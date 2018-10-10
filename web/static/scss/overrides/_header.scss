@@ -22,4 +22,13 @@ header.navbar {
       letter-spacing: normal;
     }
   }
+
+  .dropdown-menu {
+    .dropdown-item {
+      i {
+        font-size: 20px;
+        width: 2rem;
+      }
+    }
+  }
 }

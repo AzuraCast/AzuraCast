@@ -3,10 +3,9 @@ $body-bg:    $dark-theme-1;
 $body-color: $material-color-grey-300;
 
 // Breadcrumb
-$breadcrumb-bg:               $material-color-grey-100;
-$breadcrumb-border-radius:    $border-radius;
-$breadcrumb-item-color:       $black-secondary;
-$breadcrumb-item-color-hover: $black-primary;
+$breadcrumb-bg:               $dark-theme-3;
+$breadcrumb-item-color:       $white-secondary;
+$breadcrumb-item-color-hover: $white-primary;
 
 // Carousel
 $carousel-caption-color:                   $white-primary;
@@ -18,7 +17,7 @@ $carousel-indicator-border-color:          $white-divider;
 $carousel-indicator-border-width:          $border-width;
 
 // Close
-$close-color:       $black-hint;
+$close-color:       $white-hint;
 $close-color-hover: $black-primary;
 
 // Code
@@ -29,15 +28,15 @@ $code-color:                #bd4147;
 $kbd-bg:                    $black-primary;
 $kbd-color:                 $white-primary;
 
-$pre-color:                 $black-primary;
+$pre-color:                 $material-color-grey-500;
 
 // Form
 $form-feedback-invalid-color: theme-color(danger);
 $form-feedback-valid-color:   theme-color(success);
 
 // Jumbotron
-$jumbotron-bg:               $white-primary;
-$jumbotron-color:            $black-primary;
+$jumbotron-bg:               $dark-theme-2;
+$jumbotron-color:            $white-primary;
 
 // Link
 $link-color:            theme-color(primary);
@@ -45,9 +44,9 @@ $link-color-hover:      theme-color-light(primary);
 
 // Misc
 $blockquote-border-color:    theme-color(primary);
-$blockquote-small-color:     $black-hint;
+$blockquote-small-color:     $white-hint;
 
-$figure-caption-color:       $black-hint;
+$figure-caption-color:       $white-hint;
 
 $headings-color:             inherit;
 
@@ -56,15 +55,15 @@ $hr-border-color:            $border-color;
 $mark-bg:                    $material-color-yellow-500;
 $mark-color:                 $black-primary;
 
-$table-caption-color:        $black-hint;
+$table-caption-color:        $white-hint;
 
-$text-muted:                 $black-hint;
+$text-muted:                 $white-hint;
 
 $webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
 // Nav
 
-$nav-link-color-disabled: $black-hint;
+$nav-link-color-disabled: $white-hint;
 
 $nav-pills-bg-hover:      $black-divider;
 $nav-pills-border-radius: $border-radius;
@@ -77,8 +76,8 @@ $nav-pills-link-opacity:  0.7;
 $pagination-bg:             $material-color-grey-100;
 $pagination-border-radius:  $border-radius;
 $pagination-color:          $black-primary;
-$pagination-color-disabled: $black-hint;
+$pagination-color-disabled: $white-hint;
 
 // Popover
 
-$popover-bg:               $white;
+$popover-bg:               $dark-theme-1;

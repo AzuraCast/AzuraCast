@@ -2,7 +2,7 @@
 /** @var \App\Entity\Station $station */
 
 $this->layout('minimal', [
-    'page_class' => 'public-page-content station-'.$station->getShortName(),
+    'page_class' => 'station-'.$station->getShortName(),
     'title' => $this->e($station->getName()),
 ]);
 

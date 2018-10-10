@@ -321,7 +321,7 @@
 }
 
 .card-subtitle {
-  @include typography-body-1;
+  @include typography-subheading;
 
   margin-top: ($card-inner-spacer-y * -1);
   margin-bottom: 0;

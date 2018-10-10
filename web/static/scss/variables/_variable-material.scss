@@ -116,7 +116,7 @@ $table-tbody-font-size:       0.8125rem !default;
 $table-tbody-font-weight:     $font-weight-regular !default;
 $table-tbody-padding-y:       (($table-tbody-cell-height - $table-tbody-font-size * $table-line-height) / 2) !default;
 
-$table-tfoot-cell-height:     3.5rem !default;
+$table-tfoot-cell-height:     2.5rem !default;
 $table-tfoot-color:           $black-secondary !default;
 $table-tfoot-font-size:       0.75rem !default;
 $table-tfoot-font-weight:     $font-weight-regular !default;
@@ -191,7 +191,7 @@ $expansion-panel-padding-y:             (($expansion-panel-height - $expansion-p
 $menu-bg:                       $white !default;
 $menu-border-radius:            $border-radius !default;
 $menu-divider-bg:               $border-color !default;
-$menu-font-size:                1rem !default;
+$menu-font-size:                .8rem !default;
 $menu-font-size-cascading:      0.9375rem !default;
 $menu-font-weight:              $font-weight-regular !default;
 $menu-elevation-shadow:         map-get($elevation-shadows, 8) !default;
@@ -210,7 +210,7 @@ $menu-link-padding-y:           (($menu-link-height - $menu-line-height) / 2) !d
 $menu-link-padding-y-cascading: (($menu-link-height-cascading - $menu-line-height-cascading) / 2) !default;
 $menu-min-width:                7rem !default;
 $menu-min-width-cascading:      20rem !default;
-$menu-padding-y:                0.5rem !default;
+$menu-padding-y:                0.3rem !default;
 $menu-padding-y-cascading:      1rem !default;
 
 // Navigation drawer
@@ -444,8 +444,8 @@ $floating-label-font-size-sm:    0.625rem !default;
 // Toolbar (Bootstrap navbar)
 // Based on https://material.google.com/components/toolbars.html#toolbars-usage
 
-$toolbar-color:                 $black-primary !default;
-$toolbar-color-lighter:         $black-hint !default;
+$toolbar-color:                 $white-primary !default;
+$toolbar-color-lighter:         $white-hint !default;
 $toolbar-element-bg:            $black-divider !default;
 $toolbar-element-border-radius: $border-radius !default;
 $toolbar-element-height:        2.25rem !default;

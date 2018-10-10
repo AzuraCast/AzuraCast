@@ -40,7 +40,7 @@ echo $assets->css();
 echo $assets->js();
 ?>
 </head>
-<body class="<?=$page_class ?>">
+<body class="<?=$page_class ?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
 <?=$assets->inlineJs($request) ?>
 
 <a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content') ?></a>
@@ -56,56 +56,54 @@ echo $assets->js();
         azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
     </a>
 
-    <div class="ml-3">
-        <?=$this->fetch('partials/radio_controls') ?>
+    <?=$this->fetch('partials/radio_controls') ?>
 
-        <div class="dropdown">
-            <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" type="button">
-                <i class="material-icons">more_vert</i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
+    <div class="dropdown ml-3">
+        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" type="button">
+            <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('dashboard') ?>">
+                    <i class="material-icons">home</i>
+                    <?=__('Dashboard') ?>
+                </a>
+            </li>
+            <?php if ($acl->userAllowed($user, 'view administration')): ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('dashboard') ?>">
-                        <i class="material-icons">home</i>
-                        <?=__('Dashboard') ?>
+                    <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
+                        <i class="material-icons">settings</i>
+                        <?=__('System Administration') ?>
                     </a>
                 </li>
-                <?php if ($acl->userAllowed($user, 'view administration')): ?>
-                    <li>
-                        <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
-                            <i class="material-icons">settings</i>
-                            <?=__('System Administration') ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <li>
-                    <a class="dropdown-item" href="<?=$router->named('profile:index') ?>">
-                        <i class="material-icons">account_circle</i>
-                        <?=__('My Account') ?>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="<?=$router->named('api_keys:index') ?>">
-                        <i class="material-icons">vpn_key</i>
-                        <?=__('My API Keys') ?>
-                    </a>
-                </li>
-                <li class="dropdown-divider">&nbsp;</li>
-            <?php if ($auth->isMasqueraded()): ?>
-                <li>
-                    <a class="dropdown-item" href="<?=$router->named('account:endmasquerade') ?>">
-                        <i class="zmdi zmdi-power"></i>
-                        <?=__('End Session') ?>
-                    </a>
-                </li>
-            <?php else: ?>
-                <li>
-                    <a class="dropdown-item" href="<?=$router->named('account:logout') ?>">
-                        <i class="zmdi zmdi-power"></i>
-                        <?=__('Sign Out') ?></a></li>
             <?php endif; ?>
-            </ul>
-        </div>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('profile:index') ?>">
+                    <i class="material-icons">account_circle</i>
+                    <?=__('My Account') ?>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('api_keys:index') ?>">
+                    <i class="material-icons">vpn_key</i>
+                    <?=__('My API Keys') ?>
+                </a>
+            </li>
+            <li class="dropdown-divider">&nbsp;</li>
+        <?php if ($auth->isMasqueraded()): ?>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('account:endmasquerade') ?>">
+                    <i class="material-icons">exit_to_app</i>
+                    <?=__('End Session') ?>
+                </a>
+            </li>
+        <?php else: ?>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('account:logout') ?>">
+                    <i class="material-icons">exit_to_app</i>
+                    <?=__('Sign Out') ?></a></li>
+        <?php endif; ?>
+        </ul>
     </div>
 </header>
 
@@ -118,7 +116,6 @@ echo $assets->js();
 <?php endif; ?>
 
 <section id="main">
-
     <section id="content" <?php if (empty($sidebar)): ?>class="content-alt"<?php endif; ?> role="main">
         <div class="container">
         <?php if ($manual): ?>

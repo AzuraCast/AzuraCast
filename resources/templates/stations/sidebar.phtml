@@ -109,44 +109,44 @@ $assets->addInlineJs($this->fetch('stations/sidebar.js'));
         <div class="collapse pb-2" id="sidebar-submenu-reports">
             <ul class="navdrawer-nav">
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:reports:overview') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:overview') ?>">
                         <?=__('Statistics Overview') ?>
                     </a>
                 </li>
             <?php if ($frontend::supportsListenerDetail()): ?>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:reports:listeners') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:listeners') ?>">
                         <?=__('Listeners') ?>
                     </a>
                 </li>
             <?php endif; ?>
             <?php if ($station->getEnableRequests()): ?>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:reports:requests') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:requests') ?>">
                         <?=__('Song Requests') ?>
                     </a>
                 </li>
             <?php endif; ?>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:reports:timeline') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:timeline') ?>">
                         <?=__('Song Playback Timeline') ?>
                     </a>
                 </li>
             <?php if ($backend::supportsMedia()): ?>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:reports:performance') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:performance') ?>">
                         <?=__('Song Listener Impact') ?>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:reports:duplicates') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:duplicates') ?>">
                         <?=__('Duplicate Songs') ?>
                     </a>
                 </li>
             <?php endif; ?>
             <?php if ($frontend::supportsListenerDetail()): ?>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:reports:soundexchange') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:soundexchange') ?>">
                         <?=__('SoundExchange Royalties') ?>
                     </a>
                 </li>
@@ -165,14 +165,14 @@ $assets->addInlineJs($this->fetch('stations/sidebar.js'));
             <ul class="navdrawer-nav">
             <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend::supportsMedia()): ?>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-black-secondary" href="<?=$router->fromHere('stations:automation:index') ?>">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:automation:index') ?>">
                         <?=__('Automated Assignment') ?>
                     </a>
                 </li>
             <?php endif; ?>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <li>
-                    <a class="api-call nav-link pl-4 py-2 text-black-secondary" data-restart="false" href="<?=$router->fromHere('api:stations:restart') ?>">
+                    <a class="api-call nav-link pl-4 py-2 text-muted" data-restart="false" href="<?=$router->fromHere('api:stations:restart') ?>">
                         <?=__('Restart Broadcasting') ?>
                     </a>
                 </li>

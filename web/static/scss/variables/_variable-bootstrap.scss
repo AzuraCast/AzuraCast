@@ -14,8 +14,8 @@ $badge-padding-x:     0.5em !default;
 
 // Body
 
-$body-bg:    $white-primary !default;
-$body-color: $black-primary !default;
+$body-bg:    $light-theme-1 !default;
+$body-color: #5e5e5e !default;
 
 // Breadcrumb
 
@@ -121,7 +121,7 @@ $dt-font-weight:             $font-weight-medium !default;
 $figure-caption-color:       $black-hint !default;
 $figure-img-margin-y:        $spacer-sm !default;
 
-$headings-color:             inherit !default;
+$headings-color:             $black-primary !default;
 $headings-font-family:       inherit !default;
 $headings-margin-y:          $spacer-sm !default;
 

@@ -1,64 +1,73 @@
-.public-page {
-  height: 100vh;
-}
+body.page-minimal {
+  background: $body-bg url($public-page-bg);
+  background-size: cover;
 
-.public-block {
-  background: theme-color-dark('dark');
-  border-radius: 2px;
-  position: absolute;
-  top: 50%;
-  margin-top: -100px;
-  padding: 25px;
-  height: 200px;
-  width: 500px;
-  left: 50%;
-  margin-left: -250px;
-
-  h3 {
-    margin-top: 0;
-    margin-bottom: 0;
+  footer {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black, 0 0 4px #000;
   }
 
-  h2 {
-    font-size: 130px;
-    line-height: 100%;
-    font-weight: 100;
+  .public-page {
+    height: 100vh;
   }
 
-  @include media-breakpoint-only('xs') {
-    width: calc(100% - 40px);
-    left: 20px;
-    margin-left: 0;
-    height: 260px;
-    margin-top: -130px;
+  .public-block {
+    background: $card-bg;
+    border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    margin-top: -100px;
+    padding: 25px;
+    height: 200px;
+    width: 500px;
+    left: 50%;
+    margin-left: -250px;
+
+    h3 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
 
     h2 {
-      font-size: 90px;
+      font-size: 130px;
+      line-height: 100%;
+      font-weight: 100;
+    }
+
+    @include media-breakpoint-only('xs') {
+      width: calc(100% - 40px);
+      left: 20px;
+      margin-left: 0;
+      height: 260px;
+      margin-top: -130px;
+
+      h2 {
+        font-size: 90px;
+      }
+    }
+
+    small {
+      display: block;
+      font-size: 26px;
+      margin-top: -10px
+    }
+
+    .stations {
+      margin: 20px 0;
     }
   }
 
-  small {
-    display: block;
-    font-size: 26px;
-    margin-top: -10px
-  }
+  // Pulled from:
+  // https://stackoverflow.com/questions/5474871/html-how-can-i-show-tooltip-only-when-ellipsis-is-activated
 
-  .stations {
-    margin: 20px 0;
-  }
-}
+  .might-overflow {
+    text-overflow: ellipsis;
+    overflow : hidden;
+    white-space: nowrap;
 
-// Pulled from:
-// https://stackoverflow.com/questions/5474871/html-how-can-i-show-tooltip-only-when-ellipsis-is-activated
-
-.might-overflow {
-  text-overflow: ellipsis;
-  overflow : hidden;
-  white-space: nowrap;
-
-  &:hover {
-    text-overflow: clip;
-    white-space: normal;
-    word-break: break-all;
+    &:hover {
+      text-overflow: clip;
+      white-space: normal;
+      word-break: break-all;
+    }
   }
 }

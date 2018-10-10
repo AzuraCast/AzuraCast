@@ -1,15 +1,15 @@
 body {
   position: relative;
-}
 
-#main {
-  padding-bottom: 75px;
-  padding-top: 100px;
-  min-height: 100vh;
-}
-
-@include media-breakpoint-up(lg) {
   #main {
-    margin-left: $navdrawer-width;
+    padding-bottom: 75px;
+    padding-top: 100px;
+    min-height: 100vh;
+  }
+
+  @include media-breakpoint-up(lg) {
+    &.has-sidebar #main {
+      margin-left: $navdrawer-width;
+    }
   }
 }

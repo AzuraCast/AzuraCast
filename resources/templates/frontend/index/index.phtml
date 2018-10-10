@@ -16,28 +16,20 @@ if ($metrics) {
 }
 ?>
 
-<div class="block-header">
-    <h2><?=__('Dashboard') ?></h2>
-</div>
-
 <?php if ($metrics): ?>
 <div class="row">
     <div class="col-sm-6">
-        <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><?=__('Listeners Across All Stations') ?></h2>
-            </div>
-            <div class="card-body card-padding-sm">
+        <section class="card mb-4" role="region">
+            <div class="card-body">
+                <h3 class="card-title"><?=__('Listeners Across All Stations') ?></h3>
                 <div id="network_chart" style="height: 250px;"></div>
             </div>
         </section>
     </div>
     <div class="col-sm-6">
-        <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><?=__('Listeners Per Station') ?></h2>
-            </div>
-            <div class="card-body card-padding-sm">
+        <section class="card mb-4" role="region">
+            <div class="card-body">
+                <h3 class="card-title"><?=__('Listeners Per Station') ?></h3>
                 <div id="station_chart" style="height: 250px;"></div>
             </div>
         </section>
@@ -48,14 +40,8 @@ if ($metrics) {
 <div class="row">
     <div class="col-sm-12">
         <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><?=__('Station Overview') ?></h2>
-
-                <ul class="actions">
-                <?php if ($acl->userAllowed($user, 'administer stations')): ?>
-                    <li><a class="" title="<?=sprintf(__('Add %s'), __('Station')) ?>" href="<?=$router->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a></li>
-                <?php endif; ?>
-                </ul>
+            <div class="card-body">
+                <h3 class="card-title"><?=__('Station Overview') ?></h3>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" id="station_dashboard">
@@ -99,6 +85,14 @@ if ($metrics) {
                     </tbody>
                 </table>
             </div>
+        <?php if ($acl->userAllowed($user, 'administer stations')): ?>
+            <div class="card-actions">
+                <a class="btn btn-outline-primary" href="<?=$router->named('admin:stations:add') ?>">
+                    <i class="material-icons">add</i>
+                    <?=sprintf(__('Add %s'), __('Station')) ?>
+                </a>
+            </div>
+        <?php endif; ?>
         </section>
     </div>
 </div>

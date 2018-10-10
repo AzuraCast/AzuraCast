@@ -72,18 +72,18 @@ $expansion-panel-bg-active:             $material-color-grey-200;
 $expansion-panel-border-color:          $border-color;
 $expansion-panel-border-width:          $border-width;
 $expansion-panel-color:                 $material-color-grey-200;
-$expansion-panel-color-disabled:        $black-hint;
+$expansion-panel-color-disabled:        $white-hint;
 
 // Menu (Bootstrap dropdown)
 // Based on https://material.google.com/components/menus.html#menus-specs
 
-$menu-bg:                       $white;
+$menu-bg:                       $dark-theme-3;
 $menu-divider-bg:               $border-color;
 $menu-header-color:             $material-color-grey-200;
 $menu-link-bg:                  transparent;
-$menu-link-bg-hover:            $material-color-grey-100;
+$menu-link-bg-hover:            $dark-theme-4;
 $menu-link-color:               $material-color-grey-200;
-$menu-link-color-disabled:      $black-hint;
+$menu-link-color-disabled:      $white-hint;
 
 // Navigation drawer
 // Based on https://material.google.com/patterns/navigation-drawer.html#navigation-drawer-specs

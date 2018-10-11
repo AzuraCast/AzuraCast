@@ -18,13 +18,13 @@ $assets
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header ch-alt">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h2><?=__('Music Files') ?></h2>
-                        <div id="breadcrumb" class="">&nbsp;</div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-7">
+                        <h2 class="card-title"><?=__('Music Files') ?></h2>
+                        <h3 class="card-subtitle" id="breadcrumb" class="">&nbsp;</h3>
                     </div>
-                    <div class="col-md-4 text-right">
+                    <div class="col-md-5 text-right">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
                                 <span class="sr-only"><?=$space_percent ?>%</span>
@@ -33,9 +33,6 @@ $assets
                         <?=sprintf(__('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
                     </div>
                 </div>
-            </div>
-
-            <div class="card-body card-padding-sm">
 
                 <?php if (APP_INSIDE_DOCKER): ?>
                     <p><i class="zmdi zmdi-info"></i> <?=sprintf(__('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#access-files-via-sftp-docker-installations') ?></p>

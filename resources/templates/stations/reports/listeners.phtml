@@ -13,18 +13,12 @@ $assets
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header ch-alt">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h2><?=__('Listeners') ?></h2>
-                        <div><span id="listener-count">0</span> Unique</div>
-                    </div>
-                    <div class="col-md-4 text-right">
-                        <a class="btn btn-default" id="reportrange" href="#">
-                            <i class="zmdi zmdi-calendar"></i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
-                        </a>
-                    </div>
-                </div>
+            <div class="card-body">
+                <a class="btn btn-primary float-right dropdown-toggle" id="reportrange" href="#">
+                    <i class="material-icons">date_range</i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
+                </a>
+                <h2 class="card-title"><?=__('Listeners') ?></h2>
+                <h3 class="card-subtitle"><span id="listener-count">0</span> Unique</h3>
             </div>
             <div id="map" style="height: 350px;">
             </div>

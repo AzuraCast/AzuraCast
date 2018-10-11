@@ -1,0 +1,13 @@
+.bootgrid-table {
+  th > .column-header-anchor {
+    color: $table-thead-color;
+  }
+
+  th:active, th:hover {
+    background: $table-bg-active;
+  }
+
+  td.loading, td.no-results {
+    background: $table-bg-accent;
+  }
+}

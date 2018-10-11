@@ -18,7 +18,7 @@ $btn-overlay-inverse:         $white-divider;
 // Button: toggle buttons (Boostrap button group)
 // Based on https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons
 
-$btn-group-bg:             $white-primary;
+$btn-group-bg:             $dark-theme-3;
 
 // Card (Bootstrap card)
 // Based on https://material.google.com/components/cards.html#cards-usage
@@ -38,10 +38,10 @@ $chip-icon-bg:                theme-color(secondary);
 // Based on https://material.google.com/components/data-tables.html#data-tables-structure
 
 $table-bg:                    none;
-$table-bg-active:             $material-color-grey-200;
-$table-bg-active-hover:       $material-color-grey-300;
+$table-bg-active:             $dark-theme-4;
+$table-bg-active-hover:       $dark-theme-4;
 $table-bg-accent:             $dark-theme-3;
-$table-bg-hover:              $material-color-grey-200;
+$table-bg-hover:              $dark-theme-4;
 $table-border-color:          $border-color-solid;
 $table-border-width:          0;
 

@@ -16,7 +16,7 @@ body.page-minimal {
     position: absolute;
     top: 50%;
     margin-top: -100px;
-    height: 200px;
+    min-height: 200px;
     width: 500px;
     left: 50%;
     margin-left: -250px;
@@ -37,12 +37,6 @@ body.page-minimal {
       width: calc(100% - 40px);
       left: 20px;
       margin-left: 0;
-      height: 260px;
-      margin-top: -130px;
-
-      h2 {
-        font-size: 90px;
-      }
     }
   }
 

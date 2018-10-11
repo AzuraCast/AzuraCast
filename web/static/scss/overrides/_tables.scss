@@ -11,4 +11,16 @@ table {
     }
   }
 
+  tr.text-center {
+    td, th {
+      text-align: center;
+    }
+  }
+
+  td, th {
+    &.text-center {
+      text-align: center;
+    }
+  }
+
 }

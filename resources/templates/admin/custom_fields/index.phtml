@@ -1,12 +1,13 @@
 <?php $this->layout('main', ['title' => __('Custom Fields'), 'manual' => true]); ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Custom Fields') ?></h2>
-
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Custom Field')) ?>" href="<?=$router->named('admin:custom_fields:add') ?>">
-            <span class="sr-only"><?=__('Add %s', __('Custom Field')) ?></span>
-            <i class="zmdi zmdi-plus"></i>
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Custom Fields') ?></h2>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:custom_fields:add') ?>">
+            <i class="material-icons">add</i>
+            <?=__('Add %s', __('Custom Field')) ?>
         </a>
     </div>
     <div class="table-responsive">

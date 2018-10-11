@@ -1,16 +1,15 @@
 <?php $this->layout('main', ['title' => __('Remote Relays'), 'manual' => true]) ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Remote Relays') ?></h2>
-
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Remote Relay')) ?>" href="<?=$router->fromHere('stations:remotes:add') ?>">
-            <span class="sr-only"><?=__('Add %s', __('Remote Relay')) ?></span>
-            <i class="zmdi zmdi-plus"></i>
-        </a>
-    </div>
-    <div class="card-body card-padding p-b-0">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Remote Relays') ?></h2>
         <p><?=__('Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.') ?></p>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:remotes:add') ?>">
+            <i class="material-icons">add</i>
+            <?=__('Add %s', __('Remote Relay')) ?>
+        </a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

@@ -23,9 +23,9 @@ $assets
 
                 <div class="row">
                     <div class="col-md-4 col-sm-12">
-                        <div class="ml-4 position-relative">
-                            <div class="position-absolute top-0 left--2">
-                                <i class="material-icons">collection_music</i>
+                        <div class="position-relative" style="margin-left: 30px;">
+                            <div class="position-absolute" style="top: 0; left: -30px;">
+                                <i class="material-icons">music_note</i>
                             </div>
 
                             <h6><?=__('Now Playing') ?>:</h6>
@@ -43,8 +43,10 @@ $assets
                     </div>
 
                     <div class="col-md-4 col-sm-12" v-if="!np.live.is_live && np.playing_next">
-                        <div class="ml-4" style="position: relative;">
-                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-skip-next"></i></div>
+                        <div class="position-relative" style="margin-left: 30px;">
+                            <div class="position-absolute" style="top: 0; left: -30px;">
+                                <i class="material-icons">skip_next</i>
+                            </div>
 
                             <h6><?=__('Playing Next') ?>:</h6>
 
@@ -57,8 +59,10 @@ $assets
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12" v-if="np.live.is_live">
-                        <div class="ml-4" style="position: relative;">
-                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-account"></i></div>
+                        <div class="position-relative" style="margin-left: 30px;">
+                            <div class="position-absolute" style="top: 0; left: -30px;">
+                                <i class="material-icons">headset</i>
+                            </div>
 
                             <h6><?=__('Now Streaming') ?>:</h6>
 
@@ -85,8 +89,14 @@ $assets
             </div>
             <?php if ($backend_type == 'liquidsoap' && $acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <div class="card-actions">
-                    <a id="btn_skip_song" class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live"><i class="zmdi zmdi-skip-next"></i> <?=__('Skip Song') ?></a>
-                    <a id="btn_disconnect_streamer" class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live"><i class="zmdi zmdi-volume-off"></i> <?=__('Disconnect Streamer') ?></a>
+                    <a id="btn_skip_song" class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
+                        <i class="material-icons">skip_next</i>
+                        <?=__('Skip Song') ?>
+                    </a>
+                    <a id="btn_disconnect_streamer" class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
+                        <i class="material-icons">volume_off</i>
+                        <?=__('Disconnect Streamer') ?>
+                    </a>
                 </div>
             <?php endif; ?>
         </section>
@@ -97,7 +107,7 @@ $assets
         <?php if ($acl->userAllowed($user, 'manage station profile', $station->getId())): ?>
             <div class="card-actions">
                 <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:profile:edit') ?>">
-                    <i class="zmdi zmdi-edit"></i>
+                    <i class="material-icons">edit</i>
                     <?=__('Edit Profile') ?>
                 </a>
             </div>
@@ -126,7 +136,7 @@ $assets
                                 <div class="form-field">
                                     <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
                                 </div>
-                                <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="zmdi zmdi-copy"></i> <?=__('Copy to Clipboard') ?></button>
+                                <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons">file_copy</i> <?=__('Copy to Clipboard') ?></button>
                             <?php else: ?>
                                 <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
                             <?php endif; ?>
@@ -158,7 +168,7 @@ $assets
                     <td><?=__('Player Embed Code') ?></td>
                     <td class="form-field">
                         <textarea id="player_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
-                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#player_embed_url"><i class="zmdi zmdi-copy"></i> <?=__('Copy to Clipboard') ?></button>
+                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#player_embed_url"><i class="material-icons">file_copy</i> <?=__('Copy to Clipboard') ?></button>
                     </td>
                 </tr>
                 </tbody>
@@ -187,7 +197,7 @@ $assets
                     <tr class="align-middle">
                         <td>
                             <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
-                                <i class="zmdi zmdi-play"></i>
+                                <i class="material-icons">play_circle_filled</i>
                             </a>
                         </td>
                         <td>
@@ -208,7 +218,7 @@ $assets
                     <tr class="align-middle">
                         <td>
                             <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
-                                <i class="zmdi zmdi-play"></i>
+                                <i class="material-icons">play_circle_filled</i>
                             </a>
                         </td>
                         <td>

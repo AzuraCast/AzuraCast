@@ -1,11 +1,13 @@
 <?php $this->layout('main', ['title' => __('Permissions'), 'manual' => true]); ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Permissions') ?></h2>
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Permission')) ?>" href="<?=$router->named('admin:permissions:add') ?>">
-            <span class="sr-only"><?=__('Add %s', __('Permission')) ?></span>
-            <i class="zmdi zmdi-plus"></i>
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Permissions') ?></h2>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:permissions:add') ?>">
+            <i class="material-icons">add</i>
+            <?=__('Add %s', __('Permission')) ?>
         </a>
     </div>
     <div class="table-responsive">

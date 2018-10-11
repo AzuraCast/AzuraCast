@@ -1,12 +1,13 @@
 <?php $this->layout('main', ['title' => __('Stations'), 'manual' => true]); ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Manage Stations') ?></h2>
-
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Station')) ?>" href="<?=$router->named('admin:stations:add') ?>">
-            <span class="sr-only"><?=__('Add %s', __('Station')) ?></span>
-            <i class="zmdi zmdi-plus"></i>
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Manage Stations') ?></h2>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:stations:add') ?>">
+            <i class="material-icons">add</i>
+            <?=__('Add %s', __('Station')) ?>
         </a>
     </div>
     <div class="table-responsive">

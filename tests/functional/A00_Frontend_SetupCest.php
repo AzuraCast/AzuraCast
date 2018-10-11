@@ -52,7 +52,9 @@ class A00_Frontend_SetupCest extends CestAbstract
 
     protected function setupSettings(FunctionalTester $I)
     {
-        $I->submitForm('.form', []);
+        $I->submitForm('.form', [
+            'base_url' => 'localhost',
+        ]);
 
         $I->seeResponseCodeIs(200);
         $I->seeCurrentUrlEquals('/dashboard');

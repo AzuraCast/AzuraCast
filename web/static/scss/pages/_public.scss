@@ -8,16 +8,30 @@ body.page-minimal {
 
   .public-page {
     height: 100vh;
+
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.login-content,
+  &.error-content {
+    .card {
+      .card-body {
+        padding: ($card-padding-y * 2) ($card-padding-y * 2);
+      }
+    }
   }
 
   .card {
-    position: absolute;
-    top: 50%;
-    margin-top: -100px;
-    min-height: 200px;
     width: 500px;
-    left: 50%;
-    margin-left: -250px;
 
     .card-body {
       position: relative;

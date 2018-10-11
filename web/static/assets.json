@@ -1,7 +1,8 @@
 {
   "dist/app.js": "dist/app-9dbd46ed17.js",
-  "dist/dark.css": "dist/dark-e85f19cee9.css",
-  "dist/light.css": "dist/light-2be588270d.css",
+  "dist/bootgrid.js": "dist/bootgrid-e49c3ea0ee.js",
+  "dist/dark.css": "dist/dark-4615757982.css",
+  "dist/light.css": "dist/light-8017a7a389.css",
   "dist/material.js": "dist/material-e4580cfb8e.js",
   "dist/radio.js": "dist/radio-d81a043e49.js",
   "dist/zxcvbn.js": "dist/zxcvbn-da450ff5bb.js"

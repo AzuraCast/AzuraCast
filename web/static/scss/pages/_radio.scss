@@ -7,11 +7,11 @@
 
   .progress {
     .progress-bar {
-      border-bottom-width: 25px;
+      border-bottom-width: 10px;
       border-bottom-color: theme-color('info');
 
       &::after {
-        height: 25px;
+        height: 10px;
         background-color: theme-color-light('info');
       }
     }

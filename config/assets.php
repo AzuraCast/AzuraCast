@@ -155,7 +155,9 @@ return [
             'js' => [
                 [
                     'src' => 'js/bootgrid/jquery.bootgrid.updated.js',
-                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/bootgrid.js',
                 ],
             ],
         ],

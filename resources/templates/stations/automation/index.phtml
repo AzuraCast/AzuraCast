@@ -1,11 +1,10 @@
 <?php
 $this->layout('main', ['title' => __('Automated Playlist Assignment'), 'manual' => true]);
 ?>
-<div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Automated Playlist Assignment') ?></h2>
-    </div>
-    <div class="card-body card-padding">
+<div class="card mb-3">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Automated Playlist Assignment') ?></h2>
+
         <p><?=sprintf(__('Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.'), $app_settings['name']) ?></p>
 
         <p><?=__('Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.') ?></p>
@@ -15,10 +14,9 @@ $this->layout('main', ['title' => __('Automated Playlist Assignment'), 'manual' 
 </div>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Configure Automated Assignment') ?></h2>
-    </div>
-    <div class="card-body card-padding">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Configure Automated Assignment') ?></h2>
+
         <?=$this->fetch('system/form_edit', ['form' => $form]) ?>
     </div>
 </div>

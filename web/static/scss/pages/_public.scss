@@ -10,27 +10,27 @@ body.page-minimal {
     height: 100vh;
   }
 
-  .public-block {
+  .card {
     background: $card-bg;
     border-radius: 2px;
     position: absolute;
     top: 50%;
     margin-top: -100px;
-    padding: 25px;
     height: 200px;
     width: 500px;
     left: 50%;
     margin-left: -250px;
 
-    h3 {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
+    .card-body {
+      position: relative;
 
-    h2 {
-      font-size: 130px;
-      line-height: 100%;
-      font-weight: 100;
+      .btn-float {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: (0-($btn-float-size / 2));
+        margin-right: (0-($btn-float-size / 2));
+      }
     }
 
     @include media-breakpoint-only('xs') {
@@ -43,16 +43,6 @@ body.page-minimal {
       h2 {
         font-size: 90px;
       }
-    }
-
-    small {
-      display: block;
-      font-size: 26px;
-      margin-top: -10px
-    }
-
-    .stations {
-      margin: 20px 0;
     }
   }
 

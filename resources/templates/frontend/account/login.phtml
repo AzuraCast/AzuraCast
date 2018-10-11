@@ -1,37 +1,41 @@
-<?php $this->layout('minimal', ['title' => 'Log In', 'page_class' => 'login-content']) ?>
+<?php
+$this->layout('minimal', [
+    'title' => 'Log In',
+    'page_class' => 'login-content'
+]);
+?>
 
-<!-- Login -->
-<div class="lc-block toggled" id="l-login">
-    <div class="lcb-form">
-        <h3 class="text-left">
+<div class="public-page">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title mb-0">
             <?php if ($customization->hideProductName()): ?>
                 <?=__('Welcome!') ?>
             <?php else: ?>
                 <?=sprintf(__('Welcome to %s!'), $app_settings['name']) ?>
             <?php endif; ?>
-            <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
-        </h3>
-        <p class="text-left"><?=__('Please log in to continue.') ?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
+            <?php if (!empty($customization->getInstanceName())): ?>
+                <small class="text-muted"><?=$this->e($customization->getInstanceName()) ?></small>
+            <?php endif; ?>
+            </h2>
 
-        <form id="login-form" action="" method="post">
-            <div class="input-group m-b-20">
-                <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
-                <div class="fg-line">
-                    <input type="email" name="username" class="form-control" placeholder="<?=__('E-mail Address') ?>">
+            <p class="text-left"><?=__('Please log in to continue.') ?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
+
+            <form id="login-form" class="pr-5" action="" method="post">
+                <div class="floating-label">
+                    <label for="username"><?=__('E-mail Address') ?></label>
+                    <input type="email" name="username" class="form-control" placeholder="">
                 </div>
-            </div>
 
-            <div class="input-group m-b-20">
-                <span class="input-group-addon"><i class="zmdi zmdi-lock"></i></span>
-                <div class="fg-line">
-                    <input type="password" name="password" class="form-control" placeholder="<?=__('Password') ?>">
+                <div class="floating-label">
+                    <label for="password"><?=__('Password') ?></label>
+                    <input type="password" name="password" class="form-control" placeholder="">
                 </div>
-            </div>
 
-            <div class="clearfix"></div>
-
-            <button type="submit" role="button" title="<?=__('Log In') ?>" class="btn btn-login btn-primary btn-float"><i class="zmdi zmdi-arrow-forward"></i></button>
-        </form>
+                <button type="submit" role="button" title="<?=__('Log In') ?>" class="btn btn-login btn-primary btn-float">
+                    <i class="material-icons">arrow_forward_ios</i>
+                </button>
+            </form>
+        </div>
     </div>
-
 </div>

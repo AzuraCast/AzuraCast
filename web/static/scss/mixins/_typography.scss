@@ -1,0 +1,69 @@
+@mixin typography-display-4 {
+  font-size: $font-size-display-4;
+  font-weight: $font-weight-display-4;
+  letter-spacing: $letter-spacing-display-4;
+  line-height: $line-height-display-4;
+}
+
+@mixin typography-display-3 {
+  font-size: $font-size-display-3;
+  font-weight: $font-weight-display-3;
+  letter-spacing: $letter-spacing-display-3;
+  line-height: $line-height-display-3;
+}
+
+@mixin typography-display-2 {
+  font-size: $font-size-display-2;
+  font-weight: $font-weight-display-2;
+  letter-spacing: $letter-spacing-display-2;
+  line-height: $line-height-display-2;
+}
+
+@mixin typography-display-1 {
+  font-size: $font-size-display-1;
+  font-weight: $font-weight-display-1;
+  letter-spacing: $letter-spacing-display-1;
+  line-height: $line-height-display-1;
+}
+
+@mixin typography-headline {
+  font-size: $font-size-headline;
+  font-weight: $font-weight-headline;
+  letter-spacing: $letter-spacing-headline;
+  line-height: $line-height-headline;
+}
+
+@mixin typography-title {
+  font-size: $font-size-title;
+  font-weight: $font-weight-title;
+  letter-spacing: $letter-spacing-title;
+  line-height: $line-height-title;
+}
+
+@mixin typography-subheading {
+  font-size: $font-size-subheading;
+  font-weight: $font-weight-subheading;
+  letter-spacing: $letter-spacing-subheading;
+  line-height: $line-height-subheading;
+}
+
+@mixin typography-body-2 {
+  font-size: $font-size-body-2;
+  font-weight: $font-weight-body-2;
+  letter-spacing: $letter-spacing-body-2;
+  line-height: $line-height-body-2;
+}
+
+@mixin typography-body-1 {
+  font-size: $font-size-body-1;
+  font-weight: $font-weight-body-1;
+  letter-spacing: $letter-spacing-body-1;
+  line-height: $line-height-body-1;
+}
+
+@mixin typography-caption {
+  font-size: $font-size-caption;
+  font-weight: $font-weight-caption;
+  letter-spacing: $letter-spacing-caption;
+  line-height: $line-height-caption;
+}

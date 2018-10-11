@@ -1,0 +1,27 @@
+.close {
+  @include transition-standard(color);
+
+  appearance: none;
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+  color: $close-color;
+  float: right;
+  font-size: $close-font-size;
+  font-weight: $close-font-weight;
+  line-height: 1;
+  padding: 0;
+
+  @include active-focus-hover {
+    color: $close-color-hover;
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:not(:disabled):not(.disabled) {
+    cursor: pointer;
+  }
+}

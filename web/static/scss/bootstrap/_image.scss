@@ -1,0 +1,24 @@
+.figure {
+  display: inline-block;
+}
+
+.figure-caption {
+  @include typography-caption;
+
+  color: $figure-caption-color;
+}
+
+.figure-img {
+  line-height: 1;
+  margin-bottom: $figure-img-margin-y;
+}
+
+.img-fluid {
+  @include img-fluid;
+}
+
+.img-thumbnail {
+  @include img-fluid;
+
+  box-shadow: $thumbnail-box-shadow;
+}

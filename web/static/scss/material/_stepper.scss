@@ -1,0 +1,128 @@
+// Todo: only non-clickable stepper is supported for now
+
+.stepper {
+  align-items: center;
+  background-color: $stepper-bg;
+  display: flex;
+  flex-shrink: 0;
+  overflow: hidden;
+  padding: $stepper-padding-y $stepper-padding-x;
+  position: relative;
+
+  &::after,
+  &::before {
+    border-top: $stepper-border-width solid $stepper-border-color;
+    content: '';
+    display: block;
+    position: absolute;
+  }
+
+  &:first-child::before {
+    display: none;
+  }
+
+  &:last-child::after {
+    display: none;
+  }
+}
+
+.stepper-horiz {
+  background-color: $stepper-bg;
+  display: flex;
+  justify-content: space-between;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+
+  &::before {
+    border-top: $stepper-border-width solid $stepper-border-color;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: $stepper-padding-x;
+    left: $stepper-padding-x;
+  }
+
+  .stepper {
+    &::after,
+    &::before {
+      border-top: $stepper-border-width solid $stepper-border-color;
+      top: 50%;
+      width: ($stepper-padding-x - $stepper-inner-spacer);
+    }
+
+    &::after {
+      right: 0;
+    }
+
+    &::before {
+      left: 0;
+    }
+  }
+}
+
+.stepper-vert {
+  background-color: $stepper-bg;
+  position: relative;
+
+  .stepper {
+    &::after,
+    &::before {
+      border-left: $stepper-border-width solid $stepper-border-color;
+      height: ($stepper-padding-y - $stepper-inner-spacer);
+      left: ($stepper-icon-height / 2 + $stepper-padding-x);
+    }
+
+    &::after {
+      bottom: 0;
+    }
+
+    &::before {
+      top: 0;
+    }
+  }
+}
+
+// Misc
+
+.stepper-icon {
+  background-color: $stepper-icon-bg;
+  border-radius: 50%;
+  color: $stepper-icon-color;
+  font-size: $stepper-icon-font-size;
+  font-weight: $stepper-icon-font-weight;
+  height: $stepper-icon-height;
+  line-height: $stepper-icon-height;
+  margin-right: $stepper-inner-spacer;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: $stepper-icon-height;
+
+  .stepper.active &,
+  .stepper.done & {
+    background-color: $stepper-icon-bg-active;
+    color: color-yiq($stepper-icon-bg-active);
+  }
+
+  .material-icons {
+    font-size: 1.333em;
+  }
+}
+
+.stepper-text {
+  color: $stepper-text-color;
+  font-size: $stepper-text-font-size;
+  font-weight: $stepper-text-font-weight;
+  position: relative;
+
+  .stepper.active &,
+  .stepper.done & {
+    color: $stepper-text-color-active;
+  }
+
+  .stepper.active & {
+    font-weight: bolder;
+  }
+}

@@ -9,13 +9,6 @@ $(function() {
         sorting: false,
         caseSensitive: false,
         rowCount: [10, 25, 50],
-        css: {
-            icon: 'zmdi icon',
-            iconColumns: 'zmdi-view-module',
-            iconDown: 'zmdi-sort-amount-desc',
-            iconRefresh: 'zmdi-refresh',
-            iconUp: 'zmdi-sort-amount-asc'
-        },
         url: api_url,
         post: function() {
             return {
@@ -29,9 +22,9 @@ $(function() {
             },
             "delta": function(column, row) {
                 if (row.delta_total > 0) {
-                    return '<big><span class="text-success"><i class="zmdi zmdi-trending-up"></i> '+row.delta_total+'</span></big>';
+                    return '<big><span class="text-success"><i class="material-icons">trending_up</i> '+row.delta_total+'</span></big>';
                 } else if (row.delta_total < 0) {
-                    return '<big><span class="text-danger"><i class="zmdi zmdi-trending-down"></i> ' + Math.abs(row.delta_total) + '</span></big>';
+                    return '<big><span class="text-danger"><i class="material-icons">trending_down</i> ' + Math.abs(row.delta_total) + '</span></big>';
                 } else {
                     return '<big>0</big>';
                 }

@@ -3,11 +3,13 @@
 <div class="row">
     <div class="col-md-8">
         <div class="card">
-            <div class="card-header ch-alt">
-                <h2><?=__('Streamer/DJ Accounts') ?></h2>
-
-                <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Streamer')) ?>" href="<?=$router->named('stations:streamers:add', ['station' => $station->getId()]) ?>">
-                    <span class="sr-only"><?=__('Add %s', __('Streamer')) ?></span><i class="zmdi zmdi-plus"></i>
+            <div class="card-body">
+                <h2 class="card-title"><?=__('Streamer/DJ Accounts') ?></h2>
+            </div>
+            <div class="card-actions">
+                <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:streamers:add') ?>">
+                    <i class="material-icons">add</i>
+                    <?=__('Add %s', __('Streamer')) ?>
                 </a>
             </div>
             <div class="table-responsive">
@@ -46,11 +48,10 @@
     </div>
     <div class="col-md-4">
         <div class="card">
-            <div class="card-header ch-alt">
-                <h2><?=__('Connection Information') ?></h2>
-            </div>
-            <div class="card-body card-padding">
-                <h4><?=__('IceCast Clients') ?></h4>
+            <div class="card-body">
+                <h2 class="card-title"><?=__('Connection Information') ?></h2>
+
+                <h3 class="card-subtitle"><?=__('IceCast Clients') ?></h3>
                 <dl>
                     <dt><?=__('Server') ?>:</dt>
                     <dd><?=$this->e($server_url) ?></dd>
@@ -62,7 +63,7 @@
                     <dd>/</dd>
                 </dl>
 
-                <h4><?=__('ShoutCast v1 Clients') ?></h4>
+                <h3 class="card-subtitle mt-3"><?=__('ShoutCast v1 Clients') ?></h3>
                 <dl>
                     <dt><?=__('Server') ?>:</dt>
                     <dd><?=$this->e($server_url) ?></dd>

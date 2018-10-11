@@ -2,7 +2,7 @@
 /** @var \App\Entity\Station $station */
 
 $this->layout('minimal', [
-    'page_class' => 'public-page-content station-'.$station->getShortName(),
+    'page_class' => 'station-'.$station->getShortName(),
     'title' => $this->e($station->getName()),
 ]);
 
@@ -16,44 +16,40 @@ $assets
 ?>
 
 <div class="public-page">
-    <div class="public-block">
-
-        <ul class="actions pull-right" id="radio-player-controls">
-            <li><a href="javascript:;" class="jp-mute" title="<?=__('Mute') ?>"><i class="zmdi zmdi-volume-up"></i></a></li>
-            <li><a href="javascript:;" class="jp-unmute" title="<?=__('Unmute') ?>"><i class="zmdi zmdi-volume-off"></i></a></li>
-            <li>
-                <div class="progress jp-volume-bar" style="width: 100px; height: 15px;">
+    <div class="card">
+        <div class="card-body">
+            <div class="float-right text-right flex-row" id="radio-player-controls">
+                <a href="javascript:;" class="d-inline-block jp-mute" title="<?=__('Mute') ?>">
+                    <i class="material-icons">volume_mute</i>
+                </a>
+                <a href="javascript:;" class="d-inline-block jp-unmute" title="<?=__('Unmute') ?>">
+                    <i class="material-icons">volume_up</i>
+                </a>
+                <div class="d-inline-block progress jp-volume-bar" style="width: 100px;">
                     <div class="jp-volume-bar-value progress-bar" role="progressbar"></div>
                 </div>
-            </li>
-        </ul>
-        <h3 class="text-left"><?=$this->e($station->getName()) ?></h3>
+            </div>
 
-        <div class="stations nowplaying">
-            <?=$this->fetch('frontend/public/player_component', ['stream_url' => $stream_url, 'autoplay' => $autoplay]) ?>
-        </div>
+            <h2 class="card-title"><?=$this->e($station->getName()) ?></h2>
 
-        <div class="buttons">
-            <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-history">
-                <i class="zmdi zmdi-time-restore"></i> <?=__('Song History') ?>
-            </a>
-        <?php if ($station->getEnableRequests()): ?>
-            <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-request">
-                <i class="zmdi zmdi-help-outline"></i> <?=__('Request Song') ?>
-            </a>
-        <?php endif; ?>
-            <div class="btn-group">
-                <button type="button" class="btn btn-default btn-icon-text dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="zmdi zmdi-download"></i> <?=__('Playlist') ?> <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <?php foreach(['pls', 'm3u'] as $format): ?>
-                        <li><a href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>
-                    <?php endforeach; ?>
-                </ul>
+            <div class="stations nowplaying">
+                <?=$this->fetch('frontend/public/player_component', ['stream_url' => $stream_url, 'autoplay' => $autoplay]) ?>
             </div>
         </div>
 
+        <div class="card-actions">
+            <a class="btn btn-sm btn-outline-primary" href="#modal-history" data-toggle="modal" data-target="#modal-history">
+                <i class="material-icons">history</i> <?=__('Song History') ?>
+            </a>
+            <?php if ($station->getEnableRequests()): ?>
+                <a class="btn btn-sm btn-outline-primary" href="#modal-request" data-toggle="modal" data-target="#modal-request">
+                    <i class="material-icons">help_outline</i> <?=__('Request Song') ?>
+                </a>
+            <?php endif; ?>
+            <a class="btn btn-sm btn-outline-primary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">
+                <i class="material-icons">file_download</i> <?=__('Playlist') ?>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -61,8 +57,8 @@ $assets
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="modal-history-label"><?=__('Song History') ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <ol type="1" id="station-history">
@@ -80,8 +76,8 @@ $assets
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="modal-request-label"><?=__('Request a Song') ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
 

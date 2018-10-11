@@ -1,20 +1,27 @@
-<ul class="main-menu">
-    <li class="menu-header">
-        <a href="<?=$router->named('admin:index:index') ?>">
-            <?=__('Administration') ?>
-        </a>
-    </li>
+<div class="navdrawer-header">
+    <a class="navbar-brand px-0" href="<?=$router->named('admin:index:index') ?>">
+        <?=__('Administration') ?>
+    </a>
+</div>
 
-    <?php foreach($admin_panels as $category_name => $category_info): ?>
-        <li class="sub-menu">
-            <a href="" data-ma-action="submenu-toggle"><i class="<?=$category_info['icon'] ?>"></i> <?=$category_name ?></a>
-            <ul>
+<ul class="navdrawer-nav">
+<?php foreach($admin_panels as $category_name => $category_info): ?>
+    <li class="nav-item">
+        <a class="nav-item nav-link" data-toggle="collapse" href="#sidebar-submenu-<?=$category_info['id'] ?>">
+            <i class="navdrawer-nav-icon material-icons"><?=$category_info['icon'] ?></i>
+            <?=$category_name ?>
+        </a>
+        <div class="collapse pb-2 show" id="sidebar-submenu-<?=$category_info['id'] ?>">
+            <ul class="navdrawer-nav">
                 <?php foreach($category_info['items'] as $item_name => $item_params): ?>
-                    <li>
-                        <a href="<?=(is_array($item_params['url']) ? $router->route($item_params['url']) : $router->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>"><?=$item_name ?></a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=(is_array($item_params['url']) ? $router->route($item_params['url']) : $router->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
+                        <?=$item_name ?>
+                    </a>
+                </li>
                 <?php endforeach; ?>
             </ul>
-        </li>
-    <?php endforeach; ?>
+        </div>
+    </li>
+<?php endforeach; ?>
 </ul>

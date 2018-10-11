@@ -1,0 +1,69 @@
+// Elevation
+// Based on https://material.google.com/what-is-material/elevation-shadows.html#elevation-shadows-elevation-android-
+
+$elevations: (
+  24: (24 * 10),
+  16: (16 * 10),
+  12: (12 * 10),
+  8:  (8 * 10),
+  6:  (6 * 10),
+  4:  (4 * 10),
+  2:  (2 * 10),
+  1:  (1 * 10)
+) !default;
+
+// Shadow
+// Based on https://material.google.com/what-is-material/elevation-shadows.html#elevation-shadows-shadows
+
+$shadow-color-1: rgba(0, 0, 0, 0.14) !default;
+$shadow-color-2: rgba(0, 0, 0, 0.12) !default;
+$shadow-color-3: rgba(0, 0, 0, 0.2) !default;
+
+$shadows: (
+  24: unquote('0 24px 38px 3px #{$shadow-color-1}, 0 9px 46px 8px #{$shadow-color-2}, 0 11px 15px 0 #{$shadow-color-3}'),
+  16: unquote('0 16px 24px 2px #{$shadow-color-1}, 0 6px 30px 5px #{$shadow-color-2}, 0 8px 10px 0 #{$shadow-color-3}'),
+  12: unquote('0 12px 17px 2px #{$shadow-color-1}, 0 5px 22px 4px #{$shadow-color-2}, 0 7px 8px 0 #{$shadow-color-3}'),
+  8:  unquote('0 8px 10px 1px #{$shadow-color-1}, 0 3px 14px 3px #{$shadow-color-2}, 0 4px 15px 0 #{$shadow-color-3}'),
+  6:  unquote('0 6px 10px 0 #{$shadow-color-1}, 0 1px 18px 0 #{$shadow-color-2}, 0 3px 5px 0 #{$shadow-color-3}'),
+  4:  unquote('0 2px 4px 0 #{$shadow-color-1}, 0 4px 5px 0 #{$shadow-color-2}, 0 1px 10px 0 #{$shadow-color-3}'),
+  2:  unquote('0 0 4px 0 #{$shadow-color-1}, 0 3px 4px 0 #{$shadow-color-2}, 0 1px 5px 0 #{$shadow-color-3}'),
+  1:  unquote('0 0 2px 0 #{$shadow-color-1}, 0 2px 2px 0 #{$shadow-color-2}, 0 1px 3px 0 #{$shadow-color-3}')
+) !default;
+
+// Value pair
+// Combination of elevation and shadow
+
+$elevation-shadows: (
+  24: (
+    elevation: map-get($elevations, 24),
+    shadow: map-get($shadows, 4)
+  ),
+  16: (
+    elevation: map-get($elevations, 16),
+    shadow: map-get($shadows, 6)
+  ),
+  12: (
+    elevation: map-get($elevations, 12),
+    shadow: map-get($shadows, 2)
+  ),
+  8:  (
+    elevation: map-get($elevations, 8),
+    shadow: map-get($shadows, 8)
+  ),
+  6:  (
+    elevation: map-get($elevations, 6),
+    shadow: map-get($shadows, 6)
+  ),
+  4:  (
+    elevation: map-get($elevations, 4),
+    shadow: map-get($shadows, 4)
+  ),
+  2:  (
+    elevation: map-get($elevations, 2),
+    shadow: map-get($shadows, 2)
+  ),
+  1:  (
+    elevation: map-get($elevations, 1),
+    shadow: map-get($shadows, 1)
+  )
+) !default;

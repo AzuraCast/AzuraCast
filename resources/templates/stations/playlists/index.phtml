@@ -8,24 +8,28 @@ $assets->load('fullcalendar');
 ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Playlists') ?></h2>
-
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Playlist')) ?>" href="<?=$router->fromHere('stations:playlists:add') ?>">
-            <span class="sr-only"><?=__('Add %s', __('Playlist')) ?></span>
-            <i class="zmdi zmdi-plus"></i>
-        </a>
-    </div>
-
-    <div role="tabpanel">
-        <ul class="tab-nav" role="tablist">
-            <li class="p-l-10 active"><a role="tab" data-toggle="tab" aria-expanded="true" aria-controls="all-playlists" href="#all-playlists"><?=__('All Playlists') ?></a></li>
-            <li><a role="tab" data-toggle="tab" aria-controls="schedule-view" href="#schedule-view"><?=__('Schedule View') ?></a></li>
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+                <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="all-playlists" href="#all-playlists"><?=__('All Playlists') ?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" role="tab" data-toggle="tab" aria-controls="schedule-view" href="#schedule-view"><?=__('Schedule View') ?></a>
+            </li>
         </ul>
-
-        <div class="tab-content p-t-0 p-b-0">
+    </div>
+    <div role="tabpanel">
+        <div class="tab-content">
             <div class="tab-pane active" id="all-playlists" role="tabpanel">
-
+                <div class="card-body">
+                    <h2 class="card-title"><?=__('All Playlists') ?></h2>
+                </div>
+                <div class="card-actions">
+                    <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:playlists:add') ?>">
+                        <i class="material-icons">add</i>
+                        <?=__('Add %s', __('Playlist')) ?>
+                    </a>
+                </div>
                 <table class="table table-striped">
                     <colgroup>
                         <col width="30%">
@@ -101,7 +105,6 @@ $assets->load('fullcalendar');
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-
             </div>
             <div class="tab-pane card-padding" id="schedule-view" role="tabpanel">
                 <div id="playlist-calendar"></div>
@@ -118,7 +121,7 @@ $(function() {
         if (target == '#schedule-view') {
 
             $('#playlist-calendar').fullCalendar({
-                themeSystem: 'bootstrap3',
+                themeSystem: 'bootstrap4',
                 nowIndicator: true,
                 defaultView: 'agendaWeek',
                 locale: '<?=substr(strtolower($customization->getLocale()), 0, 2) ?>',

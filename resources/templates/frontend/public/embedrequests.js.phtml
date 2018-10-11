@@ -3,13 +3,6 @@ $(function() {
         ajax: true,
         rowSelect: false,
         caseSensitive: false,
-        css: {
-            icon: 'zmdi icon',
-            iconColumns: 'zmdi-view-module',
-            iconDown: 'zmdi-sort-amount-desc',
-            iconRefresh: 'zmdi-refresh',
-            iconUp: 'zmdi-sort-amount-asc'
-        },
         url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
         formatters: {
             "commands": function(column, row) {

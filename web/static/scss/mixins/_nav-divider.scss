@@ -1,0 +1,6 @@
+@mixin nav-divider($bg: $black-divider, $margin-y: $spacer-sm) {
+  background-color: $bg;
+  height: 1px;
+  margin: $margin-y 0;
+  overflow: hidden;
+}

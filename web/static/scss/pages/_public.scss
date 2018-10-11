@@ -1,0 +1,63 @@
+body.page-minimal {
+  background: $body-bg url($public-page-bg);
+  background-size: cover;
+
+  footer {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black, 0 0 4px #000;
+  }
+
+  .public-page {
+    height: 100vh;
+  }
+
+  .card {
+    background: $card-bg;
+    border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    margin-top: -100px;
+    height: 200px;
+    width: 500px;
+    left: 50%;
+    margin-left: -250px;
+
+    .card-body {
+      position: relative;
+
+      .btn-float {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: (0-($btn-float-size / 2));
+        margin-right: (0-($btn-float-size / 2));
+      }
+    }
+
+    @include media-breakpoint-only('xs') {
+      width: calc(100% - 40px);
+      left: 20px;
+      margin-left: 0;
+      height: 260px;
+      margin-top: -130px;
+
+      h2 {
+        font-size: 90px;
+      }
+    }
+  }
+
+  // Pulled from:
+  // https://stackoverflow.com/questions/5474871/html-how-can-i-show-tooltip-only-when-ellipsis-is-activated
+
+  .might-overflow {
+    text-overflow: ellipsis;
+    overflow : hidden;
+    white-space: nowrap;
+
+    &:hover {
+      text-overflow: clip;
+      white-space: normal;
+      word-break: break-all;
+    }
+  }
+}

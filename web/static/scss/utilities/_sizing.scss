@@ -1,0 +1,17 @@
+// stylelint-disable declaration-no-important
+
+@each $prop, $prop-abbr in (height: h, width: w) {
+  @each $size, $value in $sizes {
+    .#{$prop-abbr}-#{$size} {
+      #{$prop}: $value !important;
+    }
+  }
+}
+
+.mh-100 {
+  max-height: 100% !important;
+}
+
+.mw-100 {
+  max-width: 100% !important;
+}

@@ -3,26 +3,29 @@
 /** @var $frontend App\Radio\Frontend\FrontendAbstract */
 /** @var $backend App\Radio\Backend\BackendAbstract */
 /** @var $router \App\Http\Router */
-?>
-<ul class="main-menu">
-    <li class="menu-header">
-        <a href="<?=$router->fromHere('stations:profile:index') ?>">
-            <?=$this->e($station->getName()) ?>
-        </a>
-    </li>
+/** @var $assets \App\Assets */
 
+$assets->addInlineJs($this->fetch('stations/sidebar.js'));
+?>
+<div class="navdrawer-header">
+    <a class="navbar-brand px-0" href="<?=$router->fromHere('stations:profile:index') ?>">
+        <?=$this->e($station->getName()) ?>
+    </a>
+</div>
+
+<ul class="navdrawer-nav">
 <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
     <?php if (!$station->getHasStarted()): ?>
-    <li class="menu-info">
-        <a class="api-call" href="<?=$router->fromHere('api:stations:restart') ?>">
-            <i class="zmdi zmdi-refresh-sync"></i>
+    <li class="nav-item menu-info">
+        <a class="nav-link api-call" href="<?=$router->fromHere('api:stations:restart') ?>">
+            <i class="navdrawer-nav-icon material-icons">refresh</i>
             <?=__('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
         </a>
     </li>
     <?php elseif ($station->getNeedsRestart()): ?>
-    <li class="menu-alert">
-        <a class="api-call" href="<?=$router->fromHere('api:stations:restart') ?>">
-            <i class="zmdi zmdi-refresh-sync-alert"></i>
+    <li class="nav-item menu-alert">
+        <a class="nav-link api-call" href="<?=$router->fromHere('api:stations:restart') ?>">
+            <i class="navdrawer-nav-icon material-icons">refresh</i>
             <?=__('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
         </a>
     </li>
@@ -30,120 +33,151 @@
 
 <?php endif; ?>
 
-    <li <?php if ($active_tab === 'profile'): ?>class="active"<?php endif; ?>">
-    <a href="<?=$router->fromHere('stations:profile:index') ?>"><i class="zmdi zmdi-image"></i> <?=__('Profile') ?></a>
+    <li class="nav-item">
+        <a class="nav-link <?php if ($active_tab === 'profile'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:profile:index') ?>">
+            <i class="navdrawer-nav-icon material-icons">image</i>
+            <?=__('Profile') ?>
+        </a>
     </li>
 
 <?php if ($station->getEnablePublicPage()): ?>
-    <li><a href="<?=$router->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=__('Public Page') ?></a></li>
+    <li class="nav-item">
+        <a class="nav-link" href="<?=$router->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank">
+            <i class="navdrawer-nav-icon material-icons">public</i>
+            <?=__('Public Page') ?>
+        </a>
+    </li>
 <?php endif; ?>
 
 <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend::supportsMedia()): ?>
-    <li <?php if ($active_tab === 'files'): ?>class="active"<?php endif; ?>>
-        <a href="<?=$router->fromHere('stations:files:index') ?>"><i class="zmdi zmdi-collection-music"></i> <?=__('Music Files') ?></a>
+    <li class="nav-item">
+        <a class="nav-link <?php if ($active_tab === 'files'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:files:index') ?>">
+            <i class="navdrawer-nav-icon material-icons">library_music</i>
+            <?=__('Music Files') ?>
+        </a>
     </li>
-    <li <?php if ($active_tab === 'playlists'): ?>class="active"<?php endif; ?>>
-        <a href="<?=$router->fromHere('stations:playlists:index') ?>"><i class="zmdi zmdi-format-list-bulleted"></i> <?=__('Playlists') ?></a>
+    <li class="nav-item">
+        <a class="nav-link <?php if ($active_tab === 'playlists'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:playlists:index') ?>">
+            <i class="navdrawer-nav-icon material-icons">queue_music</i>
+            <?=__('Playlists') ?>
+        </a>
     </li>
 <?php endif; ?>
 
 <?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend::supportsStreamers()): ?>
-    <li <?php if ($active_tab === 'streamers'): ?>class="active"<?php endif; ?>>
-        <a href="<?=$router->fromHere('stations:streamers:index') ?>"><i class="zmdi zmdi-account"></i> <?=__('Streamer/DJ Accounts') ?></a>
+    <li class="nav-item">
+        <a class="nav-link <?php if ($active_tab === 'streamers'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:streamers:index') ?>">
+            <i class="navdrawer-nav-icon material-icons">mic</i>
+            <?=__('Streamer/DJ Accounts') ?>
+        </a>
     </li>
 <?php endif; ?>
 
 <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend::supportsMounts()): ?>
-    <li <?php if ($active_tab === 'mounts'): ?>class="active"<?php endif; ?>>
-        <a href="<?=$router->fromHere('stations:mounts:index') ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=__('Mount Points') ?></a>
+    <li class="nav-item">
+        <a class="nav-link <?php if ($active_tab === 'mounts'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:mounts:index') ?>">
+            <i class="navdrawer-nav-icon material-icons">wifi_tethering</i>
+            <?=__('Mount Points') ?>
+        </a>
     </li>
 <?php endif; ?>
 
 <?php if ($acl->userAllowed($user, 'manage station remotes', $station->getId())): ?>
-    <li <?php if ($active_tab === 'remotes'): ?>class="active"<?php endif; ?>>
-        <a href="<?=$router->fromHere('stations:remotes:index') ?>"><i class="zmdi zmdi-router"></i> <?=__('Remote Relays') ?></a>
+    <li class="nav-item">
+        <a class="nav-link <?php if ($active_tab === 'remotes'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:remotes:index') ?>">
+            <i class="navdrawer-nav-icon material-icons">router</i>
+            <?=__('Remote Relays') ?>
+        </a>
     </li>
 <?php endif; ?>
 
 <?php if ($acl->userAllowed($user, 'manage station web hooks', $station->getId())): ?>
-    <li <?php if ($active_tab === 'webhooks'): ?>class="active"<?php endif; ?>>
-        <a href="<?=$router->fromHere('stations:webhooks:index') ?>"><i class="zmdi zmdi-code-setting"></i> <?=__('Web Hooks') ?></a>
+    <li class="nav-item">
+        <a class="nav-link <?php if ($active_tab === 'webhooks'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:webhooks:index') ?>">
+            <i class="navdrawer-nav-icon material-icons">code</i>
+            <?=__('Web Hooks') ?>
+        </a>
     </li>
 <?php endif; ?>
 
 <?php if ($acl->userAllowed($user, 'view station reports', $station->getId())): ?>
-    <li class="sub-menu <?php if ($active_tab === 'reports'): ?>active toggled<?php endif; ?>">
-        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=__('Reports') ?></a>
-
-        <ul>
-            <li><a href="<?=$router->fromHere('stations:reports:overview') ?>"><?=__('Statistics Overview') ?></a></li>
-        <?php if ($frontend::supportsListenerDetail()): ?>
-            <li><a href="<?=$router->fromHere('stations:reports:listeners') ?>"><?=__('Listeners') ?></a></li>
-        <?php endif; ?>
-        <?php if ($station->getEnableRequests()): ?>
-            <li><a href="<?=$router->fromHere('stations:reports:requests') ?>"><?=__('Song Requests') ?></a></li>
-        <?php endif; ?>
-            <li><a href="<?=$router->fromHere('stations:reports:timeline') ?>"><?=__('Song Playback Timeline') ?></a></li>
-        <?php if ($backend::supportsMedia()): ?>
-            <li><a href="<?=$router->fromHere('stations:reports:performance') ?>"><?=__('Song Listener Impact') ?></a></li>
-            <li><a href="<?=$router->fromHere('stations:reports:duplicates') ?>"><?=__('Duplicate Songs') ?></a></li>
-        <?php endif; ?>
-        <?php if ($frontend::supportsListenerDetail()): ?>
-            <li><a href="<?=$router->fromHere('stations:reports:soundexchange') ?>"><?=__('SoundExchange Royalties') ?></a></li>
-        <?php endif; ?>
-        </ul>
+    <li class="nav-item">
+        <a class="nav-item nav-link" data-toggle="collapse" href="#sidebar-submenu-reports">
+            <i class="navdrawer-nav-icon material-icons">assignment</i>
+            <?=__('Reports') ?>
+        </a>
+        <div class="collapse pb-2" id="sidebar-submenu-reports">
+            <ul class="navdrawer-nav">
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:overview') ?>">
+                        <?=__('Statistics Overview') ?>
+                    </a>
+                </li>
+            <?php if ($frontend::supportsListenerDetail()): ?>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:listeners') ?>">
+                        <?=__('Listeners') ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+            <?php if ($station->getEnableRequests()): ?>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:requests') ?>">
+                        <?=__('Song Requests') ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:timeline') ?>">
+                        <?=__('Song Playback Timeline') ?>
+                    </a>
+                </li>
+            <?php if ($backend::supportsMedia()): ?>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:performance') ?>">
+                        <?=__('Song Listener Impact') ?>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:duplicates') ?>">
+                        <?=__('Duplicate Songs') ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+            <?php if ($frontend::supportsListenerDetail()): ?>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:reports:soundexchange') ?>">
+                        <?=__('SoundExchange Royalties') ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+            </ul>
+        </div>
     </li>
 <?php endif; ?>
 
     <li class="sub-menu">
-        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-settings"></i> <?=__('Utilities') ?></a>
-
-        <ul>
+        <a class="nav-item nav-link" data-toggle="collapse" href="#sidebar-submenu-utilities">
+            <i class="navdrawer-nav-icon material-icons">settings</i>
+            <?=__('Utilities') ?>
+        </a>
+        <div class="collapse pb-2" id="sidebar-submenu-utilities">
+            <ul class="navdrawer-nav">
             <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend::supportsMedia()): ?>
-                <li><a href="<?=$router->fromHere('stations:automation:index') ?>"><?=__('Automated Assignment') ?></a></li>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:automation:index') ?>">
+                        <?=__('Automated Assignment') ?>
+                    </a>
+                </li>
             <?php endif; ?>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <li><a class="api-call" data-restart="false" href="<?=$router->fromHere('api:stations:restart') ?>"><?=__('Restart Broadcasting') ?></a></li>
+                <li>
+                    <a class="api-call nav-link pl-4 py-2 text-muted" data-restart="false" href="<?=$router->fromHere('api:stations:restart') ?>">
+                        <?=__('Restart Broadcasting') ?>
+                    </a>
+                </li>
             <?php endif; ?>
-        </ul>
+            </ul>
+        </div>
     </li>
 </ul>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-$(function() {
-    $('.api-call').on('click', function(e) {
-        e.stopPropagation();
-        var btn = $(this);
-
-        var btn_original_text = btn.html();
-        var trigger_restart = (btn.data('restart') != false);
-
-        btn.text(<?=$this->escapeJs(__('Please wait...')) ?>);
-        btn.addClass('disabled');
-
-        $.ajax({
-            type: "POST",
-            url: btn.attr('href'),
-            success: function(data) {
-                if (trigger_restart) {
-                    setTimeout('location.reload()', 2000);
-                } else {
-                    btn.html(btn_original_text);
-                }
-
-                var notify_type = (data.success) ? 'success' : 'warning';
-                notify(data.message, notify_type);
-            },
-            error: function(response) {
-                data = jQuery.parseJSON(response.responseText);
-                notify(data.message, 'danger');
-
-                btn.html(btn_original_text);
-            },
-            dataType: "json"
-        });
-
-        return false;
-    });
-});
-</script>

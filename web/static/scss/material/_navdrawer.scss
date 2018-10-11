@@ -1,0 +1,278 @@
+.navdrawer {
+  display: none;
+  outline: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: map-get($navdrawer-elevation-shadow, elevation);
+}
+
+// Backdrop
+
+.navdrawer-backdrop {
+  @include transition-standard-complex(opacity);
+
+  background-color: $navdrawer-backdrop-bg;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: (map-get($navdrawer-elevation-shadow, elevation) - 1);
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+// Content
+
+.navdrawer-content {
+  @include transition-sharp(box-shadow, transform);
+
+  background-color: $navdrawer-content-bg;
+  max-width: calc(100% - #{$navdrawer-gutter-width});
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transform: translate3d(-100%, 0, 0);
+  width: $navdrawer-width;
+
+  .navdrawer-right & {
+    right: 0;
+    left: auto;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  .navdrawer.show & {
+    @include transition-deceleration(box-shadow, transform);
+
+    box-shadow: map-get($navdrawer-elevation-shadow, shadow);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+// Misc
+
+.navdrawer-body {
+  margin-bottom: $navdrawer-inner-spacer-y;
+  padding-right: $navdrawer-inner-spacer-x;
+  padding-left: $navdrawer-inner-spacer-x;
+}
+
+.navdrawer-divider {
+  @include nav-divider($navdrawer-divider-bg);
+}
+
+.navdrawer-header {
+  background-color: $navdrawer-header-bg;
+  border-bottom: $navdrawer-header-border-width solid $navdrawer-header-border-color;
+  display: block;
+  margin-bottom: $navdrawer-inner-spacer-y;
+  padding: $toolbar-padding-y $navdrawer-inner-spacer-x;
+}
+
+.navdrawer-subheader {
+  @include text-truncate;
+
+  color: $navdrawer-subheader-color;
+  display: block;
+  font-weight: $navdrawer-subheader-font-weight;
+  height: $navdrawer-subheader-height;
+  line-height: 1;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: (($navdrawer-subheader-height - $navdrawer-subheader-font-size) / 2) $navdrawer-inner-spacer-x;
+
+  .navdrawer-divider + & {
+    margin-top: ($navdrawer-inner-spacer-y * -1);
+  }
+}
+
+// Nav
+
+.navdrawer-nav {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin-top: $navdrawer-inner-spacer-y;
+  margin-bottom: $navdrawer-inner-spacer-y;
+  padding-left: 0;
+
+  .navdrawer-header + &,
+  .navdrawer-subheader + & {
+    margin-top: 0;
+  }
+
+  .nav-link {
+    @include text-truncate;
+    @include transition-standard(background-color, color);
+
+    color: $navdrawer-nav-link-color;
+    font-size: $navdrawer-nav-link-font-size;
+    font-weight: $navdrawer-nav-link-font-weight;
+    line-height: 1;
+    padding: (($navdrawer-nav-link-height - $navdrawer-nav-link-font-size) / 2) $navdrawer-inner-spacer-x;
+
+    @include active-focus-hover {
+      background-color: $navdrawer-nav-link-bg-hover;
+    }
+
+    &.active,
+    &:active {
+      color: $navdrawer-nav-link-color-active;
+    }
+
+    &.disabled {
+      background-color: transparent;
+      color: $navdrawer-nav-link-color-disabled;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  .active > .nav-link {
+    color: $navdrawer-nav-link-color-active;
+  }
+}
+
+.navdrawer-nav-icon {
+  color: $navdrawer-nav-icon-color;
+  width: $navdrawer-nav-icon-width;
+
+  .nav-link:active &,
+  .nav-link.active & {
+    color: $navdrawer-nav-link-color-active;
+  }
+}
+
+.active > .nav-link .navdrawer-nav-icon {
+  color: $navdrawer-nav-link-color-active;
+}
+
+// Permanent, persistent and temporary variations
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  $next: breakpoint-next($breakpoint);
+  $infix: breakpoint-infix($next);
+
+  @include media-breakpoint-up($next) {
+    .navdrawer-backdrop-permanent#{$infix} {
+      display: none;
+      transition: none;
+    }
+
+    .navdrawer-backdrop-persistent#{$infix} {
+      display: none;
+      transition: none;
+    }
+
+    .navdrawer-backdrop-temporary#{$infix} {
+      display: none;
+      transition: none;
+    }
+
+    .navdrawer-permanent#{$infix} {
+      border-right: $navdrawer-border-width solid $navdrawer-border-color;
+      display: block !important; // stylelint-disable-line declaration-no-important
+      right: auto;
+      width: $navdrawer-width;
+      z-index: auto;
+
+      &.navdrawer-permanent-clipped,
+      &.navdrawer-permanent-float {
+        top: $toolbar-height;
+      }
+
+      &.navdrawer-permanent-float {
+        border-right: 0;
+
+        &.navdrawer-right {
+          border-left: 0;
+        }
+
+        .navdrawer-content {
+          background-color: transparent;
+        }
+      }
+
+      &.navdrawer-right {
+        border-right: 0;
+        border-left: $navdrawer-border-width solid $navdrawer-border-color;
+        right: 0;
+        left: auto;
+      }
+
+      &.show .navdrawer-content {
+        box-shadow: none;
+      }
+
+      .navdrawer-content {
+        max-width: none;
+        position: absolute;
+        transform: translate3d(0, 0, 0);
+        width: 100%;
+      }
+    }
+
+    .navdrawer-persistent#{$infix} {
+      right: auto;
+      width: $navdrawer-width;
+      z-index: auto;
+
+      &.navdrawer-persistent-clipped {
+        border-top: $navdrawer-border-width solid $navdrawer-border-color;
+        margin-top: ($navdrawer-border-width * -1);
+        top: $toolbar-height;
+        z-index: (map-get($toolbar-elevation-shadow, elevation) - 1);
+      }
+
+      &.navdrawer-right {
+        right: 0;
+        left: auto;
+
+        .navdrawer-content {
+          border-right: 0;
+          border-left: $navdrawer-border-width solid $navdrawer-border-color;
+        }
+      }
+
+      &.show .navdrawer-content {
+        box-shadow: none;
+      }
+
+      .navdrawer-content {
+        border-right: $navdrawer-border-width solid $navdrawer-border-color;
+        max-width: none;
+        position: absolute;
+        width: 100%;
+      }
+    }
+
+    .navdrawer-temporary#{$infix} {
+      overflow: visible;
+      right: auto;
+      width: $navdrawer-width;
+
+      &.navdrawer-right {
+        right: 0;
+        left: auto;
+      }
+
+      .navdrawer-content {
+        max-width: none;
+        position: absolute;
+        width: 100%;
+      }
+    }
+  }
+}

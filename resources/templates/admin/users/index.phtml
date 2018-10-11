@@ -1,12 +1,13 @@
 <?php $this->layout('main', ['title' => __('User Accounts'), 'manual' => true]); ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('User Accounts') ?></h2>
-
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('User')) ?>" href="<?=$router->named('admin:users:add') ?>">
-            <span class="sr-only"><?=__('Add %s', __('User')) ?></span>
-            <i class="zmdi zmdi-plus"></i>
+    <div class="card-body">
+        <h2 class="card-title"><?=__('User Accounts') ?></h2>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:users:add') ?>">
+            <i class="material-icons">add</i>
+            <?=__('Add %s', __('User')) ?>
         </a>
     </div>
     <div class="table-responsive">
@@ -25,7 +26,7 @@
             </thead>
             <tbody>
             <?php foreach($users as $user_row): ?>
-                <tr class="input">
+                <tr class="align-middle">
                     <td>
                     <?php if ($user_row->getId() !== $user->getId()): ?>
                         <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Log In') ?></a>

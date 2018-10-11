@@ -1,0 +1,16 @@
+@mixin reset-text {
+  @include text-align(left);
+
+  font-family: $font-family-base;
+  font-style: normal;
+  font-weight: $font-weight-regular;
+  letter-spacing: normal;
+  line-break: auto;
+  line-height: $line-height-base;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  white-space: normal;
+  word-break: normal;
+  word-spacing: normal;
+}

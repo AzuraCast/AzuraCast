@@ -6,21 +6,17 @@
 
 <div class="row">
     <?php foreach($admin_panels as $category_name => $category_info): ?>
-    <div class="col-sm-4">
+    <div class="col-sm-4 mb-3">
         <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><i class="<?=$category_info['icon'] ?>"></i> <?=$category_name ?></h2>
+            <div class="card-body">
+                <h2 class="card-title"><?=$category_name ?></h2>
             </div>
-            <div class="card-body card-padding-sm">
-                <ul class="nav nav-list" <?php if (count($category_info['items']) >= 15): ?>style="height: 300px; overflow-y: scroll;"<?php endif; ?>>
-                    <?php foreach($category_info['items'] as $item_name => $item_params): ?>
-                        <li>
-                            <a href="<?=(is_array($item_params['url']) ? $router->route($item_params['url']) : $router->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
-                                <i class="<?=$item_params['icon'] ?>"></i> <?=$item_name ?>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+            <div class="list-group list-group-flush">
+            <?php foreach($category_info['items'] as $item_name => $item_params): ?>
+                <a class="list-group-item list-group-item-action" href="<?=(is_array($item_params['url']) ? $router->route($item_params['url']) : $router->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
+                    <?=$item_name ?>
+                </a>
+            <?php endforeach; ?>
             </div>
         </section>
     </div>
@@ -35,15 +31,16 @@
     <?php foreach($sync_times as $sync_key => $sync_info): ?>
     <div class="col-sm-3">
         <section class="card" role="region">
-            <div class="card-header bgm-bluegray">
-                <h2>
-                    <?=$sync_info['name'] ?>
-                    <small><?=implode(', ', $sync_info['contents']) ?></small>
-                </h2>
-                <a class="btn bgm-blue btn-float" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
+            <div class="card-body">
+                <h2 class="card-title"><?=$sync_info['name'] ?></h2>
+                <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents']) ?></h3>
+                <p class="card-text"><?=$customization->formatDateTime($sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
             </div>
-            <div class="card-body card-padding">
-                <p><?=$customization->formatDateTime($sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
+            <div class="card-actions">
+                <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>">
+                    <i class="material-icons">send</i>
+                    <?=__('Run Task') ?>
+                </a>
             </div>
         </section>
     </div>

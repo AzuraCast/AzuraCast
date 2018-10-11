@@ -1,0 +1,56 @@
+#radio-player-controls {
+  display: none;
+
+  &.jp-state-playing {
+    display: inline-block;
+  }
+
+  .progress {
+    .progress-bar {
+      border-bottom-width: 10px;
+      border-bottom-color: theme-color('info');
+
+      &::after {
+        height: 10px;
+        background-color: theme-color-light('info');
+      }
+    }
+  }
+}
+
+#radio-embedded-controls {
+  display: none;
+
+  &.jp-state-playing {
+    display: block;
+    padding-top: 5px;
+  }
+
+  .progress {
+    height: 15px;
+  }
+}
+
+#radio-player {
+  display: none;
+}
+
+.btn-audio {
+  i:before {
+    font-size: 35px;
+    vertical-align: middle;
+  }
+}
+
+.nowplaying {
+  h4, h6 {
+    margin: 0;
+  }
+  h4 {
+    font-size: 14px;
+  }
+  h6 {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+}

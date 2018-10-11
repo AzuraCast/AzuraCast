@@ -1,0 +1,109 @@
+// stylelint-disable declaration-no-important
+
+// Alignment
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.text-nowrap {
+  white-space: nowrap !important;
+}
+
+.text-truncate {
+  @include text-truncate;
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint);
+
+    .text#{$infix}-center {
+      text-align: center !important;
+    }
+
+    .text#{$infix}-left {
+      text-align: left !important;
+    }
+
+    .text#{$infix}-right {
+      text-align: right !important;
+    }
+  }
+}
+
+// Color
+
+@include text-emphasis-variant('.text-black', $black);
+@include text-emphasis-variant('.text-black-primary', $black-primary);
+@include text-emphasis-variant('.text-black-secondary', $black-secondary);
+@include text-emphasis-variant('.text-black-hint', $black-hint);
+@include text-emphasis-variant('.text-black-divider', $black-divider);
+@include text-emphasis-variant('.text-white', $white);
+@include text-emphasis-variant('.text-white-primary', $white-primary);
+@include text-emphasis-variant('.text-white-secondary', $white-secondary);
+@include text-emphasis-variant('.text-white-hint', $white-hint);
+@include text-emphasis-variant('.text-white-divider', $white-divider);
+@include text-emphasis-variant('.text-muted', $text-muted);
+
+@each $color, $values in $theme-colors {
+  @include text-emphasis-variant('.text-#{$color}', theme-color($color), theme-color-dark($color));
+}
+
+.text-black-50 {
+  color: rgba($black, 0.5) !important;
+}
+
+.text-body {
+  color: $body-color !important;
+}
+
+.text-white-50 {
+  color: rgba($white, 0.5) !important;
+}
+
+// Family
+
+.text-monospace {
+  font-family: $font-family-monospace;
+}
+
+// Italcs and weight
+
+.font-italic {
+  font-style: italic;
+}
+
+.font-weight-bold,
+.font-weight-medium {
+  font-weight: $font-weight-medium;
+}
+
+.font-weight-light {
+  font-weight: $font-weight-light;
+}
+
+.font-weight-normal,
+.font-weight-regular {
+  font-weight: $font-weight-regular;
+}
+
+// Misc
+
+.text-hide {
+  @include text-hide($ignore-warning: true);
+}
+
+// Transformation
+
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}

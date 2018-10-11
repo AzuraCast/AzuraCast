@@ -1,0 +1,10 @@
+.fc {
+  .fc-bg .fc-today {
+    background: theme-color-dark('secondary');
+  }
+
+  .fc-row.panel-default,
+  hr.fc-divider {
+    border-color: $table-border-color;
+  }
+}

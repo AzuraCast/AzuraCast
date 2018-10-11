@@ -3,13 +3,13 @@
 $assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
 ?>
 <div class="media media-left" id="station-nowplaying">
-    <div class="pull-left p-r-10 p-t-5">
+    <div class="pull-left pr-2 pt-1">
         <a class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
-            <i class="zmdi zmdi-play"></i>
+            <i class="material-icons">play_circle_filled</i>
         </a>
     </div>
 <?php if (!$customization->hideAlbumArt()): ?>
-    <div class="pull-left p-r-10" v-if="np.now_playing.song.art">
+    <div class="pull-left pr-2" v-if="np.now_playing.song.art">
         <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=__('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
     </div>
 <?php endif; ?>

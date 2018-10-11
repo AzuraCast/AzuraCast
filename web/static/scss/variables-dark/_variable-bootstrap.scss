@@ -1,0 +1,83 @@
+// Body
+$body-bg:    $dark-theme-1;
+$body-color: $material-color-grey-300;
+
+// Breadcrumb
+$breadcrumb-bg:               $dark-theme-3;
+$breadcrumb-item-color:       $white-secondary;
+$breadcrumb-item-color-hover: $white-primary;
+
+// Carousel
+$carousel-caption-color:                   $white-primary;
+$carousel-control-bg:                      $white-divider;
+$carousel-control-bg-hover:                rgba(204, 204, 204, 0.25);
+$carousel-control-color:                   $white-primary;
+$carousel-indicator-bg:                    rgba(204, 204, 204, 0.25);
+$carousel-indicator-border-color:          $white-divider;
+$carousel-indicator-border-width:          $border-width;
+
+// Close
+$close-color:       $white-hint;
+$close-color-hover: $black-primary;
+
+// Code
+$code-bg:                   $black-hint;
+$code-border-radius:        $border-radius;
+$code-color:                #bd4147;
+
+$kbd-bg:                    $black-primary;
+$kbd-color:                 $white-primary;
+
+$pre-color:                 $material-color-grey-500;
+
+// Form
+$form-feedback-invalid-color: theme-color(danger);
+$form-feedback-valid-color:   theme-color(success);
+
+// Jumbotron
+$jumbotron-bg:               $dark-theme-2;
+$jumbotron-color:            $white-primary;
+
+// Link
+$link-color:            theme-color(primary);
+$link-color-hover:      theme-color-light(primary);
+
+// Misc
+$blockquote-border-color:    theme-color(primary);
+$blockquote-small-color:     $white-hint;
+
+$figure-caption-color:       $white-hint;
+
+$headings-color:             inherit;
+
+$hr-border-color:            $border-color;
+
+$mark-bg:                    $material-color-yellow-500;
+$mark-color:                 $black-primary;
+
+$table-caption-color:        $white-hint;
+
+$text-muted:                 $white-hint;
+
+$webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+// Nav
+
+$nav-link-color-disabled: $white-hint;
+
+$nav-pills-bg-hover:      $black-divider;
+$nav-pills-border-radius: $border-radius;
+$nav-pills-color:         $white-secondary;
+$nav-pills-color-active:  theme-color(secondary);
+$nav-pills-link-opacity:  0.7;
+
+// Pagination
+
+$pagination-bg:             $dark-theme-3;
+$pagination-border-radius:  $border-radius;
+$pagination-color:          $white-primary;
+$pagination-color-disabled: $white-hint;
+
+// Popover
+
+$popover-bg:               $dark-theme-1;

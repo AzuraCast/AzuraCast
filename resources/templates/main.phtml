@@ -32,8 +32,7 @@ if (!APP_IN_PRODUCTION)
 
 <?php
 $assets
-    ->load('main_header')
-    ->load('main_body')
+    ->load('main')
     ->load('theme_'.$customization->getTheme())
     ->addInlineCss($customization->getCustomInternalCss());
 
@@ -41,62 +40,82 @@ echo $assets->css();
 echo $assets->js();
 ?>
 </head>
-<body class="<?=$page_class ?>">
+<body class="<?=$page_class ?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
 <?=$assets->inlineJs($request) ?>
 
-<a class="sr-only" href="#content"><?=__('Skip to main content') ?></a>
+<a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content') ?></a>
 
-<header id="header" class="clearfix" data-ma-theme="blue" style="background-image: url('/static/img/header_bg.png');" data-rjs="3">
-    <ul class="h-inner">
-        <?php if (!empty($sidebar)): ?>
-        <li class="hi-trigger ma-trigger" data-ma-action="sidebar-open" data-ma-target="#sidebar">
-            <div class="line-wrap">
-                <div class="line top"></div>
-                <div class="line center"></div>
-                <div class="line bottom"></div>
-            </div>
-        </li>
-        <?php endif; ?>
+<header class="navbar bg-primary-dark fixed-top">
+<?php if (!empty($sidebar)): ?>
+    <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__('Toggle Sidebar') ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+<?php endif; ?>
 
-        <li class="logo">
-            <a href="<?=$router->named('dashboard') ?>">
-                azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
-            </a>
-        </li>
+    <a class="navbar-brand ml-0 mr-auto" href="<?=$router->named('dashboard') ?>">
+        azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
+    </a>
 
-        <li class="pull-right">
-            <ul class="hi-menu" role="toolbar">
-                <?=$this->fetch('partials/radio_controls') ?>
+    <?=$this->fetch('partials/radio_controls') ?>
 
-                <li class="dropdown">
-                    <a data-toggle="dropdown" href="" aria-label="menu" title="<?=__('Open or Close Dropdown Menu') ?>"><i class="him-icon zmdi zmdi-more-vert"></i></a>
-                    <ul class="dropdown-menu dm-icon pull-right">
-                        <li><a href="<?=$router->named('dashboard') ?>"><i class="zmdi zmdi-home"></i> <?=__('Dashboard') ?></a></li>
-                        <?php if ($acl->userAllowed($user, 'view administration')): ?>
-                            <li><a href="<?=$router->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=__('System Administration') ?></a></li>
-                        <?php endif; ?>
-                        <li><a href="<?=$router->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=__('My Account') ?></a></li>
-                        <li><a href="<?=$router->named('api_keys:index') ?>"><i class="zmdi zmdi-key"></i> <?=__('My API Keys') ?></a></li>
-                        <li class="divider">&nbsp;</li>
-                    <?php if ($auth->isMasqueraded()): ?>
-                        <li><a href="<?=$router->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=__('End Session') ?></a></li>
-                    <?php else: ?>
-                        <li><a href="<?=$router->named('account:logout') ?>"><i class="zmdi zmdi-power"></i> <?=__('Sign Out') ?></a></li>
-                    <?php endif; ?>
-                    </ul>
+    <div class="dropdown ml-3">
+        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" type="button">
+            <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('dashboard') ?>">
+                    <i class="material-icons">home</i>
+                    <?=__('Dashboard') ?>
+                </a>
+            </li>
+            <?php if ($acl->userAllowed($user, 'view administration')): ?>
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
+                        <i class="material-icons">settings</i>
+                        <?=__('System Administration') ?>
+                    </a>
                 </li>
-            </ul>
-        </li>
-    </ul>
+            <?php endif; ?>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('profile:index') ?>">
+                    <i class="material-icons">account_circle</i>
+                    <?=__('My Account') ?>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('api_keys:index') ?>">
+                    <i class="material-icons">vpn_key</i>
+                    <?=__('My API Keys') ?>
+                </a>
+            </li>
+            <li class="dropdown-divider">&nbsp;</li>
+        <?php if ($auth->isMasqueraded()): ?>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('account:endmasquerade') ?>">
+                    <i class="material-icons">exit_to_app</i>
+                    <?=__('End Session') ?>
+                </a>
+            </li>
+        <?php else: ?>
+            <li>
+                <a class="dropdown-item" href="<?=$router->named('account:logout') ?>">
+                    <i class="material-icons">exit_to_app</i>
+                    <?=__('Sign Out') ?></a></li>
+        <?php endif; ?>
+        </ul>
+    </div>
 </header>
 
-<section id="main">
-    <?php if (!empty($sidebar)): ?>
-    <nav id="sidebar" class="sidebar c-overflow" role="navigation">
-        <?=$sidebar ?>
-    </nav>
-    <?php endif; ?>
+<?php if (!empty($sidebar)): ?>
+    <div aria-hidden="true" class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
+        <nav class="navdrawer-content">
+            <?=$sidebar ?>
+        </nav>
+    </div>
+<?php endif; ?>
 
+<section id="main">
     <section id="content" <?php if (empty($sidebar)): ?>class="content-alt"<?php endif; ?> role="main">
         <div class="container">
         <?php if ($manual): ?>
@@ -108,10 +127,9 @@ echo $assets->js();
                 </div>
             <?php endif; ?>
             <div class="card">
-                <div class="card-header ch-alt">
-                    <h2><?=$title ?></h2>
-                </div>
-                <div class="card-body card-padding">
+                <div class="card-body">
+                    <h3 class="card-title"><?=$title ?></h3>
+
                     <?=$this->section('content') ?>
                 </div>
             </div>

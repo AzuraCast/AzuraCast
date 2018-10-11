@@ -1,0 +1,50 @@
+.embed-responsive {
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  width: 100%;
+
+  &::before {
+    content: '';
+    display: block;
+  }
+
+  embed,
+  iframe,
+  object,
+  video,
+  .embed-responsive-item {
+    border: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.embed-responsive-1by1 {
+  &::before {
+    padding-top: percentage(1 / 1);
+  }
+}
+
+.embed-responsive-4by3 {
+  &::before {
+    padding-top: percentage(3 / 4);
+  }
+}
+
+.embed-responsive-16by9 {
+  &::before {
+    padding-top: percentage(9 / 16);
+  }
+}
+
+.embed-responsive-21by9 {
+  &::before {
+    padding-top: percentage(9 / 21);
+  }
+}

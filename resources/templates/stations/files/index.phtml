@@ -18,13 +18,13 @@ $assets
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header ch-alt">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h2><?=__('Music Files') ?></h2>
-                        <div id="breadcrumb" class="">&nbsp;</div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-7">
+                        <h2 class="card-title"><?=__('Music Files') ?></h2>
+                        <h3 class="card-subtitle" id="breadcrumb" class="">&nbsp;</h3>
                     </div>
-                    <div class="col-md-4 text-right">
+                    <div class="col-md-5 text-right">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
                                 <span class="sr-only"><?=$space_percent ?>%</span>
@@ -33,12 +33,9 @@ $assets
                         <?=sprintf(__('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
                     </div>
                 </div>
-            </div>
-
-            <div class="card-body card-padding-sm">
 
                 <?php if (APP_INSIDE_DOCKER): ?>
-                    <p><i class="zmdi zmdi-info"></i> <?=sprintf(__('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#access-files-via-sftp-docker-installations') ?></p>
+                    <p><i class="material-icons">info</i> <?=sprintf(__('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#access-files-via-sftp-docker-installations') ?></p>
                 <?php endif; ?>
 
                 <div id="upload_progress"></div>
@@ -47,12 +44,12 @@ $assets
                     <input id="file_browse_target" type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,audio/*" multiple />
                 </div>
 
-                <div class="row p-t-20" id="app-toolbar">
+                <div class="row pt-4" id="app-toolbar">
                     <div class="col-sm-8">
                         <?=__('With selected:') ?>&nbsp;
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="zmdi zmdi-playlist-plus"></i> <?=__('Add to Playlist') ?>
+                                <i class="material-icons">add</i> <?=__('Add to Playlist') ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -62,11 +59,11 @@ $assets
                                 <li><a href="#" class="btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=__('Create new...') ?></a></li>
                             </ul>
                         </div>
-                        <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="zmdi zmdi-playlist-audio"></i> <?=__('Clear Playlists') ?></button>
-                        <button type="button" class="btn btn-danger" v-on:click="doBatch" data-action="delete"><i class="zmdi zmdi-delete"></i> <?=__('Delete') ?></button>
+                        <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="material-icons">clear_all</i> <?=__('Clear Playlists') ?></button>
+                        <button type="button" class="btn btn-danger" v-on:click="doBatch" data-action="delete"><i class="material-icons">delete</i> <?=__('Delete') ?></button>
                     </div>
                     <div class="col-sm-4 text-right">
-                        <a class="btn btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="zmdi zmdi-folder"></i> <?=__('New Folder') ?></a>
+                        <a class="btn btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="material-icons">folder</i> <?=__('New Folder') ?></a>
                     </div>
                 </div>
             </div>

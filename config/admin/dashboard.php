@@ -5,56 +5,59 @@
 
 return [
     __('System Maintenance') => [
-        'icon' => 'zmdi zmdi-router',
+        'id' => 'maintenance',
+        'icon' => 'router',
         'items' => [
             __('System Settings') => [
                 'url' => 'admin:settings:index',
-                'icon' => 'zmdi zmdi-settings',
+                'icon' => 'settings',
                 'permission' => 'administer settings',
             ],
             __('Custom Branding') => [
                 'url' => 'admin:branding:index',
-                'icon' => 'zmdi zmdi-brush',
+                'icon' => 'brush',
                 'permission' => 'administer settings',
             ],
             __('API Keys') => [
                 'url' => 'admin:api:index',
-                'icon' => 'zmdi zmdi-key',
+                'icon' => 'vpn_key',
                 'permission' => 'administer api keys',
             ],
         ],
     ],
     __('Users') => [
-        'icon' => 'zmdi zmdi-accounts',
+        'id' => 'users',
+        'icon' => 'group',
         'items' => [
             __('User Accounts') => [
                 'url' => 'admin:users:index',
-                'icon' => 'zmdi zmdi-account',
+                'icon' => 'account_circle',
                 'permission' => 'administer user accounts',
             ],
             __('Permissions') => [
                 'url' => 'admin:permissions:index',
-                'icon' => 'zmdi zmdi-lock',
+                'icon' => 'lock',
                 'permission' => 'administer permissions',
             ],
         ],
     ],
     __('Stations') => [
-        'icon' => 'zmdi zmdi-volume-up',
+        'id' => 'stations',
+        'icon' => 'volume_up',
         'items' => [
             __('Manage %s', __('Stations')) => [
                 'url' => 'admin:stations:index',
-                'icon' => 'zmdi zmdi-surround-sound',
+                'icon' => 'speaker_group',
                 'permission' => 'administer stations',
             ],
             __('Manage %s', __('Custom Fields')) => [
                 'url' => 'admin:custom_fields:index',
-                'icon' => 'zmdi zmdi-format-list-bulleted',
+                'icon' => 'list',
                 'permission' => 'administer custom fields',
             ],
             __('Install SHOUTcast') => [
                 'url' => 'admin:install:shoutcast',
-                'icon' => 'zmdi zmdi-upload',
+                'icon' => 'file_download',
                 'permission' => 'administer all',
             ],
         ],

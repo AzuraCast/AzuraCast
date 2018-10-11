@@ -1,0 +1,46 @@
+// Make column
+@mixin make-col($size) {
+  flex: 0 0 percentage($size / $grid-columns);
+  max-width: percentage($size / $grid-columns);
+}
+
+@mixin make-col-offset($size) {
+  $num: $size / $grid-columns;
+
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+@mixin make-col-ready() {
+  min-height: 1px;
+  padding-right: ($grid-gutter-width / 2);
+  padding-left: ($grid-gutter-width / 2);
+  position: relative;
+  width: 100%;
+}
+
+// Make container
+
+@mixin make-container() {
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: ($grid-gutter-width / 2);
+  padding-left: ($grid-gutter-width / 2);
+  width: 100%;
+}
+
+@mixin make-container-max-widths() {
+  @each $breakpoint, $container-max-width in $container-max-widths {
+    @include media-breakpoint-up($breakpoint) {
+      max-width: $container-max-width;
+    }
+  }
+}
+
+// Make row
+
+@mixin make-row() {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: ($grid-gutter-width / -2);
+  margin-left: ($grid-gutter-width / -2);
+}

@@ -9,20 +9,14 @@ $assets
 ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <div class="row">
-            <div class="col-md-5">
-                <h2><?=__('Song Playback Timeline') ?></h2>
-            </div>
-            <div class="col-md-7 text-right">
-                <a class="btn btn-default" id="reportrange" href="#">
-                    <i class="zmdi zmdi-calendar"></i> <span><?=__('Last 14 Days') ?></span> <i class="caret"></i>
-                </a>
-                <a class="btn btn-primary" id="btn-export" href="<?=$router->fromHere('api:stations:history', [], ['format' => 'csv']) ?>" target="_blank" title="<?=__('Download CSV') ?>">
-                    <i class="zmdi zmdi-download"></i> <?=__('Download CSV') ?>
-                </a>
-            </div>
-        </div>
+    <div class="card-body">
+        <a class="btn btn-primary float-right dropdown-toggle" id="reportrange" href="#">
+            <i class="material-icons">date_range</i> <span><?=__('Last 14 Days') ?></span>
+        </a>
+        <a class="btn btn-primary float-right mr-2" id="btn-export" href="<?=$router->fromHere('api:stations:history', [], ['format' => 'csv']) ?>" target="_blank" title="<?=__('Download CSV') ?>">
+            <i class="material-icons">file_download</i> <?=__('Download CSV') ?>
+        </a>
+        <h2 class="card-title"><?=__('Song Playback Timeline') ?></h2>
     </div>
     <div class="table-responsive">
         <table class="data-table table table-striped">

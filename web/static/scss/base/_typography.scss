@@ -1,0 +1,179 @@
+// Blockquote
+
+.blockquote {
+  @include typography-title;
+
+  border-left: $blockquote-border-width solid $blockquote-border-color;
+  margin-bottom: $paragraph-margin-y;
+  padding: 0 $spacer;
+}
+
+.blockquote-footer {
+  @include typography-caption;
+
+  color: $blockquote-small-color;
+  display: block;
+  margin-top: $spacer-xs;
+
+  &::before {
+    content: '\2014 \00A0';
+  }
+}
+
+// Emphasis
+
+mark,
+.mark {
+  background-color: $mark-bg;
+  color: $mark-color;
+  padding: $mark-padding;
+}
+
+small,
+.small {
+  font-size: $small-font-size;
+  font-weight: $font-weight-regular;
+}
+
+.initialism {
+  font-size: 90%;
+  text-transform: uppercase;
+}
+
+// Headings
+
+.typography-display-4 {
+  @include typography-display-4;
+}
+
+.typography-display-3 {
+  @include typography-display-3;
+}
+
+.typography-display-2 {
+  @include typography-display-2;
+}
+
+.typography-display-1 {
+  @include typography-display-1;
+}
+
+.typography-headline {
+  @include typography-headline;
+}
+
+.typography-title {
+  @include typography-title;
+}
+
+.typography-subheading {
+  @include typography-subheading;
+}
+
+.typography-body-2 {
+  @include typography-body-2;
+}
+
+.typography-body-1 {
+  @include typography-body-1;
+}
+
+.typography-caption {
+  @include typography-caption;
+}
+
+// Headings - bootstrap classes
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  color: $headings-color;
+  font-family: $headings-font-family;
+  margin-bottom: $headings-margin-y;
+}
+
+h1,
+.h1 {
+  @include typography-display-2;
+}
+
+h2,
+.h2 {
+  @include typography-display-1;
+}
+
+h3,
+.h3 {
+  @include typography-headline;
+}
+
+h4,
+.h4 {
+  @include typography-title;
+}
+
+h5,
+.h5 {
+  @include typography-subheading;
+}
+
+h6,
+.h6 {
+  @include typography-body-2;
+}
+
+.display-1 {
+  @include typography-display-4;
+}
+
+.display-2 {
+  @include typography-display-3;
+}
+
+.display-3 {
+  @include typography-display-2;
+}
+
+.display-4 {
+  @include typography-display-1;
+}
+
+.lead {
+  @include typography-title;
+}
+
+// Hr
+
+hr {
+  border: 0;
+  border-top: $hr-border-width solid $hr-border-color;
+  margin-top: $paragraph-margin-y;
+  margin-bottom: $paragraph-margin-y;
+}
+
+// List
+
+.list-inline {
+  @include list-unstyled;
+}
+
+.list-inline-item {
+  display: inline-block;
+
+  &:not(:last-child) {
+    margin-right: $list-inline-inner-spacer-x;
+  }
+}
+
+.list-unstyled {
+  @include list-unstyled;
+}

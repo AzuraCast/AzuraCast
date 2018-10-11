@@ -21,6 +21,7 @@ return [
             ],
         ],
     ],
+
     'vue' => [
         'order' => 1,
         'files' => [
@@ -38,32 +39,19 @@ return [
     /*
      * Main per-layout dependencies
      */
-    'minimal_header' => [
+    'minimal' => [
         'order' => 2,
         'require' => ['jquery'],
         'files' => [
-            'css' => [
-                [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css',
-                    'integrity' => 'sha256-j+P6EZJVrbXgwSR5Mx+eCS6FvP9Wq27MBRC/ogVriY0=',
-                ],
-                [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
-                    'integrity' => 'sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=',
-                ],
-            ],
             'js' => [
                 [
-                    'src' => 'vendor/bootstrap/dist/js/bootstrap.min.js',
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js',
+                    'integrity' => 'sha256-EGs9T1xMHdvM1geM8jPpoo8EZ1V1VRsmcJz8OByENLA=',
                 ],
-            ]
-        ],
-
-    ],
-    'minimal_body' => [
-        'order' => 50,
-        'files' => [
-            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js',
+                    'integrity' => 'sha256-xaF9RpdtRxzwYMWg4ldJoyPWqyDPCRD0Cv7YEEe6Ie8=',
+                ],
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.5/waves.min.js',
                     'integrity' => 'sha256-ICvFZLf7gslwfpvdxzQ8w8oZt0brzoFr8v2dXBecuLY=',
@@ -77,12 +65,16 @@ return [
                 [
                     'src' => 'dist/app.js',
                 ],
-            ],
+                [
+                    'src' => 'dist/material.js',
+                ]
+            ]
         ],
     ],
-    'main_header' => [
+
+    'main' => [
         'order' => 3,
-        'require' => ['minimal_header'],
+        'require' => ['minimal'],
         'files' => [
             'css' => [
                 [
@@ -94,12 +86,6 @@ return [
                     'integrity' => 'sha256-JHGEmB629pipTkMag9aMaw32I8zle24p3FpsEeI6oZU=',
                 ]
             ],
-        ],
-    ],
-    'main_body' => [
-        'order' => 49,
-        'require' => ['minimal_body'],
-        'files' => [
             'js' => [
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js',
@@ -159,7 +145,9 @@ return [
             'js' => [
                 [
                     'src' => 'js/bootgrid/jquery.bootgrid.updated.js',
-                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/bootgrid.js',
                 ],
             ],
         ],

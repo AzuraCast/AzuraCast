@@ -1,0 +1,50 @@
+code {
+  @include border-radius($code-border-radius);
+
+  background-color: $code-bg;
+  color: $code-color;
+  font-size: $code-font-size;
+  padding: $code-padding-y $code-padding-x;
+  word-break: break-word;
+
+  a > & {
+    color: inherit;
+  }
+}
+
+kbd {
+  @include border-radius($code-border-radius);
+
+  background-color: $kbd-bg;
+  color: $kbd-color;
+  font-size: $code-font-size;
+  padding: $code-padding-y $code-padding-x;
+
+  kbd {
+    font-size: 100%;
+    font-weight: bolder;
+    padding: 0;
+  }
+}
+
+pre {
+  @include border-radius($code-border-radius);
+
+  color: $pre-color;
+  display: block;
+  font-size: $code-font-size;
+
+  code {
+    background-color: transparent;
+    border-radius: 0;
+    color: inherit;
+    font-size: inherit;
+    padding: 0;
+    word-break: normal;
+  }
+}
+
+.pre-scrollable {
+  max-height: $pre-scrollable-max-height;
+  overflow-y: scroll;
+}

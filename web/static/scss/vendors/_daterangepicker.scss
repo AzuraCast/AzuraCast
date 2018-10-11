@@ -1,0 +1,22 @@
+.daterangepicker {
+  &:before {
+    border: 0;
+  }
+  &:after {
+    border-bottom-color: $menu-bg;
+  }
+
+  .calendar-table {
+    background: none;
+    border: 0;
+  }
+
+  td.off {
+    background: $navdrawer-header-bg;
+  }
+
+  td.available:hover,
+  th.available:hover {
+    background-color: $navdrawer-nav-link-bg-hover;
+  }
+}

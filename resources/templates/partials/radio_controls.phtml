@@ -1,19 +1,30 @@
-<li class="dropdown" id="radio-player-controls">
-    <a data-toggle="dropdown" href=""><i class="him-icon zmdi zmdi-radio"></i></a>
-    <ul class="dropdown-menu dm-icon pull-right">
+<div class="dropdown ml-3" id="radio-player-controls">
+    <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" type="button">
+        <i class="material-icons">radio</i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
         <li>
-            <a href="javascript:;" class="jp-pause"><i class="zmdi zmdi-pause"></i> <?=__('Pause') ?></a>
+            <a href="javascript:;" class="dropdown-item jp-pause">
+                <i class="material-icons">pause</i>
+                <?=__('Pause') ?>
+            </a>
         </li>
         <li>
-            <a href="javascript:;" class="jp-mute"><i class="zmdi zmdi-portable-wifi-off"></i> <?=__('Mute') ?></a>
+            <a href="javascript:;" class="dropdown-item jp-mute">
+                <i class="material-icons">volume_mute</i>
+                <?=__('Mute') ?>
+            </a>
         </li>
         <li>
-            <a href="javascript:;" class="jp-unmute"><i class="zmdi zmdi-portable-wifi"></i> <?=__('Unmute') ?></a>
+            <a href="javascript:;" class="dropdown-item jp-unmute">
+                <i class="material-icons">volume_up</i>
+                <?=__('Unmute') ?>
+            </a>
         </li>
         <li>
             <div class="progress jp-volume-bar">
-                <div class="jp-volume-bar-value progress-bar" role="progressbar"></div>
+                <div class="jp-volume-bar-value progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </li>
     </ul>
-</li>
+</div>

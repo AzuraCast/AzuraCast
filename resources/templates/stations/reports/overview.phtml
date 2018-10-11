@@ -16,27 +16,29 @@ $assets
 
 <div class="row">
     <div class="col-sm-12">
-        <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><?=__('Statistics Overview') ?></h2>
-            </div>
-            <div role="tabpanel">
-                <ul class="tab-nav" role="tablist">
-                    <li class="p-l-10 active"><a role="tab" data-toggle="tab" aria-expanded="true" aria-controls="listeners-by-day" href="#listeners-by-day"><?=__('Listeners by Day') ?></a></li>
-                    <li><a role="tab" data-toggle="tab" aria-controls="listeners-by-hour" href="#listeners-by-hour"><?=__('Listeners by Hour') ?></a></li>
-                    <li><a role="tab" data-toggle="tab" aria-controls="listeners-by-day-of-week" href="#listeners-by-day-of-week"><?=__('Listeners by Day of Week') ?></a></li>
+        <section class="card mb-3" role="region">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="listeners-by-day" href="#listeners-by-day"><?=__('Listeners by Day') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" role="tab" data-toggle="tab" aria-controls="listeners-by-hour" href="#listeners-by-hour"><?=__('Listeners by Hour') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" role="tab" data-toggle="tab" aria-controls="listeners-by-day-of-week" href="#listeners-by-day-of-week"><?=__('Listeners by Day of Week') ?></a>
+                    </li>
                 </ul>
-
-                <div class="tab-content">
-                    <div class="tab-pane card-body card-padding active" id="listeners-by-day" role="tabpanel">
-                        <div id="listeners_by_day" style="height: 250px;"></div>
-                    </div>
-                    <div class="tab-pane card-padding" id="listeners-by-hour" role="tabpanel">
-                        <div id="listeners_by_hour" style="height: 250px;"></div>
-                    </div>
-                    <div class="tab-pane card-padding" id="listeners-by-day-of-week" role="tabpanel">
-                        <div id="listeners_by_day_of_week" style="height: 250px;"></div>
-                    </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane card-body active" id="listeners-by-day" role="tabpanel">
+                    <div id="listeners_by_day" style="height: 250px;"></div>
+                </div>
+                <div class="tab-pane card-body" id="listeners-by-hour" role="tabpanel">
+                    <div id="listeners_by_hour" style="height: 250px;"></div>
+                </div>
+                <div class="tab-pane card-body" id="listeners-by-day-of-week" role="tabpanel">
+                    <div id="listeners_by_day_of_week" style="height: 250px;"></div>
                 </div>
             </div>
         </section>
@@ -45,9 +47,12 @@ $assets
 
 <div class="row">
     <div class="col-sm-6">
-        <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><i class="zmdi zmdi-thumb-up"></i> <?=__('Best Performing Songs') ?> <small><?=__('in the last 48 hours') ?></small></h2>
+        <section class="card mb-3" role="region">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <?=__('Best Performing Songs') ?>
+                    <small><?=__('in the last 48 hours') ?></small>
+                </h2>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-condensed table-nopadding">
@@ -65,7 +70,7 @@ $assets
                     <?php foreach($best_performing_songs as $song_row): ?>
                         <tr>
                             <td class="text-center text-success">
-                                <i class="zmdi zmdi-thumb-up"></i> <?=abs($song_row['stat_delta']) ?><br>
+                                <i class="material-icons">keyboard_arrow_up</i> <?=abs($song_row['stat_delta']) ?><br>
                                 <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
                             </td>
                             <td>
@@ -84,9 +89,12 @@ $assets
         </section>
     </div>
     <div class="col-sm-6">
-        <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><i class="zmdi zmdi-thumb-down"></i> <?=__('Worst Performing Songs') ?> <small><?=__('in the last 48 hours') ?></small></h2>
+        <section class="card mb-3" role="region">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <?=__('Worst Performing Songs') ?>
+                    <small><?=__('in the last 48 hours') ?></small>
+                </h2>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-condensed table-nopadding">
@@ -104,7 +112,7 @@ $assets
                     <?php foreach($worst_performing_songs as $song_row): ?>
                         <tr>
                             <td class="text-center text-danger">
-                                <i class="zmdi zmdi-thumb-down"></i> <?=abs($song_row['stat_delta']) ?><br>
+                                <i class="material-icons">keyboard_arrow_down</i> <?=abs($song_row['stat_delta']) ?><br>
                                 <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
                             </td>
                             <td>
@@ -127,8 +135,11 @@ $assets
 <div class="row">
     <div class="col-sm-12">
         <section class="card" role="region">
-            <div class="card-header ch-alt">
-                <h2><?=__('Most Played Songs') ?> <small><?=__('in the last month') ?></small></h2>
+            <div class="card-body">
+                <h2 class="card-title">
+                    <?=__('Most Played Songs') ?>
+                    <small><?=__('in the last month') ?></small>
+                </h2>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-condensed table-nopadding">

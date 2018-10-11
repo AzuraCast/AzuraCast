@@ -1,0 +1,36 @@
+@mixin reset-material-icons {
+  font-size: ($material-icon-size / $font-size-base * 1em);
+  line-height: ($font-size-base / $material-icon-size * 1em);
+
+  // The below value is calculated using the technique illustrated in:
+  // https://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align
+  // Font metrics used in the calculation are from Roboro Regular:
+  // https://github.com/google/fonts/blob/master/apache/roboto/Roboto-Regular.ttf
+
+  $roboto-fm-ascender:        1946 !default;
+  $roboto-fm-capital-height:  1456 !default;
+  $roboto-fm-descender:       512 !default;
+
+  $roboto-capital-height:     (strip-unit($font-size-base) * strip-unit($font-size-root) * strip-unit($line-height-base)) !default;
+  $roboto-computed-font-size: ($roboto-capital-height / $roboto-fm-capital-height) !default;
+  $roboto-distance-bottom:    $roboto-fm-descender !default;
+  $roboto-distance-top:       ($roboto-fm-ascender - $roboto-fm-capital-height) !default;
+
+  vertical-align: (($roboto-distance-bottom - $roboto-distance-top) * $roboto-computed-font-size * -1em);
+}
+
+@mixin set-material-icons {
+  @include reset-material-icons;
+
+  font-family: 'Material Icons'; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+  font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: normal; // stylelint-disable-line font-weight-notation
+  letter-spacing: normal;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+}

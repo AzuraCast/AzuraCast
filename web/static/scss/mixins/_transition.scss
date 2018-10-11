@@ -1,0 +1,99 @@
+// Acceleration curve: permanently leaving the screen
+
+@mixin transition-acceleration($property...) {
+  transition-duration: $transition-duration-mobile-leaving;
+  transition-property: $property;
+  transition-timing-function: $transition-timing-function-acceleration;
+
+  @include media-breakpoint-up(sm) {
+    transition-duration: $transition-duration-tablet-leaving;
+  }
+
+  @include media-breakpoint-up(lg) {
+    transition-duration: $transition-duration-desktop-leaving;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// Deceleration curve: entering the screen
+
+@mixin transition-deceleration($property...) {
+  transition-duration: $transition-duration-mobile-entering;
+  transition-property: $property;
+  transition-timing-function: $transition-timing-function-deceleration;
+
+  @include media-breakpoint-up(sm) {
+    transition-duration: $transition-duration-tablet-entering;
+  }
+
+  @include media-breakpoint-up(lg) {
+    transition-duration: $transition-duration-desktop-entering;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// Sharp curve: temporarily leaving the screen
+
+@mixin transition-sharp($property...) {
+  transition-duration: $transition-duration-mobile-leaving;
+  transition-property: $property;
+  transition-timing-function: $transition-timing-function-sharp;
+
+  @include media-breakpoint-up(sm) {
+    transition-duration: $transition-duration-tablet-leaving;
+  }
+
+  @include media-breakpoint-up(lg) {
+    transition-duration: $transition-duration-desktop-leaving;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// Standard curve: relative movement
+
+@mixin transition-standard($property...) {
+  transition-duration: $transition-duration-mobile;
+  transition-property: $property;
+  transition-timing-function: $transition-timing-function-standard;
+
+  @include media-breakpoint-up(sm) {
+    transition-duration: $transition-duration-tablet;
+  }
+
+  @include media-breakpoint-up(lg) {
+    transition-duration: $transition-duration-desktop;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// Standard curve: relative movement - complex, full-screen, large transitions
+
+@mixin transition-standard-complex($property...) {
+  transition-duration: $transition-duration-mobile-complex;
+  transition-property: $property;
+  transition-timing-function: $transition-timing-function-standard;
+
+  @include media-breakpoint-up(sm) {
+    transition-duration: $transition-duration-tablet-complex;
+  }
+
+  @include media-breakpoint-up(lg) {
+    transition-duration: $transition-duration-desktop-complex;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

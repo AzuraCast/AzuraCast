@@ -1,0 +1,173 @@
+.floating-label {
+  padding-top: $floating-label-font-size;
+  position: relative;
+
+  &.has-value label,
+  &.is-focused label {
+    top: 0;
+    transform: scale($floating-label-font-size / $textfield-font-size);
+  }
+
+  &.is-focused label {
+    color: $floating-label-color-focus;
+  }
+
+  &:not(.has-value):not(.is-focused) .form-control {
+    &[type='date'],
+    &[type='datetime-local'],
+    &[type='time'] {
+      color: transparent;
+    }
+  }
+
+  label {
+    @include transition-standard(color, top, transform);
+
+    color: $floating-label-color;
+    display: block;
+    font-size: $textfield-font-size;
+    line-height: $textfield-line-height;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: ($floating-label-font-size + $textfield-padding-y);
+    left: 0;
+    transform-origin: 0 0;
+  }
+
+  %form-control {
+    position: relative;
+
+    &:focus {
+      &::placeholder {
+        color: $textfield-hint-color;
+        opacity: 1;
+      }
+    }
+
+    &::placeholder {
+      @include transition-standard(opacity);
+
+      color: transparent;
+      opacity: 0;
+    }
+  }
+}
+
+// Size
+
+.floating-label-lg {
+  &.has-value label,
+  &.is-focused label {
+    transform: scale($floating-label-font-size-lg / $textfield-font-size-lg);
+  }
+
+  label {
+    font-size: $textfield-font-size-lg;
+    line-height: $textfield-line-height-lg;
+    top: ($floating-label-font-size-lg + $textfield-padding-y-lg);
+  }
+
+  %form-control {
+    font-size: $textfield-font-size-lg;
+    line-height: $textfield-line-height-lg;
+    padding: $textfield-padding-y-lg $textfield-padding-x-lg calc(#{$textfield-padding-y-lg} - #{$textfield-border-width});
+  }
+
+  %form-select {
+    padding-right: $textfield-select-bg-size;
+  }
+
+  %form-textarea {
+    padding: $textfield-box-padding-y-lg $textfield-box-padding-x-lg calc(#{$textfield-box-padding-y-lg} - #{$textfield-border-width});
+  }
+}
+
+.floating-label-sm {
+  &.has-value label,
+  &.is-focused label {
+    transform: scale($floating-label-font-size-sm / $textfield-font-size-sm);
+  }
+
+  label {
+    font-size: $textfield-font-size-sm;
+    line-height: $textfield-line-height-sm;
+    top: ($floating-label-font-size-sm + $textfield-padding-y-sm);
+  }
+
+  %form-control {
+    font-size: $textfield-font-size-sm;
+    line-height: $textfield-line-height-sm;
+    padding: $textfield-padding-y-sm $textfield-padding-x-sm calc(#{$textfield-padding-y-sm} - #{$textfield-border-width});
+  }
+
+  %form-select {
+    padding-right: $textfield-select-bg-size;
+  }
+
+  %form-textarea {
+    padding: $textfield-box-padding-y-sm $textfield-box-padding-x-sm calc(#{$textfield-box-padding-y-sm} - #{$textfield-border-width});
+  }
+}
+
+// Floating label with textfield box
+
+.floating-label.textfield-box {
+  padding-top: 0;
+
+  &.has-value label,
+  &.is-focused label {
+    line-height: 1;
+    top: $textfield-box-label-spacer-y;
+  }
+
+  label {
+    top: $textfield-box-padding-y;
+    left: $textfield-box-padding-x;
+  }
+
+  %form-control,
+  %form-textarea {
+    padding-top: ($textfield-box-height - $textfield-box-label-spacer-y - $textfield-font-size * $textfield-line-height);
+  }
+
+  %form-control {
+    padding-bottom: calc(#{$textfield-box-label-spacer-y} - #{$textfield-border-width});
+  }
+}
+
+.floating-label-lg.textfield-box {
+  label {
+    top: $textfield-box-padding-y-lg;
+    left: $textfield-box-padding-x-lg;
+  }
+
+  %form-control,
+  %form-textarea {
+    padding-top: ($textfield-box-height-lg - $textfield-box-label-spacer-y - $textfield-font-size-lg * $textfield-line-height-lg);
+    padding-right: $textfield-box-padding-x-lg;
+    padding-left: $textfield-box-padding-x-lg;
+  }
+
+  %form-select {
+    padding-right: $textfield-select-bg-size;
+  }
+}
+
+.floating-label-sm.textfield-box {
+  label {
+    top: $textfield-box-padding-y-sm;
+    left: $textfield-box-padding-x-sm;
+  }
+
+  %form-control,
+  %form-textarea {
+    padding-top: ($textfield-box-height-sm - $textfield-box-label-spacer-y - $textfield-font-size-sm * $textfield-line-height-sm);
+    padding-right: $textfield-box-padding-x-sm;
+    padding-left: $textfield-box-padding-x-sm;
+  }
+
+  %form-select {
+    padding-right: $textfield-select-bg-size;
+  }
+}

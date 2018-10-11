@@ -1,0 +1,46 @@
+.badge {
+  @include border-radius($badge-border-radius);
+
+  align-items: center;
+  display: inline-flex;
+  font-size: inherit;
+  font-weight: $badge-font-weight;
+  line-height: inherit;
+  padding-right: $badge-padding-x;
+  padding-left: $badge-padding-x;
+  text-align: center;
+  vertical-align: baseline;
+  white-space: nowrap;
+
+  &:empty {
+    display: none;
+  }
+
+  .btn & {
+    margin-top: -1px;
+    margin-bottom: -1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+}
+
+@each $color, $values in $theme-colors {
+  .badge-#{$color} {
+    background-color: theme-color($color);
+    color: color-yiq(theme-color($color));
+
+    &[href] {
+      @include active-focus-hover {
+        background-color: theme-color-dark($color);
+        color: color-yiq(theme-color-dark($color));
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+// Pill badges with extra rounded corners
+
+.badge-pill {
+  @include border-radius(1em);
+}

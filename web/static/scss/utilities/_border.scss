@@ -1,0 +1,119 @@
+// stylelint-disable declaration-no-important
+
+// Border
+
+.border {
+  border: $border-width solid $border-color !important;
+}
+
+.border-0 {
+  border: 0 !important;
+}
+
+.border-top {
+  border-top: $border-width solid $border-color !important;
+}
+
+.border-top-0 {
+  border-top: 0 !important;
+}
+
+.border-right {
+  border-right: $border-width solid $border-color !important;
+}
+
+.border-right-0 {
+  border-right: 0 !important;
+}
+
+.border-bottom {
+  border-bottom: $border-width solid $border-color !important;
+}
+
+.border-bottom-0 {
+  border-bottom: 0 !important;
+}
+
+.border-left {
+  border-left: $border-width solid $border-color !important;
+}
+
+.border-left-0 {
+  border-left: 0 !important;
+}
+
+.border-black {
+  border-color: $black !important;
+}
+
+.border-black-primary {
+  border-color: $black-primary !important;
+}
+
+.border-black-secondary {
+  border-color: $black-secondary !important;
+}
+
+.border-black-hint {
+  border-color: $black-hint !important;
+}
+
+.border-black-divider {
+  border-color: $black-divider !important;
+}
+
+.border-white {
+  border-color: $white !important;
+}
+
+.border-white-primary {
+  border-color: $white-primary !important;
+}
+
+.border-white-secondary {
+  border-color: $white-secondary !important;
+}
+
+.border-white-hint {
+  border-color: $white-hint !important;
+}
+
+.border-white-divider {
+  border-color: $white-divider !important;
+}
+
+@each $color, $values in $theme-colors {
+  .border-#{$color} {
+    border-color: theme-color($color) !important;
+  }
+}
+
+// Border radius
+
+.rounded {
+  @include border-radius($border-radius);
+}
+
+.rounded-0 {
+  border-radius: 0;
+}
+
+.rounded-circle {
+  border-radius: 50%;
+}
+
+.rounded-top {
+  @include border-top-radius($border-radius);
+}
+
+.rounded-right {
+  @include border-right-radius($border-radius);
+}
+
+.rounded-bottom {
+  @include border-bottom-radius($border-radius);
+}
+
+.rounded-left {
+  @include border-left-radius($border-radius);
+}

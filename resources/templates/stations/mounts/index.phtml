@@ -1,16 +1,15 @@
 <?php $this->layout('main', ['title' => __('Mount Points'), 'manual' => true]) ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Mount Points') ?></h2>
-
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Mount Point')) ?>" href="<?=$router->fromHere('stations:mounts:add') ?>">
-            <span class="sr-only"><?=__('Add %s', __('Mount Point')) ?></span>
-            <i class="zmdi zmdi-plus"></i>
-        </a>
-    </div>
-    <div class="card-body card-padding p-b-0">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Mount Points') ?></h2>
         <p><?=__('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.') ?></p>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:mounts:add') ?>">
+            <i class="material-icons">add</i>
+            <?=__('Add %s', __('Mount Point')) ?>
+        </a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

@@ -13,7 +13,15 @@ function stopAllPlayers()
     player.src = '';
 
     is_playing = false;
-    $('.btn-audio').removeClass('playing').find('i').removeClass('zmdi-stop').addClass('zmdi-play');
+
+    $('.btn-audio').each(function() {
+        var play_icon = $(this).removeClass('playing').find('i');
+        if (play_icon.hasClass('material-icons')) {
+            play_icon.text('play_circle_filled');
+        } else {
+            play_icon.removeClass('zmdi-stop').addClass('zmdi-play');
+        }
+    });
 
     $('#radio-player-controls').removeClass('jp-state-playing');
 }
@@ -52,7 +60,13 @@ function handlePlayClick(audio_source)
         }
 
         playAudio(audio_source);
-        btn.addClass('playing').find('i').removeClass('zmdi-play').addClass('zmdi-stop');
+
+        var play_icon = btn.addClass('playing').find('i');
+        if (play_icon.hasClass('material-icons')) {
+            play_icon.text('pause_circle_filled');
+        } else {
+            play_icon.removeClass('zmdi-play').addClass('zmdi-stop');
+        }
     }
 }
 

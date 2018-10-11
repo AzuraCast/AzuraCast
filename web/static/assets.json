@@ -1,8 +1,9 @@
 {
   "dist/app.js": "dist/app-9dbd46ed17.js",
   "dist/bootgrid.js": "dist/bootgrid-28de3d6f6d.js",
-  "dist/dark.css": "dist/dark-d49bc20f56.css",
-  "dist/light.css": "dist/light-3650684071.css",
+  "dist/dark.css": "dist/dark-f87a461fef.css",
+  "dist/light.css": "dist/light-b2c8323171.css",
   "dist/material.js": "dist/material-a93414a265.js",
-  "dist/radio.js": "dist/radio-bf97216194.js"
+  "dist/radio.js": "dist/radio-bf97216194.js",
+  "dist/zxcvbn.js": "dist/zxcvbn-ab8b6822f4.js"
 }

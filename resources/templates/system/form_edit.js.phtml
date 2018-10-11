@@ -25,9 +25,9 @@ $(function() {
         });
 
         $form.find('.help-block').addClass('form-text');
-        $form.find('.help-block.form-error').addClass('text-error').parent().addClass('has-error');
-        $form.find('.help-block.form-success').addClass('text-success').parent().addClass('has-success');
-        $form.find('.help-block.form-warning').addClass('text-warning').parent().addClass('has-warning');
+        $form.find('.help-block.form-error').parent().addClass('has-error');
+        $form.find('.help-block.form-success').parent().addClass('has-success');
+        $form.find('.help-block.form-warning').parent().addClass('has-warning');
 
         // noinspection JSAnnotator
         $form.find('label.advanced,fieldset.advanced legend')

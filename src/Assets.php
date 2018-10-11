@@ -43,7 +43,7 @@ class Assets
         }
 
         $this->versioned_files = $versioned_files;
-        $this->csp_nonce = base64_encode(\random_bytes(18));
+        $this->csp_nonce = \preg_replace('/[^A-Za-z0-9\+\/=]/', '', \base64_encode(\random_bytes(18)));
         $this->csp_domains = [];
     }
 

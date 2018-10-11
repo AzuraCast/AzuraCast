@@ -3,12 +3,10 @@
 
   &.lg {
     @include reset-material-icons($material-icon-size-lg);
-    vertical-align: middle;
   }
 
   &.sm {
     @include reset-material-icons($material-icon-size-sm);
-    vertical-align: middle;
   }
 }
 

@@ -16,7 +16,7 @@ $btn-elevation-shadow:        map-get($elevation-shadows, 2) !default;
 $btn-elevation-shadow-active: map-get($elevation-shadows, 8) !default;
 $btn-font-weight:             $font-weight-medium !default;
 $btn-line-height:             1 !default;
-$btn-min-width:               5.5rem !default;
+$btn-min-width:               0 !default;
 $btn-overlay:                 $black-divider !default;
 $btn-overlay-inverse:         $white-divider !default;
 

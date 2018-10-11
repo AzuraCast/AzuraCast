@@ -3,7 +3,7 @@
 $assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
 ?>
 <div class="media media-left" id="station-nowplaying">
-    <div class="pull-left pr-2 pt-2">
+    <div class="pull-left pr-2 pt-3">
         <a class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
             <i class="material-icons lg">play_circle_filled</i>
         </a>

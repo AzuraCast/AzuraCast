@@ -34,13 +34,13 @@
 
   #file_drop_target {
     padding: 25px 0;
-    border: 4px dashed #ccc;
+    border: 4px dashed $navdrawer-header-bg;
     color:#ccc;
     text-align: center;
 
     &.drag_over {
-      border: 4px dashed #96C4EA;
-      color: #96C4EA;
+      border: 4px dashed $navdrawer-nav-link-bg-hover;
+      color: $text-muted;
     }
     input {
       display: inline;
@@ -55,9 +55,15 @@
   }
 
   .progress {
-    background: rgba(0, 0, 0, 0.1);
-    height: 10px;
     margin-bottom: 5px;
+
+    .progress-bar {
+      border-bottom-width: 10px;
+
+      &::after {
+        height: 10px;
+      }
+    }
   }
 
   /*

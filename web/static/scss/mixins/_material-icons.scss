@@ -1,6 +1,6 @@
-@mixin reset-material-icons {
-  font-size: ($material-icon-size / $font-size-base * 1em);
-  line-height: ($font-size-base / $material-icon-size * 1em);
+@mixin reset-material-icons($size: $material-icon-size) {
+  font-size: ($size / $font-size-base * 1em);
+  line-height: ($font-size-base / $size * 1em);
 
   // The below value is calculated using the technique illustrated in:
   // https://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align

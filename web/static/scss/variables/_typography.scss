@@ -79,3 +79,5 @@ $line-height-caption:    1.5 !default;      // 18px
 // Material icons default size
 
 $material-icon-size: (24 / strip-unit($font-size-root) * 1rem) !default;
+$material-icon-size-lg: ($material-icon-size * 1.5) !default;
+$material-icon-size-sm: ($material-icon-size * .6) !default;

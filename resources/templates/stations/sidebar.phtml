@@ -16,17 +16,17 @@ $assets->addInlineJs($this->fetch('stations/sidebar.js'));
 <ul class="navdrawer-nav">
 <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
     <?php if (!$station->getHasStarted()): ?>
-    <li class="nav-item menu-info">
-        <a class="nav-link api-call" href="<?=$router->fromHere('api:stations:restart') ?>">
+    <li class="nav-item">
+        <a class="nav-link api-call text-success" href="<?=$router->fromHere('api:stations:restart') ?>">
             <i class="navdrawer-nav-icon material-icons">refresh</i>
-            <?=__('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
+            <?=__('Click to Start Station') ?>
         </a>
     </li>
     <?php elseif ($station->getNeedsRestart()): ?>
-    <li class="nav-item menu-alert">
-        <a class="nav-link api-call" href="<?=$router->fromHere('api:stations:restart') ?>">
+    <li class="nav-item">
+        <a class="nav-link api-call text-warning" href="<?=$router->fromHere('api:stations:restart') ?>">
             <i class="navdrawer-nav-icon material-icons">refresh</i>
-            <?=__('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
+            <?=__('Click to Restart Station') ?>
         </a>
     </li>
     <?php endif; ?>

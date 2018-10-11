@@ -11,8 +11,6 @@ body.page-minimal {
   }
 
   .card {
-    background: $card-bg;
-    border-radius: 2px;
     position: absolute;
     top: 50%;
     margin-top: -100px;
@@ -23,6 +21,10 @@ body.page-minimal {
 
     .card-body {
       position: relative;
+
+      .card-title {
+        font-weight: bold;
+      }
 
       .btn-float {
         position: absolute;

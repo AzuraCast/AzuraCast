@@ -138,7 +138,7 @@ $assets
                                 <div class="form-field">
                                     <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
                                 </div>
-                                <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons">file_copy</i> <?=__('Copy to Clipboard') ?></button>
+                                <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
                             <?php else: ?>
                                 <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
                             <?php endif; ?>
@@ -170,7 +170,7 @@ $assets
                     <td><?=__('Player Embed Code') ?></td>
                     <td class="form-field">
                         <textarea id="player_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
-                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#player_embed_url"><i class="material-icons">file_copy</i> <?=__('Copy to Clipboard') ?></button>
+                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#player_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
                     </td>
                 </tr>
                 </tbody>
@@ -275,14 +275,14 @@ $assets
                         <td><?=__('Administrator Password') ?></td>
                         <td>
                             <span id="frontend_admin_pw"><?=$this->e($frontend_config['admin_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw"><i class="material-icons">file_copy</i></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw"><i class="material-icons sm">file_copy</i></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
                         </td>
                     </tr>
                     <tr>
                         <td><?=__('Source Password') ?></td>
                         <td>
                             <span id="frontend_source_pw"><?=$this->e($frontend_config['source_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw"><i class="material-icons">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
                         </td>
                     </tr>
                 <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
@@ -290,7 +290,7 @@ $assets
                         <td><?=__('Relay Password') ?></td>
                         <td>
                             <span id="frontend_relay_pw"><?=$this->e($frontend_config['relay_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw"><i class="material-icons">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
                         </td>
                     </tr>
                 <?php endif; ?>

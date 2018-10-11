@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     $('input[type=password].strength').on('keyup', function(e) {
-        
+
         var result = zxcvbn($(this).val()),
             score = result.score;
 

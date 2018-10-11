@@ -16,13 +16,13 @@ $assets
 ?>
 
 <div class="row">
-    <div class="col">
+    <div class="col-md-6">
         <section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
             <div class="card-body">
                 <h3 class="card-title"><?=__('On the Air') ?></h3>
 
                 <div class="row">
-                    <div class="col-md-4 col-sm-12">
+                    <div class="col-md-4">
                         <div class="position-relative" style="margin-left: 30px;">
                             <div class="position-absolute" style="top: 0; left: -30px;">
                                 <i class="material-icons">music_note</i>
@@ -42,7 +42,7 @@ $assets
                         </div>
                     </div>
 
-                    <div class="col-md-4 col-sm-12" v-if="!np.live.is_live && np.playing_next">
+                    <div class="col-md-4" v-if="!np.live.is_live && np.playing_next">
                         <div class="position-relative" style="margin-left: 30px;">
                             <div class="position-absolute" style="top: 0; left: -30px;">
                                 <i class="material-icons">skip_next</i>
@@ -58,7 +58,7 @@ $assets
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-12" v-if="np.live.is_live">
+                    <div class="col-md-4" v-if="np.live.is_live">
                         <div class="position-relative" style="margin-left: 30px;">
                             <div class="position-absolute" style="top: 0; left: -30px;">
                                 <i class="material-icons">mic</i>
@@ -72,7 +72,7 @@ $assets
                         </div>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-md-4">
                         <div class="position-relative" style="margin-left: 30px;">
                             <div class="position-absolute" style="top: 0; left: -30px;">
                                 <i class="material-icons">headset</i>
@@ -102,7 +102,7 @@ $assets
                 </div>
             <?php endif; ?>
         </section>
-        <section class="card" role="region">
+        <section class="card mb-4" role="region">
             <div class="card-body">
                 <h3 class="card-title"><?=__('Profile') ?></h3>
             </div>
@@ -177,7 +177,7 @@ $assets
             </table>
         </section>
     </div>
-    <div class="col">
+    <div class="col-md-6">
     <?php if (count($stream_urls['local']) > 0 || count($stream_urls['remote']) > 0): ?>
         <section class="card mb-4" role="region">
             <div class="card-body">

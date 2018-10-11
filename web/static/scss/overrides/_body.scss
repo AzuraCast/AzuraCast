@@ -13,3 +13,23 @@ body {
     }
   }
 }
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: $body-bg;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  margin: 2px 0;
+  border-radius: 10px;
+  background: $navdrawer-nav-link-bg-hover;
+}
+
+::-webkit-scrollbar-corner {
+  background: $body-bg;
+  border: 0;
+}

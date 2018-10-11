@@ -8,16 +8,12 @@ $assets
 ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Song Listener Impact') ?></h2>
-
-        <ul class="actions">
-            <li>
-                <a href="<?=$router->fromHere(null, ['format' => 'csv']) ?>" title="<?=__('Download CSV') ?>">
-                    <i class="zmdi zmdi-download"></i>
-                </a>
-            </li>
-        </ul>
+    <div class="card-body">
+        <a class="btn btn-primary float-right" href="<?=$router->fromHere(null, ['format' => 'csv']) ?>">
+            <i class="material-icons">file_download</i>
+            <?=__('Download CSV') ?>
+        </a>
+        <h2 class="card-title"><?=__('Song Listener Impact') ?></h2>
     </div>
     <!--
     <div class="card-body card-padding">

@@ -30,25 +30,25 @@ $assets
                 </div>
             </div>
 
-            <h3 class="card-title"><?=$this->e($station->getName()) ?></h3>
+            <h2 class="card-title"><?=$this->e($station->getName()) ?></h2>
 
             <div class="stations nowplaying">
                 <?=$this->fetch('frontend/public/player_component', ['stream_url' => $stream_url, 'autoplay' => $autoplay]) ?>
             </div>
+        </div>
 
-            <div class="buttons">
-                <a class="btn btn-sm btn-outline-primary" href="#modal-history" data-toggle="modal" data-target="#modal-history">
-                    <i class="material-icons">history</i> <?=__('Song History') ?>
+        <div class="card-actions">
+            <a class="btn btn-sm btn-outline-primary" href="#modal-history" data-toggle="modal" data-target="#modal-history">
+                <i class="material-icons">history</i> <?=__('Song History') ?>
+            </a>
+            <?php if ($station->getEnableRequests()): ?>
+                <a class="btn btn-sm btn-outline-primary" href="#modal-request" data-toggle="modal" data-target="#modal-request">
+                    <i class="material-icons">help_outline</i> <?=__('Request Song') ?>
                 </a>
-                <?php if ($station->getEnableRequests()): ?>
-                    <a class="btn btn-sm btn-outline-primary" href="#modal-request" data-toggle="modal" data-target="#modal-request">
-                        <i class="material-icons">help_outline</i> <?=__('Request Song') ?>
-                    </a>
-                <?php endif; ?>
-                <a class="btn btn-sm btn-outline-primary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">
-                    <i class="material-icons">file_download</i> <?=__('Playlist') ?>
-                </a>
-            </div>
+            <?php endif; ?>
+            <a class="btn btn-sm btn-outline-primary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">
+                <i class="material-icons">file_download</i> <?=__('Playlist') ?>
+            </a>
         </div>
     </div>
 </div>

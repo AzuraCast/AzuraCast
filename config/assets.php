@@ -43,16 +43,6 @@ return [
         'order' => 2,
         'require' => ['jquery'],
         'files' => [
-            'css' => [
-                [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css',
-                    'integrity' => 'sha256-j+P6EZJVrbXgwSR5Mx+eCS6FvP9Wq27MBRC/ogVriY0=',
-                ],
-                [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
-                    'integrity' => 'sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=',
-                ],
-            ],
             'js' => [
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js',

@@ -61,7 +61,7 @@ $assets
                     <div class="col-md-4 col-sm-12" v-if="np.live.is_live">
                         <div class="position-relative" style="margin-left: 30px;">
                             <div class="position-absolute" style="top: 0; left: -30px;">
-                                <i class="material-icons">headset</i>
+                                <i class="material-icons">mic</i>
                             </div>
 
                             <h6><?=__('Now Streaming') ?>:</h6>
@@ -73,8 +73,10 @@ $assets
                     </div>
 
                     <div class="col-sm-3">
-                        <div class="m-l-25" style="position: relative;">
-                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-headset"></i></div>
+                        <div class="position-relative" style="margin-left: 30px;">
+                            <div class="position-absolute" style="top: 0; left: -30px;">
+                                <i class="material-icons">headset</i>
+                            </div>
 
                             <h6><?=__('Listeners') ?>:</h6>
 
@@ -273,14 +275,14 @@ $assets
                         <td><?=__('Administrator Password') ?></td>
                         <td>
                             <span id="frontend_admin_pw"><?=$this->e($frontend_config['admin_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw"><i class="zmdi zmdi-copy"></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw"><i class="material-icons">file_copy</i></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
                         </td>
                     </tr>
                     <tr>
                         <td><?=__('Source Password') ?></td>
                         <td>
                             <span id="frontend_source_pw"><?=$this->e($frontend_config['source_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw"><i class="zmdi zmdi-copy"></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw"><i class="material-icons">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
                         </td>
                     </tr>
                 <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
@@ -288,7 +290,7 @@ $assets
                         <td><?=__('Relay Password') ?></td>
                         <td>
                             <span id="frontend_relay_pw"><?=$this->e($frontend_config['relay_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw"><i class="zmdi zmdi-copy"></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw"><i class="material-icons">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
                         </td>
                     </tr>
                 <?php endif; ?>

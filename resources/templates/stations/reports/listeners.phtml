@@ -37,10 +37,10 @@ $assets
                         <td>{{ listener.connected_time }}</td>
                         <td>
                             <span v-if="listener.is_mobile" title="<?=__('Mobile Device') ?>">
-                                <i class="zmdi zmdi-smartphone"></i>
+                                <i class="material-icons">smartphone</i>
                             </span>
                             <span v-else title="<?=__('Desktop Device') ?>">
-                                <i class="zmdi zmdi-desktop-windows"></i>
+                                <i class="material-icons">desktop_windows</i>
                             </span>
                             {{ listener.user_agent }}
                         </td>

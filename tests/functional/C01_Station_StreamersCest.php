@@ -15,7 +15,7 @@ class C01_Station_StreamersCest extends CestAbstract
         $I->see('Streamer/DJ Accounts');
         $I->click('Enable Streaming');
 
-        $I->click('.btn-float'); // Plus sign
+        $I->click('add', '#content');
 
         $I->submitForm('.form', [
             'streamer_username' => 'teststreamer',

@@ -13,7 +13,7 @@ class C03_Station_PlaylistsCest extends CestAbstract
         $I->amOnPage('/station/'.$station_id.'/playlists');
 
         $I->see('Playlists');
-        $I->click('.btn-float'); // Plus sign
+        $I->click('add', '#content');
 
         $I->submitForm('.form', [
             'name'          => 'Default Playlist',

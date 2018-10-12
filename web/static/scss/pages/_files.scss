@@ -34,12 +34,12 @@
 
   #file_drop_target {
     padding: 25px 0;
-    border: 4px dashed $navdrawer-header-bg;
+    border: 4px dashed $theme-color-3;
     color:#ccc;
     text-align: center;
 
     &.drag_over {
-      border: 4px dashed $navdrawer-nav-link-bg-hover;
+      border: 4px dashed $theme-color-4;
       color: $text-muted;
     }
     input {

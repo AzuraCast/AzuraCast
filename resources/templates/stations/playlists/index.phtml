@@ -4,7 +4,11 @@ use App\Entity\StationPlaylist;
 $this->layout('main', ['title' => __('Playlists'), 'manual' => true]);
 
 /** @var \App\Assets $assets */
-$assets->load('fullcalendar');
+$assets->load('fullcalendar')
+    ->addInlineJs($this->fetch('stations/playlists/index.js', [
+        'schedule_now' => $schedule_now,
+        'schedule_url' => $schedule_url,
+    ]));
 ?>
 
 <div class="card">
@@ -61,7 +65,7 @@ $assets->load('fullcalendar');
                                     </button>
                                     <ul class="dropdown-menu">
                                         <?php foreach(['pls', 'm3u'] as $format): ?>
-                                            <li><a href="<?=$router->fromHere('stations:playlists:export', ['id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
+                                            <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:export', ['id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
                                     </ul>
                                 </div>
 
@@ -112,31 +116,3 @@ $assets->load('fullcalendar');
         </div>
     </div>
 </div>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-$(function() {
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var target = $(e.target).attr("href");
-
-        if (target == '#schedule-view') {
-
-            $('#playlist-calendar').fullCalendar({
-                themeSystem: 'bootstrap4',
-                nowIndicator: true,
-                defaultView: 'agendaWeek',
-                locale: '<?=substr(strtolower($customization->getLocale()), 0, 2) ?>',
-                header: false,
-                footer: false,
-                height: 'auto',
-                now: '<?=$schedule_now ?>',
-                events: '<?=$schedule_url ?>'
-            });
-
-        } else {
-
-            $('#playlist-calendar').fullCalendar('destroy').removeClass().empty();
-
-        }
-    });
-});
-</script>

@@ -7,4 +7,26 @@
   hr.fc-divider {
     border-color: $table-border-color;
   }
+
+  table {
+    th, td {
+      border-color: $theme-color-4;
+    }
+
+    thead.fc-head td {
+      border-top-width: 0;
+    }
+
+    th:first-child, td:first-child {
+      border-left-width: 0;
+    }
+    th:last-child, td:last-child {
+      border-right-width: 0;
+    }
+
+    tbody.fc-body td {
+      border-bottom-width: 0;
+    }
+  }
+
 }

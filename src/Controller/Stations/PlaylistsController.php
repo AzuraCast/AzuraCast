@@ -144,7 +144,7 @@ class PlaylistsController
                     'allDay' => $playlist_start->eq($playlist_end),
                     'start' => $playlist_start->toIso8601String(),
                     'end' => $playlist_end->toIso8601String(),
-                    'url' => $this->router->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
+                    'url' => (string)$this->router->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
                 ];
             }
 

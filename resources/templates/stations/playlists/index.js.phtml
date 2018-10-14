@@ -1,0 +1,25 @@
+$(function() {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href");
+
+        if (target == '#schedule-view') {
+
+            $('#playlist-calendar').fullCalendar({
+                themeSystem: 'bootstrap4',
+                nowIndicator: true,
+                defaultView: 'agendaWeek',
+                locale: '<?=substr(strtolower($customization->getLocale()), 0, 2) ?>',
+                header: false,
+                footer: false,
+                height: 'auto',
+                now: '<?=$schedule_now ?>',
+                events: '<?=$schedule_url ?>'
+            });
+
+        } else {
+
+            $('#playlist-calendar').fullCalendar('destroy').removeClass().empty();
+
+        }
+    });
+});

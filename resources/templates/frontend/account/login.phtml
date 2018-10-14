@@ -22,14 +22,25 @@ $this->layout('minimal', [
             <p class="text-left"><?=__('Please log in to continue.') ?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
 
             <form id="login-form" class="pr-5" action="" method="post">
-                <div class="floating-label">
-                    <label for="username"><?=__('E-mail Address') ?></label>
-                    <input type="email" name="username" class="form-control" placeholder="">
+                <div class="input-group">
+                    <div class="floating-label">
+                        <label for="username"><?=__('E-mail Address') ?></label>
+                        <input type="email" name="username" class="form-control" placeholder="">
+                    </div>
+                    <span class="input-group-icon">
+                        <i class="material-icons">email</i>
+                    </span>
                 </div>
 
-                <div class="floating-label">
-                    <label for="password"><?=__('Password') ?></label>
-                    <input type="password" name="password" class="form-control" placeholder="">
+                <div class="input-group mt-2">
+                    <div class="floating-label">
+                        <label for="password"><?=__('Password') ?></label>
+                        <input type="password" name="password" class="form-control" placeholder="">
+                    </div>
+
+                    <span class="input-group-icon">
+                        <i class="material-icons">vpn_key</i>
+                    </span>
                 </div>
 
                 <button type="submit" role="button" title="<?=__('Log In') ?>" class="btn btn-login btn-primary btn-float">

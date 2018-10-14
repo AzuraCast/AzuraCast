@@ -9,16 +9,32 @@ $assets
     ->addInlineJs($this->fetch('partials/station_form.js'), 99);
 ?>
 
-<div class="block-header">
-    <h2><?=__('AzuraCast Setup') ?></h2>
+<div class="stepper-horiz">
+    <div class="stepper done">
+        <div class="stepper-icon">
+            <i class="material-icons">check</i>
+        </div>
+        <span class="stepper-text"><?=__('Create Account') ?></span>
+    </div>
+    <div class="stepper active">
+        <div class="stepper-icon">
+            <span>2</span>
+        </div>
+        <span class="stepper-text"><?=__('Create Station') ?></span>
+    </div>
+    <div class="stepper">
+        <div class="stepper-icon">
+            <span>3</span>
+        </div>
+        <span class="stepper-text"><?=__('System Settings') ?></span>
+    </div>
 </div>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Step 2: Create a New Station') ?></h2>
-        <div><?=__('Continue the setup process by creating your first radio station below. You can edit any of these details later.') ?></div>
-    </div>
-    <div class="card-body card-padding">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Create a New Radio Station') ?></h2>
+        <p><?=__('Continue the setup process by creating your first radio station below. You can edit any of these details later.') ?></p>
+
         <?=$this->fetch('system/form_edit', ['form' => $form]) ?>
     </div>
 </div>

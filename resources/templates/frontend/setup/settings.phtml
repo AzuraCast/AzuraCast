@@ -1,15 +1,31 @@
 <?php $this->layout('main', ['title' => __('AzuraCast Setup'), 'manual' => true]); ?>
 
-<div class="block-header">
-    <h2><?=__('AzuraCast Setup') ?></h2>
+<div class="stepper-horiz">
+    <div class="stepper done">
+        <div class="stepper-icon">
+            <i class="material-icons">check</i>
+        </div>
+        <span class="stepper-text"><?=__('Create Account') ?></span>
+    </div>
+    <div class="stepper done">
+        <div class="stepper-icon">
+            <i class="material-icons">check</i>
+        </div>
+        <span class="stepper-text"><?=__('Create Station') ?></span>
+    </div>
+    <div class="stepper active">
+        <div class="stepper-icon">
+            <span>3</span>
+        </div>
+        <span class="stepper-text"><?=__('System Settings') ?></span>
+    </div>
 </div>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Step 3: Customize AzuraCast Settings') ?></h2>
-        <div><?=__('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.') ?></div>
-    </div>
-    <div class="card-body card-padding">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Customize AzuraCast Settings') ?></h2>
+        <p><?=__('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.') ?></p>
+
         <?=$this->fetch('system/form_edit', ['form' => $form]) ?>
     </div>
 </div>

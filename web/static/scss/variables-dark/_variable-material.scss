@@ -158,13 +158,13 @@ $snackbar-elevation-shadow:       map-get($elevation-shadows, 6);
 // Stepper
 // Based on https://material.google.com/components/steppers.html#steppers-specs
 
-$stepper-bg:                $white;
-$stepper-border-color:      $material-color-grey-400;
-$stepper-icon-bg:           $black-hint;
+$stepper-bg:                $body-bg;
+$stepper-border-color:      $material-color-grey-800;
+$stepper-icon-bg:           $theme-color-3;
 $stepper-icon-bg-active:    theme-color(primary);
 $stepper-icon-color:        $white-primary;
 $stepper-icon-height:       $material-icon-size;
-$stepper-text-color:        $black-hint;
+$stepper-text-color:        $white-divider;
 $stepper-text-color-active: $material-color-grey-200;
 
 // Tab (Bootstrap tab)

@@ -343,7 +343,7 @@ $snackbar-padding-y-multi:        1.25rem !default;
 // Stepper
 // Based on https://material.google.com/components/steppers.html#steppers-specs
 
-$stepper-bg:                $white !default;
+$stepper-bg:                $body-bg !default;
 $stepper-border-color:      $material-color-grey-400 !default;
 $stepper-border-width:      $border-width !default;
 $stepper-icon-bg:           $black-hint !default;

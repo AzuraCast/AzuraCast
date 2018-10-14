@@ -12,20 +12,33 @@ $assets->load('zxcvbn');
     <div class="card">
         <div class="card-body">
             <h2 class="card-title mb-0">
-                <?=sprintf(__('Welcome to %s!'), $app_settings['name']) ?>
+                <?=sprintf(__('AzuraCast First-Time Setup')) ?>
             </h2>
 
-            <p class="text-left"><?=__('Begin setup by creating a Super Administrator account.') ?></p>
+            <p class="text-left"><?=__('Welcome to AzuraCast!') ?></p>
+            <p class="text-left"><?=__('Let\'s get started by creating your Super Administrator account.') ?></p>
+            <p class="text-left"><?=__('This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.') ?></p>
 
             <form id="login-form" class="pr-5" action="" method="post">
-                <div class="floating-label">
-                    <label for="username"><?=__('E-mail Address') ?></label>
-                    <input type="email" name="username" class="form-control" placeholder="">
+                <div class="input-group">
+                    <div class="floating-label">
+                        <label for="username"><?=__('E-mail Address') ?></label>
+                        <input type="email" name="username" class="form-control" placeholder="" required>
+                    </div>
+                    <span class="input-group-icon">
+                        <i class="material-icons">email</i>
+                    </span>
                 </div>
 
-                <div class="floating-label">
-                    <label for="password"><?=__('Password') ?></label>
-                    <input type="password" name="password" class="form-control" placeholder="">
+                <div class="input-group mt-2">
+                    <div class="floating-label">
+                        <label for="password"><?=__('Password') ?></label>
+                        <input type="password" name="password" class="form-control" placeholder="" required>
+                    </div>
+
+                    <span class="input-group-icon">
+                        <i class="material-icons">vpn_key</i>
+                    </span>
                 </div>
 
                 <button type="submit" role="button" title="<?=__('Create Account') ?>" class="btn btn-login btn-primary btn-float">

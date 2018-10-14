@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Radio\AutoDJ;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -17,9 +16,6 @@ class PlaylistsController
 
     /** @var Router */
     protected $router;
-
-    /** @var AutoDJ */
-    protected $autodj;
 
     /** @var string */
     protected $csrf_namespace = 'stations_playlists';
@@ -39,17 +35,14 @@ class PlaylistsController
      * @param array $form_config
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em, Router $router, AutoDJ $autodj, array $form_config)
+    public function __construct(EntityManager $em, Router $router, array $form_config)
     {
         $this->em = $em;
         $this->router = $router;
-        $this->autodj = $autodj;
         $this->form_config = $form_config;
 
         $this->playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
-
         $this->playlist_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
-        $this->playlist_media_repo->setAutoDJ($autodj);
     }
 
     public function indexAction(Request $request, Response $response, $station_id): Response
@@ -292,8 +285,6 @@ class PlaylistsController
                 if ($uow->isEntityScheduled($record)) {
                     $station->setNeedsRestart(true);
                     $this->em->persist($station);
-
-                    $this->autodj->clearPlaybackCache($record->getId());
                 }
             }
 

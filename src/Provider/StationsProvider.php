@@ -93,7 +93,6 @@ class StationsProvider implements ServiceProviderInterface
             return new Stations\PlaylistsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di['router'],
-                $di[\App\Radio\AutoDJ::class],
                 $config->get('forms/playlist', [
                     'customization' => $di[\App\Customization::class]
                 ])

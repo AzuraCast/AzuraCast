@@ -28,7 +28,6 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di['router'],
                 $di[\App\Cache::class],
-                $di[\App\Radio\AutoDJ::class],
                 $config->get('forms/rename')
             );
         };
@@ -43,7 +42,6 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $router,
                 $di[\App\Cache::class],
-                $di[\App\Radio\AutoDJ::class],
                 $config->get('forms/media', [
                     'router' => $router,
                 ])

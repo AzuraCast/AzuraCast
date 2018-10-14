@@ -2,18 +2,28 @@
 
 namespace App\Entity\Repository;
 
+use App\Cache;
 use App\Radio\AutoDJ;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 use Doctrine\ORM\NoResultException;
 use App\Entity;
 
 class StationPlaylistMediaRepository extends BaseRepository
 {
-    /** @var AutoDJ */
-    protected $autodj;
+    /** @var int The time to live (in seconds) of cached playlist queues. */
+    const CACHE_TTL = 43200;
 
-    public function setAutoDJ(AutoDJ $autodj)
-    {
-        $this->autodj = $autodj;
+    protected $cache;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Mapping\ClassMetadata $class,
+        Cache $cache
+    ) {
+        parent::__construct($em, $class);
+
+        $this->cache = $cache;
     }
 
     /**
@@ -27,7 +37,7 @@ class StationPlaylistMediaRepository extends BaseRepository
     public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, $weight = 0): int
     {
         if ($playlist->getSource() !== Entity\StationPlaylist::SOURCE_SONGS) {
-            return false;
+            throw new \Exception('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.
@@ -44,6 +54,7 @@ class StationPlaylistMediaRepository extends BaseRepository
             if ($weight != 0) {
                 $record->setWeight($weight);
                 $this->_em->persist($record);
+                $this->_em->flush($record);
             }
         } else {
             if ($weight === 0) {
@@ -60,14 +71,60 @@ class StationPlaylistMediaRepository extends BaseRepository
 
             $record = new Entity\StationPlaylistMedia($playlist, $media);
             $record->setWeight($weight);
+
             $this->_em->persist($record);
+            $this->_em->flush($record);
         }
 
-        if ($this->autodj instanceof AutoDJ) {
-            $this->autodj->addMediaToPlaylist($media, $playlist);
+        // Add the newly added song into the cached queue.
+        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_RANDOM) {
+            $cache_name = $this->_getCacheName($playlist->getId());
+            $media_queue = (array)$this->cache->get($cache_name);
+
+            if (!empty($media_queue)) {
+                $media_queue[] = $media->getId();
+
+                if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_SHUFFLE) {
+                    shuffle($media_queue);
+                }
+
+                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+            }
         }
+
+        // Reshuffle the playlist if needed.
+        $this->_reshuffleMedia($playlist);
 
         return $weight;
+    }
+
+    /**
+     * "Shuffle" the weights of all media in a shuffled playlist.
+     *
+     * @param Entity\StationPlaylist $playlist
+     */
+    protected function _reshuffleMedia(Entity\StationPlaylist $playlist): void
+    {
+        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SHUFFLE) {
+            return;
+        }
+
+        $update_weight_query = $this->_em->createQuery('UPDATE '.$this->_entityName.' spm SET spm.weight=:weight '.
+            'WHERE spm.playlist_id = :playlist_id AND spm.media_id = :media_id')
+            ->setParameter('playlist_id', $playlist->getId());
+
+        $media_ids = $this->_getPlayableMediaIds($playlist);
+        shuffle($media_ids);
+
+        $new_weight = 1;
+        foreach($media_ids as $media_id) {
+            $update_weight_query
+                ->setParameter('media_id', $media_id)
+                ->setParameter('weight', $new_weight)
+                ->execute();
+
+            $new_weight++;
+        }
     }
 
     /**
@@ -109,14 +166,73 @@ class StationPlaylistMediaRepository extends BaseRepository
             WHERE e.playlist_id = :playlist_id AND e.media_id = :media_id')
             ->setParameter('playlist_id', $playlist->getId());
 
-        if ($this->autodj instanceof AutoDJ) {
-            $this->autodj->clearPlaybackCache($playlist->getId());
-        }
+        // Clear the playback queue.
+        $this->cache->remove($this->_getCacheName($playlist->getId()));
 
         foreach($mapping as $media_id => $weight) {
             $update_query->setParameter('media_id', $media_id)
                 ->setParameter('weight', $weight)
                 ->execute();
         }
+    }
+
+    /**
+     * Return a song from the cached playback queue for a playlist, if applicable.
+     *
+     * @param Entity\StationPlaylist $playlist
+     * @return Entity\StationMedia|null
+     */
+    public function getQueuedSong(Entity\StationPlaylist $playlist): ?Entity\StationMedia
+    {
+        if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
+            $media_queue = $this->_getPlayableMediaIds($playlist);
+
+            shuffle($media_queue);
+            $media_id = array_pop($media_queue);
+        } else {
+            $cache_name = $this->_getCacheName($playlist->getId());
+            $media_queue = (array)$this->cache->get($cache_name);
+
+            if (empty($media_queue)) {
+                $media_queue = $this->_getPlayableMediaIds($playlist);
+            }
+
+            $media_id = array_shift($media_queue);
+
+            // Save the modified cache, sans the now-missing entry.
+            $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+        }
+
+        return ($media_id)
+            ? $this->_em->find(Entity\StationMedia::class, $media_id)
+            : null;
+    }
+
+    protected function _getPlayableMediaIds(Entity\StationPlaylist $playlist): array
+    {
+        $all_media = $this->_em->createQuery('SELECT sm.id FROM '.Entity\StationMedia::class.' sm
+            JOIN sm.playlist_items spm
+            WHERE spm.playlist_id = :playlist_id
+            ORDER BY spm.weight ASC')
+            ->setParameter('playlist_id', $playlist->getId())
+            ->getArrayResult();
+
+        $media_queue = [];
+        foreach($all_media as $media_row) {
+            $media_queue[] = $media_row['id'];
+        }
+
+        return $media_queue;
+    }
+
+    /**
+     * Get the cache name for the given playlist.
+     *
+     * @param int $playlist_id
+     * @return string
+     */
+    protected function _getCacheName($playlist_id): string
+    {
+        return 'autodj/playlist_'.$playlist_id;
     }
 }

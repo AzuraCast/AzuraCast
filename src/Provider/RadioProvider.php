@@ -30,7 +30,6 @@ class RadioProvider implements ServiceProviderInterface
         $di[AutoDJ::class] = function($di) {
             return new AutoDJ(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
                 $di[\App\EventDispatcher::class]
             );
         };

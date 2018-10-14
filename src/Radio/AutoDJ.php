@@ -10,29 +10,21 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
 {
-    /** @var int The time to live (in seconds) of cached playlist queues. */
-    const CACHE_TTL = 43200;
-
     /** @var EntityManager */
     protected $em;
-
-    /** @var Cache */
-    protected $cache;
 
     /** @var EventDispatcher */
     protected $dispatcher;
 
     /**
      * @param EntityManager $em
-     * @param Cache $cache
      * @param EventDispatcher $dispatcher
      *
      * @see \App\Provider\RadioProvider
      */
-    public function __construct(EntityManager $em, Cache $cache, EventDispatcher $dispatcher)
+    public function __construct(EntityManager $em, EventDispatcher $dispatcher)
     {
         $this->em = $em;
-        $this->cache = $cache;
         $this->dispatcher = $dispatcher;
     }
 
@@ -301,40 +293,6 @@ class AutoDJ implements EventSubscriberInterface
     }
 
     /**
-     * Mark a playlist's cache as invalidated and force regeneration on the next "next song" call.
-     *
-     * @param int $playlist_id
-     */
-    public function clearPlaybackCache($playlist_id): void
-    {
-        $this->cache->remove($this->_getCacheName($playlist_id));
-    }
-
-    /**
-     * Add the given media to the playlist, appending it to the existing queue if one exists.
-     *
-     * @param Entity\StationMedia $media
-     * @param Entity\StationPlaylist $playlist
-     */
-    public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void
-    {
-        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_RANDOM) {
-            $cache_name = $this->_getCacheName($playlist->getId());
-            $media_queue = (array)$this->cache->get($cache_name);
-
-            if (!empty($media_queue)) {
-                $media_queue[] = $media->getId();
-
-                if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_SHUFFLE) {
-                    shuffle($media_queue);
-                }
-
-                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
-            }
-        }
-    }
-
-    /**
      * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
      *
      * @param Entity\StationPlaylist $playlist
@@ -344,41 +302,9 @@ class AutoDJ implements EventSubscriberInterface
      */
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist)
     {
-        $cache_name = $this->_getCacheName($playlist->getId());
-        $media_queue = (array)$this->cache->get($cache_name);
-
-        if (empty($media_queue)) {
-            $all_media = $this->em->createQuery('SELECT sm.id FROM '.Entity\StationMedia::class.' sm
-                JOIN sm.playlist_items spm
-                WHERE spm.playlist_id = :playlist_id
-                ORDER BY spm.weight ASC')
-                    ->setParameter('playlist_id', $playlist->getId())
-                    ->getArrayResult();
-
-            $media_queue = [];
-            foreach($all_media as $media_row) {
-                $media_queue[] = $media_row['id'];
-            }
-
-            if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_SHUFFLE) {
-                // Build a queue with the song arrangement randomized.
-                shuffle($media_queue);
-            } else if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
-                // The queue should always consist of one randomly selected song.
-                shuffle($media_queue);
-                $media_queue = [array_pop($media_queue)];
-            }
-        }
-
-        $media_id = array_shift($media_queue);
-
-        // Save the modified cache, sans the now-missing entry.
-        $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
-
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
-        $media_to_play = $media_repo->find($media_id);
+        /** @var Entity\Repository\StationPlaylistMediaRepository $spm_repo */
+        $spm_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+        $media_to_play = $spm_repo->getQueuedSong($playlist);
 
         if ($media_to_play instanceof Entity\StationMedia) {
             $spm = $media_to_play->getItemForPlaylist($playlist);
@@ -402,14 +328,5 @@ class AutoDJ implements EventSubscriberInterface
         return null;
     }
 
-    /**
-     * Get the cache name for the given playlist.
-     *
-     * @param int $playlist_id
-     * @return string
-     */
-    protected function _getCacheName($playlist_id): string
-    {
-        return 'autodj/playlist_'.$playlist_id;
-    }
+
 }

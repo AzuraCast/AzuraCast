@@ -3,7 +3,6 @@ namespace App\Controller\Stations\Files;
 
 use App\Cache;
 use App\Http\Router;
-use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 
@@ -21,9 +20,6 @@ abstract class FilesControllerAbstract
     /** @var Cache */
     protected $cache;
 
-    /** @var AutoDJ */
-    protected $autodj;
-
     /** @var array */
     protected $form_config;
 
@@ -37,22 +33,18 @@ abstract class FilesControllerAbstract
      * @param EntityManager $em
      * @param Router $router
      * @param Cache $cache
-     * @param AutoDJ $autodj;
      * @param array $form_config
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em, Router $router, Cache $cache, AutoDJ $autodj, array $form_config)
+    public function __construct(EntityManager $em, Router $router, Cache $cache, array $form_config)
     {
         $this->em = $em;
         $this->router = $router;
         $this->cache = $cache;
-        $this->autodj = $autodj;
         $this->form_config = $form_config;
 
         $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
         $this->playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
-        $this->playlists_media_repo->setAutoDJ($autodj);
     }
 
     protected function _filterPath($base_path, $path)

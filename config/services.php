@@ -93,6 +93,9 @@ return function (\Slim\Container $di, $settings)
             $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
             $config->setMetadataDriverImpl($metadata_driver);
 
+            $repo_factory = new \App\Doctrine\RepositoryFactory($di);
+            $config->setRepositoryFactory($repo_factory);
+
             if (APP_IN_PRODUCTION) {
                 /** @var \Redis $redis */
                 $redis = $di[\Redis::class];
@@ -144,7 +147,21 @@ return function (\Slim\Container $di, $settings)
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
 
-        return $em->getRepository(App\Entity\Settings::class);
+        return new \App\Entity\Repository\SettingsRepository(
+            $em,
+            $em->getClassMetadata(\App\Entity\Settings::class)
+        );
+    };
+
+    $di[\App\Entity\Repository\StationPlaylistMediaRepository::class] = function($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        return new \App\Entity\Repository\StationPlaylistMediaRepository(
+            $em,
+            $em->getClassMetadata(\App\Entity\StationPlaylistMedia::class),
+            $di[\App\Cache::class]
+        );
     };
 
     $di[\App\Auth::class] = function ($di) {

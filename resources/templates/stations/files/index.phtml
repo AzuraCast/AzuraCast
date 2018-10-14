@@ -54,9 +54,9 @@ $assets
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li v-for="playlist in playlists">
-                                    <a href="#" class="btn-batch" v-on:click="doBatch" v-bind:data-action="'playlist_' + playlist.id">{{ playlist.name }}</a>
+                                    <a href="#" class="dropdown-item btn-batch" v-on:click="doBatch" v-bind:data-action="'playlist_' + playlist.id">{{ playlist.name }}</a>
                                 </li>
-                                <li><a href="#" class="btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=__('Create new...') ?></a></li>
+                                <li><a href="#" class="dropdown-item btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=__('Create new...') ?></a></li>
                             </ul>
                         </div>
                         <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="material-icons">clear_all</i> <?=__('Clear Playlists') ?></button>

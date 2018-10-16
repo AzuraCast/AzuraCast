@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Create new dedicated table for remote relays.
  */
 final class Version20180909035413 extends AbstractMigration
 {

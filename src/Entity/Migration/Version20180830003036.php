@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Move all playlists that were previously "random" into the new "shuffled" type.
  */
 final class Version20180830003036 extends AbstractMigration
 {

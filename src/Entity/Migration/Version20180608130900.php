@@ -6,7 +6,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Based to Version20180506022642
+ * Add a custom "listen" URL for each mount point.
  */
 final class Version20180608130900 extends AbstractMigration
 {

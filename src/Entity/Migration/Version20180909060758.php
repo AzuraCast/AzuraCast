@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Remove remote_ fields from station_mounts as they're now in their own table.
  */
 final class Version20180909060758 extends AbstractMigration
 {

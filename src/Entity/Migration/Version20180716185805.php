@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Make media length an INT instead of SMALLINT for songs longer than 9 hours (!)
  */
 final class Version20180716185805 extends AbstractMigration
 {

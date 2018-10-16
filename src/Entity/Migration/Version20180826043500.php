@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Switch the collation of fields from "utf8mb4_unicode_ci" to "utf8mb4_general_ci" for case-insensitive searching.
  */
 final class Version20180826043500 extends AbstractMigration
 {

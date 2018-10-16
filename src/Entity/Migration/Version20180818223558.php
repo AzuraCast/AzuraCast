@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Add per-station-configurable number of history items to be shown in the NowPlaying API.
  */
 final class Version20180818223558 extends AbstractMigration
 {

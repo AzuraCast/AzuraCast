@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Add source_port, source_mount to station_remotes table
  */
 final class Version20180909174026 extends AbstractMigration
 {

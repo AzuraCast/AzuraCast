@@ -549,7 +549,7 @@ class StationMedia
                     $prop = Liquidsoap::toFloat($prop);
                 }
 
-                $annotations[$annotation_property] = $annotation_name . '="' . $prop . '"';
+                $annotations[$annotation_name] = $prop;
             }
         }
 

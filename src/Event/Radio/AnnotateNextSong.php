@@ -79,7 +79,12 @@ class AnnotateNextSong extends Event
     public function buildAnnotations(): string
     {
         if (!empty($this->annotations)) {
-            return 'annotate:'.implode(',', $this->annotations).':'.$this->song_path;
+            $annotations_str = [];
+            foreach($this->annotations as $annotation_key => $annotation_val) {
+                $annotations_str[] = $annotation_key.'="'.$annotation_val.'"';
+            }
+
+            return 'annotate:'.implode(',', $annotations_str).':'.$this->song_path;
         }
 
         return $this->song_path;

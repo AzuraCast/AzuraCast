@@ -333,6 +333,11 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
             ]);
         }
 
+        $event->appendLines([
+            '# Apply amplification metadata (if supplied)',
+            'radio = amplify(1., radio)',
+        ]);
+
         // Custom configuration
         if (!empty($settings['custom_config'])) {
             $event->appendLines([

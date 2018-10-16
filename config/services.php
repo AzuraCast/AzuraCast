@@ -311,7 +311,7 @@ return function (\Slim\Container $di, $settings)
         $logger = new Monolog\Logger($settings['name']);
 
         if (APP_INSIDE_DOCKER || APP_IS_COMMAND_LINE) {
-            $logging_level = (APP_IN_PRODUCTION) ? \Monolog\Logger::WARNING : \Monolog\Logger::DEBUG;
+            $logging_level = (APP_IN_PRODUCTION) ? \Monolog\Logger::INFO : \Monolog\Logger::DEBUG;
 
             $handler = new \Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
             $logger->pushHandler($handler);

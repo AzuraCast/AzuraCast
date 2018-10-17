@@ -34,7 +34,7 @@ if (!APP_IN_PRODUCTION)
 <?php
 $assets
     ->load('minimal')
-    ->load('theme_'.$customization->getTheme())
+    ->load('theme_'.$customization->getPublicTheme())
     ->addInlineCss($customization->getCustomPublicCss())
     ->addInlineJs($customization->getCustomPublicJs());
 

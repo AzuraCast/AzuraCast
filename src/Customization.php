@@ -312,4 +312,27 @@ class Customization
 
         return new Uri('/static/img/generic_song.jpg');
     }
+
+    /**
+     * Return the calculated page title given branding settings and the application environment.
+     *
+     * @param string|null $title
+     * @return string
+     */
+    public function getPageTitle($title = null): string
+    {
+        if (!$this->hideProductName()) {
+            if ($title) {
+                $title .= ' - '.$this->app_settings['name'];
+            } else {
+                $title = $this->app_settings['name'];
+            }
+        }
+
+        if (!APP_IN_PRODUCTION) {
+            $title = '('.ucfirst(APP_APPLICATION_ENV).') '.$title;
+        }
+
+        return $title;
+    }
 }

@@ -17,17 +17,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<?php
-if ($title) {
-    $page_title = ($customization->hideProductName()) ? $title : $title.' - '.$app_settings['name'];
-} else {
-    $page_title = ($customization->hideProductName()) ? '' : $app_settings['name'];
-}
-
-if (!APP_IN_PRODUCTION)
-    $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;
-?>
-<title><?=$page_title ?></title>
+<title><?=$customization->getPageTitle($title) ?></title>
 
 <?=$this->fetch('partials/icons') ?>
 

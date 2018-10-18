@@ -115,7 +115,7 @@ will stay running inside the terminal window, so you can easily hit `Ctrl+C` to 
 docker run --rm \
     -v azuracast_station_data:/home/azuracast/stations \
     -p 2222:22 atmoz/sftp:alpine \
-    azuracast:4zur4c457:::stations
+    azuracast:4zur4c457:1001::stations
 ```
 
 As long as you leave this script running, it will create a connection that you can access with these credentials:

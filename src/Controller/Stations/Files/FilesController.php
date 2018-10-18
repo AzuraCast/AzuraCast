@@ -223,7 +223,7 @@ class FilesController extends FilesControllerAbstract
                 'path' => $short,
                 'text' => $shortname,
                 'is_dir' => is_dir($i),
-                'rename_url' => $this->router->named('stations:files:rename', ['station' => $station_id, 'path' => base64_encode($short)]),
+                'rename_url' => (string)$this->router->named('stations:files:rename', ['station' => $station_id, 'path' => base64_encode($short)]),
             ];
 
             foreach ($media as $media_key => $media_val) {

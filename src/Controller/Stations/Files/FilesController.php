@@ -101,7 +101,8 @@ class FilesController extends FilesControllerAbstract
             $request->getSession()->flash('<b>' . __('File renamed!') . '</b>', 'green');
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
-            return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
+
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:files:index').'#'.$file_dir);
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [

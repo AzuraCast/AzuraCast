@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "53b7f1847ecd69e1520617137c9f09552c872420"
+                "reference": "a173ec667e41b8a2e67065508e78701d1cdf58dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/53b7f1847ecd69e1520617137c9f09552c872420",
-                "reference": "53b7f1847ecd69e1520617137c9f09552c872420",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/a173ec667e41b8a2e67065508e78701d1cdf58dd",
+                "reference": "a173ec667e41b8a2e67065508e78701d1cdf58dd",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2018-10-15T19:43:52+00:00"
+            "time": "2018-10-18T02:54:13+00:00"
         },
         {
             "name": "azuracast/nowplaying",

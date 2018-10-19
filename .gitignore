@@ -15,6 +15,7 @@ tmp/cache/*---*
 /app/env.ini
 /app/.env
 /env.ini
+/azuracast.env
 /util/fixtures/*
 /util/fixtures/**/*
 !/util/fixtures/.gitkeep

@@ -8,15 +8,9 @@ services:
       - influxdb
       - stations
       - redis
+    env_file: azuracast.env
     environment: &default-environment
-      APPLICATION_ENV: "production" # "production" or "development"
-      MYSQL_HOST: "mariadb"         # You can change this if you plan to connect to an external DB host.
-      MYSQL_PORT: 3306              # ^
-      MYSQL_USER: "azuracast"       # Once the database has been installed, don't change this.
-      MYSQL_PASSWORD: "azur4c457"   # ^
-      MYSQL_DATABASE: "azuracast"   # ^
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      AZURACAST_DC_REVISION: 3      # Only modified when this Docker Compose file has changed.
+      AZURACAST_DC_REVISION: 4
     volumes:
       - www_data:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
@@ -52,8 +46,9 @@ services:
     image: azuracast/azuracast_db:latest
     volumes:
       - db_data:/var/lib/mysql
+    env_file: azuracast.env
     environment:
-      << : *default-environment
+      <<: *default-environment
     restart: always
 
   influxdb:
@@ -76,8 +71,9 @@ services:
       - influxdb
       - stations
       - redis
+    env_file: azuracast.env
     environment:
-      << : *default-environment
+      <<: *default-environment
     command: 'cron'
     init: true
     restart: always
@@ -91,8 +87,9 @@ services:
       - influxdb
       - stations
       - redis
+    env_file: azuracast.env
     environment:
-      << : *default-environment
+      <<: *default-environment
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
     command: '/bin/true'

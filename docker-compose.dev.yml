@@ -10,15 +10,9 @@ services:
       - influxdb
       - stations
       - redis
+    env_file: azuracast.env
     environment: &default-environment
-      APPLICATION_ENV: "development" # "production" or "development"
-      MYSQL_HOST: "mariadb"         # You can change this if you plan to connect to an external DB host.
-      MYSQL_PORT: 3306              # ^
-      MYSQL_USER: "azuracast"       # Once the database has been installed, don't change this.
-      MYSQL_PASSWORD: "azur4c457"   # ^
-      MYSQL_DATABASE: "azuracast"   # ^
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      AZURACAST_DC_REVISION: 3      # Only modified when this Docker Compose file has changed.
+      AZURACAST_DC_REVISION: 4
     volumes:
       - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
@@ -60,6 +54,7 @@ services:
      - "127.0.0.1:3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    env_file: azuracast.env
     environment:
       << : *default-environment
     restart: always
@@ -90,8 +85,9 @@ services:
       - influxdb
       - stations
       - redis
+    env_file: azuracast.env
     environment:
-      << : *default-environment
+      <<: *default-environment
     command: 'cron'
     init: true
     restart: always
@@ -106,14 +102,9 @@ services:
       - influxdb
       - stations
       - redis
+    env_file: azuracast.env
     environment:
-      << : *default-environment
-      INIT_BASE_URL: "docker.local"
-      INIT_GMAPS_API_KEY: "" # Populate this!
-      INIT_INSTANCE_NAME: "local development"
-      INIT_ADMIN_USERNAME: "" # Populate this!
-      INIT_ADMIN_PASSWORD: "" # Populate this!
-      INIT_MUSIC_PATH: "/var/azuracast/www/util/fixtures/init_music"
+      <<: *default-environment
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
     command: '/bin/true'

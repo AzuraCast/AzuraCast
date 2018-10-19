@@ -79,6 +79,11 @@ install() {
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env > .env
     fi
 
+    if [ ! -f azuracast.env ]; then
+        echo "Creating default AzuraCast settings file..."
+        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
+    fi
+
     if [ ! -f docker-compose.yml ]; then
         echo "Retrieving default docker-compose.yml file..."
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
@@ -104,6 +109,9 @@ update() {
 
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
         echo "New docker-compose.yml file loaded."
+
+        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
+        echo "Default environment file loaded."
 
     fi
 

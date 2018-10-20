@@ -39,3 +39,6 @@ web/static/yarn-error\.log
 /plugins/*
 /plugins/**/*
 !/plugins/.gitkeep
+
+# Documentation
+/docs/dist

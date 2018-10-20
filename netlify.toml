@@ -3,5 +3,16 @@
 
 [build]
   base    = "util/docker/docs"
-  publish = "public"
+  publish = "../../../docs/public"
   command = "yarn run vuepress build ../../../docs"
+
+[[redirects]]
+  from = "/api"
+  to = "/api/index.html"
+  status = 302
+
+[[redirects]]
+  from = "/*"
+  to = "/:splat.html"
+  status = 302
+  force = false

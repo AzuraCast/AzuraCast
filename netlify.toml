@@ -10,3 +10,8 @@
   from = "/api"
   to = "/api/index.html"
   status = 302
+
+[[redirects]]
+  from = "/demo"
+  to = "/demo.html"
+  status = 302

@@ -3,7 +3,7 @@ version: '2.2'
 services:
   docs:
     build:
-      context: ./util/docker/docs
+      context: ./docs
     ports:
       - '8080:8080'
     volumes:

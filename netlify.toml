@@ -2,9 +2,9 @@
 # Powered by Netlify
 
 [build]
-  base    = "util/docker/docs"
-  publish = "../../../docs/public"
-  command = "yarn run vuepress build ../../../docs"
+  base    = "docs"
+  publish = "dist"
+  command = "yarn run vuepress build ."
 
 [[redirects]]
   from = "/api"

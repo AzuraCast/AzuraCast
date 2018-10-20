@@ -10,9 +10,3 @@
   from = "/api"
   to = "/api/index.html"
   status = 302
-
-[[redirects]]
-  from = "/*"
-  to = "/:splat.html"
-  status = 302
-  force = false

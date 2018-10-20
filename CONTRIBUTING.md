@@ -34,6 +34,8 @@ Contributions are also welcome in the supporting technologies used to make Azura
  - [Ansible configuration](https://github.com/AzuraCast/AzuraCast/tree/master/util/ansible) for traditional installs and Docker installation/updates
  - Python for our auxiliary [station monitoring scripts](https://github.com/AzuraCast/station-watcher-python)
  
+Instructions for developing with AzuraCast locally are [available here](https://www.azuracast.com/developing.html).
+ 
 If you have questions about the guidelines above or about how to contribute to AzuraCast, please create a Github issue and we will be happy to assist you.
 
 ## The "Do Nots" of Contributing

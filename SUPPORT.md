@@ -82,25 +82,6 @@ docker-compose run --rm cli azuracast_cli cache:clear
 php /var/azuracast/www/util/cli.php cache:clear
 ```
 
-### Change Port Mappings (Docker Installations)
-
-If you're using AzuraCast alongside existing services that use the same ports, you may notice errors when attempting to start up Docker containers.
-
-Since the entire Docker configuration is controlled by a single file, `docker-compose.yml` in the project root, you can easily make your own copy of this file, modify any necessary ports, and use your copy of the file to run AzuraCast instead:
-
- - Copy `docker-compose.yml` from the AzuraCast project root to a location outside the project root. This ensures you won't lose your changes when updating AzuraCast itself.
- - Make any needed customizations to the file. AzuraCast expects certain ports to be used, but you can forward these ports to different ones on the host by changing the first part of each `ports` item. For example, you can change `80:80` to `8080:80` to use port 8080 on the host without affecting the AzuraCast container itself. _(Note: In this case you should also remove port 8080 from the `stations` container's ports)._
- - Update any items in the `volumes` section that refer to the relative path `.`, from their original setting:
-   ```
-   .:/var/azuracast/www
-   ```
-   To their new path relative to your custom `docker-compose.yml` file:
-   ```
-   /path/to/azuracast/on/host:/var/azuracast/www
-   ```
-
-**Important note:** If an AzuraCast update changes the services used in the `docker-compose.yml` file, you will need to also update your custom version of the file with the changes. These changes are infrequent compared to other sections of the code, however.
-
 ### Access Files via SFTP (Docker Installations)
 
 By default, SFTP access isn't set up for Docker based installations. If you have a large volume of media files, you may 
@@ -146,38 +127,29 @@ isn't within the default range AzuraCast serves (8000-8999).
 
 #### Docker
 
-The way ports map from Docker containers to your outside server is controlled entirely by the `docker-compose.yml` file.
+If you're using AzuraCast alongside existing services that use the same ports, you may notice errors when attempting to start up Docker containers.
 
-In the Docker Compose style, ports are listed as `outside-ip:outside-port:inside-port`. If the outside IP address isn't 
-specified, it listens on all IPs, and if only one port is specified, it maps the same port both inside and outside the
-container.
+The Docker configuration, including the ports that are exposed to the Internet, is controlled by a single file, `docker-compose.yml`. Your copy of this file can be modified as needed.
 
-To edit the ports the AzuraCast web application uses, open your local `docker-compose.yml` and find the `nginx` service.
-You'll see the following two lines in the `ports` section:
+The ports you will most often want to change are the ports for the web service. In `docker-compose.yml`, these ports are listed under the `nginx` service:
 
 ```yaml
+version: '2.2'
+
+services:
+# web,...
+  nginx:
+    image: azuracast/azuracast_nginx:latest
     ports:
       - '80:80'
       - '443:443'
 ```
 
-To change the port, only modify the first number in the pair. For example, to route HTTP traffic to port 7000, this line 
-should read ` - '7000:80'`. To change where HTTPS traffic routes, update the line for port 443.
+The first part of each port mapping, before the colon character (:), is the port that will be exposed to the public. You should _only_ change this number, not the number after the colon.
 
-When using non-standard radio station ports, you have a number of options available to you:
+For example, to serve pages via port 8080, the ports entry would be: ` - '8080:80'`.
 
-- If you're only broadcasting and not accepting streamers or DJs, you can rely on the web proxy feature built in to
-AzuraCast, which will route your radio traffic through the main web site's port. This feature can be enabled from the
-`Site Settings` page.
-
-- You can add just the ports you want to use to the `docker-compose.yml` file. In this file, under the `stations` service,
-you will find a `ports` subsection with a large number of pre-forwarded ports. You can add to this list or replace it with
-your own.
-
-- You can forward the entire range of ports you intend to use using `docker-compose.yml`. Under the `stations` service 
-inside the `ports` subsection, you can replace this entire section with your own custom port range, i.e. ` - '9000-9500:9000-9500'`.
-Note that due to the way Docker is configured, forwarding a port range this large will likely consume a high amount of memory,
-so only use this option if necessary.
+**Important note:** The Docker Utility Script (`docker.sh`) will ask you if you want to update your `docker-compose.yml` file when updating. Sometimes, there are new features that you should update the file to take advantage of. Be sure to recreate any changes you have made once the file is updated.
 
 #### Traditional
 

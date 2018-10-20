@@ -1,0 +1,10 @@
+version: '2.2'
+
+services:
+  docs:
+    build:
+      context: ./util/docker/docs
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./docs:/data/docs

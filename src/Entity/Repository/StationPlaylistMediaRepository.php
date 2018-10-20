@@ -138,7 +138,7 @@ class StationPlaylistMediaRepository extends BaseRepository
             ->getArrayResult();
 
         foreach($playlists as $row) {
-            $this->cache->remove($this->_getCacheName($row['playlist_id']));
+            $this->clearMediaQueue($row['playlist_id']);
         }
 
         $this->_em->createQuery('DELETE FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')
@@ -164,7 +164,7 @@ class StationPlaylistMediaRepository extends BaseRepository
             ->setParameter('playlist_id', $playlist->getId());
 
         // Clear the playback queue.
-        $this->cache->remove($this->_getCacheName($playlist->getId()));
+        $this->clearMediaQueue($playlist->getId());
 
         foreach($mapping as $media_id => $weight) {
             $update_query->setParameter('media_id', $media_id)
@@ -223,12 +223,20 @@ class StationPlaylistMediaRepository extends BaseRepository
     }
 
     /**
+     * @param int $playlist_id
+     */
+    public function clearMediaQueue(int $playlist_id)
+    {
+        $this->cache->remove($this->_getCacheName($playlist_id));
+    }
+
+    /**
      * Get the cache name for the given playlist.
      *
      * @param int $playlist_id
      * @return string
      */
-    protected function _getCacheName($playlist_id): string
+    protected function _getCacheName(int $playlist_id): string
     {
         return 'autodj/playlist_'.$playlist_id;
     }

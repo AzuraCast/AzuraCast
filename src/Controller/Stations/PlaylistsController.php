@@ -288,7 +288,10 @@ class PlaylistsController
                 }
             }
 
+            // Reshuffle "shuffled" playlists and clear cache.
             $this->playlist_media_repo->reshuffleMedia($record);
+            $this->playlist_media_repo->clearMediaQueue($record->getId());
+
             $this->em->flush();
 
             $this->em->refresh($station);

@@ -1,0 +1,7 @@
+# AzuraCast Docs build process
+# Powered by Netlify
+
+[build]
+  base    = "util/docker/docs"
+  publish = "public"
+  command = "yarn run vuepress build ../../../docs"

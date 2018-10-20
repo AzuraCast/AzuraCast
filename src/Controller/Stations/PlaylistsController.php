@@ -288,7 +288,9 @@ class PlaylistsController
                 }
             }
 
+            $this->playlist_media_repo->reshuffleMedia($record);
             $this->em->flush();
+
             $this->em->refresh($station);
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');

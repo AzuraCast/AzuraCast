@@ -3,7 +3,6 @@
 namespace App\Entity\Repository;
 
 use App\Cache;
-use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
 use Doctrine\ORM\NoResultException;
@@ -93,7 +92,7 @@ class StationPlaylistMediaRepository extends BaseRepository
         }
 
         // Reshuffle the playlist if needed.
-        $this->_reshuffleMedia($playlist);
+        $this->reshuffleMedia($playlist);
 
         return $weight;
     }
@@ -103,7 +102,7 @@ class StationPlaylistMediaRepository extends BaseRepository
      *
      * @param Entity\StationPlaylist $playlist
      */
-    protected function _reshuffleMedia(Entity\StationPlaylist $playlist): void
+    public function reshuffleMedia(Entity\StationPlaylist $playlist): void
     {
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SHUFFLE) {
             return;
@@ -134,14 +133,12 @@ class StationPlaylistMediaRepository extends BaseRepository
      */
     public function clearPlaylistsFromMedia(Entity\StationMedia $media)
     {
-        if ($this->autodj instanceof AutoDJ) {
-            $playlists = $this->_em->createQuery('SELECT e.playlist_id FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')
-                ->setParameter('media_id', $media->getId())
-                ->getArrayResult();
+        $playlists = $this->_em->createQuery('SELECT e.playlist_id FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')
+            ->setParameter('media_id', $media->getId())
+            ->getArrayResult();
 
-            foreach($playlists as $row) {
-                $this->autodj->clearPlaybackCache($row['playlist_id']);
-            }
+        foreach($playlists as $row) {
+            $this->cache->remove($this->_getCacheName($row['playlist_id']));
         }
 
         $this->_em->createQuery('DELETE FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')

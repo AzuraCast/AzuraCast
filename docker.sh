@@ -110,9 +110,13 @@ update() {
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
         echo "New docker-compose.yml file loaded."
 
+    fi
+
+    if [ ! -f azuracast.env ]; then
+
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
         echo "Default environment file loaded."
-
+        
     fi
 
     docker-compose pull

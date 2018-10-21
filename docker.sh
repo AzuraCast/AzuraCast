@@ -115,6 +115,13 @@ update() {
 
     fi
 
+    # This environment file was added later in the dev cycle, some people don't have it and if they don't answer "Y" above
+    #  the instance will fail to start -- go ahead and pull defaults if it doesn't exist.
+    if [ ! -f azuracast.env ]; then
+        echo "Creating default AzuraCast settings file..."
+        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
+    fi
+
     docker-compose pull
     docker-compose run --rm cli azuracast_update
     docker-compose up -d

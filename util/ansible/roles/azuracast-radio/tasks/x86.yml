@@ -31,13 +31,6 @@
       chdir: "{{ app_base }}/servers/icecast2"
       creates: "/usr/local/bin/icecast"
 
-  - name: Link IceCast Resource Files
-    file: src="{{ item.src }}" dest="{{ item.dest }}" state=link
-    with_items:
-     - { src: "{{ www_base }}/resources/error.mp3", dest: "/usr/local/share/icecast/web/error.mp3" }
-     - { src: "{{ www_base }}/resources/status-json.xsl", dest: "/usr/local/share/icecast/web/status-json.xsl" }
-     - { src: "{{ www_base }}/resources/xml2json.xslt", dest: "/usr/local/share/icecast/web/xml2json.xslt" }
-
   - name: Install OPAM
     apt: pkg="opam" install_recommends=yes state=latest
 

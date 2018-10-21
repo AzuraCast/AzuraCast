@@ -13,13 +13,13 @@
     get_url:
       url: https://github.com/AzuraCast/icecast-kh-ac/archive/master.tar.gz
       dest: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
+      force: yes
 
   - name: Extract IceCast-KH-AC Source
     unarchive:
       src: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
       dest: "{{ app_base }}/servers/icecast2"
       remote_src: yes
-      creates: "{{ app_base }}/servers/icecast2/configure"
       mode: "u=rwx,g=rx,o=rx"
       owner: "azuracast"
       group: "www-data"
@@ -29,7 +29,6 @@
     shell: "cd {{ app_base }}/servers/icecast2 && ./configure && make && make install"
     args:
       chdir: "{{ app_base }}/servers/icecast2"
-      creates: "/usr/local/bin/icecast"
 
   - name: Install OPAM
     apt: pkg="opam" install_recommends=yes state=latest

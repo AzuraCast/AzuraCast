@@ -10,6 +10,12 @@ $text-secondary:    $white-secondary;
 $text-hint:         $white-hint;
 $text-divider:      $white-divider;
 
+$secondary: (
+    color: $material-color-amber-600,
+    dark:  $material-color-amber-700,
+    light: $material-color-amber-500
+);
+
 // Body
 $body-bg:           $dark-theme-1;
 $body-color:        $material-color-grey-300;

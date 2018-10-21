@@ -31,7 +31,7 @@ Once installation has completed, be sure to follow the [post-installation steps]
 Using the Docker utility script:
 
 ```bash
-./docker.sh update
+./docker.sh update-self && ./docker.sh update
 ```
 
 To manually update, from inside the base directory where AzuraCast is copied, run the following commands:

@@ -64,10 +64,10 @@ return function (\Slim\Container $di, $settings)
                     'charset' => 'utf8mb4',
                     'defaultTableOptions' => [
                         'charset' => 'utf8mb4',
-                        'collate' => 'utf8mb4_unicode_ci',
+                        'collate' => 'utf8mb4_general_ci',
                     ],
                     'driverOptions' => [
-                        \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+                        \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
                     ],
                     'platform' => new \Doctrine\DBAL\Platforms\MariaDb1027Platform(),
                 ]

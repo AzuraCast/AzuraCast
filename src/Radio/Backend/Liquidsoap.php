@@ -100,7 +100,14 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
             '  uri = get_process_lines("'.$this->_getApiUrlCommand($station, 'nextsong').'")',
             '  uri = list.hd(uri, default="")',
             '  log("AzuraCast Raw Response: #{uri}")',
-            '  request.create(uri)',
+            '  ',
+            '  if uri == "" or string.match(pattern="Error", uri) then',
+            '    log("AzuraCast Error: Delaying subsequent requests...")',
+            '    system("sleep 30")',
+            '    request.create("")',
+            '  else',
+            '    request.create(uri)',
+            '  end',
             'end',
             '',
             '# DJ Authentication',
@@ -273,7 +280,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
             $ls_config[] = 'requests = audio_to_stereo(request.queue(id="requests"))';
             $fallbacks[] = 'requests';
         } else {
-            $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="azuracast_next_song", azuracast_next_song))';
+            $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="azuracast_next_song", timeout=20., azuracast_next_song))';
             $ls_config[] = 'dynamic = cue_cut(id="azuracast_next_song_cued", dynamic)';
             $fallbacks[] = 'dynamic';
         }

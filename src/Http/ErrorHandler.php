@@ -63,6 +63,16 @@ class ErrorHandler
             'code' => $e->getCode(),
         ]);
 
+        // Special handling for cURL (i.e. Liquidsoap) requests.
+        $ua = $req->getHeaderLine('User-Agent');
+
+        if (false !== stripos($ua, 'curl')) {
+            $res->getBody()
+                ->write('Error: '.$e->getMessage().' on '.$e->getFile().' L'.$e->getLine());
+
+            return $res;
+        }
+
         $show_detailed = !APP_IN_PRODUCTION;
         $return_json = ($req->isXhr() || APP_IS_COMMAND_LINE || APP_TESTING_MODE);
 

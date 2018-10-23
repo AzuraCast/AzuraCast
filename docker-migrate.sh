@@ -12,10 +12,13 @@ chmod a+x update.sh
 if [ ! -f ./docker-compose.yml ]; then
     cp ./docker-compose.sample.yml ./docker-compose.yml
 fi
+if [ ! -f ./azuracast.env ]; then
+    cp ./azuracast.sample.env ./azuracast.env
+fi
 
 # Dump MySQL data into fixtures folder
-MYSQL_USERNAME=`awk -F "=" '/db_username/ {print $2}' app/env.ini | tr -d ' '`
-MYSQL_PASSWORD=`awk -F "=" '/db_password/ {print $2}' app/env.ini | tr -d ' '`
+MYSQL_USERNAME=`awk -F "=" '/db_username/ {print $2}' env.ini | tr -d ' '`
+MYSQL_PASSWORD=`awk -F "=" '/db_password/ {print $2}' env.ini | tr -d ' '`
 
 mysqldump --add-drop-table -u$MYSQL_USERNAME -p$MYSQL_PASSWORD azuracast > util/fixtures/01_docker_migration.sql
 

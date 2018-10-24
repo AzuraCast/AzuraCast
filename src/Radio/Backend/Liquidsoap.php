@@ -277,18 +277,18 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
         $fallbacks = [];
 
         if ($station->useManualAutoDJ()) {
-            $ls_config[] = 'requests = audio_to_stereo(request.queue(id="requests"))';
+            $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
             $fallbacks[] = 'requests';
         } else {
-            $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="azuracast_next_song", timeout=20., azuracast_next_song))';
-            $ls_config[] = 'dynamic = cue_cut(id="azuracast_next_song_cued", dynamic)';
+            $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
+            $ls_config[] = 'dynamic = cue_cut(id="'.$this->_getVarName('cue_cut', $station).'", dynamic)';
             $fallbacks[] = 'dynamic';
         }
 
         $fallbacks[] = 'switch([ ' . implode(', ', $schedule_switches) . ' ])';
         $fallbacks[] = 'blank(duration=2.)';
 
-        $ls_config[] = 'radio = fallback(track_sensitive = '.($station->useManualAutoDJ() ? 'true' : 'false').', ['.implode(', ', $fallbacks).'])';
+        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('playlist_fallback', $station).'", track_sensitive = '.($station->useManualAutoDJ() ? 'true' : 'false').', ['.implode(', ', $fallbacks).'])';
 
         $event->appendLines($ls_config);
     }
@@ -301,7 +301,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         $harbor_params = [
             '"/"',
-            'id="input_streamer"',
+            'id="'.$this->_getVarName('input_streamer', $station).'"',
             'port='.$this->getStreamPort($station),
             'user="shoutcast"',
             'auth=dj_auth',
@@ -318,9 +318,9 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
             '# Live Broadcasting',
             'live = audio_to_stereo(input.harbor('.implode(', ', $harbor_params).'))',
             'ignore(output.dummy(live, fallible=true))',
-            'live = fallback(track_sensitive=false, [live, blank(duration=2.)])',
+            'live = fallback(id="'.$this->_getVarName('live_fallback', $station).'", track_sensitive=false, [live, blank(duration=2.)])',
             '',
-            'radio = switch(id="live_switch", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])',
+            'radio = switch(id="'.$this->_getVarName('live_switch', $station).'", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])',
         ]);
     }
 
@@ -383,7 +383,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
                     $ls_config[] = $this->_getOutputString(
                         $station,
-                        'radio_out_'.$i,
+                        $this->_getVarName('local_'.$i, $station),
                         '127.0.0.1',
                         $fe_settings['port'],
                         $mount_row->getName(),
@@ -410,7 +410,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
                     $ls_config[] = $this->_getOutputString(
                         $station,
-                        'radio_out_'.$i,
+                        $this->_getVarName('local_'.$i, $station),
                         '127.0.0.1',
                         $fe_settings['port'],
                         null,
@@ -484,7 +484,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
             $ls_config[] = $this->_getOutputString(
                 $station,
-                '',
+                $this->_getVarName('relay_'.$i, $station),
                 $remote_url_parts['host'],
                 $remote_port,
                 $stream_mount,
@@ -588,6 +588,22 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
     }
 
     /**
+     * Given an original name and a station, return a filtered prefixed variable identifying the station.
+     *
+     * @param $original_name
+     * @param Entity\Station $station
+     * @return string
+     */
+    protected function _getVarName($original_name, Entity\Station $station): string
+    {
+        $short_name = $this->_cleanUpString($station->getShortName());
+
+        return (!empty($short_name))
+            ? $short_name.'_'.$original_name
+            : 'station_'.$station->getId().'_'.$original_name;
+    }
+
+    /**
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
      *
      * @param Entity\Station $station
@@ -681,13 +697,15 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      */
     public function request(Entity\Station $station, $music_file)
     {
-        $queue = $this->command($station, 'requests.queue');
+        $requests_var = $this->_getVarName('requests', $station);
+
+        $queue = $this->command($station, $requests_var.'.queue');
 
         if (!empty($queue[0])) {
             throw new \Exception('Song(s) still pending in request queue.');
         }
 
-        return $this->command($station, 'requests.push ' . $music_file);
+        return $this->command($station, $requests_var.'.push ' . $music_file);
     }
 
     /**
@@ -699,7 +717,10 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      */
     public function skip(Entity\Station $station)
     {
-        return $this->command($station, 'radio_out_1.skip');
+        return $this->command(
+            $station,
+            $this->_getVarName('local_1', $station).'.skip'
+        );
     }
 
     /**
@@ -711,7 +732,10 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      */
     public function disconnectStreamer(Entity\Station $station)
     {
-        return $this->command($station, 'input_streamer.stop');
+        return $this->command(
+            $station,
+            $this->_getVarName('input_streamer', $station).'.stop'
+        );
     }
 
     /**

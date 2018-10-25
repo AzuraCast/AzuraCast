@@ -38,10 +38,10 @@ $chip-icon-bg:                theme-color(secondary);
 // Based on https://material.google.com/components/data-tables.html#data-tables-structure
 
 $table-bg:                    none;
-$table-bg-active:             $dark-theme-4;
-$table-bg-active-hover:       $dark-theme-4;
-$table-bg-accent:             $dark-theme-3;
-$table-bg-hover:              $dark-theme-4;
+$table-bg-active:             rgba(255, 255, 255, 0.05);
+$table-bg-active-hover:       rgba(255, 255, 255, 0.05);
+$table-bg-accent:             rgba(255, 255, 255, 0.03);
+$table-bg-hover:              rgba(255, 255, 255, 0.05);
 $table-border-color:          $theme-color-4;
 $table-border-width:          0;
 

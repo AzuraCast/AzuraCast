@@ -91,11 +91,11 @@ $chip-padding-x:              0.75rem !default;
 // Data table (Bootstrap table)
 // Based on https://material.google.com/components/data-tables.html#data-tables-structure
 
-$table-bg:                    $white !default;
-$table-bg-active:             $material-color-grey-200 !default;
-$table-bg-active-hover:       $material-color-grey-300 !default;
-$table-bg-accent:             $material-color-grey-100 !default;
-$table-bg-hover:              $material-color-grey-200 !default;
+$table-bg:                    none !default;
+$table-bg-active:             rgba(0, 0, 0, 0.07);
+$table-bg-active-hover:       rgba(0, 0, 0, 0.07);
+$table-bg-accent:             rgba(0, 0, 0, 0.04);
+$table-bg-hover:              rgba(0, 0, 0, 0.07);
 $table-border-color:          $border-color-solid !default;
 $table-border-width:          $border-width !default;
 $table-cell-padding-x:        1.75rem !default;

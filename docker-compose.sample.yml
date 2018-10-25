@@ -18,6 +18,10 @@ services:
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
     init: true
     restart: always
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "5"
 
   nginx:
     image: azuracast/azuracast_nginx:latest
@@ -32,6 +36,10 @@ services:
       - nginx_letsencrypt_certs:/etc/nginx/ssl
       - nginx_letsencrypt_www:/var/www/letsencrypt
     restart: always
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "5"
 
   # To use the LetsEncrypt support:
   # docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt
@@ -77,6 +85,10 @@ services:
     command: 'cron'
     init: true
     restart: always
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "3"
 
   cli:
     image: azuracast/azuracast_web:latest
@@ -136,6 +148,10 @@ services:
      - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
     init: true
     restart: always
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "5"
 
 volumes:
   nginx_letsencrypt_certs: {}

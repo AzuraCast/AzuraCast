@@ -157,7 +157,7 @@ class ServicesController
 
             case "disconnect":
                 if (method_exists($backend, 'disconnectStreamer')) {
-                    $backend->disconnectStreamer();
+                    $backend->disconnectStreamer($station);
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));

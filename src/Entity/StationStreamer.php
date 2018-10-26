@@ -179,7 +179,7 @@ class StationStreamer
 	/**
      * @return int|null
      */
-    public function getReactivateAt()
+    public function getReactivateAt(): ?int
     {
         return $this->reactivate_at;
     }
@@ -187,7 +187,7 @@ class StationStreamer
     /**
      * @param int|null $reactivate_at
      */
-    public function setReactivateAt($reactivate_at)
+    public function setReactivateAt(?int $reactivate_at)
     {
         $this->reactivate_at = $reactivate_at;
     }

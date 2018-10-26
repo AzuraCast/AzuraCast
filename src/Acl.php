@@ -3,6 +3,8 @@ namespace App;
 
 class Acl
 {
+
+
     /** @var Entity\Repository\RolePermissionRepository */
     protected $permission_repo;
 
@@ -21,8 +23,6 @@ class Acl
     public function reload(): void
     {
         $this->_actions = $this->permission_repo->getActionsForAllRoles();
-        $this->_roles = null;
-        $this->_cache = null;
     }
 
     /**

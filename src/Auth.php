@@ -3,10 +3,11 @@ namespace App;
 
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
+use App\Session\NamespaceInterface;
 
 class Auth
 {
-    /** @var Session */
+    /** @var NamespaceInterface */
     protected $_session;
 
     /** @var UserRepository */

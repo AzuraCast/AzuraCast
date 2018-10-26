@@ -1,0 +1,20 @@
+
+$secondary: (
+  color: $material-color-amber-600,
+  dark:  $material-color-amber-700,
+  light: $material-color-amber-500
+);
+
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    primary:   $primary,
+    secondary: $secondary,
+    danger:    $danger,
+    info:      $info,
+    success:   $success,
+    warning:   $warning,
+    dark:      $dark,
+    light:     $light
+  )
+);

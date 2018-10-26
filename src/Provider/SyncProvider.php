@@ -16,6 +16,7 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\Monolog\Logger::class],
                 new \Pimple\ServiceIterator($di, [
                     Task\NowPlaying::class,
+                    Task\ReactivateStreamer::class,
                 ]),
                 new \Pimple\ServiceIterator($di, [
                     Task\RadioRequests::class,
@@ -46,6 +47,12 @@ class SyncProvider implements ServiceProviderInterface
 
         $di[Task\Media::class] = function($di) {
             return new Task\Media(
+                $di[\Doctrine\ORM\EntityManager::class]
+            );
+        };
+
+        $di[Task\ReactivateStreamer::class] = function($di) {
+            return new Task\ReactivateStreamer(
                 $di[\Doctrine\ORM\EntityManager::class]
             );
         };

@@ -14,6 +14,7 @@ return [
         'administer all' => __('All Permissions'),
         'view station management' => __('View Station Page'),
         'view station reports' => __('View Station Reports'),
+        'view station logs' => __('View Station Logs'),
         'manage station profile' => sprintf(__('Manage Station %s'), __('Profile')),
         'manage station broadcasting' => sprintf(__('Manage Station %s'), __('Broadcasting')),
         'manage station streamers' => sprintf(__('Manage Station %s'), __('Streamers')),

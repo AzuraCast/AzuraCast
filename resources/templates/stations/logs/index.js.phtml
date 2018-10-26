@@ -1,0 +1,60 @@
+$(function() {
+    var log_modal = $('#modal-log-view'),
+        log_modal_contents = $('#modal-log-view-contents');
+
+    var current_log_url,
+        current_log_position,
+        timeout_update_log;
+
+    log_modal.modal({
+        focus: false,
+        show: false
+    });
+
+    function updateLogView() {
+        $.getJSON(current_log_url, {
+            position: current_log_position
+        }, function(log_data) {
+
+            if (current_log_position == 0) {
+                log_modal_contents.text('');
+            }
+
+            if (log_data.contents != '') {
+                log_modal_contents.append(log_data.contents+"<br>");
+
+                if (log_modal.find('#modal-log-autoscroll').is(':checked')) {
+                    log_modal_contents.animate({scrollTop: log_modal_contents.get(0).scrollHeight}, "fast");
+                }
+            }
+
+            current_log_position = log_data.position;
+
+            if (!log_data.eof) {
+                timeout_update_log = setTimeout(updateLogView, 15000);
+            }
+        });
+    }
+
+    log_modal.on('hide.bs.modal', function (event) {
+        current_log_url = null;
+        current_log_position = 0;
+
+        clearTimeout(timeout_update_log);
+    });
+
+    $('a.log-item').on('click', function(e) {
+        e.preventDefault();
+
+        current_log_url = $(this).attr('href');
+        current_log_position = 0;
+
+        log_modal.find('.modal-title').text($(this).find('.log-name').text());
+        log_modal.find('#modal-log-view-contents').text('Loading...');
+
+        log_modal.modal('show');
+
+        updateLogView();
+        return false;
+    });
+});

@@ -348,6 +348,17 @@ return function(\Slim\App $app)
             ->add(Middleware\Module\StationFiles::class)
             ->add([Middleware\Permissions::class, 'manage station media', true]);
 
+        $this->group('/logs', function () {
+
+            $this->get('', Controller\Stations\LogsController::class)
+                ->setName('stations:logs:index');
+
+            $this->get('/view/{log}', Controller\Stations\LogsController::class.':viewAction')
+                ->setName('stations:logs:view');
+
+        })
+            ->add([Middleware\Permissions::class, 'view station logs', true]);
+
         $this->group('/playlists', function () {
 
             $this->get('', Controller\Stations\PlaylistsController::class.':indexAction')

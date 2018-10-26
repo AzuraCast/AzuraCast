@@ -170,6 +170,13 @@ $assets->addInlineJs($this->fetch('stations/sidebar.js'));
                     </a>
                 </li>
             <?php endif; ?>
+            <?php if ($acl->userAllowed($user, 'view station logs', $station->getId())): ?>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:logs:index') ?>">
+                        <?=__('Log Viewer') ?>
+                    </a>
+                </li>
+            <?php endif; ?>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <li>
                     <a class="api-call nav-link pl-4 py-2 text-muted" data-restart="false" href="<?=$router->fromHere('api:stations:restart') ?>">

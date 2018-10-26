@@ -65,6 +65,12 @@ class StationStreamer
      */
     protected $is_active;
 
+	/**
+     * @Column(name="reactivate_at", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $reactivate_at;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
@@ -168,5 +174,21 @@ class StationStreamer
     public function setIsActive(bool $is_active)
     {
         $this->is_active = $is_active;
+    }
+
+	/**
+     * @return int|null
+     */
+    public function getReactivateAt()
+    {
+        return $this->reactivate_at;
+    }
+
+    /**
+     * @param int|null $reactivate_at
+     */
+    public function setReactivateAt($reactivate_at)
+    {
+        $this->reactivate_at = $reactivate_at;
     }
 }

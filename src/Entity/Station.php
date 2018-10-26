@@ -694,7 +694,7 @@ class Station
     /**
      * @return int
      */
-    public function getDisconnectDeactivateStreamer()
+    public function getDisconnectDeactivateStreamer(): int
     {
         return $this->disconnect_deactivate_streamer;
     }

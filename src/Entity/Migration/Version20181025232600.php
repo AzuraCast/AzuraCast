@@ -15,7 +15,7 @@ final class Version20181025232600 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-		$this->addSql('ALTER TABLE station ADD disconnect_deactivate_streamer INT DEFAULT 0');
+        $this->addSql('ALTER TABLE station ADD disconnect_deactivate_streamer INT DEFAULT 0');
         $this->addSql('ALTER TABLE station_streamers ADD reactivate_at INT DEFAULT NULL');
     }
 
@@ -25,6 +25,6 @@ final class Version20181025232600 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE station_streamers DROP reactivate_at');
-		$this->addSql('ALTER TABLE station DROP disconnect_deactivate_streamer');
+        $this->addSql('ALTER TABLE station DROP disconnect_deactivate_streamer');
     }
 }

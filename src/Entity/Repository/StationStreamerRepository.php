@@ -41,8 +41,10 @@ class StationStreamerRepository extends BaseRepository
      * @param int $reactivate_at
      * @return Entity\StationStreamer[]
      */
-    public function fetchDeactivatedStreamersWithReactivateAtLowerThan(int $reactivate_at)
+    public function getStreamersDueForReactivation(int $reactivate_at = null)
     {
+        $reactivate_at = $reactivate_at ?? time();
+
         return $this->createQueryBuilder('s')
             ->where('s.is_active = 0')
             ->andWhere('s.reactivate_at <= :reactivate_at')

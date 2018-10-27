@@ -733,11 +733,10 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
     public function disconnectStreamer(Entity\Station $station)
     {
         $current_streamer = $station->getCurrentStreamer();
-        $disconnect_deactivate_streamer = $station->getDisconnectDeactivateStreamer();
+        $disconnect_timeout = (int)$station->getDisconnectDeactivateStreamer();
 
-        if ($current_streamer !== null && $disconnect_deactivate_streamer > 0) {
-            $current_streamer->setIsActive(false);
-            $current_streamer->setReactivateAt(time() + $disconnect_deactivate_streamer);
+        if ($current_streamer instanceof Entity\StationStreamer && $disconnect_timeout > 0) {
+            $current_streamer->deactivateFor($disconnect_timeout);
 
             $this->em->persist($current_streamer);
             $this->em->flush();

@@ -174,6 +174,11 @@ class StationStreamer
     public function setIsActive(bool $is_active)
     {
         $this->is_active = $is_active;
+
+        // Automatically set the "reactivate_at" flag to null if the DJ is for any reason reactivated.
+        if (true === $is_active) {
+            $this->reactivate_at = null;
+        }
     }
 
 	/**
@@ -190,5 +195,16 @@ class StationStreamer
     public function setReactivateAt(?int $reactivate_at)
     {
         $this->reactivate_at = $reactivate_at;
+    }
+
+    /**
+     * Deactivate this streamer for the specified period of time.
+     *
+     * @param int $seconds
+     */
+    public function deactivateFor(int $seconds)
+    {
+        $this->is_active = false;
+        $this->reactivate_at = time()+$seconds;
     }
 }

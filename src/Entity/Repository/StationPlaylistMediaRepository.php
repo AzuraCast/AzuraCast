@@ -107,22 +107,30 @@ class StationPlaylistMediaRepository extends BaseRepository
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SHUFFLE) {
             return;
         }
+        
+        $this->_em->beginTransaction();
 
-        $update_weight_query = $this->_em->createQuery('UPDATE '.$this->_entityName.' spm SET spm.weight=:weight '.
-            'WHERE spm.playlist_id = :playlist_id AND spm.media_id = :media_id')
-            ->setParameter('playlist_id', $playlist->getId());
+        try {
+            $update_weight_query = $this->_em->createQuery('UPDATE '.$this->_entityName.' spm SET spm.weight=:weight '.
+                'WHERE spm.playlist_id = :playlist_id AND spm.media_id = :media_id')
+                ->setParameter('playlist_id', $playlist->getId());
 
-        $media_ids = $this->_getPlayableMediaIds($playlist);
-        shuffle($media_ids);
+            $media_ids = $this->_getPlayableMediaIds($playlist);
+            shuffle($media_ids);
 
-        $new_weight = 1;
-        foreach($media_ids as $media_id) {
-            $update_weight_query
-                ->setParameter('media_id', $media_id)
-                ->setParameter('weight', $new_weight)
-                ->execute();
+            $new_weight = 1;
+            foreach($media_ids as $media_id) {
+                $update_weight_query
+                    ->setParameter('media_id', $media_id)
+                    ->setParameter('weight', $new_weight)
+                    ->execute();
 
-            $new_weight++;
+                $new_weight++;
+            }
+            
+            $this->_em->commit();
+        } catch (\Exception $exception) {
+            $this->_em->rollback();
         }
     }
 

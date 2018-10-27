@@ -35,9 +35,10 @@ class LogsController
 
         if (!$log['tail']) {
             $log_contents_parts = explode("\n", file_get_contents($log['path']));
+            $log_contents_parts = str_replace(array(">", "<"), array("&gt;", "&lt;"), $log_contents_parts);
 
             return $response->withJson([
-                'contents' => implode('<br>', $log_contents_parts),
+                'contents' => implode("\n", $log_contents_parts),
                 'eof' => true,
             ]);
         }
@@ -72,7 +73,8 @@ class LogsController
                 array_pop($log_contents_parts);
             }
 
-            $log_contents = implode('<br>', $log_contents_parts);
+            $log_contents_parts = str_replace(array(">", "<"), array("&gt;", "&lt;"), $log_contents_parts);
+            $log_contents = implode("\n", $log_contents_parts);
 
             fclose($fp);
         }

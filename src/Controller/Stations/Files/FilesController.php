@@ -35,7 +35,9 @@ class FilesController extends FilesControllerAbstract
         $space_total = disk_total_space($media_dir);
         $space_used = $space_total - $space_free;
         
-        $files_count = $this->em->createQuery('SELECT COUNT(sm.id) FROM '.Entity\StationMedia::class.' sm')
+        $files_count = $this->em->createQuery('SELECT COUNT(sm.id) FROM '.Entity\StationMedia::class.' sm
+            WHERE sm.station_id = :station_id')
+            ->setParameter('station_id', $station_id)
             ->getSingleScalarResult();
 
         // Get list of custom fields.

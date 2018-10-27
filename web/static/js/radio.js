@@ -73,8 +73,17 @@ function handlePlayClick(audio_source)
 $(function() {
 
     // Check webstorage for existing volume preference.
-    if (store.enabled && store.get('player_volume') !== undefined)
+    if (store.enabled && store.get('player_volume') !== undefined) {
         volume = store.get('player_volume', volume);
+    }
+
+    // Check the query string if browser supports easy query string access.
+    if (typeof URLSearchParams !== 'undefined') {
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('volume')) {
+            volume = parseInt(urlParams.get('volume'));
+        }
+    }
 
     $('.btn-audio').on('click', function(e) {
         e.preventDefault();

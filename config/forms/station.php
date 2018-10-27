@@ -284,6 +284,17 @@ return [
                         'step' => '0.1',
                     ]
                 ],
+                
+                'disconnect_deactivate_streamer' => [
+                    'number',
+                    [
+                        'label' => __('Deactivate Streamer on Disconnect (Seconds)'),
+                        'description' => __('Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely.'),
+                        'default' => 0,
+                        'min' => '0',
+                        'step' => '1',
+                    ]
+                ],
 
                 'use_manual_autodj' => [
                     'radio',

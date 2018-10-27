@@ -20,6 +20,7 @@ class Station
 {
     public const DEFAULT_REQUEST_DELAY = 5;
     public const DEFAULT_REQUEST_THRESHOLD = 15;
+    public const DEFAULT_DISCONNECT_DEACTIVATE_STREAMER = 0;
     public const DEFAULT_API_HISTORY_ITEMS = 5;
 
     use Traits\TruncateStrings;
@@ -145,6 +146,12 @@ class Station
      * @var int|null
      */
     protected $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
+
+    /**
+     * @Column(name="disconnect_deactivate_streamer", type="integer", nullable=false)
+     * @var int
+     */
+    protected $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;
 
     /**
      * @Column(name="enable_streamers", type="boolean", nullable=false)
@@ -682,6 +689,22 @@ class Station
     public function setRequestThreshold(int $request_threshold = null)
     {
         $this->request_threshold = $request_threshold;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDisconnectDeactivateStreamer(): int
+    {
+        return $this->disconnect_deactivate_streamer;
+    }
+
+    /**
+     * @param int $disconnect_deactivate_streamer
+     */
+    public function setDisconnectDeactivateStreamer(int $disconnect_deactivate_streamer)
+    {
+        $this->disconnect_deactivate_streamer = $disconnect_deactivate_streamer;
     }
 
     /**

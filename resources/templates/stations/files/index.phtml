@@ -25,12 +25,22 @@ $assets
                         <h3 class="card-subtitle" id="breadcrumb" class="">&nbsp;</h3>
                     </div>
                     <div class="col-md-5 text-right">
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
-                                <span class="sr-only"><?=$space_percent ?>%</span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
+                                        <span class="sr-only"><?=$space_percent ?>%</span>
+                                    </div>
+                                </div>
+                                <?=sprintf(__('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
                             </div>
                         </div>
-                        <?=sprintf(__('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <?=sprintf(__('%s Files', $files_count)) ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

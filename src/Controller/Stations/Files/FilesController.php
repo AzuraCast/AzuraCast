@@ -34,6 +34,9 @@ class FilesController extends FilesControllerAbstract
         $space_free = disk_free_space($media_dir);
         $space_total = disk_total_space($media_dir);
         $space_used = $space_total - $space_free;
+        
+        $files_count = $this->em->createQuery('SELECT COUNT(sm.id) FROM '.Entity\StationMedia::class.' sm')
+            ->getSingleScalarResult();
 
         // Get list of custom fields.
         $custom_fields_raw = $this->em->createQuery('SELECT cf.id, cf.name FROM '.Entity\CustomField::class.' cf ORDER BY cf.name ASC')
@@ -51,6 +54,7 @@ class FilesController extends FilesControllerAbstract
             'space_used' => Utilities::bytes_to_text($space_used),
             'space_total' => Utilities::bytes_to_text($space_total),
             'space_percent' => round(($space_used / $space_total) * 100),
+            'files_count' => $files_count,
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'max_upload_size' => min(
                 $this->_asBytes(ini_get('post_max_size')),

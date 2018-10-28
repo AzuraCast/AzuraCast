@@ -1,8 +1,8 @@
 ---
 - name: Install UFW Firewall
-  apt:  pkg="{{ item }}" state=latest
-  with_items:
-    - ufw
+  apt:
+    pkg: ufw
+    state: latest
 
 - name: UFW - Disable all other incoming by default
   ufw:

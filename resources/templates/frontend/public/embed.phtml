@@ -20,7 +20,19 @@ $assets
         'autoplay' => $autoplay
     ]) ?>
 
-    <div id="radio-embedded-controls">
-        <div class="progress jp-volume-bar" style="height: 15px;" title="<?=__('Volume') ?>"><div class="jp-volume-bar-value progress-bar" role="progressbar"></div></div>
+    <div class="flex-row radio-controls-embedded" id="radio-player-controls">
+        <div class="flex-shrink-0">
+            <a href="javascript:;" class="text-secondary jp-mute" title="<?=__('Mute') ?>">
+                <i class="material-icons">volume_mute</i>
+            </a>
+        </div>
+        <div class="flex-fill">
+            <input type="range" title="<?=__('Volume') ?>" class="custom-range jp-volume-range" style="height: 10px;" id="jp-volume-range" min="0" max="100" step="1">
+        </div>
+        <div class="flex-shrink-0">
+            <a href="javascript:;" class="text-secondary jp-volume-full" title="<?=__('Full Volume') ?>">
+                <i class="material-icons">volume_up</i>
+            </a>
+        </div>
     </div>
 </div>

@@ -28,15 +28,16 @@ function stopAllPlayers()
 
 function setVolume(new_volume)
 {
-    volume = new_volume;
+    volume = parseInt(new_volume);
 
-    var volume_percent = Math.round(volume * 100);
-    $('.jp-volume-bar-value').css('width', volume_percent+'%');
+    $('.jp-volume-bar-value').css('width', volume+'%');
+    $('.jp-volume-range').val(volume);
 
-    player.volume = Math.pow(volume,3);
+    // Set volume logarithmically based on original input.
+    player.volume = (Math.exp(volume/100)-1)/(Math.E-1);
 
     if (store.enabled)
-        store.set('player_volume', volume*100);
+        store.set('player_volume', volume);
 }
 
 function playAudio(source_url)
@@ -95,17 +96,14 @@ $(function() {
     player = document.createElement('audio');
     $player = $(player);
 
-    setVolume(volume/100);
+    setVolume(volume);
 
     // Handle events.
     $player.on('play', function(e) {
         is_playing = true;
 
         $('.jp-unmute').hide();
-        $('#radio-player-controls,#radio-embedded-controls').addClass('jp-state-playing');
-
-        var volume_percent = Math.round($player.volume * 100);
-        $('.jp-volume-bar-value').css('width', volume_percent+'%');
+        $('#radio-player-controls').addClass('jp-state-playing');
     });
 
     $player.on('ended', function(e) {
@@ -124,15 +122,15 @@ $(function() {
     });
 
     $('.jp-mute').on('click', function(e) {
-        player.volume = 0;
-        $('.jp-unmute').show();
-        $('.jp-mute').hide();
+        setVolume(0);
     });
 
     $('.jp-unmute').on('click', function(e) {
-        setVolume(volume);
-        $('.jp-unmute').hide();
-        $('.jp-mute').show();
+        setVolume(55);
+    });
+
+    $('.jp-volume-full').on('click', function(e) {
+        setVolume(100);
     });
 
     $('.jp-volume-bar').on('click', function(e) {
@@ -143,7 +141,11 @@ $(function() {
             y = $bar.height() - e.pageY + offset.top,
             h = $bar.height();
 
-        setVolume(x/w);
+        setVolume(Math.round((x/w) * 100));
+    });
+
+    $('.jp-volume-range').on('change', function(e) {
+        setVolume($(this).val());
     });
 
     // Handle autoplay.

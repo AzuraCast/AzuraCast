@@ -18,16 +18,14 @@ $assets
 <div class="public-page">
     <div class="card">
         <div class="card-body">
-            <div class="float-right text-right flex-row" id="radio-player-controls">
-                <a href="javascript:;" class="d-inline-block jp-mute" title="<?=__('Mute') ?>">
+            <div class="radio-controls-standalone" id="radio-player-controls">
+                <a href="javascript:;" class="text-secondary jp-mute" title="<?=__('Mute') ?>">
                     <i class="material-icons">volume_mute</i>
                 </a>
-                <a href="javascript:;" class="d-inline-block jp-unmute" title="<?=__('Unmute') ?>">
+                <input type="range" title="<?=__('Volume') ?>" class="d-inline-block custom-range jp-volume-range" style="" id="jp-volume-range" min="0" max="100" step="1">
+                <a href="javascript:;" class="text-secondary jp-volume-full" title="<?=__('Full Volume') ?>">
                     <i class="material-icons">volume_up</i>
                 </a>
-                <div class="d-inline-block progress jp-volume-bar" style="width: 100px;">
-                    <div class="jp-volume-bar-value progress-bar" role="progressbar"></div>
-                </div>
             </div>
 
             <h2 class="card-title"><?=$this->e($station->getName()) ?></h2>

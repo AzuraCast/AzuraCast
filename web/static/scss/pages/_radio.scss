@@ -1,38 +1,46 @@
 #radio-player-controls {
   display: none;
 
-  &.jp-state-playing {
-    display: inline-block;
-  }
+  // Player controls in the embedded pages.
+  &.radio-controls-embedded {
+    &.jp-state-playing {
+      display: flex;
+      padding-top: 5px;
+    }
 
-  .progress {
-    .progress-bar {
-      border-bottom-width: 10px;
-      border-bottom-color: theme-color('info');
-
-      &::after {
-        height: 10px;
-        background-color: theme-color-light('info');
-      }
+    input.jp-volume-range {
+      height: 10px;
     }
   }
-}
 
-#radio-embedded-controls {
-  display: none;
+  // Player controls on the public page.
+  &.radio-controls-standalone {
+    float: right;
 
-  &.jp-state-playing {
-    display: block;
-    padding-top: 5px;
+    &.jp-state-playing {
+      display: inline-block;
+    }
+
+    a {
+      display: inline-block;
+    }
+
+    input.jp-volume-range {
+      width: 100px;
+      height: 10px;
+    }
   }
 
-  .progress {
-    height: 15px;
-  }
-}
+  // Player controls in the navbar in administrative pages.
+  &.dropdown {
+    &.jp-state-playing {
+      display: inline-block;
+    }
 
-#radio-player {
-  display: none;
+    input.jp-volume-range {
+      width: 100px;
+    }
+  }
 }
 
 .btn-audio {

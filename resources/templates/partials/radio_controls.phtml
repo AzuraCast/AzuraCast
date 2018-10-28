@@ -10,21 +10,10 @@
             </a>
         </li>
         <li>
-            <a href="javascript:;" class="dropdown-item jp-mute">
-                <i class="material-icons">volume_mute</i>
-                <?=__('Mute') ?>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:;" class="dropdown-item jp-unmute">
+            <span class="dropdown-item dropdown-item-text">
                 <i class="material-icons">volume_up</i>
-                <?=__('Unmute') ?>
-            </a>
-        </li>
-        <li>
-            <div class="progress jp-volume-bar">
-                <div class="jp-volume-bar-value progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
+                <input type="range" title="<?=__('Volume') ?>" class="custom-range jp-volume-range" id="jp-volume-range" min="0" max="100" step="1">
+            </span>
         </li>
     </ul>
 </div>

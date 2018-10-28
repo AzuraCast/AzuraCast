@@ -1,13 +1,17 @@
 ---
   - name: Install IceCast-KH-AC Dependencies
-    apt: pkg="{{ item }}" install_recommends=no state=latest
-    with_items:
-     - libxml2
-     - libxslt1-dev
-     - libvorbis-dev
-     - libssl-dev
-     - libcurl4-openssl-dev
-     - pkg-config
+    apt:
+      name: "{{ packages }}"
+      state: latest
+      install_recommends: no
+    vars:
+      packages:
+       - libxml2
+       - libxslt1-dev
+       - libvorbis-dev
+       - libssl-dev
+       - libcurl4-openssl-dev
+       - pkg-config
 
   - name: Download IceCast-KH-AC Source
     get_url:
@@ -34,21 +38,25 @@
     apt: pkg="opam" install_recommends=yes state=latest
 
   - name: Install LiquidSoap Dependencies
-    apt: pkg="{{ item }}" install_recommends=no state=latest
-    with_items:
-     - libpcre3-dev
-     - libfdk-aac-dev
-     - libmad0-dev
-     - libmp3lame-dev
-     - libtag1-dev
-     - libfaad-dev
-     - libflac-dev
-     - libogg-dev
-     - libopus-dev
-     - pkg-config
-     - m4
-     - aspcud
-     - camlp4
+    apt:
+      name: "{{ packages }}"
+      state: latest
+      install_recommends: no
+    vars:
+      packages:
+       - libpcre3-dev
+       - libfdk-aac-dev
+       - libmad0-dev
+       - libmp3lame-dev
+       - libtag1-dev
+       - libfaad-dev
+       - libflac-dev
+       - libogg-dev
+       - libopus-dev
+       - pkg-config
+       - m4
+       - aspcud
+       - camlp4
 
   - name: Build LiquidSoap
     become_user: azuracast

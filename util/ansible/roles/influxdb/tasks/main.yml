@@ -17,12 +17,14 @@
   when: influxdb_list.changed == True or influxdb_key.changed == True
 
 - name: Install python-influxdb
-  pip: name="{{ item }}" state=latest
-  with_items:
-   - influxdb
+  pip:
+    name: influxdb
+    state: latest
 
 - name: Install InfluxDB
-  apt: pkg="influxdb" state=latest
+  apt:
+    name: influxdb
+    state: latest
   register: influx_installed
 
 - name: Fix permissions on InfluxDB data folder

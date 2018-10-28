@@ -5,46 +5,52 @@
       update_cache: yes
 
   - name: Remove Old PHP Libraries
-    apt:  package="{{ item }}" state=absent
-    with_items:
-     - php5-common
-     - php5-fpm
-     - php5-cli
-     - php5-phalcon
-     - php7.0-fpm
-     - php7.0-cli
-     - php7.0-gd
-     - php7.0-curl
-     - php7.0-xml
-     - php7.0-zip
-     - php7.0-mysqlnd
-     - php7.0-mbstring
-     - php7.0-intl
-     - php7.0-phalcon
-     - php7.1-fpm
-     - php7.1-cli
-     - php7.1-gd
-     - php7.1-curl
-     - php7.1-xml
-     - php7.1-zip
-     - php7.1-mysqlnd
-     - php7.1-mbstring
-     - php7.1-intl
-     - php7.1-redis
+    apt:
+      name: "{{ packages }}"
+      state: absent
+    vars:
+      packages:
+       - php5-common
+       - php5-fpm
+       - php5-cli
+       - php5-phalcon
+       - php7.0-fpm
+       - php7.0-cli
+       - php7.0-gd
+       - php7.0-curl
+       - php7.0-xml
+       - php7.0-zip
+       - php7.0-mysqlnd
+       - php7.0-mbstring
+       - php7.0-intl
+       - php7.0-phalcon
+       - php7.1-fpm
+       - php7.1-cli
+       - php7.1-gd
+       - php7.1-curl
+       - php7.1-xml
+       - php7.1-zip
+       - php7.1-mysqlnd
+       - php7.1-mbstring
+       - php7.1-intl
+       - php7.1-redis
 
   - name: Install PHP 7.2
-    apt:  package="{{ item }}" state=latest
-    with_items:
-     - php7.2-fpm
-     - php7.2-cli
-     - php7.2-gd
-     - php7.2-curl
-     - php7.2-xml         # IceCast XML config
-     - php7.2-zip         # Composer installs
-     - php7.2-mysqlnd     # MySQL Native Driver (Doctrine)
-     - php7.2-mbstring    # Codeception Tests
-     - php7.2-intl        # Localization
-     - php7.2-redis       # Cache
+    apt:
+      name: "{{ packages }}"
+      state: latest
+    vars:
+      packages:
+       - php7.2-fpm
+       - php7.2-cli
+       - php7.2-gd
+       - php7.2-curl
+       - php7.2-xml         # IceCast XML config
+       - php7.2-zip         # Composer installs
+       - php7.2-mysqlnd     # MySQL Native Driver (Doctrine)
+       - php7.2-mbstring    # Codeception Tests
+       - php7.2-intl        # Localization
+       - php7.2-redis       # Cache
 
   - name: Configure PHP FPM Pool
     template: src=fpmpool.j2 dest=/etc/php/7.2/fpm/pool.d/www.conf force=true

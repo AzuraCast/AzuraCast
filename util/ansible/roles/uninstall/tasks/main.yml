@@ -45,8 +45,14 @@
     ignore_errors: True
 
   - name: Remove software
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+
+    apt:
+      name: "{{ packages }}"
+      state: absent
+      force: yes
+      purge: yes
+    vars:
+      packages:
       # Radio software
       - icecast2
       - liquidsoap

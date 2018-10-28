@@ -1,7 +1,7 @@
 ---
 - name: Install UFW Firewall
   apt:
-    pkg: ufw
+    name: ufw
     state: latest
 
 - name: UFW - Disable all other incoming by default

@@ -20,30 +20,33 @@
       update_cache: yes
 
   - name: Install system packages
-    apt:  pkg="{{ item }}" state=latest
-    with_items:
-      - apt-transport-https
-      - curl
-      - wget
-      - tar
-      - build-essential
-      - pwgen
-      - whois
-      - python-pip
+    apt:
+      name: "{{ packages }}"
+      state: latest
+    vars:
+      packages:
+        - apt-transport-https
+        - curl
+        - wget
+        - tar
+        - build-essential
+        - pwgen
+        - whois
+        - python-pip
 
   - name: Install software-properties (18.04 only)
-    apt:  pkg="{{ item }}" state=latest
-    with_items:
-      - software-properties-common
+    apt:
+      name: software-properties-common
+      state: latest
     when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
 
   - name: Install python-software-properties (16.04 only)
-    apt:  pkg="{{ item }}" state=latest
-    with_items:
-      - python-software-properties
+    apt:
+      name: python-software-properties
+      state: latest
     when: ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'bionic'
 
   - name: Update pip components
-    pip: name="{{ item }}" state=latest
-    with_items:
-     - pip
+    pip:
+      name: pip
+      state: latest

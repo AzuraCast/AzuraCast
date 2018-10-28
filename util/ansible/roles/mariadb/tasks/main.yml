@@ -26,8 +26,11 @@
    changed_when: false
 
  - name: Install MariaDB
-   apt: pkg="{{ item }}" state=latest
-   with_items:
+   apt:
+     name: "{{ packages }}"
+     state: latest
+   vars:
+     packages:
      - mariadb-server
      - mariadb-client
 

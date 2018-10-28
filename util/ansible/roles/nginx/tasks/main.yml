@@ -1,9 +1,12 @@
 ---
   - name: Uninstall web server packages that may conflict with nginx
-    apt:  package="{{ item }}" state=absent
-    with_items:
-     - apache2
-     - lighttpd
+    apt:
+      name: "{{ packages }}"
+      state: absent
+    vars:
+      packages:
+       - apache2
+       - lighttpd
 
   - name: Unhold nginx-related packages for updates
     dpkg_selections:
@@ -15,18 +18,25 @@
       - "nginx-extras"
 
   - name: Remove any older nginx
-    apt:  package="{{ item }}" state=absent purge=yes
-    with_items:
-     - nginx
-     - nginx-common
-     - nginx-extras
+    apt:
+      name: "{{ packages }}"
+      state: absent
+      purge: yes
+    vars:
+      packages:
+       - nginx
+       - nginx-common
+       - nginx-extras
 
   - name: Install nginx
-    apt:  package="{{ item }}" state=latest
-    with_items:
-     - nginx
-     - nginx-common
-     - nginx-extras
+    apt:
+      name: "{{ packages }}"
+      state: latest
+    vars:
+      packages:
+      - nginx
+      - nginx-common
+      - nginx-extras
 
   - name: Create nginx ssl directory
     file: path="{{ item }}" state=directory owner=root group=root mode=0744

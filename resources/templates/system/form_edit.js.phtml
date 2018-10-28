@@ -2,6 +2,8 @@ $(function() {
     $('form.form').each(function() {
         var $form = $(this);
 
+        $form.find('fieldset').addClass('form-group');
+
         $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');
 
         $form.find('select').wrap('<div class="select" />').chosen({

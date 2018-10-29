@@ -28,6 +28,7 @@ class SyncProvider implements ServiceProviderInterface
                     Task\Analytics::class,
                     Task\RadioAutomation::class,
                     Task\HistoryCleanup::class,
+                    Task\RotateLiquidsoapLogs::class,
                 ])
             );
         };
@@ -81,6 +82,15 @@ class SyncProvider implements ServiceProviderInterface
             return new Task\RadioRequests(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Radio\Adapters::class]
+            );
+        };
+
+        $di[Task\RotateLiquidsoapLogs::class] = function($di) {
+            return new Task\RotateLiquidsoapLogs(
+                $di[\App\Radio\Adapters::class],
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
+                $di[\Supervisor\Supervisor::class]
             );
         };
     }

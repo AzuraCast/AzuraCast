@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55968856be089da1642b8b45352b987c",
+    "content-hash": "a410ce6f8ba6f843a9a60b1e1b81b5f9",
     "packages": [
         {
             "name": "azuracast/azuraforms",
@@ -3160,6 +3160,53 @@
                 "router"
             ],
             "time": "2018-09-16T10:54:21+00:00"
+        },
+        {
+            "name": "studio24/rotate",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studio24/rotate.git",
+                "reference": "15ee04c5c0e5e806291190a7e21b9bd51671e858"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studio24/rotate/zipball/15ee04c5c0e5e806291190a7e21b9bd51671e858",
+                "reference": "15ee04c5c0e5e806291190a7e21b9bd51671e858",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "studio24\\Rotate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon R Jones",
+                    "email": "simon@studio24.net",
+                    "homepage": "http://simonrjones.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "File rotation utility which rotates and removes old files",
+            "homepage": "https://github.com/studio24/rotate",
+            "keywords": [
+                "delete files",
+                "logrotate",
+                "rotate"
+            ],
+            "time": "2016-04-08T12:22:59+00:00"
         },
         {
             "name": "supervisorphp/supervisor",

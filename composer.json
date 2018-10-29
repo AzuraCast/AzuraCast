@@ -41,7 +41,8 @@
         "symfony/console": "^4.1",
         "symfony/event-dispatcher": "^4.1",
         "symfony/finder": "^4.1",
-        "zendframework/zend-config": "^3.1.0"
+        "zendframework/zend-config": "^3.1.0",
+        "studio24/rotate": "^1.0"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",

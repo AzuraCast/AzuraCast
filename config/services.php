@@ -309,16 +309,15 @@ return function (\Slim\Container $di, $settings)
 
     $di[\Monolog\Logger::class] = function($di) use ($settings) {
         $logger = new Monolog\Logger($settings['name']);
+        $logging_level = (APP_IN_PRODUCTION) ? \Monolog\Logger::INFO : \Monolog\Logger::DEBUG;
 
         if (APP_INSIDE_DOCKER || APP_IS_COMMAND_LINE) {
-            $logging_level = (APP_IN_PRODUCTION) ? \Monolog\Logger::INFO : \Monolog\Logger::DEBUG;
-
-            $handler = new \Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
-            $logger->pushHandler($handler);
-        } else {
-            $handler = new \Monolog\Handler\StreamHandler(APP_INCLUDE_TEMP.'/azuracast.log', \Monolog\Logger::WARNING, true);
-            $logger->pushHandler($handler);
+            $log_stderr = new \Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
+            $logger->pushHandler($log_stderr);
         }
+
+        $log_file = new \Monolog\Handler\StreamHandler(APP_INCLUDE_TEMP.'/azuracast.log', $logging_level, true);
+        $logger->pushHandler($log_file);
 
         return $logger;
     };

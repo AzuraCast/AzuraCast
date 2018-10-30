@@ -33,6 +33,8 @@ $(function() {
             if (!log_data.eof) {
                 timeout_update_log = setTimeout(updateLogView, 15000);
             }
+        }).fail(function(xhr) {
+            log_modal_contents.text('Error: '+xhr.responseJSON.message);
         });
     }
 

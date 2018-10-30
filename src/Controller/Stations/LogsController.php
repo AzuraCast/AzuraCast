@@ -33,6 +33,10 @@ class LogsController
 
         $log = $log_areas[$log_key];
 
+        if (!file_exists($log['path'])) {
+            throw new Exception('Log file not found!');
+        }
+
         if (!$log['tail']) {
             $log_contents_parts = explode("\n", file_get_contents($log['path']));
             $log_contents_parts = str_replace(array(">", "<"), array("&gt;", "&lt;"), $log_contents_parts);
@@ -89,6 +93,12 @@ class LogsController
     protected function _getLogAreas(Entity\Station $station)
     {
         $log_paths = [];
+
+        $log_paths['azuracast_log'] = [
+            'name' => __('AzuraCast Application Log'),
+            'path' => APP_INCLUDE_TEMP.'/azuracast.log',
+            'tail' => true,
+        ];
 
         if (!APP_INSIDE_DOCKER) {
             $log_paths['nginx_access'] = [

@@ -9,7 +9,7 @@ use Monolog\Logger;
 use studio24\Rotate;
 use Supervisor\Supervisor;
 
-class RotateLiquidsoapLogs extends TaskAbstract
+class RotateLogs extends TaskAbstract
 {
     /** @var EntityManager */
     protected $em;
@@ -44,26 +44,35 @@ class RotateLiquidsoapLogs extends TaskAbstract
 
     public function run($force = false)
     {
+        // Rotate logs for individual stations.
         /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
 
-        $ls_stations = $station_repo->findBy([
-            'backend_type' => Adapters::BACKEND_LIQUIDSOAP,
-        ]);
+        $stations = $station_repo->findAll();
+        if (!empty($stations)) {
+            foreach ($stations as $station) {
+                /** @var Entity\Station $station */
+                $this->logger->info('Processing logs for station.', ['id' => $station->getId(), 'name' => $station->getName()]);
 
-        if (empty($ls_stations)) {
-            return;
+                $this->rotateStationLogs($station);
+            }
         }
 
-        foreach ($ls_stations as $station) {
-            /** @var Entity\Station $station */
-            $this->logger->info('Processing logs for station.', ['id' => $station->getId(), 'name' => $station->getName()]);
-
-            $this->processStation($station);
-        }
+        // Rotate the main AzuraCast log.
+        $rotate = new Rotate\Rotate(APP_INCLUDE_TEMP . '/azuracast.log');
+        $rotate->keep(5);
+        $rotate->size('5MB');
+        $rotate->run();
     }
 
-    public function processStation(Entity\Station $station): void
+    /**
+     * Rotate logs that are not automatically rotated (currently Liquidsoap only).
+     *
+     * @param Entity\Station $station
+     * @throws Rotate\FilenameFormatException
+     * @throws \App\Exception\NotFound
+     */
+    public function rotateStationLogs(Entity\Station $station): void
     {
         if ($station->getBackendType() !== Adapters::BACKEND_LIQUIDSOAP) {
             return;

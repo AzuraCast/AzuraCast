@@ -9,6 +9,8 @@ one you're experiencing. If one does not exist, create a new one.
 
 Before submitting any GitHub issues, you should take a look at the terminal logs that AzuraCast outputs. They can often provide additional information about the error, or include very useful information that should be included in any GitHub issue you create.
 
+Users with the appropriate permissions can also view many logs directly through AzuraCast itself. The Log Viewer feature is available under "Utilities" in each station's management page.
+
 #### Docker
 
 To view logs in Docker, from the directory where your `docker-compose.yml` file is located, you can run:

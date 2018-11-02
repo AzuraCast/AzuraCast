@@ -288,6 +288,7 @@ return function (\Slim\Container $di, $settings)
             'acl' => $di[\App\Acl::class],
             'flash' => $session->getFlash(),
             'customization' => $di[\App\Customization::class],
+            'version' => $di[\App\Version::class],
         ]);
 
         /** @var \App\EventDispatcher $dispatcher */
@@ -411,6 +412,12 @@ return function (\Slim\Container $di, $settings)
         $redis->select(3);
 
         return new \App\RateLimit($redis);
+    };
+
+    $di[\App\Version::class] = function($di) {
+        return new \App\Version(
+            $di[\App\Cache::class]
+        );
     };
 
     // Radio management

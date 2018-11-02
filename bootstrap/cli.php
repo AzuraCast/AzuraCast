@@ -14,10 +14,13 @@ $translator->register();
 /** @var \Doctrine\ORM\EntityManager $em */
 $em = $di[\Doctrine\ORM\EntityManager::class];
 
+/** @var \App\Version $version */
+$version = $di[\App\Version::class];
+
 $helperSet = \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
 $helperSet->set(new \Symfony\Component\Console\Helper\QuestionHelper, 'dialog');
 
-$cli = new \App\Console\Application($settings['name'].' Command Line Tools ('.APP_APPLICATION_ENV.')', \App\Version::getVersion());
+$cli = new \App\Console\Application($settings['name'].' Command Line Tools ('.APP_APPLICATION_ENV.')', $version->getVersion());
 $cli->setContainer($di);
 $cli->setHelperSet($helperSet);
 

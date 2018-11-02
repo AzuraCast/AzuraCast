@@ -328,8 +328,14 @@ class FilesController extends FilesControllerAbstract
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->media_repo->getOrCreate($station, $file);
-                        $this->em->remove($media);
+                        $media = $this->media_repo->findOneBy([
+                            'station_id' => $station->getId(),
+                            'path' => $station->getRelativeMediaPath($file)
+                        ]);
+
+                        if ($media instanceof Entity\StationMedia) {
+                            $this->em->remove($media);
+                        }
                     } catch (\Exception $e) {
                         $errors[] = $file.': '.$e->getMessage();
                         @unlink($file);
@@ -402,17 +408,13 @@ class FilesController extends FilesControllerAbstract
                 $music_files = $this->_getMusicFiles($files);
                 $files_found = count($music_files);
 
-                $weight = 0;
+                $weight = $this->playlists_media_repo->getHighestSongWeight($playlist);
+
                 foreach ($music_files as $file) {
+                    $weight++;
                     try {
                         $media = $this->media_repo->getOrCreate($station, $file);
-
-                        // Trigger media ID creation if it isn't already created.
-                        $this->em->persist($media);
-                        $this->em->flush($media);
-
                         $weight = $this->playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
-                        $weight++;
                     } catch (\Exception $e) {
                         $errors[] = $file.': '.$e->getMessage();
                     }
@@ -421,6 +423,9 @@ class FilesController extends FilesControllerAbstract
                 }
 
                 $this->em->flush();
+
+                // Reshuffle the playlist if needed.
+                $this->playlists_media_repo->reshuffleMedia($playlist);
 
                 // Write new PLS playlist configuration.
                 $backend->write($station);
@@ -496,7 +501,6 @@ class FilesController extends FilesControllerAbstract
 
                 $station_media = $this->media_repo->getOrCreate($station, $final_path);
                 $this->em->persist($station_media);
-                $this->em->flush($station_media);
 
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
                 if ($request->hasParam('searchPhrase')) {
@@ -512,6 +516,9 @@ class FilesController extends FilesControllerAbstract
 
                         if ($playlist instanceof Entity\StationPlaylist) {
                             $this->playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
+                            $this->em->flush();
+
+                            $this->playlists_media_repo->reshuffleMedia($playlist);
                         }
                     }
                 }
@@ -520,7 +527,7 @@ class FilesController extends FilesControllerAbstract
 
                 return $response->withJson(['success' => true]);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception | \Error $e) {
             return $this->_err($response, 500, $e->getMessage());
         }
 

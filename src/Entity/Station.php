@@ -547,6 +547,17 @@ class Station
     }
 
     /**
+     * Given an absolute path, return a path relative to this station's media directory.
+     *
+     * @param $full_path
+     * @return string
+     */
+    public function getRelativeMediaPath($full_path): string
+    {
+        return ltrim(str_replace($this->getRadioMediaDir(), '', $full_path), '/');
+    }
+
+    /**
      * @return string
      */
     public function getRadioPlaylistsDir(): string

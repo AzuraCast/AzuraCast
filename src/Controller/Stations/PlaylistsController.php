@@ -385,12 +385,17 @@ class PlaylistsController
                 ->setParameter('matched_ids', $matches)
                 ->execute();
 
+            $weight = $this->playlist_media_repo->getHighestSongWeight($playlist);
+
             foreach($matched_media as $media) {
+                $weight++;
+
                 /** @var Entity\StationMedia $media */
-                $this->playlist_media_repo->addMediaToPlaylist($media, $playlist);
+                $this->playlist_media_repo->addMediaToPlaylist($media, $playlist, $weight);
             }
 
-            $this->em->persist($playlist);
+            $this->em->flush();
+            $this->playlist_media_repo->reshuffleMedia($playlist);
         }
 
         return count($matches);

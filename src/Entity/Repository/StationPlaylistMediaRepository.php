@@ -31,6 +31,7 @@ class StationPlaylistMediaRepository extends BaseRepository
      *
      * @param Entity\StationMedia $media
      * @param Entity\StationPlaylist $playlist
+     * @param int $weight
      * @return int The weight assigned to the newly added record.
      */
     public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, $weight = 0): int
@@ -53,26 +54,15 @@ class StationPlaylistMediaRepository extends BaseRepository
             if ($weight != 0) {
                 $record->setWeight($weight);
                 $this->_em->persist($record);
-                $this->_em->flush($record);
             }
         } else {
             if ($weight === 0) {
-                try {
-                    $highest_weight = $this->_em->createQuery('SELECT MAX(e.weight) FROM ' . $this->_entityName . ' e WHERE e.playlist_id = :playlist_id')
-                        ->setParameter('playlist_id', $playlist->getId())
-                        ->getSingleScalarResult();
-                } catch (NoResultException $e) {
-                    $highest_weight = 1;
-                }
-
-                $weight = $highest_weight + 1;
+                $weight = $this->getHighestSongWeight($playlist) + 1;
             }
 
             $record = new Entity\StationPlaylistMedia($playlist, $media);
             $record->setWeight($weight);
-
             $this->_em->persist($record);
-            $this->_em->flush($record);
         }
 
         // Add the newly added song into the cached queue.
@@ -91,10 +81,20 @@ class StationPlaylistMediaRepository extends BaseRepository
             }
         }
 
-        // Reshuffle the playlist if needed.
-        $this->reshuffleMedia($playlist);
-
         return $weight;
+    }
+
+    public function getHighestSongWeight(Entity\StationPlaylist $playlist): int
+    {
+        try {
+            $highest_weight = $this->_em->createQuery('SELECT MAX(e.weight) FROM ' . $this->_entityName . ' e WHERE e.playlist_id = :playlist_id')
+                ->setParameter('playlist_id', $playlist->getId())
+                ->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            $highest_weight = 1;
+        }
+
+        return (int)$highest_weight;
     }
 
     /**

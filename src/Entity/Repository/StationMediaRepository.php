@@ -53,12 +53,17 @@ class StationMediaRepository extends BaseRepository
      */
     public function getOrCreate(Entity\Station $station, $path)
     {
-        $short_path = ltrim(str_replace($station->getRadioMediaDir(), '', $path), '/');
+        $short_path = $station->getRelativeMediaPath($path);
 
-        $record = $this->findOneBy(['station_id' => $station->getId(), 'path' => $short_path]);
+        $record = $this->findOneBy([
+            'station_id' => $station->getId(),
+            'path' => $short_path
+        ]);
 
+        $create_mode = false;
         if (!($record instanceof Entity\StationMedia)) {
             $record = new Entity\StationMedia($station, $short_path);
+            $create_mode = true;
         }
 
         $song_info = $record->loadFromFile();
@@ -66,6 +71,13 @@ class StationMediaRepository extends BaseRepository
             /** @var SongRepository $song_repo */
             $song_repo = $this->_em->getRepository(Entity\Song::class);
             $record->setSong($song_repo->getOrCreate($song_info));
+        }
+
+        $this->_em->persist($record);
+
+        // Always flush new entities to generate a media ID.
+        if ($create_mode) {
+            $this->_em->flush($record);
         }
 
         return $record;

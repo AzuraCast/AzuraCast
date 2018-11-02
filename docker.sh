@@ -23,8 +23,7 @@ ask() {
         # Ask the question (not using "read -p" as it uses stderr not stdout)
         echo -n "$1 [$prompt] "
 
-        # Read the answer (use /dev/tty in case stdin is redirected from somewhere else)
-        read reply </dev/tty
+        read reply
 
         # Default?
         if [ -z "$reply" ]; then

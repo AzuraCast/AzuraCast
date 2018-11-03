@@ -103,7 +103,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
             '  ',
             '  if uri == "" or string.match(pattern="Error", uri) then',
             '    log("AzuraCast Error: Delaying subsequent requests...")',
-            '    system("sleep 30")',
+            '    system("sleep 2")',
             '    request.create("")',
             '  else',
             '    request.create(uri)',

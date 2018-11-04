@@ -16,6 +16,6 @@ services:
     working_dir: /tmp/source
     command: sh -c "mv ./* /tmp/dest/"
 
-  web:
+  mariadb:
     volumes:
-      - ./util/fixtures/01_docker_migration.sql:/var/azuracast/www/util/fixtures/01_docker_migration.sql
+      - ./util/fixtures/01_docker_migration.sql:/tmp/01_docker_migration.sql

@@ -54,6 +54,7 @@ chmod a+x uninstall.sh
 read -n 1 -s -r -p "Uninstall complete. Press any key to continue (Install AzuraCast in Docker)..."
 
 # Run Docker AzuraCast-specific installer
+docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm cat /tmp/01_docker_migration.sql | mysql -uazuracast -pazur4c457 -D azuracast
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm migrate_stations
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm cli azuracast_install
 

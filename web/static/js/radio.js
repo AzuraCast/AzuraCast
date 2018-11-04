@@ -34,7 +34,7 @@ function setVolume(new_volume)
     $('.jp-volume-range').val(volume);
 
     // Set volume logarithmically based on original input.
-    player.volume = (Math.exp(volume/100)-1)/(Math.E-1);
+    player.volume = Math.min((Math.exp(volume/100)-1)/(Math.E-1), 1);
 
     if (store.enabled)
         store.set('player_volume', volume);

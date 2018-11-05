@@ -72,10 +72,10 @@ docker-compose rm -f
 docker volume prune -f
 docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')
 
+read -n 1 -s -r -p "Docker is running. Press any key to continue (cleanup)..."
+
 # Codebase cleanup
-rm -rf /var/azuracast/www_tmp
 rm -rf /var/azuracast/stations
-rm -rf /var/azuracast/servers
 
 find -maxdepth 1 ! -name migration ! -name . ! -name docker-compose.yml \
      ! -name .env ! -name azuracast.env ! -name plugins \

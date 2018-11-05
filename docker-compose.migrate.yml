@@ -1,21 +1,14 @@
 version: '2.2'
 
 services:
-  migrate_influx:
-    image: influxdb:alpine
+  influxdb:
     volumes:
-      - influx_data:/var/lib/influxdb
-      - ../migration:/tmp/migration
-    command: sh -c "influxd restore -metadir /var/lib/influxdb/meta /tmp/migration && influxd restore -database stations -datadir /var/lib/influxdb/data /tmp/migration"
+      - ./migration/influxdb:/tmp/migration
 
-  migrate_stations:
-    image: alpine:latest
+  cli:
     volumes:
-      - ../stations:/tmp/source
-      - station_data:/tmp/dest
-    working_dir: /tmp/source
-    command: sh -c "mv ./* /tmp/dest/"
+      - ../stations:/tmp/migration
 
   mariadb:
     volumes:
-      - ./util/fixtures/01_docker_migration.sql:/tmp/01_docker_migration.sql
+      - ./migration/database.sql:/tmp/database.sql

@@ -58,7 +58,7 @@ docker-compose pull
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml up -d
 
 # Run Docker AzuraCast-specific installer
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm influxdb import_folder /tmp/migration
+docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm influxdb import_folder /tmp/migration/
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml exec mariadb import_file /tmp/database.sql
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm cli azuracast_migrate_stations /tmp/migration
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm cli azuracast_install

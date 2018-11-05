@@ -77,5 +77,5 @@ rm -rf /var/azuracast/stations
 rm -rf /var/azuracast/servers
 
 find -maxdepth 1 ! -name migration ! -name . ! -name docker-compose.yml \
-     ! -name .env ! -name azuracast.env \
+     ! -name .env ! -name azuracast.env ! -name plugins \
      -exec rm -rv {} \;

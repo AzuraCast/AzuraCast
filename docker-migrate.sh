@@ -16,8 +16,10 @@ if [ ! -f ./azuracast.env ]; then
     cp ./azuracast.sample.env ./azuracast.env
 fi
 
-mkdir -p ./migration
-mkdir -p ./migration/influxdb
+BASE_DIR=`pwd`
+
+mkdir -p ${BASE_DIR}/migration
+mkdir -p ${BASE_DIR}/migration/influxdb
 
 # Dump MySQL data into fixtures folder
 MYSQL_USERNAME=`awk -F "=" '/db_username/ {print $2}' env.ini | tr -d ' '`
@@ -30,8 +32,8 @@ read -n 1 -s -r -p "MySQL exported. Press any key to continue (Export InfluxDB).
 # Dump InfluxDB data
 mkdir -p /var/azuracast/migration
 
-influxd backup ./migration/influxdb
-influxd backup -database stations ./migration/influxdb
+influxd backup ${BASE_DIR}/migration/influxdb
+influxd backup -database stations ${BASE_DIR}/migration/influxdb
 
 read -n 1 -s -r -p "InfluxDB exported. Press any key to continue (Install Docker)..."
 

@@ -30,8 +30,8 @@ read -n 1 -s -r -p "MySQL exported. Press any key to continue (Export InfluxDB).
 # Dump InfluxDB data
 mkdir -p /var/azuracast/migration
 
-influxd backup migration/influxdb
-influxd backup -database stations migration/influxdb
+influxd backup ./migration/influxdb
+influxd backup -database stations ./migration/influxdb
 
 read -n 1 -s -r -p "InfluxDB exported. Press any key to continue (Install Docker)..."
 

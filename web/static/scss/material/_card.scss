@@ -101,6 +101,13 @@
     padding-right: $card-action-inner-spacer-x;
     padding-left: $card-action-inner-spacer-x;
   }
+  
+  // Fix for "overflow: hidden" + "text-overflow: ellipsis" bug in Safari - see issue #869
+  .btn::after {
+    content: "\0000a0";
+    display: inline-block;
+    width: 0;
+  }
 
   .dropdown-toggle::after {
     margin-right: 0;

@@ -78,5 +78,5 @@ read -n 1 -s -r -p "Docker is running. Press any key to continue (cleanup)..."
 rm -rf /var/azuracast/stations
 
 find -maxdepth 1 ! -name migration ! -name . ! -name docker-compose.yml \
-     ! -name .env ! -name azuracast.env ! -name plugins \
+     ! -name docker.sh ! -name .env ! -name azuracast.env ! -name plugins \
      -exec rm -rv {} \;

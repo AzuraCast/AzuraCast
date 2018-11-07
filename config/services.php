@@ -432,9 +432,6 @@ return function (\Slim\Container $di, $settings)
     // Middleware
     $di->register(new \App\Provider\MiddlewareProvider);
 
-    // Event Handlers
-    $di->register(new \App\Provider\EventHandlerProvider);
-
     // Controller groups
     $di->register(new \App\Provider\AdminProvider);
     $di->register(new \App\Provider\ApiProvider);

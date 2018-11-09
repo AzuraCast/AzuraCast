@@ -118,6 +118,9 @@ update() {
         
     fi
 
+    docker volume rm azuracast_www_data
+    docker volume rm azuracast_tmp_data
+
     docker-compose pull
     docker-compose run --rm cli azuracast_update
     docker-compose up -d

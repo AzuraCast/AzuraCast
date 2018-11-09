@@ -45,14 +45,14 @@ class PublicController
         ]);
     }
 
-    public function playlistAction(Request $request, Response $response): Response
+    public function playlistAction(Request $request, Response $response, $station_id, $format = 'pls'): Response
     {
         $station = $request->getStation();
         $fa = $request->getStationFrontend();
 
         $stream_urls = $fa->getStreamUrls($station);
 
-        $format = strtolower($request->getParam('format', 'pls'));
+        $format = strtolower($format);
 
         switch ($format) {
             // M3U Playlist Format

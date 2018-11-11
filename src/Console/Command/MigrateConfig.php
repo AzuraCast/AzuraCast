@@ -2,11 +2,12 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateConfig extends \App\Console\Command\CommandAbstract
+class MigrateConfig extends CommandAbstract
 {
     /**
      * {@inheritdoc}

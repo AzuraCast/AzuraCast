@@ -1,6 +1,7 @@
 <?php
 namespace App\Console\Command;
 
+use Azura\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

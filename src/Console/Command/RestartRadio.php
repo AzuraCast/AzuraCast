@@ -2,12 +2,13 @@
 namespace App\Console\Command;
 
 use App\Radio\Configuration;
+use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use App\Entity\Station;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RestartRadio extends \App\Console\Command\CommandAbstract
+class RestartRadio extends CommandAbstract
 {
     /**
      * {@inheritdoc}

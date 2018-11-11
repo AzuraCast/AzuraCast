@@ -3,10 +3,11 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use Azura\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateApiDocs extends \App\Console\Command\CommandAbstract
+class GenerateApiDocs extends CommandAbstract
 {
     /**
      * {@inheritdoc}

@@ -281,7 +281,7 @@ class Configuration
             }
         }
 
-        throw new \App\Exception('This installation has no available ports for new radio stations.');
+        throw new \Azura\Exception('This installation has no available ports for new radio stations.');
     }
 
     /**

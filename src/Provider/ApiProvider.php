@@ -23,7 +23,7 @@ class ApiProvider implements ServiceProviderInterface
         $di[Api\ListenersController::class] = function($di) {
             return new Api\ListenersController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
+                $di[\Azura\Cache::class],
                 $di[\MaxMind\Db\Reader::class]
             );
         };
@@ -31,8 +31,8 @@ class ApiProvider implements ServiceProviderInterface
         $di[Api\NowplayingController::class] = function($di) {
             return new Api\NowplayingController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
-                $di[\App\EventDispatcher::class]
+                $di[\Azura\Cache::class],
+                $di[\Azura\EventDispatcher::class]
             );
         };
 

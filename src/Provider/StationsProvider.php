@@ -10,8 +10,8 @@ class StationsProvider implements ServiceProviderInterface
     public function register(Container $di)
     {
         $di[Stations\AutomationController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\AutomationController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -21,27 +21,27 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\Files\FilesController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\Files\FilesController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di['router'],
-                $di[\App\Cache::class],
+                $di[\Azura\Cache::class],
                 $config->get('forms/rename')
             );
         };
 
         $di[Stations\Files\EditController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             $router = $di['router'];
 
             return new Stations\Files\EditController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $router,
-                $di[\App\Cache::class],
+                $di[\Azura\Cache::class],
                 $config->get('forms/media', [
                     'router' => $router,
                 ])
@@ -55,12 +55,12 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\Profile\EditController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\Profile\EditController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
+                $di[\Azura\Cache::class],
                 $di[\App\Radio\Configuration::class],
                 $config->get('forms/station')
             );
@@ -74,8 +74,8 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\MountsController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\MountsController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -87,8 +87,8 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\PlaylistsController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\PlaylistsController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -100,8 +100,8 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\RemotesController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\RemotesController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -135,8 +135,8 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\Reports\SoundExchangeController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\Reports\SoundExchangeController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -150,8 +150,8 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\StreamersController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Stations\StreamersController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -160,8 +160,8 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\WebhooksController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             $webhook_config = $config->get('webhooks');
 

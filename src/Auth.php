@@ -3,7 +3,7 @@ namespace App;
 
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
-use App\Session\NamespaceInterface;
+use Azura\Session\NamespaceInterface;
 
 class Auth
 {
@@ -78,7 +78,7 @@ class Auth
      *
      * @param bool $real_user_only
      * @return bool|User|null|object
-     * @throws Exception
+     * @throws \Azura\Exception
      */
     public function getLoggedInUser($real_user_only = false)
     {
@@ -93,7 +93,7 @@ class Auth
      * Get the authenticated user entity.
      *
      * @return bool|User|null
-     * @throws Exception
+     * @throws \Azura\Exception
      */
     public function getUser()
     {
@@ -114,7 +114,7 @@ class Auth
                 $this->_user = false;
                 $this->logout();
 
-                throw new Exception('Invalid user!');
+                throw new \Azura\Exception('Invalid user!');
             }
         }
 

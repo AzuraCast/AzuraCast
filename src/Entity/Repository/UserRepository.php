@@ -2,8 +2,9 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class UserRepository extends BaseRepository
+class UserRepository extends Repository
 {
     /**
      * @param $username

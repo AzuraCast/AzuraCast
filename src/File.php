@@ -124,7 +124,7 @@ class File
      *
      * @param $uploaded_file
      * @return bool
-     * @throws Exception
+     * @throws \Azura\Exception
      */
     public function upload($uploaded_file)
     {
@@ -135,35 +135,35 @@ class File
         if (!$this->isValid($uploaded_file)) {
             switch ($uploaded_file['error']) {
                 case UPLOAD_ERR_INI_SIZE:
-                    throw new Exception('File Upload Error: The file you are attempting to upload is larger than allowed (upload_max_filesize).');
+                    throw new \Azura\Exception('File Upload Error: The file you are attempting to upload is larger than allowed (upload_max_filesize).');
                     break;
 
                 case UPLOAD_ERR_FORM_SIZE:
-                    throw new Exception('File Upload Error: The file you are attempting to upload is larger than allowed (MAX_FILE_SIZE).');
+                    throw new \Azura\Exception('File Upload Error: The file you are attempting to upload is larger than allowed (MAX_FILE_SIZE).');
                     break;
 
                 case UPLOAD_ERR_PARTIAL:
-                    throw new Exception('File Upload Error: The file you are attempting to upload was only partially uploaded.');
+                    throw new \Azura\Exception('File Upload Error: The file you are attempting to upload was only partially uploaded.');
                     break;
 
                 case UPLOAD_ERR_NO_FILE:
-                    throw new Exception('File Upload Error: No file was uploaded.');
+                    throw new \Azura\Exception('File Upload Error: No file was uploaded.');
                     break;
 
                 case UPLOAD_ERR_NO_TMP_DIR:
-                    throw new Exception('File Upload Error: Missing a temporary folder.');
+                    throw new \Azura\Exception('File Upload Error: Missing a temporary folder.');
                     break;
 
                 case UPLOAD_ERR_CANT_WRITE:
-                    throw new Exception('File Upload Error: Failed to write file to disk.');
+                    throw new \Azura\Exception('File Upload Error: Failed to write file to disk.');
                     break;
 
                 case UPLOAD_ERR_EXTENSION:
-                    throw new Exception('File Upload Error: Upload stopped by extension.');
+                    throw new \Azura\Exception('File Upload Error: Upload stopped by extension.');
                     break;
 
                 default:
-                    throw new Exception('File Upload Error: No file was specified.');
+                    throw new \Azura\Exception('File Upload Error: No file was specified.');
                     break;
             }
         }
@@ -171,7 +171,7 @@ class File
         if (move_uploaded_file($uploaded_file['tmp_name'], $this->getPath())) {
             return true;
         } else {
-            throw new Exception('File Upload Error: Could not upload the file requested.');
+            throw new \Azura\Exception('File Upload Error: Could not upload the file requested.');
         }
     }
 

@@ -2,7 +2,7 @@
 namespace App\Controller\Api\Stations;
 
 use App;
-use App\Doctrine\Paginator;
+use Azura\Doctrine\Paginator;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;

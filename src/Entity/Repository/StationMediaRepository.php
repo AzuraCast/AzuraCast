@@ -2,8 +2,9 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class StationMediaRepository extends BaseRepository
+class StationMediaRepository extends Repository
 {
     /**
      * @param Entity\Station $station

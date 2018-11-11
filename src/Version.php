@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use Azura\Cache;
 use Symfony\Component\Process\Process;
 
 /**

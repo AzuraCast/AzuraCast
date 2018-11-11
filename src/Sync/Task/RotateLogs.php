@@ -59,7 +59,7 @@ class RotateLogs extends TaskAbstract
         }
 
         // Rotate the main AzuraCast log.
-        $rotate = new Rotate\Rotate(APP_INCLUDE_TEMP . '/azuracast.log');
+        $rotate = new Rotate\Rotate(APP_INCLUDE_TEMP . '/app.log');
         $rotate->keep(5);
         $rotate->size('5MB');
         $rotate->run();

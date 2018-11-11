@@ -2,7 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Entity;
-use App\Exception;
+use Azura\Exception;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Adapters;

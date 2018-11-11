@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Cache;
+use Azura\Cache;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;

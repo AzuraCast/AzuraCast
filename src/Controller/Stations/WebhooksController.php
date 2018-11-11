@@ -85,7 +85,7 @@ class WebhooksController
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            /** @var Entity\Repository\BaseRepository $record_repo */
+            /** @var \Azura\Doctrine\Repository $record_repo */
             $record_repo = $this->em->getRepository(Entity\StationWebhook::class);
 
             $record = new Entity\StationWebhook($station, $type);
@@ -112,7 +112,7 @@ class WebhooksController
     {
         $station = $request->getStation();
 
-        /** @var Entity\Repository\BaseRepository $record_repo */
+        /** @var \Azura\Doctrine\Repository $record_repo */
         $record_repo = $this->em->getRepository(Entity\StationWebhook::class);
 
         $record = $record_repo->findOneBy([

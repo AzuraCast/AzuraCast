@@ -23,7 +23,7 @@ class StationFiles
         $backend = $request->getStationBackend();
 
         if (!$backend::supportsMedia()) {
-            throw new \App\Exception(__('This feature is not currently supported on this station.'));
+            throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
 
         $base_dir = $station->getRadioMediaDir();

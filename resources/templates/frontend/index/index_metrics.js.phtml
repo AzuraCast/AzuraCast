@@ -1,7 +1,7 @@
 $(function () {
     Highcharts.setOptions({
         global: {
-            timezoneOffset: <?=\App\Timezone::getOffsetMinutes() ?>,
+            timezoneOffset: <?=\Azura\Timezone::getOffsetMinutes() ?>,
             useUTC: false
         }
     });

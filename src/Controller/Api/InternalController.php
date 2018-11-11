@@ -93,11 +93,6 @@ class InternalController
 
         $payload = $request->getBody()->getContents();
 
-        if (!APP_IN_PRODUCTION) {
-            $log = date('Y-m-d g:i:s')."\n".$station->getName()."\n".$payload."\n\n";
-            file_put_contents(APP_INCLUDE_TEMP.'/notify.log', $log, \FILE_APPEND);
-        }
-
         $this->sync_nowplaying->processStation($station, $payload);
 
         return $response->write('received');
@@ -105,7 +100,7 @@ class InternalController
 
     /**
      * @param Request $request
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      * @throws \App\Exception\PermissionDenied
      */
     protected function _checkStationAuth(Request $request): void

@@ -38,7 +38,7 @@ class GenerateApiDocs extends CommandAbstract
             ],
         ]);
 
-        $yaml_path = APP_INCLUDE_STATIC.'/api/openapi.yml';
+        $yaml_path = APP_INCLUDE_ROOT.'/web/static/api/openapi.yml';
         $yaml = $oa->toYaml();
 
         file_put_contents($yaml_path, $yaml);

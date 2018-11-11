@@ -11,8 +11,8 @@ class WebhookProvider implements ServiceProviderInterface
     {
         $di[Webhook\Dispatcher::class] = function($di) {
 
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             $webhooks = $config->get('webhooks');
 
@@ -46,7 +46,7 @@ class WebhookProvider implements ServiceProviderInterface
                 $di[\Monolog\Logger::class],
                 $di[\GuzzleHttp\Client::class],
                 $di[\InfluxDB\Database::class],
-                $di[\App\Cache::class],
+                $di[\Azura\Cache::class],
                 $di[\App\Entity\Repository\SettingsRepository::class]
             );
         };

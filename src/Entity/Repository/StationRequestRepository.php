@@ -2,8 +2,9 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class StationRequestRepository extends BaseRepository
+class StationRequestRepository extends Repository
 {
     /**
      * Submit a new request.
@@ -12,18 +13,18 @@ class StationRequestRepository extends BaseRepository
      * @param $track_id
      * @param bool $is_authenticated
      * @return mixed
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function submit(Entity\Station $station, $track_id, $is_authenticated = false)
     {
         // Forbid web crawlers from using this feature.
         if (\App\Utilities::is_crawler()) {
-            throw new \App\Exception('Search engine crawlers are not permitted to use this feature.');
+            throw new \Azura\Exception('Search engine crawlers are not permitted to use this feature.');
         }
 
         // Verify that the station supports requests.
         if (!$station->getEnableRequests()) {
-            throw new \App\Exception('This station does not accept requests currently.');
+            throw new \Azura\Exception('This station does not accept requests currently.');
         }
 
         // Verify that Track ID exists with station.
@@ -31,11 +32,11 @@ class StationRequestRepository extends BaseRepository
         $media_item = $media_repo->findOneBy(['unique_id' => $track_id, 'station_id' => $station->getId()]);
 
         if (!($media_item instanceof Entity\StationMedia)) {
-            throw new \App\Exception('The song ID you specified could not be found in the station.');
+            throw new \Azura\Exception('The song ID you specified could not be found in the station.');
         }
 
         if (!$media_item->isRequestable()) {
-            throw new \App\Exception('The song ID you specified cannot be requested for this station.');
+            throw new \Azura\Exception('The song ID you specified cannot be requested for this station.');
         }
 
         // Check if the song is already enqueued as a request.
@@ -59,7 +60,7 @@ class StationRequestRepository extends BaseRepository
 
             if (count($recent_requests) > 0) {
                 $threshold_text = \App\Utilities::timeToText($threshold_seconds);
-                throw new \App\Exception('You have submitted a request too recently! Please wait '.$threshold_text.' before submitting another one.');
+                throw new \Azura\Exception('You have submitted a request too recently! Please wait '.$threshold_text.' before submitting another one.');
             }
         }
 
@@ -77,7 +78,7 @@ class StationRequestRepository extends BaseRepository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      * @return bool
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station)
     {
@@ -100,7 +101,7 @@ class StationRequestRepository extends BaseRepository
         }
 
         if ($pending_request > 0) {
-            throw new \App\Exception('Duplicate request: this song was already requested and will play soon.');
+            throw new \Azura\Exception('Duplicate request: this song was already requested and will play soon.');
         }
 
         return true;
@@ -112,7 +113,7 @@ class StationRequestRepository extends BaseRepository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      * @return bool
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station)
     {
@@ -142,7 +143,7 @@ class StationRequestRepository extends BaseRepository
 
         if ($last_play_time > 0) {
             $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
-            throw new \App\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
+            throw new \Azura\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
         }
 
         return true;

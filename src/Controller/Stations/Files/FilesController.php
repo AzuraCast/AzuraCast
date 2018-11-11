@@ -130,7 +130,7 @@ class FilesController extends FilesControllerAbstract
         $search_phrase = trim($request->getParam('searchPhrase') ?? '');
 
         if (!is_dir($file_path)) {
-            throw new \App\Exception(__('Path "%s" is not a folder.', $file));
+            throw new \Azura\Exception(__('Path "%s" is not a folder.', $file));
         }
 
         $media_query = $this->em->createQueryBuilder()
@@ -293,7 +293,7 @@ class FilesController extends FilesControllerAbstract
     {
         try {
             $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
-        } catch(\App\Exception\CsrfValidation $e) {
+        } catch(\Azura\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
@@ -449,7 +449,7 @@ class FilesController extends FilesControllerAbstract
     {
         try {
             $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
-        } catch(\App\Exception\CsrfValidation $e) {
+        } catch(\Azura\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
@@ -474,7 +474,7 @@ class FilesController extends FilesControllerAbstract
     {
         try {
             $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
-        } catch(\App\Exception\CsrfValidation $e) {
+        } catch(\Azura\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }

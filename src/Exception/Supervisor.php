@@ -1,6 +1,6 @@
 <?php
 namespace App\Exception;
 
-class Supervisor extends \App\Exception
+class Supervisor extends \Azura\Exception
 {
 }

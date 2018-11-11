@@ -11,18 +11,6 @@ class MiddlewareProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[Middleware\EnableSession::class] = function($di) {
-            return new Middleware\EnableSession($di[App\Session::class]);
-        };
-
-        $di[Middleware\EnableRouter::class] = function($di) {
-            return new Middleware\EnableRouter($di['router']);
-        };
-
-        $di[Middleware\EnableView::class] = function($di) {
-            return new Middleware\EnableView($di[App\View::class]);
-        };
-
         $di[Middleware\EnforceSecurity::class] = function($di) {
             return new Middleware\EnforceSecurity(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -56,23 +44,13 @@ class MiddlewareProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Middleware\RateLimit::class] = function($di) {
-            return new Middleware\RateLimit(
-                $di[App\RateLimit::class]
-            );
-        };
-
-        $di[Middleware\RemoveSlashes::class] = function() {
-            return new Middleware\RemoveSlashes;
-        };
-
         /*
          * Module-specific middleware
          */
 
         $di[Middleware\Module\Admin::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Middleware\Module\Admin(
                 $di[App\Acl::class],

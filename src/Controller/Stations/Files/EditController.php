@@ -29,7 +29,7 @@ class EditController extends FilesControllerAbstract
 
         // Add custom fields to form configuration.
 
-        /** @var Entity\Repository\BaseRepository $custom_fields_repo */
+        /** @var \Azura\Doctrine\Repository $custom_fields_repo */
         $custom_fields_repo = $this->em->getRepository(Entity\CustomField::class);
         $custom_fields = $custom_fields_repo->fetchArray();
 
@@ -79,7 +79,7 @@ class EditController extends FilesControllerAbstract
                     $art_resource = imagecreatefromstring($file->getStream()->getContents());
                     $media->setArt($art_resource);
                 } else if ($file->getError() !== UPLOAD_ERR_NO_FILE) {
-                    throw new \App\Exception('Error ' . $file->getError() . ' in uploaded file!');
+                    throw new \Azura\Exception('Error ' . $file->getError() . ' in uploaded file!');
                 }
             }
 

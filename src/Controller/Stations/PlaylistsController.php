@@ -23,7 +23,7 @@ class PlaylistsController
     /** @var array */
     protected $form_config;
 
-    /** @var Entity\Repository\BaseRepository */
+    /** @var \Azura\Doctrine\Repository */
     protected $playlist_repo;
 
     /** @var Entity\Repository\StationPlaylistMediaRepository */
@@ -52,7 +52,7 @@ class PlaylistsController
         $backend = $request->getStationBackend();
 
         if (!$backend::supportsMedia()) {
-            throw new \App\Exception(__('This feature is not currently supported on this station.'));
+            throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
 
         /** @var Entity\StationPlaylist[] $all_playlists */
@@ -167,13 +167,13 @@ class PlaylistsController
 
         if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
             || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
-            throw new \App\Exception(__('This playlist is not a sequential playlist.'));
+            throw new \Azura\Exception(__('This playlist is not a sequential playlist.'));
         }
 
         if ($request->isPost()) {
             try {
                 $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
-            } catch(\App\Exception\CsrfValidation $e) {
+            } catch(\Azura\Exception\CsrfValidation $e) {
                 return $response->withStatus(403)
                     ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
             }

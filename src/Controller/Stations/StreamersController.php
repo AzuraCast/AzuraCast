@@ -40,7 +40,7 @@ class StreamersController
         $backend = $request->getStationBackend();
 
         if (!$backend::supportsStreamers()) {
-            throw new \App\Exception(__('This feature is not currently supported on this station.'));
+            throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
 
         $view = $request->getView();

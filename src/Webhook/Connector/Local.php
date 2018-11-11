@@ -1,7 +1,7 @@
 <?php
 namespace App\Webhook\Connector;
 
-use App\Cache;
+use Azura\Cache;
 use App\Entity;
 use App\Event\SendWebhooks;
 use GuzzleHttp\Client;

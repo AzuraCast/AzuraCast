@@ -3,7 +3,7 @@ use \App\Entity\StationPlaylist;
 
 /** @var \App\Customization $customization */
 
-$local_time_offset = \App\Timezone::getOffsetMinutes(null);
+$local_time_offset = \Azura\Timezone::getOffsetMinutes(null);
 $local_time_hours = floor($local_time_offset / 60);
 $local_time_mins = $local_time_offset % 60;
 

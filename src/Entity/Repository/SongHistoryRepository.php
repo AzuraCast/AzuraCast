@@ -1,11 +1,12 @@
 <?php
 namespace App\Entity\Repository;
 
+use Azura\Doctrine\Repository;
 use Doctrine\ORM\NoResultException;
 use App\Entity;
 use Psr\Http\Message\UriInterface;
 
-class SongHistoryRepository extends BaseRepository
+class SongHistoryRepository extends Repository
 {
     public function getNextSongForStation(Entity\Station $station, $is_autodj = false)
     {

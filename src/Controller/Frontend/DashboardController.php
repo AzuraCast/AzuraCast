@@ -2,9 +2,8 @@
 namespace App\Controller\Frontend;
 
 use App\Acl;
-use App\Cache;
+use Azura\Cache;
 use App\Http\Router;
-use App\Url;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use App\Entity;

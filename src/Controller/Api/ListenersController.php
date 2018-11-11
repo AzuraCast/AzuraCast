@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Cache;
+use Azura\Cache;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;

@@ -5,8 +5,9 @@ use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\FrontendAbstract;
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class StationRepository extends BaseRepository
+class StationRepository extends Repository
 {
     /**
      * @return mixed

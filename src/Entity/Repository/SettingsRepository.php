@@ -2,8 +2,9 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class SettingsRepository extends BaseRepository
+class SettingsRepository extends Repository
 {
     /** @var array */
     protected static $settings;

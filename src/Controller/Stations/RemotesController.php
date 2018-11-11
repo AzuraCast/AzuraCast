@@ -42,7 +42,7 @@ class RemotesController
     {
         $station = $request->getStation();
 
-        /** @var Entity\Repository\BaseRepository $remote_repo */
+        /** @var \Azura\Doctrine\Repository $remote_repo */
         $remote_repo = $this->em->getRepository(Entity\StationRemote::class);
 
         $form = new \AzuraForms\Form($this->form_config);

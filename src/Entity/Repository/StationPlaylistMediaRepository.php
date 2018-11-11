@@ -2,13 +2,14 @@
 
 namespace App\Entity\Repository;
 
-use App\Cache;
+use Azura\Cache;
+use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
 use Doctrine\ORM\NoResultException;
 use App\Entity;
 
-class StationPlaylistMediaRepository extends BaseRepository
+class StationPlaylistMediaRepository extends Repository
 {
     /** @var int The time to live (in seconds) of cached playlist queues. */
     const CACHE_TTL = 43200;

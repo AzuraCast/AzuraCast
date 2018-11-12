@@ -28,6 +28,8 @@ class App extends \Azura\App
 
         $settings[Settings::IS_DOCKER] = APP_INSIDE_DOCKER;
 
+        define('APP_TESTING_MODE', (isset($settings[Settings::APP_ENV]) && Settings::ENV_TESTING === $settings[Settings::APP_ENV]));
+
         // Register the plugins engine.
         if (isset($values['autoloader'])) {
             $autoloader = $values['autoloader'];
@@ -50,7 +52,6 @@ class App extends \Azura\App
 
         define('APP_APPLICATION_ENV', $settings[Settings::APP_ENV]);
         define('APP_IN_PRODUCTION', $settings->isProduction());
-        define('APP_TESTING_MODE', $settings->isTesting());
 
         if (null !== $plugins) {
             $plugins->registerServices($di);

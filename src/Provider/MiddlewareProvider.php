@@ -50,8 +50,8 @@ class MiddlewareProvider implements ServiceProviderInterface
          */
 
         $di[Middleware\Module\Admin::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
+            /** @var Azura\Config $config */
+            $config = $di[Azura\Config::class];
 
             return new Middleware\Module\Admin(
                 $di[App\Acl::class],
@@ -67,7 +67,7 @@ class MiddlewareProvider implements ServiceProviderInterface
             $api_repo = $em->getRepository(Entity\ApiKey::class);
 
             return new Middleware\Module\Api(
-                $di[App\Session::class],
+                $di[Azura\Session::class],
                 $api_repo
             );
         };

@@ -30,7 +30,7 @@ class RadioProvider implements ServiceProviderInterface
         $di[AutoDJ::class] = function($di) {
             return new AutoDJ(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\EventDispatcher::class]
+                $di[\Azura\EventDispatcher::class]
             );
         };
 
@@ -47,7 +47,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
-                $di[\App\EventDispatcher::class],
+                $di[\Azura\EventDispatcher::class],
                 $di[AutoDJ::class]
             );
         };
@@ -57,7 +57,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
-                $di[\App\EventDispatcher::class]
+                $di[\Azura\EventDispatcher::class]
             );
         };
 
@@ -66,7 +66,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
-                $di[\App\EventDispatcher::class],
+                $di[\Azura\EventDispatcher::class],
                 $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
@@ -77,7 +77,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
-                $di[\App\EventDispatcher::class],
+                $di[\Azura\EventDispatcher::class],
                 $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
@@ -88,7 +88,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
-                $di[\App\EventDispatcher::class],
+                $di[\Azura\EventDispatcher::class],
                 $di[\GuzzleHttp\Client::class],
                 $di['router']
             );

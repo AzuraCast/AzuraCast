@@ -1,10 +1,9 @@
 <?php
 namespace App\Webhook;
 
-use App\Config;
 use App\Entity;
 use App\Event\SendWebhooks;
-use App\Exception;
+use Azura\Exception;
 use App\Provider\WebhookProvider;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;

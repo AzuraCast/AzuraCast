@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Doctrine\Paginator;
+use Azura\Doctrine\Paginator;
 use App\Utilities;
 use App\ApiUtilities;
 use Doctrine\ORM\EntityManager;
@@ -155,7 +155,7 @@ class RequestsController
             $request_repo->submit($station, $media_id);
 
             return $response->withJson('Request submitted successfully.');
-        } catch (\App\Exception $e) {
+        } catch (\Azura\Exception $e) {
             return $response->withJson($e->getMessage(), 400);
         }
     }

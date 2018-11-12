@@ -35,7 +35,7 @@ class MountsController
         $frontend = $request->getStationFrontend();
 
         if (!$frontend::supportsMounts()) {
-            throw new \App\Exception(__('This feature is not currently supported on this station.'));
+            throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/mounts/index', [

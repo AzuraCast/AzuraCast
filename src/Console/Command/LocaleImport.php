@@ -1,6 +1,7 @@
 <?php
 namespace App\Console\Command;
 
+use Azura\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,7 +21,7 @@ class LocaleImport extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $app_settings = $this->get('app_settings');
+        $app_settings = $this->get('settings');
         $locales = $app_settings['locale']['supported'];
 
         $locale_base = APP_INCLUDE_ROOT.'/resources/locale';

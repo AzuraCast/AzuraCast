@@ -11,8 +11,8 @@ class AdminProvider implements ServiceProviderInterface
     public function register(Container $di)
     {
         $di[Admin\ApiController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Admin\ApiController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -21,8 +21,8 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\BrandingController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Admin\BrandingController(
                 $di[Entity\Repository\SettingsRepository::class],
@@ -31,8 +31,8 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\CustomFieldsController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Admin\CustomFieldsController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -49,8 +49,8 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\PermissionsController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             /** @var \Doctrine\ORM\EntityManager $em */
             $em = $di[\Doctrine\ORM\EntityManager::class];
@@ -71,8 +71,8 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\SettingsController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Admin\SettingsController(
                 $di[Entity\Repository\SettingsRepository::class],
@@ -81,12 +81,12 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\StationsController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Admin\StationsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
+                $di[\Azura\Cache::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\App\Radio\Configuration::class],
                 $config->get('forms/station'),
@@ -95,13 +95,13 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\UsersController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             /** @var \Doctrine\ORM\EntityManager $em */
             $em = $di[\Doctrine\ORM\EntityManager::class];
 
-            /** @var Entity\Repository\BaseRepository $role_repo */
+            /** @var \Azura\Doctrine\Repository $role_repo */
             $role_repo = $em->getRepository(Entity\Role::class);
 
             return new Admin\UsersController(
@@ -114,8 +114,8 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\Install\ShoutcastController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Admin\Install\ShoutcastController(
                 $config->get('forms/install_shoutcast')

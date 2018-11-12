@@ -11,7 +11,7 @@ class ApiController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Entity\Repository\BaseRepository */
+    /** @var \Azura\Doctrine\Repository */
     protected $record_repo;
 
     /** @var array */

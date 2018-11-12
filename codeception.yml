@@ -19,24 +19,13 @@ coverage:
   include:
    - src/*
   exclude:
-   # Loaded before tests
-   - src/Tests/Module.php
-   - src/Doctrine/EntityManagerFactory.php
-  
-   # Not used in entire application
-   - src/Doctrine/Platform/*.php
-   - src/Doctrine/Paginate/*.php
-
    # Used in application, but not used in tests
    - src/Radio/Frontend/ShoutCast2.php
    - src/Console/Command/*.php
-   - src/Doctrine/Logger/EchoSQL.php
-   - src/Session/Temporary.php
    - src/Console/Command/*.php
    - src/Entity/Fixture/*
    - src/Entity/Migration/*
   
    # Exceptions
-   - src/Exception.php
    - src/Exception/*.php
    - src/Mvc/ErrorHandler.php

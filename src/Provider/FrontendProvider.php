@@ -13,7 +13,7 @@ class FrontendProvider implements ServiceProviderInterface
             return new Frontend\AccountController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
-                $di[\App\RateLimit::class],
+                $di[\Azura\RateLimit::class],
                 $di[\App\Acl::class]
             );
         };
@@ -22,7 +22,7 @@ class FrontendProvider implements ServiceProviderInterface
             return new Frontend\DashboardController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Acl::class],
-                $di[\App\Cache::class],
+                $di[\Azura\Cache::class],
                 $di[\InfluxDB\Database::class],
                 $di[\App\Radio\Adapters::class],
                 $di['router']
@@ -36,20 +36,20 @@ class FrontendProvider implements ServiceProviderInterface
         };
 
         $di[Frontend\ProfileController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Frontend\ProfileController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/profile', [
-                    'settings' => $di['app_settings'],
+                    'settings' => $di['settings'],
                 ])
             );
         };
 
         $di[Frontend\ApiKeysController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Frontend\ApiKeysController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -62,8 +62,8 @@ class FrontendProvider implements ServiceProviderInterface
         };
 
         $di[Frontend\SetupController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
 
             return new Frontend\SetupController(
                 $di[\Doctrine\ORM\EntityManager::class],

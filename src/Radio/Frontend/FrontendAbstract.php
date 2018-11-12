@@ -1,7 +1,7 @@
 <?php
 namespace App\Radio\Frontend;
 
-use App\EventDispatcher;
+use Azura\EventDispatcher;
 use App\Http\Router;
 use App\Entity;
 use Doctrine\ORM\EntityManager;
@@ -158,7 +158,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
 
         if ( $use_radio_proxy
             || (!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER)
-            || APP_IS_SECURE) {
+            || 'https' === $base_url->getScheme()) {
             // Web proxy support.
             return $base_url
                 ->withPath($base_url->getPath().'/radio/' . $radio_port);

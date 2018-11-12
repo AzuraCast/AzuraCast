@@ -5,9 +5,11 @@
  * @var \App\Auth $auth
  * @var \App\Acl $acl
  * @var \App\Http\Router $router
- * @var \App\Session\Flash $flash
+ * @var \Azura\Session\Flash $flash
  * @var \App\Customization $customization
- * @var \App\Assets $assets
+ * @var \Azura\Assets $assets
+ * @var \App\Version $version
+ * @var \App\Http\Request $request
  * @var array $app_settings
  */
 ?>
@@ -40,7 +42,7 @@ echo $assets->js();
 
 <?php if (!$customization->hideProductName() && !$hide_footer): ?>
     <footer id="footer" class="footer-alt" role="contentinfo">
-        <?=sprintf(__('Powered by %s'), '<a href="https://azuracast.com/" target="_blank">'.$app_settings['name'].'</a>'.' ') ?><br>
+        <?=sprintf(__('Powered by %s'), '<a href="https://azuracast.com/" target="_blank">'.$settings['name'].'</a>'.' ') ?><br>
         <?=sprintf(__('Mascot designed by %s'), '<a href="https://tysontan.deviantart.com/" target="_blank">Tyson Tan</a>') ?>
     </footer>
 <?php endif; ?>

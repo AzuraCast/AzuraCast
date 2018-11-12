@@ -1,7 +1,7 @@
 <?php
 namespace App\Radio;
 
-use App\EventDispatcher;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use fXmlRpc\Exception\FaultException;

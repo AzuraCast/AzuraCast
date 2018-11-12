@@ -31,7 +31,7 @@ return [
                     [
                         'label' => __('System Default Time Zone'),
                         'description' => __('For users who have not customized their time zone, all times displayed on the site will be based on this time zone.'),
-                        'options' => \App\Timezone::fetchSelect(),
+                        'options' => \Azura\Timezone::fetchSelect(),
                         'default' => 'UTC',
                     ],
                 ],

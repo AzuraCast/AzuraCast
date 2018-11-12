@@ -1,10 +1,10 @@
 <?php
 namespace App\Sync\Task;
 
-use App\Cache;
+use Azura\Cache;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
-use App\EventDispatcher;
+use Azura\EventDispatcher;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;

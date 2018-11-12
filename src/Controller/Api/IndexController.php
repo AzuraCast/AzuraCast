@@ -46,7 +46,7 @@ class IndexController
      */
     public function timeAction(Request $request, Response $response): Response
     {
-        $tz_info = \App\Timezone::getInfo();
+        $tz_info = \Azura\Timezone::getInfo();
         return $response->withJson(new Entity\Api\Time($tz_info));
     }
 }

@@ -3,13 +3,14 @@ namespace App\Console\Command;
 
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
+use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DjOff extends \App\Console\Command\CommandAbstract
+class DjOff extends CommandAbstract
 {
     /**
      * {@inheritdoc}

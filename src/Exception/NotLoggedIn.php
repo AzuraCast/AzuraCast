@@ -4,7 +4,7 @@ namespace App\Exception;
 use Monolog\Logger;
 use Throwable;
 
-class NotLoggedIn extends \App\Exception
+class NotLoggedIn extends \Azura\Exception
 {
     protected $logger_level = Logger::INFO;
 

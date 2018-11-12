@@ -3,7 +3,7 @@ namespace App\Exception;
 
 use Monolog\Logger;
 
-class PermissionDenied extends \App\Exception
+class PermissionDenied extends \Azura\Exception
 {
     protected $logger_level = Logger::INFO;
 

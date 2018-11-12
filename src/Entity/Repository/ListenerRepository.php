@@ -2,9 +2,10 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 use Doctrine\ORM\NoResultException;
 
-class ListenerRepository extends BaseRepository
+class ListenerRepository extends Repository
 {
     /**
      * Get the number of unique listeners for a station during a specified time period.

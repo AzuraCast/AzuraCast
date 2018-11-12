@@ -5,12 +5,15 @@
  * @var \App\Auth $auth
  * @var \App\Acl $acl
  * @var \App\Http\Router $router
- * @var \App\Session\Flash $flash
+ * @var \Azura\Session\Flash $flash
  * @var \App\Customization $customization
- * @var \App\Assets $assets
+ * @var \Azura\Assets $assets
  * @var \App\Version $version
+ * @var \App\Http\Request $request
  * @var array $app_settings
  */
+
+$user = $request->getUser();
 ?>
 <html>
 <head>
@@ -131,7 +134,7 @@ echo $assets->js();
 </section>
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$app_settings['name'].'</a> &bull; '.$version->getVersionText().' &bull; '.(APP_INSIDE_DOCKER ? 'Docker' : 'Traditional').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
+    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$settings['name'].'</a> &bull; '.$version->getVersionText().' &bull; '.(APP_INSIDE_DOCKER ? 'Docker' : 'Traditional').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
     <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>', 'https://www.azuracast.com/donate.html') ?>
 </footer>
 

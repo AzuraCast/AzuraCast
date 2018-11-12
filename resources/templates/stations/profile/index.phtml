@@ -7,12 +7,14 @@ $this->layout('main', [
     'sidebar_tab' => 'profile',
 ]);
 
-/** @var \App\Assets $assets */
+/** @var \Azura\Assets $assets */
 $assets
     ->load('vue')
     ->load('radio')
     ->load('clipboard')
     ->addInlineJs($this->fetch('stations/profile/index.js', ['nowplaying' => $nowplaying]), 99);
+
+$user = $request->getUser();
 ?>
 
 <div class="row">

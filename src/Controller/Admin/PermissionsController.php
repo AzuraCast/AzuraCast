@@ -65,7 +65,7 @@ class PermissionsController
 
     public function editAction(Request $request, Response $response, $id = null): Response
     {
-        /** @var Entity\Repository\BaseRepository $role_repo */
+        /** @var \Azura\Doctrine\Repository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 
         /** @var Entity\Repository\RolePermissionRepository $permission_repo */
@@ -114,7 +114,7 @@ class PermissionsController
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        /** @var Entity\Repository\BaseRepository $role_repo */
+        /** @var \Azura\Doctrine\Repository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 
         $record = $role_repo->find((int)$id);

@@ -40,6 +40,7 @@ class ProfileController
         $customization_form = new \AzuraForms\Form($this->form_config['groups']['customization'], $user_profile);
 
         return $request->getView()->renderToResponse($response, 'frontend/profile/index', [
+            'user' => $request->getUser(),
             'account_info_form' => $account_info_form,
             'customization_form' => $customization_form,
         ]);

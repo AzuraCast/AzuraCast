@@ -1,7 +1,7 @@
 <?php
 namespace App\Sync\Task;
 
-use App\Exception;
+use Azura\Exception;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use App\Entity;

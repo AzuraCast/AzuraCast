@@ -2,8 +2,9 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class ApiKeyRepository extends BaseRepository
+class ApiKeyRepository extends Repository
 {
     /**
      * Given an API key string in the format `identifier:verifier`, find and authenticate an API key.

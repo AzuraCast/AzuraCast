@@ -14,7 +14,7 @@ class CustomFieldsController
     /** @var array */
     protected $form_config;
 
-    /** @var Entity\Repository\BaseRepository */
+    /** @var \Azura\Doctrine\Repository */
     protected $record_repo;
 
     /** @var string */

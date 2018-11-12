@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Stations\Files;
 
-use App\Cache;
+use Azura\Cache;
 use App\Http\Router;
 use Doctrine\ORM\EntityManager;
 use App\Entity;

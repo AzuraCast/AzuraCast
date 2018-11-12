@@ -2,7 +2,7 @@
 namespace App\Middleware\Module;
 
 use App\Entity;
-use App\Session;
+use Azura\Session;
 use App\Http\Request;
 use App\Http\Response;
 

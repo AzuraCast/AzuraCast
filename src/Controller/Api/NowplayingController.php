@@ -1,9 +1,9 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Cache;
+use Azura\Cache;
 use App\Event\Radio\LoadNowPlaying;
-use App\EventDispatcher;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;

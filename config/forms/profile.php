@@ -81,7 +81,7 @@ return [
                         'label' => __('Time Zone'),
                         'description' => __('All times displayed on the site will be based on this time zone.') . '<br>' . sprintf(__('Current server time is <b>%s</b>.'),
                                 date('g:ia')),
-                        'options' => \App\Timezone::fetchSelect(),
+                        'options' => \Azura\Timezone::fetchSelect(),
                         'default' => 'UTC',
                     ]
                 ],

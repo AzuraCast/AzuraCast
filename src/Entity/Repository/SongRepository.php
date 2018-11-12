@@ -2,8 +2,9 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class SongRepository extends BaseRepository
+class SongRepository extends Repository
 {
     /**
      * Get a list of all song IDs.

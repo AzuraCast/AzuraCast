@@ -3,10 +3,11 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use Azura\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateApiDocs extends \App\Console\Command\CommandAbstract
+class GenerateApiDocs extends CommandAbstract
 {
     /**
      * {@inheritdoc}
@@ -37,7 +38,7 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
             ],
         ]);
 
-        $yaml_path = APP_INCLUDE_STATIC.'/api/openapi.yml';
+        $yaml_path = APP_INCLUDE_ROOT.'/web/static/api/openapi.yml';
         $yaml = $oa->toYaml();
 
         file_put_contents($yaml_path, $yaml);

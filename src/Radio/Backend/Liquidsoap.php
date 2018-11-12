@@ -3,7 +3,7 @@ namespace App\Radio\Backend;
 
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\EventDispatcher;
+use Azura\EventDispatcher;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManager;
@@ -693,7 +693,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param $music_file
      * @return array
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function request(Entity\Station $station, $music_file)
     {
@@ -713,7 +713,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @return array
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function skip(Entity\Station $station)
     {
@@ -728,7 +728,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @return array
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function disconnectStreamer(Entity\Station $station)
     {
@@ -754,14 +754,14 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param $command_str
      * @return array
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function command(Entity\Station $station, $command_str)
     {
         $fp = stream_socket_client('tcp://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $this->_getTelnetPort($station), $errno, $errstr, 20);
 
         if (!$fp) {
-            throw new \App\Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
+            throw new \Azura\Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
         }
 
         fwrite($fp, str_replace(["\\'", '&amp;'], ["'", '&'], urldecode($command_str)) . "\nquit\n");

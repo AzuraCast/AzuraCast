@@ -1,11 +1,12 @@
 <?php
 namespace App\Console\Command;
 
+use Azura\Console\Command\CommandAbstract;
 use InfluxDB\Database;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SetupInflux extends \App\Console\Command\CommandAbstract
+class SetupInflux extends CommandAbstract
 {
     /**
      * {@inheritdoc}

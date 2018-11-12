@@ -2,8 +2,9 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Azura\Doctrine\Repository;
 
-class StationStreamerRepository extends BaseRepository
+class StationStreamerRepository extends Repository
 {
     /**
      * Attempt to authenticate a streamer.

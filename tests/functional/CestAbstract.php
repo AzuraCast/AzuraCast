@@ -16,7 +16,7 @@ abstract class CestAbstract
      */
     protected $em;
 
-    protected function _inject(\App\Tests\Module $tests_module)
+    protected function _inject(\Azura\Tests\Module $tests_module)
     {
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;

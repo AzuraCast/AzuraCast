@@ -46,7 +46,7 @@ class Flow
      * Process the request and return a response if necessary, or the completed file details if successful.
      *
      * @return Response|array|null
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function process()
     {
@@ -82,7 +82,7 @@ class Flow
             foreach ($files as $file) {
                 /** @var UploadedFileInterface $file */
                 if ($file->getError() !== UPLOAD_ERR_OK) {
-                    throw new \App\Exception('Error ' . $file->getError() . ' in file ' . $flowFilename);
+                    throw new \Azura\Exception('Error ' . $file->getError() . ' in file ' . $flowFilename);
                 }
 
                 // the file is stored in a temporary directory
@@ -91,7 +91,7 @@ class Flow
                 }
 
                 if ($file->getSize() !== $currentChunkSize) {
-                    throw new \App\Exception('File size of '.$file->getSize().' does not match expected size of '.$currentChunkSize);
+                    throw new \Azura\Exception('File size of '.$file->getSize().' does not match expected size of '.$currentChunkSize);
                 }
 
                 $file->moveTo($chunkPath);

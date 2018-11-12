@@ -34,7 +34,7 @@ class PublicController
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new \App\Exception(__('Station not found!'));
+            throw new \Azura\Exception(__('Station not found!'));
         }
 
         $frontend_adapter = $request->getStationFrontend();

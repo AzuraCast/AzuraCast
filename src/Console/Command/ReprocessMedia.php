@@ -1,12 +1,13 @@
 <?php
 namespace App\Console\Command;
 
+use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity;
 
-class ReprocessMedia extends \App\Console\Command\CommandAbstract
+class ReprocessMedia extends CommandAbstract
 {
     /**
      * {@inheritdoc}

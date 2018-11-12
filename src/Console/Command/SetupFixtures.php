@@ -1,6 +1,7 @@
 <?php
 namespace App\Console\Command;
 
+use Azura\Console\Command\CommandAbstract;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -9,7 +10,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SetupFixtures extends \App\Console\Command\CommandAbstract
+class SetupFixtures extends CommandAbstract
 {
     /**
      * {@inheritdoc}

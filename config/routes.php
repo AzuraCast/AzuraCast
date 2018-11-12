@@ -1,6 +1,7 @@
 <?php
 use App\Controller;
 use App\Middleware;
+use Azura\Middleware as AzuraMiddleware;
 
 return function(\Slim\App $app)
 {
@@ -115,7 +116,7 @@ return function(\Slim\App $app)
 
     })
         ->add(Middleware\Module\Admin::class)
-        ->add(Middleware\EnableView::class)
+        ->add(AzuraMiddleware\EnableView::class)
         ->add([Middleware\Permissions::class, 'view administration'])
         ->add(Middleware\RequireLogin::class);
 
@@ -167,13 +168,13 @@ return function(\Slim\App $app)
 
         $this->get('/stations', Controller\Api\Stations\IndexController::class.':listAction')
             ->setName('api:stations:list')
-            ->add([Middleware\RateLimit::class, 'api', 5, 2]);
+            ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
 
         $this->group('/station/{station}', function () {
 
             $this->get('', Controller\Api\Stations\IndexController::class.':indexAction')
                 ->setName('api:stations:index')
-                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
+                ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
 
             $this->get('/nowplaying', Controller\Api\NowplayingController::class.':indexAction');
 
@@ -188,7 +189,7 @@ return function(\Slim\App $app)
 
             $this->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\RequestsController::class.':submitAction')
                 ->setName('api:requests:submit')
-                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
+                ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
 
             $this->get('/listeners', Controller\Api\ListenersController::class.':indexAction')
                 ->setName('api:listeners:index')
@@ -257,12 +258,12 @@ return function(\Slim\App $app)
         }
 
     })
-        ->add(Middleware\EnableView::class)
+        ->add(AzuraMiddleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);
 
     $app->map(['GET', 'POST'], '/login', Controller\Frontend\AccountController::class.':loginAction')
         ->setName('account:login')
-        ->add(Middleware\EnableView::class);
+        ->add(AzuraMiddleware\EnableView::class);
 
     $app->group('/setup', function () {
 
@@ -282,7 +283,7 @@ return function(\Slim\App $app)
             ->setName('setup:settings');
 
     })
-        ->add(Middleware\EnableView::class);
+        ->add(AzuraMiddleware\EnableView::class);
 
     $app->group('/public/{station}', function () {
 
@@ -300,7 +301,7 @@ return function(\Slim\App $app)
 
     })
         ->add(Middleware\GetStation::class)
-        ->add(Middleware\EnableView::class);
+        ->add(AzuraMiddleware\EnableView::class);
 
     $app->group('/station/{station}', function () {
 
@@ -498,7 +499,7 @@ return function(\Slim\App $app)
         ->add(Middleware\Module\Stations::class)
         ->add([Middleware\Permissions::class, 'view station management', true])
         ->add(Middleware\GetStation::class)
-        ->add(Middleware\EnableView::class)
+        ->add(AzuraMiddleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);
 
 };

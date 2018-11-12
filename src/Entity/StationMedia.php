@@ -657,7 +657,7 @@ class StationMedia
         $getID3 = new \getID3;
         $getID3->setOption(['encoding' => 'UTF8']);
 
-        require_once(APP_INCLUDE_VENDOR . '/james-heinrich/getid3/getid3/write.php');
+        require_once(APP_INCLUDE_ROOT . '/vendor/james-heinrich/getid3/getid3/write.php');
 
         $tagwriter = new \getid3_writetags;
         $tagwriter->filename = $this->getFullPath();

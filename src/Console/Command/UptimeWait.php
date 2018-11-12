@@ -2,13 +2,14 @@
 namespace App\Console\Command;
 
 use App;
+use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UptimeWait extends \App\Console\Command\CommandAbstract
+class UptimeWait extends CommandAbstract
 {
     /**
      * {@inheritdoc}

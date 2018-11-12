@@ -3,9 +3,8 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Event\Radio\GetNextSong;
-use App\EventDispatcher;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use App\Cache;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface

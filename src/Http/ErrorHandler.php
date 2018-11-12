@@ -2,8 +2,8 @@
 namespace App\Http;
 
 use App\Acl;
-use App\View;
-use App\Session;
+use Azura\View;
+use Azura\Session;
 use App\Entity;
 use Monolog\Logger;
 
@@ -33,7 +33,7 @@ class ErrorHandler
      * @param Logger $logger
      * @param Session $session
      * @param Router $router
-     * @param \App\View $view
+     * @param View $view
      */
     public function __construct(
         Acl $acl,
@@ -52,8 +52,13 @@ class ErrorHandler
 
     public function __invoke(Request $req, Response $res, \Throwable $e)
     {
+        if (!function_exists('__')) {
+            $translator = new \Gettext\Translator();
+            $translator->register();
+        }
+
         // Don't log errors that are internal to the application.
-        $e_level = ($e instanceof \App\Exception)
+        $e_level = ($e instanceof \Azura\Exception)
             ? $e->getLoggerLevel()
             : Logger::ERROR;
 
@@ -132,7 +137,7 @@ class ErrorHandler
             $handler = new \Whoops\Handler\PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');
 
-            if ($e instanceof \App\Exception) {
+            if ($e instanceof \Azura\Exception) {
                 $extra_tables = $e->getExtraData();
                 foreach($extra_tables as $legend => $data) {
                     $handler->addDataTable($legend, $data);

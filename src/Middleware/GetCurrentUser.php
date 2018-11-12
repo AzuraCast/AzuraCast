@@ -29,7 +29,7 @@ class GetCurrentUser
      * @param Response $response
      * @param callable $next
      * @return Response
-     * @throws \App\Exception
+     * @throws \Azura\Exception
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {

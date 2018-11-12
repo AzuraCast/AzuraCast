@@ -14,7 +14,7 @@ return function (\Azura\EventDispatcher $dispatcher)
         // Check HTTPS setting and enforce Content Security Policy accordingly.
         $app->add(Middleware\EnforceSecurity::class);
 
-    }, 1);
+    }, 2);
 
     // Build CLI commands
     $dispatcher->addListener(Azura\Event\BuildConsoleCommands::NAME, function(Azura\Event\BuildConsoleCommands $event) {

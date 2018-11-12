@@ -3,7 +3,7 @@ use App\Entity\StationPlaylist;
 
 $this->layout('main', ['title' => __('Playlists'), 'manual' => true]);
 
-/** @var \App\Assets $assets */
+/** @var \Azura\Assets $assets */
 $assets->load('fullcalendar')
     ->addInlineJs($this->fetch('stations/playlists/index.js', [
         'schedule_now' => $schedule_now,

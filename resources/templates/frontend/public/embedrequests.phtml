@@ -7,7 +7,7 @@ $this->layout('minimal', [
     'hide_footer' => true
 ]);
 
-/** @var \App\Assets $assets */
+/** @var \Azura\Assets $assets */
 $assets
     ->load('bootgrid')
     ->addInlineJs($this->fetch('frontend/public/embedrequests.js', ['station' => $station]));

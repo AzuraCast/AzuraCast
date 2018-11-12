@@ -13,7 +13,7 @@ class FrontendProvider implements ServiceProviderInterface
             return new Frontend\AccountController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
-                $di[\App\RateLimit::class],
+                $di[\Azura\RateLimit::class],
                 $di[\App\Acl::class]
             );
         };
@@ -42,7 +42,7 @@ class FrontendProvider implements ServiceProviderInterface
             return new Frontend\ProfileController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/profile', [
-                    'settings' => $di['app_settings'],
+                    'settings' => $di['settings'],
                 ])
             );
         };

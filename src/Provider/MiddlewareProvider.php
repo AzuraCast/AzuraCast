@@ -5,6 +5,7 @@ use App\Middleware;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 use App;
+use Azura;
 use App\Entity;
 
 class MiddlewareProvider implements ServiceProviderInterface
@@ -14,7 +15,7 @@ class MiddlewareProvider implements ServiceProviderInterface
         $di[Middleware\EnforceSecurity::class] = function($di) {
             return new Middleware\EnforceSecurity(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[App\Assets::class]
+                $di[Azura\Assets::class]
             );
         };
 

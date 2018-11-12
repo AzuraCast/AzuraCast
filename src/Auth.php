@@ -3,6 +3,7 @@ namespace App;
 
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
+use Azura\Session;
 use Azura\Session\NamespaceInterface;
 
 class Auth

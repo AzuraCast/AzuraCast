@@ -168,7 +168,7 @@ class StationsProvider implements ServiceProviderInterface
             $webhook_forms = [];
             $config_injections = [
                 'router' => $di['router'],
-                'app_settings' => $di['app_settings'],
+                'app_settings' => $di['settings'],
                 'triggers' => $webhook_config['triggers'],
             ];
             foreach($webhook_config['webhooks'] as $webhook_key => $webhook_info) {

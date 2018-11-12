@@ -1,7 +1,7 @@
 <?php
 namespace App\Middleware;
 
-use App\Assets;
+use Azura\Assets;
 use App\Entity;
 use Doctrine\ORM\EntityManager;
 use App\Http\Request;

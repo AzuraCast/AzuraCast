@@ -12,7 +12,7 @@ $this->layout('minimal', [
             <?php if ($customization->hideProductName()): ?>
                 <?=__('Welcome!') ?>
             <?php else: ?>
-                <?=sprintf(__('Welcome to %s!'), $app_settings['name']) ?>
+                <?=sprintf(__('Welcome to %s!'), $settings['name']) ?>
             <?php endif; ?>
             <?php if (!empty($customization->getInstanceName())): ?>
                 <small class="text-muted"><?=$this->e($customization->getInstanceName()) ?></small>

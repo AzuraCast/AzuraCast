@@ -6,6 +6,8 @@
 /** @var $assets \App\Assets */
 
 $assets->addInlineJs($this->fetch('stations/sidebar.js'));
+
+$user = $request->getUser();
 ?>
 <div class="navdrawer-header">
     <a class="navbar-brand px-0" href="<?=$router->fromHere('stations:profile:index') ?>">

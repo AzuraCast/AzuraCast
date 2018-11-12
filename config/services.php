@@ -154,7 +154,7 @@ return function (\Azura\Container $di)
         );
     };
 
-    $di[\App\Assets::class] = function ($di) {
+    $di[\Azura\Assets::class] = function ($di) {
         /** @var \Azura\Config $config */
         $config = $di[\Azura\Config::class];
 
@@ -166,12 +166,12 @@ return function (\Azura\Container $di)
             $versioned_files = json_decode(file_get_contents($assets_file), true);
         }
 
-        return new \App\Assets($libraries, $versioned_files);
+        return new \Azura\Assets($libraries, $versioned_files);
     };
 
     $di[\App\Customization::class] = function ($di) {
         return new \App\Customization(
-            $di['app_settings'],
+            $di['settings'],
             $di[\App\Entity\Repository\SettingsRepository::class]
         );
     };

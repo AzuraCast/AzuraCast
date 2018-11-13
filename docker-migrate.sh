@@ -57,6 +57,8 @@ read -n 1 -s -r -p "Uninstall complete. Press any key to continue (Install Azura
 docker-compose pull
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml up -d
 
+sleep 15
+
 # Run Docker AzuraCast-specific installer
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm influxdb import_folder /tmp/migration/
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml exec mariadb import_file /tmp/database.sql

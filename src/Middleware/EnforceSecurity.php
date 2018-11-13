@@ -40,13 +40,10 @@ class EnforceSecurity
         $always_use_ssl = (bool)$this->settings_repo->getSetting('always_use_ssl', 0);
         $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 
-        $uri = $request->getUri();
-        $uri_is_https = ($uri->getScheme() === 'https');
-
         // Assemble Content Security Policy (CSP)
         $csp = [];
 
-        if ($uri_is_https) {
+        if ($request->isSecure()) {
 
             $csp[] = 'upgrade-insecure-requests';
 
@@ -56,7 +53,8 @@ class EnforceSecurity
             ini_set('session.cookie_secure', 1);
 
             // Redirect if URL is not currently secure.
-            if (!$uri_is_https) {
+            if (!$request->isSecure()) {
+                $uri = $request->getUri();
                 if (!$uri->getPort()) {
                     $uri = $uri->withPort(443);
                 }

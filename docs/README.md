@@ -10,5 +10,5 @@ features:
   details: Manage every aspect of your radio station via a simple yet powerful web interface.
 - title: Runs Anywhere
   details: Install AzuraCast directly onto any Ubuntu VPS, or run it on any server (or desktop) that supports Docker.
-footer: Apache 2.0 License | Copyright © 2012-present Buster "Silver Eagle" Neece
+footer: Copyright ©2012-present Buster "Silver Eagle" Neece and AzuraCast Contributors
 ---

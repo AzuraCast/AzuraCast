@@ -33,7 +33,8 @@ module.exports = {
             '/docker_sh',
             '/mascot',
             '/developing',
-            '/donate'
+            '/donate',
+            '/privacy'
         ]
     }
 }

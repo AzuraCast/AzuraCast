@@ -26,7 +26,7 @@ class AdminProvider implements ServiceProviderInterface
 
             return new Admin\BrandingController(
                 $di[Entity\Repository\SettingsRepository::class],
-                $config->get('forms/branding', ['settings' => $di['app_settings']])
+                $config->get('forms/branding', ['settings' => $di['settings']])
             );
         };
 

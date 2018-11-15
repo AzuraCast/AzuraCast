@@ -28,7 +28,8 @@
     "studio24/rotate": "^1.0",
     "supervisorphp/supervisor": "^3.0",
     "symfony/finder": "^4.1",
-    "symfony/process": "^4.1"
+    "symfony/process": "^4.1",
+    "ramsey/uuid": "^3.8"
   },
   "require-dev": {
     "codeception/codeception": "^2.2",

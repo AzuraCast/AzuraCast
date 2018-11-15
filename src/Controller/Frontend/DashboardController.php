@@ -2,9 +2,11 @@
 namespace App\Controller\Frontend;
 
 use App\Acl;
+use App\Event\GetNotifications;
 use Azura\Cache;
 use App\Http\Router;
 use App\Radio\Adapters;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -31,29 +33,40 @@ class DashboardController
     /** @var Adapters */
     protected $adapter_manager;
 
+    /** @var EventDispatcher */
+    protected $dispatcher;
+
     /**
      * @param EntityManager $em
      * @param Acl $acl
      * @param Cache $cache
      * @param Database $influx
      * @param Adapters $adapter_manager
-     * @param Router $router
+     * @param EventDispatcher $dispatcher
+     *
      * @see \App\Provider\FrontendProvider
      */
-    public function __construct(EntityManager $em, Acl $acl, Cache $cache, Database $influx, Adapters $adapter_manager, Router $router)
-    {
+    public function __construct(
+        EntityManager $em,
+        Acl $acl,
+        Cache $cache,
+        Database $influx,
+        Adapters $adapter_manager,
+        EventDispatcher $dispatcher
+    ) {
         $this->em = $em;
         $this->acl = $acl;
         $this->cache = $cache;
         $this->influx = $influx;
         $this->adapter_manager = $adapter_manager;
-        $this->router = $router;
+        $this->dispatcher = $dispatcher;
     }
 
     public function indexAction(Request $request, Response $response): Response
     {
         $view = $request->getView();
         $user = $request->getUser();
+        $router = $request->getRouter();
 
         /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
@@ -71,6 +84,12 @@ class DashboardController
         if (empty($stations)) {
             return $view->renderToResponse($response, 'frontend/index/noaccess');
         }
+
+        // Get administrator notifications.
+        $notification_event = $this->dispatcher->dispatch(GetNotifications::NAME, new GetNotifications($user));
+
+
+        $notifications = $notification_event->getNotifications();
 
         $view_stations = [];
         $station_ids = [];
@@ -104,8 +123,8 @@ class DashboardController
                     'name' => $row->getName(),
                     'short_name' => $row->getShortName(),
                 ],
-                'public_url' => (string)$this->router->named('public:index', ['station' => $row->getShortName()]),
-                'manage_url' => (string)$this->router->named('stations:index:index', ['station' => $row->getId()]),
+                'public_url' => (string)$router->named('public:index', ['station' => $row->getShortName()]),
+                'manage_url' => (string)$router->named('stations:index:index', ['station' => $row->getId()]),
                 'stream_url' => (string)$frontend_adapter->getStreamUrl($row),
                 'np' => $np,
             ];
@@ -244,6 +263,7 @@ class DashboardController
             'stations' => ['stations' => $view_stations],
             'station_ids' => $station_ids,
             'metrics' => $metrics,
+            'notifications' => $notifications,
         ]);
     }
 }

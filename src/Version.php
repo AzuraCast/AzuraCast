@@ -36,6 +36,15 @@ class Version
     }
 
     /**
+     * @return string The long-form Git hash that represents the current commit of this installation.
+     */
+    public function getCommitHash(): string
+    {
+        $details = $this->getDetails();
+        return $details['commit'];
+    }
+
+    /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
      * @return array

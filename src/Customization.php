@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Entity\Settings;
 use App\Http\Request;
 use Gettext\Translations;
 use Gettext\Translator;
@@ -95,7 +96,7 @@ class Customization
      */
     public function getDefaultTimeZone(): string
     {
-        $global_tz = $this->settings_repo->getSetting('timezone');
+        $global_tz = $this->settings_repo->getSetting(Settings::TIMEZONE);
 
         if (!empty($global_tz)) {
             return $global_tz;
@@ -225,7 +226,7 @@ class Customization
         static $instance_name;
 
         if ($instance_name === null) {
-            $instance_name = $this->settings_repo->getSetting('instance_name', '');
+            $instance_name = $this->settings_repo->getSetting(Settings::INSTANCE_NAME, '');
         }
 
         return $instance_name;
@@ -238,7 +239,7 @@ class Customization
      */
     public function getPublicTheme()
     {
-        $public_theme = $this->settings_repo->getSetting('public_theme', null);
+        $public_theme = $this->settings_repo->getSetting(Settings::PUBLIC_THEME, null);
 
         if ($public_theme && in_array($public_theme, $this->app_settings['themes']['available'], true)) {
             return $public_theme;
@@ -254,7 +255,7 @@ class Customization
      */
     public function getCustomPublicCss()
     {
-        return (string)$this->settings_repo->getSetting('custom_css_public', '');
+        return (string)$this->settings_repo->getSetting(Settings::CUSTOM_CSS_PUBLIC, '');
     }
 
     /**
@@ -264,7 +265,7 @@ class Customization
      */
     public function getCustomPublicJs()
     {
-        return (string)$this->settings_repo->getSetting('custom_js_public', '');
+        return (string)$this->settings_repo->getSetting(Settings::CUSTOM_JS_PUBLIC, '');
     }
 
     /**
@@ -274,7 +275,7 @@ class Customization
      */
     public function getCustomInternalCss()
     {
-        return (string)$this->settings_repo->getSetting('custom_css_internal', '');
+        return (string)$this->settings_repo->getSetting(Settings::CUSTOM_CSS_INTERNAL, '');
     }
 
     /**
@@ -284,7 +285,7 @@ class Customization
      */
     public function hideProductName(): bool
     {
-        return (bool)$this->settings_repo->getSetting('hide_product_name', false);
+        return (bool)$this->settings_repo->getSetting(Settings::HIDE_PRODUCT_NAME, false);
     }
 
     /**
@@ -294,7 +295,7 @@ class Customization
      */
     public function hideAlbumArt(): bool
     {
-        return (bool)$this->settings_repo->getSetting('hide_album_art', false);
+        return (bool)$this->settings_repo->getSetting(Settings::HIDE_ALBUM_ART, false);
     }
 
     /**
@@ -304,7 +305,7 @@ class Customization
      */
     public function getDefaultAlbumArtUrl(): UriInterface
     {
-        $custom_url = trim($this->settings_repo->getSetting('default_album_art_url'));
+        $custom_url = trim($this->settings_repo->getSetting(Settings::DEFAULT_ALBUM_ART_URL));
 
         if (!empty($custom_url)) {
             return new Uri($custom_url);

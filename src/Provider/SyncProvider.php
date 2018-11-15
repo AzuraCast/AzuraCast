@@ -27,6 +27,7 @@ class SyncProvider implements ServiceProviderInterface
                 new \Pimple\ServiceIterator($di, [
                     Task\Analytics::class,
                     Task\RadioAutomation::class,
+                    Task\CheckForUpdates::class,
                     Task\HistoryCleanup::class,
                     Task\RotateLogs::class,
                 ])
@@ -37,6 +38,16 @@ class SyncProvider implements ServiceProviderInterface
             return new Task\Analytics(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\InfluxDB\Database::class]
+            );
+        };
+
+        $di[Task\CheckForUpdates::class] = function($di) {
+            return new Task\CheckForUpdates(
+                $di[\GuzzleHttp\Client::class],
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
+                $di['settings'],
+                $di[\App\Version::class]
             );
         };
 

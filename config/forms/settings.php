@@ -1,11 +1,12 @@
 <?php
+use App\Entity;
+
 return [
     'groups' => [
 
         'system' => [
             'elements' => [
-
-                'base_url' => [
+                Entity\Settings::BASE_URL => [
                     'text',
                     [
                         'label' => __('Site Base URL'),
@@ -18,7 +19,7 @@ return [
                     ]
                 ],
 
-                'instance_name' => [
+                Entity\Settings::INSTANCE_NAME => [
                     'text',
                     [
                         'label' => __('AzuraCast Instance Name'),
@@ -26,7 +27,7 @@ return [
                     ],
                 ],
 
-                'timezone' => [
+                Entity\Settings::TIMEZONE => [
                     'select',
                     [
                         'label' => __('System Default Time Zone'),
@@ -36,7 +37,7 @@ return [
                     ],
                 ],
 
-                'prefer_browser_url' => [
+                Entity\Settings::PREFER_BROWSER_URL => [
                     'radio',
                     [
                         'label' => __('Prefer Browser URL (If Available)'),
@@ -49,7 +50,7 @@ return [
                     ]
                 ],
 
-                'always_use_ssl' => [
+                Entity\Settings::ALWAYS_USE_SSL => [
                     'radio',
                     [
                         'label' => __('Always Use HTTPS'),
@@ -62,7 +63,7 @@ return [
                     ]
                 ],
 
-                'use_radio_proxy' => [
+                Entity\Settings::USE_RADIO_PROXY => [
                     'radio',
                     [
                         'label' => __('Use Web Proxy for Radio'),
@@ -75,7 +76,7 @@ return [
                     ]
                 ],
 
-                'history_keep_days' => [
+                Entity\Settings::HISTORY_KEEP_DAYS => [
                     'radio',
                     [
                         'label' => __('Days of Playback History to Keep'),
@@ -97,24 +98,46 @@ return [
 
         'privacy' => [
             'legend' => __('Privacy Controls'),
-            'description' => __('AzuraCast does not send your data to any external server. You can control how much data AzuraCast logs about your listeners here.'),
+            'description' => __('AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here.'),
 
             'elements' => [
 
-                'analytics' => [
+                Entity\Settings::LISTENER_ANALYTICS => [
                     'radio',
                     [
-                        'label' => __('Analytics Collection'),
+                        'label' => __('Listener Analytics Collection'),
                         'description' => __('Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.'),
 
                         'choices' => [
-                            \App\Entity\Analytics::LEVEL_ALL => __('<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics'),
-                            \App\Entity\Analytics::LEVEL_NO_IP => __('<b>Limited:</b> Only collect aggregate listener statistics'),
-                            \App\Entity\Analytics::LEVEL_NONE => __('<b>None:</b> Do not collect any listener analytics'),
+                            Entity\Analytics::LEVEL_ALL => __('<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics'),
+                            Entity\Analytics::LEVEL_NO_IP => __('<b>Limited:</b> Only collect aggregate listener statistics'),
+                            Entity\Analytics::LEVEL_NONE => __('<b>None:</b> Do not collect any listener analytics'),
                         ],
-                        'default' => \App\Entity\Analytics::LEVEL_ALL,
+                        'default' => Entity\Analytics::LEVEL_ALL,
                     ]
                 ],
+            ],
+        ],
+
+        'channels' => [
+            'legend' => __('AzuraCast Installation Telemetry'),
+            'description' => __('Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.', 'https://www.azuracast.com/privacy.html'),
+
+            'elements' => [
+
+                Entity\Settings::CENTRAL_UPDATES => [
+                    'radio',
+                    [
+                        'label' => __('Check for Updates and Announcements'),
+                        'description' => __('Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements.'),
+
+                        'choices' => [
+                            0 => __('No'),
+                            1 => __('Yes'),
+                        ],
+                        'default' => 1,
+                    ]
+                ]
 
             ],
         ],

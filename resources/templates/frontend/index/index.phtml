@@ -16,6 +16,20 @@ if ($metrics) {
 }
 ?>
 
+<?php if (!empty($notifications)): ?>
+    <?php foreach($notifications as $notification): ?>
+        <?php /** @var \App\Notification\Notification $notification */ ?>
+        <section class="card mb-4 border-<?=$notification->getType() ?>" role="region">
+            <div class="card-body">
+                <h3 class="card-title"><?=$notification->getTitle() ?></h3>
+                <p class="card-text">
+                    <?=$notification->getBody() ?>
+                </p>
+            </div>
+        </section>
+    <?php endforeach; ?>
+<?php endif; ?>
+
 <?php if ($metrics): ?>
 <div class="row">
     <div class="col-sm-6">

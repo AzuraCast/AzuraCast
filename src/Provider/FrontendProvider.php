@@ -25,7 +25,7 @@ class FrontendProvider implements ServiceProviderInterface
                 $di[\Azura\Cache::class],
                 $di[\InfluxDB\Database::class],
                 $di[\App\Radio\Adapters::class],
-                $di['router']
+                $di[\Azura\EventDispatcher::class]
             );
         };
 

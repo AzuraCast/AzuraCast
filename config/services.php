@@ -212,6 +212,9 @@ return function (\Azura\Container $di)
     // Middleware
     $di->register(new \App\Provider\MiddlewareProvider);
 
+    // Notifications
+    $di->register(new \App\Provider\NotificationProvider);
+
     // Controller groups
     $di->register(new \App\Provider\AdminProvider);
     $di->register(new \App\Provider\ApiProvider);

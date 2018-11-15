@@ -1,10 +1,12 @@
 <?php
+use App\Entity;
+
 return [
     'method' => 'post',
 
     'elements' => [
 
-        'public_theme' => [
+        Entity\Settings::PUBLIC_THEME => [
             'radio',
             [
                 'label' => __('Base Theme for Public Pages'),
@@ -17,7 +19,7 @@ return [
             ]
         ],
 
-        'hide_album_art' => [
+        Entity\Settings::HIDE_ALBUM_ART => [
             'radio',
             [
                 'label' => __('Hide Album Art on Public Pages'),
@@ -30,7 +32,7 @@ return [
             ]
         ],
 
-        'homepage_redirect_url' => [
+        Entity\Settings::HOMEPAGE_REDIRECT_URL => [
             'text',
             [
                 'label' => __('Homepage Redirect URL'),
@@ -39,7 +41,7 @@ return [
             ]
         ],
 
-        'default_album_art_url' => [
+        Entity\Settings::DEFAULT_ALBUM_ART_URL => [
             'text',
             [
                 'label' => __('Default Album Art URL'),
@@ -48,7 +50,7 @@ return [
             ],
         ],
 
-        'hide_product_name' => [
+        Entity\Settings::HIDE_PRODUCT_NAME => [
             'radio',
             [
                 'label' => __('Hide AzuraCast Branding on Public Pages'),
@@ -61,7 +63,7 @@ return [
             ]
         ],
 
-        'custom_css_public' => [
+        Entity\Settings::CUSTOM_CSS_PUBLIC => [
             'textarea',
             [
                 'label' => __('Custom CSS for Public Pages'),
@@ -72,7 +74,7 @@ return [
             ]
         ],
 
-        'custom_js_public' => [
+        Entity\Settings::CUSTOM_JS_PUBLIC => [
             'textarea',
             [
                 'label' => __('Custom JS for Public Pages'),
@@ -83,7 +85,7 @@ return [
             ]
         ],
 
-        'custom_css_internal' => [
+        Entity\Settings::CUSTOM_CSS_INTERNAL => [
             'textarea',
             [
                 'label' => __('Custom CSS for Internal Pages'),

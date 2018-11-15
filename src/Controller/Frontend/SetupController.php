@@ -220,7 +220,7 @@ class SetupController
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        if ($settings_repo->getSetting('setup_complete', 0) != 0) {
+        if ($settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) != 0) {
             return 'complete';
         }
 

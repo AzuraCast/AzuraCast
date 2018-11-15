@@ -57,6 +57,7 @@ return function (\Azura\EventDispatcher $dispatcher)
         \App\Sync\Task\NowPlaying::class,
         \App\Webhook\Dispatcher::class,
         \App\Controller\Api\NowplayingController::class,
+        \App\Notification\Manager::class,
     ]);
 
 };

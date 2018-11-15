@@ -1,8 +1,10 @@
 <?php
 namespace App\Console\Command;
 
+use App\Entity;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,6 +79,16 @@ class Setup extends CommandAbstract
 
         $this->runCommand($output, 'cache:clear');
         $this->runCommand($output, 'azuracast:radio:restart');
+
+        // Clear update information.
+
+        /** @var EntityManager $em */
+        $em = $this->get(EntityManager::class);
+
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
+        $settings_repo->setSetting(Entity\Settings::UPDATE_RESULTS, null);
 
         $io->newLine();
 

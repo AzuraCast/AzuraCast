@@ -2,6 +2,7 @@
 namespace App\Sync;
 
 use App\Entity\Repository\SettingsRepository;
+use App\Entity;
 use Monolog\Logger;
 use Pimple\ServiceIterator;
 
@@ -43,7 +44,7 @@ class Runner
     protected function _initSync($script_timeout = 60)
     {
         // Immediately halt if setup is not complete.
-        if ($this->settings->getSetting('setup_complete', 0) == 0) {
+        if ($this->settings->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
             die('Setup not complete; halting synchronized task.');
         }
 
@@ -69,14 +70,14 @@ class Runner
         $this->_initSync(10);
 
         // Prevent nowplaying from running on top of itself.
-        $last_start = $this->settings->getSetting('nowplaying_last_started', 0);
-        $last_end = $this->settings->getSetting('nowplaying_last_run', 0);
+        $last_start = $this->settings->getSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, 0);
+        $last_end = $this->settings->getSetting(Entity\Settings::NOWPLAYING_LAST_RUN, 0);
 
         if ($last_start > $last_end && $last_start >= (time() - 10) && !$force) {
             return;
         }
 
-        $this->settings->setSetting('nowplaying_last_started', time());
+        $this->settings->setSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, time());
 
         foreach($this->tasks_nowplaying as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
@@ -85,7 +86,7 @@ class Runner
             });
         }
 
-        $this->settings->setSetting('nowplaying_last_run', time());
+        $this->settings->setSetting(Entity\Settings::NOWPLAYING_LAST_RUN, time());
     }
 
     /**
@@ -105,7 +106,7 @@ class Runner
             });
         }
 
-        $this->settings->setSetting('sync_fast_last_run', time());
+        $this->settings->setSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, time());
     }
 
     /**
@@ -125,7 +126,7 @@ class Runner
             });
         }
 
-        $this->settings->setSetting('sync_last_run', time());
+        $this->settings->setSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, time());
     }
 
     /**
@@ -145,7 +146,7 @@ class Runner
             });
         }
 
-        $this->settings->setSetting('sync_slow_last_run', time());
+        $this->settings->setSetting(Entity\Settings::LONG_SYNC_LAST_RUN, time());
     }
 
     public function getSyncTimes()
@@ -155,28 +156,28 @@ class Runner
         $syncs = [
             'nowplaying' => [
                 'name' => __('Now Playing Data'),
-                'latest' => $this->settings->getSetting('nowplaying_last_run', 0),
+                'latest' => $this->settings->getSetting(Entity\Settings::NOWPLAYING_LAST_RUN, 0),
                 'contents' => [
                     __('Now Playing Data'),
                 ],
             ],
             'short' => [
                 'name' => __('1-Minute Sync'),
-                'latest' => $this->settings->getSetting('sync_fast_last_run', 0),
+                'latest' => $this->settings->getSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, 0),
                 'contents' => [
                     __('Song Requests Queue'),
                 ],
             ],
             'medium' => [
                 'name' => __('5-Minute Sync'),
-                'latest' => $this->settings->getSetting('sync_last_run', 0),
+                'latest' => $this->settings->getSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, 0),
                 'contents' => [
                     __('Check Media Folders'),
                 ],
             ],
             'long' => [
                 'name' => __('1-Hour Sync'),
-                'latest' => $this->settings->getSetting('sync_slow_last_run', 0),
+                'latest' => $this->settings->getSetting(Entity\Settings::LONG_SYNC_LAST_RUN, 0),
                 'contents' => [
                     __('Analytics/Statistics'),
                     __('Cleanup'),

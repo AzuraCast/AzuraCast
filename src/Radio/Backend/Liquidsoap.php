@@ -922,7 +922,14 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         $legacy_path = '/usr/bin/liquidsoap';
 
-        if (APP_INSIDE_DOCKER || file_exists($new_path)) {
+        if (APP_INSIDE_DOCKER) {
+            // Docker revisions 3 and later use the `radio` container.
+            return (APP_DOCKER_REVISION >= 3)
+                ? '/usr/local/bin/liquidsoap'
+                : $new_path;
+        }
+
+        if (file_exists($new_path)) {
             return $new_path;
         }
         if (file_exists($legacy_path)) {

@@ -111,6 +111,7 @@ class Version
     protected function _runProcess($proc, $default = ''): string
     {
         $process = new Process($proc);
+        $process->setWorkingDirectory(dirname(__DIR__));
         $process->run();
 
         if (!$process->isSuccessful()) {

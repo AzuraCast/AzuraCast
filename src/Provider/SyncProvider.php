@@ -15,19 +15,23 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\App\Entity\Repository\SettingsRepository::class],
                 $di[\Monolog\Logger::class],
                 new \Pimple\ServiceIterator($di, [
+                    // Every 15 seconds tasks
                     Task\NowPlaying::class,
                     Task\ReactivateStreamer::class,
                 ]),
                 new \Pimple\ServiceIterator($di, [
+                    // Every minute tasks
                     Task\RadioRequests::class,
                 ]),
                 new \Pimple\ServiceIterator($di, [
-                    Task\Media::class
+                    // Every 5 minutes tasks
+                    Task\Media::class,
+                    Task\CheckForUpdates::class,
                 ]),
                 new \Pimple\ServiceIterator($di, [
+                    // Every hour tasks
                     Task\Analytics::class,
                     Task\RadioAutomation::class,
-                    Task\CheckForUpdates::class,
                     Task\HistoryCleanup::class,
                     Task\RotateLogs::class,
                 ])

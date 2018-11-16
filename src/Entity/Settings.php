@@ -42,6 +42,7 @@ class Settings
 
     const UNIQUE_IDENTIFIER     = 'central_app_uuid';
     const UPDATE_RESULTS        = 'central_update_results';
+    const UPDATE_LAST_RUN       = 'central_update_last_run';
 
     /**
      * @Column(name="setting_key", type="string", length=64)

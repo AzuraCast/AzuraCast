@@ -89,6 +89,7 @@ class Setup extends CommandAbstract
         $settings_repo = $em->getRepository(Entity\Settings::class);
 
         $settings_repo->setSetting(Entity\Settings::UPDATE_RESULTS, null);
+        $settings_repo->setSetting(Entity\Settings::UPDATE_LAST_RUN, time());
 
         $io->newLine();
 

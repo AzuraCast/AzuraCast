@@ -12,6 +12,9 @@ use Ramsey\Uuid\Uuid;
 
 class CheckForUpdates extends TaskAbstract
 {
+    const UPDATE_URL = 'https://central.azuracast.com/api/update';
+    const UPDATE_THRESHOLD = 3300;
+
     /** @var EntityManager */
     protected $em;
 
@@ -58,6 +61,15 @@ class CheckForUpdates extends TaskAbstract
 
     public function run($force = false)
     {
+        if (!$force) {
+            $update_last_run = (int)$this->settings_repo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);
+
+            if ($update_last_run > (time()-self::UPDATE_THRESHOLD)) {
+                $this->logger->debug('Not checking for updates; checked too recently.');
+                return;
+            }
+        }
+
         $check_for_updates = (bool)$this->settings_repo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
 
         if (!$check_for_updates) {
@@ -77,11 +89,12 @@ class CheckForUpdates extends TaskAbstract
         }
 
         try {
-            $response = $this->http_client->request('POST', 'https://central.azuracast.com/api/update', [
+            $response = $this->http_client->request('POST', self::UPDATE_URL, [
                 'json' => [
                     'id'        => $app_uuid,
                     'is_docker' => (bool)$this->app_settings[Settings::IS_DOCKER],
                     'version'   => $this->version->getCommitHash(),
+                    'environment' => $this->app_settings[Settings::APP_ENV],
                 ]
             ]);
 
@@ -104,5 +117,7 @@ class CheckForUpdates extends TaskAbstract
         } else {
             $this->logger->error('Error parsing update data response from AzuraCast central.', ['raw' => $update_data_raw]);
         }
+
+        $this->settings_repo->setSetting(Entity\Settings::UPDATE_LAST_RUN, time());
     }
 }

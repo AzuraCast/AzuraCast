@@ -13,7 +13,7 @@ use Ramsey\Uuid\Uuid;
 class CheckForUpdates extends TaskAbstract
 {
     const UPDATE_URL = 'https://central.azuracast.com/api/update';
-    const UPDATE_THRESHOLD = 3300;
+    const UPDATE_THRESHOLD = 3180;
 
     /** @var EntityManager */
     protected $em;

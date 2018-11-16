@@ -69,6 +69,7 @@ $assets
                                 <li><a href="#" class="dropdown-item btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=__('Create new...') ?></a></li>
                             </ul>
                         </div>
+                        <a href="#" class="btn btn-default" data-toggle="modal" data-target="#mdl-move-file"><i class="material-icons">open_with</i> <?=__('Move') ?></a>
                         <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="material-icons">clear_all</i> <?=__('Clear Playlists') ?></button>
                         <button type="button" class="btn btn-danger" v-on:click="doBatch" data-action="delete"><i class="material-icons">delete</i> <?=__('Delete') ?></button>
                     </div>
@@ -142,6 +143,46 @@ $assets
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=__('Create Directory') ?></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="mdl-move-file" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="frm-move-file">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel"><?=__('Move {{ selected_files }} File(s) to') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-primary" v-on:click="pageBack" v-bind:disabled="dir_history.length == 0"><i class="material-icons">chevron_left</i> <?=__('Back') ?></button>
+                            <span>&nbsp;{{ move_dir }}</span>
+                            <br/><br/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="data-table table table-striped table-hover" id="directory-table">
+                                <thead>
+                                    <tr>
+                                        <th data-column-id="directory" data-formatter="directory" data-sortable="false"><?=__('Directory') ?></th>
+                                        <th data-column-id="commands" data-formatter="commands" data-align="right" data-sortable="false"><?=__('Actions') ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </form>

@@ -289,6 +289,30 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
+    public function listDirectoriesAction(Request $request, Response $response, $station_id): Response
+    {
+        $file_path = $request->getAttribute('file_path');
+
+        if (!is_dir($file_path)) {
+            throw new \Azura\Exception(__('Path "%s" is not a folder.', $file_path));
+        }
+
+        $finder = new Finder();
+        $finder->directories()->in($file_path)->depth(0)->sortByName();
+
+        $directories = [];
+        foreach ($finder as $directory) {
+            $directories[] = [
+                'name' => $directory->getFilename(),
+                'path' => $directory->getRelativePathname()
+            ];
+        }
+
+        return $response->withJson([
+            'rows' => $directories
+        ]);
+    }
+
     public function batchAction(Request $request, Response $response): Response
     {
         try {
@@ -429,6 +453,46 @@ class FilesController extends FilesControllerAbstract
 
                 // Write new PLS playlist configuration.
                 $backend->write($station);
+                break;
+
+            case 'move':
+                $music_files = $this->_getMusicFiles($files);
+                $files_found = count($music_files);
+
+                $directory = $request->getParsedBody()['directory'];
+
+                list($directory_path, $directory_path_full) = $this->_filterPath($base_dir, $directory);
+
+                foreach ($music_files as $file) {
+                    try {
+                        if (is_dir($file)) {
+                            continue;
+                        }
+
+                        if (!is_dir($directory_path_full)) {
+                            throw new \Azura\Exception(__('Path "%s" is not a folder.', $directory_path_full));
+                        }
+
+                        $media = $this->media_repo->getOrCreate($station, $file);
+
+                        $old_full_path = $media->getFullPath();
+
+                        $media->setPath($directory_path . DIRECTORY_SEPARATOR . basename($file));
+
+                        if (!rename($old_full_path, $media->getFullPath())) {
+                            throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path, $media->getFullPath()));
+                        }
+
+                        $this->em->persist($media);
+                        $this->em->flush($media);
+                    } catch (\Exception $e) {
+                        $errors[] = $file.': '.$e->getMessage();
+                    }
+
+                    $files_affected++;
+                }
+
+                $this->em->flush();
                 break;
         }
 

@@ -58,6 +58,11 @@ class Manager implements EventSubscriberInterface
 
     public function checkComposeVersion(GetNotifications $event)
     {
+        // This notification is for full administrators only.
+        if (!$this->acl->userAllowed($event->getCurrentUser(), 'administer all')) {
+            return;
+        }
+        
         if (!$this->app_settings->isDocker()) {
             return;
         }

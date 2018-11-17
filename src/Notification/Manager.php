@@ -4,6 +4,7 @@ namespace App\Notification;
 use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
+use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,20 +23,25 @@ class Manager implements EventSubscriberInterface
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
+    /** @var Settings */
+    protected $app_settings;
+
     /**
      * Manager constructor.
      *
      * @param Acl $acl
      * @param EntityManager $em
      * @param Logger $logger
+     * @param Settings $app_settings
      *
      * @see \App\Provider\NotificationProvider
      */
-    public function __construct(Acl $acl, EntityManager $em, Logger $logger)
+    public function __construct(Acl $acl, EntityManager $em, Logger $logger, Settings $app_settings)
     {
         $this->acl = $acl;
         $this->em = $em;
         $this->logger = $logger;
+        $this->app_settings = $app_settings;
 
         $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
     }
@@ -44,9 +50,27 @@ class Manager implements EventSubscriberInterface
     {
         return [
             GetNotifications::NAME => [
+                ['checkComposeVersion', 1],
                 ['checkUpdates', 0],
             ],
         ];
+    }
+
+    public function checkComposeVersion(GetNotifications $event)
+    {
+        if (!$this->app_settings->isDocker()) {
+            return;
+        }
+
+        $compose_revision = $_ENV['AZURACAST_DC_REVISION'] ?? 1;
+
+        if ($compose_revision < 4) {
+            $event->addNotification(new Notification(
+                __('Your <code>docker-compose.yml</code> file is out of date!'),
+                __('You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href="%s" target="_blank">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file.', 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml'),
+                Notification::WARNING
+            ));
+        }
     }
 
     public function checkUpdates(GetNotifications $event)

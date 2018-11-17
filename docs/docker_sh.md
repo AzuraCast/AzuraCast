@@ -38,8 +38,11 @@ Pulls the latest version of all Docker images and sets up the AzuraCast database
 ### Update AzuraCast
 
 ```bash
+./docker.sh update-self
 ./docker.sh update
 ```
+
+Note: You should always run `update-self` first to update the updater script.
 
 Automatically pulls down any updated Docker images and applies any database and configuration changes since your last AzuraCast update.
 

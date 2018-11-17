@@ -13,7 +13,8 @@ class NotificationProvider implements ServiceProviderInterface
             return new Notification\Manager(
                 $di[\App\Acl::class],
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di['settings']
             );
         };
     }

@@ -3,6 +3,7 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Event\SendWebhooks;
+use App\Http\Router;
 use Azura\Exception;
 use App\Provider\WebhookProvider;
 use Monolog\Handler\TestHandler;
@@ -20,12 +21,16 @@ class Dispatcher implements EventSubscriberInterface
     /** @var Logger */
     protected $logger;
 
+    /** @var Router */
+    protected $router;
+
     /** @var ServiceLocator */
     protected $connectors;
 
-    public function __construct(Logger $logger, ServiceLocator $connectors)
+    public function __construct(Logger $logger, Router $router, ServiceLocator $connectors)
     {
         $this->logger = $logger;
+        $this->router = $router;
         $this->connectors = $connectors;
     }
 
@@ -37,9 +42,21 @@ class Dispatcher implements EventSubscriberInterface
 
         return [
             SendWebhooks::NAME => [
+                ['resolveNowPlayingUrls', 100],
                 ['dispatch', 0],
             ],
         ];
+    }
+
+    /**
+     * Resolve URLs that are included in the NowPlaying response.
+     *
+     * @param SendWebhooks $event
+     */
+    public function resolveNowPlayingUrls(SendWebhooks $event): void
+    {
+        $np = $event->getNowPlaying();
+        $np->resolveUrls($this->router);
     }
 
     /**

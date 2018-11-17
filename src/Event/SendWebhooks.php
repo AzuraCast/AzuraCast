@@ -24,7 +24,7 @@ class SendWebhooks extends Event
     public function __construct(Station $station, NowPlaying $np, $np_old = null, $is_standalone = true)
     {
         $this->station = $station;
-        $this->np = $np;
+        $this->np = clone $np;
         $this->is_standalone = $is_standalone;
 
         $to_trigger = ['all'];

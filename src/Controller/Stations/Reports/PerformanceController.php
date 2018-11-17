@@ -5,6 +5,7 @@ use App\Sync\Task\RadioAutomation;
 use Doctrine\ORM\EntityManager;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class PerformanceController
 {
@@ -25,7 +26,7 @@ class PerformanceController
         $this->sync_automation = $sync_automation;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id, $format = 'html'): Response
+    public function __invoke(Request $request, Response $response, $station_id, $format = 'html'): ResponseInterface
     {
         $station = $request->getStation();
 

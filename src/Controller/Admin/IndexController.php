@@ -7,6 +7,7 @@ use App\Http\Response;
 use App\Sync\Runner;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
@@ -35,7 +36,7 @@ class IndexController
     /**
      * Main display.
      */
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $view = $request->getView();
         $user = $request->getUser();
@@ -51,7 +52,7 @@ class IndexController
         return $view->renderToResponse($response, 'admin/index/index');
     }
 
-    public function syncAction(Request $request, Response $response, $type): Response
+    public function syncAction(Request $request, Response $response, $type): ResponseInterface
     {
         $view = $request->getView();
         $view->sidebar = null;

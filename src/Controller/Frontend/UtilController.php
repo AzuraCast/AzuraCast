@@ -7,6 +7,7 @@ use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Container;
 use App\Entity;
 
@@ -24,7 +25,7 @@ class UtilController
         $this->di = $di;
     }
 
-    public function testAction(Request $request, Response $response): Response
+    public function testAction(Request $request, Response $response): ResponseInterface
     {
         $np = new \NowPlaying\Adapter\SHOUTcast2('http://stations:8000');
 

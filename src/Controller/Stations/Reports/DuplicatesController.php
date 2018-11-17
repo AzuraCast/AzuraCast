@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class DuplicatesController
 {
@@ -20,7 +21,7 @@ class DuplicatesController
         $this->em = $em;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): Response
+    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         $media_raw = $this->em->createQuery('SELECT sm, s, spm, sp FROM '.Entity\StationMedia::class.' sm JOIN sm.song s LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
             ->setParameter('station_id', $station_id)
@@ -68,7 +69,7 @@ class DuplicatesController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $media_id): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
         $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
             'id' => $media_id,

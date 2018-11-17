@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class WebhooksController
@@ -50,7 +51,7 @@ class WebhooksController
         $this->webhook_forms = $webhook_forms;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -61,7 +62,7 @@ class WebhooksController
         ]);
     }
 
-    public function addAction(Request $request, Response $response, $station_id, $type = null): Response
+    public function addAction(Request $request, Response $response, $station_id, $type = null): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -108,7 +109,7 @@ class WebhooksController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $station_id, $id): Response
+    public function editAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -151,7 +152,7 @@ class WebhooksController
         ]);
     }
 
-    public function toggleAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
+    public function toggleAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
@@ -174,7 +175,7 @@ class WebhooksController
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }
 
-    public function testAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
+    public function testAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
@@ -199,7 +200,7 @@ class WebhooksController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

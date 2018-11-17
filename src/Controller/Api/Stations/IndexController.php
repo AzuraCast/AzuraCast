@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
@@ -41,7 +42,7 @@ class IndexController
      *   )
      * )
      */
-    public function listAction(Request $request, Response $response): Response
+    public function listAction(Request $request, Response $response): ResponseInterface
     {
         $stations_raw = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);
@@ -79,7 +80,7 @@ class IndexController
      *   @OA\Response(response=404, description="Station not found")
      * )
      */
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $api_response = $request->getStation()->api($request->getStationFrontend());
         $api_response->resolveUrls($request->getRouter());

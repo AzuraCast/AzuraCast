@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class CustomFieldsController
 {
@@ -33,7 +34,7 @@ class CustomFieldsController
         $this->record_repo = $this->em->getRepository(Entity\CustomField::class);
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $records = $this->record_repo->fetchArray(true, 'name');
 
@@ -43,7 +44,7 @@ class CustomFieldsController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): Response
+    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
         $form = new \AzuraForms\Form($this->form_config);
 
@@ -79,7 +80,7 @@ class CustomFieldsController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

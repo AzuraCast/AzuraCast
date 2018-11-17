@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class StationsController
 {
@@ -65,7 +66,7 @@ class StationsController
         $this->record_repo = $this->em->getRepository(Entity\Station::class);
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $stations = $this->em->createQuery('SELECT s FROM '.Entity\Station::class.' s ORDER BY s.name ASC')
             ->getArrayResult();
@@ -76,7 +77,7 @@ class StationsController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): Response
+    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
         $form = new \AzuraForms\Form($this->edit_form_config);
 
@@ -141,7 +142,7 @@ class StationsController
         ]);
     }
 
-    public function cloneAction(Request $request, Response $response, $id): Response
+    public function cloneAction(Request $request, Response $response, $id): ResponseInterface
     {
         $record = $this->record_repo->find((int)$id);
 
@@ -235,7 +236,7 @@ class StationsController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

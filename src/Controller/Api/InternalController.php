@@ -7,6 +7,7 @@ use App\Sync\Task\NowPlaying;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class InternalController
 {
@@ -27,7 +28,7 @@ class InternalController
         $this->sync_nowplaying = $sync_nowplaying;
     }
 
-    public function authAction(Request $request, Response $response): Response
+    public function authAction(Request $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
@@ -47,7 +48,7 @@ class InternalController
         return $response->write('false');
     }
 
-    public function nextsongAction(Request $request, Response $response): Response
+    public function nextsongAction(Request $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
@@ -61,7 +62,7 @@ class InternalController
         return $response->write('');
     }
 
-    public function djonAction(Request $request, Response $response): Response
+    public function djonAction(Request $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
@@ -73,7 +74,7 @@ class InternalController
         return $response->write('received');
     }
 
-    public function djoffAction(Request $request, Response $response): Response
+    public function djoffAction(Request $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
@@ -85,7 +86,7 @@ class InternalController
         return $response->write('received');
     }
 
-    public function notifyAction(Request $request, Response $response): Response
+    public function notifyAction(Request $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 

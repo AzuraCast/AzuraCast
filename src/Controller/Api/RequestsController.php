@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
@@ -45,7 +46,7 @@ class RequestsController
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
      */
-    public function listAction(Request $request, Response $response, $station_id): Response
+    public function listAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -139,7 +140,7 @@ class RequestsController
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
      */
-    public function submitAction(Request $request, Response $response, $station_id, $media_id): Response
+    public function submitAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
         $station = $request->getStation();
 

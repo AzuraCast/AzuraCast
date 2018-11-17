@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class ProfileController
 {
@@ -30,7 +31,7 @@ class ProfileController
         $this->user_repo = $this->em->getRepository(Entity\User::class);
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $user = $request->getUser();
         $user_profile = $this->user_repo->toArray($user);
@@ -46,7 +47,7 @@ class ProfileController
         ]);
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response): ResponseInterface
     {
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');

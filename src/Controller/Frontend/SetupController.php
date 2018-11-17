@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class SetupController
 {
@@ -66,7 +67,7 @@ class SetupController
     /**
      * Setup Routing Controls
      */
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $current_step = $this->_getSetupStep();
         return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
@@ -75,7 +76,7 @@ class SetupController
     /**
      * Placeholder function for "setup complete" redirection.
      */
-    public function completeAction(Request $request, Response $response): Response
+    public function completeAction(Request $request, Response $response): ResponseInterface
     {
         $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
 
@@ -86,7 +87,7 @@ class SetupController
      * Setup Step 1:
      * Create Super Administrator Account
      */
-    public function registerAction(Request $request, Response $response): Response
+    public function registerAction(Request $request, Response $response): ResponseInterface
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
@@ -135,7 +136,7 @@ class SetupController
      * Setup Step 2:
      * Create Station and Parse Metadata
      */
-    public function stationAction(Request $request, Response $response): Response
+    public function stationAction(Request $request, Response $response): ResponseInterface
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
@@ -173,7 +174,7 @@ class SetupController
      * Setup Step 3:
      * Set site settings.
      */
-    public function settingsAction(Request $request, Response $response): Response
+    public function settingsAction(Request $request, Response $response): ResponseInterface
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();

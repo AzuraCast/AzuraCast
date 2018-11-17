@@ -7,6 +7,7 @@ use App\Radio;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Psr\Http\Message\ResponseInterface;
 
 class ServicesController
 {
@@ -34,7 +35,7 @@ class ServicesController
      *   }
      * )
      */
-    public function restartAction(Request $request, Response $response): Response
+    public function restartAction(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
@@ -86,7 +87,7 @@ class ServicesController
      *   }
      * )
      */
-    public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
+    public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
     {
         $station = $request->getStation();
         $frontend = $request->getStationFrontend();
@@ -141,7 +142,7 @@ class ServicesController
      *   }
      * )
      */
-    public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
+    public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
     {
         $station = $request->getStation();
         $backend = $request->getStationBackend();

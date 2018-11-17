@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class MediaController
 {
@@ -50,7 +51,7 @@ class MediaController
      *   )
      * )
      */
-    public function artAction(Request $request, Response $response, $station_id, $media_id): Response
+    public function artAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
         $media = $this->em->createQuery('SELECT sm, sa FROM '.Entity\StationMedia::class.' sm JOIN sm.art sa WHERE sm.station_id = :station_id AND sm.unique_id = :media_id')
             ->setParameter('station_id', $station_id)

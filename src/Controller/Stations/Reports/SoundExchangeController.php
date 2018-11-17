@@ -6,6 +6,7 @@ use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
@@ -35,7 +36,7 @@ class SoundExchangeController
         $this->http_client = $http_client;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): Response
+    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 

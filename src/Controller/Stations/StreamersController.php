@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class StreamersController
 {
@@ -34,7 +35,7 @@ class StreamersController
         $this->streamers_repo = $this->em->getRepository(Entity\StationStreamer::class);
     }
 
-    public function indexAction(Request $request, Response $response, $station_id): Response
+    public function indexAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
@@ -71,7 +72,7 @@ class StreamersController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $station_id, $id = null): Response
+    public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -113,7 +114,7 @@ class StreamersController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

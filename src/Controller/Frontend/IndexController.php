@@ -4,6 +4,7 @@ namespace App\Controller\Frontend;
 use App\Http\Request;
 use App\Http\Response;
 use App\Entity;
+use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
@@ -19,7 +20,7 @@ class IndexController
         $this->settings_repo = $settings_repo;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         // Redirect to complete setup, if it hasn't been completed yet.
         if ($this->settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) === 0) {

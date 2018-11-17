@@ -7,6 +7,7 @@ use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use InfluxDB\Database;
+use Psr\Http\Message\ResponseInterface;
 
 class OverviewController
 {
@@ -27,7 +28,7 @@ class OverviewController
         $this->influx = $influx;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): Response
+    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 

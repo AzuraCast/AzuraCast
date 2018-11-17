@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
@@ -23,7 +24,7 @@ class RequestsController
         $this->em = $em;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): Response
+    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         $requests = $this->em->createQuery('SELECT sr, sm, s FROM '.Entity\StationRequest::class.' sr
             JOIN sr.track sm
@@ -39,7 +40,7 @@ class RequestsController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $request_id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $request_id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

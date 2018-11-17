@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class ListenersController
 {
@@ -20,7 +21,7 @@ class ListenersController
         $this->em = $em;
     }
 
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Request $request, Response $response): ResponseInterface
     {
         $view = $request->getView();
 

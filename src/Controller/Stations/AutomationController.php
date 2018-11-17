@@ -5,6 +5,7 @@ use App\Sync\Task\RadioAutomation;
 use Doctrine\ORM\EntityManager;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class AutomationController
 {
@@ -30,7 +31,7 @@ class AutomationController
         $this->form_config = $form_config;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -57,7 +58,7 @@ class AutomationController
         ]);
     }
 
-    public function runAction(Request $request, Response $response, $station_id): Response
+    public function runAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 

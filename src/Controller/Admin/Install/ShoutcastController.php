@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Install;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Frontend\SHOUTcast;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\UploadedFile;
 
 class ShoutcastController
@@ -20,7 +21,7 @@ class ShoutcastController
         $this->form_config = $form_config;
     }
 
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Request $request, Response $response): ResponseInterface
     {
         if (SHOUTcast::isInstalled()) {
             return $request

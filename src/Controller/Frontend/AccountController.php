@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity\Settings;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class AccountController
 {
@@ -45,7 +46,7 @@ class AccountController
         $this->acl = $acl;
     }
 
-    public function loginAction(Request $request, Response $response): Response
+    public function loginAction(Request $request, Response $response): ResponseInterface
     {
         // Check installation completion progress.
 
@@ -110,7 +111,7 @@ class AccountController
         return $request->getView()->renderToResponse($response, 'frontend/account/login');
     }
 
-    public function logoutAction(Request $request, Response $response): Response
+    public function logoutAction(Request $request, Response $response): ResponseInterface
     {
         $this->auth->logout();
         $request->getSession()->destroy();
@@ -118,7 +119,7 @@ class AccountController
         return $response->withRedirect($request->getRouter()->named('account:login'));
     }
 
-    public function endmasqueradeAction(Request $request, Response $response): Response
+    public function endmasqueradeAction(Request $request, Response $response): ResponseInterface
     {
         $this->auth->endMasquerade();
 

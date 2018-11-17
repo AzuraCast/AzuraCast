@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class SettingsController
 {
@@ -24,12 +25,12 @@ class SettingsController
         $this->form_config = $form_config;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         return $this->renderSettingsForm($request, $response, 'system/form_page');
     }
 
-    protected function renderSettingsForm(Request $request, Response $response, $form_template): Response
+    protected function renderSettingsForm(Request $request, Response $response, $form_template): ResponseInterface
     {
         $existing_settings = $this->settings_repo->fetchArray(false);
         $form = new \AzuraForms\Form($this->form_config, $existing_settings);

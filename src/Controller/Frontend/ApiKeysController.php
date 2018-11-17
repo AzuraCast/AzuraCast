@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class ApiKeysController
 {
@@ -34,7 +35,7 @@ class ApiKeysController
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $user = $request->getUser();
 
@@ -44,7 +45,7 @@ class ApiKeysController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): Response
+    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
         $user = $request->getUser();
         $view = $request->getView();
@@ -98,7 +99,7 @@ class ApiKeysController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

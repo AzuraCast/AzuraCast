@@ -4,6 +4,7 @@ namespace App\Controller\Stations;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\UploadedFile;
 use App\Http\Request;
 use App\Http\Response;
@@ -45,7 +46,7 @@ class PlaylistsController
         $this->playlist_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
-    public function indexAction(Request $request, Response $response, $station_id): Response
+    public function indexAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -94,7 +95,7 @@ class PlaylistsController
      * @param $station_id
      * @return Response
      */
-    public function scheduleAction(Request $request, Response $response, $station_id): Response
+    public function scheduleAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $utc = new \DateTimeZone('UTC');
         $user_tz = new \DateTimeZone(date_default_timezone_get());
@@ -154,7 +155,7 @@ class PlaylistsController
         return $response->withJson($events);
     }
 
-    public function reorderAction(Request $request, Response $response, $station_id, $id): Response
+    public function reorderAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
         $record = $this->playlist_repo->findOneBy([
             'id' => $id,
@@ -205,7 +206,7 @@ class PlaylistsController
         ]);
     }
 
-    public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): Response
+    public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): ResponseInterface
     {
         $record = $this->playlist_repo->findOneBy([
             'id' => $id,
@@ -233,7 +234,7 @@ class PlaylistsController
             ->write($record->export($format));
     }
 
-    public function editAction(Request $request, Response $response, $station_id, $id = null): Response
+    public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -401,7 +402,7 @@ class PlaylistsController
         return count($matches);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

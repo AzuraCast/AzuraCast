@@ -6,12 +6,13 @@ use Azura\Exception;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Adapters;
+use Psr\Http\Message\ResponseInterface;
 
 class LogsController
 {
     const MAXIMUM_LOG_SIZE = 1048576;
 
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -20,7 +21,7 @@ class LogsController
         ]);
     }
 
-    public function viewAction(Request $request, Response $response, $station_id, $log_key): Response
+    public function viewAction(Request $request, Response $response, $station_id, $log_key): ResponseInterface
     {
         $station = $request->getStation();
         $log_areas = $this->_getLogAreas($station);

@@ -6,6 +6,7 @@ use App\Http\Request;
 use App\Http\Response;
 use App\Utilities;
 use App\Radio\Backend\BackendAbstract;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -17,7 +18,7 @@ use Symfony\Component\Finder\Finder;
  */
 class FilesController extends FilesControllerAbstract
 {
-    public function indexAction(Request $request, Response $response, $station_id): Response
+    public function indexAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -65,7 +66,7 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function renameAction(Request $request, Response $response, $station_id, $path): Response
+    public function renameAction(Request $request, Response $response, $station_id, $path): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -118,7 +119,7 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function listAction(Request $request, Response $response, $station_id): Response
+    public function listAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -289,7 +290,7 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function listDirectoriesAction(Request $request, Response $response, $station_id): Response
+    public function listDirectoriesAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $file_path = $request->getAttribute('file_path');
 
@@ -313,7 +314,7 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function batchAction(Request $request, Response $response): Response
+    public function batchAction(Request $request, Response $response): ResponseInterface
     {
         try {
             $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
@@ -509,7 +510,7 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function mkdirAction(Request $request, Response $response): Response
+    public function mkdirAction(Request $request, Response $response): ResponseInterface
     {
         try {
             $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
@@ -534,7 +535,7 @@ class FilesController extends FilesControllerAbstract
         return $response->withJson(['success' => true]);
     }
 
-    public function uploadAction(Request $request, Response $response): Response
+    public function uploadAction(Request $request, Response $response): ResponseInterface
     {
         try {
             $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
@@ -598,7 +599,7 @@ class FilesController extends FilesControllerAbstract
         return $response->withJson(['success' => false]);
     }
 
-    public function downloadAction(Request $request, Response $response): Response
+    public function downloadAction(Request $request, Response $response): ResponseInterface
     {
         set_time_limit(600);
 

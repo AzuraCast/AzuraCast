@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class UsersController
 {
@@ -40,7 +41,7 @@ class UsersController
         $this->record_repo = $this->em->getRepository(Entity\User::class);
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $users = $this->em->createQuery('SELECT u, r FROM '.Entity\User::class.' u LEFT JOIN u.roles r ORDER BY u.name ASC')
             ->execute();
@@ -52,7 +53,7 @@ class UsersController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): Response
+    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
         $form = new \AzuraForms\Form($this->form_config);
 
@@ -95,7 +96,7 @@ class UsersController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
@@ -112,7 +113,7 @@ class UsersController
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
     }
 
-    public function impersonateAction(Request $request, Response $response, $id, $csrf_token): Response
+    public function impersonateAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

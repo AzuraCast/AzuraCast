@@ -6,22 +6,23 @@ use App\Radio\Frontend\FrontendAbstract;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class PublicController
 {
-    public function indexAction(Request $request, Response $response, $station_id = null, $autoplay = false): Response
+    public function indexAction(Request $request, Response $response, $station_id = null, $autoplay = false): ResponseInterface
     {
         $template_vars = ['autoplay' => ($autoplay === 'autoplay')];
         return $this->_getPublicPage($request, $response, 'frontend/public/index', $template_vars);
     }
 
-    public function embedAction(Request $request, Response $response, $station_id = null, $autoplay = false): Response
+    public function embedAction(Request $request, Response $response, $station_id = null, $autoplay = false): ResponseInterface
     {
         $template_vars = ['autoplay' => ($autoplay === 'autoplay')];
         return $this->_getPublicPage($request, $response, 'frontend/public/embed', $template_vars);
     }
 
-    public function embedrequestsAction(Request $request, Response $response): Response
+    public function embedrequestsAction(Request $request, Response $response): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/embedrequests');
     }
@@ -45,7 +46,7 @@ class PublicController
         ]);
     }
 
-    public function playlistAction(Request $request, Response $response, $station_id, $format = 'pls'): Response
+    public function playlistAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
     {
         $station = $request->getStation();
         $fa = $request->getStationFrontend();

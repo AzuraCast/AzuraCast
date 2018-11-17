@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
@@ -26,7 +27,7 @@ class IndexController
         $this->station_repo = $em->getRepository(Entity\Station::class);
     }
 
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $view = $request->getView();

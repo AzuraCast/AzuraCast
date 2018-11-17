@@ -12,6 +12,7 @@ use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use InfluxDB\Database;
+use Psr\Http\Message\ResponseInterface;
 
 class DashboardController
 {
@@ -62,7 +63,7 @@ class DashboardController
         $this->dispatcher = $dispatcher;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $view = $request->getView();
         $user = $request->getUser();

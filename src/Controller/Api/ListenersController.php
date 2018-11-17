@@ -7,6 +7,7 @@ use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use MaxMind\Db\Reader;
+use Psr\Http\Message\ResponseInterface;
 
 class ListenersController
 {
@@ -52,7 +53,7 @@ class ListenersController
      *   },
      * )
      */
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 

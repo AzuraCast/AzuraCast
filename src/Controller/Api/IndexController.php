@@ -4,13 +4,14 @@ namespace App\Controller\Api;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
     /**
      * Public index for API.
      */
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         return $response->withRedirect('/static/api/index.html');
     }
@@ -27,7 +28,7 @@ class IndexController
      *   )
      * )
      */
-    public function statusAction(Request $request, Response $response): Response
+    public function statusAction(Request $request, Response $response): ResponseInterface
     {
         return $response->withJson(new Entity\Api\SystemStatus);
     }
@@ -44,7 +45,7 @@ class IndexController
      *   )
      * )
      */
-    public function timeAction(Request $request, Response $response): Response
+    public function timeAction(Request $request, Response $response): ResponseInterface
     {
         $tz_info = \Azura\Timezone::getInfo();
         return $response->withJson(new Entity\Api\Time($tz_info));

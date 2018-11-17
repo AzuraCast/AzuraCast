@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class RemotesController
 {
@@ -28,7 +29,7 @@ class RemotesController
         $this->form_config = $form_config;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -38,7 +39,7 @@ class RemotesController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $station_id, $id = null): Response
+    public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -90,7 +91,7 @@ class RemotesController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 

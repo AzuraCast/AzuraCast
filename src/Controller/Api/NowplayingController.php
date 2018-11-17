@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NowplayingController implements EventSubscriberInterface
@@ -93,7 +94,7 @@ class NowplayingController implements EventSubscriberInterface
      *   @OA\Response(response=404, description="Station not found")
      * )
      */
-    public function __invoke(Request $request, Response $response, $id = null): Response
+    public function __invoke(Request $request, Response $response, $id = null): ResponseInterface
     {
         $response = $response
             ->withHeader('Cache-Control', 'public, max-age=15')

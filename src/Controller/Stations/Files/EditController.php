@@ -4,6 +4,7 @@ namespace App\Controller\Stations\Files;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 /**
@@ -12,7 +13,7 @@ use Psr\Http\Message\UploadedFileInterface;
  */
 class EditController extends FilesControllerAbstract
 {
-    public function editAction(Request $request, Response $response, $station_id, $media_id): Response
+    public function editAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
         $station = $request->getStation();
 

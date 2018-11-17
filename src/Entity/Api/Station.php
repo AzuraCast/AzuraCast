@@ -3,7 +3,7 @@
 namespace App\Entity\Api;
 
 use App\Entity;
-use App\Http\Router;
+use Azura\Http\Router;
 
 /**
  * @OA\Schema(type="object")

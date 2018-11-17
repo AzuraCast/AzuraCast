@@ -10,6 +10,9 @@
     "ext-simplexml": "*",
     "ext-xml": "*",
     "ext-xmlwriter": "*",
+    "ext-json": "*",
+    "ext-redis": "*",
+    "ext-PDO": "*",
 
     "azuracast/azuracore": "dev-master",
     "azuracast/azuraforms": "dev-master",

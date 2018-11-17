@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity\Api;
 
-use App\Http\Router;
+use Azura\Http\Router;
 
 /**
  * @OA\Schema(type="object")

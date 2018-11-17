@@ -333,6 +333,9 @@ return function(\Slim\App $app)
             $this->map(['GET', 'POST'], '/list', Controller\Stations\Files\FilesController::class.':listAction')
                 ->setName('stations:files:list');
 
+            $this->map(['GET', 'POST'], '/directories', Controller\Stations\Files\FilesController::class.':listDirectoriesAction')
+                ->setName('stations:files:directories');
+
             $this->map(['GET', 'POST'], '/batch', Controller\Stations\Files\FilesController::class.':batchAction')
                 ->setName('stations:files:batch');
 

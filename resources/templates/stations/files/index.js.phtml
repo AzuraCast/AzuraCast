@@ -29,6 +29,25 @@ $(function() {
         }
     });
 
+    var appMoveFilesModal = new Vue({
+        el: '#mdl-move-file',
+        data: {
+            selected_files: 0,
+            move_dir: '',
+            dir_history: [],
+            directory_grid: null
+        },
+        methods: {
+            pageBack: function(e) {
+                e.preventDefault();
+
+                this.dir_history.pop();
+                this.move_dir = this.dir_history.join("/");
+                this.directory_grid.bootgrid("reload");
+            }
+        }
+    });
+
     var grid = $("#file-table").bootgrid({
         ajax: true,
         selection: true,
@@ -107,6 +126,65 @@ $(function() {
             grid.bootgrid("clear").bootgrid("search", $(this).data('term'));
             return false;
         });
+
+        appMoveFilesModal.selected_files = getSelectedFiles().length;
+    }).on("selected.rs.jquery.bootgrid", function(e, columns, row) {
+        appMoveFilesModal.selected_files = getSelectedFiles().length;
+    }).on("deselected.rs.jquery.bootgrid", function(e, columns, row) {
+        appMoveFilesModal.selected_files = getSelectedFiles().length;
+    });
+
+    appMoveFilesModal.directory_grid = $("#directory-table").bootgrid({
+        ajax: true,
+        navigation: 0,
+        selection: false,
+        rowSelect: false,
+        caseSensitive: false,
+        url: "<?=$router->fromHere('stations:files:directories')  ?>",
+        post: function() {
+            return {
+                'csrf': CSRF,
+                'file': appMoveFilesModal.move_dir
+            };
+        },
+        formatters: {
+            "directory": function(column, row) {
+                $icon = '<span class="file-icon"><i class="material-icons">folder</i></span> ';
+
+                return '<div class="is_dir">'+$icon + row.name +'</div>';
+            },
+            "commands": function(column, row) {
+                return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="'+window.btoa(appMoveFilesModal.move_dir.length ? appMoveFilesModal.move_dir + '/' + row.path : row.path)+'"><?=__('Select') ?></a>';
+            }
+        }
+    }).on("loaded.rs.jquery.bootgrid", function() {
+        /* Handle directory selection */
+        appMoveFilesModal.directory_grid.find(".btn-select").on("click", function(e) {
+            e.preventDefault();
+
+            var $files = getSelectedFiles();
+            $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
+                'do': 'move',
+                'files': $files.join('|'),
+                'csrf': CSRF,
+                'directory': window.atob($(this).data('path'))
+            },function(data){
+                list();
+                $('#mdl-move-file').modal('hide');
+            },'json');
+
+            return false;
+        });
+    }).on("click.rs.jquery.bootgrid", function(e, columns, row) {
+        appMoveFilesModal.dir_history.push(row.path);
+        appMoveFilesModal.move_dir = appMoveFilesModal.dir_history.join("/");
+        appMoveFilesModal.directory_grid.bootgrid("reload");
+    });
+
+    $('#mdl-move-file').on('show.bs.modal', function (e) {
+        appMoveFilesModal.dir_history = [];
+        appMoveFilesModal.move_dir = '';
+        appMoveFilesModal.directory_grid.bootgrid("reload");
     });
 
     // Check if initial URL has a hash.
@@ -252,8 +330,7 @@ $(function() {
         $('#file-table').bootgrid("reload");
     }
 
-    function getUrlHash()
-    {
+    function getUrlHash() {
         var url_hash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, "%20"));
 
         if (url_hash.substr(0, 9) === 'playlist:') {
@@ -265,8 +342,7 @@ $(function() {
         return url_hash;
     }
 
-    function getSelectedFiles()
-    {
+    function getSelectedFiles() {
         $files = [];
         $('#file-table').find('tr.active').each(function() {
             $files.push($(this).data('row-id'));

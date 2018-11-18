@@ -49,8 +49,7 @@ class ProfileController
 
     public function editAction(Request $request, Response $response): ResponseInterface
     {
-        /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
+        $user = $request->getUser();
 
         $form_config = $this->form_config;
         $form_config['groups']['reset_password']['elements']['password'][1]['validator'] = function($val, \AzuraForms\Field\AbstractField $field) use ($user) {

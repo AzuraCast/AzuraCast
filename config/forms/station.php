@@ -19,8 +19,8 @@ return [
     'enctype' => 'multipart/form-data',
 
     'groups' => [
-
-        'essentials' => [
+        'profile' => [
+            'legend' => __('Station Profile'),
             'elements' => [
                 'name' => [
                     'text',
@@ -30,12 +30,7 @@ return [
                         'required' => true,
                     ]
                 ],
-            ]
-        ],
 
-        'profile' => [
-            'legend' => __('Station Profile'),
-            'elements' => [
                 'description' => [
                     'textarea',
                     [

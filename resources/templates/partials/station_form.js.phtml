@@ -1,5 +1,15 @@
 $(function() {
 
+    $('.tab-content').prependTo('form.form');
+
+    $('form fieldset#profile').appendTo('#tab-profile');
+
+    $('form fieldset#select_frontend_type').appendTo('#tab-frontend');
+    $('form fieldset.frontend_fieldset').appendTo('#tab-frontend');
+
+    $('form fieldset#select_backend_type').appendTo('#tab-backend');
+    $('form fieldset.backend_fieldset').appendTo('#tab-backend');
+
     showFrontend($('form #field_frontend_type input:checked').val());
     showBackend($('form #field_backend_type input:checked').val());
 

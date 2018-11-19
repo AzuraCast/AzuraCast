@@ -33,6 +33,7 @@ web/static/yarn-error\.log
 
 # Docker files
 /docker-compose.yml
+/docker-compose.override.yml
 /*.tar.gz
 
 # Plugins

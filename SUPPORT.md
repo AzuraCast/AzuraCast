@@ -131,15 +131,16 @@ isn't within the default range AzuraCast serves (8000-8999).
 
 If you're using AzuraCast alongside existing services that use the same ports, you may notice errors when attempting to start up Docker containers.
 
-The Docker configuration, including the ports that are exposed to the Internet, is controlled by a single file, `docker-compose.yml`. Your copy of this file can be modified as needed.
+The Docker configuration, including the ports that are exposed to the Internet, is controlled by a file, `docker-compose.yml`. While you can modify this file directly, future updates will ask you to override your changes to this file to apply new updates or bug fixes.
 
-The ports you will most often want to change are the ports for the web service. In `docker-compose.yml`, these ports are listed under the `nginx` service:
+It is strongly recommended to instead create a file named `docker-compose.override.yml` in the same directory as your main `docker-compose.yml` file. This file can contain any changes you need to make to the Docker Compose configuration. It will automatically be parsed by Docker Compose alongside the main file, and will be kept during updates.
+
+The ports you will most often want to change are the ports for the web service. In `docker-compose.override.yml`, you can customize these ports by modifying the `nginx` service:
 
 ```yaml
 version: '2.2'
 
 services:
-# web,...
   nginx:
     image: azuracast/azuracast_nginx:latest
     ports:
@@ -150,8 +151,6 @@ services:
 The first part of each port mapping, before the colon character (:), is the port that will be exposed to the public. You should _only_ change this number, not the number after the colon.
 
 For example, to serve pages via port 8080, the ports entry would be: ` - '8080:80'`.
-
-**Important note:** The Docker Utility Script (`docker.sh`) will ask you if you want to update your `docker-compose.yml` file when updating. Sometimes, there are new features that you should update the file to take advantage of. Be sure to recreate any changes you have made once the file is updated.
 
 #### Traditional
 

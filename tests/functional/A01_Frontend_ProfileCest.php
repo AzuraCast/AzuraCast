@@ -19,12 +19,12 @@ class A01_Frontend_ProfileCest extends CestAbstract
         $I->click('Edit');
 
         $I->submitForm('.form', [
-            'timezone' => 'US/Central',
+            'timezone' => 'America/Chicago',
             'locale' => 'fr_FR.UTF-8',
         ]);
 
         $I->seeCurrentUrlEquals('/profile');
-        $I->see('Central Time');
+        $I->see('Chicago');
         $I->see('Français');
     }
 }

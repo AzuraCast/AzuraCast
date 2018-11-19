@@ -9,10 +9,10 @@ ask() {
 
     while true; do
 
-        if [ "${2:-}" = "Y" ]; then
+        if [[ "${2:-}" = "Y" ]]; then
             prompt="Y/n"
             default=Y
-        elif [ "${2:-}" = "N" ]; then
+        elif [[ "${2:-}" = "N" ]]; then
             prompt="y/N"
             default=N
         else
@@ -26,8 +26,8 @@ ask() {
         read reply
 
         # Default?
-        if [ -z "$reply" ]; then
-            reply=$default
+        if [[ -z "$reply" ]]; then
+            reply=${default}
         fi
 
         # Check if the reply is valid
@@ -73,17 +73,17 @@ install() {
         fi
     fi
 
-    if [ ! -f .env ]; then
+    if [[ ! -f .env ]]; then
         echo "Writing default .env file..."
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env > .env
     fi
 
-    if [ ! -f azuracast.env ]; then
+    if [[ ! -f azuracast.env ]]; then
         echo "Creating default AzuraCast settings file..."
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
     fi
 
-    if [ ! -f docker-compose.yml ]; then
+    if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
     fi
@@ -111,7 +111,7 @@ update() {
 
     fi
 
-    if [ ! -f azuracast.env ]; then
+    if [[ ! -f azuracast.env ]]; then
 
         curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
         echo "Default environment file loaded."

@@ -129,28 +129,20 @@ isn't within the default range AzuraCast serves (8000-8999).
 
 #### Docker
 
-If you're using AzuraCast alongside existing services that use the same ports, you may notice errors when attempting to start up Docker containers.
+To change the ports on which AzuraCast serves HTTP and HTTPS traffic, you can edit the `.env` file on the host to modify the public-facing port numbers as needed. (Note: this file should already exist on your system, but if it doesn't, you can [use this version for reference](https://github.com/AzuraCast/AzuraCast/blob/master/.env).)
 
-The Docker configuration, including the ports that are exposed to the Internet, is controlled by a file, `docker-compose.yml`. While you can modify this file directly, future updates will ask you to override your changes to this file to apply new updates or bug fixes.
+Modify (or create) the lines below to modify your port mappings:
 
-It is strongly recommended to instead create a file named `docker-compose.override.yml` in the same directory as your main `docker-compose.yml` file. This file can contain any changes you need to make to the Docker Compose configuration. It will automatically be parsed by Docker Compose alongside the main file, and will be kept during updates.
-
-The ports you will most often want to change are the ports for the web service. In `docker-compose.override.yml`, you can customize these ports by modifying the `nginx` service:
-
-```yaml
-version: '2.2'
-
-services:
-  nginx:
-    image: azuracast/azuracast_nginx:latest
-    ports:
-      - '80:80'
-      - '443:443'
+```
+AZURACAST_HTTP_PORT=80
+AZURACAST_HTTPS_PORT=443
 ```
 
-The first part of each port mapping, before the colon character (:), is the port that will be exposed to the public. You should _only_ change this number, not the number after the colon.
+You can either specify a single number (i.e. 8080) for each value, or specify "127.0.0.1:8080" to only listen on the localhost. This can be useful when AzuraCast is hosted behind a proxy on your host.
 
-For example, to serve pages via port 8080, the ports entry would be: ` - '8080:80'`.
+You will need to recycle your Docker containers using `docker-compose down`, then `docker-compose up -d` to apply any changes made to this file.
+
+To override more complex functionality in your Docker installation, see the "Customizing Docker" section below.
 
 #### Traditional
 
@@ -162,3 +154,26 @@ You can specify any port in any range for your station to use, provided the port
 By default, AzuraCast installs and enables the ufw (uncomplicated firewall) and sets it to lock down traffic to only SSH 
 and the ports used by AzuraCast. If you're using a nonstandard port, you will likely also want to enable incoming traffic
 on that port using the command `ufw allow PORTNUM`, where `PORTNUM` is the new port number.
+
+### Customizing Docker
+
+Docker installations come with four files by default:
+
+- `docker.sh`, the [Docker Utility Script](https://www.azuracast.com/docker_sh.html);
+- `.env`, which contains environment variables used by Docker Compose itself;
+- `azuracast.env`, which contains customizable environment variables sent to AzuraCast and related services; and
+- `docker-compose.yml`, a large file that defines all of the services used by AzuraCast and how they interact.
+
+For power users looking to customize or expand their Docker configuration, you should follow these best practices:
+
+- Do not modify or replace the `docker.sh` utility script.
+
+- When updating (using the `docker.sh` utility script), it is recommended to run `./docker-sh update-self` before running `./docker.sh update`, to ensure the Docker Utility Script itself is up to date before it updates your Docker installation.
+
+- Environment variables set in `.env` are only used by Docker Compose itself, and aren't passed directly into the AzuraCast containers. You should only modify this file to change the HTTP and HTTPS port mappings used by Nginx (see the "Use Non-Standard Ports" section above).
+
+- The `azuracast.env` file is specific to your environment and can be customized however you like. It will not be replaced during any updates. Once your database has been created, however, changing the password listed in this file will cause the system to fail. If you want to destructively wipe your existing database and other files and set up a new one with the updated password, add the `-v` flag to the end of `docker-compose down` to remove all existing volumes, including your database.
+
+- If possible, you should not directly modify `docker-compose.yml`, as some updates may modify how it is defined to resolve bugs or add new features. When updating, you will always be asked if you want to update this file; if you have not modified it, you should always do so.
+
+- Instead of modifying `docker-compose.yml`, you can create a file named `docker-compose.override.yml` with your customizations. The structure of this file is the same as the main `docker-compose.yml` file, and is automatically parsed by Docker Compose to override any definitions in the main file. Updates will not replace this file.

@@ -451,7 +451,7 @@ $toolbar-element-border-radius: $border-radius !default;
 $toolbar-element-height:        2.25rem !default;
 $toolbar-element-opacity:       0.7 !default;
 $toolbar-elevation-shadow:      map-get($elevation-shadows, 4) !default;
-$toolbar-height:                4.25rem !default;
+$toolbar-height:                4.5rem !default;
 $toolbar-inner-spacer-x:        1rem !default;
 $toolbar-link-font-size:        1rem !default;
 $toolbar-link-height:           $toolbar-element-height !default;
@@ -459,7 +459,7 @@ $toolbar-link-line-height:      1 !default;
 $toolbar-link-padding-x:        1rem !default;
 $toolbar-link-padding-y:        (($toolbar-link-height - $toolbar-link-font-size * $toolbar-link-line-height) / 2) !default;
 $toolbar-padding-x:             1rem !default;
-$toolbar-padding-y:             (($toolbar-height - $toolbar-element-height) / 2) !default;
+$toolbar-padding-y:             1rem !default;
 $toolbar-toggler-icon:          'menu' !default;
 $toolbar-waterfall-bg:          theme-color(primary) !default;
 

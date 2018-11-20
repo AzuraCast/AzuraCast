@@ -148,7 +148,7 @@ class Station
     protected $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
 
     /**
-     * @Column(name="disconnect_deactivate_streamer", type="integer", nullable=false)
+     * @Column(name="disconnect_deactivate_streamer", type="integer", nullable=true, options={"default":0})
      * @var int
      */
     protected $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;

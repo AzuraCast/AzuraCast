@@ -1,6 +1,66 @@
 ---
-  - include_tasks: x86.yml
-    when: ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
+  - name: Install IceCast-KH-AC Dependencies
+    apt:
+      name: "{{ packages }}"
+      state: latest
+      install_recommends: no
+    vars:
+      packages:
+       - libxml2
+       - libxslt1-dev
+       - libvorbis-dev
+       - libssl-dev
+       - libcurl4-openssl-dev
+       - pkg-config
 
-  - include_tasks: armhf.yml
-    when: ansible_architecture != 'x86_64' and ansible_architecture != 'i386'
+  - name: Download IceCast-KH-AC Source
+    get_url:
+      url: https://github.com/AzuraCast/icecast-kh-ac/archive/master.tar.gz
+      dest: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
+      force: yes
+
+  - name: Extract IceCast-KH-AC Source
+    unarchive:
+      src: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
+      dest: "{{ app_base }}/servers/icecast2"
+      remote_src: yes
+      mode: "u=rwx,g=rx,o=rx"
+      owner: "azuracast"
+      group: "www-data"
+      extra_opts: "--strip-components=1"
+
+  - name: Build IceCast-KH-AC
+    shell: "cd {{ app_base }}/servers/icecast2 && ./configure && make && make install"
+    args:
+      chdir: "{{ app_base }}/servers/icecast2"
+
+  - name: Install OPAM
+    apt: pkg="opam" install_recommends=yes state=latest
+
+  - name: Install LiquidSoap Dependencies
+    apt:
+      name: "{{ packages }}"
+      state: latest
+      install_recommends: no
+    vars:
+      packages:
+       - libpcre3-dev
+       - libfdk-aac-dev
+       - libmad0-dev
+       - libmp3lame-dev
+       - libtag1-dev
+       - libfaad-dev
+       - libflac-dev
+       - libogg-dev
+       - libopus-dev
+       - libssl-dev
+       - pkg-config
+       - m4
+       - aspcud
+       - camlp4
+
+  - name: Build LiquidSoap
+    become_user: azuracast
+    shell: "opam init -a && opam update && opam install -y taglib.0.3.3 mad.0.4.5 faad.0.3.3 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.0 cry.0.6.0 flac.0.1.2 opus.0.1.2 duppy.0.8.0 ssl liquidsoap.1.3.3"
+    args:
+      chdir: "{{ app_base }}"

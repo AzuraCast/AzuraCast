@@ -5,5 +5,6 @@
   "dist/light.css": "dist/light-72f9116688.css",
   "dist/material.js": "dist/material-a93414a265.js",
   "dist/radio.js": "dist/radio-7c2492a14b.js",
+  "dist/webcaster.js": "dist/webcaster-8d2f121772.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

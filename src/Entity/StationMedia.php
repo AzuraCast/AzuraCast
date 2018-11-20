@@ -527,6 +527,7 @@ class StationMedia
         $annotation_types = [
             'title' => 'title',
             'artist' => 'artist',
+            'length' => 'duration',
             'fade_overlap' => 'liq_start_next',
             'fade_in' => 'liq_fade_in',
             'fade_out' => 'liq_fade_out',
@@ -545,7 +546,8 @@ class StationMedia
                 }
 
                 // Convert Liquidsoap-specific annotations to floats.
-                if ('liq' === substr($annotation_name, 0, 3)) {
+                if ('liq' === substr($annotation_name, 0, 3)
+                    || 'duration' === $annotation_name) {
                     $prop = Liquidsoap::toFloat($prop);
                 }
 

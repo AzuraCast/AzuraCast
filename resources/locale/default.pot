@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-11-19T16:56:39+00:00\n"
-"PO-Revision-Date: 2018-11-19T16:56:39+00:00\n"
+"POT-Creation-Date: 2018-11-20T11:10:02+00:00\n"
+"PO-Revision-Date: 2018-11-20T11:10:02+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:55
@@ -29,9 +29,9 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:123
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:60
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:26
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:166
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:217
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:226
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:167
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:218
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:227
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:80
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:167
@@ -47,7 +47,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:91
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:100
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:300
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:82
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:105
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:143
@@ -62,7 +62,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:98
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:109
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:307
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:308
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:90
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:113
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:151
@@ -76,7 +76,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:111
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:118
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:133
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:423
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:402
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:115
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:136
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:220
@@ -88,7 +88,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:134
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:84
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:300
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:82
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:105
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:100
@@ -108,7 +108,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:95
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:98
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:307
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:308
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:90
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:113
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
@@ -380,7 +380,7 @@ msgid "SHOUTcast Configuration"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:56
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:57
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:26
 msgid "This feature is not currently supported on this station."
@@ -394,30 +394,30 @@ msgstr ""
 msgid "Mount Point"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:166
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:217
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:300
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:307
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:423
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:167
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:218
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:308
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:402
 #: /var/azuracast/www/resources/templates/frontend/public/index.phtml:48
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:34
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:47
 msgid "Playlist"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:171
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:172
 msgid "This playlist is not a sequential playlist."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:226
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:227
 msgid "Format"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:277
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:278
 msgid "Existing playlist imported."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:277
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:278
 msgid "%d song(s) were imported into the playlist."
 msgstr ""
 
@@ -765,7 +765,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/media.php:139
 #: /var/azuracast/www/config/forms/mount/icecast.php:128
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:129
-#: /var/azuracast/www/config/forms/playlist.php:342
+#: /var/azuracast/www/config/forms/playlist.php:354
 #: /var/azuracast/www/config/forms/profile.php:119
 #: /var/azuracast/www/config/forms/remote.php:131
 #: /var/azuracast/www/config/forms/rename.php:18
@@ -871,7 +871,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:95
 #: /var/azuracast/www/config/forms/playlist.php:73
 #: /var/azuracast/www/config/forms/playlist.php:156
-#: /var/azuracast/www/config/forms/playlist.php:211
+#: /var/azuracast/www/config/forms/playlist.php:223
 #: /var/azuracast/www/config/forms/remote.php:46
 #: /var/azuracast/www/config/forms/settings.php:46
 #: /var/azuracast/www/config/forms/settings.php:59
@@ -897,7 +897,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:95
 #: /var/azuracast/www/config/forms/playlist.php:72
 #: /var/azuracast/www/config/forms/playlist.php:155
-#: /var/azuracast/www/config/forms/playlist.php:212
+#: /var/azuracast/www/config/forms/playlist.php:224
 #: /var/azuracast/www/config/forms/remote.php:46
 #: /var/azuracast/www/config/forms/settings.php:47
 #: /var/azuracast/www/config/forms/settings.php:60
@@ -1267,7 +1267,7 @@ msgid "Scheduling"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:114
-#: /var/azuracast/www/config/forms/playlist.php:199
+#: /var/azuracast/www/config/forms/playlist.php:211
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:91
 msgid "General Rotation"
 msgstr ""
@@ -1286,7 +1286,7 @@ msgid "Play during a scheduled time range. Useful for mood-based time playlists.
 msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:116
-#: /var/azuracast/www/config/forms/playlist.php:264
+#: /var/azuracast/www/config/forms/playlist.php:276
 msgid "Once per x Songs"
 msgstr ""
 
@@ -1303,7 +1303,7 @@ msgid "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
 msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:118
-#: /var/azuracast/www/config/forms/playlist.php:302
+#: /var/azuracast/www/config/forms/playlist.php:314
 msgid "Daily"
 msgstr ""
 
@@ -1358,96 +1358,108 @@ msgstr ""
 msgid "Remote URL"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:206
+#: /var/azuracast/www/config/forms/playlist.php:198
+msgid "Remote URL Type"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/playlist.php:201
+msgid "Direct Stream URL"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/playlist.php:202
+msgid "Playlist (M3U/PLS) URL"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/playlist.php:218
 msgid "Include in Automated Assignment"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:207
+#: /var/azuracast/www/config/forms/playlist.php:219
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:221
+#: /var/azuracast/www/config/forms/playlist.php:233
 msgid "Customize Schedule"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:228
+#: /var/azuracast/www/config/forms/playlist.php:240
 msgid "Start Time"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:237
+#: /var/azuracast/www/config/forms/playlist.php:249
 msgid "End Time"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:238
+#: /var/azuracast/www/config/forms/playlist.php:250
 msgid "If the end time is before the start time, the playlist will play overnight until this time on the next day."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:246
-#: /var/azuracast/www/config/forms/playlist.php:318
+#: /var/azuracast/www/config/forms/playlist.php:258
+#: /var/azuracast/www/config/forms/playlist.php:330
 msgid "Scheduled Play Days of Week"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:247
-#: /var/azuracast/www/config/forms/playlist.php:319
+#: /var/azuracast/www/config/forms/playlist.php:259
+#: /var/azuracast/www/config/forms/playlist.php:331
 msgid "Leave blank to play on every day of the week."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:249
-#: /var/azuracast/www/config/forms/playlist.php:321
+#: /var/azuracast/www/config/forms/playlist.php:261
+#: /var/azuracast/www/config/forms/playlist.php:333
 msgid "Monday"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:250
-#: /var/azuracast/www/config/forms/playlist.php:322
+#: /var/azuracast/www/config/forms/playlist.php:262
+#: /var/azuracast/www/config/forms/playlist.php:334
 msgid "Tuesday"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:251
-#: /var/azuracast/www/config/forms/playlist.php:323
+#: /var/azuracast/www/config/forms/playlist.php:263
+#: /var/azuracast/www/config/forms/playlist.php:335
 msgid "Wednesday"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:252
-#: /var/azuracast/www/config/forms/playlist.php:324
+#: /var/azuracast/www/config/forms/playlist.php:264
+#: /var/azuracast/www/config/forms/playlist.php:336
 msgid "Thursday"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:253
-#: /var/azuracast/www/config/forms/playlist.php:325
+#: /var/azuracast/www/config/forms/playlist.php:265
+#: /var/azuracast/www/config/forms/playlist.php:337
 msgid "Friday"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:254
-#: /var/azuracast/www/config/forms/playlist.php:326
+#: /var/azuracast/www/config/forms/playlist.php:266
+#: /var/azuracast/www/config/forms/playlist.php:338
 msgid "Saturday"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:255
-#: /var/azuracast/www/config/forms/playlist.php:327
+#: /var/azuracast/www/config/forms/playlist.php:267
+#: /var/azuracast/www/config/forms/playlist.php:339
 msgid "Sunday"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:271
+#: /var/azuracast/www/config/forms/playlist.php:283
 msgid "Number of Songs Between Plays"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:272
+#: /var/azuracast/www/config/forms/playlist.php:284
 msgid "This playlist will play every $x songs, where $x is specified below."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:283
+#: /var/azuracast/www/config/forms/playlist.php:295
 msgid "Once per x Minutes"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:290
+#: /var/azuracast/www/config/forms/playlist.php:302
 msgid "Number of Minutes Between Plays"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:291
+#: /var/azuracast/www/config/forms/playlist.php:303
 msgid "This playlist will play every $x minutes, where $x is specified below."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/playlist.php:309
+#: /var/azuracast/www/config/forms/playlist.php:321
 msgid "Scheduled Play Time"
 msgstr ""
 

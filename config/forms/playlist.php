@@ -192,6 +192,18 @@ return [
                     ]
                 ],
 
+                'remote_type' => [
+                    'radio',
+                    [
+                        'label' => __('Remote URL Type'),
+                        'default' => StationPlaylist::REMOTE_TYPE_STREAM,
+                        'choices' => [
+                            StationPlaylist::REMOTE_TYPE_STREAM => __('Direct Stream URL'),
+                            StationPlaylist::REMOTE_TYPE_PLAYLIST => __('Playlist (M3U/PLS) URL'),
+                        ],
+                    ]
+                ]
+
             ]
         ],
 

@@ -3,6 +3,7 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Event\Radio\GetNextSong;
+use App\Radio\Backend\Liquidsoap;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,9 +45,9 @@ class AutoDJ implements EventSubscriberInterface
      * 
      * @param Entity\Station $station
      * @param bool $is_autodj
-     * @return Entity\SongHistory|null
+     * @return Entity\SongHistory|string|null
      */
-    public function getNextSong(Entity\Station $station, $is_autodj = false): ?Entity\SongHistory
+    public function getNextSong(Entity\Station $station, $is_autodj = false)
     {
         if ($station->useManualAutoDJ()) {
             return null;
@@ -159,11 +160,7 @@ class AutoDJ implements EventSubscriberInterface
         $playlists_by_type = [];
         foreach($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-
-            // Don't include empty playlists or nonstandard ones
-            if ($playlist->getIsEnabled()
-                && $playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS
-                && $playlist->getMediaItems()->count() > 0) {
+            if ($playlist->isPlayable()) {
                 $playlists_by_type[$playlist->getType()][$playlist->getId()] = $playlist;
             }
         }
@@ -295,7 +292,7 @@ class AutoDJ implements EventSubscriberInterface
      * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
      *
      * @param Entity\StationPlaylist $playlist
-     * @return Entity\SongHistory|null
+     * @return Entity\SongHistory|string|null
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -322,10 +319,10 @@ class AutoDJ implements EventSubscriberInterface
             $this->em->flush();
 
             return $sh;
+        } else if (is_string($media_to_play)) {
+            return $media_to_play;
         }
 
         return null;
     }
-
-
 }

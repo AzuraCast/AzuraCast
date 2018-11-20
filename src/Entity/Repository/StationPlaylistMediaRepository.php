@@ -2,6 +2,8 @@
 
 namespace App\Entity\Repository;
 
+use App\Radio\Backend\Liquidsoap;
+use App\Radio\PlaylistParser;
 use Azura\Cache;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -186,10 +188,14 @@ class StationPlaylistMediaRepository extends Repository
      * Return a song from the cached playback queue for a playlist, if applicable.
      *
      * @param Entity\StationPlaylist $playlist
-     * @return Entity\StationMedia|null
+     * @return Entity\StationMedia|string|null
      */
-    public function getQueuedSong(Entity\StationPlaylist $playlist): ?Entity\StationMedia
+    public function getQueuedSong(Entity\StationPlaylist $playlist)
     {
+        if (Entity\StationPlaylist::SOURCE_REMOTE_URL === $playlist->getSource()) {
+            return $this->_playRemoteUrl($playlist);
+        }
+
         if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
             $media_queue = $this->_getPlayableMediaIds($playlist);
 
@@ -229,6 +235,42 @@ class StationPlaylistMediaRepository extends Repository
         }
 
         return $media_queue;
+    }
+
+    protected function _playRemoteUrl(Entity\StationPlaylist $playlist): ?string
+    {
+        $remote_type = $playlist->getRemoteType() ?? Entity\StationPlaylist::REMOTE_TYPE_STREAM;
+
+        // Handle a raw stream URL of possibly indeterminate length.
+        if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remote_type) {
+            // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
+            if (Entity\StationPlaylist::TYPE_SCHEDULED === $playlist->getType()) {
+                $duration = $playlist->getScheduleDuration();
+                return 'annotate:duration="'.Liquidsoap::toFloat($duration).'":'.$playlist->getRemoteUrl();
+            }
+
+            return $playlist->getRemoteUrl();
+        }
+
+        // Handle a remote playlist containing songs or streams.
+        $cache_name = $this->_getCacheName($playlist->getId());
+        $media_queue = (array)$this->cache->get($cache_name);
+
+        if (empty($media_queue)) {
+            $playlist_raw = file_get_contents($playlist->getRemoteUrl());
+            $media_queue = PlaylistParser::getSongs($playlist_raw);
+        }
+
+        if (!empty($media_queue)) {
+            $media_id = array_shift($media_queue);
+        } else {
+            $media_id = null;
+        }
+
+        // Save the modified cache, sans the now-missing entry.
+        $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+
+        return $media_id;
     }
 
     /**

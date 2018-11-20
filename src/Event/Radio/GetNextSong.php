@@ -8,7 +8,7 @@ class GetNextSong extends Event
 {
     const NAME = 'autodj-next-song';
 
-    /** @var null|Entity\SongHistory The next song, if it's already calculated. */
+    /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
     protected $next_song;
 
     /** @var Entity\Station */
@@ -20,22 +20,22 @@ class GetNextSong extends Event
     }
 
     /**
-     * @return Entity\SongHistory|null
+     * @return Entity\SongHistory|string|null
      */
-    public function getNextSong(): ?Entity\SongHistory
+    public function getNextSong()
     {
         return $this->next_song;
     }
 
     /**
-     * @param Entity\SongHistory|null $next_song
+     * @param Entity\SongHistory|string|null $next_song
      * @return bool
      */
-    public function setNextSong(?Entity\SongHistory $next_song): bool
+    public function setNextSong($next_song): bool
     {
         $this->next_song = $next_song;
 
-        if ($next_song instanceof Entity\SongHistory) {
+        if (null !== $next_song) {
             $this->stopPropagation();
             return true;
         }
@@ -48,7 +48,7 @@ class GetNextSong extends Event
      */
     public function hasNextSong(): bool
     {
-        return ($this->next_song instanceof Entity\SongHistory);
+        return (null !== $this->next_song);
     }
 
     /**

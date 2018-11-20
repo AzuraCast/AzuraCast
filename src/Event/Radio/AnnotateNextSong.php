@@ -13,7 +13,7 @@ class AnnotateNextSong extends Event
 {
     const NAME = 'radio-liquidsoap-annotate-next-song';
 
-    /** @var null|Entity\SongHistory The next song, if it's already calculated. */
+    /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
     protected $next_song;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
@@ -25,7 +25,7 @@ class AnnotateNextSong extends Event
     /** @var Entity\Station */
     protected $station;
 
-    public function __construct(Entity\Station $station, Entity\SongHistory $next_song = null)
+    public function __construct(Entity\Station $station, $next_song = null)
     {
         $this->station = $station;
         $this->next_song = $next_song;
@@ -40,9 +40,9 @@ class AnnotateNextSong extends Event
     }
 
     /**
-     * @return Entity\SongHistory|null
+     * @return string|Entity\SongHistory|null
      */
-    public function getNextSong(): ?Entity\SongHistory
+    public function getNextSong()
     {
         return $this->next_song;
     }

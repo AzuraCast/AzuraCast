@@ -220,10 +220,24 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
                 $ls_config[] = $playlist_var_name . ' = audio_to_stereo(playlist('.implode(',', $playlist_params).'))';
             } else {
-                $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe(input.http("'.$playlist->getRemoteUrl().'")))';
+                switch($playlist->getRemoteType())
+                {
+                    case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
+                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(playlist("'.$this->_cleanUpString($playlist->getRemoteUrl()).'"))';
+                        break;
+
+                    case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
+                    default:
+                        $remote_url = $playlist->getRemoteUrl();
+                        $remote_url_scheme = parse_url($remote_url, \PHP_URL_SCHEME);
+                        $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
+
+                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'("'.$this->_cleanUpString($remote_url).'")))';
+                        break;
+                }
             }
 
-            if ($playlist->getType() === Entity\StationPlaylist::TYPE_ADVANCED) {
+            if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
                 $ls_config[] = 'ignore('.$playlist_var_name.')';
             }
 
@@ -855,7 +869,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      */
     public function getNextSong(Entity\Station $station, $as_autodj = false): string
     {
-        /** @var Entity\SongHistory|null $sh */
+        /** @var Entity\SongHistory|string|null $sh */
         $sh = $this->autodj->getNextSong($station, $as_autodj);
 
         $event = new AnnotateNextSong($station, $sh);
@@ -879,6 +893,8 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
                 $event->setSongPath($media->getFullPath());
                 $event->addAnnotations($media->getAnnotations());
             }
+        } else if (null !== $sh) {
+            $event->setSongPath((string)$sh);
         } else {
             $error_file = APP_INSIDE_DOCKER
                 ? '/usr/local/share/icecast/web/error.mp3'

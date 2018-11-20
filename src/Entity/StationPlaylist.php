@@ -25,6 +25,9 @@ class StationPlaylist
     public const SOURCE_SONGS = 'songs';
     public const SOURCE_REMOTE_URL ='remote_url';
 
+    public const REMOTE_TYPE_STREAM = 'stream';
+    public const REMOTE_TYPE_PLAYLIST = 'playlist';
+
     public const ORDER_RANDOM = 'random';
     public const ORDER_SHUFFLE = 'shuffle';
     public const ORDER_SEQUENTIAL = 'sequential';
@@ -62,19 +65,19 @@ class StationPlaylist
      * @Column(name="type", type="string", length=50)
      * @var string
      */
-    protected $type;
+    protected $type = self::TYPE_DEFAULT;
 
     /**
      * @Column(name="source", type="string", length=50)
      * @var string
      */
-    protected $source;
+    protected $source = self::SOURCE_SONGS;
 
     /**
      * @Column(name="playback_order", type="string", length=50)
      * @var string
      */
-    protected $order;
+    protected $order = self::ORDER_SHUFFLE;
 
     /**
      * @Column(name="remote_url", type="string", length=255, nullable=true)
@@ -83,34 +86,40 @@ class StationPlaylist
     protected $remote_url;
 
     /**
+     * @Column(name="remote_type", type="string", length=25, nullable=true)
+     * @var string|null
+     */
+    protected $remote_type = self::REMOTE_TYPE_STREAM;
+
+    /**
      * @Column(name="is_enabled", type="boolean")
      * @var bool
      */
-    protected $is_enabled;
+    protected $is_enabled = true;
 
     /**
      * @Column(name="play_per_songs", type="smallint")
      * @var int
      */
-    protected $play_per_songs;
+    protected $play_per_songs = 0;
 
     /**
      * @Column(name="play_per_minutes", type="smallint")
      * @var int
      */
-    protected $play_per_minutes;
+    protected $play_per_minutes = 0;
 
     /**
      * @Column(name="schedule_start_time", type="smallint")
      * @var int
      */
-    protected $schedule_start_time;
+    protected $schedule_start_time = 0;
 
     /**
      * @Column(name="schedule_end_time", type="smallint")
      * @var int
      */
-    protected $schedule_end_time;
+    protected $schedule_end_time = 0;
 
     /**
      * @Column(name="schedule_days", type="string", length=50, nullable=true)
@@ -122,7 +131,7 @@ class StationPlaylist
      * @Column(name="play_once_time", type="smallint")
      * @var int
      */
-    protected $play_once_time;
+    protected $play_once_time = 0;
 
     /**
      * @Column(name="play_once_days", type="string", length=50, nullable=true)
@@ -134,19 +143,19 @@ class StationPlaylist
      * @Column(name="weight", type="smallint")
      * @var int
      */
-    protected $weight;
+    protected $weight = 3;
 
     /**
      * @Column(name="include_in_requests", type="boolean")
      * @var bool
      */
-    protected $include_in_requests;
+    protected $include_in_requests = true;
 
     /**
      * @Column(name="include_in_automation", type="boolean")
      * @var bool
      */
-    protected $include_in_automation;
+    protected $include_in_automation = false;
 
     /**
      * @OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
@@ -158,20 +167,6 @@ class StationPlaylist
     public function __construct(Station $station)
     {
         $this->station = $station;
-
-        $this->type = self::TYPE_DEFAULT;
-        $this->source = self::SOURCE_SONGS;
-        $this->order = self::ORDER_SHUFFLE;
-        $this->is_enabled = 1;
-
-        $this->weight = 3;
-        $this->include_in_requests = true;
-        $this->include_in_automation = false;
-        $this->play_once_time = 0;
-        $this->play_per_minutes = 0;
-        $this->play_per_songs = 0;
-        $this->schedule_start_time = 0;
-        $this->schedule_end_time = 0;
 
         $this->media_items = new ArrayCollection;
     }
@@ -281,11 +276,45 @@ class StationPlaylist
     }
 
     /**
+     * @return string
+     */
+    public function getRemoteType(): ?string
+    {
+        return $this->remote_type;
+    }
+
+    /**
+     * @param null|string $remote_type
+     */
+    public function setRemoteType(?string $remote_type): void
+    {
+        $this->remote_type = $remote_type;
+    }
+
+    /**
      * @return bool
      */
     public function getIsEnabled(): bool
     {
         return $this->is_enabled;
+    }
+
+    /**
+     * Indicates whether a playlist is enabled and has content which can be scheduled by an AutoDJ scheduler.
+     *
+     * @return bool
+     */
+    public function isPlayable(): bool
+    {
+        if (!$this->is_enabled) {
+            return false;
+        }
+
+        if (self::SOURCE_SONGS === $this->source) {
+            return ($this->media_items->count() > 0);
+        }
+
+        return true;
     }
 
     /**
@@ -374,6 +403,25 @@ class StationPlaylist
     public function setScheduleEndTime(int $schedule_end_time)
     {
         $this->schedule_end_time = $schedule_end_time;
+    }
+
+    /**
+     * @return int Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
+     */
+    public function getScheduleDuration(): int
+    {
+        if (self::TYPE_SCHEDULED !== $this->type) {
+            return 0;
+        }
+
+        $start_time = self::getTimestamp($this->schedule_start_time);
+        $end_time = self::getTimestamp($this->schedule_end_time);
+
+        if ($start_time > $end_time) {
+            return 86400 - ($start_time - $end_time);
+        }
+
+        return $end_time - $start_time;
     }
 
     /**

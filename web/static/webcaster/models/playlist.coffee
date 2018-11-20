@@ -1,6 +1,6 @@
 class Webcaster.Model.Playlist extends Webcaster.Model.Track
-  initialize: ->
-    super()
+  initialize: (attributes, options) ->
+    super(attributes, options)
 
     @mixer.on "change:slider", @setMixGain
 

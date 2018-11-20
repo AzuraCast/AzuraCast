@@ -89,13 +89,21 @@ class CheckForUpdates extends TaskAbstract
         }
 
         try {
+            $request_body = [
+                'id'        => $app_uuid,
+                'is_docker' => (bool)$this->app_settings[Settings::IS_DOCKER],
+                'environment' => $this->app_settings[Settings::APP_ENV],
+            ];
+
+            $commit_hash = $this->version->getCommitHash();
+            if ($commit_hash) {
+                $request_body['version'] = $commit_hash;
+            } else {
+                $request_body['release'] = Version::FALLBACK_VERSION;
+            }
+
             $response = $this->http_client->request('POST', self::UPDATE_URL, [
-                'json' => [
-                    'id'        => $app_uuid,
-                    'is_docker' => (bool)$this->app_settings[Settings::IS_DOCKER],
-                    'version'   => $this->version->getCommitHash(),
-                    'environment' => $this->app_settings[Settings::APP_ENV],
-                ]
+                'json' => $request_body,
             ]);
 
             $update_data_raw = $response->getBody()->getContents();

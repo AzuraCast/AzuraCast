@@ -19,9 +19,9 @@ while test $# -gt 0; do
 done
 
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ansible|grep "install ok installed")
-echo Checking for Ansible: $PKG_OK
+echo "Checking for Ansible: $PKG_OK"
 
-if [ "" == "$PKG_OK" ]; then
+if [[ "" == "$PKG_OK" ]]; then
     sudo apt-get update
     sudo apt-get install -q -y software-properties-common
     sudo apt-add-repository ppa:ansible/ansible
@@ -37,8 +37,12 @@ UPDATE_REVISION="${UPDATE_REVISION:-30}"
 
 echo "Updating AzuraCast (Environment: $APP_ENV, Update revision: $UPDATE_REVISION)"
 
-if [ $APP_ENV = "production" ]; then
-    git reset --hard && git pull
+if [[ ${APP_ENV} = "production" ]]; then
+    if [[ -d ".git" ]]; then
+        git reset --hard && git pull
+    else
+        echo "You are running a release build. Any code updates should be applied manually."
+    fi
 fi
 
 ansible-playbook util/ansible/update.yml --inventory=util/ansible/hosts --extra-vars "app_env=$APP_ENV update_revision=$UPDATE_REVISION"

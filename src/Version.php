@@ -2,6 +2,7 @@
 namespace App;
 
 use Azura\Cache;
+use Azura\Settings;
 use Symfony\Component\Process\Process;
 
 /**
@@ -9,12 +10,24 @@ use Symfony\Component\Process\Process;
  */
 class Version
 {
+    /** @var string Version that is displayed if no Git repository information is present. */
+    const FALLBACK_VERSION = '0.9.1';
+
     /** @var Cache */
     protected $cache;
 
-    public function __construct(Cache $cache)
+    /** @var string */
+    protected $repo_dir;
+
+    /** @var Settings */
+    protected $app_settings;
+
+    public function __construct(Cache $cache, Settings $app_settings)
     {
         $this->cache = $cache;
+        $this->app_settings = $app_settings;
+
+        $this->repo_dir = $app_settings[Settings::BASE_DIR];
     }
 
     /**
@@ -23,7 +36,7 @@ class Version
     public function getVersion()
     {
         $details = $this->getDetails();
-        return $details['tag'] ?? 'N/A';
+        return $details['tag'] ?? self::FALLBACK_VERSION;
     }
 
     /**
@@ -32,16 +45,19 @@ class Version
     public function getVersionText()
     {
         $details = $this->getDetails();
-        return 'v'.$details['tag'].', #'.$details['commit_short'].' ('.$details['commit_date'].')';
+
+        return (isset($details['tag']))
+            ? 'v'.$details['tag'].', #'.$details['commit_short'].' ('.$details['commit_date'].')'
+            : 'v'.self::FALLBACK_VERSION.' Release Build';
     }
 
     /**
-     * @return string The long-form Git hash that represents the current commit of this installation.
+     * @return string|null The long-form Git hash that represents the current commit of this installation.
      */
-    public function getCommitHash(): string
+    public function getCommitHash(): ?string
     {
         $details = $this->getDetails();
-        return $details['commit'];
+        return $details['commit'] ?? null;
     }
 
     /**
@@ -56,7 +72,7 @@ class Version
         if (!$details) {
             $details = $this->cache->getOrSet('app_version_details', function() {
                 return $this->_getRawDetails();
-            }, 86400);
+            }, $this->app_settings->isProduction() ? 86400 : 600);
         }
 
         return $details;
@@ -69,6 +85,10 @@ class Version
      */
     protected function _getRawDetails(): array
     {
+        if (!is_dir($this->repo_dir.'/.git')) {
+            return [];
+        }
+
         $details = [];
 
         // Get the long form of the latest commit's hash.
@@ -111,7 +131,7 @@ class Version
     protected function _runProcess($proc, $default = ''): string
     {
         $process = new Process($proc);
-        $process->setWorkingDirectory(dirname(__DIR__));
+        $process->setWorkingDirectory($this->repo_dir);
         $process->run();
 
         if (!$process->isSuccessful()) {

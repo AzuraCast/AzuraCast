@@ -13,3 +13,18 @@ Dockerfile text eol=lf
 # Denote all files that are truly binary and should not be modified.
 *.png binary
 *.jpg binary
+
+# Files that should be excluded from the Release zip/gz's
+/.github export-ignore
+/tests export-ignore
+/util/docker export-ignore
+/util/openapi.php export-ignore
+/util/unused.php export-ignore
+/*.yml export-ignore
+/*.yaml export-ignore
+/.travis.yml export-ignore
+/docker.sh export-ignore
+/README.md export-ignore
+/SUPPORT.md export-ignore
+/CODE_OF_CONDUCT.md export-ignore
+/CONTRIBUTING.md export-ignore

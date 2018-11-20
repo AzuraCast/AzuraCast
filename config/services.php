@@ -196,7 +196,8 @@ return function (\Azura\Container $di)
 
     $di[\App\Version::class] = function($di) {
         return new \App\Version(
-            $di[\Azura\Cache::class]
+            $di[\Azura\Cache::class],
+            $di['settings']
         );
     };
 

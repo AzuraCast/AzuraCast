@@ -430,4 +430,37 @@ return [
             ],
         ],
     ],
+
+    'webcaster' => [
+        'order' => 10,
+        'require' => ['jquery'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js',
+                ],
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
+                ],
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js',
+                ],
+                [
+                    'src' => 'https://cdn.rawgit.com/toots/shine/master/js/dist/libshine.js',
+                ],
+                [
+                    'src' => 'https://cdn.rawgit.com/webcast/libsamplerate.js/master/dist/libsamplerate.js',
+                ],
+                [
+                    'src' => 'https://cdn.rawgit.com/webcast/taglib.js/master/dist/taglib.js',
+                ],
+                [
+                    'src' => 'https://cdn.rawgit.com/webcast/webcast.js/master/lib/webcast.js',
+                ],
+                [
+                    'src' => 'dist/webcaster.js',
+                ],
+            ]
+        ]
+    ],
 ];

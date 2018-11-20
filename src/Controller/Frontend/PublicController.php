@@ -62,7 +62,7 @@ class PublicController
 
                 return $response
                     ->withHeader('Content-Type', 'audio/x-mpegurl')
-                    ->withHeader('Content-Disposition', 'attachment; filename='.$station->getShortName().'.m3u')
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.m3u')
                     ->write($m3u_file);
                 break;
 
@@ -86,9 +86,16 @@ class PublicController
 
                 return $response
                     ->withHeader('Content-Type', 'audio/x-scpls')
-                    ->withHeader('Content-Disposition', 'attachment; filename='.$station->getShortName().'.pls')
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.pls')
                     ->write(implode("\n", $output));
                 break;
         }
+    }
+
+    public function djAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
+    {
+        return $request->getView()->renderToResponse($response, 'frontend/public/dj', [
+            'station' => $request->getStation(),
+        ]);
     }
 }

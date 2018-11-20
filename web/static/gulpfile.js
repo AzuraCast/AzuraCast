@@ -26,7 +26,23 @@ gulp.task('concat-js', ['clean'], function() {
 });
 
 gulp.task('build-webcaster', ['clean'], function() {
-    gulp.src('./webcaster/**/*.coffee')
+    // Files have to be in a specific order when concatenated
+    gulp.src([
+        './webcaster/compat.coffee',
+        './webcaster/webcaster.coffee',
+        './webcaster/node.coffee',
+        './webcaster/models/track.coffee',
+        './webcaster/models/microphone.coffee',
+        './webcaster/models/mixer.coffee',
+        './webcaster/models/playlist.coffee',
+        './webcaster/models/settings.coffee',
+        './webcaster/views/track.coffee',
+        './webcaster/views/microphone.coffee',
+        './webcaster/views/mixer.coffee',
+        './webcaster/views/playlist.coffee',
+        './webcaster/views/settings.coffee',
+	    './webcaster/init.coffee'
+    ])
         .pipe(sourcemaps.init())
             .pipe(coffee())
             .pipe(concat('webcaster.js'))

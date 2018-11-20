@@ -299,6 +299,9 @@ return function(\Slim\App $app)
         $this->get('/playlist[/{format}]', Controller\Frontend\PublicController::class.':playlistAction')
             ->setName('public:playlist');
 
+        $this->get('/dj', Controller\Frontend\PublicController::class.':djAction')
+            ->setName('public:dj');
+
     })
         ->add(Middleware\GetStation::class)
         ->add(AzuraMiddleware\EnableView::class);

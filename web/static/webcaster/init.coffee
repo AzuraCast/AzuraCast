@@ -3,6 +3,7 @@ $ ->
     slider: 0
 
   Webcaster.settings = new Webcaster.Model.Settings({
+
     uri:          "ws://source:hackme@localhost:8080/mount"
     bitrate:      128
     bitrates:     [ 8, 16, 24, 32, 40, 48, 56,

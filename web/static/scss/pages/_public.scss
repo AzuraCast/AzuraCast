@@ -19,6 +19,32 @@ body.page-minimal {
 
     align-items: center;
     justify-content: center;
+
+    .card {
+      width: 500px;
+
+      .card-body {
+        position: relative;
+
+        .card-title {
+          font-weight: bold;
+        }
+
+        .btn-float {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          margin-top: (0-($btn-float-size / 2));
+          margin-right: (0-($btn-float-size / 2));
+        }
+      }
+
+      @include media-breakpoint-only('xs') {
+        width: calc(100% - 40px);
+        left: 20px;
+        margin-left: 0;
+      }
+    }
   }
 
   &.login-content,
@@ -27,32 +53,6 @@ body.page-minimal {
       .card-body {
         padding: ($card-padding-y * 2) ($card-padding-y * 2);
       }
-    }
-  }
-
-  .card {
-    width: 500px;
-
-    .card-body {
-      position: relative;
-
-      .card-title {
-        font-weight: bold;
-      }
-
-      .btn-float {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        margin-top: (0-($btn-float-size / 2));
-        margin-right: (0-($btn-float-size / 2));
-      }
-    }
-
-    @include media-breakpoint-only('xs') {
-      width: calc(100% - 40px);
-      left: 20px;
-      margin-left: 0;
     }
   }
 

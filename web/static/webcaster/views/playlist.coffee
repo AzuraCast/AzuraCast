@@ -10,6 +10,7 @@ class Webcaster.View.Playlist extends Webcaster.View.Track
     "change .files"          : "onFiles"
     "change .playThrough"    : "onPlayThrough"
     "change .loop"           : "onLoop"
+    "change .volume-slider"  : "onVolumeChange"
     "submit"                 : "onSubmit"
 
   initialize: ->
@@ -61,23 +62,6 @@ class Webcaster.View.Playlist extends Webcaster.View.Track
         text "#{Webcaster.prettifyTime(position)} / #{Webcaster.prettifyTime(duration)}"
 
   render: ->
-    @$(".volume-slider").slider
-      orientation: "vertical"
-      min: 0
-      max: 150
-      value: 100
-      stop: =>
-        @$("a.ui-slider-handle").tooltip "hide"
-      slide: (e, ui) =>
-        @model.set trackGain: ui.value
-        @$("a.ui-slider-handle").tooltip "show"
-
-    @$("a.ui-slider-handle").tooltip
-      title: => @model.get "trackGain"
-      trigger: ""
-      animation: false
-      placement: "left"
-
     files = @model.get "files"
 
     @$(".files-table").empty()
@@ -168,3 +152,6 @@ class Webcaster.View.Playlist extends Webcaster.View.Track
 
   onLoop: (e) ->
     @model.set loop: $(e.target).is(":checked")
+
+  onVolumeChange: (e) ->
+    @model.set trackGain: $(e.target).val()

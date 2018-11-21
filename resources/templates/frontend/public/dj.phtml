@@ -1,6 +1,6 @@
 <?php
 $this->layout('minimal', [
-    'page_class' => 'dj station-'.$station->getShortName(),
+    'page_class' => 'dj has-sidebar station-'.$station->getShortName(),
     'title' => $this->e($station->getName()),
     'hide_footer' => true
 ]);
@@ -9,242 +9,199 @@ $this->layout('minimal', [
 $assets
     ->load('webcaster')
 ?>
-
-<div class="container">
-    <div class="row">
-        <div class="col-2 settings">
-            <div class="card">
-                <form>
-                    <fieldset>
-                        <legend>Setup</legend>
-                        <div class="control-group">
-                            <div class="controls">
-                                <button class="btn btn-primary start-stream">Start streaming</button>
-                                <button class="btn btn-danger stop-stream" style="display: none;">Stop streaming</button>
-                                <button class="btn btn-info passThrough">CUE</button>
-                            </div>
-                        </div>
-                        <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#settings" data-toggle="tab">Settings</a>
+<section id="content" role="main" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div class="container">
+        <div class="row">
+            <!-- Settings/Metadata Column -->
+            <div class="col-md-4 mb-sm-4">
+                <div class="card settings">
+                    <div class="card-header">
+                        <h5><?=$this->e($station->getName()) ?></h5>
+                        <ul class="nav nav-tabs card-header-tabs mt-0">
+                            <li class="nav-item ml-1">
+                                <a class="nav-link active" href="#settings" data-toggle="tab"><?=__('Settings') ?></a>
                             </li>
-                            <li>
-                                <a href="#metadata" data-toggle="tab">Metadata</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#metadata" data-toggle="tab"><?=__('Metadata') ?></a>
                             </li>
                         </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="settings">
-                                <div class="control-group">
-                                    <label>Encoder</label>
-                                    <div class="controls">
-                                        <label class="radio inline">
-                                            <input type="radio" name="encoder" value="mp3" class="encoder" checked>MP3
-                                        </label>
-                                        <label class="radio inline">
-                                            <input type="radio" name="encoder" value="raw" class="encoder">Raw
-                                        </label>
+                    </div>
+                    <div class="card-body">
+                        <form class="form">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="settings">
+                                    <div class="form-group">
+                                        <label><?=__('Encoder') ?></label>
+                                        <div class="controls">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input id="encoder_mp3" type="radio" name="encoder" value="mp3" class="encoder custom-control-input" checked="checked">
+                                                <label for="encoder_mp3" class="custom-control-label"><?=__('MP3') ?></label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input id="encoder_raw" type="radio" name="encoder" value="raw" class="encoder custom-control-input">
+                                                <label for="encoder_raw" class="custom-control-label"><?=__('Raw') ?></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="select_samplerate"><?=__('Sample Rate (kHz)') ?></label>
+                                        <div class="controls">
+                                            <select id="select_samplerate" class="form-control samplerate"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="select_bitrate"><?=__('Bit Rate (kbps)') ?></label>
+                                        <div class="controls">
+                                            <select id="select_bitrate" class="form-control bitrate"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><?=__('Channels') ?></label>
+                                        <div class="controls">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input id="channels_2" type="radio" name="channels" value="2" class="custom-control-input channels" checked="checked">
+                                                <label for="channels_2" class="custom-control-label"><?=__('Stereo') ?></label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input id="channels_1" type="radio" name="channels" value="1" class="custom-control-input channels">
+                                                <label for="channels_1" class="custom-control-label"><?=__('Mono') ?></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Stream destination URI</label>
+                                        <div class="controls">
+                                            <input class="uri" type="text" size="40" value="ws://source:hackme@localhost:8080/mount">
+                                            <label class="checkbox">
+                                                <input type="checkbox" class="asynchronous" checked> Use asynchronous worker
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="control-group">
-                                    <label>Samplerate</label>
-                                    <div class="controls">
-                                        <select class="samplerate"></select>
+                                <div class="tab-pane" id="metadata">
+                                    <div class="alert metadata-updated" style="display: none;">
+                                        <?=__('Metadata updated!') ?>
                                     </div>
-                                    <label>Bitrate</label>
-                                    <div class="controls">
-                                        <select class="bitrate"></select>
+                                    <div class="form-group">
+                                        <label for="metadata_title"><?=__('Title') ?></label>
+                                        <div class="controls">
+                                            <input id="metadata_title" class="form-control manual-metadata title" type="text" disabled="disabled">
+                                        </div>
                                     </div>
-                                    <label>Channels</label>
-                                    <div class="controls">
-                                        <label class="radio inline">
-                                            <input type="radio" name="channels" value="2" class="channels" checked>Stereo
-                                        </label>
-                                        <label class="radio inline">
-                                            <input type="radio" name="channels" value="1" class="channels">Mono
-                                        </label>
+                                    <div class="form-group">
+                                        <label for="metadata_artist"><?=__('Artist') ?></label>
+                                        <div class="controls">
+                                            <input id="metadata_artist" class="form-control manual-metadata artist" type="text" disabled="disabled">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="control-group">
-                                    <label>Stream destination URI</label>
-                                    <div class="controls">
-                                        <input class="uri" type="text" size="40" value="ws://source:hackme@localhost:8080/mount">
-                                        <label class="checkbox">
-                                            <input type="checkbox" class="asynchronous" checked> Use asynchronous worker
-                                        </label>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary update-metadata" disabled="disabled"><?=__('Update Metadata') ?></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="metadata">
-                                <div class="alert metadata-updated" style="display: none;">
-                                    Metadata updated!
+                        </form>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn btn-primary start-stream"><?=__('Start streaming') ?></button>
+                        <button class="btn btn-danger stop-stream" style="display: none;"><?=__('Stop streaming') ?></button>
+                        <button class="btn btn-info passThrough"><?=__('Cue') ?></button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Settings/Metadata Column -->
+
+            <!-- Playlist Row -->
+            <div class="col-md-8">
+                <div class="row mb-4">
+                    <!-- Playlist 1 -->
+                    <div class="col-md-6 mb-sm-4">
+                        <div class="card playlist-left">
+                            <h5 class="card-header">
+                                <?=__('Playlist 1') ?>
+                                <div class="float-right">
+                                    <input type="range" min="0" max="150" value="100" class="custom-range volume-slider">
                                 </div>
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <label>Title:</label>
-                                        <input class="manual-metadata title" type="text" disabled/>
-                                        <label>Artist:</label>
-                                        <input class="manual-metadata artist" type="text" disabled/>
-                                    </div>
-                                    <div class="controls">
-                                        <button class="btn btn-primary update-metadata" disabled>Update Metadata</button>
-                                    </div>
+                            </h5>
+                            <div class="card-body">
+                                <?=$this->fetch('frontend/public/dj_playlist', ['id' => 'playlist_1']) ?>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Playlist 1 -->
+
+                    <!-- Playlist 2 -->
+                    <div class="col-md-6">
+                        <div class="card playlist-right">
+                            <h5 class="card-header">
+                                <?=__('Playlist 2') ?>
+                                <div class="float-right">
+                                    <input type="range" min="0" max="150" value="100" class="custom-range volume-slider">
                                 </div>
+                            </h5>
+                            <div class="card-body">
+                                <?=$this->fetch('frontend/public/dj_playlist', ['id' => 'playlist_2']) ?>
                             </div>
                         </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-        <div class="span9">
-            <div class="hero-unit">
-                <h1>Webcaster Client</h1>
-            </div>
-        </div>
-        <div class="span3 playlist-left well">
-            <div class="volume-slider"></div>
-            <h3 class="playlist-label">Playlist 1</h3>
-            <form>
-                <fieldset>
-                    <div class="control-group" align="center">
-                        <div class="controls">
-                            <button class="btn btn-success play-audio player-control"><i class="icon-play"></i></button>
-                            <button class="btn btn-warning pause-audio player-control" style="display: none;"><i class="icon-pause"></i></button>
-                            <button class="btn previous player-control"><i class="icon-fast-backward"></i></button>
-                            <button class="btn next player-control"><i class="icon-fast-forward"></i></button>
-                            <button class="btn btn-danger stop player-control"><i class="icon-stop"></i></button>
-                            <button class="btn btn-info passThrough">CUE</button>
-                        </div>
                     </div>
-                </fieldset>
-            </form>
-            <div class="progress progress-success progress-volume">
-                <div class="progress-seek"></div>
-                <span class="track-position-text"></span>
-                <div class="bar track-position"></div>
-            </div>
-            <div class="progress progress-left">
-                <div class="bar volume-left volume-bar" style="width: 0%"></div>
-            </div>
-            <div class="progress progress-right">
-                <div class="bar volume-right" style="width: 0%"></div>
-            </div>
-            <div class="playlist">
-                <div class="playlist-table" style="display: none;">
-                    <table class="files-table table table-striped table-bordered table-hover table-condensed">
-                        <tr><th></th><th>Title</th><th>Artist</th><th>Duration</th></tr>
-                    </table>
+                    <!-- End Playlist 2 -->
                 </div>
-                <div class="playlist-input">
-                    Add files to playlist:
-                    <input type="file" class="files" accept="audio/*" multiple="multiple">
-                </div>
-            </div>
-            <form>
-                <fieldset>
-                    <div class="control-group">
-                        <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox" class="playThrough" checked> Play Through
-                            </label>
-                        </div>
-                        <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox" class="loop"> Repeat playlist
-                            </label>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-        <div class="span3">
-            <div class="mixer well">
-                <h2 class="mixer-label">Mixer</h2>
-                <div class="slider"></div>
-            </div>
-            <div class="microphone well">
-                <div class="microphone-slider"></div>
-                <h3 class="microphone-label">Microphone</h3>
-                <form>
-                    <fieldset>
-                        <div class="control-group" align="center">
-                            <div class="controls">
-                                <button class="btn btn-danger record-audio player-control"><i class="icon-facetime-video"></i></button>
-                                <button class="btn btn-info passThrough">CUE</button>
+                <div class="row">
+                    <!-- Mixer -->
+                    <div class="col-md-4 mb-sm-4">
+                        <div class="mixer card">
+                            <h5 class="card-header">
+                                <?=__('Mixer') ?>
+                            </h5>
+                            <div class="card-body">
+                                <input type="range" min="0" max="100" value="50" class="custom-range slider">
                             </div>
                         </div>
-                    </fieldset>
-                    <div class="progress progress-left">
-                        <div class="bar volume-left" style="width: 0%"></div>
                     </div>
-                    <div class="progress progress-right">
-                        <div class="bar volume-right" style="width: 0%"></div>
-                    </div>
-                    <fieldset>
-                        <div class="control-group microphone-entry" align="center" style="display: none;">
-                            <label>Microphone source</label>
-                            <div class="controls">
-                                <select></select>
+                    <!-- End Mixer -->
+
+                    <!-- Microphone -->
+                    <div class="col-md-8">
+                        <div class="microphone card">
+                            <h5 class="card-header">
+                                <?=__('Microphone') ?>
+
+                                <div class="float-right">
+                                    <input type="range" min="0" max="150" value="100" class="custom-range microphone-slider">
+                                </div>
+                            </h5>
+
+                            <div class="card-body">
+
+
+                                <form>
+                                    <div class="control-group d-flex justify-content-center mb-3">
+                                        <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-danger record-audio player-control"><i class="material-icons">mic</i></button>
+                                                <button class="btn btn-info passThrough">CUE</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress progress-left">
+                                        <div class="bar volume-left" style="width: 0%"></div>
+                                    </div>
+                                    <div class="progress progress-right">
+                                        <div class="bar volume-right" style="width: 0%"></div>
+                                    </div>
+
+                                    <div class="form-group microphone-entry">
+                                        <label for="select_microphone_source"><?=__('Microphone Source') ?></label>
+                                        <div class="controls">
+                                            <select id="select_microphone_source" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-        <div class="span3 playlist-right well">
-            <div class="volume-slider"></div>
-            <h3 class="playlist-label">Playlist 2</h3>
-            <form>
-                <fieldset>
-                    <div class="control-group" align="center">
-                        <div class="controls">
-                            <button class="btn btn-success play-audio player-control"><i class="icon-play"></i></button>
-                            <button class="btn btn-warning pause-audio player-control" style="display: none;"><i class="icon-pause"></i></button>
-                            <button class="btn previous player-control"><i class="icon-fast-backward"></i></button>
-                            <button class="btn next player-control"><i class="icon-fast-forward"></i></button>
-                            <button class="btn btn-danger stop player-control"><i class="icon-stop"></i></button>
-                            <button class="btn btn-info passThrough">CUE</button>
-                        </div>
                     </div>
-                </fieldset>
-            </form>
-            <div class="progress progress-success progress-volume">
-                <div class="progress-seek"></div>
-                <span class="track-position-text"></span>
-                <div class="bar track-position"></div>
-            </div>
-            <div class="progress progress-left">
-                <div class="bar volume-left" style="width: 0%"></div>
-            </div>
-            <div class="progress progress-right">
-                <div class="bar volume-right" style="width: 0%"></div>
-            </div>
-            <div class="playlist">
-                <div class="playlist-table" style="display: none;">
-                    <table class="files-table table table-striped table-bordered table-hover table-condensed">
-                        <tr><th></th><th>Title</th><th>Artist</th><th>Duration</th></tr>
-                    </table>
-                </div>
-                <div class="playlist-input">
-                    Add files to playlist:
-                    <input type="file" class="files" accept="audio/*" multiple="multiple">
+                    <!-- End Microphone -->
                 </div>
             </div>
-            <form>
-                <fieldset>
-                    <div class="control-group">
-                        <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox" class="playThrough" checked> Play Through
-                            </label>
-                        </div>
-                        <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox" class="loop"> Repeat playlist
-                            </label>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
         </div>
     </div>
-</div>
+</section>

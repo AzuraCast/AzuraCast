@@ -43,10 +43,8 @@ gulp.task('build-webcaster', ['clean'], function() {
         './webcaster/views/settings.coffee',
 	    './webcaster/init.coffee'
     ])
-        .pipe(sourcemaps.init())
             .pipe(coffee())
             .pipe(concat('webcaster.js'))
-        .pipe(sourcemaps.write())
         .pipe(gulp.dest('./dist'));
 });
 

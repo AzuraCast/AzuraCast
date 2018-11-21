@@ -26,15 +26,15 @@
     <div class="bar volume-right" style="width: 0%"></div>
 </div>
 
-<div class="playlist mb-3">
+<div class="playlist form-group">
     <div class="playlist-table" style="display: none;">
         <table class="files-table table table-striped table-bordered table-hover table-condensed">
             <tr><th></th><th>Title</th><th>Artist</th><th>Duration</th></tr>
         </table>
     </div>
-    <div class="playlist-input">
-        Add files to playlist:
-        <input type="file" class="files" accept="audio/*" multiple="multiple">
+    <div class="playlist-input custom-file">
+        <input id="<?=$id ?>_files" type="file" class="custom-file-input files" accept="audio/*" multiple="multiple">
+        <label for="<?=$id ?>_files" class="custom-file-label"><?=__('Add Files to Playlist') ?></label>
     </div>
 </div>
 

@@ -8,6 +8,7 @@ $this->layout('minimal', [
 /** @var \Azura\Assets $assets */
 $assets
     ->load('webcaster')
+    ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station]));
 ?>
 <section id="content" role="main" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
     <div class="container">
@@ -69,12 +70,21 @@ $assets
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Stream destination URI</label>
-                                        <div class="controls">
-                                            <input class="uri" type="text" size="40" value="ws://source:hackme@localhost:8080/mount">
-                                            <label class="checkbox">
-                                                <input type="checkbox" class="asynchronous" checked> Use asynchronous worker
-                                            </label>
+                                        <label><?=__('DJ Credentials') ?></label>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input type="text" name="dj_username" class="form-control dj_username" placeholder="<?=__('Username') ?>">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" name="dj_password" class="form-control dj_password" placeholder="<?=__('Password') ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input id="use_async_worker" type="checkbox" class="custom-control-input asynchronous" checked="checked">
+                                            <label for="use_async_worker" class="custom-control-label"><?=__('Use Asynchronous Worker') ?></label>
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +164,13 @@ $assets
                                 <?=__('Mixer') ?>
                             </h5>
                             <div class="card-body">
-                                <input type="range" min="0" max="100" value="50" class="custom-range slider">
+                                <div class="d-flex flex-row">
+                                    <div class="flex-shrink-0 pt-1 pr-2">1</div>
+                                    <div class="flex-fill">
+                                        <input type="range" min="0" max="100" value="50" class="custom-range slider">
+                                    </div>
+                                    <div class="flex-shrink-0 pt-1 pl-2">2</div>
+                                </div>
                             </div>
                         </div>
                     </div>

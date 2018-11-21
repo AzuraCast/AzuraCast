@@ -40,11 +40,10 @@ gulp.task('build-webcaster', ['clean'], function() {
         './webcaster/views/microphone.coffee',
         './webcaster/views/mixer.coffee',
         './webcaster/views/playlist.coffee',
-        './webcaster/views/settings.coffee',
-	    './webcaster/init.coffee'
+        './webcaster/views/settings.coffee'
     ])
-            .pipe(coffee())
-            .pipe(concat('webcaster.js'))
+        .pipe(coffee())
+        .pipe(concat('webcaster.js'))
         .pipe(gulp.dest('./dist'));
 });
 

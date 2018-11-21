@@ -12,3 +12,6 @@ class Webcaster.Model.Settings extends Backbone.Model
     else
       @mixer.trigger "cue"
       @set passThrough: true
+
+  rebuildUri: ->
+    @set uri: "wss://" + @get("dj_username") + ":" + @get("dj_password") + "@" + @get("base_uri")

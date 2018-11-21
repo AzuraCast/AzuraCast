@@ -6,6 +6,8 @@ class Webcaster.View.Settings extends Backbone.View
     "change .samplerate"     : "onSamplerate"
     "change .bitrate"        : "onBitrate"
     "change .asynchronous"   : "onAsynchronous"
+    "change .dj_username"    : "onDjCredentialsChange"
+    "change .dj_password"    : "onDjCredentialsChange"
     "click .passThrough"     : "onPassThrough"
     "click .start-stream"    : "onStart"
     "click .stop-stream"     : "onStop"
@@ -99,3 +101,8 @@ class Webcaster.View.Settings extends Backbone.View
 
   onSubmit: (e) ->
     e.preventDefault()
+
+  onDjCredentialsChange: (e) ->
+    @model.set dj_username: @$(".dj_username").val()
+    @model.set dj_password: @$(".dj_password").val()
+    @model.rebuildUri()

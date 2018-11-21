@@ -8,7 +8,7 @@ $this->layout('minimal', [
 /** @var \Azura\Assets $assets */
 $assets
     ->load('webcaster')
-    ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station]));
+    ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station, 'base_uri' => $base_uri]));
 ?>
 <section id="content" role="main" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
     <div class="container">

@@ -1,10 +1,10 @@
 (function() {
     $(function() {
         Webcaster.mixer = new Webcaster.Model.Mixer({
-            slider: 0
+            slider: 50
         });
         Webcaster.settings = new Webcaster.Model.Settings({
-            base_uri: "localhost/radio/8005",
+            base_uri: <?=$this->escapeJs($base_uri) ?>,
             dj_username: "",
             dj_password: "",
             uri: "",

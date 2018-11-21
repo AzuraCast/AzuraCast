@@ -13,8 +13,8 @@ class Webcaster.View.Playlist extends Webcaster.View.Track
     "change .volume-slider"  : "onVolumeChange"
     "submit"                 : "onSubmit"
 
-  initialize: ->
-    super()
+  initialize: (options) ->
+    super(options)
 
     @model.on "change:fileIndex", =>
       @$(".track-row").removeClass "success"

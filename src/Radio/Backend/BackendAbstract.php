@@ -29,4 +29,9 @@ abstract class BackendAbstract extends \App\Radio\AdapterAbstract
     {
         return true;
     }
+
+    public static function supportsWebStreaming(): bool
+    {
+        return true;
+    }
 }

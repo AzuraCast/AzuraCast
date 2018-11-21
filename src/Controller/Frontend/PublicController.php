@@ -1,8 +1,7 @@
 <?php
 namespace App\Controller\Frontend;
 
-use App\View;
-use App\Radio\Frontend\FrontendAbstract;
+use App\Radio\Backend\Liquidsoap;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
@@ -94,8 +93,28 @@ class PublicController
 
     public function djAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
     {
+        $station = $request->getStation();
+
+        if (!$station->getEnablePublicPage()) {
+            throw new \Azura\Exception(__('Station not found!'));
+        }
+
+        if (!$station->getEnableStreamers()) {
+            throw new \Azura\Exception(__('Live streaming is not enabled on this station.'));
+        }
+
+        $backend = $request->getStationBackend();
+
+        if (!($backend instanceof Liquidsoap)) {
+            throw new \Azura\Exception(__('This station does not support live streaming.'));
+        }
+
+        $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
+        $wss_url = str_replace('wss://', '', $wss_url);
+
         return $request->getView()->renderToResponse($response, 'frontend/public/dj', [
-            'station' => $request->getStation(),
+            'station' => $station,
+            'base_uri' => $wss_url,
         ]);
     }
 }

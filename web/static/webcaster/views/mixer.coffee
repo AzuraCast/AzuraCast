@@ -3,4 +3,4 @@ class Webcaster.View.Mixer extends Backbone.View
     "change .slider"  : "onMixerPositionChange"
 
   onMixerPositionChange: (e) ->
-    @model.set slider: $(e.target).val()
+    @model.set slider: @$(e.target).val()

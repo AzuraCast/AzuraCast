@@ -46,7 +46,7 @@ $user = $request->getUser();
     <li class="nav-item">
         <a class="nav-link" href="<?=$router->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank">
             <i class="navdrawer-nav-icon material-icons">public</i>
-            <?=__('Public Page') ?>
+            <?=__('Public Page') ?> <i class="material-icons sm">open_in_new</i>
         </a>
     </li>
 <?php endif; ?>
@@ -71,6 +71,14 @@ $user = $request->getUser();
         <a class="nav-link <?php if ($active_tab === 'streamers'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:streamers:index') ?>">
             <i class="navdrawer-nav-icon material-icons">mic</i>
             <?=__('Streamer/DJ Accounts') ?>
+        </a>
+    </li>
+<?php endif; ?>
+<?php if ($station->getEnablePublicPage() && $station->getEnableStreamers()): ?>
+    <li class="nav-item">
+        <a class="nav-link" href="<?=$router->named('public:dj', ['station' => $station->getShortName()]) ?>" target="_blank">
+            <i class="navdrawer-nav-icon material-icons">surround_sound</i>
+            <?=__('Web DJ') ?> <i class="material-icons sm">open_in_new</i>
         </a>
     </li>
 <?php endif; ?>

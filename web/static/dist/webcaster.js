@@ -471,9 +471,9 @@
 
     initialize(attributes, options) {
       super.initialize(attributes, options);
-      this.mixer.on("change:slider", this.setMixGain);
       this.mixGain = this.node.context.createGain();
       this.mixGain.connect(this.node.webcast);
+      this.mixer.on("change:slider", this.setMixGain);
       return this.sink = this.mixGain;
     }
 
@@ -746,7 +746,7 @@
     class Mixer extends Backbone.View {
       onMixerPositionChange(e) {
         return this.model.set({
-          slider: $(e.target).val()
+          slider: this.$(e.target).val()
         });
       }
 
@@ -765,8 +765,8 @@
 (function() {
   Webcaster.View.Playlist = (function() {
     class Playlist extends Webcaster.View.Track {
-      initialize() {
-        super.initialize();
+      initialize(options) {
+        super.initialize(options);
         this.model.on("change:fileIndex", () => {
           this.$(".track-row").removeClass("success");
           return this.$(`.track-row-${this.model.get("fileIndex")}`).addClass("success");

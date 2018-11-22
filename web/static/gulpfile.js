@@ -42,7 +42,7 @@ gulp.task('build-webcaster', ['clean'], function() {
         './webcaster/views/playlist.coffee',
         './webcaster/views/settings.coffee'
     ])
-        .pipe(coffee())
+        .pipe(coffee({ bare: true }))
         .pipe(concat('webcaster.js'))
         .pipe(gulp.dest('./dist'));
 });

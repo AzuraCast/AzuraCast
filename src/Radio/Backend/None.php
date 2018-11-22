@@ -30,6 +30,11 @@ class None extends BackendAbstract
         return false;
     }
 
+    public static function supportsWebStreaming(): bool
+    {
+        return false;
+    }
+
     public static function supportsRequests(): bool
     {
         return false;

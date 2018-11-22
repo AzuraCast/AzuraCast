@@ -5,6 +5,7 @@
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^3.9.2",
+    "gulp-coffee": "^3.0.3",
     "gulp-concat": "^2.6.1",
     "gulp-rev": "^8.1.1",
     "gulp-rev-delete-original": "^0.2.3",

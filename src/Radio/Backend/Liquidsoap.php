@@ -9,6 +9,7 @@ use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Monolog\Logger;
+use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -910,6 +911,15 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         $this->em->persist($station);
         $this->em->flush();
+    }
+
+    public function getWebStreamingUrl(Entity\Station $station, UriInterface $base_url): UriInterface
+    {
+        $stream_port = $this->getStreamPort($station);
+
+        return $base_url
+            ->withScheme('wss')
+            ->withPath($base_url->getPath().'/radio/' . $stream_port . '/');
     }
 
     /**

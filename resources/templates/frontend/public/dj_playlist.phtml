@@ -1,0 +1,52 @@
+<form>
+    <fieldset>
+        <div class="control-group d-flex justify-content-center mb-3">
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-sm btn-success play-audio player-control"><i class="material-icons">play_arrow</i></button>
+                <button class="btn btn-sm btn-warning pause-audio player-control" style="display: none;"><i class="material-icons">pause</i></button>
+                <button class="btn btn-sm previous player-control"><i class="material-icons">fast_rewind</i></button>
+                <button class="btn btn-sm next player-control"><i class="material-icons">fast_forward</i></button>
+                <button class="btn btn-sm btn-danger stop player-control"><i class="material-icons">stop</i></button>
+                <button class="btn btn-sm btn-info passThrough">CUE</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<div class="progress progress-success progress-volume">
+    <div class="progress-seek"></div>
+    <span class="track-position-text"></span>
+    <div class="bar track-position"></div>
+</div>
+
+<div class="progress progress-left">
+    <div class="bar volume-left volume-bar" style="width: 0%"></div>
+</div>
+<div class="progress progress-right">
+    <div class="bar volume-right" style="width: 0%"></div>
+</div>
+
+<div class="playlist form-group">
+    <div class="playlist-table" style="display: none;">
+        <table class="files-table table table-striped table-bordered table-hover table-condensed">
+            <tr><th></th><th>Title</th><th>Artist</th><th>Duration</th></tr>
+        </table>
+    </div>
+    <div class="playlist-input custom-file">
+        <input id="<?=$id ?>_files" type="file" class="custom-file-input files" accept="audio/*" multiple="multiple">
+        <label for="<?=$id ?>_files" class="custom-file-label"><?=__('Add Files to Playlist') ?></label>
+    </div>
+</div>
+
+<form>
+    <div class="form-group mb-0">
+        <div class="custom-control custom-checkbox">
+            <input id="<?=$id ?>_playthrough" type="checkbox" class="custom-control-input playThrough" checked="checked">
+            <label for="<?=$id ?>_playthrough" class="custom-control-label"><?=__('Play Through') ?></label>
+        </div>
+        <div class="custom-control custom-checkbox">
+            <input id="<?=$id ?>_loop" type="checkbox" class="custom-control-input loop">
+            <label for="<?=$id ?>_loop" class="custom-control-label"><?=__('Repeat Playlist') ?></label>
+        </div>
+    </div>
+</form>

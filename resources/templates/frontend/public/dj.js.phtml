@@ -1,21 +1,78 @@
+$(function() {
+    var web_dj = new Vue({
+        el: '#web_dj',
+        data: {
+            settings: {
+                is_streaming: false,
+                base_uri: <?=$this->escapeJs($base_uri) ?>,
+                dj_username: "",
+                dj_password: "",
+                bitrate: 128,
+                samplerate: 44100,
+                channels: 2,
+                encoder: "mp3",
+                asynchronous: true,
+                pass_through: false
+            },
+            metadata: {
+                title: "",
+                artist: ""
+            },
+            playlist_1: {
+                volume: 100,
+                pass_through: false
+            },
+            playlist_2: {
+                volume: 100,
+                pass_through: false
+            },
+            mixer: {
+                position: 50
+            },
+            microphone: {
+                volume: 100,
+                pass_through: false
+            }
+        },
+        computed: {
+            "uri": function() {
+                return 'wss://'+this.dj_username+':'+this.dj_password+'@'+this.base_uri;
+            }
+        },
+        methods: {
+            "startStreaming": function() {
+                this.settings.is_streaming = true;
+            },
+            "stopStreaming": function() {
+                this.settings.is_streaming = false;
+            },
+            "turnAllPassthroughsOff": function() {
+                this.settings.pass_through = false;
+                this.playlist_1.pass_through = false;
+                this.playlist_2.pass_through = false;
+                this.microphone.pass_through = false;
+            },
+            "toggleMasterPassthrough": function() {
+                if (!this.settings.pass_through) {
+                    this.turnAllPassthroughsOff();
+                }
+                this.settings.pass_through = !this.settings.pass_through;
+            },
+            "updateMetadata": function() {
+
+            }
+        }
+    });
+});
+
+/*
 (function() {
     $(function() {
         Webcaster.mixer = new Webcaster.Model.Mixer({
             slider: 50
         });
         Webcaster.settings = new Webcaster.Model.Settings({
-            base_uri: <?=$this->escapeJs($base_uri) ?>,
-            dj_username: "",
-            dj_password: "",
-            uri: "",
-            bitrate: 128,
-            bitrates: [8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 192, 224, 256, 320],
-            samplerate: 44100,
-            samplerates: [8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000],
-            channels: 2,
-            encoder: "mp3",
-            asynchronous: true,
-            passThrough: false
+
         }, {
             mixer: Webcaster.mixer
         });
@@ -85,3 +142,4 @@
     });
 
 }).call(this);
+*/

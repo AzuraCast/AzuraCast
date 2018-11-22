@@ -1,17 +1,18 @@
 <?php
 $this->layout('minimal', [
-    'page_class' => 'dj has-sidebar station-'.$station->getShortName(),
+    'page_class' => 'dj station-'.$station->getShortName(),
     'title' => $this->e($station->getName()),
     'hide_footer' => true
 ]);
 
 /** @var \Azura\Assets $assets */
 $assets
+    ->load('vue')
     ->load('webcaster')
     ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station, 'base_uri' => $base_uri]));
 ?>
-<section id="content" role="main" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-    <div class="container">
+<section id="content" role="main" class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div id="web_dj" class="container">
         <div class="row">
             <!-- Settings/Metadata Column -->
             <div class="col-md-4 mb-sm-4">
@@ -28,94 +29,121 @@ $assets
                         </ul>
                     </div>
                     <div class="card-body">
-                        <form class="form">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="settings">
-                                    <div class="form-group">
-                                        <label><?=__('Encoder') ?></label>
-                                        <div class="controls">
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input id="encoder_mp3" type="radio" name="encoder" value="mp3" class="encoder custom-control-input" checked="checked">
-                                                <label for="encoder_mp3" class="custom-control-label"><?=__('MP3') ?></label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input id="encoder_raw" type="radio" name="encoder" value="raw" class="encoder custom-control-input">
-                                                <label for="encoder_raw" class="custom-control-label"><?=__('Raw') ?></label>
-                                            </div>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="settings">
+                                <div class="form-group">
+                                    <label><?=__('Encoder') ?></label>
+                                    <div class="controls">
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input id="encoder_mp3" type="radio" v-model="settings.encoder" value="mp3" class="custom-control-input">
+                                            <label for="encoder_mp3" class="custom-control-label"><?=__('MP3') ?></label>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="select_samplerate"><?=__('Sample Rate (kHz)') ?></label>
-                                        <div class="controls">
-                                            <select id="select_samplerate" class="form-control samplerate"></select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="select_bitrate"><?=__('Bit Rate (kbps)') ?></label>
-                                        <div class="controls">
-                                            <select id="select_bitrate" class="form-control bitrate"></select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><?=__('Channels') ?></label>
-                                        <div class="controls">
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input id="channels_2" type="radio" name="channels" value="2" class="custom-control-input channels" checked="checked">
-                                                <label for="channels_2" class="custom-control-label"><?=__('Stereo') ?></label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input id="channels_1" type="radio" name="channels" value="1" class="custom-control-input channels">
-                                                <label for="channels_1" class="custom-control-label"><?=__('Mono') ?></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><?=__('DJ Credentials') ?></label>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <input type="text" name="dj_username" class="form-control dj_username" placeholder="<?=__('Username') ?>">
-                                            </div>
-                                            <div class="col-6">
-                                                <input type="text" name="dj_password" class="form-control dj_password" placeholder="<?=__('Password') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-0">
-                                        <div class="custom-control custom-checkbox">
-                                            <input id="use_async_worker" type="checkbox" class="custom-control-input asynchronous" checked="checked">
-                                            <label for="use_async_worker" class="custom-control-label"><?=__('Use Asynchronous Worker') ?></label>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input id="encoder_raw" type="radio" v-model="settings.encoder" value="raw" class="custom-control-input">
+                                            <label for="encoder_raw" class="custom-control-label"><?=__('Raw') ?></label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="metadata">
-                                    <div class="alert metadata-updated" style="display: none;">
-                                        <?=__('Metadata updated!') ?>
+                                <div class="form-group">
+                                    <label for="select_samplerate"><?=__('Sample Rate') ?></label>
+                                    <div class="controls">
+                                        <select id="select_samplerate" class="form-control" v-model.number="settings.samplerate">
+                                            <option value="8000">8 kHz</option>
+                                            <option value="11025">11.025 kHz</option>
+                                            <option value="12000">12 kHz</option>
+                                            <option value="16000">16 kHz</option>
+                                            <option value="22050">22.05 kHz</option>
+                                            <option value="24000">24 kHz</option>
+                                            <option value="32000">32 kHz</option>
+                                            <option value="44100">44.1 kHz</option>
+                                            <option value="48000">48 kHz</option>
+                                        </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="metadata_title"><?=__('Title') ?></label>
-                                        <div class="controls">
-                                            <input id="metadata_title" class="form-control manual-metadata title" type="text" disabled="disabled">
+                                </div>
+                                <div class="form-group">
+                                    <label for="select_bitrate"><?=__('Bit Rate') ?></label>
+                                    <div class="controls">
+                                        <select id="select_bitrate" class="form-control" v-model.number="settings.bitrate">
+                                            <option value="8">8 kbps</option>
+                                            <option value="16">16 kbps</option>
+                                            <option value="24">24 kbps</option>
+                                            <option value="32">32 kbps</option>
+                                            <option value="40">40 kbps</option>
+                                            <option value="48">48 kbps</option>
+                                            <option value="56">56 kbps</option>
+                                            <option value="64">64 kbps</option>
+                                            <option value="80">80 kbps</option>
+                                            <option value="96">96 kbps</option>
+                                            <option value="112">112 kbps</option>
+                                            <option value="128">128 kbps</option>
+                                            <option value="144">144 kbps</option>
+                                            <option value="160">160 kbps</option>
+                                            <option value="192">192 kbps</option>
+                                            <option value="224">224 kbps</option>
+                                            <option value="256">256 kbps</option>
+                                            <option value="320">320 kbps</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label><?=__('Channels') ?></label>
+                                    <div class="controls">
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input id="channels_2" type="radio" v-model.number="settings.channels" value="2" class="custom-control-input">
+                                            <label for="channels_2" class="custom-control-label"><?=__('Stereo') ?></label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input id="channels_1" type="radio" v-model.number="settings.channels" value="1" class="custom-control-input channels">
+                                            <label for="channels_1" class="custom-control-label"><?=__('Mono') ?></label>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="metadata_artist"><?=__('Artist') ?></label>
-                                        <div class="controls">
-                                            <input id="metadata_artist" class="form-control manual-metadata artist" type="text" disabled="disabled">
+                                </div>
+                                <div class="form-group">
+                                    <label><?=__('DJ Credentials') ?></label>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input type="text" v-model="settings.dj_username" class="form-control" placeholder="<?=__('Username') ?>">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" v-model="settings.dj_password" class="form-control" placeholder="<?=__('Password') ?>">
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-primary update-metadata" disabled="disabled"><?=__('Update Metadata') ?></button>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input id="use_async_worker" type="checkbox" v-model="settings.asynchronous" class="custom-control-input">
+                                        <label for="use_async_worker" class="custom-control-label"><?=__('Use Asynchronous Worker') ?></label>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                            <div class="tab-pane" id="metadata">
+                                <div class="alert metadata-updated" style="display: none;">
+                                    <?=__('Metadata updated!') ?>
+                                </div>
+                                <div class="form-group">
+                                    <label for="metadata_title"><?=__('Title') ?></label>
+                                    <div class="controls">
+                                        <input id="metadata_title" class="form-control" type="text" v-model="metadata.title" v-bind:disabled="!settings.is_streaming">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="metadata_artist"><?=__('Artist') ?></label>
+                                    <div class="controls">
+                                        <input id="metadata_artist" class="form-control" type="text" v-model="metadata.artist" v-bind:disabled="!settings.is_streaming">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" v-on:click="updateMetadata" v-bind:disabled="!settings.is_streaming"><?=__('Update Metadata') ?></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card-actions">
-                        <button class="btn btn-primary start-stream"><?=__('Start streaming') ?></button>
-                        <button class="btn btn-danger stop-stream" style="display: none;"><?=__('Stop streaming') ?></button>
-                        <button class="btn btn-info passThrough"><?=__('Cue') ?></button>
+                        <button class="btn btn-primary" v-on:click="startStreaming" v-if="!settings.is_streaming"><?=__('Start streaming') ?></button>
+                        <button class="btn btn-danger" v-on:click="stopStreaming" v-if="settings.is_streaming"><?=__('Stop streaming') ?></button>
+                        <button class="btn btn-secondary" v-on:click="toggleMasterPassthrough" v-bind:class="{ active: settings.pass_through }"><?=__('Cue') ?></button>
                     </div>
                 </div>
             </div>
@@ -126,11 +154,11 @@ $assets
                 <div class="row mb-4">
                     <!-- Playlist 1 -->
                     <div class="col-md-6 mb-sm-4">
-                        <div class="card playlist-left">
+                        <div class="card">
                             <h5 class="card-header">
                                 <?=__('Playlist 1') ?>
                                 <div class="float-right">
-                                    <input type="range" min="0" max="150" value="100" class="custom-range volume-slider">
+                                    <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="playlist_1.volume">
                                 </div>
                             </h5>
                             <div class="card-body">
@@ -142,11 +170,11 @@ $assets
 
                     <!-- Playlist 2 -->
                     <div class="col-md-6">
-                        <div class="card playlist-right">
+                        <div class="card">
                             <h5 class="card-header">
                                 <?=__('Playlist 2') ?>
                                 <div class="float-right">
-                                    <input type="range" min="0" max="150" value="100" class="custom-range volume-slider">
+                                    <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="playlist_2.volume">
                                 </div>
                             </h5>
                             <div class="card-body">
@@ -157,7 +185,7 @@ $assets
                     <!-- End Playlist 2 -->
                 </div>
                 <div class="row">
-                    <!-- Mixer
+                    <!-- Mixer -->
                     <div class="col-md-4 mb-sm-4">
                         <div class="mixer card">
                             <h5 class="card-header">
@@ -174,10 +202,10 @@ $assets
                             </div>
                         </div>
                     </div>
-                     End Mixer -->
+                    <!-- End Mixer -->
 
                     <!-- Microphone -->
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="microphone card">
                             <h5 class="card-header">
                                 <?=__('Microphone') ?>

@@ -437,7 +437,8 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js',
+                    'integrity' => 'sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=',
                 ],
                 [
                     'src' => 'https://cdn.rawgit.com/toots/shine/master/js/dist/libshine.js',

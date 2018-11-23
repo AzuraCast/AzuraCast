@@ -153,6 +153,7 @@ export default {
         },
         onNewCue: function(new_cue) {
             this.passThrough = (new_cue === 'master');
+            this.getStream().webcast.setPassThrough(this.passThrough);
         },
         startStreaming: function() {
             var encoderClass;

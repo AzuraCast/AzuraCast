@@ -132,9 +132,9 @@ export default {
 
         setMixGain: function(new_value) {
             if (this.id === 'playlist_1') {
-                this.mixGainObj.gain.value = new_value;
-            } else {
                 this.mixGainObj.gain.value = 1.0-new_value;
+            } else {
+                this.mixGainObj.gain.value = new_value;
             }
         },
 

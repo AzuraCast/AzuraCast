@@ -2,14 +2,16 @@ export default {
     inject: ['getStream'],
     data: function() {
         return {
-            "sink": null,
-            "controlsNode": {},
+            "controlsNode": null,
 
             "trackGain": 0,
-            "trackGainObj": {},
+            "trackGainObj": null,
+
+            "destination": null,
+            "sink": null,
 
             "passThrough": false,
-            "passThroughObj": {},
+            "passThroughObj": null,
 
             "source": null,
             "playing": false,
@@ -31,14 +33,18 @@ export default {
     methods: {
         createControlsNode: function() {
             var bufferLength, bufferLog, bufferSize, log10, source;
+
             bufferSize = 4096;
-            bufferLength = parseFloat(bufferSize) / parseFloat(this.node.context.sampleRate);
+            bufferLength = parseFloat(bufferSize) / parseFloat(this.getStream().context.sampleRate);
             bufferLog = Math.log(parseFloat(bufferSize));
             log10 = 2.0 * Math.log(10);
+
             source = this.getStream().context.createScriptProcessor(bufferSize, 2, 2);
-            source.onaudioprocess = function(buf) {
+            
+            source.onaudioprocess = (buf) => {
                 var channel, channelData, i, j, k, ref1, ref2, ref3, results, ret, rms, volume;
                 ret = {};
+
                 if (((ref1 = this.source) != null ? ref1.position : void 0) != null) {
                     this.position = this.source.position();
                 } else {
@@ -110,11 +116,11 @@ export default {
             this.controlsNode = this.createControlsNode();
             this.controlsNode.connect(this.sink);
 
-            this.trackGain = this.getStream().context.createGain();
-            this.trackGain.connect(this.controlsNode);
+            this.trackGainObj = this.getStream().context.createGain();
+            this.trackGainObj.connect(this.controlsNode);
+            this.trackGainObj.gain.value = 1.0;
 
-            this.setTrackGain();
-            this.destination = this.trackGain;
+            this.destination = this.trackGainObj;
 
             this.passThroughObj = this.createPassThrough();
             this.passThroughObj.connect(this.getStream().context.destination);
@@ -144,6 +150,9 @@ export default {
             this.source = this.trackGainObj = this.controlsNode = this.passThroughObj = null;
 
             this.position = 0.0;
+            this.volumeLeft = 0;
+            this.volumeRight = 0;
+
             this.playing = false;
             this.paused = false;
         },

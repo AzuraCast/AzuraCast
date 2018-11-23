@@ -29,7 +29,7 @@ stream.createAudioSource = function({file, audio}, model, cb) {
             return;
         }
 
-        source = this.context.createMediaElementSource(el);
+        source = stream.context.createMediaElementSource(el);
         source.play = function() {
             return el.play();
         };
@@ -69,13 +69,13 @@ stream.createFileSource = function(file, model, cb) {
 };
 
 stream.createMicrophoneSource = function(constraints, cb) {
-    return navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+    return navigator.mediaDevices.getUserMedia(constraints).then(function(bit_stream) {
         var source;
 
-        source = this.context.createMediaStreamSource(stream);
+        source = stream.context.createMediaStreamSource(bit_stream);
         source.stop = function() {
             var ref;
-            return (ref = stream.getAudioTracks()) != null ? ref[0].stop() : void 0;
+            return (ref = bit_stream.getAudioTracks()) != null ? ref[0].stop() : void 0;
         };
         return cb(source);
     });

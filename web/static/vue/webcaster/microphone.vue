@@ -16,17 +16,21 @@
                 </div>
             </div>
 
-            <div class="progress progress-left">
-                <div class="bar volume-left" style="width: 0%"></div>
-            </div>
-            <div class="progress progress-right">
-                <div class="bar volume-right" style="width: 0%"></div>
+            <div v-if="playing">
+                <div class="progress mb-1">
+                    <div class="progress-bar" v-bind:style="{ width: volumeLeft+'%' }"></div>
+                </div>
+                <div class="progress mb-2">
+                    <div class="progress-bar" v-bind:style="{ width: volumeRight+'%' }"></div>
+                </div>
             </div>
 
             <div class="form-group microphone-entry">
                 <label for="select_microphone_source">Microphone Source</label>
                 <div class="controls">
-                    <select id="select_microphone_source" class="form-control"></select>
+                    <select id="select_microphone_source" v-model="device" class="form-control">
+                        <option v-for="device_row in devices" v-bind:value="device_row.deviceId">{{ device_row.label }}</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -47,7 +51,10 @@ export default {
     },
     watch: {
         device: function(val, oldVal) {
-
+            if (this.source == null) {
+                return;
+            }
+            return this.createSource();
         }
     },
     mounted: function() {
@@ -71,29 +78,12 @@ export default {
             return Promise.reject(new Error("enumerateDevices is not implemented on this browser"));
         });
 
+        var vm_mic = this;
         navigator.mediaDevices.getUserMedia({
             audio: true,
             video: false
         }).then(function() {
-            return navigator.mediaDevices.enumerateDevices().then((devices) => {
-                var $select;
-                devices = _.filter(devices, function({kind, deviceId}) {
-                    return kind === "audioinput";
-                });
-                if (_.isEmpty(devices)) {
-                    return;
-                }
-                $select = this.$(".microphone-entry select");
-                _.each(devices, function({label, deviceId}) {
-                    return $select.append(`<option value='${deviceId}'>${label}</option>`);
-                });
-                $select.find("option:eq(0)").prop("selected", true);
-                this.model.set("device", $select.val());
-                $select.select(function() {
-                    return this.model.set("device", $select.val());
-                });
-                return this.$(".microphone-entry").show();
-            });
+            return navigator.mediaDevices.enumerateDevices().then(vm_mic.setDevices);
         });
 
         this.$root.$on('new-cue', this.onNewCue);
@@ -120,14 +110,14 @@ export default {
             constraints = {
                 video: false
             };
-            if (this.get("device")) {
+            if (this.device) {
                 constraints.audio = {
-                    exact: this.get("device")
+                    deviceId: this.device
                 };
             } else {
                 constraints.audio = true;
             }
-            return this.node.createMicrophoneSource(constraints, (source) => {
+            return this.getStream().createMicrophoneSource(constraints, (source) => {
                 this.source = source;
                 this.source.connect(this.destination);
                 return typeof cb === "function" ? cb() : void 0;
@@ -136,10 +126,21 @@ export default {
         play: function() {
             this.prepare();
 
-            return this.createSource(function() {
+            return this.createSource(() => {
                 this.playing = true;
                 this.paused = false;
             });
+        },
+        setDevices: function(devices) {
+            devices = _.filter(devices, function({kind, deviceId}) {
+                return kind === "audioinput";
+            });
+            if (_.isEmpty(devices)) {
+                return;
+            }
+
+            this.devices = devices;
+            this.device = _.first(devices).deviceId;
         }
     }
 }

@@ -11,6 +11,8 @@ $assets
     ->load('webcaster')
     ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station, 'base_uri' => $base_uri]));
 ?>
-<section id="content" role="main" class="d-flex align-items-center justify-content-center" style="height: 100vh;">
-    <div id="web_dj" class="container"></div>
+<section id="content" role="main" style="height: 100vh;">
+    <div class="container pt-5">
+        <div id="web_dj"></div>
+    </div>
 </section>

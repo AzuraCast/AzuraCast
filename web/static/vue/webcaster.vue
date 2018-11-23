@@ -5,6 +5,15 @@
         </div>
 
         <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-8 mb-sm-4">
+                    <microphone></microphone>
+                </div>
+
+                <div class="col-md-4 mb-sm-4">
+                    <mixer></mixer>
+                </div>
+            </div>
             <div class="row mb-4">
                 <div class="col-md-6 mb-sm-4">
                     <playlist name="Playlist 1" id="playlist_1"></playlist>
@@ -12,15 +21,6 @@
 
                 <div class="col-md-6">
                     <playlist name="Playlist 2" id="playlist_2"></playlist>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-sm-4">
-                    <mixer></mixer>
-                </div>
-
-                <div class="col-md-8">
-                    <microphone></microphone>
                 </div>
             </div>
         </div>

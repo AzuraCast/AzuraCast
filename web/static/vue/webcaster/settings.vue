@@ -89,9 +89,6 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="metadata">
-                    <div class="alert metadata-updated" style="display: none;">
-                        Metadata updated!
-                    </div>
                     <div class="form-group">
                         <label for="metadata_title">Title</label>
                         <div class="controls">

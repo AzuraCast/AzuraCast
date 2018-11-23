@@ -10,6 +10,7 @@ const sass = require('gulp-sass');
 const clean_css = require('gulp-clean-css');
 const revdel = require('gulp-rev-delete-original');
 const coffee = require('gulp-coffee');
+const vueify = require('gulp-vueify');
 
 gulp.task('clean', function() {
     return gulp.src(['./dist/**/*', './assets.json'], { read: false })
@@ -25,25 +26,9 @@ gulp.task('concat-js', ['clean'], function() {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build-webcaster', ['clean'], function() {
-    // Files have to be in a specific order when concatenated
-    gulp.src([
-        './webcaster/compat.coffee',
-        './webcaster/webcaster.coffee',
-        './webcaster/node.coffee',
-        './webcaster/models/track.coffee',
-        './webcaster/models/microphone.coffee',
-        './webcaster/models/mixer.coffee',
-        './webcaster/models/playlist.coffee',
-        './webcaster/models/settings.coffee',
-        './webcaster/views/track.coffee',
-        './webcaster/views/microphone.coffee',
-        './webcaster/views/mixer.coffee',
-        './webcaster/views/playlist.coffee',
-        './webcaster/views/settings.coffee'
-    ])
-        .pipe(coffee({ bare: true }))
-        .pipe(concat('webcaster.js'))
+gulp.task('build-vue', ['clean'], function() {
+    return gulp.src('vue/**/*.vue')
+        .pipe(vueify())
         .pipe(gulp.dest('./dist'));
 });
 
@@ -64,7 +49,7 @@ gulp.task('build-css', ['clean'], function() {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['concat-js', 'build-webcaster', 'build-js', 'build-css'], function() {
+gulp.task('default', ['concat-js', 'build-vue', 'build-js', 'build-css'], function() {
     return gulp.src(['./dist/*'], { base: '.' })
         .pipe(rev())
         .pipe(revdel())

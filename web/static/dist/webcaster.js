@@ -47,79 +47,17 @@ Webcaster.Node = (function() {
   var defaultChannels;
 
   class Node {
-    constructor({
-        model: model1
-      }) {
-      this.model = model1;
-      if (typeof webkitAudioContext !== "undefined") {
-        this.context = new webkitAudioContext;
-      } else {
-        this.context = new AudioContext;
-      }
-      this.webcast = this.context.createWebcastSource(4096, defaultChannels);
-      this.connect();
-      this.model.on("change:passThrough", () => {
-        return this.webcast.setPassThrough(this.model.get("passThrough"));
-      });
-      this.model.on("change:channels", () => {
-        return this.reconnect();
-      });
-    }
+    constructor() {/* DONE */}
 
-    connect() {
-      if (this.model.get("channels") === 1) {
-        this.merger || (this.merger = this.context.createChannelMerger(this.defaultChannels));
-        this.merger.connect(this.context.destination);
-        return this.webcast.connect(this.merger);
-      } else {
-        return this.webcast.connect(this.context.destination);
-      }
-    }
+    connect() {/* DONE */}
 
-    disconnect() {
-      var ref;
-      this.webcast.disconnect();
-      return (ref = this.merger) != null ? ref.disconnect() : void 0;
-    }
+    disconnect() {/* DONE */}
 
-    reconnect() {
-      this.disconnect();
-      return this.connect();
-    }
+    reconnect() {/* DONE */}
 
-    startStream() {
-      var encoder;
-      switch (this.model.get("encoder")) {
-        case "mp3":
-          encoder = Webcast.Encoder.Mp3;
-          break;
-        case "raw":
-          encoder = Webcast.Encoder.Raw;
-      }
-      this.encoder = new encoder({
-        channels: this.model.get("channels"),
-        samplerate: this.model.get("samplerate"),
-        bitrate: this.model.get("bitrate")
-      });
-      if (this.model.get("samplerate") !== this.context.sampleRate) {
-        this.encoder = new Webcast.Encoder.Resample({
-          encoder: this.encoder,
-          type: Samplerate.LINEAR,
-          samplerate: this.context.sampleRate
-        });
-      }
-      if (this.model.get("asynchronous")) {
-        this.encoder = new Webcast.Encoder.Asynchronous({
-          encoder: this.encoder,
-          scripts: ["https://cdn.rawgit.com/webcast/libsamplerate.js/master/dist/libsamplerate.js", "https://cdn.rawgit.com/savonet/shine/master/js/dist/libshine.js", "https://cdn.rawgit.com/webcast/webcast.js/master/lib/webcast.js"]
-        });
-      }
-      return this.webcast.connectSocket(this.encoder, this.model.get("uri"));
-    }
+    startStream() {/* DONE */}
 
-    stopStream() {
-      return this.webcast.close();
-    }
+    stopStream() {/* DONE */}
 
     createAudioSource({file, audio}, model, cb) {
       var el, source;

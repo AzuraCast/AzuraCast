@@ -11,6 +11,7 @@
     "gulp-rev-delete-original": "^0.2.3",
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0"
+    "gulp-uglify": "^3.0.0",
+    "gulp-vueify": "0.0.3"
   }
 }

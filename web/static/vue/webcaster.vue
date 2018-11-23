@@ -1,26 +1,26 @@
 <template>
     <div class="row">
         <div class="col-md-4 mb-sm-4">
-            <settings v-bind:station-name="stationName" v-bind:base-uri="baseUri" v-on:cue="handleCue"></settings>
+            <settings v-bind:station-name="stationName" v-bind:base-uri="baseUri"></settings>
         </div>
 
         <div class="col-md-8">
             <div class="row mb-4">
                 <div class="col-md-6 mb-sm-4">
-                    <playlist name="Playlist 1" id="playlist_1" v-bind.sync="playlist_1" v-on:cue="handleCue"></playlist>
+                    <playlist name="Playlist 1" id="playlist_1"></playlist>
                 </div>
 
                 <div class="col-md-6">
-                    <playlist name="Playlist 2" id="playlist_2" v-bind.sync="playlist_2" v-on:cue="handleCue"></playlist>
+                    <playlist name="Playlist 2" id="playlist_2"></playlist>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-sm-4">
-                    <mixer v-bind.sync="mixer"></mixer>
+                    <mixer></mixer>
                 </div>
 
                 <div class="col-md-8">
-                    <microphone v-bind.sync="microphone" v-on:cue="handleCue"></microphone>
+                    <microphone></microphone>
                 </div>
             </div>
         </div>
@@ -35,8 +35,7 @@ import settings from './webcaster/settings.vue'
 
 import stream from './webcaster/stream.js';
 
-
-module.exports = {
+export default {
     data: function() {
         return {
             "stream": stream

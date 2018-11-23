@@ -1,5 +1,5 @@
 var stream = {};
-var defaultChannels;
+var defaultChannels = 2;
 
 // Define the streaming radio context.
 if (typeof webkitAudioContext !== "undefined") {
@@ -8,8 +8,8 @@ if (typeof webkitAudioContext !== "undefined") {
     stream.context = new AudioContext;
 }
 
-stream.webcast = this.stream.context.createWebcastSource(4096, defaultChannels);
-stream.webcast.connect(this.stream.context.destination);
+stream.webcast = stream.context.createWebcastSource(4096, defaultChannels);
+stream.webcast.connect(stream.context.destination);
 
 stream.createAudioSource = function({file, audio}, model, cb) {
     var el, source;

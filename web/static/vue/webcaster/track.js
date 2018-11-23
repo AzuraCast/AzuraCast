@@ -1,4 +1,3 @@
-<script>
 export default {
     inject: ['getStream'],
     data: function() {
@@ -23,8 +22,6 @@ export default {
     },
     mounted: function() {
         this.sink = this.getStream().webcast;
-
-
     },
     watch: {
         volume: function(val, oldVal) {
@@ -78,7 +75,7 @@ export default {
                 channelData = buf.inputBuffer.getChannelData(channel);
                 results = [];
                 for (channel = j = 0, ref1 = buf.inputBuffer.numberOfChannels - 1; (0 <= ref1 ? j <= ref1 : j >= ref1); channel = 0 <= ref1 ? ++j : --j) {
-                    if (this.get("passThrough")) {
+                    if (this.passThrough) {
                         results.push(buf.outputBuffer.getChannelData(channel).set(channelData));
                     } else {
                         results.push(buf.outputBuffer.getChannelData(channel).set(new Float32Array(channelData.length)));
@@ -184,4 +181,3 @@ export default {
         }
     }
 }
-</script>

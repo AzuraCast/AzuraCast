@@ -114,7 +114,7 @@
         <div class="card-actions">
             <button class="btn btn-success" v-on:click="startStreaming" v-if="!isStreaming">Start streaming</button>
             <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming">Stop streaming</button>
-            <button class="btn" v-on:click="toggleMasterPassthrough" v-bind:class="{ 'btn-primary': passThrough }">Cue</button>
+            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">Cue</button>
         </div>
     </div>
 </template>
@@ -131,7 +131,11 @@ export default {
             "samplerate": 44100,
             "encoder": "mp3",
             "asynchronous": true,
-            "passThrough": false
+            "passThrough": false,
+            "metadata": {
+                "title": "",
+                "artist": "",
+            }
         };
     },
     computed: {
@@ -143,7 +147,16 @@ export default {
         stationName: String,
         baseUri: String
     },
+    mounted: function() {
+        this.$root.$on('new-cue', this.onNewCue);
+    },
     methods: {
+        cue: function() {
+            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'master');
+        },
+        onNewCue: function(new_cue) {
+            this.passThrough = (new_cue === 'master');
+        },
         startStreaming: function() {
             var encoderClass;
             switch (this.encoder) {
@@ -192,15 +205,6 @@ export default {
                 "artist": this.metadata.artist
             });
         },
-
-
-
-        "toggleCue": function() {
-
-        },
-        "handleCueChange": function() {
-
-        }
     }
 }
 </script>

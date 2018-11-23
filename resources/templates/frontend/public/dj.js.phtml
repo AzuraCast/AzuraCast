@@ -1,5 +1,15 @@
 $(function() {
-    var web_dj = new Vue({
+    console.log();
 
+    var web_dj = new Vue({
+        el: '#web_dj',
+        render: function(createElement) {
+            return createElement(Webcaster.default, {
+                props: {
+                    stationName: <?=$this->escapeJs($station->getName()) ?>,
+                    baseUri: <?=$this->escapeJs($base_uri) ?>
+                }
+            });
+        }
     });
 });

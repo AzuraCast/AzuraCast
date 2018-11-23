@@ -437,13 +437,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js',
-                ],
-                [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
-                ],
-                [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js',
                 ],
                 [
                     'src' => 'https://cdn.rawgit.com/toots/shine/master/js/dist/libshine.js',

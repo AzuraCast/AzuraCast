@@ -33,7 +33,7 @@
     </div>
 </template>
 <script>
-import track from './track.vue'
+import track from './track.js'
 
 export default {
     extends: track,
@@ -51,6 +51,8 @@ export default {
         }
     },
     mounted: function() {
+        var base, base1;
+
         // Get multimedia devices by requesting them from the browser.
         navigator.mediaDevices || (navigator.mediaDevices = {});
 
@@ -69,11 +71,39 @@ export default {
             return Promise.reject(new Error("enumerateDevices is not implemented on this browser"));
         });
 
+        navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: false
+        }).then(function() {
+            return navigator.mediaDevices.enumerateDevices().then((devices) => {
+                var $select;
+                devices = _.filter(devices, function({kind, deviceId}) {
+                    return kind === "audioinput";
+                });
+                if (_.isEmpty(devices)) {
+                    return;
+                }
+                $select = this.$(".microphone-entry select");
+                _.each(devices, function({label, deviceId}) {
+                    return $select.append(`<option value='${deviceId}'>${label}</option>`);
+                });
+                $select.find("option:eq(0)").prop("selected", true);
+                this.model.set("device", $select.val());
+                $select.select(function() {
+                    return this.model.set("device", $select.val());
+                });
+                return this.$(".microphone-entry").show();
+            });
+        });
 
+        this.$root.$on('new-cue', this.onNewCue);
     },
     methods: {
         cue: function() {
-            this.$emit('cue', (this.passThrough) ? 'off' : 'microphone');
+            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'microphone');
+        },
+        onNewCue: function(new_cue) {
+            this.passThrough = (new_cue === 'microphone');
         },
         toggleRecording: function() {
             if (this.playing) {
@@ -109,8 +139,6 @@ export default {
             return this.createSource(function() {
                 this.playing = true;
                 this.paused = false;
-
-                return this.trigger("playing");
             });
         }
     }

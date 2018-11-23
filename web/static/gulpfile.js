@@ -9,8 +9,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');
 const clean_css = require('gulp-clean-css');
 const revdel = require('gulp-rev-delete-original');
-const coffee = require('gulp-coffee');
-const vueify = require('gulp-vueify');
+const webpack = require('webpack-stream');
 
 gulp.task('clean', function() {
     return gulp.src(['./dist/**/*', './assets.json'], { read: false })
@@ -27,8 +26,23 @@ gulp.task('concat-js', ['clean'], function() {
 });
 
 gulp.task('build-vue', ['clean'], function() {
-    return gulp.src('vue/**/*.vue')
-        .pipe(vueify())
+    return gulp.src('vue/webcaster.vue')
+        .pipe(webpack({
+            output: {
+                publicPath: '/static/dist',
+                filename: 'webcaster.js',
+                library: 'Webcaster'
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.vue$/,
+                        loader: 'vue-loader',
+                        options: {}
+                    }
+                ]
+            }
+        }))
         .pipe(gulp.dest('./dist'));
 });
 

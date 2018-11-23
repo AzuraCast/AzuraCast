@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <h5 class="card-header">
-            {{ playlist_name }}
+            {{ name }}
 
             <div class="float-right">
                 <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
@@ -15,7 +15,7 @@
                     <button class="btn btn-sm previous player-control"><i class="material-icons">fast_rewind</i></button>
                     <button class="btn btn-sm next player-control"><i class="material-icons">fast_forward</i></button>
                     <button class="btn btn-sm btn-danger stop player-control"><i class="material-icons">stop</i></button>
-                    <button class="btn btn-sm" v-on:click="togglePassthrough()" v-bind:class="{ 'btn-primary': pass_through }">CUE</button>
+                    <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">CUE</button>
                 </div>
             </div>
 
@@ -44,19 +44,19 @@
                     </table>
                 </div>
                 <div class="playlist-input custom-file">
-                    <input id="{{ id }}_files" type="file" class="custom-file-input files" accept="audio/*" multiple="multiple">
-                    <label for="{{ id }}_files" class="custom-file-label">Add Files to Playlist</label>
+                    <input v-bind:id="id + '_files'" type="file" class="custom-file-input files" accept="audio/*" multiple="multiple">
+                    <label v-bind:for="id + '_files'" class="custom-file-label">Add Files to Playlist</label>
                 </div>
             </div>
 
             <div class="form-group mb-0">
                 <div class="custom-control custom-checkbox">
-                    <input id="{{ id }}_playthrough" type="checkbox" class="custom-control-input" v-model="playThrough">
-                    <label for="{{ id }}_playthrough" class="custom-control-label">Play Through</label>
+                    <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input" v-model="playThrough">
+                    <label v-bind:for="id + '_playthrough'" class="custom-control-label">Play Through</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input id="{{ id }}_loop" type="checkbox" class="custom-control-input" v-model="loop">
-                    <label for="{{ id }}_loop" class="custom-control-label">Repeat Playlist</label>
+                    <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
+                    <label v-bind:for="id + '_loop'" class="custom-control-label">Repeat Playlist</label>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import track from './track.vue'
+import track from './track.js'
 
 export default {
     extends: track,
@@ -74,6 +74,8 @@ export default {
             "files": [],
             "volume": 100,
             "playThrough": true,
+            "loop": false,
+
             "mixGainObj": null
         };
     },
@@ -87,10 +89,14 @@ export default {
         this.sink = this.mixGainObj;
 
         this.$root.$on('new-mixer-value', this.setMixGain);
+        this.$root.$on('new-cue', this.onNewCue);
     },
     methods: {
         cue: function() {
-            this.$emit('cue', id);
+            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
+        },
+        onNewCue: function(new_cue) {
+            this.passThrough = (new_cue === this.id);
         },
         setMixGain: function(new_value) {
             if (this.id === 'playlist_1') {

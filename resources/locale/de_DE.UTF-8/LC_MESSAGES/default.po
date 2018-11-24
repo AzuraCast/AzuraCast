@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 20:00\n"
+"PO-Revision-Date: 2018-11-24 20:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1830,19 +1830,19 @@ msgstr "Aktiviere Broadcasting"
 
 #: /var/azuracast/www/config/forms/station.php:55
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
-msgstr ""
+msgstr "Wenn deaktiviert, wird die Station nicht senden oder den AutoDJ nutzen."
 
 #: /var/azuracast/www/config/forms/station.php:67
 msgid "Enable Public Page"
-msgstr ""
+msgstr "Aktivieren Sie die öffentliche Seite"
 
 #: /var/azuracast/www/config/forms/station.php:68
 msgid "Whether to show or hide the station from public pages and general API results."
-msgstr ""
+msgstr "Entscheiden sie ob die Station in den Öffendlichen Seiten und API Resultaten angezeigt wird."
 
 #: /var/azuracast/www/config/forms/station.php:80
 msgid "Station URL Stub"
-msgstr ""
+msgstr "Stations (Kurz ) Name"
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."

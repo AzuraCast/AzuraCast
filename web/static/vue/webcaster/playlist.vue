@@ -20,10 +20,17 @@
             </div>
 
             <div class="mt-3" v-if="playing">
-                <div class="progress progress-success progress-volume mb-2">
-                    <div class="progress-seek"></div>
-                    <span class="track-position-text"></span>
-                    <div class="bar track-position"></div>
+
+                <div class="d-flex flex-row mb-2">
+                    <div class="flex-shrink-0 pt-1 pr-2">{{ position | prettifyTime }}</div>
+                    <div class="flex-fill">
+                        <input type="range" min="0" max="100" step="0.1" class="custom-range slider"
+                               v-bind:value="seekingPosition"
+                               v-on:mousedown="isSeeking = true"
+                               v-on:mousemove="doSeek($event)"
+                               v-on:mouseup="isSeeking = false">
+                    </div>
+                    <div class="flex-shrink-0 pt-1 pl-2">{{ duration | prettifyTime }}</div>
                 </div>
 
                 <div class="progress mb-1">
@@ -44,7 +51,7 @@
             <div class="form-group mb-0">
                 <div class="custom-control custom-checkbox">
                     <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input" v-model="playThrough">
-                    <label v-bind:for="id + '_playthrough'" class="custom-control-label">Play Through</label>
+                    <label v-bind:for="id + '_playthrough'" class="custom-control-label">Continuous Play</label>
                 </div>
                 <div class="custom-control custom-checkbox">
                     <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
@@ -72,23 +79,34 @@ import track from './track.js'
 
 export default {
     extends: track,
-    data: function() {
+    data: function () {
         return {
             "fileIndex": -1,
             "files": [],
 
             "volume": 100,
+            "duration": 0.0,
             "playThrough": true,
             "loop": false,
 
+            "isSeeking": false,
+            "seekPosition": 0,
             "mixGainObj": null
         };
+    },
+    computed: {
+        positionPercent: function () {
+            return (100.0 * this.position / parseFloat(this.duration));
+        },
+        seekingPosition: function () {
+            return (this.isSeeking) ? this.seekPosition : this.positionPercent;
+        }
     },
     props: {
         id: String,
         name: String
     },
-    mounted: function() {
+    mounted: function () {
         this.mixGainObj = this.getStream().context.createGain();
         this.mixGainObj.connect(this.getStream().webcast);
         this.sink = this.mixGainObj;
@@ -97,7 +115,7 @@ export default {
         this.$root.$on('new-cue', this.onNewCue);
     },
     filters: {
-        prettifyTime: function(time) {
+        prettifyTime: function (time) {
             if (typeof time === 'undefined') {
                 return 'N/A';
             }
@@ -108,37 +126,37 @@ export default {
             var seconds = parseInt(time % 60);
 
             if (minutes < 10) {
-                minutes = "0"+minutes;
+                minutes = "0" + minutes;
             }
             if (seconds < 10) {
-                seconds = "0"+seconds;
+                seconds = "0" + seconds;
             }
 
             if (hours > 0) {
-                return hours+":"+minutes+":"+seconds;
+                return hours + ":" + minutes + ":" + seconds;
             } else {
-                return minutes+":"+seconds;
+                return minutes + ":" + seconds;
             }
         }
     },
     methods: {
-        cue: function() {
+        cue: function () {
             this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
         },
 
-        onNewCue: function(new_cue) {
+        onNewCue: function (new_cue) {
             this.passThrough = (new_cue === this.id);
         },
 
-        setMixGain: function(new_value) {
+        setMixGain: function (new_value) {
             if (this.id === 'playlist_1') {
-                this.mixGainObj.gain.value = 1.0-new_value;
+                this.mixGainObj.gain.value = 1.0 - new_value;
             } else {
                 this.mixGainObj.gain.value = new_value;
             }
         },
 
-        addNewFiles: function(newFiles) {
+        addNewFiles: function (newFiles) {
             _.each(newFiles, (file) => {
                 file.readTaglibMetadata((data) => {
                     this.files.push({
@@ -150,7 +168,12 @@ export default {
             });
         },
 
-        play: function(options) {
+        play: function (options) {
+            if (this.paused) {
+                this.togglePause();
+                return;
+            }
+
             this.stop();
 
             if (!(this.file = this.selectFile(options))) {
@@ -173,12 +196,17 @@ export default {
 
                 this.source.play(this.file);
 
+                this.$root.$emit('metadata-update', {
+                    title: this.file.metadata.title || 'N/A',
+                    artist: this.file.metadata.artist || 'N/A'
+                });
+
                 this.playing = true;
                 this.paused = false;
             });
         },
 
-        selectFile: function(options = {}) {
+        selectFile: function (options = {}) {
             if (this.files.length === 0) {
                 return;
             }
@@ -208,7 +236,7 @@ export default {
             return this.files[this.fileIndex];
         },
 
-        previous: function() {
+        previous: function () {
             if (!this.playing) {
                 return;
             }
@@ -218,7 +246,7 @@ export default {
             });
         },
 
-        next: function() {
+        next: function () {
             if (!this.playing) {
                 return;
             }
@@ -226,13 +254,20 @@ export default {
             return this.play();
         },
 
-        onEnd: function() {
+        onEnd: function () {
             this.stop();
 
             if (this.playThrough) {
                 return this.play({
                     isAutoPlay: true
                 });
+            }
+        },
+
+        doSeek: function (e) {
+            if (this.isSeeking) {
+                this.seekPosition = e.target.value;
+                this.seek(this.seekPosition / 100);
             }
         }
     }

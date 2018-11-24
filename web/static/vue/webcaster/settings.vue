@@ -146,6 +146,7 @@ export default {
     },
     mounted: function() {
         this.$root.$on('new-cue', this.onNewCue);
+        this.$root.$on('metadata-update', this.onMetadataUpdate);
     },
     methods: {
         cue: function() {
@@ -198,11 +199,19 @@ export default {
             this.isStreaming = false;
         },
         updateMetadata: function() {
-            return this.getStream().webcast.sendMetadata({
-                "title": this.metadata.title,
-                "artist": this.metadata.artist
+            this.$root.$emit('metadata-update', {
+                title: this.metadata.title,
+                artist: this.metadata.artist
             });
+
+            notify('Metadata updated!', 'success', true);
         },
+        onMetadataUpdate: function(new_metadata) {
+            this.metadata.title = new_metadata.title;
+            this.metadata.artist = new_metadata.artist;
+
+            return this.getStream().webcast.sendMetadata(new_metadata);
+        }
     }
 }
 </script>

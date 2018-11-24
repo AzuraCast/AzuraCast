@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:20\n"
+"PO-Revision-Date: 2018-11-24 19:30\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -516,16 +516,16 @@ msgstr "Tester la Web Hook"
 #: /var/azuracast/www/src/Http/ErrorHandler.php:85
 #: /var/azuracast/www/src/Http/ErrorHandler.php:94
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Vous devez être connecté pour accéder à cette page."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:106
 #: /var/azuracast/www/src/Http/ErrorHandler.php:115
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "Vous n’êtes pas autorisé à accéder à cette partie du site."
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "Votre fichier <code>docker-compose.yml</code> n'est pas a jour!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."

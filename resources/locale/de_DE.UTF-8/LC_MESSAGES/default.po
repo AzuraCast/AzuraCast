@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 18:15\n"
+"PO-Revision-Date: 2018-11-24 18:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -42,7 +42,7 @@ msgstr "API Schlüssel"
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:167
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:190
 msgid "%s not found."
-msgstr ""
+msgstr "%s Nicht gefunden."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:68
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
@@ -57,7 +57,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:105
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:143
 msgid "%s updated."
-msgstr ""
+msgstr "%s aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:76
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79

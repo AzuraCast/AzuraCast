@@ -5,12 +5,15 @@
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^3.9.2",
-    "gulp-coffee": "^3.0.3",
     "gulp-concat": "^2.6.1",
     "gulp-rev": "^8.1.1",
     "gulp-rev-delete-original": "^0.2.3",
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0"
+    "gulp-uglify": "^3.0.0",
+    "prettier": "1.12.1",
+    "vue-loader": "14.2.2",
+    "vue-template-compiler": "^2.5.17",
+    "webpack-stream": "^5.1.1"
   }
 }

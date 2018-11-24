@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:00\n"
+"PO-Revision-Date: 2018-11-24 19:10\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -135,19 +135,19 @@ msgstr "Ajouter %s"
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:85
 msgid "Sync Task Output"
-msgstr ""
+msgstr "Synchronisation de sortie de tâche"
 
 #: /var/azuracast/www/src/Controller/Admin/Install/ShoutcastController.php:68
 #: /var/azuracast/www/config/admin/dashboard.php:58
 msgid "Install SHOUTcast"
-msgstr ""
+msgstr "Installer SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:102
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:110
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:128
 #: /var/azuracast/www/resources/templates/admin/permissions/index.phtml:10
 msgid "Permission"
-msgstr ""
+msgstr "Permissions"
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:43
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:227
@@ -165,7 +165,7 @@ msgstr "Configuration système"
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:98
 #: /var/azuracast/www/src/Controller/Stations/Profile/EditController.php:69
 msgid "This port is currently in use by the station \"%s\"."
-msgstr ""
+msgstr "Ce port est actuelement utiliser par la station \"%s\"."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:134
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:141
@@ -188,11 +188,11 @@ msgstr "Clone de la station : %s"
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:123
 #: /var/azuracast/www/resources/templates/admin/users/index.phtml:10
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:88
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
-msgstr ""
+msgstr "Il éxiste déjà un autre utilisateur avec cette adresse E-mail. Veuillez modifier votre adress E-mail."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:128
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:95
@@ -203,23 +203,23 @@ msgstr "Connecté avec succès."
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:118
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:189
 msgid "%s restarted."
-msgstr ""
+msgstr "%s est redémarré."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:99
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:105
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:118
 msgid "Frontend"
-msgstr ""
+msgstr "Frontend"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:99
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:170
 msgid "%s stopped."
-msgstr ""
+msgstr "%s est arrêtée."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:105
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:176
 msgid "%s started."
-msgstr ""
+msgstr "%s est démarré."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:156
 msgid "Song skipped."
@@ -227,21 +227,21 @@ msgstr "Titré ignoré."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:164
 msgid "Streamer disconnected."
-msgstr ""
+msgstr "Le diffuseur ses déconécter."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:170
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:176
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:189
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
-msgstr ""
+msgstr "Ttrop de tentatives de connexion"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
+msgstr "Vous avez tenté de vous connecter trop de fois. S’il vous plaît, attendez 30 secondes et recommencez."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:105
 msgid "Login unsuccessful"
@@ -277,11 +277,11 @@ msgstr "Station non trouvée !"
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:103
 msgid "Live streaming is not enabled on this station."
-msgstr ""
+msgstr "La diffusion en direct n'est pas active pour cette station."
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:109
 msgid "This station does not support live streaming."
-msgstr ""
+msgstr "Cette station ne supporte pas la diffusion en direct."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:81
 msgid "Setup has already been completed!"
@@ -293,7 +293,7 @@ msgstr "Super administrateur"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:153
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "Vous souhaitez utiliser SHOUTcast 2 ? <a href=\"%s\" target=\"_blank\">cliquez ici</a>, puis recharger cette page."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:202
 msgid "Setup is now complete!"
@@ -330,7 +330,7 @@ msgstr "Renommer le fichier/répertoire"
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:298
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:474
 msgid "Path \"%s\" is not a folder."
-msgstr ""
+msgstr "Le chemain \"%s\" ne mene pas a un dossier."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:212
 #: /var/azuracast/www/resources/templates/stations/files/index.phtml:174
@@ -343,23 +343,23 @@ msgstr "Fichier non traité"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:484
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
+msgstr "Vous ne pouvez pas déplacer \"%s\" vers \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:99
 msgid "AzuraCast Application Log"
-msgstr ""
+msgstr "Logs de l'application AzuraCast"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:106
 msgid "Nginx Access Log"
-msgstr ""
+msgstr "Logs d'acces Nginx"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:111
 msgid "Nginx Error Log"
-msgstr ""
+msgstr "Logs d'erreurs Nginx"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:116
 msgid "PHP Application Log"
-msgstr ""
+msgstr "Log de l'application PHP"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:121
 msgid "Supervisord Log"

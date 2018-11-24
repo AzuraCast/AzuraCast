@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 18:40\n"
+"PO-Revision-Date: 2018-11-24 18:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -241,7 +241,7 @@ msgstr "Zu viele Anmeldeversuche"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
+msgstr "Sie haben sich zu oft Angemeldet. Bitte warten Sie 30 Sekunden und wiederholen Sie den Vorgang."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:105
 msgid "Login unsuccessful"
@@ -253,11 +253,11 @@ msgstr "Ihre Anmeldeinformationen konnten nicht bestätigt werden."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:217
 msgid "%s Listener Range"
-msgstr ""
+msgstr "%s Zuhörer Bereich"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:228
 msgid "%s Daily Average"
-msgstr ""
+msgstr "%s Tagesdurchschnitt"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:90
 msgid "Profile saved!"
@@ -277,39 +277,39 @@ msgstr "Sender nicht gefunden!"
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:103
 msgid "Live streaming is not enabled on this station."
-msgstr ""
+msgstr "Live-streaming ist auf dieser Station nicht aktiviert."
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:109
 msgid "This station does not support live streaming."
-msgstr ""
+msgstr "Diese Station unterstützt kein live-streaming."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:81
 msgid "Setup has already been completed!"
-msgstr ""
+msgstr "Setup wurde bereits abgeschlossen!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:104
 msgid "Super Administrator"
-msgstr ""
+msgstr "Super-Administrator"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:153
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "Sie möchten SHOUTcast 2 verwenden? <a href=\"%s\" target=\"_blank\">installieren Sie es hier</a> und laden sie diese Seite erneut."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:202
 msgid "Setup is now complete!"
-msgstr ""
+msgstr "Die Einrichtung ist abgeschlossen!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:202
 msgid "Continue setting up your station in the main AzuraCast app."
-msgstr ""
+msgstr "Fahren sie mit der Installation in der Haupt-AzuraCast Anwendung fort."
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:67
 msgid "Automated assignment complete!"
-msgstr ""
+msgstr "Automatisierte Zuordnung abgeschlossen!"
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:70
 msgid "Automated assignment error"
-msgstr ""
+msgstr "Fehler in der automatisierten Zuordnung"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:26
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:100
@@ -320,42 +320,42 @@ msgstr "Medien"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:108
 msgid "File renamed!"
-msgstr ""
+msgstr "Die Datei wurde umbenannt!"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:118
 msgid "Rename File/Directory"
-msgstr ""
+msgstr "Benennen Sie die Datei oder das Verzeichnis um"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:134
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:298
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:474
 msgid "Path \"%s\" is not a folder."
-msgstr ""
+msgstr "Pfad \"%s\" ist kein Ordner."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:212
 #: /var/azuracast/www/resources/templates/stations/files/index.phtml:174
 msgid "Directory"
-msgstr ""
+msgstr "Verzeichnis"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:216
 msgid "File Not Processed"
-msgstr ""
+msgstr "Datei nicht verarbeitet"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:484
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
+msgstr "Konnte \"%s\" nicht nach \"%s\" verschieben"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:99
 msgid "AzuraCast Application Log"
-msgstr ""
+msgstr "AzuraCast-Anwendungsprotokoll"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:106
 msgid "Nginx Access Log"
-msgstr ""
+msgstr "Nginx Zugriffsprotokoll"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:111
 msgid "Nginx Error Log"
-msgstr ""
+msgstr "Nginx Fehlerprotokoll"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:116
 msgid "PHP Application Log"

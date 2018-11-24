@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 18:50\n"
+"PO-Revision-Date: 2018-11-24 19:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -359,35 +359,35 @@ msgstr "Nginx Fehlerprotokoll"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:116
 msgid "PHP Application Log"
-msgstr ""
+msgstr "PHP Application Log"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:121
 msgid "Supervisord Log"
-msgstr ""
+msgstr "Supervisord Log"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:133
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Liquidsoap Log"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:138
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Liquidsoap Konfiguration"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:149
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Icecast Zugriffsprotokoll"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:154
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Icecast Fehlerprotokoll"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:159
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Icecast-Konfiguration"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:167
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "SHOUTcast-Log"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:172
 msgid "SHOUTcast Configuration"
@@ -866,20 +866,20 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:89
 #: /var/azuracast/www/config/forms/profile.php:103
 msgid "Default"
-msgstr ""
+msgstr "Voreinstellung"
 
 #: /var/azuracast/www/config/forms/branding.php:16
 #: /var/azuracast/www/config/forms/profile.php:104
 msgid "Dark"
-msgstr ""
+msgstr "Dunkel"
 
 #: /var/azuracast/www/config/forms/branding.php:25
 msgid "Hide Album Art on Public Pages"
-msgstr ""
+msgstr "Album Art auf den öffentlichen Seiten ausblenden"
 
 #: /var/azuracast/www/config/forms/branding.php:26
 msgid "If selected, album art will not display on public-facing radio pages."
-msgstr ""
+msgstr "Wenn ausgewählt, wird das Albumcover nicht auf öffentlichen Radio Seiten angezeigt."
 
 #: /var/azuracast/www/config/forms/branding.php:29
 #: /var/azuracast/www/config/forms/branding.php:60
@@ -935,59 +935,59 @@ msgstr "Ja"
 
 #: /var/azuracast/www/config/forms/branding.php:38
 msgid "Homepage Redirect URL"
-msgstr ""
+msgstr "Homepage-Umleitungs-URL"
 
 #: /var/azuracast/www/config/forms/branding.php:39
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
-msgstr ""
+msgstr "Wenn ein Besucher nicht eingeloggt und die AzuraCast Homepage besucht, können Sie sie automatisch mit der hier angegebenen URL umleiten. Freilassen Sie, um sie zum Login-Bildschirm standardmäßig umzuleiten."
 
 #: /var/azuracast/www/config/forms/branding.php:47
 msgid "Default Album Art URL"
-msgstr ""
+msgstr "Standard-Album-Cover URL"
 
 #: /var/azuracast/www/config/forms/branding.php:48
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
-msgstr ""
+msgstr "Wenn ein Song über kein Albumcover verfügt, wird diese URL stattdessen aufgelistet. Freilassen um den Standard Platzhalter zu verwenden."
 
 #: /var/azuracast/www/config/forms/branding.php:56
 msgid "Hide AzuraCast Branding on Public Pages"
-msgstr ""
+msgstr "Blenden Sie AzuraCast Branding auf öffentlichen Seiten aus"
 
 #: /var/azuracast/www/config/forms/branding.php:57
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
-msgstr ""
+msgstr "Wenn ausgewählt, wird dadurch das AzuraCast branding auf öffentlich zugänglichen Seiten nicht angezeigt."
 
 #: /var/azuracast/www/config/forms/branding.php:69
 msgid "Custom CSS for Public Pages"
-msgstr ""
+msgstr "Custom CSS für öffentliche Seiten"
 
 #: /var/azuracast/www/config/forms/branding.php:70
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Dieses CSS wird auf den öffentlichen Seiten Bahnhof und Login-Seite angewendet werden."
 
 #: /var/azuracast/www/config/forms/branding.php:80
 msgid "Custom JS for Public Pages"
-msgstr ""
+msgstr "Benutzerdefinierte JS für öffentliche Seiten"
 
 #: /var/azuracast/www/config/forms/branding.php:81
 msgid "This javascript code will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Dieser Javascript-Code wird auf den öffentlichen Seiten und Login-Seite angewendet werden."
 
 #: /var/azuracast/www/config/forms/branding.php:91
 msgid "Custom CSS for Internal Pages"
-msgstr ""
+msgstr "Custom CSS für interne Seiten"
 
 #: /var/azuracast/www/config/forms/branding.php:92
 msgid "This CSS will be applied to the main management pages, like this one."
-msgstr ""
+msgstr "Dieses CSS wird auf den Haupt-Seiten angwendet, wie auf dieser Seite z.b."
 
 #: /var/azuracast/www/config/forms/custom_field.php:10
 msgid "Field Name"
-msgstr ""
+msgstr "Name des Feldes"
 
 #: /var/azuracast/www/config/forms/custom_field.php:11
 msgid "This will be used as the label when editing individual songs, and will show in API results."
-msgstr ""
+msgstr "DIese Kennzeichnung wird zum Editieren individueller Songs benutzt und wird in den API Resultaten Angezeigt."
 
 #: /var/azuracast/www/config/forms/custom_field.php:18
 #: /var/azuracast/www/resources/templates/admin/custom_fields/index.phtml:24

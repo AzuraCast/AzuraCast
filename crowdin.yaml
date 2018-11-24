@@ -1,4 +1,3 @@
 files:
-  - 
-    source: /app/locale/default.pot
-    translation: '/app/locale/%locale_with_underscore%.UTF-8/LC_MESSAGES/default.po'
+  - source: /resources/locale/default.pot
+    translation: /resources/locale/%locale_with_underscore%.UTF-8/LC_MESSAGES/default.po

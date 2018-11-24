@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:00\n"
+"PO-Revision-Date: 2018-11-24 19:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -992,11 +992,12 @@ msgstr "DIese Kennzeichnung wird zum Editieren individueller Songs benutzt und w
 #: /var/azuracast/www/config/forms/custom_field.php:18
 #: /var/azuracast/www/resources/templates/admin/custom_fields/index.phtml:24
 msgid "Programmatic Name"
-msgstr ""
+msgstr "Programmname"
 
 #: /var/azuracast/www/config/forms/custom_field.php:19
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
-msgstr ""
+msgstr "Optional kann ein API freundlicher Name, wie z. b.<code>feld_name</code>genutzt werden.\n"
+"Bitte freilassen um einen Namen automatisch zu erstellen."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:11
 #: /var/azuracast/www/config/forms/report_soundexchange.php:10

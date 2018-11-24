@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:10\n"
+"PO-Revision-Date: 2018-11-24 19:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1006,15 +1006,15 @@ msgstr "Wichtige Notizen"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:12
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr ""
+msgstr "<p>SHOUTcast 2 DNAS ist keine freie Software und seine restriktive Lizenz erlaubt AzuraCast nicht die weitergabe eines Binaries. Um SHOUTcast zu installieren, sollten sie das Linux x64binary von der <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> Webseite herunterladen. Und das Binary <code>sc_serv2_linux_x64-latest.tar.gz</code>in das vorgesehene Verzeichniss extrahieren.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:19
 msgid "Select SHOUTcast 64-bit .tar.gz File"
-msgstr ""
+msgstr "Wählen sie das SHOUTcast 64-bit .tar.gz aus"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:29
 msgid "Upload"
-msgstr ""
+msgstr "Hochladen"
 
 #: /var/azuracast/www/config/forms/login.php:9
 #: /var/azuracast/www/config/forms/profile.php:24
@@ -1041,7 +1041,7 @@ msgstr "Anmelden"
 
 #: /var/azuracast/www/config/forms/media.php:8
 msgid "Song Metadata"
-msgstr ""
+msgstr "Song Metadaten"
 
 #: /var/azuracast/www/config/forms/media.php:13
 #: /var/azuracast/www/config/forms/rename.php:9
@@ -1059,11 +1059,11 @@ msgstr "Album des Liedes"
 
 #: /var/azuracast/www/config/forms/media.php:42
 msgid "Song Lyrics"
-msgstr ""
+msgstr "Song Text"
 
 #: /var/azuracast/www/config/forms/media.php:49
 msgid "Replace Album Cover Art"
-msgstr ""
+msgstr "Ersetzen der Album Artwork"
 
 #: /var/azuracast/www/config/forms/media.php:57
 msgid "ISRC"
@@ -1075,11 +1075,11 @@ msgstr "International standardisierte Aufnahme-Kodierung, welche für Lizenz Ber
 
 #: /var/azuracast/www/config/forms/media.php:66
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Administratoren können die Felder anpassen, die hier in der <a href=\"%s\">Verwaltung Seite</a> angezeigt werden."
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Song-Wiedergabe steuern"
 
 #: /var/azuracast/www/config/forms/media.php:83
 msgid "Song Length (seconds)"
@@ -1200,12 +1200,12 @@ msgstr "Wenn \"Ja\" wird der Sender in der öffentlichen YP Radio Liste aufgelis
 #: /var/azuracast/www/config/forms/mount/icecast.php:103
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:103
 msgid "Custom Stream URL"
-msgstr ""
+msgstr "Benutzerdefinierte Stream-URL"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:105
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:105
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
-msgstr ""
+msgstr "Sie können eine benutzerdefinierte URL für den Stream festlegen, die von Azuracast benutzt wird. Lassen Sie es frei, um den Standardwert verwenden."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:112
 msgid "Custom Frontend Configuration"

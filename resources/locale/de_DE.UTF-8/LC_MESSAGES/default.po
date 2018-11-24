@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:40\n"
+"PO-Revision-Date: 2018-11-24 19:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1749,31 +1749,31 @@ msgstr "Privatsphäre-Einstellungen"
 
 #: /var/azuracast/www/config/forms/settings.php:101
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast sendet keine Ihrer Stations oder Zuhörer Daten an einem externen Server. Sie können kontrollieren wieviel Daten, AzuraCast über Ihre Hörer speichert."
 
 #: /var/azuracast/www/config/forms/settings.php:108
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Listener-Analytics-Sammlung"
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Aggregierte Zuhörer Statistiken dienen dazu Station Berichte Systemweit anzuzeigen. IP-basierte Hörer Statistiken dienen dazu, um eventuelle Lizenzgebühren und Berichte zu erstellen."
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>Komplettes:</b> sammeln aggregierte Zuhörer Statistiken und IP-basierter Hörer"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>Beschränkt:</b> sammeln nur aggregierte Zuhörer Statistiken"
 
 #: /var/azuracast/www/config/forms/settings.php:114
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>Keine:</b> Erfassen keinet Zuhörer Daten"
 
 #: /var/azuracast/www/config/forms/settings.php:123
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "AzuraCast Installation Telemetrie"
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."

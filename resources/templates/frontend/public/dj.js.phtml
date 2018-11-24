@@ -1,7 +1,55 @@
-$(function() {
-    console.log();
+<?php
+/** @var \App\Customization $customization */
+$locale_short = substr($customization->getLocale(), 0, 2);
 
-    var web_dj = new Vue({
+$locale_info = [
+    'locale' => $locale_short,
+    'messages' => [
+        $locale_short => [
+            'headers' => [
+                'microphone'    => __('Microphone'),
+                'settings'      => __('Settings'),
+                'metadata'      => __('Metadata'),
+                'mixer'         => __('Mixer'),
+                'playlist_1'    => __('Playlist 1'),
+                'playlist_2'    => __('Playlist 2'),
+            ],
+            'settings' => [
+                'encoder'       => __('Encoder'),
+                'encoder_mp3'   => __('MP3'),
+                'encoder_raw'   => __('Raw'),
+                'samplerate'    => __('Sample Rate'),
+                'bitrate'       => __('Bit Rate'),
+                'djCredentials' => __('DJ Credentials'),
+                'djUsername'    => __('Username'),
+                'djPassword'    => __('Password'),
+                'asynchronous'  => __('Use Asynchronous Worker'),
+                'metadataTitle' => __('Title'),
+                'metadataArtist' => __('Artist'),
+                'playThrough'   => __('Continuous Play'),
+                'loop'          => __('Repeat Playlist'),
+                'micSource'     => __('Microphone Source'),
+            ],
+            'buttons' => [
+                'startStreaming' => __('Start Streaming'),
+                'stopStreaming' => __('Stop Streaming'),
+                'cue'           => __('Cue'),
+                'updateMetadata' => __('Update Metadata'),
+            ],
+            'misc' => [
+                'addFiles'      => __('Add Files to Playlist'),
+                'unknownTitle'  => __('Unknown Title'),
+                'unknownArtist' => __('Unknown Artist'),
+            ],
+        ],
+    ],
+];
+?>
+
+$(function() {
+    const i18n = new VueI18n(<?=json_encode($locale_info) ?>)
+    const web_dj = new Vue({
+        i18n,
         el: '#web_dj',
         render: function(createElement) {
             return createElement(Webcaster.default, {

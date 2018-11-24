@@ -16,11 +16,11 @@
             </div>
             <div class="row mb-4">
                 <div class="col-md-6 mb-sm-4">
-                    <playlist name="Playlist 1" id="playlist_1"></playlist>
+                    <playlist id="playlist_1"></playlist>
                 </div>
 
                 <div class="col-md-6">
-                    <playlist name="Playlist 2" id="playlist_2"></playlist>
+                    <playlist id="playlist_2"></playlist>
                 </div>
             </div>
         </div>

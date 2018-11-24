@@ -36,6 +36,30 @@ return [
         ],
     ],
 
+    'vue-i18n' => [
+        'order' => 2,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/vue-i18n/8.3.1/vue-i18n.min.js',
+                    'integrity' => 'sha256-sqdawvb1bAAuOOTR87fV1F4N0U9CkQyEWzKD0ANfdj4=',
+                ],
+            ],
+        ],
+    ],
+
+    'underscore' => [
+        'order' => 2,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js',
+                    'integrity' => 'sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=',
+                ],
+            ],
+        ],
+    ],
+
     /*
      * Main per-layout dependencies
      */
@@ -433,13 +457,9 @@ return [
 
     'webcaster' => [
         'order' => 10,
-        'require' => ['jquery'],
+        'require' => ['vue', 'vue-i18n', 'underscore'],
         'files' => [
             'js' => [
-                [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js',
-                    'integrity' => 'sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=',
-                ],
                 [
                     'src' => 'https://cdn.rawgit.com/toots/shine/master/js/dist/libshine.js',
                 ],

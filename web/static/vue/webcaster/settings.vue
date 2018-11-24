@@ -5,10 +5,10 @@
 
             <ul class="nav nav-tabs card-header-tabs mt-0">
                 <li class="nav-item ml-1">
-                    <a class="nav-link active" href="#settings" data-toggle="tab">Settings</a>
+                    <a class="nav-link active" href="#settings" data-toggle="tab">{{ $t('headers.settings') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#metadata" data-toggle="tab">Metadata</a>
+                    <a class="nav-link" href="#metadata" data-toggle="tab">{{ $t('headers.metadata') }}</a>
                 </li>
             </ul>
         </div>
@@ -16,20 +16,20 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="settings">
                     <div class="form-group">
-                        <label>Encoder</label>
+                        <label>{{ $t('settings.encoder') }}</label>
                         <div class="controls">
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input id="encoder_mp3" type="radio" v-model="encoder" value="mp3" class="custom-control-input">
-                                <label for="encoder_mp3" class="custom-control-label">MP3</label>
+                                <label for="encoder_mp3" class="custom-control-label">{{ $t('settings.encoder_mp3') }}</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input id="encoder_raw" type="radio" v-model="encoder" value="raw" class="custom-control-input">
-                                <label for="encoder_raw" class="custom-control-label">Raw</label>
+                                <label for="encoder_raw" class="custom-control-label">{{ $t('settings.encoder_raw') }}</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="select_samplerate">Sample Rate</label>
+                        <label for="select_samplerate">{{ $t('settings.samplerate') }}</label>
                         <div class="controls">
                             <select id="select_samplerate" class="form-control" v-model.number="samplerate">
                                 <option value="8000">8 kHz</option>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="select_bitrate">Bit Rate</label>
+                        <label for="select_bitrate">{{ $t('settings.bitrate') }}</label>
                         <div class="controls">
                             <select id="select_bitrate" class="form-control" v-model.number="bitrate">
                                 <option value="8">8 kbps</option>
@@ -70,48 +70,48 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>DJ Credentials</label>
+                        <label>{{ $t('settings.djCredentials') }}</label>
 
                         <div class="row">
                             <div class="col-6">
-                                <input type="text" v-model="djUsername" class="form-control" placeholder="Username">
+                                <input type="text" v-model="djUsername" class="form-control" v-bind:placeholder="$t('settings.djUsername')">
                             </div>
                             <div class="col-6">
-                                <input type="text" v-model="djPassword" class="form-control" placeholder="Password">
+                                <input type="text" v-model="djPassword" class="form-control" v-bind:placeholder="$t('settings.djPassword')">
                             </div>
                         </div>
                     </div>
                     <div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
                             <input id="use_async_worker" type="checkbox" v-model="asynchronous" class="custom-control-input">
-                            <label for="use_async_worker" class="custom-control-label">Use Asynchronous Worker</label>
+                            <label for="use_async_worker" class="custom-control-label">{{ $t('settings.asynchronous') }}</label>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane" id="metadata">
                     <div class="form-group">
-                        <label for="metadata_title">Title</label>
+                        <label for="metadata_title">{{ $t('settings.metadataTitle') }}</label>
                         <div class="controls">
                             <input id="metadata_title" class="form-control" type="text" v-model="metadata.title" v-bind:disabled="!isStreaming">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="metadata_artist">Artist</label>
+                        <label for="metadata_artist">{{ $t('settings.metadataArtist') }}</label>
                         <div class="controls">
                             <input id="metadata_artist" class="form-control" type="text" v-model="metadata.artist" v-bind:disabled="!isStreaming">
                         </div>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary" v-on:click="updateMetadata" v-bind:disabled="!isStreaming">Update Metadata</button>
+                        <button class="btn btn-primary" v-on:click="updateMetadata" v-bind:disabled="!isStreaming">{{ $t('buttons.updateMetadata') }}</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="card-actions">
-            <button class="btn btn-success" v-on:click="startStreaming" v-if="!isStreaming">Start streaming</button>
-            <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming">Stop streaming</button>
-            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">Cue</button>
+            <button class="btn btn-success" v-on:click="startStreaming" v-if="!isStreaming">{{ $t('buttons.startStreaming') }}</button>
+            <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming">{{ $t('buttons.stopStreaming') }}</button>
+            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">{{ $t('buttons.cue') }}</button>
         </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <div class="mixer card">
         <h5 class="card-header">
-            Mixer
+            {{ $t('headers.mixer') }}
         </h5>
         <div class="card-body">
             <div class="d-flex flex-row">

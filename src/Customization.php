@@ -164,38 +164,45 @@ class Customization
      *
      * @return string
      */
-    public function getLocale()
+    public function getLocale(): ?string
     {
         static $locale = null;
 
-        if ($locale === null) {
-            $supported_locales = $this->app_settings['locale']['supported'];
+        if (null !== $locale) {
+            return $locale;
+        }
 
-            // Prefer user-based profile locale.
-            if ($this->user !== null && !empty($this->user->getLocale()) && $this->user->getLocale() !== 'default') {
-                if (isset($supported_locales[$this->user->getLocale()])) {
-                    $locale = $this->user->getLocale();
-                }
-            }
+        $supported_locales = $this->app_settings['locale']['supported'];
 
-            // Attempt to load from browser headers.
-            if (!$locale) {
-                $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-                foreach ($supported_locales as $lang_code => $lang_name) {
-                    if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
-                        $locale = $lang_code;
-                        break;
-                    }
-                }
-            }
-
-            // Default to system option.
-            if (!$locale) {
-                $locale = $this->app_settings['locale']['default'];
+        // Prefer user-based profile locale.
+        if ($this->user !== null && !empty($this->user->getLocale()) && $this->user->getLocale() !== 'default') {
+            if (isset($supported_locales[$this->user->getLocale()])) {
+                $locale = $this->user->getLocale();
+                return $locale;
             }
         }
 
+        // Attempt to load from browser headers.
+        $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
+        // Prefer exact match.
+        $exact_locale = substr($browser_locale, 0, 5).'.UTF-8';
+
+        if (isset($supported_locales[$exact_locale])) {
+            $locale = $exact_locale;
+            return $locale;
+        }
+
+        // Use approximate match if available.
+        foreach ($supported_locales as $lang_code => $lang_name) {
+            if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
+                $locale = $lang_code;
+                return $locale;
+            }
+        }
+
+        // Default to system option.
+        $locale = $this->app_settings['locale']['default'];
         return $locale;
     }
 

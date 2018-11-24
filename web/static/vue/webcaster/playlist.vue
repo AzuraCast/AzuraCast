@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <h5 class="card-header">
-            {{ name }}
+            {{ $t('headers.'+id) }}
 
             <div class="float-right">
                 <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
@@ -15,7 +15,7 @@
                     <button class="btn btn-sm" v-on:click="previous()"><i class="material-icons">fast_rewind</i></button>
                     <button class="btn btn-sm" v-on:click="next()"><i class="material-icons">fast_forward</i></button>
                     <button class="btn btn-sm btn-danger" v-on:click="stop()"><i class="material-icons">stop</i></button>
-                    <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">CUE</button>
+                    <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">{{ $t('buttons.cue') }}</button>
                 </div>
             </div>
 
@@ -44,18 +44,18 @@
             <div class="form-group mt-2">
                 <div class="custom-file">
                     <input v-bind:id="id + '_files'" type="file" class="custom-file-input files" accept="audio/*" multiple="multiple" v-on:change="addNewFiles($event.target.files)">
-                    <label v-bind:for="id + '_files'" class="custom-file-label">Add Files to Playlist</label>
+                    <label v-bind:for="id + '_files'" class="custom-file-label">{{ $t('misc.addFiles') }}</label>
                 </div>
             </div>
 
             <div class="form-group mb-0">
                 <div class="custom-control custom-checkbox">
                     <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input" v-model="playThrough">
-                    <label v-bind:for="id + '_playthrough'" class="custom-control-label">Continuous Play</label>
+                    <label v-bind:for="id + '_playthrough'" class="custom-control-label">{{ $t('settings.playThrough') }}</label>
                 </div>
                 <div class="custom-control custom-checkbox">
                     <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
-                    <label v-bind:for="id + '_loop'" class="custom-control-label">Repeat Playlist</label>
+                    <label v-bind:for="id + '_loop'" class="custom-control-label">{{ $t('settings.loop') }}</label>
                 </div>
             </div>
         </div>
@@ -65,10 +65,10 @@
                v-for="(rowFile, rowIndex) in files" v-bind:class="{ active: rowIndex == fileIndex }"
                v-on:click.prevent="play({ fileIndex: rowIndex })">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-0">{{ rowFile.metadata.title ? rowFile.metadata.title : 'Unknown Title' }}</h5>
+                    <h5 class="mb-0">{{ rowFile.metadata.title ? rowFile.metadata.title : $t('misc.unknownTitle') }}</h5>
                     <small class="pt-1">{{ rowFile.audio.length | prettifyTime }}</small>
                 </div>
-                <p class="mb-0">{{ rowFile.metadata.artist ? rowFile.metadata.artist : 'Unknown Artist' }}</p>
+                <p class="mb-0">{{ rowFile.metadata.artist ? rowFile.metadata.artist : $t('misc.unknownArtist') }}</p>
             </a>
         </div>
     </div>
@@ -103,8 +103,7 @@ export default {
         }
     },
     props: {
-        id: String,
-        name: String
+        id: String
     },
     mounted: function () {
         this.mixGainObj = this.getStream().context.createGain();

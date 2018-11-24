@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 18:30\n"
+"PO-Revision-Date: 2018-11-24 18:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -72,7 +72,7 @@ msgstr "%s aktualisiert."
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:113
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:151
 msgid "Edit %s"
-msgstr ""
+msgstr "Bearbeitet %s"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:92
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:95
@@ -86,7 +86,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:136
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:220
 msgid "%s deleted."
-msgstr ""
+msgstr "%s Gelöscht."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:102
@@ -98,14 +98,14 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:105
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:100
 msgid "%s added."
-msgstr ""
+msgstr "%s Hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:95
 #: /var/azuracast/www/resources/templates/admin/custom_fields/index.phtml:10
 msgid "Custom Field"
-msgstr ""
+msgstr "Benutzerdefiniertes Feld"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:110
@@ -131,23 +131,23 @@ msgstr ""
 #: /var/azuracast/www/resources/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/resources/templates/stations/webhooks/index.phtml:11
 msgid "Add %s"
-msgstr ""
+msgstr "Hinzufügen %s"
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:85
 msgid "Sync Task Output"
-msgstr ""
+msgstr "Synchronisations Ausgang"
 
 #: /var/azuracast/www/src/Controller/Admin/Install/ShoutcastController.php:68
 #: /var/azuracast/www/config/admin/dashboard.php:58
 msgid "Install SHOUTcast"
-msgstr ""
+msgstr "Installiere Shoutcast"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:102
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:110
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:128
 #: /var/azuracast/www/resources/templates/admin/permissions/index.phtml:10
 msgid "Permission"
-msgstr ""
+msgstr "Berechtigung"
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:43
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:227
@@ -165,7 +165,7 @@ msgstr "System Einstellungen"
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:98
 #: /var/azuracast/www/src/Controller/Stations/Profile/EditController.php:69
 msgid "This port is currently in use by the station \"%s\"."
-msgstr ""
+msgstr "Dieser Port wird zur Zeit von der Station %s verwendet."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:134
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:141
@@ -188,11 +188,11 @@ msgstr "Sender duplizieren: %s"
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:123
 #: /var/azuracast/www/resources/templates/admin/users/index.phtml:10
 msgid "User"
-msgstr ""
+msgstr "Benutzer"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:88
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
-msgstr ""
+msgstr "Ein anderer Benutzer mit dieser e-Mail-Adresse ist bereits vorhanden. Bitte aktualisieren Sie die e-Mail-Adresse."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:128
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:95
@@ -203,41 +203,41 @@ msgstr "Erfolgreich eingeloggt."
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:118
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:189
 msgid "%s restarted."
-msgstr ""
+msgstr "%s Neu gestartet."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:99
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:105
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:118
 msgid "Frontend"
-msgstr ""
+msgstr "Frontend"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:99
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:170
 msgid "%s stopped."
-msgstr ""
+msgstr "%s Gestoppt."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:105
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:176
 msgid "%s started."
-msgstr ""
+msgstr "%s Gestartet."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:156
 msgid "Song skipped."
-msgstr ""
+msgstr "Lied übersprungen."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:164
 msgid "Streamer disconnected."
-msgstr ""
+msgstr "Streamer getrennt."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:170
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:176
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:189
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
-msgstr ""
+msgstr "Zu viele Anmeldeversuche"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."

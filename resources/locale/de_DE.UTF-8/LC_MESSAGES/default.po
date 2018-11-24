@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:20\n"
+"PO-Revision-Date: 2018-11-24 19:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1209,7 +1209,7 @@ msgstr "Sie können eine benutzerdefinierte URL für den Stream festlegen, die v
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:112
 msgid "Custom Frontend Configuration"
-msgstr ""
+msgstr "Benutzerdefinierte Frontend Konfiguration"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:114
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
@@ -1217,11 +1217,11 @@ msgstr "Du kannst bestimmte Einstellungen des Mount Points im JSON { key: 'value
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "Stream path cannot include reserved keywords: %s"
-msgstr ""
+msgstr "Stream-Pfad kann nicht reservierte Schlüsselwörter enthalten: %s"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:112
 msgid "YP Directory Authorization Hash"
-msgstr ""
+msgstr "YP Directory Berechtigung Hash"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:113
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
@@ -1254,25 +1254,25 @@ msgstr "Playlisten mit einer höheren Priorität werden öfter gespielt."
 
 #: /var/azuracast/www/config/forms/playlist.php:87
 msgid "Low"
-msgstr ""
+msgstr "Niedrig"
 
 #: /var/azuracast/www/config/forms/playlist.php:91
 msgid "High"
-msgstr ""
+msgstr "Hoch"
 
 #: /var/azuracast/www/config/forms/playlist.php:99
 #: /var/azuracast/www/resources/templates/stations/reports/timeline.phtml:36
 msgid "Source"
-msgstr ""
+msgstr "Quelle"
 
 #: /var/azuracast/www/config/forms/playlist.php:101
 #: /var/azuracast/www/config/forms/playlist.php:130
 msgid "Song-Based Playlist"
-msgstr ""
+msgstr "Song-basierte Playlist"
 
 #: /var/azuracast/www/config/forms/playlist.php:101
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Eine Wiedergabeliste mit Media-Dateien die auf diesem Server gehostet werden."
 
 #: /var/azuracast/www/config/forms/playlist.php:102
 #: /var/azuracast/www/config/forms/playlist.php:184
@@ -1286,13 +1286,13 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:112
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:48
 msgid "Scheduling"
-msgstr ""
+msgstr "Planung"
 
 #: /var/azuracast/www/config/forms/playlist.php:114
 #: /var/azuracast/www/config/forms/playlist.php:211
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:91
 msgid "General Rotation"
-msgstr ""
+msgstr "Allgemeine Rotation"
 
 #: /var/azuracast/www/config/forms/playlist.php:114
 msgid "Plays all day, shuffles with other standard playlists based on weight."
@@ -1301,7 +1301,7 @@ msgstr "Läuft jeden Tag und wird mit anderen Playlisten nach Priorität gemisch
 #: /var/azuracast/www/config/forms/playlist.php:115
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:94
 msgid "Scheduled"
-msgstr ""
+msgstr "Planung"
 
 #: /var/azuracast/www/config/forms/playlist.php:115
 msgid "Play during a scheduled time range. Useful for mood-based time playlists."
@@ -1310,7 +1310,7 @@ msgstr "Läuft zu einer bestimmten Zeit. Nützlich bei zeitlich abhängigen Play
 #: /var/azuracast/www/config/forms/playlist.php:116
 #: /var/azuracast/www/config/forms/playlist.php:276
 msgid "Once per x Songs"
-msgstr ""
+msgstr "Einmal pro x Songs"
 
 #: /var/azuracast/www/config/forms/playlist.php:116
 msgid "Play exactly once every <i>x</i> songs. Useful for station ID/jingles."
@@ -1318,20 +1318,20 @@ msgstr "Spielt genau alle <i>x</i> Songs. Nützlich für Jingles/Dropins."
 
 #: /var/azuracast/www/config/forms/playlist.php:117
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "Einmal pro x Minuten"
 
 #: /var/azuracast/www/config/forms/playlist.php:117
 msgid "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
-msgstr ""
+msgstr "Spielt genau alle <i>x</i> Songs. Nützlich für Jingles/Dropins."
 
 #: /var/azuracast/www/config/forms/playlist.php:118
 #: /var/azuracast/www/config/forms/playlist.php:314
 msgid "Daily"
-msgstr ""
+msgstr "Täglich"
 
 #: /var/azuracast/www/config/forms/playlist.php:118
 msgid "Play once per day at the specified time. Useful for timely reminders."
-msgstr ""
+msgstr "Spielen Sie einmal pro Tag zur angegebenen Uhrzeit. Nützlich für Erinnerungen."
 
 #: /var/azuracast/www/config/forms/playlist.php:119
 #: /var/azuracast/www/resources/templates/system/form_edit.js.phtml:36
@@ -1681,11 +1681,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:34
 msgid "For users who have not customized their time zone, all times displayed on the site will be based on this time zone."
-msgstr ""
+msgstr "Für Benutzer, die keine Zeitzone eingerichtet haben, wird diese Zeitzone genutzt."
 
 #: /var/azuracast/www/config/forms/settings.php:43
 msgid "Prefer Browser URL (If Available)"
-msgstr ""
+msgstr "Bevorzugen Sie Browser-URL (falls vorhanden)"
 
 #: /var/azuracast/www/config/forms/settings.php:44
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."

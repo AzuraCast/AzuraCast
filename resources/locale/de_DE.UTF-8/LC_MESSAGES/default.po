@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:50\n"
+"PO-Revision-Date: 2018-11-24 20:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1777,15 +1777,15 @@ msgstr "AzuraCast Installation Telemetrie"
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Wählen Sie, ob Ihre Installation mit dem zentralen AzuraCast Server für Updates und Ankündigungen kommuniziert.<br>AzuraCast respektiert Ihre Privatsphäre; Schauen Sie in unsere <a href=\"%s\" target=\"_blank\">Datenschutz Erklärung</a> für weitere Details."
 
 #: /var/azuracast/www/config/forms/settings.php:131
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Check for Updates und Ankündigungen"
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Senden Sie minimalen Details über Ihre AzuraCast-Installation an den AzuraCast Zentralserver um aktualisierte Softwareversionen und wichtige Ankündigungen zu überprüfen."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/resources/templates/frontend/public/dj.js.phtml:12
@@ -1818,15 +1818,15 @@ msgstr "Senderbeschreibung"
 
 #: /var/azuracast/www/config/forms/station.php:45
 msgid "Station Web Site"
-msgstr ""
+msgstr "Station Webseite"
 
 #: /var/azuracast/www/config/forms/station.php:47
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
-msgstr ""
+msgstr "Hinweis: Dies sollte die öffentlich zugänglichen Homepage des Radiosenders, nicht die AzuraCast URL sein. Sie wird in die Broadcast Details aufgenommen."
 
 #: /var/azuracast/www/config/forms/station.php:54
 msgid "Enable Station Broadcasting"
-msgstr ""
+msgstr "Aktiviere Broadcasting"
 
 #: /var/azuracast/www/config/forms/station.php:55
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."

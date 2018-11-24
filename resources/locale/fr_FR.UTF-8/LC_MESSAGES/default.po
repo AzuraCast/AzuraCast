@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:10\n"
+"PO-Revision-Date: 2018-11-24 19:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -363,35 +363,35 @@ msgstr "Log de l'application PHP"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:121
 msgid "Supervisord Log"
-msgstr ""
+msgstr "Log de Supervisord"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:133
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Log de Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:138
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Configuration de liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:149
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Logs d'acces Icecast"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:154
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Logs d'erreur icecast"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:159
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Configuration de Icecast"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:167
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "Logs de SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Stations/LogsController.php:172
 msgid "SHOUTcast Configuration"
-msgstr ""
+msgstr "Configuration de SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:57
@@ -421,11 +421,11 @@ msgstr "Playlist"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:172
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Cette playlist n’est pas une playlist séquentielle."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:227
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:278
 msgid "Existing playlist imported."
@@ -460,7 +460,7 @@ msgstr "Artiste de la musique"
 #: /var/azuracast/www/resources/templates/stations/remotes/index.phtml:11
 #: /var/azuracast/www/resources/templates/stations/remotes/index.phtml:24
 msgid "Remote Relay"
-msgstr ""
+msgstr "Relay distant"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:173
 msgid "SoundExchange Report"
@@ -479,7 +479,7 @@ msgstr "Vous pouvez maintenant configurer des comptes pour les streamers (DJs)."
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:136
 #: /var/azuracast/www/resources/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr ""
+msgstr "Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:80
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:100
@@ -499,19 +499,19 @@ msgstr ""
 #: /var/azuracast/www/resources/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/resources/templates/stations/webhooks/index.phtml:11
 msgid "Web Hook"
-msgstr ""
+msgstr "Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s enabled."
-msgstr ""
+msgstr "%s est activé."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s disabled."
-msgstr ""
+msgstr "%s est désactivé."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:198
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Tester la Web Hook"
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:85
 #: /var/azuracast/www/src/Http/ErrorHandler.php:94

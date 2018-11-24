@@ -48,16 +48,16 @@ return [
         ],
     ],
 
-    'underscore' => [
+    'lodash' => [
         'order' => 2,
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js',
-                    'integrity' => 'sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=',
-                ],
-            ],
-        ],
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js',
+                    'integrity' => 'sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=',
+                ]
+            ]
+        ]
     ],
 
     /*
@@ -457,7 +457,7 @@ return [
 
     'webcaster' => [
         'order' => 10,
-        'require' => ['vue', 'vue-i18n', 'underscore'],
+        'require' => ['vue', 'vue-i18n', 'lodash'],
         'files' => [
             'js' => [
                 [

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 19:30\n"
+"PO-Revision-Date: 2018-11-24 19:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1689,15 +1689,15 @@ msgstr "Bevorzugen Sie Browser-URL (falls vorhanden)"
 
 #: /var/azuracast/www/config/forms/settings.php:44
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Wenn diese Einstellung auf \"Yes\" gesetzt ist, wird die Browser-URL anstelle der Basis-URL verwendet, wenn sie verfügbar ist. \"Nein\" bedeutet Sie benutzen immer die Base-URL."
 
 #: /var/azuracast/www/config/forms/settings.php:56
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "Verwenden Sie immer HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:57
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs."
-msgstr ""
+msgstr "Setzen Sie auf \"Ja\" um immer \"https://\" sichere URLs zu verwenden."
 
 #: /var/azuracast/www/config/forms/settings.php:69
 msgid "Use Web Proxy for Radio"
@@ -1705,47 +1705,47 @@ msgstr "Nutze Webproxy für das Radio"
 
 #: /var/azuracast/www/config/forms/settings.php:70
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
-msgstr ""
+msgstr "Standardmäßig nutzt die Radio-Station ihren eigenen Port (d.h. 8000). Wenn Sie einen Dienst wie z.b. CloudFlare oder den Zugriff auf Ihren Radiosender per SSL verwenden, sollten Sie diese Funktion aktivieren, die den Stream über Port 80 und 443 Routen."
 
 #: /var/azuracast/www/config/forms/settings.php:82
 msgid "Days of Playback History to Keep"
-msgstr ""
+msgstr "Tage die den Wiedergabe-Verlauf archivieren"
 
 #: /var/azuracast/www/config/forms/settings.php:83
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
-msgstr ""
+msgstr "Setze länger, um mehr Wiedergabe History der Stationen zu erhalten. Setze kürzer, um Speicherplatz zu sparen."
 
 #: /var/azuracast/www/config/forms/settings.php:85
 #: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:59
 #: /var/azuracast/www/resources/templates/stations/reports/timeline.phtml:14
 msgid "Last 14 Days"
-msgstr ""
+msgstr "Letzten 14 Tage"
 
 #: /var/azuracast/www/config/forms/settings.php:86
 #: /var/azuracast/www/resources/templates/stations/reports/listeners.js.phtml:110
 #: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:60
 msgid "Last 30 Days"
-msgstr ""
+msgstr "Letzten 30 Tage"
 
 #: /var/azuracast/www/config/forms/settings.php:87
 msgid "Last 60 Days"
-msgstr ""
+msgstr "Letzten 60 Tage"
 
 #: /var/azuracast/www/config/forms/settings.php:88
 msgid "Last Year"
-msgstr ""
+msgstr "Letztes Jahr"
 
 #: /var/azuracast/www/config/forms/settings.php:89
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Letzten 2 Jahre"
 
 #: /var/azuracast/www/config/forms/settings.php:90
 msgid "Indefinitely"
-msgstr ""
+msgstr "Auf unbestimmte Zeit"
 
 #: /var/azuracast/www/config/forms/settings.php:100
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Privatsphäre-Einstellungen"
 
 #: /var/azuracast/www/config/forms/settings.php:101
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."

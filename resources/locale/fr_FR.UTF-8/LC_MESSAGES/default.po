@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2018-11-24T18:03:41+00:00\n"
-"PO-Revision-Date: 2018-11-24 18:15\n"
+"PO-Revision-Date: 2018-11-24 19:00\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -42,7 +42,7 @@ msgstr "Clé API"
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:167
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:190
 msgid "%s not found."
-msgstr ""
+msgstr "%s est introuvable."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:68
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
@@ -57,7 +57,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:105
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:143
 msgid "%s updated."
-msgstr ""
+msgstr "%s à etait mis à jour."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:76
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
@@ -72,7 +72,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:113
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:151
 msgid "Edit %s"
-msgstr ""
+msgstr "Modifiez le fichier %s"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:92
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:95
@@ -86,7 +86,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:136
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:220
 msgid "%s deleted."
-msgstr ""
+msgstr "%s à etait supprimé."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:102
@@ -98,14 +98,14 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:105
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:100
 msgid "%s added."
-msgstr ""
+msgstr "%s à etait ajouté."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:95
 #: /var/azuracast/www/resources/templates/admin/custom_fields/index.phtml:10
 msgid "Custom Field"
-msgstr ""
+msgstr "Champ personnalisé"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:110
@@ -131,7 +131,7 @@ msgstr ""
 #: /var/azuracast/www/resources/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/resources/templates/stations/webhooks/index.phtml:11
 msgid "Add %s"
-msgstr ""
+msgstr "Ajouter %s"
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:85
 msgid "Sync Task Output"

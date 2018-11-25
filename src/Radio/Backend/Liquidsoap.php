@@ -374,75 +374,21 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        $settings = (array)$station->getBackendConfig();
-        $charset = $settings['charset'] ?? 'UTF-8';
-
         $ls_config = [
             '# Local Broadcasts',
         ];
 
         // Configure the outbound broadcast.
-        $fe_settings = (array)$station->getFrontendConfig();
+        $i = 0;
+        foreach ($station->getMounts() as $mount_row) {
+            $i++;
 
-        // Set up broadcast to local sources.
-        switch ($station->getFrontendType()) {
-            case Adapters::FRONTEND_ICECAST:
-                $i = 0;
-                foreach ($station->getMounts() as $mount_row) {
-                    $i++;
+            /** @var Entity\StationMount $mount_row */
+            if (!$mount_row->getEnableAutodj()) {
+                continue;
+            }
 
-                    /** @var Entity\StationMount $mount_row */
-                    if (!$mount_row->getEnableAutodj()) {
-                        continue;
-                    }
-
-                    $ls_config[] = $this->_getOutputString(
-                        $station,
-                        $this->_getVarName('local_'.$i, $station),
-                        '127.0.0.1',
-                        $fe_settings['port'],
-                        $mount_row->getName(),
-                        '',
-                        $fe_settings['source_pw'],
-                        strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
-                        $mount_row->getAutodjBitrate() ?: 128,
-                        $charset,
-                        $mount_row->getIsPublic(),
-                        false
-                    );
-                }
-                break;
-
-            case Adapters::FRONTEND_SHOUTCAST:
-                $i = 0;
-                foreach ($station->getMounts() as $mount_row) {
-                    $i++;
-
-                    /** @var Entity\StationMount $mount_row */
-                    if (!$mount_row->getEnableAutodj()) {
-                        continue;
-                    }
-
-                    $ls_config[] = $this->_getOutputString(
-                        $station,
-                        $this->_getVarName('local_'.$i, $station),
-                        '127.0.0.1',
-                        $fe_settings['port'],
-                        null,
-                        '',
-                        $fe_settings['source_pw'].':#'.$i,
-                        strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
-                        $mount_row->getAutodjBitrate() ?: 128,
-                        $charset,
-                        $mount_row->getIsPublic(),
-                        true
-                    );
-                }
-                break;
-
-            case Adapters::FRONTEND_REMOTE:
-            default:
-                break;
+            $ls_config[] = $this->_getOutputString($station, $mount_row, 'local_'.$i);
         }
 
         $event->appendLines($ls_config);
@@ -451,8 +397,6 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
     public function writeRemoteBroadcastConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
-        $settings = (array)$station->getBackendConfig();
-        $charset = $settings['charset'] ?? 'UTF-8';
 
         $ls_config = [
             '# Remote Relays',
@@ -468,49 +412,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
                 continue;
             }
 
-            $stream_username = $remote_row->getSourceUsername();
-            $stream_password = $remote_row->getSourcePassword();
-
-            $stream_mount = $remote_row->getSourceMount();
-            if (empty($stream_mount)) {
-                $stream_mount = $remote_row->getMount();
-            }
-
-            switch($remote_row->getType())
-            {
-                case Adapters::REMOTE_SHOUTCAST1:
-                    // SHOUTcast 1 doesn't have multiple streams.
-                    $stream_mount = null;
-                    break;
-
-                case Adapters::REMOTE_SHOUTCAST2:
-                    // Broadcasting to a separate SID is done via a password modifier in SHOUTcast 2.
-                    $stream_password .= ':#'.$stream_mount;
-                    $stream_mount = null;
-                    break;
-
-                case Adapters::REMOTE_ICECAST:
-                    // Normal behavior.
-                    break;
-            }
-
-            $remote_url_parts = parse_url($remote_row->getUrl());
-            $remote_port = $remote_row->getSourcePort() ?? $remote_url_parts['port'];
-
-            $ls_config[] = $this->_getOutputString(
-                $station,
-                $this->_getVarName('relay_'.$i, $station),
-                $remote_url_parts['host'],
-                $remote_port,
-                $stream_mount,
-                $stream_username,
-                $stream_password,
-                strtolower($remote_row->getAutodjFormat() ?: 'mp3'),
-                $remote_row->getAutodjBitrate() ?: 128,
-                $charset,
-                false,
-                $remote_row->getType() !== Adapters::REMOTE_ICECAST
-            );
+            $ls_config[] = $this->_getOutputString($station, $remote_row, 'relay_'.$i);
         }
 
         $event->appendLines($ls_config);
@@ -622,35 +524,32 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
      *
      * @param Entity\Station $station
-     * @param string $stream_id
-     * @param $host
-     * @param $port
-     * @param $mount
-     * @param string $username
-     * @param $password
-     * @param $format
-     * @param $bitrate
-     * @param string $encoding "UTF-8" or "ISO-8859-1"
-     * @param bool $is_public
-     * @param bool $shoutcast_mode
+     * @param Entity\StationMountInterface $mount
+     * @param string $id
      * @return string
      */
-    protected function _getOutputString(Entity\Station $station, $stream_id, $host, $port, $mount, $username = '', $password, $format, $bitrate, $encoding = 'UTF-8', $is_public = false, $shoutcast_mode = false)
+    protected function _getOutputString(Entity\Station $station, Entity\StationMountInterface $mount, $id = '')
     {
-        switch($format) {
-            case 'aac':
+        $settings = (array)$station->getBackendConfig();
+        $charset = $settings['charset'] ?? 'UTF-8';
+
+        $bitrate = (int)($mount->getAutodjBitrate() ?? 128);
+
+        switch(strtolower($mount->getAutodjFormat()))
+        {
+            case $mount::FORMAT_AAC:
                 $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
                 break;
 
-            case 'ogg':
+            case $mount::FORMAT_OGG:
                 $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . (int)$bitrate . ')';
                 break;
 
-            case 'opus':
+            case $mount::FORMAT_OPUS:
                 $output_format = '%opus(bitrate='.(int)$bitrate.', vbr="none", application="audio", channels=2, signal="music")';
                 break;
 
-            case 'mp3':
+            case $mount::FORMAT_MP3:
             default:
                 $output_format = '%mp3(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ', id3v2=true)';
                 break;
@@ -658,16 +557,20 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         $output_params = [];
         $output_params[] = $output_format;
-        $output_params[] = 'id="'.$stream_id.'"';
+        $output_params[] = 'id="'.$this->_getVarName($id, $station).'"';
 
-        $output_params[] = 'host = "'.str_replace('"', '', $host).'"';
-        $output_params[] = 'port = ' . (int)$port;
+        $output_params[] = 'host = "'.$this->_cleanUpString($mount->getAutodjHost()).'"';
+        $output_params[] = 'port = ' . (int)$mount->getAutodjPort();
+
+        $username = $mount->getAutodjUsername();
         if (!empty($username)) {
-            $output_params[] = 'user = "'.str_replace('"', '', $username).'"';
+            $output_params[] = 'user = "'.$this->_cleanUpString($username).'"';
         }
-        $output_params[] = 'password = "'.str_replace('"', '', $password).'"';
-        if (!empty($mount)) {
-            $output_params[] = 'mount = "'.$mount.'"';
+
+        $output_params[] = 'password = "'.$this->_cleanUpString($mount->getAutodjPassword()).'"';
+
+        if (!empty($mount->getAutodjMount())) {
+            $output_params[] = 'mount = "'.$this->_cleanUpString($mount->getAutodjMount()).'"';
         }
 
         $output_params[] = 'name = "' . $this->_cleanUpString($station->getName()) . '"';
@@ -677,10 +580,10 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
             $output_params[] = 'url = "' . $this->_cleanUpString($station->getUrl()) . '"';
         }
 
-        $output_params[] = 'public = '.($is_public ? 'true' : 'false');
-        $output_params[] = 'encoding = "'.$encoding.'"';
+        $output_params[] = 'public = '.($mount->getIsPublic() ? 'true' : 'false');
+        $output_params[] = 'encoding = "'.$charset.'"';
 
-        if ($shoutcast_mode) {
+        if ($mount->getAutodjShoutcastMode()) {
             $output_params[] = 'protocol="icy"';
         }
 

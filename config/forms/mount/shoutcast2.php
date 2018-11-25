@@ -1,4 +1,6 @@
 <?php
+use App\Entity\StationMount;
+
 return [
     'method' => 'post',
     'enctype' => 'multipart/form-data',
@@ -53,10 +55,10 @@ return [
                     [
                         'label' => __('AutoDJ Format'),
                         'choices' => [
-                            'mp3' => 'MP3',
-                            'aac' => 'AAC+ (MPEG4 HE-AAC v2)',
+                            StationMount::FORMAT_MP3 => 'MP3',
+                            StationMount::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
                         ],
-                        'default' => 'mp3',
+                        'default' => StationMount::FORMAT_MP3,
                     ]
                 ],
 

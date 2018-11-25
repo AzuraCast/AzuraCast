@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Radio\Adapters;
 use App\Radio\Remote\RemoteAbstract;
 
 /**
@@ -8,7 +9,7 @@ use App\Radio\Remote\RemoteAbstract;
  * @Entity()
  * @HasLifecycleCallbacks
  */
-class StationRemote
+class StationRemote implements StationMountInterface
 {
     use Traits\TruncateStrings;
 
@@ -306,6 +307,78 @@ class StationRemote
     public function setCustomListenUrl(string $custom_listen_url = null): void
     {
         $this->custom_listen_url = $this->_truncateString($custom_listen_url, 255);
+    }
+
+    /*
+     * StationMountInterface compliance methods
+     */
+
+    /** @inheritdoc */
+    public function getAutodjUsername(): ?string
+    {
+        return $this->getSourceUsername();
+    }
+
+    /** @inheritdoc */
+    public function getAutodjPassword(): ?string
+    {
+        $password = $this->getSourcePassword();
+
+        if (Adapters::REMOTE_SHOUTCAST2 === $this->getType()) {
+            $mount = $this->getSourceMount();
+            if (empty($mount)) {
+                $mount = $this->getMount();
+            }
+
+            if (!empty($mount)) {
+                $password .= ':#'.$mount;
+            }
+        }
+
+        return $password;
+    }
+
+    /** @inheritdoc */
+    public function getAutodjMount(): ?string
+    {
+        if (Adapters::REMOTE_ICECAST !== $this->getType()) {
+            return null;
+        }
+
+        $mount = $this->getSourceMount();
+        if (!empty($mount)) {
+            return $mount;
+        }
+
+        return $this->getMount();
+    }
+
+    /** @inheritdoc */
+    public function getAutodjHost(): ?string
+    {
+        return parse_url($this->getUrl(), \PHP_URL_HOST);
+    }
+
+    /** @inheritdoc */
+    public function getAutodjPort(): ?int
+    {
+        if (!empty($this->getSourcePort())) {
+            return $this->getSourcePort();
+        }
+
+        return parse_url($this->getUrl(), \PHP_URL_PORT);
+    }
+
+    /** @inheritdoc */
+    public function getAutodjShoutcastMode(): bool
+    {
+        return (Adapters::REMOTE_ICECAST !== $this->getType());
+    }
+
+    /** @inheritdoc */
+    public function getIsPublic(): bool
+    {
+        return false;
     }
 
     /**

@@ -1,4 +1,6 @@
 <?php
+use App\Entity\StationRemote;
+
 return [
     'method' => 'post',
     'enctype' => 'multipart/form-data',
@@ -60,11 +62,11 @@ return [
                     [
                         'label' => __('AutoDJ Format'),
                         'choices' => [
-                            'mp3' => 'MP3',
-                            'ogg' => 'OGG Vorbis',
-                            'aac' => 'AAC+ (MPEG4 HE-AAC v2)',
+                            StationRemote::FORMAT_MP3 => 'MP3',
+                            StationRemote::FORMAT_OGG => 'OGG Vorbis',
+                            StationRemote::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
                         ],
-                        'default' => 'mp3',
+                        'default' => StationRemote::FORMAT_MP3,
                     ]
                 ],
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Radio\Adapters;
 use App\Radio\Frontend\FrontendAbstract;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
@@ -10,7 +11,7 @@ use Psr\Http\Message\UriInterface;
  * @Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
  * @HasLifecycleCallbacks
  */
-class StationMount
+class StationMount implements StationMountInterface
 {
     use Traits\TruncateStrings;
 
@@ -309,6 +310,48 @@ class StationMount
     public function setFrontendConfig(string $frontend_config = null)
     {
         $this->frontend_config = $frontend_config;
+    }
+
+    /*
+     * StationMountInterface compliance methods
+     */
+
+    /** @inheritdoc */
+    public function getAutodjHost(): ?string
+    {
+        return '127.0.0.1';
+    }
+
+    /** @inheritdoc */
+    public function getAutodjPort(): ?int
+    {
+        $fe_settings = (array)$this->getStation()->getFrontendConfig();
+        return $fe_settings['port'];
+    }
+
+    /** @inheritdoc */
+    public function getAutodjUsername(): ?string
+    {
+        return '';
+    }
+
+    /** @inheritdoc */
+    public function getAutodjPassword(): ?string
+    {
+        $fe_settings = (array)$this->getStation()->getFrontendConfig();
+        return $fe_settings['source_pw'];
+    }
+
+    /** @inheritdoc */
+    public function getAutodjMount(): ?string
+    {
+        return $this->getName();
+    }
+
+    /** @inheritdoc */
+    public function getAutodjShoutcastMode(): bool
+    {
+        return (Adapters::FRONTEND_SHOUTCAST === $this->getStation()->getFrontendType());
     }
 
     /**

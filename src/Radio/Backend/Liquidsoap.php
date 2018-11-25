@@ -550,12 +550,12 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
                 break;
 
             case $mount::FORMAT_OPUS:
-                $output_format = '%opus(bitrate='.(int)$bitrate.', vbr="none", application="audio", channels=2, signal="music")';
+                $output_format = '%opus(samplerate=48000, bitrate='.(int)$bitrate.', vbr="none", application="audio", channels=2, signal="music" complexity=10, max_bandwidth="full_band", frame_size=20)';
                 break;
 
             case $mount::FORMAT_MP3:
             default:
-                $output_format = '%mp3(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ', id3v2=true)';
+                $output_format = '%mp3(samplerate=44100, stereo=true, bitrate=' . (int)$bitrate . ', id3v2=true)';
                 break;
         }
 

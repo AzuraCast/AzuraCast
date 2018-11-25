@@ -330,6 +330,10 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
         ];
 
         $event->appendLines([
+            '# A Pre-DJ source of radio that can be broadcasted if needed',
+            'radio_without_live = radio',
+            'ignore(radio_without_live)',
+            '',
             '# Live Broadcasting',
             'live = audio_to_stereo(input.harbor('.implode(', ', $harbor_params).'))',
             'ignore(output.dummy(live, fallible=true))',

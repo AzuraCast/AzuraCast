@@ -25,8 +25,7 @@ return [
                 'name' => [
                     'text',
                     [
-                        'label' => __('Station Name'),
-                        'class' => 'half-width fg-line',
+                        'label' => __('Name'),
                         'required' => true,
                     ]
                 ],
@@ -34,16 +33,21 @@ return [
                 'description' => [
                     'textarea',
                     [
-                        'label' => __('Station Description'),
-                        'class' => 'full-width full-height',
+                        'label' => __('Description'),
+                    ]
+                ],
+
+                'genre' => [
+                    'text',
+                    [
+                        'label' => __('Genre'),
                     ]
                 ],
 
                 'url' => [
                     'text',
                     [
-                        'label' => __('Station Web Site'),
-                        'class' => 'full-width full-height',
+                        'label' => __('Web Site URL'),
                         'description' => __('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.'),
                     ]
                 ],
@@ -51,7 +55,7 @@ return [
                 'is_enabled' => [
                     'radio',
                     [
-                        'label' => __('Enable Station Broadcasting'),
+                        'label' => __('Enable Broadcasting'),
                         'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
                         'choices' => [
                             0 => __('Disabled'),
@@ -77,7 +81,7 @@ return [
                 'short_name' => [
                     'text',
                     [
-                        'label' => __('Station URL Stub'),
+                        'label' => __('URL Stub'),
                         'label_class' => 'advanced',
                         'description' => __('Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'),
                     ]

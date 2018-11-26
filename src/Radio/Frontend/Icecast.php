@@ -267,6 +267,11 @@ class Icecast extends FrontendAbstract
                 '@type' => 'normal',
                 'mount-name' => $mount_row->getName(),
                 'charset' => 'UTF8',
+
+                'stream-name' => $station->getName(),
+                'stream-description' => $station->getDescription(),
+                'stream-url' => $station->getUrl(),
+                'genre' => $station->getGenre(),
             ];
 
             if (!empty($mount_row->getFallbackMount())) {

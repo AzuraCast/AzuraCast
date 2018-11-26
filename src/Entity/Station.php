@@ -94,6 +94,12 @@ class Station
     protected $url;
 
     /**
+     * @Column(name="genre", type="string", length=150, nullable=true)
+     * @var string|null
+     */
+    protected $genre;
+
+    /**
      * @Column(name="radio_base_dir", type="string", length=255, nullable=true)
      * @var string|null
      */
@@ -500,6 +506,22 @@ class Station
     public function setUrl(string $url = null)
     {
         $this->url = $this->_truncateString($url);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    /**
+     * @param string|null $genre
+     */
+    public function setGenre(?string $genre): void
+    {
+        $this->genre = $this->_truncateString($genre, 150);
     }
 
     /**

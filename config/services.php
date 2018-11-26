@@ -131,6 +131,9 @@ return function (\Azura\Container $di)
         $view->registerFunction('truncate', function ($text, $length = 80) {
             return \App\Utilities::truncate_text($text, $length);
         });
+        $view->registerFunction('truncateUrl', function($url) {
+            return \App\Utilities::truncate_url($url);
+        });
 
         $view->addData([
             'assets' => $di[\Azura\Assets::class],

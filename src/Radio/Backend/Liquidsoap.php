@@ -579,6 +579,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         $output_params[] = 'name = "' . $this->_cleanUpString($station->getName()) . '"';
         $output_params[] = 'description = "' . $this->_cleanUpString($station->getDescription()) . '"';
+        $output_params[] = 'genre = "'.$this->_cleanUpString($station->getGenre()).'"';
 
         if (!empty($station->getUrl())) {
             $output_params[] = 'url = "' . $this->_cleanUpString($station->getUrl()) . '"';

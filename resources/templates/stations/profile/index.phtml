@@ -126,40 +126,54 @@ $user = $request->getUser();
                     <td><?=__('Name') ?></td>
                     <td><?=$this->e($station->getName()) ?></td>
                 </tr>
+            <?php if (!empty($station->getDescription())): ?>
                 <tr>
                     <td><?=__('Description') ?></td>
                     <td><?=$this->e($station->getDescription()) ?></td>
                 </tr>
-                <?php if ($backend::supportsRequests()): ?>
-                    <tr>
-                        <td><?=__('Song Requests') ?></td>
-                        <td>
-                            <?php if ($station->getEnableRequests()): ?>
-                                <span class="text-success"><?=__('Enabled') ?></span>
+            <?php endif; ?>
+            <?php if (!empty($station->getGenre())): ?>
+                <tr>
+                    <td><?=__('Genre') ?></td>
+                    <td><?=$this->e($station->getGenre()) ?></td>
+                </tr>
+            <?php endif; ?>
+            <?php if (!empty($station->getUrl())): ?>
+                <tr>
+                    <td><?=__('Web Site URL') ?></td>
+                    <td><a href="<?=$this->e($station->getUrl()) ?>" target="_blank"><?=$this->e($this->truncateUrl($station->getUrl())) ?></a></td>
+                </tr>
+            <?php endif; ?>
+            <?php if ($backend::supportsRequests()): ?>
+                <tr>
+                    <td><?=__('Song Requests') ?></td>
+                    <td>
+                        <?php if ($station->getEnableRequests()): ?>
+                            <span class="text-success"><?=__('Enabled') ?></span>
 
-                                <div class="form-field">
-                                    <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
-                                </div>
-                                <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
-                            <?php else: ?>
-                                <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <? endif; ?>
-                <?php if ($backend::supportsStreamers()): ?>
-                    <tr>
-                        <td><?=__('Streamers/DJs') ?></td>
-                        <td>
-                            <?php if ($station->getEnableStreamers()): ?>
-                                <span class="text-success"><?=__('Enabled') ?></span><br>
-                                <a href="<?=$router->fromHere('stations:streamers:index') ?>"><?=__('Manage streamer accounts') ?></a>
-                            <?php else: ?>
-                                <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endif; ?>
+                            <div class="form-field">
+                                <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
+                            </div>
+                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
+                        <?php else: ?>
+                            <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <? endif; ?>
+            <?php if ($backend::supportsStreamers()): ?>
+                <tr>
+                    <td><?=__('Streamers/DJs') ?></td>
+                    <td>
+                        <?php if ($station->getEnableStreamers()): ?>
+                            <span class="text-success"><?=__('Enabled') ?></span><br>
+                            <a href="<?=$router->fromHere('stations:streamers:index') ?>"><?=__('Manage streamer accounts') ?></a>
+                        <?php else: ?>
+                            <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
                 <tr>
                     <td><?=__('Base Directory') ?></td>
                     <td class="text-preformatted"><?=$this->e($station->getRadioBaseDir()) ?></td>

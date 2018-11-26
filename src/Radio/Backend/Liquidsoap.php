@@ -360,6 +360,11 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
         }
 
         $event->appendLines([
+            '# Allow for Telnet-driven insertion of custom metadata.',
+            'radio = server.insert_metadata(id="custom_metadata", radio)',
+        ]);
+
+        $event->appendLines([
             '# Apply amplification metadata (if supplied)',
             'radio = amplify(1., radio)',
         ]);
@@ -758,10 +763,27 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
         $streamer = $streamer_repo->authenticate($station, $user, $pass);
 
         if ($streamer instanceof Entity\StationStreamer) {
-            // Successful authentication: update current streamer on station.
-            $station->setCurrentStreamer($streamer);
-            $this->em->persist($station);
-            $this->em->flush();
+            $this->logger->debug('DJ successfully authenticated.', ['username' => $user]);
+
+            try {
+                // Successful authentication: update current streamer on station.
+                $station->setCurrentStreamer($streamer);
+                $this->em->persist($station);
+                $this->em->flush();
+
+                // Send custom metadata immediately to the station to fill the gap before the DJ sends their first metadata update.
+                $custom_metadata = [
+                    'title="'.$this->_cleanUpString($streamer->getDisplayName()).'"',
+                    'artist="'.$this->_cleanUpString($station->getName()).'"',
+                ];
+                $this->command($station, 'custom_metadata.insert '.implode(',', $custom_metadata));
+            } catch(\Exception $e) {
+                $this->logger->error('Error when calling post-DJ-authentication functions.', [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'code' => $e->getCode(),
+                ]);
+            }
 
             return 'true';
         }

@@ -3,6 +3,7 @@ namespace App\Controller\Api\Stations;
 
 use App;
 use Azura\Doctrine\Paginator;
+use Azura\Utilities\Csv;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -88,7 +89,7 @@ class HistoryController
                 $export_all[] = $export_row;
             }
 
-            $csv_file = App\Export::csv($export_all);
+            $csv_file = Csv::arrayToCsv($export_all);
             $csv_filename = $station->getShortName() . '_timeline_' . date('Ymd', $start) . '_to_'. date('Ymd', $end).'.csv';
 
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);

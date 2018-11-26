@@ -558,7 +558,7 @@ class FilesController extends FilesControllerAbstract
 
                 $file_path = $request->getAttribute('file_path');
 
-                $file = new \App\File(basename($flow_response['filename']), $file_path);
+                $file = new \Azura\File(basename($flow_response['filename']), $file_path);
                 $file->sanitizeName();
 
                 $final_path = $file->getPath();

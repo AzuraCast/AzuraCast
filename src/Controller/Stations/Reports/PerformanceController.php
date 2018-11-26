@@ -84,7 +84,7 @@ class PerformanceController
                 ];
             }
 
-            $csv_file = \App\Export::csv($export_csv);
+            $csv_file = \Azura\Utilities\Csv::arrayToCsv($export_csv);
             $csv_filename = $station->getShortName() . '_media_' . date('Ymd') . '.csv';
 
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);

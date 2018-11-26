@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.9.0-2018.10
+  version: 0.9.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -286,7 +286,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1539107993
+          example: 1543331020
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -405,7 +405,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1539107993
+          example: 1543331020
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -505,11 +505,11 @@ components:
       properties:
         request_id:
           description: 'Requestable ID unique identifier'
-          type: integer
+          type: string
           example: 1
         request_url:
           description: 'URL to directly submit request'
-          type: integer
+          type: string
           example: /api/station/1/request/1
         song:
           $ref: '#/components/schemas/Song'
@@ -532,7 +532,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1539107993
+          example: 1543331020
       type: object
     Time:
       properties:

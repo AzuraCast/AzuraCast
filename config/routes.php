@@ -252,11 +252,13 @@ return function(\Slim\App $app)
             ->setName('api_keys:delete');
 
         // Used for internal development
-        if (!APP_IN_PRODUCTION) {
+        /** @var \Azura\Settings $app_settings */
+        $app_settings = $this->getContainer()->get('settings');
+
+        if (!$app_settings->isProduction()) {
             $this->any('/test', Controller\Frontend\UtilController::class.':testAction')
                 ->setName('util:test');
         }
-
     })
         ->add(AzuraMiddleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);

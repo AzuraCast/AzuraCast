@@ -103,7 +103,7 @@ class RequestsController
             /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest;
             $row->song = $media_row->api($this->api_utils);
-            $row->request_id = (int)$media_row->getId();
+            $row->request_id = (int)$media_row->getUniqueId();
             $row->request_url = (string)$router->named('api:requests:submit', [
                 'station' => $station_id,
                 'media_id' => $media_row->getUniqueId(),

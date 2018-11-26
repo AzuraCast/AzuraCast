@@ -11,6 +11,7 @@ tmp/cache/*---*
 /ubuntu-*-console.log
 
 # Local development files.
+/src/Controller/Frontend/UtilController.php
 /env.ini
 /app/env.ini
 /app/.env

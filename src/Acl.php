@@ -3,7 +3,28 @@ namespace App;
 
 class Acl
 {
+    const GLOBAL_ALL            = 'administer all';
+    const GLOBAL_VIEW           = 'view administration';
+    const GLOBAL_LOGS           = 'view system logs';
+    const GLOBAL_SETTINGS       = 'administer settings';
+    const GLOBAL_API_KEYS       = 'administer api keys';
+    const GLOBAL_USERS          = 'administer user accounts';
+    const GLOBAL_PERMISSIONS    = 'administer permissions';
+    const GLOBAL_STATIONS       = 'administer stations';
+    const GLOBAL_CUSTOM_FIELDS  = 'administer custom fields';
 
+    const STATION_ALL           = 'administer all';
+    const STATION_VIEW          = 'view station management';
+    const STATION_REPORTS       = 'view station reports';
+    const STATION_LOGS          = 'view station logs';
+    const STATION_PROFILE       = 'manage station profile';
+    const STATION_BROADCASTING  = 'manage station broadcasting';
+    const STATION_STREAMERS     = 'manage station streamers';
+    const STATION_MOUNTS        = 'manage station mounts';
+    const STATION_REMOTES       = 'manage station remotes';
+    const STATION_MEDIA         = 'manage station media';
+    const STATION_AUTOMATION    = 'manage station automation';
+    const STATION_WEB_HOOKS     = 'manage station web hooks';
 
     /** @var Entity\Repository\RolePermissionRepository */
     protected $permission_repo;

@@ -1,6 +1,7 @@
 <?php
 use App\Controller;
 use App\Middleware;
+use App\Acl;
 use Azura\Middleware as AzuraMiddleware;
 
 return function(\Slim\App $app)
@@ -12,14 +13,14 @@ return function(\Slim\App $app)
 
         $this->get('/sync/{type}', Controller\Admin\IndexController::class.':syncAction')
             ->setName('admin:index:sync')
-            ->add([Middleware\Permissions::class, 'administer all']);
+            ->add([Middleware\Permissions::class, Acl::GLOBAL_ALL]);
 
         $this->group('/install', function () {
 
             $this->map(['GET', 'POST'], '/shoutcast', Controller\Admin\Install\ShoutcastController::class)
                 ->setName('admin:install:shoutcast');
 
-        })->add([Middleware\Permissions::class, 'administer all']);
+        })->add([Middleware\Permissions::class, Acl::GLOBAL_ALL]);
 
         $this->group('/api', function () {
 
@@ -32,11 +33,11 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Admin\ApiController::class.':deleteAction')
                 ->setName('admin:api:delete');
 
-        })->add([Middleware\Permissions::class, 'administer api keys']);
+        })->add([Middleware\Permissions::class, Acl::GLOBAL_API_KEYS]);
 
         $this->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class.':indexAction')
             ->setName('admin:branding:index')
-            ->add([Middleware\Permissions::class, 'administer settings']);
+            ->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
 
         $this->group('/custom_fields', function() {
 
@@ -52,7 +53,7 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Admin\CustomFieldsController::class.':deleteAction')
                 ->setName('admin:custom_fields:delete');
 
-        })->add([Middleware\Permissions::class, 'administer custom fields']);
+        })->add([Middleware\Permissions::class, Acl::GLOBAL_CUSTOM_FIELDS]);
 
         $this->group('/permissions', function () {
 
@@ -68,11 +69,11 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Admin\PermissionsController::class.':deleteAction')
                 ->setName('admin:permissions:delete');
 
-        })->add([Middleware\Permissions::class, 'administer permissions']);
+        })->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
 
         $this->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class.':indexAction')
             ->setName('admin:settings:index')
-            ->add([Middleware\Permissions::class, 'administer settings']);
+            ->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
 
         $this->group('/stations', function () {
 
@@ -91,7 +92,7 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Admin\StationsController::class.':deleteAction')
                 ->setName('admin:stations:delete');
 
-        })->add([Middleware\Permissions::class, 'administer stations']);
+        })->add([Middleware\Permissions::class, Acl::GLOBAL_STATIONS]);
 
         $this->group('/users', function () {
 
@@ -110,14 +111,14 @@ return function(\Slim\App $app)
             $this->get('/login-as/{id}/{csrf}', Controller\Admin\UsersController::class.':impersonateAction')
                 ->setName('admin:users:impersonate');
 
-        })->add([Middleware\Permissions::class, 'administer users']);
+        })->add([Middleware\Permissions::class, Acl::GLOBAL_USERS]);
 
         // END /admin GROUP
 
     })
         ->add(Middleware\Module\Admin::class)
         ->add(AzuraMiddleware\EnableView::class)
-        ->add([Middleware\Permissions::class, 'view administration'])
+        ->add([Middleware\Permissions::class, Acl::GLOBAL_VIEW])
         ->add(Middleware\RequireLogin::class);
 
     $app->group('/api', function () {
@@ -181,7 +182,7 @@ return function(\Slim\App $app)
             // This would not normally be POST-able, but Bootgrid requires it
             $this->map(['GET', 'POST'], '/history', Controller\Api\Stations\HistoryController::class)
                 ->setName('api:stations:history')
-                ->add([Middleware\Permissions::class, 'view station reports', true]);
+                ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
             // This would not normally be POST-able, but Bootgrid requires it
             $this->map(['GET', 'POST'], '/requests', Controller\Api\RequestsController::class.':listAction')
@@ -193,7 +194,7 @@ return function(\Slim\App $app)
 
             $this->get('/listeners', Controller\Api\ListenersController::class.':indexAction')
                 ->setName('api:listeners:index')
-                ->add([Middleware\Permissions::class, 'view station reports', true]);
+                ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
             $this->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\MediaController::class.':artAction')
                 ->setName('api:stations:media:art');
@@ -202,15 +203,15 @@ return function(\Slim\App $app)
 
             $this->post('/backend/{do}', Controller\Api\Stations\ServicesController::class.':backendAction')
                 ->setName('api:stations:backend')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
 
             $this->post('/frontend/{do}', Controller\Api\Stations\ServicesController::class.':frontendAction')
                 ->setName('api:stations:frontend')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
 
             $this->post('/restart', Controller\Api\Stations\ServicesController::class.':restartAction')
                 ->setName('api:stations:restart')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
 
         })->add(Middleware\GetStation::class);
 
@@ -322,7 +323,7 @@ return function(\Slim\App $app)
             $this->get('/run', Controller\Stations\AutomationController::class.':runAction')
                 ->setName('stations:automation:run');
 
-        })->add([Middleware\Permissions::class, 'manage station automation', true]);
+        })->add([Middleware\Permissions::class, Acl::STATION_AUTOMATION, true]);
 
         $this->group('/files', function () {
 
@@ -355,7 +356,7 @@ return function(\Slim\App $app)
 
         })
             ->add(Middleware\Module\StationFiles::class)
-            ->add([Middleware\Permissions::class, 'manage station media', true]);
+            ->add([Middleware\Permissions::class, Acl::STATION_MEDIA, true]);
 
         $this->group('/logs', function () {
 
@@ -366,7 +367,7 @@ return function(\Slim\App $app)
                 ->setName('stations:logs:view');
 
         })
-            ->add([Middleware\Permissions::class, 'view station logs', true]);
+            ->add([Middleware\Permissions::class, Acl::STATION_LOGS, true]);
 
         $this->group('/playlists', function () {
 
@@ -391,7 +392,7 @@ return function(\Slim\App $app)
             $this->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
                 ->setName('stations:playlists:export');
 
-        })->add([Middleware\Permissions::class, 'manage station media', true]);
+        })->add([Middleware\Permissions::class, Acl::STATION_MEDIA, true]);
 
         $this->group('/mounts', function () {
 
@@ -407,14 +408,14 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Stations\MountsController::class.':deleteAction')
                 ->setName('stations:mounts:delete');
 
-        })->add([Middleware\Permissions::class, 'manage station mounts', true]);
+        })->add([Middleware\Permissions::class, Acl::STATION_MOUNTS, true]);
 
         $this->get('/profile', Controller\Stations\Profile\IndexController::class)
             ->setName('stations:profile:index');
 
         $this->map(['GET', 'POST'], '/profile/edit', Controller\Stations\Profile\EditController::class)
             ->setName('stations:profile:edit')
-            ->add([Middleware\Permissions::class, 'manage station profile', true]);
+            ->add([Middleware\Permissions::class, Acl::STATION_PROFILE, true]);
 
         $this->group('/remotes', function () {
 
@@ -430,7 +431,7 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Stations\RemotesController::class.':deleteAction')
                 ->setName('stations:remotes:delete');
 
-        })->add([Middleware\Permissions::class, 'manage station remotes', true]);
+        })->add([Middleware\Permissions::class, Acl::STATION_REMOTES, true]);
 
         $this->group('/reports', function () {
 
@@ -461,7 +462,7 @@ return function(\Slim\App $app)
             $this->get('/requests/delete/{request_id}/{csrf}', Controller\Stations\Reports\RequestsController::class.':deleteAction')
                 ->setName('stations:reports:requests:delete');
 
-        })->add([Middleware\Permissions::class, 'view station reports', true]);
+        })->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
         $this->group('/streamers', function () {
 
@@ -477,7 +478,7 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Stations\StreamersController::class.':deleteAction')
                 ->setName('stations:streamers:delete');
 
-        })->add([Middleware\Permissions::class, 'manage station streamers', true]);
+        })->add([Middleware\Permissions::class, Acl::STATION_STREAMERS, true]);
 
         $this->group('/webhooks', function () {
 
@@ -499,13 +500,13 @@ return function(\Slim\App $app)
             $this->get('/delete/{id}/{csrf}', Controller\Stations\WebhooksController::class.':deleteAction')
                 ->setName('stations:webhooks:delete');
 
-        })->add([Middleware\Permissions::class, 'manage station web hooks', true]);
+        })->add([Middleware\Permissions::class, Acl::STATION_WEB_HOOKS, true]);
 
         // END /stations GROUP
 
     })
         ->add(Middleware\Module\Stations::class)
-        ->add([Middleware\Permissions::class, 'view station management', true])
+        ->add([Middleware\Permissions::class, Acl::STATION_VIEW, true])
         ->add(Middleware\GetStation::class)
         ->add(AzuraMiddleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);

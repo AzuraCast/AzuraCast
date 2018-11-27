@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Need Help?') ?></h2>
+
+        <p><?=__('You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.', 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md') ?></p>
+
+        <p><?=__('If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.') ?></p>
+
+        <p><?=__('Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.', (APP_INSIDE_DOCKER ? 'Docker' : 'Traditional')) ?></p>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="https://github.com/AzuraCast/AzuraCast/issues/new/choose" target="_blank">
+            <i class="material-icons">contact_support</i>
+            <?=__('Add %s', __('New GitHub Issue')) ?>
+        </a>
+    </div>
+</div>

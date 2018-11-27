@@ -48,6 +48,12 @@ class AdminProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Admin\LogsController::class] = function($di) {
+            return new Admin\LogsController(
+                $di[\Doctrine\ORM\EntityManager::class]
+            );
+        };
+
         $di[Admin\PermissionsController::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];

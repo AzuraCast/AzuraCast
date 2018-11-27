@@ -1,0 +1,58 @@
+<?php
+$this->layout('main', [
+    'title' => __('Log Viewer'),
+    'manual' => true
+]);
+?>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2 class="card-title"><?=__('System Logs') ?></h2>
+
+                <?php if (APP_INSIDE_DOCKER): ?>
+                    <p><?=__('Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.', 'docker-compose logs -f (nginx|web|stations|...)') ?></p>
+                <?php endif; ?>
+            </div>
+            <div class="list-group list-group-flush">
+                <?php foreach($global_logs as $log_key => $log_info): ?>
+                    <a class="list-group-item list-group-item-action log-item" href="<?=$router->fromHere('admin:logs:view', ['station' => 'global', 'log' => $log_key]) ?>">
+                        <span class="log-name"><?=$log_info['name'] ?></span><br>
+                        <small class="text-secondary"><?=$log_info['path'] ?></small>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><?=__('Logs by Station') ?></h2>
+                <ul class="nav nav-pills nav-pills-scrollable card-header-pills">
+                <?php foreach($station_logs as $station_id => $station_row): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="logs_station_<?=$station_id ?>" href="#logs_station_<?=$station_id ?>"><?=$this->e($station_row['name']) ?></a>
+                    </li>
+                <?php endforeach; ?>
+                </ul>
+            </div>
+            <div class="tab-content">
+            <?php foreach($station_logs as $station_id => $station_row): ?>
+                <div class="list-group list-group-flush tab-pane" id="logs_station_<?=$station_id ?>">
+                <?php foreach($station_row['logs'] as $log_key => $log_info): ?>
+                    <a class="list-group-item list-group-item-action log-item" href="<?=$router->fromHere('admin:logs:view', ['station' => $station_id, 'log' => $log_key]) ?>">
+                        <span class="log-name"><?=$log_info['name'] ?></span><br>
+                        <small class="text-secondary"><?=$log_info['path'] ?></small>
+                    </a>
+                <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <?=$this->fetch('partials/log_help_card') ?>
+    </div>
+</div>
+
+<?=$this->fetch('partials/log_viewer') ?>

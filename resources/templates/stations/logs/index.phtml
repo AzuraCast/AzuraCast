@@ -3,10 +3,6 @@ $this->layout('main', [
     'title' => __('Log Viewer'),
     'manual' => true
 ]);
-
-/** @var \Azura\Assets $assets */
-$assets
-    ->addInlineJs($this->fetch('stations/logs/index.js'), 99);
 ?>
 
 <div class="row">
@@ -14,10 +10,6 @@ $assets
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title"><?=__('Available Logs') ?></h2>
-
-            <?php if (APP_INSIDE_DOCKER): ?>
-                <p><?=__('Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.', 'docker-compose logs -f (nginx|web|stations|...)') ?></p>
-            <?php endif; ?>
             </div>
             <div class="list-group list-group-flush">
             <?php foreach($logs as $log_key => $log_info): ?>
@@ -30,44 +22,8 @@ $assets
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="card-title"><?=__('Need Help?') ?></h2>
-
-                <p><?=__('You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.', 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md') ?></p>
-
-                <p><?=__('If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.') ?></p>
-
-                <p><?=__('Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.', (APP_INSIDE_DOCKER ? 'Docker' : 'Traditional')) ?></p>
-            </div>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" role="button" href="https://github.com/AzuraCast/AzuraCast/issues/new/choose" target="_blank">
-                    <i class="material-icons">contact_support</i>
-                    <?=__('Add %s', __('New GitHub Issue')) ?>
-                </a>
-            </div>
-        </div>
+        <?=$this->fetch('partials/log_help_card') ?>
     </div>
 </div>
 
-<div class="modal fade" id="modal-log-view" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="modal-log-view-label">Log View</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="custom-control custom-switch pb-3">
-                    <input class="custom-control-input" id="modal-log-autoscroll" type="checkbox" checked>
-                    <span class="custom-control-track"></span>
-                    <label class="custom-control-label" for="modal-log-autoscroll"><?=__('Automatically scroll to the bottom of the log') ?></label>
-                </div>
-
-                <pre id="modal-log-view-contents">
-                    Loading...
-                </pre>
-            </div>
-        </div>
-    </div>
-</div>
+<?=$this->fetch('partials/log_viewer') ?>

@@ -55,6 +55,18 @@ return function(\Slim\App $app)
 
         })->add([Middleware\Permissions::class, Acl::GLOBAL_CUSTOM_FIELDS]);
 
+        $this->group('/logs', function () {
+
+            $this->get('', Controller\Admin\LogsController::class)
+                ->setName('admin:logs:index');
+
+            $this->get('/view/{station}/{log}', Controller\Admin\LogsController::class.':viewAction')
+                ->setName('admin:logs:view')
+                ->add([Middleware\GetStation::class, false]);
+
+        })
+            ->add([Middleware\Permissions::class, Acl::GLOBAL_LOGS]);
+
         $this->group('/permissions', function () {
 
             $this->get('', Controller\Admin\PermissionsController::class.':indexAction')

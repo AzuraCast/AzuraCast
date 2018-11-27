@@ -3,6 +3,8 @@
  * Administrative dashboard configuration.
  */
 
+use App\Acl;
+
 return [
     __('System Maintenance') => [
         'id' => 'maintenance',
@@ -10,18 +12,19 @@ return [
         'items' => [
             __('System Settings') => [
                 'url' => 'admin:settings:index',
-                'icon' => 'settings',
-                'permission' => 'administer settings',
+                'permission' => Acl::GLOBAL_SETTINGS,
             ],
             __('Custom Branding') => [
                 'url' => 'admin:branding:index',
-                'icon' => 'brush',
-                'permission' => 'administer settings',
+                'permission' => Acl::GLOBAL_SETTINGS,
             ],
             __('API Keys') => [
                 'url' => 'admin:api:index',
-                'icon' => 'vpn_key',
-                'permission' => 'administer api keys',
+                'permission' => Acl::GLOBAL_API_KEYS,
+            ],
+            __('System Logs') => [
+                'url' => 'admin:logs:index',
+                'permission' => Acl::GLOBAL_LOGS,
             ],
         ],
     ],
@@ -31,13 +34,11 @@ return [
         'items' => [
             __('User Accounts') => [
                 'url' => 'admin:users:index',
-                'icon' => 'account_circle',
-                'permission' => 'administer user accounts',
+                'permission' => Acl::GLOBAL_USERS,
             ],
             __('Permissions') => [
                 'url' => 'admin:permissions:index',
-                'icon' => 'lock',
-                'permission' => 'administer permissions',
+                'permission' => Acl::GLOBAL_PERMISSIONS,
             ],
         ],
     ],
@@ -47,18 +48,17 @@ return [
         'items' => [
             __('Manage %s', __('Stations')) => [
                 'url' => 'admin:stations:index',
-                'icon' => 'speaker_group',
-                'permission' => 'administer stations',
+                'permission' => Acl::GLOBAL_STATIONS,
             ],
             __('Manage %s', __('Custom Fields')) => [
                 'url' => 'admin:custom_fields:index',
                 'icon' => 'list',
-                'permission' => 'administer custom fields',
+                'permission' => Acl::GLOBAL_CUSTOM_FIELDS,
             ],
             __('Install SHOUTcast') => [
                 'url' => 'admin:install:shoutcast',
                 'icon' => 'file_download',
-                'permission' => 'administer all',
+                'permission' => Acl::GLOBAL_ALL,
             ],
         ],
     ],

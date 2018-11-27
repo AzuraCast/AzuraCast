@@ -97,7 +97,7 @@ class LogsController
 
         $log_paths['azuracast_log'] = [
             'name' => __('AzuraCast Application Log'),
-            'path' => APP_INCLUDE_TEMP.'/azuracast.log',
+            'path' => APP_INCLUDE_TEMP.'/app.log',
             'tail' => true,
         ];
 
@@ -114,7 +114,7 @@ class LogsController
             ];
             $log_paths['php'] = [
                 'name' => __('PHP Application Log'),
-                'path' => APP_INCLUDE_TEMP.'/azuracast.log',
+                'path' => APP_INCLUDE_TEMP.'/php_errors.log',
                 'tail' => true,
             ];
             $log_paths['supervisord'] = [

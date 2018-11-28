@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-11-26T08:04:52+00:00\n"
-"PO-Revision-Date: 2018-11-26T08:04:52+00:00\n"
+"POT-Creation-Date: 2018-11-27T17:03:29+00:00\n"
+"PO-Revision-Date: 2018-11-27T17:03:29+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:55
@@ -118,7 +118,7 @@ msgstr ""
 #: /var/azuracast/www/resources/templates/admin/users/index.phtml:10
 #: /var/azuracast/www/resources/templates/frontend/api_keys/index.phtml:18
 #: /var/azuracast/www/resources/templates/frontend/index/index.phtml:106
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:46
+#: /var/azuracast/www/resources/templates/partials/log_help_card.phtml:14
 #: /var/azuracast/www/resources/templates/stations/mounts/index.phtml:11
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:34
 #: /var/azuracast/www/resources/templates/stations/remotes/index.phtml:11
@@ -133,8 +133,28 @@ msgid "Sync Task Output"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/Install/ShoutcastController.php:68
-#: /var/azuracast/www/config/admin/dashboard.php:58
+#: /var/azuracast/www/config/admin/dashboard.php:57
 msgid "Install SHOUTcast"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
+msgid "AzuraCast Application Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:77
+msgid "Nginx Access Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:82
+msgid "Nginx Error Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:87
+msgid "PHP Application Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:92
+msgid "Supervisord Log"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:102
@@ -151,7 +171,7 @@ msgid "Changes saved."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:51
-#: /var/azuracast/www/config/admin/dashboard.php:11
+#: /var/azuracast/www/config/admin/dashboard.php:13
 #: /var/azuracast/www/resources/templates/frontend/setup/settings.phtml:20
 #: /var/azuracast/www/resources/templates/frontend/setup/station.phtml:29
 msgid "System Settings"
@@ -309,7 +329,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:26
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:100
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:109
-#: /var/azuracast/www/config/admin/actions.php:23
+#: /var/azuracast/www/config/admin/actions.php:26
 msgid "Media"
 msgstr ""
 
@@ -338,54 +358,6 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:484
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:99
-msgid "AzuraCast Application Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:106
-msgid "Nginx Access Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:111
-msgid "Nginx Error Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:116
-msgid "PHP Application Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:121
-msgid "Supervisord Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:133
-msgid "Liquidsoap Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:138
-msgid "Liquidsoap Configuration"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:149
-msgid "Icecast Access Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:154
-msgid "Icecast Error Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:159
-msgid "Icecast Configuration"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:167
-msgid "SHOUTcast Log"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsController.php:172
-msgid "SHOUTcast Configuration"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
@@ -508,6 +480,34 @@ msgstr ""
 msgid "Web Hook Test Output"
 msgstr ""
 
+#: /var/azuracast/www/src/Controller/Traits/LogViewer.php:86
+msgid "Liquidsoap Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Traits/LogViewer.php:91
+msgid "Liquidsoap Configuration"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Traits/LogViewer.php:102
+msgid "Icecast Access Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Traits/LogViewer.php:107
+msgid "Icecast Error Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Traits/LogViewer.php:112
+msgid "Icecast Configuration"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Traits/LogViewer.php:120
+msgid "SHOUTcast Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Traits/LogViewer.php:125
+msgid "SHOUTcast Configuration"
+msgstr ""
+
 #: /var/azuracast/www/src/Http/ErrorHandler.php:85
 #: /var/azuracast/www/src/Http/ErrorHandler.php:94
 msgid "You must be logged in to access this page."
@@ -614,56 +614,60 @@ msgid "%d month"
 msgid_plural "%d months"
 msgstr[0] ""
 
-#: /var/azuracast/www/config/admin/actions.php:4
-#: /var/azuracast/www/config/admin/actions.php:14
+#: /var/azuracast/www/config/admin/actions.php:6
+#: /var/azuracast/www/config/admin/actions.php:17
 msgid "All Permissions"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:5
+#: /var/azuracast/www/config/admin/actions.php:7
 msgid "View Administration Page"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:6
-#: /var/azuracast/www/config/admin/actions.php:7
 #: /var/azuracast/www/config/admin/actions.php:8
+msgid "View System Logs"
+msgstr ""
+
 #: /var/azuracast/www/config/admin/actions.php:9
 #: /var/azuracast/www/config/admin/actions.php:10
 #: /var/azuracast/www/config/admin/actions.php:11
+#: /var/azuracast/www/config/admin/actions.php:12
+#: /var/azuracast/www/config/admin/actions.php:13
+#: /var/azuracast/www/config/admin/actions.php:14
 msgid "Administer %s"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:6
+#: /var/azuracast/www/config/admin/actions.php:9
 #: /var/azuracast/www/resources/templates/frontend/public/dj.js.phtml:11
 msgid "Settings"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:7
+#: /var/azuracast/www/config/admin/actions.php:10
 #: /var/azuracast/www/config/admin/dashboard.php:21
 #: /var/azuracast/www/resources/templates/admin/api/index.phtml:1
 #: /var/azuracast/www/resources/templates/admin/api/index.phtml:5
 msgid "API Keys"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:8
-#: /var/azuracast/www/config/admin/dashboard.php:28
+#: /var/azuracast/www/config/admin/actions.php:11
+#: /var/azuracast/www/config/admin/dashboard.php:31
 msgid "Users"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:9
-#: /var/azuracast/www/config/admin/dashboard.php:37
+#: /var/azuracast/www/config/admin/actions.php:12
+#: /var/azuracast/www/config/admin/dashboard.php:39
 #: /var/azuracast/www/resources/templates/admin/permissions/index.phtml:1
 #: /var/azuracast/www/resources/templates/admin/permissions/index.phtml:5
 msgid "Permissions"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:10
-#: /var/azuracast/www/config/admin/dashboard.php:44
-#: /var/azuracast/www/config/admin/dashboard.php:48
+#: /var/azuracast/www/config/admin/actions.php:13
+#: /var/azuracast/www/config/admin/dashboard.php:45
+#: /var/azuracast/www/config/admin/dashboard.php:49
 #: /var/azuracast/www/resources/templates/admin/stations/index.phtml:1
 msgid "Stations"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:11
+#: /var/azuracast/www/config/admin/actions.php:14
 #: /var/azuracast/www/config/admin/dashboard.php:53
 #: /var/azuracast/www/config/forms/media.php:65
 #: /var/azuracast/www/resources/templates/admin/custom_fields/index.phtml:1
@@ -671,30 +675,30 @@ msgstr ""
 msgid "Custom Fields"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:15
+#: /var/azuracast/www/config/admin/actions.php:18
 msgid "View Station Page"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:16
+#: /var/azuracast/www/config/admin/actions.php:19
 msgid "View Station Reports"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:17
+#: /var/azuracast/www/config/admin/actions.php:20
 msgid "View Station Logs"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:18
-#: /var/azuracast/www/config/admin/actions.php:19
-#: /var/azuracast/www/config/admin/actions.php:20
 #: /var/azuracast/www/config/admin/actions.php:21
 #: /var/azuracast/www/config/admin/actions.php:22
 #: /var/azuracast/www/config/admin/actions.php:23
 #: /var/azuracast/www/config/admin/actions.php:24
 #: /var/azuracast/www/config/admin/actions.php:25
+#: /var/azuracast/www/config/admin/actions.php:26
+#: /var/azuracast/www/config/admin/actions.php:27
+#: /var/azuracast/www/config/admin/actions.php:28
 msgid "Manage Station %s"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:18
+#: /var/azuracast/www/config/admin/actions.php:21
 #: /var/azuracast/www/resources/templates/stations/profile/disabled.phtml:5
 #: /var/azuracast/www/resources/templates/stations/profile/index.phtml:5
 #: /var/azuracast/www/resources/templates/stations/profile/index.phtml:109
@@ -702,23 +706,23 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:19
+#: /var/azuracast/www/config/admin/actions.php:22
 #: /var/azuracast/www/resources/templates/partials/station_form.phtml:22
 msgid "Broadcasting"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:20
+#: /var/azuracast/www/config/admin/actions.php:23
 msgid "Streamers"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:21
+#: /var/azuracast/www/config/admin/actions.php:24
 #: /var/azuracast/www/resources/templates/stations/mounts/index.phtml:1
 #: /var/azuracast/www/resources/templates/stations/mounts/index.phtml:5
 #: /var/azuracast/www/resources/templates/stations/sidebar.phtml:90
 msgid "Mount Points"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:22
+#: /var/azuracast/www/config/admin/actions.php:25
 #: /var/azuracast/www/resources/templates/stations/profile/index.phtml:231
 #: /var/azuracast/www/resources/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/resources/templates/stations/remotes/index.phtml:5
@@ -726,33 +730,38 @@ msgstr ""
 msgid "Remote Relays"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:24
+#: /var/azuracast/www/config/admin/actions.php:27
 msgid "Automation"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/actions.php:25
+#: /var/azuracast/www/config/admin/actions.php:28
 #: /var/azuracast/www/resources/templates/stations/sidebar.phtml:108
 #: /var/azuracast/www/resources/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/resources/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/dashboard.php:7
+#: /var/azuracast/www/config/admin/dashboard.php:9
 msgid "System Maintenance"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/dashboard.php:16
+#: /var/azuracast/www/config/admin/dashboard.php:17
 #: /var/azuracast/www/resources/templates/admin/branding/index.phtml:8
 msgid "Custom Branding"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/dashboard.php:32
+#: /var/azuracast/www/config/admin/dashboard.php:25
+#: /var/azuracast/www/resources/templates/admin/logs/index.phtml:12
+msgid "System Logs"
+msgstr ""
+
+#: /var/azuracast/www/config/admin/dashboard.php:35
 #: /var/azuracast/www/resources/templates/admin/users/index.phtml:1
 #: /var/azuracast/www/resources/templates/admin/users/index.phtml:5
 msgid "User Accounts"
 msgstr ""
 
-#: /var/azuracast/www/config/admin/dashboard.php:48
+#: /var/azuracast/www/config/admin/dashboard.php:49
 #: /var/azuracast/www/config/admin/dashboard.php:53
 msgid "Manage %s"
 msgstr ""
@@ -2456,6 +2465,20 @@ msgstr ""
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
 msgstr ""
 
+#: /var/azuracast/www/resources/templates/admin/logs/index.phtml:3
+#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:3
+#: /var/azuracast/www/resources/templates/stations/sidebar.phtml:186
+msgid "Log Viewer"
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/admin/logs/index.phtml:15
+msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/admin/logs/index.phtml:30
+msgid "Logs by Station"
+msgstr ""
+
 #: /var/azuracast/www/resources/templates/admin/permissions/index.phtml:26
 msgid "Per-Station Permissions"
 msgstr ""
@@ -2826,6 +2849,30 @@ msgstr ""
 msgid "Mascot designed by %s"
 msgstr ""
 
+#: /var/azuracast/www/resources/templates/partials/log_help_card.phtml:3
+msgid "Need Help?"
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/partials/log_help_card.phtml:5
+msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/partials/log_help_card.phtml:7
+msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/partials/log_help_card.phtml:9
+msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/partials/log_help_card.phtml:14
+msgid "New GitHub Issue"
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/partials/log_viewer.phtml:18
+msgid "Automatically scroll to the bottom of the log"
+msgstr ""
+
 #: /var/azuracast/www/resources/templates/partials/radio_controls.phtml:9
 msgid "Pause"
 msgstr ""
@@ -2967,41 +3014,8 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:3
-#: /var/azuracast/www/resources/templates/stations/sidebar.phtml:186
-msgid "Log Viewer"
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:16
+#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:19
-msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:35
-msgid "Need Help?"
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:37
-msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:39
-msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:41
-msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:46
-msgid "New GitHub Issue"
-msgstr ""
-
-#: /var/azuracast/www/resources/templates/stations/logs/index.phtml:64
-msgid "Automatically scroll to the bottom of the log"
 msgstr ""
 
 #: /var/azuracast/www/resources/templates/stations/mounts/index.phtml:6

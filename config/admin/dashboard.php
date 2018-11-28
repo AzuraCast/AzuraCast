@@ -52,12 +52,10 @@ return [
             ],
             __('Manage %s', __('Custom Fields')) => [
                 'url' => 'admin:custom_fields:index',
-                'icon' => 'list',
                 'permission' => Acl::GLOBAL_CUSTOM_FIELDS,
             ],
             __('Install SHOUTcast') => [
                 'url' => 'admin:install:shoutcast',
-                'icon' => 'file_download',
                 'permission' => Acl::GLOBAL_ALL,
             ],
         ],

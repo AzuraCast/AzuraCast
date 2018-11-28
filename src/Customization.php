@@ -1,16 +1,16 @@
 <?php
 namespace App;
 
-use App\Entity\Settings;
+use Azura\Settings;
+use App\Entity;
 use App\Http\Request;
-use Gettext\Translations;
 use Gettext\Translator;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 
 class Customization
 {
-    /** @var array */
+    /** @var Settings */
     protected $app_settings;
 
     /** @var Entity\User */
@@ -19,7 +19,7 @@ class Customization
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    public function __construct($app_settings, Entity\Repository\SettingsRepository $settings_repo)
+    public function __construct(Settings $app_settings, Entity\Repository\SettingsRepository $settings_repo)
     {
         $this->app_settings = $app_settings;
         $this->settings_repo = $settings_repo;
@@ -35,7 +35,7 @@ class Customization
     {
         $timezone = $this->getTimeZone();
 
-        if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
+        if (!$this->app_settings->isCli() || $this->app_settings->isTesting()) {
             // Set time zone.
             date_default_timezone_set($timezone);
 
@@ -47,7 +47,7 @@ class Customization
 
         $translator = new Translator();
 
-        $locale_base = APP_INCLUDE_ROOT.'/resources/locale/compiled';
+        $locale_base = $this->app_settings[Settings::BASE_DIR].'/resources/locale/compiled';
         $locale_path = $locale_base.'/'.$locale.'.php';
 
         if (file_exists($locale_path)) {
@@ -58,7 +58,7 @@ class Customization
         $translator->register();
 
         putenv("LANG=" . $locale);
-        setlocale(LC_ALL, $locale);
+        setlocale(\LC_ALL, $locale);
 
         return $request
             ->withAttribute('locale', $locale)
@@ -96,7 +96,7 @@ class Customization
      */
     public function getDefaultTimeZone(): string
     {
-        $global_tz = $this->settings_repo->getSetting(Settings::TIMEZONE);
+        $global_tz = $this->settings_repo->getSetting(Entity\Settings::TIMEZONE);
 
         if (!empty($global_tz)) {
             return $global_tz;
@@ -233,7 +233,7 @@ class Customization
         static $instance_name;
 
         if ($instance_name === null) {
-            $instance_name = $this->settings_repo->getSetting(Settings::INSTANCE_NAME, '');
+            $instance_name = $this->settings_repo->getSetting(Entity\Settings::INSTANCE_NAME, '');
         }
 
         return $instance_name;
@@ -246,7 +246,7 @@ class Customization
      */
     public function getPublicTheme()
     {
-        $public_theme = $this->settings_repo->getSetting(Settings::PUBLIC_THEME, null);
+        $public_theme = $this->settings_repo->getSetting(Entity\Settings::PUBLIC_THEME, null);
 
         if ($public_theme && in_array($public_theme, $this->app_settings['themes']['available'], true)) {
             return $public_theme;
@@ -262,7 +262,7 @@ class Customization
      */
     public function getCustomPublicCss()
     {
-        return (string)$this->settings_repo->getSetting(Settings::CUSTOM_CSS_PUBLIC, '');
+        return (string)$this->settings_repo->getSetting(Entity\Settings::CUSTOM_CSS_PUBLIC, '');
     }
 
     /**
@@ -272,7 +272,7 @@ class Customization
      */
     public function getCustomPublicJs()
     {
-        return (string)$this->settings_repo->getSetting(Settings::CUSTOM_JS_PUBLIC, '');
+        return (string)$this->settings_repo->getSetting(Entity\Settings::CUSTOM_JS_PUBLIC, '');
     }
 
     /**
@@ -282,7 +282,7 @@ class Customization
      */
     public function getCustomInternalCss()
     {
-        return (string)$this->settings_repo->getSetting(Settings::CUSTOM_CSS_INTERNAL, '');
+        return (string)$this->settings_repo->getSetting(Entity\Settings::CUSTOM_CSS_INTERNAL, '');
     }
 
     /**
@@ -292,7 +292,7 @@ class Customization
      */
     public function hideProductName(): bool
     {
-        return (bool)$this->settings_repo->getSetting(Settings::HIDE_PRODUCT_NAME, false);
+        return (bool)$this->settings_repo->getSetting(Entity\Settings::HIDE_PRODUCT_NAME, false);
     }
 
     /**
@@ -302,7 +302,7 @@ class Customization
      */
     public function hideAlbumArt(): bool
     {
-        return (bool)$this->settings_repo->getSetting(Settings::HIDE_ALBUM_ART, false);
+        return (bool)$this->settings_repo->getSetting(Entity\Settings::HIDE_ALBUM_ART, false);
     }
 
     /**
@@ -312,7 +312,7 @@ class Customization
      */
     public function getDefaultAlbumArtUrl(): UriInterface
     {
-        $custom_url = trim($this->settings_repo->getSetting(Settings::DEFAULT_ALBUM_ART_URL));
+        $custom_url = trim($this->settings_repo->getSetting(Entity\Settings::DEFAULT_ALBUM_ART_URL));
 
         if (!empty($custom_url)) {
             return new Uri($custom_url);
@@ -331,14 +331,14 @@ class Customization
     {
         if (!$this->hideProductName()) {
             if ($title) {
-                $title .= ' - '.$this->app_settings['name'];
+                $title .= ' - '.$this->app_settings[Settings::APP_NAME];
             } else {
-                $title = $this->app_settings['name'];
+                $title = $this->app_settings[Settings::APP_NAME];
             }
         }
 
-        if (!APP_IN_PRODUCTION) {
-            $title = '('.ucfirst(APP_APPLICATION_ENV).') '.$title;
+        if (!$this->app_settings->isProduction()) {
+            $title = '('.ucfirst($this->app_settings[Settings::APP_ENV]).') '.$title;
         }
 
         return $title;

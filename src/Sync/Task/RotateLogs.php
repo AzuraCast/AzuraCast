@@ -8,6 +8,7 @@ use App\Entity;
 use Monolog\Logger;
 use studio24\Rotate;
 use Supervisor\Supervisor;
+use Symfony\Component\Finder\Finder;
 
 class RotateLogs extends TaskAbstract
 {
@@ -24,11 +25,12 @@ class RotateLogs extends TaskAbstract
     protected $logger;
 
     /**
-     * RotateLiquidsoapLogs constructor.
      * @param Adapters $adapters
      * @param EntityManager $em
      * @param Logger $logger
      * @param Supervisor $supervisor
+     *
+     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         Adapters $adapters,
@@ -69,10 +71,20 @@ class RotateLogs extends TaskAbstract
      * Rotate logs that are not automatically rotated (currently Liquidsoap only).
      *
      * @param Entity\Station $station
+     *
+     */
+    public function rotateStationLogs(Entity\Station $station): void
+    {
+        $this->_rotateLiquidsoapLog($station);
+        $this->_cleanUpIcecastLog($station);
+    }
+
+    /**
+     * @param Entity\Station $station
      * @throws Rotate\FilenameFormatException
      * @throws \App\Exception\NotFound
      */
-    public function rotateStationLogs(Entity\Station $station): void
+    protected function _rotateLiquidsoapLog(Entity\Station $station): void
     {
         if ($station->getBackendType() !== Adapters::BACKEND_LIQUIDSOAP) {
             return;
@@ -112,6 +124,25 @@ class RotateLogs extends TaskAbstract
         {
             $this->logger->error('Supervisor exception: '.$e->getMessage(), $log_context);
             return;
+        }
+    }
+
+    protected function _cleanUpIcecastLog(Entity\Station $station): void
+    {
+        $config_path = $station->getRadioConfigDir();
+
+        $finder = new Finder();
+
+        $finder
+            ->files()
+            ->in($config_path)
+            ->name('icecast_*.log.*')
+            ->date('before 1 week ago');
+
+        foreach($finder as $file)
+        {
+            $file_path = $file->getRealPath();
+            @unlink($file_path);
         }
     }
 }

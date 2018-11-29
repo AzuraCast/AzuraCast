@@ -450,7 +450,7 @@ class StationPlaylist
             $now = Chronos::now(new \DateTimeZone('UTC'));
         }
 
-        $day_to_check = $now->format('N');
+        $day_to_check = (int)$now->format('N');
         $current_timecode = self::getCurrentTimeCode($now);
 
         $schedule_start_time = $this->getScheduleStartTime();
@@ -469,8 +469,8 @@ class StationPlaylist
         // Handle overnight playlists that stretch into the next day.
         if ($schedule_end_time < $schedule_start_time) {
             if ($current_timecode <= $schedule_end_time) {
-                // Check next day, since it's before the end time.
-                $day_to_check = ($day_to_check == 1) ? 7 : $day_to_check - 1;
+                // Check the previous day, since it's before the end time.
+                $day_to_check = (1 === $day_to_check) ? 7 : $day_to_check - 1;
             } else if ($current_timecode < $schedule_start_time) {
                 // The playlist shouldn't be playing before the start time on the current date.
                 return false;

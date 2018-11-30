@@ -83,7 +83,7 @@ class AutoDJ implements EventSubscriberInterface
             AND sh.timestamp_end = 0
             ORDER BY sh.id DESC')
             ->setParameter('station_id', $event->getStation()->getId())
-            ->setParameter('threshold', time() - 60 * 15)
+            ->setParameter('threshold', time() - 43200)
             ->setMaxResults(1)
             ->getOneOrNullResult();
 

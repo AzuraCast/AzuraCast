@@ -171,14 +171,14 @@ class StationPlaylistMediaRepository extends Repository
     {
         $update_query = $this->_em->createQuery('UPDATE '.$this->_entityName.' e 
             SET e.weight = :weight
-            WHERE e.playlist_id = :playlist_id AND e.media_id = :media_id')
+            WHERE e.playlist_id = :playlist_id AND e.id = :id')
             ->setParameter('playlist_id', $playlist->getId());
 
         // Clear the playback queue.
         $this->clearMediaQueue($playlist->getId());
 
-        foreach($mapping as $media_id => $weight) {
-            $update_query->setParameter('media_id', $media_id)
+        foreach($mapping as $id => $weight) {
+            $update_query->setParameter('id', $id)
                 ->setParameter('weight', $weight)
                 ->execute();
         }

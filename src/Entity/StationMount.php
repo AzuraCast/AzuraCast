@@ -3,7 +3,6 @@ namespace App\Entity;
 
 use App\Radio\Adapters;
 use App\Radio\Frontend\FrontendAbstract;
-use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -279,13 +278,11 @@ class StationMount implements StationMountInterface
     }
 
     /**
-     * @return UriInterface|null
+     * @return string|null
      */
-    public function getCustomListenUrl(): ?UriInterface
+    public function getCustomListenUrl(): ?string
     {
-        return (!empty($this->custom_listen_url))
-            ? new Uri($this->custom_listen_url)
-            : null;
+        return $this->custom_listen_url;
     }
 
     /**

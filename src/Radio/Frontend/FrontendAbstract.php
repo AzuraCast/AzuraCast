@@ -7,6 +7,7 @@ use App\Entity;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
@@ -131,7 +132,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         }
 
         if ($mount->getCustomListenUrl() !== null) {
-            return $mount->getCustomListenUrl();
+            return new Uri($mount->getCustomListenUrl());
         }
 
         $public_url = $this->getPublicUrl($station, $base_url);

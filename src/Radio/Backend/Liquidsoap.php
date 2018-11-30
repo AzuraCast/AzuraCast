@@ -233,7 +233,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
                         $remote_url_scheme = parse_url($remote_url, \PHP_URL_SCHEME);
                         $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
 
-                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'("'.$this->_cleanUpString($remote_url).'")))';
+                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'(max=20., "'.$this->_cleanUpString($remote_url).'")))';
                         break;
                 }
             }

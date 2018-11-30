@@ -131,7 +131,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
             return $this->getPublicUrl($station, $base_url);
         }
 
-        if ($mount->getCustomListenUrl() !== null) {
+        if (!empty($mount->getCustomListenUrl())) {
             return new Uri($mount->getCustomListenUrl());
         }
 

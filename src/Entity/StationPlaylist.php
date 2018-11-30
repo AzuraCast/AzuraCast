@@ -362,7 +362,7 @@ class StationPlaylist
      */
     public function getScheduleStartTime(): int
     {
-        return $this->schedule_start_time;
+        return (int)$this->schedule_start_time;
     }
 
     /**
@@ -386,7 +386,7 @@ class StationPlaylist
      */
     public function getScheduleEndTime(): int
     {
-        return $this->schedule_end_time;
+        return (int)$this->schedule_end_time;
     }
 
     /**
@@ -442,6 +442,8 @@ class StationPlaylist
 
     /**
      * Returns whether the playlist is scheduled to play according to schedule rules.
+     *
+     * @param Chronos|null $now
      * @return bool
      */
     public function canPlayScheduled(Chronos $now = null): bool
@@ -462,7 +464,7 @@ class StationPlaylist
         }
 
         // Special handling for playlists ending at midnight (hour code "000").
-        if ($schedule_end_time == 0) {
+        if (0 === $schedule_end_time) {
             $schedule_end_time = 2400;
         }
 

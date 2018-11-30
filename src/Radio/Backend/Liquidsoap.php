@@ -261,11 +261,37 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
                 case Entity\StationPlaylist::TYPE_SCHEDULED:
                     $play_time = $this->_getTime($playlist->getScheduleStartTime()) . '-' . $this->_getTime($playlist->getScheduleEndTime());
+
+                    $playlist_schedule_days = $playlist->getScheduleDays();
+                    if (!empty($playlist_schedule_days)) {
+                        $play_days = [];
+
+                        foreach($playlist_schedule_days as $day) {
+                            $day = (int)$day;
+                            $play_days[] = (($day === 7) ? '0' : $day).'w';
+                        }
+
+                        $play_time = '('.implode(' or ', $play_days).') and '.$play_time;
+                    }
+
                     $schedule_switches[] = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
                     break;
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_DAY:
                     $play_time = $this->_getTime($playlist->getPlayOnceTime());
+
+                    $playlist_once_days = $playlist->getPlayOnceDays();
+                    if (!empty($playlist_once_days)) {
+                        $play_days = [];
+
+                        foreach($playlist_once_days as $day) {
+                            $day = (int)$day;
+                            $play_days[] = (($day === 7) ? '0' : $day).'w';
+                        }
+
+                        $play_time = '('.implode(' or ', $play_days).') and '.$play_time;
+                    }
+
                     $schedule_switches[] = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
                     break;
             }

@@ -13,6 +13,7 @@ $assets->load('fullcalendar')
 
 <div class="card">
     <div class="card-header">
+        <h2 class="card-title"><?=__('Playlists') ?></h2>
         <ul class="nav nav-pills card-header-pills">
             <li class="nav-item">
                 <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="all-playlists" href="#all-playlists"><?=__('All Playlists') ?></a>
@@ -25,9 +26,6 @@ $assets->load('fullcalendar')
     <div role="tabpanel">
         <div class="tab-content">
             <div class="tab-pane active" id="all-playlists" role="tabpanel">
-                <div class="card-body">
-                    <h2 class="card-title"><?=__('All Playlists') ?></h2>
-                </div>
                 <div class="card-actions">
                     <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:playlists:add') ?>">
                         <i class="material-icons">add</i>

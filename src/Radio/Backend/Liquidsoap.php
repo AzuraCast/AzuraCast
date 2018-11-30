@@ -796,13 +796,6 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
                 $station->setCurrentStreamer($streamer);
                 $this->em->persist($station);
                 $this->em->flush();
-
-                // Send custom metadata immediately to the station to fill the gap before the DJ sends their first metadata update.
-                $custom_metadata = [
-                    'title="'.$this->_cleanUpString($streamer->getDisplayName()).'"',
-                    'artist="'.$this->_cleanUpString($station->getName()).'"',
-                ];
-                $this->command($station, 'custom_metadata.insert '.implode(',', $custom_metadata));
             } catch(\Exception $e) {
                 $this->logger->error('Error when calling post-DJ-authentication functions.', [
                     'file' => $e->getFile(),

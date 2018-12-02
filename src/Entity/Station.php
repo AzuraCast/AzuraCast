@@ -545,8 +545,10 @@ class Station
             $radio_dirs = [
                 $this->radio_base_dir,
                 $this->getRadioMediaDir(),
+                $this->getRadioAlbumArtDir(),
                 $this->getRadioPlaylistsDir(),
-                $this->getRadioConfigDir()
+                $this->getRadioConfigDir(),
+                $this->getRadioTempDir(),
             ];
             foreach ($radio_dirs as $radio_dir) {
                 if (!file_exists($radio_dir)) {
@@ -566,6 +568,22 @@ class Station
         return (!empty($this->radio_media_dir))
             ? $this->radio_media_dir
             : $this->radio_base_dir.'/media';
+    }
+
+    /**
+     * @return string
+     */
+    public function getRadioAlbumArtDir(): string
+    {
+        return $this->radio_base_dir.'/album_art';
+    }
+
+    /**
+     * @return string
+     */
+    public function getRadioTempDir(): string
+    {
+        return $this->radio_base_dir.'/temp';
     }
 
     /**

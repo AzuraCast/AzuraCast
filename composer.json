@@ -32,7 +32,9 @@
     "supervisorphp/supervisor": "^3.0",
     "symfony/finder": "^4.1",
     "symfony/process": "^4.1",
-    "ramsey/uuid": "^3.8"
+    "ramsey/uuid": "^3.8",
+    "league/flysystem": "^1.0",
+    "league/flysystem-cached-adapter": "^1.0"
   },
   "require-dev": {
     "codeception/codeception": "^2.2",

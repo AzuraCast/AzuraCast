@@ -53,6 +53,22 @@ return function (\Azura\Container $di)
         );
     };
 
+    $di[\App\Entity\Repository\StationMediaRepository::class] = function($di) {
+        /** @var \Azura\Settings $settings */
+        $settings = $di['settings'];
+
+        require_once($settings[\Azura\Settings::BASE_DIR] . '/vendor/james-heinrich/getid3/getid3/write.php');
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        return new \App\Entity\Repository\StationMediaRepository(
+            $em,
+            $em->getClassMetadata(\App\Entity\StationPlaylistMedia::class),
+            $di[\App\Radio\Filesystem::class]
+        );
+    };
+
     $di[\App\Entity\Repository\StationPlaylistMediaRepository::class] = function($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];

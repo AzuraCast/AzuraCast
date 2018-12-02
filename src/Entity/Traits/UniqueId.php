@@ -1,12 +1,8 @@
 <?php
 namespace App\Entity\Traits;
 
-/**
- * @HasLifecycleCallbacks
- */
 trait UniqueId
 {
-
     /**
      * @Column(name="unique_id", type="string", length=25, nullable=true)
      * @var string
@@ -23,10 +19,11 @@ trait UniqueId
 
     /**
      * Generate a new unique ID for this item.
-     * @PrePersist
      */
-    public function generateUniqueId()
+    public function generateUniqueId($force_new = false)
     {
-        $this->unique_id = bin2hex(random_bytes(12));
+        if (empty($this->unique_id) || $force_new) {
+            $this->unique_id = bin2hex(random_bytes(12));
+        }
     }
 }

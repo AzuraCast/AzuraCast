@@ -158,25 +158,32 @@ class FilesController extends FilesControllerAbstract
 
     public function listDirectoriesAction(Request $request, Response $response, $station_id): ResponseInterface
     {
+        $station = $request->getStation();
+        $fs = $this->filesystem->getForStation($station);
+
         $file_path = $request->getAttribute('file_path');
 
-        if (!is_dir($file_path)) {
-            throw new \Azura\Exception(__('Path "%s" is not a folder.', $file_path));
+        if (!empty($request->getAttribute('file'))) {
+            $file_meta = $fs->getMetadata($file_path);
+
+            if ('dir' !== $file_meta['type']) {
+                throw new \Azura\Exception(__('Path "%s" is not a folder.', $file_path));
+            }
         }
 
-        $finder = new Finder();
-        $finder->directories()->in($file_path)->depth(0)->sortByName();
+        $directories = array_filter(array_map(function($file) {
+            if ('dir' !== $file['type']) {
+                return null;
+            }
 
-        $directories = [];
-        foreach ($finder as $directory) {
-            $directories[] = [
-                'name' => $directory->getFilename(),
-                'path' => $directory->getRelativePathname()
+            return [
+                'name' => $file['basename'],
+                'path' => $file['path'],
             ];
-        }
+        }, $fs->listContents($file_path)));
 
         return $response->withJson([
-            'rows' => $directories
+            'rows' => array_values($directories)
         ]);
     }
 

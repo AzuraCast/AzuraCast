@@ -3,7 +3,7 @@ return [
     'method' => 'post',
     'elements' => [
 
-        'path' => [
+        'new_file' => [
             'text',
             [
                 'label' => __('File Name'),

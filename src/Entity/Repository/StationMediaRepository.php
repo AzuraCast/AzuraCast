@@ -70,21 +70,30 @@ class StationMediaRepository extends Repository
      * @return Entity\StationMedia
      * @throws \Exception
      */
-    public function getOrCreate(Entity\Station $station, $path)
+    public function getOrCreate(Entity\Station $station, $path): Entity\StationMedia
     {
-        // TODO: Remove all uses of absolute paths for Flysystem readiness.
-        $short_path = $station->getRelativeMediaPath($path);
+        if (strpos($path, '://') !== false) {
+            [$path_prefix, $path] = explode('://', $path, 2);
+        }
 
         $record = $this->findOneBy([
             'station_id' => $station->getId(),
-            'path' => $short_path
+            'path' => $path
         ]);
 
+        $created = false;
         if (!($record instanceof Entity\StationMedia)) {
-            $record = new Entity\StationMedia($station, $short_path);
+            $record = new Entity\StationMedia($station, $path);
+            $created = true;
         }
 
-        return $this->processMedia($record);
+        $processed = $this->processMedia($record);
+
+        if ($created) {
+            $this->_em->flush($record);
+        }
+
+        return $record;
     }
 
     /**

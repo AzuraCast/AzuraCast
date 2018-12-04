@@ -4,10 +4,8 @@ namespace App\Radio;
 use App\Entity;
 use App\Flysystem\StationFilesystem;
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\PhpRedis;
-use League\Flysystem\FilesystemInterface;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
@@ -35,27 +33,24 @@ class Filesystem
     {
         $station_id = $station->getId();
         if (!isset($this->interfaces[$station_id])) {
-            $this->interfaces[$station_id] = new StationFilesystem([
-                'media'         => $this->_getLocalInterface($station->getRadioMediaDir()),
-                'albumart'      => $this->_getLocalInterface($station->getRadioAlbumArtDir()),
-                'playlists'     => $this->_getLocalInterface($station->getRadioPlaylistsDir()),
-                'config'        => $this->_getLocalInterface($station->getRadioConfigDir()),
-                'temp'          => $this->_getLocalInterface($station->getRadioTempDir()),
-            ]);
+            $aliases = [
+                'media'     => $station->getRadioMediaDir(),
+                'albumart'  => $station->getRadioAlbumArtDir(),
+                'playlists' => $station->getRadioPlaylistsDir(),
+                'config'    => $station->getRadioConfigDir(),
+                'temp'      => $station->getRadioTempDir(),
+            ];
+
+            $filesystems = [];
+            foreach($aliases as $alias => $local_path) {
+                $adapter = new Local($local_path);
+                $cached_client = new PhpRedis($this->redis, 'fs_'.$station_id.'_'.$alias, 43200);
+                $filesystems[$alias] = new LeagueFilesystem(new CachedAdapter($adapter, $cached_client));
+            }
+
+            $this->interfaces[$station_id] = new StationFilesystem($filesystems);
         }
 
         return $this->interfaces[$station_id];
-    }
-
-    protected function _getLocalInterface($local_path): FilesystemInterface
-    {
-        $adapter = new Local($local_path);
-        return new LeagueFilesystem($this->_getCachedAdapter($adapter));
-    }
-
-    protected function _getCachedAdapter(AdapterInterface $adapter): CachedAdapter
-    {
-        $cached_client = new PhpRedis($this->redis, 'flysystem', 43200);
-        return new CachedAdapter($adapter, $cached_client);
     }
 }

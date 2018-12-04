@@ -85,27 +85,41 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function renameAction(Request $request, Response $response, $station_id, $path): ResponseInterface
+    protected function _asBytes($ini_v)
+    {
+        $ini_v = trim($ini_v);
+        $s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
+
+        return (int)$ini_v * ($s[strtolower(substr($ini_v, -1))] ?: 1);
+    }
+
+    public function renameAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
-        $path = base64_decode($path);
-        $path_full = 'media://'.$path;
+        $path = $request->getAttribute('file');
+        $path_full = $request->getAttribute('file_path');
+
+        if (empty($path)) {
+            throw new \Azura\Exception('File not specified.');
+        }
 
         $form = new \AzuraForms\Form($this->form_config);
-
-        $form->populate(['path' => $path]);
+        $form->populate([
+            'new_file'  => $path,
+        ]);
 
         if (!empty($_POST) && $form->isValid()) {
             $data = $form->getValues();
 
             // Detect rename.
-            if ($data['path'] !== $path) {
-                $new_path = $data['path'];
+            if ($data['new_file'] !== $path) {
+                $new_path = $data['new_file'];
                 $new_path_full = 'media://'.$new_path;
 
-                $fs->rename($path_full, $new_path_full);
+                // MountManager::rename's second argument is NOT the full URI >:(
+                $fs->rename($path_full, $new_path);
                 $path_meta = $fs->getMetadata($new_path_full);
 
                 if ('dir' === $path_meta['type']) {
@@ -179,7 +193,8 @@ class FilesController extends FilesControllerAbstract
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
-        $dir_created = $fs->createDir($_POST['name']);
+        $new_dir = $file_path.'/'.$_POST['name'];
+        $dir_created = $fs->createDir($new_dir);
         if (!$dir_created) {
             return $this->_err($response, 403, sprintf('Directory "%s" was not created', $file_path . '/' . $dir));
         }

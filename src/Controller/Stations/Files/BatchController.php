@@ -2,6 +2,7 @@
 namespace App\Controller\Stations\Files;
 
 use App\Entity;
+use App\Flysystem\StationFilesystem;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Filesystem;
@@ -77,7 +78,7 @@ class BatchController extends FilesControllerAbstract
                     try {
                         $media = $media_repo->findOneBy([
                             'station_id' => $station->getId(),
-                            'path' => $station->getRelativeMediaPath($file)
+                            'path' => $file['path'],
                         ]);
 
                         if ($media instanceof Entity\StationMedia) {
@@ -85,7 +86,6 @@ class BatchController extends FilesControllerAbstract
                         }
                     } catch (\Exception $e) {
                         $errors[] = $file.': '.$e->getMessage();
-                        @unlink($file);
                     }
 
                     $files_affected++;
@@ -95,7 +95,13 @@ class BatchController extends FilesControllerAbstract
 
                 // Delete all selected files.
                 foreach ($files as $file) {
-                    \App\Utilities::rmdir_recursive($file);
+                    $file_meta = $fs->getMetadata($file);
+
+                    if ('dir' === $file_meta['type']) {
+                        $fs->deleteDir($file);
+                    } else {
+                        $fs->delete($file);
+                    }
                 }
                 break;
 
@@ -108,7 +114,7 @@ class BatchController extends FilesControllerAbstract
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $media_repo->getOrCreate($station, $file);
+                        $media = $media_repo->getOrCreate($station, $file['path']);
 
                         $playlists_media_repo->clearPlaylistsFromMedia($media);
                     } catch (\Exception $e) {
@@ -152,6 +158,7 @@ class BatchController extends FilesControllerAbstract
                 }
 
                 $music_files = $this->_getMusicFiles($fs, $files);
+
                 $files_found = count($music_files);
 
                 $weight = $playlists_media_repo->getHighestSongWeight($playlist);
@@ -159,7 +166,7 @@ class BatchController extends FilesControllerAbstract
                 foreach ($music_files as $file) {
                     $weight++;
                     try {
-                        $media = $media_repo->getOrCreate($station, $file);
+                        $media = $media_repo->getOrCreate($station, $file['path']);
                         $weight = $playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
                     } catch (\Exception $e) {
                         $errors[] = $file.': '.$e->getMessage();
@@ -186,21 +193,18 @@ class BatchController extends FilesControllerAbstract
 
                 foreach ($music_files as $file) {
                     try {
-                        if (is_dir($file)) {
-                            continue;
-                        }
+                        $directory_path_meta = $fs->getMetadata($directory_path_full);
 
-                        if (!is_dir($directory_path_full)) {
+                        if ('dir' !== $directory_path_meta['type']) {
                             throw new \Azura\Exception(__('Path "%s" is not a folder.', $directory_path_full));
                         }
 
-                        $media = $media_repo->getOrCreate($station, $file);
+                        $media = $media_repo->getOrCreate($station, $file['path']);
 
                         $old_full_path = $media->getFullPath();
-
                         $media->setPath($directory_path . DIRECTORY_SEPARATOR . basename($file));
 
-                        if (!rename($old_full_path, $media->getFullPath())) {
+                        if (!$fs->rename($old_full_path, $media->getPath())) {
                             throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path, $media->getFullPath()));
                         }
 
@@ -228,5 +232,26 @@ class BatchController extends FilesControllerAbstract
             'errors' => $errors,
             'record' => $response_record,
         ]);
+    }
+
+    protected function _getMusicFiles(StationFilesystem $fs, $path, $recursive = true)
+    {
+        if (is_array($path)) {
+            $music_files = [];
+            foreach ($path as $dir_file) {
+                $music_files = array_merge($music_files, $this->_getMusicFiles($fs, $dir_file, $recursive));
+            }
+
+            return $music_files;
+        }
+
+        $path_meta = $fs->getMetadata($path);
+        if ('file' === $path_meta['type']) {
+            return [$path_meta];
+        }
+
+        return array_filter($fs->listContents($path, $recursive), function($file) {
+            return ('file' === $file['type']);
+        });
     }
 }

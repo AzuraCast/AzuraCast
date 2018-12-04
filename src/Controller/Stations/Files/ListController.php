@@ -136,7 +136,7 @@ class ListController extends FilesControllerAbstract
                 'path' => $short,
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
-                'rename_url' => (string)$router->named('stations:files:rename', ['station' => $station_id, 'path' => base64_encode($short)]),
+                'rename_url' => (string)$router->named('stations:files:rename', ['station' => $station_id], ['file' => $short]),
             ];
 
             foreach ($media as $media_key => $media_val) {

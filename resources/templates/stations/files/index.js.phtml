@@ -85,15 +85,24 @@ $(function() {
                     return '<a class="btn btn-sm btn-primary" href="'+row.rename_url+'"><?=__('Rename') ?></a>';
             },
             "file_length": function(column, row) {
-                if (row.media_length_text)
-                    return row.media_length_text;
-                else
-                    return 'N/A';
+                if (!row.media_length_text) {
+                    return '';
+                }
+
+                return row.media_length_text;
             },
             "file_size": function(column, row) {
+                if (!row.size) {
+                    return '';
+                }
+
                 return formatFileSize(row.size);
             },
             "file_mtime": function(column, row) {
+                if (!row.mtime) {
+                    return '';
+                }
+
                 return formatTimestamp(row.mtime);
             },
             "playlists": function(column, row) {

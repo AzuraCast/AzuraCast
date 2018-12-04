@@ -1,30 +1,30 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use App\Url;
+use App\Radio\Filesystem;
 use App\Customization;
-use Doctrine\ORM\EntityManager;
-use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
 class MediaController
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Customization */
     protected $customization;
 
+    /** @var Filesystem */
+    protected $filesystem;
+
     /**
-     * @param EntityManager $em
      * @param Customization $customization
+     * @param Filesystem $filesystem
+     *
+     * @see \App\Provider\ApiProvider
      */
-    public function __construct(EntityManager $em, Customization $customization)
+    public function __construct(Customization $customization, Filesystem $filesystem)
     {
-        $this->em = $em;
         $this->customization = $customization;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -34,11 +34,11 @@ class MediaController
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="media_id",
-     *     description="The station media ID",
+     *     description="The station media unique ID",
      *     in="path",
      *     required=true,
      *     @OA\Schema(
-     *         type="int64"
+     *         type="string"
      *     )
      *   ),
      *   @OA\Response(
@@ -53,14 +53,13 @@ class MediaController
      */
     public function artAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $media = $this->em->createQuery('SELECT sm, sa FROM '.Entity\StationMedia::class.' sm JOIN sm.art sa WHERE sm.station_id = :station_id AND sm.unique_id = :media_id')
-            ->setParameter('station_id', $station_id)
-            ->setParameter('media_id', $media_id)
-            ->getOneOrNullResult();
+        $station = $request->getStation();
+        $filesystem = $this->filesystem->getForStation($station);
 
-        if ($media instanceof Entity\StationMedia) {
+        $media_path = 'albumart://'.$media_id.'.jpg';
 
-            $art = $media->getArt();
+        if ($filesystem->has($media_path)) {
+            $art = $filesystem->readStream($media_path);
 
             if (is_resource($art)) {
                 return $response

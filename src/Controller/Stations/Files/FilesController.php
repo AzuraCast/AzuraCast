@@ -4,21 +4,39 @@ namespace App\Controller\Stations\Files;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
-use App\Utilities;
-use App\Radio\Backend\BackendAbstract;
+use App\Radio\Filesystem;
 use Psr\Http\Message\ResponseInterface;
+use App\Utilities;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Finder\Finder;
 
-/**
- * Class FilesController
- *
- * Uses components based on:
- * Simple PHP File Manager - Copyright John Campbell (jcampbell1)
- * License: MIT
- */
 class FilesController extends FilesControllerAbstract
 {
-    public function indexAction(Request $request, Response $response, $station_id): ResponseInterface
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Filesystem */
+    protected $filesystem;
+
+    /** @var array */
+    protected $form_config;
+
+    /**
+     * FilesController constructor.
+     * @param EntityManager $em
+     * @param Filesystem $filesystem
+     * @param array $form_config
+     *
+     * @see \App\Provider\StationsProvider
+     */
+    public function __construct(EntityManager $em, Filesystem $filesystem, array $form_config)
+    {
+        $this->em = $em;
+        $this->filesystem = $filesystem;
+        $this->form_config = $form_config;
+    }
+
+    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -31,6 +49,7 @@ class FilesController extends FilesControllerAbstract
             ->getArrayResult();
 
         // Show available file space in the station directory.
+        // TODO: This won't be applicable for stations that don't use local storage!
         $media_dir = $station->getRadioMediaDir();
         $space_free = disk_free_space($media_dir);
         $space_total = disk_total_space($media_dir);
@@ -69,9 +88,10 @@ class FilesController extends FilesControllerAbstract
     public function renameAction(Request $request, Response $response, $station_id, $path): ResponseInterface
     {
         $station = $request->getStation();
+        $fs = $this->filesystem->getForStation($station);
 
         $path = base64_decode($path);
-        list($path, $path_full) = $this->_filterPath($station->getRadioMediaDir(), $path);
+        $path_full = 'media://'.$path;
 
         $form = new \AzuraForms\Form($this->form_config);
 
@@ -82,10 +102,13 @@ class FilesController extends FilesControllerAbstract
 
             // Detect rename.
             if ($data['path'] !== $path) {
-                list($new_path, $new_path_full) = $this->_filterPath($station->getRadioMediaDir(), $data['path']);
-                rename($path_full, $new_path_full);
+                $new_path = $data['path'];
+                $new_path_full = 'media://'.$new_path;
 
-                if (is_dir($new_path_full)) {
+                $fs->rename($path_full, $new_path_full);
+                $path_meta = $fs->getMetadata($new_path_full);
+
+                if ('dir' === $path_meta['type']) {
                     // Update the paths of all media contained within the directory.
                     $media_in_dir = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm
                         WHERE sm.station_id = :station_id AND sm.path LIKE :path')
@@ -119,177 +142,6 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function listAction(Request $request, Response $response, $station_id): ResponseInterface
-    {
-        $station = $request->getStation();
-
-        $result = [];
-
-        $file = $request->getAttribute('file');
-        $file_path = $request->getAttribute('file_path');
-
-        $search_phrase = trim($request->getParam('searchPhrase') ?? '');
-
-        if (!is_dir($file_path)) {
-            throw new \Azura\Exception(__('Path "%s" is not a folder.', $file));
-        }
-
-        $media_query = $this->em->createQueryBuilder()
-            ->select('partial sm.{id, unique_id, path, length, length_text, artist, title, album}')
-            ->addSelect('partial spm.{id}, partial sp.{id, name}')
-            ->addSelect('partial smcf.{id, field_id, value}')
-            ->from(Entity\StationMedia::class, 'sm')
-            ->leftJoin('sm.custom_fields', 'smcf')
-            ->leftJoin('sm.playlist_items', 'spm')
-            ->leftJoin('spm.playlist', 'sp')
-            ->where('sm.station_id = :station_id')
-            ->andWhere('sm.path LIKE :path')
-            ->setParameter('station_id', $station_id)
-            ->setParameter('path', $file . '%');
-
-        // Apply searching
-        if (!empty($search_phrase)) {
-            if (substr($search_phrase, 0, 9) === 'playlist:') {
-                $playlist_name = substr($search_phrase, 9);
-                $media_query->andWhere('sp.name = :playlist_name')
-                    ->setParameter('playlist_name', $playlist_name);
-            } else {
-                $media_query->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                    ->setParameter('query', '%'.$search_phrase.'%');
-            }
-        }
-
-        $media_in_dir_raw = $media_query->getQuery()
-            ->getArrayResult();
-
-        // Process all database results.
-        $media_in_dir = [];
-        foreach ($media_in_dir_raw as $media_row) {
-            $playlists = [];
-            foreach ($media_row['playlist_items'] as $playlist_row) {
-                $playlists[] = $playlist_row['playlist']['name'];
-            }
-
-            $custom_fields = [];
-            foreach($media_row['custom_fields'] as $custom_field) {
-                $custom_fields['custom_'.$custom_field['field_id']] = $custom_field['value'];
-            }
-
-            $media_in_dir[$media_row['path']] = [
-                'is_playable' => ($media_row['length'] !== 0),
-                'length' => $media_row['length'],
-                'length_text' => $media_row['length_text'],
-                'artist' => $media_row['artist'],
-                'title' => $media_row['title'],
-                'album' => $media_row['album'],
-                'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                'art' => (string)$this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
-                'edit_url' => (string)$this->router->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
-                'play_url' => (string)$this->router->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
-                'playlists' => $playlists,
-            ] + $custom_fields;
-        }
-
-        if (!empty($search_phrase)) {
-            $files = [];
-            foreach($media_in_dir as $short_path => $media_row) {
-                $files[] = $station->getRadioMediaDir().'/'.$short_path;
-            }
-        } else {
-            $finder = new Finder();
-            $finder->in($file_path)->depth('== 0');
-
-            $files = [];
-            foreach($finder as $finder_file) {
-                $files[] = $finder_file->getPathname();
-            }
-        }
-
-        foreach ($files as $i) {
-            $short = ltrim(str_replace($station->getRadioMediaDir(), '', $i), '/');
-
-            if (is_dir($i)) {
-                $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
-            } elseif (isset($media_in_dir[$short])) {
-                $media = $media_in_dir[$short];
-            } else {
-                $media = ['name' => __('File Not Processed'), 'playlists' => [], 'is_playable' => false];
-            }
-
-            $stat = stat($i);
-
-            $max_length = 60;
-            $shortname = basename($i);
-            if (mb_strlen($shortname) > $max_length) {
-                $shortname = mb_substr($shortname, 0, $max_length - 15) . '...' . mb_substr($shortname, -12);
-            }
-
-            $result_row = [
-                'mtime' => $stat['mtime'],
-                'size' => $stat['size'],
-                'name' => $short,
-                'path' => $short,
-                'text' => $shortname,
-                'is_dir' => is_dir($i),
-                'rename_url' => (string)$this->router->named('stations:files:rename', ['station' => $station_id, 'path' => base64_encode($short)]),
-            ];
-
-            foreach ($media as $media_key => $media_val) {
-                $result_row['media_' . $media_key] = $media_val;
-            }
-
-            $result[] = $result_row;
-        }
-
-        // Example from bootgrid docs:
-        // current=1&rowCount=10&sort[sender]=asc&searchPhrase=&id=b0df282a-0d67-40e5-8558-c9e93b7befed
-
-        // Apply sorting and limiting.
-        $sort_by = ['is_dir', \SORT_DESC];
-
-        if (!empty($_REQUEST['sort'])) {
-            foreach ($_REQUEST['sort'] as $sort_key => $sort_direction) {
-                $sort_dir = (strtolower($sort_direction) === 'desc') ? \SORT_DESC : \SORT_ASC;
-
-                $sort_by[] = $sort_key;
-                $sort_by[] = $sort_dir;
-            }
-        } else {
-            $sort_by[] = 'name';
-            $sort_by[] = \SORT_ASC;
-        }
-
-        $result = \App\Utilities::array_order_by($result, $sort_by);
-
-        $num_results = count($result);
-
-        $page = @$_REQUEST['current'] ?: 1;
-        $row_count = @$_REQUEST['rowCount'] ?: 15;
-
-        if ($row_count == -1) {
-            $row_count = $num_results;
-        }
-
-        if ($num_results > 0 && $row_count > 0) {
-            $offset_start = ($page - 1) * $row_count;
-            if ($offset_start >= $num_results) {
-                $page = floor($num_results / $row_count);
-                $offset_start = ($page - 1) * $row_count;
-            }
-
-            $return_result = array_slice($result, $offset_start, $row_count);
-        } else {
-            $return_result = [];
-        }
-
-        return $response->withJson([
-            'current' => $page,
-            'rowCount' => $row_count,
-            'total' => $num_results,
-            'rows' => $return_result,
-        ]);
-    }
-
     public function listDirectoriesAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $file_path = $request->getAttribute('file_path');
@@ -314,221 +166,21 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function batchAction(Request $request, Response $response): ResponseInterface
-    {
-        try {
-            $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
-        } catch(\Azura\Exception\CsrfValidation $e) {
-            return $response->withStatus(403)
-                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
-        }
-
-        $station = $request->getStation();
-
-        $base_dir = $station->getRadioMediaDir();
-
-        $files_raw = explode('|', $_POST['files']);
-        $files = [];
-
-        foreach ($files_raw as $file) {
-            $file_path = $base_dir . '/' . $file;
-            if (file_exists($file_path)) {
-                $files[] = $file_path;
-            }
-        }
-
-        $files_found = 0;
-        $files_affected = 0;
-
-        $response_record = null;
-        $errors = [];
-
-        list($action, $action_id) = explode('_', $_POST['do']);
-
-        switch ($action) {
-            case 'delete':
-                // Remove the database entries of any music being removed.
-                $music_files = $this->_getMusicFiles($files);
-                $files_found = count($music_files);
-
-                foreach ($music_files as $file) {
-                    try {
-                        $media = $this->media_repo->findOneBy([
-                            'station_id' => $station->getId(),
-                            'path' => $station->getRelativeMediaPath($file)
-                        ]);
-
-                        if ($media instanceof Entity\StationMedia) {
-                            $this->em->remove($media);
-                        }
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
-                        @unlink($file);
-                    }
-
-                    $files_affected++;
-                }
-
-                $this->em->flush();
-
-                // Delete all selected files.
-                foreach ($files as $file) {
-                    \App\Utilities::rmdir_recursive($file);
-                }
-                break;
-
-            case 'clear':
-                $backend = $request->getStationBackend();
-
-                // Clear all assigned playlists from the selected files.
-                $music_files = $this->_getMusicFiles($files);
-                $files_found = count($music_files);
-
-                foreach ($music_files as $file) {
-                    try {
-                        $media = $this->media_repo->getOrCreate($station, $file);
-
-                        $this->playlists_media_repo->clearPlaylistsFromMedia($media);
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
-                    }
-
-                    $files_affected++;
-                }
-
-                $this->em->flush();
-
-                // Write new PLS playlist configuration.
-                $backend->write($station);
-                break;
-
-            // Add all selected files to a playlist.
-            case 'playlist':
-                /** @var BackendAbstract $backend */
-                $backend = $request->getAttribute('station_backend');
-
-                if ($action_id === 'new') {
-                    $playlist = new Entity\StationPlaylist($station);
-                    $playlist->setName($_POST['name']);
-
-                    $this->em->persist($playlist);
-                    $this->em->flush();
-
-                    $response_record = [
-                        'id' => $playlist->getId(),
-                        'name' => $playlist->getName(),
-                    ];
-                } else {
-                    $playlist_id = (int)$action_id;
-                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                        'station_id' => $station->getId(),
-                        'id' => $playlist_id
-                    ]);
-
-                    if (!($playlist instanceof Entity\StationPlaylist)) {
-                        return $this->_err($response, 500, 'Playlist Not Found');
-                    }
-                }
-
-                $music_files = $this->_getMusicFiles($files);
-                $files_found = count($music_files);
-
-                $weight = $this->playlists_media_repo->getHighestSongWeight($playlist);
-
-                foreach ($music_files as $file) {
-                    $weight++;
-                    try {
-                        $media = $this->media_repo->getOrCreate($station, $file);
-                        $weight = $this->playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
-                    }
-
-                    $files_affected++;
-                }
-
-                $this->em->flush();
-
-                // Reshuffle the playlist if needed.
-                $this->playlists_media_repo->reshuffleMedia($playlist);
-
-                // Write new PLS playlist configuration.
-                $backend->write($station);
-                break;
-
-            case 'move':
-                $music_files = $this->_getMusicFiles($files);
-                $files_found = count($music_files);
-
-                $directory = $request->getParsedBody()['directory'];
-
-                list($directory_path, $directory_path_full) = $this->_filterPath($base_dir, $directory);
-
-                foreach ($music_files as $file) {
-                    try {
-                        if (is_dir($file)) {
-                            continue;
-                        }
-
-                        if (!is_dir($directory_path_full)) {
-                            throw new \Azura\Exception(__('Path "%s" is not a folder.', $directory_path_full));
-                        }
-
-                        $media = $this->media_repo->getOrCreate($station, $file);
-
-                        $old_full_path = $media->getFullPath();
-
-                        $media->setPath($directory_path . DIRECTORY_SEPARATOR . basename($file));
-
-                        if (!rename($old_full_path, $media->getFullPath())) {
-                            throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path, $media->getFullPath()));
-                        }
-
-                        $this->em->persist($media);
-                        $this->em->flush($media);
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
-                    }
-
-                    $files_affected++;
-                }
-
-                $this->em->flush();
-                break;
-        }
-
-        $this->em->clear(Entity\StationMedia::class);
-        $this->em->clear(Entity\StationPlaylist::class);
-        $this->em->clear(Entity\StationPlaylistMedia::class);
-
-        return $response->withJson([
-            'success' => true,
-            'files_found' => $files_found,
-            'files_affected' => $files_affected,
-            'errors' => $errors,
-            'record' => $response_record,
-        ]);
-    }
-
     public function mkdirAction(Request $request, Response $response): ResponseInterface
     {
         try {
             $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
-            return $response->withStatus(403)
-                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
+            return $this->_err($response, 403, 'CSRF Failure: '.$e->getMessage());
         }
 
         $file_path = $request->getAttribute('file_path');
 
-        // don't allow actions outside root. we also filter out slashes to catch args like './../outside'
-        $dir = $_POST['name'];
-        $dir = str_replace('/', '', $dir);
-        if (substr($dir, 0, 2) === '..') {
-            return $this->_err($response, 403, 'Cannot create directory: ..');
-        }
+        $station = $request->getStation();
+        $fs = $this->filesystem->getForStation($station);
 
-        if (!mkdir($file_path . '/' . $dir) && !is_dir($file_path . '/' . $dir)) {
+        $dir_created = $fs->createDir($_POST['name']);
+        if (!$dir_created) {
             return $this->_err($response, 403, sprintf('Directory "%s" was not created', $file_path . '/' . $dir));
         }
 
@@ -544,6 +196,12 @@ class FilesController extends FilesControllerAbstract
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
 
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+
+        /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
+        $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+
         try {
             $flow = new \App\Service\Flow($request, $response);
             $flow_response = $flow->process();
@@ -553,8 +211,7 @@ class FilesController extends FilesControllerAbstract
             }
 
             if (is_array($flow_response)) {
-                /** @var Entity\Station $station */
-                $station = $request->getAttribute('station');
+                $station = $request->getStation();
 
                 $file_path = $request->getAttribute('file_path');
 
@@ -562,9 +219,11 @@ class FilesController extends FilesControllerAbstract
                 $file->sanitizeName();
 
                 $final_path = $file->getPath();
-                rename($flow_response['path'], $final_path);
 
-                $station_media = $this->media_repo->getOrCreate($station, $final_path);
+                $fs = $this->filesystem->getForStation($station);
+                $fs->upload($flow_response['path'], $final_path);
+
+                $station_media = $media_repo->getOrCreate($station, $final_path);
                 $this->em->persist($station_media);
 
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
@@ -580,10 +239,10 @@ class FilesController extends FilesControllerAbstract
                         ]);
 
                         if ($playlist instanceof Entity\StationPlaylist) {
-                            $this->playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
+                            $playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
                             $this->em->flush();
 
-                            $this->playlists_media_repo->reshuffleMedia($playlist);
+                            $playlists_media_repo->reshuffleMedia($playlist);
                         }
                     }
                 }
@@ -603,10 +262,13 @@ class FilesController extends FilesControllerAbstract
     {
         set_time_limit(600);
 
+        $station = $request->getStation();
         $file_path = $request->getAttribute('file_path');
 
+        $fs = $this->filesystem->getForStation($station);
+
         $filename = basename($file_path);
-        $fh = fopen($file_path, 'rb');
+        $fh = $fs->readStream($file_path);
 
         return $response
             ->withHeader('Content-Type', mime_content_type($file_path))
@@ -614,67 +276,5 @@ class FilesController extends FilesControllerAbstract
             ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
                 strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""))
             ->withBody(new \Slim\Http\Stream($fh));
-    }
-
-    protected function _getMusicFiles($path, $recursive = true)
-    {
-        if (is_array($path)) {
-            $music_files = [];
-            foreach ($path as $dir_file) {
-                $music_files = array_merge($music_files, $this->_getMusicFiles($dir_file, $recursive));
-            }
-
-            return $music_files;
-        }
-
-        if (!is_dir($path)) {
-            return [$path];
-        }
-
-        $finder = new Finder();
-        $finder = $finder->files()->in($path);
-
-        if (!$recursive) {
-            $finder = $finder->depth('== 0');
-        }
-
-        $music_files = [];
-        foreach($finder as $file) {
-            $music_files[] = $file->getPathname();
-        }
-        return $music_files;
-    }
-
-    protected function _is_recursively_deleteable($d)
-    {
-        $stack = [$d];
-        while ($dir = array_pop($stack)) {
-            if (!is_readable($dir) || !is_writable($dir)) {
-                return false;
-            }
-            $files = array_diff(scandir($dir, \SCANDIR_SORT_NONE), ['.', '..']);
-            foreach ($files as $file) {
-                if (is_dir($file)) {
-                    $stack[] = "$dir/$file";
-                }
-            }
-        }
-
-        return true;
-    }
-
-    protected function _asBytes($ini_v)
-    {
-        $ini_v = trim($ini_v);
-        $s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
-
-        return (int)$ini_v * ($s[strtolower(substr($ini_v, -1))] ?: 1);
-    }
-
-    protected function _err(Response $response, $code, $msg)
-    {
-        return $response
-            ->withStatus($code)
-            ->withJson(['error' => ['code' => (int)$code, 'msg' => $msg]]);
     }
 }

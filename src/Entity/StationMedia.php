@@ -362,6 +362,16 @@ class StationMedia
     }
 
     /**
+     * Return the abstracted "full path" filesystem URI for this record.
+     *
+     * @return string
+     */
+    public function getFullPath(): string
+    {
+        return 'media://'.$this->path;
+    }
+
+    /**
      * @return int|null
      */
     public function getMtime(): ?int
@@ -555,13 +565,6 @@ class StationMedia
         }
 
         return $annotations;
-    }
-
-    public function getFullPath()
-    {
-        $media_base_dir = $this->station->getRadioMediaDir();
-
-        return $media_base_dir . '/' . $this->path;
     }
 
     /**

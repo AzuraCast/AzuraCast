@@ -30,9 +30,6 @@ final class Version20181202180617 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
-        echo 'taco';
-        exit;
-
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 

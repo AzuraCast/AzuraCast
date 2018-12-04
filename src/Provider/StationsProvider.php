@@ -20,15 +20,28 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Stations\Files\BatchController::class] = function($di) {
+            return new Stations\Files\BatchController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\Radio\Filesystem::class]
+            );
+        };
+
         $di[Stations\Files\FilesController::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];
 
             return new Stations\Files\FilesController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di['router'],
-                $di[\Azura\Cache::class],
+                $di[\App\Radio\Filesystem::class],
                 $config->get('forms/rename')
+            );
+        };
+
+        $di[Stations\Files\ListController::class] = function($di) {
+            return new Stations\Files\ListController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\Radio\Filesystem::class]
             );
         };
 
@@ -36,14 +49,11 @@ class StationsProvider implements ServiceProviderInterface
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];
 
-            $router = $di['router'];
-
             return new Stations\Files\EditController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $router,
-                $di[\Azura\Cache::class],
+                $di[\App\Radio\Filesystem::class],
                 $config->get('forms/media', [
-                    'router' => $router,
+                    'router' => $di['router'],
                 ])
             );
         };

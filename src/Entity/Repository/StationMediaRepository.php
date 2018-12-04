@@ -124,12 +124,12 @@ class StationMediaRepository extends Repository
 
         $media_uri = 'media://'.$media->getPath();
 
-        $filesystem = $this->filesystem->getForStation($media->getStation());
-        if (!$filesystem->has($media_uri)) {
+        $fs = $this->filesystem->getForStation($media->getStation());
+        if (!$fs->has($media_uri)) {
             return false;
         }
 
-        $media_mtime = $filesystem->getTimestamp($media_uri);
+        $media_mtime = $fs->getTimestamp($media_uri);
 
         // No need to update if all of these conditions are true.
         if (!$force && $media->songMatches() && $media_mtime <= $media->getMtime()) {
@@ -138,8 +138,8 @@ class StationMediaRepository extends Repository
 
         $media->setMtime($media_mtime);
 
-        $temp_uri = $filesystem->copyToTemp($media_uri);
-        $temp_path = $filesystem->getFullPath($temp_uri);
+        $tmp_uri = $fs->copyToTemp($media_uri);
+        $tmp_path = $fs->getFullPath($tmp_uri);
 
         // Load metadata from supported files.
         $id3 = new \getID3();
@@ -148,7 +148,7 @@ class StationMediaRepository extends Repository
         $id3->option_md5_data_source = true;
         $id3->encoding = 'UTF-8';
 
-        $file_info = $id3->analyze($temp_path);
+        $file_info = $id3->analyze($tmp_path);
 
         if (empty($file_info['error'])) {
             $media->setLength($file_info['playtime_seconds']);
@@ -168,9 +168,12 @@ class StationMediaRepository extends Repository
                 }
             }
 
-            if (!empty($file_info['comments']['picture'][0])) {
+            if (!empty($file_info['attached_picture'][0])) {
+                $picture = $file_info['attached_picture'][0];
+                $this->writeAlbumArt($media, $picture['data']);
+            } else if (!empty($file_info['comments']['picture'][0])) {
                 $picture = $file_info['comments']['picture'][0];
-                $this->setArt(imagecreatefromstring($picture['data']));
+                $this->writeAlbumArt($media, $picture['data']);
             }
         }
 
@@ -195,20 +198,29 @@ class StationMediaRepository extends Repository
             'artist'    => $media->getArtist(),
             'title'     => $media->getTitle(),
         ]));
+
+        $fs->delete($tmp_uri);
     }
 
     /**
      * Write modified metadata directly to the file as ID3 information.
+     *
+     * @param Entity\StationMedia $media
+     * @return bool
+     * @throws \getid3_exception
      */
-    public function writeToFile()
+    public function writeToFile(Entity\StationMedia $media): bool
     {
-
+        $fs = $this->filesystem->getForStation($media->getStation());
 
         $getID3 = new \getID3;
         $getID3->setOption(['encoding' => 'UTF8']);
 
+        $tmp_uri = $fs->copyToTemp($media->getFullPath());
+        $tmp_path = $fs->getFullPath($tmp_uri);
+
         $tagwriter = new \getid3_writetags;
-        $tagwriter->filename = $this->getFullPath();
+        $tagwriter->filename = $tmp_path;
 
         $tagwriter->tagformats = ['id3v1', 'id3v2.3'];
         $tagwriter->overwrite_tags = true;
@@ -216,25 +228,27 @@ class StationMediaRepository extends Repository
         $tagwriter->remove_other_tags = true;
 
         $tag_data = [
-            'title' => [$this->title],
-            'artist' => [$this->artist],
-            'album' => [$this->album],
+            'title' => [$media->getTitle()],
+            'artist' => [$media->getArtist()],
+            'album' => [$media->getAlbum()],
         ];
 
-        if (is_resource($this->art)) {
+        $art_path = $media->getArtPath();
+        if ($fs->has($art_path)) {
             $tag_data['attached_picture'][0] = [
-                'data' => stream_get_contents($this->art),
+                'data' => $fs->read($art_path),
                 'picturetypeid' => 'image/jpeg',
                 'mime' => 'image/jpeg',
             ];
-            $tag_data['comments']['picture'][0] = $tag_data['attached_picture'][0];
         }
 
         $tagwriter->tag_data = $tag_data;
 
         // write tags
         if ($tagwriter->WriteTags()) {
-            $this->mtime = time();
+            $media->setMtime(time());
+
+            $fs->updateFromTemp($tmp_uri, $media->getFullPath());
             return true;
         }
 
@@ -289,9 +303,9 @@ class StationMediaRepository extends Repository
         imagedestroy($thumbnail_gd_image);
 
         $album_art_path = $media->getArtPath();
-        $filesystem = $this->filesystem->getForStation($media->getStation());
+        $fs = $this->filesystem->getForStation($media->getStation());
 
-        return $filesystem->forceWrite($album_art_path, $album_art);
+        return $fs->put($album_art_path, $album_art);
     }
 
     /**
@@ -303,13 +317,13 @@ class StationMediaRepository extends Repository
     public function readAlbumArt(Entity\StationMedia $media): ?string
     {
         $album_art_path = $media->getArtPath();
-        $filesystem = $this->filesystem->getForStation($media->getStation());
+        $fs = $this->filesystem->getForStation($media->getStation());
 
-        if (!$filesystem->has($album_art_path)) {
+        if (!$fs->has($album_art_path)) {
             return null;
         }
 
-        return $filesystem->get($album_art_path);
+        return $fs->read($album_art_path);
     }
 
     /**

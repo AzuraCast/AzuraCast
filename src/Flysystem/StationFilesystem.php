@@ -27,6 +27,10 @@ class StationFilesystem extends MountManager
             $this->delete($to);
         }
 
+        print_r($from);
+        print_r($to);
+        exit;
+
         $this->copy($from, $to);
 
         return $to;
@@ -47,7 +51,7 @@ class StationFilesystem extends MountManager
             return false;
         }
 
-        $written = $this->forceWriteStream($to, $buffer, $config);
+        $written = $this->putStream($to, $buffer, $config);
 
         if (is_resource($buffer)) {
             fclose($buffer);
@@ -58,6 +62,32 @@ class StationFilesystem extends MountManager
         }
 
         return $to;
+    }
+
+    /**
+     * "Upload" a local path into the Flysystem abstract filesystem.
+     *
+     * @param $local_path
+     * @param $to
+     * @param array $config
+     * @return bool
+     */
+    public function upload($local_path, $to, array $config = []): bool
+    {
+        $stream = fopen($local_path, 'r+');
+
+        $uploaded = $this->putStream($to, $stream);
+
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        if ($uploaded) {
+            @unlink($local_path);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -91,50 +121,5 @@ class StationFilesystem extends MountManager
 
         $prefix = $adapter->getPathPrefix();
         return $prefix.DIRECTORY_SEPARATOR.$path;
-    }
-
-    /**
-     * Write a new file, overwriting any file that already exists in the destination.
-     *
-     * @param string $path     The path of the new file.
-     * @param string $contents The file contents.
-     * @param array  $config   An optional configuration array.
-     *
-     * @return bool True on success, false on failure.
-     */
-    public function forceWrite($path, $contents, array $config = [])
-    {
-        list($prefix, $path) = $this->getPrefixAndPath($path);
-
-        $fs = $this->getFilesystem($prefix);
-
-        if ($fs->has($path)) {
-            return $fs->update($path, $contents, $config);
-        }
-
-        return $fs->write($path, $contents, $config);
-    }
-
-    /**
-     * Write a new file using a stream, overwriting any file that already exists in the destination.
-     *
-     * @param string   $path     The path of the new file.
-     * @param resource $resource The file handle.
-     * @param array    $config   An optional configuration array.
-     *
-     * @throws \InvalidArgumentException If $resource is not a file handle.
-     *
-     * @return bool True on success, false on failure.
-     */
-    public function forceWriteStream($path, $resource, array $config = [])
-    {
-        list($prefix, $path) = $this->getPrefixAndPath($path);
-
-        $fs = $this->getFilesystem($prefix);
-        if ($fs->has($path)) {
-            return $fs->updateStream($path, $resource, $config);
-        }
-
-        return $fs->writeStream($path, $resource, $config);
     }
 }

@@ -59,8 +59,8 @@ class ApiProvider implements ServiceProviderInterface
 
         $di[Api\Stations\MediaController::class] = function($di) {
             return new Api\Stations\MediaController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Customization::class]
+                $di[\App\Customization::class],
+                $di[\App\Radio\Filesystem::class]
             );
         };
 

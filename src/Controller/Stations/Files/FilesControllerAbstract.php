@@ -1,68 +1,85 @@
 <?php
 namespace App\Controller\Stations\Files;
 
-use Azura\Cache;
-use App\Http\Router;
-use Doctrine\ORM\EntityManager;
-use App\Entity;
+use App\Flysystem\StationFilesystem;
+use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class FilesControllerAbstract
+ *
+ * Uses components based on:
+ * Simple PHP File Manager - Copyright John Campbell (jcampbell1)
+ * License: MIT
+ */
 abstract class FilesControllerAbstract
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var Router */
-    protected $router;
-
     /** @var string */
     protected $csrf_namespace = 'stations_files';
 
-    /** @var Cache */
-    protected $cache;
-
-    /** @var array */
-    protected $form_config;
-
-    /** @var Entity\Repository\StationMediaRepository */
-    protected $media_repo;
-
-    /** @var Entity\Repository\StationPlaylistMediaRepository */
-    protected $playlists_media_repo;
-
-    /**
-     * @param EntityManager $em
-     * @param Router $router
-     * @param Cache $cache
-     * @param array $form_config
-     * @see \App\Provider\StationsProvider
-     */
-    public function __construct(EntityManager $em, Router $router, Cache $cache, array $form_config)
+    protected function _getMusicFiles(StationFilesystem $fs, $path, $recursive = true)
     {
-        $this->em = $em;
-        $this->router = $router;
-        $this->cache = $cache;
-        $this->form_config = $form_config;
-
-        $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);
-        $this->playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
-    }
-
-    protected function _filterPath($base_path, $path)
-    {
-        $path = str_replace(['../', './'], ['', ''], $path);
-        $path = trim($path, '/');
-
-        $dir_path = $base_path.DIRECTORY_SEPARATOR.dirname($path);
-        $full_path = $base_path.DIRECTORY_SEPARATOR.$path;
-
-        if ($real_path = realpath($dir_path)) {
-            if (substr($full_path, 0, strlen($base_path)) !== $base_path) {
-                throw new \Exception('New location not inside station media directory.');
+        if (is_array($path)) {
+            $music_files = [];
+            foreach ($path as $dir_file) {
+                $music_files = array_merge($music_files, $this->_getMusicFiles($fs, $dir_file, $recursive));
             }
-        } else {
-            throw new \Exception('Parent directory could not be resolved.');
+
+            return $music_files;
         }
 
-        return [$path, $full_path];
+        $path_meta = $fs->getMetadata($path);
+        print_r($path_meta);
+        exit;
+
+        if (!is_dir($path)) {
+            return [$path];
+        }
+
+        $finder = new Finder();
+        $finder = $finder->files()->in($path);
+
+        if (!$recursive) {
+            $finder = $finder->depth('== 0');
+        }
+
+        $music_files = [];
+        foreach($finder as $file) {
+            $music_files[] = $file->getPathname();
+        }
+        return $music_files;
+    }
+
+    protected function _is_recursively_deleteable($d)
+    {
+        $stack = [$d];
+        while ($dir = array_pop($stack)) {
+            if (!is_readable($dir) || !is_writable($dir)) {
+                return false;
+            }
+            $files = array_diff(scandir($dir, \SCANDIR_SORT_NONE), ['.', '..']);
+            foreach ($files as $file) {
+                if (is_dir($file)) {
+                    $stack[] = "$dir/$file";
+                }
+            }
+        }
+
+        return true;
+    }
+
+    protected function _asBytes($ini_v)
+    {
+        $ini_v = trim($ini_v);
+        $s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
+
+        return (int)$ini_v * ($s[strtolower(substr($ini_v, -1))] ?: 1);
+    }
+
+    protected function _err(Response $response, $code, $msg): ResponseInterface
+    {
+        return $response
+            ->withStatus($code)
+            ->withJson(['error' => ['code' => (int)$code, 'msg' => $msg]]);
     }
 }

@@ -49,12 +49,6 @@ class Filesystem
 
     protected function _getLocalInterface($local_path): FilesystemInterface
     {
-        if (!file_exists($local_path)) {
-            if (!mkdir($local_path, 0777) && !is_dir($local_path)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $local_path));
-            }
-        }
-
         $adapter = new Local($local_path);
         return new LeagueFilesystem($this->_getCachedAdapter($adapter));
     }

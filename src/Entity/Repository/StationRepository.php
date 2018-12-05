@@ -5,10 +5,36 @@ use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\FrontendAbstract;
 use App\Entity;
+use App\Sync\Task\Media;
 use Azura\Doctrine\Repository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 
 class StationRepository extends Repository
 {
+    /** @var Media */
+    protected $media_sync;
+
+    /** @var Adapters */
+    protected $adapters;
+
+    /** @var Configuration */
+    protected $configuration;
+
+    public function __construct(
+        $em,
+        Mapping\ClassMetadata $class,
+        Media $media_sync,
+        Adapters $adapters,
+        Configuration $configuration
+    ) {
+        parent::__construct($em, $class);
+
+        $this->media_sync = $media_sync;
+        $this->adapters = $adapters;
+        $this->configuration = $configuration;
+    }
+
     /**
      * @return mixed
      */
@@ -60,12 +86,10 @@ class StationRepository extends Repository
      * Create a station based on the specified data.
      *
      * @param array $data Array of data to populate the station with.
-     * @param Adapters $adapters
-     * @param Configuration $configuration
      * @return Entity\Station
      * @throws \Exception
      */
-    public function create($data, Adapters $adapters, Configuration $configuration)
+    public function create($data)
     {
         $station = new Entity\Station;
         $this->fromArray($station, $data);
@@ -82,18 +106,16 @@ class StationRepository extends Repository
         $this->_em->flush();
 
         // Scan directory for any existing files.
-        $media_sync = new \App\Sync\Task\Media($this->_em);
-
         set_time_limit(600);
-        $media_sync->importMusic($station);
+        $this->media_sync->importMusic($station);
         $this->_em->refresh($station);
 
-        $media_sync->importPlaylists($station);
+        $this->media_sync->importPlaylists($station);
         $this->_em->refresh($station);
 
         // Load adapters.
-        $frontend_adapter = $adapters->getFrontendAdapter($station);
-        $backend_adapter = $adapters->getBackendAdapter($station);
+        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
+        $backend_adapter = $this->adapters->getBackendAdapter($station);
 
         // Create default mountpoints if station supports them.
         $this->resetMounts($station, $frontend_adapter);
@@ -102,7 +124,7 @@ class StationRepository extends Repository
         $frontend_adapter->read($station);
 
         // Write the adapter configurations and update supervisord.
-        $configuration->writeConfiguration($station, true);
+        $this->configuration->writeConfiguration($station, true);
 
         // Save changes and continue to the last setup step.
         $this->_em->persist($station);
@@ -142,13 +164,11 @@ class StationRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     * @param Adapters $adapters
-     * @param Configuration $configuration
      * @throws \Exception
      */
-    public function destroy(Entity\Station $station, Adapters $adapters, Configuration $configuration)
+    public function destroy(Entity\Station $station)
     {
-        $configuration->removeConfiguration($station);
+        $this->configuration->removeConfiguration($station);
 
         // Remove media folders.
         $radio_dir = $station->getRadioBaseDir();

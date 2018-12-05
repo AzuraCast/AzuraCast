@@ -114,7 +114,7 @@ class StationsController
             $data = $form->getValues();
 
             if (!($record instanceof Entity\Station)) {
-                $record = $this->record_repo->create($data, $this->adapters, $this->configuration);
+                $record = $this->record_repo->create($data);
             } else {
                 $oldAdapter = $record->getFrontendType();
                 $this->record_repo->fromArray($record, $data);
@@ -174,7 +174,7 @@ class StationsController
             }
 
             // Trigger normal creation process of station.
-            $new_record = $this->record_repo->create($new_record_data, $this->adapters, $this->configuration);
+            $new_record = $this->record_repo->create($new_record_data);
 
             // Force port reassignment
             $this->configuration->assignRadioPorts($new_record, true);
@@ -243,7 +243,7 @@ class StationsController
         $record = $this->record_repo->find((int)$id);
 
         if ($record instanceof Entity\Station) {
-            $this->record_repo->destroy($record, $this->adapters, $this->configuration);
+            $this->record_repo->destroy($record);
         }
 
         $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');

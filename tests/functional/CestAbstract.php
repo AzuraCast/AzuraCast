@@ -36,11 +36,7 @@ abstract class CestAbstract
             /** @var Entity\Repository\StationRepository $station_repo */
             $station_repo = $this->em->getRepository(Entity\Station::class);
 
-            $this->test_station = $station_repo->destroy(
-                $this->test_station,
-                $this->di[\App\Radio\Adapters::class],
-                $this->di[\App\Radio\Configuration::class]
-            );
+            $this->test_station = $station_repo->destroy($this->test_station);
         }
     }
 
@@ -102,11 +98,7 @@ abstract class CestAbstract
         /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
 
-        $this->test_station = $station_repo->create(
-            $station_info,
-            $this->di[\App\Radio\Adapters::class],
-            $this->di[\App\Radio\Configuration::class]
-        );
+        $this->test_station = $station_repo->create($station_info);
 
         // Set settings.
 

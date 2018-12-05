@@ -53,6 +53,19 @@ return function (\Azura\Container $di)
         );
     };
 
+    $di[\App\Entity\Repository\StationRepository::class] = function($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        return new \App\Entity\Repository\StationRepository(
+            $em,
+            $em->getClassMetadata(\App\Entity\Station::class),
+            $di[\App\Sync\Task\Media::class],
+            $di[\App\Radio\Adapters::class],
+            $di[\App\Radio\Configuration::class]
+        );
+    };
+
     $di[\App\Entity\Repository\StationMediaRepository::class] = function($di) {
         /** @var \Azura\Settings $settings */
         $settings = $di['settings'];

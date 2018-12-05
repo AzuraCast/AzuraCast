@@ -43,7 +43,8 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
                 $di[\Azura\EventDispatcher::class],
-                $di[Radio\AutoDJ::class]
+                $di[Radio\AutoDJ::class],
+                $di[Radio\Filesystem::class]
             );
         };
 

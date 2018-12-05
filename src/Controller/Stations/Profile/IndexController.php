@@ -65,6 +65,7 @@ class IndexController
                     'title' => __('Song Title'),
                     'artist' => __('Song Artist'),
                 ],
+                'playlist' => '',
                 'is_request' => false,
                 'elapsed' => 0,
                 'duration' => 0,
@@ -82,6 +83,7 @@ class IndexController
                     'title' => __('Song Title'),
                     'artist' => __('Song Artist'),
                 ],
+                'playlist' => '',
             ],
         ];
 

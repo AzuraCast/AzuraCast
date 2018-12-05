@@ -3,6 +3,7 @@ namespace App\Radio\Backend;
 
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
+use App\Radio\Filesystem;
 use Azura\EventDispatcher;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
@@ -18,20 +19,31 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
     /** @var AutoDJ */
     protected $autodj;
 
+    /** @var Filesystem */
+    protected $filesystem;
+
     /**
      * @param EntityManager $em
      * @param Supervisor $supervisor
      * @param Logger $logger
      * @param EventDispatcher $dispatcher
      * @param AutoDJ $autodj
+     * @param Filesystem $filesystem
      *
      * @see \App\Provider\RadioProvider
      */
-    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, EventDispatcher $dispatcher, AutoDJ $autodj)
-    {
+    public function __construct(
+        EntityManager $em,
+        Supervisor $supervisor,
+        Logger $logger,
+        EventDispatcher $dispatcher,
+        AutoDJ $autodj,
+        Filesystem $filesystem
+    ) {
         parent::__construct($em, $supervisor, $logger, $dispatcher);
 
         $this->autodj = $autodj;
+        $this->filesystem = $filesystem;
     }
 
     public static function getSubscribedEvents()
@@ -839,8 +851,15 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         if ($sh instanceof Entity\SongHistory) {
             $media = $sh->getMedia();
+
             if ($media instanceof Entity\StationMedia) {
-                $event->setSongPath($media->getFullPath());
+
+                $media_uri = $media->getFullPath();
+
+                $fs = $this->filesystem->getForStation($event->getStation());
+                $media_path = $fs->getFullPath($media_uri);
+
+                $event->setSongPath($media_path);
                 $event->addAnnotations($media->getAnnotations());
             }
         } else if (null !== $sh) {

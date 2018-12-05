@@ -38,7 +38,7 @@ $user = $request->getUser();
                             <div>
                                 {{ np.now_playing.song.artist }}
                             </div>
-                            <div>
+                            <div v-if="np.now_playing.playlist">
                                 <small class="text-muted"><?=__('Playlist') ?>: {{ np.now_playing.playlist }}</small>
                             </div>
                             <div class="nowplaying-progress" v-if="time_display">
@@ -61,7 +61,7 @@ $user = $request->getUser();
                             <div>
                                 {{ np.playing_next.song.artist }}
                             </div>
-                            <div>
+                            <div v-if="np.playing_next.playlist">
                                 <small class="text-muted"><?=__('Playlist') ?>: {{ np.playing_next.playlist }}</small>
                             </div>
                         </div>

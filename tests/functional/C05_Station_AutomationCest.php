@@ -26,7 +26,7 @@ class C05_Station_AutomationCest extends CestAbstract
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
         $media = new Entity\StationMedia($this->test_station, 'test.mp3');
-        $media_repo->loadFromFile($media);
+        $media_repo->loadFromFile($media, $song_dest);
 
         $this->em->persist($media);
 

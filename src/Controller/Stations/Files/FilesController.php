@@ -235,18 +235,16 @@ class FilesController extends FilesControllerAbstract
             if (is_array($flow_response)) {
                 $station = $request->getStation();
 
+                $file = $request->getAttribute('file');
                 $file_path = $request->getAttribute('file_path');
 
-                $file = new \Azura\File(basename($flow_response['filename']), $file_path);
-                $file->sanitizeName();
+                $sanitized_name = \Azura\File::sanitizeFileName(basename($flow_response['filename']));
 
-                $final_path = $file->getPath();
+                $final_path = (empty($file))
+                    ? $file_path.$sanitized_name
+                    : $file_path.'/'.$sanitized_name;
 
-                $fs = $this->filesystem->getForStation($station);
-                $fs->upload($flow_response['path'], $final_path);
-
-                $station_media = $media_repo->getOrCreate($station, $final_path);
-                $this->em->persist($station_media);
+                $media_repo->uploadFile($station, $flow_response['path'], $final_path);
 
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
                 if ($request->hasParam('searchPhrase')) {

@@ -156,7 +156,6 @@ class StationMedia
     public function __construct(Station $station, string $path)
     {
         $this->station = $station;
-        $this->path = $path;
 
         $this->length = 0;
         $this->length_text = '0:00';
@@ -166,6 +165,7 @@ class StationMedia
         $this->playlist_items = new ArrayCollection;
         $this->custom_fields = new ArrayCollection;
 
+        $this->setPath($path);
         $this->generateUniqueId();
     }
 
@@ -215,8 +215,8 @@ class StationMedia
             'title' => $this->title,
         ]);
 
-        return (null === $this->song_id)
-            || ($this->song_id !== $expected_song_hash);
+        return (null !== $this->song_id)
+            && ($this->song_id === $expected_song_hash);
     }
 
     /**

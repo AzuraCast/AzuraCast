@@ -66,6 +66,38 @@ class StationMediaRepository extends Repository
 
     /**
      * @param Entity\Station $station
+     * @param string $tmp_path
+     * @param string $dest
+     * @return Entity\StationMedia
+     */
+    public function uploadFile(Entity\Station $station, $tmp_path, $dest): Entity\StationMedia
+    {
+        [$dest_prefix, $dest_path] = explode('://', $dest, 2);
+
+        $record = $this->findOneBy([
+            'station_id' => $station->getId(),
+            'path' => $dest_path,
+        ]);
+
+        if (!($record instanceof Entity\StationMedia)) {
+            $record = new Entity\StationMedia($station, $dest_path);
+        }
+
+        $this->loadFromFile($record, $tmp_path);
+
+        $fs = $this->filesystem->getForStation($station);
+        $fs->upload($tmp_path, $dest);
+
+        $record->setMtime(time());
+
+        $this->_em->persist($record);
+        $this->_em->flush($record);
+
+        return $record;
+    }
+
+    /**
+     * @param Entity\Station $station
      * @param $path
      * @return Entity\StationMedia
      * @throws \Exception
@@ -107,11 +139,28 @@ class StationMediaRepository extends Repository
      */
     public function processMedia(Entity\StationMedia $media, $force = false): Entity\StationMedia
     {
-        if (empty($media->getUniqueId())) {
-            $media->generateUniqueId();
+        $media_uri = $media->getFullPath();
+
+        $fs = $this->filesystem->getForStation($media->getStation());
+        if (!$fs->has($media_uri)) {
+            return $media;
         }
 
-        $this->loadFromFile($media, $force);
+        $media_mtime = $fs->getTimestamp($media_uri);
+
+        // No need to update if all of these conditions are true.
+        if (!$force && $media->songMatches() && $media_mtime <= $media->getMtime()) {
+            return $media;
+        }
+
+        $tmp_uri = $fs->copyToTemp($media_uri);
+        $tmp_path = $fs->getFullPath($tmp_uri);
+
+        $this->loadFromFile($media, $tmp_path);
+
+        $fs->delete($tmp_uri);
+
+        $media->setMtime($media_mtime);
         $this->_em->persist($media);
 
         return $media;
@@ -121,35 +170,11 @@ class StationMediaRepository extends Repository
      * Process metadata information from media file.
      *
      * @param Entity\StationMedia $media
-     * @param bool $force
-     * @return array|bool
+     * @param null $file_path
      * @throws \getid3_exception
      */
-    public function loadFromFile(Entity\StationMedia $media, $force = false)
+    public function loadFromFile(Entity\StationMedia $media, $file_path = null): void
     {
-        if (empty($media->getPath())) {
-            return false;
-        }
-
-        $media_uri = 'media://'.$media->getPath();
-
-        $fs = $this->filesystem->getForStation($media->getStation());
-        if (!$fs->has($media_uri)) {
-            return false;
-        }
-
-        $media_mtime = $fs->getTimestamp($media_uri);
-
-        // No need to update if all of these conditions are true.
-        if (!$force && $media->songMatches() && $media_mtime <= $media->getMtime()) {
-            return false;
-        }
-
-        $media->setMtime($media_mtime);
-
-        $tmp_uri = $fs->copyToTemp($media_uri);
-        $tmp_path = $fs->getFullPath($tmp_uri);
-
         // Load metadata from supported files.
         $id3 = new \getID3();
 
@@ -157,7 +182,7 @@ class StationMediaRepository extends Repository
         $id3->option_md5_data_source = true;
         $id3->encoding = 'UTF-8';
 
-        $file_info = $id3->analyze($tmp_path);
+        $file_info = $id3->analyze($file_path);
 
         if (empty($file_info['error'])) {
             $media->setLength($file_info['playtime_seconds']);
@@ -207,8 +232,6 @@ class StationMediaRepository extends Repository
             'artist'    => $media->getArtist(),
             'title'     => $media->getTitle(),
         ]));
-
-        $fs->delete($tmp_uri);
     }
 
     /**
@@ -237,18 +260,31 @@ class StationMediaRepository extends Repository
         $tagwriter->remove_other_tags = true;
 
         $tag_data = [
-            'title' => [$media->getTitle()],
-            'artist' => [$media->getArtist()],
-            'album' => [$media->getAlbum()],
+            'title' => [
+                $media->getTitle()
+            ],
+            'artist' => [
+                $media->getArtist()
+            ],
+            'album' => [
+                $media->getAlbum()
+            ],
+            'unsynchronized_lyric' => [
+                $media->getLyrics()
+            ],
         ];
 
         $art_path = $media->getArtPath();
         if ($fs->has($art_path)) {
             $tag_data['attached_picture'][0] = [
+                'encodingid'     => 0, // ISO-8859-1; 3=UTF8 but only allowed in ID3v2.4
+                'description'    => 'cover art',
                 'data' => $fs->read($art_path),
-                'picturetypeid' => 'image/jpeg',
+                'picturetypeid' => 0x03,
                 'mime' => 'image/jpeg',
             ];
+
+            $tag_data['comments']['picture'][0] = $tag_data['attached_picture'][0];
         }
 
         $tagwriter->tag_data = $tag_data;

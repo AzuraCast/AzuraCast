@@ -4,6 +4,8 @@ namespace App\Controller\Stations\Files;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use App\Radio\Filesystem;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
@@ -13,11 +15,40 @@ use Psr\Http\Message\UploadedFileInterface;
  */
 class EditController extends FilesControllerAbstract
 {
-    public function editAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Filesystem */
+    protected $filesystem;
+
+    /** @var array */
+    protected $form_config;
+
+    /**
+     * EditController constructor.
+     * @param EntityManager $em
+     * @param Filesystem $filesystem
+     * @param array $form_config
+     *
+     * @see \App\Provider\StationsProvider
+     */
+    public function __construct(EntityManager $em, Filesystem $filesystem, array $form_config)
+    {
+        $this->em = $em;
+        $this->filesystem = $filesystem;
+        $this->form_config = $form_config;
+    }
+
+    public function __invoke(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
         $station = $request->getStation();
 
-        $media = $this->media_repo->findOneBy([
+        $fs = $this->filesystem->getForStation($station);
+
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+
+        $media = $media_repo->findOneBy([
             'station_id' => $station_id,
             'id' => $media_id
         ]);
@@ -46,9 +77,9 @@ class EditController extends FilesControllerAbstract
         $form = new \AzuraForms\Form($form_config);
 
         // Populate custom fields in form.
-        $media_array = $this->media_repo->toArray($media);
+        $media_array = $media_repo->toArray($media);
         if (!empty($custom_fields)) {
-            $media_array['custom_fields'] = $this->media_repo->getCustomFields($media);
+            $media_array['custom_fields'] = $media_repo->getCustomFields($media);
         }
 
         $form->populate($media_array);
@@ -59,16 +90,16 @@ class EditController extends FilesControllerAbstract
 
             // Detect rename.
             if ($data['path'] !== $media->getPath()) {
-                list($data['path'], $path_full) = $this->_filterPath($station->getRadioMediaDir(), $data['path']);
-                rename($media->getFullPath(), $path_full);
+                $path_full = 'media://'.$data['path'];
+                $fs->rename($media->getFullPath(), $path_full);
             }
 
             if (!empty($custom_fields)) {
-                $this->media_repo->setCustomFields($media, $data['custom_fields']);
+                $media_repo->setCustomFields($media, $data['custom_fields']);
                 unset($data['custom_fields']);
             }
 
-            $this->media_repo->fromArray($media, $data);
+            $media_repo->fromArray($media, $data);
 
             // Handle uploaded artwork files.
             $files = $request->getUploadedFiles();
@@ -77,14 +108,13 @@ class EditController extends FilesControllerAbstract
 
                 /** @var UploadedFileInterface $file */
                 if ($file->getError() === UPLOAD_ERR_OK) {
-                    $art_resource = imagecreatefromstring($file->getStream()->getContents());
-                    $media->setArt($art_resource);
+                    $media_repo->writeAlbumArt($media, $file->getStream()->getContents());
                 } else if ($file->getError() !== UPLOAD_ERR_NO_FILE) {
                     throw new \Azura\Exception('Error ' . $file->getError() . ' in uploaded file!');
                 }
             }
 
-            if ($media->writeToFile()) {
+            if ($media_repo->writeToFile($media)) {
                 /** @var Entity\Repository\SongRepository $song_repo */
                 $song_repo = $this->em->getRepository(Entity\Song::class);
 

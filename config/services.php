@@ -53,6 +53,35 @@ return function (\Azura\Container $di)
         );
     };
 
+    $di[\App\Entity\Repository\StationRepository::class] = function($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        return new \App\Entity\Repository\StationRepository(
+            $em,
+            $em->getClassMetadata(\App\Entity\Station::class),
+            $di[\App\Sync\Task\Media::class],
+            $di[\App\Radio\Adapters::class],
+            $di[\App\Radio\Configuration::class]
+        );
+    };
+
+    $di[\App\Entity\Repository\StationMediaRepository::class] = function($di) {
+        /** @var \Azura\Settings $settings */
+        $settings = $di['settings'];
+
+        // require_once($settings[\Azura\Settings::BASE_DIR] . '/vendor/james-heinrich/getid3/getid3/write.php');
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        return new \App\Entity\Repository\StationMediaRepository(
+            $em,
+            $em->getClassMetadata(\App\Entity\StationMedia::class),
+            $di[\App\Radio\Filesystem::class]
+        );
+    };
+
     $di[\App\Entity\Repository\StationPlaylistMediaRepository::class] = function($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];

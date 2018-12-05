@@ -23,12 +23,6 @@ class SetupController
     /** @var Acl */
     protected $acl;
 
-    /** @var Adapters */
-    protected $adapters;
-
-    /** @var Configuration */
-    protected $configuration;
-
     /** @var array */
     protected $station_form_config;
 
@@ -39,18 +33,15 @@ class SetupController
      * @param EntityManager $em
      * @param Auth $auth
      * @param Acl $acl
-     * @param Adapters $adapters
-     * @param Configuration $configuration
      * @param array $station_form_config
      * @param array $settings_form_config
+     *
      * @see \App\Provider\FrontendProvider
      */
     public function __construct(
         EntityManager $em,
         Auth $auth,
         Acl $acl,
-        Adapters $adapters,
-        Configuration $configuration,
         array $station_form_config,
         array $settings_form_config
     )
@@ -58,8 +49,6 @@ class SetupController
         $this->em = $em;
         $this->auth = $auth;
         $this->acl = $acl;
-        $this->adapters = $adapters;
-        $this->configuration = $configuration;
         $this->station_form_config = $station_form_config;
         $this->settings_form_config = $settings_form_config;
     }
@@ -160,7 +149,7 @@ class SetupController
 
             /** @var Entity\Repository\StationRepository $station_repo */
             $station_repo = $this->em->getRepository(Entity\Station::class);
-            $station_repo->create($data, $this->adapters, $this->configuration);
+            $station_repo->create($data);
 
             return $response->withRedirect($request->getRouter()->named('setup:settings'));
         }

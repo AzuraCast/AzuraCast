@@ -339,22 +339,22 @@ return function(\Slim\App $app)
 
         $this->group('/files', function () {
 
-            $this->get('', Controller\Stations\Files\FilesController::class.':indexAction')
+            $this->get('', Controller\Stations\Files\FilesController::class)
                 ->setName('stations:files:index');
 
-            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\Files\EditController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\Files\EditController::class)
                 ->setName('stations:files:edit');
 
-            $this->map(['GET', 'POST'], '/rename/{path}', Controller\Stations\Files\FilesController::class.':renameAction')
+            $this->map(['GET', 'POST'], '/rename', Controller\Stations\Files\FilesController::class.':renameAction')
                 ->setName('stations:files:rename');
 
-            $this->map(['GET', 'POST'], '/list', Controller\Stations\Files\FilesController::class.':listAction')
+            $this->map(['GET', 'POST'], '/list', Controller\Stations\Files\ListController::class)
                 ->setName('stations:files:list');
 
             $this->map(['GET', 'POST'], '/directories', Controller\Stations\Files\FilesController::class.':listDirectoriesAction')
                 ->setName('stations:files:directories');
 
-            $this->map(['GET', 'POST'], '/batch', Controller\Stations\Files\FilesController::class.':batchAction')
+            $this->map(['GET', 'POST'], '/batch', Controller\Stations\Files\BatchController::class)
                 ->setName('stations:files:batch');
 
             $this->map(['GET', 'POST'], '/mkdir', Controller\Stations\Files\FilesController::class.':mkdirAction')

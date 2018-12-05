@@ -74,7 +74,7 @@ $(function() {
                 var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+(row.is_dir ? row.text : row.media_name)+'</a>';
 
                 var art_src = (row.media_art) ? row.media_art : '/static/img/generic_song.jpg';
-                var $art = (row.is_dir) ? '' : '<a href="'+art_src+'" target="_blank" class="float-right pl-3"><img style="width: 40px; height: auto; border-radius: 5px;" alt="<?=__('Album Artwork') ?>" src="'+art_src+'"></a>';
+                var $art = (row.is_dir) ? '' : '<a href="'+art_src+'" class="album-art float-right pl-3" target="_blank"><img style="width: 40px; height: auto; border-radius: 5px;" alt="<?=__('Album Artwork') ?>" src="'+art_src+'"></a>';
 
                 return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$art+$icon + $link + '<br><small>'+(row.is_dir ? 'Directory' : row.text)+'</small></div>';
             },
@@ -85,15 +85,24 @@ $(function() {
                     return '<a class="btn btn-sm btn-primary" href="'+row.rename_url+'"><?=__('Rename') ?></a>';
             },
             "file_length": function(column, row) {
-                if (row.media_length_text)
-                    return row.media_length_text;
-                else
-                    return 'N/A';
+                if (!row.media_length_text) {
+                    return '';
+                }
+
+                return row.media_length_text;
             },
             "file_size": function(column, row) {
+                if (!row.size) {
+                    return '';
+                }
+
                 return formatFileSize(row.size);
             },
             "file_mtime": function(column, row) {
+                if (!row.mtime) {
+                    return '';
+                }
+
                 return formatTimestamp(row.mtime);
             },
             "playlists": function(column, row) {
@@ -126,6 +135,9 @@ $(function() {
             grid.bootgrid("clear").bootgrid("search", $(this).data('term'));
             return false;
         });
+
+        /* Handle album art clicking. */
+        grid.find('.album-art').fancybox({});
 
         appMoveFilesModal.selected_files = getSelectedFiles().length;
     }).on("selected.rs.jquery.bootgrid", function(e, columns, row) {
@@ -348,7 +360,6 @@ $(function() {
             $files.push($(this).data('row-id'));
         });
 
-        console.log($files);
         return $files;
     }
 

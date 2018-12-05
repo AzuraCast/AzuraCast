@@ -29,31 +29,21 @@ class ReprocessMedia extends CommandAbstract
         $em = $this->get(EntityManager::class);
 
         $stations = $em->getRepository(Entity\Station::class)->findAll();
-        $song_repo = $em->getRepository(Entity\Song::class);
+
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $em->getRepository(Entity\StationMedia::class);
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
-
             $output->writeLn('Processing media for station: ' . $station->getName());
 
             foreach($station->getMedia() as $media) {
                 /** @var Entity\StationMedia $media */
-
                 try {
-                    if (empty($media->getUniqueId())) {
-                        $media->generateUniqueId();
-                    }
-
-                    $song_info = $media->loadFromFile(true);
-                    if (!empty($song_info)) {
-                        $media->setSong($song_repo->getOrCreate($song_info));
-                    }
-
-                    $em->persist($media);
-
-                    $output->writeLn('Processed: '.$media->getFullPath());
+                    $media_repo->processMedia($media, true);
+                    $output->writeLn('Processed: '.$media->getPath());
                 } catch (\Exception $e) {
-                    $output->writeLn('Could not read source file for: '.$media->getFullPath().' - '.$e->getMessage());
+                    $output->writeLn('Could not read source file for: '.$media->getPath().' - '.$e->getMessage());
                     continue;
                 }
             }

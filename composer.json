@@ -32,7 +32,10 @@
     "supervisorphp/supervisor": "^3.0",
     "symfony/finder": "^4.1",
     "symfony/process": "^4.1",
-    "ramsey/uuid": "^3.8"
+    "ramsey/uuid": "^3.8",
+    "league/flysystem": "^1.0",
+    "league/flysystem-cached-adapter": "^1.0",
+    "wikimedia/composer-merge-plugin": "^1.4"
   },
   "require-dev": {
     "codeception/codeception": "^2.2",
@@ -57,5 +60,19 @@
     "preferred-install": "dist"
   },
   "prefer-stable": true,
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "extra": {
+    "merge-plugin": {
+      "include": [
+        "plugins/*/composer.json"
+      ],
+      "recurse": true,
+      "replace": false,
+      "ignore-duplicates": true,
+      "merge-dev": true,
+      "merge-extra": false,
+      "merge-extra-deep": false,
+      "merge-scripts": false
+    }
+  }
 }

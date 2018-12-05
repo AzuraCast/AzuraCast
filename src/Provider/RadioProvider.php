@@ -1,12 +1,7 @@
 <?php
 namespace App\Provider;
 
-use App\Radio\Adapters;
-use App\Radio\AutoDJ;
-use App\Radio\Backend;
-use App\Radio\Configuration;
-use App\Radio\Frontend;
-use App\Radio\Remote;
+use App\Radio;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 
@@ -14,46 +9,46 @@ class RadioProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[Adapters::class] = function($di) {
-            return new Adapters(new \Pimple\Psr11\ServiceLocator($di, [
-                Backend\Liquidsoap::class,
-                Backend\None::class,
-                Frontend\Icecast::class,
-                Frontend\Remote::class,
-                Frontend\SHOUTcast::class,
-                Remote\Icecast::class,
-                Remote\SHOUTcast1::class,
-                Remote\SHOUTcast2::class,
+        $di[Radio\Adapters::class] = function($di) {
+            return new Radio\Adapters(new \Pimple\Psr11\ServiceLocator($di, [
+                Radio\Backend\Liquidsoap::class,
+                Radio\Backend\None::class,
+                Radio\Frontend\Icecast::class,
+                Radio\Frontend\Remote::class,
+                Radio\Frontend\SHOUTcast::class,
+                Radio\Remote\Icecast::class,
+                Radio\Remote\SHOUTcast1::class,
+                Radio\Remote\SHOUTcast2::class,
             ]));
         };
 
-        $di[AutoDJ::class] = function($di) {
-            return new AutoDJ(
+        $di[Radio\AutoDJ::class] = function($di) {
+            return new Radio\AutoDJ(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Azura\EventDispatcher::class]
             );
         };
 
-        $di[Configuration::class] = function($di) {
-            return new Configuration(
+        $di[Radio\Configuration::class] = function($di) {
+            return new Radio\Configuration(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[Adapters::class],
+                $di[Radio\Adapters::class],
                 $di[\Supervisor\Supervisor::class]
             );
         };
 
-        $di[Backend\Liquidsoap::class] = function($di) {
-            return new Backend\Liquidsoap(
+        $di[Radio\Backend\Liquidsoap::class] = function($di) {
+            return new Radio\Backend\Liquidsoap(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
                 $di[\Azura\EventDispatcher::class],
-                $di[AutoDJ::class]
+                $di[Radio\AutoDJ::class]
             );
         };
 
-        $di[Backend\None::class] = function($di) {
-            return new Backend\None(
+        $di[Radio\Backend\None::class] = function($di) {
+            return new Radio\Backend\None(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
@@ -61,8 +56,16 @@ class RadioProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Frontend\Icecast::class] = function($di) {
-            return new Frontend\Icecast(
+        $di[Radio\Filesystem::class] = function($di) {
+            /** @var \Redis $redis */
+            $redis = $di[\Redis::class];
+            $redis->select(5);
+
+            return new Radio\Filesystem($redis);
+        };
+
+        $di[Radio\Frontend\Icecast::class] = function($di) {
+            return new Radio\Frontend\Icecast(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
@@ -72,8 +75,8 @@ class RadioProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Frontend\Remote::class] = function($di) {
-            return new Frontend\Remote(
+        $di[Radio\Frontend\Remote::class] = function($di) {
+            return new Radio\Frontend\Remote(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
@@ -83,8 +86,8 @@ class RadioProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Frontend\SHOUTcast::class] = function($di) {
-            return new Frontend\SHOUTcast(
+        $di[Radio\Frontend\SHOUTcast::class] = function($di) {
+            return new Radio\Frontend\SHOUTcast(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
@@ -94,22 +97,22 @@ class RadioProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Remote\Icecast::class] = function($di) {
-            return new Remote\Icecast(
+        $di[Radio\Remote\Icecast::class] = function($di) {
+            return new Radio\Remote\Icecast(
                 $di[\GuzzleHttp\Client::class],
                 $di[\Monolog\Logger::class]
             );
         };
 
-        $di[Remote\SHOUTcast1::class] = function($di) {
-            return new Remote\SHOUTcast1(
+        $di[Radio\Remote\SHOUTcast1::class] = function($di) {
+            return new Radio\Remote\SHOUTcast1(
                 $di[\GuzzleHttp\Client::class],
                 $di[\Monolog\Logger::class]
             );
         };
 
-        $di[Remote\SHOUTcast2::class] = function($di) {
-            return new Remote\SHOUTcast2(
+        $di[Radio\Remote\SHOUTcast2::class] = function($di) {
+            return new Radio\Remote\SHOUTcast2(
                 $di[\GuzzleHttp\Client::class],
                 $di[\Monolog\Logger::class]
             );

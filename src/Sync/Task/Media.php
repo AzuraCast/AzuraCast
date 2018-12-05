@@ -1,9 +1,11 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Radio\Filesystem;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Monolog\Logger;
 use Symfony\Component\Finder\Finder;
 
 class Media extends TaskAbstract
@@ -11,12 +13,24 @@ class Media extends TaskAbstract
     /** @var EntityManager */
     protected $em;
 
+    /** @var Filesystem */
+    protected $filesystem;
+
+    /** @var Logger */
+    protected $logger;
+
     /**
      * @param EntityManager $em
+     * @param Filesystem $filesystem
+     * @param Logger $logger
+     *
+     * @see \App\Provider\SyncProvider
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, Filesystem $filesystem, Logger $logger)
     {
         $this->em = $em;
+        $this->filesystem = $filesystem;
+        $this->logger = $logger;
     }
 
     public function run($force = false)
@@ -31,23 +45,31 @@ class Media extends TaskAbstract
 
     public function importMusic(Entity\Station $station)
     {
-        $base_dir = $station->getRadioMediaDir();
-        if (empty($base_dir)) {
-            return;
-        }
+        $fs = $this->filesystem->getForStation($station);
 
-        $music_files_raw = $this->globDirectory($base_dir);
+        $stats = [
+            'total_files' => 0,
+            'updated' => 0,
+            'created' => 0,
+            'deleted' => 0,
+        ];
+
         $music_files = [];
+        foreach($fs->listContents('media://', true) as $file) {
+            if ('file' !== $file['type']) {
+                continue;
+            }
 
-        foreach ($music_files_raw as $music_file_path) {
-            $path_short = str_replace($base_dir . '/', '', $music_file_path);
+            $path_short = $file['path'];
 
             $path_hash = md5($path_short);
             $music_files[$path_hash] = $path_short;
         }
 
-        /** @var Entity\Repository\SongRepository $song_repo */
-        $song_repo = $this->em->getRepository(Entity\Song::class);
+        $stats['total_files'] = count($music_files);
+
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
         $existing_media_q = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId());
@@ -61,30 +83,24 @@ class Media extends TaskAbstract
             $media_row = $media_row_iteration[0];
 
             // Check if media file still exists.
-            $full_path = $base_dir . '/' . $media_row->getPath();
+            $path_hash = md5($media_row->getPath());
 
-            if (file_exists($full_path)) {
-
+            if (isset($music_files[$path_hash])) {
                 $force_reprocess = false;
                 if (empty($media_row->getUniqueId())) {
                     $media_row->generateUniqueId();
                     $force_reprocess = true;
                 }
 
-                // Check for modifications.
-                $song_info = $media_row->loadFromFile($force_reprocess);
+                $media_repo->processMedia($media_row, $force_reprocess);
 
-                if (is_array($song_info)) {
-                    $media_row->setSong($song_repo->getOrCreate($song_info));
-                }
-
-                $this->em->persist($media_row);
-
-                $path_hash = md5($media_row->getPath());
                 unset($music_files[$path_hash]);
+                $stats['updated']++;
             } else {
                 // Delete the now-nonexistent media item.
                 $this->em->remove($media_row);
+
+                $stats['deleted']++;
             }
 
             // Batch processing
@@ -101,14 +117,8 @@ class Media extends TaskAbstract
         $i = 0;
 
         foreach ($music_files as $new_file_path) {
-            $media_row = new Entity\StationMedia($station, $new_file_path);
-
-            $song_info = $media_row->loadFromFile();
-            if (is_array($song_info)) {
-                $media_row->setSong($song_repo->getOrCreate($song_info));
-            }
-
-            $this->em->persist($media_row);
+            $media_repo->getOrCreate($station, $new_file_path);
+            $stats['created']++;
 
             if ($i % $records_per_batch === 0) {
                 $this->_flushAndClearRecords();
@@ -118,6 +128,8 @@ class Media extends TaskAbstract
         }
 
         $this->_flushAndClearRecords();
+
+        $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }
 
     /**
@@ -129,7 +141,6 @@ class Media extends TaskAbstract
 
         try {
             $this->em->clear(Entity\StationMedia::class);
-            $this->em->clear(Entity\StationMediaArt::class);
             $this->em->clear(Entity\Song::class);
         } catch (MappingException $e) {}
     }

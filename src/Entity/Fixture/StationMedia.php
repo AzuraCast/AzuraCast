@@ -23,7 +23,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
             $playlist = $this->getReference('station_playlist');
 
             /** @var Entity\Repository\StationMediaRepository $media_repo */
-            $media_repo = $em->getRepository(StationMedia::class);
+            $media_repo = $em->getRepository(Entity\StationMedia::class);
 
             $directory = new \RecursiveDirectoryIterator($music_skeleton_dir);
             $iterator = new \RecursiveIteratorIterator($directory);

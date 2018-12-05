@@ -22,8 +22,8 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
             /** @var Entity\StationPlaylist $playlist */
             $playlist = $this->getReference('station_playlist');
 
-            /** @var Entity\Repository\SongRepository $song_repo */
-            $song_repo = $em->getRepository(Entity\Song::class);
+            /** @var Entity\Repository\StationMediaRepository $media_repo */
+            $media_repo = $em->getRepository(StationMedia::class);
 
             $directory = new \RecursiveDirectoryIterator($music_skeleton_dir);
             $iterator = new \RecursiveIteratorIterator($directory);
@@ -41,12 +41,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
                 // Copy the file to the station media directory.
                 copy($file_path, $station_media_dir . '/' . $file_base_name);
 
-                $media_row = new Entity\StationMedia($station, $file_base_name);
-                $media_row->generateUniqueId();
-                $song_info = $media_row->loadFromFile(true);
-                if (is_array($song_info)) {
-                    $media_row->setSong($song_repo->getOrCreate($song_info));
-                }
+                $media_row = $media_repo->getOrCreate($station, $file_base_name);
                 $em->persist($media_row);
 
                 // Add the file to the playlist.

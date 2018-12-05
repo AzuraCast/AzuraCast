@@ -79,8 +79,12 @@ class RadioRequests extends TaskAbstract
             return false;
         }
 
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+
         try {
-            $backend->request($request->getTrack()->getFullPath());
+            $media_path = $media_repo->getFullPath($request->getTrack());
+            $backend->request($media_path);
         } catch(\Exception $e) {
             return false;
         }

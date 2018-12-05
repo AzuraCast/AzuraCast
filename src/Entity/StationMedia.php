@@ -366,7 +366,7 @@ class StationMedia
      *
      * @return string
      */
-    public function getFullPath(): string
+    public function getPathUri(): string
     {
         return 'media://'.$this->path;
     }

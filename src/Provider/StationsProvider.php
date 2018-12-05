@@ -121,7 +121,8 @@ class StationsProvider implements ServiceProviderInterface
 
         $di[Stations\Reports\DuplicatesController::class] = function($di) {
             return new Stations\Reports\DuplicatesController(
-                $di[\Doctrine\ORM\EntityManager::class]
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\Radio\Filesystem::class]
             );
         };
 

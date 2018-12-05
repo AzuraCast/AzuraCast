@@ -853,11 +853,8 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
             $media = $sh->getMedia();
 
             if ($media instanceof Entity\StationMedia) {
-
-                $media_uri = $media->getFullPath();
-
                 $fs = $this->filesystem->getForStation($event->getStation());
-                $media_path = $fs->getFullPath($media_uri);
+                $media_path = $fs->getFullPath($media->getPathUri());
 
                 $event->setSongPath($media_path);
                 $event->addAnnotations($media->getAnnotations());

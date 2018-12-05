@@ -201,11 +201,11 @@ class BatchController extends FilesControllerAbstract
 
                         $media = $media_repo->getOrCreate($station, $file['path']);
 
-                        $old_full_path = $media->getFullPath();
+                        $old_full_path = $media->getPathUri();
                         $media->setPath($directory_path . DIRECTORY_SEPARATOR . $file['basename']);
 
                         if (!$fs->rename($old_full_path, $media->getPath())) {
-                            throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path, $media->getFullPath()));
+                            throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path, $media->getPath()));
                         }
 
                         $this->em->persist($media);

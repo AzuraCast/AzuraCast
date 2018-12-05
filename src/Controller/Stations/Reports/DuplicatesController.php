@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
+use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -12,13 +13,19 @@ class DuplicatesController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Filesystem */
+    protected $filesystem;
+
     /**
      * @param EntityManager $em
+     * @param Filesystem $filesystem
+     *
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, Filesystem $filesystem)
     {
         $this->em = $em;
+        $this->filesystem = $filesystem;
     }
 
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
@@ -71,14 +78,18 @@ class DuplicatesController
 
     public function deleteAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
+        $station = $request->getStation();
+        $fs = $this->filesystem->getForStation($station);
+
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+        $media = $media_repo->findOneBy([
             'id' => $media_id,
             'station_id' => $station_id
         ]);
 
         if ($media instanceof Entity\StationMedia) {
-            $path = $media->getFullPath();
-            @unlink($path);
+            $fs->delete($media->getPathUri());
 
             $this->em->remove($media);
             $this->em->flush();

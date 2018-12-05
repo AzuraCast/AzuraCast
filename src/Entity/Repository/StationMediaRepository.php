@@ -139,7 +139,7 @@ class StationMediaRepository extends Repository
      */
     public function processMedia(Entity\StationMedia $media, $force = false): Entity\StationMedia
     {
-        $media_uri = $media->getFullPath();
+        $media_uri = $media->getPathUri();
 
         $fs = $this->filesystem->getForStation($media->getStation());
         if (!$fs->has($media_uri)) {
@@ -248,7 +248,7 @@ class StationMediaRepository extends Repository
         $getID3 = new \getID3;
         $getID3->setOption(['encoding' => 'UTF8']);
 
-        $tmp_uri = $fs->copyToTemp($media->getFullPath());
+        $tmp_uri = $fs->copyToTemp($media->getPathUri());
         $tmp_path = $fs->getFullPath($tmp_uri);
 
         $tagwriter = new \getid3_writetags;
@@ -293,7 +293,7 @@ class StationMediaRepository extends Repository
         if ($tagwriter->WriteTags()) {
             $media->setMtime(time());
 
-            $fs->updateFromTemp($tmp_uri, $media->getFullPath());
+            $fs->updateFromTemp($tmp_uri, $media->getPathUri());
             return true;
         }
 
@@ -369,6 +369,21 @@ class StationMediaRepository extends Repository
         }
 
         return $fs->read($album_art_path);
+    }
+
+    /**
+     * Return the full path associated with a media entity.
+     *
+     * @param Entity\StationMedia $media
+     * @return string
+     */
+    public function getFullPath(Entity\StationMedia $media): string
+    {
+        $fs = $this->filesystem->getForStation($media->getStation());
+
+        $uri = $media->getPathUri();
+
+        return $fs->getFullPath($uri);
     }
 
     /**

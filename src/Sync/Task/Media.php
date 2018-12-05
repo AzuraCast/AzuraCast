@@ -147,6 +147,8 @@ class Media extends TaskAbstract
 
     public function importPlaylists(Entity\Station $station)
     {
+        $fs = $this->filesystem->getForStation($station);
+
         $base_dir = $station->getRadioPlaylistsDir();
         if (empty($base_dir)) {
             return;
@@ -156,7 +158,7 @@ class Media extends TaskAbstract
         $media_lookup = [];
         foreach ($station->getMedia() as $media) {
             /** @var Entity\StationMedia $media */
-            $media_path = $media->getFullPath();
+            $media_path = $fs->getFullPath($media->getPathUri());
             $media_hash = md5($media_path);
 
             $media_lookup[$media_hash] = $media;

@@ -119,4 +119,19 @@ class StationFilesystem extends MountManager
         $prefix = $adapter->getPathPrefix();
         return $prefix.$path;
     }
+
+    /**
+     * Flush the caches of all associated filesystems.
+     */
+    public function flushAllCaches(): void
+    {
+        foreach($this->filesystems as $prefix => $filesystem) {
+            if ($filesystem instanceof Filesystem) {
+                $adapter = $filesystem->getAdapter();
+                if ($adapter instanceof CachedAdapter) {
+                    $adapter->getCache()->flush();
+                }
+            }
+        }
+    }
 }

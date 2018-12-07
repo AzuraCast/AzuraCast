@@ -133,24 +133,25 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param bool $force
-     * @return Entity\StationMedia
+     * @return bool Whether reprocessing was required for this file.
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \getid3_exception
      */
-    public function processMedia(Entity\StationMedia $media, $force = false): Entity\StationMedia
+    public function processMedia(Entity\StationMedia $media, $force = false): bool
     {
         $media_uri = $media->getPathUri();
 
         $fs = $this->filesystem->getForStation($media->getStation());
         if (!$fs->has($media_uri)) {
-            return $media;
+            return false;
         }
 
         $media_mtime = $fs->getTimestamp($media_uri);
 
         // No need to update if all of these conditions are true.
         if (!$force && $media->songMatches() && $media_mtime <= $media->getMtime()) {
-            return $media;
+            return false;
         }
 
         $tmp_uri = $fs->copyToTemp($media_uri);
@@ -163,7 +164,7 @@ class StationMediaRepository extends Repository
         $media->setMtime($media_mtime);
         $this->_em->persist($media);
 
-        return $media;
+        return true;
     }
 
     /**

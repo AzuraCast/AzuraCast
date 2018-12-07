@@ -44,7 +44,10 @@ class Filesystem
             $filesystems = [];
             foreach($aliases as $alias => $local_path) {
                 $adapter = new Local($local_path);
-                $cached_client = new PhpRedis($this->redis, 'fs_'.$station_id.'_'.$alias, 43200);
+
+                $fs_location_key = 'fs_'.substr(md5($local_path), 0, 10);
+
+                $cached_client = new PhpRedis($this->redis, $fs_location_key, 3600);
                 $filesystems[$alias] = new LeagueFilesystem(new CachedAdapter($adapter, $cached_client));
             }
 

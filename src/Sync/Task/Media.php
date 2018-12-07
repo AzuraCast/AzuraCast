@@ -46,9 +46,11 @@ class Media extends TaskAbstract
     public function importMusic(Entity\Station $station)
     {
         $fs = $this->filesystem->getForStation($station);
+        $fs->flushAllCaches();
 
         $stats = [
             'total_files' => 0,
+            'unchanged' => 0,
             'updated' => 0,
             'created' => 0,
             'deleted' => 0,
@@ -92,10 +94,15 @@ class Media extends TaskAbstract
                     $force_reprocess = true;
                 }
 
-                $media_repo->processMedia($media_row, $force_reprocess);
+                $processed = $media_repo->processMedia($media_row, $force_reprocess);
 
                 unset($music_files[$path_hash]);
-                $stats['updated']++;
+
+                if ($processed) {
+                    $stats['updated']++;
+                } else {
+                    $stats['unchanged']++;
+                }
             } else {
                 // Delete the now-nonexistent media item.
                 $this->em->remove($media_row);

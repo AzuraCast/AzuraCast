@@ -101,18 +101,7 @@ return [
         'order' => 3,
         'require' => ['minimal'],
         'files' => [
-            'css' => [
-                [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css',
-                    'integrity' => 'sha256-JHGEmB629pipTkMag9aMaw32I8zle24p3FpsEeI6oZU=',
-                ]
-            ],
             'js' => [
-                [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js',
-                    'integrity' => 'sha256-/YAntTqXy9V4LoXFkI5WPDl3ZwP/knn1BljmMJJ7QWc=',
-                    'defer' => true,
-                ],
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js',
                     'integrity' => 'sha256-KsRuvuRtUVvobe66OFtOQfjP8WA2SzYsmm4VPfMnxms=',

@@ -2,7 +2,10 @@
   "name": "AzuraCast",
   "license": "Apache-2.0",
   "dependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
     "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^3.9.2",
     "gulp-concat": "^2.6.1",

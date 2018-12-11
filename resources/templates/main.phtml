@@ -35,7 +35,7 @@ echo $assets->css();
 echo $assets->js();
 ?>
 </head>
-<body class="<?=$page_class ?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
+<body class="page-full <?=$page_class ?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
 <?=$assets->inlineJs($request) ?>
 
 <a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content') ?></a>

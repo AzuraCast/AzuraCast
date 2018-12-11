@@ -1,6 +1,7 @@
 'use strict';
 
 const gulp = require('gulp');
+const babel = require('gulp-babel');
 const clean = require('gulp-clean');
 const rev = require('gulp-rev');
 const concat = require('gulp-concat');
@@ -19,6 +20,9 @@ gulp.task('clean', function() {
 gulp.task('concat-js', ['clean'], function() {
     return gulp.src('./js/inc/*.js')
         .pipe(sourcemaps.init())
+            .pipe(babel({
+                presets: ['@babel/env']
+            }))
             .pipe(concat('app.js'))
             .pipe(uglify())
         .pipe(sourcemaps.write())
@@ -27,22 +31,28 @@ gulp.task('concat-js', ['clean'], function() {
 
 gulp.task('build-vue', ['clean'], function() {
     return gulp.src('vue/webcaster.vue')
-        .pipe(webpack({
-            output: {
-                publicPath: '/static/dist',
-                filename: 'webcaster.js',
-                library: 'Webcaster'
-            },
-            module: {
-                rules: [
-                    {
-                        test: /\.vue$/,
-                        loader: 'vue-loader',
-                        options: {}
-                    }
-                ]
-            }
-        }))
+        .pipe(sourcemaps.init())
+            .pipe(webpack({
+                output: {
+                    publicPath: '/static/dist',
+                    filename: 'webcaster.js',
+                    library: 'Webcaster'
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.vue$/,
+                            loader: 'vue-loader',
+                            options: {}
+                        }
+                    ]
+                }
+            }))
+            .pipe(babel({
+                presets: ['@babel/env']
+            }))
+            .pipe(uglify())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('./dist'));
 });
 

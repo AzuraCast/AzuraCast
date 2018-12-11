@@ -88,6 +88,7 @@ return [
                 ],
                 [
                     'src' => 'dist/app.js',
+                    'defer' => true,
                 ],
                 [
                     'src' => 'dist/material.js',
@@ -102,10 +103,6 @@ return [
         'files' => [
             'css' => [
                 [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css',
-                    'integrity' => 'sha256-zuyRv+YsWwh1XR5tsrZ7VCfGqUmmPmqBjIvJgQWoSDo=',
-                ],
-                [
                     'href' => 'https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css',
                     'integrity' => 'sha256-JHGEmB629pipTkMag9aMaw32I8zle24p3FpsEeI6oZU=',
                 ]
@@ -117,8 +114,8 @@ return [
                     'defer' => true,
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js',
-                    'integrity' => 'sha256-JirYRqbf+qzfqVtEE4GETyHlAbiCpC005yBTa4rj6xg=',
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js',
+                    'integrity' => 'sha256-KsRuvuRtUVvobe66OFtOQfjP8WA2SzYsmm4VPfMnxms=',
                     'defer' => true,
                 ],
                 [

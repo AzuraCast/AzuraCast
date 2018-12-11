@@ -4,19 +4,22 @@ $(function() {
 
         e.preventDefault();
 
-        var linkUrl = $(this).attr('href');
+        const linkUrl = $(this).attr('href');
+
+        let confirmTitle = 'Are you sure?';
+        if ($(this).data('confirm-title')) {
+            confirmTitle = $(this).data('confirm-title');
+        }
 
         swal({
-            title: 'Are you sure?',
+            title: confirmTitle,
             type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes',
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-        }, function() {
-            window.location.href = linkUrl;
+            buttons: [true, $(this).text()],
+            dangerMode: true
+        }).then((value) => {
+            if (value) {
+                window.location.href = linkUrl;
+            }
         });
 
         return false;

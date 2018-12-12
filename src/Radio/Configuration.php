@@ -219,7 +219,7 @@ class Configuration
      */
     public function assignRadioPorts(Station $station, $force = false)
     {
-        if ($station->getFrontendType() !== 'remote' && $station->getBackendType() !== 'none') {
+        if ($station->getFrontendType() !== Adapters::FRONTEND_REMOTE || $station->getBackendType() !== Adapters::BACKEND_NONE) {
             $frontend_config = (array)$station->getFrontendConfig();
             $backend_config = (array)$station->getBackendConfig();
 

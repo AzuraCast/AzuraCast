@@ -67,7 +67,7 @@ $assets->load('fullcalendar')
                                     </ul>
                                 </div>
 
-                                <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('stations:playlists:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                                <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete playlist "%s"?', $row['name'])) ?>" href="<?=$router->fromHere('stations:playlists:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                             </td>
                             <td>
                                 <big>

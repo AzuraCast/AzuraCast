@@ -97,6 +97,12 @@ class SongHistory
     protected $request;
 
     /**
+     * @Column(name="autodj_custom_uri", type="string", length=255, nullable=true)
+     * @var string|null
+     */
+    protected $autodj_custom_uri;
+
+    /**
      * @Column(name="timestamp_cued", type="integer", nullable=true)
      * @var int|null
      */
@@ -259,6 +265,22 @@ class SongHistory
     public function setRequest($request)
     {
         $this->request = $request;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAutodjCustomUri(): ?string
+    {
+        return $this->autodj_custom_uri;
+    }
+
+    /**
+     * @param string|null $autodj_custom_uri
+     */
+    public function setAutodjCustomUri(?string $autodj_custom_uri): void
+    {
+        $this->autodj_custom_uri = $autodj_custom_uri;
     }
 
     /**
@@ -475,7 +497,7 @@ class SongHistory
         $response->duration = (int)$this->duration;
         $response->is_request = $this->request !== null;
 
-        if ($this->playlist_id !== null) {
+        if ($this->playlist instanceof StationPlaylist) {
             $playlist = $this->getPlaylist();
             $response->playlist = $playlist->getName();
         } else {
@@ -486,6 +508,11 @@ class SongHistory
             $response->listeners_start = (int)$this->listeners_start;
             $response->listeners_end = (int)$this->listeners_end;
             $response->delta_total = (int)$this->delta_total;
+        }
+
+        if ($response instanceof Api\QueuedSong) {
+            $response->cued_at = (int)$this->timestamp_cued;
+            $response->autodj_custom_uri = $this->autodj_custom_uri;
         }
 
         $response->song = ($this->media)

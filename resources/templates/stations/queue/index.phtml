@@ -1,0 +1,35 @@
+<?php
+$this->layout('main', ['title' => __('Upcoming Song Queue'), 'manual' => true]);
+
+/** @var \Azura\Assets $assets */
+$assets
+    ->load('bootgrid')
+    ->load('moment')
+    ->addInlineJs($this->fetch('stations/queue/index.js'));
+?>
+
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('Upcoming Song Queue') ?></h2>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table table table-striped">
+            <colgroup>
+                <col width="20%">
+                <col width="35%">
+                <col width="25%">
+                <col width="20%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th data-column-id="date_time" data-formatter="datetime"><?=__('Cued On') ?></th>
+                <th data-column-id="song" data-formatter="song_title"><?=__('Song Title') ?></th>
+                <th data-column-id="source" data-formatter="source"><?=__('Source') ?></th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=__('Actions') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>

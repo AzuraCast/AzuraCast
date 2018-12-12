@@ -2,11 +2,13 @@
 use App\Controller;
 use App\Middleware;
 use App\Acl;
+use Azura\App;
 use Azura\Middleware as AzuraMiddleware;
 
-return function(\Slim\App $app)
+return function(App $app)
 {
     $app->group('/admin', function () {
+        /** @var App $this */
 
         $this->get('', Controller\Admin\IndexController::class.':indexAction')
             ->setName('admin:index:index');
@@ -16,6 +18,7 @@ return function(\Slim\App $app)
             ->add([Middleware\Permissions::class, Acl::GLOBAL_ALL]);
 
         $this->group('/install', function () {
+            /** @var App $this */
 
             $this->map(['GET', 'POST'], '/shoutcast', Controller\Admin\Install\ShoutcastController::class)
                 ->setName('admin:install:shoutcast');
@@ -23,6 +26,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::GLOBAL_ALL]);
 
         $this->group('/api', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Admin\ApiController::class.':indexAction')
                 ->setName('admin:api:index');
@@ -40,6 +44,7 @@ return function(\Slim\App $app)
             ->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
 
         $this->group('/custom_fields', function() {
+            /** @var App $this */
 
             $this->get('', Controller\Admin\CustomFieldsController::class.':indexAction')
                 ->setName('admin:custom_fields:index');
@@ -56,6 +61,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::GLOBAL_CUSTOM_FIELDS]);
 
         $this->group('/logs', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Admin\LogsController::class)
                 ->setName('admin:logs:index');
@@ -68,6 +74,7 @@ return function(\Slim\App $app)
             ->add([Middleware\Permissions::class, Acl::GLOBAL_LOGS]);
 
         $this->group('/permissions', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Admin\PermissionsController::class.':indexAction')
                 ->setName('admin:permissions:index');
@@ -88,6 +95,7 @@ return function(\Slim\App $app)
             ->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
 
         $this->group('/stations', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Admin\StationsController::class.':indexAction')
                 ->setName('admin:stations:index');
@@ -107,6 +115,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::GLOBAL_STATIONS]);
 
         $this->group('/users', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Admin\UsersController::class.':indexAction')
                 ->setName('admin:users:index');
@@ -134,6 +143,7 @@ return function(\Slim\App $app)
         ->add(Middleware\RequireLogin::class);
 
     $app->group('/api', function () {
+        /** @var App $this */
 
         $this->options('/{routes:.+}', function (\App\Http\Request $request, \App\Http\Response $response) {
             return $response
@@ -152,8 +162,10 @@ return function(\Slim\App $app)
             ->setName('api:index:time');
 
         $this->group('/internal', function () {
+            /** @var App $this */
 
             $this->group('/{station}', function() {
+                /** @var App $this */
 
                 // Liquidsoap internal authentication functions
                 $this->map(['GET', 'POST'], '/auth', Controller\Api\InternalController::class.':authAction')
@@ -184,6 +196,7 @@ return function(\Slim\App $app)
             ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
 
         $this->group('/station/{station}', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Api\Stations\IndexController::class.':indexAction')
                 ->setName('api:stations:index')
@@ -191,12 +204,21 @@ return function(\Slim\App $app)
 
             $this->get('/nowplaying', Controller\Api\NowplayingController::class.':indexAction');
 
-            // This would not normally be POST-able, but Bootgrid requires it
+            // Includes POST for Bootgrid
             $this->map(['GET', 'POST'], '/history', Controller\Api\Stations\HistoryController::class)
                 ->setName('api:stations:history')
                 ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
-            // This would not normally be POST-able, but Bootgrid requires it
+            // Includes POST for Bootgrid
+            $this->map(['GET', 'POST'], '/queue', Controller\Api\Stations\QueueController::class)
+                ->setName('api:stations:queue')
+                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+
+            $this->map(['GET', 'DELETE'], '/queue/{id}', Controller\Api\Stations\QueueController::class.':record')
+                ->setName('api:stations:queue:record')
+                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+
+            // Includes POST for Bootgrid
             $this->map(['GET', 'POST'], '/requests', Controller\Api\RequestsController::class.':listAction')
                 ->setName('api:requests:list');
 
@@ -236,6 +258,7 @@ return function(\Slim\App $app)
         ->setName('home');
 
     $app->group('', function() {
+        /** @var App $this */
 
         $this->get('/dashboard', Controller\Frontend\DashboardController::class.':indexAction')
             ->setName('dashboard');
@@ -281,6 +304,7 @@ return function(\Slim\App $app)
         ->add(AzuraMiddleware\EnableView::class);
 
     $app->group('/setup', function () {
+        /** @var App $this */
 
         $this->map(['GET', 'POST'], '', Controller\Frontend\SetupController::class.':indexAction')
             ->setName('setup:index');
@@ -301,6 +325,7 @@ return function(\Slim\App $app)
         ->add(AzuraMiddleware\EnableView::class);
 
     $app->group('/public/{station}', function () {
+        /** @var App $this */
 
         $this->get('[/{autoplay:autoplay}]', Controller\Frontend\PublicController::class.':indexAction')
             ->setName('public:index');
@@ -322,12 +347,14 @@ return function(\Slim\App $app)
         ->add(AzuraMiddleware\EnableView::class);
 
     $app->group('/station/{station}', function () {
+        /** @var App $this */
 
         $this->get('', function (\App\Http\Request $request, \App\Http\Response $response) {
             return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
         })->setName('stations:index:index');
 
         $this->group('/automation', function () {
+            /** @var App $this */
 
             $this->map(['GET', 'POST'], '', Controller\Stations\AutomationController::class.':indexAction')
                 ->setName('stations:automation:index');
@@ -338,6 +365,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::STATION_AUTOMATION, true]);
 
         $this->group('/files', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Stations\Files\FilesController::class)
                 ->setName('stations:files:index');
@@ -371,6 +399,7 @@ return function(\Slim\App $app)
             ->add([Middleware\Permissions::class, Acl::STATION_MEDIA, true]);
 
         $this->group('/logs', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Stations\LogsController::class)
                 ->setName('stations:logs:index');
@@ -382,6 +411,7 @@ return function(\Slim\App $app)
             ->add([Middleware\Permissions::class, Acl::STATION_LOGS, true]);
 
         $this->group('/playlists', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Stations\PlaylistsController::class.':indexAction')
                 ->setName('stations:playlists:index');
@@ -407,6 +437,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::STATION_MEDIA, true]);
 
         $this->group('/mounts', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Stations\MountsController::class.':indexAction')
                 ->setName('stations:mounts:index');
@@ -429,7 +460,11 @@ return function(\Slim\App $app)
             ->setName('stations:profile:edit')
             ->add([Middleware\Permissions::class, Acl::STATION_PROFILE, true]);
 
+        $this->get('/queue', Controller\Stations\QueueController::class)
+            ->setName('stations:queue:index');
+
         $this->group('/remotes', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Stations\RemotesController::class.':indexAction')
                 ->setName('stations:remotes:index');
@@ -446,6 +481,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::STATION_REMOTES, true]);
 
         $this->group('/reports', function () {
+            /** @var App $this */
 
             $this->get('/overview', Controller\Stations\Reports\OverviewController::class)
                 ->setName('stations:reports:overview');
@@ -477,6 +513,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
         $this->group('/streamers', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Stations\StreamersController::class.':indexAction')
                 ->setName('stations:streamers:index');
@@ -493,6 +530,7 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, Acl::STATION_STREAMERS, true]);
 
         $this->group('/webhooks', function () {
+            /** @var App $this */
 
             $this->get('', Controller\Stations\WebhooksController::class.':indexAction')
                 ->setName('stations:webhooks:index');

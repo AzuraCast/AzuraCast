@@ -37,5 +37,16 @@ class HistoryCleanup extends TaskAbstract
         $this->em->createQuery('DELETE FROM '.Entity\SongHistory::class.' sh WHERE sh.timestamp_start <= :threshold')
             ->setParameter('threshold', $threshold)
             ->execute();
+
+        // Clean up any history entries that don't represent actual played songs.
+        $cleanup_threshold = time() - 43200;
+
+        $this->em->createQuery('DELETE FROM ' . Entity\SongHistory::class . ' sh
+            WHERE sh.timestamp_cued < :threshold
+            AND sh.sent_to_autodj = 0
+            AND sh.timestamp_start = 0
+            AND sh.timestamp_end = 0')
+            ->setParameter('threshold', $cleanup_threshold)
+            ->execute();
     }
 }

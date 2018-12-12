@@ -851,13 +851,21 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         if ($sh instanceof Entity\SongHistory) {
             $media = $sh->getMedia();
-
             if ($media instanceof Entity\StationMedia) {
                 $fs = $this->filesystem->getForStation($event->getStation());
                 $media_path = $fs->getFullPath($media->getPathUri());
 
                 $event->setSongPath($media_path);
                 $event->addAnnotations($media->getAnnotations());
+            } else if (!empty($sh->getAutodjCustomUri())) {
+                $custom_uri = $sh->getAutodjCustomUri();
+
+                $event->setSongPath($custom_uri);
+                if ($sh->getDuration()) {
+                    $event->addAnnotations([
+                        'length' => $sh->getDuration(),
+                    ]);
+                }
             }
         } else if (null !== $sh) {
             $event->setSongPath((string)$sh);

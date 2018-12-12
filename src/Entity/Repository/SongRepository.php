@@ -26,7 +26,7 @@ class SongRepository extends Repository
     /**
      * Retrieve an existing Song entity or create a new one.
      *
-     * @param $song_info
+     * @param array|string $song_info
      * @param bool $is_radio_play
      * @return Entity\Song
      */

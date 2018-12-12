@@ -1,4 +1,6 @@
 <?php
+use App\Acl;
+
 /** @var $station App\Entity\Station */
 /** @var $frontend App\Radio\Frontend\FrontendAbstract */
 /** @var $backend App\Radio\Backend\BackendAbstract */
@@ -16,7 +18,7 @@ $user = $request->getUser();
 </div>
 
 <ul class="navdrawer-nav">
-<?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+<?php if ($acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId())): ?>
     <?php if (!$station->getHasStarted()): ?>
     <li class="nav-item">
         <a class="nav-link api-call text-success" href="<?=$router->fromHere('api:stations:restart') ?>">
@@ -51,7 +53,7 @@ $user = $request->getUser();
     </li>
 <?php endif; ?>
 
-<?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend::supportsMedia()): ?>
+<?php if ($acl->userAllowed($user, Acl::STATION_MEDIA, $station->getId()) && $backend::supportsMedia()): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'files'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:files:index') ?>">
             <i class="navdrawer-nav-icon material-icons">library_music</i>
@@ -66,7 +68,7 @@ $user = $request->getUser();
     </li>
 <?php endif; ?>
 
-<?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend::supportsStreamers()): ?>
+<?php if ($acl->userAllowed($user, Acl::STATION_STREAMERS, $station->getId()) && $backend::supportsStreamers()): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'streamers'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:streamers:index') ?>">
             <i class="navdrawer-nav-icon material-icons">mic</i>
@@ -83,7 +85,7 @@ $user = $request->getUser();
     </li>
 <?php endif; ?>
 
-<?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend::supportsMounts()): ?>
+<?php if ($acl->userAllowed($user, Acl::STATION_MOUNTS, $station->getId()) && $frontend::supportsMounts()): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'mounts'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:mounts:index') ?>">
             <i class="navdrawer-nav-icon material-icons">wifi_tethering</i>
@@ -92,7 +94,7 @@ $user = $request->getUser();
     </li>
 <?php endif; ?>
 
-<?php if ($acl->userAllowed($user, 'manage station remotes', $station->getId())): ?>
+<?php if ($acl->userAllowed($user, Acl::STATION_REMOTES, $station->getId())): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'remotes'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:remotes:index') ?>">
             <i class="navdrawer-nav-icon material-icons">router</i>
@@ -101,7 +103,7 @@ $user = $request->getUser();
     </li>
 <?php endif; ?>
 
-<?php if ($acl->userAllowed($user, 'manage station web hooks', $station->getId())): ?>
+<?php if ($acl->userAllowed($user, Acl::STATION_WEB_HOOKS, $station->getId())): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'webhooks'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:webhooks:index') ?>">
             <i class="navdrawer-nav-icon material-icons">code</i>
@@ -110,7 +112,7 @@ $user = $request->getUser();
     </li>
 <?php endif; ?>
 
-<?php if ($acl->userAllowed($user, 'view station reports', $station->getId())): ?>
+<?php if ($acl->userAllowed($user, Acl::STATION_REPORTS, $station->getId())): ?>
     <li class="nav-item">
         <a class="nav-item nav-link" data-toggle="collapse" href="#sidebar-submenu-reports">
             <i class="navdrawer-nav-icon material-icons">assignment</i>
@@ -173,21 +175,26 @@ $user = $request->getUser();
         </a>
         <div class="collapse pb-2" id="sidebar-submenu-utilities">
             <ul class="navdrawer-nav">
-            <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend::supportsMedia()): ?>
+            <?php if ($acl->userAllowed($user, Acl::STATION_AUTOMATION, $station->getId()) && $backend::supportsMedia()): ?>
                 <li class="nav-item">
                     <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:automation:index') ?>">
                         <?=__('Automated Assignment') ?>
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($acl->userAllowed($user, 'view station logs', $station->getId())): ?>
+            <?php if ($acl->userAllowed($user, Acl::STATION_LOGS, $station->getId())): ?>
                 <li class="nav-item">
                     <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:logs:index') ?>">
                         <?=__('Log Viewer') ?>
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+            <?php if ($acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId())): ?>
+                <li>
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$router->fromHere('stations:queue:index') ?>">
+                        <?=__('Upcoming Song Queue') ?>
+                    </a>
+                </li>
                 <li>
                     <a class="api-call nav-link pl-4 py-2 text-muted" data-restart="false" href="<?=$router->fromHere('api:stations:restart') ?>">
                         <?=__('Restart Broadcasting') ?>

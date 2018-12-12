@@ -188,7 +188,7 @@ class StationPlaylistMediaRepository extends Repository
      * Return a song from the cached playback queue for a playlist, if applicable.
      *
      * @param Entity\StationPlaylist $playlist
-     * @return Entity\StationMedia|string|null
+     * @return Entity\StationMedia|array|null
      */
     public function getQueuedSong(Entity\StationPlaylist $playlist)
     {
@@ -237,7 +237,7 @@ class StationPlaylistMediaRepository extends Repository
         return $media_queue;
     }
 
-    protected function _playRemoteUrl(Entity\StationPlaylist $playlist): ?string
+    protected function _playRemoteUrl(Entity\StationPlaylist $playlist): ?array
     {
         $remote_type = $playlist->getRemoteType() ?? Entity\StationPlaylist::REMOTE_TYPE_STREAM;
 
@@ -246,10 +246,10 @@ class StationPlaylistMediaRepository extends Repository
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
             if (Entity\StationPlaylist::TYPE_SCHEDULED === $playlist->getType()) {
                 $duration = $playlist->getScheduleDuration();
-                return 'annotate:duration="'.Liquidsoap::toFloat($duration).'":'.$playlist->getRemoteUrl();
+                return [$playlist->getRemoteUrl(), $duration];
             }
 
-            return $playlist->getRemoteUrl();
+            return [$playlist->getRemoteUrl(), 0];
         }
 
         // Handle a remote playlist containing songs or streams.
@@ -270,7 +270,7 @@ class StationPlaylistMediaRepository extends Repository
         // Save the modified cache, sans the now-missing entry.
         $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
 
-        return $media_id;
+        return ($media_id) ? [$media_id, 0] : null;
     }
 
     /**

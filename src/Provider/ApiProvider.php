@@ -36,6 +36,13 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Api\Stations\QueueController::class] = function($di) {
+            return new Api\Stations\QueueController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\ApiUtilities::class]
+            );
+        };
+
         $di[Api\RequestsController::class] = function($di) {
             return new Api\RequestsController(
                 $di[\Doctrine\ORM\EntityManager::class],

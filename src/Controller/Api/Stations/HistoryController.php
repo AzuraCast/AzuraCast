@@ -9,11 +9,6 @@ use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-/**
- * Class HistoryController
- * @package App\Controller\Api\Stations
- * @see App\Controller\Api\ApiProvider
- */
 class HistoryController
 {
     /** @var EntityManager */
@@ -25,6 +20,8 @@ class HistoryController
     /**
      * @param EntityManager $em
      * @param App\ApiUtilities $api_utils
+     *
+     * @see App\Controller\Api\ApiProvider
      */
     public function __construct(EntityManager $em, App\ApiUtilities $api_utils)
     {

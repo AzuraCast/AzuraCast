@@ -45,9 +45,9 @@ class AutoDJ implements EventSubscriberInterface
      * 
      * @param Entity\Station $station
      * @param bool $is_autodj
-     * @return Entity\SongHistory|string|null
+     * @return Entity\SongHistory|null
      */
-    public function getNextSong(Entity\Station $station, $is_autodj = false)
+    public function getNextSong(Entity\Station $station, $is_autodj = false): ?Entity\SongHistory
     {
         if ($station->useManualAutoDJ()) {
             return null;
@@ -74,16 +74,18 @@ class AutoDJ implements EventSubscriberInterface
 
     public function checkDatabaseForNextSong(GetNextSong $event)
     {
-        $next_song = $this->em->createQuery('SELECT sh, s, sm
-            FROM ' . Entity\SongHistory::class . ' sh JOIN sh.song s JOIN sh.media sm
+        $next_song = $this->em->createQuery('SELECT sh, s, sp, sm
+            FROM ' . Entity\SongHistory::class . ' sh
+            LEFT JOIN sh.song s 
+            LEFT JOIN sh.media sm
+            LEFT JOIN sh.playlist sp
             WHERE sh.station_id = :station_id
-            AND sh.timestamp_cued >= :threshold
+            AND sh.timestamp_cued != 0
             AND sh.sent_to_autodj = 0
             AND sh.timestamp_start = 0
             AND sh.timestamp_end = 0
             ORDER BY sh.id DESC')
             ->setParameter('station_id', $event->getStation()->getId())
-            ->setParameter('threshold', time() - 43200)
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
@@ -300,11 +302,16 @@ class AutoDJ implements EventSubscriberInterface
     {
         /** @var Entity\Repository\StationPlaylistMediaRepository $spm_repo */
         $spm_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+
+        /** @var Entity\Repository\SongRepository $song_repo */
+        $song_repo = $this->em->getRepository(Entity\Song::class);
+
         $media_to_play = $spm_repo->getQueuedSong($playlist);
 
         if ($media_to_play instanceof Entity\StationMedia) {
             $spm = $media_to_play->getItemForPlaylist($playlist);
             $spm->played();
+
             $this->em->persist($spm);
 
             // Log in history
@@ -319,8 +326,23 @@ class AutoDJ implements EventSubscriberInterface
             $this->em->flush();
 
             return $sh;
-        } else if (is_string($media_to_play)) {
-            return $media_to_play;
+        } else if (is_array($media_to_play)) {
+            [$media_uri, $media_duration] = $media_to_play;
+
+            $sh = new Entity\SongHistory($song_repo->getOrCreate([
+                'text' => 'Internal AutoDJ URI',
+            ]), $playlist->getStation());
+
+            $sh->setPlaylist($playlist);
+            $sh->setAutodjCustomUri($media_uri);
+            $sh->setDuration($media_duration);
+
+            $sh->setTimestampCued(time());
+
+            $this->em->persist($sh);
+            $this->em->flush();
+
+            return $sh;
         }
 
         return null;

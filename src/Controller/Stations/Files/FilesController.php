@@ -244,7 +244,7 @@ class FilesController extends FilesControllerAbstract
                     ? $file_path.$sanitized_name
                     : $file_path.'/'.$sanitized_name;
 
-                $media_repo->uploadFile($station, $flow_response['path'], $final_path);
+                $station_media = $media_repo->uploadFile($station, $flow_response['path'], $final_path);
 
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
                 if ($request->hasParam('searchPhrase')) {

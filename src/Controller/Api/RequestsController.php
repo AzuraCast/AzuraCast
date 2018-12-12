@@ -150,10 +150,12 @@ class RequestsController
             return $response->withJson('This station does not accept requests currently.', 403);
         }
 
+        $is_authenticated = !empty($request->getAttribute(Request::ATTRIBUTE_USER));
+
         try {
             /** @var Entity\Repository\StationRequestRepository $request_repo */
             $request_repo = $this->em->getRepository(Entity\StationRequest::class);
-            $request_repo->submit($station, $media_id);
+            $request_repo->submit($station, $media_id, $is_authenticated);
 
             return $response->withJson('Request submitted successfully.');
         } catch (\Azura\Exception $e) {

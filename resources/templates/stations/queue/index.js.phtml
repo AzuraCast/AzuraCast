@@ -29,7 +29,7 @@ $(function() {
             },
             "commands": function(column, row) {
                 if (row.links_self) {
-                    return '<a class="btn btn-sm btn-danger" href="' + row.links_self + '"><?=__('Delete') ?></a>';
+                    return '<a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete queue item?')) ?>" href="' + row.links_self + '"><?=__('Delete') ?></a>';
                 }
             }
         }
@@ -40,14 +40,16 @@ $(function() {
 
             const linkUrl = $(this).attr('href');
             confirmDangerousAction(e.target).then(function(value) {
-                $.ajax(linkUrl, {
-                    method: "DELETE",
-                    dataType: "json",
-                    success: function(data) {
-                        notify(data.message, 'success', false);
-                        grid.bootgrid('reload');
-                    }
-                })
+                if (value) {
+                    $.ajax(linkUrl, {
+                        method: "DELETE",
+                        dataType: "json",
+                        success: function(data) {
+                            notify(data.message, 'success', false);
+                            grid.bootgrid('reload');
+                        }
+                    });
+                }
             });
 
             return false;

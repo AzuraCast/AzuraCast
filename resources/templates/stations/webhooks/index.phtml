@@ -33,7 +33,7 @@
                         <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:webhooks:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
                         <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$router->fromHere('stations:webhooks:toggle',['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? __('Disable') : __('Enable')) ?></a>
                         <a class="btn btn-sm btn-default" href="<?=$router->fromHere('stations:webhooks:test', ['id' => $row->getId(), 'csrf' => $csrf]) ?>" title="<?=__('Trigger the web hook manually and view the raw response.') ?>"><?=__('Test') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('stations:webhooks:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete web hook "%s"?', $row->getName())) ?>" href="<?=$router->fromHere('stations:webhooks:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
                         <big><?=$this->e($row->getName()) ?></big><br>

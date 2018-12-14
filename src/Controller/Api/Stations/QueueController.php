@@ -53,7 +53,7 @@ class QueueController
 
             /** @var Entity\SongHistory $sh_row */
             /** @var Entity\Api\QueuedSong $row */
-            $row = $sh_row->api(new Entity\Api\Queuedsong, $this->api_utils);
+            $row = $sh_row->api(new Entity\Api\QueuedSong, $this->api_utils);
             $row->resolveUrls($router);
 
             $row->links = [
@@ -97,7 +97,7 @@ class QueueController
                 $router = $request->getRouter();
 
                 /** @var Entity\Api\QueuedSong $row */
-                $row = $sh_record->api(new Entity\Api\Queuedsong, $this->api_utils);
+                $row = $sh_record->api(new Entity\Api\QueuedSong, $this->api_utils);
                 $row->resolveUrls($router);
 
                 $row->links = [

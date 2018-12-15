@@ -8,43 +8,6 @@ use Psr\Http\Message\UriInterface;
 
 class SongHistoryRepository extends Repository
 {
-    public function getNextSongForStation(Entity\Station $station, $is_autodj = false)
-    {
-        if ($station->useManualAutoDJ()) {
-            return null;
-        }
-
-        $next_song = $this->_em->createQuery('SELECT sh, s, sm
-            FROM ' . $this->_entityName . ' sh JOIN sh.song s JOIN sh.media sm
-            WHERE sh.station_id = :station_id
-            AND sh.timestamp_cued >= :threshold
-            AND sh.sent_to_autodj = 0
-            AND sh.timestamp_start = 0
-            AND sh.timestamp_end = 0
-            ORDER BY sh.id DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('threshold', time() - 60 * 15)
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-
-        if (!($next_song instanceof Entity\SongHistory)) {
-            $next_song = $this->getNextSong($station);
-        }
-
-        if ($next_song instanceof Entity\SongHistory && $is_autodj) {
-            $next_song->sentToAutodj();
-            $this->_em->persist($next_song);
-
-            // The "get next song" function is only called when a streamer is not live
-            $station->setIsStreamerLive(false);
-            $this->_em->persist($station);
-
-            $this->_em->flush();
-        }
-
-        return $next_song;
-    }
-
     /**
      * @param Entity\Station $station
      * @param \App\ApiUtilities $api_utils

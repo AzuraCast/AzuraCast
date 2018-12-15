@@ -196,7 +196,7 @@ class StationPlaylistMediaRepository extends Repository
             return $this->_playRemoteUrl($playlist);
         }
 
-        if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
+        if (Entity\StationPlaylist::ORDER_RANDOM === $playlist->getOrder()) {
             $media_queue = $this->_getPlayableMediaIds($playlist);
 
             shuffle($media_queue);

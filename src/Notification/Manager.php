@@ -85,9 +85,9 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        $check_for_updates = (bool)$this->settings_repo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
+        $check_for_updates = (int)$this->settings_repo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
 
-        if (!$check_for_updates) {
+        if (Entity\Settings::UPDATES_NONE === $check_for_updates) {
             return;
         }
 
@@ -108,7 +108,7 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        if ($update_data['needs_rolling_update']) {
+        if (Entity\Settings::UPDATES_ALL === $check_for_updates && $update_data['needs_rolling_update']) {
             $event->addNotification(new Notification(
                 __('New AzuraCast Updates Available'),
                 __('<b>Your installation is currently %d update(s) behind the latest version.</b> You should update to take advantage of bug and security fixes. Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.', $update_data['rolling_updates_available'], $instructions_url),

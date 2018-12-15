@@ -132,10 +132,11 @@ return [
                         'description' => __('Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements.'),
 
                         'choices' => [
-                            0 => __('No'),
-                            1 => __('Yes'),
+                            Entity\Settings::UPDATES_NONE => __('<b>None:</b> Do not check for updates or announcements.'),
+                            Entity\Settings::UPDATES_RELEASE_ONLY => __('<b>Release Only:</b> Critical announcements and new release versions only.'),
+                            Entity\Settings::UPDATES_ALL => __('<b>All Updates:</b> Include all announcements and minor updates.'),
                         ],
-                        'default' => 1,
+                        'default' => Entity\Settings::UPDATES_RELEASE_ONLY,
                     ]
                 ]
 

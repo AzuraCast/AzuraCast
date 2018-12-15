@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-12-12T18:22:44+00:00\n"
-"PO-Revision-Date: 2018-12-12T18:22:44+00:00\n"
+"POT-Creation-Date: 2018-12-15T19:33:09+00:00\n"
+"PO-Revision-Date: 2018-12-15T19:33:09+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:55
@@ -791,7 +791,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/remote.php:133
 #: /var/azuracast/www/config/forms/rename.php:18
 #: /var/azuracast/www/config/forms/role.php:65
-#: /var/azuracast/www/config/forms/settings.php:152
+#: /var/azuracast/www/config/forms/settings.php:153
 #: /var/azuracast/www/config/forms/song.php:47
 #: /var/azuracast/www/config/forms/station.php:363
 #: /var/azuracast/www/config/forms/streamer.php:61
@@ -897,7 +897,6 @@ msgstr ""
 #: /var/azuracast/www/config/forms/settings.php:46
 #: /var/azuracast/www/config/forms/settings.php:59
 #: /var/azuracast/www/config/forms/settings.php:72
-#: /var/azuracast/www/config/forms/settings.php:135
 #: /var/azuracast/www/config/forms/station.php:223
 #: /var/azuracast/www/config/forms/station.php:233
 #: /var/azuracast/www/config/forms/station.php:305
@@ -923,7 +922,6 @@ msgstr ""
 #: /var/azuracast/www/config/forms/settings.php:47
 #: /var/azuracast/www/config/forms/settings.php:60
 #: /var/azuracast/www/config/forms/settings.php:73
-#: /var/azuracast/www/config/forms/settings.php:136
 #: /var/azuracast/www/config/forms/station.php:223
 #: /var/azuracast/www/config/forms/station.php:233
 #: /var/azuracast/www/config/forms/station.php:305
@@ -1788,6 +1786,18 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/settings.php:135
+msgid "<b>None:</b> Do not check for updates or announcements."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/settings.php:136
+msgid "<b>Release Only:</b> Critical announcements and new release versions only."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/settings.php:137
+msgid "<b>All Updates:</b> Include all announcements and minor updates."
 msgstr ""
 
 #: /var/azuracast/www/config/forms/song.php:8

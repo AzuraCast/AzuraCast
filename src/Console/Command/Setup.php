@@ -20,7 +20,8 @@ class Setup extends CommandAbstract
         $this->setName('azuracast:setup')
             ->setDescription('Run all general AzuraCast setup steps.')
             ->addOption('update', null, InputOption::VALUE_NONE, 'Only update the existing installation.')
-            ->addOption('load-fixtures', null, InputOption::VALUE_NONE, 'Load predefined fixtures (for development purposes).');
+            ->addOption('load-fixtures', null, InputOption::VALUE_NONE, 'Load predefined fixtures (for development purposes).')
+            ->addOption('release', null, InputOption::VALUE_NONE, 'Used for updating only to a tagged release.');
     }
 
     /**

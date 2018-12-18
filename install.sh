@@ -1,17 +1,12 @@
 #!/usr/bin/env bash
 
-while test $# -gt 0; do
-    case "$1" in
-        --dev)
-            APP_ENV="development"
-            shift
-            ;;
-
-        *)
-            break
-            ;;
-    esac
-done
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
+    --dev)
+        APP_ENV="development"
+        shift
+        ;;
+esac; shift; done
+if [[ "$1" == '--' ]]; then shift; fi
 
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ansible|grep "install ok installed")
 echo "Checking for Ansible: $PKG_OK"

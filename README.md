@@ -7,13 +7,13 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_web.svg)](https://hub.docker.com/r/azuracast/azuracast_web/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
 
-**AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer and powerful but intuitive web interface, you can start up a fully working web radio station in a few quick minutes. 
+**AzuraCast** is a self-hosted, all-in-one web radio management suite. Using its easy installer and powerful but intuitive web interface, you can start up a fully working web radio station in a few quick minutes. 
 
-AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live). AzuraCast also has its own project mascot, [Azura Ruisselante](https://azuracast.com/mascot.html) created by the talented artist [Tyson Tan](https://tysontan.deviantart.com/).
+AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. AzuraCast's mascot is [Azura Ruisselante](https://azuracast.com/mascot.html), created by [Tyson Tan](https://tysontan.deviantart.com/).
 
 **AzuraCast is currently in beta.** Many web radio stations already run AzuraCast, but keeping your server up-to-date with the latest code from the GitHub repository is strongly recommended for security, bug fixes and new feature releases. It's unlikely, but updates may result in unexpected issues or data loss, so always make sure to keep your station's media files backed up in a second location.
 
-To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's simple to use web interface.
+To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's web interface.
 
 ## Live Demo
 
@@ -31,18 +31,25 @@ our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 ## Features
 
-With AzuraCast, you can:
+#### For Radio Stations
 
-* **Manage your Media:** Upload songs from the web, organize music into folders, and preview songs in your browser.
-* **Create Playlists:** Set up standard playlists that play all the time, scheduled playlists for time periods, or special playlists that play once per x songs, or once per x minutes.
-* **Set Up Live DJs:** Enable or disable live broadcasting from streamers/DJs, and create individual accounts for each streamer to use.
-* **Take Listener Requests:** Let your listeners request specific songs from your playlists, both via an API and a simple public-facing listener page.
-* **Track Analytics and Reports:** Keep track of every aspect of your station's listeners over time. View reports of each song's impact on your listener count.
-* **Let Station Autopilot Do the Work:** AzuraCast can automatically assign songs to a playlist based on the song's impact on listener numbers. 
-* **Delegate Management:** Create and remove separate administrator accounts for each station manager.
-* **Build Your Own Radio Player:** AzuraCast's powerful, well-documented API lets you control your station from software built in any programming language.
-* **Integrate with TuneIn, Discord and More:** The new web hook system lets you broadcast changes in your station to third party services.
-* ...and more.
+- **Rich Media Management:** Upload songs, edit metadata, preview songs and organize music into folders from your browser.
+- **Playlists:** Add music to standard-rotation playlists (in sequential or shuffled playback order) or schedule a playlist to play at a scheduled time, or once per x songs/minutes/etc.
+- **Live DJs:** Set up individual DJ/streamer accounts and see who's currently streaming from your station's profile page.
+- **Web DJ:** Broadcast live directly from your browser, with no extra software needed, with AzuraCast's built-in Web DJ tool.
+- **Public Pages:** AzuraCast includes embeddable public pages that you can integrate into your existing web page or use as the basis for your own customized player.
+- **Listener Requests:** Let your listeners request specific songs from your playlists, both via an API and a simple public-facing listener page.
+- **Remote Relays:** Broadcast your radio signal (including live DJs) to any remote server running Icecast or SHOUTcast.
+- **Web Hooks:** Integrate your station with Slack, Discord, TuneIn, Twitter and more by setting up web hooks that connect to third-party services.
+- **Detailed Analytics and Reports:** Keep track of every aspect of your station's listeners over time. View reports of each song's impact on your listener count. You can also generate a report that's compatible with SoundExchange for US web radio royalties.
+
+#### For Server Administrators
+
+- **Role-based User Management:** Assign global and per-station permissions to a role, then add users to those roles to control access.
+- **Custom Branding:** Modify every aspect of both the internal and public-facing AzuraCast pages by supplying your own custom CSS and JavaScript. 
+- **Authenticated RESTful API:** Individual users in the system can create API keys which have the same permissions they have in the system. The AzuraCast API is a powerful and [well-documented](https://www.azuracast.com/api/index.html) tool for interacting with installations. 
+- **Web Log Viewing:** Quickly diagnose problems affecting any part of the AzuraCast system through the system-wide web log viewer.
+- **Automatic Radio Proxies:** Many users can't connect directly to radio station ports (i.e. 8000) by default, so AzuraCast includes an automatic nginx proxy that lets listeners connect via the http (80) and https (443) ports. These proxies are also compatible with services like CloudFlare.
 
 ### What's Included
 

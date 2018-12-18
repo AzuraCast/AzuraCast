@@ -1,3 +1,14 @@
+#
+# AzuraCast Docker Compose Configuration File
+#
+# When updating, you will be prompted to replace this file with a new
+# version; you should do this whenever possible to take advantage of
+# new updates.
+#
+# If you need to customize this file, you can create a new file named:
+#   docker-compose.override.yml
+# with any changes you need to make.
+#
 version: '2.2'
 
 services:
@@ -25,6 +36,8 @@ services:
 
   nginx:
     image: azuracast/azuracast_nginx:latest
+    # Want to customize the HTTP/S ports? Follow the instructions here:
+    # https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#use-non-standard-ports
     ports:
       - '${AZURACAST_HTTP_PORT:-80}:80'
       - '${AZURACAST_HTTPS_PORT:-443}:443'

@@ -2,27 +2,27 @@
 namespace App\Entity;
 
 /**
- * @Table(name="station_playlist_media")
- * @Entity(repositoryClass="App\Entity\Repository\StationPlaylistMediaRepository")
+ * @ORM\Table(name="station_playlist_media")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\StationPlaylistMediaRepository")
  */
 class StationPlaylistMedia
 {
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="playlist_id", type="integer")
+     * @ORM\Column(name="playlist_id", type="integer")
      * @var int
      */
     protected $playlist_id;
 
     /**
-     * @ManyToOne(targetEntity="StationPlaylist", inversedBy="media_items", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="media_items", fetch="EAGER")
      * @JoinColumns({
      *   @JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -31,13 +31,13 @@ class StationPlaylistMedia
     protected $playlist;
 
     /**
-     * @Column(name="media_id", type="integer")
+     * @ORM\Column(name="media_id", type="integer")
      * @var int
      */
     protected $media_id;
 
     /**
-     * @ManyToOne(targetEntity="StationMedia", inversedBy="playlist_items", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="StationMedia", inversedBy="playlist_items", fetch="EAGER")
      * @JoinColumns({
      *   @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -46,13 +46,13 @@ class StationPlaylistMedia
     protected $media;
 
     /**
-     * @Column(name="weight", type="smallint")
+     * @ORM\Column(name="weight", type="smallint")
      * @var int
      */
     protected $weight;
 
     /**
-     * @Column(name="last_played", type="integer")
+     * @ORM\Column(name="last_played", type="integer")
      * @var int
      */
     protected $last_played;

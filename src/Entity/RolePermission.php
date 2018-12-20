@@ -2,29 +2,29 @@
 namespace App\Entity;
 
 /**
- * @Table(name="role_permissions", uniqueConstraints={
+ * @ORM\Table(name="role_permissions", uniqueConstraints={
  *   @UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
  * })
- * @Entity(repositoryClass="App\Entity\Repository\RolePermissionRepository")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\RolePermissionRepository")
  */
 class RolePermission
 {
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="role_id", type="integer")
+     * @ORM\Column(name="role_id", type="integer")
      * @var int
      */
     protected $role_id;
 
     /**
-     * @ManyToOne(targetEntity="Role", inversedBy="permissions")
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="permissions")
      * @JoinColumns({
      *   @JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -33,19 +33,19 @@ class RolePermission
     protected $role;
 
     /**
-     * @Column(name="action_name", type="string", length=50, nullable=false)
+     * @ORM\Column(name="action_name", type="string", length=50, nullable=false)
      * @var string
      */
     protected $action_name;
 
     /**
-     * @Column(name="station_id", type="integer", nullable=true)
+     * @ORM\Column(name="station_id", type="integer", nullable=true)
      * @var int|null
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="permissions")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="permissions")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })

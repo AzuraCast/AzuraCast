@@ -5,8 +5,8 @@ use App\Radio\Adapters;
 use App\Radio\Remote\RemoteAbstract;
 
 /**
- * @Table(name="station_remotes")
- * @Entity()
+ * @ORM\Table(name="station_remotes")
+ * @ORM\Entity()
  * @HasLifecycleCallbacks
  */
 class StationRemote implements StationMountInterface
@@ -14,21 +14,21 @@ class StationRemote implements StationMountInterface
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="remotes")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="remotes")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -37,67 +37,67 @@ class StationRemote implements StationMountInterface
     protected $station;
 
     /**
-     * @Column(name="type", type="string", length=50)
+     * @ORM\Column(name="type", type="string", length=50)
      * @var string
      */
     protected $type;
 
     /**
-     * @Column(name="enable_autodj", type="boolean")
+     * @ORM\Column(name="enable_autodj", type="boolean")
      * @var bool
      */
     protected $enable_autodj = false;
 
     /**
-     * @Column(name="autodj_format", type="string", length=10, nullable=true)
+     * @ORM\Column(name="autodj_format", type="string", length=10, nullable=true)
      * @var string|null
      */
     protected $autodj_format;
 
     /**
-     * @Column(name="autodj_bitrate", type="smallint", nullable=true)
+     * @ORM\Column(name="autodj_bitrate", type="smallint", nullable=true)
      * @var int|null
      */
     protected $autodj_bitrate;
 
     /**
-     * @Column(name="custom_listen_url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="custom_listen_url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $custom_listen_url;
 
     /**
-     * @Column(name="url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $url;
 
     /**
-     * @Column(name="mount", type="string", length=150, nullable=true)
+     * @ORM\Column(name="mount", type="string", length=150, nullable=true)
      * @var string|null
      */
     protected $mount;
 
     /**
-     * @Column(name="source_port", type="smallint", nullable=true)
+     * @ORM\Column(name="source_port", type="smallint", nullable=true)
      * @var int|null
      */
     protected $source_port;
 
     /**
-     * @Column(name="source_mount", type="string", length=150, nullable=true)
+     * @ORM\Column(name="source_mount", type="string", length=150, nullable=true)
      * @var string|null
      */
     protected $source_mount;
 
     /**
-     * @Column(name="source_username", type="string", length=100, nullable=true)
+     * @ORM\Column(name="source_username", type="string", length=100, nullable=true)
      * @var string|null
      */
     protected $source_username;
 
     /**
-     * @Column(name="source_password", type="string", length=100, nullable=true)
+     * @ORM\Column(name="source_password", type="string", length=100, nullable=true)
      * @var string|null
      */
     protected $source_password;

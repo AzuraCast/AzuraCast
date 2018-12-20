@@ -5,35 +5,35 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * @Table(name="role")
- * @Entity
+ * @ORM\Table(name="role")
+ * @ORM\Entity
  */
 class Role
 {
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=100)
      * @var string
      */
     protected $name;
 
     /**
-     * @ManyToMany(targetEntity="User", mappedBy="roles")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
      * @var Collection
      */
     protected $users;
 
     /**
-     * @OneToMany(targetEntity="RolePermission", mappedBy="role")
+     * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="role")
      * @var Collection
      */
     protected $permissions;

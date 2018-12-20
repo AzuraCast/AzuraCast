@@ -4,8 +4,8 @@ namespace App\Entity;
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
- * @Table(name="station_streamers")
- * @Entity(repositoryClass="App\Entity\Repository\StationStreamerRepository")
+ * @ORM\Table(name="station_streamers")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\StationStreamerRepository")
  * @HasLifecycleCallbacks
  */
 class StationStreamer
@@ -13,21 +13,21 @@ class StationStreamer
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="streamers")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="streamers")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -36,37 +36,37 @@ class StationStreamer
     protected $station;
 
     /**
-     * @Column(name="streamer_username", type="string", length=50, nullable=false)
+     * @ORM\Column(name="streamer_username", type="string", length=50, nullable=false)
      * @var string
      */
     protected $streamer_username;
 
     /**
-     * @Column(name="streamer_password", type="string", length=50, nullable=false)
+     * @ORM\Column(name="streamer_password", type="string", length=50, nullable=false)
      * @var string
      */
     protected $streamer_password;
 
     /**
-     * @Column(name="display_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $display_name;
 
     /**
-     * @Column(name="comments", type="text", nullable=true)
+     * @ORM\Column(name="comments", type="text", nullable=true)
      * @var string|null
      */
     protected $comments;
 
     /**
-     * @Column(name="is_active", type="boolean", nullable=false)
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
      * @var bool
      */
     protected $is_active;
 
 	/**
-     * @Column(name="reactivate_at", type="integer", nullable=true)
+     * @ORM\Column(name="reactivate_at", type="integer", nullable=true)
      * @var int|null
      */
     protected $reactivate_at;

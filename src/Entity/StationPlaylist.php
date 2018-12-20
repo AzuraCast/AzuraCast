@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use DateTime;
 
 /**
- * @Table(name="station_playlists")
- * @Entity
+ * @ORM\Table(name="station_playlists")
+ * @ORM\Entity
  * @HasLifecycleCallbacks
  */
 class StationPlaylist
@@ -33,21 +33,21 @@ class StationPlaylist
     public const ORDER_SEQUENTIAL = 'sequential';
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="playlists")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="playlists")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -56,109 +56,109 @@ class StationPlaylist
     protected $station;
 
     /**
-     * @Column(name="name", type="string", length=200)
+     * @ORM\Column(name="name", type="string", length=200)
      * @var string
      */
     protected $name;
 
     /**
-     * @Column(name="type", type="string", length=50)
+     * @ORM\Column(name="type", type="string", length=50)
      * @var string
      */
     protected $type = self::TYPE_DEFAULT;
 
     /**
-     * @Column(name="source", type="string", length=50)
+     * @ORM\Column(name="source", type="string", length=50)
      * @var string
      */
     protected $source = self::SOURCE_SONGS;
 
     /**
-     * @Column(name="playback_order", type="string", length=50)
+     * @ORM\Column(name="playback_order", type="string", length=50)
      * @var string
      */
     protected $order = self::ORDER_SHUFFLE;
 
     /**
-     * @Column(name="remote_url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="remote_url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $remote_url;
 
     /**
-     * @Column(name="remote_type", type="string", length=25, nullable=true)
+     * @ORM\Column(name="remote_type", type="string", length=25, nullable=true)
      * @var string|null
      */
     protected $remote_type = self::REMOTE_TYPE_STREAM;
 
     /**
-     * @Column(name="is_enabled", type="boolean")
+     * @ORM\Column(name="is_enabled", type="boolean")
      * @var bool
      */
     protected $is_enabled = true;
 
     /**
-     * @Column(name="play_per_songs", type="smallint")
+     * @ORM\Column(name="play_per_songs", type="smallint")
      * @var int
      */
     protected $play_per_songs = 0;
 
     /**
-     * @Column(name="play_per_minutes", type="smallint")
+     * @ORM\Column(name="play_per_minutes", type="smallint")
      * @var int
      */
     protected $play_per_minutes = 0;
 
     /**
-     * @Column(name="schedule_start_time", type="smallint")
+     * @ORM\Column(name="schedule_start_time", type="smallint")
      * @var int
      */
     protected $schedule_start_time = 0;
 
     /**
-     * @Column(name="schedule_end_time", type="smallint")
+     * @ORM\Column(name="schedule_end_time", type="smallint")
      * @var int
      */
     protected $schedule_end_time = 0;
 
     /**
-     * @Column(name="schedule_days", type="string", length=50, nullable=true)
+     * @ORM\Column(name="schedule_days", type="string", length=50, nullable=true)
      * @var string
      */
     protected $schedule_days;
 
     /**
-     * @Column(name="play_once_time", type="smallint")
+     * @ORM\Column(name="play_once_time", type="smallint")
      * @var int
      */
     protected $play_once_time = 0;
 
     /**
-     * @Column(name="play_once_days", type="string", length=50, nullable=true)
+     * @ORM\Column(name="play_once_days", type="string", length=50, nullable=true)
      * @var string
      */
     protected $play_once_days;
 
     /**
-     * @Column(name="weight", type="smallint")
+     * @ORM\Column(name="weight", type="smallint")
      * @var int
      */
     protected $weight = 3;
 
     /**
-     * @Column(name="include_in_requests", type="boolean")
+     * @ORM\Column(name="include_in_requests", type="boolean")
      * @var bool
      */
     protected $include_in_requests = true;
 
     /**
-     * @Column(name="include_in_automation", type="boolean")
+     * @ORM\Column(name="include_in_automation", type="boolean")
      * @var bool
      */
     protected $include_in_automation = false;
 
     /**
-     * @OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @OrderBy({"weight" = "ASC"})
      * @var Collection
      */

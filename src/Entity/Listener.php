@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 /**
- * @Table(name="listener", indexes={
+ * @ORM\Table(name="listener", indexes={
  *   @index(name="update_idx", columns={"listener_hash"}),
  *   @index(name="search_idx", columns={"listener_uid", "timestamp_end"})
  * })
- * @Entity(repositoryClass="App\Entity\Repository\ListenerRepository")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\ListenerRepository")
  */
 class Listener
 {
@@ -31,21 +31,21 @@ class Listener
     }
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="history")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -54,37 +54,37 @@ class Listener
     protected $station;
 
     /**
-     * @Column(name="listener_uid", type="integer")
+     * @ORM\Column(name="listener_uid", type="integer")
      * @var int
      */
     protected $listener_uid;
 
     /**
-     * @Column(name="listener_ip", type="string", length=45)
+     * @ORM\Column(name="listener_ip", type="string", length=45)
      * @var string
      */
     protected $listener_ip;
 
     /**
-     * @Column(name="listener_user_agent", type="string", length=255)
+     * @ORM\Column(name="listener_user_agent", type="string", length=255)
      * @var string
      */
     protected $listener_user_agent;
 
     /**
-     * @Column(name="listener_hash", type="string", length=32)
+     * @ORM\Column(name="listener_hash", type="string", length=32)
      * @var string
      */
     protected $listener_hash;
 
     /**
-     * @Column(name="timestamp_start", type="integer")
+     * @ORM\Column(name="timestamp_start", type="integer")
      * @var int
      */
     protected $timestamp_start;
 
     /**
-     * @Column(name="timestamp_end", type="integer")
+     * @ORM\Column(name="timestamp_end", type="integer")
      * @var int
      */
     protected $timestamp_end;

@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Table(name="users", uniqueConstraints={@UniqueConstraint(name="email_idx", columns={"email"})})
- * @Entity(repositoryClass="App\Entity\Repository\UserRepository")
+ * @ORM\Table(name="users", uniqueConstraints={@UniqueConstraint(name="email_idx", columns={"email"})})
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\UserRepository")
  * @HasLifecycleCallbacks
  */
 class User
@@ -15,64 +15,64 @@ class User
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="uid", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="uid", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="email", type="string", length=100, nullable=true)
+     * @ORM\Column(name="email", type="string", length=100, nullable=true)
      * @var string|null
      */
     protected $email;
 
     /**
-     * @Column(name="auth_password", type="string", length=255, nullable=true)
+     * @ORM\Column(name="auth_password", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $auth_password;
 
     /**
-     * @Column(name="name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
      * @var string|null
      */
     protected $name;
 
     /**
-     * @Column(name="timezone", type="string", length=100, nullable=true)
+     * @ORM\Column(name="timezone", type="string", length=100, nullable=true)
      * @var string|null
      */
     protected $timezone;
 
     /**
-     * @Column(name="locale", type="string", length=25, nullable=true)
+     * @ORM\Column(name="locale", type="string", length=25, nullable=true)
      * @var string|null
      */
     protected $locale;
 
     /**
-     * @Column(name="theme", type="string", length=25, nullable=true)
+     * @ORM\Column(name="theme", type="string", length=25, nullable=true)
      * @var string|null
      */
     protected $theme;
 
     /**
-     * @Column(name="created_at", type="integer")
+     * @ORM\Column(name="created_at", type="integer")
      * @var int
      */
     protected $created_at;
 
     /**
-     * @Column(name="updated_at", type="integer")
+     * @ORM\Column(name="updated_at", type="integer")
      * @var int
      */
     protected $updated_at;
 
     /**
-     * @ManyToMany(targetEntity="Role", inversedBy="users", fetch="EAGER")
-     * @JoinTable(name="user_has_role",
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", fetch="EAGER")
+     * @ORM\JoinTable(name="user_has_role",
      *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
      *      inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
@@ -81,7 +81,7 @@ class User
     protected $roles;
 
     /**
-     * @OneToMany(targetEntity="ApiKey", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ApiKey", mappedBy="user")
      * @var Collection
      */
     protected $api_keys;

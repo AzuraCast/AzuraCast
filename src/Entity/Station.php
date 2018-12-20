@@ -12,8 +12,8 @@ use Interop\Container\ContainerInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @Table(name="station")
- * @Entity(repositoryClass="App\Entity\Repository\StationRepository")
+ * @ORM\Table(name="station")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\StationRepository")
  * @HasLifecycleCallbacks
  */
 class Station
@@ -26,202 +26,202 @@ class Station
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
      * @var string|null The full display name of the station.
      */
     protected $name;
 
     /**
-     * @Column(name="short_name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="short_name", type="string", length=100, nullable=true)
      * @var string|null The URL-friendly name for the station, typically auto-generated from the full station name.
      */
     protected $short_name;
 
     /**
-     * @Column(name="is_enabled", type="boolean", nullable=false)
+     * @ORM\Column(name="is_enabled", type="boolean", nullable=false)
      * @var bool If set to "false", prevents the station from broadcasting but leaves it in the database.
      */
     protected $is_enabled = true;
 
     /**
-     * @Column(name="frontend_type", type="string", length=100, nullable=true)
+     * @ORM\Column(name="frontend_type", type="string", length=100, nullable=true)
      * @var string|null The frontend adapter (icecast,shoutcast,remote,etc)
      */
     protected $frontend_type;
 
     /**
-     * @Column(name="frontend_config", type="json_array", nullable=true)
+     * @ORM\Column(name="frontend_config", type="json_array", nullable=true)
      * @var array|null An array containing station-specific frontend configuration
      */
     protected $frontend_config;
 
     /**
-     * @Column(name="backend_type", type="string", length=100, nullable=true)
+     * @ORM\Column(name="backend_type", type="string", length=100, nullable=true)
      * @var string|null The backend adapter (liquidsoap,etc)
      */
     protected $backend_type;
 
     /**
-     * @Column(name="backend_config", type="json_array", nullable=true)
+     * @ORM\Column(name="backend_config", type="json_array", nullable=true)
      * @var array|null An array containing station-specific backend configuration
      */
     protected $backend_config;
 
     /**
-     * @Column(name="adapter_api_key", type="string", length=150, nullable=true)
+     * @ORM\Column(name="adapter_api_key", type="string", length=150, nullable=true)
      * @var string|null An internal-use API key used for container-to-container communications from Liquidsoap to AzuraCast
      */
     protected $adapter_api_key;
 
     /**
-     * @Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      * @var string|null
      */
     protected $description;
 
     /**
-     * @Column(name="url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $url;
 
     /**
-     * @Column(name="genre", type="string", length=150, nullable=true)
+     * @ORM\Column(name="genre", type="string", length=150, nullable=true)
      * @var string|null
      */
     protected $genre;
 
     /**
-     * @Column(name="radio_base_dir", type="string", length=255, nullable=true)
+     * @ORM\Column(name="radio_base_dir", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $radio_base_dir;
 
     /**
-     * @Column(name="radio_media_dir", type="string", length=255, nullable=true)
+     * @ORM\Column(name="radio_media_dir", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $radio_media_dir;
 
     /**
-     * @Column(name="nowplaying", type="array", nullable=true)
+     * @ORM\Column(name="nowplaying", type="array", nullable=true)
      * @var mixed|null
      */
     protected $nowplaying;
 
     /**
-     * @Column(name="nowplaying_timestamp", type="integer", nullable=true)
+     * @ORM\Column(name="nowplaying_timestamp", type="integer", nullable=true)
      * @var int
      */
     protected $nowplaying_timestamp;
 
     /**
-     * @Column(name="automation_settings", type="json_array", nullable=true)
+     * @ORM\Column(name="automation_settings", type="json_array", nullable=true)
      * @var array|null
      */
     protected $automation_settings;
 
     /**
-     * @Column(name="automation_timestamp", type="integer", nullable=true)
+     * @ORM\Column(name="automation_timestamp", type="integer", nullable=true)
      * @var int|null The UNIX timestamp when station automation was most recently run.
      */
     protected $automation_timestamp = 0;
 
     /**
-     * @Column(name="enable_requests", type="boolean", nullable=false)
+     * @ORM\Column(name="enable_requests", type="boolean", nullable=false)
      * @var bool Whether listeners can request songs to play on this station.
      */
     protected $enable_requests = false;
 
     /**
-     * @Column(name="request_delay", type="integer", nullable=true)
+     * @ORM\Column(name="request_delay", type="integer", nullable=true)
      * @var int|null
      */
     protected $request_delay = self::DEFAULT_REQUEST_DELAY;
 
     /**
-     * @Column(name="request_threshold", type="integer", nullable=true)
+     * @ORM\Column(name="request_threshold", type="integer", nullable=true)
      * @var int|null
      */
     protected $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
 
     /**
-     * @Column(name="disconnect_deactivate_streamer", type="integer", nullable=true, options={"default":0})
+     * @ORM\Column(name="disconnect_deactivate_streamer", type="integer", nullable=true, options={"default":0})
      * @var int
      */
     protected $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;
 
     /**
-     * @Column(name="enable_streamers", type="boolean", nullable=false)
+     * @ORM\Column(name="enable_streamers", type="boolean", nullable=false)
      * @var bool Whether streamers are allowed to broadcast to this station at all.
      */
     protected $enable_streamers = false;
 
     /**
-     * @Column(name="is_streamer_live", type="boolean", nullable=false)
+     * @ORM\Column(name="is_streamer_live", type="boolean", nullable=false)
      * @var bool Whether a streamer is currently active on the station.
      */
     protected $is_streamer_live = false;
 
     /**
-     * @Column(name="enable_public_page", type="boolean", nullable=false)
+     * @ORM\Column(name="enable_public_page", type="boolean", nullable=false)
      * @var bool Whether this station is visible as a public page and in a now-playing API response.
      */
     protected $enable_public_page = true;
 
     /**
-     * @Column(name="needs_restart", type="boolean")
+     * @ORM\Column(name="needs_restart", type="boolean")
      * @var bool Whether to show the "Restart station to apply changes" sidebar for this station
      */
     protected $needs_restart = false;
 
     /**
-     * @Column(name="has_started", type="boolean")
+     * @ORM\Column(name="has_started", type="boolean")
      * @var bool
      */
     protected $has_started = false;
 
     /**
-     * @Column(name="api_history_items", type="smallint")
+     * @ORM\Column(name="api_history_items", type="smallint")
      * @var int|null The number of "last played" history items to show for a given station in the Now Playing API responses.
      */
     protected $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
 
     /**
-     * @OneToMany(targetEntity="SongHistory", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
      * @OrderBy({"timestamp" = "DESC"})
      * @var Collection
      */
     protected $history;
 
     /**
-     * @OneToMany(targetEntity="StationMedia", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="station")
      * @var Collection
      */
     protected $media;
 
     /**
-     * @OneToMany(targetEntity="StationStreamer", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="StationStreamer", mappedBy="station")
      * @var Collection
      */
     protected $streamers;
 
     /**
-     * @Column(name="current_streamer_id", type="integer", nullable=true)
+     * @ORM\Column(name="current_streamer_id", type="integer", nullable=true)
      * @var int
      */
     protected $current_streamer_id;
 
     /**
-     * @ManyToOne(targetEntity="StationStreamer")
+     * @ORM\ManyToOne(targetEntity="StationStreamer")
      * @JoinColumns({
      *   @JoinColumn(name="current_streamer_id", referencedColumnName="id", onDelete="SET NULL")
      * })
@@ -230,32 +230,32 @@ class Station
     protected $current_streamer;
 
     /**
-     * @OneToMany(targetEntity="RolePermission", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="station")
      * @var Collection
      */
     protected $permissions;
 
     /**
-     * @OneToMany(targetEntity="StationPlaylist", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="StationPlaylist", mappedBy="station")
      * @OrderBy({"type" = "ASC","weight" = "DESC"})
      * @var Collection
      */
     protected $playlists;
 
     /**
-     * @OneToMany(targetEntity="StationMount", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="StationMount", mappedBy="station")
      * @var Collection
      */
     protected $mounts;
 
     /**
-     * @OneToMany(targetEntity="StationRemote", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="StationRemote", mappedBy="station")
      * @var Collection
      */
     protected $remotes;
 
     /**
-     * @OneToMany(targetEntity="StationWebhook", mappedBy="station", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="StationWebhook", mappedBy="station", fetch="EXTRA_LAZY")
      * @var Collection
      */
     protected $webhooks;

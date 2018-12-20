@@ -4,31 +4,31 @@ namespace App\Entity;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @Table(name="song_history", indexes={
+ * @ORM\Table(name="song_history", indexes={
  *   @index(name="history_idx", columns={"timestamp_start","timestamp_end","listeners_start"}),
  * })
- * @Entity(repositoryClass="App\Entity\Repository\SongHistoryRepository")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\SongHistoryRepository")
  */
 class SongHistory
 {
     const DEFAULT_DAYS_TO_KEEP = 60;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="song_id", type="string", length=50)
+     * @ORM\Column(name="song_id", type="string", length=50)
      * @var string
      */
     protected $song_id;
 
     /**
-     * @ManyToOne(targetEntity="Song", inversedBy="history")
+     * @ORM\ManyToOne(targetEntity="Song", inversedBy="history")
      * @JoinColumns({
      *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -37,13 +37,13 @@ class SongHistory
     protected $song;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="history")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -52,13 +52,13 @@ class SongHistory
     protected $station;
 
     /**
-     * @Column(name="playlist_id", type="integer", nullable=true)
+     * @ORM\Column(name="playlist_id", type="integer", nullable=true)
      * @var int|null
      */
     protected $playlist_id;
 
     /**
-     * @ManyToOne(targetEntity="StationPlaylist")
+     * @ORM\ManyToOne(targetEntity="StationPlaylist")
      * @JoinColumns({
      *   @JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -67,13 +67,13 @@ class SongHistory
     protected $playlist;
 
     /**
-     * @Column(name="media_id", type="integer", nullable=true)
+     * @ORM\Column(name="media_id", type="integer", nullable=true)
      * @var int|null
      */
     protected $media_id;
 
     /**
-     * @ManyToOne(targetEntity="StationMedia")
+     * @ORM\ManyToOne(targetEntity="StationMedia")
      * @JoinColumns({
      *   @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -82,13 +82,13 @@ class SongHistory
     protected $media;
 
     /**
-     * @Column(name="request_id", type="integer", nullable=true)
+     * @ORM\Column(name="request_id", type="integer", nullable=true)
      * @var int|null
      */
     protected $request_id;
 
     /**
-     * @OneToOne(targetEntity="StationRequest")
+     * @ORM\OneToOne(targetEntity="StationRequest")
      * @JoinColumns({
      *   @JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -97,79 +97,79 @@ class SongHistory
     protected $request;
 
     /**
-     * @Column(name="autodj_custom_uri", type="string", length=255, nullable=true)
+     * @ORM\Column(name="autodj_custom_uri", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $autodj_custom_uri;
 
     /**
-     * @Column(name="timestamp_cued", type="integer", nullable=true)
+     * @ORM\Column(name="timestamp_cued", type="integer", nullable=true)
      * @var int|null
      */
     protected $timestamp_cued;
 
     /**
-     * @Column(name="sent_to_autodj", type="boolean")
+     * @ORM\Column(name="sent_to_autodj", type="boolean")
      * @var bool
      */
     protected $sent_to_autodj;
 
     /**
-     * @Column(name="timestamp_start", type="integer")
+     * @ORM\Column(name="timestamp_start", type="integer")
      * @var int
      */
     protected $timestamp_start;
 
     /**
-     * @Column(name="duration", type="integer", nullable=true)
+     * @ORM\Column(name="duration", type="integer", nullable=true)
      * @var int|null
      */
     protected $duration;
 
     /**
-     * @Column(name="listeners_start", type="integer", nullable=true)
+     * @ORM\Column(name="listeners_start", type="integer", nullable=true)
      * @var int|null
      */
     protected $listeners_start;
 
     /**
-     * @Column(name="timestamp_end", type="integer")
+     * @ORM\Column(name="timestamp_end", type="integer")
      * @var int
      */
     protected $timestamp_end;
 
     /**
-     * @Column(name="listeners_end", type="smallint", nullable=true)
+     * @ORM\Column(name="listeners_end", type="smallint", nullable=true)
      * @var int|null
      */
     protected $listeners_end;
 
     /**
-     * @Column(name="unique_listeners", type="smallint", nullable=true)
+     * @ORM\Column(name="unique_listeners", type="smallint", nullable=true)
      * @var int|null
      */
     protected $unique_listeners;
 
     /**
-     * @Column(name="delta_total", type="smallint")
+     * @ORM\Column(name="delta_total", type="smallint")
      * @var int
      */
     protected $delta_total;
 
     /**
-     * @Column(name="delta_positive", type="smallint")
+     * @ORM\Column(name="delta_positive", type="smallint")
      * @var int
      */
     protected $delta_positive;
 
     /**
-     * @Column(name="delta_negative", type="smallint")
+     * @ORM\Column(name="delta_negative", type="smallint")
      * @var int
      */
     protected $delta_negative;
 
     /**
-     * @Column(name="delta_points", type="json_array", nullable=true)
+     * @ORM\Column(name="delta_points", type="json_array", nullable=true)
      * @var mixed|null
      */
     protected $delta_points;

@@ -6,8 +6,8 @@ use App\Radio\Frontend\FrontendAbstract;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @Table(name="station_mounts")
- * @Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
+ * @ORM\Table(name="station_mounts")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
  * @HasLifecycleCallbacks
  */
 class StationMount implements StationMountInterface
@@ -15,21 +15,21 @@ class StationMount implements StationMountInterface
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="mounts")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="mounts")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -38,67 +38,67 @@ class StationMount implements StationMountInterface
     protected $station;
 
     /**
-     * @Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=100)
      * @var string
      */
     protected $name;
 
     /**
-     * @Column(name="is_default", type="boolean")
+     * @ORM\Column(name="is_default", type="boolean")
      * @var bool
      */
     protected $is_default;
 
     /**
-     * @Column(name="is_public", type="boolean")
+     * @ORM\Column(name="is_public", type="boolean")
      * @var bool
      */
     protected $is_public;
 
     /**
-     * @Column(name="fallback_mount", type="string", length=100, nullable=true)
+     * @ORM\Column(name="fallback_mount", type="string", length=100, nullable=true)
      * @var string|null
      */
     protected $fallback_mount;
 
     /**
-     * @Column(name="relay_url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="relay_url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $relay_url;
 
     /**
-     * @Column(name="authhash", type="string", length=255, nullable=true)
+     * @ORM\Column(name="authhash", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $authhash;
 
     /**
-     * @Column(name="enable_autodj", type="boolean")
+     * @ORM\Column(name="enable_autodj", type="boolean")
      * @var bool
      */
     protected $enable_autodj;
 
     /**
-     * @Column(name="autodj_format", type="string", length=10, nullable=true)
+     * @ORM\Column(name="autodj_format", type="string", length=10, nullable=true)
      * @var string|null
      */
     protected $autodj_format;
 
     /**
-     * @Column(name="autodj_bitrate", type="smallint", nullable=true)
+     * @ORM\Column(name="autodj_bitrate", type="smallint", nullable=true)
      * @var int|null
      */
     protected $autodj_bitrate;
 
     /**
-     * @Column(name="custom_listen_url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="custom_listen_url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $custom_listen_url;
 
     /**
-     * @Column(name="frontend_config", type="text", nullable=true)
+     * @ORM\Column(name="frontend_config", type="text", nullable=true)
      * @var string|null
      */
     protected $frontend_config;

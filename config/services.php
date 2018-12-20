@@ -143,6 +143,20 @@ return function (\Azura\Container $di)
 
         return $supervisor;
     };
+
+    $di[\Symfony\Component\Serializer\Serializer::class] = function($di) {
+        $meta_factory = new \Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
+            new \Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader(new \Doctrine\Common\Annotations\AnnotationReader())
+        );
+        $normalizer = new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory);
+        return new Symfony\Component\Serializer\Serializer(array($normalizer));
+    };
+
+    $di[Symfony\Component\Validator\Validator\ValidatorInterface::class] = function($di) {
+        $builder = new \Symfony\Component\Validator\ValidatorBuilder();
+        $builder->enableAnnotationMapping();
+        return $builder->getValidator();
+    };
     
     $di->extend(\Azura\View::class, function(\Azura\View $view, \Azura\Container $di) {
         $view->registerFunction('mailto', function ($address, $link_text = null) {

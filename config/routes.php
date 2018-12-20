@@ -195,6 +195,36 @@ return function(App $app)
             ->setName('api:stations:list')
             ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
 
+        $this->group('/admin', function() {
+            /** @var App $this */
+
+            $crud_areas = [
+                Controller\Api\Admin\UsersController::class => [
+                    'collection'    => 'users',
+                    'item'          => 'user',
+                    'permission'    => Acl::GLOBAL_USERS,
+                ],
+            ];
+
+            foreach($crud_areas as $controller => $route_info) {
+                $this->group('', function() use ($controller, $route_info) {
+                    /** @var App $this */
+
+                    $this->get('/'.$route_info['collection'], $controller.':listAction')
+                        ->setName('api:admin:'.$route_info['collection']);
+
+                    $this->post('/'.$route_info['collection'], $controller.':createAction');
+
+                    $this->get('/'.$route_info['item'].'/{id}', $controller.':getAction')
+                        ->setName('api:admin:'.$route_info['item']);
+
+                    $this->put('/'.$route_info['item'].'/{id}', $controller.':editAction');
+                    $this->delete($route_info['item'].'/{id}', $controller.':deleteAction');
+
+                })->add([Middleware\Permissions::class, $route_info['permission']]);
+            }
+        });
+
         $this->group('/station/{station}', function () {
             /** @var App $this */
 

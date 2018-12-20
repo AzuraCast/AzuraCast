@@ -77,5 +77,19 @@ class ApiProvider implements ServiceProviderInterface
                 $di[\App\Radio\Configuration::class]
             );
         };
+
+        $standard_crud_controllers = [
+            Api\Admin\UsersController::class,
+        ];
+
+        foreach($standard_crud_controllers as $controller) {
+            $di[$controller] = function($di) use ($controller) {
+                return new $controller(
+                    $di[\Doctrine\ORM\EntityManager::class],
+                    $di[\Symfony\Component\Serializer\Serializer::class],
+                    $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class]
+                );
+            };
+        }
     }
 }

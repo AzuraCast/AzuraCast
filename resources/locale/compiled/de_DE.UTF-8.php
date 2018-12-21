@@ -30,7 +30,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'System Maintenance' => 
       array (
-        0 => 'Wartungsarbeiten',
+        0 => 'Systemsteuerung',
       ),
       'System Settings' => 
       array (
@@ -558,7 +558,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Source Password' => 
       array (
-        0 => '',
+        0 => 'Source Passwort',
       ),
       'Leave blank to automatically generate a new password.' => 
       array (
@@ -566,11 +566,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Admin Password' => 
       array (
-        0 => '',
+        0 => 'Admin Passwort',
       ),
       'Maximum Listeners' => 
       array (
-        0 => '',
+        0 => 'Maximale Hörer',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
@@ -806,7 +806,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Edit' => 
       array (
-        0 => '',
+        0 => 'Bearbeiten',
       ),
       'Revoke' => 
       array (
@@ -826,7 +826,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Delete' => 
       array (
-        0 => '',
+        0 => 'Löschen',
       ),
       'This role cannot be deleted.' => 
       array (
@@ -846,7 +846,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Manage' => 
       array (
-        0 => '',
+        0 => 'Verwalten',
       ),
       'Clone' => 
       array (
@@ -890,7 +890,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Edit Profile' => 
       array (
-        0 => '',
+        0 => 'Profil bearbeiten',
       ),
       'Station not found!' => 
       array (
@@ -926,75 +926,75 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Listeners Across All Stations' => 
       array (
-        0 => '',
+        0 => 'Hörer auf all deinen Streams',
       ),
       'Listeners Per Station' => 
       array (
-        0 => '',
+        0 => 'Hörer nach Stream',
       ),
       'Station Overview' => 
       array (
-        0 => '',
+        0 => 'Stream Überblick',
       ),
       'Refresh' => 
       array (
-        0 => '',
+        0 => 'Aktualisieren',
       ),
       'Add' => 
       array (
-        0 => '',
+        0 => 'Hinzufügen',
       ),
       'Listeners' => 
       array (
-        0 => '',
+        0 => 'Hörer',
       ),
       'Now Playing' => 
       array (
-        0 => '',
+        0 => 'Gerade läuft',
       ),
       'Options' => 
       array (
-        0 => '',
+        0 => 'Optionen',
       ),
       'My Profile' => 
       array (
-        0 => '',
+        0 => 'Mein Account',
       ),
       'Update Profile Picture' => 
       array (
-        0 => '',
+        0 => 'Profilbild ändern',
       ),
       'Title' => 
       array (
-        0 => '',
+        0 => 'Titel',
       ),
       'Artist' => 
       array (
-        0 => '',
+        0 => 'Interpret',
       ),
       'Request' => 
       array (
-        0 => '',
+        0 => 'Wunsch',
       ),
       'Song History' => 
       array (
-        0 => '',
+        0 => 'Songverlauf',
       ),
       'Request Song' => 
       array (
-        0 => '',
+        0 => 'Song wünschen',
       ),
       'Playlist' => 
       array (
-        0 => '',
+        0 => 'Playliste',
       ),
       'Download %s' => 
       array (
-        0 => '',
+        0 => '%s herunterladen',
       ),
       'Request a Song' => 
       array (
-        0 => '',
+        0 => 'Wünsch einen Song',
       ),
       'Begin setup by creating a Super Administrator account.' => 
       array (
@@ -1126,71 +1126,71 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Drag files here to upload to this folder or ' => 
       array (
-        0 => '',
+        0 => 'Ziehe Dateien zum Upload hinein oder',
       ),
       'With selected:' => 
       array (
-        0 => '',
+        0 => 'Mit ausgewählten',
       ),
       'Add to Playlist' => 
       array (
-        0 => '',
+        0 => 'Zur Playlist hinzufügen',
       ),
       'Create new...' => 
       array (
-        0 => '',
+        0 => 'Neu erstellen',
       ),
       'Clear Playlists' => 
       array (
-        0 => '',
+        0 => 'Playlisten leeren',
       ),
       'New Folder Name' => 
       array (
-        0 => '',
+        0 => 'Neuer Ordnername',
       ),
       'Create Folder' => 
       array (
-        0 => '',
+        0 => 'Ordner erstellen',
       ),
       'Length' => 
       array (
-        0 => '',
+        0 => 'Länge',
       ),
       'Size' => 
       array (
-        0 => '',
+        0 => 'Größe',
       ),
       'Modified' => 
       array (
-        0 => '',
+        0 => 'Geändert',
       ),
       'Playlists' => 
       array (
-        0 => '',
+        0 => 'Playlisten',
       ),
       'Create Playlist' => 
       array (
-        0 => '',
+        0 => 'Playlist erstellen',
       ),
       'Rename' => 
       array (
-        0 => '',
+        0 => 'Umbenennen',
       ),
       'Daily Listener Range' => 
       array (
-        0 => '',
+        0 => 'Tägliche Durchschnittsreichweite',
       ),
       'Hourly Average Listeners' => 
       array (
-        0 => '',
+        0 => 'Stündliche Durschschnittsreichweite',
       ),
       'Daily Average Listeners' => 
       array (
-        0 => '',
+        0 => 'Tägliche Durchschnittsreichweite',
       ),
       'Average Listeners' => 
       array (
-        0 => '',
+        0 => 'Durchschnittliche Hörer',
       ),
       'Station Center' => 
       array (
@@ -1198,15 +1198,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Listeners By Day' => 
       array (
-        0 => '',
+        0 => 'Hörer nach Tag',
       ),
       'Listeners by Hour of Day' => 
       array (
-        0 => '',
+        0 => 'Hörer nach Stunde eines Tages',
       ),
       'Listeners by Day of Week' => 
       array (
-        0 => '',
+        0 => 'Hörer nach Tag einer Woche',
       ),
       'Best Performing Songs' => 
       array (
@@ -1282,7 +1282,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Enabled' => 
       array (
-        0 => '',
+        0 => 'Aktiviert', 
       ),
       'Type' => 
       array (
@@ -1414,23 +1414,23 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Running' => 
       array (
-        0 => '',
+        0 => 'Aktiv',
       ),
       'Not Running' => 
       array (
-        0 => '',
+        0 => 'Nicht aktiv',
       ),
       'Restart Service' => 
       array (
-        0 => '',
+        0 => 'Neustarten',
       ),
       'Start Service' => 
       array (
-        0 => '',
+        0 => 'Starten',
       ),
       'Stop Service' => 
       array (
-        0 => '',
+        0 => 'Stoppen',
       ),
       'Public URL' => 
       array (
@@ -1446,7 +1446,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Administrator Password' => 
       array (
-        0 => '',
+        0 => 'Administrator Passwort',
       ),
       'AutoDJ Disabled' => 
       array (
@@ -1462,11 +1462,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Skip Song' => 
       array (
-        0 => '',
+        0 => 'Nächsten Titel starten',
       ),
       'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
       array (
-        0 => '',
+        0 => 'LiquidSoap spielt aktuell <b>%d hochgeladene Songs</b> aus <b>%d Playlisten</b>',
       ),
       'Song Duplicates' => 
       array (
@@ -1788,6 +1788,82 @@ X-Crowdin-File: /master/app/locale/default.pot
       'No results found!' => 
       array (
         0 => 'Keine Ergebnisse gefunden!',
+      ),
+       'Playing Next' => 
+      array (
+        0 => 'Als Nächstes',
+      ),
+      'My API Keys' => 
+      array (
+        0 => 'Meine API Schlüssel',
+      ),
+      'Local Streams' => 
+      array (
+        0 => 'Lokale Streams',
+      ),
+      'Manage streamer accounts' => 
+      array (
+        0 => 'Streambenutzer verwalten',
+      ),
+      'Restart' => 
+      array (
+        0 => 'Neustart',
+      ),
+      'Relay Password' => 
+      array (
+        0 => 'Relay Passwort',
+      ),
+      'Copy to Clipboard' => 
+      array (
+        0 => 'In Zwischenablage kopieren',
+      ),
+      'On the Air' => 
+      array (
+        0 => 'OnAir Übersicht',
+      ),
+      '%s Files' => 
+      array (
+        0 => '%s Dateien',
+      ),
+      'New Folder' => 
+      array (
+        0 => 'Neuer Ordner',
+      ),
+      'Move' => 
+      array (
+        0 => 'Verschieben',
+      ),
+      'Close' => 
+      array (
+        0 => 'Schließen',
+      ),
+      'Song Lyrics' => 
+      array (
+        0 => 'Liedtexte',
+      ),
+      'Replace Album Cover Art' => 
+      array (
+        0 => 'Album Cover austauschen',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Benutzerdefinierte Felder',
+      ),
+      'Control Song Playback' => 
+      array (
+        0 => 'Song Laufzeitkontrolle',
+      ),
+      'Advanced' => 
+      array (
+        0 => 'Erweitert',
+      ),
+      'Create Directory' => 
+      array (
+        0 => 'Ordner erstellen',
+      ),
+      'Create Directory' => 
+      array (
+        0 => 'Ordner erstellen',
       ),
     ),
   ),

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Migration;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -15,13 +16,18 @@ final class Version20181202180617 extends AbstractMigration
         $stations = $this->connection->fetchAll('SELECT s.* FROM station AS s');
 
         foreach($stations as $station) {
+            $this->write('Migrating album art for station "'.$station['name'].'"...');
+
             $base_dir = $station['radio_base_dir'];
             $art_dir = $base_dir.'/album_art';
             mkdir($art_dir, 0777);
 
-            $art_raw = $this->connection->fetchAll('SELECT sm.unique_id, sma.art FROM station_media AS sm JOIN station_media_art sma on sm.id = sma.media_id');
+            $stmt = $this->connection->executeQuery('SELECT sm.unique_id, sma.art 
+                FROM station_media AS sm 
+                JOIN station_media_art sma on sm.id = sma.media_id
+                WHERE sm.station_id = ?', [$station['id']], [ParameterType::INTEGER]);
 
-            foreach($art_raw as $art_row) {
+            while ($art_row = $stmt->fetch()) {
                 $art_path = $art_dir.'/'.$art_row['unique_id'].'.jpg';
                 file_put_contents($art_path, $art_row['art']);
             }

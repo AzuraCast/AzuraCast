@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="station_requests")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationRequestRepository")
@@ -23,8 +25,8 @@ class StationRequest
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="media")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */
@@ -38,8 +40,8 @@ class StationRequest
 
     /**
      * @ORM\ManyToOne(targetEntity="StationMedia")
-     * @JoinColumns({
-     *   @JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var StationMedia
      */

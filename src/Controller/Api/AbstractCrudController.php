@@ -1,7 +1,9 @@
 <?php
 namespace App\Controller\Api;
 
+use Azura\Http\Router;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -36,15 +38,42 @@ abstract class AbstractCrudController
 
     /**
      * @param $record
+     * @param Router $router
      * @return array
      */
-    protected function _viewRecord($record): array
+    protected function _viewRecord($record, Router $router): array
     {
         if (!($record instanceof $this->entityClass)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        return $this->serializer->normalize($record, null, []);
+        $return = $this->serializer->normalize($record, null, [
+            ObjectNormalizer::ENABLE_MAX_DEPTH => true,
+            ObjectNormalizer::MAX_DEPTH_HANDLER => function ($innerObject, $outerObject, string $attributeName, string $format = null, array $context = array()) {
+                return $this->_displayShortenedObject($innerObject);
+            },
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, string $format = null, array $context = array()) {
+                return $this->_displayShortenedObject($object);
+            },
+        ]);
+
+        $return['links'] = [
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+        ];
+        return $return;
+    }
+
+    /**
+     * @param $object
+     * @return mixed
+     */
+    protected function _displayShortenedObject($object)
+    {
+        if (method_exists($object, 'getName')) {
+            return $object->getName();
+        }
+
+        return $object->getId();
     }
 
     /**

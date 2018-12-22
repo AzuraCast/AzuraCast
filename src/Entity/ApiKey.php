@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="api_keys")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\ApiKeyRepository")
@@ -30,8 +32,8 @@ class ApiKey
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")
-     * @JoinColumns({
-     *   @JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
      * })
      * @var User
      */

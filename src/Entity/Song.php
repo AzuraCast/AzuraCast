@@ -3,11 +3,13 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
 use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="songs", indexes={
- *   @index(name="search_idx", columns={"text", "artist", "title"})
+ *   @ORM\Index(name="search_idx", columns={"text", "artist", "title"})
  * })
  * @ORM\Entity(repositoryClass="App\Entity\Repository\SongRepository")
  */
@@ -62,7 +64,7 @@ class Song
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="song")
-     * @OrderBy({"timestamp" = "DESC"})
+     * @ORM\OrderBy({"timestamp" = "DESC"})
      * @var Collection
      */
     protected $history;

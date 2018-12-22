@@ -1,11 +1,13 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="song_history", indexes={
- *   @index(name="history_idx", columns={"timestamp_start","timestamp_end","listeners_start"}),
+ *   @ORM\Index(name="history_idx", columns={"timestamp_start","timestamp_end","listeners_start"}),
  * })
  * @ORM\Entity(repositoryClass="App\Entity\Repository\SongHistoryRepository")
  */
@@ -29,8 +31,8 @@ class SongHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="Song", inversedBy="history")
-     * @JoinColumns({
-     *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Song
      */
@@ -44,8 +46,8 @@ class SongHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */
@@ -59,8 +61,8 @@ class SongHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="StationPlaylist")
-     * @JoinColumns({
-     *   @JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var StationPlaylist|null
      */
@@ -74,8 +76,8 @@ class SongHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="StationMedia")
-     * @JoinColumns({
-     *   @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var StationMedia|null
      */
@@ -89,8 +91,8 @@ class SongHistory
 
     /**
      * @ORM\OneToOne(targetEntity="StationRequest")
-     * @JoinColumns({
-     *   @JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var StationRequest|null
      */

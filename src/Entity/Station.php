@@ -1,11 +1,13 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
 use App\Radio\Frontend\FrontendAbstract;
 use App\Radio\Remote\AdapterProxy;
 use App\Radio\Remote\RemoteAbstract;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\Uri;
 use Interop\Container\ContainerInterface;
@@ -14,7 +16,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @ORM\Table(name="station")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationRepository")
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class Station
 {
@@ -197,7 +199,7 @@ class Station
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
-     * @OrderBy({"timestamp" = "DESC"})
+     * @ORM\OrderBy({"timestamp" = "DESC"})
      * @var Collection
      */
     protected $history;
@@ -222,8 +224,8 @@ class Station
 
     /**
      * @ORM\ManyToOne(targetEntity="StationStreamer")
-     * @JoinColumns({
-     *   @JoinColumn(name="current_streamer_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="current_streamer_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      * @var StationStreamer|null
      */
@@ -237,7 +239,7 @@ class Station
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylist", mappedBy="station")
-     * @OrderBy({"type" = "ASC","weight" = "DESC"})
+     * @ORM\OrderBy({"type" = "ASC","weight" = "DESC"})
      * @var Collection
      */
     protected $playlists;

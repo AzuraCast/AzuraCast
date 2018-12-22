@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="station_playlist_media")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationPlaylistMediaRepository")
@@ -23,8 +25,8 @@ class StationPlaylistMedia
 
     /**
      * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="media_items", fetch="EAGER")
-     * @JoinColumns({
-     *   @JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var StationPlaylist
      */
@@ -38,8 +40,8 @@ class StationPlaylistMedia
 
     /**
      * @ORM\ManyToOne(targetEntity="StationMedia", inversedBy="playlist_items", fetch="EAGER")
-     * @JoinColumns({
-     *   @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var StationMedia
      */

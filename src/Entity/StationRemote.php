@@ -1,13 +1,15 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 use App\Radio\Adapters;
 use App\Radio\Remote\RemoteAbstract;
 
 /**
  * @ORM\Table(name="station_remotes")
  * @ORM\Entity()
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class StationRemote implements StationMountInterface
 {
@@ -29,8 +31,8 @@ class StationRemote implements StationMountInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="remotes")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */

@@ -21,10 +21,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
-            $return = $this->_viewRecord($row);
-            $return['links'] = [
-                'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $row->getId()], [], true),
-            ];
+            $return = $this->_viewRecord($row, $router);
 
             if ($is_bootgrid) {
                 return Utilities::flatten_array($return, '_');
@@ -46,12 +43,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
     {
         $row = $this->_createRecord($request->getParsedBody());
 
-        $router = $request->getRouter();
-        $return = $this->_viewRecord($row);
-        $return['links'] = [
-            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $row->getId()], [], true),
-        ];
-
+        $return = $this->_viewRecord($row, $request->getRouter());
         return $response->withJson($return);
     }
 
@@ -60,9 +52,21 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
      * @param Response $response
      * @param $record_id
      * @return ResponseInterface
-     * @throws \App\Exception\Validation
      */
+    public function getAction(Request $request, Response $response, $record_id): ResponseInterface
+    {
+        $record = $this->_getRecord($record_id);
 
+        $return = $this->_viewRecord($record, $request->getRouter());
+        return $response->withJson($return);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $record_id
+     * @return ResponseInterface
+     */
     public function editAction(Request $request, Response $response, $record_id): ResponseInterface
     {
         $record = $this->_getRecord($record_id);

@@ -1,10 +1,12 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="listener", indexes={
- *   @index(name="update_idx", columns={"listener_hash"}),
- *   @index(name="search_idx", columns={"listener_uid", "timestamp_end"})
+ *   @ORM\Index(name="update_idx", columns={"listener_hash"}),
+ *   @ORM\Index(name="search_idx", columns={"listener_uid", "timestamp_end"})
  * })
  * @ORM\Entity(repositoryClass="App\Entity\Repository\ListenerRepository")
  */
@@ -46,8 +48,8 @@ class Listener
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */

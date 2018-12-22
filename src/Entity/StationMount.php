@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 use App\Radio\Adapters;
 use App\Radio\Frontend\FrontendAbstract;
 use Psr\Http\Message\UriInterface;
@@ -8,7 +10,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @ORM\Table(name="station_mounts")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class StationMount implements StationMountInterface
 {
@@ -30,8 +32,8 @@ class StationMount implements StationMountInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="mounts")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */

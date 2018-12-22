@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Entity\Api;
 
+use OpenApi\Annotations\OpenApi as OA;
 use App\Entity;
 use Azura\Http\Router;
 

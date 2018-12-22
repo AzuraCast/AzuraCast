@@ -4,6 +4,7 @@ namespace App\Entity\Api;
 
 use App\Entity;
 use Azura\Http\Router;
+use OpenApi\Annotations\OpenApi as OA;
 
 /**
  * @OA\Schema(type="object")

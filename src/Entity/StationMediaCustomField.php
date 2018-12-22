@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="station_media_custom_field")
@@ -29,7 +30,7 @@ class StationMediaCustomField
 
     /**
      * @ORM\ManyToOne(targetEntity="StationMedia", inversedBy="metadata")
-     * @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * @var StationMedia
      */
     protected $media;
@@ -42,7 +43,7 @@ class StationMediaCustomField
 
     /**
      * @ORM\ManyToOne(targetEntity="CustomField", inversedBy="media_fields")
-     * @JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
      * @var CustomField
      */
     protected $field;

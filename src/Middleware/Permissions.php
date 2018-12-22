@@ -34,7 +34,11 @@ class Permissions
             $station_id = null;
         }
 
-        $user = $request->getUser();
+        try {
+            $user = $request->getUser();
+        } catch (\Exception $e) {
+            throw new \App\Exception\PermissionDenied;
+        }
 
         if (!$this->acl->userAllowed($user, $action, $station_id)) {
             throw new \App\Exception\PermissionDenied;

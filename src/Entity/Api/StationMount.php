@@ -2,6 +2,7 @@
 namespace App\Entity\Api;
 
 use Azura\Http\Router;
+use OpenApi\Annotations\OpenApi as OA;
 
 /**
  * @OA\Schema(type="object")

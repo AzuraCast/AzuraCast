@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity\Api;
 
+use OpenApi\Annotations\OpenApi as OA;
+
 class NewRecord extends Status
 {
     /**

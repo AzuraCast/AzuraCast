@@ -148,8 +148,12 @@ return function (\Azura\Container $di)
         $meta_factory = new \Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new \Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader(new \Doctrine\Common\Annotations\AnnotationReader())
         );
-        $normalizer = new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory);
-        return new Symfony\Component\Serializer\Serializer(array($normalizer));
+
+        $normalizers = [
+            new \Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
+            new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory, new \Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter()),
+        ];
+        return new Symfony\Component\Serializer\Serializer($normalizers);
     };
 
     $di[Symfony\Component\Validator\Validator\ValidatorInterface::class] = function($di) {

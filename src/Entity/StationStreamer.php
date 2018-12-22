@@ -1,12 +1,14 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
  * @ORM\Table(name="station_streamers")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationStreamerRepository")
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class StationStreamer
 {
@@ -28,8 +30,8 @@ class StationStreamer
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="streamers")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */

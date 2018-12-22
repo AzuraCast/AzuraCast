@@ -3,12 +3,13 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="role")
  * @ORM\Entity
  */
-class Role
+class Role implements \JsonSerializable
 {
     use Traits\TruncateStrings;
 
@@ -85,5 +86,29 @@ class Role
     public function getPermissions(): Collection
     {
         return $this->permissions;
+    }
+
+    public function jsonSerialize()
+    {
+        $return = [
+            'id'      => $this->id,
+            'name'    => $this->name,
+            'permissions' => [
+                'global' => [],
+                'station' => [],
+            ],
+        ];
+
+        foreach($this->permissions as $permission) {
+            /** @var RolePermission $permission */
+
+            if ($permission->hasStation()) {
+                $return['permissions']['station'][$permission->getStationId()][] = $permission->getActionName();
+            } else {
+                $return['permissions']['global'][] = $permission->getActionName();
+            }
+        }
+
+        return $return;
     }
 }

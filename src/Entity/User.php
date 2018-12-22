@@ -4,11 +4,15 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations\OpenApi as OA;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ORM\Table(name="users", uniqueConstraints={@UniqueConstraint(name="email_idx", columns={"email"})})
+ * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
  * @ORM\Entity(repositoryClass="App\Entity\Repository\UserRepository")
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @OA\Schema(type="object")
  */
 class User
 {
@@ -18,12 +22,16 @@ class User
      * @ORM\Column(name="uid", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example=1497652397)
      * @var string|null
      */
     protected $email;
@@ -73,9 +81,10 @@ class User
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", fetch="EAGER")
      * @ORM\JoinTable(name="user_has_role",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
-     *      inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     * @MaxDepth(1)
      * @var Collection
      */
     protected $roles;
@@ -96,7 +105,7 @@ class User
     }
 
     /**
-     * @PrePersist
+     * @ORM\PrePersist
      */
     public function preSave()
     {
@@ -128,11 +137,11 @@ class User
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthPassword(): string
+    public function getAuthPassword(): ?string
     {
-        return '';
+        return null;
     }
 
     /**

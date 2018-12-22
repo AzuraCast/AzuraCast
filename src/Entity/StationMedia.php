@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
-use App\Radio\Backend\Liquidsoap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+use App\Radio\Backend\Liquidsoap;
 use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="station_media", indexes={
- *   @index(name="search_idx", columns={"title", "artist", "album"})
+ *   @ORM\Index(name="search_idx", columns={"title", "artist", "album"})
  * }, uniqueConstraints={
- *   @UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
+ *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
  * })
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMediaRepository")
  */
@@ -35,8 +37,8 @@ class StationMedia
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="media")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */
@@ -50,8 +52,8 @@ class StationMedia
 
     /**
      * @ORM\ManyToOne(targetEntity="Song")
-     * @JoinColumns({
-     *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="song_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      * @var Song|null
      */

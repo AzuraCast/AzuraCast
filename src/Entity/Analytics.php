@@ -1,9 +1,11 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="analytics", indexes={
- *   @index(name="search_idx", columns={"type", "timestamp"})
+ *   @ORM\Index(name="search_idx", columns={"type", "timestamp"})
  * })
  * @ORM\Entity
  */
@@ -64,8 +66,8 @@ class Analytics
 
     /**
      * @ORM\ManyToOne(targetEntity="Station")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station|null
      */

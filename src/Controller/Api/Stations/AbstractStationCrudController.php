@@ -74,6 +74,21 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
+     * @param $record_id
+     * @return ResponseInterface
+     */
+    public function getAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
+    {
+        $station = $request->getStation();
+        $record = $this->_getRecord($station, $record_id);
+
+        $return = $this->_viewRecord($record, $request->getRouter());
+        return $response->withJson($return);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
      * @param $station_id
      * @param $record_id
      * @return ResponseInterface

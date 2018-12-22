@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="settings")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\SettingsRepository")

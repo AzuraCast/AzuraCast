@@ -1,13 +1,15 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="role_permissions", uniqueConstraints={
- *   @UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
+ *   @ORM\UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
  * })
  * @ORM\Entity(repositoryClass="App\Entity\Repository\RolePermissionRepository")
  */
-class RolePermission
+class RolePermission implements \JsonSerializable
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -25,8 +27,8 @@ class RolePermission
 
     /**
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="permissions")
-     * @JoinColumns({
-     *   @JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Role
      */
@@ -46,8 +48,8 @@ class RolePermission
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="permissions")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station|null
      */
@@ -83,9 +85,25 @@ class RolePermission
     /**
      * @return Station|null
      */
-    public function getStation()
+    public function getStation(): ?Station
     {
         return $this->station;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getStationId(): ?int
+    {
+        return $this->station_id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasStation(): bool
+    {
+        return (null !== $this->station_id);
     }
 
     /**
@@ -102,5 +120,13 @@ class RolePermission
     public function setActionName(string $action_name)
     {
         $this->action_name = $action_name;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'action' => $this->action_name,
+            'station_id' => $this->station_id,
+        ];
     }
 }

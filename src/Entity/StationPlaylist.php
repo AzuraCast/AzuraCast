@@ -1,15 +1,17 @@
 <?php
 namespace App\Entity;
 
-use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+use Cake\Chronos\Chronos;
 use DateTime;
 
 /**
  * @ORM\Table(name="station_playlists")
  * @ORM\Entity
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class StationPlaylist
 {
@@ -48,8 +50,8 @@ class StationPlaylist
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="playlists")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */
@@ -159,7 +161,7 @@ class StationPlaylist
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
-     * @OrderBy({"weight" = "ASC"})
+     * @ORM\OrderBy({"weight" = "ASC"})
      * @var Collection
      */
     protected $media_items;

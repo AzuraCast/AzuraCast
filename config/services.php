@@ -67,11 +67,6 @@ return function (\Azura\Container $di)
     };
 
     $di[\App\Entity\Repository\StationMediaRepository::class] = function($di) {
-        /** @var \Azura\Settings $settings */
-        $settings = $di['settings'];
-
-        // require_once($settings[\Azura\Settings::BASE_DIR] . '/vendor/james-heinrich/getid3/getid3/write.php');
-
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
 
@@ -145,8 +140,20 @@ return function (\Azura\Container $di)
     };
 
     $di[\Symfony\Component\Serializer\Serializer::class] = function($di) {
+        /** @var \Azura\Settings $settings */
+        $settings = $di['settings'];
+
+        /** @var \Doctrine\Common\Cache\Cache $doctrine_cache */
+        $doctrine_cache = $di[\Doctrine\Common\Cache\Cache::class];
+
+        $annotation_reader = new \Doctrine\Common\Annotations\CachedReader(
+            new \Doctrine\Common\Annotations\AnnotationReader,
+            $doctrine_cache,
+            !$settings->isProduction()
+        );
+
         $meta_factory = new \Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
-            new \Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader(new \Doctrine\Common\Annotations\AnnotationReader())
+            new \Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($annotation_reader)
         );
 
         $normalizers = [

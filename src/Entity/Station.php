@@ -3,7 +3,9 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 
 use App\Radio\Frontend\FrontendAbstract;
 use App\Radio\Remote\AdapterProxy;
@@ -17,6 +19,8 @@ use Psr\Http\Message\UriInterface;
  * @ORM\Table(name="station")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @OA\Schema(type="object", schema="Station")
  */
 class Station
 {

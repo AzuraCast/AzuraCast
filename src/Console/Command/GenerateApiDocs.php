@@ -25,18 +25,12 @@ class GenerateApiDocs extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var Version $version */
-        $version = $this->get(Version::class);
-
         /** @var Settings $settings */
         $settings = $this->get(Settings::class);
 
-        define('AZURACAST_VERSION', $version->getVersion());
-        define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
-
         $oa = \OpenApi\scan([
             $settings[Settings::BASE_DIR] . '/util/openapi.php',
-            $settings[Settings::BASE_DIR] . '/src/Entity/Api',
+            $settings[Settings::BASE_DIR] . '/src/Entity',
             $settings[Settings::BASE_DIR] . '/src/Controller/Api',
         ], [
             'exclude' => [

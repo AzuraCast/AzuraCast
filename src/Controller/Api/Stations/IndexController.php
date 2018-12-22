@@ -37,7 +37,7 @@ class IndexController
      *     description="Success",
      *     @OA\Schema(
      *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Station")
+     *       @OA\Items(ref="#/components/schemas/Api_Station")
      *     )
      *   )
      * )
@@ -74,7 +74,7 @@ class IndexController
      *     response=200,
      *     description="Success",
      *     @OA\Schema(
-     *       ref="#/components/schemas/Station"
+     *       ref="#/components/schemas/Api_Station"
      *     )
      *   ),
      *   @OA\Response(response=404, description="Station not found")

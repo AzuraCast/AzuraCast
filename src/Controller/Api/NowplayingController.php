@@ -75,7 +75,7 @@ class NowplayingController implements EventSubscriberInterface
      *     description="Success",
      *     @OA\Schema(
      *       type="array",
-     *       @OA\Items(ref="#/components/schemas/NowPlaying")
+     *       @OA\Items(ref="#/components/schemas/Api_NowPlaying")
      *     )
      *   )
      * )
@@ -88,7 +88,7 @@ class NowplayingController implements EventSubscriberInterface
      *     response=200,
      *     description="Success",
      *     @OA\Schema(
-     *       ref="#/components/schemas/NowPlaying"
+     *       ref="#/components/schemas/Api_NowPlaying"
      *     )
      *   ),
      *   @OA\Response(response=404, description="Station not found")

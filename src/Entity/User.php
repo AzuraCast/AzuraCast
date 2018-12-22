@@ -3,9 +3,10 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations\OpenApi as OA;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
@@ -31,49 +32,63 @@ class User
     /**
      * @ORM\Column(name="email", type="string", length=100, nullable=true)
      *
-     * @OA\Property(example=1497652397)
+     * @OA\Property(example="demo@azuracast.com")
      * @var string|null
      */
     protected $email;
 
     /**
      * @ORM\Column(name="auth_password", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="")
      * @var string|null
      */
     protected $auth_password;
 
     /**
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="Demo Account")
      * @var string|null
      */
     protected $name;
 
     /**
      * @ORM\Column(name="timezone", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="America/Chicago")
      * @var string|null
      */
     protected $timezone;
 
     /**
      * @ORM\Column(name="locale", type="string", length=25, nullable=true)
+     *
+     * @OA\Property(example="en_US")
      * @var string|null
      */
     protected $locale;
 
     /**
      * @ORM\Column(name="theme", type="string", length=25, nullable=true)
+     *
+     * @OA\Property(example="dark")
      * @var string|null
      */
     protected $theme;
 
     /**
      * @ORM\Column(name="created_at", type="integer")
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
     protected $created_at;
 
     /**
      * @ORM\Column(name="updated_at", type="integer")
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
     protected $updated_at;
@@ -84,7 +99,12 @@ class User
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
-     * @MaxDepth(1)
+     *
+     * @Serializer\MaxDepth(1)
+     * @OA\Property(
+     *     @OA\Items()
+     * )
+     *
      * @var Collection
      */
     protected $roles;

@@ -17,7 +17,7 @@ paths:
         - Miscellaneous
       description: 'Returns an affirmative response if the API is active.'
       operationId: 'App\Controller\Api\IndexController::statusAction'
-      parameters: {  }
+      parameters: []
       responses:
         '200':
           description: Success
@@ -27,7 +27,7 @@ paths:
         - Miscellaneous
       description: 'Returns the time (with formatting) in GMT and the user''s local time zone, if logged in.'
       operationId: 'App\Controller\Api\IndexController::timeAction'
-      parameters: {  }
+      parameters: []
       responses:
         '200':
           description: Success
@@ -57,7 +57,7 @@ paths:
         - 'Now Playing'
       description: 'Returns a full summary of all stations'' current state.'
       operationId: 'App\Controller\Api\NowplayingController::__invoke'
-      parameters: {  }
+      parameters: []
       responses:
         '200':
           description: Success
@@ -120,7 +120,7 @@ paths:
         - 'Stations: General'
       description: 'Returns a list of stations.'
       operationId: 'App\Controller\Api\Stations\IndexController::listAction'
-      parameters: {  }
+      parameters: []
       responses:
         '200':
           description: Success
@@ -150,10 +150,10 @@ paths:
         -
           name: media_id
           in: path
-          description: 'The station media ID'
+          description: 'The station media unique ID'
           required: true
           schema:
-            type: int64
+            type: string
       responses:
         '200':
           description: 'The requested album artwork'
@@ -175,8 +175,7 @@ paths:
           description: 'Access Forbidden'
       security:
         -
-          api_key:
-            - 'manage station broadcasting'
+          - api_key
   '/station/{station_id}/frontend/{action}':
     post:
       tags:
@@ -231,10 +230,10 @@ paths:
             - 'manage station broadcasting'
 components:
   schemas:
-    DetailedSongHistory:
+    Api_DetailedSongHistory:
       allOf:
         -
-          $ref: '#/components/schemas/SongHistory'
+          $ref: '#/components/schemas/Api_SongHistory'
         -
           properties:
             listeners_start:
@@ -250,7 +249,7 @@ components:
               type: integer
               example: 11
           type: object
-    Error:
+    Api_Error:
       properties:
         code:
           description: 'The numeric code of the error.'
@@ -269,7 +268,7 @@ components:
           type: boolean
           example: false
       type: object
-    Listener:
+    Api_Listener:
       properties:
         ip:
           description: 'The listener''s IP address'
@@ -286,7 +285,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1543331020
+          example: 1545441844
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -296,22 +295,34 @@ components:
           type: array
           items: {  }
       type: object
-    NowPlaying:
+    Api_NewRecord:
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_Status'
+        -
+          properties:
+            links:
+              type: array
+              items:
+                type: string
+                example: 'http://localhost/api/record/1'
+          type: object
+    Api_NowPlaying:
       properties:
         station:
-          $ref: '#/components/schemas/Station'
+          $ref: '#/components/schemas/Api_Station'
         listeners:
-          $ref: '#/components/schemas/NowPlayingListeners'
+          $ref: '#/components/schemas/Api_NowPlayingListeners'
         live:
-          $ref: '#/components/schemas/NowPlayingLive'
+          $ref: '#/components/schemas/Api_NowPlayingLive'
         now_playing:
-          $ref: '#/components/schemas/NowPlayingCurrentSong'
+          $ref: '#/components/schemas/Api_NowPlayingCurrentSong'
         playing_next:
-          $ref: '#/components/schemas/SongHistory'
+          $ref: '#/components/schemas/Api_SongHistory'
         song_history:
           type: array
           items:
-            $ref: '#/components/schemas/SongHistory'
+            $ref: '#/components/schemas/Api_SongHistory'
         cache:
           description: 'Debugging information about where the now playing data comes from.'
           type: string
@@ -320,10 +331,10 @@ components:
             - database
             - station
       type: object
-    NowPlayingCurrentSong:
+    Api_NowPlayingCurrentSong:
       allOf:
         -
-          $ref: '#/components/schemas/SongHistory'
+          $ref: '#/components/schemas/Api_SongHistory'
         -
           properties:
             elapsed:
@@ -335,7 +346,7 @@ components:
               type: integer
               example: 155
           type: object
-    NowPlayingListeners:
+    Api_NowPlayingListeners:
       properties:
         current:
           description: 'Current listeners, either unique (if supplied) or total (non-unique)'
@@ -350,7 +361,7 @@ components:
           type: integer
           example: 20
       type: object
-    NowPlayingLive:
+    Api_NowPlayingLive:
       properties:
         is_live:
           description: 'Whether the stream is known to currently have a live DJ.'
@@ -361,7 +372,27 @@ components:
           type: string
           example: 'DJ Jazzy Jeff'
       type: object
-    Song:
+    Api_QueuedSong:
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_SongHistory'
+        -
+          properties:
+            cued_at:
+              description: 'UNIX timestamp when the item was cued for playback.'
+              type: integer
+              example: 1545441844
+            autodj_custom_uri:
+              description: 'Custom AutoDJ playback URI, if it exists.'
+              type: string
+              example: ''
+            links:
+              type: array
+              items:
+                type: string
+                example: 'http://localhost/api/stations/1/queue/1'
+          type: object
+    Api_Song:
       properties:
         id:
           description: 'The song''s 32-character unique identifier hash'
@@ -397,7 +428,7 @@ components:
             type: string
             example: custom_field_value
       type: object
-    SongHistory:
+    Api_SongHistory:
       properties:
         sh_id:
           description: 'Song history unique identifier'
@@ -405,7 +436,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1543331020
+          example: 1545441844
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -418,9 +449,9 @@ components:
           description: 'Indicates whether the song is a listener request.'
           type: boolean
         song:
-          $ref: '#/components/schemas/Song'
+          $ref: '#/components/schemas/Api_Song'
       type: object
-    Station:
+    Api_Station:
       properties:
         id:
           description: 'Station ID'
@@ -457,13 +488,13 @@ components:
         mounts:
           type: array
           items:
-            $ref: '#/components/schemas/StationMount'
+            $ref: '#/components/schemas/Api_StationMount'
         remotes:
           type: array
           items:
-            $ref: '#/components/schemas/StationRemote'
+            $ref: '#/components/schemas/Api_StationRemote'
       type: object
-    StationMount:
+    Api_StationMount:
       properties:
         name:
           description: 'Mount point name/URL'
@@ -486,7 +517,7 @@ components:
           type: string
           example: mp3
       type: object
-    StationRemote:
+    Api_StationRemote:
       properties:
         url:
           description: 'Full listening URL specific to this mount'
@@ -501,7 +532,7 @@ components:
           type: string
           example: mp3
       type: object
-    StationRequest:
+    Api_StationRequest:
       properties:
         request_id:
           description: 'Requestable ID unique identifier'
@@ -512,9 +543,9 @@ components:
           type: string
           example: /api/station/1/request/1
         song:
-          $ref: '#/components/schemas/Song'
+          $ref: '#/components/schemas/Api_Song'
       type: object
-    Status:
+    Api_Status:
       properties:
         success:
           type: boolean
@@ -523,7 +554,7 @@ components:
           type: string
           example: 'Changes saved successfully.'
       type: object
-    SystemStatus:
+    Api_SystemStatus:
       properties:
         online:
           description: 'Whether the service is online or not (should always be true)'
@@ -532,9 +563,9 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1543331020
+          example: 1545441844
       type: object
-    Time:
+    Api_Time:
       properties:
         timestamp:
           description: 'The current UNIX timestamp'
@@ -570,6 +601,40 @@ components:
         local_timezone_abbr:
           type: string
           example: UTC
+      type: object
+    Station:
+      type: object
+    User:
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: demo@azuracast.com
+        auth_password:
+          type: string
+          example: ''
+        name:
+          type: string
+          example: 'Demo Account'
+        timezone:
+          type: string
+          example: America/Chicago
+        locale:
+          type: string
+          example: en_US
+        theme:
+          type: string
+          example: dark
+        created_at:
+          type: integer
+          example: 1545441844
+        updated_at:
+          type: integer
+          example: 1545441844
+        roles:
+          items: {  }
       type: object
   responses:
     todo:

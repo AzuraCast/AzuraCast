@@ -1,10 +1,10 @@
 <?php
 namespace App\Entity\Api;
 
-use OpenApi\Annotations\OpenApi as OA;
+use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema(type="object", schema="Api_StationRemote")
  */
 class StationRemote
 {

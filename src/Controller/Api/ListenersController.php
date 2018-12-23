@@ -49,7 +49,7 @@ class ListenersController
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={
-     *     {"api_key": {"view station reports"}}
+     *     {"api_key"}
      *   },
      * )
      */

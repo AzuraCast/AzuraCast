@@ -139,18 +139,23 @@ return function (\Azura\Container $di)
         return $supervisor;
     };
 
-    $di[\Symfony\Component\Serializer\Serializer::class] = function($di) {
+    $di[\Doctrine\Common\Annotations\Reader::class] = function($di) {
         /** @var \Azura\Settings $settings */
         $settings = $di['settings'];
 
         /** @var \Doctrine\Common\Cache\Cache $doctrine_cache */
         $doctrine_cache = $di[\Doctrine\Common\Cache\Cache::class];
 
-        $annotation_reader = new \Doctrine\Common\Annotations\CachedReader(
+        return new \Doctrine\Common\Annotations\CachedReader(
             new \Doctrine\Common\Annotations\AnnotationReader,
             $doctrine_cache,
             !$settings->isProduction()
         );
+    };
+
+    $di[\Symfony\Component\Serializer\Serializer::class] = function($di) {
+        /** @var \Doctrine\Common\Annotations\Reader $annotation_reader */
+        $annotation_reader = $di[\Doctrine\Common\Annotations\Reader::class];
 
         $meta_factory = new \Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new \Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($annotation_reader)
@@ -164,8 +169,11 @@ return function (\Azura\Container $di)
     };
 
     $di[Symfony\Component\Validator\Validator\ValidatorInterface::class] = function($di) {
+        /** @var \Doctrine\Common\Annotations\Reader $annotation_reader */
+        $annotation_reader = $di[\Doctrine\Common\Annotations\Reader::class];
+
         $builder = new \Symfony\Component\Validator\ValidatorBuilder();
-        $builder->enableAnnotationMapping();
+        $builder->enableAnnotationMapping($annotation_reader);
         return $builder->getValidator();
     };
     

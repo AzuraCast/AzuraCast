@@ -34,11 +34,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
-            $return = $this->_viewRecord($row);
-            $return['links'] = [
-                'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $row->getId()], [], true),
-            ];
-
+            $return = $this->_viewRecord($row, $router);
             if ($is_bootgrid) {
                 return Utilities::flatten_array($return, '_');
             }
@@ -63,10 +59,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
         $row = $this->_createRecord($request->getParsedBody(), $record);
 
         $router = $request->getRouter();
-        $return = $this->_viewRecord($row);
-        $return['links'] = [
-            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $row->getId()], [], true),
-        ];
+        $return = $this->_viewRecord($row, $router);
 
         return $response->withJson($return);
     }

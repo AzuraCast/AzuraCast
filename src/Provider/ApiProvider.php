@@ -39,6 +39,8 @@ class ApiProvider implements ServiceProviderInterface
         $di[Api\Stations\QueueController::class] = function($di) {
             return new Api\Stations\QueueController(
                 $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Symfony\Component\Serializer\Serializer::class],
+                $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class],
                 $di[\App\ApiUtilities::class]
             );
         };

@@ -234,22 +234,24 @@ return function(App $app)
 
             $this->get('/nowplaying', Controller\Api\NowplayingController::class.':indexAction');
 
-            // Includes POST for Bootgrid
-            $this->map(['GET', 'POST'], '/history', Controller\Api\Stations\HistoryController::class)
+            $this->get('/history', Controller\Api\Stations\HistoryController::class)
                 ->setName('api:stations:history')
                 ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
-            // Includes POST for Bootgrid
-            $this->map(['GET', 'POST'], '/queue', Controller\Api\Stations\QueueController::class)
-                ->setName('api:stations:queue')
-                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+            $this->group('/queue', function() {
+                /** @var App $this */
 
-            $this->map(['GET', 'DELETE'], '/queue/{id}', Controller\Api\Stations\QueueController::class.':record')
-                ->setName('api:stations:queue:record')
-                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+                $this->get('/queue', Controller\Api\Stations\QueueController::class.':listAction')
+                    ->setName('api:stations:queue');
 
-            // Includes POST for Bootgrid
-            $this->map(['GET', 'POST'], '/requests', Controller\Api\RequestsController::class.':listAction')
+                $this->get('/queue/{id}', Controller\Api\Stations\QueueController::class.':getAction')
+                    ->setName('api:stations:queue:record');
+
+                $this->delete('/queue/{id}', Controller\Api\Stations\QueueController::class.':deleteAction');
+
+            })->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+
+            $this->get('/requests', Controller\Api\RequestsController::class.':listAction')
                 ->setName('api:requests:list');
 
             $this->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\RequestsController::class.':submitAction')

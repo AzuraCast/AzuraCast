@@ -3,6 +3,7 @@ namespace App\Controller\Api;
 
 use Azura\Http\Router;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -39,9 +40,9 @@ abstract class AbstractCrudController
     /**
      * @param $record
      * @param Router $router
-     * @return array
+     * @return mixed
      */
-    protected function _viewRecord($record, Router $router): array
+    protected function _viewRecord($record, Router $router)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

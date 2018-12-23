@@ -3,33 +3,54 @@ namespace App\Controller\Api\Stations;
 
 use App;
 use Azura\Doctrine\Paginator;
+use Azura\Http\Router;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class QueueController
+/**
+ * @see \App\Provider\ApiProvider
+ */
+class QueueController extends AbstractStationCrudController
 {
-    /** @var EntityManager */
-    protected $em;
+    protected $entityClass = Entity\SongHistory::class;
+    protected $resourceRouteName = 'api:stations:queue:record';
 
     /** @var App\ApiUtilities */
-    protected $api_utils;
+    protected $apiUtils;
 
-    /**
-     * @param EntityManager $em
-     * @param App\ApiUtilities $api_utils
-     *
-     * @see \App\Provider\ApiProvider
-     */
-    public function __construct(EntityManager $em, App\ApiUtilities $api_utils)
+    public function __construct(EntityManager $em, Serializer $serializer, ValidatorInterface $validator, App\ApiUtilities $apiUtils)
     {
-        $this->em = $em;
-        $this->api_utils = $api_utils;
+        parent::__construct($em, $serializer, $validator);
+
+        $this->apiUtils = $apiUtils;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
+    /**
+     * @OA\Get(path="/station/{station_id}/queue",
+     *   tags={"Stations: Listeners"},
+     *   description="Return information about the upcoming song playback queue.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\Schema(
+     *       type="array",
+     *       @OA\Items(ref="#/components/schemas/Api_QueuedSong")
+     *     )
+     *   ),
+     *   @OA\Response(response=404, description="Station not found"),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key"}},
+     * )
+     *
+     * @inheritdoc
+     */
+    public function listAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $query = $this->em->createQuery('SELECT sh, sp, s, sm
             FROM ' . Entity\SongHistory::class . ' sh 
@@ -49,63 +70,52 @@ class QueueController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function($sh_row) use ($is_bootgrid, $router) {
-
-            /** @var Entity\SongHistory $sh_row */
-            /** @var Entity\Api\QueuedSong $row */
-            $row = $sh_row->api(new Entity\Api\QueuedSong, $this->api_utils);
-            $row->resolveUrls($router);
-
-            $row->links = [
-                'self' => (string)$router->fromHere('api:stations:queue:record', ['id' => $sh_row->getId()], [], true),
-            ];
-
+        $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
+            $return = $this->_viewRecord($row, $router);
             if ($is_bootgrid) {
-                return App\Utilities::flatten_array($row, '_');
+                return App\Utilities::flatten_array($return, '_');
             }
 
-            return $row;
+            return $return;
         });
 
         return $paginator->write($response);
     }
 
-    public function record(Request $request, Response $response, $station_id, $id): ResponseInterface
+    /**
+     * @inheritdoc
+     */
+    public function getAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
     {
-        $sh_repo = $this->em->getRepository(Entity\SongHistory::class);
+        return parent::getAction($request, $response, $station_id, $record_id);
+    }
 
-        $sh_record = $sh_repo->findOneBy([
-            'station_id' => $station_id,
-            'id' => $id,
-        ]);
+    /**
+     * @inheritdoc
+     */
+    public function deleteAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
+    {
+        return parent::deleteAction($request, $response, $station_id, $record_id);
+    }
 
-        if (!($sh_record instanceof Entity\SongHistory)) {
-            return $response->withJson(new Entity\Api\Error(404, 'Record not found'));
+    /**
+     * @inheritdoc
+     */
+    protected function _viewRecord($record, Router $router)
+    {
+        if (!($record instanceof $this->entityClass)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        switch($request->getMethod())
-        {
-            case 'DELETE':
-                $this->em->remove($sh_record);
-                $this->em->flush();
+        /** @var Entity\SongHistory $record */
+        /** @var Entity\Api\QueuedSong $row */
+        $row = $record->api(new Entity\Api\QueuedSong, $this->apiUtils);
+        $row->resolveUrls($router);
 
-                return $response->withJson(new Entity\Api\Status(true, 'Record deleted.'));
-                break;
+        $row->links = [
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+        ];
 
-            case 'GET':
-            default:
-                $router = $request->getRouter();
-
-                /** @var Entity\Api\QueuedSong $row */
-                $row = $sh_record->api(new Entity\Api\QueuedSong, $this->api_utils);
-                $row->resolveUrls($router);
-
-                $row->links = [
-                    'self' => (string)$router->fromHere(null, [], [], true),
-                ];
-
-                return $response->withJson($row);
-                break;
-        }
+        return $row;
     }
 }

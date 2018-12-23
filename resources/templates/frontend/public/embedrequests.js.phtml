@@ -1,6 +1,10 @@
 $(function() {
     var grid = $("#requests-table").bootgrid({
         ajax: true,
+        ajaxSettings: {
+            method: "GET",
+            cache: false
+        },
         rowSelect: false,
         caseSensitive: false,
         url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",

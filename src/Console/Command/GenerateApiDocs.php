@@ -28,6 +28,10 @@ class GenerateApiDocs extends CommandAbstract
         /** @var Settings $settings */
         $settings = $this->get(Settings::class);
 
+        define('AZURACAST_API_URL', 'https://demo.azuracast.com/api');
+        define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
+        define('AZURACAST_VERSION', Version::FALLBACK_VERSION);
+
         $oa = \OpenApi\scan([
             $settings[Settings::BASE_DIR] . '/util/openapi.php',
             $settings[Settings::BASE_DIR] . '/src/Entity',

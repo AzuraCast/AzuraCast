@@ -41,14 +41,8 @@ class MediaController
      *         type="string"
      *     )
      *   ),
-     *   @OA\Response(
-     *     response=200,
-     *     description="The requested album artwork"
-     *   ),
-     *   @OA\Response(
-     *     response=404,
-     *     description="Image not found; generic filler image."
-     *   )
+     *   @OA\Response(response=200, description="The requested album artwork"),
+     *   @OA\Response(response=404, description="Image not found; generic filler image.")
      * )
      */
     public function artAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface

@@ -32,20 +32,17 @@ class QueueController extends AbstractStationCrudController
 
     /**
      * @OA\Get(path="/station/{station_id}/queue",
-     *   tags={"Stations: Listeners"},
+     *   tags={"Stations: Queue"},
      *   description="Return information about the upcoming song playback queue.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\Schema(
-     *       type="array",
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(type="array",
      *       @OA\Items(ref="#/components/schemas/Api_QueuedSong")
      *     )
      *   ),
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key"}},
+     *   security={{"api_key": \App\Acl::STATION_REPORTS}},
      * )
      *
      * @inheritdoc
@@ -83,20 +80,42 @@ class QueueController extends AbstractStationCrudController
     }
 
     /**
-     * @inheritdoc
+     * @OA\Get(path="/station/{station_id}/queue/{id}",
+     *   tags={"Stations: Queue"},
+     *   description="Retrieve details of a single queued item.",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Queue Item ID",
+     *     required=true,
+     *     @OA\Schema(type="integer", format="int64")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_QueuedSong")
+     *   ),
+     *   @OA\Response(response=404, description="Station or Queue ID not found"),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": App\Acl::STATION_REPORTS}},
+     * )
+     *
+     * @OA\Delete(path="/station/{station_id}/queue/{id}",
+     *   tags={"Stations: Queue"},
+     *   description="Retrieve details of a single queued item.",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Queue Item ID",
+     *     required=true,
+     *     @OA\Schema(type="integer", format="int64")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/API_Status")
+     *   ),
+     *   @OA\Response(response=404, description="Station or Queue ID not found"),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": App\Acl::STATION_REPORTS}},
+     * )
      */
-    public function getAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
-    {
-        return parent::getAction($request, $response, $station_id, $record_id);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function deleteAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
-    {
-        return parent::deleteAction($request, $response, $station_id, $record_id);
-    }
 
     /**
      * @inheritdoc

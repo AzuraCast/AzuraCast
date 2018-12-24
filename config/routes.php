@@ -155,6 +155,9 @@ return function(App $app)
         $this->get('', Controller\Api\IndexController::class.':indexAction')
             ->setName('api:index:index');
 
+        $this->get('/openapi.yml', Controller\Api\OpenApiController::class)
+            ->setName('api:openapi');
+
         $this->get('/status', Controller\Api\IndexController::class.':statusAction')
             ->setName('api:index:status');
 
@@ -198,31 +201,19 @@ return function(App $app)
         $this->group('/admin', function() {
             /** @var App $this */
 
-            $crud_areas = [
-                Controller\Api\Admin\UsersController::class => [
-                    'collection'    => 'users',
-                    'item'          => 'user',
-                    'permission'    => Acl::GLOBAL_USERS,
-                ],
-            ];
+            $this->group('', function() {
+                /** @var App $this */
+                $this->get('/users', Controller\Api\Admin\UsersController::class.':listAction')
+                    ->setName('api:admin:users');
+                $this->post('/users', Controller\Api\Admin\UsersController::class.':createAction');
 
-            foreach($crud_areas as $controller => $route_info) {
-                $this->group('', function() use ($controller, $route_info) {
-                    /** @var App $this */
+                $this->get('/user/{id}', Controller\Api\Admin\UsersController::class.':getAction')
+                    ->setName('api:admin:user');
+                $this->put('/user/{id}', Controller\Api\Admin\UsersController::class.':editAction');
+                $this->delete('/user/{id}', Controller\Api\Admin\UsersController::class.':deleteAction');
+            })->add([Middleware\Permissions::class, Acl::GLOBAL_USERS]);
 
-                    $this->get('/'.$route_info['collection'], $controller.':listAction')
-                        ->setName('api:admin:'.$route_info['collection']);
 
-                    $this->post('/'.$route_info['collection'], $controller.':createAction');
-
-                    $this->get('/'.$route_info['item'].'/{id}', $controller.':getAction')
-                        ->setName('api:admin:'.$route_info['item']);
-
-                    $this->put('/'.$route_info['item'].'/{id}', $controller.':editAction');
-                    $this->delete($route_info['item'].'/{id}', $controller.':deleteAction');
-
-                })->add([Middleware\Permissions::class, $route_info['permission']]);
-            }
         });
 
         $this->group('/station/{station}', function () {
@@ -240,15 +231,13 @@ return function(App $app)
 
             $this->group('/queue', function() {
                 /** @var App $this */
-
-                $this->get('/queue', Controller\Api\Stations\QueueController::class.':listAction')
+                $this->get('', Controller\Api\Stations\QueueController::class.':listAction')
                     ->setName('api:stations:queue');
 
-                $this->get('/queue/{id}', Controller\Api\Stations\QueueController::class.':getAction')
+                $this->get('/{id}', Controller\Api\Stations\QueueController::class.':getAction')
                     ->setName('api:stations:queue:record');
 
-                $this->delete('/queue/{id}', Controller\Api\Stations\QueueController::class.':deleteAction');
-
+                $this->delete('/{id}', Controller\Api\Stations\QueueController::class.':deleteAction');
             })->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
 
             $this->get('/requests', Controller\Api\RequestsController::class.':listAction')

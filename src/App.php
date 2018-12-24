@@ -32,7 +32,6 @@ class App extends \Azura\App
         define('APP_TESTING_MODE', (isset($settings[Settings::APP_ENV]) && Settings::ENV_TESTING === $settings[Settings::APP_ENV]));
 
         // Constants used in annotations
-        define('AZURACAST_VERSION', Version::FALLBACK_VERSION);
         define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
 
         // Register the plugins engine.

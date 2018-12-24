@@ -9,7 +9,7 @@ info:
 servers:
   -
     url: 'https://demo.azuracast.com/api'
-    description: 'AzuraCast Demo API'
+    description: 'AzuraCast Public Demo Server'
 paths:
   /status:
     get:
@@ -49,8 +49,7 @@ paths:
           description: 'Access denied'
       security:
         -
-          api_key:
-            - 'view station reports'
+          - api_key
   /nowplaying:
     get:
       tags:
@@ -159,6 +158,25 @@ paths:
           description: 'The requested album artwork'
         '404':
           description: 'Image not found; generic filler image.'
+  '/station/{station_id}/queue':
+    get:
+      tags:
+        - 'Stations: Listeners'
+      description: 'Return information about the upcoming song playback queue.'
+      operationId: 'App\Controller\Api\Stations\QueueController::listAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          - api_key
   '/station/{station_id}/restart':
     post:
       tags:
@@ -285,7 +303,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1545441844
+          example: 1545718940
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -381,7 +399,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1545441844
+              example: 1545718940
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -436,7 +454,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1545441844
+          example: 1545718940
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -563,7 +581,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1545441844
+          example: 1545718940
       type: object
     Api_Time:
       properties:
@@ -629,10 +647,10 @@ components:
           example: dark
         created_at:
           type: integer
-          example: 1545441844
+          example: 1545718940
         updated_at:
           type: integer
-          example: 1545441844
+          example: 1545718940
         roles:
           items: {  }
       type: object

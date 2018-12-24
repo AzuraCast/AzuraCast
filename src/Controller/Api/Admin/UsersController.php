@@ -13,23 +13,78 @@ class UsersController extends AbstractGenericCrudController
     protected $resourceRouteName = 'api:admin:user';
 
     /**
-     * @OA\Get(path="/station/{station_id}/listeners",
-     *   tags={"Stations: Listeners"},
-     *   description="Return detailed information about current listeners.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\Schema(
-     *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_Listener")
-     *     )
+     * @OA\Get(path="/admin/users",
+     *   tags={"Administration: Users"},
+     *   description="List all current users in the system.",
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/User"))
      *   ),
-     *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={
-     *     {"api_key"}
-     *   },
+     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     * )
+     *
+     * @OA\Post(path="/admin/users",
+     *   tags={"Administration: Users"},
+     *   description="Create a new user.",
+     *   @OA\RequestBody(ref="#/components/schemas/User"),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/User")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     * )
+     *
+     * @OA\Get(path="/admin/user/{id}",
+     *   tags={"Administration: Users"},
+     *   description="Retrieve details for a single current user.",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="User ID",
+     *     required=true,
+     *     @OA\Schema(type="integer", format="int64")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/User")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     * )
+     *
+     * @OA\Put(path="/admin/user/{id}",
+     *   tags={"Administration: Users"},
+     *   description="Update details of a single user.",
+     *   @OA\RequestBody(ref="#/components/schemas/User"),
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="User ID",
+     *     required=true,
+     *     @OA\Schema(type="integer", format="int64")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/API_Status")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     * )
+     *
+     * @OA\Delete(path="/admin/user/{id}",
+     *   tags={"Administration: Users"},
+     *   description="Delete a single user.",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="User ID",
+     *     required=true,
+     *     @OA\Schema(type="integer", format="int64")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/API_Status")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
      * )
      */
+
 }

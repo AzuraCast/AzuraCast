@@ -11,8 +11,8 @@
  * )
  *
  * @OA\Server(
- *     description="AzuraCast Demo API",
- *     url="https://demo.azuracast.com/api"
+ *     description=AZURACAST_API_NAME,
+ *     url=AZURACAST_API_URL
  * )
  *
  * @OA\ExternalDocumentation(
@@ -41,10 +41,17 @@
  *     name="Now Playing",
  *     description="Endpoints that provide full summaries of the current state of stations.",
  * )
- * @OA\Tag(name="Miscellaneous")
+ *
  * @OA\Tag(name="Stations: General")
  * @OA\Tag(name="Stations: Song Requests")
  * @OA\Tag(name="Stations: Listeners")
+ * @OA\Tag(name="Stations: Media")
+ * @OA\Tag(name="Stations: Queue")
+ * @OA\Tag(name="Stations: Service Control")
+ *
+ * @OA\Tag(name="Administration: Users")
+ *
+ * @OA\Tag(name="Miscellaneous")
  *
  * @OA\SecurityScheme(
  *     type="apiKey",

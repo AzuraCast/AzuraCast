@@ -36,6 +36,13 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Api\OpenApiController::class] = function($di) {
+            return new Api\OpenApiController(
+                $di[\Azura\Settings::class],
+                $di[\App\Version::class]
+            );
+        };
+
         $di[Api\Stations\QueueController::class] = function($di) {
             return new Api\Stations\QueueController(
                 $di[\Doctrine\ORM\EntityManager::class],

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
@@ -34,6 +35,8 @@ class User
      *
      * @OA\Property(example="demo@azuracast.com")
      * @var string|null
+     *
+     * @Assert\NotBlank
      */
     protected $email;
 

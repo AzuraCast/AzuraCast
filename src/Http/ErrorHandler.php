@@ -79,7 +79,7 @@ class ErrorHandler
         }
 
         $show_detailed = !APP_IN_PRODUCTION;
-        $return_json = ($req->isXhr() || APP_IS_COMMAND_LINE || APP_TESTING_MODE);
+        $return_json = $this->_returnJson($req);
 
         if ($e instanceof \App\Exception\NotLoggedIn) {
             $error_message = __('You must be logged in to access this page.');
@@ -153,5 +153,22 @@ class ErrorHandler
         return $this->view->renderToResponse($res->withStatus(500), 'system/error_general', [
             'exception' => $e,
         ]);
+    }
+
+    protected function _returnJson(Request $req): bool
+    {
+        if (APP_IS_COMMAND_LINE || APP_TESTING_MODE || $req->isXhr()) {
+            return true;
+        }
+
+        if ($req->hasHeader('Accept')) {
+            $accept = $req->getHeader('Accept');
+
+            if (in_array('application/json', $accept)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

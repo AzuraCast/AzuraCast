@@ -109,7 +109,7 @@ class QueueController extends AbstractStationCrudController
      *     @OA\Schema(type="integer", format="int64")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/API_Status")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
      *   ),
      *   @OA\Response(response=404, description="Station or Queue ID not found"),
      *   @OA\Response(response=403, description="Access denied"),

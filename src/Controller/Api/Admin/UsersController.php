@@ -66,7 +66,7 @@ class UsersController extends AbstractGenericCrudController
      *     @OA\Schema(type="integer", format="int64")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/API_Status")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
@@ -85,7 +85,7 @@ class UsersController extends AbstractGenericCrudController
      *     @OA\Schema(type="integer", format="int64")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/API_Status")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": \App\Acl::GLOBAL_USERS}},

@@ -18,6 +18,7 @@ services:
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
+      - www_node_modules:/var/azuracast/www/web/static/node_modules
     init: true
     restart: always
 
@@ -168,3 +169,4 @@ volumes:
   station_data: {}
   shoutcast2_install: {}
   tmp_data: {}
+  www_node_modules: {}

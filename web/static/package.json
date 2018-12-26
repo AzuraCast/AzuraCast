@@ -13,7 +13,7 @@
     "codemirror": "^5.42.2",
     "fullcalendar": "^3.9.0",
     "highcharts": "^7.0.1",
-    "jquery": "^2.2.4",
+    "jquery": "^3.3.1",
     "jquery-sortable": "^0.9.13",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",

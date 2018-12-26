@@ -28,10 +28,10 @@ class ServicesController
      *   tags={"Stations: Service Control"},
      *   description="Restart all services associated with the radio broadcast.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Status")),
-     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Error")),
+     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),
+     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={
-     *     {"api_key": {"manage station broadcasting"}}
+     *     {"api_key"}
      *   }
      * )
      */
@@ -80,8 +80,8 @@ class ServicesController
      *         type="string"
      *     )
      *   ),
-     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Status")),
-     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Error")),
+     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),
+     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }
@@ -135,8 +135,8 @@ class ServicesController
      *         type="string"
      *     )
      *   ),
-     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Status")),
-     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Error")),
+     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),
+     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }

@@ -1,63 +1,65 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity
- * @Table(name="station_webhooks", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci"})
+ * @ORM\Entity
+ * @ORM\Table(name="station_webhooks", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci"})
  */
 class StationWebhook
 {
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="webhooks")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="webhooks")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */
     protected $station;
 
     /**
-     * @Column(name="name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
      * @var string|null The nickname of the webhook connector.
      */
     protected $name;
 
     /**
-     * @Column(name="type", type="string", length=100)
+     * @ORM\Column(name="type", type="string", length=100)
      * @var string The type of webhook connector to use.
      */
     protected $type;
 
     /**
-     * @Column(name="is_enabled", type="boolean")
+     * @ORM\Column(name="is_enabled", type="boolean")
      * @var bool
      */
     protected $is_enabled;
 
     /**
-     * @Column(name="triggers", type="json_array", nullable=true)
+     * @ORM\Column(name="triggers", type="json_array", nullable=true)
      * @var array List of events that should trigger the webhook notification.
      */
     protected $triggers;
 
     /**
-     * @Column(name="config", type="json_array", nullable=true)
+     * @ORM\Column(name="config", type="json_array", nullable=true)
      * @var array Detailed webhook configuration (if applicable)
      */
     protected $config;

@@ -4,9 +4,10 @@ namespace App\Entity\Api;
 
 use App\Entity;
 use Azura\Http\Router;
+use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema(type="object", schema="Api_SongHistory")
  */
 class SongHistory
 {
@@ -53,7 +54,7 @@ class SongHistory
     /**
      * Song
      *
-     * @OA\Property
+     * @OA\Property()
      * @var Song
      */
     public $song;

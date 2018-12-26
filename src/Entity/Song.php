@@ -3,13 +3,15 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
 use Psr\Http\Message\UriInterface;
 
 /**
- * @Table(name="songs", indexes={
- *   @index(name="search_idx", columns={"text", "artist", "title"})
+ * @ORM\Table(name="songs", indexes={
+ *   @ORM\Index(name="search_idx", columns={"text", "artist", "title"})
  * })
- * @Entity(repositoryClass="App\Entity\Repository\SongRepository")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\SongRepository")
  */
 class Song
 {
@@ -18,51 +20,51 @@ class Song
     const SYNC_THRESHOLD = 604800; // 604800 = 1 week
 
     /**
-     * @Column(name="id", type="string", length=50)
-     * @Id
+     * @ORM\Column(name="id", type="string", length=50)
+     * @ORM\Id
      * @var string
      */
     protected $id;
 
     /**
-     * @Column(name="text", type="string", length=150, nullable=true)
+     * @ORM\Column(name="text", type="string", length=150, nullable=true)
      * @var string|null
      */
     protected $text;
 
     /**
-     * @Column(name="artist", type="string", length=150, nullable=true)
+     * @ORM\Column(name="artist", type="string", length=150, nullable=true)
      * @var string|null
      */
     protected $artist;
 
     /**
-     * @Column(name="title", type="string", length=150, nullable=true)
+     * @ORM\Column(name="title", type="string", length=150, nullable=true)
      * @var string|null
      */
     protected $title;
 
     /**
-     * @Column(name="created", type="integer")
+     * @ORM\Column(name="created", type="integer")
      * @var int
      */
     protected $created;
 
     /**
-     * @Column(name="play_count", type="integer")
+     * @ORM\Column(name="play_count", type="integer")
      * @var int
      */
     protected $play_count;
 
     /**
-     * @Column(name="last_played", type="integer")
+     * @ORM\Column(name="last_played", type="integer")
      * @var int
      */
     protected $last_played;
 
     /**
-     * @OneToMany(targetEntity="SongHistory", mappedBy="song")
-     * @OrderBy({"timestamp" = "DESC"})
+     * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="song")
+     * @ORM\OrderBy({"timestamp" = "DESC"})
      * @var Collection
      */
     protected $history;

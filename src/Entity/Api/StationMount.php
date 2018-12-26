@@ -2,9 +2,10 @@
 namespace App\Entity\Api;
 
 use Azura\Http\Router;
+use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema(type="object", schema="Api_StationMount")
  */
 class StationMount
 {

@@ -32,12 +32,9 @@ class IndexController
      *   tags={"Stations: General"},
      *   description="Returns a list of stations.",
      *   parameters={},
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\Schema(
-     *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Station")
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(type="array",
+     *       @OA\Items(ref="#/components/schemas/Api_Station")
      *     )
      *   )
      * )
@@ -70,12 +67,8 @@ class IndexController
      *   tags={"Stations: General"},
      *   description="Return information about a single station.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\Schema(
-     *       ref="#/components/schemas/Station"
-     *     )
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Station")
      *   ),
      *   @OA\Response(response=404, description="Station not found")
      * )

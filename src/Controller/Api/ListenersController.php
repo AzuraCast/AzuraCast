@@ -43,13 +43,13 @@ class ListenersController
      *     description="Success",
      *     @OA\Schema(
      *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Listener")
+     *       @OA\Items(ref="#/components/schemas/Api_Listener")
      *     )
      *   ),
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={
-     *     {"api_key": {"view station reports"}}
+     *     {"api_key"}
      *   },
      * )
      */

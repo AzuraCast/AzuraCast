@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Entity\Api;
 
 use App\Entity;
+use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema(type="object", schema="Api_NowPlayingCurrentSong")
  */
 class NowPlayingCurrentSong extends SongHistory
 {

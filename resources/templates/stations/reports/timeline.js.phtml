@@ -6,6 +6,10 @@ const api_url = "<?=$router->fromHere('api:stations:history') ?>";
 $(function() {
     $(".data-table").bootgrid({
         ajax: true,
+        ajaxSettings: {
+            method: "GET",
+            cache: false
+        },
         sorting: false,
         caseSensitive: false,
         rowCount: [10, 25, 50],

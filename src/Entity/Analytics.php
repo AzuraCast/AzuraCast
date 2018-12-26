@@ -1,11 +1,13 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Table(name="analytics", indexes={
- *   @index(name="search_idx", columns={"type", "timestamp"})
+ * @ORM\Table(name="analytics", indexes={
+ *   @ORM\Index(name="search_idx", columns={"type", "timestamp"})
  * })
- * @Entity
+ * @ORM\Entity
  */
 class Analytics
 {
@@ -19,53 +21,53 @@ class Analytics
     public const LEVEL_NONE = 'none';
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int|null
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer", nullable=true)
+     * @ORM\Column(name="station_id", type="integer", nullable=true)
      * @var int|null
      */
     protected $station_id;
 
     /**
-     * @Column(name="type", type="string", length=15)
+     * @ORM\Column(name="type", type="string", length=15)
      * @var string
      */
     protected $type;
 
     /**
-     * @Column(name="timestamp", type="integer")
+     * @ORM\Column(name="timestamp", type="integer")
      * @var int
      */
     protected $timestamp;
 
     /**
-     * @Column(name="number_min", type="integer")
+     * @ORM\Column(name="number_min", type="integer")
      * @var int
      */
     protected $number_min;
 
     /**
-     * @Column(name="number_max", type="integer")
+     * @ORM\Column(name="number_max", type="integer")
      * @var int
      */
     protected $number_max;
 
     /**
-     * @Column(name="number_avg", type="integer")
+     * @ORM\Column(name="number_avg", type="integer")
      * @var int
      */
     protected $number_avg;
 
     /**
-     * @ManyToOne(targetEntity="Station")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Station")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station|null
      */

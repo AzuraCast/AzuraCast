@@ -4,31 +4,32 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Table(name="custom_field")
- * @Entity
+ * @ORM\Table(name="custom_field")
+ * @ORM\Entity
  */
 class CustomField
 {
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      * @var string
      */
     protected $name;
 
     /**
-     * @Column(name="short_name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="short_name", type="string", length=100, nullable=true)
      * @var string|null The programmatic name for the field. Can be auto-generated from the full name.
      */
     protected $short_name;

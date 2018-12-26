@@ -1,44 +1,46 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Table(name="api_keys")
- * @Entity(repositoryClass="App\Entity\Repository\ApiKeyRepository")
+ * @ORM\Table(name="api_keys")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\ApiKeyRepository")
  */
 class ApiKey
 {
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="string", length=16)
-     * @Id
+     * @ORM\Column(name="id", type="string", length=16)
+     * @ORM\Id
      * @var string
      */
     protected $id;
 
     /**
-     * @Column(name="verifier", type="string", length=128, nullable=false)
+     * @ORM\Column(name="verifier", type="string", length=128, nullable=false)
      * @var string
      */
     protected $verifier;
 
     /**
-     * @Column(name="user_id", type="integer")
+     * @ORM\Column(name="user_id", type="integer")
      * @var int
      */
     protected $user_id;
 
     /**
-     * @ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")
-     * @JoinColumns({
-     *   @JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
      * })
      * @var User
      */
     protected $user;
 
     /**
-     * @Column(name="comment", type="string", length=255, nullable=true)
+     * @ORM\Column(name="comment", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $comment;

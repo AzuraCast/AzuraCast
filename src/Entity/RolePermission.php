@@ -1,53 +1,55 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Table(name="role_permissions", uniqueConstraints={
- *   @UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
+ * @ORM\Table(name="role_permissions", uniqueConstraints={
+ *   @ORM\UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
  * })
- * @Entity(repositoryClass="App\Entity\Repository\RolePermissionRepository")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\RolePermissionRepository")
  */
-class RolePermission
+class RolePermission implements \JsonSerializable
 {
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="role_id", type="integer")
+     * @ORM\Column(name="role_id", type="integer")
      * @var int
      */
     protected $role_id;
 
     /**
-     * @ManyToOne(targetEntity="Role", inversedBy="permissions")
-     * @JoinColumns({
-     *   @JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="permissions")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Role
      */
     protected $role;
 
     /**
-     * @Column(name="action_name", type="string", length=50, nullable=false)
+     * @ORM\Column(name="action_name", type="string", length=50, nullable=false)
      * @var string
      */
     protected $action_name;
 
     /**
-     * @Column(name="station_id", type="integer", nullable=true)
+     * @ORM\Column(name="station_id", type="integer", nullable=true)
      * @var int|null
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="permissions")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="permissions")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station|null
      */
@@ -83,9 +85,25 @@ class RolePermission
     /**
      * @return Station|null
      */
-    public function getStation()
+    public function getStation(): ?Station
     {
         return $this->station;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getStationId(): ?int
+    {
+        return $this->station_id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasStation(): bool
+    {
+        return (null !== $this->station_id);
     }
 
     /**
@@ -102,5 +120,13 @@ class RolePermission
     public function setActionName(string $action_name)
     {
         $this->action_name = $action_name;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'action' => $this->action_name,
+            'station_id' => $this->station_id,
+        ];
     }
 }

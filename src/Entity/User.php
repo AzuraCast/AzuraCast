@@ -3,85 +3,117 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Table(name="users", uniqueConstraints={@UniqueConstraint(name="email_idx", columns={"email"})})
- * @Entity(repositoryClass="App\Entity\Repository\UserRepository")
- * @HasLifecycleCallbacks
+ * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @OA\Schema(type="object")
  */
 class User
 {
     use Traits\TruncateStrings;
 
     /**
-     * @Column(name="uid", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="uid", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="email", type="string", length=100, nullable=true)
+     * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="demo@azuracast.com")
      * @var string|null
+     *
+     * @Assert\NotBlank
      */
     protected $email;
 
     /**
-     * @Column(name="auth_password", type="string", length=255, nullable=true)
+     * @ORM\Column(name="auth_password", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="")
      * @var string|null
      */
     protected $auth_password;
 
     /**
-     * @Column(name="name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="Demo Account")
      * @var string|null
      */
     protected $name;
 
     /**
-     * @Column(name="timezone", type="string", length=100, nullable=true)
+     * @ORM\Column(name="timezone", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="America/Chicago")
      * @var string|null
      */
     protected $timezone;
 
     /**
-     * @Column(name="locale", type="string", length=25, nullable=true)
+     * @ORM\Column(name="locale", type="string", length=25, nullable=true)
+     *
+     * @OA\Property(example="en_US")
      * @var string|null
      */
     protected $locale;
 
     /**
-     * @Column(name="theme", type="string", length=25, nullable=true)
+     * @ORM\Column(name="theme", type="string", length=25, nullable=true)
+     *
+     * @OA\Property(example="dark")
      * @var string|null
      */
     protected $theme;
 
     /**
-     * @Column(name="created_at", type="integer")
+     * @ORM\Column(name="created_at", type="integer")
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
     protected $created_at;
 
     /**
-     * @Column(name="updated_at", type="integer")
+     * @ORM\Column(name="updated_at", type="integer")
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
     protected $updated_at;
 
     /**
-     * @ManyToMany(targetEntity="Role", inversedBy="users", fetch="EAGER")
-     * @JoinTable(name="user_has_role",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
-     *      inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", fetch="EAGER")
+     * @ORM\JoinTable(name="user_has_role",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     *
+     * @Serializer\MaxDepth(1)
+     * @OA\Property(
+     *     @OA\Items()
+     * )
+     *
      * @var Collection
      */
     protected $roles;
 
     /**
-     * @OneToMany(targetEntity="ApiKey", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ApiKey", mappedBy="user")
      * @var Collection
      */
     protected $api_keys;
@@ -96,7 +128,7 @@ class User
     }
 
     /**
-     * @PrePersist
+     * @ORM\PrePersist
      */
     public function preSave()
     {
@@ -128,11 +160,11 @@ class User
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthPassword(): string
+    public function getAuthPassword(): ?string
     {
-        return '';
+        return null;
     }
 
     /**

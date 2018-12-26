@@ -1,9 +1,11 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Table(name="settings")
- * @Entity(repositoryClass="App\Entity\Repository\SettingsRepository")
+ * @ORM\Table(name="settings")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\SettingsRepository")
  */
 class Settings
 {
@@ -49,15 +51,15 @@ class Settings
     const UPDATE_LAST_RUN       = 'central_update_last_run';
 
     /**
-     * @Column(name="setting_key", type="string", length=64)
-     * @Id
-     * @GeneratedValue(strategy="NONE")
+     * @ORM\Column(name="setting_key", type="string", length=64)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      * @var string
      */
     protected $setting_key;
 
     /**
-     * @Column(name="setting_value", type="json_array", nullable=true)
+     * @ORM\Column(name="setting_value", type="json_array", nullable=true)
      * @var mixed
      */
     protected $setting_value;

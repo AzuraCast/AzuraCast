@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Entity\Api;
 
 use App\Entity;
 use Azura\Http\Router;
+use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema(type="object", schema="Api_Station")
  */
 class Station
 {
@@ -67,13 +67,13 @@ class Station
     public $is_public;
 
     /**
-     * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/StationMount"))
+     * @OA\Property()
      * @var StationMount[]
      */
     public $mounts;
 
     /**
-     * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/StationRemote"))
+     * @OA\Property()
      * @var StationRemote[]
      */
     public $remotes;

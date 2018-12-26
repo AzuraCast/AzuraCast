@@ -1,64 +1,66 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Table(name="station_requests")
- * @Entity(repositoryClass="App\Entity\Repository\StationRequestRepository")
+ * @ORM\Table(name="station_requests")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\StationRequestRepository")
  */
 class StationRequest
 {
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="media")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="media")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */
     protected $station;
 
     /**
-     * @Column(name="track_id", type="integer")
+     * @ORM\Column(name="track_id", type="integer")
      * @var int
      */
     protected $track_id;
 
     /**
-     * @ManyToOne(targetEntity="StationMedia")
-     * @JoinColumns({
-     *   @JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="StationMedia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var StationMedia
      */
     protected $track;
 
     /**
-     * @Column(name="timestamp", type="integer")
+     * @ORM\Column(name="timestamp", type="integer")
      * @var int
      */
     protected $timestamp;
 
     /**
-     * @Column(name="played_at", type="integer")
+     * @ORM\Column(name="played_at", type="integer")
      * @var int
      */
     protected $played_at;
 
     /**
-     * @Column(name="ip", type="string", length=40)
+     * @ORM\Column(name="ip", type="string", length=40)
      * @var string
      */
     protected $ip;

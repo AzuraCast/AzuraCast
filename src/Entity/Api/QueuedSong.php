@@ -4,9 +4,10 @@ namespace App\Entity\Api;
 
 use App\Entity;
 use Azura\Http\Router;
+use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema(type="object", schema="Api_QueuedSong")
  */
 class QueuedSong extends SongHistory
 {

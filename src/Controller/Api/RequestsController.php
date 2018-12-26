@@ -39,7 +39,7 @@ class RequestsController
      *     description="Success",
      *     @OA\Schema(
      *       type="array",
-     *       @OA\Items(ref="#/components/schemas/StationRequest")
+     *       @OA\Items(ref="#/components/schemas/Api_StationRequest")
      *     )
      *   ),
      *   @OA\Response(response=404, description="Station not found"),

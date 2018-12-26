@@ -36,9 +36,18 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Api\OpenApiController::class] = function($di) {
+            return new Api\OpenApiController(
+                $di[\Azura\Settings::class],
+                $di[\App\Version::class]
+            );
+        };
+
         $di[Api\Stations\QueueController::class] = function($di) {
             return new Api\Stations\QueueController(
                 $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Symfony\Component\Serializer\Serializer::class],
+                $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class],
                 $di[\App\ApiUtilities::class]
             );
         };
@@ -77,5 +86,19 @@ class ApiProvider implements ServiceProviderInterface
                 $di[\App\Radio\Configuration::class]
             );
         };
+
+        $standard_crud_controllers = [
+            Api\Admin\UsersController::class,
+        ];
+
+        foreach($standard_crud_controllers as $controller) {
+            $di[$controller] = function($di) use ($controller) {
+                return new $controller(
+                    $di[\Doctrine\ORM\EntityManager::class],
+                    $di[\Symfony\Component\Serializer\Serializer::class],
+                    $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class]
+                );
+            };
+        }
     }
 }

@@ -2,153 +2,155 @@
 
 namespace App\Entity;
 
-use App\Radio\Backend\Liquidsoap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+use App\Radio\Backend\Liquidsoap;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @Table(name="station_media", indexes={
- *   @index(name="search_idx", columns={"title", "artist", "album"})
+ * @ORM\Table(name="station_media", indexes={
+ *   @ORM\Index(name="search_idx", columns={"title", "artist", "album"})
  * }, uniqueConstraints={
- *   @UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
+ *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
  * })
- * @Entity(repositoryClass="App\Entity\Repository\StationMediaRepository")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMediaRepository")
  */
 class StationMedia
 {
     use Traits\UniqueId, Traits\TruncateStrings;
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @var int
      */
     protected $id;
 
     /**
-     * @Column(name="station_id", type="integer")
+     * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="media")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="media")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @var Station
      */
     protected $station;
 
     /**
-     * @Column(name="song_id", type="string", length=50, nullable=true)
+     * @ORM\Column(name="song_id", type="string", length=50, nullable=true)
      * @var int|null
      */
     protected $song_id;
 
     /**
-     * @ManyToOne(targetEntity="Song")
-     * @JoinColumns({
-     *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="Song")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="song_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      * @var Song|null
      */
     protected $song;
 
     /**
-     * @Column(name="title", type="string", length=200, nullable=true)
+     * @ORM\Column(name="title", type="string", length=200, nullable=true)
      * @var string|null
      */
     protected $title;
 
     /**
-     * @Column(name="artist", type="string", length=200, nullable=true)
+     * @ORM\Column(name="artist", type="string", length=200, nullable=true)
      * @var string|null
      */
     protected $artist;
 
     /**
-     * @Column(name="album", type="string", length=200, nullable=true)
+     * @ORM\Column(name="album", type="string", length=200, nullable=true)
      * @var string|null
      */
     protected $album;
 
     /**
-     * @Column(name="lyrics", type="text", nullable=true)
+     * @ORM\Column(name="lyrics", type="text", nullable=true)
      * @var string|null
      */
     protected $lyrics;
 
     /**
-     * @Column(name="isrc", type="string", length=15, nullable=true)
+     * @ORM\Column(name="isrc", type="string", length=15, nullable=true)
      * @var string|null The track ISRC (International Standard Recording Code), used for licensing purposes.
      */
     protected $isrc;
 
     /**
-     * @Column(name="length", type="integer")
+     * @ORM\Column(name="length", type="integer")
      * @var int
      */
     protected $length;
 
     /**
-     * @Column(name="length_text", type="string", length=10, nullable=true)
+     * @ORM\Column(name="length_text", type="string", length=10, nullable=true)
      * @var string|null
      */
     protected $length_text;
 
     /**
-     * @Column(name="path", type="string", length=500, nullable=true)
+     * @ORM\Column(name="path", type="string", length=500, nullable=true)
      * @var string|null
      */
     protected $path;
 
     /**
-     * @Column(name="mtime", type="integer", nullable=true)
+     * @ORM\Column(name="mtime", type="integer", nullable=true)
      * @var int|null
      */
     protected $mtime;
 
     /**
-     * @Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
      * @var float|null
      */
     protected $fade_overlap;
 
     /**
-     * @Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true)
      * @var float|null
      */
     protected $fade_in;
 
     /**
-     * @Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true)
      * @var float|null
      */
     protected $fade_out;
 
     /**
-     * @Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true)
+     * @ORM\Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true)
      * @var float|null
      */
     protected $cue_in;
 
     /**
-     * @Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true)
+     * @ORM\Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true)
      * @var float|null
      */
     protected $cue_out;
 
     /**
-     * @OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
+     * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
      * @var Collection
      */
     protected $playlist_items;
 
     /**
-     * @OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
+     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
      * @var Collection
      */
     protected $custom_fields;

@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Entity\Api;
 
+use OpenApi\Annotations as OA;
 use App\Entity;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema(type="object", schema="Api_Listener")
  */
 class Listener
 {

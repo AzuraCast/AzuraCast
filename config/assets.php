@@ -15,7 +15,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/jquery/2.2.4/jquery.min.js',
+                    'src' => 'dist/lib/jquery/jquery.min.js',
                 ],
             ],
         ],
@@ -26,7 +26,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/vue/2.5.21/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js'),
+                    'src' => 'dist/lib/vue/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js'),
                 ],
             ],
         ],
@@ -37,7 +37,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/vue-i18n/8.6.0/vue-i18n.min.js',
+                    'src' => 'dist/lib/vue-i18n/vue-i18n.min.js',
                 ],
             ],
         ],
@@ -48,7 +48,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/lodash/4.17.11/lodash.min.js',
+                    'src' => 'dist/lib/lodash/lodash.min.js',
                 ]
             ]
         ]
@@ -63,13 +63,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/popper.js/1.14.6/umd/popper.min.js',
+                    'src' => 'dist/lib/popper/popper.min.js',
                 ],
                 [
-                    'src' => 'vendor/bootstrap/4.2.1/js/bootstrap.min.js',
+                    'src' => 'dist/lib/bootstrap/bootstrap.min.js',
                 ],
                 [
-                    'src' => 'vendor/bootstrap-notify/3.1.3/bootstrap-notify.min.js',
+                    'src' => 'dist/lib/bootstrap-notify/bootstrap-notify.min.js',
                     'defer' => true,
                 ],
                 [
@@ -89,11 +89,11 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/sweetalert/2.1.2/sweetalert.min.js',
+                    'src' => 'dist/lib/sweetalert/sweetalert.min.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'vendor/autosize/4.0.2/autosize.min.js',
+                    'src' => 'dist/lib/autosize/autosize.min.js',
                     'defer' => true,
                 ],
             ],
@@ -152,7 +152,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/store/1.3.20/store.min.js',
+                    'src' => 'dist/lib/store/store.min.js',
                     'defer' => true,
                 ],
                 [
@@ -168,15 +168,15 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/highcharts/7.0.1/highcharts.js',
+                    'src' => 'dist/lib/highcharts/highcharts.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'vendor/highcharts/7.0.1/highcharts-more.js',
+                    'src' => 'dist/lib/highcharts/highcharts-more.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'vendor/highcharts/7.0.1/modules/exporting.js',
+                    'src' => 'dist/lib/highcharts/exporting.js',
                     'defer' => true,
                 ],
             ]
@@ -188,11 +188,11 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/proj4/2.5.0/proj4.js',
+                    'src' => 'dist/lib/proj4/proj4.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'vendor/highcharts/7.0.1/modules/map.js',
+                    'src' => 'dist/lib/highcharts/map.js',
                     'defer' => true,
                 ],
                 [
@@ -220,7 +220,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/zxcvbn/4.4.2/zxcvbn.js',
+                    'src' => 'dist/lib/zxcvbn/zxcvbn.js',
                     'defer' => true,
                 ],
                 [
@@ -236,13 +236,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/chosen-js/1.8.7/chosen.jquery.min.js',
+                    'src' => 'dist/lib/chosen/chosen.jquery.min.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'vendor/chosen-js/1.8.7/chosen.min.css',
+                    'href' => 'dist/lib/chosen/chosen.min.css',
                 ],
             ]
         ],
@@ -253,11 +253,11 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/moment/2.23.0/moment-with-locales.min.js',
+                    'src' => 'dist/lib/moment/moment-with-locales.min.js',
                     'charset' => 'UTF-8',
                 ],
                 [
-                    'src' => 'vendor/moment-timezone/0.5.23/moment-timezone-with-data.min.js',
+                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data.min.js',
                 ],
             ]
         ],
@@ -284,13 +284,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/bootstrap-daterangepicker/3.0.3/daterangepicker.js',
+                    'src' => 'dist/lib/daterangepicker/daterangepicker.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'vendor/bootstrap-daterangepicker/3.0.3/daterangepicker.css',
+                    'href' => 'dist/lib/daterangepicker/daterangepicker.css',
                 ],
             ],
         ],
@@ -301,20 +301,20 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/codemirror/5.42.2/codemirror.js',
+                    'src' => 'dist/lib/codemirror/codemirror.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'vendor/codemirror/5.42.2/mode/css/css.js',
+                    'src' => 'dist/lib/codemirror/css.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'vendor/codemirror/5.42.2/codemirror.css',
+                    'href' => 'dist/lib/codemirror/codemirror.css',
                 ],
                 [
-                    'href' => 'vendor/codemirror/5.42.2/theme/material.css',
+                    'href' => 'dist/lib/codemirror/material.css',
                 ],
             ],
         ],
@@ -325,7 +325,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/clipboard/2.0.4/clipboard.min.js',
+                    'src' => 'dist/lib/clipboard/clipboard.min.js',
                 ],
             ],
         ],
@@ -341,13 +341,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/@fancyapps/fancybox/3.5.6/jquery.fancybox.min.js',
+                    'src' => 'dist/lib/fancybox/jquery.fancybox.min.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'vendor/@fancyapps/fancybox/3.5.6/jquery.fancybox.min.css',
+                    'href' => 'dist/lib/fancybox/jquery.fancybox.min.css',
                 ]
             ],
         ],
@@ -358,7 +358,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/@flowjs/flow.js/2.13.1/flow.min.js',
+                    'src' => 'dist/lib/flowjs/flow.min.js',
                     'defer' => true,
                 ],
             ],
@@ -371,17 +371,17 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/fullcalendar/3.9.0/fullcalendar.min.js',
+                    'src' => 'dist/lib/fullcalendar/fullcalendar.min.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'vendor/fullcalendar/3.9.0/locale-all.js',
+                    'src' => 'dist/lib/fullcalendar/locale-all.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'vendor/fullcalendar/3.9.0/fullcalendar.min.css',
+                    'href' => 'dist/lib/fullcalendar/fullcalendar.min.css',
                 ]
             ]
         ],
@@ -393,7 +393,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'vendor/jquery-sortable/0.9.13/jquery-sortable-min.js',
+                    'src' => 'dist/lib/jquery-sortable/jquery-sortable-min.js',
                     'defer' => true,
                 ],
             ],

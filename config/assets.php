@@ -15,8 +15,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js',
-                    'integrity' => 'sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=',
+                    'src' => 'dist/lib/jquery/jquery.min.js',
                 ],
             ],
         ],
@@ -27,10 +26,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js'),
-                    'integrity' => (APP_IN_PRODUCTION)
-                        ? 'sha256-1Q2q5hg2YXp9fYlM++sIEXOcUb8BRSDUsQ1zXvLBqmA='
-                        : 'sha256-pU9euBaEcVl8Gtg+FRYCtin2vKLN8sx5/4npZDmY2VA=',
+                    'src' => 'dist/lib/vue/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js'),
                 ],
             ],
         ],
@@ -41,8 +37,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/vue-i18n/8.3.1/vue-i18n.min.js',
-                    'integrity' => 'sha256-sqdawvb1bAAuOOTR87fV1F4N0U9CkQyEWzKD0ANfdj4=',
+                    'src' => 'dist/lib/vue-i18n/vue-i18n.min.js',
                 ],
             ],
         ],
@@ -53,8 +48,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js',
-                    'integrity' => 'sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=',
+                    'src' => 'dist/lib/lodash/lodash.min.js',
                 ]
             ]
         ]
@@ -69,21 +63,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js',
-                    'integrity' => 'sha256-EGs9T1xMHdvM1geM8jPpoo8EZ1V1VRsmcJz8OByENLA=',
+                    'src' => 'dist/lib/popper/popper.min.js',
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js',
-                    'integrity' => 'sha256-xaF9RpdtRxzwYMWg4ldJoyPWqyDPCRD0Cv7YEEe6Ie8=',
+                    'src' => 'dist/lib/bootstrap/bootstrap.min.js',
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.5/waves.min.js',
-                    'integrity' => 'sha256-ICvFZLf7gslwfpvdxzQ8w8oZt0brzoFr8v2dXBecuLY=',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js',
-                    'integrity' => 'sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=',
+                    'src' => 'dist/lib/bootstrap-notify/bootstrap-notify.min.js',
                     'defer' => true,
                 ],
                 [
@@ -103,13 +89,11 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js',
-                    'integrity' => 'sha256-KsRuvuRtUVvobe66OFtOQfjP8WA2SzYsmm4VPfMnxms=',
+                    'src' => 'dist/lib/sweetalert/sweetalert.min.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.0/autosize.min.js',
-                    'integrity' => 'sha256-F7Bbc+3hGv34D+obsHHsSm3ZKRBudWR7e2H0fS0beok=',
+                    'src' => 'dist/lib/autosize/autosize.min.js',
                     'defer' => true,
                 ],
             ],
@@ -168,8 +152,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/store.js/1.3.20/store.min.js',
-                    'integrity' => 'sha256-0jgHNEQo7sIScbcI/Pc5GYJ+VosKM1mJ+fI0iuQ1a9E=',
+                    'src' => 'dist/lib/store/store.min.js',
                     'defer' => true,
                 ],
                 [
@@ -185,18 +168,15 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.4/highcharts.js',
-                    'integrity' => 'sha256-jLlwSowwSPJ9ukSEWxfqld2rgZTzBcTJhfotyvtdOSk=',
+                    'src' => 'dist/lib/highcharts/highcharts.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.4/highcharts-more.js',
-                    'integrity' => 'sha256-QnoLQZe7BYRVTl3AY8Lsw6mn60HfHZNpcZBEndybfBk=',
+                    'src' => 'dist/lib/highcharts/highcharts-more.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.4/modules/exporting.js',
-                    'integrity' => 'sha256-t0WPpPvL2cZgET8RU2pdgP8SdZue1Ni+IhYh7AkDIo4=',
+                    'src' => 'dist/lib/highcharts/exporting.js',
                     'defer' => true,
                 ],
             ]
@@ -208,13 +188,11 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js',
-                    'integrity' => 'sha256-ROS+XfN+WVpU3giGt7Fwy92u3h4at1gN7Z5xQ2Ke1lw=',
+                    'src' => 'dist/lib/proj4/proj4.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/highmaps/6.0.3/js/modules/map.js',
-                    'integrity' => 'sha256-Vkj0+DtwVRfvzGIXKu03YG4ax8JLZSi0V8bDgCTUjkw=',
+                    'src' => 'dist/lib/highcharts/map.js',
                     'defer' => true,
                 ],
                 [
@@ -242,8 +220,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js',
-                    'integrity' => 'sha256-Znf8FdJF85f1LV0JmPOob5qudSrns8pLPZ6qkd/+F0o=',
+                    'src' => 'dist/lib/zxcvbn/zxcvbn.js',
                     'defer' => true,
                 ],
                 [
@@ -259,15 +236,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.jquery.min.js',
-                    'integrity' => 'sha256-j9yXOqKOlGKkAerTz/6KCllekmWP3Kt3a7sBvMK8IGI=',
+                    'src' => 'dist/lib/chosen/chosen.jquery.min.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.min.css',
-                    'integrity' => 'sha256-mmiAhiWsn5EjME5u13M5klIesdx2mQQnvwSDFWwAW4E=',
+                    'href' => 'dist/lib/chosen/chosen.min.css',
                 ],
             ]
         ],
@@ -278,13 +253,11 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js',
-                    'integrity' => 'sha256-VrmtNHAdGzjNsUNtWYG55xxE9xDTz4gF63x/prKXKH0=',
+                    'src' => 'dist/lib/moment/moment-with-locales.min.js',
                     'charset' => 'UTF-8',
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.21/moment-timezone-with-data.min.js',
-                    'integrity' => 'sha256-VX6SyoDzanqBxHY3YQyaYB/R7t5TpgjF4ZvotrViKAY=',
+                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data.min.js',
                 ],
             ]
         ],
@@ -311,15 +284,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.27/daterangepicker.min.js',
-                    'integrity' => 'sha256-fuPJ7xvV6OPcIGSJd2Xj7s/+2aWsVGapv+Uj/cuVOzk=',
+                    'src' => 'dist/lib/daterangepicker/daterangepicker.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.27/daterangepicker.min.css',
-                    'integrity' => 'sha256-m4uCSkjNdbrhPh2GPVsyB8nuDl5uiF/DpAhSGdqujrc=',
+                    'href' => 'dist/lib/daterangepicker/daterangepicker.css',
                 ],
             ],
         ],
@@ -330,24 +301,20 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.js',
-                    'integrity' => 'sha256-ag7KgA1S7cuuU2FCC2G7/L8IpaijDSPqzcLLLeJv5Iw=',
+                    'src' => 'dist/lib/codemirror/codemirror.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/css/css.min.js',
-                    'integrity' => 'sha256-EPuuMaFXpkGuc1TQeBblqQDxuPiTFgd8K+l/vGIC5EQ=',
+                    'src' => 'dist/lib/codemirror/css.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.css',
-                    'integrity' => 'sha256-I8NyGs4wjbMuBSUE40o55W6k6P7tu/7G28/JGUUYCIs=',
+                    'href' => 'dist/lib/codemirror/codemirror.css',
                 ],
                 [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/theme/material.min.css',
-                    'integrity' => 'sha256-UyTiM5wwtuGiISIGyvkdYa9kgCRJmBQ+OYU72oexofc=',
+                    'href' => 'dist/lib/codemirror/material.css',
                 ],
             ],
         ],
@@ -358,14 +325,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js',
-                    'integrity' => 'sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=',
+                    'src' => 'dist/lib/clipboard/clipboard.min.js',
                 ],
             ],
         ],
         'inline' => [
             'js' => [
-                "new Clipboard('.btn-copy');",
+                "new ClipboardJS('.btn-copy');",
             ],
         ],
     ],
@@ -375,15 +341,13 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js',
-                    'integrity' => 'sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=',
+                    'src' => 'dist/lib/fancybox/jquery.fancybox.min.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css',
-                    'integrity' => 'sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=',
+                    'href' => 'dist/lib/fancybox/jquery.fancybox.min.css',
                 ]
             ],
         ],
@@ -394,8 +358,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/flow.js/2.13.0/flow.min.js',
-                    'integrity' => 'sha256-F82/auvnDa23QdME+MJ76ucrjnWyUDxKwEvCuhT1m2Y=',
+                    'src' => 'dist/lib/flowjs/flow.min.js',
                     'defer' => true,
                 ],
             ],
@@ -408,20 +371,17 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js',
-                    'integrity' => 'sha256-QvhPq+evNjd8JyxSOU5KL3jPYTD7+gWVev1OH763SL0=',
+                    'src' => 'dist/lib/fullcalendar/fullcalendar.min.js',
                     'defer' => true,
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale-all.js',
-                    'integrity' => 'sha256-EmG1dya2dF5fANGOBHzCYtmTXO++8RJQ96jzEx/SfgY=',
+                    'src' => 'dist/lib/fullcalendar/locale-all.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css',
-                    'integrity' => 'sha256-Tu3DN+5kwrhzlzhNUMuGht2h7cR6ARgKcYemB9u5SzA=',
+                    'href' => 'dist/lib/fullcalendar/fullcalendar.min.css',
                 ]
             ]
         ],
@@ -433,8 +393,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js',
-                    'integrity' => 'sha256-wWIfHlrIpCbyDbt+VSBUsc54ApQZWKqBmF38yUKLGeY=',
+                    'src' => 'dist/lib/jquery-sortable/jquery-sortable-min.js',
                     'defer' => true,
                 ],
             ],

@@ -240,14 +240,14 @@ return function(App $app)
                 $this->delete('/{id}', Controller\Api\Stations\QueueController::class.':deleteAction');
             })->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
 
-            $this->get('/requests', Controller\Api\RequestsController::class.':listAction')
+            $this->get('/requests', Controller\Api\Stations\RequestsController::class.':listAction')
                 ->setName('api:requests:list');
 
-            $this->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\RequestsController::class.':submitAction')
+            $this->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\Stations\RequestsController::class.':submitAction')
                 ->setName('api:requests:submit')
                 ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
 
-            $this->get('/listeners', Controller\Api\ListenersController::class.':indexAction')
+            $this->get('/listeners', Controller\Api\Stations\ListenersController::class.':indexAction')
                 ->setName('api:listeners:index')
                 ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 

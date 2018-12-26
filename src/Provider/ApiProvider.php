@@ -20,14 +20,6 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Api\ListenersController::class] = function($di) {
-            return new Api\ListenersController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\Azura\Cache::class],
-                $di[\MaxMind\Db\Reader::class]
-            );
-        };
-
         $di[Api\NowplayingController::class] = function($di) {
             return new Api\NowplayingController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -40,22 +32,6 @@ class ApiProvider implements ServiceProviderInterface
             return new Api\OpenApiController(
                 $di[\Azura\Settings::class],
                 $di[\App\Version::class]
-            );
-        };
-
-        $di[Api\Stations\QueueController::class] = function($di) {
-            return new Api\Stations\QueueController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\Symfony\Component\Serializer\Serializer::class],
-                $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class],
-                $di[\App\ApiUtilities::class]
-            );
-        };
-
-        $di[Api\RequestsController::class] = function($di) {
-            return new Api\RequestsController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\ApiUtilities::class]
             );
         };
 
@@ -73,10 +49,34 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Api\Stations\ListenersController::class] = function($di) {
+            return new Api\Stations\ListenersController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Azura\Cache::class],
+                $di[\MaxMind\Db\Reader::class]
+            );
+        };
+
         $di[Api\Stations\MediaController::class] = function($di) {
             return new Api\Stations\MediaController(
                 $di[\App\Customization::class],
                 $di[\App\Radio\Filesystem::class]
+            );
+        };
+
+        $di[Api\Stations\QueueController::class] = function($di) {
+            return new Api\Stations\QueueController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Symfony\Component\Serializer\Serializer::class],
+                $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class],
+                $di[\App\ApiUtilities::class]
+            );
+        };
+
+        $di[Api\Stations\RequestsController::class] = function($di) {
+            return new Api\Stations\RequestsController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\ApiUtilities::class]
             );
         };
 

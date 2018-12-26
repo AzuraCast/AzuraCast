@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Api;
+namespace App\Controller\Api\Stations;
 
 use Azura\Doctrine\Paginator;
 use App\Utilities;

@@ -68,7 +68,7 @@ class Flow
 
         $currentChunkSize = (int)$this->request->getParam('flowCurrentChunkSize', 0);
 
-        $targetSize = $this->request->getParam('flowTotalSize', 0);
+        $targetSize = (int)$this->request->getParam('flowTotalSize', 0);
         $targetChunks = (int)$this->request->getParam('flowTotalChunks', 0);
 
         // Check if request is GET and the requested chunk exists or not. This makes testChunks work
@@ -148,6 +148,7 @@ class Flow
      */
     protected function _createFileFromChunks($chunkBaseDir, $chunkIdentifier, $originalFileName, $numChunks): array
     {
+        $originalFileName = \Azura\File::sanitizeFileName(basename($originalFileName));
         $finalPath = $this->temp_dir.'/'.$originalFileName;
 
         $fp = fopen($finalPath, 'w+');
@@ -159,7 +160,7 @@ class Flow
         fclose($fp);
 
         // rename the temporary directory (to avoid access from other
-        // concurrent chunks uploads) and than delete it
+        // concurrent chunk uploads) and then delete it.
         if (rename($chunkBaseDir, $chunkBaseDir . '_UNUSED')) {
             $this->_rrmdir($chunkBaseDir . '_UNUSED');
         } else {

@@ -221,7 +221,7 @@ class FilesController extends FilesControllerAbstract
         $station = $request->getStation();
 
         try {
-            $flow = new \App\Service\Flow($request, $response);
+            $flow = new \App\Service\Flow($request, $response, $station->getRadioTempDir());
             $flow_response = $flow->process();
 
             if ($flow_response instanceof Response) {
@@ -241,7 +241,7 @@ class FilesController extends FilesControllerAbstract
             $file = $request->getAttribute('file');
             $file_path = $request->getAttribute('file_path');
 
-            $sanitized_name = \Azura\File::sanitizeFileName(basename($flow_response['filename']));
+            $sanitized_name = $flow_response['filename'];
 
             $final_path = empty($file)
                 ? $file_path.$sanitized_name

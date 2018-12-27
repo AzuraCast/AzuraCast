@@ -218,11 +218,7 @@ class FilesController extends FilesControllerAbstract
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
 
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
-        /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
-        $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+        $station = $request->getStation();
 
         try {
             $flow = new \App\Service\Flow($request, $response);
@@ -231,48 +227,52 @@ class FilesController extends FilesControllerAbstract
             if ($flow_response instanceof Response) {
                 return $flow_response;
             }
-
-            if (is_array($flow_response)) {
-                $station = $request->getStation();
-
-                $file = $request->getAttribute('file');
-                $file_path = $request->getAttribute('file_path');
-
-                $sanitized_name = \Azura\File::sanitizeFileName(basename($flow_response['filename']));
-
-                $final_path = (empty($file))
-                    ? $file_path.$sanitized_name
-                    : $file_path.'/'.$sanitized_name;
-
-                $station_media = $media_repo->uploadFile($station, $flow_response['path'], $final_path);
-
-                // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-                if ($request->hasParam('searchPhrase')) {
-                    $search_phrase = $request->getParam('searchPhrase');
-
-                    if (substr($search_phrase, 0, 9) === 'playlist:') {
-                        $playlist_name = substr($search_phrase, 9);
-
-                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                            'station_id' => $station->getId(),
-                            'name' => $playlist_name,
-                        ]);
-
-                        if ($playlist instanceof Entity\StationPlaylist) {
-                            $playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
-                            $this->em->flush();
-
-                            $playlists_media_repo->reshuffleMedia($playlist);
-                        }
-                    }
-                }
-
-                $this->em->flush();
-
-                return $response->withJson(['success' => true]);
-            }
         } catch (\Exception | \Error $e) {
             return $this->_err($response, 500, $e->getMessage());
+        }
+
+        if (is_array($flow_response)) {
+            /** @var Entity\Repository\StationMediaRepository $media_repo */
+            $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+
+            /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
+            $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+
+            $file = $request->getAttribute('file');
+            $file_path = $request->getAttribute('file_path');
+
+            $sanitized_name = \Azura\File::sanitizeFileName(basename($flow_response['filename']));
+
+            $final_path = empty($file)
+                ? $file_path.$sanitized_name
+                : $file_path.'/'.$sanitized_name;
+
+            $station_media = $media_repo->uploadFile($station, $flow_response['path'], $final_path);
+
+            // If the user is looking at a playlist's contents, add uploaded media to that playlist.
+            if ($request->hasParam('searchPhrase')) {
+                $search_phrase = $request->getParam('searchPhrase');
+
+                if (0 === strpos($search_phrase, 'playlist:')) {
+                    $playlist_name = substr($search_phrase, 9);
+
+                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                        'station_id' => $station->getId(),
+                        'name' => $playlist_name,
+                    ]);
+
+                    if ($playlist instanceof Entity\StationPlaylist) {
+                        $playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
+                        $this->em->flush();
+
+                        $playlists_media_repo->reshuffleMedia($playlist);
+                    }
+                }
+            }
+
+            $this->em->flush();
+
+            return $response->withJson(['success' => true]);
         }
 
         return $response->withJson(['success' => false]);

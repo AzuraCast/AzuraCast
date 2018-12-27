@@ -36,10 +36,18 @@ class Flow
     /** @var Response */
     protected $response;
 
-    public function __construct(Request $request, Response $response)
+    /** @var string */
+    protected $temp_dir;
+
+    public function __construct(Request $request, Response $response, $temp_dir = null)
     {
         $this->request = $request;
         $this->response = $response;
+
+        if (null === $temp_dir) {
+            $temp_dir = sys_get_temp_dir().'/uploads/';
+        }
+        $this->temp_dir = $temp_dir;
     }
 
     /**
@@ -55,7 +63,7 @@ class Flow
         $flowFilename = $this->request->getParam('flowFilename', $flowIdentifier ?: 'upload-'.date('Ymd'));
 
         // init the destination file (format <filename.ext>.part<#chunk>
-        $chunkBaseDir = sys_get_temp_dir() . '/uploads/' . $flowIdentifier;
+        $chunkBaseDir = $this->temp_dir . '/' . $flowIdentifier;
         $chunkPath = $chunkBaseDir . '/' . $flowIdentifier . '.part' . $flowChunkNumber;
 
         $currentChunkSize = (int)$this->request->getParam('flowCurrentChunkSize', 0);
@@ -69,14 +77,14 @@ class Flow
             // Force a reupload of the last chunk if all chunks are uploaded, to trigger processing below.
             if ($flowChunkNumber !== $targetChunks
                 && file_exists($chunkPath)
-                && filesize($chunkPath) == $currentChunkSize) {
+                && filesize($chunkPath) === $currentChunkSize) {
                 return $this->response->withStatus(200, 'OK');
-            } else {
-                return $this->response->withStatus(204, 'No Content');
             }
 
-        } else if (!empty($this->request->getUploadedFiles())) {
+            return $this->response->withStatus(204, 'No Content');
+        }
 
+        if (!empty($this->request->getUploadedFiles())) {
             $files = $this->request->getUploadedFiles();
 
             foreach ($files as $file) {
@@ -99,11 +107,10 @@ class Flow
 
             if ($this->_allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
                 return $this->_createFileFromChunks($chunkBaseDir, $flowIdentifier, $flowFilename, $targetChunks);
-            } else {
-                // Return an OK status to indicate that the chunk upload itself succeeded.
-                return $this->response->withStatus(200, 'OK');
             }
 
+            // Return an OK status to indicate that the chunk upload itself succeeded.
+            return $this->response->withStatus(200, 'OK');
         }
 
         return null;
@@ -114,19 +121,20 @@ class Flow
      *
      * @param $chunkBaseDir
      * @param $targetSize
+     * @param $targetChunkNumber
      * @return bool
      */
-    protected function _allPartsExist($chunkBaseDir, $targetSize, $targetChunkNumber)
+    protected function _allPartsExist($chunkBaseDir, $targetSize, $targetChunkNumber): bool
     {
         $chunkSize = 0;
         $chunkNumber = 0;
 
-        foreach (array_diff(scandir($chunkBaseDir), array('.', '..')) as $file) {
+        foreach (array_diff(scandir($chunkBaseDir, \SCANDIR_SORT_NONE), array('.', '..')) as $file) {
             $chunkSize += filesize($chunkBaseDir.'/'.$file);
             $chunkNumber++;
         }
 
-        return ($chunkSize == $targetSize && $chunkNumber == $targetChunkNumber);
+        return ($chunkSize === $targetSize && $chunkNumber === $targetChunkNumber);
     }
 
     /**
@@ -138,9 +146,9 @@ class Flow
      * @param $numChunks
      * @return array
      */
-    protected function _createFileFromChunks($chunkBaseDir, $chunkIdentifier, $originalFileName, $numChunks)
+    protected function _createFileFromChunks($chunkBaseDir, $chunkIdentifier, $originalFileName, $numChunks): array
     {
-        $finalPath = sys_get_temp_dir().'/'.$originalFileName;
+        $finalPath = $this->temp_dir.'/'.$originalFileName;
 
         $fp = fopen($finalPath, 'w+');
 
@@ -169,15 +177,15 @@ class Flow
      * @param string $dir - directory path
      * @link http://php.net/manual/en/function.rmdir.php
      */
-    protected function _rrmdir($dir)
+    protected function _rrmdir($dir): void
     {
         if (is_dir($dir)) {
-            $objects = array_diff(scandir($dir), array('.', '..'));
+            $objects = array_diff(scandir($dir, \SCANDIR_SORT_NONE), array('.', '..'));
             foreach ($objects as $object) {
-                if (is_dir($dir . "/" . $object)) {
-                    $this->_rrmdir($dir . "/" . $object);
+                if (is_dir($dir . '/' . $object)) {
+                    $this->_rrmdir($dir . '/' . $object);
                 } else {
-                    unlink($dir . "/" . $object);
+                    unlink($dir . '/' . $object);
                 }
             }
             reset($objects);

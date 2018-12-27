@@ -5,7 +5,7 @@ use App\Entity;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 
-class Remote extends FrontendAbstract
+class Remote extends AbstractFrontend
 {
     public function read(Entity\Station $station): bool
     {

@@ -4,22 +4,28 @@ namespace App\Sync\Task;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use App\Entity;
+use Monolog\Logger;
 
-class Analytics extends TaskAbstract
+class Analytics extends AbstractTask
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Database  */
     protected $influx;
 
-    public function __construct(EntityManager $em, Database $influx)
+    /**
+     * @param EntityManager $em
+     * @param Logger $logger
+     * @param Database $influx
+     *
+     * @see \App\Provider\SyncProvider
+     */
+    public function __construct(EntityManager $em, Logger $logger, Database $influx)
     {
-        $this->em = $em;
+        parent::__construct($em, $logger);
+
         $this->influx = $influx;
     }
 
-    public function run($force = false)
+    public function run($force = false): void
     {
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);

@@ -30,6 +30,7 @@ class SyncProvider implements ServiceProviderInterface
                 ]),
                 new \Pimple\ServiceIterator($di, [
                     // Every hour tasks
+                    Task\TempCleanup::class,
                     Task\Analytics::class,
                     Task\RadioAutomation::class,
                     Task\HistoryCleanup::class,
@@ -41,15 +42,16 @@ class SyncProvider implements ServiceProviderInterface
         $di[Task\Analytics::class] = function($di) {
             return new Task\Analytics(
                 $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
                 $di[\InfluxDB\Database::class]
             );
         };
 
         $di[Task\CheckForUpdates::class] = function($di) {
             return new Task\CheckForUpdates(
-                $di[\GuzzleHttp\Client::class],
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class],
                 $di['settings'],
                 $di[\App\Version::class]
             );
@@ -57,40 +59,43 @@ class SyncProvider implements ServiceProviderInterface
 
         $di[Task\HistoryCleanup::class] = function($di) {
             return new Task\HistoryCleanup(
-                $di[\Doctrine\ORM\EntityManager::class]
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class]
             );
         };
 
         $di[Task\Media::class] = function($di) {
             return new Task\Media(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Radio\Filesystem::class],
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\App\Radio\Filesystem::class]
             );
         };
 
         $di[Task\ReactivateStreamer::class] = function($di) {
             return new Task\ReactivateStreamer(
-                $di[\Doctrine\ORM\EntityManager::class]
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class]
             );
         };
 
         $di[Task\NowPlaying::class] = function($di) {
             return new Task\NowPlaying(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\App\ApiUtilities::class],
                 $di[\App\Radio\AutoDJ::class],
                 $di[\Azura\Cache::class],
                 $di[\InfluxDB\Database::class],
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\Azura\EventDispatcher::class],
-                $di[\Monolog\Logger::class]
+                $di[\Azura\EventDispatcher::class]
             );
         };
 
         $di[Task\RadioAutomation::class] = function($di) {
             return new Task\RadioAutomation(
                 $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
                 $di[\App\Radio\Adapters::class]
             );
         };
@@ -98,16 +103,25 @@ class SyncProvider implements ServiceProviderInterface
         $di[Task\RadioRequests::class] = function($di) {
             return new Task\RadioRequests(
                 $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
                 $di[\App\Radio\Adapters::class]
             );
         };
 
         $di[Task\RotateLogs::class] = function($di) {
             return new Task\RotateLogs(
-                $di[\App\Radio\Adapters::class],
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Monolog\Logger::class],
+                $di[\App\Radio\Adapters::class],
                 $di[\Supervisor\Supervisor::class]
+            );
+        };
+
+        $di[Task\TempCleanup::class] = function($di) {
+            return new Task\TempCleanup(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
+                $di[\App\Radio\Filesystem::class]
             );
         };
     }

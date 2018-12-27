@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Radio\Backend\BackendAbstract;
+use App\Radio\Backend\AbstractBackend;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;

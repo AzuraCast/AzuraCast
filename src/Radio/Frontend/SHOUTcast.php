@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Psr\Http\Message\UriInterface;
 
-class SHOUTcast extends FrontendAbstract
+class SHOUTcast extends AbstractFrontend
 {
     public function getWatchCommand(Entity\Station $station): ?string
     {

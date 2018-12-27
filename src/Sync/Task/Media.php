@@ -8,32 +8,26 @@ use App\Entity;
 use Monolog\Logger;
 use Symfony\Component\Finder\Finder;
 
-class Media extends TaskAbstract
+class Media extends AbstractTask
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Filesystem */
     protected $filesystem;
 
-    /** @var Logger */
-    protected $logger;
-
     /**
      * @param EntityManager $em
-     * @param Filesystem $filesystem
      * @param Logger $logger
+     * @param Filesystem $filesystem
      *
      * @see \App\Provider\SyncProvider
      */
-    public function __construct(EntityManager $em, Filesystem $filesystem, Logger $logger)
+    public function __construct(EntityManager $em, Logger $logger, Filesystem $filesystem)
     {
-        $this->em = $em;
+        parent::__construct($em, $logger);
+
         $this->filesystem = $filesystem;
-        $this->logger = $logger;
     }
 
-    public function run($force = false)
+    public function run($force = false): void
     {
         $station_repo = $this->em->getRepository(Entity\Station::class);
         $stations = $station_repo->findAll();

@@ -5,25 +5,26 @@ use Azura\Exception;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Monolog\Logger;
 
-class RadioAutomation extends TaskAbstract
+class RadioAutomation extends AbstractTask
 {
     const DEFAULT_THRESHOLD_DAYS = 14;
-
-    /** @var EntityManager */
-    protected $em;
 
     /** @var Adapters */
     protected $adapters;
 
     /**
-     * RadioAutomation constructor.
      * @param EntityManager $em
+     * @param Logger $logger
      * @param Adapters $adapters
+     *
+     * @see \App\Provider\SyncProvider
      */
-    public function __construct(EntityManager $em, Adapters $adapters)
+    public function __construct(EntityManager $em, Logger $logger, Adapters $adapters)
     {
-        $this->em = $em;
+        parent::__construct($em, $logger);
+
         $this->adapters = $adapters;
     }
 
@@ -31,7 +32,7 @@ class RadioAutomation extends TaskAbstract
      * Iterate through all stations and attempt to run automated assignment.
      * @param bool $force
      */
-    public function run($force = false)
+    public function run($force = false): void
     {
         // Check all stations for automation settings.
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();

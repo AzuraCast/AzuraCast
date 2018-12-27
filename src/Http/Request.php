@@ -41,24 +41,24 @@ class Request extends \Azura\Http\Request
      * Get the current station frontend associated with the request, if it's set.
      * Set by @see \App\Middleware\GetStation
      *
-     * @return Radio\Frontend\FrontendAbstract
+     * @return Radio\Frontend\AbstractFrontend
      * @throws Exception
      */
-    public function getStationFrontend(): Radio\Frontend\FrontendAbstract
+    public function getStationFrontend(): Radio\Frontend\AbstractFrontend
     {
-        return $this->_getAttributeOfType(self::ATTRIBUTE_STATION_FRONTEND, Radio\Frontend\FrontendAbstract::class);
+        return $this->_getAttributeOfType(self::ATTRIBUTE_STATION_FRONTEND, Radio\Frontend\AbstractFrontend::class);
     }
 
     /**
      * Get the current station backend associated with the request, if it's set.
      * Set by @see \App\Middleware\GetStation
      *
-     * @return Radio\Backend\BackendAbstract
+     * @return Radio\Backend\AbstractBackend
      * @throws Exception
      */
-    public function getStationBackend(): Radio\Backend\BackendAbstract
+    public function getStationBackend(): Radio\Backend\AbstractBackend
     {
-        return $this->_getAttributeOfType(self::ATTRIBUTE_STATION_BACKEND, Radio\Backend\BackendAbstract::class);
+        return $this->_getAttributeOfType(self::ATTRIBUTE_STATION_BACKEND, Radio\Backend\AbstractBackend::class);
     }
 
     /**

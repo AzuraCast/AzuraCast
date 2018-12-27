@@ -10,19 +10,13 @@ use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 use Ramsey\Uuid\Uuid;
 
-class CheckForUpdates extends TaskAbstract
+class CheckForUpdates extends AbstractTask
 {
     const UPDATE_URL = 'https://central.azuracast.com/api/update';
     const UPDATE_THRESHOLD = 3780;
 
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
-
-    /** @var Logger */
-    protected $logger;
 
     /** @var Client */
     protected $http_client;
@@ -34,23 +28,23 @@ class CheckForUpdates extends TaskAbstract
     protected $version;
 
     /**
-     * CheckForUpdates constructor.
-     * @param Client $http_client
      * @param EntityManager $em
      * @param Logger $logger
+     * @param Client $http_client
      * @param Settings $settings
      * @param Version $version
      *
      * @see \App\Provider\SyncProvider
      */
     public function __construct(
-        Client $http_client,
         EntityManager $em,
         Logger $logger,
+        Client $http_client,
         Settings $settings,
         Version $version
     ) {
-        $this->em = $em;
+        parent::__construct($em, $logger);
+
         $this->settings_repo = $em->getRepository(Entity\Settings::class);
 
         $this->logger = $logger;
@@ -59,7 +53,7 @@ class CheckForUpdates extends TaskAbstract
         $this->version = $version;
     }
 
-    public function run($force = false)
+    public function run($force = false): void
     {
         if (!$force) {
             $update_last_run = (int)$this->settings_repo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);

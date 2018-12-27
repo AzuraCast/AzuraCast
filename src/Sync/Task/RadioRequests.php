@@ -4,23 +4,24 @@ namespace App\Sync\Task;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Monolog\Logger;
 
-class RadioRequests extends TaskAbstract
+class RadioRequests extends AbstractTask
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Adapters */
     protected $adapters;
 
     /**
-     * RadioRequests constructor.
      * @param EntityManager $em
+     * @param Logger $logger
      * @param Adapters $adapters
+     *
+     * @see \App\Provider\SyncProvider
      */
-    public function __construct(EntityManager $em, Adapters $adapters)
+    public function __construct(EntityManager $em, Logger $logger, Adapters $adapters)
     {
-        $this->em = $em;
+        parent::__construct($em, $logger);
+
         $this->adapters = $adapters;
     }
 
@@ -29,7 +30,7 @@ class RadioRequests extends TaskAbstract
      *
      * @param bool $force
      */
-    public function run($force = false)
+    public function run($force = false): void
     {
         /** @var Entity\Repository\StationRepository $stations */
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();

@@ -81,7 +81,7 @@ class Runner
 
         foreach($this->tasks_nowplaying as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Task\TaskAbstract $task */
+                /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
         }
@@ -101,7 +101,7 @@ class Runner
 
         foreach($this->tasks_short as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Task\TaskAbstract $task */
+                /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
         }
@@ -121,7 +121,7 @@ class Runner
 
         foreach($this->tasks_medium as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Task\TaskAbstract $task */
+                /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
         }
@@ -141,7 +141,7 @@ class Runner
 
         foreach($this->tasks_long as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Task\TaskAbstract $task */
+                /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
         }

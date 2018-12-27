@@ -12,7 +12,7 @@ use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
 
-abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
+abstract class AbstractFrontend extends \App\Radio\AdapterAbstract
 {
     /** @var Client */
     protected $http_client;

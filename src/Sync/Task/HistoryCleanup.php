@@ -5,21 +5,9 @@ use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 
-class HistoryCleanup extends TaskAbstract
+class HistoryCleanup extends AbstractTask
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /**
-     * HistoryCleanup constructor.
-     * @param EntityManager $em
-     */
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
-    public function run($force = false)
+    public function run($force = false): void
     {
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);

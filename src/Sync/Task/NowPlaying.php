@@ -15,11 +15,8 @@ use App\Entity;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class NowPlaying extends TaskAbstract implements EventSubscriberInterface
+class NowPlaying extends AbstractTask implements EventSubscriberInterface
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Database */
     protected $influx;
 
@@ -31,9 +28,6 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
 
     /** @var AutoDJ */
     protected $autodj;
-
-    /** @var Logger */
-    protected $logger;
 
     /** @var EventDispatcher */
     protected $event_dispatcher;
@@ -57,35 +51,35 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
     protected $analytics_level;
 
     /**
+     * @param EntityManager $em
+     * @param Logger $logger
      * @param Adapters $adapters
      * @param ApiUtilities $api_utils
      * @param AutoDJ $autodj
      * @param Cache $cache
      * @param Database $influx
-     * @param EntityManager $em
      * @param EventDispatcher $event_dispatcher
-     * @param Logger $logger
      *
      * @see \App\Provider\SyncProvider
      */
     public function __construct(
+        EntityManager $em,
+        Logger $logger,
         Adapters $adapters,
         ApiUtilities $api_utils,
         AutoDJ $autodj,
         Cache $cache,
         Database $influx,
-        EntityManager $em,
-        EventDispatcher $event_dispatcher,
-        Logger $logger)
-    {
+        EventDispatcher $event_dispatcher
+    ) {
+        parent::__construct($em, $logger);
+
         $this->adapters = $adapters;
         $this->api_utils = $api_utils;
         $this->autodj = $autodj;
         $this->cache = $cache;
-        $this->em = $em;
         $this->event_dispatcher = $event_dispatcher;
         $this->influx = $influx;
-        $this->logger = $logger;
 
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
@@ -110,7 +104,7 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
         ];
     }
 
-    public function run($force = false)
+    public function run($force = false): void
     {
         $nowplaying = $this->_loadNowPlaying($force);
 

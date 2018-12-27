@@ -5,22 +5,22 @@ use App\Entity;
 
 class AdapterProxy
 {
-    /** @var RemoteAbstract */
+    /** @var AbstractRemote */
     protected $adapter;
 
     /** @var Entity\StationRemote */
     protected $remote;
 
-    public function __construct(RemoteAbstract $adapter, Entity\StationRemote $remote)
+    public function __construct(AbstractRemote $adapter, Entity\StationRemote $remote)
     {
         $this->adapter = $adapter;
         $this->remote = $remote;
     }
 
     /**
-     * @return RemoteAbstract
+     * @return AbstractRemote
      */
-    public function getAdapter(): RemoteAbstract
+    public function getAdapter(): AbstractRemote
     {
         return $this->adapter;
     }

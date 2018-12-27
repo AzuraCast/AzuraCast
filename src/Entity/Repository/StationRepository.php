@@ -3,7 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Radio\Adapters;
 use App\Radio\Configuration;
-use App\Radio\Frontend\FrontendAbstract;
+use App\Radio\Frontend\AbstractFrontend;
 use App\Entity;
 use App\Sync\Task\Media;
 use Azura\Doctrine\Repository;
@@ -137,9 +137,9 @@ class StationRepository extends Repository
      * Reset mount points to their adapter defaults (in the event of an adapter change).
      *
      * @param Entity\Station $station
-     * @param FrontendAbstract $frontend_adapter
+     * @param AbstractFrontend $frontend_adapter
      */
-    public function resetMounts(Entity\Station $station, FrontendAbstract $frontend_adapter)
+    public function resetMounts(Entity\Station $station, AbstractFrontend $frontend_adapter)
     {
         foreach($station->getMounts() as $mount) {
             $this->_em->remove($mount);

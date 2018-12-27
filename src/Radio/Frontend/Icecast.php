@@ -7,7 +7,7 @@ use App\Entity;
 use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;
 
-class Icecast extends FrontendAbstract
+class Icecast extends AbstractFrontend
 {
     public const LOGLEVEL_DEBUG = 4;
     public const LOGLEVEL_INFO = 3;

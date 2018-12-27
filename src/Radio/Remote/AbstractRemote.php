@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 
-abstract class RemoteAbstract
+abstract class AbstractRemote
 {
     /** @var Client */
     protected $http_client;

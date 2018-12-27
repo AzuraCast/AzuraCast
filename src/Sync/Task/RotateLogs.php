@@ -10,7 +10,7 @@ use studio24\Rotate;
 use Supervisor\Supervisor;
 use Symfony\Component\Finder\Finder;
 
-class RotateLogs extends TaskAbstract
+class RotateLogs extends AbstractTask
 {
     /** @var EntityManager */
     protected $em;
@@ -25,26 +25,26 @@ class RotateLogs extends TaskAbstract
     protected $logger;
 
     /**
-     * @param Adapters $adapters
      * @param EntityManager $em
      * @param Logger $logger
+     * @param Adapters $adapters
      * @param Supervisor $supervisor
      *
      * @see \App\Provider\SyncProvider
      */
     public function __construct(
-        Adapters $adapters,
         EntityManager $em,
         Logger $logger,
-        Supervisor $supervisor)
-    {
+        Adapters $adapters,
+        Supervisor $supervisor
+    ) {
+        parent::__construct($em, $logger);
+
         $this->adapters = $adapters;
-        $this->em = $em;
-        $this->logger = $logger;
         $this->supervisor = $supervisor;
     }
 
-    public function run($force = false)
+    public function run($force = false): void
     {
         // Rotate logs for individual stations.
         /** @var Entity\Repository\StationRepository $station_repo */

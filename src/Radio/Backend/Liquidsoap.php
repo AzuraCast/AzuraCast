@@ -14,7 +14,7 @@ use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
+class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 {
     /** @var AutoDJ */
     protected $autodj;

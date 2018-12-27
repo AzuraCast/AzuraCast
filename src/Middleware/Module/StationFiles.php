@@ -1,7 +1,7 @@
 <?php
 namespace App\Middleware\Module;
 
-use App\Radio\Backend\BackendAbstract;
+use App\Radio\Backend\AbstractBackend;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;

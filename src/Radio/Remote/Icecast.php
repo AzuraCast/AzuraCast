@@ -3,7 +3,7 @@ namespace App\Radio\Remote;
 
 use App\Entity;
 
-class Icecast extends RemoteAbstract
+class Icecast extends AbstractRemote
 {
     public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
     {

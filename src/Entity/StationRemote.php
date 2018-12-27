@@ -4,7 +4,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Radio\Adapters;
-use App\Radio\Remote\RemoteAbstract;
+use App\Radio\Remote\AbstractRemote;
 
 /**
  * @ORM\Table(name="station_remotes")
@@ -386,10 +386,10 @@ class StationRemote implements StationMountInterface
     /**
      * Retrieve the API version of the object/array.
      *
-     * @param RemoteAbstract $adapter
+     * @param AbstractRemote $adapter
      * @return Api\StationRemote
      */
-    public function api(RemoteAbstract $adapter): Api\StationRemote
+    public function api(AbstractRemote $adapter): Api\StationRemote
     {
         $response = new Api\StationRemote;
         $response->url = $adapter->getPublicUrl($this);

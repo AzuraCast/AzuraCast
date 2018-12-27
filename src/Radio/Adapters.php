@@ -3,7 +3,7 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Exception\NotFound;
-use App\Radio\Remote\RemoteAbstract;
+use App\Radio\Remote\AbstractRemote;
 use Pimple\Psr11\ServiceLocator;
 
 /**
@@ -35,10 +35,10 @@ class Adapters
 
     /**
      * @param Entity\Station $station
-     * @return Frontend\FrontendAbstract
+     * @return Frontend\AbstractFrontend
      * @throws NotFound
      */
-    public function getFrontendAdapter(Entity\Station $station): Frontend\FrontendAbstract
+    public function getFrontendAdapter(Entity\Station $station): Frontend\AbstractFrontend
     {
         $adapters = self::listFrontendAdapters();
 
@@ -59,10 +59,10 @@ class Adapters
 
     /**
      * @param Entity\Station $station
-     * @return Backend\BackendAbstract
+     * @return Backend\AbstractBackend
      * @throws NotFound
      */
-    public function getBackendAdapter(Entity\Station $station): Backend\BackendAbstract
+    public function getBackendAdapter(Entity\Station $station): Backend\AbstractBackend
     {
         $adapters = self::listBackendAdapters();
 
@@ -102,10 +102,10 @@ class Adapters
      *
      * @param Entity\Station $station
      * @param Entity\StationRemote $remote
-     * @return Remote\RemoteAbstract
+     * @return Remote\AbstractRemote
      * @throws NotFound
      */
-    public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\RemoteAbstract
+    public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
     {
         $adapters = self::listRemoteAdapters();
 

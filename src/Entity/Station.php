@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
-use App\Radio\Frontend\FrontendAbstract;
+use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Remote\AdapterProxy;
-use App\Radio\Remote\RemoteAbstract;
+use App\Radio\Remote\AbstractRemote;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\Uri;
 use Interop\Container\ContainerInterface;
@@ -952,12 +952,12 @@ class Station
     /**
      * Retrieve the API version of the object/array.
      *
-     * @param FrontendAbstract $fa
+     * @param AbstractFrontend $fa
      * @param AdapterProxy[] $remote_adapters
      * @param UriInterface|null $base_url
      * @return Api\Station
      */
-    public function api(FrontendAbstract $fa, array $remote_adapters = [], UriInterface $base_url = null): Api\Station
+    public function api(AbstractFrontend $fa, array $remote_adapters = [], UriInterface $base_url = null): Api\Station
     {
         $response = new Api\Station;
         $response->id = (int)$this->id;

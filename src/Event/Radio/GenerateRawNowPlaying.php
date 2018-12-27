@@ -12,7 +12,7 @@ class GenerateRawNowPlaying extends Event
     /** @var Station */
     protected $station;
 
-    /** @var Radio\Frontend\FrontendAbstract */
+    /** @var Radio\Frontend\AbstractFrontend */
     protected $frontend;
 
     /** @var Radio\Remote\AdapterProxy[] */
@@ -29,7 +29,7 @@ class GenerateRawNowPlaying extends Event
 
     public function __construct(
         Station $station,
-        Radio\Frontend\FrontendAbstract $frontend,
+        Radio\Frontend\AbstractFrontend $frontend,
         array $remotes,
         $payload = null,
         $include_clients = false
@@ -46,7 +46,7 @@ class GenerateRawNowPlaying extends Event
         return $this->station;
     }
 
-    public function getFrontend(): Radio\Frontend\FrontendAbstract
+    public function getFrontend(): Radio\Frontend\AbstractFrontend
     {
         return $this->frontend;
     }

@@ -3,7 +3,7 @@ namespace App\Radio\Remote;
 
 use App\Entity;
 
-class SHOUTcast1 extends RemoteAbstract
+class SHOUTcast1 extends AbstractRemote
 {
     /** @inheritdoc */
     public function getPublicUrl(Entity\StationRemote $remote): string

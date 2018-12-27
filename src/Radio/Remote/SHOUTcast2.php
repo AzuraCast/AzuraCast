@@ -3,7 +3,7 @@ namespace App\Radio\Remote;
 
 use App\Entity;
 
-class SHOUTcast2 extends RemoteAbstract
+class SHOUTcast2 extends AbstractRemote
 {
     /** @inheritdoc */
     public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool

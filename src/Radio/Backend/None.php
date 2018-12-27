@@ -3,7 +3,7 @@ namespace App\Radio\Backend;
 
 use App\Entity;
 
-class None extends BackendAbstract
+class None extends AbstractBackend
 {
     public function write(Entity\Station $station): bool
     {

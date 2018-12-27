@@ -4,7 +4,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Radio\Adapters;
-use App\Radio\Frontend\FrontendAbstract;
+use App\Radio\Frontend\AbstractFrontend;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -356,11 +356,11 @@ class StationMount implements StationMountInterface
     /**
      * Retrieve the API version of the object/array.
      *
-     * @param FrontendAbstract $fa
+     * @param AbstractFrontend $fa
      * @param UriInterface|null $base_url
      * @return Api\StationMount
      */
-    public function api(FrontendAbstract $fa, UriInterface $base_url = null): Api\StationMount
+    public function api(AbstractFrontend $fa, UriInterface $base_url = null): Api\StationMount
     {
         $response = new Api\StationMount;
 

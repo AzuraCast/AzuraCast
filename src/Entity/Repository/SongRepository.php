@@ -49,7 +49,7 @@ class SongRepository extends Repository
         }
 
         $this->_em->persist($obj);
-        $this->_em->flush();
+        $this->_em->flush($obj);
 
         return $obj;
     }

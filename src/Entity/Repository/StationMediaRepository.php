@@ -178,38 +178,46 @@ class StationMediaRepository extends Repository
     {
         // Load metadata from supported files.
         $id3 = new \getID3();
-
+ 
         $id3->option_md5_data = true;
         $id3->option_md5_data_source = true;
         $id3->encoding = 'UTF-8';
 
         $file_info = $id3->analyze($file_path);
 
-        if (empty($file_info['error'])) {
+        // Report any errors found by the file analysis to the logs
+        if (!empty($file_info['error'])) {
+
+            $media_warning = 'Warning for uploaded media file "'.pathinfo($media->getPath(), PATHINFO_FILENAME).'": '.json_encode($file_info['error']);
+            error_log($media_warning);
+        }
+
+        // Set playtime length if the analysis was able to determine it
+        if ( is_numeric($file_info['playtime_seconds']) ) {
             $media->setLength($file_info['playtime_seconds']);
+        }
 
-            $tags_to_set = ['title', 'artist', 'album'];
-            if (!empty($file_info['tags'])) {
-                foreach ($file_info['tags'] as $tag_type => $tag_data) {
-                    foreach ($tags_to_set as $tag) {
-                        if (!empty($tag_data[$tag][0])) {
-                            $media->{'set'.ucfirst($tag)}(mb_convert_encoding($tag_data[$tag][0], "UTF-8"));
-                        }
-                    }
-
-                    if (!empty($tag_data['unsynchronized_lyric'][0])) {
-                        $media->setLyrics($tag_data['unsynchronized_lyric'][0]);
+        $tags_to_set = ['title', 'artist', 'album'];
+        if (!empty($file_info['tags'])) {
+            foreach ($file_info['tags'] as $tag_type => $tag_data) {
+                foreach ($tags_to_set as $tag) {
+                    if (!empty($tag_data[$tag][0])) {
+                        $media->{'set'.ucfirst($tag)}(mb_convert_encoding($tag_data[$tag][0], "UTF-8"));
                     }
                 }
-            }
 
-            if (!empty($file_info['attached_picture'][0])) {
-                $picture = $file_info['attached_picture'][0];
-                $this->writeAlbumArt($media, $picture['data']);
-            } else if (!empty($file_info['comments']['picture'][0])) {
-                $picture = $file_info['comments']['picture'][0];
-                $this->writeAlbumArt($media, $picture['data']);
+                if (!empty($tag_data['unsynchronized_lyric'][0])) {
+                    $media->setLyrics($tag_data['unsynchronized_lyric'][0]);
+                }
             }
+        }
+
+        if (!empty($file_info['attached_picture'][0])) {
+            $picture = $file_info['attached_picture'][0];
+            $this->writeAlbumArt($media, $picture['data']);
+        } else if (!empty($file_info['comments']['picture'][0])) {
+            $picture = $file_info['comments']['picture'][0];
+            $this->writeAlbumArt($media, $picture['data']);
         }
 
         // Attempt to derive title and artist from filename.

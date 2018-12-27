@@ -140,7 +140,7 @@ class Flow
      */
     protected function _createFileFromChunks($chunkBaseDir, $chunkIdentifier, $originalFileName, $numChunks)
     {
-        $finalPath = sys_get_temp_dir().'/'.$chunkIdentifier.'_complete';
+        $finalPath = sys_get_temp_dir().'/'.$originalFileName;
 
         $fp = fopen($finalPath, 'w+');
 

@@ -88,9 +88,14 @@ class Media extends AbstractTask
                     $force_reprocess = true;
                 }
 
-                $processed = $media_repo->processMedia($media_row, $force_reprocess);
-
-                unset($music_files[$path_hash]);
+                try {
+                    $processed = $media_repo->processMedia($media_row, $force_reprocess);
+                } catch (\App\Exception\MediaProcessing $e) {
+                    $this->logger->error(sprintf('Error processing media ID %d: %s', $media_row->getId(), $e->getMessage()));
+                    continue;
+                } finally {
+                    unset($music_files[$path_hash]);
+                }
 
                 if ($processed) {
                     $stats['updated']++;
@@ -118,7 +123,14 @@ class Media extends AbstractTask
         $i = 0;
 
         foreach ($music_files as $new_file_path) {
-            $media_repo->getOrCreate($station, $new_file_path);
+
+            try {
+                $media_repo->getOrCreate($station, $new_file_path);
+            } catch (\App\Exception\MediaProcessing $e) {
+                $this->logger->error(sprintf('Error creating media from path %s: %s', $new_file_path, $e->getMessage()));
+                continue;
+            }
+
             $stats['created']++;
 
             if ($i % $records_per_batch === 0) {

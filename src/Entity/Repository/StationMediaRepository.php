@@ -122,6 +122,7 @@ class StationMediaRepository extends Repository
         $processed = $this->processMedia($record);
 
         if ($created) {
+            $this->_em->persist($record);
             $this->_em->flush($record);
         }
 
@@ -144,7 +145,7 @@ class StationMediaRepository extends Repository
 
         $fs = $this->filesystem->getForStation($media->getStation());
         if (!$fs->has($media_uri)) {
-            return false;
+            throw new \App\Exception\MediaProcessing(sprintf('Media path "%s" not found.', $media_uri));
         }
 
         $media_mtime = $fs->getTimestamp($media_uri);

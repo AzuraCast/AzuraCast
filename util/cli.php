@@ -5,6 +5,8 @@ ini_set('display_errors', 1);
 $autoloader = require dirname(__DIR__).'/vendor/autoload.php';
 
 // Placeholder locale functions
+\App\Customization::setGlobalValues();
+
 $translator = new \Gettext\Translator();
 $translator->register();
 

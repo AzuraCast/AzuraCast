@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Monolog\Logger;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\VarDumper\VarDumper;
 
 class Media extends AbstractTask
 {

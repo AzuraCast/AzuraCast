@@ -10,6 +10,9 @@ use Psr\Http\Message\UriInterface;
 
 class Customization
 {
+    const DEFAULT_TIMEZONE = 'UTC';
+    const DEFAULT_LOCALE = 'en_US.UTF-8';
+
     /** @var Settings */
     protected $app_settings;
 
@@ -33,15 +36,11 @@ class Customization
      */
     public function init(Request $request): Request
     {
-        $timezone = $this->getTimeZone();
-
         if (!$this->app_settings->isCli() || $this->app_settings->isTesting()) {
-            // Set time zone.
-            date_default_timezone_set($timezone);
-
-            // Localization
+            $timezone = $this->getTimeZone();
             $locale = $this->getLocale();
         } else {
+            $timezone = self::DEFAULT_TIMEZONE;
             $locale = $this->app_settings['locale']['default'];
         }
 
@@ -57,8 +56,7 @@ class Customization
         // Register translation superglobal functions
         $translator->register();
 
-        putenv("LANG=" . $locale);
-        setlocale(\LC_ALL, $locale);
+        self::setGlobalValues($timezone, $locale);
 
         return $request
             ->withAttribute('locale', $locale)
@@ -343,4 +341,24 @@ class Customization
 
         return $title;
     }
+
+    /**
+     * @param null $timezone
+     * @param null $locale
+     */
+    public static function setGlobalValues($timezone = null, $locale = null): void
+    {
+        if (empty($timezone)) {
+            $timezone = self::DEFAULT_TIMEZONE;
+        }
+        if (empty($locale)) {
+            $locale = self::DEFAULT_LOCALE;
+        }
+
+        date_default_timezone_set($timezone);
+
+        putenv("LANG=" . $locale);
+        setlocale(\LC_ALL, $locale);
+    }
+
 }

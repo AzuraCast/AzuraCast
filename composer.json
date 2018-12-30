@@ -13,7 +13,7 @@
     "ext-json": "*",
     "ext-redis": "*",
     "ext-PDO": "*",
-,
+
     "azuracast/azuracore": "dev-master",
     "azuracast/azuraforms": "dev-master",
     "azuracast/nowplaying": "dev-master",

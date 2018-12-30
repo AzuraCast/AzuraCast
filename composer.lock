@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b5e3ad06e662f08423b65d1fed3687b",
+    "content-hash": "57ed1ca392dc17245799a7c90fd53736",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -233,6 +233,178 @@
             ],
             "description": "A lightweight PHP adapter for viewing the current now playing data in Icecast and SHOUTcast 1/2. A part of the AzuraCast software suite.",
             "time": "2018-09-13T17:15:20+00:00"
+        },
+        {
+            "name": "beberlei/assert",
+            "version": "v2.9.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/assert.git",
+                "reference": "ec9e4cf0b63890edce844ee3922e2b95a526e936"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/ec9e4cf0b63890edce844ee3922e2b95a526e936",
+                "reference": "ec9e4cf0b63890edce844ee3922e2b95a526e936",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.1.1",
+                "phpunit/phpunit": "^4.8.35|^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                },
+                "files": [
+                    "lib/Assert/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Richard Quadling",
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Thin assertion library for input validation in business models.",
+            "keywords": [
+                "assert",
+                "assertion",
+                "validation"
+            ],
+            "time": "2018-06-11T17:15:25+00:00"
+        },
+        {
+            "name": "bernard/bernard",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bernardphp/bernard.git",
+                "reference": "3ff88921bea87186d1baffc93708dd7aee4e963e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bernardphp/bernard/zipball/3ff88921bea87186d1baffc93708dd7aee4e963e",
+                "reference": "3ff88921bea87186d1baffc93708dd7aee4e963e",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^2.1",
+                "bernard/normalt": "^1.0",
+                "php": "^5.6 || ^7.0",
+                "symfony/event-dispatcher": "^3.0 || ^4.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^3.0",
+                "doctrine/dbal": "^2.5",
+                "doctrine/instantiator": "^1.0.5",
+                "iron-io/iron_mq": "^4.0",
+                "leanphp/phpspec-code-coverage": "^3.0 || ^4.0",
+                "pda/pheanstalk": "^3.0",
+                "php-amqplib/php-amqplib": "^2.5",
+                "phpspec/phpspec": "^3.0 || ^4.0",
+                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0",
+                "predis/predis": "^1.0",
+                "psr/container": "^1.0",
+                "psr/log": "^1.0",
+                "queue-interop/amqp-interop": "^0.6",
+                "queue-interop/queue-interop": "^0.6",
+                "symfony/console": "^3.0 || ^4.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending messages to AWS services like Simple Queue Service",
+                "doctrine/dbal": "Allow sending messages to simulated message queue in a database via doctrine dbal",
+                "iron-io/iron_mq": "Allow sending messages to IronMQ",
+                "mongodb/mongodb": "Allow sending messages to a MongoDB server via PHP Driver",
+                "pda/pheanstalk": "Allow sending messages to Beanstalk using pheanstalk",
+                "php-amqplib/php-amqplib": "Allow sending messages to an AMQP server using php-amqplib",
+                "predis/predis": "Allow sending messages to Redis using predis",
+                "queue-interop/amqp-interop": "Allow sending messages using amqp interop compatible transports",
+                "queue-interop/queue-interop": "Allow sending messages using queue interop compatible transports"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bernard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Message queue abstraction layer",
+            "homepage": "https://github.com/bernardphp/bernard",
+            "keywords": [
+                "bernard",
+                "message",
+                "message queue",
+                "queue"
+            ],
+            "time": "2018-06-24T11:41:28+00:00"
+        },
+        {
+            "name": "bernard/normalt",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bernardphp/normalt.git",
+                "reference": "9ed9b6bbc657bb1e5a52ff4da6607e32152b390e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bernardphp/normalt/zipball/9ed9b6bbc657bb1e5a52ff4da6607e32152b390e",
+                "reference": "9ed9b6bbc657bb1e5a52ff4da6607e32152b390e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6||^7.0",
+                "symfony/serializer": "^2.3 || ^3.0 || ^4.0"
+            },
+            "require-dev": {
+                "doctrine/common": "^2.1",
+                "phpspec/phpspec": "^2.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Normalt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Normalt is a extension to Symfony Serializer that only implements the Normalization part",
+            "keywords": [
+                "denormalization",
+                "normalization"
+            ],
+            "time": "2018-01-13T09:47:09+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -7319,6 +7491,7 @@
         "azuracast/azuraforms": 20,
         "azuracast/nowplaying": 20,
         "james-heinrich/getid3": 20,
+        "bernard/bernard": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

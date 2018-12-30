@@ -1,5 +1,6 @@
 0 * * * * php {{ util_base }}/cli.php sync:run long
 */5 * * * * php {{ util_base }}/cli.php sync:run medium
+*/5 * * * * php {{ util_base }}/cli.php queue:process 275
 * * * * * php {{ util_base }}/cli.php sync:run short
 * * * * * php {{ util_base }}/cli.php sync:run nowplaying
 * * * * * sleep 15; php {{ util_base }}/cli.php sync:run nowplaying

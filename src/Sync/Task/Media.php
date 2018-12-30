@@ -1,33 +1,78 @@
 <?php
 namespace App\Sync\Task;
 
+use App\MessageQueue;
+use App\Message;
 use App\Radio\Filesystem;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Monolog\Logger;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\VarDumper\VarDumper;
 
 class Media extends AbstractTask
 {
     /** @var Filesystem */
     protected $filesystem;
 
+    /** @var MessageQueue */
+    protected $message_queue;
+
     /**
      * @param EntityManager $em
      * @param Logger $logger
      * @param Filesystem $filesystem
+     * @param MessageQueue $message_queue
      *
      * @see \App\Provider\SyncProvider
      */
-    public function __construct(EntityManager $em, Logger $logger, Filesystem $filesystem)
-    {
+    public function __construct(
+        EntityManager $em,
+        Logger $logger,
+        Filesystem $filesystem,
+        MessageQueue $message_queue
+    ) {
         parent::__construct($em, $logger);
 
         $this->filesystem = $filesystem;
+        $this->message_queue = $message_queue;
     }
 
+    /**
+     * Handle event dispatch.
+     *
+     * @param Message\AbstractMessage $message
+     * @throws MappingException
+     */
+    public function __invoke(Message\AbstractMessage $message)
+    {
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+
+        try {
+            if ($message instanceof Message\ReprocessMedia) {
+                $media_row = $media_repo->find($message->media_id);
+
+                if ($media_row instanceof Entity\StationMedia) {
+                    $media_repo->processMedia($media_row, $message->force);
+
+                    $this->em->flush($media_row);
+                }
+            } else if ($message instanceof Message\AddNewMedia) {
+                $station = $this->em->find(Entity\Station::class, $message->station_id);
+
+                if ($station instanceof Entity\Station) {
+                    $media_repo->getOrCreate($station, $message->path);
+                }
+            }
+        } finally {
+            $this->em->clear();
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function run($force = false): void
     {
         $station_repo = $this->em->getRepository(Entity\Station::class);
@@ -57,10 +102,8 @@ class Media extends AbstractTask
                 continue;
             }
 
-            $path_short = $file['path'];
-
-            $path_hash = md5($path_short);
-            $music_files[$path_hash] = $path_short;
+            $path_hash = md5($file['path']);
+            $music_files[$path_hash] = $file;
         }
 
         $stats['total_files'] = count($music_files);
@@ -89,20 +132,20 @@ class Media extends AbstractTask
                     $force_reprocess = true;
                 }
 
-                try {
-                    $processed = $media_repo->processMedia($media_row, $force_reprocess);
-                } catch (\App\Exception\MediaProcessing $e) {
-                    $this->logger->error(sprintf('Error processing media ID %d: %s', $media_row->getId(), $e->getMessage()));
-                    continue;
-                } finally {
-                    unset($music_files[$path_hash]);
-                }
+                $file_info = $music_files[$path_hash];
+                if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+                    $message = new Message\ReprocessMedia;
+                    $message->media_id = $media_row->getId();
+                    $message->force = $force_reprocess;
 
-                if ($processed) {
+                    $this->message_queue->produce($message);
+
                     $stats['updated']++;
                 } else {
                     $stats['unchanged']++;
                 }
+
+                unset($music_files[$path_hash]);
             } else {
                 // Delete the now-nonexistent media item.
                 $this->em->remove($media_row);
@@ -121,24 +164,14 @@ class Media extends AbstractTask
         $this->_flushAndClearRecords();
 
         // Create files that do not currently exist.
-        $i = 0;
+        foreach ($music_files as $path_hash => $new_music_file) {
+            $message = new Message\AddNewMedia;
+            $message->station_id = $station->getId();
+            $message->path = $new_music_file['path'];
 
-        foreach ($music_files as $new_file_path) {
-
-            try {
-                $media_repo->getOrCreate($station, $new_file_path);
-            } catch (\App\Exception\MediaProcessing $e) {
-                $this->logger->error(sprintf('Error creating media from path %s: %s', $new_file_path, $e->getMessage()));
-                continue;
-            }
+            $this->message_queue->produce($message);
 
             $stats['created']++;
-
-            if ($i % $records_per_batch === 0) {
-                $this->_flushAndClearRecords();
-            }
-
-            ++$i;
         }
 
         $this->_flushAndClearRecords();
@@ -149,7 +182,7 @@ class Media extends AbstractTask
     /**
      * Flush the Doctrine Entity Manager and clear associated records to save memory space.
      */
-    protected function _flushAndClearRecords()
+    protected function _flushAndClearRecords(): void
     {
         $this->em->flush();
 

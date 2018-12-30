@@ -524,6 +524,23 @@ class StationMedia
     }
 
     /**
+     * Indicate whether this media needs reprocessing given certain factors.
+     *
+     * @param int $current_mtime
+     * @return bool
+     */
+    public function needsReprocessing($current_mtime = 0): bool
+    {
+        if ($current_mtime > $this->mtime) {
+            return true;
+        }
+        if (!$this->songMatches()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Assemble a list of annotations for LiquidSoap.
      *
      * Liquidsoap expects a string similar to:

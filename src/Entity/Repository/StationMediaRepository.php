@@ -151,7 +151,7 @@ class StationMediaRepository extends Repository
         $media_mtime = $fs->getTimestamp($media_uri);
 
         // No need to update if all of these conditions are true.
-        if (!$force && $media->songMatches() && $media_mtime <= $media->getMtime()) {
+        if (!$force && !$media->needsReprocessing($media_mtime)) {
             return false;
         }
 

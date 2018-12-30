@@ -208,6 +208,7 @@ return function (\Azura\Container $di)
         return $view;
     });
 
+    // MaxMind (IP Geolocation database for listener metadata)
     $di[\MaxMind\Db\Reader::class] = function($di) {
         $mmdb_path = dirname(APP_INCLUDE_ROOT).'/geoip/GeoLite2-City.mmdb';
         return new \MaxMind\Db\Reader($mmdb_path);
@@ -224,6 +225,39 @@ return function (\Azura\Container $di)
 
         return $dispatcher;
     });
+
+    $di[\App\MessageQueue::class] = function($di) {
+        // Build QueueFactory
+        /** @var \Redis $redis */
+        $redis = $di[\Redis::class];
+        $redis->select(4);
+        $driver = new \Bernard\Driver\PhpRedis\Driver($redis);
+
+        $serializer = new \Bernard\Serializer(new \Normalt\Normalizer\AggregateNormalizer([
+            new \Bernard\Normalizer\EnvelopeNormalizer(),
+            new \Symfony\Component\Serializer\Normalizer\PropertyNormalizer()
+        ]));
+        $queue_factory = new \Bernard\QueueFactory\PersistentFactory($driver, $serializer);
+
+        // Event dispatcher
+        $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher;
+        $dispatcher->addSubscriber(new \Bernard\EventListener\LoggerSubscriber($di[\Monolog\Logger::class]));
+
+        // Build Producer
+        $producer = new \Bernard\Producer($queue_factory, $dispatcher);
+
+        // Build Consumer
+        $receivers = require __DIR__.'/messagequeue.php';
+        $router = new \Bernard\Router\ReceiverMapRouter($receivers, new \Bernard\Router\ContainerReceiverResolver($di));
+
+        $consumer = new Bernard\Consumer($router, $dispatcher);
+
+        return new \App\MessageQueue(
+            $queue_factory,
+            $producer,
+            $consumer
+        );
+    };
 
     //
     // AzuraCast-specific dependencies

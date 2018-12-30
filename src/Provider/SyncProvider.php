@@ -68,7 +68,8 @@ class SyncProvider implements ServiceProviderInterface
             return new Task\Media(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Monolog\Logger::class],
-                $di[\App\Radio\Filesystem::class]
+                $di[\App\Radio\Filesystem::class],
+                $di[\App\MessageQueue::class]
             );
         };
 

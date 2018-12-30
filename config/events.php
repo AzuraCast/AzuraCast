@@ -38,6 +38,7 @@ return function (\Azura\EventDispatcher $dispatcher)
             // Maintenance
             new Command\RestartRadio,
             new Command\Sync,
+            new Command\ProcessMessageQueue,
             new Command\ReprocessMedia,
 
             new Command\GenerateApiDocs,

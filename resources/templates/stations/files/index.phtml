@@ -60,7 +60,7 @@ $assets
                         <?=__('With selected:') ?>&nbsp;
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="material-icons">add</i> <?=__('Add to Playlist') ?>
+                                <i class="material-icons" aria-hidden="true">add</i> <?=__('Add to Playlist') ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -70,12 +70,12 @@ $assets
                                 <li><a href="#" class="dropdown-item btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=__('Create new...') ?></a></li>
                             </ul>
                         </div>
-                        <a href="#" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mdl-move-file"><i class="material-icons">open_with</i> <?=__('Move') ?></a>
-                        <button type="button" class="btn btn-sm btn-warning" v-on:click="doBatch" data-action="clear"><i class="material-icons">clear_all</i> <?=__('Clear Playlists') ?></button>
-                        <button type="button" class="btn btn-sm btn-danger" v-on:click="doBatch" data-action="delete"><i class="material-icons">delete</i> <?=__('Delete') ?></button>
+                        <a href="#" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mdl-move-file"><i class="material-icons" aria-hidden="true">open_with</i> <?=__('Move') ?></a>
+                        <button type="button" class="btn btn-sm btn-warning" v-on:click="doBatch" data-action="clear"><i class="material-icons" aria-hidden="true">clear_all</i> <?=__('Clear Playlists') ?></button>
+                        <button type="button" class="btn btn-sm btn-danger" v-on:click="doBatch" data-action="delete"><i class="material-icons" aria-hidden="true">delete</i> <?=__('Delete') ?></button>
                     </div>
                     <div class="col-sm-4 text-right">
-                        <a class="btn btn-sm btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="material-icons">folder</i> <?=__('New Folder') ?></a>
+                        <a class="btn btn-sm btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="material-icons" aria-hidden="true">folder</i> <?=__('New Folder') ?></a>
                     </div>
                 </div>
             </div>
@@ -161,7 +161,7 @@ $assets
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <button type="button" class="btn btn-primary" v-on:click="pageBack" v-bind:disabled="dir_history.length == 0"><i class="material-icons">chevron_left</i> <?=__('Back') ?></button>
+                            <button type="button" class="btn btn-primary" v-on:click="pageBack" v-bind:disabled="dir_history.length == 0"><i class="material-icons" aria-hidden="true">chevron_left</i> <?=__('Back') ?></button>
                             <span>&nbsp;{{ move_dir }}</span>
                             <br/><br/>
                         </div>

@@ -20,11 +20,11 @@ $assets
         <div class="card-body">
             <div class="radio-controls-standalone" id="radio-player-controls">
                 <a href="javascript:;" class="text-secondary jp-mute" title="<?=__('Mute') ?>">
-                    <i class="material-icons">volume_mute</i>
+                    <i class="material-icons" aria-hidden="true">volume_mute</i>
                 </a>
                 <input type="range" title="<?=__('Volume') ?>" class="d-inline-block custom-range jp-volume-range" style="" id="jp-volume-range" min="0" max="100" step="1">
                 <a href="javascript:;" class="text-secondary jp-volume-full" title="<?=__('Full Volume') ?>">
-                    <i class="material-icons">volume_up</i>
+                    <i class="material-icons" aria-hidden="true">volume_up</i>
                 </a>
             </div>
 
@@ -37,15 +37,15 @@ $assets
 
         <div class="card-actions">
             <a class="btn btn-sm btn-outline-primary" href="#modal-history" data-toggle="modal" data-target="#modal-history">
-                <i class="material-icons">history</i> <?=__('Song History') ?>
+                <i class="material-icons" aria-hidden="true">history</i> <?=__('Song History') ?>
             </a>
             <?php if ($station->getEnableRequests()): ?>
                 <a class="btn btn-sm btn-outline-primary" href="#modal-request" data-toggle="modal" data-target="#modal-request">
-                    <i class="material-icons">help_outline</i> <?=__('Request Song') ?>
+                    <i class="material-icons" aria-hidden="true">help_outline</i> <?=__('Request Song') ?>
                 </a>
             <?php endif; ?>
             <a class="btn btn-sm btn-outline-primary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">
-                <i class="material-icons">file_download</i> <?=__('Playlist') ?>
+                <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Playlist') ?>
             </a>
         </div>
     </div>

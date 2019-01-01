@@ -54,33 +54,33 @@ echo $assets->js();
     <?=$this->fetch('partials/radio_controls') ?>
 
     <div class="dropdown ml-3">
-        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" type="button">
-            <i class="material-icons">more_vert</i>
+        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__('Toggle Menu') ?>" data-toggle="dropdown" type="button">
+            <i class="material-icons" aria-hidden="true">more_vert</i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             <li>
                 <a class="dropdown-item" href="<?=$router->named('dashboard') ?>">
-                    <i class="material-icons">home</i>
+                    <i class="material-icons" aria-hidden="true">home</i>
                     <?=__('Dashboard') ?>
                 </a>
             </li>
             <?php if ($acl->userAllowed($user, 'view administration')): ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
-                        <i class="material-icons">settings</i>
+                        <i class="material-icons" aria-hidden="true">settings</i>
                         <?=__('System Administration') ?>
                     </a>
                 </li>
             <?php endif; ?>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('profile:index') ?>">
-                    <i class="material-icons">account_circle</i>
+                    <i class="material-icons" aria-hidden="true">account_circle</i>
                     <?=__('My Account') ?>
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('api_keys:index') ?>">
-                    <i class="material-icons">vpn_key</i>
+                    <i class="material-icons" aria-hidden="true">vpn_key</i>
                     <?=__('My API Keys') ?>
                 </a>
             </li>
@@ -88,14 +88,14 @@ echo $assets->js();
         <?php if ($auth->isMasqueraded()): ?>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('account:endmasquerade') ?>">
-                    <i class="material-icons">exit_to_app</i>
+                    <i class="material-icons" aria-hidden="true">exit_to_app</i>
                     <?=__('End Session') ?>
                 </a>
             </li>
         <?php else: ?>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('account:logout') ?>">
-                    <i class="material-icons">exit_to_app</i>
+                    <i class="material-icons" aria-hidden="true">exit_to_app</i>
                     <?=__('Sign Out') ?></a></li>
         <?php endif; ?>
         </ul>
@@ -103,7 +103,7 @@ echo $assets->js();
 </header>
 
 <?php if (!empty($sidebar)): ?>
-    <div aria-hidden="true" class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
+    <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
         <nav class="navdrawer-content">
             <?=$sidebar ?>
         </nav>

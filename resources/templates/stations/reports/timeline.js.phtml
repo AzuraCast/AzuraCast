@@ -26,9 +26,9 @@ $(function() {
             },
             "delta": function(column, row) {
                 if (row.delta_total > 0) {
-                    return '<big><span class="text-success"><i class="material-icons">trending_up</i> '+row.delta_total+'</span></big>';
+                    return '<big><span class="text-success"><i class="material-icons" aria-hidden="true">trending_up</i> '+row.delta_total+'</span></big>';
                 } else if (row.delta_total < 0) {
-                    return '<big><span class="text-danger"><i class="material-icons">trending_down</i> ' + Math.abs(row.delta_total) + '</span></big>';
+                    return '<big><span class="text-danger"><i class="material-icons" aria-hidden="true">trending_down</i> ' + Math.abs(row.delta_total) + '</span></big>';
                 } else {
                     return '<big>0</big>';
                 }

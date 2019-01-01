@@ -8,7 +8,7 @@
 <?php foreach($admin_panels as $category_name => $category_info): ?>
     <li class="nav-item">
         <a class="nav-item nav-link" data-toggle="collapse" href="#sidebar-submenu-<?=$category_info['id'] ?>">
-            <i class="navdrawer-nav-icon material-icons"><?=$category_info['icon'] ?></i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?=$category_info['icon'] ?></i>
             <?=$category_name ?>
         </a>
         <div class="collapse pb-2 show" id="sidebar-submenu-<?=$category_info['id'] ?>">

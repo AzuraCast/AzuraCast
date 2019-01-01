@@ -67,9 +67,9 @@ $(function() {
                 var $icon = '';
 
                 if (row.media_is_playable)
-                    $icon = '<a class="file-icon btn-audio" href="#" data-url="'+$url+'"><i class="material-icons">play_circle_filled</i></a>';
+                    $icon = '<a class="file-icon btn-audio" href="#" data-url="'+$url+'"><i class="material-icons" aria-hidden="true">play_circle_filled</i></a>';
                 else
-                    $icon = '<span class="file-icon"><i class="material-icons">'+(row.is_dir ? 'folder' : 'note')+'</i></span>';
+                    $icon = '<span class="file-icon"><i class="material-icons" aria-hidden="true">'+(row.is_dir ? 'folder' : 'note')+'</i></span>';
 
                 var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+(row.is_dir ? row.text : row.media_name)+'</a>';
 
@@ -161,7 +161,7 @@ $(function() {
         },
         formatters: {
             "directory": function(column, row) {
-                $icon = '<span class="file-icon"><i class="material-icons">folder</i></span> ';
+                $icon = '<span class="file-icon"><i class="material-icons" aria-hidden="true">folder</i></span> ';
 
                 return '<div class="is_dir">'+$icon + row.name +'</div>';
             },

@@ -15,7 +15,7 @@ $assets
         <div class="card">
             <div class="card-body">
                 <a class="btn btn-primary float-right dropdown-toggle" id="reportrange" href="#">
-                    <i class="material-icons">date_range</i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
+                    <i class="material-icons" aria-hidden="true">date_range</i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
                 </a>
                 <h2 class="card-title"><?=__('Listeners') ?></h2>
                 <h3 class="card-subtitle"><span id="listener-count">0</span> Unique</h3>
@@ -36,11 +36,13 @@ $assets
                         <td>{{ listener.ip }}</td>
                         <td>{{ listener.connected_time }}</td>
                         <td>
-                            <span v-if="listener.is_mobile" title="<?=__('Mobile Device') ?>">
-                                <i class="material-icons">smartphone</i>
+                            <span v-if="listener.is_mobile">
+                                <i class="material-icons" aria-hidden="true">smartphone</i>
+                                <span class="sr-only"><?=__('Mobile Device') ?></span>
                             </span>
-                            <span v-else title="<?=__('Desktop Device') ?>">
-                                <i class="material-icons">desktop_windows</i>
+                            <span v-else>
+                                <i class="material-icons" aria-hidden="true">desktop_windows</i>
+                                <span class="sr-only"><?=__('Desktop Device') ?></span>
                             </span>
                             {{ listener.user_agent }}
                         </td>

@@ -25,26 +25,26 @@ $this->layout('minimal', [
                 <div class="input-group">
                     <div class="floating-label">
                         <label for="username"><?=__('E-mail Address') ?></label>
-                        <input type="email" name="username" class="form-control" placeholder="" required>
+                        <input type="email" name="username" class="form-control" placeholder="" aria-label="<?=__('E-mail Address') ?>" required>
                     </div>
                     <span class="input-group-icon">
-                        <i class="material-icons">email</i>
+                        <i class="material-icons" aria-hidden="true">email</i>
                     </span>
                 </div>
 
                 <div class="input-group mt-2">
                     <div class="floating-label">
                         <label for="password"><?=__('Password') ?></label>
-                        <input type="password" name="password" class="form-control" placeholder="" required>
+                        <input type="password" name="password" class="form-control" aria-label="<?=__('Password') ?>" placeholder="" required>
                     </div>
 
                     <span class="input-group-icon">
-                        <i class="material-icons">vpn_key</i>
+                        <i class="material-icons" aria-hidden="true">vpn_key</i>
                     </span>
                 </div>
 
                 <button type="submit" role="button" title="<?=__('Log In') ?>" class="btn btn-login btn-primary btn-float">
-                    <i class="material-icons">arrow_forward_ios</i>
+                    <i class="material-icons" aria-hidden="true">arrow_forward_ios</i>
                 </button>
             </form>
         </div>

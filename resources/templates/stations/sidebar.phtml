@@ -22,14 +22,14 @@ $user = $request->getUser();
     <?php if (!$station->getHasStarted()): ?>
     <li class="nav-item">
         <a class="nav-link api-call text-success" href="<?=$router->fromHere('api:stations:restart') ?>">
-            <i class="navdrawer-nav-icon material-icons">refresh</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">refresh</i>
             <?=__('Click to Start Station') ?>
         </a>
     </li>
     <?php elseif ($station->getNeedsRestart()): ?>
     <li class="nav-item">
         <a class="nav-link api-call text-warning" href="<?=$router->fromHere('api:stations:restart') ?>">
-            <i class="navdrawer-nav-icon material-icons">refresh</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">refresh</i>
             <?=__('Click to Restart Station') ?>
         </a>
     </li>
@@ -39,7 +39,7 @@ $user = $request->getUser();
 
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'profile'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:profile:index') ?>">
-            <i class="navdrawer-nav-icon material-icons">image</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">image</i>
             <?=__('Profile') ?>
         </a>
     </li>
@@ -47,7 +47,7 @@ $user = $request->getUser();
 <?php if ($station->getEnablePublicPage()): ?>
     <li class="nav-item">
         <a class="nav-link" href="<?=$router->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank">
-            <i class="navdrawer-nav-icon material-icons">public</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">public</i>
             <?=__('Public Page') ?> <i class="material-icons sm">open_in_new</i>
         </a>
     </li>
@@ -56,13 +56,13 @@ $user = $request->getUser();
 <?php if ($acl->userAllowed($user, Acl::STATION_MEDIA, $station->getId()) && $backend::supportsMedia()): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'files'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:files:index') ?>">
-            <i class="navdrawer-nav-icon material-icons">library_music</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">library_music</i>
             <?=__('Music Files') ?>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'playlists'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:playlists:index') ?>">
-            <i class="navdrawer-nav-icon material-icons">queue_music</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">queue_music</i>
             <?=__('Playlists') ?>
         </a>
     </li>
@@ -71,7 +71,7 @@ $user = $request->getUser();
 <?php if ($acl->userAllowed($user, Acl::STATION_STREAMERS, $station->getId()) && $backend::supportsStreamers()): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'streamers'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:streamers:index') ?>">
-            <i class="navdrawer-nav-icon material-icons">mic</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">mic</i>
             <?=__('Streamer/DJ Accounts') ?>
         </a>
     </li>
@@ -79,7 +79,7 @@ $user = $request->getUser();
 <?php if ($station->getEnablePublicPage() && $station->getEnableStreamers()): ?>
     <li class="nav-item">
         <a class="nav-link" href="<?=$router->named('public:dj', ['station' => $station->getShortName()]) ?>" target="_blank">
-            <i class="navdrawer-nav-icon material-icons">surround_sound</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">surround_sound</i>
             <?=__('Web DJ') ?> <i class="material-icons sm">open_in_new</i>
         </a>
     </li>
@@ -88,7 +88,7 @@ $user = $request->getUser();
 <?php if ($acl->userAllowed($user, Acl::STATION_MOUNTS, $station->getId()) && $frontend::supportsMounts()): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'mounts'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:mounts:index') ?>">
-            <i class="navdrawer-nav-icon material-icons">wifi_tethering</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">wifi_tethering</i>
             <?=__('Mount Points') ?>
         </a>
     </li>
@@ -97,7 +97,7 @@ $user = $request->getUser();
 <?php if ($acl->userAllowed($user, Acl::STATION_REMOTES, $station->getId())): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'remotes'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:remotes:index') ?>">
-            <i class="navdrawer-nav-icon material-icons">router</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">router</i>
             <?=__('Remote Relays') ?>
         </a>
     </li>
@@ -106,7 +106,7 @@ $user = $request->getUser();
 <?php if ($acl->userAllowed($user, Acl::STATION_WEB_HOOKS, $station->getId())): ?>
     <li class="nav-item">
         <a class="nav-link <?php if ($active_tab === 'webhooks'): ?>active<?php endif; ?>" href="<?=$router->fromHere('stations:webhooks:index') ?>">
-            <i class="navdrawer-nav-icon material-icons">code</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">code</i>
             <?=__('Web Hooks') ?>
         </a>
     </li>
@@ -115,7 +115,7 @@ $user = $request->getUser();
 <?php if ($acl->userAllowed($user, Acl::STATION_REPORTS, $station->getId())): ?>
     <li class="nav-item">
         <a class="nav-item nav-link" data-toggle="collapse" href="#sidebar-submenu-reports">
-            <i class="navdrawer-nav-icon material-icons">assignment</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">assignment</i>
             <?=__('Reports') ?>
         </a>
         <div class="collapse pb-2" id="sidebar-submenu-reports">
@@ -170,7 +170,7 @@ $user = $request->getUser();
 
     <li class="sub-menu">
         <a class="nav-item nav-link" data-toggle="collapse" href="#sidebar-submenu-utilities">
-            <i class="navdrawer-nav-icon material-icons">settings</i>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true">settings</i>
             <?=__('Utilities') ?>
         </a>
         <div class="collapse pb-2" id="sidebar-submenu-utilities">

@@ -11,6 +11,128 @@ servers:
     url: 'https://demo.azuracast.com/api'
     description: 'AzuraCast Public Demo Server'
 paths:
+  /admin/users:
+    get:
+      tags:
+        - 'Administration: Users'
+      description: 'List all current users in the system.'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'administer user accounts'
+    post:
+      tags:
+        - 'Administration: Users'
+      description: 'Create a new user.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'administer user accounts'
+  '/admin/user/{id}':
+    get:
+      tags:
+        - 'Administration: Users'
+      description: 'Retrieve details for a single current user.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'administer user accounts'
+    put:
+      tags:
+        - 'Administration: Users'
+      description: 'Update details of a single user.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'administer user accounts'
+    delete:
+      tags:
+        - 'Administration: Users'
+      description: 'Delete a single user.'
+      operationId: 'App\Controller\Api\Admin\UsersController::deleteAction'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'administer user accounts'
   /status:
     get:
       tags:
@@ -31,25 +153,6 @@ paths:
       responses:
         '200':
           description: Success
-  '/station/{station_id}/listeners':
-    get:
-      tags:
-        - 'Stations: Listeners'
-      description: 'Return detailed information about current listeners.'
-      operationId: 'App\Controller\Api\ListenersController::indexAction'
-      parameters:
-        -
-          $ref: '#/components/parameters/station_id_required'
-      responses:
-        '200':
-          description: Success
-        '404':
-          description: 'Station not found'
-        '403':
-          description: 'Access denied'
-      security:
-        -
-          - api_key
   /nowplaying:
     get:
       tags:
@@ -74,45 +177,6 @@ paths:
           description: Success
         '404':
           description: 'Station not found'
-  '/station/{station_id}/requests':
-    get:
-      tags:
-        - 'Stations: Song Requests'
-      description: 'Return a list of requestable songs.'
-      operationId: 'App\Controller\Api\RequestsController::listAction'
-      parameters:
-        -
-          $ref: '#/components/parameters/station_id_required'
-      responses:
-        '200':
-          description: Success
-        '404':
-          description: 'Station not found'
-        '403':
-          description: 'Station does not support requests'
-  '/station/{station_id}/request/{request_id}':
-    post:
-      tags:
-        - 'Stations: Song Requests'
-      description: 'Submit a song request.'
-      operationId: 'App\Controller\Api\RequestsController::submitAction'
-      parameters:
-        -
-          $ref: '#/components/parameters/station_id_required'
-        -
-          name: request_id
-          in: path
-          description: 'The requestable song ID'
-          required: true
-          schema:
-            type: int64
-      responses:
-        '200':
-          description: Success
-        '404':
-          description: 'Station not found'
-        '403':
-          description: 'Station does not support requests'
   /stations:
     get:
       tags:
@@ -123,6 +187,12 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Station'
   '/station/{station_id}':
     get:
       tags:
@@ -135,8 +205,31 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Station'
         '404':
           description: 'Station not found'
+  '/station/{station_id}/listeners':
+    get:
+      tags:
+        - 'Stations: Listeners'
+      description: 'Return detailed information about current listeners.'
+      operationId: 'App\Controller\Api\Stations\ListenersController::indexAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          - api_key
   '/station/{station_id}/art/{media_id}':
     get:
       tags:
@@ -161,9 +254,89 @@ paths:
   '/station/{station_id}/queue':
     get:
       tags:
-        - 'Stations: Listeners'
+        - 'Stations: Queue'
       description: 'Return information about the upcoming song playback queue.'
       operationId: 'App\Controller\Api\Stations\QueueController::listAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_QueuedSong'
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'view station reports'
+  '/station/{station_id}/queue/{id}':
+    get:
+      tags:
+        - 'Stations: Queue'
+      description: 'Retrieve details of a single queued item.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Queue Item ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_QueuedSong'
+        '404':
+          description: 'Station or Queue ID not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'view station reports'
+    delete:
+      tags:
+        - 'Stations: Queue'
+      description: 'Retrieve details of a single queued item.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Queue Item ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Station or Queue ID not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: 'view station reports'
+  '/station/{station_id}/requests':
+    get:
+      tags:
+        - 'Stations: Song Requests'
+      description: 'Return a list of requestable songs.'
+      operationId: 'App\Controller\Api\Stations\RequestsController::listAction'
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -173,10 +346,30 @@ paths:
         '404':
           description: 'Station not found'
         '403':
-          description: 'Access denied'
-      security:
+          description: 'Station does not support requests'
+  '/station/{station_id}/request/{request_id}':
+    post:
+      tags:
+        - 'Stations: Song Requests'
+      description: 'Submit a song request.'
+      operationId: 'App\Controller\Api\Stations\RequestsController::submitAction'
+      parameters:
         -
-          - api_key
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: request_id
+          in: path
+          description: 'The requestable song ID'
+          required: true
+          schema:
+            type: int64
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Station does not support requests'
   '/station/{station_id}/restart':
     post:
       tags:
@@ -303,7 +496,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1545718940
+          example: 1546505015
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -399,7 +592,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1545718940
+              example: 1546505015
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -454,7 +647,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1545718940
+          example: 1546505015
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -581,7 +774,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1545718940
+          example: 1546505015
       type: object
     Api_Time:
       properties:
@@ -647,10 +840,10 @@ components:
           example: dark
         created_at:
           type: integer
-          example: 1545718940
+          example: 1546505015
         updated_at:
           type: integer
-          example: 1545718940
+          example: 1546505015
         roles:
           items: {  }
       type: object
@@ -676,13 +869,21 @@ tags:
     name: 'Now Playing'
     description: 'Endpoints that provide full summaries of the current state of stations.'
   -
-    name: Miscellaneous
-  -
     name: 'Stations: General'
   -
     name: 'Stations: Song Requests'
   -
     name: 'Stations: Listeners'
+  -
+    name: 'Stations: Media'
+  -
+    name: 'Stations: Queue'
+  -
+    name: 'Stations: Service Control'
+  -
+    name: 'Administration: Users'
+  -
+    name: Miscellaneous
 externalDocs:
   description: 'AzuraCast on GitHub'
   url: 'https://github.com/AzuraCast/AzuraCast'

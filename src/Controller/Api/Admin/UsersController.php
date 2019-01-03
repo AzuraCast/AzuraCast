@@ -29,7 +29,9 @@ class UsersController extends AbstractGenericCrudController
      * @OA\Post(path="/admin/users",
      *   tags={"Administration: Users"},
      *   description="Create a new user.",
-     *   @OA\RequestBody(ref="#/components/schemas/User"),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(ref="#/components/schemas/User")
+     *   ),
      *   @OA\Response(response=200, description="Success",
      *     @OA\JsonContent(ref="#/components/schemas/User")
      *   ),
@@ -57,7 +59,9 @@ class UsersController extends AbstractGenericCrudController
      * @OA\Put(path="/admin/user/{id}",
      *   tags={"Administration: Users"},
      *   description="Update details of a single user.",
-     *   @OA\RequestBody(ref="#/components/schemas/User"),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(ref="#/components/schemas/User")
+     *   ),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",

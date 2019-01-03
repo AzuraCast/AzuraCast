@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-12-15T19:33:09+00:00\n"
-"PO-Revision-Date: 2018-12-15T19:33:09+00:00\n"
+"POT-Creation-Date: 2019-01-03T08:32:11+00:00\n"
+"PO-Revision-Date: 2019-01-03T08:32:11+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:55
@@ -132,7 +132,11 @@ msgstr ""
 msgid "Sync Task Output"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/Install/ShoutcastController.php:68
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
+msgid "SHOUTcast version \"%s\" is currently installed."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/admin/dashboard.php:57
 msgid "Install SHOUTcast"
 msgstr ""
@@ -1007,10 +1011,18 @@ msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license doe
 msgstr ""
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:19
+msgid "Current Installed Version"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/install_shoutcast.php:20
+msgid "SHOUTcast is not currently installed on this installation."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/install_shoutcast.php:27
 msgid "Select SHOUTcast 64-bit .tar.gz File"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/install_shoutcast.php:29
+#: /var/azuracast/www/config/forms/install_shoutcast.php:37
 msgid "Upload"
 msgstr ""
 
@@ -1020,6 +1032,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/user.php:18
 #: /var/azuracast/www/resources/templates/admin/users/index.phtml:23
 #: /var/azuracast/www/resources/templates/frontend/account/login.phtml:27
+#: /var/azuracast/www/resources/templates/frontend/account/login.phtml:28
 #: /var/azuracast/www/resources/templates/frontend/setup/register.phtml:25
 msgid "E-mail Address"
 msgstr ""
@@ -1027,6 +1040,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/login.php:19
 #: /var/azuracast/www/config/forms/register.php:23
 #: /var/azuracast/www/resources/templates/frontend/account/login.phtml:37
+#: /var/azuracast/www/resources/templates/frontend/account/login.phtml:38
 #: /var/azuracast/www/resources/templates/frontend/public/dj.js.phtml:25
 #: /var/azuracast/www/resources/templates/frontend/setup/register.phtml:35
 #: /var/azuracast/www/resources/templates/stations/streamers/index.phtml:74
@@ -1717,14 +1731,14 @@ msgid "Set longer to preserve more playback history for stations. Set shorter to
 msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:85
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:59
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:63
 #: /var/azuracast/www/resources/templates/stations/reports/timeline.phtml:14
 msgid "Last 14 Days"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:86
 #: /var/azuracast/www/resources/templates/stations/reports/listeners.js.phtml:110
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:60
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:64
 msgid "Last 30 Days"
 msgstr ""
 
@@ -2454,7 +2468,7 @@ msgstr ""
 #: /var/azuracast/www/resources/templates/stations/files/index.phtml:75
 #: /var/azuracast/www/resources/templates/stations/mounts/index.phtml:34
 #: /var/azuracast/www/resources/templates/stations/playlists/index.phtml:70
-#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:32
+#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:36
 #: /var/azuracast/www/resources/templates/stations/remotes/index.phtml:34
 #: /var/azuracast/www/resources/templates/stations/reports/duplicates.phtml:34
 #: /var/azuracast/www/resources/templates/stations/reports/requests.phtml:53
@@ -2565,7 +2579,7 @@ msgstr ""
 
 #: /var/azuracast/www/resources/templates/frontend/api_keys/index.phtml:11
 msgid ""
-"API keys can be used to access some system functionality without needing to log in. All of the keys \n"
+"API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
 msgstr ""
 
@@ -2646,6 +2660,8 @@ msgstr ""
 
 #: /var/azuracast/www/resources/templates/frontend/index/index.phtml:81
 #: /var/azuracast/www/resources/templates/frontend/public/player_component.phtml:7
+#: /var/azuracast/www/resources/templates/stations/profile/index.phtml:223
+#: /var/azuracast/www/resources/templates/stations/profile/index.phtml:244
 msgid "Play/Pause"
 msgstr ""
 
@@ -2781,8 +2797,8 @@ msgstr ""
 msgid "Full Volume"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/frontend/public/embedrequests.js.phtml:9
-#: /var/azuracast/www/resources/templates/frontend/public/index.js.phtml:55
+#: /var/azuracast/www/resources/templates/frontend/public/embedrequests.js.phtml:13
+#: /var/azuracast/www/resources/templates/frontend/public/index.js.phtml:59
 msgid "Request"
 msgstr ""
 
@@ -2858,6 +2874,10 @@ msgstr ""
 
 #: /var/azuracast/www/resources/templates/main.phtml:45
 msgid "Toggle Sidebar"
+msgstr ""
+
+#: /var/azuracast/www/resources/templates/main.phtml:57
+msgid "Toggle Menu"
 msgstr ""
 
 #: /var/azuracast/www/resources/templates/main.phtml:71
@@ -3278,17 +3298,17 @@ msgstr ""
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:25
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:41
+#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:29
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:45
 msgid "Listener Request"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:27
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:43
+#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:31
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:47
 msgid "Playlist:"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:32
+#: /var/azuracast/www/resources/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
 msgstr ""
 
@@ -3335,27 +3355,27 @@ msgid "Listener"
 msgstr ""
 
 #: /var/azuracast/www/resources/templates/stations/reports/listeners.js.phtml:107
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:56
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:60
 msgid "Today"
 msgstr ""
 
 #: /var/azuracast/www/resources/templates/stations/reports/listeners.js.phtml:108
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:57
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:61
 msgid "Yesterday"
 msgstr ""
 
 #: /var/azuracast/www/resources/templates/stations/reports/listeners.js.phtml:109
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:58
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:62
 msgid "Last 7 Days"
 msgstr ""
 
 #: /var/azuracast/www/resources/templates/stations/reports/listeners.js.phtml:111
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:61
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:65
 msgid "This Month"
 msgstr ""
 
 #: /var/azuracast/www/resources/templates/stations/reports/listeners.js.phtml:112
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:62
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:66
 msgid "Last Month"
 msgstr ""
 
@@ -3375,19 +3395,19 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:39
+#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:41
 msgid "Mobile Device"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:42
+#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:45
 msgid "Desktop Device"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:55
+#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:57
 msgid "Unknown"
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:62
+#: /var/azuracast/www/resources/templates/stations/reports/listeners.phtml:64
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
 msgstr ""
 
@@ -3527,7 +3547,7 @@ msgstr ""
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
 msgstr ""
 
-#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:45
+#: /var/azuracast/www/resources/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Broadcast"
 msgstr ""
 

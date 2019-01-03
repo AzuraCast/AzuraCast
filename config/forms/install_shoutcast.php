@@ -13,6 +13,14 @@ return [
             ]
         ],
 
+        'current_version' => [
+            'markup',
+            [
+                'label' => __('Current Installed Version'),
+                'markup' => '<p class="text-danger">'.__('SHOUTcast is not currently installed on this installation.').'</p>',
+            ]
+        ],
+
         'binary' => [
             'file',
             [

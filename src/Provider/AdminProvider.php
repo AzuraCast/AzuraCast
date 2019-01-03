@@ -119,11 +119,11 @@ class AdminProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Admin\Install\ShoutcastController::class] = function($di) {
+        $di[Admin\InstallShoutcastController::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];
 
-            return new Admin\Install\ShoutcastController(
+            return new Admin\InstallShoutcastController(
                 $config->get('forms/install_shoutcast')
             );
         };

@@ -5,6 +5,7 @@ use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Process\Process;
 
 class SHOUTcast extends AbstractFrontend
 {
@@ -235,5 +236,26 @@ class SHOUTcast extends AbstractFrontend
         return file_exists($new_path)
             ? $new_path
             : false;
+    }
+
+    /**
+     * @return string|null
+     */
+    public static function getVersion(): ?string
+    {
+        $binary_path = self::getBinary();
+        if (!$binary_path) {
+            return null;
+        }
+
+        $process = new Process([$binary_path, '--version']);
+        $process->setWorkingDirectory(dirname($binary_path));
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return null;
+        }
+
+        return trim($process->getOutput());
     }
 }

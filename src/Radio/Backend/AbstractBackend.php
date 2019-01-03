@@ -3,7 +3,7 @@ namespace App\Radio\Backend;
 
 use App\Entity;
 
-abstract class AbstractBackend extends \App\Radio\AdapterAbstract
+abstract class AbstractBackend extends \App\Radio\AbstractAdapter
 {
     public function getStreamPort(Entity\Station $station)
     {

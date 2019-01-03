@@ -150,7 +150,7 @@ class Adapters
 
         if ($check_installed) {
             return array_filter($adapters, function($adapter_info) {
-                /** @var \App\Radio\AdapterAbstract $adapter_class */
+                /** @var \App\Radio\AbstractAdapter $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();
             });
@@ -181,7 +181,7 @@ class Adapters
 
         if ($check_installed) {
             return array_filter($adapters, function ($adapter_info) {
-                /** @var \App\Radio\AdapterAbstract $adapter_class */
+                /** @var \App\Radio\AbstractAdapter $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();
             });

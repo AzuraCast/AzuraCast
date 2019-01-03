@@ -9,7 +9,7 @@ use Monolog\Logger;
 use Supervisor\Process;
 use Supervisor\Supervisor;
 
-abstract class AdapterAbstract
+abstract class AbstractAdapter
 {
     /** @var EntityManager */
     protected $em;

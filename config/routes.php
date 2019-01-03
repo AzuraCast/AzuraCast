@@ -20,7 +20,7 @@ return function(App $app)
         $this->group('/install', function () {
             /** @var App $this */
 
-            $this->map(['GET', 'POST'], '/shoutcast', Controller\Admin\Install\ShoutcastController::class)
+            $this->map(['GET', 'POST'], '/shoutcast', Controller\Admin\InstallShoutcastController::class)
                 ->setName('admin:install:shoutcast');
 
         })->add([Middleware\Permissions::class, Acl::GLOBAL_ALL]);

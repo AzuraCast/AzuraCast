@@ -30,9 +30,7 @@ class ServicesController
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
-     *   security={
-     *     {"api_key"}
-     *   }
+     *   security={{"api_key": {}}}
      * )
      */
     public function restartAction(Request $request, Response $response): ResponseInterface
@@ -82,9 +80,7 @@ class ServicesController
      *   ),
      *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
-     *   security={
-     *     {"api_key": {"manage station broadcasting"}}
-     *   }
+     *   security={{"api_key": {}}}
      * )
      */
     public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
@@ -137,9 +133,7 @@ class ServicesController
      *   ),
      *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
-     *   security={
-     *     {"api_key": {"manage station broadcasting"}}
-     *   }
+     *   security={{"api_key": {}}}
      * )
      */
     public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface

@@ -119,7 +119,5 @@ class InternalController
         if (!$station->validateAdapterApiKey($auth_key)) {
             throw new \App\Exception\PermissionDenied();
         }
-
-        return;
     }
 }

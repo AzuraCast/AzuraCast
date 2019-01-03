@@ -48,9 +48,7 @@ class ListenersController
      *   ),
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={
-     *     {"api_key"}
-     *   },
+     *   security={{"api_key": {}}},
      * )
      */
     public function indexAction(Request $request, Response $response): ResponseInterface

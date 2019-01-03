@@ -42,7 +42,7 @@ class QueueController extends AbstractStationCrudController
      *   ),
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": \App\Acl::STATION_REPORTS}},
+     *   security={{"api_key": {}}}
      * )
      *
      * @inheritdoc
@@ -95,7 +95,7 @@ class QueueController extends AbstractStationCrudController
      *   ),
      *   @OA\Response(response=404, description="Station or Queue ID not found"),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": App\Acl::STATION_REPORTS}},
+     *   security={{"api_key": {}}}
      * )
      *
      * @OA\Delete(path="/station/{station_id}/queue/{id}",
@@ -113,7 +113,7 @@ class QueueController extends AbstractStationCrudController
      *   ),
      *   @OA\Response(response=404, description="Station or Queue ID not found"),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": App\Acl::STATION_REPORTS}},
+     *   security={{"api_key": {}}}
      * )
      */
 

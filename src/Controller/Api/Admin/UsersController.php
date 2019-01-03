@@ -23,7 +23,7 @@ class UsersController extends AbstractGenericCrudController
      *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/User"))
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     *   security={{"api_key": {}}},
      * )
      *
      * @OA\Post(path="/admin/users",
@@ -36,7 +36,7 @@ class UsersController extends AbstractGenericCrudController
      *     @OA\JsonContent(ref="#/components/schemas/User")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     *   security={{"api_key": {}}},
      * )
      *
      * @OA\Get(path="/admin/user/{id}",
@@ -53,7 +53,7 @@ class UsersController extends AbstractGenericCrudController
      *     @OA\JsonContent(ref="#/components/schemas/User")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     *   security={{"api_key": {}}},
      * )
      *
      * @OA\Put(path="/admin/user/{id}",
@@ -73,7 +73,7 @@ class UsersController extends AbstractGenericCrudController
      *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     *   security={{"api_key": {}}},
      * )
      */
 
@@ -92,7 +92,7 @@ class UsersController extends AbstractGenericCrudController
      *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": \App\Acl::GLOBAL_USERS}},
+     *   security={{"api_key": {}}},
      * )
      *
      * @inheritdoc

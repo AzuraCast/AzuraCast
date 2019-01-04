@@ -120,5 +120,4 @@ class UsersController extends AbstractGenericCrudController
 
         return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
     }
-
 }

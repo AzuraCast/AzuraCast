@@ -160,14 +160,6 @@ class User
     }
 
     /**
-     * @return string|null
-     */
-    public function getAuthPassword(): ?string
-    {
-        return null;
-    }
-
-    /**
      * @param string $password
      */
     public function setAuthPassword(string $password)

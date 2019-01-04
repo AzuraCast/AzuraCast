@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="api_keys")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\ApiKeyRepository")
  */
-class ApiKey
+class ApiKey implements \JsonSerializable
 {
     use Traits\TruncateStrings;
 
@@ -110,5 +110,13 @@ class ApiKey
     public function setComment(?string $comment): void
     {
         $this->comment = $this->_truncateString($comment);
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'comment' => $this->comment,
+        ];
     }
 }

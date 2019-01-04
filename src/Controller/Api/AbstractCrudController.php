@@ -108,12 +108,9 @@ abstract class AbstractCrudController
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $this->serializer->denormalize($data, $this->entityClass, null, [
-            'object_to_populate' => $record,
-        ]);
+        $this->_denormalizeToRecord($data, $record);
 
         $errors = $this->validator->validate($record);
-
         if (count($errors) > 0) {
             throw new \App\Exception\Validation((string)$errors);
         }
@@ -122,6 +119,17 @@ abstract class AbstractCrudController
         $this->em->flush($record);
 
         return $record;
+    }
+
+    /**
+     * @param $data
+     * @param $record
+     */
+    protected function _denormalizeToRecord($data, $record): void
+    {
+        $this->serializer->denormalize($data, $this->entityClass, null, [
+            'object_to_populate' => $record,
+        ]);
     }
 
     /**

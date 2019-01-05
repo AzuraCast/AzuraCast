@@ -4,10 +4,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="role")
  * @ORM\Entity
+ *
+ * @OA\Schema(type="object")
  */
 class Role implements \JsonSerializable
 {
@@ -17,12 +21,15 @@ class Role implements \JsonSerializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
+     * @OA\Property(example="Super Administrator")
+     * @Assert\NotBlank
      * @var string
      */
     protected $name;
@@ -35,6 +42,7 @@ class Role implements \JsonSerializable
 
     /**
      * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="role")
+     * @OA\Property(@OA\Items)
      * @var Collection
      */
     protected $permissions;
@@ -103,7 +111,7 @@ class Role implements \JsonSerializable
             /** @var RolePermission $permission */
 
             if ($permission->hasStation()) {
-                $return['permissions']['station'][$permission->getStationId()][] = $permission->getActionName();
+                $return['permissions']['station'][$permission->getStation()->getId()][] = $permission->getActionName();
             } else {
                 $return['permissions']['global'][] = $permission->getActionName();
             }

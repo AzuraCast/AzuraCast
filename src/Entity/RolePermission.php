@@ -60,10 +60,14 @@ class RolePermission implements \JsonSerializable
      * @param Role $role
      * @param Station|null $station
      */
-    public function __construct(Role $role, Station $station = null)
+    public function __construct(Role $role, Station $station = null, $action_name = null)
     {
         $this->role = $role;
         $this->station = $station;
+
+        if (null !== $action_name) {
+            $this->setActionName($action_name);
+        }
     }
 
     /**
@@ -91,19 +95,11 @@ class RolePermission implements \JsonSerializable
     }
 
     /**
-     * @return int|null
-     */
-    public function getStationId(): ?int
-    {
-        return $this->station_id;
-    }
-
-    /**
      * @return bool
      */
     public function hasStation(): bool
     {
-        return (null !== $this->station_id);
+        return (null !== $this->station);
     }
 
     /**

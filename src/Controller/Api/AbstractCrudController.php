@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 use Azura\Http\Router;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -48,7 +49,17 @@ abstract class AbstractCrudController
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $return = $this->serializer->normalize($record, null, [
+        $return = $this->_normalizeRecord($record);
+
+        $return['links'] = [
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+        ];
+        return $return;
+    }
+
+    protected function _normalizeRecord($record, array $context = [])
+    {
+        return $this->serializer->normalize($record, null, array_merge($context, [
             ObjectNormalizer::ENABLE_MAX_DEPTH => true,
             ObjectNormalizer::MAX_DEPTH_HANDLER => function ($innerObject, $outerObject, string $attributeName, string $format = null, array $context = array()) {
                 return $this->_displayShortenedObject($innerObject);
@@ -56,12 +67,7 @@ abstract class AbstractCrudController
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, string $format = null, array $context = array()) {
                 return $this->_displayShortenedObject($object);
             },
-        ]);
-
-        $return['links'] = [
-            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
-        ];
-        return $return;
+        ]));
     }
 
     /**
@@ -124,12 +130,13 @@ abstract class AbstractCrudController
     /**
      * @param $data
      * @param $record
+     * @param array $context
      */
-    protected function _denormalizeToRecord($data, $record): void
+    protected function _denormalizeToRecord($data, $record, array $context = []): void
     {
-        $this->serializer->denormalize($data, $this->entityClass, null, [
-            'object_to_populate' => $record,
-        ]);
+        $this->serializer->denormalize($data, $this->entityClass, null, array_merge($context, [
+            AbstractNormalizer::OBJECT_TO_POPULATE => $record,
+        ]));
     }
 
     /**

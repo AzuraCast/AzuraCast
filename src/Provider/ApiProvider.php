@@ -9,6 +9,15 @@ class ApiProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
+        $di[Api\Admin\PermissionsController::class] = function($di) {
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
+
+            return new Api\Admin\PermissionsController(
+                $config->get('admin/actions')
+            );
+        };
+
         $di[Api\IndexController::class] = function($di) {
             return new Api\IndexController;
         };
@@ -89,6 +98,7 @@ class ApiProvider implements ServiceProviderInterface
 
         $standard_crud_controllers = [
             Api\Admin\UsersController::class,
+            Api\Admin\RolesController::class,
         ];
 
         foreach($standard_crud_controllers as $controller) {

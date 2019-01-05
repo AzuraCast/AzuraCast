@@ -50,6 +50,7 @@
  * @OA\Tag(name="Stations: Service Control")
  *
  * @OA\Tag(name="Administration: Users")
+ * @OA\Tag(name="Administration: Roles")
  *
  * @OA\Tag(name="Miscellaneous")
  *

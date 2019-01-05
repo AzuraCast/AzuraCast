@@ -11,6 +11,141 @@ servers:
     url: 'https://demo.azuracast.com/api'
     description: 'AzuraCast Public Demo Server'
 paths:
+  /admin/permissions:
+    get:
+      tags:
+        - 'Administration: Roles'
+      description: 'Return a list of all available permissions.'
+      operationId: 'App\Controller\Api\Admin\PermissionsController::__invoke'
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  /admin/roles:
+    get:
+      tags:
+        - 'Administration: Roles'
+      description: 'List all current roles in the system.'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Administration: Roles'
+      description: 'Create a new role.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/admin/role/{id}':
+    get:
+      tags:
+        - 'Administration: Roles'
+      description: 'Retrieve details for a single current role.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Role ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Administration: Roles'
+      description: 'Update details of a single role.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Role ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Administration: Roles'
+      description: 'Delete a single role.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Role ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   /admin/users:
     get:
       tags:
@@ -494,7 +629,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1546528962
+          example: 1546681991
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -590,7 +725,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1546528962
+              example: 1546681991
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -645,7 +780,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1546528962
+          example: 1546681991
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -772,7 +907,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1546528962
+          example: 1546681991
       type: object
     Api_Time:
       properties:
@@ -811,6 +946,17 @@ components:
           type: string
           example: UTC
       type: object
+    Role:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Super Administrator'
+        permissions:
+          items: {  }
+      type: object
     Station:
       type: object
     User:
@@ -838,10 +984,10 @@ components:
           example: dark
         created_at:
           type: integer
-          example: 1546528962
+          example: 1546681991
         updated_at:
           type: integer
-          example: 1546528962
+          example: 1546681991
         roles:
           items: {  }
       type: object
@@ -880,6 +1026,8 @@ tags:
     name: 'Stations: Service Control'
   -
     name: 'Administration: Users'
+  -
+    name: 'Administration: Roles'
   -
     name: Miscellaneous
 externalDocs:

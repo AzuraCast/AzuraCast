@@ -213,6 +213,20 @@ return function(App $app)
                 $this->delete('/user/{id}', Controller\Api\Admin\UsersController::class.':deleteAction');
             })->add([Middleware\Permissions::class, Acl::GLOBAL_USERS]);
 
+            $this->group('', function() {
+                /** @var App $this */
+                $this->get('/roles', Controller\Api\Admin\RolesController::class.':listAction')
+                    ->setName('api:admin:roles');
+                $this->post('/roles', Controller\Api\Admin\RolesController::class.':createAction');
+
+                $this->get('/role/{id}', Controller\Api\Admin\RolesController::class.':getAction')
+                    ->setName('api:admin:role');
+                $this->put('/role/{id}', Controller\Api\Admin\RolesController::class.':editAction');
+                $this->delete('/role/{id}', Controller\Api\Admin\RolesController::class.':deleteAction');
+            })->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
+
+            $this->get('/permissions', Controller\Api\Admin\PermissionsController::class)
+                ->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
 
         });
 

@@ -64,13 +64,9 @@ class AdminProvider implements ServiceProviderInterface
             /** @var Entity\Repository\StationRepository $stations_repo */
             $stations_repo = $em->getRepository(Entity\Station::class);
 
-            $actions = $config->get('admin/actions');
-
             return new Admin\PermissionsController(
                 $em,
-                $actions,
                 $config->get('forms/role', [
-                    'actions' => $actions,
                     'all_stations' => $stations_repo->fetchArray(),
                 ])
             );

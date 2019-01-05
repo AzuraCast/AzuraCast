@@ -9,16 +9,11 @@ class ApiProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[Api\Admin\PermissionsController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
-
-            return new Api\Admin\PermissionsController(
-                $config->get('admin/actions')
-            );
+        $di[Api\Admin\PermissionsController::class] = function() {
+            return new Api\Admin\PermissionsController;
         };
 
-        $di[Api\IndexController::class] = function($di) {
+        $di[Api\IndexController::class] = function() {
             return new Api\IndexController;
         };
 

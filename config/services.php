@@ -88,20 +88,6 @@ return function (\Azura\Container $di)
         );
     };
 
-    $di[\App\Entity\Repository\RolePermissionRepository::class] = function($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        /** @var \Azura\Config $config */
-        $config = $di[\Azura\Config::class];
-
-        return new \App\Entity\Repository\RolePermissionRepository(
-            $em,
-            $em->getClassMetadata(\App\Entity\RolePermission::class),
-            $config->get('admin/actions')
-        );
-    };
-
     $di[\App\Auth::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Acl;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -23,14 +24,12 @@ class PermissionsController
 
     /**
      * @param EntityManager $em
-     * @param array $actions
      * @param array $form_config
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(EntityManager $em, array $actions, array $form_config)
+    public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;
-        $this->actions = $actions;
         $this->form_config = $form_config;
     }
 
@@ -43,15 +42,17 @@ class PermissionsController
 
         $roles = [];
 
+        $actions = Acl::listPermissions();
+
         foreach ($all_roles as $role) {
             $role['permissions_global'] = [];
             $role['permissions_station'] = [];
 
             foreach ($role['permissions'] as $permission) {
                 if ($permission['station']) {
-                    $role['permissions_station'][$permission['station']['name']][] = $this->actions['station'][$permission['action_name']];
+                    $role['permissions_station'][$permission['station']['name']][] = $actions['station'][$permission['action_name']];
                 } else {
-                    $role['permissions_global'][] = $this->actions['global'][$permission['action_name']];
+                    $role['permissions_global'][] = $actions['global'][$permission['action_name']];
                 }
             }
 

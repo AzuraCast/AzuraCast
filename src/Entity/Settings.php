@@ -50,6 +50,10 @@ class Settings
     const UPDATE_RESULTS        = 'central_update_results';
     const UPDATE_LAST_RUN       = 'central_update_last_run';
 
+    public static $settings = [
+
+    ];
+
     /**
      * @ORM\Column(name="setting_key", type="string", length=64)
      * @ORM\Id

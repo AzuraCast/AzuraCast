@@ -157,4 +157,58 @@ class Acl
             throw new Exception\PermissionDenied;
         }
     }
+
+    /**
+     * @return array
+     */
+    public static function listPermissions(): array
+    {
+        static $permissions;
+
+        if (null === $permissions) {
+            $permissions= [
+                'global' => [
+                    self::GLOBAL_ALL             => __('All Permissions'),
+                    self::GLOBAL_VIEW            => __('View Administration Page'),
+                    self::GLOBAL_LOGS            => __('View System Logs'),
+                    self::GLOBAL_SETTINGS        => sprintf(__('Administer %s'), __('Settings')),
+                    self::GLOBAL_API_KEYS        => sprintf(__('Administer %s'), __('API Keys')),
+                    self::GLOBAL_USERS           => sprintf(__('Administer %s'), __('Users')),
+                    self::GLOBAL_PERMISSIONS     => sprintf(__('Administer %s'), __('Permissions')),
+                    self::GLOBAL_STATIONS        => sprintf(__('Administer %s'), __('Stations')),
+                    self::GLOBAL_CUSTOM_FIELDS   => sprintf(__('Administer %s'), __('Custom Fields')),
+                ],
+                'station' => [
+                    self::STATION_ALL            => __('All Permissions'),
+                    self::STATION_VIEW           => __('View Station Page'),
+                    self::STATION_REPORTS        => __('View Station Reports'),
+                    self::STATION_LOGS           => __('View Station Logs'),
+                    self::STATION_PROFILE        => sprintf(__('Manage Station %s'), __('Profile')),
+                    self::STATION_BROADCASTING   => sprintf(__('Manage Station %s'), __('Broadcasting')),
+                    self::STATION_STREAMERS      => sprintf(__('Manage Station %s'), __('Streamers')),
+                    self::STATION_MOUNTS         => sprintf(__('Manage Station %s'), __('Mount Points')),
+                    self::STATION_REMOTES        => sprintf(__('Manage Station %s'), __('Remote Relays')),
+                    self::STATION_MEDIA          => sprintf(__('Manage Station %s'), __('Media')),
+                    self::STATION_AUTOMATION     => sprintf(__('Manage Station %s'), __('Automation')),
+                    self::STATION_WEB_HOOKS      => sprintf(__('Manage Station %s'), __('Web Hooks')),
+                ]
+            ];
+        }
+
+        return $permissions;
+    }
+
+    /**
+     * @param $permission_name
+     * @param $is_global
+     * @return bool
+     */
+    public static function isValidPermission($permission_name, $is_global): bool
+    {
+        $permissions = self::listPermissions();
+
+        return $is_global
+            ? isset($permissions['global'][$permission_name])
+            : isset($permissions['station'][$permission_name]);
+    }
 }

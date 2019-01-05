@@ -1,6 +1,7 @@
 <?php
-/** @var array $actions */
 /** @var array $all_stations */
+
+$actions = \App\Acl::listPermissions();
 
 $form_config = [
     'method' => 'post',

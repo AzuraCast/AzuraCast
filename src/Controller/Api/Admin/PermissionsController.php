@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Api\Admin;
 
+use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -10,18 +11,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class PermissionsController
 {
-    /** @var array */
-    protected $actions;
-
-    /**
-     * PermissionsController constructor.
-     * @param array $actions
-     */
-    public function __construct(array $actions)
-    {
-        $this->actions = $actions;
-    }
-
     /**
      * @OA\Get(path="/admin/permissions",
      *   tags={"Administration: Roles"},
@@ -41,8 +30,14 @@ class PermissionsController
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
         $permissions = [];
-
-
+        foreach(Acl::listPermissions() as $group => $actions) {
+            foreach($actions as $action_id => $action_name) {
+                $permissions[$group][] = [
+                    'id' => $action_id,
+                    'name' => $action_name,
+                ];
+            }
+        }
 
         return $response->withJson($permissions);
     }

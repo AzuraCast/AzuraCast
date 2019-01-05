@@ -1,11 +1,9 @@
 <?php
 namespace App\Controller\Api\Admin;
 
+use App\Acl;
 use App\Entity;
 use App\Controller\Api\AbstractGenericCrudController;
-use App\Http\Request;
-use App\Http\Response;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
@@ -99,14 +97,44 @@ class RolesController extends AbstractGenericCrudController
 
     protected function _denormalizeToRecord($data, $record, array $context = []): void
     {
-        /** @var Entity\Repository\RolePermissionRepository $rp_repo */
-        $rp_repo = $this->em->getRepository(Entity\RolePermission::class);
-
         parent::_denormalizeToRecord($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [
-                'permissions' => function(array $value, $record) use ($rp_repo) {
+                'permissions' => function(array $value, $record) {
                     if ($record instanceof Entity\Role) {
-                        $rp_repo->setPermissions($record, $value);
+                        $perms = $record->getPermissions();
+
+                        if ($perms->count() > 0) {
+                            foreach($perms as $existing_perm) {
+                                $this->em->remove($existing_perm);
+                            }
+                            $perms->clear();
+                        }
+
+                        if (!empty($value['global'])) {
+                            foreach ($value['global'] as $perm_name) {
+                                if (Acl::isValidPermission($perm_name, true)) {
+                                    $perm_record = new Entity\RolePermission($record, null, $perm_name);
+                                    $this->em->persist($perm_record);
+                                    $perms->add($perm_record);
+                                }
+                            }
+                        }
+
+                        if (!empty($value['station'])) {
+                            foreach($value['station'] as $station_id => $station_perms) {
+                                $station = $this->_em->find(Entity\Station::class, $station_id);
+
+                                if ($station instanceof Entity\Station) {
+                                    foreach($station_perms as $perm_name) {
+                                        if (Acl::isValidPermission($perm_name, false)) {
+                                            $perm_record = new Entity\RolePermission($record, $station, $perm_name);
+                                            $this->em->persist($perm_record);
+                                            $perms->add($perm_record);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                     return null;
                 },

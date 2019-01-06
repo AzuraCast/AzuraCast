@@ -92,6 +92,7 @@ class ApiProvider implements ServiceProviderInterface
         };
 
         $standard_crud_controllers = [
+            Api\Admin\CustomFieldsController::class,
             Api\Admin\UsersController::class,
             Api\Admin\RolesController::class,
             Api\Admin\SettingsController::class,

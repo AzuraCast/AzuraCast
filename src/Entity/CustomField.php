@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="custom_field")
  * @ORM\Entity
+ *
+ * @OA\Schema(type="object")
  */
 class CustomField
 {
@@ -18,18 +20,27 @@ class CustomField
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @OA\Property()
      * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @OA\Property()
+     * @Assert\NotBlank
+     *
      * @var string
      */
     protected $name;
 
     /**
      * @ORM\Column(name="short_name", type="string", length=100, nullable=true)
+     *
+     * @OA\Property()
+     *
      * @var string|null The programmatic name for the field. Can be auto-generated from the full name.
      */
     protected $short_name;

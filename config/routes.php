@@ -203,6 +203,18 @@ return function(App $app)
 
             $this->group('', function() {
                 /** @var App $this */
+                $this->get('/custom_fields', Controller\Api\Admin\CustomFieldsController::class.':listAction')
+                    ->setName('api:admin:custom_fields');
+                $this->post('/custom_fields', Controller\Api\Admin\CustomFieldsController::class.':createAction');
+
+                $this->get('/custom_field/{id}', Controller\Api\Admin\CustomFieldsController::class.':getAction')
+                    ->setName('api:admin:custom_field');
+                $this->put('/custom_field/{id}', Controller\Api\Admin\CustomFieldsController::class.':editAction');
+                $this->delete('/custom_field/{id}', Controller\Api\Admin\CustomFieldsController::class.':deleteAction');
+            })->add([Middleware\Permissions::class, Acl::GLOBAL_CUSTOM_FIELDS]);
+
+            $this->group('', function() {
+                /** @var App $this */
                 $this->get('/users', Controller\Api\Admin\UsersController::class.':listAction')
                     ->setName('api:admin:users');
                 $this->post('/users', Controller\Api\Admin\UsersController::class.':createAction');

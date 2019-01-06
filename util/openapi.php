@@ -49,6 +49,7 @@
  * @OA\Tag(name="Stations: Queue")
  * @OA\Tag(name="Stations: Service Control")
  *
+ * @OA\Tag(name="Administration: Custom Fields")
  * @OA\Tag(name="Administration: Users")
  * @OA\Tag(name="Administration: Roles")
  * @OA\Tag(name="Administration: Settings")

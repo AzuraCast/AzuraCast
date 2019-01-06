@@ -113,16 +113,21 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         }
 
         if (is_array($prop_val)) {
-            $return_arr[$prop_name] = $prop_val;
-        } elseif (!is_object($prop_val)) {
+            return $prop_val;
+        }
+
+        if (!is_object($prop_val)) {
             if ('array' === $prop_info['type']) {
-                $return_arr[$prop_name] = (array)$prop_val;
-            } else {
-                $return_arr[$prop_name] = (string)$prop_val;
+                return (array)$prop_val;
             }
-        } elseif ($prop_val instanceof \DateTime) {
+            return (string)$prop_val;
+        }
+
+        if ($prop_val instanceof \DateTime) {
             return $prop_val->getTimestamp();
-        } elseif ($deep) {
+        }
+
+        if ($deep) {
             if ($prop_val instanceof Collection) {
                 $return_val = [];
                 if (count($prop_val) > 0) {

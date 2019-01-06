@@ -164,7 +164,7 @@ return function (\Azura\Container $di)
         $normalizers = [
             new \Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
             new \App\Normalizer\DoctrineEntityNormalizer($di[\Doctrine\ORM\EntityManager::class]),
-            new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory, new \Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter()),
+            new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory),
         ];
         return new Symfony\Component\Serializer\Serializer($normalizers);
     };

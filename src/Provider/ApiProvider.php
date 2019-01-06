@@ -94,6 +94,7 @@ class ApiProvider implements ServiceProviderInterface
         $standard_crud_controllers = [
             Api\Admin\UsersController::class,
             Api\Admin\RolesController::class,
+            Api\Admin\SettingsController::class,
         ];
 
         foreach($standard_crud_controllers as $controller) {

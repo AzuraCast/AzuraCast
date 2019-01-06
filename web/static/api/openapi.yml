@@ -30,6 +30,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'List all current roles in the system.'
+      operationId: 'App\Controller\Api\Admin\RolesController::_denormalizeToRecord'
       responses:
         '200':
           description: Success
@@ -48,6 +49,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Create a new role.'
+      operationId: 'App\Controller\Api\Admin\RolesController::_denormalizeToRecord'
       requestBody:
         content:
           application/json:
@@ -70,6 +72,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Retrieve details for a single current role.'
+      operationId: 'App\Controller\Api\Admin\RolesController::_denormalizeToRecord'
       parameters:
         -
           name: id
@@ -95,6 +98,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Update details of a single role.'
+      operationId: 'App\Controller\Api\Admin\RolesController::_denormalizeToRecord'
       parameters:
         -
           name: id
@@ -125,6 +129,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Delete a single role.'
+      operationId: 'App\Controller\Api\Admin\RolesController::_denormalizeToRecord'
       parameters:
         -
           name: id
@@ -134,6 +139,46 @@ paths:
           schema:
             type: integer
             format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  /admin/settings:
+    get:
+      tags:
+        - 'Administration: Settings'
+      description: 'List the current values of all editable system settings.'
+      operationId: 'App\Controller\Api\Admin\SettingsController::listAction'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Settings'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Administration: Settings'
+      description: 'Update settings to modify any settings provided.'
+      operationId: 'App\Controller\Api\Admin\SettingsController::updateAction'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Api_Admin_Settings'
       responses:
         '200':
           description: Success
@@ -574,6 +619,60 @@ paths:
           api_key: []
 components:
   schemas:
+    Api_Admin_Settings:
+      properties:
+        base_url:
+          description: 'Site Base URL'
+          type: string
+        instance_name:
+          description: 'AzuraCast Instance Name'
+          type: string
+        timezone:
+          description: 'System Default Time Zone'
+          type: string
+        prefer_browser_url:
+          description: 'Prefer Browser URL (If Available)'
+          type: integer
+        always_use_ssl:
+          description: 'Always Use HTTPS'
+          type: integer
+        use_radio_proxy:
+          description: 'Use Web Proxy for Radio'
+          type: integer
+        history_keep_days:
+          description: 'Days of Playback History to Keep'
+          type: integer
+        analytics:
+          description: 'Listener Analytics Collection'
+          type: string
+        central_updates_channel:
+          description: 'Check for Updates and Announcements'
+          type: integer
+        public_theme:
+          description: 'Base Theme for Public Pages'
+          type: string
+        hide_album_art:
+          description: 'Hide Album Art on Public Pages'
+          type: integer
+        homepage_redirect_url:
+          description: 'Homepage Redirect URL'
+          type: string
+        default_album_art_url:
+          description: 'Default Album Art URL'
+          type: string
+        hide_product_name:
+          description: 'Hide AzuraCast Branding on Public Pages'
+          type: integer
+        custom_css_public:
+          description: 'Custom CSS for Public Pages'
+          type: string
+        custom_js_public:
+          description: 'Custom JS for Public Pages'
+          type: string
+        custom_css_internal:
+          description: 'Custom CSS for Internal Pages'
+          type: string
+      type: object
     Api_DetailedSongHistory:
       allOf:
         -
@@ -629,7 +728,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1546681991
+          example: 1546849413
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -725,7 +824,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1546681991
+              example: 1546849413
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -780,7 +879,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1546681991
+          example: 1546849413
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -907,7 +1006,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1546681991
+          example: 1546849413
       type: object
     Api_Time:
       properties:
@@ -984,10 +1083,10 @@ components:
           example: dark
         created_at:
           type: integer
-          example: 1546681991
+          example: 1546849413
         updated_at:
           type: integer
-          example: 1546681991
+          example: 1546849413
         roles:
           items: {  }
       type: object
@@ -1028,6 +1127,8 @@ tags:
     name: 'Administration: Users'
   -
     name: 'Administration: Roles'
+  -
+    name: 'Administration: Settings'
   -
     name: Miscellaneous
 externalDocs:

@@ -111,7 +111,14 @@ class ListenersController
 
     protected function _getLocationInfo($ip, $locale): array
     {
-        $ip_info = $this->geoip->get($ip);
+        try {
+            $ip_info = $this->geoip->get($ip);
+        } catch(\Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
 
         if (empty($ip_info)) {
             return [

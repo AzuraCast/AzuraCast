@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Traits\LogViewer;
+use App\Controller\Traits\LogViewerTrait;
 use App\Entity;
 use Azura\Exception;
 use App\Http\Request;
@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class LogsController
 {
-    use LogViewer;
+    use LogViewerTrait;
 
     /** @var EntityManager */
     protected $em;

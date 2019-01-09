@@ -8,7 +8,7 @@ use App\Radio\Adapters;
 use Azura\Exception;
 use Psr\Http\Message\ResponseInterface;
 
-trait LogViewer
+trait LogViewerTrait
 {
     static $maximum_log_size = 1048576;
 

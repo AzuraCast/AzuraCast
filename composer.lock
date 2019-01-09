@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57ed1ca392dc17245799a7c90fd53736",
+    "content-hash": "739eb0ecaeab301f0950a7f5972094ba",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -153,12 +153,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "a173ec667e41b8a2e67065508e78701d1cdf58dd"
+                "reference": "a8b8b6d56b74df5450476a6389a780436da5a749"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/a173ec667e41b8a2e67065508e78701d1cdf58dd",
-                "reference": "a173ec667e41b8a2e67065508e78701d1cdf58dd",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/a8b8b6d56b74df5450476a6389a780436da5a749",
+                "reference": "a8b8b6d56b74df5450476a6389a780436da5a749",
                 "shasum": ""
             },
             "require": {
@@ -190,7 +190,7 @@
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2018-10-18T02:54:13+00:00"
+            "time": "2019-01-09T18:49:17+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -1307,12 +1307,12 @@
             "version": "v2.6.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "434820973cadf2da2d66e7184be370084cc32ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/434820973cadf2da2d66e7184be370084cc32ca8",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/434820973cadf2da2d66e7184be370084cc32ca8",
                 "reference": "434820973cadf2da2d66e7184be370084cc32ca8",
                 "shasum": ""
             },
@@ -7490,8 +7490,8 @@
         "azuracast/azuracore": 20,
         "azuracast/azuraforms": 20,
         "azuracast/nowplaying": 20,
-        "james-heinrich/getid3": 20,
         "bernard/bernard": 20,
+        "james-heinrich/getid3": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

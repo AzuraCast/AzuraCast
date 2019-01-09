@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Controller\Traits\LogViewer;
+use App\Controller\Traits\LogViewerTrait;
 use Azura\Exception;
 use App\Http\Request;
 use App\Http\Response;
@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class LogsController
 {
-    use LogViewer;
+    use LogViewerTrait;
 
     public function __invoke(Request $request, Response $response): ResponseInterface
     {

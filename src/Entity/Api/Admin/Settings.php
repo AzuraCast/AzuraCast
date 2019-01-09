@@ -45,6 +45,14 @@ class Settings
     public $prefer_browser_url = 0;
 
     /**
+     * @param int $prefer_browser_url
+     */
+    public function setPreferBrowserUrl(int $prefer_browser_url): void
+    {
+        $this->prefer_browser_url = $prefer_browser_url;
+    }
+
+    /**
      * Always Use HTTPS
      *
      * @OA\Property()
@@ -52,6 +60,14 @@ class Settings
      * @var int
      */
     public $always_use_ssl = 0;
+
+    /**
+     * @param int $always_use_ssl
+     */
+    public function setAlwaysUseSsl(int $always_use_ssl): void
+    {
+        $this->always_use_ssl = $always_use_ssl;
+    }
 
     /**
      * Use Web Proxy for Radio
@@ -63,6 +79,14 @@ class Settings
     public $use_radio_proxy = 0;
 
     /**
+     * @param int $use_radio_proxy
+     */
+    public function setUseRadioProxy(int $use_radio_proxy): void
+    {
+        $this->use_radio_proxy = $use_radio_proxy;
+    }
+
+    /**
      * Days of Playback History to Keep
      *
      * @OA\Property()
@@ -70,6 +94,14 @@ class Settings
      * @var int
      */
     public $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
+
+    /**
+     * @param int $history_keep_days
+     */
+    public function setHistoryKeepDays(int $history_keep_days): void
+    {
+        $this->history_keep_days = $history_keep_days;
+    }
 
     /**
      * Listener Analytics Collection
@@ -90,6 +122,14 @@ class Settings
     public $central_updates_channel = Entity\Settings::UPDATES_RELEASE_ONLY;
 
     /**
+     * @param int $central_updates_channel
+     */
+    public function setCentralUpdatesChannel(int $central_updates_channel): void
+    {
+        $this->central_updates_channel = $central_updates_channel;
+    }
+
+    /**
      * Base Theme for Public Pages
      *
      * @OA\Property()
@@ -106,6 +146,14 @@ class Settings
      * @var int
      */
     public $hide_album_art = 0;
+
+    /**
+     * @param int $hide_album_art
+     */
+    public function setHideAlbumArt(int $hide_album_art): void
+    {
+        $this->hide_album_art = $hide_album_art;
+    }
 
     /**
      * Homepage Redirect URL
@@ -131,6 +179,14 @@ class Settings
      * @var int
      */
     public $hide_product_name = 0;
+
+    /**
+     * @param int $hide_product_name
+     */
+    public function setHideProductName(int $hide_product_name): void
+    {
+        $this->hide_product_name = $hide_product_name;
+    }
 
     /**
      * Custom CSS for Public Pages

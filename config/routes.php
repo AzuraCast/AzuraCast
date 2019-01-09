@@ -240,8 +240,13 @@ return function(App $app)
             $this->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                 ->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
 
-            $this->get('/settings', Controller\Api\Admin\SettingsController::class.':listAction')
-                ->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
+            $this->group('', function() {
+                /** @var App $this */
+                $this->get('/settings', Controller\Api\Admin\SettingsController::class.':listAction')
+                    ->setName('api:admin:settings');
+
+                $this->put('/settings', Controller\Api\Admin\SettingsController::class.':updateAction');
+            })->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
 
         });
 

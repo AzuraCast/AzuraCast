@@ -118,7 +118,9 @@ abstract class AbstractCrudController
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            throw new \App\Exception\Validation((string)$errors);
+            $e = new \App\Exception\Validation((string)$errors);
+            $e->setDetailedErrors($errors);
+            throw $e;
         }
 
         $this->em->persist($record);

@@ -165,7 +165,19 @@ class StationsController
             $new_record_data['name'] = $data['name'];
             $new_record_data['description'] = $data['description'];
 
-            unset($new_record_data['short_name'], $new_record_data['radio_base_dir']);
+            $unset_values = [
+                'short_name',
+                'radio_base_dir',
+                'nowplaying',
+                'nowplaying_timestamp',
+                'is_streamer_live',
+                'needs_restart',
+                'has_started',
+            ];
+
+            foreach($unset_values as $unset_value) {
+                unset($new_record_data[$unset_value]);
+            }
 
             if ($data['clone_media'] === 'share') {
                 $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();

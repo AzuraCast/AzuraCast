@@ -239,7 +239,7 @@ uninstall() {
 # Usage: ./docker.sh letsencrypt-create domainname.example.com
 #
 letsencrypt-create() {
-    docker-compose run --user="azuracast" --rm web letsencrypt_connect $*
+    docker-compose exec --user="azuracast" web letsencrypt_connect $*
 }
 
 #
@@ -247,7 +247,7 @@ letsencrypt-create() {
 # Usage: ./docker.sh letsencrypt-renew
 #
 letsencrypt-renew() {
-    docker-compose run --user="azuracast" --rm web letsencrypt_renew $*
+    docker-compose exec --user="azuracast" web letsencrypt_renew $*
 }
 
 $*

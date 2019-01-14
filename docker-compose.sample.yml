@@ -98,7 +98,7 @@ services:
     volumes:
      - station_data:/var/azuracast/stations
      - shoutcast2_install:/var/azuracast/servers/shoutcast2
-     - letsencrypt:/etc/letsencrypt:ro
+     - letsencrypt:/etc/nginx/ssl:ro
     init: true
     restart: always
     logging: *default-logging

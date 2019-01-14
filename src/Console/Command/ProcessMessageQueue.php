@@ -3,6 +3,7 @@ namespace App\Console\Command;
 
 use App\MessageQueue;
 use Azura\Console\Command\CommandAbstract;
+use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,9 +30,15 @@ class ProcessMessageQueue extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var Logger $logger */
+        $logger = $this->get(Logger::class);
+
         $runtime = (int)$input->getArgument('runtime');
         if ($runtime < 1) {
             $runtime = \PHP_INT_MAX;
+            $logger->info('Running message queue processor with indefinite length.');
+        } else {
+            $logger->info(sprintf('Running message queue processor for %d seconds.', $runtime));
         }
 
         /** @var MessageQueue $message_queue */

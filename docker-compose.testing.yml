@@ -2,16 +2,10 @@ version: '2.2'
 
 services:
   web:
-    volumes:
-      - .:/var/azuracast/www
-
-  cli:
     image: azuracast_cli:latest
     build:
       context: ./util/docker/testing
     environment:
       APPLICATION_ENV: "testing"
-
-  nginx:
     volumes:
       - .:/var/azuracast/www

@@ -67,6 +67,7 @@ class Runner
      */
     public function syncNowplaying($force = false)
     {
+        $this->logger->info('Running Now Playing sync task');
         $this->_initSync(10);
 
         // Prevent nowplaying from running on top of itself.
@@ -97,6 +98,7 @@ class Runner
      */
     public function syncShort($force = false)
     {
+        $this->logger->info('Running 1-minute sync task');
         $this->_initSync(60);
 
         foreach($this->tasks_short as $task) {
@@ -117,6 +119,7 @@ class Runner
      */
     public function syncMedium($force = false)
     {
+        $this->logger->info('Running 5-minute sync task');
         $this->_initSync(300);
 
         foreach($this->tasks_medium as $task) {
@@ -137,6 +140,7 @@ class Runner
      */
     public function syncLong($force = false)
     {
+        $this->logger->info('Running 1-hour sync task');
         $this->_initSync(1800);
 
         foreach($this->tasks_long as $task) {

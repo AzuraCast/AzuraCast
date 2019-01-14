@@ -480,7 +480,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $params = (array)$params;
             $params['api_auth'] = $station->getAdapterApiKey();
 
-            $api_url = 'http://nginx/api/internal/'.$station->getId().'/'.$endpoint;
+            $service_uri = (APP_DOCKER_REVISION >= 5) ? 'web' : 'nginx';
+            $api_url = 'http://'.$service_uri.'/api/internal/'.$station->getId().'/'.$endpoint;
             $curl_request = 'curl -s --request POST --url '.$api_url;
             foreach($params as $param_key => $param_val) {
                 $curl_request .= ' --form '.$param_key.'='.$param_val;

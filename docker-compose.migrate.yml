@@ -5,7 +5,7 @@ services:
     volumes:
       - ./migration/influxdb:/tmp/migration
 
-  cli:
+  web:
     volumes:
       - ../stations:/tmp/migration
 

@@ -69,7 +69,7 @@ class Manager implements EventSubscriberInterface
 
         $compose_revision = $_ENV['AZURACAST_DC_REVISION'] ?? 1;
 
-        if ($compose_revision < 4) {
+        if ($compose_revision < 5) {
             $event->addNotification(new Notification(
                 __('Your <code>docker-compose.yml</code> file is out of date!'),
                 __('You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href="%s" target="_blank">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file.', 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml'),

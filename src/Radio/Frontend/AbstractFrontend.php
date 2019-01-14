@@ -79,7 +79,12 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
      */
     protected function _getStationWatcherCommand(Entity\Station $station, $adapter, $watch_uri): string
     {
-        $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
+        if (APP_INSIDE_DOCKER) {
+            $base_url = (APP_DOCKER_REVISION >= 5) ? 'http://web' : 'http://nginx';
+        } else {
+            $base_url = 'http://localhost';
+        }
+
         $notify_uri = $base_url.'/api/internal/'.$station->getId().'/notify?api_auth='.$station->getAdapterApiKey();
 
         return '/var/azuracast/servers/station-watcher/station-watcher '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$station->getShortName();

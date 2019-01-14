@@ -89,7 +89,7 @@ install() {
     fi
 
     docker-compose pull
-    docker-compose run --rm cli azuracast_install
+    docker-compose run --user="azuracast" --rm web azuracast_install
     docker-compose up -d
 }
 
@@ -122,7 +122,7 @@ update() {
     docker volume rm azuracast_tmp_data
 
     docker-compose pull
-    docker-compose run --rm cli azuracast_update
+    docker-compose run --user="azuracast" --rm web azuracast_update
     docker-compose up -d
 
     docker rmi $(docker images | grep "none" | awk '/ / { print $3 }') 2> /dev/null
@@ -236,21 +236,10 @@ uninstall() {
 
 #
 # Create and link a LetsEncrypt SSL certificate.
-# Usage: ./docker.sh letsencrypt-create
+# Usage: ./docker.sh letsencrypt-create domainname.example.com
 #
 letsencrypt-create() {
-    docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt $*
-
-    echo "-------------------------------------------------------------------------------"
-    echo "Re-enter the domain name that was entered in the previous step: "
-    read reply </dev/tty
-
-    docker-compose run --rm nginx letsencrypt_connect $reply
-
-    echo "Reloading nginx..."
-    docker-compose kill -s SIGHUP nginx
-
-    echo "Nginx reloaded; letsencrypt certificate has been set up."
+    docker-compose run --user="azuracast" --rm web letsencrypt_connect $*
 }
 
 #
@@ -258,7 +247,7 @@ letsencrypt-create() {
 # Usage: ./docker.sh letsencrypt-renew
 #
 letsencrypt-renew() {
-    docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt $*
+    docker-compose run --user="azuracast" --rm web letsencrypt_renew $*
 }
 
 $*

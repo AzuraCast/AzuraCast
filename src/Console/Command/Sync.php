@@ -35,27 +35,19 @@ class Sync extends CommandAbstract
 
         switch ($input->getArgument('task')) {
             case 'long':
-                $output->writeln('Running Long (1-hour) Sync...');
-
                 $sync->syncLong();
                 break;
 
             case 'medium':
-                $output->writeln('Running Medium (5-minutes) Sync...');
-
                 $sync->syncMedium();
                 break;
 
             case 'short':
-                $output->writeln('Running Short (1-minute) Sync...');
-
                 $sync->syncShort();
                 break;
 
             case 'nowplaying':
             default:
-                $output->writeln('Running Now-Playing (15-second) Sync...');
-
                 define('NOWPLAYING_SEGMENT', 1);
                 $sync->syncNowplaying();
                 break;

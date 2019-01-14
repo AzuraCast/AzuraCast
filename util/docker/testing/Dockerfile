@@ -1,4 +1,4 @@
-FROM azuracast/azuracast_web:latest
+FROM azuracast/azuracast_web:v2
 
 ENV PATH="${PATH}:/var/azuracast/.composer/vendor/bin"
 

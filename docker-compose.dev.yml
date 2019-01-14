@@ -2,9 +2,14 @@ version: '2.2'
 
 services:
   web:
-    image: azuracast/azuracast_web:latest
+    image: azuracast/azuracast_web_v2:latest
     build:
-      context: ../docker-azuracast-web
+      context: ../docker-azuracast-web-v2
+    # Want to customize the HTTP/S ports? Follow the instructions here:
+    # https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#use-non-standard-ports
+    ports:
+      - '${AZURACAST_HTTP_PORT:-80}:80'
+      - '${AZURACAST_HTTPS_PORT:-443}:443'
     depends_on:
       - mariadb
       - influxdb
@@ -12,39 +17,18 @@ services:
       - redis
     env_file: azuracast.env
     environment: &default-environment
-      AZURACAST_DC_REVISION: 4
+      AZURACAST_DC_REVISION: 5
     volumes:
+      - letsencrypt:/etc/letsencrypt
       - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
-    init: true
     restart: always
-
-  nginx:
-    image: azuracast/azuracast_nginx:latest
-    build:
-      context: ../docker-azuracast-nginx
-    ports:
-      - '${AZURACAST_HTTP_PORT:-80}:80'
-      - '${AZURACAST_HTTPS_PORT:-443}:443'
-    depends_on:
-      - web
-      - stations
-    volumes:
-      - .:/var/azuracast/www
-      - nginx_letsencrypt_certs:/etc/nginx/ssl
-      - nginx_letsencrypt_www:/var/www/letsencrypt
-    restart: always
-
-  # To use the LetsEncrypt support:
-  # docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt
-  letsencrypt:
-    image: certbot/certbot
-    command: /bin/true
-    volumes:
-      - nginx_letsencrypt_certs:/etc/letsencrypt
-      - nginx_letsencrypt_www:/var/www/letsencrypt
+    logging: &default-logging
+      options:
+        max-size: "1m"
+        max-file: "5"
 
   mariadb:
     image: azuracast/azuracast_db:latest
@@ -58,6 +42,7 @@ services:
     environment:
       << : *default-environment
     restart: always
+    logging: *default-logging
 
   influxdb:
     image: azuracast/azuracast_influxdb:latest
@@ -66,6 +51,7 @@ services:
     volumes:
       - influx_data:/var/lib/influxdb
     restart: always
+    logging: *default-logging
 
   redis:
     image: azuracast/azuracast_redis:latest
@@ -74,42 +60,7 @@ services:
     ports:
      - "127.0.0.1:6379:6379"
     restart: always
-
-  cron:
-    container_name: azuracast_cron
-    image: azuracast/azuracast_web:latest
-    volumes_from:
-      - web
-    depends_on:
-      - mariadb
-      - influxdb
-      - stations
-      - redis
-    env_file: azuracast.env
-    environment:
-      <<: *default-environment
-    command: 'cron'
-    init: true
-    restart: always
-
-  cli:
-    build:
-      context: ./util/docker/testing
-    volumes_from:
-      - web
-    depends_on:
-      - mariadb
-      - influxdb
-      - stations
-      - redis
-    env_file: azuracast.env
-    environment:
-      <<: *default-environment
-    user: 'azuracast'
-    working_dir: '/var/azuracast/www'
-    command: '/bin/true'
-    tty: true # Pretty colors
-    init: true
+    logging: *default-logging
 
   stations:
     container_name: azuracast_stations
@@ -134,10 +85,11 @@ services:
      - '8046:8046'
     volumes:
      - station_data:/var/azuracast/stations
-     - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
+     - letsencrypt:/etc/nginx/ssl:ro
      - shoutcast2_install:/var/azuracast/servers/shoutcast2
     init: true
     restart: always
+    logging: *default-logging
 
 #  chronograf:
 #    image: chronograf:alpine
@@ -161,8 +113,7 @@ services:
 #      BLACKFIRE_SERVER_TOKEN: ""
 
 volumes:
-  nginx_letsencrypt_certs: {}
-  nginx_letsencrypt_www: {}
+  letsencrypt: {}
   db_data: {}
   influx_data: {}
   station_data: {}

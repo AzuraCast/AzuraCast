@@ -24,6 +24,29 @@ class ServicesController
     }
 
     /**
+     * @OA\Get(path="/station/{station_id}/status",
+     *   tags={"Stations: Service Control"},
+     *   description="Retrieve the current status of all serivces associated with the radio broadcast.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_StationServiceStatus")),
+     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
+     *   security={{"api_key": {}}}
+     * )
+     */
+    public function statusAction(Request $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $backend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
+
+        return $response->withJson(new Entity\Api\StationServiceStatus(
+            $backend->isRunning($station),
+            $frontend->isRunning($station)
+        ));
+    }
+
+    /**
      * @OA\Post(path="/station/{station_id}/restart",
      *   tags={"Stations: Service Control"},
      *   description="Restart all services associated with the radio broadcast.",
@@ -36,29 +59,7 @@ class ServicesController
     public function restartAction(Request $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
-
-        $this->configuration->writeConfiguration($station);
-
-        try
-        {
-            $backend->stop($station);
-        } catch(\App\Exception\Supervisor\NotRunning $e) {}
-
-        try
-        {
-            $frontend->stop($station);
-        } catch(\App\Exception\Supervisor\NotRunning $e) {}
-
-        $frontend->start($station);
-        $backend->start($station);
-
-        $station->setHasStarted(true);
-        $station->setNeedsRestart(false);
-
-        $this->em->persist($station);
-        $this->em->flush();
+        $this->configuration->writeConfiguration($station, false, true);
 
         return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
     }

@@ -36,7 +36,6 @@ class IndexController
             return $view->renderToResponse($response, 'stations/profile/disabled');
         }
 
-        $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
         $remotes = $request->getStationRemotes();
 
@@ -98,10 +97,8 @@ class IndexController
             'stream_urls' => $stream_urls,
             'backend_type' => $station->getBackendType(),
             'backend_config' => (array)$station->getBackendConfig(),
-            'backend_is_running' => $backend->isRunning($station),
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
-            'frontend_is_running' => $frontend->isRunning($station),
             'nowplaying' => $np,
         ]);
     }

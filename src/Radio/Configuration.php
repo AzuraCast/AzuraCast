@@ -16,9 +16,6 @@ class Configuration
     /** @var Supervisor */
     protected $supervisor;
 
-    /** @var array */
-    protected $used_ports;
-
     /**
      * Configuration constructor.
      * @param EntityManager $em
@@ -38,10 +35,14 @@ class Configuration
      * Write all configuration changes to the filesystem and reload supervisord.
      *
      * @param Station $station
-     * @param bool $regen_auth_key Regenerate the API authorization key (will trigger a full reset of processes).
-     * @throws \Exception
+     * @param bool $regen_auth_key
+     * @param bool $force_restart Always restart this station's supervisor instances, even if nothing changed.
+     *
+     * @throws \App\Exception\NotFound
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function writeConfiguration(Station $station, $regen_auth_key = false)
+    public function writeConfiguration(Station $station, $regen_auth_key = false, $force_restart = false): void
     {
         if (APP_TESTING_MODE) {
             return;
@@ -54,7 +55,7 @@ class Configuration
 
         if (!$station->isEnabled()) {
             @unlink($supervisor_config_path);
-            $this->_reloadSupervisor();
+            $this->_reloadSupervisorForStation($station, true);
             return;
         }
 
@@ -64,7 +65,7 @@ class Configuration
         if ($regen_auth_key || empty($station->getAdapterApiKey())) {
             $station->generateAdapterApiKey();
             $this->em->persist($station);
-            $this->em->flush();
+            $this->em->flush($station);
         }
 
         $frontend = $this->adapters->getFrontendAdapter($station);
@@ -73,7 +74,7 @@ class Configuration
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
             @unlink($supervisor_config_path);
-            $this->_reloadSupervisor();
+            $this->_reloadSupervisorForStation($station, true);
             return;
         }
 
@@ -83,13 +84,13 @@ class Configuration
 
         // Get group information
         $backend_name = $backend->getProgramName($station);
-        list($backend_group, $backend_program) = explode(':', $backend_name);
+        [$backend_group, $backend_program] = explode(':', $backend_name);
 
         $frontend_name = $frontend->getProgramName($station);
-        list(,$frontend_program) = explode(':', $frontend_name);
+        [,$frontend_program] = explode(':', $frontend_name);
 
         $frontend_watch_name = $frontend->getWatchProgramName($station);
-        list(,$frontend_watch_program) = explode(':', $frontend_watch_name);
+        [,$frontend_watch_program] = explode(':', $frontend_watch_name);
 
         // Write group section of config
         $programs = [];
@@ -138,10 +139,10 @@ class Configuration
         $supervisor_config_data = implode("\n", $supervisor_config);
         file_put_contents($supervisor_config_path, $supervisor_config_data);
 
-        $this->_reloadSupervisor();
+        $this->_reloadSupervisorForStation($station, $force_restart);
     }
 
-    protected function _writeConfigurationSection(&$supervisor_config, $program_name, $config_lines)
+    protected function _writeConfigurationSection(&$supervisor_config, $program_name, $config_lines): void
     {
         $defaults = [
             'user' => 'azuracast',
@@ -170,7 +171,7 @@ class Configuration
      *
      * @param Station $station
      */
-    public function removeConfiguration(Station $station)
+    public function removeConfiguration(Station $station): void
     {
         if (APP_TESTING_MODE) {
             return;
@@ -185,30 +186,67 @@ class Configuration
     }
 
     /**
-     * Trigger a supervisord reload and restart all relevant services.
+     * Trigger a supervisord reload/restart for a station, optionally forcing a restart of the station's
+     * service group.
+     *
+     * @param Station $station
+     * @param bool $force_restart
      */
-    protected function _reloadSupervisor()
+    protected function _reloadSupervisorForStation(Station $station, $force_restart = false): void
+    {
+        $station_group = 'station_'.$station->getId();
+        $affected_groups = $this->_reloadSupervisor();
+
+        $was_restarted = in_array($station_group, $affected_groups, true);
+
+        if (!$was_restarted && $force_restart) {
+            $this->supervisor->stopProcessGroup($station_group);
+            $this->supervisor->removeProcessGroup($station_group);
+            $this->supervisor->addProcessGroup($station_group);
+            $was_restarted = true;
+        }
+
+        if ($was_restarted) {
+            $station->setHasStarted(true);
+            $station->setNeedsRestart(false);
+
+            $this->em->persist($station);
+            $this->em->flush($station);
+        }
+    }
+
+    /**
+     * Trigger a supervisord reload and restart all relevant services.
+     *
+     * @return array A list of affected service groups (either stopped, removed or
+     */
+    protected function _reloadSupervisor(): array
     {
         $reload_result = $this->supervisor->reloadConfig();
 
-        $reload_added = $reload_result[0][0];
-        $reload_changed = $reload_result[0][1];
-        $reload_removed = $reload_result[0][2];
+        $affected_groups = [];
+
+        [$reload_added, $reload_changed, $reload_removed] = $reload_result[0];
 
         foreach ($reload_removed as $group) {
+            $affected_groups[] = $group;
             $this->supervisor->stopProcessGroup($group);
             $this->supervisor->removeProcessGroup($group);
         }
 
         foreach ($reload_changed as $group) {
+            $affected_groups[] = $group;
             $this->supervisor->stopProcessGroup($group);
             $this->supervisor->removeProcessGroup($group);
             $this->supervisor->addProcessGroup($group);
         }
 
         foreach ($reload_added as $group) {
+            $affected_groups[] = $group;
             $this->supervisor->addProcessGroup($group);
         }
+
+        return $affected_groups;
     }
 
     /**
@@ -217,7 +255,7 @@ class Configuration
      * @param Station $station
      * @param bool $force
      */
-    public function assignRadioPorts(Station $station, $force = false)
+    public function assignRadioPorts(Station $station, $force = false): void
     {
         if ($station->getFrontendType() !== Adapters::FRONTEND_REMOTE || $station->getBackendType() !== Adapters::BACKEND_NONE) {
             $frontend_config = (array)$station->getFrontendConfig();
@@ -292,8 +330,10 @@ class Configuration
      */
     public function getUsedPorts(Station $except_station = null): array
     {
-        if (!$this->used_ports) {
-            $this->used_ports = [];
+        static $used_ports;
+
+        if (null === $used_ports) {
+            $used_ports = [];
 
             // Get all station used ports.
             $station_configs = $this->em->createQuery('SELECT s.id, s.name, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config FROM '.Station::class.' s')
@@ -307,29 +347,29 @@ class Configuration
 
                     if (!empty($frontend_config['port'])) {
                         $port = (int)$frontend_config['port'];
-                        $this->used_ports[$port] = $station_reference;
+                        $used_ports[$port] = $station_reference;
                     }
 
                     $backend_config = (array)$row['backend_config'];
 
                     if (!empty($backend_config['dj_port'])) {
                         $port = (int)$frontend_config['dj_port'];
-                        $this->used_ports[$port] = $station_reference;
+                        $used_ports[$port] = $station_reference;
                     }
                     if (!empty($backend_config['telnet_port'])) {
                         $port = (int)$frontend_config['telnet_port'];
-                        $this->used_ports[$port] = $station_reference;
+                        $used_ports[$port] = $station_reference;
                     }
                 }
             }
         }
 
         if ($except_station !== null) {
-            return array_filter($this->used_ports, function($station_reference) use ($except_station) {
+            return array_filter($used_ports, function($station_reference) use ($except_station) {
                 return ($station_reference['id'] !== $except_station->getId());
             });
         }
 
-        return $this->used_ports;
+        return $used_ports;
     }
 }

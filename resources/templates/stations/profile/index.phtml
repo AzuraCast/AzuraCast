@@ -97,13 +97,13 @@ $user = $request->getUser();
 
                 </div>
             </div>
-            <?php if ($backend_type == 'liquidsoap' && $acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+            <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
                 <div class="card-actions">
-                    <a id="btn_skip_song" class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
+                    <a id="btn_skip_song" class="btn btn-outline-primary api-call" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
                         <i class="material-icons" aria-hidden="true">skip_next</i>
                         <?=__('Skip Song') ?>
                     </a>
-                    <a id="btn_disconnect_streamer" class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
+                    <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
                         <i class="material-icons" aria-hidden="true">volume_off</i>
                         <?=__('Disconnect Streamer') ?>
                     </a>
@@ -114,7 +114,7 @@ $user = $request->getUser();
             <div class="card-body">
                 <h3 class="card-title"><?=__('Profile') ?></h3>
             </div>
-        <?php if ($acl->userAllowed($user, 'manage station profile', $station->getId())): ?>
+        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
             <div class="card-actions">
                 <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:profile:edit') ?>">
                     <i class="material-icons" aria-hidden="true">edit</i>
@@ -162,7 +162,10 @@ $user = $request->getUser();
                             </div>
                             <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
                         <?php else: ?>
-                            <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
+                            <span class="text-danger"><?=__('Disabled') ?></span>
+                            <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
+                                <br><small><?=__('<a href="%s">Edit station profile</a> to enable.', $router->fromHere('stations:profile:edit')) ?></small>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -175,7 +178,10 @@ $user = $request->getUser();
                             <span class="text-success"><?=__('Enabled') ?></span><br>
                             <a href="<?=$router->fromHere('stations:streamers:index') ?>"><?=__('Manage streamer accounts') ?></a>
                         <?php else: ?>
-                            <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
+                            <span class="text-danger"><?=__('Disabled') ?></span>
+                            <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
+                                <br><small><?=__('<a href="%s">Edit station profile</a> to enable.', $router->fromHere('stations:profile:edit')) ?></small>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -276,11 +282,7 @@ $user = $request->getUser();
                         <?=__('SHOUTcast DNAS 2 (Broadcasting Service)') ?>
                     <?php endif; ?>
                 </h3>
-                <?php if ($frontend_is_running): ?>
-                    <h5 class="card-subtitle text-success"><?=__('Running') ?></h5>
-                <?php else: ?>
-                    <h5 class="card-subtitle text-danger"><?=__('Not Running') ?></h5>
-                <?php endif; ?>
+                <h5 class="card-subtitle" id="frontend_status"><?=__('Loading...') ?></h5>
             </div>
 
             <table class="table table-striped table-responsive">
@@ -353,11 +355,7 @@ $user = $request->getUser();
                     <?=__('Liquidsoap (AutoDJ Service)') ?><br>
                 <?php endif; ?>
                 </h3>
-                <?php if ($backend_is_running): ?>
-                    <h5 class="card-subtitle text-success"><?=__('Running') ?></h5>
-                <?php else: ?>
-                    <h5 class="card-subtitle text-danger"><?=__('Not Running') ?></h5>
-                <?php endif; ?>
+                <h5 class="card-subtitle" id="backend_status"><?=__('Loading...') ?></h5>
 
                 <p><?=sprintf(__('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
 

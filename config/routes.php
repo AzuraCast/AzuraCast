@@ -290,6 +290,10 @@ return function(App $app)
 
             $this->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\MediaController::class.':artAction');
 
+            $this->get('/status', Controller\Api\Stations\ServicesController::class.':statusAction')
+                ->setName('api:stations:status')
+                ->add([Middleware\Permissions::class, Acl::STATION_VIEW, true]);
+
             $this->post('/backend/{do}', Controller\Api\Stations\ServicesController::class.':backendAction')
                 ->setName('api:stations:backend')
                 ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);

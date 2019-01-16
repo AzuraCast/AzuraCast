@@ -1,23 +1,8 @@
 <?php
 /** @var App\Entity\Station $station */
+$this->layout('main', ['title' =>
+    __('Station Broadcasting Disabled')
+]);
 ?>
 
-<?php $this->layout('main', ['title' => __('Profile'), 'manual' => true]) ?>
-
-<div class="row">
-    <div class="col-sm-6">
-        <?=$this->fetch('stations/profile/profile_view') ?>
-    </div>
-    <div class="col-sm-6">
-        <section class="card" role="region">
-            <div class="card-header bgm-bluegray ch-alt">
-                <h2>
-                    <?=__('Station Broadcasting Disabled') ?>
-                </h2>
-            </div>
-            <div class="card-body card-padding">
-                <p><?=__('Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, edit your station profile.') ?></p>
-            </div>
-        </section>
-    </div>
-</div>
+<p><?=__('Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.', $router->fromHere('stations:profile:edit')) ?></p>

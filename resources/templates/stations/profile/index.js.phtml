@@ -71,25 +71,43 @@ $(function() {
 
     setTimeout(loadNowPlaying, 15000);
 
-    $('#btn_skip_song,#btn_disconnect_streamer').on('click', function(e) {
-        e.stopPropagation();
-        var btn = $(this);
+    var service_status_lang = {
+        "running": <?=$this->escapeJs(__('Running')) ?>,
+        "not_running": <?=$this->escapeJs(__('Not Running')) ?>
+    };
 
-        btn.addClass('disabled');
+    var is_first_load = true;
 
-        $.ajax({
-            type: "POST",
-            url: btn.attr('href'),
-            success: function(data) {
-                var notify_type = (data.success) ? 'success' : 'warning';
-                notify(data.message, notify_type);
+    function checkServiceStatus() {
+        $.getJSON('<?=$router->fromHere('api:stations:status') ?>', function(data) {
+            var backend_status = $('#backend_status');
+            backend_status.removeClass('text-success text-danger');
 
-                btn.removeClass('disabled');
-            },
-            dataType: "json"
+            if (data.backend_running) {
+                backend_status.addClass('text-success').text(service_status_lang.running);
+            } else {
+                backend_status.addClass('text-danger').text(service_status_lang.not_running);
+            }
+
+            var frontend_status = $('#frontend_status');
+            frontend_status.removeClass('text-success text-danger');
+
+            if (data.frontend_running) {
+                frontend_status.addClass('text-success').text(service_status_lang.running);
+            } else {
+                frontend_status.addClass('text-danger').text(service_status_lang.not_running);
+            }
+
+            if (is_first_load) {
+                setTimeout(checkServiceStatus, 5000);
+                is_first_load = false;
+            } else {
+                setTimeout(checkServiceStatus, 15000);
+            }
+        }).fail(function() {
+            setTimeout(checkServiceStatus, 30000);
         });
+    }
 
-        return false;
-    });
-
+    checkServiceStatus();
 });

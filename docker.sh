@@ -146,7 +146,15 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-    docker-compose run --rm cli azuracast_cli $*
+    docker-compose run --user="azuracast" --rm web azuracast_cli $*
+}
+
+#
+# Enter the bash terminal of the running web container.
+# Usage: ./docker.sh bash
+#
+bash() {
+    docker-compose exec --user="azuracast" web bash
 }
 
 #

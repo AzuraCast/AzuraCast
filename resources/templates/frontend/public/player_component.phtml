@@ -14,12 +14,20 @@ $assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
     </div>
 <?php endif; ?>
     <div class="media-body">
-        <h4 class="media-heading might-overflow nowplaying-title">
-            {{ np.now_playing.song.title }}
-        </h4>
-        <div class="nowplaying-artist might-overflow">
-            {{ np.now_playing.song.artist }}
+        <div v-if="np.now_playing.song.title != ''">
+            <h4 class="media-heading might-overflow nowplaying-title">
+                {{ np.now_playing.song.title }}
+            </h4>
+            <div class="nowplaying-artist might-overflow">
+                {{ np.now_playing.song.artist }}
+            </div>
         </div>
+        <div v-else>
+            <h4 class="media-heading might-overflow nowplaying-title">
+                {{ np.now_playing.song.text }}
+            </h4>
+        </div>
+
         <div class="nowplaying-progress" v-if="time_display">
             {{ time_display }}
         </div>

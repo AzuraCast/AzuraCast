@@ -89,8 +89,13 @@ if ($metrics) {
                                 <span class="nowplaying-listeners">{{ row.np.listeners.current }}</span>
                             </td>
                             <td>
-                                <strong><span class="nowplaying-title">{{ row.np.now_playing.song.title }}</span></strong><br>
-                                <span class="nowplaying-artist">{{ row.np.now_playing.song.artist }}</span>
+                                <div v-if="row.np.now_playing.song.title != ''">
+                                    <strong><span class="nowplaying-title">{{ row.np.now_playing.song.title }}</span></strong><br>
+                                    <span class="nowplaying-artist">{{ row.np.now_playing.song.artist }}</span>
+                                </div>
+                                <div v-else>
+                                    <strong><span class="nowplaying-title">{{ row.np.now_playing.song.text }}</span></strong>
+                                </div>
                             </td>
                             <td>
                                 <a class="btn btn-primary" role="button" v-bind:href="row.manage_url"><?=__('Manage') ?></a>

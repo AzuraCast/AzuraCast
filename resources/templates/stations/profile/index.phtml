@@ -32,12 +32,14 @@ $user = $request->getUser();
 
                             <h6><?=__('Now Playing') ?>:</h6>
 
-                            <h4 class="media-heading">
-                                {{ np.now_playing.song.title }}
-                            </h4>
-                            <div>
-                                {{ np.now_playing.song.artist }}
+                            <div v-if="np.now_playing.song.title != ''">
+                                <h4 class="media-heading">{{ np.now_playing.song.title }}</h4>
+                                <div>{{ np.now_playing.song.artist }}</div>
                             </div>
+                            <div v-else>
+                                <h4 class="media-heading">{{ np.now_playing.song.text }}</h4>
+                            </div>
+
                             <div v-if="np.now_playing.playlist">
                                 <small class="text-muted"><?=__('Playlist') ?>: {{ np.now_playing.playlist }}</small>
                             </div>
@@ -55,12 +57,14 @@ $user = $request->getUser();
 
                             <h6><?=__('Playing Next') ?>:</h6>
 
-                            <h4 class="media-heading">
-                                {{ np.playing_next.song.title }}
-                            </h4>
-                            <div>
-                                {{ np.playing_next.song.artist }}
+                            <div v-if="np.playing_next.song.title != ''">
+                                <h4 class="media-heading">{{ np.playing_next.song.title }}</h4>
+                                <div>{{ np.playing_next.song.artist }}</div>
                             </div>
+                            <div v-else>
+                                <h4 class="media-heading">{{ np.playing_next.song.text }}</h4>
+                            </div>
+
                             <div v-if="np.playing_next.playlist">
                                 <small class="text-muted"><?=__('Playlist') ?>: {{ np.playing_next.playlist }}</small>
                             </div>

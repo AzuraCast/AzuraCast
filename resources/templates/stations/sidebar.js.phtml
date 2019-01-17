@@ -14,7 +14,10 @@ $(function() {
             url: btn.attr('href'),
             success: function(data) {
                 if (trigger_restart) {
-                    setTimeout('location.reload()', 2000);
+                    // Only restart if the user isn't on a form page
+                    if ($('form').length === 0) {
+                        setTimeout('location.reload()', 2000);
+                    }
                 } else {
                     btn.html(btn_original_text);
                 }

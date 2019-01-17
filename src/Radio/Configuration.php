@@ -200,9 +200,8 @@ class Configuration
         $was_restarted = in_array($station_group, $affected_groups, true);
 
         if (!$was_restarted && $force_restart) {
-            $this->supervisor->stopProcessGroup($station_group);
-            $this->supervisor->removeProcessGroup($station_group);
-            $this->supervisor->addProcessGroup($station_group);
+            $this->supervisor->stopProcessGroup($station_group, true);
+            $this->supervisor->startProcessGroup($station_group, true);
             $was_restarted = true;
         }
 

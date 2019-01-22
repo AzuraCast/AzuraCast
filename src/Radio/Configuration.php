@@ -55,7 +55,7 @@ class Configuration
 
         if (!$station->isEnabled()) {
             @unlink($supervisor_config_path);
-            $this->_reloadSupervisorForStation($station, true);
+            $this->_reloadSupervisorForStation($station, false);
             return;
         }
 
@@ -74,7 +74,7 @@ class Configuration
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
             @unlink($supervisor_config_path);
-            $this->_reloadSupervisorForStation($station, true);
+            $this->_reloadSupervisorForStation($station, false);
             return;
         }
 

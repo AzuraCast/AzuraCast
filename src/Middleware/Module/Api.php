@@ -14,13 +14,27 @@ class Api
     /** @var Entity\Repository\ApiKeyRepository */
     protected $api_repo;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settings_repo;
+
     /** @var Session */
     protected $session;
 
-    public function __construct(Session $session, Entity\Repository\ApiKeyRepository $api_repo)
-    {
+    /**
+     * @param Session $session
+     * @param Entity\Repository\ApiKeyRepository $api_repo
+     * @param Entity\Repository\SettingsRepository $settings_repo
+     *
+     * @see \App\Provider\MiddlewareProvider
+     */
+    public function __construct(
+        Session $session,
+        Entity\Repository\ApiKeyRepository $api_repo,
+        Entity\Repository\SettingsRepository $settings_repo
+    ) {
         $this->session = $session;
         $this->api_repo = $api_repo;
+        $this->settings_repo = $settings_repo;
     }
 
     /**
@@ -48,9 +62,32 @@ class Api
             $request = $request->withAttribute(Request::ATTRIBUTE_USER, $api_user);
         }
 
-        // Only set global CORS for GET requests and API-authenticated requests;
-        // Session-authenticated, non-GET requests should only be made in a same-host situation.
-        if ($api_user instanceof Entity\User || $request->isGet()) {
+        // Check for a user-set CORS header override.
+        $acao_header = trim($this->settings_repo->getSetting(Entity\Settings::API_ACCESS_CONTROL));
+        if (!empty($acao_header)) {
+            if ('*' === $acao_header) {
+                $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+            } else {
+                // Return the proper ACAO header matching the origin (if one exists).
+                $origin = $request->getHeaderLine('Origin');
+                if (!empty($origin)) {
+                    $origins = array_map('trim', explode(',', $acao_header));
+
+                    $base_url = $this->settings_repo->getSetting(Entity\Settings::BASE_URL);
+                    $origins[] = 'http://'.$base_url;
+                    $origins[] = 'https://'.$base_url;
+
+                    if (in_array($origin, $origins, true)) {
+                        $response
+                            ->withHeader('Access-Control-Allow-Origin', $origin)
+                            ->withHeader('Vary', 'Origin');
+                    }
+                }
+            }
+        } else if ($api_user instanceof Entity\User || $request->isGet() || $request->isOptions()) {
+            // Default behavior:
+            // Only set global CORS for GET requests and API-authenticated requests;
+            // Session-authenticated, non-GET requests should only be made in a same-host situation.
             $response = $response->withHeader('Access-Control-Allow-Origin', '*');
         }
 

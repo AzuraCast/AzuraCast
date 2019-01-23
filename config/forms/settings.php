@@ -50,19 +50,6 @@ return [
                     ]
                 ],
 
-                Entity\Settings::ALWAYS_USE_SSL => [
-                    'radio',
-                    [
-                        'label' => __('Always Use HTTPS'),
-                        'description' => __('Set to "Yes" to always use "https://" secure URLs.'),
-                        'choices' => [
-                            0 => __('No'),
-                            1 => __('Yes'),
-                        ],
-                        'default' => 0,
-                    ]
-                ],
-
                 Entity\Settings::USE_RADIO_PROXY => [
                     'radio',
                     [
@@ -90,6 +77,36 @@ return [
                             0 => __('Indefinitely'),
                         ],
                         'default' => \App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
+                    ]
+                ],
+
+            ],
+        ],
+
+        'security' => [
+            'legend' => __('Security Controls'),
+            'elements' => [
+
+                Entity\Settings::ALWAYS_USE_SSL => [
+                    'radio',
+                    [
+                        'label' => __('Always Use HTTPS'),
+                        'description' => __('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.'),
+                        'choices' => [
+                            0 => __('No'),
+                            1 => __('Yes'),
+                        ],
+                        'default' => 0,
+                    ]
+                ],
+
+                Entity\Settings::API_ACCESS_CONTROL => [
+                    'text',
+                    [
+                        'label' => __('API "Access-Control-Allow-Origin" header'),
+                        'class' => 'advanced',
+                        'description' => __('<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).', 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin'),
+                        'default' => '',
                     ]
                 ],
 

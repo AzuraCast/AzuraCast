@@ -53,23 +53,6 @@ class Settings
     }
 
     /**
-     * Always Use HTTPS
-     *
-     * @OA\Property()
-     * @Assert\Choice({0,1})
-     * @var int
-     */
-    public $always_use_ssl = 0;
-
-    /**
-     * @param int $always_use_ssl
-     */
-    public function setAlwaysUseSsl(int $always_use_ssl): void
-    {
-        $this->always_use_ssl = $always_use_ssl;
-    }
-
-    /**
      * Use Web Proxy for Radio
      *
      * @OA\Property()
@@ -102,6 +85,31 @@ class Settings
     {
         $this->history_keep_days = $history_keep_days;
     }
+
+    /**
+     * Always Use HTTPS
+     *
+     * @OA\Property()
+     * @Assert\Choice({0,1})
+     * @var int
+     */
+    public $always_use_ssl = 0;
+
+    /**
+     * @param int $always_use_ssl
+     */
+    public function setAlwaysUseSsl(int $always_use_ssl): void
+    {
+        $this->always_use_ssl = $always_use_ssl;
+    }
+
+    /**
+     * API "Access-Control-Allow-Origin" header
+     *
+     * @OA\Property()
+     * @var string
+     */
+    public $api_access_control;
 
     /**
      * Listener Analytics Collection

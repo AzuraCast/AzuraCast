@@ -66,9 +66,13 @@ class MiddlewareProvider implements ServiceProviderInterface
             /** @var Entity\Repository\ApiKeyRepository $api_repo */
             $api_repo = $em->getRepository(Entity\ApiKey::class);
 
+            /** @var Entity\Repository\SettingsRepository $settings_repo */
+            $settings_repo = $em->getRepository(Entity\Settings::class);
+
             return new Middleware\Module\Api(
                 $di[Azura\Session::class],
-                $api_repo
+                $api_repo,
+                $settings_repo
             );
         };
 

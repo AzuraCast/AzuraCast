@@ -40,7 +40,7 @@ class Router extends \Azura\Http\Router
 
                 $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
                 if ($prefer_browser_url || $base_url->getHost() === '') {
-                    $ignored_hosts = ['nginx', 'localhost'];
+                    $ignored_hosts = ['web', 'nginx', 'localhost'];
                     if (!in_array($current_uri->getHost(), $ignored_hosts)) {
                         $base_url = (new Uri())
                             ->withScheme($current_uri->getScheme())

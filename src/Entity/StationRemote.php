@@ -104,6 +104,12 @@ class StationRemote implements StationMountInterface
      */
     protected $source_password;
 
+    /**
+     * @ORM\Column(name="is_public", type="boolean")
+     * @var bool
+     */
+    protected $is_public = false;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
@@ -377,10 +383,20 @@ class StationRemote implements StationMountInterface
         return (Adapters::REMOTE_ICECAST !== $this->getType());
     }
 
-    /** @inheritdoc */
+    /**
+     * @return bool
+     */
     public function getIsPublic(): bool
     {
-        return false;
+        return $this->is_public;
+    }
+
+    /**
+     * @param bool $is_public
+     */
+    public function setIsPublic(bool $is_public)
+    {
+        $this->is_public = $is_public;
     }
 
     /**

@@ -120,6 +120,16 @@ return [
                     ]
                 ],
 
+                'is_public' => [
+                    'radio',
+                    [
+                        'label' => __('Advertise to YP Directories (Public Station)'),
+                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
+                        'default' => 0,
+                    ]
+                ],
+
             ],
         ],
 

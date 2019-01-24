@@ -43,19 +43,19 @@ class StationMount implements StationMountInterface
      * @ORM\Column(name="name", type="string", length=100)
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @ORM\Column(name="is_default", type="boolean")
      * @var bool
      */
-    protected $is_default;
+    protected $is_default = false;
 
     /**
      * @ORM\Column(name="is_public", type="boolean")
      * @var bool
      */
-    protected $is_public;
+    protected $is_public = false;
 
     /**
      * @ORM\Column(name="fallback_mount", type="string", length=100, nullable=true)
@@ -79,19 +79,19 @@ class StationMount implements StationMountInterface
      * @ORM\Column(name="enable_autodj", type="boolean")
      * @var bool
      */
-    protected $enable_autodj;
+    protected $enable_autodj = true;
 
     /**
      * @ORM\Column(name="autodj_format", type="string", length=10, nullable=true)
      * @var string|null
      */
-    protected $autodj_format;
+    protected $autodj_format = 'mp3';
 
     /**
      * @ORM\Column(name="autodj_bitrate", type="smallint", nullable=true)
      * @var int|null
      */
-    protected $autodj_bitrate;
+    protected $autodj_bitrate = 128;
 
     /**
      * @ORM\Column(name="custom_listen_url", type="string", length=255, nullable=true)
@@ -108,14 +108,6 @@ class StationMount implements StationMountInterface
     public function __construct(Station $station)
     {
         $this->station = $station;
-
-        $this->name = '';
-        $this->is_default = false;
-        $this->is_public = false;
-        $this->enable_autodj = true;
-
-        $this->autodj_format = 'mp3';
-        $this->autodj_bitrate = 128;
     }
 
     /**

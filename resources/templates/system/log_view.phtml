@@ -1,6 +1,6 @@
 <?php $this->layout('main', ['title' => $title, 'manual' => true]); ?>
 
-<? foreach($log_records as $row): ?>
+<?php foreach($log_records as $row): ?>
 <div class="card mb-3">
 <?php if ($row['level'] === \Monolog\Logger::DEBUG): ?>
     <h5 class="card-header text-info">Debug</h5>

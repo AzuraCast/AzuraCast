@@ -414,12 +414,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $settings['custom_config'],
             ]);
         }
-
     }
 
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
+
+        if (Adapters::FRONTEND_REMOTE === $station->getFrontendType()) {
+            return;
+        }
 
         $ls_config = [
             '# Local Broadcasts',

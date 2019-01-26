@@ -65,14 +65,8 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\Profile\EditController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
-
             return new Stations\Profile\EditController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\Azura\Cache::class],
-                $di[\App\Radio\Configuration::class],
-                $config->get('forms/station')
+                $di[\App\Form\Station::class]
             );
         };
 

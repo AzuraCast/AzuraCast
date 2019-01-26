@@ -62,7 +62,8 @@ return function (\Azura\Container $di)
             $em->getClassMetadata(\App\Entity\Station::class),
             $di[\App\Sync\Task\Media::class],
             $di[\App\Radio\Adapters::class],
-            $di[\App\Radio\Configuration::class]
+            $di[\App\Radio\Configuration::class],
+            $di[\Azura\Cache::class]
         );
     };
 
@@ -298,6 +299,16 @@ return function (\Azura\Container $di)
         return new \App\Version(
             $di[\Azura\Cache::class],
             $di['settings']
+        );
+    };
+
+    $di[\App\Form\Station::class] = function($di) {
+        /** @var \Azura\Config $config */
+        $config = $di[\Azura\Config::class];
+
+        return new \App\Form\Station(
+            $di[\App\Entity\Repository\StationRepository::class],
+            $config->get('forms/station')
         );
     };
 

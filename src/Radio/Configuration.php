@@ -341,7 +341,7 @@ class Configuration
             foreach($station_configs as $row) {
                 $station_reference = ['id' => $row['id'], 'name' => $row['name']];
 
-                if ($row['frontend_type'] !== 'remote' && $row['backend_type'] !== 'none') {
+                if ($row['frontend_type'] !== Adapters::FRONTEND_REMOTE && $row['backend_type'] !== Adapters::BACKEND_NONE) {
                     $frontend_config = (array)$row['frontend_config'];
 
                     if (!empty($frontend_config['port'])) {

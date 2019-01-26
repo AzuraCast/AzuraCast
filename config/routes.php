@@ -97,7 +97,7 @@ return function(App $app)
         $this->group('/stations', function () {
             /** @var App $this */
 
-            $this->get('', Controller\Admin\StationsController::class.':indexAction')
+            $this->get('', Controller\Admin\StationsController::class)
                 ->setName('admin:stations:index');
 
             $this->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\StationsController::class.':editAction')
@@ -106,7 +106,7 @@ return function(App $app)
             $this->map(['GET', 'POST'], '/add', Controller\Admin\StationsController::class.':editAction')
                 ->setName('admin:stations:add');
 
-            $this->map(['GET', 'POST'], '/clone/{id}', Controller\Admin\StationsController::class.':cloneAction')
+            $this->map(['GET', 'POST'], '/clone/{id}', Controller\Admin\Stations\CloneController::class)
                 ->setName('admin:stations:clone');
 
             $this->get('/delete/{id}/{csrf}', Controller\Admin\StationsController::class.':deleteAction')

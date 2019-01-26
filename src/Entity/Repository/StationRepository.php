@@ -6,6 +6,7 @@ use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Entity;
 use App\Sync\Task\Media;
+use Azura\Cache;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
@@ -21,18 +22,23 @@ class StationRepository extends Repository
     /** @var Configuration */
     protected $configuration;
 
+    /** @var Cache */
+    protected $cache;
+
     public function __construct(
         $em,
         Mapping\ClassMetadata $class,
         Media $media_sync,
         Adapters $adapters,
-        Configuration $configuration
+        Configuration $configuration,
+        Cache $cache
     ) {
         parent::__construct($em, $class);
 
         $this->media_sync = $media_sync;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
+        $this->cache = $cache;
     }
 
     /**
@@ -83,13 +89,55 @@ class StationRepository extends Repository
     }
 
     /**
+     * @param $data
+     * @param Entity\Station|null $record
+     * @return Entity\Station
+     */
+    public function editOrCreate($data, Entity\Station $record = null): Entity\Station
+    {
+        return (null === $record)
+            ? $this->create($data)
+            : $this->edit($data, $record);
+    }
+
+    /**
+     * @param $data
+     * @param Entity\Station $record
+     * @return Entity\Station
+     */
+    public function edit($data, Entity\Station $record): Entity\Station
+    {
+        $old_frontend = $record->getFrontendType();
+        $old_backend = $record->getBackendType();
+
+        $this->fromArray($record, $data);
+        $this->_em->persist($record);
+        $this->_em->flush($record);
+
+        $frontend_changed = ($old_frontend !== $record->getFrontendType());
+        $backend_changed = ($old_backend !== $record->getBackendType());
+        $adapter_changed = $frontend_changed || $backend_changed;
+
+        if ($frontend_changed) {
+            $frontend = $this->adapters->getFrontendAdapter($record);
+            $this->resetMounts($record, $frontend);
+        }
+
+        $this->configuration->writeConfiguration($record, $adapter_changed);
+
+        $this->cache->remove('stations');
+
+        return $record;
+    }
+
+    /**
      * Create a station based on the specified data.
      *
      * @param array $data Array of data to populate the station with.
      * @return Entity\Station
      * @throws \Exception
      */
-    public function create($data)
+    public function create($data): Entity\Station
     {
         $station = new Entity\Station;
         $this->fromArray($station, $data);
@@ -130,6 +178,8 @@ class StationRepository extends Repository
         $this->_em->persist($station);
         $this->_em->flush();
 
+        $this->cache->remove('stations');
+
         return $station;
     }
 
@@ -139,7 +189,7 @@ class StationRepository extends Repository
      * @param Entity\Station $station
      * @param AbstractFrontend $frontend_adapter
      */
-    public function resetMounts(Entity\Station $station, AbstractFrontend $frontend_adapter)
+    public function resetMounts(Entity\Station $station, AbstractFrontend $frontend_adapter): void
     {
         foreach($station->getMounts() as $mount) {
             $this->_em->remove($mount);
@@ -156,17 +206,46 @@ class StationRepository extends Repository
 
                 $this->_em->persist($mount_record);
             }
-
-            $this->_em->flush();
-            $this->_em->refresh($station);
         }
+
+        $this->_em->flush();
+        $this->_em->refresh($station);
+    }
+
+    public function clone(Entity\Station $record, array $data, array $options = [])
+    {
+        $new_record_data = $this->toArray($record);
+        $new_record_data['name'] = $data['name'];
+        $new_record_data['description'] = $data['description'];
+
+        $unset_values = [
+            'short_name',
+            'radio_base_dir',
+            'nowplaying',
+            'nowplaying_timestamp',
+            'is_streamer_live',
+            'needs_restart',
+            'has_started',
+        ];
+
+        foreach($unset_values as $unset_value) {
+            unset($new_record_data[$unset_value]);
+        }
+
+        if ($options['clone_media'] === 'share') {
+            $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();
+        } else {
+            unset($new_record_data['radio_media_dir']);
+        }
+
+
     }
 
     /**
      * @param Entity\Station $station
      * @throws \Exception
      */
-    public function destroy(Entity\Station $station)
+    public function destroy(Entity\Station $station): void
     {
         $this->configuration->removeConfiguration($station);
 
@@ -176,6 +255,24 @@ class StationRepository extends Repository
 
         // Save changes and continue to the last setup step.
         $this->_em->remove($station);
-        $this->_em->flush();
+        $this->_em->flush($station);
+
+        $this->cache->remove('stations');
+    }
+
+    /**
+     * @param $port
+     * @param Entity\Station|null $except_record
+     * @return bool
+     */
+    public function isPortUsed($port, Entity\Station $except_record = null): bool
+    {
+        if (!empty($port)) {
+            $port = (int)$port;
+            $used_ports = $this->configuration->getUsedPorts($except_record);
+
+            return isset($used_ports[$port]);
+        }
+        return false;
     }
 }

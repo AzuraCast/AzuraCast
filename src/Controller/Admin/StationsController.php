@@ -1,10 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
-use Azura\Cache;
-use App\Radio\Adapters;
-use App\Radio\Configuration;
-use Doctrine\ORM\EntityManager;
+use App\Form;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
@@ -12,64 +9,30 @@ use Psr\Http\Message\ResponseInterface;
 
 class StationsController
 {
-    /** @var EntityManager */
-    protected $em;
+    /** @var Entity\Repository\StationRepository */
+    protected $record_repo;
 
-    /** @var Cache */
-    protected $cache;
-
-    /** @var Adapters */
-    protected $adapters;
-
-    /** @var Configuration */
-    protected $configuration;
+    /** @var Form\Station */
+    protected $station_form;
 
     /** @var string */
     protected $csrf_namespace = 'admin_stations';
 
-    /** @var array */
-    protected $edit_form_config;
-
-    /** @var array */
-    protected $clone_form_config;
-
-    /** @var Entity\Repository\StationRepository */
-    protected $record_repo;
-
     /**
-     * StationsController constructor.
-     * @param EntityManager $em
-     * @param Cache $cache
-     * @param Adapters $adapters
-     * @param Configuration $configuration
-     * @param array $edit_form_config
-     * @param array $clone_form_config
+     * @param Entity\Repository\StationRepository $record_repo
+     * @param Form\Station $station_form
+     *
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(
-        EntityManager $em,
-        Cache $cache,
-        Adapters $adapters,
-        Configuration $configuration,
-        array $edit_form_config,
-        array $clone_form_config
-    )
+    public function __construct(Entity\Repository\StationRepository $record_repo, Form\Station $station_form)
     {
-        $this->em = $em;
-        $this->cache = $cache;
-        $this->adapters = $adapters;
-        $this->configuration = $configuration;
-
-        $this->edit_form_config = $edit_form_config;
-        $this->clone_form_config = $clone_form_config;
-
-        $this->record_repo = $this->em->getRepository(Entity\Station::class);
+        $this->record_repo = $record_repo;
+        $this->station_form = $station_form;
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $stations = $this->em->createQuery('SELECT s FROM '.Entity\Station::class.' s ORDER BY s.name ASC')
-            ->getArrayResult();
+        $stations = $this->record_repo->fetchArray(false, 'name');
 
         return $request->getView()->renderToResponse($response, 'admin/stations/index', [
             'stations' => $stations,
@@ -79,172 +42,18 @@ class StationsController
 
     public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
-        $form = new \AzuraForms\Form($this->edit_form_config);
+        $record = (!empty($id))
+            ? $this->record_repo->find((int)$id)
+            : null;
 
-        if (!empty($id)) {
-            $record = $this->record_repo->find((int)$id);
-            $form->populate($this->record_repo->toArray($record, false, true));
-        } else {
-            $record = null;
-        }
-
-        $port_checker = function($value) use ($record) {
-            if (!empty($value)) {
-                $value = (int)$value;
-                $used_ports = $this->configuration->getUsedPorts($record);
-
-                if (isset($used_ports[$value])) {
-                    $station_reference = $used_ports[$value];
-                    return __('This port is currently in use by the station "%s".', $station_reference['name']);
-                }
-            }
-            return true;
-        };
-
-        foreach($form as $field) {
-            /** @var AbstractField $field */
-            $attrs = $field->getAttributes();
-
-            if (isset($attrs['class']) && strpos($attrs['class'], 'input-port') !== false) {
-                $field->addValidator($port_checker);
-            }
-        }
-
-        if ($_POST && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\Station)) {
-                $record = $this->record_repo->create($data);
-            } else {
-                $oldAdapter = $record->getFrontendType();
-                $this->record_repo->fromArray($record, $data);
-                $this->em->persist($record);
-                $this->em->flush();
-
-                $this->configuration->writeConfiguration($record);
-
-                if ($oldAdapter !== $record->getFrontendType()) {
-                    $this->record_repo->resetMounts($record, $this->adapters->getFrontendAdapter($record));
-                }
-            }
-
-            // Clear station cache.
-            $this->cache->remove('stations');
-
+        if ($this->station_form->process($request, $record)) {
             $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
-
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
-            'form' => $form,
+            'form' => $this->station_form,
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Station')),
-        ]);
-    }
-
-    public function cloneAction(Request $request, Response $response, $id): ResponseInterface
-    {
-        $record = $this->record_repo->find((int)$id);
-
-        if (!($record instanceof Entity\Station)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Station')));
-        }
-
-        $form = new \AzuraForms\Form($this->clone_form_config);
-
-        $form->populate([
-            'name' => $record->getName().' - Copy',
-            'description' => $record->getDescription(),
-        ]);
-
-        if ($_POST && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            // Assemble new station from old station based on form parameters.
-            $new_record_data = $this->record_repo->toArray($record);
-            $new_record_data['name'] = $data['name'];
-            $new_record_data['description'] = $data['description'];
-
-            $unset_values = [
-                'short_name',
-                'radio_base_dir',
-                'nowplaying',
-                'nowplaying_timestamp',
-                'is_streamer_live',
-                'needs_restart',
-                'has_started',
-            ];
-
-            foreach($unset_values as $unset_value) {
-                unset($new_record_data[$unset_value]);
-            }
-
-            if ($data['clone_media'] === 'share') {
-                $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();
-            } else {
-                unset($new_record_data['radio_media_dir']);
-            }
-
-            // Trigger normal creation process of station.
-            $new_record = $this->record_repo->create($new_record_data);
-
-            // Force port reassignment
-            $this->configuration->assignRadioPorts($new_record, true);
-
-            $this->configuration->writeConfiguration($new_record);
-
-            // Copy associated records if applicable.
-            if ($data['clone_media'] === 'copy') {
-                copy($record->getRadioMediaDir(), $new_record->getRadioMediaDir());
-            }
-
-            if ($data['clone_playlists'] == 1) {
-                foreach ($record->getPlaylists() as $source_record) {
-                    $dest_record_data = $this->record_repo->toArray($source_record);
-                    unset($dest_record_data['id'], $dest_record_data['station_id']);
-
-                    $dest_record = new Entity\StationPlaylist($new_record);
-                    $this->record_repo->fromArray($dest_record, $dest_record_data);
-                    $this->em->persist($dest_record);
-                }
-            }
-
-            if ($data['clone_streamers'] == 1) {
-                foreach ($record->getStreamers() as $source_record) {
-                    $dest_record_data = $this->record_repo->toArray($source_record);
-                    unset($dest_record_data['id'], $dest_record_data['station_id']);
-
-                    $dest_record = new Entity\StationStreamer($new_record);
-                    $this->record_repo->fromArray($dest_record, $dest_record_data);
-                    $this->em->persist($dest_record);
-                }
-            }
-
-            if ($data['clone_permissions'] == 1) {
-                foreach ($record->getPermissions() as $source_record) {
-                    $dest_record_data = $this->record_repo->toArray($source_record);
-                    unset($dest_record_data['id'], $dest_record_data['station_id']);
-
-                    $dest_record = new Entity\RolePermission($source_record->getRole(), $new_record);
-                    $this->record_repo->fromArray($dest_record, $dest_record_data);
-                    $this->em->persist($dest_record);
-                }
-            }
-
-            $this->em->flush();
-
-            // Clear station cache.
-            $this->cache->remove('stations');
-
-            $request->getSession()->flash(__('Changes saved.'), 'green');
-
-            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
-        }
-
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
-            'render_mode' => 'edit',
-            'title' => __('Clone Station: %s', $record->getName())
         ]);
     }
 
@@ -259,7 +68,6 @@ class StationsController
         }
 
         $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');
-
         return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
     }
 }

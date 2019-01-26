@@ -55,6 +55,10 @@ class SetupController
 
     /**
      * Setup Routing Controls
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return ResponseInterface
      */
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
@@ -64,6 +68,10 @@ class SetupController
 
     /**
      * Placeholder function for "setup complete" redirection.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return ResponseInterface
      */
     public function completeAction(Request $request, Response $response): ResponseInterface
     {
@@ -75,6 +83,10 @@ class SetupController
     /**
      * Setup Step 1:
      * Create Super Administrator Account
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return ResponseInterface
      */
     public function registerAction(Request $request, Response $response): ResponseInterface
     {
@@ -124,6 +136,10 @@ class SetupController
     /**
      * Setup Step 2:
      * Create Station and Parse Metadata
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return ResponseInterface
      */
     public function stationAction(Request $request, Response $response): ResponseInterface
     {
@@ -135,7 +151,6 @@ class SetupController
 
         // Set up station form.
         $form_config = $this->station_form_config;
-        unset($form_config['groups']['admin']);
         unset($form_config['groups']['profile']['legend']);
 
         if (!SHOUTcast::isInstalled()) {
@@ -162,6 +177,10 @@ class SetupController
     /**
      * Setup Step 3:
      * Set site settings.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return ResponseInterface
      */
     public function settingsAction(Request $request, Response $response): ResponseInterface
     {
@@ -205,18 +224,18 @@ class SetupController
      * @return string
      * @throws \App\Exception\NotLoggedIn
      */
-    protected function _getSetupStep()
+    protected function _getSetupStep(): string
     {
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        if ($settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) != 0) {
+        if (0 !== (int)$settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
             return 'complete';
         }
 
         // Step 1: Register
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM '.Entity\User::class.' u')->getSingleScalarResult();
-        if ($num_users == 0) {
+        $num_users = (int)$this->em->createQuery('SELECT COUNT(u.id) FROM '.Entity\User::class.' u')->getSingleScalarResult();
+        if (0 === $num_users) {
             return 'register';
         }
 
@@ -226,8 +245,8 @@ class SetupController
         }
 
         // Step 2: Set up Station
-        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM '.Entity\Station::class.' s')->getSingleScalarResult();
-        if ($num_stations == 0) {
+        $num_stations = (int)$this->em->createQuery('SELECT COUNT(s.id) FROM '.Entity\Station::class.' s')->getSingleScalarResult();
+        if (0 === $num_stations) {
             return 'station';
         }
 

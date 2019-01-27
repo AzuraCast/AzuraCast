@@ -16,7 +16,6 @@ class App extends \Azura\App
         }
 
         $settings[Settings::TEMP_DIR] = dirname($settings[Settings::BASE_DIR]) . '/www_tmp';
-        $settings[Settings::VIEWS_DIR] = $settings[Settings::BASE_DIR] . '/resources/templates';
 
         // Define the "helper" constants used by AzuraCast.
         define('APP_IS_COMMAND_LINE', PHP_SAPI === 'cli');

@@ -2,6 +2,7 @@
 namespace App\Console\Command;
 
 use Azura\Console\Command\CommandAbstract;
+use Azura\Settings;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,14 +22,16 @@ class LocaleGenerate extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dest_file = APP_INCLUDE_ROOT.'/resources/locale/default.pot';
+        $settings = $this->get('settings');
+
+        $dest_file = $settings[Settings::BASE_DIR].'/resources/locale/default.pot';
         $translations = new \Gettext\Translations;
 
         // Find all PHP/PHTML files in the application's code.
         $translatable_folders = [
-            APP_INCLUDE_ROOT.'/src',
-            APP_INCLUDE_ROOT.'/config',
-            APP_INCLUDE_ROOT.'/resources/templates',
+            $settings[Settings::BASE_DIR].'/src',
+            $settings[Settings::BASE_DIR].'/config',
+            $settings[Settings::VIEWS_DIR],
         ];
 
         foreach($translatable_folders as $folder) {

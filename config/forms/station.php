@@ -52,19 +52,6 @@ return [
                     ]
                 ],
 
-                'is_enabled' => [
-                    'radio',
-                    [
-                        'label' => __('Enable Broadcasting'),
-                        'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
-                        'choices' => [
-                            0 => __('Disabled'),
-                            1 => __('Enabled'),
-                        ],
-                        'default' => 1,
-                    ]
-                ],
-
                 'enable_public_page' => [
                     'radio',
                     [
@@ -87,15 +74,6 @@ return [
                     ]
                 ],
 
-                'radio_media_dir' => [
-                    'text',
-                    [
-                        'label' => __('Custom Media Directory'),
-                        'label_class' => 'advanced',
-                        'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
-                    ]
-                ],
-
                 'api_history_items' => [
                     'select',
                     [
@@ -112,6 +90,45 @@ return [
                         'default' => Station::DEFAULT_API_HISTORY_ITEMS,
                     ]
                 ]
+            ],
+        ],
+
+        'admin' => [
+            'legend' => __('Administration'),
+
+            'elements' => [
+
+                'is_enabled' => [
+                    'radio',
+                    [
+                        'label' => __('Enable Broadcasting'),
+                        'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
+                        'choices' => [
+                            0 => __('Disabled'),
+                            1 => __('Enabled'),
+                        ],
+                        'default' => 1,
+                    ]
+                ],
+
+                'radio_base_dir' => [
+                    'text',
+                    [
+                        'label' => __('Base Station Directory'),
+                        'label_class' => 'advanced',
+                        'description' => __('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'),
+                    ]
+                ],
+
+                'radio_media_dir' => [
+                    'text',
+                    [
+                        'label' => __('Custom Media Directory'),
+                        'label_class' => 'advanced',
+                        'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
+                    ]
+                ],
+
             ],
         ],
 

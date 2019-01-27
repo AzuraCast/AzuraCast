@@ -307,6 +307,7 @@ return function (\Azura\Container $di)
         $config = $di[\Azura\Config::class];
 
         return new \App\Form\Station(
+            $di[\App\Acl::class],
             $di[\App\Entity\Repository\StationRepository::class],
             $config->get('forms/station')
         );

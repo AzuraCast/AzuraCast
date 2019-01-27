@@ -5,6 +5,8 @@ $this->layout('main', [
     'manual' => true,
 ]);
 
+/** @var \App\Form\Station $form */
+
 /** @var \Azura\Assets $assets */
 $assets
     ->load('chosen')
@@ -19,11 +21,16 @@ $assets
                 <a aria-controls="home" aria-selected="true" class="nav-link active" data-toggle="tab" href="#tab-profile" id="tab-profile-link" role="tab"><?=__('Station Profile') ?></a>
             </li>
             <li class="nav-item">
-                <a aria-controls="profile" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-frontend" id="tab-frontend-link" role="tab"><?=__('Broadcasting') ?></a>
+                <a aria-controls="frontend" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-frontend" id="tab-frontend-link" role="tab"><?=__('Broadcasting') ?></a>
             </li>
             <li class="nav-item">
-                <a aria-controls="contact" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-backend" id="tab-backend-link" role="tab"><?=__('AutoDJ') ?></a>
+                <a aria-controls="backend" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-backend" id="tab-backend-link" role="tab"><?=__('AutoDJ') ?></a>
             </li>
+        <?php if ($form->canSeeAdministration()): ?>
+            <li class="nav-item">
+                <a aria-controls="admin" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-admin" id="tab-admin-link" role="tab"><?=__('Administration') ?></a>
+            </li>
+        <?php endif; ?>
         </ul>
     </div>
     <div class="card-body">
@@ -31,6 +38,9 @@ $assets
             <div aria-labelledby="tab-profile-link" class="tab-pane fade show active" id="tab-profile" role="tabpanel"></div>
             <div aria-labelledby="tab-frontend-link" class="tab-pane fade" id="tab-frontend" role="tabpanel"></div>
             <div aria-labelledby="tab-backend-link" class="tab-pane fade" id="tab-backend" role="tabpanel"></div>
+        <?php if ($form->canSeeAdministration()): ?>
+            <div aria-labelledby="tab-admin-link" class="tab-pane fade" id="tab-admin" role="tabpanel"></div>
+        <?php endif; ?>
         </div>
 
         <?=$form->render() ?>

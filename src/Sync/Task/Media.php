@@ -103,7 +103,9 @@ class Media extends AbstractTask
         $total_size = BigInteger::zero();
 
         foreach($fs->listContents('media://', true) as $file) {
-            $total_size = $total_size->plus($file['size']);
+            if (!empty($file['size'])) {
+                $total_size = $total_size->plus($file['size']);
+            }
 
             if ('file' !== $file['type']) {
                 continue;

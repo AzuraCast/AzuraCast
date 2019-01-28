@@ -1,0 +1,80 @@
+<?php
+namespace App\Radio;
+
+use Brick\Math;
+
+/**
+ * Static utility class for managing quotas.
+ */
+class Quota
+{
+    /**
+     * @param Math\BigInteger $size
+     * @param Math\BigInteger $total
+     * @return int
+     */
+    public static function getPercentage(Math\BigInteger $size, Math\BigInteger $total): int
+    {
+        if (-1 !== $size->compareTo($total)) {
+            return 100;
+        }
+
+        $size = $size->toBigDecimal();
+        return $size->dividedBy($total, 2, Math\RoundingMode::HALF_CEILING)
+            ->multipliedBy(100)
+            ->toInt();
+    }
+
+    /**
+     * @param Math\BigInteger $bytes
+     * @param int $decimals
+     * @return string
+     */
+    public static function getReadableSize(Math\BigInteger $bytes, $decimals = 1): string
+    {
+        $bytes_str = (string)$bytes;
+
+        $size = ['B','KB','MB','GB','TB','PB','EB','ZB','YB'];
+        $factor = (int)floor((strlen($bytes_str) - 1) / 3);
+
+        if (isset($size[$factor])) {
+            $byte_divisor = Math\BigInteger::of(1024)->power($factor);
+            $size_string = $bytes->toBigDecimal()
+                ->dividedBy($byte_divisor, $decimals, Math\RoundingMode::HALF_DOWN);
+
+            return $size_string.' '.$size[$factor];
+        }
+
+        return $bytes_str;
+    }
+
+    /**
+     * @param $size
+     * @return Math\BigInteger|null
+     */
+    public static function convertFromReadableSize($size): ?Math\BigInteger
+    {
+        if (empty($size)) {
+            return null;
+        }
+
+        // Remove the non-unit characters from the size.
+        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
+
+        // Remove the non-numeric characters from the size.
+        $size = preg_replace('/[^0-9\\.]/', '', $size);
+
+        if ($unit) {
+            // Find the position of the unit in the ordered string which is the power
+            // of magnitude to multiply a kilobyte by.
+            $byte_power = stripos('bkmgtpezy', $unit[0]);
+            $byte_multiplier = Math\BigInteger::of(1024)->power($byte_power);
+
+            return Math\BigDecimal::of($size)
+                ->multipliedBy($byte_multiplier)
+                ->toBigInteger();
+        }
+
+        return Math\BigInteger::of($size);
+    }
+}

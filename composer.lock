@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "739eb0ecaeab301f0950a7f5972094ba",
+    "content-hash": "3a668ffc79f88c7c87f6c1fc9b3850e3",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -406,6 +406,49 @@
                 "normalization"
             ],
             "time": "2018-01-13T09:47:09+00:00"
+        },
+        {
+            "name": "brick/math",
+            "version": "0.8.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/math.git",
+                "reference": "41eeaed92906856968a3d4cc1020a70647c9e97f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/math/zipball/41eeaed92906856968a3d4cc1020a70647c9e97f",
+                "reference": "41eeaed92906856968a3d4cc1020a70647c9e97f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "2.*",
+                "phpunit/phpunit": "7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Math\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Arbitrary-precision arithmetic library",
+            "keywords": [
+                "Arbitrary-precision",
+                "BigInteger",
+                "BigRational",
+                "arithmetic",
+                "bigdecimal",
+                "brick",
+                "math"
+            ],
+            "time": "2018-12-07T14:38:55+00:00"
         },
         {
             "name": "cakephp/chronos",

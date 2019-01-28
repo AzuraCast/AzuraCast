@@ -47,13 +47,6 @@ class FilesController extends FilesControllerAbstract
             ->setParameter('station_id', $station_id)
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
-
-        // Show available file space in the station directory.
-        // TODO: This won't be applicable for stations that don't use local storage!
-        $media_dir = $station->getRadioMediaDir();
-        $space_free = disk_free_space($media_dir);
-        $space_total = disk_total_space($media_dir);
-        $space_used = $space_total - $space_free;
         
         $files_count = $this->em->createQuery('SELECT COUNT(sm.id) FROM '.Entity\StationMedia::class.' sm
             WHERE sm.station_id = :station_id')
@@ -72,25 +65,12 @@ class FilesController extends FilesControllerAbstract
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
-            'space_free' => Utilities::bytes_to_text($space_free),
-            'space_used' => Utilities::bytes_to_text($space_used),
-            'space_total' => Utilities::bytes_to_text($space_total),
-            'space_percent' => round(($space_used / $space_total) * 100),
+            'space_used' => $station->getStorageUsed(),
+            'space_total' => $station->getStorageAvailable(),
+            'space_percent' => $station->getStorageUsePercentage(),
             'files_count' => $files_count,
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
-            'max_upload_size' => min(
-                $this->_asBytes(ini_get('post_max_size')),
-                $this->_asBytes(ini_get('upload_max_filesize'))
-            ),
         ]);
-    }
-
-    protected function _asBytes($ini_v)
-    {
-        $ini_v = trim($ini_v);
-        $s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
-
-        return (int)$ini_v * ($s[strtolower(substr($ini_v, -1))] ?: 1);
     }
 
     public function renameAction(Request $request, Response $response, $station_id): ResponseInterface

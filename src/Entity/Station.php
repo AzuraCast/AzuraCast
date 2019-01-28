@@ -920,19 +920,14 @@ class Station
     }
 
     /**
-     * @return BigInteger|null
+     * @return BigInteger
      */
-    public function getRawStorageUsed(): ?BigInteger
+    public function getRawStorageUsed(): BigInteger
     {
         $size = $this->storage_used;
 
         if (null === $size) {
-            $total_size = disk_total_space($this->getRadioMediaDir());
-            $used_size = disk_free_space($this->getRadioMediaDir());
-
-            return BigInteger::of($total_size)
-                ->minus($used_size)
-                ->abs();
+            return BigInteger::zero();
         }
 
         return BigInteger::of($size);
@@ -955,10 +950,6 @@ class Station
     public function addStorageUsed($new_storage_amount): void
     {
         $current_storage_used = $this->getRawStorageUsed();
-        if (null === $current_storage_used) {
-            return;
-        }
-
         $this->storage_used = (string)$current_storage_used->plus($new_storage_amount);
     }
 
@@ -970,11 +961,12 @@ class Station
     public function removeStorageUsed($amount_to_remove): void
     {
         $current_storage_used = $this->getRawStorageUsed();
-        if (null === $current_storage_used) {
-            return;
+        $storage_used = $current_storage_used->minus($amount_to_remove);
+        if ($storage_used->isLessThan(0)) {
+            $storage_used = BigInteger::zero();
         }
 
-        $this->storage_used = (string)$current_storage_used->minus($amount_to_remove);
+        $this->storage_used = (string)$storage_used;
     }
 
     /**

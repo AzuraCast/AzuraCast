@@ -899,11 +899,11 @@ class Station
     }
 
     /**
-     * @param string|null $storage_quota
+     * @param BigInteger|string|null $storage_quota
      */
-    public function setStorageQuota(?string $storage_quota): void
+    public function setStorageQuota($storage_quota): void
     {
-        $this->storage_quota = Quota::convertFromReadableSize($storage_quota);
+        $this->storage_quota = (string)Quota::convertFromReadableSize($storage_quota);
     }
 
     /**
@@ -938,11 +938,27 @@ class Station
     }
 
     /**
-     * @param string|null $storage_used
+     * @param BigInteger|string|null $storage_used
      */
-    public function setStorageUsed(?string $storage_used): void
+    public function setStorageUsed($storage_used): void
     {
-        $this->storage_used = Quota::convertFromReadableSize($storage_used);
+        $this->storage_used = (string)Quota::convertFromReadableSize($storage_used);
+    }
+
+    /**
+     * Increment the current used storage total
+     *
+     * @param BigInteger|string|int $new_storage_amount
+     */
+    public function addStorageUsed($new_storage_amount): void
+    {
+        $current_storage_used = $this->getRawStorageUsed();
+
+        if (null === $current_storage_used) {
+            return;
+        }
+
+        $this->storage_used = (string)$current_storage_used->plus($new_storage_amount);
     }
 
     /**
@@ -962,11 +978,32 @@ class Station
      */
     public function getRawStorageAvailable(): ?BigInteger
     {
-        $size = $this->storage_quota ?? disk_total_space($this->getRadioMediaDir());
+        $quota = $this->getRawStorageQuota();
+        $total_space = disk_total_space($this->getRadioMediaDir());
 
-        return (null !== $size)
-            ? BigInteger::of($size)
-            : null;
+        if ($quota === null || $quota->compareTo($total_space) === 1) {
+            return BigInteger::of($total_space);
+        }
+
+        return $quota;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStorageFull(): bool
+    {
+        $available = $this->getRawStorageAvailable();
+        if ($available === null) {
+            return true;
+        }
+
+        $used = $this->getRawStorageUsed();
+        if ($used === null) {
+            return false;
+        }
+
+        return ($used->compareTo($available) !== -1);
     }
 
     /**

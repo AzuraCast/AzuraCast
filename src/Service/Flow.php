@@ -170,6 +170,7 @@ class Flow
         return [
             'path'      => $finalPath,
             'filename'  => $originalFileName,
+            'size'      => filesize($finalPath),
         ];
     }
 

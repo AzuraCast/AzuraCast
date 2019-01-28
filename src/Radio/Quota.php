@@ -49,11 +49,15 @@ class Quota
     }
 
     /**
-     * @param $size
+     * @param string $size
      * @return Math\BigInteger|null
      */
     public static function convertFromReadableSize($size): ?Math\BigInteger
     {
+        if ($size instanceof Math\BigInteger) {
+            return $size;
+        }
+
         if (empty($size)) {
             return null;
         }

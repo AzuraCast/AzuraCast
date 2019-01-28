@@ -200,6 +200,10 @@ class FilesController extends FilesControllerAbstract
 
         $station = $request->getStation();
 
+        if ($station->isStorageFull()) {
+            throw new \App\Exception\OutOfSpace(__('This station is out of available storage space.'));
+        }
+
         try {
             $flow = new \App\Service\Flow($request, $response, $station->getRadioTempDir());
             $flow_response = $flow->process();
@@ -250,6 +254,7 @@ class FilesController extends FilesControllerAbstract
                 }
             }
 
+            $station->addStorageUsed($flow_response['size']);
             $this->em->flush();
 
             return $response->withJson(['success' => true]);

@@ -1,7 +1,5 @@
 $(function() {
     var CSRF = '<?=$csrf ?>';
-    var MAX_UPLOAD_SIZE = <?=$max_upload_size ?>;
-
     var $current_dir = '';
 
     var appToolbar = new Vue({
@@ -283,6 +281,9 @@ $(function() {
                 searchPhrase: $('input.search-field').val()
             };
         },
+        headers: {
+            'Accept': 'application/json'
+        },
         withCredentials: true,
         allowDuplicateUploads: true,
         fileParameterName: 'file_data'
@@ -311,12 +312,13 @@ $(function() {
         var $row = $('#file_upload_'+file.uniqueIdentifier);
         $row.remove();
 
-        var $error_row = renderFileSizeErrorRow(file, message);
+        var message_json = JSON.parse(message);
+        var $error_row = renderFileSizeErrorRow(file, message_json.message);
         $('#upload_progress').append($error_row);
         window.setTimeout(function(){ $error_row.fadeOut(); },5000);
     });
     flow.on('error', function(message, file, chunk) {
-        console.log(message, file, chunk);
+        console.error(message, file, chunk);
     });
 
     function renderFileUploadRow(file) {
@@ -328,8 +330,8 @@ $(function() {
 
     function renderFileSizeErrorRow(file, message) {
         return $row = $('<div id="file_upload_error_'+file.uniqueIdentifier+'" class="error" />')
-            .append( $('<span class="fileuploadname" />').text('Error: ' + file.name))
-            .append( $('<span/>').text(message) );
+            .append( $('<div class="fileuploadname" />').text('Error: ' + file.name))
+            .append( $('<div/>').text(message) );
     }
 
     function list() {

@@ -11,7 +11,6 @@ $assets
     ->load('fancybox')
     ->addInlineJs($this->fetch('stations/files/index.js', [
         'csrf' => $csrf,
-        'max_upload_size' => $max_upload_size,
         'playlists' => $playlists,
     ]));
 ?>
@@ -33,7 +32,7 @@ $assets
                                         <span class="sr-only"><?=$space_percent ?>%</span>
                                     </div>
                                 </div>
-                                <?=sprintf(__('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
+                                <?=sprintf(__('%s of %s Used'), $space_used, $space_total) ?>
                             </div>
                         </div>
 

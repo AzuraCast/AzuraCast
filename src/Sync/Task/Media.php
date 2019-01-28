@@ -4,6 +4,8 @@ namespace App\Sync\Task;
 use App\MessageQueue;
 use App\Message;
 use App\Radio\Filesystem;
+use App\Radio\Quota;
+use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -89,6 +91,7 @@ class Media extends AbstractTask
         $fs->flushAllCaches();
 
         $stats = [
+            'total_size' => '0',
             'total_files' => 0,
             'unchanged' => 0,
             'updated' => 0,
@@ -97,7 +100,11 @@ class Media extends AbstractTask
         ];
 
         $music_files = [];
+        $total_size = BigInteger::zero();
+
         foreach($fs->listContents('media://', true) as $file) {
+            $total_size = $total_size->plus($file['size']);
+
             if ('file' !== $file['type']) {
                 continue;
             }
@@ -106,6 +113,10 @@ class Media extends AbstractTask
             $music_files[$path_hash] = $file;
         }
 
+        $station->setStorageUsed($total_size);
+        $this->em->persist($station);
+
+        $stats['total_size'] = $total_size.' ('.Quota::getReadableSize($total_size).')';
         $stats['total_files'] = count($music_files);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */

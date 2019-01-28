@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use App\Radio\Quota;
+use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -202,6 +204,18 @@ class Station
     protected $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
 
     /**
+     * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
+     * @var string|null
+     */
+    protected $storage_quota;
+
+    /**
+     * @ORM\Column(name="storage_used", type="bigint", nullable=true)
+     * @var string|null
+     */
+    protected $storage_used;
+
+    /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
      * @ORM\OrderBy({"timestamp" = "DESC"})
      * @var Collection
@@ -296,7 +310,7 @@ class Station
     /**
      * @param null|string $name
      */
-    public function setName(?string $name = null)
+    public function setName(?string $name = null): void
     {
         $this->name = $this->_truncateString($name, 100);
 
@@ -353,7 +367,7 @@ class Station
     /**
      * @param null|string $frontend_type
      */
-    public function setFrontendType(string $frontend_type = null)
+    public function setFrontendType(string $frontend_type = null): void
     {
         $this->frontend_type = $frontend_type;
     }
@@ -370,7 +384,7 @@ class Station
      * @param $frontend_config
      * @param bool $force_overwrite
      */
-    public function setFrontendConfig($frontend_config, $force_overwrite = false)
+    public function setFrontendConfig($frontend_config, $force_overwrite = false): void
     {
         $config = ($force_overwrite) ? [] : (array)$this->frontend_config;
         foreach((array)$frontend_config as $cfg_key => $cfg_val) {
@@ -389,7 +403,7 @@ class Station
      *
      * @param $default_config
      */
-    public function setFrontendConfigDefaults($default_config)
+    public function setFrontendConfigDefaults($default_config): void
     {
         $frontend_config = (array)$this->frontend_config;
 
@@ -413,7 +427,7 @@ class Station
     /**
      * @param null|string $backend_type
      */
-    public function setBackendType(string $backend_type = null)
+    public function setBackendType(string $backend_type = null): void
     {
         $this->backend_type = $backend_type;
     }
@@ -430,7 +444,7 @@ class Station
      * @param $backend_config
      * @param bool $force_overwrite
      */
-    public function setBackendConfig($backend_config, $force_overwrite = false)
+    public function setBackendConfig($backend_config, $force_overwrite = false): void
     {
         $config = ($force_overwrite) ? [] : (array)$this->backend_config;
         foreach((array)$backend_config as $cfg_key => $cfg_val) {
@@ -466,7 +480,7 @@ class Station
     /**
      * Generate a random new adapter API key.
      */
-    public function generateAdapterApiKey()
+    public function generateAdapterApiKey(): void
     {
         $this->adapter_api_key = bin2hex(random_bytes(50));
     }
@@ -477,7 +491,7 @@ class Station
      * @param $api_key
      * @return bool
      */
-    public function validateAdapterApiKey($api_key)
+    public function validateAdapterApiKey($api_key): bool
     {
         return hash_equals($api_key, $this->adapter_api_key);
     }
@@ -493,7 +507,7 @@ class Station
     /**
      * @param null|string $description
      */
-    public function setDescription(string $description = null)
+    public function setDescription(string $description = null): void
     {
         $this->description = $description;
     }
@@ -509,7 +523,7 @@ class Station
     /**
      * @param null|string $url
      */
-    public function setUrl(string $url = null)
+    public function setUrl(string $url = null): void
     {
         $this->url = $this->_truncateString($url);
     }
@@ -541,7 +555,7 @@ class Station
     /**
      * @param $new_dir
      */
-    public function setRadioBaseDir($new_dir)
+    public function setRadioBaseDir($new_dir): void
     {
         $new_dir = $this->_truncateString(trim($new_dir));
 
@@ -622,7 +636,7 @@ class Station
     /**
      * @param $new_dir
      */
-    public function setRadioMediaDir(?string $new_dir)
+    public function setRadioMediaDir(?string $new_dir): void
     {
         $new_dir = $this->_truncateString(trim($new_dir));
 
@@ -651,7 +665,7 @@ class Station
     /**
      * @param Api\NowPlaying|null $nowplaying
      */
-    public function setNowplaying(Api\NowPlaying $nowplaying = null)
+    public function setNowplaying(Api\NowPlaying $nowplaying = null): void
     {
         $this->nowplaying = $nowplaying;
 
@@ -679,7 +693,7 @@ class Station
     /**
      * @param array|null $automation_settings
      */
-    public function setAutomationSettings(array $automation_settings = null)
+    public function setAutomationSettings(array $automation_settings = null): void
     {
         $this->automation_settings = $automation_settings;
     }
@@ -695,7 +709,7 @@ class Station
     /**
      * @param int|null $automation_timestamp
      */
-    public function setAutomationTimestamp(int $automation_timestamp = null)
+    public function setAutomationTimestamp(int $automation_timestamp = null): void
     {
         $this->automation_timestamp = $automation_timestamp;
     }
@@ -711,7 +725,7 @@ class Station
     /**
      * @param bool $enable_requests
      */
-    public function setEnableRequests(bool $enable_requests)
+    public function setEnableRequests(bool $enable_requests): void
     {
         $this->enable_requests = $enable_requests;
     }
@@ -727,7 +741,7 @@ class Station
     /**
      * @param int|null $request_delay
      */
-    public function setRequestDelay(int $request_delay = null)
+    public function setRequestDelay(int $request_delay = null): void
     {
         $this->request_delay = $request_delay;
     }
@@ -735,7 +749,7 @@ class Station
     /**
      * @return int|null
      */
-    public function getRequestThreshold()
+    public function getRequestThreshold(): ?int
     {
         return $this->request_threshold;
     }
@@ -743,7 +757,7 @@ class Station
     /**
      * @param int|null $request_threshold
      */
-    public function setRequestThreshold(int $request_threshold = null)
+    public function setRequestThreshold(int $request_threshold = null): void
     {
         $this->request_threshold = $request_threshold;
     }
@@ -759,7 +773,7 @@ class Station
     /**
      * @param int $disconnect_deactivate_streamer
      */
-    public function setDisconnectDeactivateStreamer(int $disconnect_deactivate_streamer)
+    public function setDisconnectDeactivateStreamer(int $disconnect_deactivate_streamer): void
     {
         $this->disconnect_deactivate_streamer = $disconnect_deactivate_streamer;
     }
@@ -775,7 +789,7 @@ class Station
     /**
      * @param bool $enable_streamers
      */
-    public function setEnableStreamers(bool $enable_streamers)
+    public function setEnableStreamers(bool $enable_streamers): void
     {
         $this->enable_streamers = $enable_streamers;
     }
@@ -807,7 +821,7 @@ class Station
     /**
      * @param bool $enable_public_page
      */
-    public function setEnablePublicPage(bool $enable_public_page)
+    public function setEnablePublicPage(bool $enable_public_page): void
     {
         $this->enable_public_page = $enable_public_page;
     }
@@ -823,7 +837,7 @@ class Station
     /**
      * @param bool $needs_restart
      */
-    public function setNeedsRestart(bool $needs_restart)
+    public function setNeedsRestart(bool $needs_restart): void
     {
         $this->needs_restart = $needs_restart;
     }
@@ -839,7 +853,7 @@ class Station
     /**
      * @param bool $has_started
      */
-    public function setHasStarted(bool $has_started)
+    public function setHasStarted(bool $has_started): void
     {
         $this->has_started = $has_started;
     }
@@ -858,6 +872,162 @@ class Station
     public function setApiHistoryItems(?int $api_history_items): void
     {
         $this->api_history_items = $api_history_items;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStorageQuota(): ?string
+    {
+        $raw_quota = $this->getRawStorageQuota();
+
+        return ($raw_quota instanceof BigInteger)
+            ? Quota::getReadableSize($raw_quota)
+            : '';
+    }
+
+    /**
+     * @return BigInteger|null
+     */
+    public function getRawStorageQuota(): ?BigInteger
+    {
+        $size = $this->storage_quota;
+
+        return (null !== $size)
+            ? BigInteger::of($size)
+            : null;
+    }
+
+    /**
+     * @param BigInteger|string|null $storage_quota
+     */
+    public function setStorageQuota($storage_quota): void
+    {
+        $storage_quota = (string)Quota::convertFromReadableSize($storage_quota);
+        $this->storage_quota = !empty($storage_quota) ? $storage_quota : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStorageUsed(): ?string
+    {
+        $raw_size = $this->getRawStorageUsed();
+
+        return ($raw_size instanceof BigInteger)
+            ? Quota::getReadableSize($raw_size)
+            : '';
+    }
+
+    /**
+     * @return BigInteger|null
+     */
+    public function getRawStorageUsed(): ?BigInteger
+    {
+        $size = $this->storage_used;
+
+        if (null === $size) {
+            $total_size = disk_total_space($this->getRadioMediaDir());
+            $used_size = disk_free_space($this->getRadioMediaDir());
+
+            return BigInteger::of($total_size)
+                ->minus($used_size)
+                ->abs();
+        }
+
+        return BigInteger::of($size);
+    }
+
+    /**
+     * @param BigInteger|string|null $storage_used
+     */
+    public function setStorageUsed($storage_used): void
+    {
+        $storage_used = (string)Quota::convertFromReadableSize($storage_used);
+        $this->storage_used = !empty($storage_used) ? $storage_used : null;
+    }
+
+    /**
+     * Increment the current used storage total.
+     *
+     * @param BigInteger|string|int $new_storage_amount
+     */
+    public function addStorageUsed($new_storage_amount): void
+    {
+        $current_storage_used = $this->getRawStorageUsed();
+        if (null === $current_storage_used) {
+            return;
+        }
+
+        $this->storage_used = (string)$current_storage_used->plus($new_storage_amount);
+    }
+
+    /**
+     * Decrement the current used storage total.
+     *
+     * @param BigInteger|string|int $amount_to_remove
+     */
+    public function removeStorageUsed($amount_to_remove): void
+    {
+        $current_storage_used = $this->getRawStorageUsed();
+        if (null === $current_storage_used) {
+            return;
+        }
+
+        $this->storage_used = (string)$current_storage_used->minus($amount_to_remove);
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorageAvailable(): string
+    {
+        $raw_size = $this->getRawStorageAvailable();
+
+        return ($raw_size instanceof BigInteger)
+            ? Quota::getReadableSize($raw_size)
+            : '';
+    }
+
+    /**
+     * @return BigInteger|null
+     */
+    public function getRawStorageAvailable(): ?BigInteger
+    {
+        $quota = $this->getRawStorageQuota();
+        $total_space = disk_total_space($this->getRadioMediaDir());
+
+        if ($quota === null || $quota->compareTo($total_space) === 1) {
+            return BigInteger::of($total_space);
+        }
+
+        return $quota;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStorageFull(): bool
+    {
+        $available = $this->getRawStorageAvailable();
+        if ($available === null) {
+            return true;
+        }
+
+        $used = $this->getRawStorageUsed();
+        if ($used === null) {
+            return false;
+        }
+
+        return ($used->compareTo($available) !== -1);
+    }
+
+    /**
+     * @return int
+     */
+    public function getStorageUsePercentage(): int
+    {
+        return Quota::getPercentage($this->getRawStorageUsed(), $this->getRawStorageAvailable());
     }
 
     /**

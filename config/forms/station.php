@@ -111,6 +111,14 @@ return [
                     ]
                 ],
 
+                'storage_quota' => [
+                    'text',
+                    [
+                        'label' => __('Storage Quota'),
+                        'description' => __('Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.')
+                    ]
+                ],
+
                 'radio_base_dir' => [
                     'text',
                     [

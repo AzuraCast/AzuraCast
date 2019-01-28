@@ -903,7 +903,8 @@ class Station
      */
     public function setStorageQuota($storage_quota): void
     {
-        $this->storage_quota = (string)Quota::convertFromReadableSize($storage_quota);
+        $storage_quota = (string)Quota::convertFromReadableSize($storage_quota);
+        $this->storage_quota = !empty($storage_quota) ? $storage_quota : null;
     }
 
     /**
@@ -942,7 +943,8 @@ class Station
      */
     public function setStorageUsed($storage_used): void
     {
-        $this->storage_used = (string)Quota::convertFromReadableSize($storage_used);
+        $storage_used = (string)Quota::convertFromReadableSize($storage_used);
+        $this->storage_used = !empty($storage_used) ? $storage_used : null;
     }
 
     /**

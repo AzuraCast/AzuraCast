@@ -100,9 +100,14 @@ class BatchController extends FilesControllerAbstract
                     if ('dir' === $file_meta['type']) {
                         $fs->deleteDir($file);
                     } else {
+                        $station->removeStorageUsed($file_meta['size']);
+
                         $fs->delete($file);
                     }
                 }
+
+                $this->em->persist($station);
+                $this->em->flush($station);
                 break;
 
             case 'clear':

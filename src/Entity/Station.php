@@ -946,19 +946,33 @@ class Station
     }
 
     /**
-     * Increment the current used storage total
+     * Increment the current used storage total.
      *
      * @param BigInteger|string|int $new_storage_amount
      */
     public function addStorageUsed($new_storage_amount): void
     {
         $current_storage_used = $this->getRawStorageUsed();
-
         if (null === $current_storage_used) {
             return;
         }
 
         $this->storage_used = (string)$current_storage_used->plus($new_storage_amount);
+    }
+
+    /**
+     * Decrement the current used storage total.
+     *
+     * @param BigInteger|string|int $amount_to_remove
+     */
+    public function removeStorageUsed($amount_to_remove): void
+    {
+        $current_storage_used = $this->getRawStorageUsed();
+        if (null === $current_storage_used) {
+            return;
+        }
+
+        $this->storage_used = (string)$current_storage_used->minus($amount_to_remove);
     }
 
     /**

@@ -244,57 +244,6 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                 }
             }
         } else {
-            // Handle a scalar value that should possibly be converted.
-            $field_info = $context[self::CLASS_METADATA]->fieldMappings[$field] ?? [];
-
-            switch ($field_info['type']) {
-                case 'datetime':
-                case 'date':
-                    if (!($value instanceof \DateTime)) {
-                        if ($value) {
-                            if (!is_numeric($value)) {
-                                $value = strtotime($value . ' UTC');
-                            }
-
-                            $value = \DateTime::createFromFormat(\DateTime::ATOM, gmdate(\DateTime::ATOM, (int)$value));
-                        } else {
-                            $value = null;
-                        }
-                    }
-                    break;
-
-                case 'string':
-                    if (is_string($value) && $field_info['length'] && strlen($value) > $field_info['length']) {
-                        $value = substr($value, 0, $field_info['length']);
-                    }
-                    break;
-
-                case 'decimal':
-                case 'float':
-                    if ($value !== null) {
-                        if (is_numeric($value)) {
-                            $value = (float)$value;
-                        } elseif (empty($value)) {
-                            $value = ($field_info['nullable']) ? NULL : 0.0;
-                        }
-                    }
-                    break;
-
-                case 'integer':
-                case 'smallint':
-                case 'bigint':
-                    if ($value !== null) {
-                        $value = (int)$value;
-                    }
-                    break;
-
-                case 'boolean':
-                    if ($value !== null) {
-                        $value = (bool)$value;
-                    }
-                    break;
-            }
-
             $this->_set($object, $field, $value);
         }
     }

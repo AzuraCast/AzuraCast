@@ -284,10 +284,12 @@ class FilesController extends FilesControllerAbstract
         }
 
         return $response
+            ->withNoCache()
             ->withHeader('Content-Type', $file_mime)
             ->withHeader('Content-Length', $file_meta['size'])
             ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
                 strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""))
+            ->withHeader('X-Accel-Buffering', 'no')
             ->withBody(new \Slim\Http\Stream($fh));
     }
 }

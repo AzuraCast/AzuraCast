@@ -44,6 +44,7 @@
  *
  * @OA\Tag(name="Stations: General")
  * @OA\Tag(name="Stations: Song Requests")
+ * @OA\Tag(name="Stations: History")
  * @OA\Tag(name="Stations: Listeners")
  * @OA\Tag(name="Stations: Media")
  * @OA\Tag(name="Stations: Queue")

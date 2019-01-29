@@ -41,10 +41,7 @@ class ListenersController
      *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @OA\Schema(
-     *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_Listener")
-     *     )
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Listener"))
      *   ),
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Access denied"),

@@ -11,6 +11,127 @@ servers:
     url: 'https://demo.azuracast.com/api'
     description: 'AzuraCast Public Demo Server'
 paths:
+  /admin/custom_fields:
+    get:
+      tags:
+        - 'Administration: Custom Fields'
+      description: 'List all current custom fields in the system.'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomField'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Administration: Custom Fields'
+      description: 'Create a new custom field.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomField'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/admin/custom_field/{id}':
+    get:
+      tags:
+        - 'Administration: Custom Fields'
+      description: 'Retrieve details for a single custom field.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Administration: Custom Fields'
+      description: 'Update details of a single custom field.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomField'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Administration: Custom Fields'
+      description: 'Delete a single custom field.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   /admin/permissions:
     get:
       tags:
@@ -357,6 +478,45 @@ paths:
           description: Success
         '404':
           description: 'Station not found'
+  '/station/{station_id}/history':
+    get:
+      tags:
+        - 'Stations: History'
+      description: 'Return song playback history items for a given station.'
+      operationId: 'App\Controller\Api\Stations\HistoryController::__invoke'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: start
+          in: query
+          description: 'The start date for records, in YYYY-MM-DD format.'
+          required: false
+          schema:
+            type: string
+        -
+          name: end
+          in: query
+          description: 'The end date for records, in YYYY-MM-DD format.'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_DetailedSongHistory'
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   /stations:
     get:
       tags:
@@ -403,6 +563,12 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Listener'
         '404':
           description: 'Station not found'
         '403':
@@ -550,6 +716,23 @@ paths:
           description: 'Station not found'
         '403':
           description: 'Station does not support requests'
+  '/station/{station_id}/status':
+    get:
+      tags:
+        - 'Stations: Service Control'
+      description: 'Retrieve the current status of all serivces associated with the radio broadcast.'
+      operationId: 'App\Controller\Api\Stations\ServicesController::statusAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: 'Access Forbidden'
+      security:
+        -
+          api_key: []
   '/station/{station_id}/restart':
     post:
       tags:
@@ -633,15 +816,18 @@ components:
         prefer_browser_url:
           description: 'Prefer Browser URL (If Available)'
           type: integer
-        always_use_ssl:
-          description: 'Always Use HTTPS'
-          type: integer
         use_radio_proxy:
           description: 'Use Web Proxy for Radio'
           type: integer
         history_keep_days:
           description: 'Days of Playback History to Keep'
           type: integer
+        always_use_ssl:
+          description: 'Always Use HTTPS'
+          type: integer
+        api_access_control:
+          description: 'API "Access-Control-Allow-Origin" header'
+          type: string
         analytics:
           description: 'Listener Analytics Collection'
           type: string
@@ -728,7 +914,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1546849413
+          example: 1548811265
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -824,7 +1010,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1546849413
+              example: 1548811265
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -879,7 +1065,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1546849413
+          example: 1548811265
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -988,6 +1174,15 @@ components:
         song:
           $ref: '#/components/schemas/Api_Song'
       type: object
+    Api_StationServiceStatus:
+      properties:
+        backend_running:
+          type: boolean
+          example: true
+        frontend_running:
+          type: boolean
+          example: true
+      type: object
     Api_Status:
       properties:
         success:
@@ -1006,7 +1201,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1546849413
+          example: 1548811265
       type: object
     Api_Time:
       properties:
@@ -1044,6 +1239,16 @@ components:
         local_timezone_abbr:
           type: string
           example: UTC
+      type: object
+    CustomField:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        short_name:
+          description: 'The programmatic name for the field. Can be auto-generated from the full name.'
+          type: string
       type: object
     Role:
       properties:
@@ -1083,10 +1288,10 @@ components:
           example: dark
         created_at:
           type: integer
-          example: 1546849413
+          example: 1548811265
         updated_at:
           type: integer
-          example: 1546849413
+          example: 1548811265
         roles:
           items: {  }
       type: object
@@ -1116,6 +1321,8 @@ tags:
   -
     name: 'Stations: Song Requests'
   -
+    name: 'Stations: History'
+  -
     name: 'Stations: Listeners'
   -
     name: 'Stations: Media'
@@ -1123,6 +1330,8 @@ tags:
     name: 'Stations: Queue'
   -
     name: 'Stations: Service Control'
+  -
+    name: 'Administration: Custom Fields'
   -
     name: 'Administration: Users'
   -

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class HistoryController
 {
@@ -29,7 +30,45 @@ class HistoryController
         $this->api_utils = $api_utils;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id)
+    /**
+     * @OA\Get(path="/station/{station_id}/history",
+     *   tags={"Stations: History"},
+     *   description="Return song playback history items for a given station.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="start",
+     *     description="The start date for records, in YYYY-MM-DD format.",
+     *     in="query",
+     *     required=false,
+     *     @OA\Schema(
+     *         type="string"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="end",
+     *     description="The end date for records, in YYYY-MM-DD format.",
+     *     in="query",
+     *     required=false,
+     *     @OA\Schema(
+     *         type="string"
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_DetailedSongHistory"))
+     *   ),
+     *   @OA\Response(response=404, description="Station not found"),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param $station_id
+     * @return ResponseInterface
+     */
+    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
 

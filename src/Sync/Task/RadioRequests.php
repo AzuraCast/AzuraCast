@@ -85,7 +85,7 @@ class RadioRequests extends AbstractTask
 
         try {
             $media_path = $media_repo->getFullPath($request->getTrack());
-            $backend->request($media_path);
+            $backend->request($station, $media_path);
         } catch(\Exception $e) {
             return false;
         }

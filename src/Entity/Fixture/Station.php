@@ -17,6 +17,11 @@ class Station extends AbstractFixture
         $station->setBackendType(Adapters::BACKEND_LIQUIDSOAP);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
 
+        $station_quota = getenv('INIT_STATION_QUOTA');
+        if (!empty($station_quota)) {
+            $station->setStorageQuota($station_quota);
+        }
+
         $em->persist($station);
         $em->flush();
 

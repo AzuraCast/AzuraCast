@@ -93,12 +93,10 @@ class ListenersController
 
         $listeners = [];
         foreach($listeners_raw as $listener) {
-            $detect->setUserAgent($listener['listener_user_agent']);
-
             $api = new Entity\Api\Listener;
             $api->ip = (string)$listener['listener_ip'];
             $api->user_agent = (string)$listener['listener_user_agent'];
-            $api->is_mobile = $detect->isMobile();
+            $api->is_mobile = $detect->isMobile($listener['listener_user_agent']);
             $api->connected_on = (int)$listener['timestamp_start'];
             $api->connected_time = $listener['connected_time'] ?? (time() - $listener['timestamp_start']);
             $api->location = $this->_getLocationInfo($listener['listener_ip'], $locale);

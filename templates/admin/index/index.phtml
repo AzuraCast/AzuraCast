@@ -1,8 +1,6 @@
 <?php $this->layout('main', ['title' => 'Administration', 'manual' => true]); ?>
 
-<div class="block-header">
-    <h2><?=__('Administration') ?></h2>
-</div>
+<h2 class="outside-card-header"><?=__('Administration') ?></h2>
 
 <div class="row">
     <?php foreach($admin_panels as $category_name => $category_info): ?>
@@ -23,26 +21,24 @@
     <?php endforeach; ?>
 </div>
 
-<div class="block-header">
-    <h2>Synchronization Tasks</h2>
-</div>
+<h2 class="outside-card-header">Synchronization Tasks</h2>
 
-<div class="row">
-    <?php foreach($sync_times as $sync_key => $sync_info): ?>
-    <div class="col-sm-3">
-        <section class="card" role="region">
-            <div class="card-body">
-                <h2 class="card-title"><?=$sync_info['name'] ?></h2>
-                <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents']) ?></h3>
-                <p class="card-text"><?=$customization->formatDateTime($sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
-            </div>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>">
-                    <i class="material-icons" aria-hidden="true">send</i>
-                    <?=__('Run Task') ?>
-                </a>
-            </div>
-        </section>
-    </div>
-    <?php endforeach; ?>
+<div class="card-deck">
+<?php foreach($sync_times as $sync_key => $sync_info): ?>
+    <section class="card" role="region">
+        <div class="card-header">
+            <h2 class="card-title"><?=$sync_info['name'] ?></h2>
+            <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents']) ?></h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><?=$customization->formatDateTime($sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
+        </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>">
+                <i class="material-icons" aria-hidden="true">send</i>
+                <?=__('Run Task') ?>
+            </a>
+        </div>
+    </section>
+<?php endforeach; ?>
 </div>

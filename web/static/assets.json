@@ -1,7 +1,7 @@
 {
   "dist/app.js": "dist/app-b7a1aaa0b1.js",
   "dist/bootgrid.js": "dist/bootgrid-acbc545ec1.js",
-  "dist/dark.css": "dist/dark-8a62c21db3.css",
+  "dist/dark.css": "dist/dark-749283956e.css",
   "dist/lib/autosize/autosize.min.js": "dist/lib/autosize/autosize-ad0656589d.min.js",
   "dist/lib/bootstrap-notify/bootstrap-notify.min.js": "dist/lib/bootstrap-notify/bootstrap-notify-a02f92a499.min.js",
   "dist/lib/bootstrap/bootstrap.min.js": "dist/lib/bootstrap/bootstrap-6895e8cd60.min.js",
@@ -37,9 +37,9 @@
   "dist/lib/vue/vue.js": "dist/lib/vue/vue-5424a463b5.js",
   "dist/lib/vue/vue.min.js": "dist/lib/vue/vue-f15aee8488.min.js",
   "dist/lib/zxcvbn/zxcvbn.js": "dist/lib/zxcvbn/zxcvbn-9cf6916dc0.js",
-  "dist/light.css": "dist/light-31b5d53a55.css",
+  "dist/light.css": "dist/light-aa50279c20.css",
   "dist/material.js": "dist/material-4f1d9f4f98.js",
   "dist/radio.js": "dist/radio-7c2492a14b.js",
-  "dist/webcaster.js": "dist/webcaster-d7d270b491.js",
+  "dist/webcaster.js": "dist/webcaster-3fdff63eb7.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

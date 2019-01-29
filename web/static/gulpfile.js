@@ -2,7 +2,7 @@
 
 const gulp = require('gulp');
 const babel = require('gulp-babel');
-const clean = require('gulp-clean');
+const del = require('del');
 const rev = require('gulp-rev');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
@@ -114,8 +114,10 @@ gulp.task('bundle_deps', gulp.parallel(
 ));
 
 gulp.task('clean', function() {
-    return gulp.src(['./dist/**/*', './assets.json'], { read: false })
-        .pipe(clean());
+    return del([
+        './dist/**/*',
+        './assets.json'
+    ]);
 });
 
 gulp.task('concat-js', function() {

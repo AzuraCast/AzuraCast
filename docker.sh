@@ -223,6 +223,15 @@ restore() {
 }
 
 #
+# Access the static console as a developer.
+# Usage: ./docker.sh static [static_container_command]
+#
+static() {
+    docker-compose -f docker-compose.static.yml build
+    docker-compose -f docker-compose.static.yml run --rm static $*
+}
+
+#
 # Stop all Docker containers and remove related volumes.
 # Usage: ./docker.sh uninstall
 #

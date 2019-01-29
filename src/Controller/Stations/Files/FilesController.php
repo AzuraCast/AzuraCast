@@ -275,9 +275,17 @@ class FilesController extends FilesControllerAbstract
         $filename = basename($file_path);
         $fh = $fs->readStream($file_path);
 
+        $file_meta = $fs->getMetadata($file_path);
+
+        try {
+            $file_mime = $fs->getMimetype($file_path);
+        } catch(\Exception $e) {
+            $file_mime = 'application/octet-stream';
+        }
+
         return $response
-            ->withHeader('Content-Type', mime_content_type($file_path))
-            ->withHeader('Content-Length', filesize($file_path))
+            ->withHeader('Content-Type', $file_mime)
+            ->withHeader('Content-Length', $file_meta['size'])
             ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
                 strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""))
             ->withBody(new \Slim\Http\Stream($fh));

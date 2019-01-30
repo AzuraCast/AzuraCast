@@ -183,7 +183,7 @@ class FilesController extends FilesControllerAbstract
         $new_dir = $file_path.'/'.$_POST['name'];
         $dir_created = $fs->createDir($new_dir);
         if (!$dir_created) {
-            return $this->_err($response, 403, sprintf('Directory "%s" was not created', $file_path . '/' . $dir));
+            return $this->_err($response, 403, sprintf('Directory "%s" was not created', $new_dir));
         }
 
         return $response->withJson(['success' => true]);

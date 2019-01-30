@@ -400,8 +400,12 @@ class StationMedia
     /**
      * @param float|null $fade_overlap
      */
-    public function setFadeOverlap(float $fade_overlap = null)
+    public function setFadeOverlap($fade_overlap = null): void
     {
+        if ($fade_overlap === '') {
+            $fade_overlap = null;
+        }
+
         $this->fade_overlap = $fade_overlap;
     }
 
@@ -416,8 +420,12 @@ class StationMedia
     /**
      * @param float|null $fade_in
      */
-    public function setFadeIn(float $fade_in = null)
+    public function setFadeIn($fade_in = null): void
     {
+        if ($fade_in === '') {
+            $fade_in = null;
+        }
+
         $this->fade_in = $fade_in;
     }
 
@@ -432,8 +440,12 @@ class StationMedia
     /**
      * @param float|null $fade_out
      */
-    public function setFadeOut(float $fade_out = null)
+    public function setFadeOut($fade_out = null): void
     {
+        if ($fade_out === '') {
+            $fade_out = null;
+        }
+
         $this->fade_out = $fade_out;
     }
 
@@ -448,8 +460,12 @@ class StationMedia
     /**
      * @param float|null $cue_in
      */
-    public function setCueIn(float $cue_in = null)
+    public function setCueIn($cue_in = null)
     {
+        if ($cue_in === '') {
+            $cue_in = null;
+        }
+
         $this->cue_in = $cue_in;
     }
 
@@ -464,8 +480,12 @@ class StationMedia
     /**
      * @param float|null $cue_out
      */
-    public function setCueOut(float $cue_out = null)
+    public function setCueOut($cue_out = null)
     {
+        if ($cue_out === '') {
+            $cue_out = null;
+        }
+
         $this->cue_out = $cue_out;
     }
 
@@ -474,7 +494,7 @@ class StationMedia
      *
      * @return int
      */
-    public function getCalculatedLength()
+    public function getCalculatedLength(): int
     {
         $length = (int)$this->length;
 

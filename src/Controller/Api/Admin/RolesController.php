@@ -122,7 +122,7 @@ class RolesController extends AbstractGenericCrudController
 
                         if (!empty($value['station'])) {
                             foreach($value['station'] as $station_id => $station_perms) {
-                                $station = $this->_em->find(Entity\Station::class, $station_id);
+                                $station = $this->em->find(Entity\Station::class, $station_id);
 
                                 if ($station instanceof Entity\Station) {
                                     foreach($station_perms as $perm_name) {

@@ -27,8 +27,6 @@ class Configuration
         $this->em = $em;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
-
-        $this->used_ports = [];
     }
 
     /**

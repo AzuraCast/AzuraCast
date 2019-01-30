@@ -1,10 +1,10 @@
 <?php
 namespace App\Middleware\Module;
 
-use App\Entity;
 use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
+use Slim\Route;
 
 /**
  * Module middleware for the /admin pages.

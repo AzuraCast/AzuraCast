@@ -73,11 +73,5 @@ class FrontendProvider implements ServiceProviderInterface
                 $config->get('forms/settings')
             );
         };
-
-        if (!APP_IN_PRODUCTION) {
-            $di[Frontend\UtilController::class] = function ($di) {
-                return new Frontend\UtilController($di);
-            };
-        }
     }
 }

@@ -1,0 +1,32 @@
+parameters:
+    level: 1
+
+    paths:
+        - src
+
+    ignoreErrors:
+        # These errors are reported because the gettext extension is not installed/enabled in CLI (see https://github.com/phpstan/phpstan/issues/604)
+        - '#Function __ not found.#'
+        - '#Function n__ not found.#'
+
+        # See https://github.com/phpstan/phpstan/issues/768
+        # TODO: Add bootstrap file for PHPStan
+        - '#Constant APP_IS_COMMAND_LINE not found.#'
+        - '#Constant APP_TESTING_MODE not found.#'
+        - '#Constant APP_INCLUDE_ROOT not found.#'
+        - '#Constant APP_APPLICATION_ENV not found.#'
+        - '#Constant APP_INSIDE_DOCKER not found.#'
+        - '#Constant APP_IN_PRODUCTION not found.#'
+        - '#Constant APP_INCLUDE_TEMP not found.#'
+        - '#Constant APP_DOCKER_REVISION not found.#'
+
+        # Seems to be a bug that is also present in PHPStorm. We should consider changing the code there
+        -
+            message: '#Variable \$key_identifier might not be defined.#'
+            path: %rootDir%/../../../src/Controller/Frontend/ApiKeysController.php
+        -
+            message: '#Variable \$key_verifier might not be defined.#'
+            path: %rootDir%/../../../src/Controller/Frontend/ApiKeysController.php
+
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon

@@ -61,6 +61,8 @@ class StreamersController
             return $view->renderToResponse($response, 'stations/streamers/disabled');
         }
 
+        $be_settings = (array)$station->getBackendConfig();
+
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
@@ -68,6 +70,7 @@ class StreamersController
             'server_url' => $settings_repo->getSetting('base_url', ''),
             'stream_port' => $backend->getStreamPort($station),
             'streamers' => $station->getStreamers(),
+            'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }

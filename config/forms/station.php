@@ -239,16 +239,6 @@ return [
 
             'elements' => [
 
-                'enable_streamers' => [
-                    'radio',
-                    [
-                        'label' => __('Allow Streamers / DJs'),
-                        'description' => __('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
-                        'default' => '0',
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                    ]
-                ],
-
                 'enable_requests' => [
                     'radio',
                     [
@@ -257,21 +247,6 @@ return [
                         'default' => '0',
                         'choices' => [0 => __('No'), 1 => __('Yes')],
                     ]
-                ],
-
-                'charset' => [
-                    'radio',
-                    [
-                        'label' => __('Character Set Encoding'),
-                        'description' => __('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.'),
-                        'belongsTo' => 'backend_config',
-                        'default' => 'UTF-8',
-                        'choices' => [
-                            'UTF-8' => 'UTF-8',
-                            'ISO-8859-1' => 'ISO-8859-1',
-                        ],
-                        'class' => 'field-advanced',
-                    ],
                 ],
 
                 'request_delay' => [
@@ -296,19 +271,16 @@ return [
                     ]
                 ],
 
-                'crossfade' => [
-                    'number',
+                'enable_streamers' => [
+                    'radio',
                     [
-                        'label' => __('Crossfade Duration (Seconds)'),
-                        'belongsTo' => 'backend_config',
-                        'description' => __('Number of seconds to overlap songs. Set to 0 to disable crossfade completely.'),
-                        'default' => 2,
-                        'min' => '0.0',
-                        'max' => '30.0',
-                        'step' => '0.1',
+                        'label' => __('Allow Streamers / DJs'),
+                        'description' => __('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
+                        'default' => '0',
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
                     ]
                 ],
-                
+
                 'disconnect_deactivate_streamer' => [
                     'number',
                     [
@@ -317,18 +289,6 @@ return [
                         'default' => 0,
                         'min' => '0',
                         'step' => '1',
-                    ]
-                ],
-
-                'use_manual_autodj' => [
-                    'radio',
-                    [
-                        'label' => __('Manual AutoDJ Mode'),
-                        'label_class' => 'advanced',
-                        'description' => __('This mode disables App\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
-                        'default' => '0',
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'belongsTo' => 'backend_config',
                     ]
                 ],
 
@@ -343,6 +303,17 @@ return [
                     ]
                 ],
 
+                'dj_mount_point' => [
+                    'text',
+                    [
+                        'label' => __('Customize DJ/Streamer Mount Point'),
+                        'label_class' => 'advanced',
+                        'description' => __('If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.'),
+                        'belongsTo' => 'backend_config',
+                        'default' => '/',
+                    ],
+                ],
+
                 'dj_buffer' => [
                     'text',
                     [
@@ -350,6 +321,46 @@ return [
                         'label_class' => 'advanced',
                         'description' => __('The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'),
                         'default' => 5,
+                        'belongsTo' => 'backend_config',
+                    ]
+                ],
+
+                'charset' => [
+                    'radio',
+                    [
+                        'label' => __('Character Set Encoding'),
+                        'description' => __('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.'),
+                        'belongsTo' => 'backend_config',
+                        'default' => 'UTF-8',
+                        'choices' => [
+                            'UTF-8' => 'UTF-8',
+                            'ISO-8859-1' => 'ISO-8859-1',
+                        ],
+                        'class' => 'field-advanced',
+                    ],
+                ],
+
+                'crossfade' => [
+                    'number',
+                    [
+                        'label' => __('Crossfade Duration (Seconds)'),
+                        'belongsTo' => 'backend_config',
+                        'description' => __('Number of seconds to overlap songs. Set to 0 to disable crossfade completely.'),
+                        'default' => 2,
+                        'min' => '0.0',
+                        'max' => '30.0',
+                        'step' => '0.1',
+                    ]
+                ],
+
+                'use_manual_autodj' => [
+                    'radio',
+                    [
+                        'label' => __('Manual AutoDJ Mode'),
+                        'label_class' => 'advanced',
+                        'description' => __('This mode disables App\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
+                        'default' => '0',
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
                         'belongsTo' => 'backend_config',
                     ]
                 ],

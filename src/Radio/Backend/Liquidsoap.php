@@ -107,46 +107,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '',
             'set("tag.encodings",["UTF-8","ISO-8859-1"])',
             'set("encoder.encoder.export",["artist","title","album","song"])',
-            '',
-            '# AutoDJ Next Song Script',
-            'def azuracast_next_song() =',
-            '  uri = get_process_lines("'.$this->_getApiUrlCommand($station, 'nextsong').'")',
-            '  uri = list.hd(uri, default="")',
-            '  log("AzuraCast Raw Response: #{uri}")',
-            '  ',
-            '  if uri == "" or string.match(pattern="Error", uri) then',
-            '    log("AzuraCast Error: Delaying subsequent requests...")',
-            '    system("sleep 2")',
-            '    request.create("")',
-            '  else',
-            '    request.create(uri)',
-            '  end',
-            'end',
-            '',
-            '# DJ Authentication',
-            'def dj_auth(user,password) =',
-            '  log("Authenticating DJ: #{user}")',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
-            '  ret = list.hd(ret, default="")',
-            '  log("AzuraCast DJ Auth Response: #{ret}")',
-            '  bool_of_string(ret)',
-            'end',
-            '',
-            'live_enabled = ref false',
-            '',
-            'def live_connected(header) =',
-            '  log("DJ Source connected! #{header}")',
-            '  live_enabled := true',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'djon').'")',
-            '  log("AzuraCast Live Connected Response: #{ret}")',
-            'end',
-            '',
-            'def live_disconnected() =',
-            '  log("DJ Source disconnected!")',
-            '  live_enabled := false',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'djoff').'")',
-            '  log("AzuraCast Live Disconnected Response: #{ret}")',
-            'end',
         ]);
     }
 
@@ -333,6 +293,23 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
             $fallbacks[] = 'requests';
         } else {
+            $event->appendLines([
+                '# AutoDJ Next Song Script',
+                'def azuracast_next_song() =',
+                '  uri = get_process_lines("'.$this->_getApiUrlCommand($station, 'nextsong').'")',
+                '  uri = list.hd(uri, default="")',
+                '  log("AzuraCast Raw Response: #{uri}")',
+                '  ',
+                '  if uri == "" or string.match(pattern="Error", uri) then',
+                '    log("AzuraCast Error: Delaying subsequent requests...")',
+                '    system("sleep 2")',
+                '    request.create("")',
+                '  else',
+                '    request.create(uri)',
+                '  end',
+                'end',
+            ]);
+
             $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
             $ls_config[] = 'dynamic = cue_cut(id="'.$this->_getVarName('cue_cut', $station).'", dynamic)';
             $fallbacks[] = 'dynamic';
@@ -349,11 +326,44 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
+
+        if (!$station->getEnableStreamers()) {
+            return;
+        }
+
+        $event->appendLines([
+            '# DJ Authentication',
+            'def dj_auth(user,password) =',
+            '  log("Authenticating DJ: #{user}")',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
+            '  ret = list.hd(ret, default="")',
+            '  log("AzuraCast DJ Auth Response: #{ret}")',
+            '  bool_of_string(ret)',
+            'end',
+            '',
+            'live_enabled = ref false',
+            '',
+            'def live_connected(header) =',
+            '  log("DJ Source connected! #{header}")',
+            '  live_enabled := true',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'djon').'")',
+            '  log("AzuraCast Live Connected Response: #{ret}")',
+            'end',
+            '',
+            'def live_disconnected() =',
+            '  log("DJ Source disconnected!")',
+            '  live_enabled := false',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'djoff').'")',
+            '  log("AzuraCast Live Disconnected Response: #{ret}")',
+            'end',
+        ]);
+
         $settings = (array)$station->getBackendConfig();
         $charset = $settings['charset'] ?? 'UTF-8';
+        $dj_mount = $settings['dj_mount_point'] ?? '/';
 
         $harbor_params = [
-            '"/"',
+            '"'.$this->_cleanUpString($dj_mount).'"',
             'id="'.$this->_getVarName('input_streamer', $station).'"',
             'port='.$this->getStreamPort($station),
             'user="shoutcast"',

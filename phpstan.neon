@@ -10,7 +10,6 @@ parameters:
         - '#Function n__ not found.#'
 
         # See https://github.com/phpstan/phpstan/issues/768
-        # TODO: Add bootstrap file for PHPStan
         - '#Constant APP_IS_COMMAND_LINE not found.#'
         - '#Constant APP_TESTING_MODE not found.#'
         - '#Constant APP_INCLUDE_ROOT not found.#'

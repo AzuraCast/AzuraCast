@@ -247,7 +247,7 @@ dev-tests() {
 # Run linter across all PHP code in the app.
 #
 dev-lint() {
-    docker-compose exec --user="azuracast" web vendor/bin/phplint $*
+    docker-compose exec --user="azuracast" web composer phplint -- $*
 }
 
 #
@@ -255,7 +255,7 @@ dev-lint() {
 # Run PHPStan for static analysis.
 #
 dev-phpstan() {
-    docker-compose exec --user="azuracast" web vendor/bin/phpstan analyze $*
+    docker-compose exec --user="azuracast" web composer phpstan -- $*
 }
 
 #
@@ -264,7 +264,7 @@ dev-phpstan() {
 #
 dev-codeception() {
     docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml build web
-    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web vendor/codeception/codeception/codecept run --no-interaction --coverage --coverage-xml --fail-fast
+    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web composer codeception -- $*
 }
 
 #

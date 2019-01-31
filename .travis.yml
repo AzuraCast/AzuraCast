@@ -30,9 +30,7 @@ install:
   - dc-testing run --user="azuracast" --rm web azuracast_install
 
 script:
-  - dc-testing run --user="azuracast" --rm web /var/azuracast/www/vendor/bin/phplint $*
-  - dc-testing run --user="azuracast" --rm web /var/azuracast/www/vendor/bin/phpstan analyze
-  - dc-testing run --user="azuracast" --rm web /var/azuracast/www/vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
+  - dc-testing run --user="azuracast" --rm web composer test
 
 after_failure:
   - cat tests/_output/*.html

@@ -56,6 +56,17 @@
     "squizlabs/php_codesniffer": "3.*",
     "overtrue/phplint": "^1.1"
   },
+  "scripts": {
+    "test": [
+      "@composer install",
+      "@phplint",
+      "@phpstan",
+      "@codeception"
+    ],
+    "phplint": "phplint",
+    "phpstan": "phpstan analyze",
+    "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast"
+  },
   "authors": [
     {
       "name": "Buster Neece",

@@ -17,7 +17,7 @@ class Song
 {
     use Traits\TruncateStrings;
 
-    const SYNC_THRESHOLD = 604800; // 604800 = 1 week
+    public const SYNC_THRESHOLD = 604800; // 604800 = 1 week
 
     /**
      * @ORM\Column(name="id", type="string", length=50)
@@ -155,9 +155,9 @@ class Song
     /**
      * Increment the play counter and last-played items.
      */
-    public function played()
+    public function played(): void
     {
-        $this->play_count += 1;
+        ++$this->play_count;
         $this->last_played = time();
     }
 
@@ -191,7 +191,7 @@ class Song
     }
 
     /**
-     * @param $song_info
+     * @param array|object|string $song_info
      * @return string
      */
     public static function getSongHash($song_info): string
@@ -212,12 +212,10 @@ class Song
         // Generate hash.
         if (!empty($song_info['text'])) {
             $song_text = $song_info['text'];
+        } elseif (!empty($song_info['artist'])) {
+            $song_text = $song_info['artist'] . ' - ' . $song_info['title'];
         } else {
-            if (!empty($song_info['artist'])) {
-                $song_text = $song_info['artist'] . ' - ' . $song_info['title'];
-            } else {
-                $song_text = $song_info['title'];
-            }
+            $song_text = $song_info['title'];
         }
 
         // Strip non-alphanumeric characters

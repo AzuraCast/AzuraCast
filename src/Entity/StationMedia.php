@@ -198,7 +198,7 @@ class StationMedia
     /**
      * @param Song|null $song
      */
-    public function setSong(Song $song = null)
+    public function setSong(Song $song = null): void
     {
         $this->song = $song;
     }
@@ -232,7 +232,7 @@ class StationMedia
     /**
      * @param null|string $title
      */
-    public function setTitle(string $title = null)
+    public function setTitle(string $title = null): void
     {
         $this->title = $this->_truncateString($title, 200);
     }
@@ -248,7 +248,7 @@ class StationMedia
     /**
      * @param null|string $artist
      */
-    public function setArtist(string $artist = null)
+    public function setArtist(string $artist = null): void
     {
         $this->artist = $this->_truncateString($artist, 200);
     }
@@ -264,7 +264,7 @@ class StationMedia
     /**
      * @param null|string $album
      */
-    public function setAlbum(string $album = null)
+    public function setAlbum(string $album = null): void
     {
         $this->album = $this->_truncateString($album, 200);
     }
@@ -272,7 +272,7 @@ class StationMedia
     /**
      * @return null|string
      */
-    public function getLyrics()
+    public function getLyrics(): ?string
     {
         return $this->lyrics;
     }
@@ -280,7 +280,7 @@ class StationMedia
     /**
      * @param null|string $lyrics
      */
-    public function setLyrics($lyrics)
+    public function setLyrics($lyrics): void
     {
         $this->lyrics = $lyrics;
     }
@@ -290,7 +290,7 @@ class StationMedia
      *
      * @return string
      */
-    public function getArtPath()
+    public function getArtPath(): string
     {
         return 'albumart://'.$this->unique_id.'.jpg';
     }
@@ -306,7 +306,7 @@ class StationMedia
     /**
      * @param null|string $isrc
      */
-    public function setIsrc(string $isrc = null)
+    public function setIsrc(string $isrc = null): void
     {
         $this->isrc = $isrc;
     }
@@ -320,9 +320,9 @@ class StationMedia
     }
 
     /**
-     * @param $length
+     * @param int $length
      */
-    public function setLength($length)
+    public function setLength($length): void
     {
         $length_min = floor($length / 60);
         $length_sec = $length % 60;
@@ -342,7 +342,7 @@ class StationMedia
     /**
      * @param null|string $length_text
      */
-    public function setLengthText(string $length_text = null)
+    public function setLengthText(string $length_text = null): void
     {
         $this->length_text = $length_text;
     }
@@ -358,7 +358,7 @@ class StationMedia
     /**
      * @param null|string $path
      */
-    public function setPath(string $path = null)
+    public function setPath(string $path = null): void
     {
         $this->path = $path;
     }
@@ -384,7 +384,7 @@ class StationMedia
     /**
      * @param int|null $mtime
      */
-    public function setMtime(int $mtime = null)
+    public function setMtime(int $mtime = null): void
     {
         $this->mtime = $mtime;
     }
@@ -460,7 +460,7 @@ class StationMedia
     /**
      * @param float|null $cue_in
      */
-    public function setCueIn($cue_in = null)
+    public function setCueIn($cue_in = null): void
     {
         if ($cue_in === '') {
             $cue_in = null;
@@ -480,7 +480,7 @@ class StationMedia
     /**
      * @param float|null $cue_out
      */
-    public function setCueOut($cue_out = null)
+    public function setCueOut($cue_out = null): void
     {
         if ($cue_out === '') {
             $cue_out = null;
@@ -517,11 +517,15 @@ class StationMedia
         return $this->playlist_items;
     }
 
+    /**
+     * @param StationPlaylist $playlist
+     * @return StationPlaylistMedia|null
+     */
     public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
     {
         $item = $this->playlist_items->filter(function($spm) use ($playlist) {
             /** @var StationPlaylistMedia $spm */
-            return ($spm->getPlaylist()->getId() == $playlist->getId());
+            return $spm->getPlaylist()->getId() === $playlist->getId();
         });
 
         return $item->first() ?? null;
@@ -586,7 +590,7 @@ class StationMedia
         foreach ($annotation_types as $annotation_property => $annotation_name) {
             if ($this->$annotation_property !== null) {
                 $prop = $this->$annotation_property;
-                $prop = mb_convert_encoding($prop, "UTF-8");
+                $prop = mb_convert_encoding($prop, 'UTF-8');
                 $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
 
                 if ($annotation_property === 'cue_out' && $prop < 0) {
@@ -594,8 +598,8 @@ class StationMedia
                 }
 
                 // Convert Liquidsoap-specific annotations to floats.
-                if ('liq' === substr($annotation_name, 0, 3)
-                    || 'duration' === $annotation_name) {
+                if ('duration' === $annotation_name ||
+                    0 === strpos($annotation_name, 'liq')) {
                     $prop = Liquidsoap::toFloat($prop);
                 }
 

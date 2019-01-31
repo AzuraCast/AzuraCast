@@ -13,7 +13,7 @@ interface ConnectorInterface
      * @param array|null $triggers The configured triggers for this connector.
      * @return bool
      */
-    public function shouldDispatch(SendWebhooks $event, array $triggers): bool;
+    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool;
 
     /**
      * Trigger the webhook for the specified station, now playing entry, and specified configuration.

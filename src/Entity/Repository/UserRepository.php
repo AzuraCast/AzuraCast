@@ -7,8 +7,8 @@ use Azura\Doctrine\Repository;
 class UserRepository extends Repository
 {
     /**
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      * @return bool|null|object
      */
     public function authenticate($username, $password)
@@ -21,18 +21,17 @@ class UserRepository extends Repository
 
         if ($login_info->verifyPassword($password)) {
             return $login_info;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
      * Creates or returns an existing user with the specified e-mail address.
      *
-     * @param $email
+     * @param string $email
      * @return Entity\User
      */
-    public function getOrCreate($email)
+    public function getOrCreate($email): Entity\User
     {
         $user = $this->findOneBy(['email' => $email]);
 

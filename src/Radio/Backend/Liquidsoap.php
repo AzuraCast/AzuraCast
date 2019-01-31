@@ -482,11 +482,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Returns the URL that LiquidSoap should call when attempting to execute AzuraCast API commands.
      *
      * @param Entity\Station $station
-     * @param $endpoint
+     * @param string $endpoint
      * @param array $params
      * @return string
      */
-    protected function _getApiUrlCommand(Entity\Station $station, $endpoint, $params = [])
+    protected function _getApiUrlCommand(Entity\Station $station, $endpoint, $params = []): string
     {
         // Docker cURL-based API URL call with API authentication.
         if (APP_INSIDE_DOCKER) {
@@ -520,15 +520,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /**
      * Configure the time offset
      *
-     * @param $time_code
+     * @param int $time_code
      * @return string
      */
-    protected function _getTime($time_code)
+    protected function _getTime($time_code): string
     {
         $hours = floor($time_code / 100);
         $mins = $time_code % 100;
 
-        $system_time_zone = \App\Utilities::get_system_time_zone();
+        $system_time_zone = \App\Utilities::getSystemTimeZone();
         $app_time_zone = 'UTC';
 
         if ($system_time_zone !== $app_time_zone) {
@@ -557,7 +557,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /**
      * Filter a user-supplied string to be a valid LiquidSoap config entry.
      *
-     * @param $string
+     * @param string $string
      * @return mixed
      */
     protected function _cleanUpString($string)
@@ -568,7 +568,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /**
      * Given an original name and a station, return a filtered prefixed variable identifying the station.
      *
-     * @param $original_name
+     * @param string $original_name
      * @param Entity\Station $station
      * @return string
      */
@@ -671,7 +671,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * If a station uses Manual AutoDJ mode, enqueue a request directly with Liquidsoap.
      *
      * @param Entity\Station $station
-     * @param $music_file
+     * @param string $music_file
      * @return array
      * @throws \Azura\Exception
      */
@@ -732,7 +732,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Execute the specified remote command on LiquidSoap via the telnet API.
      *
      * @param Entity\Station $station
-     * @param $command_str
+     * @param string $command_str
      * @return array
      * @throws \Azura\Exception
      */

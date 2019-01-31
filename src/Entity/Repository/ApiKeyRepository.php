@@ -9,7 +9,7 @@ class ApiKeyRepository extends Repository
     /**
      * Given an API key string in the format `identifier:verifier`, find and authenticate an API key.
      *
-     * @param $key_string
+     * @param string $key_string
      * @return Entity\User|null
      */
     public function authenticate($key_string): ?Entity\User

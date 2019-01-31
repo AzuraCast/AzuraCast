@@ -73,10 +73,9 @@ class Analytics
      */
     protected $station;
 
-    /**
-     * Analytics constructor.
+    /*
      * @param Station|null $station
-     * @param $type
+     * @param string $type
      * @param null $timestamp
      * @param int $number_min
      * @param int $number_max

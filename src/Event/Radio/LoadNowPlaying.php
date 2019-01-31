@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class LoadNowPlaying extends Event
 {
-    const NAME = 'radio-nowplaying-load';
+    public const NAME = 'radio-nowplaying-load';
 
     /** @var NowPlaying[] */
     protected $np = [];

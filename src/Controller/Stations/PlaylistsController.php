@@ -47,6 +47,12 @@ class PlaylistsController
         $this->playlist_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param int|string $station_id
+     * @return ResponseInterface
+     */
     public function indexAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
@@ -93,7 +99,7 @@ class PlaylistsController
      *
      * @param Request $request
      * @param Response $response
-     * @param $station_id
+     * @param int|string $station_id
      * @return Response
      */
     public function scheduleAction(Request $request, Response $response, $station_id): ResponseInterface

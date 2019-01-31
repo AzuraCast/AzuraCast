@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class GenerateRawNowPlaying extends Event
 {
-    const NAME = 'radio-nowplaying-generate-raw';
+    public const NAME = 'radio-nowplaying-generate-raw';
 
     /** @var Station */
     protected $station;

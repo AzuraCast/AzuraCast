@@ -13,7 +13,7 @@ use Psr\Http\Message\UriInterface;
  */
 class SongHistory
 {
-    const DEFAULT_DAYS_TO_KEEP = 60;
+    public const DEFAULT_DAYS_TO_KEEP = 60;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -224,7 +224,7 @@ class SongHistory
     /**
      * @return StationPlaylist|null
      */
-    public function getPlaylist()
+    public function getPlaylist(): ?StationPlaylist
     {
         return $this->playlist;
     }
@@ -232,7 +232,7 @@ class SongHistory
     /**
      * @param StationPlaylist|null $playlist
      */
-    public function setPlaylist(StationPlaylist $playlist = null)
+    public function setPlaylist(StationPlaylist $playlist = null): void
     {
         $this->playlist = $playlist;
     }
@@ -240,7 +240,7 @@ class SongHistory
     /**
      * @return StationMedia|null
      */
-    public function getMedia()
+    public function getMedia(): ?StationMedia
     {
         return $this->media;
     }
@@ -248,7 +248,7 @@ class SongHistory
     /**
      * @param StationMedia|null $media
      */
-    public function setMedia(StationMedia $media = null)
+    public function setMedia(StationMedia $media = null): void
     {
         $this->media = $media;
     }
@@ -256,7 +256,7 @@ class SongHistory
     /**
      * @return StationRequest|null
      */
-    public function getRequest()
+    public function getRequest(): ?StationRequest
     {
         return $this->request;
     }
@@ -264,7 +264,7 @@ class SongHistory
     /**
      * @param StationRequest|null $request
      */
-    public function setRequest($request)
+    public function setRequest($request): void
     {
         $this->request = $request;
     }
@@ -288,7 +288,7 @@ class SongHistory
     /**
      * @return int|null
      */
-    public function getTimestampCued()
+    public function getTimestampCued(): ?int
     {
         return $this->timestamp_cued;
     }
@@ -296,7 +296,7 @@ class SongHistory
     /**
      * @param int|null $timestamp_cued
      */
-    public function setTimestampCued($timestamp_cued)
+    public function setTimestampCued($timestamp_cued): void
     {
         $this->timestamp_cued = $timestamp_cued;
     }
@@ -309,7 +309,7 @@ class SongHistory
         return $this->sent_to_autodj;
     }
 
-    public function sentToAutodj()
+    public function sentToAutodj(): void
     {
         $this->sent_to_autodj = true;
     }
@@ -325,7 +325,7 @@ class SongHistory
     /**
      * @param int $timestamp_start
      */
-    public function setTimestampStart(int $timestamp_start)
+    public function setTimestampStart(int $timestamp_start): void
     {
         $this->timestamp_start = $timestamp_start;
     }
@@ -333,7 +333,7 @@ class SongHistory
     /**
      * @return int|null
      */
-    public function getDuration()
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
@@ -341,7 +341,7 @@ class SongHistory
     /**
      * @param int|null $duration
      */
-    public function setDuration($duration)
+    public function setDuration($duration): void
     {
         $this->duration = $duration;
     }
@@ -349,7 +349,7 @@ class SongHistory
     /**
      * @return int|null
      */
-    public function getListenersStart()
+    public function getListenersStart(): ?int
     {
         return $this->listeners_start;
     }
@@ -357,7 +357,7 @@ class SongHistory
     /**
      * @param int|null $listeners_start
      */
-    public function setListenersStart($listeners_start)
+    public function setListenersStart($listeners_start): void
     {
         $this->listeners_start = $listeners_start;
     }
@@ -373,11 +373,14 @@ class SongHistory
     /**
      * @param int $timestamp_end
      */
-    public function setTimestampEnd(int $timestamp_end)
+    public function setTimestampEnd(int $timestamp_end): void
     {
         $this->timestamp_end = $timestamp_end;
     }
 
+    /**
+     * @return int
+     */
     public function getTimestamp(): int
     {
         return (int)$this->timestamp_start;
@@ -386,7 +389,7 @@ class SongHistory
     /**
      * @return int|null
      */
-    public function getListenersEnd()
+    public function getListenersEnd(): ?int
     {
         return $this->listeners_end;
     }
@@ -394,7 +397,7 @@ class SongHistory
     /**
      * @param int|null $listeners_end
      */
-    public function setListenersEnd($listeners_end)
+    public function setListenersEnd($listeners_end): void
     {
         $this->listeners_end = $listeners_end;
     }
@@ -402,7 +405,7 @@ class SongHistory
     /**
      * @return int|null
      */
-    public function getUniqueListeners()
+    public function getUniqueListeners(): ?int
     {
         return $this->unique_listeners;
     }
@@ -410,11 +413,14 @@ class SongHistory
     /**
      * @param int|null $unique_listeners
      */
-    public function setUniqueListeners($unique_listeners)
+    public function setUniqueListeners($unique_listeners): void
     {
         $this->unique_listeners = $unique_listeners;
     }
 
+    /**
+     * @return int
+     */
     public function getListeners(): int
     {
         return (int)$this->listeners_start;
@@ -431,7 +437,7 @@ class SongHistory
     /**
      * @param int $delta_total
      */
-    public function setDeltaTotal(int $delta_total)
+    public function setDeltaTotal(int $delta_total): void
     {
         $this->delta_total = $delta_total;
     }
@@ -447,7 +453,7 @@ class SongHistory
     /**
      * @param int $delta_positive
      */
-    public function setDeltaPositive(int $delta_positive)
+    public function setDeltaPositive(int $delta_positive): void
     {
         $this->delta_positive = $delta_positive;
     }
@@ -463,7 +469,7 @@ class SongHistory
     /**
      * @param int $delta_negative
      */
-    public function setDeltaNegative(int $delta_negative)
+    public function setDeltaNegative(int $delta_negative): void
     {
         $this->delta_negative = $delta_negative;
     }
@@ -477,9 +483,9 @@ class SongHistory
     }
 
     /**
-     * @param $delta_point
+     * @param mixed $delta_point
      */
-    public function addDeltaPoint($delta_point)
+    public function addDeltaPoint($delta_point): void
     {
         $delta_points = (array)$this->delta_points;
         $delta_points[] = $delta_point;

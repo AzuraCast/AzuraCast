@@ -116,7 +116,7 @@ class Icecast extends AbstractFrontend
         if (!empty($frontend_config['custom_config'])) {
             $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
             if (!empty($custom_conf)) {
-                $config = Utilities::array_merge_recursive_distinct($config, $custom_conf);
+                $config = Utilities::arrayMergeRecursiveDistinct($config, $custom_conf);
             }
         }
 
@@ -174,7 +174,7 @@ class Icecast extends AbstractFrontend
             $reader = new \App\Xml\Reader;
             $data = $reader->fromFile($icecast_path);
 
-            return Utilities::array_merge_recursive_distinct($defaults, $data);
+            return Utilities::arrayMergeRecursiveDistinct($defaults, $data);
         }
 
         return $defaults;
@@ -284,7 +284,7 @@ class Icecast extends AbstractFrontend
                 $mount_conf = $this->_processCustomConfig($mount_row->getFrontendConfig());
 
                 if (!empty($mount_conf)) {
-                    $mount = Utilities::array_merge_recursive_distinct($mount, $mount_conf);
+                    $mount = Utilities::arrayMergeRecursiveDistinct($mount, $mount_conf);
                 }
             }
 

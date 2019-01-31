@@ -28,7 +28,7 @@ abstract class AbstractRemote
 
     /**
      * @param Entity\StationRemote $remote
-     * @param $np
+     * @param array $np
      * @param bool $include_clients
      * @return bool
      */
@@ -39,8 +39,8 @@ abstract class AbstractRemote
 
     /**
      * @param Entity\StationRemote $remote
-     * @param $np
-     * @param $adapter_class
+     * @param array $np
+     * @param string $adapter_class
      * @param bool $include_clients
      * @return bool
      */

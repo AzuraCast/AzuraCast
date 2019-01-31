@@ -24,7 +24,6 @@ abstract class AbstractAdapter
     protected $dispatcher;
 
     /**
-     * AdapterAbstract constructor.
      * @param EntityManager $em
      * @param Supervisor $supervisor
      * @param Logger $logger
@@ -160,7 +159,7 @@ abstract class AbstractAdapter
      * Internal handling of any Supervisor-related exception, to add richer data to it.
      *
      * @param FaultException $e
-     * @param $program_name
+     * @param string $program_name
      * @param Entity\Station $station
      *
      * @throws \App\Exception\Supervisor

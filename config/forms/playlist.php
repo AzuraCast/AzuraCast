@@ -89,7 +89,7 @@ return [
                             3 => '3 - '.__('Default'),
                             4 => '4',
                             5 => '5 - '.__('High'),
-                        ] + \App\Utilities::pairs(range(6, 25)),
+                        ] + array_combine(range(6, 25), range(6, 25)),
                     ]
                 ],
 

@@ -135,11 +135,11 @@ class StationMount implements StationMountInterface
     }
 
     /**
-     * Ensure all mountpoint names start with a leading slash.
-     * @param $new_name
+     * @param string $new_name
      */
-    public function setName(string $new_name)
+    public function setName(string $new_name): void
     {
+        // Ensure all mount point names start with a leading slash.
         $this->name = $this->_truncateString('/' . ltrim($new_name, '/'), 100);
     }
 
@@ -154,7 +154,7 @@ class StationMount implements StationMountInterface
     /**
      * @param bool $is_default
      */
-    public function setIsDefault(bool $is_default)
+    public function setIsDefault(bool $is_default): void
     {
         $this->is_default = $is_default;
     }
@@ -170,7 +170,7 @@ class StationMount implements StationMountInterface
     /**
      * @param bool $is_public
      */
-    public function setIsPublic(bool $is_public)
+    public function setIsPublic(bool $is_public): void
     {
         $this->is_public = $is_public;
     }
@@ -186,7 +186,7 @@ class StationMount implements StationMountInterface
     /**
      * @param null|string $fallback_mount
      */
-    public function setFallbackMount($fallback_mount)
+    public function setFallbackMount($fallback_mount): void
     {
         $this->fallback_mount = $fallback_mount;
     }
@@ -202,7 +202,7 @@ class StationMount implements StationMountInterface
     /**
      * @param null|string $relay_url
      */
-    public function setRelayUrl($relay_url)
+    public function setRelayUrl($relay_url): void
     {
         $this->relay_url = $relay_url;
     }
@@ -218,7 +218,7 @@ class StationMount implements StationMountInterface
     /**
      * @param null|string $authhash
      */
-    public function setAuthhash(string $authhash = null)
+    public function setAuthhash(string $authhash = null): void
     {
         $this->authhash = $authhash;
     }
@@ -234,7 +234,7 @@ class StationMount implements StationMountInterface
     /**
      * @param bool $enable_autodj
      */
-    public function setEnableAutodj(bool $enable_autodj)
+    public function setEnableAutodj(bool $enable_autodj): void
     {
         $this->enable_autodj = $enable_autodj;
     }
@@ -250,7 +250,7 @@ class StationMount implements StationMountInterface
     /**
      * @param null|string $autodj_format
      */
-    public function setAutodjFormat(string $autodj_format = null)
+    public function setAutodjFormat(string $autodj_format = null): void
     {
         $this->autodj_format = $autodj_format;
     }
@@ -266,7 +266,7 @@ class StationMount implements StationMountInterface
     /**
      * @param int|null $autodj_bitrate
      */
-    public function setAutodjBitrate(int $autodj_bitrate = null)
+    public function setAutodjBitrate(int $autodj_bitrate = null): void
     {
         $this->autodj_bitrate = $autodj_bitrate;
     }
@@ -282,7 +282,7 @@ class StationMount implements StationMountInterface
     /**
      * @param null|string $custom_listen_url
      */
-    public function setCustomListenUrl(string $custom_listen_url = null)
+    public function setCustomListenUrl(string $custom_listen_url = null): void
     {
         $this->custom_listen_url = $custom_listen_url;
     }
@@ -298,7 +298,7 @@ class StationMount implements StationMountInterface
     /**
      * @param null|string $frontend_config
      */
-    public function setFrontendConfig(string $frontend_config = null)
+    public function setFrontendConfig(string $frontend_config = null): void
     {
         $this->frontend_config = $frontend_config;
     }

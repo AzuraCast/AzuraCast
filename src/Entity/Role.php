@@ -57,7 +57,7 @@ class Role implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId(): int
     {
@@ -75,7 +75,7 @@ class Role implements \JsonSerializable
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $this->_truncateString($name, 100);
     }

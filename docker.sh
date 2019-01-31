@@ -246,9 +246,8 @@ dev-phpstan() {
 #
 dev-codeception() {
     docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml build web
-    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web /var/azuracast/www/vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
+    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web vendor/codeception/codeception/codecept run --no-interaction --coverage --coverage-xml --fail-fast
 }
-
 
 #
 # Stop all Docker containers and remove related volumes.

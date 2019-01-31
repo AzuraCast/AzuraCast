@@ -10,7 +10,7 @@ class StationRequestRepository extends Repository
      * Submit a new request.
      *
      * @param Entity\Station $station
-     * @param $track_id
+     * @param int $track_id
      * @param bool $is_authenticated
      * @return mixed
      * @throws \Azura\Exception
@@ -18,7 +18,7 @@ class StationRequestRepository extends Repository
     public function submit(Entity\Station $station, $track_id, $is_authenticated = false)
     {
         // Forbid web crawlers from using this feature.
-        if (\App\Utilities::is_crawler()) {
+        if (\App\Utilities::isCrawler()) {
             throw new \Azura\Exception('Search engine crawlers are not permitted to use this feature.');
         }
 
@@ -50,7 +50,7 @@ class StationRequestRepository extends Repository
             $user_ip = $_SERVER['REMOTE_ADDR'];
 
             // Check for any request (on any station) within the last $threshold_seconds.
-            $threshold_mins = (int)($station->getRequestThreshold() ?? 5);
+            $threshold_mins = $station->getRequestThreshold() ?? 5;
             $threshold_seconds = $threshold_mins * 60;
 
             $recent_requests = $this->_em->createQuery('SELECT sr FROM ' . $this->_entityName . ' sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')

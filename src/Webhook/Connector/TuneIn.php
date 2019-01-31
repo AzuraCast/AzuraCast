@@ -8,7 +8,7 @@ use Monolog\Logger;
 
 class TuneIn extends AbstractConnector
 {
-    public function shouldDispatch(SendWebhooks $event, array $triggers): bool
+    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool
     {
         return $event->hasTrigger('song_changed');
     }

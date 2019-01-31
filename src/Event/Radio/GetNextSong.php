@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class GetNextSong extends Event
 {
-    const NAME = 'autodj-next-song';
+    public const NAME = 'autodj-next-song';
 
     /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
     protected $next_song;

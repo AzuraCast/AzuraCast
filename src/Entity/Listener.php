@@ -17,7 +17,7 @@ class Listener
     /**
      * Listener constructor.
      * @param Station $station
-     * @param $client
+     * @param array $client
      */
     public function __construct(Station $station, $client)
     {
@@ -166,7 +166,7 @@ class Listener
     /**
      * @param int $timestamp_end
      */
-    public function setTimestampEnd(int $timestamp_end)
+    public function setTimestampEnd(int $timestamp_end): void
     {
         $this->timestamp_end = $timestamp_end;
     }
@@ -180,7 +180,7 @@ class Listener
     }
 
     /**
-     * @param $client
+     * @param array $client
      * @return string
      */
     public static function calculateListenerHash($client): string

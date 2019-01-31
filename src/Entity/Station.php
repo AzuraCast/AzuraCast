@@ -381,13 +381,13 @@ class Station
     }
 
     /**
-     * @param $frontend_config
+     * @param array $frontend_config
      * @param bool $force_overwrite
      */
-    public function setFrontendConfig($frontend_config, $force_overwrite = false): void
+    public function setFrontendConfig(array $frontend_config, $force_overwrite = false): void
     {
         $config = ($force_overwrite) ? [] : (array)$this->frontend_config;
-        foreach((array)$frontend_config as $cfg_key => $cfg_val) {
+        foreach($frontend_config as $cfg_key => $cfg_val) {
             $config[$cfg_key] = $cfg_val;
         }
 
@@ -401,9 +401,9 @@ class Station
     /**
      * Set frontend configuration but do not overwrite existing values.
      *
-     * @param $default_config
+     * @param array $default_config
      */
-    public function setFrontendConfigDefaults($default_config): void
+    public function setFrontendConfigDefaults(array $default_config): void
     {
         $frontend_config = (array)$this->frontend_config;
 
@@ -441,13 +441,13 @@ class Station
     }
 
     /**
-     * @param $backend_config
+     * @param array $backend_config
      * @param bool $force_overwrite
      */
-    public function setBackendConfig($backend_config, $force_overwrite = false): void
+    public function setBackendConfig(array $backend_config, $force_overwrite = false): void
     {
         $config = ($force_overwrite) ? [] : (array)$this->backend_config;
-        foreach((array)$backend_config as $cfg_key => $cfg_val) {
+        foreach($backend_config as $cfg_key => $cfg_val) {
             $config[$cfg_key] = $cfg_val;
         }
 
@@ -488,7 +488,7 @@ class Station
     /**
      * Authenticate the supplied adapter API key.
      *
-     * @param $api_key
+     * @param string $api_key
      * @return bool
      */
     public function validateAdapterApiKey($api_key): bool
@@ -553,7 +553,7 @@ class Station
     }
 
     /**
-     * @param $new_dir
+     * @param string $new_dir
      */
     public function setRadioBaseDir($new_dir): void
     {
@@ -571,10 +571,8 @@ class Station
                 $this->getRadioTempDir(),
             ];
             foreach ($radio_dirs as $radio_dir) {
-                if (!file_exists($radio_dir)) {
-                    if (!mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
-                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
-                    }
+                if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
                 }
             }
         }
@@ -609,7 +607,7 @@ class Station
     /**
      * Given an absolute path, return a path relative to this station's media directory.
      *
-     * @param $full_path
+     * @param string $full_path
      * @return string
      */
     public function getRelativeMediaPath($full_path): string
@@ -634,7 +632,7 @@ class Station
     }
 
     /**
-     * @param $new_dir
+     * @param string $new_dir
      */
     public function setRadioMediaDir(?string $new_dir): void
     {
@@ -1103,7 +1101,7 @@ class Station
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return string
      */
     public static function getStationShortName($name): string

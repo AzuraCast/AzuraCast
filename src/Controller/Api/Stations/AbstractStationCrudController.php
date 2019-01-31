@@ -14,7 +14,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $station_id
+     * @param int|string $station_id
      * @return ResponseInterface
      * @throws \Azura\Exception
      */
@@ -36,7 +36,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
             $return = $this->_viewRecord($row, $router);
             if ($is_bootgrid) {
-                return Utilities::flatten_array($return, '_');
+                return Utilities::flattenArray($return, '_');
             }
 
             return $return;
@@ -48,7 +48,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $station_id
+     * @param int|string $station_id
      * @return ResponseInterface
      */
     public function createAction(Request $request, Response $response, $station_id): ResponseInterface
@@ -67,7 +67,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $record_id
+     * @param int|string $record_id
      * @return ResponseInterface
      */
     public function getAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
@@ -82,8 +82,8 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $station_id
-     * @param $record_id
+     * @param int|string $station_id
+     * @param int|string $record_id
      * @return ResponseInterface
      */
     public function editAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
@@ -104,8 +104,8 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $station_id
-     * @param $record_id
+     * @param int|string $station_id
+     * @param int|string $record_id
      * @return ResponseInterface
      */
     public function deleteAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
@@ -125,7 +125,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
 
     /**
      * @param Entity\Station $station
-     * @param $record_id
+     * @param int|string $record_id
      * @return object|null
      */
     protected function _getRecord(Entity\Station $station, $record_id)

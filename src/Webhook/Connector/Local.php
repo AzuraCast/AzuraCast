@@ -28,7 +28,7 @@ class Local extends AbstractConnector
         $this->settings_repo = $settings_repo;
     }
 
-    public function shouldDispatch(SendWebhooks $event, array $triggers): bool
+    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool
     {
         return true;
     }

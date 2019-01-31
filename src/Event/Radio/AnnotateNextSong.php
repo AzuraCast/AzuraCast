@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AnnotateNextSong extends Event
 {
-    const NAME = 'radio-liquidsoap-annotate-next-song';
+    public const NAME = 'radio-liquidsoap-annotate-next-song';
 
     /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
     protected $next_song;

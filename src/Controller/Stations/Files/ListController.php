@@ -164,7 +164,7 @@ class ListController extends FilesControllerAbstract
             $sort_by[] = \SORT_ASC;
         }
 
-        $result = \App\Utilities::array_order_by($result, $sort_by);
+        $result = \App\Utilities::arrayOrderBy($result, $sort_by);
 
         $num_results = count($result);
 

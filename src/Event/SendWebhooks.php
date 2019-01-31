@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class SendWebhooks extends Event
 {
-    const NAME = 'webhooks-send';
+    public const NAME = 'webhooks-send';
 
     /** @var Station */
     protected $station;
@@ -75,12 +75,12 @@ class SendWebhooks extends Event
     }
 
     /**
-     * @param $trigger_name
+     * @param string $trigger_name
      * @return bool
      */
     public function hasTrigger($trigger_name): bool
     {
-        return in_array($trigger_name, $this->triggers);
+        return in_array($trigger_name, $this->triggers, true);
     }
 
     /**

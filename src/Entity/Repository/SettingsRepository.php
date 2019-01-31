@@ -20,8 +20,8 @@ class SettingsRepository extends Repository
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param mixed $value
      */
     public function setSetting($key, $value): void
     {
@@ -41,7 +41,7 @@ class SettingsRepository extends Repository
     }
 
     /**
-     * @param $key
+     * @param string $key
      */
     public function deleteSetting($key): void
     {
@@ -57,8 +57,8 @@ class SettingsRepository extends Repository
     }
 
     /**
-     * @param $key
-     * @param null $default_value
+     * @param string $key
+     * @param mixed|null $default_value
      * @param bool $cached
      * @return mixed|null
      */
@@ -71,7 +71,7 @@ class SettingsRepository extends Repository
     /**
      * @return array
      */
-    public function fetchAll()
+    public function fetchAll(): array
     {
         $all_records_raw = $this->findAll();
 
@@ -90,7 +90,7 @@ class SettingsRepository extends Repository
      * @param string $order_dir
      * @return array
      */
-    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC')
+    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
         if (!self::$settings || !$cached) {
             $settings_raw = $this->_em->createQuery('SELECT s FROM ' . $this->_entityName . ' s ORDER BY s.setting_key ASC')
@@ -108,7 +108,7 @@ class SettingsRepository extends Repository
     /**
      * Force a clearing of the cache.
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         // Regenerate cache and flush static value.
         $this->fetchArray(false);

@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    const FALLBACK_VERSION = '0.9.1';
+    public const FALLBACK_VERSION = '0.9.1';
 
     /** @var Cache */
     protected $cache;
@@ -33,7 +33,7 @@ class Version
     /**
      * @return string The current tagged version.
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         $details = $this->getDetails();
         return $details['tag'] ?? self::FALLBACK_VERSION;
@@ -42,7 +42,7 @@ class Version
     /**
      * @return string A textual representation of the current installed version.
      */
-    public function getVersionText()
+    public function getVersionText(): string
     {
         $details = $this->getDetails();
 
@@ -124,7 +124,7 @@ class Version
     /**
      * Run the specified process and return its output.
      *
-     * @param $proc
+     * @param array $proc
      * @param string $default
      * @return string
      */
@@ -140,7 +140,4 @@ class Version
 
         return trim($process->getOutput());
     }
-
-
-
 }

@@ -24,7 +24,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
             $return = $this->_viewRecord($row, $router);
 
             if ($is_bootgrid) {
-                return Utilities::flatten_array($return, '_');
+                return Utilities::flattenArray($return, '_');
             }
 
             return $return;

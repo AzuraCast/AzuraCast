@@ -14,11 +14,11 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 {
     use ObjectToPopulateTrait;
 
-    const DEEP_NORMALIZE = 'deep';
-    const NORMALIZE_TO_IDENTIFIERS = 'form_mode';
+    public const DEEP_NORMALIZE = 'deep';
+    public const NORMALIZE_TO_IDENTIFIERS = 'form_mode';
 
-    const CLASS_METADATA = 'class_metadata';
-    const ASSOCIATION_MAPPINGS = 'association_mappings';
+    public const CLASS_METADATA = 'class_metadata';
+    public const ASSOCIATION_MAPPINGS = 'association_mappings';
 
     /** @var EntityManager */
     protected $em;
@@ -55,7 +55,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param mixed $object
      * @param null $format
      * @param array $context
-     * @return array|bool|float|int|string
+     * @return mixed
      */
     public function normalize($object, $format = null, array $context = array())
     {
@@ -75,9 +75,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
                 $value = $this->getAttributeValue($object, $attribute, $format, $context);
 
-                /**
-                 * @var $callback callable|null
-                 */
+                /** @var callable|null $callback */
                 $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? $this->callbacks[$attribute] ?? null;
                 if ($callback) {
                     $value = $callback($value, $object, $attribute, $format, $context);
@@ -93,11 +91,11 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     }
 
     /**
-     * @param $object
-     * @param $prop_name
+     * @param object $object
+     * @param string $prop_name
      * @param null $format
      * @param array $context
-     * @return array|bool|float|int|string|null
+     * @return mixed
      */
     protected function getAttributeValue($object, $prop_name, $format = null, array $context = array())
     {
@@ -158,9 +156,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @param mixed $data
      * @param string $class
-     * @param null $format
+     * @param string|null $format
      * @param array $context
-     * @return object|void
+     * @return object
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
@@ -197,9 +195,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         }
 
         foreach ((array)$data as $attribute => $value) {
-            /**
-             * @var $callback callable|null
-             */
+            /** @var callable|null $callback */
             $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? $this->callbacks[$attribute] ?? null;
             if ($callback) {
                 $value = $callback($value, $object, $attribute, $format, $context);
@@ -207,16 +203,18 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
             $this->setAttributeValue($object, $attribute, $value, $format, $context);
         }
+
+        return $object;
     }
 
     /**
-     * @param $object
-     * @param $field
-     * @param $value
+     * @param object $object
+     * @param string $field
+     * @param mixed $value
      * @param null $format
      * @param array $context
      */
-    protected function setAttributeValue($object, $field, $value, $format = null, array $context = array())
+    protected function setAttributeValue($object, $field, $value, $format = null, array $context = array()): void
     {
         if (isset($context[self::ASSOCIATION_MAPPINGS][$field])) {
             // Handle a mapping to another entity.
@@ -265,7 +263,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     }
 
     /**
-     * @param $class
+     * @param object|string $class
      * @return bool
      */
     protected function _isEntity($class): bool
@@ -286,8 +284,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     }
 
     /**
-     * @param $entity
-     * @param $key
+     * @param object $entity
+     * @param string $key
      * @return mixed|null
      */
     protected function _get($entity, $key)
@@ -308,9 +306,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     }
 
     /**
-     * @param $entity
-     * @param $key
-     * @param $value
+     * @param object $entity
+     * @param string $key
+     * @param mixed $value
      * @return mixed|null
      */
     protected function _set($entity, $key, $value)
@@ -325,7 +323,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /**
      * Converts "getvar_name_blah" to "getVarNameBlah".
      *
-     * @param $var
+     * @param string $var
      * @param string $prefix
      * @return string
      */

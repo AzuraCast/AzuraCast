@@ -165,7 +165,7 @@ class StationPlaylistMediaRepository extends Repository
      * ]
      *
      * @param Entity\StationPlaylist $playlist
-     * @param $mapping
+     * @param array $mapping
      */
     public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping)
     {

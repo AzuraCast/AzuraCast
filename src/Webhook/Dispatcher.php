@@ -155,7 +155,7 @@ class Dispatcher implements EventSubscriberInterface
     /**
      * Directly access a webhook connector of the specified type.
      *
-     * @param $type
+     * @param string $type
      * @return Connector\ConnectorInterface
      */
     public function getConnector($type): Connector\ConnectorInterface

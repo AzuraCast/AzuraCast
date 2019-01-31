@@ -99,7 +99,7 @@ class Setup extends CommandAbstract
                 'AzuraCast is now updated to the latest version!',
             ]);
         } else {
-            $public_ip = Utilities::get_public_ip();
+            $public_ip = Utilities::getPublicIp();
 
             $io->success([
                 'AzuraCast installation complete!',

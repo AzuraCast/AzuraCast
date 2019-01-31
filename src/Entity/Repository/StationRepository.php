@@ -70,7 +70,7 @@ class StationRepository extends Repository
         $results = $this->fetchArray();
 
         // Assemble select values and, if necessary, call $display callback.
-        foreach ((array)$results as $result) {
+        foreach ($results as $result) {
             $key = $result[$pk];
             $value = ($display === null) ? $result['name'] : $display($result);
             $select[$key] = $value;
@@ -80,7 +80,7 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param $short_code
+     * @param string $short_code
      * @return null|object
      */
     public function findByShortCode($short_code)
@@ -89,7 +89,7 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @param Entity\Station|null $record
      * @return Entity\Station
      */
@@ -101,7 +101,7 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @param Entity\Station $record
      * @return Entity\Station
      */
@@ -212,35 +212,6 @@ class StationRepository extends Repository
         $this->_em->refresh($station);
     }
 
-    public function clone(Entity\Station $record, array $data, array $options = [])
-    {
-        $new_record_data = $this->toArray($record);
-        $new_record_data['name'] = $data['name'];
-        $new_record_data['description'] = $data['description'];
-
-        $unset_values = [
-            'short_name',
-            'radio_base_dir',
-            'nowplaying',
-            'nowplaying_timestamp',
-            'is_streamer_live',
-            'needs_restart',
-            'has_started',
-        ];
-
-        foreach($unset_values as $unset_value) {
-            unset($new_record_data[$unset_value]);
-        }
-
-        if ($options['clone_media'] === 'share') {
-            $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();
-        } else {
-            unset($new_record_data['radio_media_dir']);
-        }
-
-
-    }
-
     /**
      * @param Entity\Station $station
      * @throws \Exception
@@ -251,7 +222,7 @@ class StationRepository extends Repository
 
         // Remove media folders.
         $radio_dir = $station->getRadioBaseDir();
-        \App\Utilities::rmdir_recursive($radio_dir);
+        \App\Utilities::rmdirRecursive($radio_dir);
 
         // Save changes and continue to the last setup step.
         $this->_em->remove($station);
@@ -261,7 +232,7 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param $port
+     * @param mixed|null $port
      * @param Entity\Station|null $except_record
      * @return bool
      */
@@ -273,6 +244,7 @@ class StationRepository extends Repository
 
             return isset($used_ports[$port]);
         }
+
         return false;
     }
 }

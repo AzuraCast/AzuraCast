@@ -112,7 +112,7 @@ class RequestsController
             $row->resolveUrls($router);
 
             if ($is_bootgrid) {
-                return Utilities::flatten_array($row, '_');
+                return Utilities::flattenArray($row, '_');
             }
 
             return $row;

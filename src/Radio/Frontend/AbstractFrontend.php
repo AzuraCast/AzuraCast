@@ -73,8 +73,8 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
      * Get the AzuraCast station-watcher binary command for the specified adapter and watch URI.
      *
      * @param Entity\Station $station
-     * @param $adapter
-     * @param $watch_uri
+     * @param string $adapter
+     * @param string $watch_uri
      * @return string
      */
     protected function _getStationWatcherCommand(Entity\Station $station, $adapter, $watch_uri): string
@@ -126,7 +126,7 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
 
     /**
      * @param Entity\Station $station
-     * @param $mount
+     * @param Entity\StationMount|null $mount
      * @param UriInterface|null $base_url
      * @return UriInterface
      */

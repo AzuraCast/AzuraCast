@@ -21,7 +21,7 @@ abstract class AbstractConnector implements ConnectorInterface
         $this->http_client = $http_client;
     }
 
-    public function shouldDispatch(SendWebhooks $event, array $triggers): bool
+    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool
     {
         if (empty($triggers)) {
             return true;
@@ -45,7 +45,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     public function _replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
     {
-        $values = Utilities::flatten_array($np, '.');
+        $values = Utilities::flattenArray($np, '.');
         $vars = [];
 
         foreach($raw_vars as $var_key => $var_value) {
@@ -86,7 +86,7 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Determine if a passed URL is valid and return it if so, or return null otherwise.
      *
-     * @param $url_string
+     * @param string $url_string
      * @return string|null
      */
     protected function _getValidUrl($url_string): ?string

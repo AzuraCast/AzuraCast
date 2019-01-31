@@ -208,7 +208,7 @@ class StationPlaylist
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $this->_truncateString($name, 200);
     }
@@ -224,7 +224,7 @@ class StationPlaylist
     /**
      * @param string $type
      */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
@@ -322,7 +322,7 @@ class StationPlaylist
     /**
      * @param bool $is_enabled
      */
-    public function setIsEnabled(bool $is_enabled)
+    public function setIsEnabled(bool $is_enabled): void
     {
         $this->is_enabled = $is_enabled;
     }
@@ -338,7 +338,7 @@ class StationPlaylist
     /**
      * @param int $play_per_songs
      */
-    public function setPlayPerSongs(int $play_per_songs)
+    public function setPlayPerSongs(int $play_per_songs): void
     {
         $this->play_per_songs = $play_per_songs;
     }
@@ -354,7 +354,7 @@ class StationPlaylist
     /**
      * @param int $play_per_minutes
      */
-    public function setPlayPerMinutes(int $play_per_minutes)
+    public function setPlayPerMinutes(int $play_per_minutes): void
     {
         $this->play_per_minutes = $play_per_minutes;
     }
@@ -378,7 +378,7 @@ class StationPlaylist
     /**
      * @param int $schedule_start_time
      */
-    public function setScheduleStartTime(int $schedule_start_time)
+    public function setScheduleStartTime(int $schedule_start_time): void
     {
         $this->schedule_start_time = $schedule_start_time;
     }
@@ -402,7 +402,7 @@ class StationPlaylist
     /**
      * @param int $schedule_end_time
      */
-    public function setScheduleEndTime(int $schedule_end_time)
+    public function setScheduleEndTime(int $schedule_end_time): void
     {
         $this->schedule_end_time = $schedule_end_time;
     }
@@ -437,7 +437,7 @@ class StationPlaylist
     /**
      * @param array $schedule_days
      */
-    public function setScheduleDays($schedule_days)
+    public function setScheduleDays($schedule_days): void
     {
         $this->schedule_days = implode(',', (array)$schedule_days);
     }
@@ -491,7 +491,7 @@ class StationPlaylist
     /**
      * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
      *
-     * @param $day_to_check
+     * @param int $day_to_check
      * @return bool
      */
     public function canPlayScheduledOnDay($day_to_check): bool
@@ -520,7 +520,7 @@ class StationPlaylist
     /**
      * @param int $play_once_time
      */
-    public function setPlayOnceTime(int $play_once_time)
+    public function setPlayOnceTime(int $play_once_time): void
     {
         $this->play_once_time = $play_once_time;
     }
@@ -536,7 +536,7 @@ class StationPlaylist
     /**
      * @param array $play_once_days
      */
-    public function setPlayOnceDays($play_once_days)
+    public function setPlayOnceDays($play_once_days): void
     {
         $this->play_once_days = implode(',', (array)$play_once_days);
     }
@@ -572,7 +572,7 @@ class StationPlaylist
     /**
      * @param int $weight
      */
-    public function setWeight(int $weight)
+    public function setWeight(int $weight): void
     {
         $this->weight = $weight;
     }
@@ -614,7 +614,7 @@ class StationPlaylist
     /**
      * @param bool $include_in_automation
      */
-    public function setIncludeInAutomation(bool $include_in_automation)
+    public function setIncludeInAutomation(bool $include_in_automation): void
     {
         $this->include_in_automation = $include_in_automation;
     }
@@ -634,7 +634,7 @@ class StationPlaylist
      * @param bool $absolute_paths
      * @return string
      */
-    public function export($file_format = 'pls', $absolute_paths = false)
+    public function export($file_format = 'pls', $absolute_paths = false): string
     {
         $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir().'/' : '';
 
@@ -680,7 +680,7 @@ class StationPlaylist
     /**
      * Given a time code i.e. "2300", return a UNIX timestamp that can be used to format the time for display.
      *
-     * @param $time_code
+     * @param string|int $time_code
      * @return int
      */
     public static function getTimestamp($time_code): int
@@ -692,7 +692,7 @@ class StationPlaylist
     /**
      * Given a time code i.e. "2300", return a time suitable for HTML5 inputs, i.e. "23:00".
      *
-     * @param $time_code
+     * @param string|int $time_code
      * @return string
      */
     public static function formatTimeCodeForInput($time_code): string
@@ -705,7 +705,8 @@ class StationPlaylist
     /**
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
-     * @param $time_code
+     * @param string|int $time_code
+     * @param Chronos|null $now
      * @return Chronos
      */
     public static function getDateTime($time_code, Chronos $now = null): Chronos

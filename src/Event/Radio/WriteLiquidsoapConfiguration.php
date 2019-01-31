@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class WriteLiquidsoapConfiguration extends Event
 {
-    const NAME = 'radio-liquidsoap-write-configuration';
+    public const NAME = 'radio-liquidsoap-write-configuration';
 
     /** @var array */
     protected $config_lines;

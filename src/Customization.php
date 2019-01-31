@@ -106,12 +106,12 @@ class Customization
     /**
      * Format the given UNIX timestamp into a locale-friendly time.
      *
-     * @param $timestamp
+     * @param int $timestamp
      * @param bool $use_utc
      * @param bool $show_timezone_abbr
      * @return string Formatted time for presentation.
      */
-    public function formatTime($timestamp = null, $use_utc = false, $show_timezone_abbr = false)
+    public function formatTime($timestamp = null, $use_utc = false, $show_timezone_abbr = false): string
     {
         $timestamp = $timestamp ?? time();
 
@@ -130,7 +130,7 @@ class Customization
     /**
      * Format a date/time using PHP's IntlDateFormatter constants.
      *
-     * @param $timestamp
+     * @param int $timestamp
      * @param bool $use_utc
      * @param int|null $date_display One of:
      *     IntlDateFormatter::NONE - Do not include
@@ -141,7 +141,11 @@ class Customization
      * @param int|null $time_display One of the above.
      * @return string
      */
-    public function formatDateTime($timestamp, $use_utc = false, $date_display = \IntlDateFormatter::LONG, $time_display = \IntlDateFormatter::LONG)
+    public function formatDateTime(
+        $timestamp,
+        $use_utc = false,
+        $date_display = \IntlDateFormatter::LONG,
+        $time_display = \IntlDateFormatter::LONG): string
     {
         $timezone = ($use_utc) ? 'UTC' : date_default_timezone_get();
         $locale = str_replace('.UTF-8', '', $this->getLocale());

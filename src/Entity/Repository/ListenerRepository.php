@@ -11,8 +11,8 @@ class ListenerRepository extends Repository
      * Get the number of unique listeners for a station during a specified time period.
      *
      * @param Entity\Station $station
-     * @param $timestamp_start
-     * @param $timestamp_end
+     * @param int $timestamp_start
+     * @param int $timestamp_end
      * @return mixed
      */
     public function getUniqueListeners(Entity\Station $station, $timestamp_start, $timestamp_end)
@@ -32,7 +32,7 @@ class ListenerRepository extends Repository
      * Update listener data for a station.
      *
      * @param Entity\Station $station
-     * @param $clients
+     * @param array $clients
      */
     public function update(Entity\Station $station, $clients)
     {

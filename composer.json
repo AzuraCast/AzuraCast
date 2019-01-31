@@ -18,6 +18,7 @@
     "azuracast/azuraforms": "dev-master",
     "azuracast/nowplaying": "dev-master",
     "bernard/bernard": "dev-master",
+    "brick/math": "^0.8.4",
     "cakephp/chronos": "^1.1",
     "doctrine/annotations": "^1.6",
     "gettext/gettext": "^4.4",
@@ -42,8 +43,7 @@
     "symfony/validator": "^4.2",
     "ramsey/uuid": "^3.8",
     "wikimedia/composer-merge-plugin": "^1.4",
-    "zircote/swagger-php": "^3.0",
-    "brick/math": "^0.8.4"
+    "zircote/swagger-php": "^3.0"
   },
   "require-dev": {
     "codeception/codeception": "^2.2",

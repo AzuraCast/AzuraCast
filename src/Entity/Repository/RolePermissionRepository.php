@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping;
 class RolePermissionRepository extends Repository
 {
     /**
-     * TODO: Legacy
-     *
      * @return array
      */
     public function getActionsForAllRoles(): array
@@ -30,8 +28,6 @@ class RolePermissionRepository extends Repository
     }
 
     /**
-     * TODO: Legacy functionality only used by existing administration form.
-     *
      * @param Entity\Role $role
      * @return array
      */
@@ -54,10 +50,8 @@ class RolePermissionRepository extends Repository
     }
 
     /**
-     * TODO: Legacy functionality only used by existing administration form.
-     *
      * @param Entity\Role $role
-     * @param $post_values
+     * @param array $post_values
      */
     public function setActionsForRole(Entity\Role $role, $post_values): void
     {

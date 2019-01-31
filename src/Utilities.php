@@ -8,33 +8,12 @@ namespace App;
 class Utilities
 {
     /**
-     * Pretty print_r
-     *
-     * @param $var
-     * @param bool $return
-     * @return string
-     */
-    public static function print_r($var, $return = false)
-    {
-        $return_value = '<pre style="font-size: 13px; font-family: Consolas, Courier New, Courier, monospace; color: #000; background: #EFEFEF; border: 1px solid #CCC; padding: 5px;">';
-        $return_value .= print_r($var, true);
-        $return_value .= '</pre>';
-
-        if ($return) {
-            return $return_value;
-        } else {
-            echo $return_value;
-            return null;
-        }
-    }
-
-    /**
      * Generate a randomized password of specified length.
      *
-     * @param $char_length
+     * @param int $char_length
      * @return string
      */
-    public static function generatePassword($char_length = 8)
+    public static function generatePassword($char_length = 8): string
     {
         // String of all possible characters. Avoids using certain letters and numbers that closely resemble others.
         $numeric_chars = str_split('234679');
@@ -55,10 +34,10 @@ class Utilities
     /**
      * Convert a specified number of seconds into a date range.
      *
-     * @param $timestamp
+     * @param int $timestamp
      * @return string
      */
-    public static function timeToText($timestamp)
+    public static function timeToText($timestamp): string
     {
         return self::timeDifferenceText(0, $timestamp);
     }
@@ -66,12 +45,12 @@ class Utilities
     /**
      * Get the textual difference between two strings.
      *
-     * @param $timestamp1
-     * @param $timestamp2
+     * @param int $timestamp1
+     * @param int $timestamp2
      * @param int $precision
      * @return string
      */
-    public static function timeDifferenceText($timestamp1, $timestamp2, $precision = 1)
+    public static function timeDifferenceText($timestamp1, $timestamp2, $precision = 1): string
     {
         $time_diff = abs($timestamp1 - $timestamp2);
 
@@ -101,33 +80,14 @@ class Utilities
     }
 
     /**
-     * Forced-GMT strtotime alternative.
-     *
-     * @param $time
-     * @param null $now
-     * @return int
-     */
-    public static function gstrtotime($time, $now = null)
-    {
-        $prev_timezone = @date_default_timezone_get();
-        @date_default_timezone_set('UTC');
-
-        $timestamp = strtotime($time, $now);
-
-        @date_default_timezone_set($prev_timezone);
-
-        return $timestamp;
-    }
-
-    /**
      * Truncate text (adding "..." if needed)
      *
-     * @param $text
+     * @param string $text
      * @param int $limit
      * @param string $pad
      * @return string
      */
-    public static function truncate_text($text, $limit = 80, $pad = '...')
+    public static function truncateText($text, $limit = 80, $pad = '...'): string
     {
         mb_internal_encoding('UTF-8');
 
@@ -135,12 +95,12 @@ class Utilities
             return $text;
         }
 
-        $wrapped_text = self::mb_wordwrap($text, $limit, "{N}", true);
-        $shortened_text = mb_substr($wrapped_text, 0, strpos($wrapped_text, "{N}"));
+        $wrapped_text = self::mbWordwrap($text, $limit, '{N}', true);
+        $shortened_text = mb_substr($wrapped_text, 0, strpos($wrapped_text, '{N}'));
 
         // Prevent the padding string from bumping up against punctuation.
         $punctuation = ['.', ',', ';', '?', '!'];
-        if (in_array(mb_substr($shortened_text, -1), $punctuation)) {
+        if (in_array(mb_substr($shortened_text, -1), $punctuation, true)) {
             $shortened_text = mb_substr($shortened_text, 0, -1);
         }
 
@@ -150,13 +110,13 @@ class Utilities
     /**
      * UTF-8 capable replacement for wordwrap function.
      *
-     * @param $str
+     * @param string $str
      * @param int $width
      * @param string $break
      * @param bool $cut
      * @return string
      */
-    public static function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false)
+    public static function mbWordwrap($str, $width = 75, $break = "\n", $cut = false): string
     {
         $lines = explode($break, $str);
         foreach ($lines as &$line) {
@@ -193,76 +153,15 @@ class Utilities
     /**
      * Truncate URL in text-presentable format (i.e. "http://www.example.com" becomes "example.com")
      *
-     * @param $url
+     * @param string $url
      * @param int $length
      * @return string
      */
-    public static function truncate_url($url, $length = 40)
+    public static function truncateUrl($url, $length = 40): string
     {
-        $url = str_replace(['http://', 'https://', 'www.'], ['', '', ''], $url);
+        $url = str_replace(['http://', 'https://', 'www.'], '', $url);
 
-        return self::truncate_text(rtrim($url, '/'), $length);
-    }
-
-    /**
-     * Join one or more items into an array.
-     *
-     * @param array $items
-     * @return string
-     */
-    public static function join_compound(array $items)
-    {
-        $count = count($items);
-
-        if ($count == 0) {
-            return '';
-        }
-
-        if ($count == 1) {
-            return $items[0];
-        }
-
-        return implode(', ', array_slice($items, 0, -1)) . ' and ' . end($items);
-    }
-
-    /**
-     * Create an array where the keys and values match each other.
-     *
-     * @param $array
-     * @return array
-     */
-    public static function pairs($array)
-    {
-        return array_combine($array, $array);
-    }
-
-    /**
-     * Split an array into "columns", typically for display purposes.
-     *
-     * @param $array
-     * @param int $num_cols
-     * @param bool $preserve_keys
-     * @return array
-     */
-    public static function columns($array, $num_cols = 2, $preserve_keys = true)
-    {
-        $items_total = (int)count($array);
-        $items_per_col = ceil($items_total / $num_cols);
-
-        return array_chunk($array, $items_per_col, $preserve_keys);
-    }
-
-    /**
-     * Split an array into "rows", typically for display purposes.
-     *
-     * @param $array
-     * @param int $num_per_row
-     * @param bool $preserve_keys
-     * @return array
-     */
-    public static function rows($array, $num_per_row = 3, $preserve_keys = true)
-    {
-        return array_chunk($array, $num_per_row, $preserve_keys);
+        return self::truncateText(rtrim($url, '/'), $length);
     }
 
     /**
@@ -290,12 +189,12 @@ class Utilities
      * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
      * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
      */
-    public static function array_merge_recursive_distinct(array &$array1, array &$array2)
+    public static function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
     {
         $merged = $array1;
         foreach ($array2 as $key => &$value) {
             if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-                $merged[$key] = self::array_merge_recursive_distinct($merged[$key], $value);
+                $merged[$key] = self::arrayMergeRecursiveDistinct($merged[$key], $value);
             } else {
                 $merged[$key] = $value;
             }
@@ -305,38 +204,16 @@ class Utilities
     }
 
     /**
-     * Return all keys in a multi-dimensional array.
-     * Useful for getting all possible values in an optgroup-stacked select dropdown.
-     *
-     * @param $array
-     * @return array The keys found.
-     */
-    public static function array_keys_recursive($array)
-    {
-        $keys = [];
-
-        foreach ((array)$array as $key => $value) {
-            if (is_array($value)) {
-                $keys = array_merge($keys, self::array_keys_recursive($value));
-            } else {
-                $keys[] = $key;
-            }
-        }
-
-        return $keys;
-    }
-
-    /**
      * Sort a supplied array (the first argument) by one or more indices, specified in this format:
      * arrayOrderBy($data, [ 'index_name', SORT_ASC, 'index2_name', SORT_DESC ])
      *
      * Internally uses array_multisort().
      *
-     * @param $data
+     * @param array $data
      * @param array $args
      * @return mixed
      */
-    public static function array_order_by($data, array $args = [])
+    public static function arrayOrderBy($data, array $args = [])
     {
         if (empty($args)) {
             return $data;
@@ -359,137 +236,18 @@ class Utilities
     }
 
     /**
-     * Split a URL into an array (similar to parse_url() itself) but with cleaner parameter handling.
-     *
-     * @param $url
-     * @return mixed
-     */
-    public static function parse_url($url)
-    {
-        $url_parts = @parse_url($url);
-        $url_parts['path_clean'] = trim($url_parts['path'], '/');
-        $url_parts['query_arr'] = self::convert_url_query($url_parts['query']);
-
-        return $url_parts;
-    }
-
-    /**
-     * Convert the query string of a URL into an array of keys and values.
-     *
-     * @param $query
-     * @return array
-     */
-    public static function convert_url_query($query)
-    {
-        $queryParts = explode('&', $query);
-        $params = [];
-        foreach ($queryParts as $param) {
-            $item = explode('=', $param);
-            $params[$item[0]] = $item[1];
-        }
-
-        return $params;
-    }
-
-    /**
-     * Construct a URL based on an array returned from parseUrl().
-     *
-     * @param $url
-     * @return string
-     */
-    public static function build_url($url)
-    {
-        is_array($url) || $url = parse_url($url);
-
-        if (is_array($url['query'])) {
-            $url['query'] = http_build_query($url['query']);
-        }
-
-        if (isset($url['path']) && substr($url['path'], 0, 1) !== '/') {
-            $url['path'] = '/' . $url['path'];
-        }
-
-        $parsed_string = '';
-        if (isset($url['scheme'])) {
-            $parsed_string .= $url['scheme'] . '://';
-        }
-
-        if (isset($url['user'])) {
-            $parsed_string .= $url['user'];
-
-            if (isset($url['pass'])) {
-                $parsed_string .= ':' . $url['pass'];
-            }
-
-            $parsed_string .= '@';
-        }
-
-        if (isset($url['host'])) {
-            $parsed_string .= $url['host'];
-        }
-
-        if (isset($url['port'])) {
-            $parsed_string .= ':' . $url['port'];
-        }
-
-        if (!empty($url['path'])) {
-            $parsed_string .= $url['path'];
-        } else {
-            $parsed_string .= '/';
-        }
-
-        if (isset($url['query'])) {
-            $parsed_string .= '?' . $url['query'];
-        }
-
-        if (isset($url['fragment'])) {
-            $parsed_string .= '#' . $url['fragment'];
-        }
-
-        return $parsed_string;
-    }
-
-    /**
-     * Construct a URL based on an array returned from parseUrl().
-     *
-     * @param $needle       The value we're looking for
-     * @param $haystack     The array we're looking through
-     * @param $strict       If true, checks type as well
-     * @return string
-     */
-    public static function recursive_array_search($needle, $haystack, $strict = false)
-    {
-        foreach ($haystack as $key => $value) {
-            if (is_array($value)) {
-                // Value is an array, check that instead!
-                $nextKey = self::recursive_array_search($needle, $value, $strict);
-
-                if ($nextKey) {
-                    return $nextKey;
-                }
-            } else {
-                if ($strict ? $value === $needle : $value == $needle) {
-                    return $key;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Detect if the User-Agent matches common crawler UAs.
      * Not expected to be 100% accurate or trustworthy, just used to prevent
      * common crawlers from accessing features like API endpoints.
      *
      * @return bool
      */
-    public static function is_crawler()
+    public static function isCrawler(): bool
     {
         $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 
         $crawlers_agents = strtolower('Bloglines subscriber|Dumbot|Sosoimagespider|QihooBot|FAST-WebCrawler|Superdownloads Spiderman|LinkWalker|msnbot|ASPSeek|WebAlta Crawler|Lycos|FeedFetcher-Google|Yahoo|YoudaoBot|AdsBot-Google|Googlebot|Scooter|Gigabot|Charlotte|eStyle|AcioRobot|GeonaBot|msnbot-media|Baidu|CocoCrawler|Google|Charlotte t|Yahoo! Slurp China|Sogou web spider|YodaoBot|MSRBOT|AbachoBOT|Sogou head spider|AltaVista|IDBot|Sosospider|Yahoo! Slurp|Java VM|DotBot|LiteFinder|Yeti|Rambler|Scrubby|Baiduspider|accoona');
-        $crawlers = explode("|", $crawlers_agents);
+        $crawlers = explode('|', $crawlers_agents);
 
         foreach ($crawlers as $crawler) {
             if (strpos($ua, trim($crawler)) !== false) {
@@ -504,7 +262,7 @@ class Utilities
      * Get the system time zone.
      * @return string
      */
-    public static function get_system_time_zone()
+    public static function getSystemTimeZone(): string
     {
         if (APP_INSIDE_DOCKER) {
             return 'UTC';
@@ -540,14 +298,14 @@ class Utilities
     /**
      * Recursively remove a directory and its contents.
      *
-     * @param $dir
+     * @param string $dir
      */
-    public static function rmdir_recursive($dir)
+    public static function rmdirRecursive($dir): void
     {
         if (is_dir($dir)) {
-            $files = array_diff(scandir($dir), ['.', '..']);
+            $files = array_diff(scandir($dir, \SCANDIR_SORT_NONE), ['.', '..']);
             foreach ($files as $file) {
-                self::rmdir_recursive($dir . '/' . $file);
+                self::rmdirRecursive($dir . '/' . $file);
             }
 
             @rmdir($dir);
@@ -557,28 +315,15 @@ class Utilities
     }
 
     /**
-     * Convert from a bytes number to text (i.e.
-     *
-     * @param $bytes
-     * @return string
-     */
-    public static function bytes_to_text($bytes)
-    {
-        $si_prefix = ['B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB'];
-        $base = 1024;
-        $class = min((int)log($bytes, $base), count($si_prefix) - 1);
-
-        return sprintf('%1.2f', $bytes / pow($base, $class)) . ' ' . $si_prefix[$class];
-    }
-
-    /**
      * Attempt to fetch the most likely "external" IP for this instance.
+     *
+     * @return false|string
      */
-    public static function get_public_ip()
+    public static function getPublicIp()
     {
         if (APP_INSIDE_DOCKER) {
             if (APP_IN_PRODUCTION) {
-                $public_ip = @file_get_contents("http://ipecho.net/plain");
+                $public_ip = @file_get_contents('http://ipecho.net/plain');
                 if (!empty($public_ip)) {
                     return $public_ip;
                 }
@@ -587,7 +332,7 @@ class Utilities
             return 'localhost';
         }
 
-        return getHostByName(getHostName()) ?? 'localhost';
+        return gethostbyname(gethostname()) ?? 'localhost';
     }
 
     /**
@@ -612,7 +357,7 @@ class Utilities
      * @param null $prefix
      * @return array
      */
-    public static function flatten_array($array, $separator = '.', $prefix = null): array
+    public static function flattenArray($array, $separator = '.', $prefix = null): array
     {
         if (!is_array($array)) {
             if (is_object($array)) {
@@ -628,7 +373,7 @@ class Utilities
         foreach($array as $key => $value) {
             $return_key = $prefix ? $prefix.$separator.$key : $key;
             if (\is_array($value)) {
-                $return = array_merge($return, self::flatten_array($value, $separator, $return_key));
+                $return = array_merge($return, self::flattenArray($value, $separator, $return_key));
             } else {
                 $return[$return_key] = $value;
             }

@@ -27,7 +27,7 @@ class GetStation
     /**
      * @param Request $request
      * @param Response $response
-     * @param $next
+     * @param callable $next
      * @param bool $station_required
      * @param string $station_param
      * @return Response

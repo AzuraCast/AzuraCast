@@ -119,9 +119,9 @@ class Flow
     /**
      * Check if all parts exist and are uploaded.
      *
-     * @param $chunkBaseDir
-     * @param $targetSize
-     * @param $targetChunkNumber
+     * @param string $chunkBaseDir
+     * @param int $targetSize
+     * @param int $targetChunkNumber
      * @return bool
      */
     protected function _allPartsExist($chunkBaseDir, $targetSize, $targetChunkNumber): bool
@@ -140,10 +140,10 @@ class Flow
     /**
      * Reassemble the file on the local destination disk and return the relevant information.
      *
-     * @param $chunkBaseDir
-     * @param $chunkIdentifier
-     * @param $originalFileName
-     * @param $numChunks
+     * @param string $chunkBaseDir
+     * @param string $chunkIdentifier
+     * @param string $originalFileName
+     * @param int $numChunks
      * @return array
      */
     protected function _createFileFromChunks($chunkBaseDir, $chunkIdentifier, $originalFileName, $numChunks): array

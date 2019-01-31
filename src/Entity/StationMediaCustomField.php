@@ -50,7 +50,7 @@ class StationMediaCustomField
 
     /**
      * @ORM\Column(name="field_value", type="string", length=255, nullable=true)
-     * @var
+     * @var string
      */
     protected $value;
 
@@ -77,15 +77,15 @@ class StationMediaCustomField
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
     /**
-     * @param mixed $value
+     * @param string|null $value
      */
     public function setValue($value): void
     {

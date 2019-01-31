@@ -17,7 +17,7 @@ class StationFilesystem extends MountManager
      */
     public function copyToTemp($from, $to = null): string
     {
-        list($prefix_from, $path_from) = $this->getPrefixAndPath($from);
+        [$prefix_from, $path_from] = $this->getPrefixAndPath($from);
 
         if (null === $to) {
             $random_prefix = substr(md5(random_bytes(8)), 0, 5);
@@ -64,8 +64,8 @@ class StationFilesystem extends MountManager
     /**
      * "Upload" a local path into the Flysystem abstract filesystem.
      *
-     * @param $local_path
-     * @param $to
+     * @param string $local_path
+     * @param string $to
      * @param array $config
      * @return bool
      */

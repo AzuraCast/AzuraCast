@@ -65,7 +65,7 @@ class HistoryController
      *
      * @param Request $request
      * @param Response $response
-     * @param $station_id
+     * @param int|string $station_id
      * @return ResponseInterface
      */
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
@@ -152,7 +152,7 @@ class HistoryController
             $row->resolveUrls($router);
 
             if ($is_bootgrid) {
-                return App\Utilities::flatten_array($row, '_');
+                return App\Utilities::flattenArray($row, '_');
             }
 
             return $row;

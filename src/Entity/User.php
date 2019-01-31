@@ -130,7 +130,7 @@ class User
     /**
      * @ORM\PrePersist
      */
-    public function preSave()
+    public function preSave(): void
     {
         $this->updated_at = time();
     }
@@ -146,7 +146,7 @@ class User
     /**
      * @return null|string
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -154,7 +154,7 @@ class User
     /**
      * @param null|string $email
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $this->_truncateString($email, 100);
     }
@@ -162,7 +162,7 @@ class User
     /**
      * @param string $password
      */
-    public function setAuthPassword(string $password)
+    public function setAuthPassword(string $password): void
     {
         if (trim($password)) {
             [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
@@ -171,10 +171,10 @@ class User
     }
 
     /**
-     * @param $password
+     * @param string $password
      * @return bool
      */
-    public function verifyPassword($password)
+    public function verifyPassword($password): bool
     {
         if (password_verify($password, $this->auth_password)) {
             [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
@@ -191,7 +191,7 @@ class User
     /**
      * @throws \Exception
      */
-    public function generateRandomPassword()
+    public function generateRandomPassword(): void
     {
         $this->setAuthPassword(bin2hex(random_bytes(20)));
     }
@@ -201,19 +201,19 @@ class User
      *
      * @return array [algorithm constant, algorithm options array]
      */
-    protected function _getPasswordAlgorithm()
+    protected function _getPasswordAlgorithm(): array
     {
         if (defined('PASSWORD_ARGON2I')) {
             return [\PASSWORD_ARGON2I, []];
-        } else {
-            return [\PASSWORD_BCRYPT, []];
         }
+
+        return [\PASSWORD_BCRYPT, []];
     }
 
     /**
      * @return null|string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -221,7 +221,7 @@ class User
     /**
      * @param null|string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $this->_truncateString($name, 100);
     }
@@ -229,7 +229,7 @@ class User
     /**
      * @return null|string
      */
-    public function getTimezone()
+    public function getTimezone(): ?string
     {
         return $this->timezone;
     }
@@ -237,7 +237,7 @@ class User
     /**
      * @param null|string $timezone
      */
-    public function setTimezone($timezone)
+    public function setTimezone($timezone): void
     {
         $this->timezone = $timezone;
     }
@@ -245,7 +245,7 @@ class User
     /**
      * @return null|string
      */
-    public function getLocale()
+    public function getLocale(): ?string
     {
         return $this->locale;
     }
@@ -253,7 +253,7 @@ class User
     /**
      * @param null|string $locale
      */
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->locale = $locale;
     }
@@ -261,7 +261,7 @@ class User
     /**
      * @return null|string
      */
-    public function getTheme()
+    public function getTheme(): ?string
     {
         return $this->theme;
     }
@@ -269,7 +269,7 @@ class User
     /**
      * @param null|string $theme
      */
-    public function setTheme($theme)
+    public function setTheme($theme): void
     {
         $this->theme = $theme;
     }
@@ -306,7 +306,11 @@ class User
         return $this->api_keys;
     }
 
-    public function getAvatar($size = 50)
+    /**
+     * @param int $size
+     * @return string
+     */
+    public function getAvatar($size = 50): string
     {
         return \App\Service\Gravatar::get($this->email, $size, 'identicon');
     }

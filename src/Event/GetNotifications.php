@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class GetNotifications extends Event
 {
-    const NAME = 'get-notifications';
+    public const NAME = 'get-notifications';
 
     /** @var User */
     protected $current_user;

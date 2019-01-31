@@ -10,8 +10,8 @@ class StationStreamerRepository extends Repository
      * Attempt to authenticate a streamer.
      *
      * @param Entity\Station $station
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      * @return Entity\StationStreamer|bool
      */
     public function authenticate(Entity\Station $station, $username, $password)

@@ -70,7 +70,7 @@ class QueueController extends AbstractStationCrudController
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
             $return = $this->_viewRecord($row, $router);
             if ($is_bootgrid) {
-                return App\Utilities::flatten_array($return, '_');
+                return App\Utilities::flattenArray($return, '_');
             }
 
             return $return;

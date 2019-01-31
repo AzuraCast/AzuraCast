@@ -76,10 +76,9 @@ class AccountController
                 return $response->withRedirect($request->getUri()->getPath());
             }
 
-            $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);
+            $user = $this->auth->authenticate($_POST['username'], $_POST['password']);
 
-            if ($login_success) {
-
+            if ($user instanceof User) {
                 // Regenerate session ID
                 $session->regenerate();
 
@@ -87,8 +86,6 @@ class AccountController
                 $this->acl->reload();
 
                 // Persist user as database entity.
-                $user = $this->auth->getLoggedInUser();
-
                 $this->em->persist($user);
                 $this->em->flush();
 

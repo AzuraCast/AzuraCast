@@ -55,25 +55,24 @@ class IndexController
     public function syncAction(Request $request, Response $response, $type): ResponseInterface
     {
         $view = $request->getView();
-        $view->sidebar = null;
 
         $handler = new TestHandler(Logger::DEBUG, false);
         $this->logger->pushHandler($handler);
 
         switch ($type) {
-            case "long":
+            case 'long':
                 $this->sync->syncLong(true);
                 break;
 
-            case "medium":
+            case 'medium':
                 $this->sync->syncMedium(true);
                 break;
 
-            case "short":
+            case 'short':
                 $this->sync->syncShort(true);
                 break;
 
-            case "nowplaying":
+            case 'nowplaying':
             default:
                 $this->sync->syncNowplaying(true);
                 break;
@@ -82,7 +81,8 @@ class IndexController
         $this->logger->popHandler();
 
         return $view->renderToResponse($response, 'system/log_view', [
-            'title' => __('Sync Task Output'),
+            'sidebar'   => null,
+            'title'     => __('Sync Task Output'),
             'log_records' => $handler->getRecords(),
         ]);
     }

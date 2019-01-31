@@ -7,6 +7,7 @@ use Doctrine\ORM\Query;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractCrudController
@@ -39,7 +40,7 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param $record
+     * @param object $record
      * @param Router $router
      * @return mixed
      */
@@ -71,7 +72,7 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param $object
+     * @param object $object
      * @return mixed
      */
     protected function _displayShortenedObject($object)
@@ -84,8 +85,8 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param $data
-     * @param null $record
+     * @param array $data
+     * @param object|null $record
      * @return object
      * @throws \App\Exception\Validation
      * @throws \Doctrine\ORM\ORMException
@@ -101,8 +102,8 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param $data
-     * @param $record
+     * @param array $data
+     * @param object $record
      * @return object
      * @throws \App\Exception\Validation
      * @throws \Doctrine\ORM\ORMException
@@ -130,8 +131,8 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param $data
-     * @param $record
+     * @param array $data
+     * @param object $record
      * @param array $context
      */
     protected function _denormalizeToRecord($data, $record, array $context = []): void
@@ -142,7 +143,7 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param $record
+     * @param object $record
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

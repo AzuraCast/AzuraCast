@@ -40,9 +40,11 @@ class SettingsController
         $this->serializer = $serializer;
         $this->validator = $validator;
 
-        $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
 
-        $all_settings = $this->settings_repo->fetchAll();
+        $this->settings_repo = $settings_repo;
+        $all_settings = $settings_repo->fetchAll();
         $this->api_settings = $this->serializer->denormalize($all_settings, Entity\Api\Admin\Settings::class);
     }
 

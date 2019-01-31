@@ -81,12 +81,15 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->event_dispatcher = $event_dispatcher;
         $this->influx = $influx;
 
-        $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
-        $this->song_repo = $this->em->getRepository(Entity\Song::class);
-        $this->listener_repo = $this->em->getRepository(Entity\Listener::class);
+        $this->history_repo = $em->getRepository(Entity\SongHistory::class);
+        $this->song_repo = $em->getRepository(Entity\Song::class);
+        $this->listener_repo = $em->getRepository(Entity\Listener::class);
 
-        $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
-        $this->analytics_level = $this->settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
+        $this->settings_repo = $settings_repo;
+        $this->analytics_level = $settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
     }
 
     public static function getSubscribedEvents()

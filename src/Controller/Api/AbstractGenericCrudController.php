@@ -50,7 +50,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $record_id
+     * @param mixed $record_id
      * @return ResponseInterface
      */
     public function getAction(Request $request, Response $response, $record_id): ResponseInterface
@@ -64,7 +64,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $record_id
+     * @param mixed $record_id
      * @return ResponseInterface
      */
     public function editAction(Request $request, Response $response, $record_id): ResponseInterface
@@ -85,7 +85,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $record_id
+     * @param mixed $record_id
      * @return ResponseInterface
      */
     public function deleteAction(Request $request, Response $response, $record_id): ResponseInterface
@@ -104,7 +104,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
     }
 
     /**
-     * @param $record_id
+     * @param mixed $record_id
      * @return object|null
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

@@ -116,9 +116,13 @@ class OverviewController
 
         // Compile the above data.
         $song_totals = [];
+
+        /** @var Entity\Repository\SongRepository $song_repo */
+        $song_repo = $this->em->getRepository(Entity\Song::class);
+
         foreach ($song_totals_raw as $total_type => $total_records) {
             foreach ($total_records as $total_record) {
-                $song = $this->em->getRepository(Entity\Song::class)->findAsArray($total_record['song_id']);
+                $song = $song_repo->findAsArray($total_record['song_id']);
                 $total_record['song'] = $song;
 
                 $song_totals[$total_type][] = $total_record;
@@ -128,7 +132,6 @@ class OverviewController
         }
 
         /* Song "Deltas" (Changes in Listener Count) */
-
         $threshold = strtotime('-2 weeks');
 
         // Get all songs played in timeline.

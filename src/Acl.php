@@ -50,7 +50,7 @@ class Acl
      * Check if a specified User entity is allowed to perform an action (or array of actions).
      *
      * @param Entity\User|null $user
-     * @param $action
+     * @param string|array $action
      * @param null $station_id
      * @return bool
      */
@@ -142,7 +142,7 @@ class Acl
      * Wrapper around the 'userAllowed' function that throws a UI-friendly exception upon failure.
      *
      * @param Entity\User|null $user
-     * @param $action
+     * @param string|array $action
      * @param null $station_id
      * @throws Exception\NotLoggedIn
      * @throws Exception\PermissionDenied
@@ -199,8 +199,8 @@ class Acl
     }
 
     /**
-     * @param $permission_name
-     * @param $is_global
+     * @param string $permission_name
+     * @param bool $is_global
      * @return bool
      */
     public static function isValidPermission($permission_name, $is_global): bool

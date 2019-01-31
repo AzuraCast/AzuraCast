@@ -15,10 +15,10 @@ class Auth
     protected $_user_repo;
 
     /** @var User|null */
-    protected $_user = null;
+    protected $_user;
 
     /** @var User|null */
-    protected $_masqueraded_user = null;
+    protected $_masqueraded_user;
 
     public function __construct(Session $session, UserRepository $user_repo)
     {
@@ -31,24 +31,23 @@ class Auth
     /**
      * Authenticate a given username and password combination against the User repository.
      *
-     * @param $username
-     * @param $password
-     * @return bool
+     * @param string $username
+     * @param string $password
+     * @return User|null
      */
-    public function authenticate($username, $password)
+    public function authenticate($username, $password): ?User
     {
         $user_auth = $this->_user_repo->authenticate($username, $password);
 
         if ($user_auth instanceof User) {
             $this->setUser($user_auth);
-
-            return true;
-        } else {
-            return false;
+            return $user_auth;
         }
+
+        return null;
     }
 
-    public function logout()
+    public function logout(): void
     {
         unset($this->_session->user_id);
         unset($this->_session->masquerade_user_id);
@@ -63,7 +62,7 @@ class Auth
      *
      * @return bool
      */
-    public function isLoggedIn()
+    public function isLoggedIn(): bool
     {
         if (APP_IS_COMMAND_LINE && !APP_TESTING_MODE) {
             return false;
@@ -78,33 +77,32 @@ class Auth
      * Get the currently logged in user.
      *
      * @param bool $real_user_only
-     * @return bool|User|null|object
+     * @return User|null
      * @throws \Azura\Exception
      */
-    public function getLoggedInUser($real_user_only = false)
+    public function getLoggedInUser($real_user_only = false): ?User
     {
-        if ($this->isMasqueraded() && !$real_user_only) {
+        if (!$real_user_only && $this->isMasqueraded()) {
             return $this->getMasquerade();
-        } else {
-            return $this->getUser();
         }
+
+        return $this->getUser();
     }
 
     /**
      * Get the authenticated user entity.
      *
-     * @return bool|User|null
+     * @return User|null
      * @throws \Azura\Exception
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         if ($this->_user === null) {
             $user_id = (int)$this->_session->user_id;
 
-            if ($user_id == 0) {
+            if (0 === $user_id) {
                 $this->_user = false;
-
-                return false;
+                return null;
             }
 
             $user = $this->_user_repo->find($user_id);
@@ -119,25 +117,20 @@ class Auth
             }
         }
 
-        return $this->_user;
+        return ($this->_user instanceof User)
+            ? $this->_user
+            : null;
     }
 
     /**
      * Set the currently authenticated user.
      *
      * @param User $user
-     * @return bool
      */
-    public function setUser(User $user)
+    public function setUser(User $user): void
     {
-        // Prevent any previous identity from being used.
-        // @session_regenerate_id(true);
-
         $this->_session->user_id = $user->getId();
-
         $this->_user = $user;
-
-        return true;
     }
 
     /**
@@ -147,12 +140,16 @@ class Auth
     /**
      * Become a different user across the application.
      *
-     * @param $user_info
+     * @param array $user_info
      */
-    public function masqueradeAsUser($user_info)
+    public function masqueradeAsUser($user_info): void
     {
         if (!($user_info instanceof User)) {
             $user_info = $this->_user_repo->findOneBy($user_info);
+        }
+
+        if (!($user_info instanceof User)) {
+            throw new \Azura\Exception('Invalid user!');
         }
 
         $this->_session->masquerade_user_id = $user_info->getId();
@@ -162,7 +159,7 @@ class Auth
     /**
      * Return to the regular authenticated account.
      */
-    public function endMasquerade()
+    public function endMasquerade(): void
     {
         unset($this->_session->masquerade_user_id);
         $this->_masqueraded_user = null;
@@ -173,7 +170,7 @@ class Auth
      *
      * @return User|null
      */
-    public function getMasquerade()
+    public function getMasquerade(): ?User
     {
         return $this->_masqueraded_user;
     }
@@ -183,11 +180,10 @@ class Auth
      *
      * @return bool
      */
-    public function isMasqueraded()
+    public function isMasqueraded(): bool
     {
         if (!$this->isLoggedIn()) {
             $this->_masqueraded_user = false;
-
             return false;
         }
 
@@ -196,7 +192,7 @@ class Auth
                 $this->_masqueraded_user = false;
             } else {
                 $mask_user_id = (int)$this->_session->masquerade_user_id;
-                if ($mask_user_id != 0) {
+                if (0 !== $mask_user_id) {
                     $user = $this->_user_repo->find($mask_user_id);
                 } else {
                     $user = null;
@@ -205,9 +201,7 @@ class Auth
                 if ($user instanceof User) {
                     $this->_masqueraded_user = $user;
                 } else {
-                    unset($this->_session->user_id);
-                    unset($this->_session->masquerade_user_id);
-
+                    unset($this->_session->user_id, $this->_session->masquerade_user_id);
                     $this->_masqueraded_user = false;
                 }
             }

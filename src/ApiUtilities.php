@@ -40,8 +40,8 @@ class ApiUtilities
     /**
      * Get the album art URL for a given unique StationMedia identifier.
      *
-     * @param $station_id
-     * @param $media_unique_id
+     * @param int $station_id
+     * @param string $media_unique_id
      * @param UriInterface|null $base_url
      * @return UriInterface
      */

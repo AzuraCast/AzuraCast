@@ -31,7 +31,7 @@ class MigrateConfig extends CommandAbstract
 
             if (!empty($settings['db_password'])) {
                 $output->writeln('Configuration already set up.');
-                return false;
+                return null;
             }
         }
 
@@ -72,6 +72,6 @@ class MigrateConfig extends CommandAbstract
         file_put_contents($env_path, implode("\n", $ini_data));
 
         $output->writeln('Configuration successfully written.');
-        return 0;
+        return null;
     }
 }

@@ -51,7 +51,7 @@ class DjAuth extends CommandAbstract
 
         if (!($station instanceof Entity\Station) || !$station->getEnableStreamers()) {
             $output->write('false');
-            return false;
+            return null;
         }
 
         $user = $input->getOption('dj_user');
@@ -65,10 +65,10 @@ class DjAuth extends CommandAbstract
         if ($adapter instanceof Liquidsoap) {
             $response = $adapter->authenticateStreamer($station, $user, $pass);
             $output->write($response);
-            return ($response === 'true');
+            return null;
         }
 
         $output->write('false');
-        return false;
+        return null;
     }
 }

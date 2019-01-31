@@ -44,7 +44,7 @@ class NextSong extends CommandAbstract
 
         if (!($station instanceof Entity\Station)) {
             $output->write('false');
-            return false;
+            return null;
         }
 
         $as_autodj = ($input->getArgument('as_autodj') !== 'false');
@@ -56,7 +56,7 @@ class NextSong extends CommandAbstract
 
         if ($adapter instanceof Liquidsoap) {
             $output->write($adapter->getNextSong($station, $as_autodj));
-            return 0;
+            return null;
         }
 
         $output->write('');

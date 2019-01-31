@@ -91,7 +91,7 @@ class OverviewController
             $hourly_ranges[] = [$stat['time'], $stat['min'], $stat['max']];
             $hourly_averages[] = [$stat['time'], round($stat['value'], 2)];
 
-            $hour = date('G', round($stat['time'] / 1000));
+            $hour = (int)date('G', round($stat['time'] / 1000));
             $totals_by_hour[$hour][] = $stat['value'];
         }
 

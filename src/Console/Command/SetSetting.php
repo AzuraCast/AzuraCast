@@ -51,10 +51,10 @@ class SetSetting extends CommandAbstract
             $settings_repo->deleteSetting($setting_key);
 
             $io->success(sprintf('Setting "%s" removed.', $setting_key));
-            return;
+            return null;
         }
 
-        if (substr($setting_value, 0, 1) === '{') {
+        if (0 === strpos($setting_value, '{')) {
             $setting_value = json_decode($setting_value, true);
         }
 

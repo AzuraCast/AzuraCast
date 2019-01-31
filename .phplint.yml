@@ -1,0 +1,7 @@
+path: ./
+jobs: 10
+extensions:
+  - php
+  - phtml
+exclude:
+  - vendor

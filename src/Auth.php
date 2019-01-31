@@ -14,10 +14,10 @@ class Auth
     /** @var UserRepository */
     protected $_user_repo;
 
-    /** @var User|null */
+    /** @var User|bool|null */
     protected $_user;
 
-    /** @var User|null */
+    /** @var User|bool|null */
     protected $_masqueraded_user;
 
     public function __construct(Session $session, UserRepository $user_repo)

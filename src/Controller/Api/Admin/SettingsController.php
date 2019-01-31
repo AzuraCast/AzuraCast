@@ -45,7 +45,10 @@ class SettingsController
 
         $this->settings_repo = $settings_repo;
         $all_settings = $settings_repo->fetchAll();
-        $this->api_settings = $this->serializer->denormalize($all_settings, Entity\Api\Admin\Settings::class);
+
+        /** @var Entity\Api\Admin\Settings $api_settings */
+        $api_settings = $this->serializer->denormalize($all_settings, Entity\Api\Admin\Settings::class);
+        $this->api_settings = $api_settings;
     }
 
     /**

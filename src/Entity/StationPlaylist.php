@@ -731,6 +731,6 @@ class StationPlaylist
             $now = Chronos::now(new \DateTimeZone('UTC'));
         }
 
-        return $now->format('Hi');
+        return (int)$now->format('Hi');
     }
 }

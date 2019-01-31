@@ -9,6 +9,7 @@ tmp/cache/*---*
 .vagrant
 .idea
 /ubuntu-*-console.log
+.phplint-cache
 
 # Local development files.
 /src/Controller/Frontend/UtilController.php

@@ -234,7 +234,25 @@ static() {
 
 #
 # DEVELOPER TOOL:
+# Run the full test suite.
 #
+dev-tests() {
+    dev-lint
+    dev-phpstan
+    dev-codeception
+}
+
+#
+# DEVELOPER TOOL:
+# Run linter across all PHP code in the app.
+#
+dev-lint() {
+    docker-compose exec --user="azuracast" web vendor/bin/phplint $*
+}
+
+#
+# DEVELOPER TOOL:
+# Run PHPStan for static analysis.
 #
 dev-phpstan() {
     docker-compose exec --user="azuracast" web vendor/bin/phpstan analyze $*

@@ -193,7 +193,7 @@ class BatchController extends FilesControllerAbstract
                 $music_files = $this->_getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
-                $directory_path = $request->getParsedBody()['directory'];
+                $directory_path = ((array)$request->getParsedBody())['directory'];
                 $directory_path_full = 'media://'.$directory_path;
 
                 foreach ($music_files as $file) {

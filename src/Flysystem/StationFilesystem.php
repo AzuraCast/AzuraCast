@@ -45,7 +45,7 @@ class StationFilesystem extends MountManager
     {
         $buffer = $this->readStream($from);
         if ($buffer === false) {
-            return false;
+            throw new \Azura\Exception('Source file could not be read.');
         }
 
         $written = $this->putStream($to, $buffer, $config);

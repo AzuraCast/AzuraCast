@@ -1,5 +1,6 @@
 path: ./
 jobs: 10
+cache: ../www_tmp/phplint.cache
 extensions:
   - php
   - phtml

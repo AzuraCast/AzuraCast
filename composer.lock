@@ -198,12 +198,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "58d38e04ccd6d1f9f4be7b276f7c7af1b3511bac"
+                "reference": "9100c1b242264d1ef81bb045b650b5391e7674ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/58d38e04ccd6d1f9f4be7b276f7c7af1b3511bac",
-                "reference": "58d38e04ccd6d1f9f4be7b276f7c7af1b3511bac",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/9100c1b242264d1ef81bb045b650b5391e7674ee",
+                "reference": "9100c1b242264d1ef81bb045b650b5391e7674ee",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
                 }
             ],
             "description": "A lightweight PHP adapter for viewing the current now playing data in Icecast and SHOUTcast 1/2. A part of the AzuraCast software suite.",
-            "time": "2019-01-17T12:41:09+00:00"
+            "time": "2019-01-30T19:21:33+00:00"
         },
         {
             "name": "beberlei/assert",

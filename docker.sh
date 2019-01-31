@@ -223,6 +223,7 @@ restore() {
 }
 
 #
+# DEVELOPER TOOL:
 # Access the static console as a developer.
 # Usage: ./docker.sh static [static_container_command]
 #
@@ -230,6 +231,24 @@ static() {
     docker-compose -f docker-compose.static.yml build
     docker-compose -f docker-compose.static.yml run --rm static $*
 }
+
+#
+# DEVELOPER TOOL:
+#
+#
+dev-phpstan() {
+    docker-compose exec --user="azuracast" web vendor/bin/phpstan analyze $*
+}
+
+#
+# DEVELOPER TOOL:
+# Run codeception for unit testing.
+#
+dev-codeception() {
+    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml build web
+    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web /var/azuracast/www/vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
+}
+
 
 #
 # Stop all Docker containers and remove related volumes.

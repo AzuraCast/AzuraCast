@@ -69,6 +69,10 @@ class ApiKeysController
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();
 
+            // Setting values here to avoid static analysis errors.
+            $key_identifier = null;
+            $key_verifier = null;
+
             if ($new_record) {
                 $record = new Entity\ApiKey($user);
                 list($key_identifier, $key_verifier) = $record->generate();

@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.86.1",
+            "version": "3.87.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "217f783754b803b95eea220308ca7cf046ead832"
+                "reference": "7c00779a343c9b813628bf6a27b94945272ced93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/217f783754b803b95eea220308ca7cf046ead832",
-                "reference": "217f783754b803b95eea220308ca7cf046ead832",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7c00779a343c9b813628bf6a27b94945272ced93",
+                "reference": "7c00779a343c9b813628bf6a27b94945272ced93",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-01-17T23:11:37+00:00"
+            "time": "2019-01-25T22:29:49+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "30c19fb89fced3511565136535dfd1ef3ee320c3"
+                "reference": "c699e4af4bffa18869de26676e20c244140caa71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/30c19fb89fced3511565136535dfd1ef3ee320c3",
-                "reference": "30c19fb89fced3511565136535dfd1ef3ee320c3",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/c699e4af4bffa18869de26676e20c244140caa71",
+                "reference": "c699e4af4bffa18869de26676e20c244140caa71",
                 "shasum": ""
             },
             "require": {
@@ -126,6 +126,9 @@
             "require-dev": {
                 "codeception/codeception": "^2.2",
                 "mockery/mockery": "^1.0",
+                "overtrue/phplint": "^1.1",
+                "phpstan/phpstan": "^0.11.1",
+                "phpstan/phpstan-strict-rules": "^0.11.0",
                 "roave/security-advisories": "dev-master"
             },
             "type": "library",
@@ -145,7 +148,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-01-28T17:36:30+00:00"
+            "time": "2019-02-01T00:49:55+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -153,16 +156,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "a8b8b6d56b74df5450476a6389a780436da5a749"
+                "reference": "d3f5ff8833fe0c5bc0268783b56c2a84c917e21c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/a8b8b6d56b74df5450476a6389a780436da5a749",
-                "reference": "a8b8b6d56b74df5450476a6389a780436da5a749",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/d3f5ff8833fe0c5bc0268783b56c2a84c917e21c",
+                "reference": "d3f5ff8833fe0c5bc0268783b56c2a84c917e21c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
+            },
+            "require-dev": {
+                "overtrue/phplint": "^1.1",
+                "phpstan/phpstan": "^0.11.1",
+                "phpstan/phpstan-strict-rules": "^0.11.0",
+                "roave/security-advisories": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -190,7 +199,7 @@
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2019-01-09T18:49:17+00:00"
+            "time": "2019-02-01T00:04:19+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -198,12 +207,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "9100c1b242264d1ef81bb045b650b5391e7674ee"
+                "reference": "1b0b7d9e36d0ec0acafa6143bf9e53f5d8cc6e9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/9100c1b242264d1ef81bb045b650b5391e7674ee",
-                "reference": "9100c1b242264d1ef81bb045b650b5391e7674ee",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/1b0b7d9e36d0ec0acafa6143bf9e53f5d8cc6e9d",
+                "reference": "1b0b7d9e36d0ec0acafa6143bf9e53f5d8cc6e9d",
                 "shasum": ""
             },
             "require": {
@@ -214,6 +223,9 @@
                 "php": ">=7.2"
             },
             "require-dev": {
+                "overtrue/phplint": "^1.1",
+                "phpstan/phpstan": "^0.11.1",
+                "phpstan/phpstan-strict-rules": "^0.11.0",
                 "roave/security-advisories": "dev-master"
             },
             "type": "library",
@@ -233,7 +245,7 @@
                 }
             ],
             "description": "A lightweight PHP adapter for viewing the current now playing data in Icecast and SHOUTcast 1/2. A part of the AzuraCast software suite.",
-            "time": "2019-01-30T19:21:33+00:00"
+            "time": "2019-02-01T01:12:41+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -2069,12 +2081,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "f31b8961570a109b7284ead133f2d3ece4358961"
+                "reference": "e3abc4dd334ff537870b7ee9091b1751e46e4d14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/f31b8961570a109b7284ead133f2d3ece4358961",
-                "reference": "f31b8961570a109b7284ead133f2d3ece4358961",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/e3abc4dd334ff537870b7ee9091b1751e46e4d14",
+                "reference": "e3abc4dd334ff537870b7ee9091b1751e46e4d14",
                 "shasum": ""
             },
             "require": {
@@ -2124,7 +2136,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2018-12-05T06:44:07+00:00"
+            "time": "2019-01-26T17:17:08+00:00"
         },
         {
             "name": "league/flysystem",
@@ -2212,16 +2224,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.21",
+            "version": "1.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "43523fec10a831ea48bedb3277e3f3fa218f4e49"
+                "reference": "883b02c80ca9cd68cf58a9b4b2185beef24b836b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/43523fec10a831ea48bedb3277e3f3fa218f4e49",
-                "reference": "43523fec10a831ea48bedb3277e3f3fa218f4e49",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/883b02c80ca9cd68cf58a9b4b2185beef24b836b",
+                "reference": "883b02c80ca9cd68cf58a9b4b2185beef24b836b",
                 "shasum": ""
             },
             "require": {
@@ -2255,7 +2267,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2018-10-08T07:53:55+00:00"
+            "time": "2019-01-31T15:07:25+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -3090,16 +3102,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.5.2",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "ffef11d54171336d841a34816a35bc035fb8cef0"
+                "reference": "02b7ea21eafa0757af04140890a67d8ed45f83b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/ffef11d54171336d841a34816a35bc035fb8cef0",
-                "reference": "ffef11d54171336d841a34816a35bc035fb8cef0",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/02b7ea21eafa0757af04140890a67d8ed45f83b2",
+                "reference": "02b7ea21eafa0757af04140890a67d8ed45f83b2",
                 "shasum": ""
             },
             "require": {
@@ -3109,8 +3121,7 @@
                 "nyholm/psr7": "<1.0"
             },
             "require-dev": {
-                "henrikbjorn/phpspec-code-coverage": "^2.0.2",
-                "php-http/httplug": "^1.0|^2.0",
+                "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message-factory": "^1.0",
                 "phpspec/phpspec": "^2.4",
                 "puli/composer-plugin": "1.0.0-beta10"
@@ -3151,7 +3162,7 @@
                 "message",
                 "psr7"
             ],
-            "time": "2018-12-31T07:31:26+00:00"
+            "time": "2019-01-23T12:41:22+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -7359,12 +7370,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "d155baccb43ba2542941fbcba258b85ce7786419"
+                "reference": "db876706aacd4ffbd1c253358d19a651e50e65c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d155baccb43ba2542941fbcba258b85ce7786419",
-                "reference": "d155baccb43ba2542941fbcba258b85ce7786419",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/db876706aacd4ffbd1c253358d19a651e50e65c2",
+                "reference": "db876706aacd4ffbd1c253358d19a651e50e65c2",
                 "shasum": ""
             },
             "conflict": {
@@ -7502,8 +7513,8 @@
                 "titon/framework": ">=0,<9.9.99",
                 "truckersmp/phpwhois": "<=4.3.1",
                 "twig/twig": "<1.20",
-                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.21|>=9,<9.5.2",
-                "typo3/cms-core": ">=8,<8.7.21|>=9,<9.5.2",
+                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.23|>=9,<9.5.4",
+                "typo3/cms-core": ">=8,<8.7.23|>=9,<9.5.4",
                 "typo3/flow": ">=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1|>=2.3,<2.3.16|>=3,<3.0.10|>=3.1,<3.1.7|>=3.2,<3.2.7|>=3.3,<3.3.5",
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
                 "ua-parser/uap-php": "<3.8",
@@ -7555,7 +7566,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-01-15T19:39:37+00:00"
+            "time": "2019-01-22T18:37:22+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -7724,16 +7735,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "febd209a219cea7b56ad799b30ebbea34b71eb8f"
+                "reference": "4a43e9af57b4afa663077b9bc85255dbc6e8a2bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/febd209a219cea7b56ad799b30ebbea34b71eb8f",
-                "reference": "febd209a219cea7b56ad799b30ebbea34b71eb8f",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/4a43e9af57b4afa663077b9bc85255dbc6e8a2bd",
+                "reference": "4a43e9af57b4afa663077b9bc85255dbc6e8a2bd",
                 "shasum": ""
             },
             "require": {
@@ -7770,7 +7781,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2018-11-25T09:31:21+00:00"
+            "time": "2019-01-28T15:26:03+00:00"
         },
         {
             "name": "sebastian/exporter",

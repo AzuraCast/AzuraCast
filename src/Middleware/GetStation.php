@@ -1,6 +1,7 @@
 <?php
 namespace App\Middleware;
 
+use App\Exception\StationNotFound;
 use App\Radio\Adapters;
 use App\Entity;
 use App\Entity\Repository\StationRepository;
@@ -35,31 +36,40 @@ class GetStation
      */
     public function __invoke(Request $request, Response $response, $next, $station_required = true, $station_param = 'station'): Response
     {
-        $route_args = $request->getAttribute('routeInfo')[2];
-        $id = $route_args[$station_param] ?? null;
+        try {
+            $route_args = $request->getAttribute('routeInfo')[2];
+            $id = $route_args[$station_param] ?? null;
 
-        if (empty($id) && $station_required) {
-            throw new \RuntimeException('Station not found!');
-        }
+            if (empty($id) && $station_required) {
+                throw new StationNotFound;
+            }
 
-        if (is_numeric($id)) {
-            $record = $this->station_repo->find($id);
-        } else {
-            $record = $this->station_repo->findByShortCode($id);
-        }
+            if (is_numeric($id)) {
+                $record = $this->station_repo->find($id);
+            } else {
+                $record = $this->station_repo->findByShortCode($id);
+            }
 
-        if ($record instanceof Entity\Station) {
-            $frontend = $this->adapters->getFrontendAdapter($record);
-            $backend = $this->adapters->getBackendAdapter($record);
-            $remotes = $this->adapters->getRemoteAdapters($record);
+            if ($record instanceof Entity\Station) {
+                $frontend = $this->adapters->getFrontendAdapter($record);
+                $backend = $this->adapters->getBackendAdapter($record);
+                $remotes = $this->adapters->getRemoteAdapters($record);
 
-            $request = $request
-                ->withAttribute(Request::ATTRIBUTE_STATION, $record)
-                ->withAttribute(Request::ATTRIBUTE_STATION_FRONTEND, $frontend)
-                ->withAttribute(Request::ATTRIBUTE_STATION_BACKEND, $backend)
-                ->withAttribute(Request::ATTRIBUTE_STATION_REMOTES, $remotes);
-        } else if ($station_required) {
-            throw new \RuntimeException('Station not found!');
+                $request = $request
+                    ->withAttribute(Request::ATTRIBUTE_STATION, $record)
+                    ->withAttribute(Request::ATTRIBUTE_STATION_FRONTEND, $frontend)
+                    ->withAttribute(Request::ATTRIBUTE_STATION_BACKEND, $backend)
+                    ->withAttribute(Request::ATTRIBUTE_STATION_REMOTES, $remotes);
+            } else if ($station_required) {
+                throw new StationNotFound;
+            }
+        } catch (StationNotFound $e) {
+            if ($request->isApiCall()) {
+                return $response->withStatus(404)
+                    ->withJson(new Entity\Api\Error(404, $e->getMessage()));
+            }
+
+            throw $e;
         }
 
         return $next($request, $response);

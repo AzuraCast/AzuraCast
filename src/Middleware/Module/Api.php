@@ -51,7 +51,7 @@ class Api
         }
 
         // Set "is API call" attribute on the request so error handling responds correctly.
-        $request = $request->withAttribute('is_api_call', true);
+        $request = $request->withAttribute(Request::ATTRIBUTE_IS_API_CALL, true);
 
         // Attempt API key auth if a key exists.
         $api_key = $this->getApiKey($request);
@@ -94,7 +94,6 @@ class Api
         // Set default cache control for API pages.
         $response = $response->withCacheLifetime(30);
 
-        // Custom error handling for API responses.
         return $next($request, $response);
     }
 

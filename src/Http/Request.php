@@ -7,11 +7,20 @@ use App\Radio;
 
 class Request extends \Azura\Http\Request
 {
-    const ATTRIBUTE_STATION = 'station';
-    const ATTRIBUTE_STATION_BACKEND = 'station_backend';
-    const ATTRIBUTE_STATION_FRONTEND = 'station_frontend';
-    const ATTRIBUTE_STATION_REMOTES = 'station_remotes';
-    const ATTRIBUTE_USER = 'user';
+    public const ATTRIBUTE_IS_API_CALL = 'is_api_call';
+    public const ATTRIBUTE_STATION = 'station';
+    public const ATTRIBUTE_STATION_BACKEND = 'station_backend';
+    public const ATTRIBUTE_STATION_FRONTEND = 'station_frontend';
+    public const ATTRIBUTE_STATION_REMOTES = 'station_remotes';
+    public const ATTRIBUTE_USER = 'user';
+
+    /**
+     * @return bool
+     */
+    public function isApiCall(): bool
+    {
+        return $this->hasAttribute(self::ATTRIBUTE_IS_API_CALL);
+    }
 
     /**
      * Get the current user associated with the request, if it's set.

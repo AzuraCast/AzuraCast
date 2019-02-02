@@ -315,12 +315,29 @@ return [
                 ],
 
                 'dj_buffer' => [
-                    'text',
+                    'number',
                     [
                         'label' => __('DJ/Streamer Buffer Time (Seconds)'),
                         'label_class' => 'advanced',
                         'description' => __('The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'),
                         'default' => 5,
+                        'min' => 0,
+                        'max' => 60,
+                        'step' => 1,
+                        'belongsTo' => 'backend_config',
+                    ]
+                ],
+
+                'dj_silence_buffer' => [
+                    'number',
+                    [
+                        'label' => __('DJ/Streamer Silence Detection Buffer (Seconds)'),
+                        'label_class' => 'advanced',
+                        'description' => __('The number of seconds of silence before a streamer will automatically be disconnected. Set to zero (0) to disable.'),
+                        'default' => 30,
+                        'min' => 0,
+                        'max' => 999,
+                        'step' => 1,
                         'belongsTo' => 'backend_config',
                     ]
                 ],

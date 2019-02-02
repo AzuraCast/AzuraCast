@@ -356,6 +356,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'djoff').'")',
             '  log("AzuraCast Live Disconnected Response: #{ret}")',
             'end',
+            '',
+            '# A Pre-DJ source of radio that can be broadcasted if needed',
+            'radio_without_live = radio',
+            'ignore(radio_without_live)',
         ]);
 
         $settings = (array)$station->getBackendConfig();
@@ -377,17 +381,16 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'on_disconnect=live_disconnected',
         ];
 
+        $silence_buffer = (int)($settings['dj_silence_buffer'] ?? 30);
+        $live_fallback = (0 === $silence_buffer)
+            ? 'live'
+            : 'strip_blank(max_blank='.$silence_buffer.'.,live)';
+
         $event->appendLines([
-            '# A Pre-DJ source of radio that can be broadcasted if needed',
-            'radio_without_live = radio',
-            'ignore(radio_without_live)',
-            '',
             '# Live Broadcasting',
             'live = audio_to_stereo(input.harbor('.implode(', ', $harbor_params).'))',
             'ignore(output.dummy(live, fallible=true))',
-            'live = fallback(id="'.$this->_getVarName('live_fallback', $station).'", track_sensitive=false, [live, blank(duration=2.)])',
-            '',
-            'radio = switch(id="'.$this->_getVarName('live_switch', $station).'", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])',
+            'radio = fallback(id="'.$this->_getVarName('live_fallback', $station).'", track_sensitive=false, ['.$live_fallback.', radio])',
         ]);
     }
 

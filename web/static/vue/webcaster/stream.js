@@ -1,15 +1,26 @@
 var stream = {};
 var defaultChannels = 2;
 
-// Define the streaming radio context.
-if (typeof webkitAudioContext !== "undefined") {
-    stream.context = new webkitAudioContext;
-} else {
-    stream.context = new AudioContext;
-}
+// Function to be called upon the first user interaction.
+stream.init = function() {
+    // Define the streaming radio context.
+    if (!this.context) {
+        if (typeof webkitAudioContext !== "undefined") {
+            this.context = new webkitAudioContext;
+        } else {
+            this.context = new AudioContext;
+        }
 
-stream.webcast = stream.context.createWebcastSource(4096, defaultChannels);
-stream.webcast.connect(stream.context.destination);
+        this.webcast = this.context.createWebcastSource(4096, defaultChannels);
+        this.webcast.connect(this.context.destination);
+    }
+};
+
+stream.resumeContext = function() {
+    if (this.context.state !== 'running') {
+        this.context.resume();
+    }
+};
 
 stream.createAudioSource = function({file, audio}, model, cb) {
     var el, source;

@@ -118,7 +118,7 @@
 
 <script>
 export default {
-    inject: ['getStream'],
+    inject: ['getStream', 'resumeStream'],
     data: function() {
         return {
             "isStreaming": false,
@@ -150,6 +150,8 @@ export default {
     },
     methods: {
         cue: function() {
+            this.resumeStream();
+
             this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'master');
         },
         onNewCue: function(new_cue) {
@@ -157,6 +159,8 @@ export default {
             this.getStream().webcast.setPassThrough(this.passThrough);
         },
         startStreaming: function() {
+            this.resumeStream();
+
             var encoderClass;
             switch (this.encoder) {
                 case "mp3":

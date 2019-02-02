@@ -140,6 +140,7 @@ export default {
     },
     methods: {
         cue: function () {
+            this.resumeStream();
             this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
         },
 
@@ -168,6 +169,8 @@ export default {
         },
 
         play: function (options) {
+            this.resumeStream();
+
             if (this.paused) {
                 this.togglePause();
                 return;

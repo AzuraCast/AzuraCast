@@ -53,12 +53,18 @@ export default {
     },
     provide: function() {
         return {
-            getStream: this.getStream
+            getStream: this.getStream,
+            resumeStream: this.resumeStream
         };
     },
     methods: {
         getStream: function() {
+            this.stream.init();
+
             return this.stream;
+        },
+        resumeStream: function() {
+            this.stream.resumeContext();
         }
     }
 }

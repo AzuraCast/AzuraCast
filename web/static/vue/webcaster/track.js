@@ -1,5 +1,5 @@
 export default {
-    inject: ['getStream'],
+    inject: ['getStream', 'resumeStream'],
     data: function() {
         return {
             "controlsNode": null,

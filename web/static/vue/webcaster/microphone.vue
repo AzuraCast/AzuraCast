@@ -90,12 +90,15 @@ export default {
     },
     methods: {
         cue: function() {
+            this.resumeStream();
             this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'microphone');
         },
         onNewCue: function(new_cue) {
             this.passThrough = (new_cue === 'microphone');
         },
         toggleRecording: function() {
+            this.resumeStream();
+
             if (this.playing) {
                 this.stop();
             } else {

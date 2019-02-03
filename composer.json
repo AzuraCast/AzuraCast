@@ -1,5 +1,5 @@
 {
-  "name": "AzuraCast/AzuraCast",
+  "name": "azuracast/azuracast",
   "description": "The AzuraCast standalone radio station management suite.",
   "license": "Apache-2.0",
   "require": {

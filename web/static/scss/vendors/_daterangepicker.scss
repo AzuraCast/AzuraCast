@@ -1,4 +1,20 @@
 .daterangepicker {
+  background: $menu-bg;
+  border: 1px solid $menu-divider-bg;
+
+  .ranges {
+    li:hover {
+      background: $menu-link-bg-hover;
+    }
+  }
+
+  &.show-ranges .drp-calendar.left {
+    border-left: 1px solid $menu-divider-bg;
+  }
+  .drp-buttons {
+    border-top: 1px solid $menu-divider-bg;
+  }
+
   &:before {
     border: 0;
   }

@@ -39,8 +39,6 @@
     "symfony/finder": "^4.1",
     "symfony/process": "^4.1",
     "symfony/property-access": "^4.2",
-    "symfony/serializer": "^4.2",
-    "symfony/validator": "^4.2",
     "ramsey/uuid": "^3.8",
     "wikimedia/composer-merge-plugin": "^1.4",
     "zircote/swagger-php": "^3.0"

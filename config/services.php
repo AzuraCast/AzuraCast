@@ -139,45 +139,6 @@ return function (\Azura\Container $di)
 
         return $supervisor;
     };
-
-    $di[\Doctrine\Common\Annotations\Reader::class] = function($di) {
-        /** @var \Azura\Settings $settings */
-        $settings = $di['settings'];
-
-        /** @var \Doctrine\Common\Cache\Cache $doctrine_cache */
-        $doctrine_cache = $di[\Doctrine\Common\Cache\Cache::class];
-
-        return new \Doctrine\Common\Annotations\CachedReader(
-            new \Doctrine\Common\Annotations\AnnotationReader,
-            $doctrine_cache,
-            !$settings->isProduction()
-        );
-    };
-
-    $di[\Symfony\Component\Serializer\Serializer::class] = function($di) {
-        /** @var \Doctrine\Common\Annotations\Reader $annotation_reader */
-        $annotation_reader = $di[\Doctrine\Common\Annotations\Reader::class];
-
-        $meta_factory = new \Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
-            new \Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($annotation_reader)
-        );
-
-        $normalizers = [
-            new \Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new \App\Normalizer\DoctrineEntityNormalizer($di[\Doctrine\ORM\EntityManager::class]),
-            new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory),
-        ];
-        return new Symfony\Component\Serializer\Serializer($normalizers);
-    };
-
-    $di[Symfony\Component\Validator\Validator\ValidatorInterface::class] = function($di) {
-        /** @var \Doctrine\Common\Annotations\Reader $annotation_reader */
-        $annotation_reader = $di[\Doctrine\Common\Annotations\Reader::class];
-
-        $builder = new \Symfony\Component\Validator\ValidatorBuilder();
-        $builder->enableAnnotationMapping($annotation_reader);
-        return $builder->getValidator();
-    };
     
     $di->extend(\Azura\View::class, function(\Azura\View $view, \Azura\Container $di) {
         $view->registerFunction('mailto', function ($address, $link_text = null) {

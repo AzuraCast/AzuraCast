@@ -54,14 +54,14 @@ class MediaController
 
         if ($filesystem->has($media_path)) {
             $file_meta = $filesystem->getMetadata($media_path);
-            $art = $filesystem->readStream($media_path);
+            $art = $filesystem->read($media_path);
 
             if (is_resource($art)) {
                 return $response
                     ->withHeader('Content-Type', 'image/jpeg')
                     ->withHeader('Content-Length', $file_meta['size'])
                     ->withCacheLifetime(Response::CACHE_ONE_YEAR)
-                    ->withBody(new \Slim\Http\Stream($art));
+                    ->write($art);
             }
         }
 

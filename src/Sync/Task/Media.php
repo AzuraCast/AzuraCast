@@ -82,6 +82,7 @@ class Media extends AbstractTask
 
         foreach ($stations as $station) {
             $this->importMusic($station);
+            gc_collect_cycles();
         }
     }
 
@@ -188,6 +189,7 @@ class Media extends AbstractTask
         }
 
         $this->_flushAndClearRecords();
+        $fs->flushAllCaches(true);
 
         $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }

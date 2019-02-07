@@ -3,6 +3,7 @@ namespace App\Flysystem;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Cached\Storage\AbstractCache;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 
@@ -122,14 +123,25 @@ class StationFilesystem extends MountManager
 
     /**
      * Flush the caches of all associated filesystems.
+     *
+     * @param bool $in_memory_only Set to TRUE to only flush the current PHP process's memory, not the Redis cache.
      */
-    public function flushAllCaches(): void
+    public function flushAllCaches($in_memory_only = false): void
     {
         foreach($this->filesystems as $prefix => $filesystem) {
             if ($filesystem instanceof Filesystem) {
                 $adapter = $filesystem->getAdapter();
                 if ($adapter instanceof CachedAdapter) {
-                    $adapter->getCache()->flush();
+                    $cache = $adapter->getCache();
+
+                    if ($in_memory_only && $cache instanceof AbstractCache) {
+                        $prev_autosave = $cache->getAutosave();
+                        $cache->setAutosave(false);
+                        $cache->flush();
+                        $cache->setAutosave($prev_autosave);
+                    } else {
+                        $cache->flush();
+                    }
                 }
             }
         }

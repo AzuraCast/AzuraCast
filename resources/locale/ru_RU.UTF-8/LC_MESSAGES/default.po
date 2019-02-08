@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-02-08T00:46:01+00:00\n"
-"PO-Revision-Date: 2019-02-08 00:51\n"
+"PO-Revision-Date: 2019-02-08 14:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3528,20 +3528,20 @@ msgstr "Ежедневный диапазон слушателей"
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:64
 msgid "Hourly Average Listeners"
-msgstr ""
+msgstr "Слушателей в среднем за час"
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Daily Average Listeners"
-msgstr ""
+msgstr "Слушателей в среднем за сутки"
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:120
 msgid "Average Listeners"
-msgstr ""
+msgstr "В среднем слушателей"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:1
 #: /var/azuracast/www/templates/stations/sidebar.phtml:125
 msgid "Statistics Overview"
-msgstr ""
+msgstr "Статистика"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 msgid "Listeners by Day"
@@ -3557,7 +3557,7 @@ msgstr "Слушателей по дням недели"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:53
 msgid "Best Performing Songs"
-msgstr ""
+msgstr "Лучшие исполнители песен"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:54
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:96
@@ -3811,11 +3811,11 @@ msgstr "Проверить"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "Удалить вебхук \"%s\"?"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."
-msgstr ""
+msgstr "Запрошенная вами страница не найдена."
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:3
 msgid "Select..."

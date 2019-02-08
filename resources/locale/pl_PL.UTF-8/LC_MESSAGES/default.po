@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-02-06T19:28:02+00:00\n"
-"PO-Revision-Date: 2019-02-06 19:30\n"
+"POT-Creation-Date: 2019-02-08T00:46:01+00:00\n"
+"PO-Revision-Date: 2019-02-08 00:50\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -666,21 +666,37 @@ msgstr "Plik<code>docker-compose.yml </code>jest nieaktualny!"
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
 msgstr "Należy zaktualizować plik<code> docker-compose.yml </code>, aby odzwierciedlić najnowsze zmiany. Zobacz <a href=\"%s\" target=\"_blank\">Najnowsza wersja pliku</a> i odpowiednio zaktualizować plik.<br> <code>./docker.sh</code> narzędzie skryptu można użyć również automatycznie zaktualizować plik."
 
-#: /var/azuracast/www/src/Notification/Manager.php:104
+#: /var/azuracast/www/src/Notification/Manager.php:101
+msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Manager.php:105
+msgid "AzuraCast version %s is now available."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Manager.php:106
+msgid "You are currently running version %s. Updating is highly recommended."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Manager.php:111
 msgid "New AzuraCast Release Version Available"
 msgstr "Dostępna jest nowa wersja oprogramowania AzuraCast"
 
-#: /var/azuracast/www/src/Notification/Manager.php:105
-msgid "<b>AzuraCast version %s is now available.</b> You are currently running version %s. Updating is highly recommended. Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr "<b>Dostępna jest wersja %s oprogramowania AzuraCast.</b> Obecnie używasz wersji %s. Aktualizacja jest wysoce zalecana. Instrukcja aktualizacji dostępna jest <a href=\"%s\" target=\"_blank\">od tym linkiem</a>."
+#: /var/azuracast/www/src/Notification/Manager.php:121
+msgid "The following improvements have been made since your last update:"
+msgstr ""
 
-#: /var/azuracast/www/src/Notification/Manager.php:113
+#: /var/azuracast/www/src/Notification/Manager.php:124
+msgid "Your installation is currently %d update(s) behind the latest version."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Manager.php:125
+msgid "You should update to take advantage of bug and security fixes."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
 msgstr "Dostępne są nowe aktualizacje AzuraCast"
-
-#: /var/azuracast/www/src/Notification/Manager.php:114
-msgid "<b>Your installation is currently %d update(s) behind the latest version.</b> You should update to take advantage of bug and security fixes. Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
 
 #: /var/azuracast/www/src/Radio/Adapters.php:137
 #: /var/azuracast/www/src/Radio/Adapters.php:141

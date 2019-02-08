@@ -98,20 +98,38 @@ class Manager implements EventSubscriberInterface
         }
 
         $instructions_url = 'https://www.azuracast.com/install.html';
+        $instructions_string = __('Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.', $instructions_url);
 
         if ($update_data['needs_release_update']) {
+            $notification_parts = [
+                '<b>'.__('AzuraCast version %s is now available.', $update_data['latest_release']).'</b>',
+                __('You are currently running version %s. Updating is highly recommended.', $update_data['current_release']),
+                $instructions_string
+            ];
+
             $event->addNotification(new Notification(
                 __('New AzuraCast Release Version Available'),
-                __('<b>AzuraCast version %s is now available.</b> You are currently running version %s. Updating is highly recommended. Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.', $update_data['latest_release'], $update_data['current_release'], $instructions_url),
+                implode(' ', $notification_parts),
                 Notification::INFO
             ));
             return;
         }
 
         if (Entity\Settings::UPDATES_ALL === $check_for_updates && $update_data['needs_rolling_update']) {
+            $notification_parts = [];
+            if ($update_data['rolling_updates_available'] < 15 && !empty($update_data['rolling_updates_list'])) {
+                $notification_parts[] = __('The following improvements have been made since your last update:');
+                $notification_parts[] = '<ul><li>'.implode('</li><li>', $update_data['rolling_updates_list']).'</li></ul>';
+            } else {
+                $notification_parts[] = '<b>'.__('Your installation is currently %d update(s) behind the latest version.', $update_data['rolling_updates_available']).'</b>';
+                $notification_parts[] = __('You should update to take advantage of bug and security fixes.');
+            }
+
+            $notification_parts[] = $instructions_string;
+
             $event->addNotification(new Notification(
                 __('New AzuraCast Updates Available'),
-                __('<b>Your installation is currently %d update(s) behind the latest version.</b> You should update to take advantage of bug and security fixes. Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.', $update_data['rolling_updates_available'], $instructions_url),
+                 implode(' ', $notification_parts),
                 Notification::INFO
             ));
             return;

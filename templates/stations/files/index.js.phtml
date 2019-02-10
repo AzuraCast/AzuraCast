@@ -40,7 +40,7 @@ $(function() {
                 e.preventDefault();
 
                 this.dir_history.pop();
-                this.move_dir = this.dir_history.join("/");
+                this.move_dir = this.dir_history.slice(-1)[0];
                 this.directory_grid.bootgrid("reload");
             }
         }
@@ -164,7 +164,7 @@ $(function() {
                 return '<div class="is_dir">'+$icon + row.name +'</div>';
             },
             "commands": function(column, row) {
-                return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="'+window.btoa(appMoveFilesModal.move_dir.length ? appMoveFilesModal.move_dir + '/' + row.path : row.path)+'"><?=__('Select') ?></a>';
+                return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="'+window.btoa(row.path)+'"><?=__('Select') ?></a>';
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function() {
@@ -187,7 +187,7 @@ $(function() {
         });
     }).on("click.rs.jquery.bootgrid", function(e, columns, row) {
         appMoveFilesModal.dir_history.push(row.path);
-        appMoveFilesModal.move_dir = appMoveFilesModal.dir_history.join("/");
+        appMoveFilesModal.move_dir = row.path;
         appMoveFilesModal.directory_grid.bootgrid("reload");
     });
 

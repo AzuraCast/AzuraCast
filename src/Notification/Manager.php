@@ -119,7 +119,7 @@ class Manager implements EventSubscriberInterface
             $notification_parts = [];
             if ($update_data['rolling_updates_available'] < 15 && !empty($update_data['rolling_updates_list'])) {
                 $notification_parts[] = __('The following improvements have been made since your last update:');
-                $notification_parts[] = '<ul><li>'.implode('</li><li>', $update_data['rolling_updates_list']).'</li></ul>';
+                $notification_parts[] = nl2br('<ul><li>'.implode('</li><li>', $update_data['rolling_updates_list']).'</li></ul>');
             } else {
                 $notification_parts[] = '<b>'.__('Your installation is currently %d update(s) behind the latest version.', $update_data['rolling_updates_available']).'</b>';
                 $notification_parts[] = __('You should update to take advantage of bug and security fixes.');

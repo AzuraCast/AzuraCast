@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.87.7",
+            "version": "3.87.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "52e0590429cf6a80909a93636fed9c929224a2f6"
+                "reference": "28f117c221ee53dc2486ffcbf7288a9af6d21612"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/52e0590429cf6a80909a93636fed9c929224a2f6",
-                "reference": "52e0590429cf6a80909a93636fed9c929224a2f6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/28f117c221ee53dc2486ffcbf7288a9af6d21612",
+                "reference": "28f117c221ee53dc2486ffcbf7288a9af6d21612",
                 "shasum": ""
             },
             "require": {
@@ -86,7 +86,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-02-08T22:10:20+00:00"
+            "time": "2019-02-11T23:07:51+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -157,12 +157,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "8d396a1f7d36b2395cf473825423ca747ea7fac5"
+                "reference": "4866f611711e4fad74b2b2e4d0f70d4576c045bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/8d396a1f7d36b2395cf473825423ca747ea7fac5",
-                "reference": "8d396a1f7d36b2395cf473825423ca747ea7fac5",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/4866f611711e4fad74b2b2e4d0f70d4576c045bd",
+                "reference": "4866f611711e4fad74b2b2e4d0f70d4576c045bd",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2019-02-11T07:17:05+00:00"
+            "time": "2019-02-12T17:26:18+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -423,16 +423,16 @@
         },
         {
             "name": "brick/math",
-            "version": "0.8.4",
+            "version": "0.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "41eeaed92906856968a3d4cc1020a70647c9e97f"
+                "reference": "510f506185d4c988f97180426ec80fb3dbf51e04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/41eeaed92906856968a3d4cc1020a70647c9e97f",
-                "reference": "41eeaed92906856968a3d4cc1020a70647c9e97f",
+                "url": "https://api.github.com/repos/brick/math/zipball/510f506185d4c988f97180426ec80fb3dbf51e04",
+                "reference": "510f506185d4c988f97180426ec80fb3dbf51e04",
                 "shasum": ""
             },
             "require": {
@@ -462,20 +462,20 @@
                 "brick",
                 "math"
             ],
-            "time": "2018-12-07T14:38:55+00:00"
+            "time": "2019-02-12T10:40:15+00:00"
         },
         {
             "name": "cakephp/chronos",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "395110125ff577f080fa064dca5c5608a4e77ee1"
+                "reference": "ebda7326d4a65e53bc5bb915ebbbeee98f1926b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/395110125ff577f080fa064dca5c5608a4e77ee1",
-                "reference": "395110125ff577f080fa064dca5c5608a4e77ee1",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/ebda7326d4a65e53bc5bb915ebbbeee98f1926b0",
+                "reference": "ebda7326d4a65e53bc5bb915ebbbeee98f1926b0",
                 "shasum": ""
             },
             "require": {
@@ -519,7 +519,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-10-18T22:02:21+00:00"
+            "time": "2019-02-11T02:08:31+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -6910,16 +6910,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.11.1",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "a138b8a2731b2c19f1dffa2f1411984a638fe977"
+                "reference": "8e185a74004920419ee97bf9dc62e6a175e8dca5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a138b8a2731b2c19f1dffa2f1411984a638fe977",
-                "reference": "a138b8a2731b2c19f1dffa2f1411984a638fe977",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/8e185a74004920419ee97bf9dc62e6a175e8dca5",
+                "reference": "8e185a74004920419ee97bf9dc62e6a175e8dca5",
                 "shasum": ""
             },
             "require": {
@@ -6979,7 +6979,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-01-19T20:23:08+00:00"
+            "time": "2019-02-12T14:54:38+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",

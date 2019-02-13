@@ -1,6 +1,5 @@
 $(function() {
     var CSRF = '<?=$csrf ?>';
-    var $current_dir = '';
 
     var appToolbar = new Vue({
         el: '#app-toolbar',
@@ -46,18 +45,28 @@ $(function() {
         }
     });
 
+    var currentDir = '';
+    var flushCache = false;
+
     var grid = $("#file-table").bootgrid({
         ajax: true,
         selection: true,
         multiSelect: true,
         rowSelect: false,
         caseSensitive: false,
-        url: "<?=$router->fromHere('stations:files:list')  ?>",
+        url: "<?=$router->fromHere('stations:files:list') ?>",
         post: function() {
-            return {
-                'file': $current_dir,
+            var postVars = {
+                'file': currentDir,
                 'csrf': CSRF
             };
+
+            if (flushCache) {
+                postVars.flush_cache = 'true';
+                flushCache = false;
+            }
+
+            return postVars;
         },
         formatters: {
             "playable": function(column, row) {
@@ -233,11 +242,11 @@ $(function() {
     $('#frm-create-playlist').submit(function(e) {
         e.preventDefault();
 
-        var $files = getSelectedFiles();
-        $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
+        var files = getSelectedFiles();
+        files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
             'do': 'playlist_new',
             'name': $('#fld-playlist-name').val(),
-            'files': $files.join('|'),
+            'files': files.join('|'),
             'csrf': CSRF,
             'file': getUrlHash()
         },function(data){
@@ -293,46 +302,51 @@ $(function() {
     flow.assignDrop(document.getElementById('file_drop_target'));
 
     flow.on('fileAdded', function(file, event) {
-        $('#upload_progress').append(renderFileUploadRow(file));
+        var $row = $('<div class="uploading-file" id="file_upload_'+file.uniqueIdentifier+'"/>')
+            .append( $('<div class="fileuploadname" />').text(file.name) )
+            .append( $('<div class="progress"><div class="progress-bar"></div></div>') )
+            .append( $('<div class="upload-status" />') )
+            .append( $('<div class="size" />').text(formatFileSize(file.size)) );
+
+        $('#upload_progress').append($row);
         return true;
     });
+
     flow.on('filesSubmitted', function(array, event) {
         flow.upload();
     });
+
     flow.on('fileProgress', function(file) {
         var $row = $('#file_upload_'+file.uniqueIdentifier);
         $row.find('.progress-bar').css('width',(file.progress() * 100)+'%' );
     });
-    flow.on('fileSuccess', function(file, message){
-        var $row = $('#file_upload_'+file.uniqueIdentifier);
-        $row.fadeOut();
-        list();
-    });
-    flow.on('fileError', function(file, message){
-        var $row = $('#file_upload_'+file.uniqueIdentifier);
-        $row.remove();
 
-        var message_json = JSON.parse(message);
-        var $error_row = renderFileSizeErrorRow(file, message_json.message);
-        $('#upload_progress').append($error_row);
-        window.setTimeout(function(){ $error_row.fadeOut(); },5000);
+    flow.on('fileSuccess', function(file, message) {
+        var $row = $('#file_upload_'+file.uniqueIdentifier);
+
+        $row.addClass('text-success');
+        $row.find('.progress').hide();
     });
+
+    flow.on('fileError', function(file, message) {
+        var message_json = JSON.parse(message);
+
+        var $row = $('#file_upload_'+file.uniqueIdentifier);
+        $row.addClass('text-danger');
+        $row.find('.progress').hide();
+        $row.find('.upload-status').text(message_json.message);
+    });
+
     flow.on('error', function(message, file, chunk) {
         console.error(message, file, chunk);
     });
 
-    function renderFileUploadRow(file) {
-        return $row = $('<div id="file_upload_'+file.uniqueIdentifier+'"/>')
-            .append( $('<span class="fileuploadname" />').text(file.name) )
-            .append( $('<div class="progress"><div class="progress-bar"></div></div>') )
-            .append( $('<span class="size" />').text(formatFileSize(file.size)) );
-    }
+    flow.on('complete', function() {
+        $('.uploading-file').fadeOut();
 
-    function renderFileSizeErrorRow(file, message) {
-        return $row = $('<div id="file_upload_error_'+file.uniqueIdentifier+'" class="error" />')
-            .append( $('<div class="fileuploadname" />').text('Error: ' + file.name))
-            .append( $('<div/>').text(message) );
-    }
+        flushCache = true;
+        list();
+    });
 
     function list() {
         var hashval = getUrlHash();
@@ -340,7 +354,7 @@ $(function() {
 
         console.log('Relisting for directory: #'+hashval);
 
-        $current_dir = hashval;
+        currentDir = hashval;
         $('#file-table').bootgrid("reload");
     }
 

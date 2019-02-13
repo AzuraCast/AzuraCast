@@ -208,12 +208,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "8e49f1ae9108d75f86f1f68f49ca6ea74fe22aef"
+                "reference": "5a7b0414c7d291df7fc6e7c0a02deef432eff763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/8e49f1ae9108d75f86f1f68f49ca6ea74fe22aef",
-                "reference": "8e49f1ae9108d75f86f1f68f49ca6ea74fe22aef",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/5a7b0414c7d291df7fc6e7c0a02deef432eff763",
+                "reference": "5a7b0414c7d291df7fc6e7c0a02deef432eff763",
                 "shasum": ""
             },
             "require": {
@@ -221,7 +221,6 @@
                 "ext-simplexml": "*",
                 "ext-xml": "*",
                 "guzzlehttp/guzzle": ">6.0",
-                "imangazaliev/didom": "^1.14",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -247,7 +246,7 @@
                 }
             ],
             "description": "A lightweight PHP adapter for viewing the current now playing data in Icecast and SHOUTcast 1/2. A part of the AzuraCast software suite.",
-            "time": "2019-02-11T20:39:51+00:00"
+            "time": "2019-02-13T22:33:01+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -2016,55 +2015,6 @@
                 "url"
             ],
             "time": "2018-12-04T20:46:45+00:00"
-        },
-        {
-            "name": "imangazaliev/didom",
-            "version": "1.14.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Imangazaliev/DiDOM.git",
-                "reference": "a8389cc26897f6bb8843363b4ea16e7ef16fb3c3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Imangazaliev/DiDOM/zipball/a8389cc26897f6bb8843363b4ea16e7ef16fb3c3",
-                "reference": "a8389cc26897f6bb8843363b4ea16e7ef16fb3c3",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-iconv": "*",
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.9",
-                "phpunit/phpunit": "^4.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DiDom\\": "src/DiDom/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Imangazaliev Muhammad",
-                    "email": "imangazalievm@gmail.com"
-                }
-            ],
-            "description": "Simple and fast HTML parser",
-            "homepage": "https://github.com/Imangazaliev/DiDOM",
-            "keywords": [
-                "didom",
-                "html",
-                "parser",
-                "xml"
-            ],
-            "time": "2019-01-17T11:01:36+00:00"
         },
         {
             "name": "influxdb/influxdb-php",
@@ -5799,6 +5749,55 @@
                 "test"
             ],
             "time": "2016-01-20T08:20:44+00:00"
+        },
+        {
+            "name": "imangazaliev/didom",
+            "version": "1.14.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Imangazaliev/DiDOM.git",
+                "reference": "a8389cc26897f6bb8843363b4ea16e7ef16fb3c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Imangazaliev/DiDOM/zipball/a8389cc26897f6bb8843363b4ea16e7ef16fb3c3",
+                "reference": "a8389cc26897f6bb8843363b4ea16e7ef16fb3c3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-iconv": "*",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "2.9",
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DiDom\\": "src/DiDom/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Imangazaliev Muhammad",
+                    "email": "imangazalievm@gmail.com"
+                }
+            ],
+            "description": "Simple and fast HTML parser",
+            "homepage": "https://github.com/Imangazaliev/DiDOM",
+            "keywords": [
+                "didom",
+                "html",
+                "parser",
+                "xml"
+            ],
+            "time": "2019-01-17T11:01:36+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",

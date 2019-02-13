@@ -328,20 +328,6 @@ return [
                     ]
                 ],
 
-                'dj_silence_buffer' => [
-                    'number',
-                    [
-                        'label' => __('DJ/Streamer Silence Detection Buffer (Seconds)'),
-                        'label_class' => 'advanced',
-                        'description' => __('The number of seconds of silence before a streamer will automatically be disconnected. Set to zero (0) to disable.'),
-                        'default' => 30,
-                        'min' => 0,
-                        'max' => 999,
-                        'step' => 1,
-                        'belongsTo' => 'backend_config',
-                    ]
-                ],
-
                 'charset' => [
                     'radio',
                     [

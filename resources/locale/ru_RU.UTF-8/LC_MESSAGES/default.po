@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-02-08T00:46:01+00:00\n"
-"PO-Revision-Date: 2019-02-14 10:30\n"
+"PO-Revision-Date: 2019-02-14 10:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2982,7 +2982,7 @@ msgstr "Перейти к основному содержанию"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Переключить боковую панель"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
@@ -3057,7 +3057,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:12
 msgid "Run Automated Assignment"
-msgstr ""
+msgstr "Запустить автоматическое назначение"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:18
 msgid "Configure Automated Assignment"
@@ -3065,7 +3065,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:75
 msgid "Album Artwork"
-msgstr ""
+msgstr "Обложка альбома"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:83
 msgid "Rename"
@@ -3222,7 +3222,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:77
 msgid "Song-based"
-msgstr ""
+msgstr "Песня на основе"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:82
 msgid "Auto-Assigned"
@@ -3258,7 +3258,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:4
 msgid "Reorder Playlist"
-msgstr ""
+msgstr "Изменить порядок плейлиста"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:12
 msgid "Reorder Playlist: %s"
@@ -3578,7 +3578,7 @@ msgstr "Трек"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:95
 msgid "Worst Performing Songs"
-msgstr ""
+msgstr "Самые худшие песни"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:140
 msgid "Most Played Songs"
@@ -3591,7 +3591,7 @@ msgstr "за прошлый месяц"
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:152
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:37
 msgid "Plays"
-msgstr ""
+msgstr "Воспроизведение"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:1
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:16
@@ -3631,7 +3631,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:39
 msgid "Ratio"
-msgstr ""
+msgstr "Коэффициент"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:24
 msgid "Date Requested"
@@ -3652,7 +3652,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
 msgid "Report Not Available"
-msgstr ""
+msgstr "Отчет недоступен"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."

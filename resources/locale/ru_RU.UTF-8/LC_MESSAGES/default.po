@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-02-08T00:46:01+00:00\n"
-"PO-Revision-Date: 2019-02-08 14:10\n"
+"PO-Revision-Date: 2019-02-14 10:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3666,7 +3666,7 @@ msgstr "Прямая трансляция"
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:19
 #: /var/azuracast/www/templates/stations/sidebar.phtml:144
 msgid "Song Playback Timeline"
-msgstr ""
+msgstr "Хронология воспроизведения песни"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:32
 msgid "Date/Time"
@@ -3678,11 +3678,11 @@ msgstr "Пожалуйста, подождите..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:26
 msgid "Click to Start Station"
-msgstr ""
+msgstr "Нажмите, чтобы запустить станцию"
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:33
 msgid "Click to Restart Station"
-msgstr ""
+msgstr "Нажмите, чтобы перезагрузить станцию"
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:51
 msgid "Public Page"
@@ -3697,7 +3697,7 @@ msgstr "Аккаунты ведущих и DJ"
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:83
 msgid "Web DJ"
-msgstr ""
+msgstr "Веб DJ"
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:119
 msgid "Reports"
@@ -3717,7 +3717,7 @@ msgstr "Инструменты"
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:181
 msgid "Automated Assignment"
-msgstr ""
+msgstr "Автоматическое назначение"
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:200
 msgid "Restart Broadcasting"
@@ -3741,7 +3741,7 @@ msgstr "Заметки"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr ""
+msgstr "Удалить стримера \"% s\"?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
@@ -3771,7 +3771,7 @@ msgstr "Клиенты ShoutCast v1"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:77
 msgid "(DJ username and password separated by a colon)"
-msgstr ""
+msgstr "(Имя пользователя и пароль DJ разделены двоеточием)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:81
 msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
@@ -3779,11 +3779,11 @@ msgstr "Инструкции по установке программ для в�
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 msgid "Select the type of web hook to create."
-msgstr ""
+msgstr "Выберите тип веб-хука для создания."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:6
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
-msgstr ""
+msgstr "Веб-хуки позволяют вам подключиться к внешним веб-сервисам и транслировать изменения на вашу станцию."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:24
 msgid "Type"
@@ -3803,7 +3803,7 @@ msgstr "Включить"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Trigger the web hook manually and view the raw response."
-msgstr ""
+msgstr "Запустите веб-хук вручную и просмотрите необработанный ответ."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Test"

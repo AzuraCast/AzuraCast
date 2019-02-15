@@ -102,7 +102,7 @@ class Manager implements EventSubscriberInterface
 
         if ($update_data['needs_release_update']) {
             $notification_parts = [
-                '<b>'.__('AzuraCast version %s is now available.', $update_data['latest_release']).'</b>',
+                '<b>'.__('AzuraCast <a href="%s" target="_blank">version %s</a> is now available.', 'https://github.com/AzuraCast/AzuraCast/releases', $update_data['latest_release']).'</b>',
                 __('You are currently running version %s. Updating is highly recommended.', $update_data['current_release']),
                 $instructions_string
             ];

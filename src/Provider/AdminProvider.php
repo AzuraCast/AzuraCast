@@ -84,8 +84,7 @@ class AdminProvider implements ServiceProviderInterface
 
         $di[Admin\StationsController::class] = function($di) {
             return new Admin\StationsController(
-                $di[Entity\Repository\StationRepository::class],
-                $di[\App\Form\Station::class]
+                $di[\App\Form\StationForm::class]
             );
         };
 

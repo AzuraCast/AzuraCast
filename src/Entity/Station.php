@@ -217,7 +217,7 @@ class Station
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
-     * @ORM\OrderBy({"timestamp" = "DESC"})
+     * @ORM\OrderBy({"timestamp_start" = "DESC"})
      * @var Collection
      */
     protected $history;

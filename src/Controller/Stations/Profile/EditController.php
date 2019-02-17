@@ -8,15 +8,15 @@ use Psr\Http\Message\ResponseInterface;
 
 class EditController
 {
-    /** @var Form\Station */
+    /** @var Form\StationForm */
     protected $station_form;
 
     /**
-     * @param Form\Station $station_form
+     * @param Form\StationForm $station_form
      *
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(Form\Station $station_form)
+    public function __construct(Form\StationForm $station_form)
     {
         $this->station_form = $station_form;
     }
@@ -25,7 +25,7 @@ class EditController
     {
         $station = $request->getStation();
 
-        if ($this->station_form->process($request, $station)) {
+        if (false !== $this->station_form->process($request, $station)) {
             return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
         }
 

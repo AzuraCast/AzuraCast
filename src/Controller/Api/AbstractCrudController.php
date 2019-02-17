@@ -3,11 +3,8 @@ namespace App\Controller\Api;
 
 use Azura\Http\Router;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractCrudController
@@ -103,19 +100,19 @@ abstract class AbstractCrudController
 
     /**
      * @param array $data
-     * @param object $record
+     * @param object|null $record
      * @return object
      * @throws \App\Exception\Validation
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function _editRecord($data, $record): object
+    protected function _editRecord($data, $record = null): object
     {
         if (!($record instanceof $this->entityClass)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $this->_denormalizeToRecord($data, $record);
+        $record = $this->_denormalizeToRecord($data, $record);
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
@@ -131,15 +128,18 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param array $data
-     * @param object $record
+     * @param $data
+     * @param object|null $record
      * @param array $context
+     * @return object
      */
-    protected function _denormalizeToRecord($data, $record, array $context = []): void
+    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
     {
-        $this->serializer->denormalize($data, $this->entityClass, null, array_merge($context, [
-            AbstractNormalizer::OBJECT_TO_POPULATE => $record,
-        ]));
+        if (null !== $record) {
+            $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;
+        }
+
+        return $this->serializer->denormalize($data, $this->entityClass, null, $context);
     }
 
     /**

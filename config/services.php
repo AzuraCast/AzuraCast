@@ -263,13 +263,23 @@ return function (\Azura\Container $di)
         );
     };
 
-    $di[\App\Form\Station::class] = function($di) {
+    $di[\App\Form\EntityForm::class] = function($di) {
+        return new \App\Form\EntityForm(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Symfony\Component\Serializer\Serializer::class],
+            $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class]
+        );
+    };
+
+    $di[\App\Form\StationForm::class] = function($di) {
         /** @var \Azura\Config $config */
         $config = $di[\Azura\Config::class];
 
-        return new \App\Form\Station(
+        return new \App\Form\StationForm(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Symfony\Component\Serializer\Serializer::class],
+            $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class],
             $di[\App\Acl::class],
-            $di[\App\Entity\Repository\StationRepository::class],
             $config->get('forms/station')
         );
     };

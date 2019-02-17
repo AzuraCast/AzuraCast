@@ -56,7 +56,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
         $station = $request->getStation();
         $record = new $this->entityClass($station);
 
-        $row = $this->_createRecord($request->getParsedBody(), $record);
+        $row = $this->_editRecord($request->getParsedBody(), $record);
 
         $router = $request->getRouter();
         $return = $this->_viewRecord($row, $router);

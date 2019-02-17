@@ -66,7 +66,7 @@ class StationsProvider implements ServiceProviderInterface
 
         $di[Stations\Profile\EditController::class] = function($di) {
             return new Stations\Profile\EditController(
-                $di[\App\Form\Station::class]
+                $di[\App\Form\StationForm::class]
             );
         };
 

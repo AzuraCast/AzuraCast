@@ -12,22 +12,21 @@ class StationsController
     /** @var Entity\Repository\StationRepository */
     protected $record_repo;
 
-    /** @var Form\Station */
+    /** @var Form\StationForm */
     protected $station_form;
 
     /** @var string */
     protected $csrf_namespace = 'admin_stations';
 
     /**
-     * @param Entity\Repository\StationRepository $record_repo
-     * @param Form\Station $station_form
+     * @param Form\StationForm $station_form
      *
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(Entity\Repository\StationRepository $record_repo, Form\Station $station_form)
+    public function __construct(Form\StationForm $station_form)
     {
-        $this->record_repo = $record_repo;
         $this->station_form = $station_form;
+        $this->record_repo = $station_form->getStationRepository();
     }
 
     public function __invoke(Request $request, Response $response): ResponseInterface
@@ -46,7 +45,7 @@ class StationsController
             ? $this->record_repo->find((int)$id)
             : null;
 
-        if ($this->station_form->process($request, $record)) {
+        if (false !== $this->station_form->process($request, $record)) {
             $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }

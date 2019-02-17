@@ -4,8 +4,11 @@ namespace App\Form;
 use App\Acl;
 use App\Entity;
 use App\Http\Request;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class Station extends \AzuraForms\Form
+class StationForm extends EntityForm
 {
     /** @var Entity\Repository\StationRepository */
     protected $station_repo;
@@ -16,23 +19,47 @@ class Station extends \AzuraForms\Form
     /** @var bool */
     protected $can_see_administration = false;
 
+    /**
+     * @param EntityManager $em
+     * @param Serializer $serializer
+     * @param ValidatorInterface $validator
+     * @param Acl $acl
+     * @param array $form_config
+     */
     public function __construct(
+        EntityManager $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
         Acl $acl,
-        Entity\Repository\StationRepository $station_repo,
-        array $options = []
-    ) {
-        parent::__construct($options);
+        array $form_config)
+    {
+        parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->acl = $acl;
-        $this->station_repo = $station_repo;
+        $this->entityClass = Entity\Station::class;
+        $this->station_repo = $em->getRepository(Entity\Station::class);
     }
 
     /**
-     * @param Request $request
-     * @param Entity\Station|null $record
+     * @return Entity\Repository\StationRepository
+     */
+    public function getStationRepository(): Entity\Repository\StationRepository
+    {
+        return $this->station_repo;
+    }
+
+    /**
      * @return bool
      */
-    public function process(Request $request, Entity\Station $record = null): bool
+    public function canSeeAdministration(): bool
+    {
+        return $this->can_see_administration;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function process(Request $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
         $user = $request->getUser();
@@ -61,27 +88,6 @@ class Station extends \AzuraForms\Form
             }
         }
 
-        // Populate the form with existing values (if they exist).
-        if (null !== $record) {
-            $this->populate($this->station_repo->toArray($record));
-        }
-
-        // Handle submission.
-        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
-            $data = $this->getValues();
-            $this->station_repo->editOrCreate($data, $record);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function canSeeAdministration(): bool
-    {
-        return $this->can_see_administration;
+        return parent::process($request, $record);
     }
 }

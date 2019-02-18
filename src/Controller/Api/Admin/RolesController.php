@@ -95,9 +95,9 @@ class RolesController extends AbstractGenericCrudController
      * @inheritdoc
      */
 
-    protected function _denormalizeToRecord($data, $record, array $context = []): void
+    protected function _denormalizeToRecord($data, $record, array $context = []): object
     {
-        parent::_denormalizeToRecord($data, $record, array_merge($context, [
+        return parent::_denormalizeToRecord($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [
                 'permissions' => function(array $value, $record) {
                     if ($record instanceof Entity\Role) {

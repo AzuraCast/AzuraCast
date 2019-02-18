@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Acl;
+use App\Form\PermissionsForm;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -13,24 +14,24 @@ class PermissionsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var array */
-    protected $actions;
-
-    /** @var array */
-    protected $form_config;
+    /** @var PermissionsForm */
+    protected $form;
 
     /** @var string */
     protected $csrf_namespace = 'admin_permissions';
 
     /**
      * @param EntityManager $em
-     * @param array $form_config
+     * @param PermissionsForm $form
+     *
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(EntityManager $em, array $form_config)
+    public function __construct(
+        EntityManager $em,
+        PermissionsForm $form)
     {
         $this->em = $em;
-        $this->form_config = $form_config;
+        $this->form = $form;
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface
@@ -70,43 +71,18 @@ class PermissionsController
         /** @var \Azura\Doctrine\Repository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 
-        /** @var Entity\Repository\RolePermissionRepository $permission_repo */
-        $permission_repo = $this->em->getRepository(Entity\RolePermission::class);
+        $record = (null !== $id)
+            ? $role_repo->find((int)$id)
+            : null;
 
-        $form = new \AzuraForms\Form($this->form_config);
-
-        if (!empty($id)) {
-            $record = $role_repo->find($id);
-            $record_info = $role_repo->toArray($record, true, true);
-
-            $actions = $permission_repo->getActionsForRole($record);
-
-            $form->populate(array_merge($record_info, $actions));
-        } else {
-            $record = null;
-        }
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\Role)) {
-                $record = new Entity\Role;
-            }
-
-            $role_repo->fromArray($record, $data);
-
-            $this->em->persist($record);
-            $this->em->flush();
-
-            $permission_repo->setActionsForRole($record, $data);
-
+        if (false !== $this->form->process($request, $record)) {
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Permission')) . '</b>', 'green');
 
             return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
+            'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Permission')),
         ]);

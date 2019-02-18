@@ -263,27 +263,6 @@ return function (\Azura\Container $di)
         );
     };
 
-    $di[\App\Form\EntityForm::class] = function($di) {
-        return new \App\Form\EntityForm(
-            $di[\Doctrine\ORM\EntityManager::class],
-            $di[\Symfony\Component\Serializer\Serializer::class],
-            $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class]
-        );
-    };
-
-    $di[\App\Form\StationForm::class] = function($di) {
-        /** @var \Azura\Config $config */
-        $config = $di[\Azura\Config::class];
-
-        return new \App\Form\StationForm(
-            $di[\Doctrine\ORM\EntityManager::class],
-            $di[\Symfony\Component\Serializer\Serializer::class],
-            $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class],
-            $di[\App\Acl::class],
-            $config->get('forms/station')
-        );
-    };
-
     // Radio management
     $di->register(new \App\Provider\RadioProvider);
 
@@ -298,6 +277,9 @@ return function (\Azura\Container $di)
 
     // Notifications
     $di->register(new \App\Provider\NotificationProvider);
+
+    // Forms
+    $di->register(new \App\Provider\FormProvider);
 
     // Controller groups
     $di->register(new \App\Provider\AdminProvider);

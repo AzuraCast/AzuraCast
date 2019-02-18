@@ -5,69 +5,47 @@ $actions = \App\Acl::listPermissions();
 
 $form_config = [
     'method' => 'post',
-    'groups' => [
+    'elements' => [
 
-        'basic_info' => [
-            'elements' => [
-
-                'name' => [
-                    'text',
-                    [
-                        'label' => __('Role Name'),
-                        'class' => 'half-width',
-                        'required' => true,
-                    ]
-                ],
-
-            ],
+        'name' => [
+            'text',
+            [
+                'label' => __('Role Name'),
+                'class' => 'half-width',
+                'required' => true,
+            ]
         ],
 
-        'grp_global' => [
-            'legend' => __('System-Wide Permissions'),
-            'elements' => [
-
-                'actions_global' => [
-                    'multiSelect',
-                    [
-                        'label' => __('Actions'),
-                        'choices' => $actions['global'],
-                    ]
-                ],
-
-            ],
+        'actions_global' => [
+            'multiSelect',
+            [
+                'label' => __('System-Wide Permissions'),
+                'choices' => $actions['global'],
+                'class' => 'permission-select',
+            ]
         ],
 
     ],
 ];
 
 foreach ($all_stations as $station) {
-    $form_config['groups']['grp_station_' . $station['id']] = [
-        'legend' => __('Per-Station').': '.$station['name'],
-        'elements' => [
-
-            'actions_' . $station['id'] => [
-                'multiSelect',
-                [
-                    'label' => __('Actions'),
-                    'choices' => $actions['station'],
-                ]
-            ],
-
-        ],
+    $form_config['elements']['actions_' . $station['id']] = [
+        'multiSelect',
+        [
+            'label' => __('Permissions for %s', $station['name']),
+            'choices' => $actions['station'],
+            'class' => 'permission-select',
+        ]
     ];
 }
 
-$form_config['groups']['grp_submit'] = [
-    'elements' => [
-        'submit' => [
-            'submit',
-            [
-                'type' => 'submit',
-                'label' => __('Save Changes'),
-                'class' => 'btn btn-lg btn-primary',
-            ]
-        ],
-    ],
+$form_config['elements']['submit'] = [
+    'submit',
+    [
+        'type' => 'submit',
+        'label' => __('Save Changes'),
+        'class' => 'btn btn-lg btn-primary',
+    ]
 ];
 
 return $form_config;

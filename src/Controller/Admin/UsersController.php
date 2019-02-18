@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Auth;
+use App\Form\UserForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -14,14 +15,14 @@ class UsersController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\UserRepository */
+    protected $record_repo;
+
     /** @var Auth */
     protected $auth;
 
-    /** @var array */
-    protected $form_config;
-
-    /** @var Entity\Repository\UserRepository */
-    protected $record_repo;
+    /** @var UserForm */
+    protected $form;
 
     /** @var string */
     protected $csrf_namespace = 'admin_users';
@@ -29,14 +30,18 @@ class UsersController
     /**
      * @param EntityManager $em
      * @param Auth $auth
-     * @param array $form_config
+     * @param UserForm $form
+     *
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(EntityManager $em, Auth $auth, array $form_config)
+    public function __construct(
+        EntityManager $em,
+        Auth $auth,
+        UserForm $form)
     {
         $this->em = $em;
         $this->auth = $auth;
-        $this->form_config = $form_config;
+        $this->form = $form;
 
         $this->record_repo = $this->em->getRepository(Entity\User::class);
     }
@@ -55,42 +60,23 @@ class UsersController
 
     public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
-        $form = new \AzuraForms\Form($this->form_config);
+        $record = (null !== $id)
+            ? $this->record_repo->find((int)$id)
+            : null;
 
-        if (!empty($id)) {
-            $record = $this->record_repo->find((int)$id);
-            $record_defaults = $this->record_repo->toArray($record, true, true);
-
-            unset($record_defaults['auth_password']);
-
-            $form->populate($record_defaults);
-        } else {
-            $record = null;
-        }
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\User)) {
-                $record = new Entity\User;
-            }
-
-            $this->record_repo->fromArray($record, $data);
-
-            try {
-                $this->em->persist($record);
-                $this->em->flush();
-
-                $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')), 'green');
+        try {
+            if (false !== $this->form->process($request, $record)) {
+                $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')),
+                    'green');
 
                 return $response->withRedirect($request->getRouter()->named('admin:users:index'));
-            } catch(UniqueConstraintViolationException $e) {
-                $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
             }
+        } catch(UniqueConstraintViolationException $e) {
+            $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
+            'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('User'))
         ]);
@@ -102,13 +88,16 @@ class UsersController
 
         $user = $this->record_repo->find((int)$id);
 
-        if ($user instanceof Entity\User) {
+        $current_user = $request->getUser();
+
+        if ($user === $current_user) {
+            $request->getSession()->flash('<b>'.__('You cannot delete your own account.').'</b>', 'red');
+        } elseif ($user instanceof Entity\User) {
             $this->em->remove($user);
+            $this->em->flush();
+
+            $request->getSession()->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
         }
-
-        $this->em->flush();
-
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
 
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
     }

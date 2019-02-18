@@ -3,28 +3,28 @@ namespace App;
 
 class Acl
 {
-    const GLOBAL_ALL            = 'administer all';
-    const GLOBAL_VIEW           = 'view administration';
-    const GLOBAL_LOGS           = 'view system logs';
-    const GLOBAL_SETTINGS       = 'administer settings';
-    const GLOBAL_API_KEYS       = 'administer api keys';
-    const GLOBAL_USERS          = 'administer user accounts';
-    const GLOBAL_PERMISSIONS    = 'administer permissions';
-    const GLOBAL_STATIONS       = 'administer stations';
-    const GLOBAL_CUSTOM_FIELDS  = 'administer custom fields';
+    public const GLOBAL_ALL            = 'administer all';
+    public const GLOBAL_VIEW           = 'view administration';
+    public const GLOBAL_LOGS           = 'view system logs';
+    public const GLOBAL_SETTINGS       = 'administer settings';
+    public const GLOBAL_API_KEYS       = 'administer api keys';
+    public const GLOBAL_USERS          = 'administer user accounts';
+    public const GLOBAL_PERMISSIONS    = 'administer permissions';
+    public const GLOBAL_STATIONS       = 'administer stations';
+    public const GLOBAL_CUSTOM_FIELDS  = 'administer custom fields';
 
-    const STATION_ALL           = 'administer all';
-    const STATION_VIEW          = 'view station management';
-    const STATION_REPORTS       = 'view station reports';
-    const STATION_LOGS          = 'view station logs';
-    const STATION_PROFILE       = 'manage station profile';
-    const STATION_BROADCASTING  = 'manage station broadcasting';
-    const STATION_STREAMERS     = 'manage station streamers';
-    const STATION_MOUNTS        = 'manage station mounts';
-    const STATION_REMOTES       = 'manage station remotes';
-    const STATION_MEDIA         = 'manage station media';
-    const STATION_AUTOMATION    = 'manage station automation';
-    const STATION_WEB_HOOKS     = 'manage station web hooks';
+    public const STATION_ALL           = 'administer all';
+    public const STATION_VIEW          = 'view station management';
+    public const STATION_REPORTS       = 'view station reports';
+    public const STATION_LOGS          = 'view station logs';
+    public const STATION_PROFILE       = 'manage station profile';
+    public const STATION_BROADCASTING  = 'manage station broadcasting';
+    public const STATION_STREAMERS     = 'manage station streamers';
+    public const STATION_MOUNTS        = 'manage station mounts';
+    public const STATION_REMOTES       = 'manage station remotes';
+    public const STATION_MEDIA         = 'manage station media';
+    public const STATION_AUTOMATION    = 'manage station automation';
+    public const STATION_WEB_HOOKS     = 'manage station web hooks';
 
     /** @var Entity\Repository\RolePermissionRepository */
     protected $permission_repo;
@@ -85,9 +85,10 @@ class Acl
      *
      * @param int|array $role_id
      * @param string|array $action
+     * @param int|null $station_id
      * @return bool
      */
-    public function roleAllowed($role_id, $action, $station_id = null)
+    public function roleAllowed($role_id, $action, $station_id = null): bool
     {
         // Iterate through an array of roles and return with the first "true" response, or "false" otherwise.
         if (\is_array($role_id)) {
@@ -114,17 +115,17 @@ class Acl
         if (!empty($this->_actions[$role_id])) {
             $role_actions = (array)$this->_actions[$role_id];
 
-            if (\in_array('administer all', (array)$role_actions['global'], true)) {
+            if (\in_array(self::GLOBAL_ALL, (array)$role_actions['global'], true)) {
                 return true;
             }
 
             if ($station_id !== null) {
-                if (\in_array('administer stations', (array)$role_actions['global'], true)) {
+                if (\in_array(self::GLOBAL_STATIONS, (array)$role_actions['global'], true)) {
                     return true;
                 }
 
                 if (!empty($role_actions['stations'][$station_id])) {
-                    if (\in_array('administer all', $role_actions['stations'][$station_id], true)) {
+                    if (\in_array(self::STATION_ALL, $role_actions['stations'][$station_id], true)) {
                         return true;
                     }
 
@@ -147,7 +148,7 @@ class Acl
      * @throws Exception\NotLoggedIn
      * @throws Exception\PermissionDenied
      */
-    public function checkPermission(?Entity\User $user = null, $action, $station_id = null)
+    public function checkPermission(?Entity\User $user = null, $action, $station_id = null): void
     {
         if (!($user instanceof Entity\User)) {
             throw new Exception\NotLoggedIn;
@@ -171,26 +172,26 @@ class Acl
                     self::GLOBAL_ALL             => __('All Permissions'),
                     self::GLOBAL_VIEW            => __('View Administration Page'),
                     self::GLOBAL_LOGS            => __('View System Logs'),
-                    self::GLOBAL_SETTINGS        => sprintf(__('Administer %s'), __('Settings')),
-                    self::GLOBAL_API_KEYS        => sprintf(__('Administer %s'), __('API Keys')),
-                    self::GLOBAL_USERS           => sprintf(__('Administer %s'), __('Users')),
-                    self::GLOBAL_PERMISSIONS     => sprintf(__('Administer %s'), __('Permissions')),
-                    self::GLOBAL_STATIONS        => sprintf(__('Administer %s'), __('Stations')),
-                    self::GLOBAL_CUSTOM_FIELDS   => sprintf(__('Administer %s'), __('Custom Fields')),
+                    self::GLOBAL_SETTINGS        => __('Administer %s', __('Settings')),
+                    self::GLOBAL_API_KEYS        => __('Administer %s', __('API Keys')),
+                    self::GLOBAL_USERS           => __('Administer %s', __('Users')),
+                    self::GLOBAL_PERMISSIONS     => __('Administer %s', __('Permissions')),
+                    self::GLOBAL_STATIONS        => __('Administer %s', __('Stations')),
+                    self::GLOBAL_CUSTOM_FIELDS   => __('Administer %s', __('Custom Fields')),
                 ],
                 'station' => [
                     self::STATION_ALL            => __('All Permissions'),
                     self::STATION_VIEW           => __('View Station Page'),
                     self::STATION_REPORTS        => __('View Station Reports'),
                     self::STATION_LOGS           => __('View Station Logs'),
-                    self::STATION_PROFILE        => sprintf(__('Manage Station %s'), __('Profile')),
-                    self::STATION_BROADCASTING   => sprintf(__('Manage Station %s'), __('Broadcasting')),
-                    self::STATION_STREAMERS      => sprintf(__('Manage Station %s'), __('Streamers')),
-                    self::STATION_MOUNTS         => sprintf(__('Manage Station %s'), __('Mount Points')),
-                    self::STATION_REMOTES        => sprintf(__('Manage Station %s'), __('Remote Relays')),
-                    self::STATION_MEDIA          => sprintf(__('Manage Station %s'), __('Media')),
-                    self::STATION_AUTOMATION     => sprintf(__('Manage Station %s'), __('Automation')),
-                    self::STATION_WEB_HOOKS      => sprintf(__('Manage Station %s'), __('Web Hooks')),
+                    self::STATION_PROFILE        => __('Manage Station %s', __('Profile')),
+                    self::STATION_BROADCASTING   => __('Manage Station %s', __('Broadcasting')),
+                    self::STATION_STREAMERS      => __('Manage Station %s', __('Streamers')),
+                    self::STATION_MOUNTS         => __('Manage Station %s', __('Mount Points')),
+                    self::STATION_REMOTES        => __('Manage Station %s', __('Remote Relays')),
+                    self::STATION_MEDIA          => __('Manage Station %s', __('Media')),
+                    self::STATION_AUTOMATION     => __('Manage Station %s', __('Automation')),
+                    self::STATION_WEB_HOOKS      => __('Manage Station %s', __('Web Hooks')),
                 ]
             ];
         }

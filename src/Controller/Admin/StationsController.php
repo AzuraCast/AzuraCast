@@ -26,7 +26,7 @@ class StationsController
     public function __construct(Form\StationForm $station_form)
     {
         $this->station_form = $station_form;
-        $this->record_repo = $station_form->getStationRepository();
+        $this->record_repo = $station_form->getEntityRepository();
     }
 
     public function __invoke(Request $request, Response $response): ResponseInterface

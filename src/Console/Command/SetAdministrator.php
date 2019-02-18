@@ -1,6 +1,7 @@
 <?php
 namespace App\Console\Command;
 
+use App\Acl;
 use App\Entity;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
@@ -9,15 +10,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ResetPassword extends CommandAbstract
+class SetAdministrator extends CommandAbstract
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('azuracast:account:reset-password')
-            ->setDescription('Reset the password of the specified account.')
+        $this->setName('azuracast:account:set-administrator')
+            ->setDescription('Set the account specified as a global administrator.')
             ->addArgument(
                 'email',
                 InputArgument::REQUIRED,
@@ -31,7 +32,7 @@ class ResetPassword extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title('Reset Account Password');
+        $io->title('Set Administrator');
 
         /** @var EntityManager $em */
         $em = $this->get(EntityManager::class);
@@ -42,25 +43,34 @@ class ResetPassword extends CommandAbstract
             ->findOneBy(['email' => $user_email ]);
 
         if ($user instanceof Entity\User) {
-            $temp_pw = \App\Utilities::generatePassword(15);
+            $admin_role = $em->getRepository(Entity\Role::class)
+                ->find(Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID);
 
-            $user->setAuthPassword($temp_pw);
+            /** @var Entity\Repository\RolePermissionRepository $perms_repo */
+            $perms_repo = $em->getRepository(Entity\RolePermission::class);
+
+            $perms_repo->setActionsForRole($admin_role, [
+                'actions_global' => [
+                    Acl::GLOBAL_ALL,
+                ]
+            ]);
+
+            $user_roles = $user->getRoles();
+
+            if (!$user_roles->contains($admin_role)) {
+                $user_roles->add($admin_role);
+            }
 
             $em->persist($user);
             $em->flush();
 
-            $io->text([
-                'The account password has been reset. The new temporary password is:',
-                '',
-                '    '.$temp_pw,
-                '',
-                'Log in using this temporary password and set a new password using the web interface.',
-                '',
-            ]);
+            $io->text(__('The account associated with e-mail address "%s" has been set as an administrator', $user->getEmail()));
+            $io->newLine();
             return 0;
         }
 
-        $io->error('Account not found.');
+        $io->error(__('Account not found.'));
+        $io->newLine();
         return 1;
     }
 }

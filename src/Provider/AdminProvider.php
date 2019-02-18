@@ -2,6 +2,7 @@
 namespace App\Provider;
 
 use App\Controller\Admin;
+use Doctrine\ORM\EntityManager;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 use App\Entity;
@@ -15,7 +16,7 @@ class AdminProvider implements ServiceProviderInterface
             $config = $di[\Azura\Config::class];
 
             return new Admin\ApiController(
-                $di[\Doctrine\ORM\EntityManager::class],
+                $di[EntityManager::class],
                 $config->get('forms/api_key')
             );
         };
@@ -35,7 +36,7 @@ class AdminProvider implements ServiceProviderInterface
             $config = $di[\Azura\Config::class];
 
             return new Admin\CustomFieldsController(
-                $di[\Doctrine\ORM\EntityManager::class],
+                $di[EntityManager::class],
                 $config->get('forms/custom_field')
             );
         };
@@ -50,25 +51,14 @@ class AdminProvider implements ServiceProviderInterface
 
         $di[Admin\LogsController::class] = function($di) {
             return new Admin\LogsController(
-                $di[\Doctrine\ORM\EntityManager::class]
+                $di[EntityManager::class]
             );
         };
 
         $di[Admin\PermissionsController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
-
-            /** @var \Doctrine\ORM\EntityManager $em */
-            $em = $di[\Doctrine\ORM\EntityManager::class];
-
-            /** @var Entity\Repository\StationRepository $stations_repo */
-            $stations_repo = $em->getRepository(Entity\Station::class);
-
             return new Admin\PermissionsController(
-                $em,
-                $config->get('forms/role', [
-                    'all_stations' => $stations_repo->fetchArray(),
-                ])
+                $di[EntityManager::class],
+                $di[\App\Form\PermissionsForm::class]
             );
         };
 
@@ -93,7 +83,7 @@ class AdminProvider implements ServiceProviderInterface
             $config = $di[\Azura\Config::class];
 
             return new Admin\Stations\CloneController(
-                $di[\Doctrine\ORM\EntityManager::class],
+                $di[EntityManager::class],
                 $di[\Azura\Cache::class],
                 $di[\App\Radio\Configuration::class],
                 $config->get('forms/station_clone')
@@ -101,21 +91,10 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\UsersController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
-
-            /** @var \Doctrine\ORM\EntityManager $em */
-            $em = $di[\Doctrine\ORM\EntityManager::class];
-
-            /** @var \Azura\Doctrine\Repository $role_repo */
-            $role_repo = $em->getRepository(Entity\Role::class);
-
             return new Admin\UsersController(
-                $di[\Doctrine\ORM\EntityManager::class],
+                $di[EntityManager::class],
                 $di[\App\Auth::class],
-                $config->get('forms/user', [
-                    'roles' => $role_repo->fetchSelect()
-                ])
+                $di[\App\Form\UserForm::class]
             );
         };
 

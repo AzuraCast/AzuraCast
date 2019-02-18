@@ -46,6 +46,7 @@ return function (\Azura\EventDispatcher $dispatcher)
 
             // User-side tools
             new Command\ResetPassword,
+            new Command\SetAdministrator,
             new Command\ListSettings,
             new Command\SetSetting,
         ]);

@@ -4,6 +4,7 @@ namespace App\Form;
 use App\Acl;
 use App\Entity;
 use App\Http\Request;
+use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,9 +42,9 @@ class StationForm extends EntityForm
     }
 
     /**
-     * @return Entity\Repository\StationRepository
+     * @inheritdoc
      */
-    public function getStationRepository(): Entity\Repository\StationRepository
+    public function getEntityRepository(): Repository
     {
         return $this->station_repo;
     }

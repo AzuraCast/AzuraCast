@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Role implements \JsonSerializable
 {
+    public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
+
     use Traits\TruncateStrings;
 
     /**

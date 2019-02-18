@@ -2,10 +2,12 @@
 namespace App\Form;
 
 use App\Http\Request;
+use Azura\Doctrine\Repository;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -47,14 +49,6 @@ class EntityForm extends \AzuraForms\Form
     }
 
     /**
-     * @return EntityManager
-     */
-    public function getEntityManager(): EntityManager
-    {
-        return $this->em;
-    }
-
-    /**
      * @return string
      */
     public function getEntityClass(): string
@@ -71,13 +65,37 @@ class EntityForm extends \AzuraForms\Form
     }
 
     /**
+     * @return EntityManager
+     */
+    public function getEntityManager(): EntityManager
+    {
+        return $this->em;
+    }
+
+    /**
+     * @return Repository
+     */
+    public function getEntityRepository(): Repository
+    {
+        if (null === $this->entityClass) {
+            throw new \Azura\Exception('Entity class name is not specified.');
+        }
+
+        return $this->em->getRepository($this->entityClass);
+    }
+
+    /**
      * @param Request $request
      * @param object|null $record
      * @return object|bool The modified object if edited/created, or `false` if not processed.
      */
     public function process(Request $request, $record = null)
     {
-        if (!($record instanceof $this->entityClass)) {
+        if (null === $this->entityClass) {
+            throw new \Azura\Exception('Entity class name is not specified.');
+        }
+
+        if (null !== $record && !($record instanceof $this->entityClass)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
@@ -94,9 +112,25 @@ class EntityForm extends \AzuraForms\Form
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {
-                $e = new \App\Exception\Validation((string)$errors);
-                $e->setDetailedErrors($errors);
-                throw $e;
+                $other_errors = [];
+                foreach($errors as $error) {
+                    /** @var ConstraintViolation $error */
+                    $field_name = $error->getPropertyPath();
+
+                    if (isset($this->fields[$field_name])) {
+                        $this->fields[$field_name]->addError($error->getMessage());
+                    } else {
+                        $other_errors[] = $error;
+                    }
+                }
+
+                if (count($other_errors) > 0) {
+                    $e = new \App\Exception\Validation((string)$errors);
+                    $e->setDetailedErrors($errors);
+                    throw $e;
+                }
+
+                return false;
             }
 
             $this->em->persist($record);
@@ -110,9 +144,9 @@ class EntityForm extends \AzuraForms\Form
     /**
      * @param $record
      * @param array $context
-     * @return array|bool|float|int|mixed|string
+     * @return array
      */
-    protected function _normalizeRecord($record, array $context = [])
+    protected function _normalizeRecord($record, array $context = []): array
     {
         return $this->serializer->normalize($record, null, array_merge($context, [
             DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,

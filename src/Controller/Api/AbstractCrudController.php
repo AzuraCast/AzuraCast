@@ -128,7 +128,7 @@ abstract class AbstractCrudController
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @param object|null $record
      * @param array $context
      * @return object

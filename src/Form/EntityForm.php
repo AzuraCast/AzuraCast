@@ -142,7 +142,7 @@ class EntityForm extends \AzuraForms\Form
     }
 
     /**
-     * @param $record
+     * @param object $record
      * @param array $context
      * @return array
      */
@@ -174,7 +174,7 @@ class EntityForm extends \AzuraForms\Form
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @param object|null $record
      * @param array $context
      * @return object

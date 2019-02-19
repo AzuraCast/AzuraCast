@@ -89,6 +89,15 @@ class StationForm extends EntityForm
             }
         }
 
-        return parent::process($request, $record);
+        if (null !== $record) {
+            $this->populate($this->_normalizeRecord($record));
+        }
+
+        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
+            $data = $this->getValues();
+            return $this->station_repo->editOrCreate($data, $record);
+        }
+
+        return false;
     }
 }

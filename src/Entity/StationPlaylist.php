@@ -722,7 +722,7 @@ class StationPlaylist
         }
 
         // Check if already played
-        $relevant_song_history = array_slice($songHistoryEntries, 0, 15);
+        $relevant_song_history = array_slice($songHistoryEntries, 0, $length);
 
         $was_played = false;
         foreach($relevant_song_history as $sh_row) {

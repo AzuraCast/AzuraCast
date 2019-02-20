@@ -37,59 +37,8 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
     abstract public function read(Entity\Station $station): bool;
 
     /**
-     * @param Entity\Station $station
-     * @return null|string The command to pass the station-watcher app.
+     * @inheritdoc
      */
-    public function getWatchCommand(Entity\Station $station): ?string
-    {
-        return null;
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @return bool Whether a station-watcher command exists for this adapter.
-     */
-    public function hasWatchCommand(Entity\Station $station): bool
-    {
-        if (APP_TESTING_MODE || !APP_INSIDE_DOCKER || !$station->isEnabled()) {
-            return false;
-        }
-
-        return ($this->getCommand($station) !== null);
-    }
-
-    /**
-     * Return the supervisord programmatic name for the station-watcher command.
-     *
-     * @param Entity\Station $station
-     * @return string
-     */
-    public function getWatchProgramName(Entity\Station $station): string
-    {
-        return 'station_' . $station->getId() . ':station_' . $station->getId() . '_watcher';
-    }
-
-    /**
-     * Get the AzuraCast station-watcher binary command for the specified adapter and watch URI.
-     *
-     * @param Entity\Station $station
-     * @param string $adapter
-     * @param string $watch_uri
-     * @return string
-     */
-    protected function _getStationWatcherCommand(Entity\Station $station, $adapter, $watch_uri): string
-    {
-        if (APP_INSIDE_DOCKER) {
-            $base_url = (APP_DOCKER_REVISION >= 5) ? 'http://web' : 'http://nginx';
-        } else {
-            $base_url = 'http://localhost';
-        }
-
-        $notify_uri = $base_url.'/api/internal/'.$station->getId().'/notify?api_auth='.$station->getAdapterApiKey();
-
-        return '/var/azuracast/servers/station-watcher/station-watcher '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$station->getShortName();
-    }
-
     public function getProgramName(Entity\Station $station): string
     {
         return 'station_' . $station->getId() . ':station_' . $station->getId() . '_frontend';
@@ -185,44 +134,6 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
     public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
         return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function stop(Entity\Station $station): void
-    {
-        parent::stop($station);
-
-        if ($this->hasWatchCommand($station)) {
-            $program_name = $this->getWatchProgramName($station);
-
-            try {
-                $this->supervisor->stopProcess($program_name);
-                $this->logger->info('Frontend watcher stopped.', ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
-            } catch (FaultException $e) {
-                $this->_handleSupervisorException($e, $program_name, $station);
-            }
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function start(Entity\Station $station): void
-    {
-        parent::start($station);
-
-        if ($this->hasWatchCommand($station)) {
-            $program_name = $this->getWatchProgramName($station);
-
-            try {
-                $this->supervisor->startProcess($program_name);
-                $this->logger->info('Frontend watcher started.', ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
-            } catch (FaultException $e) {
-                $this->_handleSupervisorException($e, $program_name, $station);
-            }
-        }
     }
 
     protected function _processCustomConfig($custom_config_raw)

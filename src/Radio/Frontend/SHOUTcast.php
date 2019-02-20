@@ -9,19 +9,6 @@ use Symfony\Component\Process\Process;
 
 class SHOUTcast extends AbstractFrontend
 {
-    public function getWatchCommand(Entity\Station $station): ?string
-    {
-        $fe_config = (array)$station->getFrontendConfig();
-
-        $mount_name = $this->_getDefaultMountSid($station);
-
-        return $this->_getStationWatcherCommand(
-            $station,
-            'shoutcast2',
-            'http://localhost:' . $fe_config['port'] . '/stats?sid='.$mount_name
-        );
-    }
-
     public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
         $fe_config = (array)$station->getFrontendConfig();

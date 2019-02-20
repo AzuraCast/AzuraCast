@@ -87,9 +87,6 @@ class Configuration
         $frontend_name = $frontend->getProgramName($station);
         [,$frontend_program] = explode(':', $frontend_name);
 
-        $frontend_watch_name = $frontend->getWatchProgramName($station);
-        [,$frontend_watch_program] = explode(':', $frontend_watch_name);
-
         // Write group section of config
         $programs = [];
         if ($backend->hasCommand($station)) {
@@ -97,9 +94,6 @@ class Configuration
         }
         if ($frontend->hasCommand($station)) {
             $programs[] = $frontend_program;
-        }
-        if ($frontend->hasWatchCommand($station)) {
-            $programs[] = $frontend_watch_program;
         }
 
         $supervisor_config[] = '[group:' . $backend_group . ']';
@@ -112,15 +106,6 @@ class Configuration
                 'directory' => $config_path,
                 'command' => $frontend->getCommand($station),
                 'priority' => 90,
-            ]);
-        }
-
-        // Write frontend watcher program
-        if ($frontend->hasWatchCommand($station)) {
-            $this->_writeConfigurationSection($supervisor_config, $frontend_watch_program, [
-                'directory' => '/var/azuracast/servers/station-watcher',
-                'command' => $frontend->getWatchCommand($station),
-                'priority' => 95,
             ]);
         }
 

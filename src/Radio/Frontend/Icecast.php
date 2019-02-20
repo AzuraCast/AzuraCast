@@ -14,17 +14,6 @@ class Icecast extends AbstractFrontend
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function getWatchCommand(Entity\Station $station): ?string
-    {
-        $fe_config = (array)$station->getFrontendConfig();
-
-        return $this->_getStationWatcherCommand(
-            $station,
-            'icecast',
-            'http://admin:'.$fe_config['admin_pw'].'@localhost:' . $fe_config['port'] . '/admin/stats'
-        );
-    }
-
     public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
         $fe_config = (array)$station->getFrontendConfig();

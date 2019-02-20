@@ -84,7 +84,7 @@ class CloneController
             if ($data['clone_media'] === 'share') {
                 $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();
             } else {
-                unset($new_record_data['radio_media_dir']);
+                unset($new_record_data['radio_media_dir'], $new_record_data['storage_used']);
             }
 
             // Trigger normal creation process of station.

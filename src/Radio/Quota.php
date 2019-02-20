@@ -76,6 +76,7 @@ class Quota
 
             return Math\BigDecimal::of($size)
                 ->multipliedBy($byte_multiplier)
+                ->toScale(0, Math\RoundingMode::FLOOR)
                 ->toBigInteger();
         }
 

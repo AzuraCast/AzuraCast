@@ -1,7 +1,8 @@
 {
   "name": "azuracast/azuracast",
-  "description": "The AzuraCast standalone radio station management suite.",
+  "description": "The AzuraCast self-hosted web radio station management suite.",
   "license": "Apache-2.0",
+  "type": "project",
   "require": {
     "php": ">=7.2",
     "ext-fileinfo": "*",
@@ -76,6 +77,9 @@
       "App\\": "src"
     }
   },
+  "bin": [
+    "bin/azuracast"
+  ],
   "config": {
     "preferred-install": "dist"
   },

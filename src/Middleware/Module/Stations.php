@@ -1,8 +1,11 @@
 <?php
 namespace App\Middleware\Module;
 
+use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
+use App\Event;
+use Azura\EventDispatcher;
 use Slim\Route;
 
 /**
@@ -10,6 +13,24 @@ use Slim\Route;
  */
 class Stations
 {
+    /** @var Acl */
+    protected $acl;
+
+    /** @var EventDispatcher */
+    protected $dispatcher;
+
+    /**
+     * @param Acl $acl
+     * @param EventDispatcher $dispatcher
+     *
+     * @see \App\Provider\MiddlewareProvider
+     */
+    public function __construct(Acl $acl, EventDispatcher $dispatcher)
+    {
+        $this->acl = $acl;
+        $this->dispatcher = $dispatcher;
+    }
+
     /**
      * @param Request $request
      * @param Response $response
@@ -20,11 +41,18 @@ class Stations
     {
         $view = $request->getView();
 
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
+
         $view->addData([
-            'station'   => $request->getStation(),
-            'frontend'  => $request->getStationFrontend(),
-            'backend'   => $request->getStationBackend(),
+            'station'   => $station,
+            'frontend'  => $frontend,
+            'backend'   => $backend,
         ]);
+
+        $event = new Event\BuildStationMenu($this->acl, $request->getUser(), $request->getRouter(), $station, $backend, $frontend);
+        $this->dispatcher->dispatch(Event\BuildStationMenu::NAME, $event);
 
         $active_tab = null;
         $current_route = $request->getAttribute('route');
@@ -34,7 +62,8 @@ class Stations
         }
 
         $view->sidebar = $view->render('stations/sidebar', [
-            'active_tab' => $active_tab,
+            'menu' => $event->getFilteredMenu(),
+            'active' => $active_tab,
         ]);
 
         return $next($request, $response);

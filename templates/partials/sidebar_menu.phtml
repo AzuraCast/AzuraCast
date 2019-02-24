@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var array $menu
+ * @var string $active
+ * @var \App\Http\Router $router
+ */
+?>
+<ul class="navdrawer-nav">
+<?php foreach($menu as $category_id => $category): ?>
+    <li class="nav-item">
+        <a class="nav-link <?=$category['class'] ?> <?php if ($active === $category_id): ?>active<?php endif; ?>" <?php if (empty($category['items'])): ?>href="<?=$category['url'] ?>"<?php else: ?>data-toggle="collapse" href="#sidebar-submenu-<?=$category_id ?>"<?php endif; ?> <?php if ($category['external']): ?>target="_blank"<?php endif; ?>>
+            <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?=$category['icon'] ?></i>
+            <?=$category['label'] ?>
+        <?php if ($category['external']): ?>
+            <i class="material-icons sm">open_in_new</i>
+        <?php endif; ?>
+        </a>
+    <?php if (!empty($category['items'])): ?>
+        <div class="collapse pb-2" id="sidebar-submenu-<?=$category_id ?>">
+            <ul class="navdrawer-nav">
+            <?php foreach($category['items'] as $item_id => $item): ?>
+                <li class="nav-item">
+                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$item['url'] ?>" title="<?=$item['title'] ?>">
+                        <?=$item['label'] ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+    </li>
+<?php endforeach; ?>
+</ul>

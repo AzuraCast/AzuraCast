@@ -16,6 +16,17 @@ return function (\Azura\EventDispatcher $dispatcher)
 
     }, 2);
 
+    // Build default menus
+    $dispatcher->addListener(App\Event\BuildAdminMenu::NAME, function(\App\Event\BuildAdminMenu $e) {
+        $callable = require(__DIR__.'/menus/admin.php');
+        $callable($e);
+    });
+
+    $dispatcher->addListener(App\Event\BuildStationMenu::NAME, function(\App\Event\BuildStationMenu $e) {
+        $callable = require(__DIR__.'/menus/station.php');
+        $callable($e);
+    });
+
     // Build CLI commands
     $dispatcher->addListener(Azura\Event\BuildConsoleCommands::NAME, function(Azura\Event\BuildConsoleCommands $event) {
         $event->getConsole()->addCommands([

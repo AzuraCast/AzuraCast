@@ -50,12 +50,9 @@ class MiddlewareProvider implements ServiceProviderInterface
          */
 
         $di[Middleware\Module\Admin::class] = function($di) {
-            /** @var Azura\Config $config */
-            $config = $di[Azura\Config::class];
-
             return new Middleware\Module\Admin(
                 $di[App\Acl::class],
-                $config->get('admin/dashboard')
+                $di[Azura\EventDispatcher::class]
             );
         };
 
@@ -76,8 +73,11 @@ class MiddlewareProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Middleware\Module\Stations::class] = function() {
-            return new Middleware\Module\Stations;
+        $di[Middleware\Module\Stations::class] = function($di) {
+            return new Middleware\Module\Stations(
+                $di[App\Acl::class],
+                $di[Azura\EventDispatcher::class]
+            );
         };
 
         $di[Middleware\Module\StationFiles::class] = function($di) {

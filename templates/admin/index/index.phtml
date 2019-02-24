@@ -2,23 +2,21 @@
 
 <h2 class="outside-card-header"><?=__('Administration') ?></h2>
 
-<div class="row">
-    <?php foreach($admin_panels as $category_name => $category_info): ?>
-    <div class="col-sm-4 mb-3">
-        <section class="card" role="region">
-            <div class="card-body">
-                <h2 class="card-title"><?=$category_name ?></h2>
-            </div>
-            <div class="list-group list-group-flush">
-            <?php foreach($category_info['items'] as $item_name => $item_params): ?>
-                <a class="list-group-item list-group-item-action" href="<?=(is_array($item_params['url']) ? $router->route($item_params['url']) : $router->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
-                    <?=$item_name ?>
-                </a>
-            <?php endforeach; ?>
-            </div>
-        </section>
-    </div>
-    <?php endforeach; ?>
+<div class="card-columns">
+<?php foreach($admin_panels as $category_id => $category): ?>
+    <section class="card" role="region">
+        <div class="card-body">
+            <h2 class="card-title"><?=$category['label'] ?></h2>
+        </div>
+        <div class="list-group list-group-flush">
+        <?php foreach($category['items'] as $item): ?>
+            <a class="list-group-item list-group-item-action" href="<?=(is_array($item['url']) ? $router->route($item['url']) : $router->named($item['url'])) ?>" title="<?=$item['title'] ?>">
+                <?=$item['label'] ?>
+            </a>
+        <?php endforeach; ?>
+        </div>
+    </section>
+<?php endforeach; ?>
 </div>
 
 <h2 class="outside-card-header"><?=__('Synchronization Tasks') ?></h2>

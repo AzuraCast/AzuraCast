@@ -4,6 +4,8 @@ namespace App\Middleware\Module;
 use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
+use Azura\EventDispatcher;
+use App\Event;
 use Slim\Route;
 
 /**
@@ -14,13 +16,19 @@ class Admin
     /** @var Acl */
     protected $acl;
 
-    /** @var array */
-    protected $dashboard_config;
+    /** @var EventDispatcher */
+    protected $dispatcher;
 
-    public function __construct(Acl $acl, $dashboard_config)
+    /**
+     * @param Acl $acl
+     * @param EventDispatcher $dispatcher
+     *
+     * @see \App\Provider\MiddlewareProvider
+     */
+    public function __construct(Acl $acl, EventDispatcher $dispatcher)
     {
         $this->acl = $acl;
-        $this->dashboard_config = $dashboard_config;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -31,29 +39,8 @@ class Admin
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
-        $user = $request->getUser();
-
-        // Load dashboard.
-        $panels = $this->dashboard_config;
-
-        foreach ($panels as $sidebar_category => &$sidebar_info) {
-            foreach ($sidebar_info['items'] as $item_name => $item_params) {
-                $permission = $item_params['permission'];
-                if (!is_bool($permission)) {
-                    $permission = $this->acl->userAllowed($user, $permission);
-                }
-
-                if (!$permission) {
-                    unset($sidebar_info['items'][$item_name]);
-                }
-            }
-
-            if (empty($sidebar_info['items'])) {
-                unset($panels[$sidebar_category]);
-            }
-        }
-
-        unset($sidebar_info);
+        $event = new Event\BuildAdminMenu($this->acl, $request->getUser(), $request->getRouter());
+        $this->dispatcher->dispatch(Event\BuildAdminMenu::NAME, $event);
 
         $view = $request->getView();
 
@@ -64,7 +51,7 @@ class Admin
             $active_tab = $route_parts[1];
         }
 
-        $view->admin_panels = $panels;
+        $view->admin_panels = $event->getFilteredMenu();
         $view->sidebar = $view->render('admin/sidebar', [
             'active_tab' => $active_tab,
         ]);

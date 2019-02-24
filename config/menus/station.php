@@ -16,7 +16,7 @@ return function(\App\Event\BuildStationMenu $e) {
             'label' => __('Click to Start Station'),
             'icon' => 'refresh',
             'url' => $router->fromHere('api:stations:restart'),
-            'class' => 'text-success',
+            'class' => 'api-call text-success',
             'visible' => !$station->getHasStarted(),
             'permission' => Acl::STATION_BROADCASTING,
         ],
@@ -24,7 +24,7 @@ return function(\App\Event\BuildStationMenu $e) {
             'label' => __('Click to Restart Station'),
             'icon' => 'refresh',
             'url' => $router->fromHere('api:stations:restart'),
-            'class' => 'text-warning',
+            'class' => 'api-call text-warning',
             'visible' => $station->getNeedsRestart(),
             'permission' => Acl::STATION_BROADCASTING,
         ],
@@ -150,6 +150,7 @@ return function(\App\Event\BuildStationMenu $e) {
                 'restart' => [
                     'label' => __('Restart Broadcasting'),
                     'url' => $router->fromHere('api:stations:restart'),
+                    'class' => 'api-call',
                     'permission' => Acl::STATION_BROADCASTING,
                 ],
             ]

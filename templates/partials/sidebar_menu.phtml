@@ -20,7 +20,7 @@
             <ul class="navdrawer-nav">
             <?php foreach($category['items'] as $item_id => $item): ?>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 py-2 text-muted" href="<?=$item['url'] ?>" title="<?=$item['title'] ?>">
+                    <a class="nav-link pl-4 py-2 text-muted <?=$item['class'] ?>" href="<?=$item['url'] ?>" title="<?=$item['title'] ?>">
                         <?=$item['label'] ?>
                     </a>
                 </li>

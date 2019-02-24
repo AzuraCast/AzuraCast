@@ -10,7 +10,7 @@
         </div>
         <div class="list-group list-group-flush">
         <?php foreach($category['items'] as $item): ?>
-            <a class="list-group-item list-group-item-action" href="<?=(is_array($item['url']) ? $router->route($item['url']) : $router->named($item['url'])) ?>" title="<?=$item['title'] ?>">
+            <a class="list-group-item list-group-item-action" href="<?=$item['url'] ?>" title="<?=$item['title'] ?>">
                 <?=$item['label'] ?>
             </a>
         <?php endforeach; ?>

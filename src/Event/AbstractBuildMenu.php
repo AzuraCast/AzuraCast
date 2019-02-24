@@ -51,7 +51,7 @@ abstract class AbstractBuildMenu extends Event
     /**
      * Add a single item to the menu.
      *
-     * @param $item_id
+     * @param string $item_id
      * @param array $item_details
      */
     public function addItem($item_id, array $item_details): void

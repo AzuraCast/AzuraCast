@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Internal;
 
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
@@ -8,21 +8,32 @@ use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DjOn extends CommandAbstract
+class DjAuth extends CommandAbstract
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('azuracast:internal:djon')
-            ->setDescription('Indicate that a DJ has begun streaming to a station.')
+        $this->setName('azuracast:internal:auth')
+            ->setDescription('Authorize a streamer to connect as a source for the radio service.')
             ->addArgument(
                 'station_id',
                 InputArgument::REQUIRED,
                 'The ID of the station.'
+            )->addOption(
+                'dj_user',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The streamer username (or "shoutcast" for SC legacy auth).'
+            )->addOption(
+                'dj_password',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The streamer password (or "username:password" for SC legacy auth).'
             );
     }
 
@@ -39,8 +50,12 @@ class DjOn extends CommandAbstract
         $station = $em->getRepository(Entity\Station::class)->find($station_id);
 
         if (!($station instanceof Entity\Station) || !$station->getEnableStreamers()) {
-            return 1;
+            $output->write('false');
+            return null;
         }
+
+        $user = $input->getOption('dj_user');
+        $pass = $input->getOption('dj_password');
 
         /** @var Adapters $adapters */
         $adapters = $this->get(Adapters::class);
@@ -48,10 +63,12 @@ class DjOn extends CommandAbstract
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus($station, true);
+            $response = $adapter->authenticateStreamer($station, $user, $pass);
+            $output->write($response);
+            return null;
         }
 
-        $output->write('received');
-        return 0;
+        $output->write('false');
+        return null;
     }
 }

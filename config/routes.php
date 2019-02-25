@@ -183,9 +183,8 @@ return function(App $app)
                 $this->map(['GET', 'POST'], '/djoff', Controller\Api\InternalController::class.':djoffAction')
                     ->setName('api:internal:djoff');
 
-                // Station-watcher connection endpoint
-                $this->map(['GET', 'POST'], '/notify', Controller\Api\InternalController::class.':notifyAction')
-                    ->setName('api:internal:notify');
+                $this->map(['GET', 'POST'], '/feedback', Controller\Api\InternalController::class.':feedbackAction')
+                    ->setName('api:internal:feedback');
 
             })->add(Middleware\GetStation::class);
 

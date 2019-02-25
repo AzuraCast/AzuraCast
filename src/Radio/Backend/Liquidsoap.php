@@ -1,7 +1,6 @@
 <?php
 namespace App\Radio\Backend;
 
-use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Filesystem;
 use Azura\EventDispatcher;
@@ -49,14 +48,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AnnotateNextSong::NAME => [
-                ['annotateNextSong', 0],
-            ],
             WriteLiquidsoapConfiguration::NAME => [
-                ['writeHeaderFunctions', 25],
-                ['writePlaylistConfiguration', 20],
-                ['writeHarborConfiguration', 15],
-                ['writeCustomConfiguration', 10],
+                ['writeHeaderFunctions', 30],
+                ['writePlaylistConfiguration', 25],
+                ['writeHarborConfiguration', 20],
+                ['writeCustomConfiguration', 15],
+                ['writeMetadataFeedbackConfiguration', 10],
                 ['writeLocalBroadcastConfiguration', 5],
                 ['writeRemoteBroadcastConfiguration', 0],
             ],
@@ -170,14 +167,30 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $schedule_switches = [];
 
         foreach ($playlist_objects as $playlist) {
-
             /** @var Entity\StationPlaylist $playlist */
-
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
 
             if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
-                $playlist_file_contents = $playlist->export('m3u', true);
+                $media_base_dir = $station->getRadioMediaDir().'/';
+                $playlist_file = [];
+                foreach ($playlist->getMediaItems() as $media_item) {
+                    /** @var Entity\StationMedia $media_file */
+                    $media_file = $media_item->getMedia();
+
+                    $media_file_path = $media_base_dir.$media_file->getPath();
+                    $media_annotations = $media_file->getAnnotations();
+                    $media_annotations['playlist_id'] = $playlist->getId();
+
+                    $annotations_str = [];
+                    foreach($media_annotations as $annotation_key => $annotation_val) {
+                        $annotations_str[] = $annotation_key.'="'.$annotation_val.'"';
+                    }
+
+                    $playlist_file[] = 'annotate:'.implode(',', $annotations_str).':'.$media_file_path;
+                }
+
                 $playlist_file_path =  $playlist_path . '/' . $playlist_var_name . '.m3u';
+                $playlist_file_contents = implode("\n", $playlist_file);
 
                 file_put_contents($playlist_file_path, $playlist_file_contents);
 
@@ -296,8 +309,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $event->appendLines([
                 '# AutoDJ Next Song Script',
                 'def azuracast_next_song() =',
-                '  uri = get_process_lines("'.$this->_getApiUrlCommand($station, 'nextsong').'")',
-                '  uri = list.hd(uri, default="")',
+                '  uri = '.$this->_getApiUrlCommand($station, 'nextsong'),
                 '  log("AzuraCast Raw Response: #{uri}")',
                 '  ',
                 '  if uri == "" or string.match(pattern="Error", uri) then',
@@ -335,8 +347,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '# DJ Authentication',
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
-            '  ret = list.hd(ret, default="")',
+            '  ret = '.$this->_getApiUrlCommand($station, 'auth', ['dj_user' => 'user', 'dj_password' => 'password']),
             '  log("AzuraCast DJ Auth Response: #{ret}")',
             '  bool_of_string(ret)',
             'end',
@@ -346,14 +357,14 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'def live_connected(header) =',
             '  log("DJ Source connected! #{header}")',
             '  live_enabled := true',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'djon').'")',
+            '  ret = '.$this->_getApiUrlCommand($station, 'djon'),
             '  log("AzuraCast Live Connected Response: #{ret}")',
             'end',
             '',
             'def live_disconnected() =',
             '  log("DJ Source disconnected!")',
             '  live_enabled := false',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand($station, 'djoff').'")',
+            '  ret = '.$this->_getApiUrlCommand($station, 'djoff'),
             '  log("AzuraCast Live Disconnected Response: #{ret}")',
             'end',
         ]);
@@ -426,6 +437,23 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
     }
 
+    public function writeMetadataFeedbackConfiguration(WriteLiquidsoapConfiguration $event)
+    {
+        $station = $event->getStation();
+
+        $event->appendLines([
+            '# Send metadata changes back to AzuraCast',
+            'def metadata_updated(m) =',
+            '  if (m["song_id"] != "") then',
+            '    ret = '.$this->_getApiUrlCommand($station, 'feedback', ['song' => 'm["song_id"]', 'media' => 'm["media_id"]', 'playlist' => 'm["playlist_id"]']),
+            '    log("AzuraCast Feedback Response: #{ret}")',
+            '  end',
+            'end',
+            '',
+            'radio = on_metadata(metadata_updated,radio)'
+        ]);
+    }
+
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
@@ -491,30 +519,30 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         // Docker cURL-based API URL call with API authentication.
         if (APP_INSIDE_DOCKER) {
             $params = (array)$params;
-            $params['api_auth'] = $station->getAdapterApiKey();
+            $params['api_auth'] = '"'.$station->getAdapterApiKey().'"';
 
             $service_uri = (APP_DOCKER_REVISION >= 5) ? 'web' : 'nginx';
-            $api_url = 'http://'.$service_uri.'/api/internal/'.$station->getId().'/'.$endpoint;
-            $curl_request = 'curl -s --request POST --url '.$api_url;
-            foreach($params as $param_key => $param_val) {
-                $curl_request .= ' --form '.$param_key.'='.$param_val;
+            $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
+            $command = 'curl -s --request POST --url ' . $api_url;
+            foreach ($params as $param_key => $param_val) {
+                $command .= ' --form ' . $param_key . '="^quote(' . $param_val . ')^"';
+            }
+        } else {
+            // Traditional shell-script call.
+            $shell_path = '/usr/bin/php '.APP_INCLUDE_ROOT.'/bin/azuracast';
+
+            $shell_args = [];
+            $shell_args[] = 'azuracast:internal:'.$endpoint;
+            $shell_args[] = $station->getId();
+
+            foreach((array)$params as $param_key => $param_val) {
+                $shell_args [] = '--'.$param_key.'="^quote('.$param_val.')^"';
             }
 
-            return $curl_request;
+            $command = $shell_path.' '.implode(' ', $shell_args);
         }
 
-        // Traditional shell-script call.
-        $shell_path = '/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php';
-
-        $shell_args = [];
-        $shell_args[] = 'azuracast:internal:'.$endpoint;
-        $shell_args[] = $station->getId();
-
-        foreach((array)$params as $param_key => $param_val) {
-            $shell_args [] = '--'.$param_key.'=\''.$param_val.'\'';
-        }
-
-        return $shell_path.' '.implode(' ', $shell_args);
+        return 'list.hd(get_process_lines("'.$command.'"), default="")';
     }
 
     /**
@@ -834,62 +862,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         return 'false';
-    }
-
-    /**
-     * Pulls the next song from the AutoDJ, dispatches the AnnotateNextSong event and returns the built result.
-     *
-     * @param Entity\Station $station
-     * @param bool $as_autodj
-     * @return string
-     */
-    public function getNextSong(Entity\Station $station, $as_autodj = false): string
-    {
-        /** @var Entity\SongHistory|string|null $sh */
-        $sh = $this->autodj->getNextSong($station, $as_autodj);
-
-        $event = new AnnotateNextSong($station, $sh);
-        $this->dispatcher->dispatch(AnnotateNextSong::NAME, $event);
-
-        return $event->buildAnnotations();
-    }
-
-    /**
-     * Event Handler function for the AnnotateNextSong event.
-     *
-     * @param AnnotateNextSong $event
-     */
-    public function annotateNextSong(AnnotateNextSong $event)
-    {
-        $sh = $event->getNextSong();
-
-        if ($sh instanceof Entity\SongHistory) {
-            $media = $sh->getMedia();
-            if ($media instanceof Entity\StationMedia) {
-                $fs = $this->filesystem->getForStation($event->getStation());
-                $media_path = $fs->getFullPath($media->getPathUri());
-
-                $event->setSongPath($media_path);
-                $event->addAnnotations($media->getAnnotations());
-            } else if (!empty($sh->getAutodjCustomUri())) {
-                $custom_uri = $sh->getAutodjCustomUri();
-
-                $event->setSongPath($custom_uri);
-                if ($sh->getDuration()) {
-                    $event->addAnnotations([
-                        'length' => $sh->getDuration(),
-                    ]);
-                }
-            }
-        } else if (null !== $sh) {
-            $event->setSongPath((string)$sh);
-        } else {
-            $error_file = APP_INSIDE_DOCKER
-                ? '/usr/local/share/icecast/web/error.mp3'
-                : APP_INCLUDE_ROOT . '/resources/error.mp3';
-
-            $event->setSongPath($error_file);
-        }
     }
 
     public function toggleLiveStatus(Entity\Station $station, $is_streamer_live = true): void

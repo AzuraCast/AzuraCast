@@ -1,8 +1,7 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Internal;
 
-use App\Radio\Adapters;
-use App\Radio\Backend\Liquidsoap;
+use App\Radio\AutoDJ;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -11,29 +10,34 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DjAuth extends CommandAbstract
+class Feedback extends CommandAbstract
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('azuracast:internal:auth')
-            ->setDescription('Authorize a streamer to connect as a source for the radio service.')
+        $this->setName('azuracast:internal:feedback')
+            ->setDescription('Send upcoming song feedback from the AutoDJ back to AzuraCast.')
             ->addArgument(
                 'station_id',
                 InputArgument::REQUIRED,
                 'The ID of the station.'
             )->addOption(
-                'dj_user',
-                null,
+                'song',
+                's',
                 InputOption::VALUE_REQUIRED,
-                'The streamer username (or "shoutcast" for SC legacy auth).'
+                'Song ID'
             )->addOption(
-                'dj_password',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The streamer password (or "username:password" for SC legacy auth).'
+                'media',
+                'm',
+                InputOption::VALUE_OPTIONAL,
+                'Media ID'
+            )->addOption(
+                'playlist',
+                'p',
+                InputOption::VALUE_OPTIONAL,
+                'Playlist ID'
             );
     }
 
@@ -54,21 +58,22 @@ class DjAuth extends CommandAbstract
             return null;
         }
 
-        $user = $input->getOption('dj_user');
-        $pass = $input->getOption('dj_password');
+        /** @var AutoDJ $autodj */
+        $autodj = $this->get(AutoDJ::class);
 
-        /** @var Adapters $adapters */
-        $adapters = $this->get(Adapters::class);
+        try {
+            $autodj->setNextCuedSong(
+                $station,
+                $input->getOption('song'),
+                $input->getOption('media'),
+                $input->getOption('playlist')
+            );
 
-        $adapter = $adapters->getBackendAdapter($station);
-
-        if ($adapter instanceof Liquidsoap) {
-            $response = $adapter->authenticateStreamer($station, $user, $pass);
-            $output->write($response);
+            $output->write('OK');
             return null;
+        } catch (\Exception $e) {
+            $output->write('Error: '.$e->getMessage());
+            return 1;
         }
-
-        $output->write('false');
-        return null;
     }
 }

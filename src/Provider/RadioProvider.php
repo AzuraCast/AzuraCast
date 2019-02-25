@@ -26,6 +26,7 @@ class RadioProvider implements ServiceProviderInterface
             return new Radio\AutoDJ(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Azura\EventDispatcher::class],
+                $di[Radio\Filesystem::class],
                 $di[\Monolog\Logger::class]
             );
         };

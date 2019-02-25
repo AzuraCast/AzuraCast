@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Internal;
 
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;

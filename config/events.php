@@ -31,10 +31,11 @@ return function (\Azura\EventDispatcher $dispatcher)
     $dispatcher->addListener(Azura\Event\BuildConsoleCommands::NAME, function(Azura\Event\BuildConsoleCommands $event) {
         $event->getConsole()->addCommands([
             // Liquidsoap Internal CLI Commands
-            new Command\NextSong,
-            new Command\DjAuth,
-            new Command\DjOn,
-            new Command\DjOff,
+            new Command\Internal\NextSong,
+            new Command\Internal\DjAuth,
+            new Command\Internal\DjOn,
+            new Command\Internal\DjOff,
+            new Command\Internal\Feedback,
 
             // Locales
             new Command\LocaleGenerate,

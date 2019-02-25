@@ -72,10 +72,7 @@ class ErrorHandler
         $ua = $req->getHeaderLine('User-Agent');
 
         if (false !== stripos($ua, 'curl')) {
-            $res->getBody()
-                ->write('Error: '.$e->getMessage().' on '.$e->getFile().' L'.$e->getLine());
-
-            return $res;
+            return $res->write('Error: '.$e->getMessage().' on '.$e->getFile().' L'.$e->getLine());
         }
 
         $show_detailed = !APP_IN_PRODUCTION;

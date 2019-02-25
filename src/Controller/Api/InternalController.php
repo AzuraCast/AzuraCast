@@ -2,6 +2,7 @@
 namespace App\Controller\Api;
 
 use App\Acl;
+use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Task\NowPlaying;
 use App\Entity;
@@ -17,15 +18,21 @@ class InternalController
     /** @var NowPlaying */
     protected $sync_nowplaying;
 
+    /** @var AutoDJ */
+    protected $autodj;
+
     /**
      * @param Acl $acl
      * @param NowPlaying $sync_nowplaying
+     * @param AutoDJ $autodj
+     *
      * @see \App\Provider\ApiProvider
      */
-    public function __construct(Acl $acl, NowPlaying $sync_nowplaying)
+    public function __construct(Acl $acl, NowPlaying $sync_nowplaying, AutoDJ $autodj)
     {
         $this->acl = $acl;
         $this->sync_nowplaying = $sync_nowplaying;
+        $this->autodj = $autodj;
     }
 
     public function authAction(Request $request, Response $response): ResponseInterface
@@ -54,12 +61,7 @@ class InternalController
 
         $as_autodj = $request->hasParam('api_auth');
 
-        $adapter = $request->getStationBackend();
-        if ($adapter instanceof Liquidsoap) {
-            return $response->write($adapter->getNextSong($request->getStation(), $as_autodj));
-        }
-
-        return $response->write('');
+        return $response->write($this->autodj->annotateNextSong($request->getStation(), $as_autodj));
     }
 
     public function djonAction(Request $request, Response $response): ResponseInterface
@@ -86,17 +88,25 @@ class InternalController
         return $response->write('received');
     }
 
-    public function notifyAction(Request $request, Response $response): ResponseInterface
+    public function feedbackAction(Request $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
         $station = $request->getStation();
 
-        $payload = $request->getBody()->getContents();
+        try {
+            $body = $request->getParsedBody();
+            $this->autodj->setNextCuedSong(
+                $station,
+                $body['song'] ?? null,
+                $body['media'] ?? null,
+                $body['playlist'] ?? null
+            );
 
-        $this->sync_nowplaying->processStation($station, $payload);
-
-        return $response->write('received');
+            return $response->write('OK');
+        } catch (\Exception $e) {
+            return $response->write('Error: '.$e->getMessage());
+        }
     }
 
     /**

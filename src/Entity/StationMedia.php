@@ -212,13 +212,21 @@ class StationMedia
      */
     public function songMatches(): bool
     {
-        $expected_song_hash = Song::getSongHash([
+        return (null !== $this->song_id)
+            && ($this->song_id === $this->getExpectedSongHash());
+    }
+
+    /**
+     * Get the appropriate song hash for the title and artist specified here.
+     *
+     * @return string
+     */
+    protected function getExpectedSongHash(): string
+    {
+        return Song::getSongHash([
             'artist' => $this->artist,
             'title' => $this->title,
         ]);
-
-        return (null !== $this->song_id)
-            && ($this->song_id === $expected_song_hash);
     }
 
     /**
@@ -577,34 +585,36 @@ class StationMedia
     {
         $annotations = [];
         $annotation_types = [
-            'title' => 'title',
-            'artist' => 'artist',
-            'length' => 'duration',
-            'fade_overlap' => 'liq_start_next',
-            'fade_in' => 'liq_fade_in',
-            'fade_out' => 'liq_fade_out',
-            'cue_in' => 'liq_cue_in',
-            'cue_out' => 'liq_cue_out',
+            'title'         => $this->title,
+            'artist'        => $this->artist,
+            'duration'      => $this->length,
+            'song_id'       => $this->getSong()->getId(),
+            'media_id'      => $this->id,
+            'liq_start_next' => $this->fade_overlap,
+            'liq_fade_in'   => $this->fade_in,
+            'liq_fade_out'  => $this->fade_out,
+            'liq_cue_in'    => $this->cue_in,
+            'liq_cue_out'   => $this->cue_out,
         ];
 
-        foreach ($annotation_types as $annotation_property => $annotation_name) {
-            if ($this->$annotation_property !== null) {
-                $prop = $this->$annotation_property;
-                $prop = mb_convert_encoding($prop, 'UTF-8');
-                $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
-
-                if ($annotation_property === 'cue_out' && $prop < 0) {
-                    $prop = max(0, $this->getLength() - abs($prop));
-                }
-
-                // Convert Liquidsoap-specific annotations to floats.
-                if ('duration' === $annotation_name ||
-                    0 === strpos($annotation_name, 'liq')) {
-                    $prop = Liquidsoap::toFloat($prop);
-                }
-
-                $annotations[$annotation_name] = $prop;
+        foreach ($annotation_types as $annotation_name => $prop) {
+            if (null === $prop) {
+                continue;
             }
+
+            $prop = mb_convert_encoding($prop, 'UTF-8');
+            $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
+
+            if ('liq_cue_out' === $annotation_name && $prop < 0) {
+                $prop = max(0, $this->getLength() - abs($prop));
+            }
+
+            // Convert Liquidsoap-specific annotations to floats.
+            if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {
+                $prop = Liquidsoap::toFloat($prop);
+            }
+
+            $annotations[$annotation_name] = $prop;
         }
 
         return $annotations;

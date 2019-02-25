@@ -111,16 +111,7 @@ class SongHistoryRepository extends Repository
         }
 
         // Look for an already cued but unplayed song.
-        $sh = $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
-            WHERE sh.station_id = :station_id
-            AND sh.song_id = :song_id
-            AND sh.timestamp_cued != 0
-            AND sh.timestamp_start = 0
-            ORDER BY sh.timestamp_cued DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('song_id', $song->getId())
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+        $sh = $this->getCuedSong($song, $station);
 
         // Processing a new SongHistory item.
         if (!($sh instanceof Entity\SongHistory)) {
@@ -135,5 +126,24 @@ class SongHistoryRepository extends Repository
         $this->_em->flush();
 
         return $sh;
+    }
+
+    /**
+     * @param Entity\Song $song
+     * @param Entity\Station $station
+     * @return Entity\SongHistory|null
+     */
+    public function getCuedSong(Entity\Song $song, Entity\Station $station): ?Entity\SongHistory
+    {
+        return $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
+            WHERE sh.station_id = :station_id
+            AND sh.song_id = :song_id
+            AND sh.timestamp_cued != 0
+            AND sh.timestamp_start = 0
+            ORDER BY sh.timestamp_cued DESC')
+            ->setParameter('station_id', $station->getId())
+            ->setParameter('song_id', $song->getId())
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
     }
 }

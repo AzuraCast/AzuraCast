@@ -1,7 +1,8 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Internal;
 
 use App\Radio\Adapters;
+use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Entity;
 use Azura\Console\Command\CommandAbstract;
@@ -49,17 +50,10 @@ class NextSong extends CommandAbstract
 
         $as_autodj = ($input->getArgument('as_autodj') !== 'false');
 
-        /** @var Adapters $adapters */
-        $adapters = $this->get(Adapters::class);
+        /** @var AutoDJ $autodj */
+        $autodj = $this->get(AutoDJ::class);
 
-        $adapter = $adapters->getBackendAdapter($station);
-
-        if ($adapter instanceof Liquidsoap) {
-            $output->write($adapter->getNextSong($station, $as_autodj));
-            return null;
-        }
-
-        $output->write('');
-        return 1;
+        $output->write($autodj->annotateNextSong($station, $as_autodj));
+        return null;
     }
 }

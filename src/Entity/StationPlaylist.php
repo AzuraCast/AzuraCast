@@ -741,9 +741,10 @@ class StationPlaylist
      *
      * @param string $file_format
      * @param bool $absolute_paths
+     * @param bool $with_annotations
      * @return string
      */
-    public function export($file_format = 'pls', $absolute_paths = false): string
+    public function export($file_format = 'pls', $absolute_paths = false, $with_annotations = false): string
     {
         $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir().'/' : '';
 

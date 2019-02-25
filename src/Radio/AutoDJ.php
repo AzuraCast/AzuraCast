@@ -442,8 +442,8 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * Fetch an entity if given either the entity object itself OR its identifier.
      *
-     * @param $class_name
-     * @param $identifier
+     * @param string $class_name
+     * @param object|string|int $identifier
      * @return object|null
      */
     protected function getEntity($class_name, $identifier): ?object

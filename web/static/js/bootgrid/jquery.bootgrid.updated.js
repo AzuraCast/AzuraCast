@@ -467,9 +467,9 @@
                     maxCount = this.options.padding * 2 + 1,
                     count = (totalPages >= maxCount) ? maxCount : totalPages;
 
-                renderPaginationItem.call(this, pagination, "first", "<i class='zmdi zmdi-more-horiz'></i>", "first")
+                renderPaginationItem.call(this, pagination, "first", "<i class='material-icons'>first_page</i>", "first")
                     ._bgEnableAria(current > 1);
-                renderPaginationItem.call(this, pagination, "prev", "<i class='zmdi zmdi-chevron-left'></i>", "prev")
+                renderPaginationItem.call(this, pagination, "prev", "<i class='material-icons'>chevron_left</i>", "prev")
                     ._bgEnableAria(current > 1);
 
                 for (var i = 0; i < count; i++)
@@ -485,9 +485,9 @@
                         ._bgEnableAria(false)._bgSelectAria();
                 }
 
-                renderPaginationItem.call(this, pagination, "next", "<i class='zmdi zmdi-chevron-right'></i>", "next")
+                renderPaginationItem.call(this, pagination, "next", "<i class='material-icons'>chevron_right</i>", "next")
                     ._bgEnableAria(totalPages > current);
-                renderPaginationItem.call(this, pagination, "last", "<i class='zmdi zmdi-more-horiz'></i>", "last")
+                renderPaginationItem.call(this, pagination, "last", "<i class='material-icons'>last_page</i>", "last")
                     ._bgEnableAria(totalPages > current);
 
                 replacePlaceHolder.call(this, paginationItems, pagination);

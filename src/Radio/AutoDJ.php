@@ -354,108 +354,37 @@ class AutoDJ implements EventSubscriberInterface
             $this->em->persist($spm);
 
             // Log in history
-            return $this->setNextCuedSong(
-                $playlist->getStation(),
-                $media_to_play->getSong(),
-                $media_to_play,
-                $playlist
-            );
+            $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
+            $sh->setPlaylist($playlist);
+            $sh->setMedia($media_to_play);
+
+            $sh->setDuration($media_to_play->getCalculatedLength());
+            $sh->setTimestampCued(time());
+
+            $this->em->persist($sh);
+            $this->em->flush();
+
+            return $sh;
         }
 
         if (is_array($media_to_play)) {
             [$media_uri, $media_duration] = $media_to_play;
 
-            return $this->setNextCuedSong(
-                $playlist->getStation(),
-                $song_repo->getOrCreate(['text' => 'Internal AutoDJ URI']),
-                null,
-                $playlist,
-                $media_duration,
-                $media_uri
-            );
-        }
+            $sh = new Entity\SongHistory($song_repo->getOrCreate([
+                'text' => 'Internal AutoDJ URI',
+            ]), $playlist->getStation());
 
-        return null;
-    }
+            $sh->setPlaylist($playlist);
+            $sh->setAutodjCustomUri($media_uri);
+            $sh->setDuration($media_duration);
+            $sh->setTimestampCued(time());
 
-    /**
-     * @param Entity\Station $station
-     * @param Entity\Song|string $song
-     * @param Entity\StationMedia|string|int|null $media
-     * @param Entity\StationPlaylist|string|int|null $playlist
-     * @param int|null $duration
-     * @param string|null $custom_uri
-     * @return Entity\SongHistory
-     */
-    public function setNextCuedSong(
-        Entity\Station $station,
-        $song,
-        $media = null,
-        $playlist = null,
-        $duration = null,
-        $custom_uri = null): Entity\SongHistory
-    {
-        /** @var Entity\Song|null $song */
-        $song = $this->getEntity(Entity\Song::class, $song);
+            $this->em->persist($sh);
+            $this->em->flush();
 
-        if (!($song instanceof Entity\Song)) {
-            throw new \Azura\Exception('Error: Song ID is not valid.');
-        }
-
-        /** @var Entity\Repository\SongHistoryRepository $sh_repo */
-        $sh_repo = $this->em->getRepository(Entity\SongHistory::class);
-        $sh = $sh_repo->getCuedSong($song, $station);
-
-        if ($sh instanceof Entity\SongHistory) {
             return $sh;
         }
 
-        $sh = new Entity\SongHistory($song, $station);
-        $sh->setTimestampCued(time());
-
-        $media = $this->getEntity(Entity\StationMedia::class, $media);
-        if ($media instanceof Entity\StationMedia) {
-            $sh->setMedia($media);
-        }
-
-        $playlist = $this->getEntity(Entity\StationPlaylist::class, $playlist);
-        if ($playlist instanceof Entity\StationPlaylist) {
-            $sh->setPlaylist($playlist);
-        }
-
-        if (!empty($duration)) {
-            $sh->setDuration($duration);
-        } else if ($media instanceof Entity\StationMedia) {
-            $sh->setDuration($media->getCalculatedLength());
-        }
-
-        if (!empty($custom_uri)) {
-            $sh->setAutodjCustomUri($custom_uri);
-        }
-
-        $this->em->persist($sh);
-        $this->em->flush($sh);
-
-        return $sh;
-    }
-
-    /**
-     * Fetch an entity if given either the entity object itself OR its identifier.
-     *
-     * @param string $class_name
-     * @param object|string|int $identifier
-     * @return object|null
-     */
-    protected function getEntity($class_name, $identifier): ?object
-    {
-        if ($identifier instanceof $class_name) {
-            return $identifier;
-        }
-
-        if (empty($identifier)) {
-            return null;
-        }
-
-        return $this->em->find($class_name, $identifier);
+        return null;
     }
 }

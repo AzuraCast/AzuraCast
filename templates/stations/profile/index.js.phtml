@@ -1,11 +1,35 @@
-var nowPlaying;
+var nowPlaying, nowPlayingTimeout;
+
+function loadNowPlaying() {
+    $.getJSON('<?=$router->fromHere('api:nowplaying:index') ?>', function(row) {
+        nowPlaying.np = row;
+
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: row.now_playing.song.title,
+                artist: row.now_playing.song.artist
+            });
+        }
+
+        nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
+    }).fail(function() {
+        nowPlayingTimeout = setTimeout(loadNowPlaying, 30000);
+    });
+}
 
 function iterateTimer() {
     var np_elapsed = nowPlaying.np.now_playing.elapsed;
     var np_total = nowPlaying.np.now_playing.duration;
 
     if (np_elapsed < np_total) {
-        nowPlaying.np.now_playing.elapsed = np_elapsed + 1;
+        np_elapsed++;
+        nowPlaying.np.now_playing.elapsed = np_elapsed;
+
+        if (np_elapsed == np_total) {
+            // If the song JUST reached its endpoint, check now-playing much sooner.
+            clearTimeout(nowPlayingTimeout);
+            nowPlayingTimeout = setTimeout(loadNowPlaying, 3000);
+        }
     }
 }
 
@@ -52,24 +76,7 @@ $(function() {
 
     setInterval(iterateTimer, 1000);
 
-    function loadNowPlaying() {
-        $.getJSON('<?=$router->fromHere('api:nowplaying:index') ?>', function(row) {
-            nowPlaying.np = row;
-
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: row.now_playing.song.title,
-                    artist: row.now_playing.song.artist
-                });
-            }
-
-            setTimeout(loadNowPlaying, 15000);
-        }).fail(function() {
-            setTimeout(loadNowPlaying, 30000);
-        });
-    }
-
-    setTimeout(loadNowPlaying, 15000);
+    nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
 
     var service_status_lang = {
         "running": <?=$this->escapeJs(__('Running')) ?>,

@@ -94,19 +94,15 @@ class InternalController
 
         $station = $request->getStation();
 
-        try {
             $body = $request->getParsedBody();
-            $this->autodj->setNextCuedSong(
-                $station,
-                $body['song'] ?? null,
-                $body['media'] ?? null,
-                $body['playlist'] ?? null
-            );
+
+            $this->sync_nowplaying->queueStation($station, [
+                'song_id'   => $body['song'] ?? null,
+                'media_id'  => $body['media'] ?? null,
+                'playlist'  => $body['playlist'] ?? null,
+            ]);
 
             return $response->write('OK');
-        } catch (\Exception $e) {
-            return $response->write('Error: '.$e->getMessage());
-        }
     }
 
     /**

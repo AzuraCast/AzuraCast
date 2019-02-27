@@ -2,6 +2,7 @@
 namespace App\Console\Command\Internal;
 
 use App\Radio\AutoDJ;
+use App\Sync\Task\NowPlaying;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -58,16 +59,15 @@ class Feedback extends CommandAbstract
             return null;
         }
 
-        /** @var AutoDJ $autodj */
-        $autodj = $this->get(AutoDJ::class);
-
         try {
-            $autodj->setNextCuedSong(
-                $station,
-                $input->getOption('song'),
-                $input->getOption('media'),
-                $input->getOption('playlist')
-            );
+            /** @var NowPlaying $sync_nowplaying */
+            $sync_nowplaying = $this->get(NowPlaying::class);
+
+            $sync_nowplaying->queueStation($station, [
+                'song_id'   => $input->getOption('song'),
+                'media_id'  => $input->getOption('media'),
+                'playlist'  => $input->getOption('playlist'),
+            ]);
 
             $output->write('OK');
             return null;

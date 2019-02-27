@@ -103,11 +103,11 @@ $user = $request->getUser();
             </div>
             <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
                 <div class="card-actions">
-                    <a id="btn_skip_song" class="btn btn-outline-primary api-call" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
+                    <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
                         <i class="material-icons" aria-hidden="true">skip_next</i>
                         <?=__('Skip Song') ?>
                     </a>
-                    <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
+                    <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
                         <i class="material-icons" aria-hidden="true">volume_off</i>
                         <?=__('Disconnect Streamer') ?>
                     </a>
@@ -327,15 +327,15 @@ $user = $request->getUser();
 
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <div class="card-actions">
-                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'restart']) ?>">
+                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'restart']) ?>">
                         <i class="material-icons" aria-hidden="true">update</i>
                         <?=__('Restart') ?>
                     </a>
-                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
+                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
                         <i class="material-icons" aria-hidden="true">play_arrow</i>
                         <?=__('Start') ?>
                     </a>
-                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
+                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
                         <i class="material-icons" aria-hidden="true">stop</i>
                         <?=__('Stop') ?>
                     </a>
@@ -372,15 +372,15 @@ $user = $request->getUser();
             </div>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <div class="card-actions">
-                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'restart']) ?>">
+                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'restart']) ?>">
                         <i class="material-icons" aria-hidden="true">update</i>
                         <?=__('Restart') ?>
                     </a>
-                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>">
+                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>">
                         <i class="material-icons" aria-hidden="true">play_arrow</i>
                         <?=__('Start') ?>
                     </a>
-                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>">
+                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>">
                         <i class="material-icons" aria-hidden="true">stop</i>
                         <?=__('Stop') ?>
                     </a>

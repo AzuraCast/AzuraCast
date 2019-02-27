@@ -204,7 +204,6 @@ return function (\Azura\Container $di)
 
         // Event dispatcher
         $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher;
-        $dispatcher->addSubscriber(new \Bernard\EventListener\LoggerSubscriber($di[\Monolog\Logger::class]));
 
         // Build Producer
         $producer = new \Bernard\Producer($queue_factory, $dispatcher);
@@ -215,11 +214,15 @@ return function (\Azura\Container $di)
 
         $consumer = new Bernard\Consumer($router, $dispatcher);
 
-        return new \App\MessageQueue(
+        $mq = new \App\MessageQueue(
             $queue_factory,
             $producer,
-            $consumer
+            $consumer,
+            $di[\Monolog\Logger::class]
         );
+
+        $dispatcher->addSubscriber($mq);
+        return $mq;
     };
 
     //

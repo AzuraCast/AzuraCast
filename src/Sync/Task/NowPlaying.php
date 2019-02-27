@@ -1,9 +1,11 @@
 <?php
 namespace App\Sync\Task;
 
+use App\MessageQueue;
 use Azura\Cache;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
+use App\Message;
 use Azura\EventDispatcher;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
@@ -32,6 +34,9 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     /** @var EventDispatcher */
     protected $event_dispatcher;
 
+    /** @var MessageQueue */
+    protected $message_queue;
+
     /** @var ApiUtilities */
     protected $api_utils;
 
@@ -59,6 +64,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Cache $cache
      * @param Database $influx
      * @param EventDispatcher $event_dispatcher
+     * @param MessageQueue $message_queue
      *
      * @see \App\Provider\SyncProvider
      */
@@ -70,8 +76,9 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         AutoDJ $autodj,
         Cache $cache,
         Database $influx,
-        EventDispatcher $event_dispatcher
-    ) {
+        EventDispatcher $event_dispatcher,
+        MessageQueue $message_queue)
+    {
         parent::__construct($em, $logger);
 
         $this->adapters = $adapters;
@@ -79,6 +86,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->autodj = $autodj;
         $this->cache = $cache;
         $this->event_dispatcher = $event_dispatcher;
+        $this->message_queue = $message_queue;
         $this->influx = $influx;
 
         $this->history_repo = $em->getRepository(Entity\SongHistory::class);
@@ -183,16 +191,49 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     }
 
     /**
+     * Queue an individual station for processing its "Now Playing" metadata.
+     *
+     * @param Entity\Station $station
+     * @param array $extra_metadata
+     */
+    public function queueStation(Entity\Station $station, array $extra_metadata = []): void
+    {
+        $message = new Message\UpdateNowPlayingMessage;
+        $message->station_id = $station->getId();
+        $message->extra_metadata = $extra_metadata;
+
+        $this->message_queue->produce($message);
+    }
+
+    /**
+     * Handle event dispatch.
+     *
+     * @param Message\AbstractMessage $message
+     */
+    public function __invoke(Message\AbstractMessage $message)
+    {
+        try {
+            if ($message instanceof Message\UpdateNowPlayingMessage) {
+                $station = $this->em->find(Entity\Station::class, $message->station_id);
+                $this->processStation($station, true);
+            }
+        } finally {
+            $this->em->clear();
+        }
+    }
+
+    /**
      * Generate Structured NowPlaying Data for a given station.
      *
      * @param Entity\Station $station
-     * @param string|null $payload The request body from the watcher notification service (if applicable).
+     * @param array $extra_metadata
+     * @param bool $standalone Whether the request is for this station alone or part of the regular sync process.
      * @return Entity\Api\NowPlaying
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Exception
      */
-    public function processStation(Entity\Station $station, $payload = null): Entity\Api\NowPlaying
+    public function processStation(
+        Entity\Station $station,
+        array $extra_metadata = [],
+        $standalone = false): Entity\Api\NowPlaying
     {
         $this->logger->pushProcessor(function($record) use ($station) {
             $record['extra']['station'] = [
@@ -211,7 +252,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $np_old = $station->getNowplaying();
 
         // Build the new "raw" NowPlaying data.
-        $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, $payload, $include_clients);
+        $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null, $include_clients);
         $this->event_dispatcher->dispatch(GenerateRawNowPlaying::NAME, $event);
         $np_raw = $event->getRawResponse();
 
@@ -247,7 +288,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 /** @var Entity\Song $song_obj */
                 $song_obj = $this->song_repo->find($current_song_hash);
 
-                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw, $extra_metadata);
 
                 $np->song_history = $np_old->song_history;
                 $np->playing_next = $np_old->playing_next;
@@ -255,7 +296,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 // SongHistory registration must ALWAYS come before the history/nextsong calls
                 // otherwise they will not have up-to-date database info!
                 $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
-                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw, $extra_metadata);
 
                 $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
 
@@ -295,7 +336,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->em->flush();
 
         // Trigger the dispatching of webhooks.
-        $webhook_event = new SendWebhooks($station, $np, $np_old, ($payload !== null));
+        $webhook_event = new SendWebhooks($station, $np, $np_old, $standalone);
         $this->event_dispatcher->dispatch(SendWebhooks::NAME, $webhook_event);
 
         $this->logger->popProcessor();

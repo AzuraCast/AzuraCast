@@ -196,10 +196,14 @@ return function (\Azura\Container $di)
         $redis->select(4);
         $driver = new \Bernard\Driver\PhpRedis\Driver($redis);
 
-        $serializer = new \Bernard\Serializer(new \Normalt\Normalizer\AggregateNormalizer([
-            new \Bernard\Normalizer\EnvelopeNormalizer(),
-            new \Symfony\Component\Serializer\Normalizer\PropertyNormalizer()
-        ]));
+        $normalizer = new \Normalt\Normalizer\AggregateNormalizer([
+            new \Bernard\Normalizer\EnvelopeNormalizer,
+            new \Symfony\Component\Serializer\Normalizer\PropertyNormalizer
+        ]);
+
+        $symfony_serializer = new \Symfony\Component\Serializer\Serializer([$normalizer]);
+        $serializer = new \Bernard\Serializer($normalizer);
+
         $queue_factory = new \Bernard\QueueFactory\PersistentFactory($driver, $serializer);
 
         // Event dispatcher

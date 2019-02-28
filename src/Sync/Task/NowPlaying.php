@@ -215,7 +215,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         try {
             if ($message instanceof Message\UpdateNowPlayingMessage) {
                 $station = $this->em->find(Entity\Station::class, $message->station_id);
-                $this->processStation($station, true);
+                $this->processStation($station, $message->extra_metadata, true);
             }
         } finally {
             $this->em->clear();

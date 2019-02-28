@@ -66,6 +66,7 @@ class ErrorHandler
             'file' => $e->getFile(),
             'line' => $e->getLine(),
             'code' => $e->getCode(),
+            'extra' => $e->getTrace(),
         ]);
 
         // Special handling for cURL (i.e. Liquidsoap) requests.

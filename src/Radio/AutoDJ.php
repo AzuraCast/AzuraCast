@@ -304,7 +304,7 @@ class AutoDJ implements EventSubscriberInterface
             foreach($playlists_by_type[$type] as $playlist_id => $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 if ($playlist->canPlay($cued_song_history)) {
-                    $eligible_playlists[$playlist_id] = $playlist->getCalculatedWeight();
+                    $eligible_playlists[$playlist_id] = $playlist->getWeight();
                 }
             }
 

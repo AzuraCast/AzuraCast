@@ -17,6 +17,8 @@ class StationPlaylist
 {
     use Traits\TruncateStrings;
 
+    public const DEFAULT_WEIGHT = 3;
+
     public const TYPE_DEFAULT = 'default';
     public const TYPE_SCHEDULED = 'scheduled';
     public const TYPE_ONCE_PER_X_SONGS = 'once_per_x_songs';
@@ -145,7 +147,7 @@ class StationPlaylist
      * @ORM\Column(name="weight", type="smallint")
      * @var int
      */
-    protected $weight = 3;
+    protected $weight = self::DEFAULT_WEIGHT;
 
     /**
      * @ORM\Column(name="include_in_requests", type="boolean")
@@ -487,26 +489,11 @@ class StationPlaylist
      */
     public function getWeight(): int
     {
+        if ($this->weight < 1) {
+            return self::DEFAULT_WEIGHT;
+        }
+
         return $this->weight;
-    }
-
-    /**
-     * Returns the "calculated" weight, factoring in the total number of songs in each playlist.
-     *
-     * @return int
-     */
-    public function getCalculatedWeight(): int
-    {
-        $weight = $this->weight;
-        if ($weight < 1) {
-            $weight = 1;
-        }
-
-        if (self::SOURCE_SONGS === $this->source) {
-            $weight *= $this->media_items->count();
-        }
-
-        return $weight;
     }
 
     /**

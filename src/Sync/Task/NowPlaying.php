@@ -198,6 +198,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      */
     public function queueStation(Entity\Station $station, array $extra_metadata = []): void
     {
+        $station->setNowPlayingTimestamp(time());
+        $this->em->persist($station);
+        $this->em->flush($station);
+
         $message = new Message\UpdateNowPlayingMessage;
         $message->station_id = $station->getId();
         $message->extra_metadata = $extra_metadata;
@@ -215,7 +219,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         try {
             if ($message instanceof Message\UpdateNowPlayingMessage) {
                 $station = $this->em->find(Entity\Station::class, $message->station_id);
-                $this->processStation($station, $message->extra_metadata, true);
+
+                if ($station instanceof Entity\Station) {
+                    $this->processStation($station, $message->extra_metadata, true);
+                }
             }
         } finally {
             $this->em->clear();

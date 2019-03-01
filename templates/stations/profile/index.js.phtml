@@ -28,7 +28,7 @@ function iterateTimer() {
         if (np_elapsed == np_total) {
             // If the song JUST reached its endpoint, check now-playing much sooner.
             clearTimeout(nowPlayingTimeout);
-            nowPlayingTimeout = setTimeout(loadNowPlaying, 3000);
+            nowPlayingTimeout = setTimeout(loadNowPlaying, 5000);
         }
     }
 }

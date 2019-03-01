@@ -673,6 +673,14 @@ class Station
     }
 
     /**
+     * @param int $nowplaying_timestamp
+     */
+    public function setNowPlayingTimestamp(int $nowplaying_timestamp): void
+    {
+        $this->nowplaying_timestamp = $nowplaying_timestamp;
+    }
+
+    /**
      * @return int
      */
     public function getNowplayingTimestamp(): int

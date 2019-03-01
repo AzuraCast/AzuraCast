@@ -100,7 +100,7 @@ class QueueController extends AbstractStationCrudController
      *
      * @OA\Delete(path="/station/{station_id}/queue/{id}",
      *   tags={"Stations: Queue"},
-     *   description="Retrieve details of a single queued item.",
+     *   description="Delete a single queued item.",
      *   @OA\Parameter(
      *     name="id",
      *     in="path",

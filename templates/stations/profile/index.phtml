@@ -251,7 +251,7 @@ $user = $request->getUser();
                 <?php foreach($stream_urls['remote'] as $stream_url): ?>
                     <tr class="align-middle">
                         <td>
-                            <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>" title="<?__('Play/Pause') ?>">
+                            <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>" title="<?=__('Play/Pause') ?>">
                                 <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                             </a>
                         </td>

@@ -2,9 +2,6 @@
 use App\Entity\StationRemote;
 
 return [
-    'method' => 'post',
-    'enctype' => 'multipart/form-data',
-
     'groups' => [
 
         'basic_info' => [
@@ -26,8 +23,12 @@ return [
                 'url' => [
                     'text',
                     [
-                        'label' => __('Remote Station Base URL'),
-                        'description' => __('Example: if the remote radio URL is http://station.example.com:8000/stream.mp3, enter <code>http://station.example.com:8000</code>.'),
+                        'label' => __('Remote Station Listening URL'),
+                        'description' => __(
+                            'Example: if the remote radio URL is %s, enter <code>%s</code>.',
+                            'http://station.example.com:8000/radio.mp3',
+                            'http://station.example.com:8000'
+                        ),
                         'required' => true,
                     ]
                 ],
@@ -35,16 +36,20 @@ return [
                 'mount' => [
                     'text',
                     [
-                        'label' => __('Remote Station Mountpoint/SID'),
-                        'description' => __('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use for statistics or broadcasting.'),
+                        'label' => __('Remote Station Listening Mountpoint/SID'),
+                        'description' => __(
+                            'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.',
+                            '/radio.mp3',
+                            '2'
+                        ),
                     ]
                 ],
 
                 'enable_autodj' => [
                     'radio',
                     [
-                        'label' => __('Enable AutoDJ'),
-                        'description' => __('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
+                        'label' => __('Broadcast AutoDJ to Remote Station'),
+                        'description' => __('If set to "Yes", the AutoDJ on this installation will automatically play music to this mount point.'),
                         'choices' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 0,
                     ]

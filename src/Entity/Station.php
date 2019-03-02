@@ -391,7 +391,7 @@ class Station
             $config[$cfg_key] = $cfg_val;
         }
 
-        if ($this->frontend_config !== $config) {
+        if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
 
@@ -451,7 +451,7 @@ class Station
             $config[$cfg_key] = $cfg_val;
         }
 
-        if ($this->backend_config !== $config) {
+        if ($this->backend_config != $config) {
             $this->setNeedsRestart(true);
         }
 
@@ -797,6 +797,10 @@ class Station
      */
     public function setEnableStreamers(bool $enable_streamers): void
     {
+        if ($this->enable_streamers !== $enable_streamers) {
+            $this->setNeedsRestart(true);
+        }
+
         $this->enable_streamers = $enable_streamers;
     }
 

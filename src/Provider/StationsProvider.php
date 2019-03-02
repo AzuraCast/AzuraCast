@@ -58,14 +58,9 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Stations\Profile\IndexController::class] = function($di) {
-            return new Stations\Profile\IndexController(
-                $di[\Doctrine\ORM\EntityManager::class]
-            );
-        };
-
-        $di[Stations\Profile\EditController::class] = function($di) {
-            return new Stations\Profile\EditController(
+        $di[Stations\ProfileController::class] = function($di) {
+            return new Stations\ProfileController(
+                $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Form\StationForm::class]
             );
         };

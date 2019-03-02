@@ -1,13 +1,14 @@
 <?php
-namespace App\Controller\Stations\Profile;
+namespace App\Controller\Stations;
 
+use App\Form\StationForm;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class IndexController
+class ProfileController
 {
     /** @var EntityManager */
     protected $em;
@@ -15,16 +16,24 @@ class IndexController
     /** @var Entity\Repository\StationRepository */
     protected $station_repo;
 
+    /** @var StationForm */
+    protected $station_form;
+
     /**
      * @param EntityManager $em
+     * @param StationForm $station_form
+     *
      * @see \App\Provider\StationsProvider
      */
     public function __construct(
-        EntityManager $em
+        EntityManager $em,
+        StationForm $station_form
     )
     {
         $this->em = $em;
         $this->station_repo = $em->getRepository(Entity\Station::class);
+
+        $this->station_form = $station_form;
     }
 
     public function __invoke(Request $request, Response $response): ResponseInterface
@@ -49,11 +58,18 @@ class IndexController
         }
 
         // Statistics about backend playback.
-        $num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM '.Entity\StationMedia::class.' sm LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
+        $num_songs = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) 
+            FROM App\Entity\StationMedia sm 
+            LEFT JOIN sm.playlist_items spm 
+            LEFT JOIN spm.playlist sp 
+            WHERE sp.id IS NOT NULL 
+            AND sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
-        $num_playlists = $this->em->createQuery('SELECT COUNT(sp.id) FROM '.Entity\StationPlaylist::class.' sp WHERE sp.station_id = :station_id')
+        $num_playlists = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sp.id) 
+            FROM App\Entity\StationPlaylist sp 
+            WHERE sp.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
@@ -100,6 +116,19 @@ class IndexController
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
             'nowplaying' => $np,
+        ]);
+    }
+
+    public function editAction(Request $request, Response $response, $station_id): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        if (false !== $this->station_form->process($request, $station)) {
+            return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+        }
+
+        return $request->getView()->renderToResponse($response, 'stations/profile/edit', [
+            'form' => $this->station_form,
         ]);
     }
 }

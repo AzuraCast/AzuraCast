@@ -344,15 +344,6 @@ return function(App $app)
 
         $this->get('/api_keys/delete/{id}/{csrf}', Controller\Frontend\ApiKeysController::class.':deleteAction')
             ->setName('api_keys:delete');
-
-        // Used for internal development
-        /** @var \Azura\Settings $app_settings */
-        $app_settings = $this->getContainer()->get('settings');
-
-        if (!$app_settings->isProduction()) {
-            $this->any('/test', Controller\Frontend\UtilController::class.':testAction')
-                ->setName('util:test');
-        }
     })
         ->add(AzuraMiddleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);
@@ -511,10 +502,10 @@ return function(App $app)
 
         })->add([Middleware\Permissions::class, Acl::STATION_MOUNTS, true]);
 
-        $this->get('/profile', Controller\Stations\Profile\IndexController::class)
+        $this->get('/profile', Controller\Stations\ProfileController::class)
             ->setName('stations:profile:index');
 
-        $this->map(['GET', 'POST'], '/profile/edit', Controller\Stations\Profile\EditController::class)
+        $this->map(['GET', 'POST'], '/profile/edit', Controller\Stations\ProfileController::class.':editAction')
             ->setName('stations:profile:edit')
             ->add([Middleware\Permissions::class, Acl::STATION_PROFILE, true]);
 

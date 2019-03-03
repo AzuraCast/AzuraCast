@@ -41,16 +41,13 @@ return [
         ],
 
         'is_active' => [
-            'radio',
+            'toggle',
             [
                 'label' => __('Account is Active'),
-                'description' => __('Set to "Yes" to allow this account to log in and stream.'),
-                'required' => true,
-                'default' => '1',
-                'choices' => [
-                    0 => __('No'),
-                    1 => __('Yes'),
-                ],
+                'description' => __('Enable to allow this account to log in and stream.'),
+                'selected_text' => __('Yes'),
+                'deselected_text' => __('No'),
+                'default' => true,
             ]
         ],
 

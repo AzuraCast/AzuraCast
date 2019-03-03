@@ -29,7 +29,11 @@ function styleForm(form, translations) {
     $form.find('input[type=checkbox]').each(function() {
         $(this).addClass('custom-control-input');
         $(this).closest('.form-field').addClass('mt-3');
-        $(this).next('label').addClass('custom-control-label').addBack().wrapAll('<div class="custom-control custom-checkbox" />');
+
+        $(this).next('label')
+            .addClass('custom-control-label')
+            .addBack()
+            .wrapAll('<div class="custom-control custom-checkbox" />');
     });
 
     $form.find('.help-block').addClass('form-text');

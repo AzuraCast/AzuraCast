@@ -31,24 +31,64 @@ return [
                 ],
 
                 'is_default' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Is Default Mount'),
                         'description' => __('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 0,
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                    ]
+                ],
+
+                'relay_url' => [
+                    'text',
+                    [
+                        'label' => __('Relay Stream URL'),
+                        'description' => __('Enter the full URL of another stream to relay its broadcast through this mount point.'),
+                        'default' => '',
+                    ]
+                ],
+
+                'is_public' => [
+                    'toggle',
+                    [
+                        'label' => __('Advertise to YP Directories (Public Station)'),
+                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                    ]
+                ],
+
+                'authhash' => [
+                    'text',
+                    [
+                        'label' => __('YP Directory Authorization Hash'),
+                        'description' => sprintf(__('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.'),
+                            'https://rmo.shoutcast.com'),
+                        'default' => '',
                     ]
                 ],
 
                 'enable_autodj' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Enable AutoDJ'),
                         'description' => __('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 1,
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
                     ]
                 ],
+
+            ],
+        ],
+
+        'autodj' => [
+            'legend' => __('Configure AutoDJ Broadcasting'),
+            'class' => 'fieldset_autodj',
+            'elements' => [
 
                 'autodj_format' => [
                     'radio',
@@ -80,24 +120,12 @@ return [
                     ]
                 ],
 
-                'relay_url' => [
-                    'text',
-                    [
-                        'label' => __('Relay Stream URL'),
-                        'description' => __('Enter the full URL of another stream to relay its broadcast through this mount point.'),
-                        'default' => '',
-                    ]
-                ],
+            ],
+        ],
 
-                'is_public' => [
-                    'radio',
-                    [
-                        'label' => __('Advertise to YP Directories (Public Station)'),
-                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 0,
-                    ]
-                ],
+        'advanced_items' => [
+            'legend' => __('Advanced Configuration'),
+            'elements' => [
 
                 'custom_listen_url' => [
                     'text',
@@ -105,16 +133,6 @@ return [
                         'label' => __('Custom Stream URL'),
                         'label_class' => 'advanced',
                         'description' => __('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')
-                    ]
-                ],
-
-                'authhash' => [
-                    'text',
-                    [
-                        'label' => __('YP Directory Authorization Hash'),
-                        'description' => sprintf(__('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.'),
-                            'https://rmo.shoutcast.com'),
-                        'default' => '',
                     ]
                 ],
 

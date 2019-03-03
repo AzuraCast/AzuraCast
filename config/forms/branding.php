@@ -20,15 +20,13 @@ return [
         ],
 
         Entity\Settings::HIDE_ALBUM_ART => [
-            'radio',
+            'toggle',
             [
                 'label' => __('Hide Album Art on Public Pages'),
                 'description' => __('If selected, album art will not display on public-facing radio pages.'),
-                'default' => 0,
-                'choices' => [
-                    0 => __('No'),
-                    1 => __('Yes'),
-                ],
+                'selected_text' => __('Yes'),
+                'deselected_text' => __('No'),
+                'default' => false,
             ]
         ],
 
@@ -51,15 +49,13 @@ return [
         ],
 
         Entity\Settings::HIDE_PRODUCT_NAME => [
-            'radio',
+            'toggle',
             [
                 'label' => __('Hide AzuraCast Branding on Public Pages'),
                 'description' => __('If selected, this will remove the AzuraCast branding from public-facing pages.'),
-                'default' => 0,
-                'choices' => [
-                    0 => __('No'),
-                    1 => __('Yes'),
-                ],
+                'selected_text' => __('Yes'),
+                'deselected_text' => __('No'),
+                'default' => false,
             ]
         ],
 

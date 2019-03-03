@@ -46,11 +46,12 @@ return [
                 ],
 
                 'enable_autodj' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Broadcast AutoDJ to Remote Station'),
                         'description' => __('If set to "Yes", the AutoDJ on this installation will automatically play music to this mount point.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
                         'default' => 0,
                     ]
                 ],

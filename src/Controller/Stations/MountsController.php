@@ -102,7 +102,7 @@ class MountsController
             return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'stations/mounts/edit', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Mount Point'))

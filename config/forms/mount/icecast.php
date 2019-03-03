@@ -20,12 +20,13 @@ return [
                 ],
 
                 'is_default' => [
-                    'radio',
+                    'toggle',
                     [
-                        'label' => __('Is Default Mount'),
+                        'label' => __('Set as Default Mount Point'),
                         'description' => __('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 0,
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
                     ]
                 ],
 
@@ -47,15 +48,33 @@ return [
                     ]
                 ],
 
-                'enable_autodj' => [
+                'is_public' => [
                     'radio',
                     [
-                        'label' => __('Enable AutoDJ'),
-                        'description' => __('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
+                        'label' => __('Advertise to YP Directories (Public Station)'),
+                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
                         'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 1,
+                        'default' => 0,
                     ]
                 ],
+
+                'enable_autodj' => [
+                    'toggle',
+                    [
+                        'label' => __('Enable AutoDJ'),
+                        'description' => __('If enabled, the AutoDJ will automatically play music to this mount point.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                    ]
+                ],
+            ],
+        ],
+
+        'autodj' => [
+            'legend' => __('Configure AutoDJ Broadcasting'),
+            'class' => 'fieldset_autodj',
+            'elements' => [
 
                 'autodj_format' => [
                     'radio',
@@ -89,15 +108,13 @@ return [
                     ]
                 ],
 
-                'is_public' => [
-                    'radio',
-                    [
-                        'label' => __('Advertise to YP Directories (Public Station)'),
-                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 0,
-                    ]
-                ],
+
+            ],
+        ],
+
+        'advanced_items' => [
+            'legend' => __('Advanced Configuration'),
+            'elements' => [
 
                 'custom_listen_url' => [
                     'text',

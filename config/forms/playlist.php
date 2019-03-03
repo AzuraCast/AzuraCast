@@ -63,16 +63,14 @@ return [
                 ],
 
                 'is_enabled' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Enable Playlist'),
                         'required' => true,
                         'description' => __('If set to "No", the playlist will not be included in radio playback, but can still be managed.'),
-                        'choices' => [
-                            1 => __('Yes'),
-                            0 => __('No'),
-                        ],
-                        'default' => 1,
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
                     ]
                 ],
 
@@ -146,16 +144,14 @@ return [
                 ],
 
                 'include_in_requests' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Allow Requests from This Playlist'),
                         'required' => true,
                         'description' => __('If requests are enabled for your station, users will be able to request media that is on this playlist.'),
-                        'choices' => [
-                            1 => __('Yes'),
-                            0 => __('No'),
-                        ],
-                        'default' => 1,
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
                     ]
                 ],
 
@@ -213,16 +209,13 @@ return [
             'elements' => [
 
                 'include_in_automation' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Include in Automated Assignment'),
                         'description' => __('If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.'),
-                        'required' => true,
-                        'default' => '0',
-                        'choices' => [
-                            0 => __('No'),
-                            1 => __('Yes'),
-                        ],
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
                     ]
                 ],
 

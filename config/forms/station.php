@@ -53,15 +53,13 @@ return [
                 ],
 
                 'enable_public_page' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Enable Public Page'),
-                        'description' => __('Whether to show or hide the station from public pages and general API results.'),
-                        'choices' => [
-                            0 => __('Disabled'),
-                            1 => __('Enabled')
-                        ],
-                        'default' => 1,
+                        'description' => __('Show the station in public pages and general API results.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
                     ]
                 ],
 
@@ -90,53 +88,6 @@ return [
                         'default' => Station::DEFAULT_API_HISTORY_ITEMS,
                     ]
                 ]
-            ],
-        ],
-
-        'admin' => [
-            'legend' => __('Administration'),
-
-            'elements' => [
-
-                'is_enabled' => [
-                    'radio',
-                    [
-                        'label' => __('Enable Broadcasting'),
-                        'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
-                        'choices' => [
-                            0 => __('Disabled'),
-                            1 => __('Enabled'),
-                        ],
-                        'default' => 1,
-                    ]
-                ],
-
-                'storage_quota' => [
-                    'text',
-                    [
-                        'label' => __('Storage Quota'),
-                        'description' => __('Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.')
-                    ]
-                ],
-
-                'radio_base_dir' => [
-                    'text',
-                    [
-                        'label' => __('Base Station Directory'),
-                        'label_class' => 'advanced',
-                        'description' => __('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'),
-                    ]
-                ],
-
-                'radio_media_dir' => [
-                    'text',
-                    [
-                        'label' => __('Custom Media Directory'),
-                        'label_class' => 'advanced',
-                        'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
-                    ]
-                ],
-
             ],
         ],
 
@@ -240,12 +191,13 @@ return [
             'elements' => [
 
                 'enable_requests' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Allow Song Requests'),
-                        'description' => __('This enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.'),
-                        'default' => '0',
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
+                        'description' => __('Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
                     ]
                 ],
 
@@ -272,12 +224,13 @@ return [
                 ],
 
                 'enable_streamers' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Allow Streamers / DJs'),
-                        'description' => __('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
-                        'default' => '0',
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
+                        'description' => __('If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
                     ]
                 ],
 
@@ -357,13 +310,14 @@ return [
                 ],
 
                 'use_manual_autodj' => [
-                    'radio',
+                    'toggle',
                     [
                         'label' => __('Manual AutoDJ Mode'),
                         'label_class' => 'advanced',
-                        'description' => __('This mode disables App\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
-                        'default' => '0',
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
+                        'description' => __('This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
                         'belongsTo' => 'backend_config',
                     ]
                 ],
@@ -387,6 +341,51 @@ return [
                         'belongsTo' => 'backend_config',
                         'class' => 'text-preformatted',
                         'description' => __('This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!'),
+                    ]
+                ],
+
+            ],
+        ],
+
+        'admin' => [
+            'legend' => __('Administration'),
+
+            'elements' => [
+
+                'is_enabled' => [
+                    'toggle',
+                    [
+                        'label' => __('Enable Broadcasting'),
+                        'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                    ]
+                ],
+
+                'storage_quota' => [
+                    'text',
+                    [
+                        'label' => __('Storage Quota'),
+                        'description' => __('Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.')
+                    ]
+                ],
+
+                'radio_base_dir' => [
+                    'text',
+                    [
+                        'label' => __('Base Station Directory'),
+                        'label_class' => 'advanced',
+                        'description' => __('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'),
+                    ]
+                ],
+
+                'radio_media_dir' => [
+                    'text',
+                    [
+                        'label' => __('Custom Media Directory'),
+                        'label_class' => 'advanced',
+                        'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
                     ]
                 ],
 

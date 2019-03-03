@@ -14,6 +14,6 @@ $(function() {
 
 function showFieldset(fieldset_prefix, fieldset_id)
 {
-    $('form fieldset.'+fieldset_prefix+'_fieldset').hide();
-    $('form fieldset#'+fieldset_prefix+'_'+fieldset_id).show();
+    $('form fieldset.'+fieldset_prefix+'_fieldset').slideUp('fast');
+    $('form fieldset#'+fieldset_prefix+'_'+fieldset_id).slideDown('fast');
 }

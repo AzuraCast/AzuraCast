@@ -4,6 +4,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Azura\Normalizer\Annotation\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -103,6 +104,7 @@ class User
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      *
+     * @DeepNormalize(true)
      * @Serializer\MaxDepth(1)
      * @OA\Property(
      *     @OA\Items()
@@ -114,6 +116,7 @@ class User
 
     /**
      * @ORM\OneToMany(targetEntity="ApiKey", mappedBy="user")
+     * @DeepNormalize(true)
      * @var Collection
      */
     protected $api_keys;

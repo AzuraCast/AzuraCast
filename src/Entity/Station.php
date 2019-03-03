@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\Radio\Quota;
+use Azura\Normalizer\Annotation\DeepNormalize;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

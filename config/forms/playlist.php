@@ -147,7 +147,6 @@ return [
                     'toggle',
                     [
                         'label' => __('Allow Requests from This Playlist'),
-                        'required' => true,
                         'description' => __('If requests are enabled for your station, users will be able to request media that is on this playlist.'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),

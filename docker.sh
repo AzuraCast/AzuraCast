@@ -62,10 +62,24 @@ install() {
         fi
     fi
 
-    if [[ $(which docker-compose) ]]; then
+    if [[ $(which docker-compose) && $(docker-compose --version) ]]; then
         echo "Docker Compose is already installed! Continuing..."
     else
         if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
+            if [[ $(which git) ]]; then
+                echo "Git does not appear to be installed."
+                echo "Install git using your host's package manager,"
+                echo "then continue installing using this script."
+                exit 1
+            fi
+
+            if [[ $(which curl) ]]; then
+                echo "cURL does not appear to be installed."
+                echo "Install curl using your host's package manager,"
+                echo "then continue installing using this script."
+                exit 1
+            fi
+
             COMPOSE_VERSION=`git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1`
             sudo sh -c "curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
             sudo chmod +x /usr/local/bin/docker-compose

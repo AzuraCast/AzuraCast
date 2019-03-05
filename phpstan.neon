@@ -22,7 +22,6 @@ parameters:
 
         # Supervisor functions that do exist but aren't annotated properly in the connector lib.
         - '#Call to an undefined method Supervisor\\Supervisor::reloadConfig().#'
-        - '#Call to an undefined method Supervisor\\Supervisor::tailProcessLog().#'
         - '#Call to an undefined method Supervisor\\Supervisor::signalProcess().#'
 
     dynamicConstantNames:

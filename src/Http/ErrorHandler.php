@@ -119,10 +119,19 @@ class ErrorHandler
         }
 
         if ($return_json) {
+            $api_extra = [];
+            if ($show_detailed) {
+                $api_extra['trace'] = $e->getTrace();
+            }
+            if ($e instanceof \Azura\Exception) {
+                $api_extra['context'] = $e->getLoggingContext();
+                $api_extra = array_merge($api_extra, $e->getExtraData());
+            }
+
             $api_response = new Entity\Api\Error(
                 $e->getCode(),
                 $e->getMessage(),
-                ($show_detailed) ? $e->getTrace() : []
+                $api_extra
             );
 
             return $res

@@ -8,11 +8,11 @@ use OpenApi\Annotations as OA;
  */
 class Error
 {
-    public function __construct($code = 500, $message = 'General Error', $stack_trace = [])
+    public function __construct($code = 500, $message = 'General Error', $extra_data = [])
     {
         $this->code = (int)$code;
         $this->message = (string)$message;
-        $this->stack_trace = (array)$stack_trace;
+        $this->extra_data = (array)$extra_data;
         $this->success = false;
     }
 
@@ -33,12 +33,12 @@ class Error
     public $message;
 
     /**
-     * A stack trace outlining the error, if permissions allow this to be shown.
+     * Stack traces and other supplemental data.
      *
      * @OA\Property(@OA\Items)
      * @var array
      */
-    public $stack_trace;
+    public $extra_data;
 
     /**
      * Used for API calls that expect an \Entity\Api\Status type response.

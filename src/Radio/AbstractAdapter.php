@@ -168,20 +168,27 @@ abstract class AbstractAdapter
      */
     protected function _handleSupervisorException(FaultException $e, $program_name, Entity\Station $station): void
     {
+        $class_parts = explode('\\', static::class);
+        $class_name = array_pop($class_parts);
+
         if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
             $app_e = new \App\Exception\Supervisor\AlreadyRunning(
-                sprintf('Adapter "%s" cannot start; was already running.', static::class),
+                __('%s cannot start; it is already running.', $class_name),
                 $e->getCode(),
                 $e
             );
         } else if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
             $app_e = new \App\Exception\Supervisor\NotRunning(
-                sprintf('Adapter "%s" cannot start; was already running.', static::class),
+                __('%s cannot stop; it is not running.', $class_name),
                 $e->getCode(),
                 $e
             );
         } else {
-            $app_e = new \App\Exception\Supervisor($e->getMessage(), $e->getCode(), $e);
+            $message = (false !== stripos($e->getMessage(), 'SPAWN_ERROR'))
+                ? __('%s encountered an error when starting; check the logs for details.', $class_name)
+                : $class_name.': '.$e->getMessage();
+
+            $app_e = new \App\Exception\Supervisor($message, $e->getCode(), $e);
         }
 
         $app_e->addLoggingContext('station_id', $station->getId());
@@ -189,13 +196,7 @@ abstract class AbstractAdapter
 
         // Get more detailed information for more significant errors.
         if ($app_e->getLoggerLevel() !== Logger::INFO) {
-            $process_log = $this->supervisor->tailProcessLog($program_name, 0, 0);
-            $process_log = array_filter(explode("\n", $process_log[0]));
-
-            $app_e->addExtraData('Supervisord Log', $process_log);
-            $this->supervisor->clearProcessLogs($program_name);
-
-            $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
+            $app_e->addExtraData('Supervisor Process Info', $this->supervisor->getProcessInfo($program_name));
         }
 
         throw $app_e;

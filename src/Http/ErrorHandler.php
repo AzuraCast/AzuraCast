@@ -66,7 +66,7 @@ class ErrorHandler
 
         $e_extra = [];
         if ($show_detailed) {
-            $e_extra['trace'] = array_slice($e->getTrace(), -5);
+            $e_extra['trace'] = array_slice($e->getTrace(), 0, 5);
 
             if ($e instanceof \Azura\Exception) {
                 $e_extra['context'] = $e->getLoggingContext();

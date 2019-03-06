@@ -5,5 +5,5 @@ use Monolog\Logger;
 
 class NotFound extends \Azura\Exception
 {
-    protected $logger_level = Logger::INFO;
+    protected $logger_level = Logger::DEBUG;
 }

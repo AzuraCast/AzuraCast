@@ -62,12 +62,23 @@ class ErrorHandler
             ? $e->getLoggerLevel()
             : Logger::ERROR;
 
+        $show_detailed = !APP_IN_PRODUCTION && $e_level >= Logger::ERROR;
+
+        $e_extra = [];
+        if ($show_detailed) {
+            $e_extra['trace'] = array_slice($e->getTrace(), -5);
+
+            if ($e instanceof \Azura\Exception) {
+                $e_extra['context'] = $e->getLoggingContext();
+                $e_extra = array_merge($e_extra, $e->getExtraData());
+            }
+        }
+
         $this->logger->addRecord($e_level, $e->getMessage(), [
             'file' => $e->getFile(),
             'line' => $e->getLine(),
             'code' => $e->getCode(),
-            'extra' => $e->getTrace(),
-        ]);
+        ] + $e_extra);
 
         // Special handling for cURL (i.e. Liquidsoap) requests.
         $ua = $req->getHeaderLine('User-Agent');
@@ -76,7 +87,6 @@ class ErrorHandler
             return $res->write('Error: '.$e->getMessage().' on '.$e->getFile().' L'.$e->getLine());
         }
 
-        $show_detailed = !APP_IN_PRODUCTION;
         $return_json = $this->_returnJson($req);
 
         if ($e instanceof \App\Exception\NotLoggedIn) {
@@ -119,19 +129,10 @@ class ErrorHandler
         }
 
         if ($return_json) {
-            $api_extra = [];
-            if ($show_detailed) {
-                $api_extra['trace'] = $e->getTrace();
-            }
-            if ($e instanceof \Azura\Exception) {
-                $api_extra['context'] = $e->getLoggingContext();
-                $api_extra = array_merge($api_extra, $e->getExtraData());
-            }
-
             $api_response = new Entity\Api\Error(
                 $e->getCode(),
                 $e->getMessage(),
-                $api_extra
+                $e_extra
             );
 
             return $res

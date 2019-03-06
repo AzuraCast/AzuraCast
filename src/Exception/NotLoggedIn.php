@@ -6,7 +6,7 @@ use Throwable;
 
 class NotLoggedIn extends \Azura\Exception
 {
-    protected $logger_level = Logger::INFO;
+    protected $logger_level = Logger::DEBUG;
 
     public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
     {

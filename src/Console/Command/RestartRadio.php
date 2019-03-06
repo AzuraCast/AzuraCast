@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity\Station;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RestartRadio extends CommandAbstract
 {
@@ -24,10 +25,9 @@ class RestartRadio extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeLn('Restarting all radio stations...');
+        $io = new SymfonyStyle($input, $output);
 
-        /** @var \Supervisor\Supervisor $supervisor */
-        $supervisor = $this->get(\Supervisor\Supervisor::class);
+        $io->section('Restarting all radio stations...');
 
         /** @var EntityManager $em */
         $em = $this->get(EntityManager::class);
@@ -38,20 +38,21 @@ class RestartRadio extends CommandAbstract
         /** @var Station[] $stations */
         $stations = $em->getRepository(Station::class)->findAll();
 
-        $supervisor->stopAllProcesses();
+        $io->progressStart(count($stations));
 
         foreach ($stations as $station) {
-            $output->writeLn('Restarting station #' . $station->getId() . ': ' . $station->getName());
-            $configuration->writeConfiguration($station);
+            $configuration->writeConfiguration($station, false, true);
 
             $station->setHasStarted(true);
             $station->setNeedsRestart(false);
 
             $em->persist($station);
+            $em->flush($station);
+
+            $io->progressAdvance();
         }
 
-        $supervisor->startAllProcesses();
-        $em->flush();
+        $io->progressFinish();
 
         return 0;
     }

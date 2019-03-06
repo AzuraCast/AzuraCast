@@ -66,14 +66,14 @@ install() {
         echo "Docker Compose is already installed! Continuing..."
     else
         if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-            if [[ $(which git) ]]; then
+            if [[ ! $(which git) ]]; then
                 echo "Git does not appear to be installed."
                 echo "Install git using your host's package manager,"
                 echo "then continue installing using this script."
                 exit 1
             fi
 
-            if [[ $(which curl) ]]; then
+            if [[ ! $(which curl) ]]; then
                 echo "cURL does not appear to be installed."
                 echo "Install curl using your host's package manager,"
                 echo "then continue installing using this script."

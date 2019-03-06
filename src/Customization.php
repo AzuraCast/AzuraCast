@@ -10,14 +10,14 @@ use Psr\Http\Message\UriInterface;
 
 class Customization
 {
-    const DEFAULT_TIMEZONE = 'UTC';
-    const DEFAULT_LOCALE = 'en_US.UTF-8';
+    public const DEFAULT_TIMEZONE = 'UTC';
+    public const DEFAULT_LOCALE = 'en_US.UTF-8';
 
     /** @var Settings */
     protected $app_settings;
 
-    /** @var Entity\User */
-    protected $user = null;
+    /** @var Entity\User|null */
+    protected $user;
 
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;

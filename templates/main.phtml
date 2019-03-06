@@ -64,6 +64,7 @@ echo $assets->js();
                     <?=__('Dashboard') ?>
                 </a>
             </li>
+            <li class="dropdown-divider">&nbsp;</li>
             <?php if ($acl->userAllowed($user, 'view administration')): ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
@@ -79,9 +80,21 @@ echo $assets->js();
                 </a>
             </li>
             <li>
+                <a class="dropdown-item" href="<?=$router->named('profile:theme') ?>">
+                    <i class="material-icons" aria-hidden="true">invert_colors</i>
+                    <?=__('Switch Theme') ?>
+                </a>
+            </li>
+            <li>
                 <a class="dropdown-item" href="<?=$router->named('api_keys:index') ?>">
                     <i class="material-icons" aria-hidden="true">vpn_key</i>
                     <?=__('My API Keys') ?>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="https://www.azuracast.com/help.html" target="_blank">
+                    <i class="material-icons" aria-hidden="true">help</i>
+                    <?=__('Help') ?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>

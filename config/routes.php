@@ -333,6 +333,9 @@ return function(App $app)
         $this->map(['GET', 'POST'], '/profile/edit', Controller\Frontend\ProfileController::class.':editAction')
             ->setName('profile:edit');
 
+        $this->get('/profile/theme', Controller\Frontend\ProfileController::class.':themeAction')
+            ->setName('profile:theme');
+
         $this->get('/api_keys', Controller\Frontend\ApiKeysController::class.':indexAction')
             ->setName('api_keys:index');
 

@@ -98,4 +98,34 @@ class ProfileController
             'title' => __('Edit Profile')
         ]);
     }
+
+    public function themeAction(Request $request, Response $response): ResponseInterface
+    {
+        $user = $request->getUser();
+
+        $theme_field = $this->form_config['groups']['customization']['elements']['theme'][1];
+        $theme_options = array_keys($theme_field['choices']);
+
+        $current_theme = $user->getTheme();
+        if (empty($current_theme)) {
+            $current_theme = $theme_field['default'];
+        }
+
+        foreach($theme_options as $theme) {
+            if ($theme !== $current_theme) {
+                $user->setTheme($theme);
+                break;
+            }
+        }
+
+        $this->em->persist($user);
+        $this->em->flush($user);
+
+        $referer = $request->getHeaderLine('HTTP_REFERER');
+        if (!empty($referer)) {
+            return $response->withRedirect($referer);
+        }
+
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
+    }
 }

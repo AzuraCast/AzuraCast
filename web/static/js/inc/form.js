@@ -8,6 +8,14 @@ function styleForm(form, translations) {
 
     var $form = $(form);
 
+    $(window).on('beforeunload', function() {
+        return false;
+    });
+
+    $form.on('submit', function() {
+        $(window).off('beforeunload');
+    });
+
     $form.find('fieldset').addClass('form-group');
 
     $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');

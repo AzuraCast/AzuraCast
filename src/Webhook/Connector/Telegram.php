@@ -13,8 +13,8 @@ class Telegram extends AbstractConnector
 {
     public function dispatch(SendWebhooks $event, array $config): void
     {
-        $bot_token = $config['bot_token'] ?? '';
-        $chat_id = $config['chat_id'] ?? '';
+        $bot_token = trim($config['bot_token'] ?? '');
+        $chat_id = trim($config['chat_id'] ?? '');
 
         if (empty($bot_token) || empty($chat_id)) {
             $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');

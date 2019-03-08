@@ -95,7 +95,7 @@ class RolesController extends AbstractGenericCrudController
      * @inheritdoc
      */
 
-    protected function _denormalizeToRecord($data, $record, array $context = []): object
+    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
     {
         return parent::_denormalizeToRecord($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [

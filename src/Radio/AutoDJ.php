@@ -371,7 +371,7 @@ class AutoDJ implements EventSubscriberInterface
             [$media_uri, $media_duration] = $media_to_play;
 
             $sh = new Entity\SongHistory($song_repo->getOrCreate([
-                'text' => 'Internal AutoDJ URI',
+                'text' => 'Remote Playlist URL',
             ]), $playlist->getStation());
 
             $sh->setPlaylist($playlist);

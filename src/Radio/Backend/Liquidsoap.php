@@ -96,6 +96,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'set("init.daemon", false)',
             'set("init.daemon.pidfile.path","' . $config_path . '/liquidsoap.pid")',
             'set("log.stdout", true)',
+            'set("log.file", false)',
             'set("server.telnet",true)',
             'set("server.telnet.bind_addr","'.(APP_INSIDE_DOCKER ? '0.0.0.0' : '127.0.0.1').'")',
             'set("server.telnet.port", ' . $this->_getTelnetPort($station) . ')',

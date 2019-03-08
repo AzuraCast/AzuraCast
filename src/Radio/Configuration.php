@@ -102,20 +102,12 @@ class Configuration
 
         // Write frontend
         if ($frontend->hasCommand($station)) {
-            $this->_writeConfigurationSection($supervisor_config, $frontend_program, [
-                'directory' => $config_path,
-                'command' => $frontend->getCommand($station),
-                'priority' => 90,
-            ]);
+            $supervisor_config[] = $this->_writeConfigurationSection($station, $frontend, 90);
         }
 
         // Write backend
         if ($backend->hasCommand($station)) {
-            $this->_writeConfigurationSection($supervisor_config, $backend_program, [
-                'directory' => $config_path,
-                'command' => $backend->getCommand($station),
-                'priority' => 100,
-            ]);
+            $supervisor_config[] = $this->_writeConfigurationSection($station, $backend, 100);
         }
 
         // Write config contents
@@ -125,28 +117,34 @@ class Configuration
         $this->_reloadSupervisorForStation($station, $force_restart);
     }
 
-    protected function _writeConfigurationSection(&$supervisor_config, $program_name, $config_lines): void
+    protected function _writeConfigurationSection(
+        Station $station,
+        AbstractAdapter $adapter,
+        $priority): string
     {
-        $defaults = [
+        $config_path = $station->getRadioConfigDir();
+
+        [,$program_name] = explode(':', $adapter->getProgramName($station));
+
+        $config_lines = [
             'user' => 'azuracast',
-            'priority' => 100,
+            'priority' => $priority,
+            'command' => $adapter->getCommand($station),
+            'directory' => $config_path,
+            'stdout_logfile' => $adapter->getLogPath($station),
+            'stdout_logfile_maxbytes' => '5MB',
+            'stdout_logfile_backups' => '10',
+            'redirect_stderr' => 'true',
         ];
 
-        if (APP_INSIDE_DOCKER) {
-            $defaults['stdout_logfile'] = '/dev/stdout';
-            $defaults['stdout_logfile_maxbytes'] = 0;
-            $defaults['stderr_logfile'] = '/dev/stderr';
-            $defaults['stderr_logfile_maxbytes'] = 0;
-        }
-
         $supervisor_config[] = '[program:' . $program_name . ']';
-        $config_lines = array_merge($defaults, $config_lines);
 
         foreach($config_lines as $config_key => $config_value) {
             $supervisor_config[] = $config_key . '=' . $config_value;
         }
 
         $supervisor_config[] = '';
+        return implode("\n", $supervisor_config);
     }
 
     /**

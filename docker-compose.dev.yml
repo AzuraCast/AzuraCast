@@ -87,6 +87,7 @@ services:
      - station_data:/var/azuracast/stations
      - letsencrypt:/etc/nginx/ssl:ro
      - shoutcast2_install:/var/azuracast/servers/shoutcast2
+     - tmp_data:/var/azuracast/www_tmp
     init: true
     restart: always
     logging: *default-logging

@@ -105,7 +105,7 @@ trait LogViewerTrait
                 ];
                 $log_paths['icecast_error_log'] = [
                     'name' => __('Icecast Error Log'),
-                    'path' => $station_config_dir.'/icecast_error.log',
+                    'path' => $station_config_dir.'/icecast.log',
                     'tail' => true,
                 ];
                 $log_paths['icecast_xml'] = [
@@ -118,7 +118,7 @@ trait LogViewerTrait
             case Adapters::FRONTEND_SHOUTCAST:
                 $log_paths['shoutcast_log'] = [
                     'name' => __('SHOUTcast Log'),
-                    'path' => $station_config_dir.'/sc_serv.log',
+                    'path' => $station_config_dir.'/shoutcast.log',
                     'tail' => true,
                 ];
                 $log_paths['shoutcast_conf'] = [

@@ -235,7 +235,7 @@ class Icecast extends AbstractFrontend
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
-                'errorlog' => 'icecast_error.log',
+                'errorlog' => '/dev/stderr',
                 'loglevel' => (APP_IN_PRODUCTION) ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
                 'logsize' => 10000,
             ],

@@ -91,30 +91,35 @@ $(function() {
     var is_first_load = true;
 
     function checkServiceStatus() {
-        $.getJSON('<?=$router->fromHere('api:stations:status') ?>', function(data) {
-            var backend_status = $('#backend_status');
-            backend_status.removeClass('text-success text-danger');
+        $.ajax({
+            cache: false,
+            dataType: "json",
+            url: '<?=$router->fromHere('api:stations:status') ?>',
+            success: function(data) {
+                var backend_status = $('#backend_status');
+                backend_status.removeClass('text-success text-danger');
 
-            if (data.backend_running) {
-                backend_status.addClass('text-success').text(service_status_lang.running);
-            } else {
-                backend_status.addClass('text-danger').text(service_status_lang.not_running);
-            }
+                if (data.backend_running) {
+                    backend_status.addClass('text-success').text(service_status_lang.running);
+                } else {
+                    backend_status.addClass('text-danger').text(service_status_lang.not_running);
+                }
 
-            var frontend_status = $('#frontend_status');
-            frontend_status.removeClass('text-success text-danger');
+                var frontend_status = $('#frontend_status');
+                frontend_status.removeClass('text-success text-danger');
 
-            if (data.frontend_running) {
-                frontend_status.addClass('text-success').text(service_status_lang.running);
-            } else {
-                frontend_status.addClass('text-danger').text(service_status_lang.not_running);
-            }
+                if (data.frontend_running) {
+                    frontend_status.addClass('text-success').text(service_status_lang.running);
+                } else {
+                    frontend_status.addClass('text-danger').text(service_status_lang.not_running);
+                }
 
-            if (is_first_load) {
-                setTimeout(checkServiceStatus, 5000);
-                is_first_load = false;
-            } else {
-                setTimeout(checkServiceStatus, 15000);
+                if (is_first_load) {
+                    setTimeout(checkServiceStatus, 5000);
+                    is_first_load = false;
+                } else {
+                    setTimeout(checkServiceStatus, 15000);
+                }
             }
         }).fail(function() {
             setTimeout(checkServiceStatus, 30000);

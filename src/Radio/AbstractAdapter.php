@@ -156,6 +156,22 @@ abstract class AbstractAdapter
     abstract public function getProgramName(Entity\Station $station): string;
 
     /**
+     * Return the path where logs are written to.
+     *
+     * @param Entity\Station $station
+     * @return string
+     */
+     public function getLogPath(Entity\Station $station): string
+     {
+         $config_dir = $station->getRadioConfigDir();
+
+         $class_parts = explode('\\', static::class);
+         $class_name = array_pop($class_parts);
+
+         return $config_dir.'/'.strtolower($class_name).'.log';
+     }
+
+    /**
      * Internal handling of any Supervisor-related exception, to add richer data to it.
      *
      * @param FaultException $e
@@ -172,32 +188,43 @@ abstract class AbstractAdapter
         $class_name = array_pop($class_parts);
 
         if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
+            $e_headline = __('%s cannot start', $class_name);
+            $e_body = __('It is already running.');
+
             $app_e = new \App\Exception\Supervisor\AlreadyRunning(
-                __('%s cannot start; it is already running.', $class_name),
+                $e_headline.'; '.$e_body,
                 $e->getCode(),
                 $e
             );
         } else if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
+            $e_headline = __('%s cannot stop', $class_name);
+            $e_body = __('It is not running.');
+
             $app_e = new \App\Exception\Supervisor\NotRunning(
-                __('%s cannot stop; it is not running.', $class_name),
+                $e_headline.'; '.$e_body,
                 $e->getCode(),
                 $e
             );
         } else {
-            $message = (false !== stripos($e->getMessage(), 'SPAWN_ERROR'))
-                ? __('%s encountered an error when starting; check the logs for details.', $class_name)
-                : $class_name.': '.$e->getMessage();
+            $e_headline = __('%s encountered an error', $class_name);
 
-            $app_e = new \App\Exception\Supervisor($message, $e->getCode(), $e);
+            // Get more detailed information for more significant errors.
+            $process_log = $this->supervisor->tailProcessStdoutLog($program_name, 0, 500);
+            $process_log = array_filter(explode("\n", $process_log[0]));
+            $process_log = array_slice($process_log, -6);
+
+            $e_body = (!empty($process_log))
+                ? implode('<br>', $process_log)
+                : __('Check the log for details.');
+
+            $app_e = new \App\Exception\Supervisor($e_headline, $e->getCode(), $e);
+            $app_e->addExtraData('supervisor_log', $process_log);
+            $app_e->addExtraData('supervisor_process_info', $this->supervisor->getProcessInfo($program_name));
         }
 
+        $app_e->setFormattedMessage('<b>'.$e_headline.'</b><br>'.$e_body);
         $app_e->addLoggingContext('station_id', $station->getId());
         $app_e->addLoggingContext('station_name', $station->getName());
-
-        // Get more detailed information for more significant errors.
-        if ($app_e->getLoggerLevel() !== Logger::INFO) {
-            $app_e->addExtraData('Supervisor Process Info', $this->supervisor->getProcessInfo($program_name));
-        }
 
         throw $app_e;
     }

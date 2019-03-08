@@ -23,11 +23,11 @@ $(function() {
                 }
 
                 var notify_type = (data.success) ? 'success' : 'warning';
-                notify(data.message, notify_type);
+                notify(data.formatted_message, notify_type);
             },
             error: function(response) {
                 data = jQuery.parseJSON(response.responseText);
-                notify(data.message, 'danger');
+                notify(data.formatted_message, 'danger');
 
                 btn.removeClass('disabled').html(btn_original_text);
             },

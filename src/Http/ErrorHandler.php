@@ -65,13 +65,12 @@ class ErrorHandler
         $show_detailed = !APP_IN_PRODUCTION && $e_level >= Logger::ERROR;
 
         $e_extra = [];
+        if ($e instanceof \Azura\Exception) {
+            $e_extra['context'] = $e->getLoggingContext();
+            $e_extra = array_merge($e_extra, $e->getExtraData());
+        }
         if ($show_detailed) {
             $e_extra['trace'] = array_slice($e->getTrace(), 0, 5);
-
-            if ($e instanceof \Azura\Exception) {
-                $e_extra['context'] = $e->getLoggingContext();
-                $e_extra = array_merge($e_extra, $e->getExtraData());
-            }
         }
 
         $this->logger->addRecord($e_level, $e->getMessage(), [
@@ -132,6 +131,7 @@ class ErrorHandler
             $api_response = new Entity\Api\Error(
                 $e->getCode(),
                 $e->getMessage(),
+                ($e instanceof \Azura\Exception) ? $e->getFormattedMessage() : $e->getMessage(),
                 $e_extra
             );
 

@@ -66,7 +66,7 @@ class GetStation
         } catch (StationNotFound $e) {
             if ($request->isApiCall()) {
                 return $response->withStatus(404)
-                    ->withJson(new Entity\Api\Error(404, $e->getMessage()));
+                    ->withJson(new Entity\Api\Error(404, $e->getMessage(), $e->getFormattedMessage()));
             }
 
             throw $e;

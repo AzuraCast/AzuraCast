@@ -8,10 +8,15 @@ use OpenApi\Annotations as OA;
  */
 class Error
 {
-    public function __construct($code = 500, $message = 'General Error', $extra_data = [])
+    public function __construct(
+        $code = 500,
+        $message = 'General Error',
+        $formatted_message = null,
+        $extra_data = [])
     {
         $this->code = (int)$code;
         $this->message = (string)$message;
+        $this->formatted_message = (string)($formatted_message ?? $message);
         $this->extra_data = (array)$extra_data;
         $this->success = false;
     }
@@ -31,6 +36,14 @@ class Error
      * @var string
      */
     public $message;
+
+    /**
+     * The HTML-formatted text description of the error.
+     *
+     * @OA\Property(example="<b>Error description.</b><br>Detailed error text.")
+     * @var string
+     */
+    public $formatted_message;
 
     /**
      * Stack traces and other supplemental data.

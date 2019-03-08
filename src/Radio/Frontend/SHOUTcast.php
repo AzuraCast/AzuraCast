@@ -182,7 +182,7 @@ class SHOUTcast extends AbstractFrontend
         $defaults = [
             'password' => Utilities::generatePassword(),
             'adminpassword' => Utilities::generatePassword(),
-            'logfile' => $config_path . '/sc_serv.log',
+            'logfile' => '/dev/stdout',
             'w3clog' => $config_path . '/sc_w3c.log',
             'banfile' => $config_path . '/sc_serv.ban',
             'ripfile' => $config_path . '/sc_serv.rip',

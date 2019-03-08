@@ -75,56 +75,7 @@ class RotateLogs extends AbstractTask
      */
     public function rotateStationLogs(Entity\Station $station): void
     {
-        $this->_rotateLiquidsoapLog($station);
         $this->_cleanUpIcecastLog($station);
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @throws Rotate\FilenameFormatException
-     * @throws \App\Exception\NotFound
-     */
-    protected function _rotateLiquidsoapLog(Entity\Station $station): void
-    {
-        if ($station->getBackendType() !== Adapters::BACKEND_LIQUIDSOAP) {
-            return;
-        }
-
-        $log_context = [
-            'id' => $station->getId(),
-            'name' => $station->getName(),
-        ];
-
-        /** @var Liquidsoap $backend_adapter */
-        $backend_adapter = $this->adapters->getBackendAdapter($station);
-
-        try
-        {
-            $config_path = $station->getRadioConfigDir();
-
-            $rotate = new Rotate\Rotate($config_path . '/liquidsoap.log');
-            $rotate->keep(5);
-            $rotate->size('5MB');
-            $rotate->run();
-        }
-        catch(Rotate\RotateException $e)
-        {
-            $this->logger->error('Log rotation exception: '.$e->getMessage(), $log_context);
-            return;
-        }
-
-        try
-        {
-            // Send the "USR1" signal to Liquidsoap via Supervisord to have it update its log pointer.
-            $backend_supervisor_name = $backend_adapter->getProgramName($station);
-
-            $this->supervisor->signalProcess($backend_supervisor_name, 'USR1');
-        }
-        catch(\Exception $e)
-        {
-            $this->logger->error('Supervisor exception: '.$e->getMessage(), $log_context);
-            return;
-        }
     }
 
     protected function _cleanUpIcecastLog(Entity\Station $station): void
@@ -137,7 +88,7 @@ class RotateLogs extends AbstractTask
             ->files()
             ->in($config_path)
             ->name('icecast_*.log.*')
-            ->date('before 1 week ago');
+            ->date('before 1 month ago');
 
         foreach($finder as $file)
         {

@@ -49,7 +49,7 @@ class Permissions
         } catch (PermissionDenied $e) {
             if ($request->isApiCall()) {
                 return $response->withStatus(403)
-                    ->withJson(new Entity\Api\Error(403, $e->getMessage()));
+                    ->withJson(new Entity\Api\Error(403, $e->getMessage(), $e->getFormattedMessage()));
             }
 
             throw $e;

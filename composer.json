@@ -91,8 +91,8 @@
         "plugins/*/composer.json"
       ],
       "recurse": true,
-      "replace": false,
-      "ignore-duplicates": true,
+      "replace": true,
+      "ignore-duplicates": false,
       "merge-dev": true,
       "merge-extra": false,
       "merge-extra-deep": false,

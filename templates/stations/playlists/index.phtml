@@ -49,29 +49,29 @@ $assets->load('fullcalendar')
                     </thead>
                     <tbody>
                     <?php foreach($playlists as $row): ?>
-                        <tr class="vertical-align-middle">
+                        <tr class="align-middle">
                             <td>
-                                <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:playlists:edit', ['id' => $row['id']]) ?>"><?=__('Edit') ?></a>
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-primary" href="<?=$router->fromHere('stations:playlists:edit', ['id' => $row['id']]) ?>"><?=__('Edit') ?></a>
+                                    <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete playlist "%s"?', $row['name'])) ?>" href="<?=$router->fromHere('stations:playlists:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
 
-                            <?php if ($row['source'] === StationPlaylist::SOURCE_SONGS && $row['order'] === StationPlaylist::ORDER_SEQUENTIAL): ?>
-                                <a class="btn btn-sm btn-default" href="<?=$router->fromHere('stations:playlists:reorder', ['id' => $row['id']]) ?>"><?=__('Reorder') ?></a>
-                            <?php endif; ?>
-
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <?=__('Export') ?> <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <?php foreach(['pls', 'm3u'] as $format): ?>
-                                            <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:export', ['id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
-                                    </ul>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <?=__('More') ?> <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <?php if ($row['source'] === StationPlaylist::SOURCE_SONGS && $row['order'] === StationPlaylist::ORDER_SEQUENTIAL): ?>
+                                                <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:reorder', ['id' => $row['id']]) ?>"><?=__('Reorder') ?></a></li>
+                                            <?php endif; ?>
+                                            <?php foreach(['pls', 'm3u'] as $format): ?>
+                                                <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:export', ['id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(__('Export %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
+                                        </ul>
+                                    </div>
                                 </div>
-
-                                <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete playlist "%s"?', $row['name'])) ?>" href="<?=$router->fromHere('stations:playlists:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                             </td>
                             <td>
                                 <big>
-                                    <a href="<?=$router->fromHere('stations:files:index').'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
+                                    <?=$this->e($row['name']) ?>
                                 </big>
                                 <br>
                                 <span class="label label-default"><?=(($row['source'] === StationPlaylist::SOURCE_SONGS) ? __('Song-based') : __('Remote URL')) ?></span>
@@ -102,7 +102,9 @@ $assets->load('fullcalendar')
                                     <?=__('Custom') ?>
                                 <?php endif; ?>
                             </td>
-                            <td><?=$row['num_songs'] ?></td>
+                            <td>
+                                <a href="<?=$router->fromHere('stations:files:index').'#playlist:'.urlencode($row['name']) ?>"><?=$row['num_songs'] ?></a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

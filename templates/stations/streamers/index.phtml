@@ -31,7 +31,7 @@
                     <tbody>
                     <?php foreach($streamers as $row): ?>
                         <?php /** @var App\Entity\StationStreamer $row */ ?>
-                        <tr class="vertical-align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
+                        <tr class="align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
                             <td>
                                 <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:streamers:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
                                 <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete streamer "%s"?', $row->getStreamerUsername())) ?>" href="<?=$router->fromHere('stations:streamers:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>

@@ -28,7 +28,7 @@
             <tbody>
             <?php foreach($mounts as $row): ?>
                 <?php /** @var App\Entity\StationMount $row */ ?>
-                <tr class="vertical-align-middle">
+                <tr class="align-middle">
                     <td>
                         <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
                         <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>

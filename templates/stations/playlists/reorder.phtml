@@ -27,7 +27,7 @@ $assets->load('jquery-sortable');
             </thead>
             <tbody>
             <?php foreach($media_items as $row): ?>
-                <tr class="vertical-align-middle" data-id="<?=$row['id'] ?>">
+                <tr class="align-middle" data-id="<?=$row['id'] ?>">
                     <td><big><?=$this->e($row['media']['title']) ?></big></td>
                     <td><?=$this->e($row['media']['artist']) ?></td>
                     <td><?=$this->e($row['media']['album']) ?></td>

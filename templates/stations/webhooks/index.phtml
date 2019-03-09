@@ -28,7 +28,7 @@
             <tbody>
             <?php foreach($webhooks as $row): ?>
                 <?php /** @var \App\Entity\StationWebhook $row */ ?>
-                <tr class="vertical-align-middle">
+                <tr class="align-middle">
                     <td>
                         <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:webhooks:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
                         <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$router->fromHere('stations:webhooks:toggle',['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? __('Disable') : __('Enable')) ?></a>

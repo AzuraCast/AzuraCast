@@ -121,11 +121,8 @@ class ProfileController
         $this->em->persist($user);
         $this->em->flush($user);
 
-        $referer = $request->getHeaderLine('HTTP_REFERER');
-        if (!empty($referer)) {
-            return $response->withRedirect($referer);
-        }
-
-        return $response->withRedirect($request->getRouter()->named('dashboard'));
+        return $response->withRedirect(
+            $request->getReferrer($request->getRouter()->named('dashboard'))
+        );
     }
 }

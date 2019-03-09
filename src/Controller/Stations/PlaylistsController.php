@@ -164,14 +164,7 @@ class PlaylistsController
 
     public function reorderAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->playlist_repo->findOneBy([
-            'id' => $id,
-            'station_id' => $station_id
-        ]);
-
-        if (!($record instanceof Entity\StationPlaylist)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
-        }
+        $record = $this->_getRecord($id, $station_id);
 
         if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
             || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
@@ -199,7 +192,8 @@ class PlaylistsController
             return $response->withJson($mapping);
         }
 
-        $media_items = $this->em->createQuery('SELECT spm, sm FROM '.Entity\StationPlaylistMedia::class.' spm
+        $media_items = $this->em->createQuery(/** @lang DQL */'SELECT spm, sm 
+            FROM App\Entity\StationPlaylistMedia spm
             JOIN spm.media sm
             WHERE spm.playlist_id = :playlist_id
             ORDER BY spm.weight ASC')
@@ -215,14 +209,7 @@ class PlaylistsController
 
     public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): ResponseInterface
     {
-        $record = $this->playlist_repo->findOneBy([
-            'id' => $id,
-            'station_id' => $station_id
-        ]);
-
-        if (!($record instanceof Entity\StationPlaylist)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
-        }
+        $record = $this->_getRecord($id, $station_id);
 
         $formats = [
             'pls' => 'audio/x-scpls',
@@ -241,6 +228,30 @@ class PlaylistsController
             ->write($record->export($format));
     }
 
+    public function toggleAction(Request $request, Response $response, $station_id, $id): ResponseInterface
+    {
+        $record = $this->_getRecord($id, $station_id);
+
+        $new_value = !$record->getIsEnabled();
+
+        $record->setIsEnabled($new_value);
+        $this->em->persist($record);
+        $this->em->flush($record);
+
+        $station = $request->getStation();
+        $this->em->refresh($station);
+
+        $flash_message = ($new_value)
+            ? __('Playlist enabled.')
+            : __('Playlist disabled.');
+
+        $request->getSession()->flash('<b>' . $flash_message . '</b><br>' . $record->getName(), 'green');
+
+        return $response->withRedirect(
+            $request->getReferrer($request->getRouter()->fromHere('stations:playlists:index'))
+        );
+    }
+
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
@@ -248,15 +259,9 @@ class PlaylistsController
         $form = new \AzuraForms\Form($this->form_config);
 
         if (!empty($id)) {
-            $record = $this->playlist_repo->findOneBy([
-                'id' => $id,
-                'station_id' => $station_id
-            ]);
-
-            if ($record instanceof Entity\StationPlaylist) {
-                $data = $this->playlist_repo->toArray($record);
-                $form->populate($data);
-            }
+            $record = $this->_getRecord($id, $station_id);
+            $data = $this->playlist_repo->toArray($record);
+            $form->populate($data);
         } else {
             $record = null;
         }
@@ -335,7 +340,9 @@ class PlaylistsController
         // Assemble list of station media to match against.
         $media_lookup = [];
 
-        $media_info_raw = $this->em->createQuery('SELECT sm.id, sm.path FROM '.Entity\StationMedia::class.' sm WHERE sm.station_id = :station_id')
+        $media_info_raw = $this->em->createQuery(/** @lang DQL */'SELECT sm.id, sm.path 
+            FROM App\Entity\StationMedia sm 
+            WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
@@ -365,7 +372,8 @@ class PlaylistsController
 
         // Assign all matched media to the playlist.
         if (!empty($matches)) {
-            $matched_media = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm
+            $matched_media = $this->em->createQuery(/** @lang DQL */'SELECT sm 
+                FROM App\Entity\StationMedia sm
                 WHERE sm.station_id = :station_id AND sm.id IN (:matched_ids)')
                 ->setParameter('station_id', $station_id)
                 ->setParameter('matched_ids', $matches)
@@ -393,20 +401,34 @@ class PlaylistsController
 
         $station = $request->getStation();
 
-        $record = $this->playlist_repo->findOneBy([
-            'id' => $id,
-            'station_id' => $station_id
-        ]);
-
-        if ($record instanceof Entity\StationPlaylist) {
-            $this->em->remove($record);
-        }
-
+        $record = $this->_getRecord($id, $station_id);
+        $this->em->remove($record);
         $this->em->flush();
+
         $this->em->refresh($station);
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
+    }
+
+    /**
+     * @param int $id
+     * @param int $station_id
+     * @return Entity\StationPlaylist
+     * @throws \App\Exception\NotFound
+     */
+    protected function _getRecord($id, $station_id): Entity\StationPlaylist
+    {
+        $record = $this->playlist_repo->findOneBy([
+            'id' => $id,
+            'station_id' => $station_id
+        ]);
+
+        if (!($record instanceof Entity\StationPlaylist)) {
+            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
+        }
+
+        return $record;
     }
 }

@@ -483,6 +483,9 @@ return function(App $app)
             $this->map(['GET', 'POST'], '/reorder/{id}', Controller\Stations\PlaylistsController::class.':reorderAction')
                 ->setName('stations:playlists:reorder');
 
+            $this->get('/toggle/{id}', Controller\Stations\PlaylistsController::class.':toggleAction')
+                ->setName('stations:playlists:toggle');
+
             $this->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
                 ->setName('stations:playlists:export');
 

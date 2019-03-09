@@ -60,6 +60,7 @@ $assets->load('fullcalendar')
                                             <?=__('More') ?> <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:toggle', ['id' => $row['id']]) ?>"><?=($row['is_enabled'] ? __('Disable') : __('Enable')) ?></a></li>
                                             <?php if ($row['source'] === StationPlaylist::SOURCE_SONGS && $row['order'] === StationPlaylist::ORDER_SEQUENTIAL): ?>
                                                 <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:reorder', ['id' => $row['id']]) ?>"><?=__('Reorder') ?></a></li>
                                             <?php endif; ?>

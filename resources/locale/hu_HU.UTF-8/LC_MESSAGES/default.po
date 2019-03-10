@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-03-09T23:13:35+00:00\n"
-"PO-Revision-Date: 2019-03-09 23:20\n"
+"POT-Creation-Date: 2019-03-10T08:04:48+00:00\n"
+"PO-Revision-Date: 2019-03-10 08:10\n"
 "Language: hu_HU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -91,7 +91,7 @@ msgid "View Station Logs"
 msgstr ""
 
 #: /var/azuracast/www/src/Acl.php:187
-#: /var/azuracast/www/config/menus/station.php:32
+#: /var/azuracast/www/config/menus/station.php:34
 #: /var/azuracast/www/templates/stations/profile/index.phtml:5
 #: /var/azuracast/www/templates/stations/profile/index.phtml:119
 msgid "Profile"
@@ -118,14 +118,14 @@ msgid "Streamers"
 msgstr ""
 
 #: /var/azuracast/www/src/Acl.php:190
-#: /var/azuracast/www/config/menus/station.php:72
+#: /var/azuracast/www/config/menus/station.php:74
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:1
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:5
 msgid "Mount Points"
 msgstr "Csatolási pontok"
 
 #: /var/azuracast/www/src/Acl.php:191
-#: /var/azuracast/www/config/menus/station.php:79
+#: /var/azuracast/www/config/menus/station.php:81
 #: /var/azuracast/www/templates/stations/profile/index.phtml:247
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
@@ -144,7 +144,7 @@ msgid "Automation"
 msgstr ""
 
 #: /var/azuracast/www/src/Acl.php:194
-#: /var/azuracast/www/config/menus/station.php:85
+#: /var/azuracast/www/config/menus/station.php:87
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
@@ -819,25 +819,33 @@ msgid "New AzuraCast Updates Available"
 msgstr ""
 
 #: /var/azuracast/www/config/menus/station.php:16
-msgid "Click to Start Station"
+msgid "Start Station"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:24
-msgid "Click to Restart Station"
+#: /var/azuracast/www/config/menus/station.php:17
+msgid "Ready to start broadcasting? Click to start your station."
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:37
+#: /var/azuracast/www/config/menus/station.php:25
+msgid "Restart to Apply Changes"
+msgstr ""
+
+#: /var/azuracast/www/config/menus/station.php:26
+msgid "Click to restart your station and apply configuration changes."
+msgstr ""
+
+#: /var/azuracast/www/config/menus/station.php:39
 msgid "Public Page"
 msgstr "Publikus oldal"
 
-#: /var/azuracast/www/config/menus/station.php:44
+#: /var/azuracast/www/config/menus/station.php:46
 #: /var/azuracast/www/templates/stations/profile/index.phtml:368
 #: /var/azuracast/www/templates/stations/files/index.phtml:1
 #: /var/azuracast/www/templates/stations/files/index.phtml:24
 msgid "Music Files"
 msgstr "Zenei fájlok"
 
-#: /var/azuracast/www/config/menus/station.php:51
+#: /var/azuracast/www/config/menus/station.php:53
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:4
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:16
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26
@@ -846,27 +854,27 @@ msgstr "Zenei fájlok"
 msgid "Playlists"
 msgstr "Lejátszási listák"
 
-#: /var/azuracast/www/config/menus/station.php:58
+#: /var/azuracast/www/config/menus/station.php:60
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:1
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:1
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:7
 msgid "Streamer/DJ Accounts"
 msgstr "Sugárzó/DJ fiókok"
 
-#: /var/azuracast/www/config/menus/station.php:65
+#: /var/azuracast/www/config/menus/station.php:67
 msgid "Web DJ"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:91
+#: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
 msgstr "Jelentések"
 
-#: /var/azuracast/www/config/menus/station.php:96
+#: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:1
 msgid "Statistics Overview"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:100
+#: /var/azuracast/www/config/menus/station.php:102
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:1
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:32
@@ -880,54 +888,54 @@ msgstr ""
 msgid "Listeners"
 msgstr "Hallgatók"
 
-#: /var/azuracast/www/config/menus/station.php:105
+#: /var/azuracast/www/config/menus/station.php:107
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:1
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:11
 #: /var/azuracast/www/templates/stations/profile/index.phtml:159
 msgid "Song Requests"
 msgstr "Dal kérése"
 
-#: /var/azuracast/www/config/menus/station.php:110
+#: /var/azuracast/www/config/menus/station.php:112
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:1
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:19
 msgid "Song Playback Timeline"
 msgstr "Dalok játszási története"
 
-#: /var/azuracast/www/config/menus/station.php:114
+#: /var/azuracast/www/config/menus/station.php:116
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:1
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:16
 msgid "Song Listener Impact"
 msgstr "Dal hatása a hallgatóra"
 
-#: /var/azuracast/www/config/menus/station.php:119
+#: /var/azuracast/www/config/menus/station.php:121
 msgid "Duplicate Songs"
 msgstr "Ismétlődő dalok"
 
-#: /var/azuracast/www/config/menus/station.php:124
+#: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:131
+#: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
 msgstr "Eszközök"
 
-#: /var/azuracast/www/config/menus/station.php:135
+#: /var/azuracast/www/config/menus/station.php:137
 msgid "Automated Assignment"
 msgstr "Automatikus hozzárendelés"
 
-#: /var/azuracast/www/config/menus/station.php:141
+#: /var/azuracast/www/config/menus/station.php:143
 #: /var/azuracast/www/templates/admin/logs/index.phtml:3
 #: /var/azuracast/www/templates/stations/logs/index.phtml:3
 msgid "Log Viewer"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:146
+#: /var/azuracast/www/config/menus/station.php:148
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:151
+#: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
 msgstr "Sugárzás újra indítása"
 

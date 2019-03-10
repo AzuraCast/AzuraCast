@@ -194,13 +194,16 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 file_put_contents($playlist_file_path, $playlist_file_contents);
 
-                $playlist_mode = $playlist->getOrder() === Entity\StationPlaylist::ORDER_SEQUENTIAL
-                    ? 'normal'
-                    : 'randomize';
+                $playlist_modes = [
+                    Entity\StationPlaylist::ORDER_SEQUENTIAL    => 'normal',
+                    Entity\StationPlaylist::ORDER_SHUFFLE       => 'randomize',
+                    Entity\StationPlaylist::ORDER_RANDOM        => 'random',
+                ];
 
                 $playlist_params = [
-                    'reload_mode="watch"',
-                    'mode="'.$playlist_mode.'"',
+                    'reload=1',
+                    'reload_mode="rounds"',
+                    'mode="'.$playlist_modes[$playlist->getOrder()].'"',
                     '"'.$playlist_file_path.'"',
                 ];
 

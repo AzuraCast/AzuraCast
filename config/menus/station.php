@@ -13,7 +13,8 @@ return function(\App\Event\BuildStationMenu $e) {
 
     $e->merge([
         'start_station' => [
-            'label' => __('Click to Start Station'),
+            'label' => __('Start Station'),
+            'title' => __('Ready to start broadcasting? Click to start your station.'),
             'icon' => 'refresh',
             'url' => $router->fromHere('api:stations:restart'),
             'class' => 'api-call text-success',
@@ -21,7 +22,8 @@ return function(\App\Event\BuildStationMenu $e) {
             'permission' => Acl::STATION_BROADCASTING,
         ],
         'restart_station' => [
-            'label' => __('Click to Restart Station'),
+            'label' => __('Restart to Apply Changes'),
+            'title' => __('Click to restart your station and apply configuration changes.'),
             'icon' => 'refresh',
             'url' => $router->fromHere('api:stations:restart'),
             'class' => 'api-call text-warning',

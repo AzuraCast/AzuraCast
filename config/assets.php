@@ -63,10 +63,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/popper/popper.min.js',
-                ],
-                [
-                    'src' => 'dist/lib/bootstrap/bootstrap.min.js',
+                    'src' => 'dist/lib/bootstrap/bootstrap.bundle.min.js',
                 ],
                 [
                     'src' => 'dist/lib/bootstrap-notify/bootstrap-notify.min.js',

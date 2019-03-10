@@ -29,11 +29,8 @@ var jsFiles = {
     ],
 
     // Main per-layout dependencies
-    "popper": [
-        "node_modules/popper.js/dist/umd/popper.min.js"
-    ],
     "bootstrap": [
-        "node_modules/bootstrap/dist/js/bootstrap.min.js"
+        "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
     ],
     "bootstrap-notify": [
         "node_modules/bootstrap-notify/bootstrap-notify.min.js"
@@ -136,6 +133,7 @@ gulp.task('build-vue', function() {
     return gulp.src('vue/webcaster.vue')
         .pipe(sourcemaps.init())
             .pipe(webpack({
+                mode: 'production',
                 output: {
                     publicPath: '/static/dist',
                     filename: 'webcaster.js',

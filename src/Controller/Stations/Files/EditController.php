@@ -118,10 +118,16 @@ class EditController extends FilesControllerAbstract
                 /** @var Entity\Repository\SongRepository $song_repo */
                 $song_repo = $this->em->getRepository(Entity\Song::class);
 
-                $media->setSong($song_repo->getOrCreate([
+                $song_info = [
                     'title' => $media->getTitle(),
                     'artist' => $media->getArtist(),
-                ]));
+                ];
+
+                $song = $song_repo->getOrCreate($song_info);
+                $song->update($song_info);
+                $this->em->persist($song);
+
+                $media->setSong($song);
             }
 
             $this->em->persist($media);

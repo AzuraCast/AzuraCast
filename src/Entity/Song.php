@@ -54,13 +54,13 @@ class Song
      * @ORM\Column(name="play_count", type="integer")
      * @var int
      */
-    protected $play_count;
+    protected $play_count = 0;
 
     /**
      * @ORM\Column(name="last_played", type="integer")
      * @var int
      */
-    protected $last_played;
+    protected $last_played = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="song")
@@ -75,6 +75,20 @@ class Song
      */
     public function __construct(array $song_info)
     {
+
+        $this->created = time();
+        $this->history = new ArrayCollection;
+        $this->update($song_info);
+    }
+
+    /**
+     * Given an array of song information possibly containing artist, title, text
+     * or any combination of those, update this entity to reflect this metadata.
+     *
+     * @param array $song_info
+     */
+    public function update(array $song_info): void
+    {
         if (empty($song_info['text'])) {
             if (!empty($song_info['artist'])) {
                 $song_info['text'] = $song_info['artist'] . ' - ' . $song_info['title'];
@@ -87,13 +101,13 @@ class Song
         $this->title = $this->_truncateString($song_info['title'], 150);
         $this->artist = $this->_truncateString($song_info['artist'], 150);
 
-        $this->id = self::getSongHash($song_info);
+        $new_song_hash = self::getSongHash($song_info);
 
-        $this->created = time();
-        $this->play_count = 0;
-        $this->last_played = 0;
-
-        $this->history = new ArrayCollection;
+        if (null === $this->id) {
+            $this->id = $new_song_hash;
+        } else if ($this->id !== $new_song_hash) {
+            throw new \Azura\Exception('New song data supplied would not produce the same song ID.');
+        }
     }
 
     /**

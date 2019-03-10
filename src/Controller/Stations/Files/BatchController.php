@@ -111,8 +111,6 @@ class BatchController extends FilesControllerAbstract
                 break;
 
             case 'clear':
-                $backend = $request->getStationBackend();
-
                 // Clear all assigned playlists from the selected files.
                 $music_files = $this->_getMusicFiles($fs, $files);
                 $files_found = count($music_files);
@@ -130,15 +128,10 @@ class BatchController extends FilesControllerAbstract
                 }
 
                 $this->em->flush();
-
-                // Write new PLS playlist configuration.
-                $backend->write($station);
                 break;
 
             // Add all selected files to a playlist.
             case 'playlist':
-                $backend = $request->getStationBackend();
-
                 if ($action_id === 'new') {
                     $playlist = new Entity\StationPlaylist($station);
                     $playlist->setName($_POST['name']);
@@ -184,9 +177,6 @@ class BatchController extends FilesControllerAbstract
 
                 // Reshuffle the playlist if needed.
                 $playlists_media_repo->reshuffleMedia($playlist);
-
-                // Write new PLS playlist configuration.
-                $backend->write($station);
                 break;
 
             case 'move':
@@ -225,6 +215,10 @@ class BatchController extends FilesControllerAbstract
                 $this->em->flush();
                 break;
         }
+
+        // Write new PLS playlist configuration.
+        $backend = $request->getStationBackend();
+        $backend->write($station);
 
         $this->em->clear(Entity\StationMedia::class);
         $this->em->clear(Entity\StationPlaylist::class);

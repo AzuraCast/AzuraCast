@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 19:10\n"
+"PO-Revision-Date: 2019-03-12 19:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1206,7 +1206,7 @@ msgstr "YP Directory Berechtigung Hash"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:68
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr ""
+msgstr "Wenn Ihr Stream auf den YP-Verzeichnissen angezeigt wird, müssen Sie einen Autorisierungshash angeben. Sie können authhashes <a href=\"%s\" target=\"_blank\">auf der SHOUTcast-Website</a> verwalten."
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:77
 #: /var/azuracast/www/config/forms/mount/icecast.php:64
@@ -1221,7 +1221,7 @@ msgstr "Wenn \"Ja\" wird der AutoDJ automatisch Musik abspielen."
 #: /var/azuracast/www/config/forms/mount/icecast.php:75
 #: /var/azuracast/www/config/forms/remote.php:63
 msgid "Configure AutoDJ Broadcasting"
-msgstr ""
+msgstr "AutoDJ-Broadcasting konfigurieren"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:96
 #: /var/azuracast/www/config/forms/mount/icecast.php:82
@@ -1238,7 +1238,7 @@ msgstr "AutoDJ Bitrate (kbps)"
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:127
 #: /var/azuracast/www/config/forms/mount/icecast.php:116
 msgid "Advanced Configuration"
-msgstr ""
+msgstr "Erweiterte Einstellungen"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:133
 #: /var/azuracast/www/config/forms/mount/icecast.php:122
@@ -1252,7 +1252,7 @@ msgstr "Sie können eine benutzerdefinierte URL für den Stream festlegen, die v
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:25
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Als Standard-Mount-Punkt festlegen"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:36
 msgid "Fallback Mount"
@@ -1264,7 +1264,7 @@ msgstr "Wenn ein Mount Point nichts abspielt wird automatisch ein Fallback benut
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:65
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "Wenn aktiviert, wird der AutoDJ automatisch Musik abspielen."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:131
 msgid "Custom Frontend Configuration"
@@ -1285,7 +1285,7 @@ msgstr "Systemweite Berechtigungen"
 
 #: /var/azuracast/www/config/forms/role.php:35
 msgid "Permissions for %s"
-msgstr ""
+msgstr "Berechtigungen für %s"
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:10
 #: /var/azuracast/www/config/forms/install_shoutcast.php:11
@@ -1294,11 +1294,11 @@ msgstr "Wichtige Notizen"
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:11
 msgid "This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href=\"%s\" target=\"_blank\">SoundExchange web site</a>."
-msgstr ""
+msgstr "Dieser Bericht ist nur für Lizenzen in den Vereinigten Staaten gedacht, für Webcaster, die Lizenzgebühren über SoundExchange bezahlen. Erfahren Sie mehr über die Anforderungen für Berichterstattung und Klassifizierung auf der <a href=\"%s\" target=\"_blank\">SoundExchange Website</a>."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:15
 msgid "AzuraCast assumes that your station fits SoundExchange Transmission Category A, \"Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming.\" If your station does not fall within this category, update the transmission category field accordingly."
-msgstr ""
+msgstr "AzuraCast geht davon aus, dass Ihre Station zur SoundExchange Übertragungskategorie A passt, \"Eligible non-subscription transmissions other than broadcast simulcasts and transmissions of non-music programming.\" Wenn Ihre Station nicht in diese Kategorie fällt, aktualisieren Sie das Übertragungskategoriefeld entsprechend."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:18
 msgid "The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate."
@@ -2108,36 +2108,36 @@ msgstr "Einmal am Tag zu einer bestimmten Zeit spielen. Nützlich für zeitliche
 #: /var/azuracast/www/config/forms/playlist.php:117
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5
 msgid "Advanced"
-msgstr ""
+msgstr "Erweitert"
 
 #: /var/azuracast/www/config/forms/playlist.php:117
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr ""
+msgstr "Manuell definieren, wie diese Playlist in der Liquidsoap-Konfiguration verwendet wird. <a href=\"%s\" target=\"_blank\">Erfahren Sie mehr über erweiterte Playlists</a>"
 
 #: /var/azuracast/www/config/forms/playlist.php:135
 msgid "Song Playback Order"
-msgstr ""
+msgstr "Reihenfolge der Song-Wiedergabe"
 
 #: /var/azuracast/www/config/forms/playlist.php:138
 msgid "Shuffled"
-msgstr ""
+msgstr "Mischen"
 
 #: /var/azuracast/www/config/forms/playlist.php:139
 msgid "Random"
-msgstr ""
+msgstr "Zufällig"
 
 #: /var/azuracast/www/config/forms/playlist.php:140
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:80
 msgid "Sequential"
-msgstr ""
+msgstr "Fortlaufend"
 
 #: /var/azuracast/www/config/forms/playlist.php:149
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "Wünsche aus dieser Playlist erlauben"
 
 #: /var/azuracast/www/config/forms/playlist.php:150
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Wenn Musikwünsche für Ihre Station aktiviert sind, können sich Hörer Songs, die in dieser Playlist sind, wünschen."
 
 #: /var/azuracast/www/config/forms/playlist.php:160
 msgid "Import Existing Playlist"
@@ -2150,31 +2150,31 @@ msgstr "Importiere eine existierende Playlist zum hinzufügen von Content. PLS u
 #: /var/azuracast/www/config/forms/playlist.php:186
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Remote URL"
-msgstr ""
+msgstr "Remote-URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:193
 msgid "Remote URL Type"
-msgstr ""
+msgstr "Remote-URL-Typ"
 
 #: /var/azuracast/www/config/forms/playlist.php:196
 msgid "Direct Stream URL"
-msgstr ""
+msgstr "Direct-Stream-URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:197
 msgid "Playlist (M3U/PLS) URL"
-msgstr ""
+msgstr "Playlist (M3U/PLS) URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 msgid "Include in Automated Assignment"
-msgstr ""
+msgstr "In automatische Zuordnung einschließen"
 
 #: /var/azuracast/www/config/forms/playlist.php:214
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
-msgstr ""
+msgstr "Wenn die automatische Zuordnung aktiviert ist, verwenden Sie diese Playlist als eine der Ziele, in die Songs verteilt werden sollen. Dies überschreibt die vorhandenen Inhalte dieser Playlist."
 
 #: /var/azuracast/www/config/forms/playlist.php:225
 msgid "Customize Schedule"
-msgstr ""
+msgstr "Zeitplan anpassen"
 
 #: /var/azuracast/www/config/forms/playlist.php:232
 msgid "Start Time"

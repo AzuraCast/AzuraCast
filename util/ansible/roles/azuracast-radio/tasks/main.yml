@@ -67,6 +67,7 @@
        - m4
        - pkg-config
        - bubblewrap
+       - unzip
 
   - name: Build and Install Liquidsoap
     become_user: azuracast

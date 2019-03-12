@@ -47,7 +47,6 @@
       mode: 0755
 
   - name: Install Liquidsoap Dependencies
-    become_user: azuracast
     apt:
       name: "{{ packages }}"
       state: latest

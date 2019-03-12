@@ -54,7 +54,7 @@ class Feedback extends CommandAbstract
 
         $station = $em->getRepository(Entity\Station::class)->find($station_id);
 
-        if (!($station instanceof Entity\Station) || !$station->getEnableStreamers()) {
+        if (!($station instanceof Entity\Station)) {
             $output->write('false');
             return null;
         }

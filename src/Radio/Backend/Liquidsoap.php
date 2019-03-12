@@ -905,24 +905,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      */
     public static function getBinary()
     {
-        $user_base = \dirname(APP_INCLUDE_ROOT);
-        $new_path = $user_base . '/.opam/system/bin/liquidsoap';
-
-        $legacy_path = '/usr/bin/liquidsoap';
-
-        if (APP_INSIDE_DOCKER) {
-            // Docker revisions 3 and later use the `radio` container.
-            return (APP_DOCKER_REVISION >= 3)
-                ? '/usr/local/bin/liquidsoap'
-                : $new_path;
+        // Docker revisions 3 and later use the `radio` container.
+        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION < 3) {
+            return '/var/azuracast/.opam/system/bin/liquidsoap';
         }
 
-        if (file_exists($new_path)) {
-            return $new_path;
-        }
-        if (file_exists($legacy_path)) {
-            return $legacy_path;
-        }
-        return false;
+        return '/usr/local/bin/liquidsoap';
     }
 }

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 19:01\n"
+"PO-Revision-Date: 2019-03-12 19:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -187,7 +187,7 @@ msgstr "Das läuft nicht."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
-msgstr ""
+msgstr "Bei %s ist ein Fehler aufgetreten"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
@@ -564,7 +564,7 @@ msgstr "Remote-Relay"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:173
 msgid "SoundExchange Report"
-msgstr ""
+msgstr "SoundExchange Bericht"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:55
 msgid "Streamers enabled!"
@@ -572,7 +572,7 @@ msgstr "Streamer aktiviert!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:55
 msgid "You can now set up streamer (DJ) accounts."
-msgstr ""
+msgstr "Sie können nun Streamer (DJ) Konten einrichten."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:108
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:116
@@ -597,7 +597,7 @@ msgstr "Fehler in der automatisierten Zuordnung"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:171
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Diese Playlist ist keine sequentielle Playlist."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:220
 msgid "Format"
@@ -605,11 +605,11 @@ msgstr "Format"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:245
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Playlist aktiviert."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:246
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Playlist deaktiviert."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:289
 msgid "Existing playlist imported."
@@ -617,7 +617,7 @@ msgstr "Vorhandene Wiedergabeliste importiert."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:289
 msgid "%d song(s) were imported into the playlist."
-msgstr ""
+msgstr "%d Lied(er) wurde(n) in die Playlist importiert."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:312
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:319
@@ -650,7 +650,7 @@ msgstr "Benennen Sie die Datei oder das Verzeichnis um"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:204
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Diese Station hat keinen Speicherplatz mehr."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
 #: /var/azuracast/www/templates/stations/files/index.phtml:165
@@ -682,7 +682,7 @@ msgstr "Ein anderer Benutzer mit dieser e-Mail-Adresse ist bereits vorhanden. Bi
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:94
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "Sie können Ihr eigenes Konto nicht löschen."
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
 msgid "AzuraCast Application Log"
@@ -710,7 +710,7 @@ msgstr "Sender duplizieren: %s"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "SHOUTcast Version \"%s\" ist derzeit installiert."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:69
@@ -784,35 +784,35 @@ msgstr "Ihre <code>-Docker-compose.yml-</code> -Datei ist nicht mehr aktuell!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "Sie sollten Ihre <code>docker-compose.yml</code> aktualisieren, um die neuesten Änderungen zu übernehmen. Lesen Sie die <a href=\"%s\" target=\"_blank\">neueste Version der Datei</a> und aktualisieren Sie Ihre Datei entsprechend.<br>Sie können auch das <code>./docker.sh</code> verwenden, um Ihre Datei automatisch zu aktualisieren."
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Folgen Sie den <a href=\"%s\" target=\"_blank\">Update-Anweisungen</a>, um Ihre Installation zu aktualisieren."
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">Version %s</a> ist jetzt verfügbar."
 
 #: /var/azuracast/www/src/Notification/Manager.php:106
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr ""
+msgstr "Sie nutzen derzeit Version %s. Eine Aktualisierung wird dringend empfohlen."
 
 #: /var/azuracast/www/src/Notification/Manager.php:111
 msgid "New AzuraCast Release Version Available"
-msgstr ""
+msgstr "Neue AzuraCast-Release-Version verfügbar"
 
 #: /var/azuracast/www/src/Notification/Manager.php:121
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "Seit Ihrer letzten Aktualisierung wurden folgenden Verbesserungen vorgenommen:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:124
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "Ihre Installation ist derzeit %d Update(s) hinter die neuesten Version."
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Sie sollten aktualisieren, um Fehler und Sicherheitsupdates zu nutzen."
 
 #: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
@@ -820,19 +820,19 @@ msgstr "Neue AzuraCast-Updates verfügbar"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Station starten"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Bereit zum Streamen? Klicken Sie, um Ihre Station zu starten."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Neustart um die Änderungen anzuwenden..."
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Klicken Sie, um Ihre Station neu zu starten und Konfigurationsänderungen anzuwenden."
 
 #: /var/azuracast/www/config/menus/station.php:39
 msgid "Public Page"
@@ -863,7 +863,7 @@ msgstr "Stream Benutzer"
 
 #: /var/azuracast/www/config/menus/station.php:67
 msgid "Web DJ"
-msgstr ""
+msgstr "Web DJ"
 
 #: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
@@ -872,7 +872,7 @@ msgstr "Berichte"
 #: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:1
 msgid "Statistics Overview"
-msgstr ""
+msgstr "Statistik-Übersicht"
 
 #: /var/azuracast/www/config/menus/station.php:102
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:1
@@ -893,7 +893,7 @@ msgstr "Hörer"
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:11
 #: /var/azuracast/www/templates/stations/profile/index.phtml:159
 msgid "Song Requests"
-msgstr ""
+msgstr "Musikwünsche"
 
 #: /var/azuracast/www/config/menus/station.php:112
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:1
@@ -905,7 +905,7 @@ msgstr "Song Verlauf"
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:1
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:16
 msgid "Song Listener Impact"
-msgstr ""
+msgstr "Song-Hörer-Wirkung"
 
 #: /var/azuracast/www/config/menus/station.php:121
 msgid "Duplicate Songs"
@@ -913,7 +913,7 @@ msgstr "Doppelte Songs"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
-msgstr ""
+msgstr "SoundExchange Lizenzgebühren"
 
 #: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
@@ -927,13 +927,13 @@ msgstr "Automatische Zuordnung"
 #: /var/azuracast/www/templates/admin/logs/index.phtml:3
 #: /var/azuracast/www/templates/stations/logs/index.phtml:3
 msgid "Log Viewer"
-msgstr ""
+msgstr "Log Viewer"
 
 #: /var/azuracast/www/config/menus/station.php:148
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "Warteschlange"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
@@ -951,7 +951,7 @@ msgstr "Benutzerdefiniertes Branding"
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "System-Logs"
 
 #: /var/azuracast/www/config/menus/admin.php:43
 #: /var/azuracast/www/templates/admin/users/index.phtml:1

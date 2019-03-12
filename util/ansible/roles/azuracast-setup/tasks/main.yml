@@ -8,11 +8,11 @@
   - name: Run AzuraCast Setup (Install Mode)
     become: true
     become_user: azuracast
-    shell: php {{ app_base }}/bin/azuracast.php azuracast:setup
+    shell: php {{ www_base }}/bin/azuracast.php azuracast:setup
     when: update_mode|bool == false
 
   - name: Run AzuraCast Setup (Update Mode)
     become: true
     become_user: azuracast
-    shell: php {{ app_base }}/bin/azuracast.php azuracast:setup --update
+    shell: php {{ www_base }}/bin/azuracast.php azuracast:setup --update
     when: update_mode|bool == true

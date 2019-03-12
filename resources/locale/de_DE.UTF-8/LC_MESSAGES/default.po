@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 19:30\n"
+"PO-Revision-Date: 2019-03-12 19:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1366,15 +1366,15 @@ msgstr "Remote Station Source Mountpoint/SID"
 
 #: /var/azuracast/www/config/forms/remote.php:109
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Wenn sich der Mountpoint (z.B. <code>/radio.mp3</code>) oder die Shoutcast SID (z.B. <code>2</code>), auf den Sie senden, von dem unterscheidet, den Sie oben angegeben haben, geben Sie den Quell-Mount-Punkt hier ein."
 
 #: /var/azuracast/www/config/forms/remote.php:116
 msgid "Remote Station Source Username"
-msgstr ""
+msgstr "Remote Station Source Benutzername"
 
 #: /var/azuracast/www/config/forms/remote.php:117
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr ""
+msgstr "Wenn Sie AutoDJ verwenden, geben Sie hier den Quell-Benutzernamen hier ein. Dies kann leer bleiben."
 
 #: /var/azuracast/www/config/forms/remote.php:124
 msgid "Remote Station Source Password"
@@ -1432,11 +1432,11 @@ msgstr "<p>SHOUTcast 2 DNAS ist keine freie Software und seine restriktive Lizen
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:19
 msgid "Current Installed Version"
-msgstr ""
+msgstr "Aktuell installierte Version"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:20
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr ""
+msgstr "SHOUTcast ist derzeit nicht auf diesem System installiert."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:27
 msgid "Select SHOUTcast 64-bit .tar.gz File"

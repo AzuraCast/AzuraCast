@@ -66,7 +66,9 @@ class BatchController extends FilesControllerAbstract
         $response_record = null;
         $errors = [];
 
-        list($action, $action_id) = explode('_', $_POST['do']);
+        $post_data = $request->getParsedBody();
+
+        [$action, $action_id] = explode('_', $post_data['do']);
 
         switch ($action) {
             case 'delete':
@@ -110,8 +112,42 @@ class BatchController extends FilesControllerAbstract
                 $this->em->flush($station);
                 break;
 
-            case 'clear':
-                // Clear all assigned playlists from the selected files.
+            case 'playlist':
+                // Set playlists for selected files.
+                $response_record = null;
+
+                /** @var Entity\StationPlaylist[] $playlists */
+                $playlists = [];
+                $playlist_weights = [];
+
+                foreach($post_data['playlists'] as $playlist_id) {
+                    if ('new' === $playlist_id) {
+                        $playlist = new Entity\StationPlaylist($station);
+                        $playlist->setName($post_data['new_playlist_name']);
+
+                        $this->em->persist($playlist);
+                        $this->em->flush();
+
+                        $response_record = [
+                            'id' => $playlist->getId(),
+                            'name' => $playlist->getName(),
+                        ];
+
+                        $playlists[] = $playlist;
+                        $playlist_weights[$playlist->getId()] = 0;
+                    } else {
+                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                            'station_id' => $station->getId(),
+                            'id' => (int)$playlist_id
+                        ]);
+
+                        if ($playlist instanceof Entity\StationPlaylist) {
+                            $playlists[] = $playlist;
+                            $playlist_weights[$playlist->getId()] = $playlists_media_repo->getHighestSongWeight($playlist);
+                        }
+                    }
+                }
+
                 $music_files = $this->_getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
@@ -120,6 +156,13 @@ class BatchController extends FilesControllerAbstract
                         $media = $media_repo->getOrCreate($station, $file['path']);
 
                         $playlists_media_repo->clearPlaylistsFromMedia($media);
+
+                        foreach($playlists as $playlist) {
+                            $playlist_weights[$playlist->getId()]++;
+                            $weight = $playlist_weights[$playlist->getId()];
+
+                            $playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
+                        }
                     } catch (\Exception $e) {
                         $errors[] = $file.': '.$e->getMessage();
                     }
@@ -128,55 +171,6 @@ class BatchController extends FilesControllerAbstract
                 }
 
                 $this->em->flush();
-                break;
-
-            // Add all selected files to a playlist.
-            case 'playlist':
-                if ($action_id === 'new') {
-                    $playlist = new Entity\StationPlaylist($station);
-                    $playlist->setName($_POST['name']);
-
-                    $this->em->persist($playlist);
-                    $this->em->flush();
-
-                    $response_record = [
-                        'id' => $playlist->getId(),
-                        'name' => $playlist->getName(),
-                    ];
-                } else {
-                    $playlist_id = (int)$action_id;
-                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                        'station_id' => $station->getId(),
-                        'id' => $playlist_id
-                    ]);
-
-                    if (!($playlist instanceof Entity\StationPlaylist)) {
-                        return $this->_err($response, 500, 'Playlist Not Found');
-                    }
-                }
-
-                $music_files = $this->_getMusicFiles($fs, $files);
-
-                $files_found = count($music_files);
-
-                $weight = $playlists_media_repo->getHighestSongWeight($playlist);
-
-                foreach ($music_files as $file) {
-                    $weight++;
-                    try {
-                        $media = $media_repo->getOrCreate($station, $file['path']);
-                        $weight = $playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
-                    }
-
-                    $files_affected++;
-                }
-
-                $this->em->flush();
-
-                // Reshuffle the playlist if needed.
-                $playlists_media_repo->reshuffleMedia($playlist);
                 break;
 
             case 'move':

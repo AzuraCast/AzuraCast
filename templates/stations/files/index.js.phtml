@@ -235,31 +235,42 @@ $(function() {
         return false;
     });
 
-    $('.btn-new-playlist').on('click', function(e) {
-        $(this).closest('.btn-group').removeClass('open');
+    // Allow playlist dropdown to stay open.
+    $(document).on('click', '.allow-focus .dropdown-menu', function (e) {
+        e.stopPropagation();
     });
 
-    $('#frm-create-playlist').submit(function(e) {
+    $('input#new_playlist_name').on('change', function(e) {
+        $(this).closest('div').find('input[type=checkbox]').attr('checked', $(this).val() != '');
+    });
+
+    $('form#frm_set_playlists').on('submit', function(e) {
         e.preventDefault();
+
+        var new_playlist_field = $(this).find('input#new_playlist_name');
+        var playlist_checkboxes = $(this).find("input[name='playlists[]']");
+
+        var playlists = playlist_checkboxes.filter(':checked').map(function(){return $(this).val();}).get();
 
         var files = getSelectedFiles();
         files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
-            'do': 'playlist_new',
-            'name': $('#fld-playlist-name').val(),
+            'do': 'playlist',
+            'playlists': playlists,
+            'new_playlist_name': new_playlist_field.val(),
             'files': files.join('|'),
             'csrf': CSRF,
             'file': getUrlHash()
         },function(data){
-            if (data.success) {
+            if (data.success && data.record) {
                 appToolbar.playlists.push(data.record);
             }
             list();
         },'json');
 
-        $('#fld-playlist-name').val('');
-        $('#mdl-create-playlist').modal('hide');
+        playlist_checkboxes.prop('checked', false);
+        new_playlist_field.val('');
 
-        return false;
+        $(this).closest('.dropdown').find('[data-toggle=dropdown]').dropdown('toggle');
     });
 
     $('#frm-create-directory').submit(function(e) {

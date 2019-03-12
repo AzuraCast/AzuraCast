@@ -16,13 +16,13 @@ $assets
 ?>
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-7">
                         <h2 class="card-title"><?=__('Music Files') ?></h2>
-                        <h3 class="card-subtitle" id="breadcrumb" class="">&nbsp;</h3>
+                        <h3 class="card-subtitle" id="breadcrumb">&nbsp;</h3>
                     </div>
                     <div class="col-md-5 text-right">
                         <div class="row">
@@ -51,26 +51,40 @@ $assets
                 <div id="upload_progress"></div>
                 <div id="file_drop_target">
                     <?=__('Drag files here to upload to this folder or ') ?>
-                    <input id="file_browse_target" type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,audio/*" multiple />
+                    <input id="file_browse_target" type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,.flac,audio/*" multiple />
                 </div>
 
                 <div class="row pt-4" id="app-toolbar">
-                    <div class="col-sm-8">
-                        <?=__('With selected:') ?>&nbsp;
-                        <div class="btn-group">
+                    <div class="col-sm-8">&nbsp;
+                        <div class="btn-group dropdown allow-focus">
                             <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="material-icons" aria-hidden="true">add</i> <?=__('Add to Playlist') ?>
+                                <i class="material-icons" aria-hidden="true">clear_all</i> <?=__('Set Playlists') ?>
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li v-for="playlist in playlists">
-                                    <a href="#" class="dropdown-item btn-batch" v-on:click="doBatch" v-bind:data-action="'playlist_' + playlist.id">{{ playlist.name }}</a>
-                                </li>
-                                <li><a href="#" class="dropdown-item btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=__('Create new...') ?></a></li>
-                            </ul>
+                            <div class="dropdown-menu" role="menu"  style="line-height: inherit">
+                                <form id="frm_set_playlists" class="px-3 py-3">
+                                    <div v-for="playlist in playlists" class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" v-bind:id="'chk_playlist_' + playlist.id" name="playlists[]" v-bind:value="playlist.id">
+                                            <label class="custom-control-label" v-bind:for="'chk_playlist_'+playlist.id">
+                                                {{ playlist.name }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="chk_playlist_new" name="playlists[]" value="new">
+                                            <label class="custom-control-label" for="chk_playlist_new">
+                                                <input type="text" class="form-control p-0" id="new_playlist_name" name="new_playlist_name" placeholder="<?=__('New Playlist') ?>">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-sm btn-primary"><?=__('Save') ?></button>
+                                </form>
+                            </div>
                         </div>
                         <a href="#" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mdl-move-file"><i class="material-icons" aria-hidden="true">open_with</i> <?=__('Move') ?></a>
-                        <button type="button" class="btn btn-sm btn-warning" v-on:click="doBatch" data-action="clear"><i class="material-icons" aria-hidden="true">clear_all</i> <?=__('Clear Playlists') ?></button>
                         <button type="button" class="btn btn-sm btn-danger" v-on:click="doBatch" data-action="delete"><i class="material-icons" aria-hidden="true">delete</i> <?=__('Delete') ?></button>
                     </div>
                     <div class="col-sm-4 text-right">
@@ -100,29 +114,6 @@ $assets
                 </table>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="modal fade" id="mdl-create-playlist" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <form id="frm-create-playlist">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel"><?=__('Create Playlist') ?></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name" class="control-label"><?=__('Playlist Name') ?>:</label>
-                        <input type="text" class="form-control" id="fld-playlist-name" name="name">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=__('Create Playlist') ?></button>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 

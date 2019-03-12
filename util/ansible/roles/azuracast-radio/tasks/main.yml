@@ -66,6 +66,7 @@
        - libvorbis-dev
        - m4
        - pkg-config
+       - bubblewrap
 
   - name: Build and Install Liquidsoap
     become_user: azuracast

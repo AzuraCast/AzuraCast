@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 19:50\n"
+"PO-Revision-Date: 2019-03-12 20:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1879,11 +1879,11 @@ msgstr "Dieser Code wird in die Liquidsoap-Konfiguration Ihrer Station eingefüg
 #: /var/azuracast/www/templates/admin/sidebar.phtml:3
 #: /var/azuracast/www/templates/partials/station_form.phtml:31
 msgid "Administration"
-msgstr ""
+msgstr "Administration"
 
 #: /var/azuracast/www/config/forms/station.php:358
 msgid "Enable Broadcasting"
-msgstr ""
+msgstr "Aktiviere Broadcasting"
 
 #: /var/azuracast/www/config/forms/station.php:359
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."

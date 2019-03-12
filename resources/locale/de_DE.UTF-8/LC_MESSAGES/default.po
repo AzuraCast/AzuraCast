@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 19:40\n"
+"PO-Revision-Date: 2019-03-12 19:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1532,15 +1532,15 @@ msgstr "Immer HTTPS verwenden"
 
 #: /var/azuracast/www/config/forms/settings.php:90
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Auf \"Ja\" setzen, um immer \"https://\" sichere URLs zu verwenden und automatisch auf die sichere URL umzuleiten, wenn eine unsichere URL besucht wird."
 
 #: /var/azuracast/www/config/forms/settings.php:100
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "API \"Access-Control-Allow-Origin\"-Header"
 
 #: /var/azuracast/www/config/forms/settings.php:102
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Erfahren Sie mehr über diesen Header</a>. Setzen Sie auf '*' , um alle Quellen zu erlauben oder geben Sie eine Liste von Quellen an (getrennt durch Komma ',')."
 
 #: /var/azuracast/www/config/forms/settings.php:111
 msgid "Privacy Controls"
@@ -1588,15 +1588,15 @@ msgstr "Senden Sie minimalen Details über Ihre AzuraCast-Installation an den Az
 
 #: /var/azuracast/www/config/forms/settings.php:146
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>None:</b> Überprüfe nicht auf Updates oder Ankündigungen."
 
 #: /var/azuracast/www/config/forms/settings.php:147
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>Release Only:</b> Nur wichtige Ankündigungen und neue Release-Versionen."
 
 #: /var/azuracast/www/config/forms/settings.php:148
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>Alle Updates:</b> Alle Ankündigungen und kleinere Updates."
 
 #: /var/azuracast/www/config/forms/streamer.php:9
 msgid "Streamer Username"
@@ -1639,11 +1639,11 @@ msgstr "Account ist Aktiviert"
 
 #: /var/azuracast/www/config/forms/streamer.php:47
 msgid "Enable to allow this account to log in and stream."
-msgstr ""
+msgstr "Aktivieren, um diesem Account das Einloggen und Streamen zu erlauben."
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Den Anwendungsfall für diesen API-Schlüssel für die Zukunft beschreiben."
 
 #: /var/azuracast/www/config/forms/station.php:23
 #: /var/azuracast/www/templates/partials/station_form.phtml:21
@@ -1664,17 +1664,17 @@ msgstr "Name"
 #: /var/azuracast/www/config/forms/webhook/discord.php:73
 #: /var/azuracast/www/templates/stations/profile/index.phtml:141
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: /var/azuracast/www/config/forms/station.php:43
 #: /var/azuracast/www/templates/stations/profile/index.phtml:147
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: /var/azuracast/www/config/forms/station.php:50
 #: /var/azuracast/www/templates/stations/profile/index.phtml:153
 msgid "Web Site URL"
-msgstr ""
+msgstr "Website-URL"
 
 #: /var/azuracast/www/config/forms/station.php:51
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
@@ -1686,11 +1686,11 @@ msgstr "Aktivieren Sie die öffentliche Seite"
 
 #: /var/azuracast/www/config/forms/station.php:59
 msgid "Show the station in public pages and general API results."
-msgstr ""
+msgstr "Diese Station auf öffentlichen Seiten und allgemeinen API Ergebnissen anzeigen."
 
 #: /var/azuracast/www/config/forms/station.php:69
 msgid "URL Stub"
-msgstr ""
+msgstr "URL-Stub"
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."

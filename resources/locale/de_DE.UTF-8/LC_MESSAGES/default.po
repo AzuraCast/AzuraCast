@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 09:10\n"
+"PO-Revision-Date: 2019-03-12 19:01\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -27,7 +27,7 @@ msgstr "Verwaltungsbereich"
 
 #: /var/azuracast/www/src/Acl.php:174
 msgid "View System Logs"
-msgstr ""
+msgstr "System-Logs anzeigen"
 
 #: /var/azuracast/www/src/Acl.php:175
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
@@ -111,7 +111,7 @@ msgstr "Verwalten von Station %s"
 #: /var/azuracast/www/src/Acl.php:188
 #: /var/azuracast/www/templates/partials/station_form.phtml:24
 msgid "Broadcasting"
-msgstr ""
+msgstr "Übertragen"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Streamers"
@@ -130,7 +130,7 @@ msgstr "Einhängepunkte"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr ""
+msgstr "Remote-Relays"
 
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:57
@@ -148,7 +148,7 @@ msgstr "Automatisierung"
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
-msgstr ""
+msgstr "WebHooks"
 
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:25
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
@@ -159,31 +159,31 @@ msgstr "Diese Funktion ist derzeit nicht auf dieser Station unterstützt."
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "Das Konto mit der E-Mail-Adresse \"%s\" wurde als Administrator gesetzt"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Konto nicht gefunden."
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "This port is currently in use by another station."
-msgstr ""
+msgstr "Dieser Port wird derzeit von einer anderen Station verwendet."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s kann nicht gestartet werden"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."
-msgstr ""
+msgstr "Es läuft bereits."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s kann nicht gestoppt werden"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
-msgstr ""
+msgstr "Das läuft nicht."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
@@ -191,7 +191,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
-msgstr ""
+msgstr "Überprüfen Sie die Logs für Details."
 
 #: /var/azuracast/www/src/Radio/Adapters.php:137
 #: /var/azuracast/www/src/Radio/Adapters.php:141
@@ -201,7 +201,7 @@ msgstr "Verwenden <b>%s</b> auf diesem Server"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:145
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Mit einem <b>entfernten Radio-Server</b> verbinden"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"
@@ -540,7 +540,7 @@ msgstr "Einhängepunkt"
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:11
 msgid "Web Hook"
-msgstr ""
+msgstr "WebHook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s enabled."
@@ -552,7 +552,7 @@ msgstr "%s deaktiviert."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:198
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "WebHook Test-Ausgabe"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:82
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:90
@@ -560,7 +560,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:11
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:24
 msgid "Remote Relay"
-msgstr ""
+msgstr "Remote-Relay"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:173
 msgid "SoundExchange Report"

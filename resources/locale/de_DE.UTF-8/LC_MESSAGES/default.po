@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-13 07:30\n"
+"PO-Revision-Date: 2019-03-13 07:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1824,11 +1824,11 @@ msgstr "Kein anderes Programm kann diesen Port verwenden. Lassen Sie das Feld le
 
 #: /var/azuracast/www/config/forms/station.php:262
 msgid "Customize DJ/Streamer Mount Point"
-msgstr ""
+msgstr "DJ/Streamer-Mount-Punkt anpassen"
 
 #: /var/azuracast/www/config/forms/station.php:264
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
-msgstr ""
+msgstr "Wenn Ihre Streaming-Software einen bestimmten Mount-Punkt benötigt, geben Sie ihn hier an. Andernfalls verwenden Sie den Standard."
 
 #: /var/azuracast/www/config/forms/station.php:273
 msgid "DJ/Streamer Buffer Time (Seconds)"
@@ -1860,7 +1860,7 @@ msgstr "Manueller AutoDJ-Modus"
 
 #: /var/azuracast/www/config/forms/station.php:317
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr ""
+msgstr "Dieser Modus deaktiviert die AutoDJ-Verwaltung von AzuraCast um Liquidsoap selbst zu verwenden und die Wiedergabe von Songs zu verwalten. \"Nächster Song\" und einige andere Funktionen sind nicht verfügbar."
 
 #: /var/azuracast/www/config/forms/station.php:328
 msgid "Customize Internal Request Processing Port"
@@ -1891,7 +1891,7 @@ msgstr "Wenn deaktiviert, wird die Station nicht senden oder den AutoDJ nutzen."
 
 #: /var/azuracast/www/config/forms/station.php:369
 msgid "Storage Quota"
-msgstr ""
+msgstr "Speicherkontingent"
 
 #: /var/azuracast/www/config/forms/station.php:370
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."

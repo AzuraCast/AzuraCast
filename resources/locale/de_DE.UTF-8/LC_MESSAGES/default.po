@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 20:00\n"
+"PO-Revision-Date: 2019-03-13 07:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1524,7 +1524,7 @@ msgstr "Gesamte Zeit"
 
 #: /var/azuracast/www/config/forms/settings.php:83
 msgid "Security Controls"
-msgstr ""
+msgstr "Sicherheitseinstellungen"
 
 #: /var/azuracast/www/config/forms/settings.php:89
 msgid "Always Use HTTPS"
@@ -1780,7 +1780,7 @@ msgstr "Musikwünsche erlauben"
 
 #: /var/azuracast/www/config/forms/station.php:197
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
-msgstr ""
+msgstr "Musikwünsche erlauben. Nur Songs in entsprechenden Playlists dürfen gewünscht werden."
 
 #: /var/azuracast/www/config/forms/station.php:207
 msgid "Request Minimum Delay (Minutes)"
@@ -1804,7 +1804,7 @@ msgstr "Zusätzliche Stream-Benutzer erlauben"
 
 #: /var/azuracast/www/config/forms/station.php:230
 msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
-msgstr ""
+msgstr "Wenn eingeschaltet können weitere Benutzer erstellt werden, die sich dann über den AutoDJ schalten können."
 
 #: /var/azuracast/www/config/forms/station.php:240
 msgid "Deactivate Streamer on Disconnect (Seconds)"

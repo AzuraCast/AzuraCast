@@ -201,8 +201,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 ];
 
                 $playlist_params = [
-                    'reload=1',
-                    'reload_mode="rounds"',
+                    'reload_mode="watch"',
                     'mode="'.$playlist_modes[$playlist->getOrder()].'"',
                     '"'.$playlist_file_path.'"',
                 ];

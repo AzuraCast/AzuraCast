@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-14 19:20\n"
+"PO-Revision-Date: 2019-03-14 19:30\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -443,17 +443,17 @@ msgstr "%s reiniciado."
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:115
 msgid "Frontend"
-msgstr ""
+msgstr "Frontend"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:96
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:165
 msgid "%s stopped."
-msgstr ""
+msgstr "%s detenido."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "%s started."
-msgstr ""
+msgstr "%s iniciado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:151
 msgid "Song skipped."
@@ -461,41 +461,41 @@ msgstr "Saltar canción."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:159
 msgid "Streamer disconnected."
-msgstr ""
+msgstr "Emisor desconectado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:165
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:184
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Registro de Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:91
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Configuración de Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Registro de acceso de Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:107
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Registro de error de Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:112
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Configuración de Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:120
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "Registro SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:125
 msgid "SHOUTcast Configuration"
-msgstr ""
+msgstr "Configuración de SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:80
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:98
@@ -527,7 +527,7 @@ msgstr "Artista"
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:79
 msgid "%s added."
-msgstr ""
+msgstr "%s añadido."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108

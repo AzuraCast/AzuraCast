@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-14 19:18\n"
+"PO-Revision-Date: 2019-03-14 19:20\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -437,7 +437,7 @@ msgstr "Estación"
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:115
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:184
 msgid "%s restarted."
-msgstr ""
+msgstr "%s reiniciado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:96
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102

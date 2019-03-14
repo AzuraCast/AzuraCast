@@ -2,18 +2,23 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 
 class Generic extends AbstractConnector
 {
-    public function dispatch(SendWebhooks $event, array $config): void
+    public const NAME = 'generic';
+
+    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
     {
+        $config = $webhook->getConfig();
+
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
             return;
         }
 

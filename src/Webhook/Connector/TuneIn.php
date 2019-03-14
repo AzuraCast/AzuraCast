@@ -2,21 +2,26 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 
 class TuneIn extends AbstractConnector
 {
-    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool
+    public const NAME = 'tunein';
+
+    public function shouldDispatch(SendWebhooks $event, StationWebhook $webhook): bool
     {
         return $event->hasTrigger('song_changed');
     }
 
-    public function dispatch(SendWebhooks $event, array $config): void
+    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
     {
+        $config = $webhook->getConfig();
+
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
-            $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
             return;
         }
 

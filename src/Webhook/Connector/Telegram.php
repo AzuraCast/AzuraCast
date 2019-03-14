@@ -1,6 +1,7 @@
 <?php
 namespace App\Webhook\Connector;
 
+use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 
@@ -11,13 +12,17 @@ use GuzzleHttp\Exception\TransferException;
  */
 class Telegram extends AbstractConnector
 {
-    public function dispatch(SendWebhooks $event, array $config): void
+    public const NAME = 'telegram';
+
+    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
     {
+        $config = $webhook->getConfig();
+
         $bot_token = trim($config['bot_token'] ?? '');
         $chat_id = trim($config['chat_id'] ?? '');
 
         if (empty($bot_token) || empty($chat_id)) {
-            $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -43,7 +48,7 @@ class Telegram extends AbstractConnector
             ]);
 
             $this->logger->debug(
-                sprintf('Webhook %s returned code %d', $this->_getName(), $response->getStatusCode()),
+                sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
                 [
                     'request_url' => $webhook_url,
                     'request_params' => $request_params,
@@ -51,7 +56,7 @@ class Telegram extends AbstractConnector
                 ]
             );
         } catch(TransferException $e) {
-            $this->logger->error(sprintf('Error from webhook %s (%d): %s', $this->_getName(), $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from webhook %s (%d): %s', self::NAME, $e->getCode(), $e->getMessage()));
         }
     }
 }

@@ -71,49 +71,43 @@ class Dispatcher implements EventSubscriberInterface
             return;
         }
 
-        // Compile list of connectors for the station. Always dispatch to the local websocket receiver.
-        $connectors = [];
-
-        if ($event->isStandalone()) {
-            $connectors[] = [
-                'type' => 'local',
-                'triggers' => [],
-                'config' => [],
-            ];
-        }
-
         // Assemble list of webhooks for the station
         $station_webhooks = $event->getStation()->getWebhooks();
 
+        /** @var Entity\StationWebhook[] $connectors */
+        $connectors = [];
         if ($station_webhooks->count() > 0) {
             foreach($station_webhooks as $webhook) {
                 /** @var Entity\StationWebhook $webhook */
                 if ($webhook->isEnabled()) {
-                    $connectors[] = [
-                        'type' => $webhook->getType(),
-                        'triggers' => $webhook->getTriggers() ?: [],
-                        'config' => $webhook->getConfig() ?: [],
-                    ];
+                    $connectors[] = $webhook;
                 }
             }
         }
 
         $this->logger->debug('Triggering events: '.implode(', ', $event->getTriggers()));
 
+        // Always dispatch the special "local" updater task for standalone updates.
+        if ($event->isStandalone()) {
+            /** @var Connector\Local $connector_obj */
+            $connector_obj = $this->connectors->get(Connector\Local::NAME);
+            $connector_obj->dispatch($event);
+        }
+
         // Trigger all appropriate webhooks.
         foreach($connectors as $connector) {
-            if (!$this->connectors->has($connector['type'])) {
-                $this->logger->error(sprintf('Webhook connector "%s" does not exist; skipping.', $connector['type']));
+            if (!$this->connectors->has($connector->getType())) {
+                $this->logger->error(sprintf('Webhook connector "%s" does not exist; skipping.', $connector->getType()));
                 continue;
             }
 
             /** @var Connector\ConnectorInterface $connector_obj */
-            $connector_obj = $this->connectors->get($connector['type']);
+            $connector_obj = $this->connectors->get($connector->getType());
 
-            if ($connector_obj->shouldDispatch($event, (array)$connector['triggers'])) {
+            if ($connector_obj->shouldDispatch($event, $connector)) {
                 $this->logger->debug(sprintf('Dispatching connector "%s".', $connector['type']));
 
-                $connector_obj->dispatch($event, (array)$connector['config']);
+                $connector_obj->dispatch($event, $connector);
             }
         }
     }
@@ -130,7 +124,6 @@ class Dispatcher implements EventSubscriberInterface
     public function testDispatch(Entity\Station $station, Entity\StationWebhook $webhook)
     {
         $webhook_type = $webhook->getType();
-        $webhook_config = $webhook->getConfig();
 
         if (!$this->connectors->has($webhook_type)) {
             throw new Exception(sprintf('Webhook connector "%s" does not exist; skipping.', $webhook_type));
@@ -145,7 +138,7 @@ class Dispatcher implements EventSubscriberInterface
         $np = $station->getNowplaying();
 
         $event = new SendWebhooks($station, $np);
-        $connector_obj->dispatch($event, $webhook_config);
+        $connector_obj->dispatch($event, $webhook);
 
         $this->logger->popHandler();
 

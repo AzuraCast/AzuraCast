@@ -2,6 +2,7 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
@@ -61,12 +62,16 @@ use Monolog\Logger;
 
 class Discord extends AbstractConnector
 {
-    public function dispatch(SendWebhooks $event, array $config): void
+    public const NAME = 'discord';
+
+    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
     {
+        $config = $webhook->getConfig();
+
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -128,7 +133,7 @@ class Discord extends AbstractConnector
 
             $this->logger->addRecord(
                 ($response->getStatusCode() !== 204 ? Logger::ERROR : Logger::DEBUG),
-                sprintf('Webhook %s returned code %d', $this->_getName(), $response->getStatusCode()),
+                sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
                 ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
             );
         } catch(TransferException $e) {

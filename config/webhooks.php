@@ -10,30 +10,30 @@ use App\Webhook\Connector;
 
 return [
     'webhooks' => [
-        'local' => [
+        Connector\Local::NAME => [
             'class' => Connector\Local::class,
         ],
-        'generic' => [
+        Connector\Generic::NAME => [
             'class' => Connector\Generic::class,
             'name' => __('Generic Web Hook'),
             'description' => __('Automatically send a message to any URL when your station data changes.'),
         ],
-        'tunein' => [
+        Connector\TuneIn::NAME => [
             'class' => Connector\TuneIn::class,
             'name' => __('TuneIn AIR'),
             'description' => __('Send song metadata changes to TuneIn.'),
         ],
-        'discord' => [
+        Connector\Discord::NAME => [
             'class' => Connector\Discord::class,
             'name' => __('Discord Webhook'),
             'description' => __('Automatically send a customized message to your Discord server.'),
         ],
-        'telegram' => [
+        Connector\Telegram::NAME => [
             'class' => Connector\Telegram::class,
             'name' => __('Telegram Chat Message'),
             'description' => __('Use the Telegram Bot API to send a message to a channel.'),
         ],
-        'twitter' => [
+        Connector\Twitter::NAME => [
             'class' => Connector\Twitter::class,
             'name' => __('Twitter Post'),
             'description' => __('Automatically send a tweet.'),

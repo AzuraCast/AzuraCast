@@ -69,7 +69,8 @@ class WebhookProvider implements ServiceProviderInterface
         $di[Webhook\Connector\Twitter::class] = function($di) {
             return new Webhook\Connector\Twitter(
                 $di[\Monolog\Logger::class],
-                $di[\GuzzleHttp\Client::class]
+                $di[\GuzzleHttp\Client::class],
+                $di[\Doctrine\ORM\EntityManager::class]
             );
         };
     }

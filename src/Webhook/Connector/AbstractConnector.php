@@ -2,6 +2,7 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use App\Utilities;
 use GuzzleHttp\Client;
@@ -21,8 +22,10 @@ abstract class AbstractConnector implements ConnectorInterface
         $this->http_client = $http_client;
     }
 
-    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool
+    public function shouldDispatch(SendWebhooks $event, StationWebhook $webhook): bool
     {
+        $triggers = $webhook->getTriggers();
+
         if (empty($triggers)) {
             return true;
         }
@@ -65,7 +68,7 @@ abstract class AbstractConnector implements ConnectorInterface
      * @see https://github.com/symfony/Validator/blob/master/Constraints/UrlValidator.php
      * @author Bernhard Schussek <bschussek@gmail.com>
      */
-    const URL_PATTERN = '~^
+    protected const URL_PATTERN = '~^
             (%s)://                                 # protocol
             (([\.\pL\pN-]+:)?([\.\pL\pN-]+)@)?      # basic auth
             (
@@ -94,16 +97,5 @@ abstract class AbstractConnector implements ConnectorInterface
         $url = trim($url_string);
         $pattern = sprintf(self::URL_PATTERN, implode('|', ['http', 'https']));
         return (preg_match($pattern, $url)) ? $url : null;
-    }
-
-    /**
-     * Get the displayable name of the connector class.
-     *
-     * @return string
-     */
-    protected function _getName(): string
-    {
-        $class_name = static::class;
-        return array_pop(explode("\\", $class_name));
     }
 }

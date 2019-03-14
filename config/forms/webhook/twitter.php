@@ -58,6 +58,27 @@ return [
                     ]
                 ],
 
+                'rate_limit' => [
+                    'select',
+                    [
+                        'label' => __('Only Send One Tweet Every...'),
+                        'belongsTo' => 'config',
+                        'default' => 0,
+                        'choices' => [
+                            0 => __('No Limit'),
+                            15 => \App\Utilities::timeToText(15),
+                            30 => \App\Utilities::timeToText(30),
+                            60 => \App\Utilities::timeToText(60),
+                            120 => \App\Utilities::timeToText(120),
+                            300 => \App\Utilities::timeToText(300),
+                            600 => \App\Utilities::timeToText(600),
+                            900 => \App\Utilities::timeToText(900),
+                            1800 => \App\Utilities::timeToText(1800),
+                            3600 => \App\Utilities::timeToText(3600),
+                        ],
+                    ]
+                ],
+
             ],
         ],
 

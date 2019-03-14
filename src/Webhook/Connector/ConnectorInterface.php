@@ -1,6 +1,7 @@
 <?php
 namespace App\Webhook\Connector;
 
+use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 
 interface ConnectorInterface
@@ -10,16 +11,16 @@ interface ConnectorInterface
      * that are set to be triggered, and the configured triggers for this connector.
      *
      * @param SendWebhooks $event The current webhook dispatching event being evaluated.
-     * @param array|null $triggers The configured triggers for this connector.
+     * @param StationWebhook $webhook
      * @return bool
      */
-    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool;
+    public function shouldDispatch(SendWebhooks $event, StationWebhook $webhook): bool;
 
     /**
      * Trigger the webhook for the specified station, now playing entry, and specified configuration.
      *
      * @param SendWebhooks $event The details of the event that triggered the webhook.
-     * @param array $config The specific settings associated with this webhook.
+     * @param StationWebhook $webhook
      */
-    public function dispatch(SendWebhooks $event, array $config): void;
+    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void;
 }

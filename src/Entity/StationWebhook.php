@@ -64,6 +64,12 @@ class StationWebhook
      */
     protected $config;
 
+    /**
+     * @ORM\Column(name="metadata", type="json_array", nullable=true)
+     * @var array Internal details used by the webhook to preserve state.
+     */
+    protected $metadata;
+
     public function __construct(Station $station, $type)
     {
         $this->station = $station;
@@ -167,5 +173,40 @@ class StationWebhook
     public function setConfig(array $config = null): void
     {
         $this->config = $config;
+    }
+
+    /**
+     * Set the value of a given metadata key.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setMetadataKey(string $key, $value = null): void
+    {
+        if (null === $value) {
+            unset($this->metadata[$key]);
+        } else {
+            $this->metadata[$key] = $value;
+        }
+    }
+
+    /**
+     * Return the value of a given metadata key, or a default if it is null or doesn't exist.
+     *
+     * @param string $key
+     * @param mixed|null $default
+     * @return mixed|null
+     */
+    public function getMetadataKey(string $key, $default = null)
+    {
+        return $this->metadata[$key] ?? $default;
+    }
+
+    /**
+     * Clear all metadata associated with this webhook.
+     */
+    public function clearMetadata(): void
+    {
+        $this->metadata = [];
     }
 }

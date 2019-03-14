@@ -8,8 +8,16 @@ use GuzzleHttp\Client;
 use InfluxDB\Database;
 use Monolog\Logger;
 
-class Local extends AbstractConnector
+class Local
 {
+    public const NAME = 'local';
+
+    /** @var Client */
+    protected $http_client;
+
+    /** @var Logger */
+    protected $logger;
+
     /** @var Database */
     protected $influx;
 
@@ -21,19 +29,14 @@ class Local extends AbstractConnector
 
     public function __construct(Logger $logger, Client $http_client, Database $influx, Cache $cache, Entity\Repository\SettingsRepository $settings_repo)
     {
-        parent::__construct($logger, $http_client);
-
+        $this->logger = $logger;
+        $this->http_client = $http_client;
         $this->influx = $influx;
         $this->cache = $cache;
         $this->settings_repo = $settings_repo;
     }
 
-    public function shouldDispatch(SendWebhooks $event, array $triggers = null): bool
-    {
-        return true;
-    }
-
-    public function dispatch(SendWebhooks $event, array $config): void
+    public function dispatch(SendWebhooks $event): void
     {
         $np = $event->getNowPlaying();
 

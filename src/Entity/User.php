@@ -1,12 +1,14 @@
 <?php
 namespace App\Entity;
 
+use App\Auth;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use Azura\Normalizer\Annotation\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use OTPHP\TOTP;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -80,6 +82,14 @@ class User
      * @var string|null
      */
     protected $theme;
+
+    /**
+     * @ORM\Column(name="two_factor_secret", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="A1B2C3D4")
+     * @var string|null
+     */
+    protected $two_factor_secret;
 
     /**
      * @ORM\Column(name="created_at", type="integer")
@@ -191,9 +201,6 @@ class User
         return false;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function generateRandomPassword(): void
     {
         $this->setAuthPassword(bin2hex(random_bytes(20)));
@@ -275,6 +282,36 @@ class User
     public function setTheme($theme): void
     {
         $this->theme = $theme;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTwoFactorSecret(): ?string
+    {
+        return $this->two_factor_secret;
+    }
+
+    /**
+     * @param string|null $two_factor_secret
+     */
+    public function setTwoFactorSecret(?string $two_factor_secret): void
+    {
+        $this->two_factor_secret = $two_factor_secret;
+    }
+
+    /**
+     * @param string $otp
+     * @return bool
+     */
+    public function verifyTwoFactor(string $otp): bool
+    {
+        if (null === $this->two_factor_secret) {
+            return true;
+        }
+
+        $totp = \OTPHP\Factory::loadFromProvisioningUri($this->two_factor_secret);
+        return $totp->verify($otp, null, Auth::TOTP_WINDOW);
     }
 
     /**

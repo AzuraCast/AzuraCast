@@ -1,15 +1,35 @@
-<?php $this->layout('main', ['title' => __('My Account'), 'manual' => true]); ?>
+<?php
+$this->layout('main', ['title' => __('My Account'), 'manual' => true]);
+
+/** @var \App\Entity\User $user */
+?>
 
 <div class="row">
     <div class="col-4">
         <div class="card mb-4">
-            <a href="http://www.gravatar.com/" target="_blank">
-                <img class="card-img-top" src="<?=$user->getAvatar(500) ?>" width="100%" alt="">
-            </a>
+            <div class="card-body">
+                <div class="media">
+                    <a class="align-self-center d-flex" href="http://www.gravatar.com/" target="_blank">
+                        <img src="<?=$user->getAvatar(64) ?>" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h2 class="card-title mt-2">
+                            <?php if (!empty($user->getName())): ?>
+                                <?=$this->e($user->getName()) ?>
+                            <?php else: ?>
+                                <?=__('My Account') ?>
+                            <?php endif; ?>
+                        </h2>
+                        <h3 class="card-subtitle">
+                            <?=$this->e($user->getEmail()) ?>
+                        </h3>
+                    </div>
+                </div>
+            </div>
             <div class="card-actions">
-                <a class="btn btn-outline-primary" href="http://www.gravatar.com/" target="_blank">
-                    <i class="material-icons" aria-hidden="true">image</i>
-                    <?=__('Update Profile Picture') ?>
+                <a class="btn btn-outline-primary" href="<?=$router->named('profile:edit') ?>">
+                    <i class="material-icons" aria-hidden="true">edit</i>
+                    <?=__('Edit Profile') ?>
                 </a>
             </div>
         </div>
@@ -24,25 +44,45 @@
             </ul>
         </div>
     </div>
-    <div class="col-8">
-        <div class="card mb-4">
+    <div class="col-4">
+        <div class="card">
             <div class="card-body">
-                <h2 class="card-title"><?=__('My Account') ?></h2>
-            </div>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" href="<?=$router->named('profile:edit') ?>">
-                    <i class="material-icons" aria-hidden="true">edit</i>
-                    <?=__('Edit Profile') ?>
-                </a>
-            </div>
-            <div class="card-body">
-                <h3 class="card-subtitle"><?=__('Account Information') ?></h3>
-
-                <?=$account_info_form->renderView() ?>
-
-                <h3 class="card-subtitle mt-4"><?=__('Customization') ?></h3>
+                <h2 class="card-title"><?=__('Customization') ?></h2>
 
                 <?=$customization_form->renderView() ?>
+            </div>
+            <div class="card-actions">
+                <a class="btn btn-outline-primary" href="<?=$router->named('profile:edit') ?>#customization">
+                    <i class="material-icons" aria-hidden="true">edit</i>
+                    <?=__('Customize') ?>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title"><?=__('Two-Factor Authentication') ?></h2>
+            <?php if (null !== $user->getTwoFactorSecret()): ?>
+                <h3 class="card-subtitle text-success"><?=__('Enabled') ?></h3>
+            <?php else: ?>
+                <h3 class="card-subtitle text-danger"><?=__('Disabled') ?></h3>
+            <?php endif; ?>
+
+                <p class="card-text mt-3"><?=__('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.') ?></p>
+            </div>
+            <div class="card-actions">
+            <?php if (null !== $user->getTwoFactorSecret()): ?>
+                <a class="btn btn-outline-primary" href="<?=$router->named('profile:2fa:disable') ?>">
+                    <i class="material-icons" aria-hidden="true">lock_open</i>
+                    <?=__('Disable Two-Factor') ?>
+                </a>
+            <?php else: ?>
+                <a class="btn btn-outline-primary" href="<?=$router->named('profile:2fa:enable') ?>">
+                    <i class="material-icons" aria-hidden="true">lock_open</i>
+                    <?=__('Enable Two-Factor') ?>
+                </a>
+            <?php endif; ?>
             </div>
         </div>
     </div>

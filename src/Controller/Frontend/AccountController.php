@@ -89,6 +89,11 @@ class AccountController
                 $this->em->persist($user);
                 $this->em->flush();
 
+                // Redirect for 2FA.
+                if (!$this->auth->isLoginComplete()) {
+                    return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
+                }
+
                 $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
                 $referrer = $session->get('login_referrer');
@@ -106,6 +111,35 @@ class AccountController
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/account/login');
+    }
+
+    public function twoFactorAction(Request $request, Response $response): ResponseInterface
+    {
+        if ($request->isPost()) {
+            $session = $request->getSession();
+            $otp = $request->getParsedBodyParam('otp');
+
+            if ($this->auth->verifyTwoFactor($otp)) {
+
+                $user = $this->auth->getUser();
+
+                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+
+                $referrer = $session->get('login_referrer');
+                if (!empty($referrer->url)) {
+                    return $response->withRedirect($referrer->url);
+                }
+
+                return $response->withRedirect($request->getRouter()->named('dashboard'));
+            }
+
+            $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+                'red');
+
+            return $response->withRedirect($request->getUri());
+        }
+
+        return $request->getView()->renderToResponse($response, 'frontend/account/two_factor');
     }
 
     public function logoutAction(Request $request, Response $response): ResponseInterface

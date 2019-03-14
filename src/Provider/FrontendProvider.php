@@ -43,7 +43,8 @@ class FrontendProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/profile', [
                     'settings' => $di['settings'],
-                ])
+                ]),
+                $config->get('forms/profile_two_factor')
             );
         };
 

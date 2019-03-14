@@ -15,7 +15,6 @@ return [
 
     /* Localization Settings */
     'locale' => [
-        'default' => 'en_US.UTF-8',
         'supported' => [
             'en_US.UTF-8' => 'English (Default)',
             'de_DE.UTF-8' => 'Deutsch',             // German
@@ -36,11 +35,6 @@ return [
     'time_formats' => [
         'default' => 'G:i',
         'en_US.UTF-8' => 'g:i A',
-    ],
-
-    'themes' => [
-        'default' => 'light',
-        'available' => ['light', 'dark'],
     ],
 
 ];

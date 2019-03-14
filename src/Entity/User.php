@@ -191,9 +191,6 @@ class User
         return false;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function generateRandomPassword(): void
     {
         $this->setAuthPassword(bin2hex(random_bytes(20)));

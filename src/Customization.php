@@ -12,6 +12,7 @@ class Customization
 {
     public const DEFAULT_TIMEZONE = 'UTC';
     public const DEFAULT_LOCALE = 'en_US.UTF-8';
+    public const DEFAULT_THEME = 'light';
 
     /** @var Settings */
     protected $app_settings;
@@ -41,7 +42,7 @@ class Customization
             $locale = $this->getLocale();
         } else {
             $timezone = self::DEFAULT_TIMEZONE;
-            $locale = $this->app_settings['locale']['default'];
+            $locale = self::DEFAULT_LOCALE;
         }
 
         $translator = new Translator();
@@ -204,7 +205,8 @@ class Customization
         }
 
         // Default to system option.
-        $locale = $this->app_settings['locale']['default'];
+        $locale = self::DEFAULT_LOCALE;
+
         return $locale;
     }
 
@@ -216,13 +218,10 @@ class Customization
     public function getTheme()
     {
         if ($this->user !== null && !empty($this->user->getTheme())) {
-            $available_themes = $this->app_settings['themes']['available'];
-            if (in_array($this->user->getTheme(), $available_themes)) {
-                return $this->user->getTheme();
-            }
+            return $this->user->getTheme();
         }
 
-        return $this->app_settings['themes']['default'];
+        return self::DEFAULT_THEME;
     }
 
     /**
@@ -230,7 +229,7 @@ class Customization
      *
      * @return string|null
      */
-    public function getInstanceName()
+    public function getInstanceName(): ?string
     {
         static $instance_name;
 
@@ -246,7 +245,7 @@ class Customization
      *
      * @return string
      */
-    public function getPublicTheme()
+    public function getPublicTheme(): string
     {
         $public_theme = $this->settings_repo->getSetting(Entity\Settings::PUBLIC_THEME, null);
 
@@ -254,7 +253,7 @@ class Customization
             return $public_theme;
         }
 
-        return $this->app_settings['themes']['default'];
+        return self::DEFAULT_THEME;
     }
 
     /**

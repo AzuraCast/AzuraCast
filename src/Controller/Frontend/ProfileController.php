@@ -35,14 +35,11 @@ class ProfileController
     {
         $user = $request->getUser();
         $user_profile = $this->user_repo->toArray($user);
-        unset($user_profile['auth_password']);
 
-        $account_info_form = new \AzuraForms\Form($this->form_config['groups']['account_info'], $user_profile);
         $customization_form = new \AzuraForms\Form($this->form_config['groups']['customization'], $user_profile);
 
         return $request->getView()->renderToResponse($response, 'frontend/profile/index', [
             'user' => $request->getUser(),
-            'account_info_form' => $account_info_form,
             'customization_form' => $customization_form,
         ]);
     }

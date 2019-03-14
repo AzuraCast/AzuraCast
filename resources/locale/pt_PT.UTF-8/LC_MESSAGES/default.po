@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-03-12T09:03:07+00:00\n"
-"PO-Revision-Date: 2019-03-12 09:11\n"
+"POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
+"PO-Revision-Date: 2019-03-14 08:51\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -237,15 +237,27 @@ msgid_plural "%d months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:90
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:98
 msgid "Profile saved!"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:98
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:106
 #: /var/azuracast/www/templates/stations/profile/edit.phtml:1
 #: /var/azuracast/www/templates/stations/profile/index.phtml:125
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:35
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:32
 msgid "Edit Profile"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:148
+msgid "The token you supplied is invalid. Please try again."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:171
+msgid "Two-factor authentication enabled."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:202
+msgid "Two-factor authentication disabled."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:78
@@ -381,16 +393,19 @@ msgstr ""
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:92
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:126
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:117
 msgid "Logged in successfully."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:102
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
 msgid "Login unsuccessful"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:102
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
 msgid "Your credentials could not be verified."
 msgstr ""
 
@@ -1400,6 +1415,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:43
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:46
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:40
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:69
 msgid "Disabled"
 msgstr ""
 
@@ -1408,6 +1424,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/index.phtml:182
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:41
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:44
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:67
 msgid "Enabled"
 msgstr ""
 
@@ -1932,7 +1949,6 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/profile.php:10
 #: /var/azuracast/www/config/forms/register.php:7
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:39
 msgid "Account Information"
 msgstr ""
 
@@ -1958,7 +1974,7 @@ msgid "Confirm New Password"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/profile.php:75
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:43
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:50
 msgid "Customization"
 msgstr ""
 
@@ -1988,7 +2004,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/user.php:37
 #: /var/azuracast/www/templates/admin/users/index.phtml:24
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:18
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:38
 msgid "Roles"
 msgstr ""
 
@@ -2272,6 +2288,18 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:19
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/profile_two_factor.php:10
+msgid "Code from Authenticator App"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/profile_two_factor.php:11
+msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/profile_two_factor.php:21
+msgid "Verify Authenticator"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/station_clone.php:9
@@ -2720,8 +2748,8 @@ msgid "System Administration"
 msgstr ""
 
 #: /var/azuracast/www/templates/main.phtml:79
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:1
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:30
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:2
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:20
 msgid "My Account"
 msgstr ""
 
@@ -2875,7 +2903,10 @@ msgid "Delete custom field \"%s\"?"
 msgstr ""
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:33
+#: /var/azuracast/www/templates/frontend/account/login.phtml:3
 #: /var/azuracast/www/templates/frontend/account/login.phtml:46
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:3
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:25
 msgid "Log In"
 msgstr ""
 
@@ -3625,6 +3656,19 @@ msgstr ""
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
 msgstr ""
 
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
+msgid "Enter Two-Factor Code"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
+msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:17
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
+msgid "Security Code"
+msgstr ""
+
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:15
 msgid "AzuraCast First-Time Setup"
 msgstr ""
@@ -3720,8 +3764,45 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:12
-msgid "Update Profile Picture"
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:9
+msgid "Enable Two-Factor Authentication"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:11
+msgid "Step 1: Scan QR Code"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
+msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:15
+msgid "Step 2: Verify Generated Code"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:17
+msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:57
+msgid "Customize"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:65
+msgid "Two-Factor Authentication"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:72
+msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:78
+msgid "Disable Two-Factor"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:83
+msgid "Enable Two-Factor"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13

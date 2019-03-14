@@ -333,6 +333,12 @@ return function(App $app)
         $this->map(['GET', 'POST'], '/profile/edit', Controller\Frontend\ProfileController::class.':editAction')
             ->setName('profile:edit');
 
+        $this->map(['GET', 'POST'], '/profile/2fa/enable', Controller\Frontend\ProfileController::class.':enableTwoFactorAction')
+            ->setName('profile:2fa:enable');
+
+        $this->map(['GET', 'POST'], '/profile/2fa/disable', Controller\Frontend\ProfileController::class.':disableTwoFactorAction')
+            ->setName('profile:2fa:disable');
+
         $this->get('/profile/theme', Controller\Frontend\ProfileController::class.':themeAction')
             ->setName('profile:theme');
 
@@ -353,6 +359,10 @@ return function(App $app)
 
     $app->map(['GET', 'POST'], '/login', Controller\Frontend\AccountController::class.':loginAction')
         ->setName('account:login')
+        ->add(AzuraMiddleware\EnableView::class);
+
+    $app->map(['GET', 'POST'], '/login/2fa', Controller\Frontend\AccountController::class.':twoFactorAction')
+        ->setName('account:login:2fa')
         ->add(AzuraMiddleware\EnableView::class);
 
     $app->group('/setup', function () {

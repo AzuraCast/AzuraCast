@@ -28,6 +28,11 @@ class User extends AbstractFixture implements DependentFixtureInterface
             $admin_user->setAuthPassword($admin_password);
             $admin_user->getRoles()->add($this->getReference('admin_role'));
 
+            $admin_2fa_secret = getenv('INIT_ADMIN_2FA_SECRET');
+            if (!empty($admin_2fa_secret)) {
+                $admin_user->setTwoFactorSecret($admin_2fa_secret);
+            }
+
             $em->persist($admin_user);
         }
 

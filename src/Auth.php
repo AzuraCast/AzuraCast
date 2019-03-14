@@ -8,6 +8,9 @@ use Azura\Session\NamespaceInterface;
 
 class Auth
 {
+    /** @var int The window of valid one-time passwords outside the current timestamp. */
+    public const TOTP_WINDOW = 5;
+
     /** @var NamespaceInterface */
     protected $_session;
 
@@ -47,8 +50,13 @@ class Auth
         return null;
     }
 
+    /**
+     * End the user's currently logged in session.
+     */
     public function logout(): void
     {
+        $this->_session->login_complete = false;
+
         unset($this->_session->user_id);
         unset($this->_session->masquerade_user_id);
 
@@ -68,8 +76,11 @@ class Auth
             return false;
         }
 
-        $user = $this->getUser();
+        if (!$this->isLoginComplete()) {
+            return false;
+        }
 
+        $user = $this->getUser();
         return ($user instanceof User);
     }
 
@@ -84,6 +95,10 @@ class Auth
     {
         if (!$real_user_only && $this->isMasqueraded()) {
             return $this->getMasquerade();
+        }
+
+        if (!$this->isLoginComplete()) {
+            return null;
         }
 
         return $this->getUser();
@@ -129,6 +144,7 @@ class Auth
      */
     public function setUser(User $user): void
     {
+        $this->_session->login_complete = (null === $user->getTwoFactorSecret());
         $this->_session->user_id = $user->getId();
         $this->_user = $user;
     }
@@ -208,5 +224,38 @@ class Auth
         }
 
         return ($this->_masqueraded_user instanceof User);
+    }
+
+    /**
+     * Indicate whether login is "complete", i.e. whether any necessary
+     * second-factor authentication steps have been completed.
+     *
+     * @return bool
+     */
+    public function isLoginComplete(): bool
+    {
+        return $this->_session->login_complete ?? false;
+    }
+
+    /**
+     * Verify a supplied one-time password.
+     *
+     * @param string $otp
+     * @return bool
+     */
+    public function verifyTwoFactor(string $otp): bool
+    {
+        $user = $this->getUser();
+
+        if (!($user instanceof User)) {
+            throw new \App\Exception\NotLoggedIn;
+        }
+
+        if ($user->verifyTwoFactor($otp)) {
+            $this->_session->login_complete = true;
+            return true;
+        }
+
+        return false;
     }
 }

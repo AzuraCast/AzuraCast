@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-14 08:51\n"
+"PO-Revision-Date: 2019-03-14 19:18\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -19,20 +19,20 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:172
 #: /var/azuracast/www/src/Acl.php:183
 msgid "All Permissions"
-msgstr ""
+msgstr "Todos los permisos"
 
 #: /var/azuracast/www/src/Acl.php:173
 msgid "View Administration Page"
-msgstr ""
+msgstr "Ver página de administración"
 
 #: /var/azuracast/www/src/Acl.php:174
 msgid "View System Logs"
-msgstr ""
+msgstr "Ver registros del sistema"
 
 #: /var/azuracast/www/src/Acl.php:175
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
 msgid "Settings"
-msgstr ""
+msgstr "Ajustes"
 
 #: /var/azuracast/www/src/Acl.php:175
 #: /var/azuracast/www/src/Acl.php:176
@@ -41,7 +41,7 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:179
 #: /var/azuracast/www/src/Acl.php:180
 msgid "Administer %s"
-msgstr ""
+msgstr "Administrar %s"
 
 #: /var/azuracast/www/src/Acl.php:176
 #: /var/azuracast/www/config/menus/admin.php:27
@@ -76,19 +76,19 @@ msgstr "Estaciones"
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:1
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:5
 msgid "Custom Fields"
-msgstr ""
+msgstr "Campos personalizados"
 
 #: /var/azuracast/www/src/Acl.php:184
 msgid "View Station Page"
-msgstr ""
+msgstr "Ver página de la estación"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View Station Reports"
-msgstr ""
+msgstr "Ver reportes de la estación"
 
 #: /var/azuracast/www/src/Acl.php:186
 msgid "View Station Logs"
-msgstr ""
+msgstr "Ver registros de la estación"
 
 #: /var/azuracast/www/src/Acl.php:187
 #: /var/azuracast/www/config/menus/station.php:34
@@ -106,16 +106,16 @@ msgstr "Perfil"
 #: /var/azuracast/www/src/Acl.php:193
 #: /var/azuracast/www/src/Acl.php:194
 msgid "Manage Station %s"
-msgstr ""
+msgstr "Administrar estación %s"
 
 #: /var/azuracast/www/src/Acl.php:188
 #: /var/azuracast/www/templates/partials/station_form.phtml:24
 msgid "Broadcasting"
-msgstr ""
+msgstr "Emisión"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Streamers"
-msgstr ""
+msgstr "Emisores"
 
 #: /var/azuracast/www/src/Acl.php:190
 #: /var/azuracast/www/config/menus/station.php:74
@@ -130,7 +130,7 @@ msgstr "Puntos de montaje"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr ""
+msgstr "Repetidoras"
 
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:57
@@ -141,14 +141,14 @@ msgstr "Medios"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Automation"
-msgstr ""
+msgstr "Automatización"
 
 #: /var/azuracast/www/src/Acl.php:194
 #: /var/azuracast/www/config/menus/station.php:87
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
-msgstr ""
+msgstr "Hooks web"
 
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:25
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
@@ -159,53 +159,53 @@ msgstr "Esta característica no es soportada actualmente por esta estación."
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "Se han dado privilegios de administrador a la cuenta asociada a la dirección de e-mail \"%s\""
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Cuenta no encontrada."
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "This port is currently in use by another station."
-msgstr ""
+msgstr "Este puerto está actualmente siendo usado por otra estación."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s no puede empezar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."
-msgstr ""
+msgstr "Ya está en funcionamiento."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s no puede detenerse"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
-msgstr ""
+msgstr "No está en funcionamiento."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
-msgstr ""
+msgstr "%s ha encontrado un error"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
-msgstr ""
+msgstr "Comprueba el registro para más detalles."
 
 #: /var/azuracast/www/src/Radio/Adapters.php:137
 #: /var/azuracast/www/src/Radio/Adapters.php:141
 #: /var/azuracast/www/src/Radio/Adapters.php:172
 msgid "Use <b>%s</b> on this server"
-msgstr ""
+msgstr "Usar <b>%s</b> en este servidor"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:145
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Conectar a un <b>servidor remoto de radio</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr ""
+msgstr "<b>No usar</b> un servicio de DJ Automático"
 
 #: /var/azuracast/www/src/Utilities.php:60
 msgid "%d second"
@@ -250,15 +250,15 @@ msgstr "Editar el perfil"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:148
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "La clave de acceso que proporcionaste no es válida. Por favor, inténtalo de nuevo."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:171
 msgid "Two-factor authentication enabled."
-msgstr ""
+msgstr "Autenticación basada en dos factores activada."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:202
 msgid "Two-factor authentication disabled."
-msgstr ""
+msgstr "Autenticación basada en dos factores desactivada."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:78
 msgid "Setup has already been completed!"
@@ -270,7 +270,7 @@ msgstr "Super Administrador"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:157
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "¿Quieres usar SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Instálalo aquí</a> y vuelve a cargar esta página."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:210
 msgid "Setup is now complete!"
@@ -305,7 +305,7 @@ msgstr "Clave del API"
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:55
 #: /var/azuracast/www/src/Controller/Admin/Stations/CloneController.php:52
 msgid "%s not found."
-msgstr ""
+msgstr "%s no encontrado."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:95
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
@@ -320,7 +320,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:79
 msgid "%s updated."
-msgstr ""
+msgstr "%s actualizado."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:102
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
@@ -335,7 +335,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:87
 msgid "Edit %s"
-msgstr ""
+msgstr "Editar %s"
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:102
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
@@ -361,7 +361,7 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/index/index.phtml:111
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:14
 msgid "Add %s"
-msgstr ""
+msgstr "Agregar %s"
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:122
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:133
@@ -375,7 +375,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:95
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:105
 msgid "%s deleted."
-msgstr ""
+msgstr "%s eliminado."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:217
 msgid "%s Listener Range"
@@ -387,11 +387,11 @@ msgstr "Promedio diario de %s"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
-msgstr ""
+msgstr "Demasiados intentos de inicio de sesión"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
+msgstr "Has intentado iniciar sesión demasiadas veces. Por favor, espera 30 segundos e inténtalo de nuevo."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:126
@@ -416,11 +416,11 @@ msgstr "Estación no encontrada!"
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:103
 msgid "Live streaming is not enabled on this station."
-msgstr ""
+msgstr "La emisión en directo no está habilitada para esta estación."
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:109
 msgid "This station does not support live streaming."
-msgstr ""
+msgstr "Esta estación no soporta la emisión en directo."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:64
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:49

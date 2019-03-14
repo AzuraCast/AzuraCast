@@ -103,7 +103,7 @@ return [
                             'light' => __('Light').' ('.__('Default').')',
                             'dark' => __('Dark'),
                         ],
-                        'default' => $settings['themes']['default'],
+                        'default' => \App\Customization::DEFAULT_THEME,
                     ]
                 ],
 

@@ -25,7 +25,7 @@ $assets->load('fullcalendar')
     </div>
     <div role="tabpanel">
         <div class="tab-content">
-            <div class="tab-pane active" id="all-playlists" role="tabpanel">
+            <h6 class="tab-pane active" id="all-playlists" role="tabpanel">
                 <div class="card-actions">
                     <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:playlists:add') ?>">
                         <i class="material-icons" aria-hidden="true">add</i>
@@ -65,23 +65,26 @@ $assets->load('fullcalendar')
                                                 <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:reorder', ['id' => $row['id']]) ?>"><?=__('Reorder') ?></a></li>
                                             <?php endif; ?>
                                             <?php foreach(['pls', 'm3u'] as $format): ?>
-                                                <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:export', ['id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(__('Export %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
+                                                <li><a class="dropdown-item" href="<?=$router->fromHere('stations:playlists:export', ['id' => $row['id'], 'format' => $format]) ?>"><?=__('Export %s', strtoupper($format)) ?></a></li>
+                                            <?php endforeach; ?>
                                         </ul>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <big>
-                                    <?=$this->e($row['name']) ?>
-                                </big>
-                                <br>
-                                <span class="label label-default"><?=(($row['source'] === StationPlaylist::SOURCE_SONGS) ? __('Song-based') : __('Remote URL')) ?></span>
+                                <h5 class="m-0"><?=$this->e($row['name']) ?></h5>
+                                <div>
+                                    <span class="badge badge-dark"><?=(($row['source'] === StationPlaylist::SOURCE_SONGS) ? __('Song-based') : __('Remote URL')) ?></span>
+                                <?php if ($row['is_jingle']): ?>
+                                    <span class="badge badge-primary"><?=__('Jingle Mode') ?></span>
+                                <?php endif; ?>
                                 <?php if ($row['source'] === StationPlaylist::SOURCE_SONGS && $row['order'] === StationPlaylist::ORDER_SEQUENTIAL): ?>
-                                    <span class="label label-info"><?=__('Sequential') ?></span>
+                                    <span class="badge badge-info"><?=__('Sequential') ?></span>
                                 <?php endif; ?>
                                 <?php if ($row['include_in_automation']): ?>
-                                    <span class="label label-success"><?=__('Auto-Assigned') ?></span>
+                                    <span class="badge badge-success"><?=__('Auto-Assigned') ?></span>
                                 <?php endif; ?>
+                                </div>
                             </td>
                             <td>
                                 <?php if (!$row['is_enabled']): ?>
@@ -91,14 +94,14 @@ $assets->load('fullcalendar')
                                     <?=__('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_SCHEDULED): ?>
                                     <?=__('Scheduled') ?><br>
-                                    <?=sprintf(__('Plays between %s and %s'), $customization->formatTime(StationPlaylist::getTimestamp($row['schedule_start_time'])), $customization->formatTime(StationPlaylist::getTimestamp($row['schedule_end_time']))) ?>
+                                    <?=__('Plays between %s and %s', $customization->formatTime(StationPlaylist::getTimestamp($row['schedule_start_time'])), $customization->formatTime(StationPlaylist::getTimestamp($row['schedule_end_time']))) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_SONGS): ?>
-                                    <?=sprintf(__('Once per %d Songs'), $row['play_per_songs']) ?>
+                                    <?=__('Once per %d Songs', $row['play_per_songs']) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_MINUTES): ?>
-                                    <?=sprintf(__('Once per %d Minutes'), $row['play_per_minutes']) ?>
+                                    <?=__('Once per %d Minutes', $row['play_per_minutes']) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_DAY): ?>
                                     <?=__('Once per Day') ?><br>
-                                    <?=sprintf(__('Plays at %s'), $customization->formatTime(StationPlaylist::getTimestamp($row['play_once_time']))) ?>
+                                    <?=__('Plays at %s', $customization->formatTime(StationPlaylist::getTimestamp($row['play_once_time']))) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ADVANCED): ?>
                                     <?=__('Custom') ?>
                                 <?php endif; ?>

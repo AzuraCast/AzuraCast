@@ -29,12 +29,6 @@ class AnnotateNextSong extends Event
     {
         $this->station = $station;
         $this->next_song = $next_song;
-
-        if ($next_song instanceof Entity\SongHistory && $next_song->getPlaylist() instanceof Entity\StationPlaylist) {
-            $this->addAnnotations([
-                'playlist_id' => $next_song->getPlaylist()->getId(),
-            ]);
-        }
     }
 
     /**

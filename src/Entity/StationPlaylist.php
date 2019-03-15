@@ -102,6 +102,12 @@ class StationPlaylist
     protected $is_enabled = true;
 
     /**
+     * @ORM\Column(name="is_jingle", type="boolean")
+     * @var bool If yes, do not send jingle metadata to AutoDJ or trigger web hooks.
+     */
+    protected $is_jingle = false;
+
+    /**
      * @ORM\Column(name="play_per_songs", type="smallint")
      * @var int
      */
@@ -327,6 +333,22 @@ class StationPlaylist
     public function setIsEnabled(bool $is_enabled): void
     {
         $this->is_enabled = $is_enabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isJingle(): bool
+    {
+        return $this->is_jingle;
+    }
+
+    /**
+     * @param bool $is_jingle
+     */
+    public function setIsJingle(bool $is_jingle): void
+    {
+        $this->is_jingle = $is_jingle;
     }
 
     /**

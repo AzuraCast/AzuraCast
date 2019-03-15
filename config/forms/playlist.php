@@ -143,6 +143,17 @@ return [
                     ],
                 ],
 
+                'is_jingle' => [
+                    'toggle',
+                    [
+                        'label' => __('Hide Metadata from Listeners ("Jingle Mode")'),
+                        'description' => __('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                    ]
+                ],
+
                 'include_in_requests' => [
                     'toggle',
                     [

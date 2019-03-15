@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 18:50\n"
+"PO-Revision-Date: 2019-03-15 19:00\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2718,7 +2718,7 @@ msgstr "Sempre que um soft transmissor/DJ iniciar uma transmissão"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr "Sempre que finalizar uma transmissão ao vivo"
+msgstr "Sempre que um soft transmissor/DJ desconectar"
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:3
 msgid "Select..."
@@ -2741,19 +2741,19 @@ msgstr "Dashboard"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
-msgstr ""
+msgstr "Mascote desenhado por %s"
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
-msgstr ""
+msgstr "Pular para o conteúdo principal"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Alternar barra lateral"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Alternar Menu"
 
 #: /var/azuracast/www/templates/main.phtml:72
 msgid "System Administration"
@@ -2767,18 +2767,18 @@ msgstr "Minha conta"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Mudar tema"
 
 #: /var/azuracast/www/templates/main.phtml:91
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:3
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:9
 msgid "My API Keys"
-msgstr ""
+msgstr "Minhas Chaves API"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"
@@ -2790,7 +2790,7 @@ msgstr "Sair"
 
 #: /var/azuracast/www/templates/main.phtml:151
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "Gostou do nosso software? <a href=\"%s\" target=\"_blank\">Faça uma Doação para apoiar o AzuraCast!</a>"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:20
 msgid "Owner"
@@ -2818,11 +2818,11 @@ msgstr "Revogar"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast instalado"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
-msgstr ""
+msgstr "O SHOUTcast 2 DNAS está instalado e pronto para uso."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:22
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21

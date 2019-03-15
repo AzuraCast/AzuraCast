@@ -25,9 +25,7 @@ our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 ## Install AzuraCast
 
-- **[Docker Installation (Recommended)](https://azuracast.com/install.html#using-docker-recommended)**: Docker offers an easy-to-use experience with prebuilt images. Updates are simple and AzuraCast won't interfere with other software on your server. You should use this method whenever possible.
-
-- **[Traditional Installation](https://azuracast.com/install.html#traditional-installation)**: For advanced users, if you want more customizability or need to run a leaner installation, you can use the Traditional installation method to install AzuraCast on Ubuntu servers.
+Follow our **[installation guide](https://azuracast.com/install.html)** for instructions on how to install AzuraCast on your own server.
 
 ## Features
 

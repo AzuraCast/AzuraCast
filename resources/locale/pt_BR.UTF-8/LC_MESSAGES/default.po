@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 14:40\n"
+"PO-Revision-Date: 2019-03-15 14:50\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1703,11 +1703,11 @@ msgstr "Ativar página pública"
 
 #: /var/azuracast/www/config/forms/station.php:59
 msgid "Show the station in public pages and general API results."
-msgstr ""
+msgstr "Exibir a rádio em páginas públicas e em resultados gerais da API."
 
 #: /var/azuracast/www/config/forms/station.php:69
 msgid "URL Stub"
-msgstr ""
+msgstr "Endereço encurtado"
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
@@ -1797,7 +1797,7 @@ msgstr "Permitir pedidos de música"
 
 #: /var/azuracast/www/config/forms/station.php:197
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
-msgstr ""
+msgstr "Permitir que os ouvintes solicitem uma música para tocar na sua estação. Somente músicas que já estão em suas listas de reprodução são solicitadas."
 
 #: /var/azuracast/www/config/forms/station.php:207
 msgid "Request Minimum Delay (Minutes)"
@@ -1821,7 +1821,7 @@ msgstr "Permitir transmissores / DJs"
 
 #: /var/azuracast/www/config/forms/station.php:230
 msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
-msgstr ""
+msgstr "Se ativado, os streamers (ou DJs) poderão se conectar diretamente ao seu stream e transmitir música ao vivo que interrompe o fluxo de AutoDJ."
 
 #: /var/azuracast/www/config/forms/station.php:240
 msgid "Deactivate Streamer on Disconnect (Seconds)"
@@ -1841,7 +1841,7 @@ msgstr "Nenhum outro programa pode estar usando esta porta. Deixe em branco para
 
 #: /var/azuracast/www/config/forms/station.php:262
 msgid "Customize DJ/Streamer Mount Point"
-msgstr ""
+msgstr "Personalizar Ponto de Montagem do DJ/Streamer"
 
 #: /var/azuracast/www/config/forms/station.php:264
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
@@ -1921,7 +1921,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:379
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
-msgstr ""
+msgstr "O diretório principal no qual os arquivos de configuração e lista de reprodução da estação são armazenados. Deixe em branco para usar o diretório padrão."
 
 #: /var/azuracast/www/config/forms/station.php:386
 msgid "Custom Media Directory"
@@ -1960,19 +1960,19 @@ msgstr "Redefinir senha"
 
 #: /var/azuracast/www/config/forms/profile.php:36
 msgid "Leave these fields blank to continue using your current password."
-msgstr ""
+msgstr "Deixe em branco para continuar usando a senha atual."
 
 #: /var/azuracast/www/config/forms/profile.php:42
 msgid "Current Password"
-msgstr ""
+msgstr "Senha Atual"
 
 #: /var/azuracast/www/config/forms/profile.php:56
 msgid "New Password"
-msgstr ""
+msgstr "Nova Senha"
 
 #: /var/azuracast/www/config/forms/profile.php:66
 msgid "Confirm New Password"
-msgstr ""
+msgstr "Confirmar Nova Senha"
 
 #: /var/azuracast/www/config/forms/profile.php:75
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:50
@@ -2018,7 +2018,7 @@ msgstr "Criar conta"
 
 #: /var/azuracast/www/config/forms/playlist.php:43
 msgid "Your current local time is <b>%s</b> (%s UTC). You can customize your time zone from the \"My Account\" page."
-msgstr ""
+msgstr "Sua hora local é <b>%s</b> (%s UTC). Você pode alterar sua hora local na página \"Minha Conta\"."
 
 #: /var/azuracast/www/config/forms/playlist.php:60
 msgid "Playlist Name"
@@ -2042,11 +2042,11 @@ msgstr "Playlists de maior peso são tocadas com mais frequência se comparadas 
 
 #: /var/azuracast/www/config/forms/playlist.php:85
 msgid "Low"
-msgstr ""
+msgstr "Baixa"
 
 #: /var/azuracast/www/config/forms/playlist.php:89
 msgid "High"
-msgstr ""
+msgstr "Alta"
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 #: /var/azuracast/www/templates/stations/queue/index.phtml:27
@@ -2057,20 +2057,20 @@ msgstr "Fonte"
 #: /var/azuracast/www/config/forms/playlist.php:99
 #: /var/azuracast/www/config/forms/playlist.php:128
 msgid "Song-Based Playlist"
-msgstr ""
+msgstr "Playlist baseada em músicas"
 
 #: /var/azuracast/www/config/forms/playlist.php:99
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Uma lista de reprodução contendo arquivos de mídia hospedados neste servidor."
 
 #: /var/azuracast/www/config/forms/playlist.php:100
 #: /var/azuracast/www/config/forms/playlist.php:179
 msgid "Remote URL Playlist"
-msgstr ""
+msgstr "Lista de reprodução de URL remota"
 
 #: /var/azuracast/www/config/forms/playlist.php:100
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr ""
+msgstr "Uma lista de reprodução que instrui a estação a reproduzir a partir de um URL remoto."
 
 #: /var/azuracast/www/config/forms/playlist.php:110
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:46
@@ -2099,7 +2099,7 @@ msgstr "Toca durante um intervalo de tempo programado. Útil para listas de repr
 #: /var/azuracast/www/config/forms/playlist.php:114
 #: /var/azuracast/www/config/forms/playlist.php:268
 msgid "Once per x Songs"
-msgstr ""
+msgstr "Uma vez a cada x músicas"
 
 #: /var/azuracast/www/config/forms/playlist.php:114
 msgid "Play exactly once every <i>x</i> songs. Useful for station ID/jingles."
@@ -2107,7 +2107,7 @@ msgstr "Reproduz exatamente uma vez a cada <i>X</i> músicas. Útil para vinheta
 
 #: /var/azuracast/www/config/forms/playlist.php:115
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "Uma vez a cada x minutos"
 
 #: /var/azuracast/www/config/forms/playlist.php:115
 msgid "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
@@ -2116,7 +2116,7 @@ msgstr "Reproduz exatamente a cada <i>X</i> minutos. Útil para vinhetas/jingles
 #: /var/azuracast/www/config/forms/playlist.php:116
 #: /var/azuracast/www/config/forms/playlist.php:306
 msgid "Daily"
-msgstr ""
+msgstr "Diário"
 
 #: /var/azuracast/www/config/forms/playlist.php:116
 msgid "Play once per day at the specified time. Useful for timely reminders."
@@ -2125,23 +2125,23 @@ msgstr "Reproduz uma vez por dia no horário especificado. Útil para lembretes 
 #: /var/azuracast/www/config/forms/playlist.php:117
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5
 msgid "Advanced"
-msgstr ""
+msgstr "Avançado"
 
 #: /var/azuracast/www/config/forms/playlist.php:117
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr ""
+msgstr "Defina manualmente como essa playlist é usada na configuração do Liquidsoap. <a href=\"%s\" target=\"_blank\">Saiba mais sobre Listas de reprodução avançadas</a>"
 
 #: /var/azuracast/www/config/forms/playlist.php:135
 msgid "Song Playback Order"
-msgstr ""
+msgstr "Ordem de reprodução da música"
 
 #: /var/azuracast/www/config/forms/playlist.php:138
 msgid "Shuffled"
-msgstr ""
+msgstr "Embaralhado"
 
 #: /var/azuracast/www/config/forms/playlist.php:139
 msgid "Random"
-msgstr ""
+msgstr "Aleatória"
 
 #: /var/azuracast/www/config/forms/playlist.php:140
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:80
@@ -2150,11 +2150,11 @@ msgstr "Sequencial"
 
 #: /var/azuracast/www/config/forms/playlist.php:149
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "Permitir solicitações desta lista de reprodução"
 
 #: /var/azuracast/www/config/forms/playlist.php:150
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Se as solicitações estiverem ativadas para sua estação, os usuários poderão solicitar a mídia que está nessa lista de reprodução."
 
 #: /var/azuracast/www/config/forms/playlist.php:160
 msgid "Import Existing Playlist"
@@ -2171,15 +2171,15 @@ msgstr "URL remoto"
 
 #: /var/azuracast/www/config/forms/playlist.php:193
 msgid "Remote URL Type"
-msgstr ""
+msgstr "Tipo de URL Remoto"
 
 #: /var/azuracast/www/config/forms/playlist.php:196
 msgid "Direct Stream URL"
-msgstr ""
+msgstr "URL de transmissão direta"
 
 #: /var/azuracast/www/config/forms/playlist.php:197
 msgid "Playlist (M3U/PLS) URL"
-msgstr ""
+msgstr "URL da lista de reprodução (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 msgid "Include in Automated Assignment"

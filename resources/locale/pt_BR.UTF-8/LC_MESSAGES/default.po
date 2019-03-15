@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 18:40\n"
+"PO-Revision-Date: 2019-03-15 18:50\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2570,23 +2570,23 @@ msgstr "Token Secreto de Acesso"
 #: /var/azuracast/www/config/forms/webhook/twitter.php:65
 #: /var/azuracast/www/config/forms/webhook/generic.php:12
 msgid "Web Hook Details"
-msgstr ""
+msgstr "Detalhes do Web Hook"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:91
 msgid "Message Body"
-msgstr ""
+msgstr "Corpo da Mensagem"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:12
 msgid "Discord API Details"
-msgstr ""
+msgstr "Detalhes da API do Discord"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:27
 msgid "Discord Web Hook URL"
-msgstr ""
+msgstr "URL do Discord Web Hook"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:28
 msgid "This URL is provided within the Discord application."
-msgstr ""
+msgstr "Esta URL é fornecida no aplicativo do Discord."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:57
 msgid "Now playing on %s:"
@@ -2604,7 +2604,7 @@ msgstr "Título"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:82
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:91
 msgid "Author Name"
@@ -2630,51 +2630,55 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Web Hook automaticamente envia uma solicitação de HTTP POST para a URL que você especificar para \n"
+"                notificar-lhe qualquer momento um dos gatilhos você especificar ocorre na sua estação. O corpo da mensagem POST\n"
+"                é exatamente igual a <a href=\"%s\" target=\"_blank\">API agora jogando resposta</a> para sua estação. \n"
+"                a fim de processar rapidamente, ganchos de web têm um curto tempo de espera, para que o serviço de resposta deve ser\n"
+"                otimizado para manipular a solicitação em menos de 2 segundos."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:34
 msgid "Web Hook URL"
-msgstr ""
+msgstr "URL do Gancho na Web"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:35
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "A URL que receberá o POST das mensagens quando um evento é acionado."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:44
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "Opcional: Usuário de Autenticação Básica HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:45
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Se seu we hook requer autenticação básica HTTP, forneça o nome de usuário aqui."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:53
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "Opcional: Usuário de Autenticação Básica HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:54
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Se seu web hook requer autenticação básica HTTP, forneça o nome de usuário aqui."
 
 #: /var/azuracast/www/config/webhooks.php:18
 msgid "Generic Web Hook"
-msgstr ""
+msgstr "Web Hook Genérico"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "Enviar automaticamente uma mensagem para qualquer URL quando os dados da sua rádio forem alterados."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
-msgstr ""
+msgstr "Enviar alterações de metadados da música para TuneIn."
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
-msgstr ""
+msgstr "Webhook da Discord"
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
@@ -2682,39 +2686,39 @@ msgstr "Enviar automaticamente uma mensagem personalizada para o seu servidor do
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Mensagem de bate-papo do telegrama"
 
 #: /var/azuracast/www/config/webhooks.php:34
 msgid "Use the Telegram Bot API to send a message to a channel."
-msgstr ""
+msgstr "Use a API de Bot do telegrama para enviar uma mensagem para um canal."
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
-msgstr ""
+msgstr "Post do Twitter"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Enviar automaticamente um tweet."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Sempre que a mudar a música que está sendo reproduzida"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Sempre que o número de ouvintes aumentar"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Sempre que o número de ouvintes diminuir"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "Sempre que um soft transmissor/DJ iniciar uma transmissão"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "Sempre que finalizar uma transmissão ao vivo"
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:3
 msgid "Select..."

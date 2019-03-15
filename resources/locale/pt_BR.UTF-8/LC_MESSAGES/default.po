@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 16:30\n"
+"PO-Revision-Date: 2019-03-15 16:40\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2872,7 +2872,7 @@ msgstr "Registro por Estação"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:22
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Sincronização de Tarefas"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:32
 msgid "%s ago"
@@ -2880,7 +2880,7 @@ msgstr "%s atrás"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Run Task"
-msgstr ""
+msgstr "Rodar Tarefa"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -2897,7 +2897,7 @@ msgstr "Clonar"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr ""
+msgstr "Excluir rádio \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
@@ -3643,7 +3643,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:13
 msgid "Welcome!"
-msgstr ""
+msgstr "Bem Vindo!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:15
 msgid "Welcome to %s!"
@@ -3655,36 +3655,36 @@ msgstr "Por favor, identifique-se para continuar."
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:22
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Esqueceu sua senha?</a>"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
-msgstr ""
+msgstr "Digite o código de autenticação de dois fatores"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
 msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
-msgstr ""
+msgstr "Sua conta usa um código de segurança de dois fatores. Digite o código que seu dispositivo atualmente está mostrando abaixo."
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:17
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
 msgid "Security Code"
-msgstr ""
+msgstr "Código de segurança"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:15
 msgid "AzuraCast First-Time Setup"
-msgstr ""
+msgstr "Configuração do AzuraCast pela primeira vez"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:18
 msgid "Welcome to AzuraCast!"
-msgstr ""
+msgstr "Bem-vindo ao AzuraCast!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:19
 msgid "Let's get started by creating your Super Administrator account."
-msgstr ""
+msgstr "Comece a configuração criando uma conta de super administrador."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
-msgstr ""
+msgstr "Esta conta terá acesso completo ao sistema, e você será conectado automaticamente para o restante da configuração."
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:1
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:3
@@ -3698,7 +3698,7 @@ msgstr "Criar nova estação"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:26
 msgid "Customize AzuraCast Settings"
-msgstr ""
+msgstr "Personalizar configurações do AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:27
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
@@ -3714,32 +3714,33 @@ msgstr "Continue o processo de configuração criando a sua primeira estação d
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
 msgid "New Key Generated"
-msgstr ""
+msgstr "Nova Chave Gerada"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:13
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
-msgstr ""
+msgstr "<b>Importante: copie a chave abaixo antes de continuar!</b> Você não será capaz de recuperá-la novamente."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:15
 msgid "Your full API key is below:"
-msgstr ""
+msgstr "Sua chave de API completa está abaixo:"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:24
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr ""
+msgstr "Ao fazer chamadas de API, você pode passar esse valor no cabeçalho \"X-API-Key\" para autenticar como a mesmo. Você só pode executar as ações de que sua conta de usuário tem permissão para executar."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:27
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:11
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Chaves de API podem ser usadas para acessar algumas funcionalidades do sistema sem a necessidade de se logar. Todas as chaves \n"
+"            que você criar compartilham suas permissões no sistema. Para obter mais informações, consulte a documentação de <a href=\"%s\">API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:31
 msgid "Key Identifier"
-msgstr ""
+msgstr "Identificador de chave"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
@@ -3768,43 +3769,43 @@ msgstr "Opções"
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:9
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "Ativar autenticação de dois fatores"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:11
 msgid "Step 1: Scan QR Code"
-msgstr ""
+msgstr "Passo 1: Leia o código QR"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
-msgstr ""
+msgstr "De seu smartphone, digitalizar o código para a direita usando um aplicativo de autenticação de sua escolha (FreeOTP, Authy, etc)."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:15
 msgid "Step 2: Verify Generated Code"
-msgstr ""
+msgstr "Etapa 2: Verifique o código gerado"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:17
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
-msgstr ""
+msgstr "Para verificar se o código foi configurado corretamente, digite o código de 6 dígitos que o app mostra."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:57
 msgid "Customize"
-msgstr ""
+msgstr "Personalizar"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:65
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Autenticação de dois fatores"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:72
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "Autenticação de dois fatores melhora a segurança da sua conta, exigindo um segundo código de acesso único além de sua senha quando você se logar."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:78
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "Desativar autenticação de dois fatores"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:83
 msgid "Enable Two-Factor"
-msgstr ""
+msgstr "Habilitar autenticação em dois fatores"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:59

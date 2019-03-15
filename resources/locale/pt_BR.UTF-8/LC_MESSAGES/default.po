@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 15:00\n"
+"PO-Revision-Date: 2019-03-15 15:10\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2374,7 +2374,7 @@ msgstr "Letra da música"
 
 #: /var/azuracast/www/config/forms/media.php:49
 msgid "Replace Album Cover Art"
-msgstr ""
+msgstr "Substituir a Capa do Álbum"
 
 #: /var/azuracast/www/config/forms/media.php:57
 msgid "ISRC"
@@ -2386,7 +2386,7 @@ msgstr "International Standard Recording Code, usado para relatórios de licenci
 
 #: /var/azuracast/www/config/forms/media.php:66
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Os administradores podem personalizar os campos que aparecem aqui na <a href=\"%s\"> página de administração</a>."
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Control Song Playback"
@@ -2917,7 +2917,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:46
 msgid "(You)"
-msgstr ""
+msgstr "(Você)"
 
 #: /var/azuracast/www/templates/stations/sidebar.js.phtml:9
 msgid "Please wait..."
@@ -2983,7 +2983,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:60
 msgid "More"
-msgstr ""
+msgstr "Mais"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
@@ -3001,7 +3001,7 @@ msgstr "Reordenar"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:68
 msgid "Export %s"
-msgstr ""
+msgstr "Exportar %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Song-based"
@@ -3360,7 +3360,7 @@ msgstr "Transmissões locais"
 #: /var/azuracast/www/templates/frontend/index/index.phtml:81
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:7
 msgid "Play/Pause"
-msgstr ""
+msgstr "Tocar/Pausar"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:269
 #: /var/azuracast/www/templates/stations/profile/index.phtml:273
@@ -3378,7 +3378,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/index.phtml:289
 #: /var/azuracast/www/templates/stations/profile/index.phtml:362
 msgid "Loading..."
-msgstr ""
+msgstr "Carregando..."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:299
 msgid "Administration URL"
@@ -3461,15 +3461,15 @@ msgstr "Arraste arquivos aqui para enviar músicas para esse diretório ou "
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:61
 msgid "Set Playlists"
-msgstr ""
+msgstr "Ajustar Listas de Reprodução"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:78
 msgid "New Playlist"
-msgstr ""
+msgstr "Cadastrar Lista de Reprodução"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:83
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "Move"
@@ -3530,7 +3530,7 @@ msgstr "Notas"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr ""
+msgstr "Excluir streamer \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"

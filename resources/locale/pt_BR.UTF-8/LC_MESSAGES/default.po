@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 16:40\n"
+"PO-Revision-Date: 2019-03-15 18:30\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2947,7 +2947,7 @@ msgstr "Reorganizar Lista de reprodução"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:12
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Reordenar Lista de Reprodução: %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:24
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:29
@@ -2979,7 +2979,7 @@ msgstr "# Músicas"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Delete playlist \"%s\"?"
-msgstr ""
+msgstr "Excluir Lista de Reprodução \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:60
 msgid "More"
@@ -3394,7 +3394,7 @@ msgstr "Senha da fonte"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:318
 msgid "Relay Password"
-msgstr ""
+msgstr "Senha de retransmissão"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:332
 #: /var/azuracast/www/templates/stations/profile/index.phtml:377
@@ -3445,7 +3445,7 @@ msgstr "Início"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:35
 msgid "%s of %s Used"
-msgstr ""
+msgstr "%s de %s Usado"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:41
 msgid "%s Files"
@@ -3599,7 +3599,7 @@ msgstr "AutoDJ"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:34
 msgid "Delete remote relay \"%s\"?"
-msgstr ""
+msgstr "Excluir retransmissão remota \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:6
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
@@ -3607,7 +3607,7 @@ msgstr "Pontos de montagem são como ouvintes ligar e ouvir a sua estação. Cad
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:34
 msgid "Delete mount point \"%s\"?"
-msgstr ""
+msgstr "Excluir ponto de montagem \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:39
 msgid "Default Mount"
@@ -3639,7 +3639,7 @@ msgstr "Teste"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "Excluir webhook \"%s\"?"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:13
 msgid "Welcome!"
@@ -3821,20 +3821,20 @@ msgstr "Silenciar"
 #: /var/azuracast/www/templates/frontend/public/index.phtml:25
 #: /var/azuracast/www/templates/partials/radio_controls.phtml:15
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #: /var/azuracast/www/templates/frontend/public/embed.phtml:33
 #: /var/azuracast/www/templates/frontend/public/index.phtml:26
 msgid "Full Volume"
-msgstr ""
+msgstr "Volume Máximo"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
-msgstr ""
+msgstr "Microfone"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:13
 msgid "Mixer"
-msgstr ""
+msgstr "Controle de Volume"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"

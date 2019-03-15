@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 18:30\n"
+"PO-Revision-Date: 2019-03-15 18:40\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2390,7 +2390,7 @@ msgstr "Os administradores podem personalizar os campos que aparecem aqui na <a 
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Controle de reprodução de música"
 
 #: /var/azuracast/www/config/forms/media.php:83
 msgid "Song Length (seconds)"
@@ -2438,7 +2438,7 @@ msgstr "Segundos a partir do início da música que o AutoDJ deve parar de tocar
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:12
 msgid "Telegram API Details"
-msgstr ""
+msgstr "Detalhes da API do Telegram"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:18
 #: /var/azuracast/www/config/forms/webhook/tunein.php:14
@@ -2454,28 +2454,28 @@ msgstr "%s Nome"
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:26
 msgid "Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page."
-msgstr ""
+msgstr "Escolha um nome para este webhook que irá ajudá-lo a distingui-lo de outros. Isso só será mostrado na página da administração."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:27
 msgid "Bot Token"
-msgstr ""
+msgstr "Token do Bot"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 #: /var/azuracast/www/config/forms/webhook/telegram.php:86
 msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
-msgstr ""
+msgstr "Veja a Documentação do Telegram <a href=\"%s\" target=\"_blank\"></a> para mais detalhes."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:37
 msgid "Chat ID"
-msgstr ""
+msgstr "ID de bate-papo"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:38
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
-msgstr ""
+msgstr "Identificador único para o chat de destino ou nome de usuário do canal de destino (no formato @channelusername)."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:47
 msgid "Custom API Base URL"
-msgstr ""
+msgstr "URL Base da API Personalizada"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:49
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
@@ -2486,7 +2486,7 @@ msgstr "Deixe em branco para usar a URL padrão da API do Telegram (recomendado)
 #: /var/azuracast/www/config/forms/webhook/discord.php:37
 #: /var/azuracast/www/config/forms/webhook/generic.php:62
 msgid "Web Hook Triggers"
-msgstr ""
+msgstr "Gatilhos de Hook Web"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:67
 #: /var/azuracast/www/config/forms/webhook/discord.php:47
@@ -2542,15 +2542,22 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below."
-msgstr ""
+msgstr "Etapas para configurar um aplicativo de Twitter:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>criar um app novo sobre o <a href=\"%s\" target=\"_blank\">aplicações twitter - site</a>. \n"
+"                    utilize URL de base desta instalação como a URL do aplicativo.</li>\n"
+"                    <li>no aplicativo recém-criado, clique em \"Chaves e Tokens de acesso\" Tab.</li>\n"
+"                    <li>na parte inferior da página, clique em \"Criar meu token de acesso\".</li>\n"
+"                </ol>\n"
+"                uma vez que estas etapas são concluídas, insira as informações a partir da página de \"Chaves e Tokens de acesso\" nos campos abaixo."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:28
 msgid "Consumer Key (API Key)"
-msgstr ""
+msgstr "Chave do consumidor (Chave API)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:37
 msgid "Consumer Secret (API Secret)"
-msgstr ""
+msgstr "Consumidor Secreto (API Secreta)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:46
 msgid "Access Token"
@@ -2558,7 +2565,7 @@ msgstr "Token de acesso"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:55
 msgid "Access Token Secret"
-msgstr ""
+msgstr "Token Secreto de Acesso"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:65
 #: /var/azuracast/www/config/forms/webhook/generic.php:12
@@ -2901,7 +2908,7 @@ msgstr "Excluir rádio \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr ""
+msgstr "Excluir campo personalizado \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:33
 #: /var/azuracast/www/templates/frontend/account/login.phtml:3
@@ -2935,11 +2942,11 @@ msgstr "Lista de reprodução:"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Apagar o item selecionado?"
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:25
 msgid "Cued On"
-msgstr ""
+msgstr "Escuta Ligada"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:4
 msgid "Reorder Playlist"
@@ -3005,7 +3012,7 @@ msgstr "Exportar %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Song-based"
-msgstr ""
+msgstr "Baseado na canção"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:83
 msgid "Auto-Assigned"
@@ -3274,7 +3281,7 @@ msgstr "Desativar transmissão da Estação"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "Sua estação não está atualmente ativada para transmissão. Você ainda pode gerenciar mídias, listas de reprodução e outras configurações de estação. Para reativar a transmissão, <a href=\"%s\">edite seu perfil de estação</a>."
 
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:87
 msgid "Running"
@@ -3303,7 +3310,7 @@ msgstr "Iniciar transmissão"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:97
 msgid "Unique"
-msgstr ""
+msgstr "Único"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:108
 msgid "Skip Song"
@@ -3325,7 +3332,7 @@ msgstr "Copiar para área de transferência"
 #: /var/azuracast/www/templates/stations/profile/index.phtml:171
 #: /var/azuracast/www/templates/stations/profile/index.phtml:187
 msgid "<a href=\"%s\">Edit station profile</a> to enable."
-msgstr ""
+msgstr "<a href=\"%s\">Alterar perfil da estação</a> para ativar."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:179
 msgid "Streamers/DJs"
@@ -3373,7 +3380,7 @@ msgstr "IceCast (serviço de transmissão)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:286
 msgid "SHOUTcast DNAS 2 (Broadcasting Service)"
-msgstr ""
+msgstr "SHOUTcast DNAS 2 (Serviço de Transmissão)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:289
 #: /var/azuracast/www/templates/stations/profile/index.phtml:362
@@ -3838,83 +3845,83 @@ msgstr "Controle de Volume"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"
-msgstr ""
+msgstr "Lista de reprodução 1"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:15
 msgid "Playlist 2"
-msgstr ""
+msgstr "Lista de reprodução 2"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:18
 msgid "Encoder"
-msgstr ""
+msgstr "Codificador"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:19
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:20
 msgid "Raw"
-msgstr ""
+msgstr "Sem tratamento"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
-msgstr ""
+msgstr "Taxa de amostragem"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:22
 msgid "Bit Rate"
-msgstr ""
+msgstr "Taxa de bits"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:23
 msgid "DJ Credentials"
-msgstr ""
+msgstr "Credenciais do DJ"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:26
 msgid "Use Asynchronous Worker"
-msgstr ""
+msgstr "Use o trabalhador assíncrono"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:29
 msgid "Continuous Play"
-msgstr ""
+msgstr "Reprodução contínua"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:30
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Repetir lista"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:31
 msgid "Microphone Source"
-msgstr ""
+msgstr "Fonte do microfone"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:34
 msgid "Start Streaming"
-msgstr ""
+msgstr "Iniciar Transmissão"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:35
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Parar transmissão"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:36
 msgid "Cue"
-msgstr ""
+msgstr "Escuta"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:37
 msgid "Update Metadata"
-msgstr ""
+msgstr "Atualizar Metadados"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:40
 msgid "Add Files to Playlist"
-msgstr ""
+msgstr "Adicionar Arquivos à Playlist"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:41
 msgid "Unknown Title"
-msgstr ""
+msgstr "Título Desconhecido"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:42
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Artista Desconhecido"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:13
 msgid "Album Cover"
-msgstr ""
+msgstr "Capa do Álbum"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:40
 #: /var/azuracast/www/templates/frontend/public/index.phtml:58

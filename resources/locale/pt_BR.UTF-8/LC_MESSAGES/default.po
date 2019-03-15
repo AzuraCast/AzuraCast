@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 14:30\n"
+"PO-Revision-Date: 2019-03-15 14:40\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -479,11 +479,11 @@ msgstr "Configuração do Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
 msgid "Icecast Access Log"
-msgstr "Log de acesso do Icecast"
+msgstr "Registro de acesso do Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:107
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Registro de Erro do Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:112
 msgid "Icecast Configuration"
@@ -594,7 +594,7 @@ msgstr "Você pode agora configurar as contas para os streamers (DJ)."
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:139
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr ""
+msgstr "Transmissor"
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:51
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:43
@@ -620,11 +620,11 @@ msgstr "Formato"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:245
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Playlist ativada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:246
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Playlist desativada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:289
 msgid "Existing playlist imported."
@@ -665,7 +665,7 @@ msgstr "Renomear arquivo/diretório"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:204
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Esta rádio ultrapassou o espaço disponível em disco."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
 #: /var/azuracast/www/templates/stations/files/index.phtml:165
@@ -697,7 +697,7 @@ msgstr "Outro usuário já utiliza este endereço de e-mail. Por favor, atualize
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:94
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "Você não pode excluir a própria conta."
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
 msgid "AzuraCast Application Log"
@@ -717,7 +717,7 @@ msgstr "Log de aplicação do PHP"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:92
 msgid "Supervisord Log"
-msgstr ""
+msgstr "Registro do Supervisor"
 
 #: /var/azuracast/www/src/Controller/Admin/Stations/CloneController.php:149
 msgid "Clone Station: %s"
@@ -725,7 +725,7 @@ msgstr "Clonar estação: %s"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "SHOUTcast versão \"%s\" está instalado."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:69
@@ -753,12 +753,12 @@ msgstr "Permissão"
 #: /var/azuracast/www/src/Http/ErrorHandler.php:92
 #: /var/azuracast/www/src/Http/ErrorHandler.php:101
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Você precisa estar logado para acessar esta página."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:113
 #: /var/azuracast/www/src/Http/ErrorHandler.php:122
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "Você não tem permissão para acessar essa área do site."
 
 #: /var/azuracast/www/src/Sync/Runner.php:162
 #: /var/azuracast/www/src/Sync/Runner.php:165
@@ -795,19 +795,19 @@ msgstr "Limpeza"
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "Seu arquivo <code>docker-compose.yml</code> está desatualizado!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "Você deve atualizar seu arquivo <code>docker-compose.yml</code> para receber as novas alterações. Veja a <a href=\"%s\" target=\"_blank\"> última versão do arquivo </a> e atualize seu arquivo adequadamente. <br> Você também pode usar o script de utilitário <code>./docker.sh</code> para atualizar automaticamente seu arquivo."
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Siga as <a href=\"%s\" target=\"_blank\"> instruções de atualização </a> para atualizar sua instalação."
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "O AzuraCast <a href=\"%s\" target=\"_blank\"> versão %s </a> já está disponível."
 
 #: /var/azuracast/www/src/Notification/Manager.php:106
 msgid "You are currently running version %s. Updating is highly recommended."
@@ -961,7 +961,7 @@ msgstr "Manutenção do sistema"
 #: /var/azuracast/www/config/menus/admin.php:22
 #: /var/azuracast/www/templates/admin/branding/index.phtml:8
 msgid "Custom Branding"
-msgstr ""
+msgstr "Marca personalizada"
 
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
@@ -1686,12 +1686,12 @@ msgstr "Descrição"
 #: /var/azuracast/www/config/forms/station.php:43
 #: /var/azuracast/www/templates/stations/profile/index.phtml:147
 msgid "Genre"
-msgstr ""
+msgstr "Gênero"
 
 #: /var/azuracast/www/config/forms/station.php:50
 #: /var/azuracast/www/templates/stations/profile/index.phtml:153
 msgid "Web Site URL"
-msgstr ""
+msgstr "Endereço do Site"
 
 #: /var/azuracast/www/config/forms/station.php:51
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."

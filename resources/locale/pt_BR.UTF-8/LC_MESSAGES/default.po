@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 14:50\n"
+"PO-Revision-Date: 2019-03-15 15:00\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1909,15 +1909,15 @@ msgstr "Se desativado, a estação não será transmitido ou embaralhe seu AutoD
 
 #: /var/azuracast/www/config/forms/station.php:369
 msgid "Storage Quota"
-msgstr ""
+msgstr "Espaço em disco"
 
 #: /var/azuracast/www/config/forms/station.php:370
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr ""
+msgstr "Defina um espaço em disco máximo que esta estação possa usar. Especifique o tamanho com a unidade, ou seja, \"8 GB\". Unidades são medidas em 1024 bytes. Deixe em branco para o padrão para o espaço disponível no disco."
 
 #: /var/azuracast/www/config/forms/station.php:377
 msgid "Base Station Directory"
-msgstr ""
+msgstr "Diretório da Estação Base"
 
 #: /var/azuracast/www/config/forms/station.php:379
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
@@ -2191,7 +2191,7 @@ msgstr "Se a autoatribuição estiver habilitada, use essa playlist como um font
 
 #: /var/azuracast/www/config/forms/playlist.php:225
 msgid "Customize Schedule"
-msgstr ""
+msgstr "Configurar Programação"
 
 #: /var/azuracast/www/config/forms/playlist.php:232
 msgid "Start Time"
@@ -2208,47 +2208,47 @@ msgstr "Se a hora de término for menor que a hora de início, a playlist irá r
 #: /var/azuracast/www/config/forms/playlist.php:250
 #: /var/azuracast/www/config/forms/playlist.php:322
 msgid "Scheduled Play Days of Week"
-msgstr ""
+msgstr "Programar por Dias da Semana"
 
 #: /var/azuracast/www/config/forms/playlist.php:251
 #: /var/azuracast/www/config/forms/playlist.php:323
 msgid "Leave blank to play on every day of the week."
-msgstr ""
+msgstr "Deixe em branco para tocar todos os dias da semana."
 
 #: /var/azuracast/www/config/forms/playlist.php:253
 #: /var/azuracast/www/config/forms/playlist.php:325
 msgid "Monday"
-msgstr ""
+msgstr "Segunda-feira"
 
 #: /var/azuracast/www/config/forms/playlist.php:254
 #: /var/azuracast/www/config/forms/playlist.php:326
 msgid "Tuesday"
-msgstr ""
+msgstr "Terça-feira"
 
 #: /var/azuracast/www/config/forms/playlist.php:255
 #: /var/azuracast/www/config/forms/playlist.php:327
 msgid "Wednesday"
-msgstr ""
+msgstr "Quarta-feira"
 
 #: /var/azuracast/www/config/forms/playlist.php:256
 #: /var/azuracast/www/config/forms/playlist.php:328
 msgid "Thursday"
-msgstr ""
+msgstr "Quinta-feira"
 
 #: /var/azuracast/www/config/forms/playlist.php:257
 #: /var/azuracast/www/config/forms/playlist.php:329
 msgid "Friday"
-msgstr ""
+msgstr "Sexta-feira"
 
 #: /var/azuracast/www/config/forms/playlist.php:258
 #: /var/azuracast/www/config/forms/playlist.php:330
 msgid "Saturday"
-msgstr ""
+msgstr "Sábado"
 
 #: /var/azuracast/www/config/forms/playlist.php:259
 #: /var/azuracast/www/config/forms/playlist.php:331
 msgid "Sunday"
-msgstr ""
+msgstr "Domingo"
 
 #: /var/azuracast/www/config/forms/playlist.php:275
 msgid "Number of Songs Between Plays"
@@ -2260,7 +2260,7 @@ msgstr "Essa playlist irá tocar a cada $x músicas, onde $x está especificado 
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Once per x Minutes"
-msgstr ""
+msgstr "Uma vez a cada x minutos"
 
 #: /var/azuracast/www/config/forms/playlist.php:294
 msgid "Number of Minutes Between Plays"
@@ -2276,32 +2276,32 @@ msgstr "Hora de reprodução agendada"
 
 #: /var/azuracast/www/config/forms/custom_field.php:10
 msgid "Field Name"
-msgstr ""
+msgstr "Nome do campo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:11
 msgid "This will be used as the label when editing individual songs, and will show in API results."
-msgstr ""
+msgstr "Isso será usado como rótulo ao editar músicas individuais e será exibido nos resultados da API."
 
 #: /var/azuracast/www/config/forms/custom_field.php:18
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:24
 msgid "Programmatic Name"
-msgstr ""
+msgstr "Nome programático"
 
 #: /var/azuracast/www/config/forms/custom_field.php:19
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
-msgstr ""
+msgstr "Opcionalmente, especifique um nome amigável à API, como <code>field_name</code>. Deixe este campo em branco para criar automaticamente baseado no nome."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:10
 msgid "Code from Authenticator App"
-msgstr ""
+msgstr "Código do Aplicativo Autenticador"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
-msgstr ""
+msgstr "Digite o código atual fornecido pelo seu aplicativo autenticador para verificar se ele está funcionando corretamente."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:21
 msgid "Verify Authenticator"
-msgstr ""
+msgstr "Verificar Autenticador"
 
 #: /var/azuracast/www/config/forms/station_clone.php:9
 msgid "New Station Details"
@@ -2362,7 +2362,7 @@ msgstr "Criar nova estação"
 
 #: /var/azuracast/www/config/forms/media.php:8
 msgid "Song Metadata"
-msgstr ""
+msgstr "Metadados de músicas"
 
 #: /var/azuracast/www/config/forms/media.php:35
 msgid "Song Album"
@@ -2370,7 +2370,7 @@ msgstr "Álbum"
 
 #: /var/azuracast/www/config/forms/media.php:42
 msgid "Song Lyrics"
-msgstr ""
+msgstr "Letra da música"
 
 #: /var/azuracast/www/config/forms/media.php:49
 msgid "Replace Album Cover Art"

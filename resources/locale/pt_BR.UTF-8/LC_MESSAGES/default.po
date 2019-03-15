@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 16:00\n"
+"PO-Revision-Date: 2019-03-15 16:10\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -827,7 +827,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Você deve atualizar para tirar proveito das correções de erros e segurança."
 
 #: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
@@ -835,19 +835,19 @@ msgstr ""
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Iniciar Rádio"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Pronto para iniciar a transmissão? Clique para iniciar sua rádio."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Reiniciar para Aplicar Alterações"
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Clique para reiniciar sua estação e aplicar alterações de configuração."
 
 #: /var/azuracast/www/config/menus/station.php:39
 msgid "Public Page"
@@ -948,7 +948,7 @@ msgstr "Visualizador de registro"
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "Fila das próximas músicas"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
@@ -966,7 +966,7 @@ msgstr "Marca personalizada"
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "Registros do Sistema"
 
 #: /var/azuracast/www/config/menus/admin.php:43
 #: /var/azuracast/www/templates/admin/users/index.phtml:1
@@ -976,7 +976,7 @@ msgstr "Contas de usuário"
 
 #: /var/azuracast/www/config/forms/branding.php:12
 msgid "Base Theme for Public Pages"
-msgstr ""
+msgstr "Tema base para Páginas Públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:13
 msgid "Select a theme to use as a base for station public pages and the login page."
@@ -985,26 +985,26 @@ msgstr "Selecione um tema para usar com base para a página publica da estação
 #: /var/azuracast/www/config/forms/branding.php:15
 #: /var/azuracast/www/config/forms/profile.php:103
 msgid "Light"
-msgstr ""
+msgstr "Claro"
 
 #: /var/azuracast/www/config/forms/branding.php:15
 #: /var/azuracast/www/config/forms/profile.php:103
 #: /var/azuracast/www/config/forms/playlist.php:87
 msgid "Default"
-msgstr ""
+msgstr "Padrão"
 
 #: /var/azuracast/www/config/forms/branding.php:16
 #: /var/azuracast/www/config/forms/profile.php:104
 msgid "Dark"
-msgstr ""
+msgstr "Escuro"
 
 #: /var/azuracast/www/config/forms/branding.php:25
 msgid "Hide Album Art on Public Pages"
-msgstr ""
+msgstr "Esconder a capa do álbum em páginas públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:26
 msgid "If selected, album art will not display on public-facing radio pages."
-msgstr ""
+msgstr "Se selecionado, a capa do álbum não exibirá nas páginas de rádio voltado para o público."
 
 #: /var/azuracast/www/config/forms/branding.php:27
 #: /var/azuracast/www/config/forms/branding.php:56
@@ -1064,39 +1064,39 @@ msgstr "Não"
 
 #: /var/azuracast/www/config/forms/branding.php:36
 msgid "Homepage Redirect URL"
-msgstr ""
+msgstr "URL de redirecionamento da página inicial"
 
 #: /var/azuracast/www/config/forms/branding.php:37
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
-msgstr ""
+msgstr "Se um visitante não estiver logado e visitar a página inicial do AzuraCast, você pode redirecionar automaticamente para a URL especificada aqui. Deixe em branco para redirecionar para a tela de login por padrão."
 
 #: /var/azuracast/www/config/forms/branding.php:45
 msgid "Default Album Art URL"
-msgstr ""
+msgstr "URL padrão da capa do álbum"
 
 #: /var/azuracast/www/config/forms/branding.php:46
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
-msgstr ""
+msgstr "Se uma música não tem capa do álbum, esta URL será listada em vez disso. Deixe em branco para usar a arte padrão do placeholder."
 
 #: /var/azuracast/www/config/forms/branding.php:54
 msgid "Hide AzuraCast Branding on Public Pages"
-msgstr ""
+msgstr "Esconder a marca AzuraCast em páginas públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:55
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
-msgstr ""
+msgstr "Se selecionado, isto irá remover a marca AzuraCast de páginas voltadas para o público."
 
 #: /var/azuracast/www/config/forms/branding.php:65
 msgid "Custom CSS for Public Pages"
-msgstr ""
+msgstr "CSS personalizado para páginas públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:66
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Este CSS será aplicado às páginas públicas da rádio e na página de login."
 
 #: /var/azuracast/www/config/forms/branding.php:76
 msgid "Custom JS for Public Pages"
-msgstr ""
+msgstr "JS personalizado para páginas públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:77
 msgid "This javascript code will be applied to the station public pages and login page."

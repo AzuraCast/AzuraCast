@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 16:20\n"
+"PO-Revision-Date: 2019-03-15 16:30\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2507,31 +2507,31 @@ msgstr "Conteúdo da página principal"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:77
 #: /var/azuracast/www/config/forms/webhook/twitter.php:94
 msgid "Now playing on %s: %s by %s! Tune in now."
-msgstr ""
+msgstr "Agora tocando em %s: %s por %s! Escute agora."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:85
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Modo de análise de mensagens"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:23
 msgid "TuneIn Partner ID"
-msgstr ""
+msgstr "ID do parceiro do TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:32
 msgid "TuneIn Partner Key"
-msgstr ""
+msgstr "Chave do parceiro do TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:41
 msgid "TuneIn Station ID"
-msgstr ""
+msgstr "ID da Estação de TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:42
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr ""
+msgstr "O ID da estação será uma string numérica que começa com a letra S."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:12
 msgid "Twitter Account Details"
-msgstr ""
+msgstr "Detalhes da Conta do Twitter"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Steps for configuring a Twitter application:<br>\n"
@@ -2554,7 +2554,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:46
 msgid "Access Token"
-msgstr ""
+msgstr "Token de acesso"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:55
 msgid "Access Token Secret"
@@ -2583,7 +2583,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:57
 msgid "Now playing on %s:"
-msgstr ""
+msgstr "Tocando agora em %s:"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:64
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:23
@@ -2601,21 +2601,21 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:91
 msgid "Author Name"
-msgstr ""
+msgstr "Nome do Autor"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Thumbnail Image URL"
-msgstr ""
+msgstr "URL da miniatura da imagem"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:109
 msgid "Footer Text"
-msgstr ""
+msgstr "Texto do rodapé"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:111
 #: /var/azuracast/www/templates/minimal.phtml:45
 #: /var/azuracast/www/templates/main.phtml:150
 msgid "Powered by %s"
-msgstr ""
+msgstr "Desenvolvido por %s"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:13
 msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
@@ -2671,7 +2671,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Enviar automaticamente uma mensagem personalizada para o seu servidor do Discord."
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
@@ -2834,7 +2834,7 @@ msgstr "Ações"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr ""
+msgstr "Excluir regra \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
@@ -2860,7 +2860,7 @@ msgstr "Essa função não pode ser removida."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:44
 msgid "Global"
-msgstr ""
+msgstr "Global"
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:15
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
@@ -2868,7 +2868,7 @@ msgstr "Como você está executando o Docker, alguns logs do sistema só podem s
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:30
 msgid "Logs by Station"
-msgstr ""
+msgstr "Registro por Estação"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:22
 msgid "Synchronization Tasks"
@@ -2913,7 +2913,7 @@ msgstr "Iniciar sessão"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr ""
+msgstr "Excluir usuário \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:46
 msgid "(You)"

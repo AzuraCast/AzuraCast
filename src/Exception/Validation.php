@@ -11,7 +11,7 @@ class Validation extends \Azura\Exception
     /** @var ConstraintViolationListInterface */
     protected $detailed_errors;
 
-    public function __construct(string $message = "", int $code = 0, \Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null)
     {
         if (empty($message)) {
             $message = 'Submission could not be validated.';

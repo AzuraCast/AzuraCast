@@ -55,6 +55,13 @@ abstract class AbstractCrudController
         return $return;
     }
 
+    /**
+     * Modern version of $record->toArray().
+     *
+     * @param $record
+     * @param array $context
+     * @return array|mixed
+     */
     protected function _normalizeRecord($record, array $context = [])
     {
         return $this->serializer->normalize($record, null, array_merge($context, [
@@ -108,6 +115,10 @@ abstract class AbstractCrudController
      */
     protected function _editRecord($data, $record = null): object
     {
+        if (null === $data) {
+            throw new \InvalidArgumentException('Could not parse input data.');
+        }
+
         $record = $this->_denormalizeToRecord($data, $record);
 
         $errors = $this->validator->validate($record);
@@ -124,6 +135,8 @@ abstract class AbstractCrudController
     }
 
     /**
+     * Modern equivalent of $object->fromArray($data).
+     *
      * @param array $data
      * @param object|null $record
      * @param array $context

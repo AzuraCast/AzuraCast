@@ -96,23 +96,6 @@ abstract class AbstractCrudController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function _createRecord($data, $record = null): object
-    {
-        if (null === $record) {
-            $record = new $this->entityClass();
-        }
-
-        return $this->_editRecord($data, $record);
-    }
-
-    /**
-     * @param array $data
-     * @param object|null $record
-     * @return object
-     * @throws \App\Exception\Validation
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     protected function _editRecord($data, $record = null): object
     {
         if (null === $data) {

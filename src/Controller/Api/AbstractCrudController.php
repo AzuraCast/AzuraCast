@@ -108,10 +108,6 @@ abstract class AbstractCrudController
      */
     protected function _editRecord($data, $record = null): object
     {
-        if (!($record instanceof $this->entityClass)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         $record = $this->_denormalizeToRecord($data, $record);
 
         $errors = $this->validator->validate($record);

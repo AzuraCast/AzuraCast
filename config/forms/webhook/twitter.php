@@ -10,15 +10,15 @@ return [
 
         'api_info' => [
             'legend' => __('Twitter Account Details'),
-            'description' => sprintf(__('Steps for configuring a Twitter application:<br>
+            'description' => __('Steps for configuring a Twitter application:<br>
                 <ol type="1">
                     <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>. 
                     Use this installation\'s base URL as the application URL.</li>
                     <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
                     <li>At the bottom of the page, click "Create my access token".</li>
                 </ol>
-                Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.'),
-                'https://apps.twitter.com/'),
+                Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.',
+                'https://developer.twitter.com/en/apps'),
 
             'elements' => [
 

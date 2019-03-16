@@ -105,7 +105,7 @@ class Dispatcher implements EventSubscriberInterface
             $connector_obj = $this->connectors->get($connector->getType());
 
             if ($connector_obj->shouldDispatch($event, $connector)) {
-                $this->logger->debug(sprintf('Dispatching connector "%s".', $connector['type']));
+                $this->logger->debug(sprintf('Dispatching connector "%s".', $connector->getType()));
 
                 $connector_obj->dispatch($event, $connector);
             }

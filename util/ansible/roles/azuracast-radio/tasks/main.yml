@@ -39,12 +39,10 @@
       path: /var/azuracast/.opam
       state: absent
 
-  - name: Install OPAM Binary
-    get_url:
-      url: https://github.com/ocaml/opam/releases/download/2.0.3/opam-2.0.3-x86_64-linux
-      dest: "/usr/bin/opam"
-      force: yes
-      mode: 0755
+  - name: Add OPAM/OCaml Repository
+    apt_repository:
+      repo: "ppa:avsm/ppa"
+      update_cache: yes
 
   - name: Install Liquidsoap Dependencies
     apt:
@@ -53,6 +51,8 @@
       install_recommends: no
     vars:
       packages:
+       - opam
+       - ocaml
        - libfaad-dev
        - libfdk-aac-dev
        - libflac-dev
@@ -67,10 +67,11 @@
        - m4
        - pkg-config
        - unzip
+       - bubblewrap
 
   - name: Build and Install Liquidsoap (This process takes some time)
     become_user: azuracast
-    shell: "opam init --disable-sandboxing -a && opam install -y taglib.0.3.3 mad.0.4.5 faad.0.4.0 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.1 cry.0.6.0 flac.0.1.4 opus.0.1.2 duppy.0.8.0 ssl liquidsoap.1.3.6"
+    shell: "opam init -a && opam install -y taglib.0.3.3 mad.0.4.5 faad.0.4.0 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.1 cry.0.6.0 flac.0.1.4 opus.0.1.2 duppy.0.8.0 ssl liquidsoap.1.3.6"
     args:
       chdir: "{{ app_base }}"
       executable: "bash" # Fixes a hanging issue.

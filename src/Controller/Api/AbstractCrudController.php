@@ -58,7 +58,7 @@ abstract class AbstractCrudController
     /**
      * Modern version of $record->toArray().
      *
-     * @param $record
+     * @param object $record
      * @param array $context
      * @return array|mixed
      */

@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-03-14T08:47:26+00:00\n"
-"PO-Revision-Date: 2019-03-15 19:00\n"
+"POT-Creation-Date: 2019-03-16T09:28:25+00:00\n"
+"PO-Revision-Date: 2019-03-16 09:31\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -549,7 +549,7 @@ msgstr "Ponto de montagem"
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:220
 #: /var/azuracast/www/config/forms/webhook/telegram.php:18
 #: /var/azuracast/www/config/forms/webhook/tunein.php:14
-#: /var/azuracast/www/config/forms/webhook/twitter.php:73
+#: /var/azuracast/www/config/forms/webhook/twitter.php:94
 #: /var/azuracast/www/config/forms/webhook/discord.php:18
 #: /var/azuracast/www/config/forms/webhook/generic.php:25
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
@@ -1027,7 +1027,8 @@ msgstr "Se selecionado, a capa do álbum não exibirá nas páginas de rádio vo
 #: /var/azuracast/www/config/forms/station.php:360
 #: /var/azuracast/www/config/forms/playlist.php:71
 #: /var/azuracast/www/config/forms/playlist.php:151
-#: /var/azuracast/www/config/forms/playlist.php:215
+#: /var/azuracast/www/config/forms/playlist.php:162
+#: /var/azuracast/www/config/forms/playlist.php:226
 #: /var/azuracast/www/config/forms/station_clone.php:56
 #: /var/azuracast/www/config/forms/station_clone.php:68
 #: /var/azuracast/www/config/forms/station_clone.php:81
@@ -1055,7 +1056,8 @@ msgstr "Sim"
 #: /var/azuracast/www/config/forms/station.php:361
 #: /var/azuracast/www/config/forms/playlist.php:72
 #: /var/azuracast/www/config/forms/playlist.php:152
-#: /var/azuracast/www/config/forms/playlist.php:216
+#: /var/azuracast/www/config/forms/playlist.php:163
+#: /var/azuracast/www/config/forms/playlist.php:227
 #: /var/azuracast/www/config/forms/station_clone.php:55
 #: /var/azuracast/www/config/forms/station_clone.php:67
 #: /var/azuracast/www/config/forms/station_clone.php:80
@@ -1124,12 +1126,12 @@ msgstr "Este CSS será aplicado às principais páginas de gerenciamento, como e
 #: /var/azuracast/www/config/forms/song.php:47
 #: /var/azuracast/www/config/forms/profile.php:119
 #: /var/azuracast/www/config/forms/user.php:46
-#: /var/azuracast/www/config/forms/playlist.php:346
+#: /var/azuracast/www/config/forms/playlist.php:357
 #: /var/azuracast/www/config/forms/custom_field.php:27
 #: /var/azuracast/www/config/forms/media.php:139
 #: /var/azuracast/www/config/forms/webhook/telegram.php:105
 #: /var/azuracast/www/config/forms/webhook/tunein.php:52
-#: /var/azuracast/www/config/forms/webhook/twitter.php:108
+#: /var/azuracast/www/config/forms/webhook/twitter.php:129
 #: /var/azuracast/www/config/forms/webhook/discord.php:125
 #: /var/azuracast/www/config/forms/webhook/generic.php:78
 msgid "Save Changes"
@@ -1409,7 +1411,7 @@ msgstr "Permitir o sistema automaticamente e periodicamente atribuir músicas à
 
 #: /var/azuracast/www/config/forms/automation.php:14
 #: /var/azuracast/www/config/forms/station.php:82
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:88
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:91
 #: /var/azuracast/www/templates/stations/profile/index.phtml:169
 #: /var/azuracast/www/templates/stations/profile/index.phtml:185
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:43
@@ -2064,7 +2066,7 @@ msgid "A playlist containing media files hosted on this server."
 msgstr "Uma lista de reprodução contendo arquivos de mídia hospedados neste servidor."
 
 #: /var/azuracast/www/config/forms/playlist.php:100
-#: /var/azuracast/www/config/forms/playlist.php:179
+#: /var/azuracast/www/config/forms/playlist.php:190
 msgid "Remote URL Playlist"
 msgstr "Lista de reprodução de URL remota"
 
@@ -2078,8 +2080,8 @@ msgid "Scheduling"
 msgstr "Agendamento"
 
 #: /var/azuracast/www/config/forms/playlist.php:112
-#: /var/azuracast/www/config/forms/playlist.php:206
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:90
+#: /var/azuracast/www/config/forms/playlist.php:217
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:93
 msgid "General Rotation"
 msgstr "Rotação Geral"
 
@@ -2088,7 +2090,7 @@ msgid "Plays all day, shuffles with other standard playlists based on weight."
 msgstr "Toca o dia todo, embaralha com outras playlists padrão com base no peso."
 
 #: /var/azuracast/www/config/forms/playlist.php:113
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:93
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:96
 msgid "Scheduled"
 msgstr "Agendado"
 
@@ -2097,7 +2099,7 @@ msgid "Play during a scheduled time range. Useful for mood-based time playlists.
 msgstr "Toca durante um intervalo de tempo programado. Útil para listas de reprodução baseadas em período de tempo (manhã, tarde, noite)."
 
 #: /var/azuracast/www/config/forms/playlist.php:114
-#: /var/azuracast/www/config/forms/playlist.php:268
+#: /var/azuracast/www/config/forms/playlist.php:279
 msgid "Once per x Songs"
 msgstr "Uma vez a cada x músicas"
 
@@ -2114,7 +2116,7 @@ msgid "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
 msgstr "Reproduz exatamente a cada <i>X</i> minutos. Útil para vinhetas/jingles da estação."
 
 #: /var/azuracast/www/config/forms/playlist.php:116
-#: /var/azuracast/www/config/forms/playlist.php:306
+#: /var/azuracast/www/config/forms/playlist.php:317
 msgid "Daily"
 msgstr "Diário"
 
@@ -2144,133 +2146,141 @@ msgid "Random"
 msgstr "Aleatória"
 
 #: /var/azuracast/www/config/forms/playlist.php:140
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:80
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:82
 msgid "Sequential"
 msgstr "Sequencial"
 
 #: /var/azuracast/www/config/forms/playlist.php:149
+msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/playlist.php:150
+msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/playlist.php:160
 msgid "Allow Requests from This Playlist"
 msgstr "Permitir solicitações desta lista de reprodução"
 
-#: /var/azuracast/www/config/forms/playlist.php:150
+#: /var/azuracast/www/config/forms/playlist.php:161
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
 msgstr "Se as solicitações estiverem ativadas para sua estação, os usuários poderão solicitar a mídia que está nessa lista de reprodução."
 
-#: /var/azuracast/www/config/forms/playlist.php:160
+#: /var/azuracast/www/config/forms/playlist.php:171
 msgid "Import Existing Playlist"
 msgstr "Importar playlist existente"
 
-#: /var/azuracast/www/config/forms/playlist.php:161
+#: /var/azuracast/www/config/forms/playlist.php:172
 msgid "Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported."
 msgstr "Selecione um arquivo de playlist existente para adicionar seu conteúdo a esta playlist. PLS e M3U são suportados."
 
-#: /var/azuracast/www/config/forms/playlist.php:186
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:78
+#: /var/azuracast/www/config/forms/playlist.php:197
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:77
 msgid "Remote URL"
 msgstr "URL remoto"
 
-#: /var/azuracast/www/config/forms/playlist.php:193
+#: /var/azuracast/www/config/forms/playlist.php:204
 msgid "Remote URL Type"
 msgstr "Tipo de URL Remoto"
 
-#: /var/azuracast/www/config/forms/playlist.php:196
+#: /var/azuracast/www/config/forms/playlist.php:207
 msgid "Direct Stream URL"
 msgstr "URL de transmissão direta"
 
-#: /var/azuracast/www/config/forms/playlist.php:197
+#: /var/azuracast/www/config/forms/playlist.php:208
 msgid "Playlist (M3U/PLS) URL"
 msgstr "URL da lista de reprodução (M3U/PLS)"
 
-#: /var/azuracast/www/config/forms/playlist.php:213
+#: /var/azuracast/www/config/forms/playlist.php:224
 msgid "Include in Automated Assignment"
 msgstr "Incluir na atribuição automatizada"
 
-#: /var/azuracast/www/config/forms/playlist.php:214
+#: /var/azuracast/www/config/forms/playlist.php:225
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
 msgstr "Se a autoatribuição estiver habilitada, use essa playlist como um fonte para que as músicas sejam redistribuídas nela. Isso irá substituir o conteúdo existente desta playlist."
 
-#: /var/azuracast/www/config/forms/playlist.php:225
+#: /var/azuracast/www/config/forms/playlist.php:236
 msgid "Customize Schedule"
 msgstr "Configurar Programação"
 
-#: /var/azuracast/www/config/forms/playlist.php:232
+#: /var/azuracast/www/config/forms/playlist.php:243
 msgid "Start Time"
 msgstr "Hora de início"
 
-#: /var/azuracast/www/config/forms/playlist.php:241
+#: /var/azuracast/www/config/forms/playlist.php:252
 msgid "End Time"
 msgstr "Hora de término"
 
-#: /var/azuracast/www/config/forms/playlist.php:242
+#: /var/azuracast/www/config/forms/playlist.php:253
 msgid "If the end time is before the start time, the playlist will play overnight until this time on the next day."
 msgstr "Se a hora de término for menor que a hora de início, a playlist irá reproduzir durante à noite até este horário no dia seguinte."
 
-#: /var/azuracast/www/config/forms/playlist.php:250
-#: /var/azuracast/www/config/forms/playlist.php:322
+#: /var/azuracast/www/config/forms/playlist.php:261
+#: /var/azuracast/www/config/forms/playlist.php:333
 msgid "Scheduled Play Days of Week"
 msgstr "Programar por Dias da Semana"
 
-#: /var/azuracast/www/config/forms/playlist.php:251
-#: /var/azuracast/www/config/forms/playlist.php:323
+#: /var/azuracast/www/config/forms/playlist.php:262
+#: /var/azuracast/www/config/forms/playlist.php:334
 msgid "Leave blank to play on every day of the week."
 msgstr "Deixe em branco para tocar todos os dias da semana."
 
-#: /var/azuracast/www/config/forms/playlist.php:253
-#: /var/azuracast/www/config/forms/playlist.php:325
+#: /var/azuracast/www/config/forms/playlist.php:264
+#: /var/azuracast/www/config/forms/playlist.php:336
 msgid "Monday"
 msgstr "Segunda-feira"
 
-#: /var/azuracast/www/config/forms/playlist.php:254
-#: /var/azuracast/www/config/forms/playlist.php:326
+#: /var/azuracast/www/config/forms/playlist.php:265
+#: /var/azuracast/www/config/forms/playlist.php:337
 msgid "Tuesday"
 msgstr "Terça-feira"
 
-#: /var/azuracast/www/config/forms/playlist.php:255
-#: /var/azuracast/www/config/forms/playlist.php:327
+#: /var/azuracast/www/config/forms/playlist.php:266
+#: /var/azuracast/www/config/forms/playlist.php:338
 msgid "Wednesday"
 msgstr "Quarta-feira"
 
-#: /var/azuracast/www/config/forms/playlist.php:256
-#: /var/azuracast/www/config/forms/playlist.php:328
+#: /var/azuracast/www/config/forms/playlist.php:267
+#: /var/azuracast/www/config/forms/playlist.php:339
 msgid "Thursday"
 msgstr "Quinta-feira"
 
-#: /var/azuracast/www/config/forms/playlist.php:257
-#: /var/azuracast/www/config/forms/playlist.php:329
+#: /var/azuracast/www/config/forms/playlist.php:268
+#: /var/azuracast/www/config/forms/playlist.php:340
 msgid "Friday"
 msgstr "Sexta-feira"
 
-#: /var/azuracast/www/config/forms/playlist.php:258
-#: /var/azuracast/www/config/forms/playlist.php:330
+#: /var/azuracast/www/config/forms/playlist.php:269
+#: /var/azuracast/www/config/forms/playlist.php:341
 msgid "Saturday"
 msgstr "Sábado"
 
-#: /var/azuracast/www/config/forms/playlist.php:259
-#: /var/azuracast/www/config/forms/playlist.php:331
+#: /var/azuracast/www/config/forms/playlist.php:270
+#: /var/azuracast/www/config/forms/playlist.php:342
 msgid "Sunday"
 msgstr "Domingo"
 
-#: /var/azuracast/www/config/forms/playlist.php:275
+#: /var/azuracast/www/config/forms/playlist.php:286
 msgid "Number of Songs Between Plays"
 msgstr "Número de músicas entre as reproduções"
 
-#: /var/azuracast/www/config/forms/playlist.php:276
+#: /var/azuracast/www/config/forms/playlist.php:287
 msgid "This playlist will play every $x songs, where $x is specified below."
 msgstr "Essa playlist irá tocar a cada $x músicas, onde $x está especificado abaixo."
 
-#: /var/azuracast/www/config/forms/playlist.php:287
+#: /var/azuracast/www/config/forms/playlist.php:298
 msgid "Once per x Minutes"
 msgstr "Uma vez a cada x minutos"
 
-#: /var/azuracast/www/config/forms/playlist.php:294
+#: /var/azuracast/www/config/forms/playlist.php:305
 msgid "Number of Minutes Between Plays"
 msgstr "Minutos entre as reproduções"
 
-#: /var/azuracast/www/config/forms/playlist.php:295
+#: /var/azuracast/www/config/forms/playlist.php:306
 msgid "This playlist will play every $x minutes, where $x is specified below."
 msgstr "Essa playlist irá tocar a cada $x minutos, onde $x está especificado abaixo."
 
-#: /var/azuracast/www/config/forms/playlist.php:313
+#: /var/azuracast/www/config/forms/playlist.php:324
 msgid "Scheduled Play Time"
 msgstr "Hora de reprodução agendada"
 
@@ -2442,7 +2452,7 @@ msgstr "Detalhes da API do Telegram"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:18
 #: /var/azuracast/www/config/forms/webhook/tunein.php:14
-#: /var/azuracast/www/config/forms/webhook/twitter.php:73
+#: /var/azuracast/www/config/forms/webhook/twitter.php:94
 #: /var/azuracast/www/config/forms/webhook/discord.php:18
 #: /var/azuracast/www/config/forms/webhook/generic.php:25
 msgid "%s Name"
@@ -2450,7 +2460,7 @@ msgstr "%s Nome"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:19
 #: /var/azuracast/www/config/forms/webhook/tunein.php:15
-#: /var/azuracast/www/config/forms/webhook/twitter.php:74
+#: /var/azuracast/www/config/forms/webhook/twitter.php:95
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:26
 msgid "Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page."
@@ -2482,7 +2492,7 @@ msgid "Leave blank to use the default Telegram API URL (recommended). Specify th
 msgstr "Deixe em branco para usar a URL padrão da API do Telegram (recomendado). Especifique a URL completa, como <code>https://api.pwrtelegram.xyz/</code>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:57
-#: /var/azuracast/www/config/forms/webhook/twitter.php:82
+#: /var/azuracast/www/config/forms/webhook/twitter.php:103
 #: /var/azuracast/www/config/forms/webhook/discord.php:37
 #: /var/azuracast/www/config/forms/webhook/generic.php:62
 msgid "Web Hook Triggers"
@@ -2494,7 +2504,7 @@ msgid "Customize Message"
 msgstr "Personalizar mensagem"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:68
-#: /var/azuracast/www/config/forms/webhook/twitter.php:66
+#: /var/azuracast/www/config/forms/webhook/twitter.php:87
 #: /var/azuracast/www/config/forms/webhook/discord.php:48
 msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
 msgstr "As variáveis estão na forma de <code>{{ var.name }}</code>. Todos os valores na resposta da API <a href=\"%s\" target=\"_blank\">Agora jogando</a> são disponíveis para uso. Quaisquer campos vazios são ignorados."
@@ -2505,7 +2515,7 @@ msgid "Main Message Content"
 msgstr "Conteúdo da página principal"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:77
-#: /var/azuracast/www/config/forms/webhook/twitter.php:94
+#: /var/azuracast/www/config/forms/webhook/twitter.php:115
 msgid "Now playing on %s: %s by %s! Tune in now."
 msgstr "Agora tocando em %s: %s por %s! Escute agora."
 
@@ -2567,12 +2577,20 @@ msgstr "Token de acesso"
 msgid "Access Token Secret"
 msgstr "Token Secreto de Acesso"
 
-#: /var/azuracast/www/config/forms/webhook/twitter.php:65
+#: /var/azuracast/www/config/forms/webhook/twitter.php:64
+msgid "Only Send One Tweet Every..."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:68
+msgid "No Limit"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:86
 #: /var/azuracast/www/config/forms/webhook/generic.php:12
 msgid "Web Hook Details"
 msgstr "Detalhes do Web Hook"
 
-#: /var/azuracast/www/config/forms/webhook/twitter.php:91
+#: /var/azuracast/www/config/forms/webhook/twitter.php:112
 msgid "Message Body"
 msgstr "Corpo da Mensagem"
 
@@ -3014,39 +3032,43 @@ msgstr "Reordenar"
 msgid "Export %s"
 msgstr "Exportar %s"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:78
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:77
 msgid "Song-based"
 msgstr "Baseado na canção"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:83
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:79
+msgid "Jingle Mode"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:85
 msgid "Auto-Assigned"
 msgstr "Autoatribuída"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:91
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:94
 msgid "Weight"
 msgstr "Peso"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:94
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:97
 msgid "Plays between %s and %s"
 msgstr "Reproduções entre %s e %s"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:96
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:99
 msgid "Once per %d Songs"
 msgstr "Uma vez a cada %d músicas"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:98
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:101
 msgid "Once per %d Minutes"
 msgstr "Uma vez a cada %d minutos"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:100
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:103
 msgid "Once per Day"
 msgstr "Uma vez ao dia"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:101
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:104
 msgid "Plays at %s"
 msgstr "Reproduzir em %s"
 
-#: /var/azuracast/www/templates/stations/playlists/index.phtml:103
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:106
 msgid "Custom"
 msgstr "Personalizado"
 

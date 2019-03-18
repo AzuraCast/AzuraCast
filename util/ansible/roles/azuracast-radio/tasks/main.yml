@@ -75,7 +75,7 @@
 
   - name: Initialize OPAM (Xenial) - This takes a while...
     become_user: azuracast
-    shell: "opam init -a --bare && opam switch create 4.06.1"
+    shell: "opam init -a --bare && opam switch create 4.05.0"
     args:
       chdir: "{{ app_base }}"
       executable: "bash" # Fixes some possible hang issues.
@@ -98,7 +98,7 @@
 
   - name: Link Liquidsoap binary (Xenial)
     file:
-      src: /var/azuracast/.opam/4.06.1/bin/liquidsoap
+      src: /var/azuracast/.opam/4.05.0/bin/liquidsoap
       dest: /usr/local/bin/liquidsoap
       state: link
       force: yes

@@ -190,6 +190,46 @@ return [
 
             'elements' => [
 
+                'crossfade_type' => [
+                    'radio',
+                    [
+                        'label' => __('Crossfade Method'),
+                        'belongsTo' => 'backend_config',
+                        'description' => __('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.'),
+                        'choices' => [
+                            \App\Radio\Backend\Liquidsoap::CROSSFADE_SMART => __('Smart Mode'),
+                            \App\Radio\Backend\Liquidsoap::CROSSFADE_NORMAL => __('Normal Mode'),
+                            \App\Radio\Backend\Liquidsoap::CROSSFADE_DISABLED => __('Disable Crossfading')
+                        ],
+                        'default' => \App\Radio\Backend\Liquidsoap::CROSSFADE_NORMAL,
+                    ]
+                ],
+
+                'crossfade' => [
+                    'number',
+                    [
+                        'label' => __('Crossfade Duration (Seconds)'),
+                        'belongsTo' => 'backend_config',
+                        'description' => __('Number of seconds to overlap songs.'),
+                        'default' => 2,
+                        'min' => '0.0',
+                        'max' => '30.0',
+                        'step' => '0.1',
+                    ]
+                ],
+
+                'nrj' => [
+                    'toggle',
+                    [
+                        'label' => __('Apply Compression and Normalization'),
+                        'belongsTo' => 'backend_config',
+                        'description' => __('Compress and normalize your station\'s audio, producing a more uniform and "full" sound.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                    ]
+                ],
+
                 'enable_requests' => [
                     'toggle',
                     [
@@ -285,6 +325,7 @@ return [
                     'radio',
                     [
                         'label' => __('Character Set Encoding'),
+                        'label_class' => 'advanced',
                         'description' => __('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.'),
                         'belongsTo' => 'backend_config',
                         'default' => 'UTF-8',
@@ -292,21 +333,7 @@ return [
                             'UTF-8' => 'UTF-8',
                             'ISO-8859-1' => 'ISO-8859-1',
                         ],
-                        'class' => 'field-advanced',
                     ],
-                ],
-
-                'crossfade' => [
-                    'number',
-                    [
-                        'label' => __('Crossfade Duration (Seconds)'),
-                        'belongsTo' => 'backend_config',
-                        'description' => __('Number of seconds to overlap songs. Set to 0 to disable crossfade completely.'),
-                        'default' => 2,
-                        'min' => '0.0',
-                        'max' => '30.0',
-                        'step' => '0.1',
-                    ]
                 ],
 
                 'use_manual_autodj' => [
@@ -330,6 +357,19 @@ return [
                         'description' => __('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'backend_config',
                         'class' => 'input-port',
+                    ]
+                ],
+
+                'enable_replaygain_metadata' => [
+                    'toggle',
+                    [
+                        'label' => __('Use Replaygain Metadata'),
+                        'label_class' => 'advanced',
+                        'belongsTo' => 'backend_config',
+                        'description' => __('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
                     ]
                 ],
 

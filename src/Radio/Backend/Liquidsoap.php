@@ -15,6 +15,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 {
+    public const CROSSFADE_DISABLED = 'none';
+    public const CROSSFADE_SMART = 'smart';
+    public const CROSSFADE_NORMAL = 'normal';
+
     /** @var AutoDJ */
     protected $autodj;
 
@@ -409,26 +413,47 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $station = $event->getStation();
         $settings = (array)$station->getBackendConfig();
 
-        // Crossfading
-        $crossfade = round($settings['crossfade'] ?? 2, 1);
-        if ($crossfade > 0) {
-            $start_next = round($crossfade * 1.5, 2);
-
-            $event->appendLines([
-                '# Crossfading',
-                'radio = crossfade(start_next=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
-            ]);
-        }
-
         $event->appendLines([
             '# Allow for Telnet-driven insertion of custom metadata.',
             'radio = server.insert_metadata(id="custom_metadata", radio)',
-        ]);
-
-        $event->appendLines([
+            '',
             '# Apply amplification metadata (if supplied)',
             'radio = amplify(1., radio)',
         ]);
+
+        // NRJ normalization
+        if (true === (bool)($settings['nrj'] ?? false)) {
+            $event->appendLines([
+                '# Normalization and Compression',
+                'radio = nrj(radio)',
+            ]);
+        }
+
+        // Replaygain metadata
+        if (true === (bool)($settings['enable_replaygain_metadata'] ?? false)) {
+            $event->appendLines([
+                '# Replaygain Metadata',
+                'enable_replaygain_metadata()',
+            ]);
+        }
+
+        // Crossfading
+        $crossfade_type = $settings['crossfade_type'] ?? self::CROSSFADE_NORMAL;
+        $crossfade = round($settings['crossfade'] ?? 2, 1);
+
+        if (self::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
+            $start_next = round($crossfade * 1.5, 2);
+
+            if (self::CROSSFADE_SMART === $crossfade_type) {
+                $crossfade_function = 'smart_crossfade';
+            } else {
+                $crossfade_function = 'crossfade';
+            }
+
+            $event->appendLines([
+                'radio = '.$crossfade_function.'(start_next=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
+            ]);
+        }
 
         // Custom configuration
         if (!empty($settings['custom_config'])) {

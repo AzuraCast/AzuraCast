@@ -1,5 +1,9 @@
 <?php
 $this->layout('main', ['title' => __('Enable Two-Factor Authentication'), 'manual' => true]);
+
+/** @var \Azura\Assets $assets */
+$assets
+    ->load('clipboard')
 ?>
 
 <div class="row">
@@ -23,7 +27,18 @@ $this->layout('main', ['title' => __('Enable Two-Factor Authentication'), 'manua
     <div class="col-4">
         <div class="card">
             <div class="card-body">
-                <?=$qr_code ?>
+                <figure>
+                    <?=$qr_code ?>
+                </figure>
+
+                <div class="d-flex">
+                    <div class="flex-fill" style="max-width: 80%">
+                        <code id="totp_uri" class="d-inline-block text-truncate" style="width: 100%;"><?=$totp_uri ?></code>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <button class="btn btn-copy btn-link btn-xs py-1 px-2" data-clipboard-target="#totp_uri"><i class="material-icons sm">file_copy</i></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

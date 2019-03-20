@@ -178,16 +178,19 @@ class ProfileController
         $totp->setParameter('image', 'https://www.azuracast.com/img/logo.png');
 
         // Generate QR code
+        $totp_uri = $totp->getProvisioningUri();
+
         $renderer = new BaconQrCode\Renderer\ImageRenderer(
             new BaconQrCode\Renderer\RendererStyle\RendererStyle(300),
             new BaconQrCode\Renderer\Image\SvgImageBackEnd()
         );
         $writer = new BaconQrCode\Writer($renderer);
-        $qr_code = $writer->writeString($totp->getProvisioningUri());
+        $qr_code = $writer->writeString($totp_uri);
 
         return $request->getView()->renderToResponse($response, 'frontend/profile/enable_two_factor', [
             'form' => $form,
             'qr_code' => $qr_code,
+            'totp_uri' => $totp_uri,
         ]);
     }
 

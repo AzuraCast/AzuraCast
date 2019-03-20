@@ -2,34 +2,53 @@
 /** @var \Azura\Assets $assets */
 $assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
 ?>
-<div class="media media-left" id="station-nowplaying">
-    <div class="pull-left pr-2 pt-3">
-        <a class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
-            <i class="material-icons lg">play_circle_filled</i>
-        </a>
-    </div>
-<?php if (!$customization->hideAlbumArt()): ?>
-    <div class="pull-left pr-2" v-if="np.now_playing.song.art">
-        <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=__('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
-    </div>
-<?php endif; ?>
-    <div class="media-body">
-        <div v-if="np.now_playing.song.title != ''">
-            <h4 class="media-heading might-overflow nowplaying-title">
-                {{ np.now_playing.song.title }}
-            </h4>
-            <div class="nowplaying-artist might-overflow">
-                {{ np.now_playing.song.artist }}
+
+<div id="station-nowplaying">
+    <div class="media align-items-center">
+    <?php if (!$customization->hideAlbumArt()): ?>
+        <div class="pr-2" v-if="np.now_playing.song.art">
+            <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=__('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
+        </div>
+    <?php endif; ?>
+        <div class="media-body">
+            <div v-if="np.now_playing.song.title != ''">
+                <h4 class="media-heading might-overflow nowplaying-title">
+                    {{ np.now_playing.song.title }}
+                </h4>
+                <div class="nowplaying-artist might-overflow">
+                    {{ np.now_playing.song.artist }}
+                </div>
+            </div>
+            <div v-else>
+                <h4 class="media-heading might-overflow nowplaying-title">
+                    {{ np.now_playing.song.text }}
+                </h4>
             </div>
         </div>
-        <div v-else>
-            <h4 class="media-heading might-overflow nowplaying-title">
-                {{ np.now_playing.song.text }}
-            </h4>
+    </div>
+
+    <div class="d-flex flex-row align-items-center mt-2 pt-1 border-top border-black-divider">
+        <div class="">
+            <a class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
+                <i class="material-icons lg" style="line-height: 1">play_circle_filled</i>
+            </a>
+        </div>
+        <div class="flex-fill ml-1 nowplaying-progress" v-if="time_display">
+            {{ time_display }}
         </div>
 
-        <div class="nowplaying-progress" v-if="time_display">
-            {{ time_display }}
+        <div class="flex-shrink-0">
+            <a href="javascript:;" class="text-secondary jp-mute" title="<?=__('Mute') ?>">
+                <i class="material-icons" style="line-height: 1;" aria-hidden="true">volume_mute</i>
+            </a>
+        </div>
+        <div class="flex-fill" style="max-width: 30%;">
+            <input type="range" title="<?=__('Volume') ?>" class="custom-range jp-volume-range" style="height: 10px;" id="jp-volume-range" min="0" max="100" step="1">
+        </div>
+        <div class="flex-shrink-0">
+            <a href="javascript:;" class="text-secondary jp-volume-full" title="<?=__('Full Volume') ?>">
+                <i class="material-icons" style="line-height: 1;" aria-hidden="true">volume_up</i>
+            </a>
         </div>
     </div>
 </div>

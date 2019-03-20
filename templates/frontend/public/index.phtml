@@ -18,16 +18,6 @@ $assets
 <div class="public-page">
     <div class="card">
         <div class="card-body">
-            <div class="radio-controls-standalone" id="radio-player-controls">
-                <a href="javascript:;" class="text-secondary jp-mute" title="<?=__('Mute') ?>">
-                    <i class="material-icons" aria-hidden="true">volume_mute</i>
-                </a>
-                <input type="range" title="<?=__('Volume') ?>" class="d-inline-block custom-range jp-volume-range" style="" id="jp-volume-range" min="0" max="100" step="1">
-                <a href="javascript:;" class="text-secondary jp-volume-full" title="<?=__('Full Volume') ?>">
-                    <i class="material-icons" aria-hidden="true">volume_up</i>
-                </a>
-            </div>
-
             <h2 class="card-title"><?=$this->e($station->getName()) ?></h2>
 
             <div class="stations nowplaying">
@@ -36,15 +26,15 @@ $assets
         </div>
 
         <div class="card-actions">
-            <a class="btn btn-sm btn-outline-primary" href="#modal-history" data-toggle="modal" data-target="#modal-history">
+            <a class="btn btn-sm btn-outline-secondary" href="#modal-history" data-toggle="modal" data-target="#modal-history">
                 <i class="material-icons" aria-hidden="true">history</i> <?=__('Song History') ?>
             </a>
             <?php if ($station->getEnableRequests()): ?>
-                <a class="btn btn-sm btn-outline-primary" href="#modal-request" data-toggle="modal" data-target="#modal-request">
+                <a class="btn btn-sm btn-outline-secondary" href="#modal-request" data-toggle="modal" data-target="#modal-request">
                     <i class="material-icons" aria-hidden="true">help_outline</i> <?=__('Request Song') ?>
                 </a>
             <?php endif; ?>
-            <a class="btn btn-sm btn-outline-primary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">
+            <a class="btn btn-sm btn-outline-secondary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">
                 <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Playlist') ?>
             </a>
         </div>

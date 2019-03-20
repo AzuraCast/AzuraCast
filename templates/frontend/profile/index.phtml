@@ -9,7 +9,7 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
         <div class="card mb-4">
             <div class="card-body">
                 <div class="media">
-                    <a class="align-self-center d-flex" href="http://www.gravatar.com/" target="_blank">
+                    <a class="align-self-center" href="http://www.gravatar.com/" target="_blank">
                         <img src="<?=$user->getAvatar(64) ?>" alt="">
                     </a>
                     <div class="media-body">
@@ -79,7 +79,7 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
                 </a>
             <?php else: ?>
                 <a class="btn btn-outline-primary" href="<?=$router->named('profile:2fa:enable') ?>">
-                    <i class="material-icons" aria-hidden="true">lock_open</i>
+                    <i class="material-icons" aria-hidden="true">lock</i>
                     <?=__('Enable Two-Factor') ?>
                 </a>
             <?php endif; ?>

@@ -19,7 +19,7 @@ To view logs in Docker, from the directory where your `docker-compose.yml` file 
 docker-compose logs -f
 ```
 
-This command will show you a running log of all containers. You can also get detailed logs by running `docker-compose logs -f service`, where "service" is one of `web`, `stations`, `nginx`, etc.
+This command will show you a running log of all containers. You can also get detailed logs by running `docker-compose logs -f service`, where "service" is one of `web`, `stations`, etc.
 
 #### Traditional
 
@@ -52,17 +52,13 @@ Replace `YOUREMAILADDRESS` with the e-mail address whose password you intend to 
 ##### Docker
 
 ```bash
-# With the Docker Utility Script
 ./docker.sh cli azuracast:account:reset-password YOUREMAILADDRESS
-
-# Manually using Docker Compose
-docker-compose run --rm cli azuracast_cli azuracast:account:reset-password YOUREMAILADDRESS
 ``` 
 
 ##### Traditional
 
 ```bash
-php /var/azuracast/www/util/cli.php azuracast:account:reset-password YOUREMAILADDRESS
+php /var/azuracast/www/bin/azuracast.php azuracast:account:reset-password YOUREMAILADDRESS
 ```
 
 ### Manually Flush the System Cache
@@ -71,17 +67,13 @@ Many parts of the AzuraCast system depend on caches to speed up site performance
 date, and they may cause errors. You can always flush all site-wide caches using one command-line script:
 
 ```bash
-# With the Docker Utility Script
 ./docker.sh cli cache:clear
-
-# Manually using Docker Compose
-docker-compose run --rm cli azuracast_cli cache:clear
 ``` 
 
 ##### Traditional
 
 ```bash
-php /var/azuracast/www/util/cli.php cache:clear
+php /var/azuracast/www/bin/azuracast.php cache:clear
 ```
 
 ### Access Files via SFTP (Docker Installations)

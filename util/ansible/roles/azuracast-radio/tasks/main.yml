@@ -44,10 +44,6 @@
       repo: "ppa:avsm/ppa"
       update_cache: yes
 
-  - name: Configure Sandboxing on Host
-    become: true
-    shell: "sysctl kernel.unprivileged_userns_clone=1"
-
   - name: Install Liquidsoap Dependencies
     apt:
       name: "{{ packages }}"
@@ -75,7 +71,7 @@
 
   - name: Initialize OPAM (Xenial) - This takes a while...
     become_user: azuracast
-    shell: "opam init -a --bare && opam switch create 4.05.0"
+    shell: "opam init -a --disable-sandboxing --bare && opam switch create 4.05.0"
     args:
       chdir: "{{ app_base }}"
       executable: "bash" # Fixes some possible hang issues.
@@ -83,7 +79,7 @@
 
   - name: Initialize OPAM (Bionic)
     become_user: azuracast
-    shell: "opam init -a"
+    shell: "opam init --disable-sandboxing -a"
     args:
       chdir: "{{ app_base }}"
       executable: "bash" # Fixes some possible hang issues.

@@ -15,7 +15,7 @@ Do not include your responses inside the "!--" comments. Add them outside these 
 -->
 
 **Installation method**
-<!-- Indicate whether you are using the "Docker" or "Traditional" installation method. -->
+<!-- Indicate whether you are using the "Docker" or "Bare-metal" installation method. -->
 
 **Host OS (for Docker installations)**
 <!-- Indicate what your host operating system is (i.e. Ubuntu 16.04, MacOS High Sierra, Windows 10), if you're using the Docker installation method. -->

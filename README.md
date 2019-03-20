@@ -51,7 +51,7 @@ Follow our **[installation guide](https://azuracast.com/install.html)** for inst
 
 ### What's Included
 
-Whether you're using the traditional installer or Docker containers, AzuraCast will automatically retrieve and install these components for you:
+Whether you're using the Bare-metal installer or Docker containers, AzuraCast will automatically retrieve and install these components for you:
 
 #### Radio Software
 

@@ -45,9 +45,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
 
 # Pull Docker images
-read -n 1 -s -r -p "Docker installed. Press any key to continue (Uninstall Traditional AzuraCast)..."
+read -n 1 -s -r -p "Docker installed. Press any key to continue (Uninstall Bare-metal AzuraCast)..."
 
-# Run traditional uninstaller
+# Run Bare-metal uninstaller
 chmod a+x uninstall.sh
 ./uninstall.sh
 

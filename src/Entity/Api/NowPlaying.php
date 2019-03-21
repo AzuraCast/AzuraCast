@@ -8,7 +8,7 @@ use Azura\Http\Router;
 /**
  * @OA\Schema(type="object", schema="Api_NowPlaying")
  */
-class NowPlaying
+class NowPlaying implements ResolvableUrlInterface
 {
     /**
      * Station

@@ -52,6 +52,7 @@ return [
     'groups' => [
 
         'basic_info' => [
+            'legend' => __('Basic Information'),
             'elements' => [
 
                 'name' => [
@@ -90,7 +91,12 @@ return [
                         ] + array_combine(range(6, 25), range(6, 25)),
                     ]
                 ],
+            ],
+        ],
 
+        'select_source' => [
+            'legend' => __('Source'),
+            'elements' => [
                 'source' => [
                     'radio',
                     [
@@ -103,24 +109,6 @@ return [
                         'required' => true,
                     ]
                 ],
-
-                'type' => [
-                    'radio',
-                    [
-                        'label' => __('Scheduling'),
-                        'choices' => [
-                            StationPlaylist::TYPE_DEFAULT => '<b>' . __('General Rotation') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
-                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
-                            StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
-                            StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
-                            StationPlaylist::TYPE_ONCE_PER_DAY => '<b>' . __('Daily') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
-                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/azuracast.com/blob/master/AdvancedPlaylists.md'),
-                        ],
-                        'default' => StationPlaylist::TYPE_DEFAULT,
-                        'required' => true,
-                    ]
-                ],
-
             ],
         ],
 
@@ -210,6 +198,28 @@ return [
                     ]
                 ]
 
+            ]
+        ],
+
+        'select_type' => [
+            'legend' => __('Scheduling'),
+            'elements' => [
+                'type' => [
+                    'radio',
+                    [
+                        'label' => __('Scheduling'),
+                        'choices' => [
+                            StationPlaylist::TYPE_DEFAULT => '<b>' . __('General Rotation') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
+                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
+                            StationPlaylist::TYPE_ONCE_PER_DAY => '<b>' . __('Daily') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
+                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/azuracast.com/blob/master/AdvancedPlaylists.md'),
+                        ],
+                        'default' => StationPlaylist::TYPE_DEFAULT,
+                        'required' => true,
+                    ]
+                ],
             ]
         ],
 

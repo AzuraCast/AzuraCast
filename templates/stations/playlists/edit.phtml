@@ -1,11 +1,40 @@
 <?php
-/** @var \Azura\Assets $assets */
-$assets
-    ->addInlineJs($this->fetch('stations/playlists/edit.js'), 99);
-
-echo $this->fetch('system/form_page', [
+$this->layout('main', [
     'title' => $title,
     'header' => $header,
-    'form' => $form,
-    'render_mode' => 'edit'
+    'manual' => true,
 ]);
+
+/** @var \Azura\Assets $assets */
+$assets
+    ->load('chosen')
+    ->addInlineJs($this->fetch('stations/playlists/edit.js'), 99)
+    ->addInlineJs($this->fetch('system/form_edit.js'));
+?>
+<section class="card mb-3" role="region">
+    <div class="card-header">
+        <h2 class="card-title"><?=$title ?></h2>
+    </div>
+    <div class="card-header">
+        <ul class="nav nav-justified nav-tabs card-header-tabs" role="tablist">
+            <li class="nav-item">
+                <a aria-controls="info" aria-selected="true" class="nav-link active" data-toggle="tab" href="#tab-info" id="tab-info-link" role="tab"><?=__('Basic Information') ?></a>
+            </li>
+            <li class="nav-item">
+                <a aria-controls="source" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-source" id="tab-source-link" role="tab"><?=__('Source') ?></a>
+            </li>
+            <li class="nav-item">
+                <a aria-controls="scheduling" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-scheduling" id="tab-scheduling-link" role="tab"><?=__('Scheduling') ?></a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div aria-labelledby="tab-info-link" class="tab-pane fade show active" id="tab-info" role="tabpanel"></div>
+            <div aria-labelledby="tab-source-link" class="tab-pane fade" id="tab-source" role="tabpanel"></div>
+            <div aria-labelledby="tab-scheduling-link" class="tab-pane fade" id="tab-scheduling" role="tabpanel"></div>
+        </div>
+
+        <?=$form->render() ?>
+    </div>
+</section>

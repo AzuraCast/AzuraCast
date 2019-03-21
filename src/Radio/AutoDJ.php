@@ -108,7 +108,7 @@ class AutoDJ implements EventSubscriberInterface
                     if ($playlist->isJingle()) {
                         $np = $event->getStation()->getNowplaying();
                         if ($np instanceof Entity\Api\NowPlaying) {
-                            $event->addAnnotations([
+                            $event->setAnnotations([
                                 'title' => $np->now_playing->song->title,
                                 'artist' => $np->now_playing->song->artist,
                             ]);

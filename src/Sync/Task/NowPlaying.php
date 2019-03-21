@@ -309,7 +309,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
                 $next_song = $this->autodj->getNextSong($station);
 
-                if ($next_song instanceof Entity\SongHistory) {
+                if ($next_song instanceof Entity\SongHistory && $next_song->showInApis()) {
                     $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
                 }
             }

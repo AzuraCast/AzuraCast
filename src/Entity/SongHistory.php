@@ -493,10 +493,21 @@ class SongHistory
     }
 
     /**
+     * @return bool Whether the record should be shown in APIs (i.e. is not a jingle)
+     */
+    public function showInApis(): bool
+    {
+        if ($this->playlist instanceof StationPlaylist) {
+            return !$this->playlist->isJingle();
+        }
+        return true;
+    }
+
+    /**
      * @param Api\SongHistory $response
      * @param \App\ApiUtilities $api
      * @param UriInterface|null $base_url
-     * @return null|Api\SongHistory
+     * @return Api\SongHistory
      */
     public function api(Api\SongHistory $response, \App\ApiUtilities $api, UriInterface $base_url = null)
     {
@@ -507,11 +518,6 @@ class SongHistory
 
         if ($this->playlist instanceof StationPlaylist) {
             $response->playlist = $this->playlist->getName();
-
-            // Don't show "jingle mode" playlists in API responses ever.
-            if ($this->playlist->isJingle()) {
-                return null;
-            }
         } else {
             $response->playlist = '';
         }

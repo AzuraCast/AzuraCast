@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(type="object", schema="Api_Station")
  */
-class Station
+class Station implements ResolvableUrlInterface
 {
     /**
      * Station ID
@@ -88,7 +88,9 @@ class Station
         $this->listen_url = (string)$router->getUri($this->listen_url, true);
 
         foreach($this->mounts as $mount) {
-            $mount->resolveUrls($router);
+            if ($mount instanceof ResolvableUrlInterface) {
+                $mount->resolveUrls($router);
+            }
         }
     }
 }

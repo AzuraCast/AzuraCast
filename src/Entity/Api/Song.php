@@ -3,13 +3,13 @@
 namespace App\Entity\Api;
 
 use App\Entity;
-use App\Http\Router;
+use Azura\Http\Router;
 use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(type="object", schema="Api_Song")
  */
-class Song
+class Song implements ResolvableUrlInterface
 {
     /**
      * The song's 32-character unique identifier hash

@@ -9,7 +9,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(type="object", schema="Api_SongHistory")
  */
-class SongHistory
+class SongHistory implements ResolvableUrlInterface
 {
     /**
      * Song history unique identifier
@@ -66,6 +66,8 @@ class SongHistory
      */
     public function resolveUrls(Router $router): void
     {
-        $this->song->resolveUrls($router);
+        if ($this->song instanceof ResolvableUrlInterface) {
+            $this->song->resolveUrls($router);
+        }
     }
 }

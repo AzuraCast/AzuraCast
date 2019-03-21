@@ -496,7 +496,7 @@ class SongHistory
      * @param Api\SongHistory $response
      * @param \App\ApiUtilities $api
      * @param UriInterface|null $base_url
-     * @return Api\SongHistory
+     * @return null|Api\SongHistory
      */
     public function api(Api\SongHistory $response, \App\ApiUtilities $api, UriInterface $base_url = null)
     {
@@ -506,8 +506,12 @@ class SongHistory
         $response->is_request = $this->request !== null;
 
         if ($this->playlist instanceof StationPlaylist) {
-            $playlist = $this->getPlaylist();
-            $response->playlist = $playlist->getName();
+            $response->playlist = $this->playlist->getName();
+
+            // Don't show "jingle mode" playlists in API responses ever.
+            if ($this->playlist->isJingle()) {
+                return null;
+            }
         } else {
             $response->playlist = '';
         }

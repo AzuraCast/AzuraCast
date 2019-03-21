@@ -89,17 +89,22 @@ class NowPlaying
      */
     public function resolveUrls(Router $router): void
     {
-        $this->station->resolveUrls($router);
+        if ($this->station instanceof ResolvableUrlInterface) {
+            $this->station->resolveUrls($router);
+        }
 
-        if ($this->now_playing) {
+        if ($this->now_playing instanceof ResolvableUrlInterface) {
             $this->now_playing->resolveUrls($router);
         }
-        if ($this->playing_next) {
+
+        if ($this->playing_next instanceof ResolvableUrlInterface) {
             $this->playing_next->resolveUrls($router);
         }
 
         foreach($this->song_history as $history_obj) {
-            $history_obj->resolveUrls($router);
+            if ($history_obj instanceof ResolvableUrlInterface) {
+                $history_obj->resolveUrls($router);
+            }
         }
     }
 }

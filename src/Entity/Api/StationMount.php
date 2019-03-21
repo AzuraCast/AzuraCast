@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(type="object", schema="Api_StationMount")
  */
-class StationMount
+class StationMount implements ResolvableUrlInterface
 {
     /**
      * Mount point name/URL

@@ -2,13 +2,13 @@
 namespace App\Entity\Api;
 
 use App\Entity;
-use App\Http\Router;
+use Azura\Http\Router;
 use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(type="object", schema="Api_StationRequest")
  */
-class StationRequest
+class StationRequest implements ResolvableUrlInterface
 {
     /**
      * Requestable ID unique identifier

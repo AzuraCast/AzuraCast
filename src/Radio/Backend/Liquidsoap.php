@@ -211,6 +211,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 ];
 
                 $ls_config[] = $playlist_var_name . ' = audio_to_stereo(playlist('.implode(',', $playlist_params).'))';
+
+                if ($playlist->isJingle()) {
+                    $ls_config[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
+                }
             } else {
                 switch($playlist->getRemoteType())
                 {

@@ -186,7 +186,7 @@ class Customization
         }
 
         // Attempt to load from browser headers.
-        $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null);
 
         // Prefer exact match.
         $exact_locale = substr($browser_locale, 0, 5).'.UTF-8';

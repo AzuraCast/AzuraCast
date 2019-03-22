@@ -3,6 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Entity;
 use Azura\Doctrine\Repository;
+use Ramsey\Uuid\Uuid;
 
 class SettingsRepository extends Repository
 {
@@ -112,5 +113,22 @@ class SettingsRepository extends Repository
     {
         // Regenerate cache and flush static value.
         $this->fetchArray(false);
+    }
+
+    /**
+     * @return string A persistent unique identifier for this installation.
+     */
+    public function getUniqueIdentifier(): string
+    {
+        $app_uuid = $this->getSetting(Entity\Settings::UNIQUE_IDENTIFIER);
+
+        if (!empty($app_uuid)) {
+            return $app_uuid;
+        }
+
+        $app_uuid = Uuid::uuid4()->toString();
+        $this->setSetting(Entity\Settings::UNIQUE_IDENTIFIER, $app_uuid);
+
+        return $app_uuid;
     }
 }

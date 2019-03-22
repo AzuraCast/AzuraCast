@@ -127,6 +127,8 @@ class ErrorHandler
                 ->withHeader('Location', $this->router->named('home'));
         }
 
+        \Sentry\captureException($e);
+
         if ($return_json) {
             $api_response = new Entity\Api\Error(
                 $e->getCode(),

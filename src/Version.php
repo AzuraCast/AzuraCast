@@ -61,6 +61,15 @@ class Version
     }
 
     /**
+     * @return string|null The shortened Git hash corresponding to the current commit.
+     */
+    public function getCommitShort(): ?string
+    {
+        $details = $this->getDetails();
+        return $details['commit_short'] ?? null;
+    }
+
+    /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
      * @return array

@@ -62,6 +62,10 @@ class App extends \Azura\App
             $plugins->registerServices($di);
         }
 
+        /** @var \App\Service\Sentry $sentry */
+        $sentry = $di[\App\Service\Sentry::class];
+        $sentry->init();
+
         return $app;
     }
 }

@@ -71,16 +71,7 @@ class CheckForUpdates extends AbstractTask
             return;
         }
 
-        $app_uuid = $this->settings_repo->getSetting(Entity\Settings::UNIQUE_IDENTIFIER);
-
-        if (empty($app_uuid)) {
-            $app_uuid = Uuid::uuid4()->toString();
-            $this->settings_repo->setSetting(Entity\Settings::UNIQUE_IDENTIFIER, $app_uuid);
-
-            $this->logger->debug('Installation did not previously have a unique identifier. New identifier assigned.', ['app_uuid' => $app_uuid]);
-        } else {
-            $this->logger->debug('Using previously defined installation unique identifier.', ['app_uuid' => $app_uuid]);
-        }
+        $app_uuid = $this->settings_repo->getUniqueIdentifier();
 
         try {
             $request_body = [

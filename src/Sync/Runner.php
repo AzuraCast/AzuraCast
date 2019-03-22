@@ -202,7 +202,8 @@ class Runner
     protected function _runTimer($timer_description, callable $timed_function)
     {
         // Filter namespace name
-        $timer_description = array_pop(explode("\\", $timer_description));
+        $timer_description_parts = explode("\\", $timer_description);
+        $timer_description = array_pop($timer_description_parts);
 
         $start_time = microtime(true);
 

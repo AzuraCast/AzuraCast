@@ -270,6 +270,14 @@ return function (\Azura\Container $di)
         );
     };
 
+    $di[\App\Service\Sentry::class] = function($di) {
+        return new \App\Service\Sentry(
+            $di[\App\Entity\Repository\SettingsRepository::class],
+            $di['settings'],
+            $di[\App\Version::class]
+        );
+    };
+
     // Radio management
     $di->register(new \App\Provider\RadioProvider);
 

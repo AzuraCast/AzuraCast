@@ -101,7 +101,7 @@ class Api
     {
         // Check authorization header
         $auth_headers = $request->getHeader('Authorization');
-        $auth_header = $auth_headers[0] ?? "";
+        $auth_header = $auth_headers[0] ?? '';
 
         if (preg_match("/Bearer\s+(.*)$/i", $auth_header, $matches)) {
             return $matches[1];
@@ -109,16 +109,12 @@ class Api
 
         // Check API key header
         $api_key_headers = $request->getHeader('X-API-Key');
-        if ($api_key_headers[0]) {
+        if (!empty($api_key_headers[0])) {
             return $api_key_headers[0];
         }
 
         // Check cookies
         $cookieParams = $request->getCookieParams();
-        if (isset($cookieParams['token'])) {
-            return $cookieParams['token'];
-        };
-
-        return null;
+        return $cookieParams['token'] ?? null;
     }
 }

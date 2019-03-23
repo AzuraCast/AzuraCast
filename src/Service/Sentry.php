@@ -6,6 +6,7 @@ use App\Version;
 use Azura\Settings;
 use GuzzleHttp\Client;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Monolog\Logger;
 use Sentry\ClientBuilder;
 use Sentry\Options;
 use Sentry\State\Hub;
@@ -123,8 +124,30 @@ class Sentry
      */
     public function handleException(\Throwable $e): void
     {
-        if ($this->is_enabled) {
-            $this->hub->captureException($e);
+        if (!$this->is_enabled) {
+            return;
         }
+
+        $e_level = ($e instanceof \Azura\Exception)
+            ? $e->getLoggerLevel()
+            : Logger::ERROR;
+
+        if ($e_level < Logger::WARNING) {
+            return;
+        }
+
+        $sentry_levels = [
+            Logger::WARNING     => \Sentry\Severity::warning(),
+            Logger::ERROR       => \Sentry\Severity::error(),
+            Logger::CRITICAL    => \Sentry\Severity::error(),
+            Logger::ALERT       => \Sentry\Severity::fatal(),
+            Logger::EMERGENCY   => \Sentry\Severity::fatal(),
+        ];
+        $sentry_level = $sentry_levels[$e_level];
+
+        $this->hub->withScope(function(\Sentry\State\Scope $scope) use ($e, $sentry_level) {
+            $scope->setLevel($sentry_level);
+            $this->hub->captureException($e);
+        });
     }
 }

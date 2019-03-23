@@ -36,7 +36,7 @@
     "php-http/socket-client": "^1.2",
     "php-http/message": "^1.4",
     "php-http/guzzle6-adapter": "^1.1",
-    "sentry/sdk": "2.0.2",
+    "sentry/sentry": "2.0.1",
     "spomky-labs/otphp": "^9.1",
     "studio24/rotate": "^1.0",
     "supervisorphp/supervisor": "^3.0",

@@ -4,6 +4,11 @@ namespace App\Service;
 use App\Entity;
 use App\Version;
 use Azura\Settings;
+use GuzzleHttp\Client;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Sentry\ClientBuilder;
+use Sentry\Options;
+use Sentry\State\Hub;
 use Sentry\State\Scope;
 
 class Sentry
@@ -14,20 +19,30 @@ class Sentry
     /** @var Settings */
     protected $app_settings;
 
+    /** @var Client */
+    protected $http_client;
+
     /** @var Version */
     protected $version;
 
-    /** @var bool|null */
-    protected $is_enabled;
+    /** @var bool */
+    protected $is_enabled = false;
+
+    /** @var Hub */
+    protected $hub;
 
     public function __construct(
         Entity\Repository\SettingsRepository $settings_repo,
         Settings $app_settings,
-        Version $version
+        Version $version,
+        Client $http_client
     ) {
         $this->settings_repo = $settings_repo;
         $this->app_settings = $app_settings;
         $this->version = $version;
+        $this->http_client = $http_client;
+
+        $this->init();
     }
 
     /**
@@ -37,7 +52,12 @@ class Sentry
     {
         // Check for enabled status.
         if ($this->app_settings->isProduction()) {
-            $this->is_enabled = false;
+            return;
+        }
+
+        try {
+            $server_uuid = $this->settings_repo->getUniqueIdentifier();
+        } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
             return;
         }
 
@@ -46,7 +66,7 @@ class Sentry
         $options = [
             'dsn'           => $this->app_settings['sentry_io']['dsn'],
             'environment'   => $this->app_settings[Settings::APP_ENV],
-            'server_name'   => $this->settings_repo->getUniqueIdentifier(),
+            'server_name'   => $server_uuid,
             'prefixes'      => [
                 $this->app_settings[Settings::BASE_DIR]
             ],
@@ -59,8 +79,12 @@ class Sentry
             $options['release'] = 'AzuraCast/AzuraCast@'.$commit_hash;
         }
 
-        \Sentry\init($options);
-        \Sentry\configureScope([$this, 'configureScope']);
+        $options = new Options($options);
+        $builder = new ClientBuilder($options);
+        $builder->setHttpClient(new GuzzleAdapter($this->http_client));
+
+        $this->hub = new Hub($builder->getClient());
+        $this->hub->configureScope([$this, 'configureScope']);
     }
 
     /**
@@ -79,10 +103,28 @@ class Sentry
     }
 
     /**
+     * @return Hub
+     */
+    public function getHub(): Hub
+    {
+        return $this->hub;
+    }
+
+    /**
      * @return bool
      */
     public function isEnabled(): bool
     {
-        return $this->is_enabled ?? false;
+        return $this->is_enabled;
+    }
+
+    /**
+     * @param \Throwable $e
+     */
+    public function handleException(\Throwable $e): void
+    {
+        if ($this->is_enabled) {
+            $this->hub->captureException($e);
+        }
     }
 }

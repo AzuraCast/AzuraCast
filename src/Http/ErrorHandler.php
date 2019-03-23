@@ -2,6 +2,7 @@
 namespace App\Http;
 
 use App\Acl;
+use App\Service\Sentry;
 use Azura\View;
 use Azura\Session;
 use App\Entity;
@@ -24,6 +25,9 @@ class ErrorHandler
     /** @var View */
     protected $view;
 
+    /** @var Sentry */
+    protected $sentry;
+
     /**
      * ErrorHandler constructor.
      * NOTE: Session and View need to be injected directly, as the request attributes don't get
@@ -40,7 +44,8 @@ class ErrorHandler
         Logger $logger,
         Router $router,
         Session $session,
-        View $view
+        View $view,
+        Sentry $sentry
     )
     {
         $this->acl = $acl;
@@ -48,6 +53,7 @@ class ErrorHandler
         $this->router = $router;
         $this->session = $session;
         $this->view = $view;
+        $this->sentry = $sentry;
     }
 
     public function __invoke(Request $req, Response $res, \Throwable $e)
@@ -127,7 +133,7 @@ class ErrorHandler
                 ->withHeader('Location', $this->router->named('home'));
         }
 
-        \Sentry\captureException($e);
+        $this->sentry->handleException($e);
 
         if ($return_json) {
             $api_response = new Entity\Api\Error(

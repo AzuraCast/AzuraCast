@@ -27,7 +27,8 @@ return function (\Azura\Container $di)
             $di[\Monolog\Logger::class],
             $di['router'],
             $di[\Azura\Session::class],
-            $di[\Azura\View::class]
+            $di[\Azura\View::class],
+            $di[\App\Service\Sentry::class]
         );
     };
     
@@ -274,7 +275,8 @@ return function (\Azura\Container $di)
         return new \App\Service\Sentry(
             $di[\App\Entity\Repository\SettingsRepository::class],
             $di['settings'],
-            $di[\App\Version::class]
+            $di[\App\Version::class],
+            $di[\GuzzleHttp\Client::class]
         );
     };
 

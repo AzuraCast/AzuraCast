@@ -3,7 +3,6 @@ namespace App;
 
 use Azura\Settings;
 use Azura\Exception;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 
 class App extends \Azura\App
 {
@@ -35,12 +34,8 @@ class App extends \Azura\App
 
         // Register the plugins engine.
         if (isset($values['autoloader'])) {
-            $autoloader = $values['autoloader'];
-
-            AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
-
             $plugins = new Plugins($settings[Settings::BASE_DIR] . '/plugins');
-            $plugins->registerAutoloaders($autoloader);
+            $plugins->registerAutoloaders($values['autoloader']);
 
             $values[Plugins::class] = $plugins;
         } else {

@@ -102,6 +102,7 @@ We would like to thank the following organizations for their support of AzuraCas
 - [DigitalOcean](https://m.do.co/c/21612b90440f) for generously providing the server resources we use for our demonstration instance, our staging and testing environments, and more
 - [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like PhpStorm
 - [CrowdIn](https://crowdin.com/) for giving us a simple and powerful tool to help translate our application for users around the world
+- [Sentry](https://sentry.io/) for providing a great way to aggregate errors being reported from AzuraCast installations around the web.
 - The creators and maintainers of the many free and open-source tools that AzuraCast is built on, who have done so much to help move FOSS forward
 
 ## Support AzuraCast Development

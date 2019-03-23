@@ -51,18 +51,18 @@ class Sentry
     public function init(): void
     {
         // Check for enabled status.
-        if ($this->app_settings->isProduction()) {
-            return;
-        }
-
         try {
-            $server_uuid = $this->settings_repo->getUniqueIdentifier();
+            $send_error_reports = (bool)$this->settings_repo->getSetting(Entity\Settings::SEND_ERROR_REPORTS, false);
+            if (!$send_error_reports) {
+                return;
+            }
         } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
             return;
         }
 
         $this->is_enabled = true;
 
+        $server_uuid = $this->settings_repo->getUniqueIdentifier();
         $options = [
             'dsn'           => $this->app_settings['sentry_io']['dsn'],
             'environment'   => $this->app_settings[Settings::APP_ENV],

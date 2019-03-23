@@ -23,6 +23,7 @@ class Settings
 
     public const LISTENER_ANALYTICS    = 'analytics';
     public const CENTRAL_UPDATES       = 'central_updates_channel';
+    public const SEND_ERROR_REPORTS    = 'send_error_reports';
 
     // Custom branding constants.
     public const PUBLIC_THEME          = 'public_theme';

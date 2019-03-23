@@ -10,11 +10,11 @@ class Settings extends AbstractFixture
     public function load(ObjectManager $em)
     {
         $settings = [
-            'base_url' => getenv('INIT_BASE_URL') ?? 'docker.local',
-            'gmaps_api_key' => getenv('INIT_GMAPS_API_KEY') ?? '',
-            'instance_name' => getenv('INIT_INSTANCE_NAME') ?? 'local test',
-            'setup_complete' => time(),
-            'use_radio_proxy' => 1,
+            Entity\Settings::BASE_URL   => getenv('INIT_BASE_URL') ?? 'docker.local',
+            Entity\Settings::INSTANCE_NAME => getenv('INIT_INSTANCE_NAME') ?? 'local test',
+            Entity\Settings::SETUP_COMPLETE => time(),
+            Entity\Settings::USE_RADIO_PROXY => 1,
+            Entity\Settings::SEND_ERROR_REPORTS => 1,
         ];
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */

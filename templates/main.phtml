@@ -65,7 +65,7 @@ echo $assets->js();
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
-            <?php if ($acl->userAllowed($user, 'view administration')): ?>
+            <?php if ($acl->userAllowed($user, \App\Acl::GLOBAL_VIEW)): ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
                         <i class="material-icons" aria-hidden="true">settings</i>

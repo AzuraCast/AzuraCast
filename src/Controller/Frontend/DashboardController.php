@@ -79,7 +79,7 @@ class DashboardController
         $stations = array_filter($stations, function($station) use ($user) {
             /** @var Entity\Station $station */
             return $station->isEnabled() &&
-                $this->acl->userAllowed($user, 'view station management', $station->getId());
+                $this->acl->userAllowed($user, Acl::STATION_VIEW, $station->getId());
         });
 
         if (empty($stations)) {
@@ -137,7 +137,7 @@ class DashboardController
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        $analytics_level = $settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $settings_repo->getSetting(Entity\Settings::LISTENER_ANALYTICS, Entity\Analytics::LEVEL_ALL);
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $metrics = null;

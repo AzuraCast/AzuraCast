@@ -117,7 +117,7 @@ class InternalController
         /** @var Entity\User $user */
         $user = $request->getAttribute(Request::ATTRIBUTE_USER);
 
-        if ($this->acl->userAllowed($user, 'view administration', $station->getId())) {
+        if ($this->acl->userAllowed($user, Acl::GLOBAL_VIEW, $station->getId())) {
             return;
         }
 

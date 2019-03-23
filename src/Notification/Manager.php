@@ -59,7 +59,7 @@ class Manager implements EventSubscriberInterface
     public function checkComposeVersion(GetNotifications $event)
     {
         // This notification is for full administrators only.
-        if (!$this->acl->userAllowed($event->getCurrentUser(), 'administer all')) {
+        if (!$this->acl->userAllowed($event->getCurrentUser(), Acl::GLOBAL_ALL)) {
             return;
         }
         
@@ -81,7 +81,7 @@ class Manager implements EventSubscriberInterface
     public function checkUpdates(GetNotifications $event)
     {
         // This notification is for full administrators only.
-        if (!$this->acl->userAllowed($event->getCurrentUser(), 'administer all')) {
+        if (!$this->acl->userAllowed($event->getCurrentUser(), Acl::GLOBAL_ALL)) {
             return;
         }
 

@@ -45,7 +45,7 @@ class IndexController
         $view->sidebar = null;
 
         // Synchronization statuses
-        if ($this->acl->userAllowed($user, 'administer all')) {
+        if ($this->acl->userAllowed($user, Acl::GLOBAL_ALL)) {
             $view->sync_times = $this->sync->getSyncTimes();
         }
 

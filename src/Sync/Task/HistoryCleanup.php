@@ -12,7 +12,7 @@ class HistoryCleanup extends AbstractTask
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        $days_to_keep = (int)$settings_repo->getSetting('history_keep_days', Entity\SongHistory::DEFAULT_DAYS_TO_KEEP);
+        $days_to_keep = (int)$settings_repo->getSetting(Entity\Settings::HISTORY_KEEP_DAYS, Entity\SongHistory::DEFAULT_DAYS_TO_KEEP);
 
         if ($days_to_keep !== 0) {
             $threshold = (new Chronos())

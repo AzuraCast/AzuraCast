@@ -67,7 +67,7 @@ class StreamersController
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
         return $view->renderToResponse($response, 'stations/streamers/index', [
-            'server_url' => $settings_repo->getSetting('base_url', ''),
+            'server_url' => $settings_repo->getSetting(Entity\Settings::BASE_URL, ''),
             'stream_port' => $backend->getStreamPort($station),
             'streamers' => $station->getStreamers(),
             'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',

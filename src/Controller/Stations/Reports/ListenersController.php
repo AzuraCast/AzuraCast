@@ -28,7 +28,7 @@ class ListenersController
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        $analytics_level = $settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $settings_repo->getSetting(Entity\Settings::LISTENER_ANALYTICS, Entity\Analytics::LEVEL_ALL);
 
         if ($analytics_level !== Entity\Analytics::LEVEL_ALL) {
             return $view->renderToResponse($response, 'stations/reports/restricted');

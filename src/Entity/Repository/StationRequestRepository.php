@@ -53,7 +53,10 @@ class StationRequestRepository extends Repository
             $threshold_mins = $station->getRequestThreshold() ?? 5;
             $threshold_seconds = $threshold_mins * 60;
 
-            $recent_requests = $this->_em->createQuery('SELECT sr FROM ' . $this->_entityName . ' sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')
+            $recent_requests = $this->_em->createQuery(/** @lang DQL */'SELECT sr 
+                FROM App\Entity\StationRequest sr 
+                WHERE sr.ip = :user_ip 
+                AND sr.timestamp >= :threshold')
                 ->setParameter('user_ip', $user_ip)
                 ->setParameter('threshold', time() - $threshold_seconds)
                 ->getArrayResult();
@@ -85,8 +88,8 @@ class StationRequestRepository extends Repository
         $pending_request_threshold = time() - (60 * 10);
 
         try {
-            $pending_request = $this->_em->createQuery('SELECT sr.timestamp 
-                FROM ' . $this->_entityName . ' sr
+            $pending_request = $this->_em->createQuery(/** @lang DQL */'SELECT sr.timestamp 
+                FROM App\Entity\StationRequest sr
                 WHERE sr.track_id = :track_id 
                 AND sr.station_id = :station_id 
                 AND (sr.timestamp >= :threshold OR sr.played_at = 0)
@@ -126,8 +129,8 @@ class StationRequestRepository extends Repository
         $last_play_threshold = time() - ($last_play_threshold_mins * 60);
 
         try {
-            $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
-                FROM '.Entity\SongHistory::class.' sh 
+            $last_play_time = $this->_em->createQuery(/** @lang DQL */'SELECT sh.timestamp_start 
+                FROM App\Entity\SongHistory sh 
                 WHERE sh.media_id = :media_id 
                 AND sh.station_id = :station_id
                 AND sh.timestamp_start >= :threshold

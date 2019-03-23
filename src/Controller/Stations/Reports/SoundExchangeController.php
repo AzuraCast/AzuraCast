@@ -63,8 +63,8 @@ class SoundExchangeController
                 'ACTUAL_TOTAL_PERFORMANCES',
             ]];
 
-            $all_media = $this->em->createQuery('SELECT sm
-                FROM '.Entity\StationMedia::class.' sm
+            $all_media = $this->em->createQuery(/** @lang DQL */'SELECT sm
+                FROM App\Entity\StationMedia sm
                 WHERE sm.station_id = :station_id')
                 ->setParameter('station_id', $station_id)
                 ->getArrayResult();
@@ -74,16 +74,16 @@ class SoundExchangeController
                 $media_by_id[$media_row['song_id']] = $media_row;
             }
 
-            $history_rows = $this->em->createQuery('SELECT
+            $history_rows = $this->em->createQuery(/** @lang DQL */'SELECT
                 sh.song_id AS song_id, COUNT(sh.id) AS plays, SUM(sh.unique_listeners) AS unique_listeners
-                FROM '.Entity\SongHistory::class.' sh
+                FROM App\Entity\SongHistory sh
                 WHERE sh.station_id = :station_id
-                AND sh.timestamp_start <= :end
-                AND sh.timestamp_end >= :start
+                AND sh.timestamp_start <= :time_end
+                AND sh.timestamp_end >= :time_start
                 GROUP BY sh.song_id')
                 ->setParameter('station_id', $station_id)
-                ->setParameter('start', $start_date)
-                ->setParameter('end', $end_date)
+                ->setParameter('time_start', $start_date)
+                ->setParameter('time_end', $end_date)
                 ->getArrayResult();
 
             $history_rows_by_id = [];
@@ -100,8 +100,8 @@ class SoundExchangeController
 
             if (!empty($not_found_songs)) {
 
-                $songs_raw = $this->em->createQuery('SELECT s
-                    FROM '.Entity\Song::class.' s
+                $songs_raw = $this->em->createQuery(/** @lang DQL */'SELECT s
+                    FROM App\Entity\Song s
                     WHERE s.id IN (:song_ids)')
                     ->setParameter('song_ids', array_keys($not_found_songs))
                     ->getArrayResult();
@@ -114,7 +114,8 @@ class SoundExchangeController
             // Assemble report items
             $station_name = $station->getName();
 
-            $set_isrc_query = $this->em->createQuery('UPDATE '.Entity\StationMedia::class.' sm
+            $set_isrc_query = $this->em->createQuery(/** @lang DQL */'UPDATE 
+                App\Entity\StationMedia sm
                 SET sm.isrc = :isrc
                 WHERE sm.song_id = :song_id
                 AND sm.station_id = :station_id')

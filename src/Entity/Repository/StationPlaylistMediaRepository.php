@@ -90,7 +90,10 @@ class StationPlaylistMediaRepository extends Repository
     public function getHighestSongWeight(Entity\StationPlaylist $playlist): int
     {
         try {
-            $highest_weight = $this->_em->createQuery('SELECT MAX(e.weight) FROM ' . $this->_entityName . ' e WHERE e.playlist_id = :playlist_id')
+            $highest_weight = $this->_em->createQuery(/** @lang DQL */'SELECT 
+                MAX(e.weight) 
+                FROM App\Entity\StationPlaylistMedia e 
+                WHERE e.playlist_id = :playlist_id')
                 ->setParameter('playlist_id', $playlist->getId())
                 ->getSingleScalarResult();
         } catch (NoResultException $e) {
@@ -114,8 +117,10 @@ class StationPlaylistMediaRepository extends Repository
         $this->_em->beginTransaction();
 
         try {
-            $update_weight_query = $this->_em->createQuery('UPDATE '.$this->_entityName.' spm SET spm.weight=:weight '.
-                'WHERE spm.playlist_id = :playlist_id AND spm.media_id = :media_id')
+            $update_weight_query = $this->_em->createQuery(/** @lang DQL */'UPDATE App\Entity\StationPlaylistMedia spm 
+                SET spm.weight=:weight 
+                WHERE spm.playlist_id = :playlist_id 
+                AND spm.media_id = :media_id')
                 ->setParameter('playlist_id', $playlist->getId());
 
             $media_ids = $this->_getPlayableMediaIds($playlist);
@@ -144,7 +149,9 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function clearPlaylistsFromMedia(Entity\StationMedia $media)
     {
-        $playlists = $this->_em->createQuery('SELECT e.playlist_id FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')
+        $playlists = $this->_em->createQuery(/** @lang DQL */'SELECT e.playlist_id 
+            FROM App\Entity\StationPlaylistMedia e
+            WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->getArrayResult();
 
@@ -152,7 +159,9 @@ class StationPlaylistMediaRepository extends Repository
             $this->clearMediaQueue($row['playlist_id']);
         }
 
-        $this->_em->createQuery('DELETE FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')
+        $this->_em->createQuery(/** @lang DQL */'DELETE 
+            FROM App\Entity\StationPlaylistMedia e
+            WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->execute();
     }
@@ -169,9 +178,11 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping)
     {
-        $update_query = $this->_em->createQuery('UPDATE '.$this->_entityName.' e 
+        $update_query = $this->_em->createQuery(/** @lang DQL */'UPDATE 
+            App\Entity\StationPlaylistMedia e 
             SET e.weight = :weight
-            WHERE e.playlist_id = :playlist_id AND e.id = :id')
+            WHERE e.playlist_id = :playlist_id 
+            AND e.id = :id')
             ->setParameter('playlist_id', $playlist->getId());
 
         // Clear the playback queue.
@@ -222,7 +233,8 @@ class StationPlaylistMediaRepository extends Repository
 
     protected function _getPlayableMediaIds(Entity\StationPlaylist $playlist): array
     {
-        $all_media = $this->_em->createQuery('SELECT sm.id FROM '.Entity\StationMedia::class.' sm
+        $all_media = $this->_em->createQuery(/** @lang DQL */'SELECT sm.id 
+            FROM App\Entity\StationMedia sm
             JOIN sm.playlist_items spm
             WHERE spm.playlist_id = :playlist_id
             ORDER BY spm.weight ASC')

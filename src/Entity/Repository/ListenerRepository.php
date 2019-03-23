@@ -17,14 +17,15 @@ class ListenerRepository extends Repository
      */
     public function getUniqueListeners(Entity\Station $station, $timestamp_start, $timestamp_end)
     {
-        return $this->_em->createQuery('SELECT COUNT(DISTINCT l.listener_hash)
-            FROM '.$this->_entityName.' l
+        return $this->_em->createQuery(/** @lang DQL */'SELECT 
+            COUNT(DISTINCT l.listener_hash)
+            FROM App\Entity\Listener l
             WHERE l.station_id = :station_id
-            AND l.timestamp_start <= :end
-            AND l.timestamp_end >= :start')
+            AND l.timestamp_start <= :time_end
+            AND l.timestamp_end >= :time_start')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('end', $timestamp_end)
-            ->setParameter('start', $timestamp_start)
+            ->setParameter('time_end', $timestamp_end)
+            ->setParameter('time_start', $timestamp_start)
             ->getSingleScalarResult();
     }
 
@@ -46,7 +47,9 @@ class ListenerRepository extends Repository
                 $listener_hash = Entity\Listener::calculateListenerHash($client);
 
                 /** @throws NoResultException */
-                $existing_id = $this->_em->createQuery('SELECT l.id FROM '.$this->_entityName.' l
+                $existing_id = $this->_em->createQuery(/** @lang DQL */'SELECT 
+                    l.id 
+                    FROM App\Entity\Listener l
                     WHERE l.station_id = :station_id
                     AND l.listener_uid = :uid
                     AND l.listener_hash = :hash
@@ -74,7 +77,7 @@ class ListenerRepository extends Repository
         }
 
         // Mark the end of all other clients on this station.
-        $this->_em->createQuery('UPDATE '.$this->_entityName.' l
+        $this->_em->createQuery(/** @lang DQL */'UPDATE App\Entity\Listener l
             SET l.timestamp_end = :time
             WHERE l.station_id = :station_id
             AND l.timestamp_end = 0

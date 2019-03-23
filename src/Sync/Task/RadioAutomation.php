@@ -206,9 +206,12 @@ class RadioAutomation extends AbstractTask
         $threshold = strtotime('-' . (int)$threshold_days . ' days');
 
         // Pull all SongHistory data points.
-        $data_points_raw = $this->em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
-            FROM '.Entity\SongHistory::class.' sh 
-            WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
+        $data_points_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
+            sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
+            FROM App\Entity\SongHistory sh 
+            WHERE sh.station_id = :station_id 
+            AND sh.timestamp_end != 0 
+            AND sh.timestamp_start >= :threshold')
             ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
@@ -238,7 +241,13 @@ class RadioAutomation extends AbstractTask
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $media_raw = $this->em->createQuery('SELECT sm, spm, sp FROM '.Entity\StationMedia::class.' sm LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
+        $media_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
+            sm, spm, sp 
+            FROM App\Entity\StationMedia sm 
+            LEFT JOIN sm.playlist_items spm 
+            LEFT JOIN spm.playlist sp 
+            WHERE sm.station_id = :station_id 
+            ORDER BY sm.artist ASC, sm.title ASC')
             ->setParameter('station_id', $station->getId())
             ->execute();
 

@@ -40,21 +40,21 @@ class FilesController extends FilesControllerAbstract
     {
         $station = $request->getStation();
 
-        $playlists = $this->em->createQuery('SELECT sp.id, sp.name 
-            FROM '.Entity\StationPlaylist::class.' sp 
+        $playlists = $this->em->createQuery(/** @lang DQL */'SELECT sp.id, sp.name 
+            FROM App\Entity\StationPlaylist sp 
             WHERE sp.station_id = :station_id AND sp.source = :source 
             ORDER BY sp.name ASC')
             ->setParameter('station_id', $station_id)
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
         
-        $files_count = $this->em->createQuery('SELECT COUNT(sm.id) FROM '.Entity\StationMedia::class.' sm
+        $files_count = $this->em->createQuery(/** @lang DQL */'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
             WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station_id)
             ->getSingleScalarResult();
 
         // Get list of custom fields.
-        $custom_fields_raw = $this->em->createQuery('SELECT cf.id, cf.name FROM '.Entity\CustomField::class.' cf ORDER BY cf.name ASC')
+        $custom_fields_raw = $this->em->createQuery(/** @lang DQL */'SELECT cf.id, cf.name FROM App\Entity\CustomField cf ORDER BY cf.name ASC')
             ->getArrayResult();
 
         $custom_fields = [];
@@ -104,7 +104,7 @@ class FilesController extends FilesControllerAbstract
 
                 if ('dir' === $path_meta['type']) {
                     // Update the paths of all media contained within the directory.
-                    $media_in_dir = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm
+                    $media_in_dir = $this->em->createQuery(/** @lang DQL */'SELECT sm FROM App\Entity\StationMedia sm
                         WHERE sm.station_id = :station_id AND sm.path LIKE :path')
                         ->setParameter('station_id', $station->getId())
                         ->setParameter('path', $path . '%')

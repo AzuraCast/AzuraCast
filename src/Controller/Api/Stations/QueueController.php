@@ -49,8 +49,8 @@ class QueueController extends AbstractStationCrudController
      */
     public function listAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $query = $this->em->createQuery('SELECT sh, sp, s, sm
-            FROM ' . Entity\SongHistory::class . ' sh 
+        $query = $this->em->createQuery(/** @lang DQL */'SELECT sh, sp, s, sm
+            FROM App\Entity\SongHistory sh 
             LEFT JOIN sh.song s 
             LEFT JOIN sh.media sm
             LEFT JOIN sh.playlist sp 

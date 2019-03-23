@@ -25,8 +25,8 @@ class SongHistoryRepository extends Repository
             return [];
         }
 
-        $history = $this->_em->createQuery('SELECT sh, s 
-            FROM ' . $this->_entityName . ' sh JOIN sh.song s LEFT JOIN sh.media sm  
+        $history = $this->_em->createQuery(/** @lang DQL */'SELECT sh, s 
+            FROM App\Entity\SongHistory sh JOIN sh.song s LEFT JOIN sh.media sm  
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')
@@ -59,7 +59,8 @@ class SongHistoryRepository extends Repository
         array $extra_metadata = []): Entity\SongHistory
     {
         // Pull the most recent history item for this station.
-        $last_sh = $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
+        $last_sh = $this->_em->createQuery(/** @lang DQL */'SELECT sh 
+            FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id
             ORDER BY sh.timestamp_start DESC')
             ->setParameter('station_id', $station->getId())
@@ -159,7 +160,8 @@ class SongHistoryRepository extends Repository
      */
     public function getCuedSong(Entity\Song $song, Entity\Station $station): ?Entity\SongHistory
     {
-        return $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
+        return $this->_em->createQuery(/** @lang DQL */'SELECT sh 
+            FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id
             AND sh.song_id = :song_id
             AND sh.timestamp_cued != 0

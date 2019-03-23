@@ -181,7 +181,7 @@ class AutoDJ implements EventSubscriberInterface
 
     public function checkDatabaseForNextSong(GetNextSong $event): void
     {
-        $nextSongQuery = /** @lang DQL */ 'SELECT sh, s, sp, sm
+        $next_song = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s, sp, sm
             FROM App\Entity\SongHistory sh
             LEFT JOIN sh.song s 
             LEFT JOIN sh.media sm
@@ -191,9 +191,7 @@ class AutoDJ implements EventSubscriberInterface
             AND sh.sent_to_autodj = 0
             AND sh.timestamp_start = 0
             AND sh.timestamp_end = 0
-            ORDER BY sh.id DESC';
-
-        $next_song = $this->em->createQuery($nextSongQuery)
+            ORDER BY sh.id DESC')
             ->setParameter('station_id', $event->getStation()->getId())
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -220,14 +218,12 @@ class AutoDJ implements EventSubscriberInterface
             $threshold = time() - ($threshold_minutes * 60);
 
             // Look up all requests that have at least waited as long as the threshold.
-            $requestQuery = /** @lang DQL */ 'SELECT sr, sm 
+            $request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
                 FROM App\Entity\StationRequest sr JOIN sr.track sm
                 WHERE sr.played_at = 0 
                 AND sr.station_id = :station_id 
                 AND sr.timestamp <= :threshold
-                ORDER BY sr.id ASC';
-
-            $request = $this->em->createQuery($requestQuery)
+                ORDER BY sr.id ASC')
                 ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $threshold)
                 ->setMaxResults(1)
@@ -293,14 +289,12 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         // Pull all recent cued songs for easy referencing below.
-        $cuedSongHistoryQuery = /** @lang DQL */ 'SELECT sh 
+        $cued_song_history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh 
             FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id
             AND (sh.timestamp_cued != 0 AND sh.timestamp_cued IS NOT NULL)
             AND sh.timestamp_cued >= :threshold
-            ORDER BY sh.timestamp_cued DESC';
-
-        $cued_song_history = $this->em->createQuery($cuedSongHistoryQuery)
+            ORDER BY sh.timestamp_cued DESC')
             ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', time()-86399)
             ->getArrayResult();

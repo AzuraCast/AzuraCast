@@ -46,7 +46,7 @@ class StationRepository extends Repository
      */
     public function fetchAll()
     {
-        return $this->_em->createQuery('SELECT s FROM ' . $this->_entityName . ' s ORDER BY s.name ASC')
+        return $this->_em->createQuery(/** @lang DQL */'SELECT s FROM App\Entity\Station s ORDER BY s.name ASC')
             ->execute();
     }
 

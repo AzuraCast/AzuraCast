@@ -125,7 +125,10 @@ class Media extends AbstractTask
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $existing_media_q = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm WHERE sm.station_id = :station_id')
+        $existing_media_q = $this->em->createQuery(/** @lang DQL */'SELECT 
+            sm 
+            FROM App\Entity\StationMedia sm 
+            WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId());
         $existing_media = $existing_media_q->iterate();
 

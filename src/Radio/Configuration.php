@@ -316,7 +316,9 @@ class Configuration
             $used_ports = [];
 
             // Get all station used ports.
-            $station_configs = $this->em->createQuery('SELECT s.id, s.name, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config FROM '.Station::class.' s')
+            $station_configs = $this->em->createQuery(/** @lang DQL */'SELECT 
+                s.id, s.name, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config 
+                FROM App\Entity\Station s')
                 ->getArrayResult();
 
             foreach($station_configs as $row) {

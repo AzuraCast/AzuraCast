@@ -88,7 +88,7 @@ class MountsController
 
             // Unset all other records as default if this one is set.
             if ($record->getIsDefault()) {
-                $this->em->createQuery('UPDATE '.Entity\StationMount::class.' sm SET sm.is_default = 0
+                $this->em->createQuery(/** @lang DQL */'UPDATE App\Entity\StationMount sm SET sm.is_default = 0
                     WHERE sm.station_id = :station_id AND sm.id != :new_default_id')
                     ->setParameter('station_id', $station->getId())
                     ->setParameter('new_default_id', $record->getId())

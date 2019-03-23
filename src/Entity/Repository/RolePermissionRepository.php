@@ -33,7 +33,9 @@ class RolePermissionRepository extends Repository
      */
     public function getActionsForRole(Entity\Role $role): array
     {
-        $role_has_action = $this->_em->createQuery('SELECT e FROM '.$this->_entityName.' e WHERE e.role_id = :role_id')
+        $role_has_action = $this->_em->createQuery(/** @lang DQL */'SELECT e 
+            FROM App\Entity\RolePermission e 
+            WHERE e.role_id = :role_id')
             ->setParameter('role_id', $role->getId())
             ->getArrayResult();
 
@@ -55,7 +57,9 @@ class RolePermissionRepository extends Repository
      */
     public function setActionsForRole(Entity\Role $role, $post_values): void
     {
-        $this->_em->createQuery('DELETE FROM ' . $this->_entityName . ' rp WHERE rp.role_id = :role_id')
+        $this->_em->createQuery(/** @lang DQL */'DELETE 
+            FROM App\Entity\RolePermission rp
+            WHERE rp.role_id = :role_id')
             ->setParameter('role_id', $role->getId())
             ->execute();
 

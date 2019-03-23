@@ -19,7 +19,10 @@ class HistoryCleanup extends AbstractTask
                 ->subDays($days_to_keep)
                 ->getTimestamp();
 
-            $this->em->createQuery('DELETE FROM ' . Entity\SongHistory::class . ' sh WHERE sh.timestamp_start != 0 AND sh.timestamp_start <= :threshold')
+            $this->em->createQuery(/** @lang DQL */'DELETE 
+                FROM App\Entity\SongHistory sh 
+                WHERE sh.timestamp_start != 0 
+                AND sh.timestamp_start <= :threshold')
                 ->setParameter('threshold', $threshold)
                 ->execute();
         }
@@ -27,7 +30,8 @@ class HistoryCleanup extends AbstractTask
         // Clean up any history entries that don't represent actual played songs.
         $cleanup_threshold = time() - 43200;
 
-        $this->em->createQuery('DELETE FROM ' . Entity\SongHistory::class . ' sh
+        $this->em->createQuery(/** @lang DQL */'DELETE 
+            FROM App\Entity\SongHistory sh
             WHERE sh.timestamp_cued < :threshold
             AND sh.sent_to_autodj = 0
             AND sh.timestamp_start = 0

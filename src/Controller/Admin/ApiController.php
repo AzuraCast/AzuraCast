@@ -36,7 +36,8 @@ class ApiController
 
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $records = $this->em->createQuery('SELECT a, u FROM '.Entity\ApiKey::class.' a JOIN a.user u')
+        $records = $this->em->createQuery(/** @lang DQL */'SELECT 
+            a, u FROM App\Entity\ApiKey a JOIN a.user u')
             ->getArrayResult();
 
         return $request->getView()->renderToResponse($response, 'admin/api/index', [

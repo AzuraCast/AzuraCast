@@ -48,7 +48,11 @@ class UsersController
 
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $users = $this->em->createQuery('SELECT u, r FROM '.Entity\User::class.' u LEFT JOIN u.roles r ORDER BY u.name ASC')
+        $users = $this->em->createQuery(/** @lang DQL */'SELECT 
+            u, r 
+            FROM App\Entity\User u 
+            LEFT JOIN u.roles r
+            ORDER BY u.name ASC')
             ->execute();
 
         return $request->getView()->renderToResponse($response, 'admin/users/index', [

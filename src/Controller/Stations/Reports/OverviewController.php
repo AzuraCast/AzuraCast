@@ -104,8 +104,9 @@ class OverviewController
         /* Play Count Statistics */
 
         $song_totals_raw = [];
-        $song_totals_raw['played'] = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS records
-            FROM '.Entity\SongHistory::class.' sh
+        $song_totals_raw['played'] = $this->em->createQuery(/** @lang DQL */'SELECT 
+            sh.song_id, COUNT(sh.id) AS records
+            FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
             GROUP BY sh.song_id
             ORDER BY records DESC')
@@ -135,11 +136,13 @@ class OverviewController
         $threshold = strtotime('-2 weeks');
 
         // Get all songs played in timeline.
-        $songs_played_raw = $this->em->createQuery('SELECT sh, s
-                FROM '.Entity\SongHistory::class.' sh
-                LEFT JOIN sh.song s
-                WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp AND sh.listeners_start IS NOT NULL
-                ORDER BY sh.timestamp_start ASC')
+        $songs_played_raw = $this->em->createQuery(/** @lang DQL */'SELECT sh, s
+            FROM App\Entity\SongHistory sh
+            LEFT JOIN sh.song s
+            WHERE sh.station_id = :station_id 
+            AND sh.timestamp_start >= :timestamp 
+            AND sh.listeners_start IS NOT NULL
+            ORDER BY sh.timestamp_start ASC')
             ->setParameter('station_id', $station->getId())
             ->setParameter('timestamp', $threshold)
             ->getArrayResult();

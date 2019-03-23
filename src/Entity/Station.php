@@ -960,6 +960,10 @@ class Station
      */
     public function addStorageUsed($new_storage_amount): void
     {
+        if (empty($new_storage_amount)) {
+            return;
+        }
+
         $current_storage_used = $this->getRawStorageUsed();
         $this->storage_used = (string)$current_storage_used->plus($new_storage_amount);
     }
@@ -971,6 +975,10 @@ class Station
      */
     public function removeStorageUsed($amount_to_remove): void
     {
+        if (empty($amount_to_remove)) {
+            return;
+        }
+
         $current_storage_used = $this->getRawStorageUsed();
         $storage_used = $current_storage_used->minus($amount_to_remove);
         if ($storage_used->isLessThan(0)) {

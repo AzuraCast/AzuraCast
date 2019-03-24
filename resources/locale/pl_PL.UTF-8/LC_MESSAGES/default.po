@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-03-23T04:31:53+00:00\n"
-"PO-Revision-Date: 2019-03-23 04:40\n"
+"POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
+"PO-Revision-Date: 2019-03-24 05:50\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -130,7 +130,7 @@ msgstr "Punkty montowania"
 
 #: /var/azuracast/www/src/Acl.php:191
 #: /var/azuracast/www/config/menus/station.php:81
-#: /var/azuracast/www/templates/stations/profile/index.phtml:247
+#: /var/azuracast/www/templates/stations/profile/index.phtml:248
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
@@ -426,10 +426,10 @@ msgid "Supervisord Log"
 msgstr "Supervisord dziennika"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:69
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:73
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:49
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:68
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:79
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:69
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:83
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:136
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:108
@@ -441,9 +441,9 @@ msgid "%s updated."
 msgstr "%s zaktualizowane."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:69
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:73
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:49
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:79
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:83
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:108
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:82
@@ -460,10 +460,10 @@ msgid "Custom Field"
 msgstr "Pole niestandardowe"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:81
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:85
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:55
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:76
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:87
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:77
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:91
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:145
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:116
@@ -475,9 +475,9 @@ msgid "Edit %s"
 msgstr "Edytuj %s"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:81
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:85
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:55
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:87
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:91
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:116
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:90
@@ -501,10 +501,10 @@ msgid "Add %s"
 msgstr "Dodaj %s"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:95
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:99
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:103
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:92
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:105
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:93
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:109
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:133
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:139
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:115
@@ -514,25 +514,25 @@ msgstr "Dodaj %s"
 msgid "%s deleted."
 msgstr "%s usunięto."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:69
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:81
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:99
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:112
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:73
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:85
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:103
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:116
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "User"
 msgstr "Użytkownik"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:75
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:79
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
 msgstr "Inny użytkownik już istnieje z tym adresem e-mail. Proszę zaktualizować adres e-mail."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:94
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 msgid "You cannot delete your own account."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:112
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:116
 #: /var/azuracast/www/src/Controller/Admin/Stations/CloneController.php:52
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:55
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:56
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:57
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:80
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
@@ -544,7 +544,7 @@ msgstr ""
 msgid "%s not found."
 msgstr "%s nie znaleziono."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:117
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:121
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:126
 msgid "Logged in successfully."
@@ -569,10 +569,10 @@ msgstr ""
 msgid "Install SHOUTcast"
 msgstr "Zainstaluj SHOUTcast"
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:55
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:68
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:76
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:92
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:56
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:69
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:77
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:93
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:60
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:95
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:102
@@ -586,9 +586,9 @@ msgstr "Klucz API"
 msgid "Sync Task Output"
 msgstr "Dane wyjściowe zadania synchronizacji"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:79
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:87
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:105
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:83
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:91
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:109
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Permission"
 msgstr "Uprawnienia"
@@ -661,7 +661,7 @@ msgstr "Streamer"
 msgid "Remote Relay"
 msgstr "Zdalny przekaźnik"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:173
+#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
 msgid "SoundExchange Report"
 msgstr "Raport SoundExchange"
 
@@ -737,42 +737,29 @@ msgstr "%d utwory zostały zaimportowane do listy odtwarzania."
 #: /var/azuracast/www/templates/stations/profile/index.phtml:69
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:45
-#: /var/azuracast/www/templates/frontend/public/index.phtml:38
+#: /var/azuracast/www/templates/frontend/public/index.phtml:51
 msgid "Playlist"
 msgstr "Lista odtwarzania"
 
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:80
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:98
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:92
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:110
 #: /var/azuracast/www/config/forms/song.php:33
 #: /var/azuracast/www/config/forms/media.php:21
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:35
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:26
 #: /var/azuracast/www/templates/stations/queue/index.phtml:26
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:7
-#: /var/azuracast/www/templates/frontend/public/index.js.phtml:8
+#: /var/azuracast/www/templates/frontend/public/index.js.phtml:28
 msgid "Song Title"
 msgstr "Tytuł utworu"
 
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:81
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:99
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:93
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:111
 #: /var/azuracast/www/config/forms/media.php:28
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:8
-#: /var/azuracast/www/templates/frontend/public/index.js.phtml:9
+#: /var/azuracast/www/templates/frontend/public/index.js.phtml:29
 msgid "Song Artist"
 msgstr "Artysta"
-
-#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:37
-#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:99
-msgid "Station not found!"
-msgstr "Nie znaleziono Stacji!"
-
-#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:103
-msgid "Live streaming is not enabled on this station."
-msgstr "Przesyłanie strumieniowe na żywo nie jest włączone na tej stacji."
-
-#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:109
-msgid "This station does not support live streaming."
-msgstr "Ta stacja nie obsługuje przesyłania strumieniowego na żywo."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
@@ -864,14 +851,14 @@ msgid "Public Page"
 msgstr "Strona Publiczna"
 
 #: /var/azuracast/www/config/menus/station.php:46
-#: /var/azuracast/www/templates/stations/profile/index.phtml:368
+#: /var/azuracast/www/templates/stations/profile/index.phtml:370
 #: /var/azuracast/www/templates/stations/files/index.phtml:1
 #: /var/azuracast/www/templates/stations/files/index.phtml:24
 msgid "Music Files"
 msgstr "Pliki muzyczne"
 
 #: /var/azuracast/www/config/menus/station.php:53
-#: /var/azuracast/www/templates/stations/profile/index.phtml:369
+#: /var/azuracast/www/templates/stations/profile/index.phtml:371
 #: /var/azuracast/www/templates/stations/files/index.phtml:109
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:4
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:16
@@ -1044,31 +1031,37 @@ msgstr ""
 msgid "Any time a live streamer/DJ disconnects from the stream"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:16
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:16
-msgid "Mount Point Name/URL"
-msgstr "Nazwa/URL punktu montowania"
+#: /var/azuracast/www/config/forms/mount/generic.php:14
+msgid "Mount Point URL"
+msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:17
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:17
+#: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
 msgstr "Tą nazwę zawsze należy zaczynać ukośnikiem (/) i musi być prawidłowym adresem URL, np. /autodj.mp3"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:25
-msgid "Set as Default Mount Point"
+#: /var/azuracast/www/config/forms/mount/generic.php:23
+#: /var/azuracast/www/config/forms/remote.php:13
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:27
+msgid "Display Name"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:26
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:37
-msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
-msgstr "Jeśli ten punkt jest domyślny, utwory będą grane w podglądzie radia oraz na publicznej stronie radia tego systemu."
+#: /var/azuracast/www/config/forms/mount/generic.php:24
+msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:27
-#: /var/azuracast/www/config/forms/mount/icecast.php:56
-#: /var/azuracast/www/config/forms/mount/icecast.php:66
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:38
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:58
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:79
+#: /var/azuracast/www/config/forms/mount/generic.php:31
+#: /var/azuracast/www/config/forms/remote.php:21
+msgid "Show on Public Pages"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/mount/generic.php:32
+msgid "Enable to allow listeners to select this mount point on this station's public pages."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/mount/generic.php:33
+#: /var/azuracast/www/config/forms/mount/generic.php:44
+#: /var/azuracast/www/config/forms/mount/generic.php:64
+#: /var/azuracast/www/config/forms/mount/generic.php:75
 #: /var/azuracast/www/config/forms/station_clone.php:56
 #: /var/azuracast/www/config/forms/station_clone.php:68
 #: /var/azuracast/www/config/forms/station_clone.php:81
@@ -1090,17 +1083,16 @@ msgstr "Jeśli ten punkt jest domyślny, utwory będą grane w podglądzie radia
 #: /var/azuracast/www/config/forms/station.php:370
 #: /var/azuracast/www/config/forms/station.php:400
 #: /var/azuracast/www/config/forms/streamer.php:48
-#: /var/azuracast/www/config/forms/remote.php:53
-#: /var/azuracast/www/config/forms/remote.php:134
+#: /var/azuracast/www/config/forms/remote.php:23
+#: /var/azuracast/www/config/forms/remote.php:72
+#: /var/azuracast/www/config/forms/remote.php:153
 msgid "Yes"
 msgstr "Tak"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:28
-#: /var/azuracast/www/config/forms/mount/icecast.php:56
-#: /var/azuracast/www/config/forms/mount/icecast.php:67
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:39
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:59
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:80
+#: /var/azuracast/www/config/forms/mount/generic.php:34
+#: /var/azuracast/www/config/forms/mount/generic.php:45
+#: /var/azuracast/www/config/forms/mount/generic.php:65
+#: /var/azuracast/www/config/forms/mount/generic.php:76
 #: /var/azuracast/www/config/forms/station_clone.php:55
 #: /var/azuracast/www/config/forms/station_clone.php:67
 #: /var/azuracast/www/config/forms/station_clone.php:80
@@ -1122,93 +1114,74 @@ msgstr "Tak"
 #: /var/azuracast/www/config/forms/station.php:371
 #: /var/azuracast/www/config/forms/station.php:401
 #: /var/azuracast/www/config/forms/streamer.php:49
-#: /var/azuracast/www/config/forms/remote.php:54
-#: /var/azuracast/www/config/forms/remote.php:134
+#: /var/azuracast/www/config/forms/remote.php:24
+#: /var/azuracast/www/config/forms/remote.php:73
+#: /var/azuracast/www/config/forms/remote.php:154
 msgid "No"
 msgstr "Nie"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:36
-msgid "Fallback Mount"
-msgstr "Rezerwowy Punkt Montowania"
+#: /var/azuracast/www/config/forms/mount/generic.php:42
+msgid "Set as Default Mount Point"
+msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:37
-msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
-msgstr "Jeśli ten punkt instalacji nie odtwarzania dźwięku, słuchacz będzie automatycznie przekierowany na ten punkt instalacji. Wartością domyślną jest /error.mp3, wraz z powtarzanym komunikacie o błędzie."
+#: /var/azuracast/www/config/forms/mount/generic.php:43
+msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
+msgstr "Jeśli ten punkt jest domyślny, utwory będą grane w podglądzie radia oraz na publicznej stronie radia tego systemu."
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:45
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:47
+#: /var/azuracast/www/config/forms/mount/generic.php:53
 msgid "Relay Stream URL"
 msgstr "Adres URL przekazania strumienia"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:46
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:48
+#: /var/azuracast/www/config/forms/mount/generic.php:54
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
 msgstr "Wprowadź pełny adres URL innego strumienia do przekazywania jego nadawanych przez ten punkt instancji."
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:54
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:56
-#: /var/azuracast/www/config/forms/remote.php:132
-msgid "Advertise to YP Directories (Public Station)"
-msgstr "Reklamowanie do katalogów YP (publicznych stacji)"
+#: /var/azuracast/www/config/forms/mount/generic.php:62
+#: /var/azuracast/www/config/forms/remote.php:151
+msgid "Publish to \"Yellow Pages\" Directories"
+msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:55
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:57
-#: /var/azuracast/www/config/forms/remote.php:133
-msgid "Set to \"yes\" to advertise this stream on the YP public radio directories."
-msgstr "Ustaw \"tak\", aby reklamować ten strumień do katalogów publicznych YP."
+#: /var/azuracast/www/config/forms/mount/generic.php:63
+#: /var/azuracast/www/config/forms/remote.php:152
+msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
+msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:64
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:77
+#: /var/azuracast/www/config/forms/mount/generic.php:73
 msgid "Enable AutoDJ"
 msgstr "Włącz AutoDJ'a"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:65
+#: /var/azuracast/www/config/forms/mount/generic.php:74
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:75
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:89
-#: /var/azuracast/www/config/forms/remote.php:63
+#: /var/azuracast/www/config/forms/mount/generic.php:84
+#: /var/azuracast/www/config/forms/remote.php:82
 msgid "Configure AutoDJ Broadcasting"
 msgstr "Skonfiguruj nadawanie AutoDJ'a"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:82
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:96
-#: /var/azuracast/www/config/forms/remote.php:69
+#: /var/azuracast/www/config/forms/mount/generic.php:91
+#: /var/azuracast/www/config/forms/remote.php:88
 msgid "AutoDJ Format"
 msgstr "Format AutoDJ'a"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:96
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:108
-#: /var/azuracast/www/config/forms/remote.php:82
+#: /var/azuracast/www/config/forms/mount/generic.php:99
+#: /var/azuracast/www/config/forms/remote.php:101
 msgid "AutoDJ Bitrate (kbps)"
 msgstr "Bitrate AutoDJ (kbps)"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:116
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:127
+#: /var/azuracast/www/config/forms/mount/generic.php:119
 msgid "Advanced Configuration"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:122
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:133
+#: /var/azuracast/www/config/forms/mount/generic.php:125
 msgid "Custom Stream URL"
 msgstr "Niestandardowy Adres URL strumienia"
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:124
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:135
+#: /var/azuracast/www/config/forms/mount/generic.php:127
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
 msgstr "Można ustawić niestandardowy adres URL dla tego strumienia, który AzuraCast będzie używany przy odwoływaniu się do niego. Pozostaw puste, aby użyć wartości domyślnej."
 
-#: /var/azuracast/www/config/forms/mount/icecast.php:131
-msgid "Custom Frontend Configuration"
-msgstr "Niestandardowa konfiguracja Frontend"
-
-#: /var/azuracast/www/config/forms/mount/icecast.php:133
-msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
-msgstr "Możesz tu podać specjalne ustawienia punktu montowania w formacie JSON (klucz: \"wartość\"} lub wartość \"klucza XML\" & lt; / key & gt;"
-
-#: /var/azuracast/www/config/forms/mount/icecast.php:147
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:149
+#: /var/azuracast/www/config/forms/mount/generic.php:141
 #: /var/azuracast/www/config/forms/custom_field.php:27
 #: /var/azuracast/www/config/forms/playlist.php:367
 #: /var/azuracast/www/config/forms/api_key.php:20
@@ -1226,31 +1199,39 @@ msgstr "Możesz tu podać specjalne ustawienia punktu montowania w formacie JSON
 #: /var/azuracast/www/config/forms/webhook/discord.php:125
 #: /var/azuracast/www/config/forms/station.php:441
 #: /var/azuracast/www/config/forms/streamer.php:58
-#: /var/azuracast/www/config/forms/remote.php:149
+#: /var/azuracast/www/config/forms/remote.php:169
 #: /var/azuracast/www/config/forms/song.php:47
 #: /var/azuracast/www/config/forms/media.php:139
 msgid "Save Changes"
 msgstr "Zapisz zmiany"
 
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:24
+#: /var/azuracast/www/config/forms/mount/icecast.php:9
+msgid "Fallback Mount"
+msgstr "Rezerwowy Punkt Montowania"
+
+#: /var/azuracast/www/config/forms/mount/icecast.php:10
+msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
+msgstr "Jeśli ten punkt instalacji nie odtwarzania dźwięku, słuchacz będzie automatycznie przekierowany na ten punkt instalacji. Wartością domyślną jest /error.mp3, wraz z powtarzanym komunikacie o błędzie."
+
+#: /var/azuracast/www/config/forms/mount/icecast.php:26
+msgid "Custom Frontend Configuration"
+msgstr "Niestandardowa konfiguracja Frontend"
+
+#: /var/azuracast/www/config/forms/mount/icecast.php:28
+msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
+msgstr "Możesz tu podać specjalne ustawienia punktu montowania w formacie JSON (klucz: \"wartość\"} lub wartość \"klucza XML\" & lt; / key & gt;"
+
+#: /var/azuracast/www/config/forms/mount/shoutcast2.php:11
 msgid "Stream path cannot include reserved keywords: %s"
 msgstr "Stream ścieżka nie może zawierać zastrzeżonych słów kluczowych: %s"
 
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:36
-msgid "Is Default Mount"
-msgstr "Jest domyślny"
-
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:67
+#: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"
 msgstr "Hash autoryzacji katalogu YP"
 
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:68
+#: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
 msgstr "Jeśli Twój strumień jest ustawiony do reklamowania YP katalogów powyżej, należy określić skrótu autoryzacji. Zarządzanie authhashes <a href=\"%s\" target=\"_blank\">na SHOUTcast witryny sieci web</a>."
-
-#: /var/azuracast/www/config/forms/mount/shoutcast2.php:78
-msgid "If set to \"Yes\", the AutoDJ will automatically play music to this mount point."
-msgstr "Jeśli jest ustawione na \"Tak\", AutoDJ automatycznie odtworzy muzykę do tego punktu montowania."
 
 #: /var/azuracast/www/config/forms/station_clone.php:9
 msgid "New Station Details"
@@ -1911,7 +1892,7 @@ msgstr "Okresowo pozwala systemowi na automatyczne przypisanie utworów do odtwa
 #: /var/azuracast/www/config/forms/station.php:82
 #: /var/azuracast/www/templates/stations/profile/index.phtml:169
 #: /var/azuracast/www/templates/stations/profile/index.phtml:185
-#: /var/azuracast/www/templates/stations/mounts/index.phtml:46
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:48
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:43
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:91
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:40
@@ -1922,7 +1903,7 @@ msgstr "Nieaktywne"
 #: /var/azuracast/www/config/forms/automation.php:15
 #: /var/azuracast/www/templates/stations/profile/index.phtml:162
 #: /var/azuracast/www/templates/stations/profile/index.phtml:182
-#: /var/azuracast/www/templates/stations/mounts/index.phtml:44
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:46
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:41
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:67
 msgid "Enabled"
@@ -2285,7 +2266,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/files/index.phtml:100
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:23
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:28
-#: /var/azuracast/www/templates/frontend/public/index.phtml:76
+#: /var/azuracast/www/templates/frontend/public/index.phtml:89
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:27
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
 msgid "Title"
@@ -2650,63 +2631,71 @@ msgstr "Konto jest aktywne"
 msgid "Enable to allow this account to log in and stream."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:13
+#: /var/azuracast/www/config/forms/remote.php:14
+msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/remote.php:22
+msgid "Enable to allow listeners to select this relay on this station's public pages."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/remote.php:32
 msgid "Remote Station Type"
 msgstr "Typ zdalnej stacji"
 
-#: /var/azuracast/www/config/forms/remote.php:26
+#: /var/azuracast/www/config/forms/remote.php:45
 msgid "Remote Station Listening URL"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:27
+#: /var/azuracast/www/config/forms/remote.php:46
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:39
+#: /var/azuracast/www/config/forms/remote.php:58
 msgid "Remote Station Listening Mountpoint/SID"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:40
+#: /var/azuracast/www/config/forms/remote.php:59
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:51
+#: /var/azuracast/www/config/forms/remote.php:70
 msgid "Broadcast AutoDJ to Remote Station"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:52
-msgid "If set to \"Yes\", the AutoDJ on this installation will automatically play music to this mount point."
+#: /var/azuracast/www/config/forms/remote.php:71
+msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:100
+#: /var/azuracast/www/config/forms/remote.php:119
 msgid "Remote Station Source Port"
 msgstr "Port źródłowy zdalnej stacji"
 
-#: /var/azuracast/www/config/forms/remote.php:101
+#: /var/azuracast/www/config/forms/remote.php:120
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:108
+#: /var/azuracast/www/config/forms/remote.php:127
 msgid "Remote Station Source Mountpoint/SID"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:109
+#: /var/azuracast/www/config/forms/remote.php:128
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:116
+#: /var/azuracast/www/config/forms/remote.php:135
 msgid "Remote Station Source Username"
 msgstr "Nazwa użytkownika zdalnej stacji"
 
-#: /var/azuracast/www/config/forms/remote.php:117
+#: /var/azuracast/www/config/forms/remote.php:136
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/remote.php:124
+#: /var/azuracast/www/config/forms/remote.php:143
 msgid "Remote Station Source Password"
 msgstr "Hasło źródła stacji zdalnej"
 
-#: /var/azuracast/www/config/forms/remote.php:125
+#: /var/azuracast/www/config/forms/remote.php:144
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
 msgstr ""
 
@@ -2912,7 +2901,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:24
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:28
 #: /var/azuracast/www/templates/stations/queue/index.phtml:28
-#: /var/azuracast/www/templates/frontend/public/index.phtml:79
+#: /var/azuracast/www/templates/frontend/public/index.phtml:92
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
 msgid "Actions"
 msgstr "Opcje"
@@ -3041,10 +3030,6 @@ msgstr ""
 msgid "Username"
 msgstr "Nazwa użytkownika"
 
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:27
-msgid "Display Name"
-msgstr ""
-
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:28
 msgid "Notes"
 msgstr "Notatki"
@@ -3136,9 +3121,9 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:167
 #: /var/azuracast/www/templates/stations/profile/index.phtml:205
-#: /var/azuracast/www/templates/stations/profile/index.phtml:306
-#: /var/azuracast/www/templates/stations/profile/index.phtml:313
-#: /var/azuracast/www/templates/stations/profile/index.phtml:321
+#: /var/azuracast/www/templates/stations/profile/index.phtml:308
+#: /var/azuracast/www/templates/stations/profile/index.phtml:315
+#: /var/azuracast/www/templates/stations/profile/index.phtml:323
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:20
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:39
 msgid "Copy to Clipboard"
@@ -3178,74 +3163,74 @@ msgid "Local Streams"
 msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:233
-#: /var/azuracast/www/templates/stations/profile/index.phtml:254
+#: /var/azuracast/www/templates/stations/profile/index.phtml:255
 #: /var/azuracast/www/templates/frontend/index/index.phtml:81
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:32
 msgid "Play/Pause"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:269
-#: /var/azuracast/www/templates/stations/profile/index.phtml:273
+#: /var/azuracast/www/templates/stations/profile/index.phtml:271
+#: /var/azuracast/www/templates/stations/profile/index.phtml:275
 msgid "Download %s"
 msgstr "Pobierz %s"
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:284
+#: /var/azuracast/www/templates/stations/profile/index.phtml:286
 msgid "Icecast (Broadcasting Service)"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:286
+#: /var/azuracast/www/templates/stations/profile/index.phtml:288
 msgid "SHOUTcast DNAS 2 (Broadcasting Service)"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:289
-#: /var/azuracast/www/templates/stations/profile/index.phtml:362
+#: /var/azuracast/www/templates/stations/profile/index.phtml:291
+#: /var/azuracast/www/templates/stations/profile/index.phtml:364
 msgid "Loading..."
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:299
+#: /var/azuracast/www/templates/stations/profile/index.phtml:301
 msgid "Administration URL"
 msgstr "URL Administacji"
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:303
+#: /var/azuracast/www/templates/stations/profile/index.phtml:305
 msgid "Administrator Password"
 msgstr "Hasło administratora"
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:310
+#: /var/azuracast/www/templates/stations/profile/index.phtml:312
 msgid "Source Password"
 msgstr "Hasło źródła"
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:318
+#: /var/azuracast/www/templates/stations/profile/index.phtml:320
 msgid "Relay Password"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:332
-#: /var/azuracast/www/templates/stations/profile/index.phtml:377
+#: /var/azuracast/www/templates/stations/profile/index.phtml:334
+#: /var/azuracast/www/templates/stations/profile/index.phtml:379
 msgid "Restart"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:336
-#: /var/azuracast/www/templates/stations/profile/index.phtml:381
+#: /var/azuracast/www/templates/stations/profile/index.phtml:338
+#: /var/azuracast/www/templates/stations/profile/index.phtml:383
 msgid "Start"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:340
-#: /var/azuracast/www/templates/stations/profile/index.phtml:385
+#: /var/azuracast/www/templates/stations/profile/index.phtml:342
+#: /var/azuracast/www/templates/stations/profile/index.phtml:387
 msgid "Stop"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:350
+#: /var/azuracast/www/templates/stations/profile/index.phtml:352
 msgid "AutoDJ Disabled"
 msgstr "AutoDJ wyłączony"
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:351
+#: /var/azuracast/www/templates/stations/profile/index.phtml:353
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
 msgstr "AutoDJ została wyłączona dla tej stacji. Żadna muzyka nie będzie odtwarzana automatycznie, gdy źródło nie jest aktywne."
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:359
+#: /var/azuracast/www/templates/stations/profile/index.phtml:361
 msgid "Liquidsoap (AutoDJ Service)"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.phtml:364
+#: /var/azuracast/www/templates/stations/profile/index.phtml:366
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
 msgstr "Lista LiquidSoap jest obecnie losowana z <b>%d zapisanych utworów</b> w <b>listy odtwarzania %d</b>."
 
@@ -3294,7 +3279,7 @@ msgstr ""
 msgid "Delete mount point \"%s\"?"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/mounts/index.phtml:39
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:40
 msgid "Default Mount"
 msgstr "Domyślna instancja"
 
@@ -3337,7 +3322,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/files/index.phtml:101
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:24
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:29
-#: /var/azuracast/www/templates/frontend/public/index.phtml:77
+#: /var/azuracast/www/templates/frontend/public/index.phtml:90
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:28
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
 msgid "Artist"
@@ -3345,7 +3330,7 @@ msgstr "Wykonawca"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:102
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:25
-#: /var/azuracast/www/templates/frontend/public/index.phtml:78
+#: /var/azuracast/www/templates/frontend/public/index.phtml:91
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
 msgid "Album"
 msgstr ""
@@ -3894,16 +3879,16 @@ msgstr ""
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/public/index.phtml:30
-#: /var/azuracast/www/templates/frontend/public/index.phtml:48
+#: /var/azuracast/www/templates/frontend/public/index.phtml:43
+#: /var/azuracast/www/templates/frontend/public/index.phtml:61
 msgid "Song History"
 msgstr "Historia utworu"
 
-#: /var/azuracast/www/templates/frontend/public/index.phtml:34
+#: /var/azuracast/www/templates/frontend/public/index.phtml:47
 msgid "Request Song"
 msgstr "Żądanie utworu"
 
-#: /var/azuracast/www/templates/frontend/public/index.phtml:67
+#: /var/azuracast/www/templates/frontend/public/index.phtml:80
 msgid "Request a Song"
 msgstr "Żądanie utworu"
 
@@ -3920,7 +3905,7 @@ msgid "Full Volume"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
-#: /var/azuracast/www/templates/frontend/public/index.js.phtml:59
+#: /var/azuracast/www/templates/frontend/public/index.js.phtml:80
 msgid "Request"
 msgstr "Zgłoszenie"
 

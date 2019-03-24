@@ -18,23 +18,10 @@ $assets
 <div class="public-page">
     <div class="card">
         <div class="card-body">
-            <?php if (count($streams) > 1): ?>
-            <div id="stream-selector" class="dropdown float-right">
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?=$this->e($current_stream['name']) ?>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <?php foreach($streams as $stream_row): ?>
-                    <a class="dropdown-item" href="javascript:;" data-url="<?=$this->e($stream_row['url']) ?>"><?=$this->e($stream_row['name']) ?></a>
-                <?php endforeach; ?>
-                </div>
-            </div>
-            <?php endif; ?>
-
             <h2 class="card-title"><?=$this->e($station->getName()) ?></h2>
 
             <div class="stations nowplaying">
-                <?=$this->fetch('frontend/public/player_component', ['current_stream' => $current_stream, 'autoplay' => $autoplay]) ?>
+                <?=$this->fetch('frontend/public/player_component', ['current_stream' => $current_stream, 'streams' => $streams, 'autoplay' => $autoplay]) ?>
             </div>
         </div>
 

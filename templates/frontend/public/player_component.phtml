@@ -1,6 +1,9 @@
 <?php
 /** @var \Azura\Assets $assets */
-$assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
+$assets->addInlineJs($this->fetch('frontend/public/player_component.js', [
+    'current_stream' => $current_stream,
+    'streams' => $streams
+]), 95);
 ?>
 
 <div id="station-nowplaying">
@@ -27,14 +30,40 @@ $assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
         </div>
     </div>
 
-    <div class="d-flex flex-row align-items-center mt-2 pt-1 border-top border-black-divider">
-        <div class="">
-            <a id="main-play-btn" class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($current_stream['url']) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
+    <div class="d-flex flex-row align-items-center my-2" v-if="time_display_played">
+        <div class="nowplaying-progress mr-2">
+            {{ time_display_played }}
+        </div>
+        <div class="flex-fill">
+            <div class="progress">
+                <div class="progress-bar bg-secondary" role="progressbar" v-bind:style="{ width: time_percent+'%' }"></div>
+            </div>
+        </div>
+        <div class="nowplaying-progress ml-2">
+            {{ time_display_total }}
+        </div>
+    </div>
+    <div v-else>
+        <hr class="my-2">
+    </div>
+
+    <div class="d-flex flex-row align-items-center">
+        <div>
+            <a id="main-play-btn" class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" v-bind:data-url="current_stream.url">
                 <i class="material-icons lg" style="line-height: 1">play_circle_filled</i>
             </a>
         </div>
         <div class="flex-fill ml-1 nowplaying-progress">
-            {{ time_display }}
+            <div id="stream-selector" v-if="this.streams.length > 1" class="dropdown">
+                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="btn-select-stream" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ current_stream.name }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btn-select-stream">
+                    <a class="dropdown-item" v-for="stream in streams" href="javascript:;" v-on:click="playStream(stream)">
+                        {{ stream.name }}
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="flex-shrink-0">

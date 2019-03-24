@@ -12,7 +12,9 @@ $vue_data_model = [
             'elapsed' => 0,
             'duration' => 0,
         ]
-    ]
+    ],
+    'streams' => $streams,
+    'current_stream' => $current_stream,
 ];
 ?>
 
@@ -51,7 +53,20 @@ $(function() {
         el: '#station-nowplaying',
         data: <?=$this->escapeJs($vue_data_model) ?>,
         computed: {
-            "time_display": function() {
+            "time_percent": function() {
+                var time_played = this.np.now_playing.elapsed;
+                var time_total = this.np.now_playing.duration;
+
+                if (!time_total) {
+                    return 0;
+                }
+                if (time_played > time_total) {
+                    return 100;
+                }
+
+                return (time_played / time_total) * 100;
+            },
+            "time_display_played": function() {
                 var time_played = this.np.now_playing.elapsed;
                 var time_total = this.np.now_playing.duration;
 
@@ -63,7 +78,27 @@ $(function() {
                     time_played = time_total;
                 }
 
-                return formatTime(time_played) + ' / ' + formatTime(time_total);
+                return formatTime(time_played);
+            },
+            "time_display_total": function() {
+                var time_total = this.np.now_playing.duration;
+                return (time_total) ? formatTime(time_total) : null;
+            }
+        },
+        methods: {
+            "playStream": function(new_stream) {
+                // Hackiness to work with jQuery.
+                var play_btn = $('#main-play-btn');
+                var is_playing = play_btn.hasClass('playing');
+
+                stopAllPlayers();
+                this.current_stream = new_stream;
+
+                play_btn.data('url', new_stream.url).attr('data-url', new_stream.url);
+
+                if (is_playing) {
+                    handlePlayClick(new_stream.url);
+                }
             }
         }
     });

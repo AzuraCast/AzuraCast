@@ -17,6 +17,7 @@ $assets
 <div class="stations nowplaying">
     <?=$this->fetch('frontend/public/player_component', [
         'current_stream' => $current_stream,
+        'streams' => $streams,
         'autoplay' => $autoplay
     ]) ?>
 </div>

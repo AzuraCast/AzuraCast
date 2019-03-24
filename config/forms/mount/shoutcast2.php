@@ -1,157 +1,35 @@
 <?php
 use App\Entity\StationMount;
 
-return [
-    'method' => 'post',
-    'enctype' => 'multipart/form-data',
+$form_config = require __DIR__.'/generic.php';
 
-    'groups' => [
+$form_config['groups']['basic_info']['elements']['name'][1]['validator'] = function($text) {
+    $forbidden_paths = ['listen', 'admin', 'statistics', '7.html'];
 
-        'basic_info' => [
-            'elements' => [
+    foreach($forbidden_paths as $forbidden_path) {
+        if (stripos($text, $forbidden_path) !== false) {
+            return __('Stream path cannot include reserved keywords: %s', implode(', ', $forbidden_paths));
+        }
+    }
 
-                'name' => [
-                    'text',
-                    [
-                        'label' => __('Mount Point Name/URL'),
-                        'description' => __('This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3'),
-                        'required' => true,
-                        'validator' => function($text) {
-                            $forbidden_paths = ['listen', 'admin', 'statistics', '7.html'];
+    return true;
+};
 
-                            foreach($forbidden_paths as $forbidden_path) {
-                                if (stripos($text, $forbidden_path) !== false) {
-                                    return __('Stream path cannot include reserved keywords: %s', implode(', ', $forbidden_paths));
-                                }
-                            }
-
-                            return true;
-                        },
-                    ]
-                ],
-
-                'is_default' => [
-                    'toggle',
-                    [
-                        'label' => __('Is Default Mount'),
-                        'description' => __('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => false,
-                    ]
-                ],
-
-                'relay_url' => [
-                    'text',
-                    [
-                        'label' => __('Relay Stream URL'),
-                        'description' => __('Enter the full URL of another stream to relay its broadcast through this mount point.'),
-                        'default' => '',
-                    ]
-                ],
-
-                'is_public' => [
-                    'toggle',
-                    [
-                        'label' => __('Advertise to YP Directories (Public Station)'),
-                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => false,
-                    ]
-                ],
-
-                'authhash' => [
-                    'text',
-                    [
-                        'label' => __('YP Directory Authorization Hash'),
-                        'description' => sprintf(__('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.'),
-                            'https://rmo.shoutcast.com'),
-                        'default' => '',
-                    ]
-                ],
-
-                'enable_autodj' => [
-                    'toggle',
-                    [
-                        'label' => __('Enable AutoDJ'),
-                        'description' => __('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => true,
-                    ]
-                ],
-
-            ],
-        ],
-
-        'autodj' => [
-            'legend' => __('Configure AutoDJ Broadcasting'),
-            'class' => 'fieldset_autodj',
-            'elements' => [
-
-                'autodj_format' => [
-                    'radio',
-                    [
-                        'label' => __('AutoDJ Format'),
-                        'choices' => [
-                            StationMount::FORMAT_MP3 => 'MP3',
-                            StationMount::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
-                        ],
-                        'default' => StationMount::FORMAT_MP3,
-                    ]
-                ],
-
-                'autodj_bitrate' => [
-                    'radio',
-                    [
-                        'label' => __('AutoDJ Bitrate (kbps)'),
-                        'choices' => [
-                            32 => '32',
-                            48 => '48',
-                            64 => '64',
-                            96 => '96',
-                            128 => '128',
-                            192 => '192',
-                            256 => '256',
-                            320 => '320',
-                        ],
-                        'default' => 128,
-                    ]
-                ],
-
-            ],
-        ],
-
-        'advanced_items' => [
-            'legend' => __('Advanced Configuration'),
-            'elements' => [
-
-                'custom_listen_url' => [
-                    'text',
-                    [
-                        'label' => __('Custom Stream URL'),
-                        'label_class' => 'advanced',
-                        'description' => __('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')
-                    ]
-                ],
-
-            ],
-        ],
-
-        'grp_submit' => [
-            'elements' => [
-
-                'submit' => [
-                    'submit',
-                    [
-                        'type' => 'submit',
-                        'label' => __('Save Changes'),
-                        'class' => 'ui-button btn-lg btn-primary',
-                    ]
-                ],
-
-            ],
-        ],
-    ],
+$form_config['groups']['basic_info']['elements']['authhash'] = [
+    'text',
+    [
+        'label' => __('YP Directory Authorization Hash'),
+        'description' => sprintf(__('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.'),
+            'https://rmo.shoutcast.com'),
+        'default' => '',
+    ]
 ];
+
+$form_config['groups']['autodj']['elements']['autodj_format'][1]['choices'] = [
+    StationMount::FORMAT_MP3 => 'MP3',
+    StationMount::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
+];
+
+$form_config['groups']['autodj']['elements']['autodj_format'][1]['default'] = StationMount::FORMAT_MP3;
+
+return $form_config;

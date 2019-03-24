@@ -29,7 +29,7 @@ $assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
 
     <div class="d-flex flex-row align-items-center mt-2 pt-1 border-top border-black-divider">
         <div class="">
-            <a class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
+            <a id="main-play-btn" class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($current_stream['url']) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
                 <i class="material-icons lg" style="line-height: 1">play_circle_filled</i>
             </a>
         </div>

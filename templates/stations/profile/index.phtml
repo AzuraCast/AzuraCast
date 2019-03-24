@@ -227,7 +227,7 @@ $user = $request->getUser();
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach($stream_urls['local'] as $stream_url): ?>
+                <?php foreach($stream_urls['local'] as [$stream_name, $stream_url]): ?>
                     <tr class="align-middle">
                         <td>
                             <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>" title="<?=__('Play/Pause') ?>">
@@ -235,7 +235,8 @@ $user = $request->getUser();
                             </a>
                         </td>
                         <td>
-                            <a href="<?=$this->e((string)$stream_url) ?>"><?=$this->e((string)$stream_url) ?></a>
+                            <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
+                            <a href="<?=$this->e($stream_url) ?>"><?=$this->truncateUrl($stream_url) ?></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -248,7 +249,7 @@ $user = $request->getUser();
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach($stream_urls['remote'] as $stream_url): ?>
+                <?php foreach($stream_urls['remote'] as [$stream_name, $stream_url]): ?>
                     <tr class="align-middle">
                         <td>
                             <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>" title="<?=__('Play/Pause') ?>">
@@ -256,7 +257,8 @@ $user = $request->getUser();
                             </a>
                         </td>
                         <td>
-                            <a href="<?=$this->e((string)$stream_url) ?>"><?=$this->e((string)$stream_url) ?></a>
+                            <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
+                            <a href="<?=$this->e($stream_url) ?>"><?=$this->truncateUrl($stream_url) ?></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

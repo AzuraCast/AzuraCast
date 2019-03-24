@@ -49,12 +49,24 @@ class ProfileController
         $remotes = $request->getStationRemotes();
 
         $stream_urls = [
-            'local' => $frontend->getStreamUrls($station),
+            'local' => [],
             'remote' => [],
         ];
 
+        foreach ($station->getMounts() as $mount) {
+            $stream_urls['local'][] = [
+                $mount->getDisplayName(),
+                (string)$frontend->getUrlForMount($station, $mount),
+            ];
+        }
+
         foreach($remotes as $ra_proxy) {
-            $stream_urls['remote'][] = $ra_proxy->getAdapter()->getPublicUrl($ra_proxy->getRemote());
+            $remote = $ra_proxy->getRemote();
+
+            $stream_urls['remote'][] = [
+                $remote->getDisplayName(),
+                (string)$ra_proxy->getAdapter()->getPublicUrl($remote)
+            ];
         }
 
         // Statistics about backend playback.

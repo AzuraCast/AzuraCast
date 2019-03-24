@@ -1,12 +1,32 @@
 $(function() {
+
+    // Handle multi-stream selection
+    $('#stream-selector a.dropdown-item').on('click', function(e) {
+        var stream_url = $(this).data('url');
+        var stream_name = $(this).text();
+
+        var main_play_btn = $('#main-play-btn');
+        var is_playing = main_play_btn.hasClass('playing');
+
+        stopAllPlayers();
+
+        $('#stream-selector button').text(stream_name);
+        main_play_btn.attr('data-url', stream_url).data('url', stream_url);
+
+        if (is_playing) {
+            handlePlayClick(stream_url);
+        }
+    });
+
+    // Song history Vue component
     songHistory = new Vue({
         el: '#station-history',
         data: {
             history: [
                 {
                     song: {
-                        title: '<?= __('Song Title') ?>',
-                        artist: '<?= __('Song Artist') ?>'
+                        title: '<?=__('Song Title') ?>',
+                        artist: '<?=__('Song Artist') ?>'
                     }
                 }
             ]
@@ -39,6 +59,7 @@ $(function() {
         buttons: ['close']
     });
 
+    // Song request modal dialog component
 	var request_dialog = $('#modal-request');
 
 	request_dialog.on('show.bs.modal', function (event) {

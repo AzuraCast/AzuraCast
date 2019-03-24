@@ -34,14 +34,53 @@ class PublicController
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new \Azura\Exception(__('Station not found!'));
+            throw new \App\Exception\StationNotFound;
         }
 
-        $frontend_adapter = $request->getStationFrontend();
+        $frontend = $request->getStationFrontend();
+
+        // List all publicly available streams.
+        $current_stream = null;
+        $streams = [];
+        foreach ($station->getMounts() as $mount) {
+            /** @var Entity\StationMount $mount */
+            if ($mount->isVisibleOnPublicPages()) {
+                $stream = [
+                    'name' => $mount->getDisplayName(),
+                    'url'  => (string)$frontend->getUrlForMount($station, $mount),
+                ];
+
+                $streams[] = $stream;
+                if ($mount->getIsDefault()) {
+                    $current_stream = $stream;
+                }
+            }
+        }
+
+        $remotes = $request->getStationRemotes();
+        foreach($remotes as $ra_proxy) {
+            $remote = $ra_proxy->getRemote();
+
+            if ($remote->isVisibleOnPublicPages()) {
+                $streams[] = [
+                    'name'  => $remote->getDisplayName(),
+                    'url'   => (string)$ra_proxy->getAdapter()->getPublicUrl($remote)
+                ];
+            }
+        }
+
+        if (0 === count($streams)) {
+            throw new \App\Exception\StationUnsupported;
+        }
+
+        if (null === $current_stream) {
+            $current_stream = reset($streams);
+        }
 
         return $request->getView()->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
-            'stream_url' => $frontend_adapter->getStreamUrl($station),
+            'streams' => $streams,
+            'current_stream' => $current_stream,
         ]);
     }
 
@@ -96,17 +135,17 @@ class PublicController
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new \Azura\Exception(__('Station not found!'));
+            throw new \App\Exception\StationNotFound;
         }
 
         if (!$station->getEnableStreamers()) {
-            throw new \Azura\Exception(__('Live streaming is not enabled on this station.'));
+            throw new \App\Exception\StationUnsupported;
         }
 
         $backend = $request->getStationBackend();
 
         if (!($backend instanceof Liquidsoap)) {
-            throw new \Azura\Exception(__('This station does not support live streaming.'));
+            throw new \App\Exception\StationUnsupported;
         }
 
         $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());

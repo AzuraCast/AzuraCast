@@ -7,6 +7,25 @@ return [
         'basic_info' => [
             'elements' => [
 
+                'display_name' => [
+                    'text',
+                    [
+                        'label' => __('Display Name'),
+                        'description' => __('The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.'),
+                    ]
+                ],
+
+                'is_visible_on_public_pages' => [
+                    'toggle',
+                    [
+                        'label' => __('Show on Public Pages'),
+                        'description' => __('Enable to allow listeners to select this relay on this station\'s public pages.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                    ]
+                ],
+
                 'type' => [
                     'radio',
                     [
@@ -49,7 +68,7 @@ return [
                     'toggle',
                     [
                         'label' => __('Broadcast AutoDJ to Remote Station'),
-                        'description' => __('If set to "Yes", the AutoDJ on this installation will automatically play music to this mount point.'),
+                        'description' => __('If enabled, the AutoDJ on this installation will automatically play music to this mount point.'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => 0,
@@ -127,12 +146,13 @@ return [
                 ],
 
                 'is_public' => [
-                    'radio',
+                    'toggle',
                     [
-                        'label' => __('Advertise to YP Directories (Public Station)'),
-                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 0,
+                        'label' => __('Publish to "Yellow Pages" Directories'),
+                        'description' => __('Enable to advertise this mount point on "Yellow Pages" public radio directories.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
                     ]
                 ],
 

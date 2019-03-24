@@ -39,6 +39,18 @@ class StationRemote implements StationMountInterface
     protected $station;
 
     /**
+     * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
+     * @var string|null
+     */
+    protected $display_name;
+
+    /**
+     * @ORM\Column(name="is_visible_on_public_pages", type="boolean")
+     * @var bool
+     */
+    protected $is_visible_on_public_pages = true;
+
+    /**
      * @ORM\Column(name="type", type="string", length=50)
      * @var string
      */
@@ -129,6 +141,46 @@ class StationRemote implements StationMountInterface
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName(): string
+    {
+        if (!empty($this->display_name)) {
+            return $this->display_name;
+        }
+
+        if ($this->enable_autodj) {
+            return $this->autodj_bitrate.'kbps '.strtoupper($this->autodj_format);
+        }
+
+        return \App\Utilities::truncateUrl($this->url);
+    }
+
+    /**
+     * @param string|null $display_name
+     */
+    public function setDisplayName(?string $display_name): void
+    {
+        $this->display_name = $this->_truncateString($display_name);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisibleOnPublicPages(): bool
+    {
+        return $this->is_visible_on_public_pages;
+    }
+
+    /**
+     * @param bool $is_visible_on_public_pages
+     */
+    public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
+    {
+        $this->is_visible_on_public_pages = $is_visible_on_public_pages;
     }
 
     /**

@@ -17,7 +17,7 @@ trait LogViewerTrait
         clearstatcache();
 
         if (!file_exists($log_path)) {
-            throw new Exception('Log file not found!');
+            throw new \App\Exception\NotFound('Log file not found!');
         }
 
         if (!$tail_file) {

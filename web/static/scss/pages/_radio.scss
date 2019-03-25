@@ -65,5 +65,12 @@
   .nowplaying-progress {
     font-size: 10px;
     color: $textfield-color-disabled;
+
+    .progress-bar {
+      -webkit-transition: width 1s; /* Safari */
+      transition: width 1s;
+
+      transition-timing-function: linear;
+    }
   }
 }

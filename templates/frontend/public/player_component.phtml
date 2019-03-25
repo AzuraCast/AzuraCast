@@ -29,8 +29,8 @@ $assets->addInlineJs($this->fetch('frontend/public/player_component.js', [
         </div>
     </div>
 
-    <div class="d-flex flex-row align-items-center my-2" v-if="time_display_played">
-        <div class="nowplaying-progress mr-2">
+    <div class="d-flex flex-row align-items-center nowplaying-progress my-2" v-if="time_display_played">
+        <div class="mr-2">
             {{ time_display_played }}
         </div>
         <div class="flex-fill">
@@ -38,7 +38,7 @@ $assets->addInlineJs($this->fetch('frontend/public/player_component.js', [
                 <div class="progress-bar bg-secondary" role="progressbar" v-bind:style="{ width: time_percent+'%' }"></div>
             </div>
         </div>
-        <div class="nowplaying-progress ml-2">
+        <div class="ml-2">
             {{ time_display_total }}
         </div>
     </div>

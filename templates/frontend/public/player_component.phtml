@@ -1,8 +1,7 @@
 <?php
 /** @var \Azura\Assets $assets */
 $assets->addInlineJs($this->fetch('frontend/public/player_component.js', [
-    'current_stream' => $current_stream,
-    'streams' => $streams
+    'station' => $station,
 ]), 95);
 ?>
 

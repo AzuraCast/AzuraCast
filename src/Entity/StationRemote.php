@@ -460,6 +460,7 @@ class StationRemote implements StationMountInterface
     public function api(AbstractRemote $adapter): Api\StationRemote
     {
         $response = new Api\StationRemote;
+        $response->name = $this->getDisplayName();
         $response->url = $adapter->getPublicUrl($this);
 
         if ($this->enable_autodj) {

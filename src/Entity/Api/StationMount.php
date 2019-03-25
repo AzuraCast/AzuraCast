@@ -7,16 +7,8 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(type="object", schema="Api_StationMount")
  */
-class StationMount implements ResolvableUrlInterface
+class StationMount extends StationRemote implements ResolvableUrlInterface
 {
-    /**
-     * Mount point name/URL
-     *
-     * @OA\Property(example="/radio.mp3")
-     * @var string
-     */
-    public $name;
-
     /**
      * If the mount is the default mount for the parent station
      *
@@ -24,30 +16,6 @@ class StationMount implements ResolvableUrlInterface
      * @var bool
      */
     public $is_default;
-
-    /**
-     * Full listening URL specific to this mount
-     *
-     * @OA\Property(example="http://localhost:8000/radio.mp3")
-     * @var string
-     */
-    public $url;
-
-    /**
-     * Bitrate (kbps) of the broadcasted audio (if known)
-     *
-     * @OA\Property(example=128)
-     * @var int
-     */
-    public $bitrate;
-
-    /**
-     * Audio encoding format of broadcasted audio (if known)
-     *
-     * @OA\Property(example="mp3")
-     * @var string
-     */
-    public $format;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

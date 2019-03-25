@@ -9,16 +9,14 @@ use Psr\Http\Message\ResponseInterface;
 
 class PublicController
 {
-    public function indexAction(Request $request, Response $response, $station_id = null, $autoplay = false): ResponseInterface
+    public function indexAction(Request $request, Response $response, $station_id = null): ResponseInterface
     {
-        $template_vars = ['autoplay' => ($autoplay === 'autoplay')];
-        return $this->_getPublicPage($request, $response, 'frontend/public/index', $template_vars);
+        return $this->_getPublicPage($request, $response, 'frontend/public/index');
     }
 
-    public function embedAction(Request $request, Response $response, $station_id = null, $autoplay = false): ResponseInterface
+    public function embedAction(Request $request, Response $response, $station_id = null): ResponseInterface
     {
-        $template_vars = ['autoplay' => ($autoplay === 'autoplay')];
-        return $this->_getPublicPage($request, $response, 'frontend/public/embed', $template_vars);
+        return $this->_getPublicPage($request, $response, 'frontend/public/embed');
     }
 
     public function embedrequestsAction(Request $request, Response $response): ResponseInterface
@@ -37,50 +35,8 @@ class PublicController
             throw new \App\Exception\StationNotFound;
         }
 
-        $frontend = $request->getStationFrontend();
-
-        // List all publicly available streams.
-        $current_stream = null;
-        $streams = [];
-        foreach ($station->getMounts() as $mount) {
-            /** @var Entity\StationMount $mount */
-            if ($mount->isVisibleOnPublicPages()) {
-                $stream = [
-                    'name' => $mount->getDisplayName(),
-                    'url'  => (string)$frontend->getUrlForMount($station, $mount),
-                ];
-
-                $streams[] = $stream;
-                if ($mount->getIsDefault()) {
-                    $current_stream = $stream;
-                }
-            }
-        }
-
-        $remotes = $request->getStationRemotes();
-        foreach($remotes as $ra_proxy) {
-            $remote = $ra_proxy->getRemote();
-
-            if ($remote->isVisibleOnPublicPages()) {
-                $streams[] = [
-                    'name'  => $remote->getDisplayName(),
-                    'url'   => (string)$ra_proxy->getAdapter()->getPublicUrl($remote)
-                ];
-            }
-        }
-
-        if (0 === count($streams)) {
-            throw new \App\Exception\StationUnsupported;
-        }
-
-        if (null === $current_stream) {
-            $current_stream = reset($streams);
-        }
-
         return $request->getView()->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
-            'streams' => $streams,
-            'current_stream' => $current_stream,
         ]);
     }
 

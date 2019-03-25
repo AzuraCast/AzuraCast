@@ -9,6 +9,14 @@ use OpenApi\Annotations as OA;
 class StationRemote
 {
     /**
+     * Mount point name/URL
+     *
+     * @OA\Property(example="/radio.mp3")
+     * @var string
+     */
+    public $name;
+
+    /**
      * Full listening URL specific to this mount
      *
      * @OA\Property(example="http://localhost:8000/radio.mp3")

@@ -1,23 +1,3 @@
-<?php
-/** @var \App\Customization $customization */
-$vue_data_model = [
-    'np' => [
-        'now_playing' => [
-            'song' => [
-                'title' => __('Song Title'),
-                'artist' => __('Song Artist'),
-                'art' => (string)$customization->getDefaultAlbumArtUrl(),
-            ],
-            'is_request' => false,
-            'elapsed' => 0,
-            'duration' => 0,
-        ]
-    ],
-    'streams' => $streams,
-    'current_stream' => $current_stream,
-];
-?>
-
 var nowPlaying;
 
 function iterateTimer() {
@@ -51,8 +31,49 @@ function formatTime(time) {
 $(function() {
     nowPlaying = new Vue({
         el: '#station-nowplaying',
-        data: <?=$this->escapeJs($vue_data_model) ?>,
+        data: {
+            "np": {
+                "station": {
+                    "listen_url": '',
+                    "mounts": [],
+                    "remotes": []
+                },
+                "now_playing": {
+                    "song": {
+                        "title": <?=$this->escapeJs(__('Song Title')) ?>,
+                        "artist": <?=$this->escapeJs(__('Song Artist')) ?>,
+                        "art": <?=$this->escapeJs((string)$customization->getDefaultAlbumArtUrl()) ?>
+                    },
+                    "is_request": false,
+                    "elapsed": 0,
+                    "duration": 0
+                }
+            },
+            "current_stream": {
+                "name": "",
+                "url": ""
+            }
+        },
         computed: {
+            "streams": function() {
+                var all_streams = [];
+
+                this.np.station.mounts.forEach(function (mount) {
+                    all_streams.push({
+                        "name": mount.name,
+                        "url": mount.url
+                    });
+                });
+
+                this.np.station.remotes.forEach(function(remote) {
+                    all_streams.push({
+                        "name": remote.name,
+                        "url": remote.url
+                    })
+                });
+
+                return all_streams;
+            },
             "time_percent": function() {
                 var time_played = this.np.now_playing.elapsed;
                 var time_total = this.np.now_playing.duration;
@@ -83,6 +104,21 @@ $(function() {
             "time_display_total": function() {
                 var time_total = this.np.now_playing.duration;
                 return (time_total) ? formatTime(time_total) : null;
+            }
+        },
+        watch: {
+            "np": function(np_new, np_old) {
+                if (this.current_stream.url == '' && np_new.station.listen_url != '' && this.streams.length > 0) {
+                    var current_stream = null;
+
+                    this.streams.forEach(function(stream) {
+                        if (stream.url === np_new.station.listen_url) {
+                            current_stream = stream;
+                        }
+                    });
+
+                    this.playStream(current_stream);
+                }
             }
         },
         methods: {

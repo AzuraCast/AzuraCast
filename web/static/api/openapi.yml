@@ -888,8 +888,12 @@ components:
           description: 'The text description of the error.'
           type: string
           example: 'Error description.'
-        stack_trace:
-          description: 'A stack trace outlining the error, if permissions allow this to be shown.'
+        formatted_message:
+          description: 'The HTML-formatted text description of the error.'
+          type: string
+          example: '<b>Error description.</b><br>Detailed error text.'
+        extra_data:
+          description: 'Stack traces and other supplemental data.'
           type: array
           items: {  }
         success:
@@ -914,7 +918,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1551188534
+          example: 1553508782
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1010,7 +1014,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1551188534
+              example: 1553508782
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1065,7 +1069,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1551188534
+          example: 1553508782
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -1124,30 +1128,22 @@ components:
             $ref: '#/components/schemas/Api_StationRemote'
       type: object
     Api_StationMount:
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_StationRemote'
+        -
+          properties:
+            is_default:
+              description: 'If the mount is the default mount for the parent station'
+              type: boolean
+              example: true
+          type: object
+    Api_StationRemote:
       properties:
         name:
           description: 'Mount point name/URL'
           type: string
           example: /radio.mp3
-        is_default:
-          description: 'If the mount is the default mount for the parent station'
-          type: boolean
-          example: true
-        url:
-          description: 'Full listening URL specific to this mount'
-          type: string
-          example: 'http://localhost:8000/radio.mp3'
-        bitrate:
-          description: 'Bitrate (kbps) of the broadcasted audio (if known)'
-          type: integer
-          example: 128
-        format:
-          description: 'Audio encoding format of broadcasted audio (if known)'
-          type: string
-          example: mp3
-      type: object
-    Api_StationRemote:
-      properties:
         url:
           description: 'Full listening URL specific to this mount'
           type: string
@@ -1191,6 +1187,9 @@ components:
         message:
           type: string
           example: 'Changes saved successfully.'
+        formatted_message:
+          type: string
+          example: '<b>Changes saved successfully.</b>'
       type: object
     Api_SystemStatus:
       properties:
@@ -1201,7 +1200,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1551188534
+          example: 1553508782
       type: object
     Api_Time:
       properties:
@@ -1286,12 +1285,15 @@ components:
         theme:
           type: string
           example: dark
+        two_factor_secret:
+          type: string
+          example: A1B2C3D4
         created_at:
           type: integer
-          example: 1551188534
+          example: 1553508782
         updated_at:
           type: integer
-          example: 1551188534
+          example: 1553508782
         roles:
           items: {  }
       type: object

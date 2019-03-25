@@ -1154,14 +1154,19 @@ class Station
         if ($fa::supportsMounts() && $this->mounts->count() > 0) {
             foreach ($this->mounts as $mount) {
                 /** @var StationMount $mount */
-                $mounts[] = $mount->api($fa, $base_url);
+                if ($mount->isVisibleOnPublicPages()) {
+                    $mounts[] = $mount->api($fa, $base_url);
+                }
             }
         }
         $response->mounts = $mounts;
 
         $remotes = [];
         foreach($remote_adapters as $ra_proxy) {
-            $remotes[] = $ra_proxy->getRemote()->api($ra_proxy->getAdapter());
+            $remote = $ra_proxy->getRemote();
+            if ($remote->isVisibleOnPublicPages()) {
+                $remotes[] = $remote->api($ra_proxy->getAdapter());
+            }
         }
         $response->remotes = $remotes;
 

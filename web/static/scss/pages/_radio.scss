@@ -62,6 +62,16 @@
     margin-bottom: 2px;
   }
 
+  img#album-art {
+    width: 75px;
+    height: auto;
+    border-radius: 5px;
+
+    @include media-breakpoint-only('xs') {
+      width: 50px;
+    }
+  }
+
   .nowplaying-progress {
     font-size: 10px;
     color: $textfield-color-disabled;

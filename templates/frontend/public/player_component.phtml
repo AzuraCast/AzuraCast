@@ -9,12 +9,12 @@ $assets->addInlineJs($this->fetch('frontend/public/player_component.js', [
     <div class="media align-items-center">
     <?php if (!$customization->hideAlbumArt()): ?>
         <div class="pr-2" v-if="np.now_playing.song.art">
-            <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=__('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
+            <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" id="album-art" alt="<?=__('Album Cover') ?>"></a>
         </div>
     <?php endif; ?>
         <div class="media-body">
             <div v-if="np.now_playing.song.title != ''">
-                <h4 class="media-heading might-overflow nowplaying-title">
+                <h4 class="media-heading might-overflow m-0 nowplaying-title">
                     {{ np.now_playing.song.title }}
                 </h4>
                 <div class="nowplaying-artist might-overflow">
@@ -26,25 +26,24 @@ $assets->addInlineJs($this->fetch('frontend/public/player_component.js', [
                     {{ np.now_playing.song.text }}
                 </h4>
             </div>
+
+            <div class="d-flex flex-row align-items-center nowplaying-progress mt-1" v-if="time_display_played">
+                <div class="mr-2">
+                    {{ time_display_played }}
+                </div>
+                <div class="flex-fill">
+                    <div class="progress">
+                        <div class="progress-bar bg-secondary" role="progressbar" v-bind:style="{ width: time_percent+'%' }"></div>
+                    </div>
+                </div>
+                <div class="ml-2">
+                    {{ time_display_total }}
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="d-flex flex-row align-items-center nowplaying-progress my-2" v-if="time_display_played">
-        <div class="mr-2">
-            {{ time_display_played }}
-        </div>
-        <div class="flex-fill">
-            <div class="progress">
-                <div class="progress-bar bg-secondary" role="progressbar" v-bind:style="{ width: time_percent+'%' }"></div>
-            </div>
-        </div>
-        <div class="ml-2">
-            {{ time_display_total }}
-        </div>
-    </div>
-    <div v-else>
-        <hr class="my-2">
-    </div>
+    <hr class="my-2">
 
     <div class="d-flex flex-row align-items-center">
         <div>

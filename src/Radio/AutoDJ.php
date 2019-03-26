@@ -55,7 +55,6 @@ class AutoDJ implements EventSubscriberInterface
             ],
             GetNextSong::NAME => [
                 ['checkDatabaseForNextSong', 10],
-                ['getNextSongFromRequests', 5],
                 ['calculateNextSong', 0],
             ],
         ];
@@ -130,12 +129,6 @@ class AutoDJ implements EventSubscriberInterface
             }
         } else if (null !== $sh) {
             $event->setSongPath((string)$sh);
-        } else {
-            $error_file = APP_INSIDE_DOCKER
-                ? '/usr/local/share/icecast/web/error.mp3'
-                : APP_INCLUDE_ROOT . '/resources/error.mp3';
-
-            $event->setSongPath($error_file);
         }
     }
 
@@ -149,10 +142,6 @@ class AutoDJ implements EventSubscriberInterface
      */
     public function getNextSong(Entity\Station $station, $is_autodj = false): ?Entity\SongHistory
     {
-        if ($station->useManualAutoDJ()) {
-            return null;
-        }
-
         $this->logger->pushProcessor(function($record) use ($station) {
             $record['extra']['station'] = [
                 'id' => $station->getId(),

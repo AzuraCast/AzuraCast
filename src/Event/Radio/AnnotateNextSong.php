@@ -78,6 +78,10 @@ class AnnotateNextSong extends Event
      */
     public function buildAnnotations(): string
     {
+        if (empty($this->song_path)) {
+            return '';
+        }
+
         $this->annotations = array_filter($this->annotations);
 
         if (!empty($this->annotations)) {

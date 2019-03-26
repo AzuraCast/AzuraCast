@@ -169,7 +169,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             ],
         ];
 
-        $use_azuracast_autodj = true;
         $schedule_switches = [];
         $schedule_switches_interrupting = [];
 
@@ -203,8 +202,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     $ls_config[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
                 }
             } else {
-                $use_azuracast_autodj = false;
-
                 switch($playlist->getRemoteType())
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
@@ -322,26 +319,24 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $ls_config[] = '# Assemble final playback order';
         $fallbacks = [];
 
-        if ($use_azuracast_autodj) {
-            $event->appendLines([
-                '# AutoDJ Next Song Script',
-                'def azuracast_next_song() =',
-                '  uri = '.$this->_getApiUrlCommand($station, 'nextsong'),
-                '  log("AzuraCast Raw Response: #{uri}")',
-                '  ',
-                '  if uri == "" or string.match(pattern="Error", uri) then',
-                '    log("AzuraCast Error: Delaying subsequent requests...")',
-                '    system("sleep 2")',
-                '    request.create("")',
-                '  else',
-                '    request.create(uri)',
-                '  end',
-                'end',
-            ]);
+        $event->appendLines([
+            '# AutoDJ Next Song Script',
+            'def azuracast_next_song() =',
+            '  uri = '.$this->_getApiUrlCommand($station, 'nextsong'),
+            '  log("AzuraCast Raw Response: #{uri}")',
+            '  ',
+            '  if uri == "" or string.match(pattern="Error", uri) then',
+            '    log("AzuraCast Error: Delaying subsequent requests...")',
+            '    system("sleep 2")',
+            '    request.create("")',
+            '  else',
+            '    request.create(uri)',
+            '  end',
+            'end',
+        ]);
 
-            $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
-            $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [dynamic, radio])';
-        }
+        $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
+        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [dynamic, radio])';
 
         $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
         $fallbacks[] = 'requests';
@@ -354,7 +349,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         $fallbacks[] = 'radio';
-        $fallbacks[] = 'blank(duration=2.)';
+
+        $error_file = APP_INSIDE_DOCKER
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : APP_INCLUDE_ROOT . '/resources/error.mp3';
+        $fallbacks[] = 'single("'.$error_file.'")';
 
         $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('playlist_fallback', $station).'", track_sensitive = true, ['.implode(', ', $fallbacks).'])';
 

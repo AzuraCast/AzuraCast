@@ -78,6 +78,8 @@ class AnnotateNextSong extends Event
      */
     public function buildAnnotations(): string
     {
+        $this->annotations = array_filter($this->annotations);
+
         if (!empty($this->annotations)) {
             $annotations_str = [];
             foreach($this->annotations as $annotation_key => $annotation_val) {

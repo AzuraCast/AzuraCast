@@ -114,10 +114,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
-        $playlist_path = $station->getRadioPlaylistsDir();
         $ls_config = [];
 
         // Clear out existing playlists directory.
+        $playlist_path = $station->getRadioPlaylistsDir();
         $current_playlists = array_diff(scandir($playlist_path, SCANDIR_SORT_NONE), ['..', '.']);
         foreach ($current_playlists as $list) {
             @unlink($playlist_path . '/' . $list);
@@ -168,35 +168,22 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 '# Once per x Minutes Playlists',
             ],
         ];
+
+        $use_azuracast_autodj = true;
         $schedule_switches = [];
+        $schedule_switches_interrupting = [];
 
         foreach ($playlist_objects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
+            $playlist_func_name = $playlist->loopPlaylistOnce() ? 'playlist.once' : 'playlist';
 
             if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
-                $media_base_dir = $station->getRadioMediaDir().'/';
-                $playlist_file = [];
-                foreach ($playlist->getMediaItems() as $media_item) {
-                    /** @var Entity\StationMedia $media_file */
-                    $media_file = $media_item->getMedia();
+                $playlist_file_path = $this->writePlaylistFile($playlist, false);
 
-                    $media_file_path = $media_base_dir.$media_file->getPath();
-                    $media_annotations = $media_file->getAnnotations();
-                    $media_annotations['playlist_id'] = $playlist->getId();
-
-                    $annotations_str = [];
-                    foreach($media_annotations as $annotation_key => $annotation_val) {
-                        $annotations_str[] = $annotation_key.'="'.$annotation_val.'"';
-                    }
-
-                    $playlist_file[] = 'annotate:'.implode(',', $annotations_str).':'.$media_file_path;
+                if (!$playlist_file_path) {
+                    continue;
                 }
-
-                $playlist_file_path =  $playlist_path . '/' . $playlist_var_name . '.m3u';
-                $playlist_file_contents = implode("\n", $playlist_file);
-
-                file_put_contents($playlist_file_path, $playlist_file_contents);
 
                 $playlist_modes = [
                     Entity\StationPlaylist::ORDER_SEQUENTIAL    => 'normal',
@@ -204,22 +191,24 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     Entity\StationPlaylist::ORDER_RANDOM        => 'random',
                 ];
 
-                $playlist_params = [
-                    'reload_mode="watch"',
-                    'mode="'.$playlist_modes[$playlist->getOrder()].'"',
-                    '"'.$playlist_file_path.'"',
-                ];
+                $playlist_params = ['reload_mode="watch"'];
+                if (!$playlist->loopPlaylistOnce()) {
+                    $playlist_params[] = 'mode="'.$playlist_modes[$playlist->getOrder()].'"';
+                }
+                $playlist_params[] = '"'.$playlist_file_path.'"';
 
-                $ls_config[] = $playlist_var_name . ' = audio_to_stereo(playlist('.implode(',', $playlist_params).'))';
+                $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
 
                 if ($playlist->isJingle()) {
                     $ls_config[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
                 }
             } else {
+                $use_azuracast_autodj = false;
+
                 switch($playlist->getRemoteType())
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
-                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(playlist("'.$this->_cleanUpString($playlist->getRemoteUrl()).'"))';
+                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'("'.$this->_cleanUpString($playlist->getRemoteUrl()).'"))';
                         break;
 
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
@@ -250,8 +239,20 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
                     $delay_seconds = $playlist->getPlayPerMinutes() * 60;
+
                     $special_playlists['once_per_x_minutes'][] = 'delay_' . $playlist_var_name . ' = delay(' . $delay_seconds . '., ' . $playlist_var_name . ')';
                     $special_playlists['once_per_x_minutes'][] = 'radio = fallback([delay_' . $playlist_var_name . ', radio])';
+                    break;
+
+                case Entity\StationPlaylist::TYPE_ONCE_PER_HOUR:
+                    $play_time = $playlist->getPlayPerHourMinute().'m';
+
+                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                    if ($playlist->interruptOtherSongs()) {
+                        $schedule_switches_interrupting[] = $schedule_timing;
+                    } else {
+                        $schedule_switches[] = $schedule_timing;
+                    }
                     break;
 
                 case Entity\StationPlaylist::TYPE_SCHEDULED:
@@ -269,7 +270,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         $play_time = '('.implode(' or ', $play_days).') and '.$play_time;
                     }
 
-                    $schedule_switches[] = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                    if ($playlist->interruptOtherSongs()) {
+                        $schedule_switches_interrupting[] = $schedule_timing;
+                    } else {
+                        $schedule_switches[] = $schedule_timing;
+                    }
                     break;
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_DAY:
@@ -287,7 +293,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         $play_time = '('.implode(' or ', $play_days).') and '.$play_time;
                     }
 
-                    $schedule_switches[] = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                    if ($playlist->interruptOtherSongs()) {
+                        $schedule_switches_interrupting[] = $schedule_timing;
+                    } else {
+                        $schedule_switches[] = $schedule_timing;
+                    }
                     break;
             }
         }
@@ -308,14 +319,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         }
 
-        $schedule_switches[] = '({ true }, radio)';
         $ls_config[] = '# Assemble final playback order';
         $fallbacks = [];
 
-        if ($station->useManualAutoDJ()) {
-            $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
-            $fallbacks[] = 'requests';
-        } else {
+        if ($use_azuracast_autodj) {
             $event->appendLines([
                 '# AutoDJ Next Song Script',
                 'def azuracast_next_song() =',
@@ -333,16 +340,76 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             ]);
 
             $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
-            $ls_config[] = 'dynamic = cue_cut(id="'.$this->_getVarName('cue_cut', $station).'", dynamic)';
-            $fallbacks[] = 'dynamic';
+            $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [dynamic, radio])';
         }
 
-        $fallbacks[] = 'switch([ ' . implode(', ', $schedule_switches) . ' ])';
+        $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
+        $fallbacks[] = 'requests';
+
+        if (!empty($schedule_switches)) {
+            $fallbacks[] = 'switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])';
+        }
+        if (!empty($schedule_switches_interrupting)) {
+            $fallbacks[] = 'switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])';
+        }
+
+        $fallbacks[] = 'radio';
         $fallbacks[] = 'blank(duration=2.)';
 
-        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('playlist_fallback', $station).'", track_sensitive = '.($station->useManualAutoDJ() ? 'true' : 'false').', ['.implode(', ', $fallbacks).'])';
+        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('playlist_fallback', $station).'", track_sensitive = true, ['.implode(', ', $fallbacks).'])';
 
         $event->appendLines($ls_config);
+    }
+
+    /**
+     * Write a playlist's contents to file so Liquidsoap can process it, and optionally notify
+     * Liquidsoap of the change.
+     *
+     * @param Entity\StationPlaylist $playlist
+     * @param bool $notify
+     * @return string The full path that was written to.
+     */
+    public function writePlaylistFile(Entity\StationPlaylist $playlist, $notify = true): ?string
+    {
+        $station = $playlist->getStation();
+
+        $playlist_path = $station->getRadioPlaylistsDir();
+        $playlist_var_name = 'playlist_' . $playlist->getShortName();
+
+        $media_base_dir = $station->getRadioMediaDir().'/';
+        $playlist_file = [];
+        foreach ($playlist->getMediaItems() as $media_item) {
+            /** @var Entity\StationMedia $media_file */
+            $media_file = $media_item->getMedia();
+
+            $media_file_path = $media_base_dir.$media_file->getPath();
+            $media_annotations = $media_file->getAnnotations();
+
+            if ($playlist->isJingle()) {
+                $media_annotations['is_jingle_mode'] = 'true';
+                unset($media_annotations['media_id']);
+            } else {
+                $media_annotations['playlist_id'] = $playlist->getId();
+            }
+
+            $annotations_str = [];
+            foreach($media_annotations as $annotation_key => $annotation_val) {
+                $annotations_str[] = $annotation_key.'="'.$annotation_val.'"';
+            }
+
+            $playlist_file[] = 'annotate:'.implode(',', $annotations_str).':'.$media_file_path;
+        }
+
+        $playlist_file_path =  $playlist_path . '/' . $playlist_var_name . '.m3u';
+        $playlist_file_contents = implode("\n", $playlist_file);
+
+        file_put_contents($playlist_file_path, $playlist_file_contents);
+
+        if ($notify) {
+
+        }
+
+        return $playlist_file_path;
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event)

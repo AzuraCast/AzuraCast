@@ -190,7 +190,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     Entity\StationPlaylist::ORDER_RANDOM        => 'random',
                 ];
 
-                $playlist_params = ['reload_mode="watch"'];
+                $playlist_params = [
+                    'id="'.$this->_cleanUpString($playlist_var_name).'"',
+                    'reload_mode="watch"'
+                ];
                 if (!$playlist->loopPlaylistOnce()) {
                     $playlist_params[] = 'mode="'.$playlist_modes[$playlist->getOrder()].'"';
                 }
@@ -405,7 +408,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         file_put_contents($playlist_file_path, $playlist_file_contents);
 
         if ($notify) {
-
+            $this->command($station, $playlist_var_name.'.reload');
         }
 
         return $playlist_file_path;

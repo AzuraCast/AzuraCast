@@ -5,6 +5,7 @@ use App\Entity;
 use App\Flysystem\StationFilesystem;
 use App\Http\Request;
 use App\Http\Response;
+use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
@@ -117,6 +118,8 @@ class BatchController extends FilesControllerAbstract
                 $response_record = null;
 
                 /** @var Entity\StationPlaylist[] $playlists */
+                $affected_playlists = [];
+
                 $playlists = [];
                 $playlist_weights = [];
 
@@ -133,6 +136,7 @@ class BatchController extends FilesControllerAbstract
                             'name' => $playlist->getName(),
                         ];
 
+                        $affected_playlists[$playlist->getId()] = $playlist;
                         $playlists[] = $playlist;
                         $playlist_weights[$playlist->getId()] = 0;
                     } else {
@@ -142,6 +146,7 @@ class BatchController extends FilesControllerAbstract
                         ]);
 
                         if ($playlist instanceof Entity\StationPlaylist) {
+                            $affected_playlists[$playlist->getId()] = $playlist;
                             $playlists[] = $playlist;
                             $playlist_weights[$playlist->getId()] = $playlists_media_repo->getHighestSongWeight($playlist);
                         }
@@ -155,7 +160,12 @@ class BatchController extends FilesControllerAbstract
                     try {
                         $media = $media_repo->getOrCreate($station, $file['path']);
 
-                        $playlists_media_repo->clearPlaylistsFromMedia($media);
+                        $media_playlists = $playlists_media_repo->clearPlaylistsFromMedia($media);
+                        foreach($media_playlists as $playlist_id => $playlist) {
+                            if (!isset($affected_playlists[$playlist_id])) {
+                                $affected_playlists[$playlist_id] = $playlist;
+                            }
+                        }
 
                         foreach($playlists as $playlist) {
                             $playlist_weights[$playlist->getId()]++;
@@ -171,6 +181,16 @@ class BatchController extends FilesControllerAbstract
                 }
 
                 $this->em->flush();
+
+                // Write new PLS playlist configuration.
+                $backend = $request->getStationBackend();
+
+                if ($backend instanceof Liquidsoap) {
+                    foreach($affected_playlists as $playlist) {
+                        /** @var Entity\StationPlaylist $playlist */
+                        $backend->writePlaylistFile($playlist);
+                    }
+                }
                 break;
 
             case 'move':
@@ -209,10 +229,6 @@ class BatchController extends FilesControllerAbstract
                 $this->em->flush();
                 break;
         }
-
-        // Write new PLS playlist configuration.
-        $backend = $request->getStationBackend();
-        $backend->write($station);
 
         $this->em->clear(Entity\StationMedia::class);
         $this->em->clear(Entity\StationPlaylist::class);

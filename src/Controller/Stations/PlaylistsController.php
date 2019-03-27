@@ -291,14 +291,12 @@ class PlaylistsController
             }
 
             // If using Manual AutoDJ mode, check for changes and flag as needing-restart.
-            if ($station->useManualAutoDJ()) {
-                $uow = $this->em->getUnitOfWork();
-                $uow->computeChangeSets();
+            $uow = $this->em->getUnitOfWork();
+            $uow->computeChangeSets();
 
-                if ($uow->isEntityScheduled($record)) {
-                    $station->setNeedsRestart(true);
-                    $this->em->persist($station);
-                }
+            if ($uow->isEntityScheduled($record)) {
+                $station->setNeedsRestart(true);
+                $this->em->persist($station);
             }
 
             // Reshuffle "shuffled" playlists and clear cache.

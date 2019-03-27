@@ -146,17 +146,23 @@ class StationPlaylistMediaRepository extends Repository
      * Remove all playlist associations from the specified media object.
      *
      * @param Entity\StationMedia $media
+     * @return array The IDs and records for all affected playlists.
      */
-    public function clearPlaylistsFromMedia(Entity\StationMedia $media)
+    public function clearPlaylistsFromMedia(Entity\StationMedia $media): array
     {
-        $playlists = $this->_em->createQuery(/** @lang DQL */'SELECT e.playlist_id 
-            FROM App\Entity\StationPlaylistMedia e
+        $affected_playlists = [];
+        $playlists = $this->_em->createQuery(/** @lang DQL */'SELECT e, p 
+            FROM App\Entity\StationPlaylistMedia e JOIN e.playlist p 
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
-            ->getArrayResult();
+            ->execute();
 
         foreach($playlists as $row) {
-            $this->clearMediaQueue($row['playlist_id']);
+            /** @var Entity\StationPlaylistMedia $row */
+            $playlist = $row->getPlaylist();
+
+            $affected_playlists[$playlist->getId()] = $playlist;
+            $this->clearMediaQueue($playlist->getId());
         }
 
         $this->_em->createQuery(/** @lang DQL */'DELETE 
@@ -164,6 +170,8 @@ class StationPlaylistMediaRepository extends Repository
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->execute();
+
+        return $affected_playlists;
     }
 
     /**

@@ -135,6 +135,7 @@ return [
                     'toggle',
                     [
                         'label' => __('Hide Metadata from Listeners ("Jingle Mode")'),
+                        'label_class' => 'advanced',
                         'description' => __('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
@@ -210,9 +211,10 @@ return [
                         'label' => __('Scheduling'),
                         'choices' => [
                             StationPlaylist::TYPE_DEFAULT => '<b>' . __('General Rotation') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
-                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
-                            StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
-                            StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
+                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled') . ':</b> ' . __('Play during a scheduled time range.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes.'),
+                            StationPlaylist::TYPE_ONCE_PER_HOUR => '<b>'.__('Once per Hour') . ':</b> '.__('Play once per hour at the specified minute.'),
                             StationPlaylist::TYPE_ONCE_PER_DAY => '<b>' . __('Daily') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
                             StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/azuracast.com/blob/master/AdvancedPlaylists.md'),
                         ],
@@ -220,10 +222,34 @@ return [
                         'required' => true,
                     ]
                 ],
+
+                'interrupt_other_songs' => [
+                    'toggle',
+                    [
+                        'label' => __('Interrupt Other Songs'),
+                        'label_class' => 'advanced',
+                        'description' => __('When this playlist is scheduled to play, it will interrupt any currently playing playlists instead of waiting for the end of a song.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                    ]
+                ],
+
+                'loop_playlist_once' => [
+                    'toggle',
+                    [
+                        'label' => __('Only Loop Playlist Once'),
+                        'label_class' => 'advanced',
+                        'description' => __('If the playlist would play multiple times within its scheduled time, enable this to ensure it only plays once.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                    ]
+                ]
             ]
         ],
 
-        'type_default' => [
+        'type_'.StationPlaylist::TYPE_DEFAULT => [
             'legend' => __('General Rotation'),
             'class' => 'type_fieldset',
             'elements' => [
@@ -320,7 +346,26 @@ return [
                     ]
                 ],
 
-            ],
+            ]
+        ],
+
+        'type_'.StationPlaylist::TYPE_ONCE_PER_HOUR => [
+            'legend' => __('Once per Hour'),
+            'class' => 'type_fieldset',
+            'elements' => [
+
+                'play_per_hour_minute' => [
+                    'number',
+                    [
+                        'label' => __('Minute of Hour to Play'),
+                        'description' => __('Specify the minute of every hour that this playlist should play.'),
+                        'default' => 0,
+                        'min' => 0,
+                        'max' => 59,
+                    ]
+                ],
+
+            ]
         ],
 
         'type_'.StationPlaylist::TYPE_ONCE_PER_DAY => [

@@ -73,6 +73,9 @@ class Sentry
             ],
             'project_root'  => $this->app_settings[Settings::BASE_DIR].'/src',
             'error_types'   => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
+            'excluded_exceptions' => [
+                \League\Flysystem\FileNotFoundException::class,
+            ],
         ];
 
         $commit_hash = $this->version->getCommitHash();

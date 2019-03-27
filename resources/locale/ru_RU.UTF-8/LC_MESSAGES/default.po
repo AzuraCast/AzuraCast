@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-24 05:50\n"
+"PO-Revision-Date: 2019-03-27 23:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3300,7 +3300,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:61
 msgid "Set Playlists"
-msgstr ""
+msgstr "В плейлист"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:78
 msgid "New Playlist"
@@ -3994,7 +3994,7 @@ msgstr "Неизвестный артист"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:13
 msgid "Welcome!"
-msgstr ""
+msgstr "Добро пожаловать!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:15
 msgid "Welcome to %s!"

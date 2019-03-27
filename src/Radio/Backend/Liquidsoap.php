@@ -354,7 +354,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $ls_config[] = 'radio = smooth_add(normal=radio, special=switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ]))';
         }
         if (!empty($schedule_switches_interrupting)) {
-            $ls_config[] = 'radio = smooth_add(switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ]))';
+            $ls_config[] = 'radio = smooth_add(normal=radio, special=switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ]))';
         }
 
         $event->appendLines($ls_config);

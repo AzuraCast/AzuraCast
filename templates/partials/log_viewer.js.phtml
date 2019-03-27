@@ -24,7 +24,10 @@ $(function() {
                 log_modal_contents.append(log_data.contents+"\n");
 
                 if (log_modal.find('#modal-log-autoscroll').is(':checked')) {
-                    log_modal_contents.animate({scrollTop: log_modal_contents.get(0).scrollHeight}, "fast");
+                    // Timeout to allow height to adjust to appended contents.
+                    setTimeout(function() {
+                        log_modal_contents.animate({scrollTop: log_modal_contents.prop("scrollHeight")}, "fast");
+                    }, 500);
                 }
             }
 

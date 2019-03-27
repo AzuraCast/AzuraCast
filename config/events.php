@@ -8,6 +8,11 @@ return function (\Azura\EventDispatcher $dispatcher)
     $dispatcher->addListener(Azura\Event\BuildRoutes::NAME, function(Azura\Event\BuildRoutes $event) {
         $app = $event->getApp();
 
+        if (file_exists(__DIR__.'/routes.dev.php')) {
+            $dev_routes = require __DIR__.'/routes.dev.php';
+            $dev_routes($app);
+        }
+
         // Get the current user entity object and assign it into the request if it exists.
         $app->add(Middleware\GetCurrentUser::class);
 

@@ -12,7 +12,7 @@ tmp/cache/*---*
 .phplint-cache
 
 # Local development files.
-/src/Controller/Frontend/UtilController.php
+/config/routes.dev.php
 /env.ini
 /app/env.ini
 /app/.env

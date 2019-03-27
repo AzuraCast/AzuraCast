@@ -207,7 +207,7 @@ class AutoDJ implements EventSubscriberInterface
         $general_playlists = [];
         foreach($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            if (Entity\StationPlaylist::TYPE_DEFAULT === $playlist->getType()) {
+            if (Entity\StationPlaylist::TYPE_DEFAULT === $playlist->getType() && $playlist->isPlayable()) {
                 $general_playlists[$playlist->getId()] = $playlist;
                 $eligible_playlists[$playlist->getId()] = $playlist->getWeight();
             }

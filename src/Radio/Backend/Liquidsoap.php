@@ -112,6 +112,20 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'def simple_crossfade(a,b) =',
             '  add([fade.initial(duration=3.,b),fade.final(duration=3.,a)])',
             'end',
+            '',
+            '# AutoDJ Next Song Script',
+            'def azuracast_next_song() =',
+            '  uri = '.$this->_getApiUrlCommand($station, 'nextsong'),
+            '  log("AzuraCast Raw Response: #{uri}")',
+            '  ',
+            '  if uri == "" or string.match(pattern="Error", uri) then',
+            '    log("AzuraCast Error: Delaying subsequent requests...")',
+            '    system("sleep 5")',
+            '    request.create("")',
+            '  else',
+            '    request.create(uri)',
+            '  end',
+            'end',
         ]);
     }
 
@@ -263,7 +277,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     $play_time = $this->_getTime($playlist->getScheduleStartTime()) . '-' . $this->_getTime($playlist->getScheduleEndTime());
 
                     $playlist_schedule_days = $playlist->getScheduleDays();
-                    if (!empty($playlist_schedule_days)) {
+                    if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
                         $play_days = [];
 
                         foreach($playlist_schedule_days as $day) {
@@ -286,7 +300,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     $play_time = $this->_getTime($playlist->getPlayOnceTime());
 
                     $playlist_once_days = $playlist->getPlayOnceDays();
-                    if (!empty($playlist_once_days)) {
+                    if (!empty($playlist_once_days) && count($playlist_once_days) < 7) {
                         $play_days = [];
 
                         foreach($playlist_once_days as $day) {
@@ -315,33 +329,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $playlist_vars) . ']);';
         $ls_config[] = '';
 
-        // Add in special playlists if necessary.
-        foreach($special_playlists as $playlist_type => $playlist_config_lines) {
-            if (count($playlist_config_lines) > 1) {
-                $ls_config = array_merge($ls_config, $playlist_config_lines);
-                $ls_config[] = '';
-            }
-        }
-
-        $ls_config[] = '# Assemble final playback order';
-        $fallbacks = [];
-
-        $event->appendLines([
-            '# AutoDJ Next Song Script',
-            'def azuracast_next_song() =',
-            '  uri = '.$this->_getApiUrlCommand($station, 'nextsong'),
-            '  log("AzuraCast Raw Response: #{uri}")',
-            '  ',
-            '  if uri == "" or string.match(pattern="Error", uri) then',
-            '    log("AzuraCast Error: Delaying subsequent requests...")',
-            '    system("sleep 2")',
-            '    request.create("")',
-            '  else',
-            '    request.create(uri)',
-            '  end',
-            'end',
-        ]);
-
+        # Defer to AzuraCast for general rotation playlists if available.
         $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
 
         $error_file = APP_INSIDE_DOCKER
@@ -352,7 +340,18 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
 
         $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, transitions=[simple_crossfade], [requests, dynamic, radio, blank(duration=2.), error_song])';
+        $ls_config[] = '';
 
+        // Add in special playlists if necessary.
+        $ls_config[] = '# Special playlists';
+        foreach($special_playlists as $playlist_type => $playlist_config_lines) {
+            if (count($playlist_config_lines) > 1) {
+                $ls_config = array_merge($ls_config, $playlist_config_lines);
+                $ls_config[] = '';
+            }
+        }
+
+        $ls_config[] = '# Add schedule switches';
         if (!empty($schedule_switches)) {
             $schedule_switches[] = '({true}, radio)';
             $ls_config[] = 'radio = switch(track_sensitive=true, transitions=[simple_crossfade], [ ' . implode(', ', $schedule_switches) . ' ])';

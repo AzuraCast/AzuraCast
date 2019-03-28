@@ -99,6 +99,8 @@ $assets->load('fullcalendar')
                                     <?=__('Once per %d Songs', $row['play_per_songs']) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_MINUTES): ?>
                                     <?=__('Once per %d Minutes', $row['play_per_minutes']) ?>
+                                <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_HOUR): ?>
+                                    <?=__('Once per Hour (at :%02d)', $row['play_per_hour_minute']) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_DAY): ?>
                                     <?=__('Once per Day') ?><br>
                                     <?=__('Plays at %s', $customization->formatTime(StationPlaylist::getTimestamp($row['play_once_time']))) ?>

@@ -351,10 +351,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $ls_config[] = 'radio = smooth_add(normal=radio, special=requests)';
 
         if (!empty($schedule_switches)) {
-            $ls_config[] = 'radio = smooth_add(normal=radio, special=switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ]))';
+            $schedule_switches[] = '({true}, radio)';
+            $ls_config[] = 'radio = switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])';
         }
         if (!empty($schedule_switches_interrupting)) {
-            $ls_config[] = 'radio = smooth_add(normal=radio, special=switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ]))';
+            $schedule_switches_interrupting[] = '({true}, radio)';
+            $ls_config[] = 'radio = switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])';
         }
 
         $event->appendLines($ls_config);
@@ -474,7 +476,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'ignore(output.dummy(live, fallible=true))',
             'live = fallback(id="'.$this->_getVarName('live_fallback', $station).'", track_sensitive=false, [live, blank(duration=2.)])',
             '',
-            'radio = smooth_add(normal=radio, special=switch(id="'.$this->_getVarName('live_switch', $station).'", track_sensitive=false, [({!live_enabled}, live)]))',
+            'radio = switch(id="'.$this->_getVarName('live_switch', $station).'", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])',
         ]);
     }
 

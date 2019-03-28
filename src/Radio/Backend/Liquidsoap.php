@@ -108,6 +108,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '',
             'set("tag.encodings",["UTF-8","ISO-8859-1"])',
             'set("encoder.encoder.export",["artist","title","album","song"])',
+            '',
+            'def simple_crossfade(a,b) =',
+            '  add([fade.initial(duration=3.,b),fade.final(duration=3.,a)])',
+            'end',
         ]);
     }
 
@@ -345,18 +349,17 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             : APP_INCLUDE_ROOT . '/resources/error.mp3';
         $ls_config[] = 'error_song = single("'.$error_file.'")';
 
-        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [dynamic, radio, error_song])';
-
         $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
-        $ls_config[] = 'radio = smooth_add(normal=radio, special=requests)';
+
+        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, transitions=[simple_crossfade], [requests, dynamic, radio, blank(duration=2.), error_song])';
 
         if (!empty($schedule_switches)) {
             $schedule_switches[] = '({true}, radio)';
-            $ls_config[] = 'radio = switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])';
+            $ls_config[] = 'radio = switch(track_sensitive=true, transitions=[simple_crossfade], [ ' . implode(', ', $schedule_switches) . ' ])';
         }
         if (!empty($schedule_switches_interrupting)) {
             $schedule_switches_interrupting[] = '({true}, radio)';
-            $ls_config[] = 'radio = switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])';
+            $ls_config[] = 'radio = switch(track_sensitive=false, transitions=[simple_crossfade], [ ' . implode(', ', $schedule_switches_interrupting) . ' ])';
         }
 
         $event->appendLines($ls_config);
@@ -476,7 +479,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'ignore(output.dummy(live, fallible=true))',
             'live = fallback(id="'.$this->_getVarName('live_fallback', $station).'", track_sensitive=false, [live, blank(duration=2.)])',
             '',
-            'radio = switch(id="'.$this->_getVarName('live_switch', $station).'", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])',
+            'radio = switch(id="'.$this->_getVarName('live_switch', $station).'", track_sensitive=false, transitions=[simple_crossfade], [({!live_enabled}, live), ({true}, radio)])',
         ]);
     }
 

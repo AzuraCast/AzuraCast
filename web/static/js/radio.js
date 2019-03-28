@@ -144,7 +144,4 @@ $(function() {
         setVolume($(this).val());
     });
 
-    // Handle autoplay.
-    $('.btn-audio[data-autoplay="true"]:first').click();
-
 });

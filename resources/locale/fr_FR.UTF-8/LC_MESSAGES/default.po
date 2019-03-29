@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 19:20\n"
+"PO-Revision-Date: 2019-03-29 19:30\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -119,7 +119,7 @@ msgstr "Diffusion"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Streamers"
-msgstr ""
+msgstr "Émetteurs"
 
 #: /var/azuracast/www/src/Acl.php:190
 #: /var/azuracast/www/config/menus/station.php:74
@@ -152,7 +152,7 @@ msgstr "Automatisation"
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
-msgstr ""
+msgstr "Webhooks"
 
 #: /var/azuracast/www/src/Sync/Runner.php:162
 #: /var/azuracast/www/src/Sync/Runner.php:165
@@ -189,11 +189,11 @@ msgstr "Nettoyage"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "Le compte associé à l'adresse e-mail \"%s\" a été défini en tant qu'administrateur"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Compte non trouvé."
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
@@ -201,27 +201,27 @@ msgstr "Votre fichier <code>docker-compose.yml</code> est obsolète!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "Vous devriez mettre à jour votre <code>docker-compose.yml</code> pour afficher les changements les plus récents. Voir la <a href=\"%s\" target=\"_blank\"> version la plus récente du fichier </a> et mettez à jour votre fichier en conséquence.<br>Vous pouvez également utiliser la commande <code>./docker.sh</code> pour mettre à jour automatiquement votre fichier."
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Suivez les <a href=\"%s\" target=\"_blank\"> instructions de mise à jour </a> pour mettre à jour votre installation."
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> est maintenant disponible."
 
 #: /var/azuracast/www/src/Notification/Manager.php:106
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr ""
+msgstr "Vous exécutez actuellement la version %s. La mise à jour est fortement recommandée."
 
 #: /var/azuracast/www/src/Notification/Manager.php:111
 msgid "New AzuraCast Release Version Available"
-msgstr ""
+msgstr "Une nouvelle version d'AzuraCast est disponible"
 
 #: /var/azuracast/www/src/Notification/Manager.php:121
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "Les améliorations suivantes ont été apportées depuis la dernière mise à jour :"
 
 #: /var/azuracast/www/src/Notification/Manager.php:124
 msgid "Your installation is currently %d update(s) behind the latest version."

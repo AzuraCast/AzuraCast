@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 22:10\n"
+"PO-Revision-Date: 2019-03-29 22:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2728,11 +2728,11 @@ msgstr "L'International Standard Recording Code, utilisé pour les licences de d
 
 #: /var/azuracast/www/config/forms/media.php:66
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Les administrateurs peuvent personnaliser les champs qui apparaissent ici sur la<a href=\"%s\">page d'administration</a>."
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Lecture du morceau de contrôle"
 
 #: /var/azuracast/www/config/forms/media.php:83
 msgid "Song Length (seconds)"
@@ -2780,7 +2780,7 @@ msgstr "A quel moment, en secondes depuis le début, l'AutoDJ arrêtera de lire 
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
-msgstr ""
+msgstr "Passer au contenu principal"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
@@ -2788,7 +2788,7 @@ msgstr "Afficher/Masquer le panneau latéral"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Basculer le menu"
 
 #: /var/azuracast/www/templates/main.phtml:64
 #: /var/azuracast/www/templates/frontend/index/index.phtml:1
@@ -2809,7 +2809,7 @@ msgstr "Mon compte"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Changer de thème"
 
 #: /var/azuracast/www/templates/main.phtml:91
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
@@ -2820,7 +2820,7 @@ msgstr "Mes clés API"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Aide"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"
@@ -2832,7 +2832,7 @@ msgstr "Se déconnecter"
 
 #: /var/azuracast/www/templates/main.phtml:151
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "Vous aimez notre logiciel ? <a href=\"%s\" target=\"_blank\">Faites un don pour soutenir AzuraCast !</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
@@ -2844,19 +2844,19 @@ msgstr "Avez-vous besoin d’aide ?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:5
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
+msgstr "Vous trouverez les réponses à de nombreuses questions courantes dans notre rubrique <a href=\"%s\" target=\"_blank\">documents de support</a>."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:7
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
+msgstr "Si vous rencontrez un bug ou une erreur, vous pouvez soumettre un rapport sur GitHub en utilisant le lien ci-dessous."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:9
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
+msgstr "Votre installation actuelle est la <b>%s</b>. Assurez-vous de l'inclure lors de la création d'un nouveau problème."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:14
 msgid "New GitHub Issue"
-msgstr ""
+msgstr "Nouveau sujet GitHub"
 
 #: /var/azuracast/www/templates/partials/radio_controls.phtml:9
 msgid "Pause"
@@ -2865,7 +2865,7 @@ msgstr "Pause"
 #: /var/azuracast/www/templates/partials/radio_controls.phtml:15
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:46
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #: /var/azuracast/www/templates/partials/station_form.phtml:30
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:25
@@ -2875,7 +2875,7 @@ msgstr "AutoDJ"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr ""
+msgstr "Défilement automatique jusqu'au bas du log"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:22
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
@@ -2921,7 +2921,7 @@ msgstr "Éditer"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr ""
+msgstr "Supprimer l'utilisateur \"%s\" ?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 #: /var/azuracast/www/templates/admin/users/index.phtml:39
@@ -2947,7 +2947,7 @@ msgstr "(Vous)"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:22
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Tâches de synchronisation"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:32
 msgid "%s ago"
@@ -2972,19 +2972,19 @@ msgstr "Dupliquer"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr ""
+msgstr "Supprimer la station \"%s\" ?"
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr ""
+msgstr "Supprimer le champ personnalisé \"%s\" ?"
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:15
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
-msgstr ""
+msgstr "Comme vous exécutez Docker, certains logs système ne sont accessibles qu'à partir d'une session shell sur le serveur hôte. Vous pouvez exécuter <code>%s</code> pour accéder aux logs des conteneurs depuis le terminal."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:30
 msgid "Logs by Station"
-msgstr ""
+msgstr "Logs par station"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:20
 msgid "Owner"
@@ -2997,7 +2997,7 @@ msgstr "Révoquer"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr ""
+msgstr "Supprimer le rôle \"%s\" ?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "This role cannot be deleted."
@@ -3005,11 +3005,11 @@ msgstr "Ce rôle ne peut pas être supprimé."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:44
 msgid "Global"
-msgstr ""
+msgstr "Globale"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast est installé"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
@@ -3026,7 +3026,7 @@ msgstr "Notes"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr ""
+msgstr "Supprimer le streamer \"%s\" ?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
@@ -3098,7 +3098,7 @@ msgstr "Total"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:97
 msgid "Unique"
-msgstr ""
+msgstr "Unique"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:108
 msgid "Skip Song"
@@ -3121,7 +3121,7 @@ msgstr "Copier dans le presse-papier"
 #: /var/azuracast/www/templates/stations/profile/index.phtml:171
 #: /var/azuracast/www/templates/stations/profile/index.phtml:187
 msgid "<a href=\"%s\">Edit station profile</a> to enable."
-msgstr ""
+msgstr "<a href=\"%s\">Editer le profil de la station</a> pour l'activer."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:179
 msgid "Streamers/DJs"
@@ -3129,7 +3129,7 @@ msgstr "Streamers/DJs"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:183
 msgid "Manage streamer accounts"
-msgstr ""
+msgstr "Gérer les comptes de streamers"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:194
 msgid "Base Directory"
@@ -3726,7 +3726,7 @@ msgstr "Moyenne d'auditeurs"
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:25
 msgid "Cued On"
-msgstr ""
+msgstr "En cours d'exécution"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
@@ -3772,11 +3772,11 @@ msgstr "Bienvenue sur AzuraCast !"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:19
 msgid "Let's get started by creating your Super Administrator account."
-msgstr ""
+msgstr "Commençons par créer votre compte Super Administrateur."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
-msgstr ""
+msgstr "Ce compte aura un accès complet au système, et vous y serez automatiquement connecté pour le reste de l'installation."
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:3
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:1
@@ -3786,11 +3786,11 @@ msgstr "Configuration d'AzuraCast"
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:23
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:14
 msgid "Create Station"
-msgstr ""
+msgstr "Créer une station"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:35
 msgid "Create a New Radio Station"
-msgstr ""
+msgstr "Créer une nouvelle station de radio"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:36
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
@@ -3798,7 +3798,7 @@ msgstr "Poursuivez le processus de configuration en créant votre première stat
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:26
 msgid "Customize AzuraCast Settings"
-msgstr ""
+msgstr "Personnaliser les paramètres d'AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:27
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
@@ -3830,19 +3830,19 @@ msgstr "Votre compte est actif, mais n'est actuellement associé à aucune stati
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:57
 msgid "Customize"
-msgstr ""
+msgstr "Personnaliser"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:65
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Authentification à deux facteurs"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:72
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "L'authentification à deux facteurs améliore la sécurité de votre compte en exigeant un deuxième code d'accès unique en plus de votre mot de passe lorsque vous ouvrez une session."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:78
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "Désactiver l'authentification à deux facteurs"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:83
 msgid "Enable Two-Factor"

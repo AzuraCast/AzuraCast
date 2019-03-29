@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 20:50\n"
+"PO-Revision-Date: 2019-03-29 21:00\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3274,7 +3274,7 @@ msgstr "Point de montage par défaut"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:35
 msgid "%s of %s Used"
-msgstr ""
+msgstr "%s de %s utilisé"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:41
 msgid "%s Files"
@@ -3282,7 +3282,7 @@ msgstr "%s fichiers"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:48
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr ""
+msgstr "Vous pouvez également télécharger des fichiers en vrac via SFTP <a href=\"%s\" target=\"_blank\">en suivant ces instructions</a>. Les fichiers récemment téléchargés seront automatiquement traités en quelques minutes."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:53
 msgid "Drag files here to upload to this folder or "
@@ -3290,15 +3290,15 @@ msgstr "Glissez ici les fichier à téléverser dans ce dossier ou "
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:61
 msgid "Set Playlists"
-msgstr ""
+msgstr "Définir les playlists"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:78
 msgid "New Playlist"
-msgstr ""
+msgstr "Nouvelle playlist"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:83
 msgid "Save"
-msgstr ""
+msgstr "Sauvegarder"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "Move"
@@ -3322,7 +3322,7 @@ msgstr "Artiste"
 #: /var/azuracast/www/templates/frontend/public/index.phtml:91
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:103
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:27
@@ -3360,7 +3360,7 @@ msgstr "Retour"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:84
 msgid "Album Artwork"
-msgstr ""
+msgstr "Illustration de l'album"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:92
 msgid "Rename"
@@ -3372,27 +3372,27 @@ msgstr "Sélectionner"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:396
 msgid "Home"
-msgstr ""
+msgstr "Accueil"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:6
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
-msgstr ""
+msgstr "Les relais distants vous permettent de travailler avec des logiciels de diffusion en dehors de ce serveur. Tout relais que vous incluez ici sera inclus dans les statistiques de votre station. Vous pouvez également diffuser depuis ce serveur vers des relais distants."
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:34
 msgid "Delete remote relay \"%s\"?"
-msgstr ""
+msgstr "Supprimer le relais à distance \"%s\" ?"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:4
 msgid "Reorder Playlist"
-msgstr ""
+msgstr "Réorganiser la playlist"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:12
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Réorganiser la playlist : %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:19
 msgid "All Playlists"
-msgstr ""
+msgstr "Toutes les playlists"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:22
 msgid "Schedule View"
@@ -3404,11 +3404,11 @@ msgstr "# Titres"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Delete playlist \"%s\"?"
-msgstr ""
+msgstr "Supprimer la playlist \"%s\" ?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:60
 msgid "More"
-msgstr ""
+msgstr "Plus"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
@@ -3422,19 +3422,19 @@ msgstr "Activer"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:65
 msgid "Reorder"
-msgstr ""
+msgstr "Réorganiser"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:68
 msgid "Export %s"
-msgstr ""
+msgstr "Exporter %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:77
 msgid "Song-based"
-msgstr ""
+msgstr "Sur la base de chansons"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:79
 msgid "Jingle Mode"
-msgstr ""
+msgstr "Mode Jingle"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:85
 msgid "Auto-Assigned"
@@ -3470,11 +3470,11 @@ msgstr "Personnalisé"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
-msgstr ""
+msgstr "Logs disponibles"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:6
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
-msgstr ""
+msgstr "Les Webhooks vous permettent de vous connecter à des services Web externes et de diffuser les modifications apportées à votre station sur ces derniers."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:24
 msgid "Type"
@@ -3486,7 +3486,7 @@ msgstr "Déclencheurs"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Trigger the web hook manually and view the raw response."
-msgstr ""
+msgstr "Déclenchez le Webhook manuellement et visualisez la réponse brute."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Test"
@@ -3494,11 +3494,11 @@ msgstr "Tester"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "Supprimer le Webhook \"%s\" ?"
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 msgid "Select the type of web hook to create."
-msgstr ""
+msgstr "Sélectionnez le type de Webhook à créer."
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:6
@@ -3517,21 +3517,21 @@ msgstr "Titre / Chemin d’accès"
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
 msgid "Report Not Available"
-msgstr ""
+msgstr "Rapport non disponible"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
-msgstr ""
+msgstr "Ce rapport n'est pas disponible pour cette station, car l'administrateur système a choisi de ne pas collecter d'informations détaillées sur les auditeurs IP."
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 msgid "Listener Request"
-msgstr ""
+msgstr "Demande des auditeurs"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 msgid "Playlist:"
-msgstr ""
+msgstr "Playlist :"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Broadcast"
@@ -3636,11 +3636,11 @@ msgstr "Localité"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 msgid "Mobile Device"
-msgstr ""
+msgstr "Appareil mobile"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:45
 msgid "Desktop Device"
-msgstr ""
+msgstr "Périphérique de bureau"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:57
 msgid "Unknown"
@@ -3648,7 +3648,7 @@ msgstr "Inconnu"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:64
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr ""
+msgstr "Ce produit inclut les données GeoLite2 créées par MaxMind, disponibles auprès de %s."
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:47
 msgid "Listener"
@@ -3730,32 +3730,33 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Supprimer un élément de la file d'attente ?"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:11
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Les clés API peuvent être utilisées pour accéder à certaines fonctionnalités du système sans avoir besoin de se connecter. Toutes les clés \n"
+"     que vous créez partagent vos permissions dans le système. Pour plus d'informations, voir la section <a href=\"%s\">Documentation API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:31
 msgid "Key Identifier"
-msgstr ""
+msgstr "Identificateur de clef"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
 msgid "New Key Generated"
-msgstr ""
+msgstr "Nouvelle clé générée"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:13
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
-msgstr ""
+msgstr "<b>Important : copiez la clé ci-dessous avant de continuer !</b> Vous ne pourrez plus la consulter."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:15
 msgid "Your full API key is below:"
-msgstr ""
+msgstr "Votre clé API complète est ci-dessous :"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:24
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr ""
+msgstr "Lors des appels API, vous pouvez passer cette valeur dans l'en-tête \"X-API-Key\" pour vous authentifier. Vous ne pouvez effectuer que les actions que votre compte utilisateur est autorisé à effectuer."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:27
 msgid "Continue"
@@ -3763,7 +3764,7 @@ msgstr "Continuer"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:15
 msgid "AzuraCast First-Time Setup"
-msgstr ""
+msgstr "AzuraCast Première installation"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:18
 msgid "Welcome to AzuraCast!"

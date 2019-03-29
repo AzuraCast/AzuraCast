@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 19:30\n"
+"PO-Revision-Date: 2019-03-29 19:40\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -225,15 +225,15 @@ msgstr "Les améliorations suivantes ont été apportées depuis la dernière mi
 
 #: /var/azuracast/www/src/Notification/Manager.php:124
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "Votre installation est actuellement %d mise à jour derrière la dernière version."
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Vous devriez mettre à jour pour profiter des corrections de bugs et de sécurité."
 
 #: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
-msgstr ""
+msgstr "Nouvelles mises à jour d'AzuraCast disponibles"
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:107
@@ -247,27 +247,27 @@ msgstr "Vous n’êtes pas autorisé à accéder à cette partie du site."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s ne peut pas démarrer"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."
-msgstr ""
+msgstr "Il est déjà en cours d'exécution."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s ne peut s'arrêter"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
-msgstr ""
+msgstr "Il ne fonctionne pas."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
-msgstr ""
+msgstr "%s a rencontré une erreur"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
-msgstr ""
+msgstr "Consultez le fichier log pour plus de détails."
 
 #: /var/azuracast/www/src/Radio/Adapters.php:137
 #: /var/azuracast/www/src/Radio/Adapters.php:141
@@ -277,11 +277,11 @@ msgstr "Utilisez <b>%s</b> sur ce serveur"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:145
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Connectez-vous à un <b>serveur radio distant</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr ""
+msgstr "<b>Ne pas utiliser</b> un service AutoDJ"
 
 #: /var/azuracast/www/src/Utilities.php:60
 msgid "%d second"
@@ -518,7 +518,7 @@ msgstr "Il existe déjà un autre utilisateur avec cette adresse E-mail. Veuille
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "Vous ne pouvez pas supprimer votre propre compte."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:116
 #: /var/azuracast/www/src/Controller/Admin/Stations/CloneController.php:52
@@ -552,7 +552,7 @@ msgstr "Clone de la station : %s"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "La version de SHOUTcast \"%s\" est actuellement installé."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:69
@@ -618,7 +618,7 @@ msgstr "Renommer le fichier/répertoire"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:204
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Cette station n'a plus d'espace de stockage disponible."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
@@ -705,11 +705,11 @@ msgstr "Format"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:245
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Playlist activé."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:246
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Playlist désactivée."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:289
 msgid "Existing playlist imported."
@@ -810,31 +810,31 @@ msgstr "Modifier le profil"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:148
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "Le jeton que vous avez fourni n'est pas valide. Veuillez réessayer."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:171
 msgid "Two-factor authentication enabled."
-msgstr ""
+msgstr "Authentification à deux facteurs activée."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:205
 msgid "Two-factor authentication disabled."
-msgstr ""
+msgstr "Authentification à deux facteurs désactivée."
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Démarrer la station"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Prêt à diffuser ? Cliquez pour démarrer votre station."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Redémarrer pour appliquer les modifications"
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Cliquez pour redémarrer votre station et appliquer les modifications de configuration."
 
 #: /var/azuracast/www/config/menus/station.php:39
 msgid "Public Page"
@@ -865,7 +865,7 @@ msgstr "Comptes des streamers/DJs"
 
 #: /var/azuracast/www/config/menus/station.php:67
 msgid "Web DJ"
-msgstr ""
+msgstr "Web DJ"
 
 #: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
@@ -874,7 +874,7 @@ msgstr "Rapports"
 #: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:1
 msgid "Statistics Overview"
-msgstr ""
+msgstr "Récapitulatif des statistiques"
 
 #: /var/azuracast/www/config/menus/station.php:102
 #: /var/azuracast/www/templates/stations/profile/index.phtml:93
@@ -929,13 +929,13 @@ msgstr "Affectation automatique"
 #: /var/azuracast/www/templates/admin/logs/index.phtml:3
 #: /var/azuracast/www/templates/stations/logs/index.phtml:3
 msgid "Log Viewer"
-msgstr ""
+msgstr "Visionneuse de logs"
 
 #: /var/azuracast/www/config/menus/station.php:148
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "File d'attente des chansons à venir"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
@@ -948,12 +948,12 @@ msgstr "Maintenance système"
 #: /var/azuracast/www/config/menus/admin.php:22
 #: /var/azuracast/www/templates/admin/branding/index.phtml:8
 msgid "Custom Branding"
-msgstr ""
+msgstr "Personnalisation de l'image de marque"
 
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "Journaux(Logs) du système"
 
 #: /var/azuracast/www/config/menus/admin.php:43
 #: /var/azuracast/www/templates/admin/users/index.phtml:1
@@ -963,27 +963,27 @@ msgstr "Comptes utilisateurs"
 
 #: /var/azuracast/www/config/webhooks.php:18
 msgid "Generic Web Hook"
-msgstr ""
+msgstr "Webhook générique"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "Envoyez automatiquement un message à n'importe quelle URL lorsque les données de votre station changent."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
-msgstr ""
+msgstr "Envoyer les changements de métadonnées de morceau à TuneIn."
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
-msgstr ""
+msgstr "Discord Webhook"
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Envoyez automatiquement un message personnalisé sur votre serveur Discord."
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"

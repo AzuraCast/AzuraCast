@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 22:40\n"
+"PO-Revision-Date: 2019-03-29 22:50\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2217,51 +2217,51 @@ msgstr "URL qui recevra les messages POST chaque fois qu'un événement est déc
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:44
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "Optionnel : Nom d'utilisateur pour l'authentification de base HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:45
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Si votre Webhook nécessite une authentification de base HTTP, indiquez le nom d'utilisateur ici."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:53
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "Optionnel : Mot de passe d'authentification de base HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:54
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Si votre Webhook nécessite une authentification de base HTTP, indiquez le mot de passe ici."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:23
 msgid "TuneIn Partner ID"
-msgstr ""
+msgstr "ID partenaire TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:32
 msgid "TuneIn Partner Key"
-msgstr ""
+msgstr "Clé de partenaire TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:41
 msgid "TuneIn Station ID"
-msgstr ""
+msgstr "TuneIn Station ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:42
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr ""
+msgstr "L'ID de la station sera une chaîne numérique commençant par la lettre S."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:12
 msgid "Discord API Details"
-msgstr ""
+msgstr "Détails de l'API Discord"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:27
 msgid "Discord Web Hook URL"
-msgstr ""
+msgstr "URL Webhook de Discord"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:28
 msgid "This URL is provided within the Discord application."
-msgstr ""
+msgstr "Cette URL est fournie dans l'application Discord."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:57
 msgid "Now playing on %s:"
-msgstr ""
+msgstr "Maintenant on joue sur %s :"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:64
 #: /var/azuracast/www/templates/stations/files/index.phtml:100
@@ -2281,7 +2281,7 @@ msgstr "Description"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:82
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:91
 msgid "Author Name"
@@ -2289,11 +2289,11 @@ msgstr "Nom de l'auteur"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Thumbnail Image URL"
-msgstr ""
+msgstr "URL de la vignette"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:109
 msgid "Footer Text"
-msgstr ""
+msgstr "Texte de bas de page"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:111
 #: /var/azuracast/www/templates/main.phtml:150
@@ -2316,12 +2316,12 @@ msgstr "Profil de la station"
 #: /var/azuracast/www/config/forms/station.php:43
 #: /var/azuracast/www/templates/stations/profile/index.phtml:147
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: /var/azuracast/www/config/forms/station.php:50
 #: /var/azuracast/www/templates/stations/profile/index.phtml:153
 msgid "Web Site URL"
-msgstr ""
+msgstr "URL du site Web"
 
 #: /var/azuracast/www/config/forms/station.php:51
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."

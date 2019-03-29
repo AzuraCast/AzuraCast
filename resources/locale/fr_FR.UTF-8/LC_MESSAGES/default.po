@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 21:00\n"
+"PO-Revision-Date: 2019-03-29 21:10\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3768,7 +3768,7 @@ msgstr "AzuraCast Première installation"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:18
 msgid "Welcome to AzuraCast!"
-msgstr ""
+msgstr "Bienvenue sur AzuraCast !"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:19
 msgid "Let's get started by creating your Super Administrator account."

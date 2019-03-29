@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 22:00\n"
+"PO-Revision-Date: 2019-03-29 22:10\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1503,7 +1503,7 @@ msgstr "Jouer pendant un intervalle de temps. Utile pour les playlists axées su
 #: /var/azuracast/www/config/forms/playlist.php:214
 #: /var/azuracast/www/config/forms/playlist.php:289
 msgid "Once per x Songs"
-msgstr ""
+msgstr "Une fois toutes les x musiques"
 
 #: /var/azuracast/www/config/forms/playlist.php:214
 msgid "Play exactly once every <i>x</i> songs. Useful for station ID/jingles."
@@ -1511,7 +1511,7 @@ msgstr "Jouer exactement une fois après <i>x</i> titres. Utile pour les ID/jing
 
 #: /var/azuracast/www/config/forms/playlist.php:215
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "Une fois toutes les x minutes"
 
 #: /var/azuracast/www/config/forms/playlist.php:215
 msgid "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
@@ -2326,7 +2326,7 @@ msgstr "Afficher la station dans les pages publiques et les résultats générau
 
 #: /var/azuracast/www/config/forms/station.php:69
 msgid "URL Stub"
-msgstr ""
+msgstr "Bout d'URL"
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
@@ -2579,7 +2579,7 @@ msgstr "Le répertoire parent dans lequel sont stockés la liste de lecture et l
 
 #: /var/azuracast/www/config/forms/station.php:426
 msgid "Custom Media Directory"
-msgstr ""
+msgstr "Répertoire personnalisé des médias"
 
 #: /var/azuracast/www/config/forms/station.php:428
 msgid "The directory where media files are stored. Leave blank to use default directory."
@@ -2599,7 +2599,7 @@ msgstr "Mot de passe du streamer"
 
 #: /var/azuracast/www/config/forms/streamer.php:19
 msgid "The streamer will use this password to connect to the radio server. Do not use the colon (:) character."
-msgstr ""
+msgstr "Le streamer utilisera ce mot de passe pour se connecter au serveur radio. N'utilisez pas le caractère deux-points ( :)."
 
 #: /var/azuracast/www/config/forms/streamer.php:30
 msgid "Streamer Display Name"
@@ -2607,7 +2607,7 @@ msgstr "Nom d'affichage du streamer"
 
 #: /var/azuracast/www/config/forms/streamer.php:31
 msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
-msgstr ""
+msgstr "C'est le nom de l'affichage informel qui sera affiché dans les réponses API si le streamer/DJ est en direct."
 
 #: /var/azuracast/www/config/forms/streamer.php:39
 msgid "Internal notes or comments about the user, visible only on this control panel."
@@ -2619,75 +2619,75 @@ msgstr "Le compte est actif"
 
 #: /var/azuracast/www/config/forms/streamer.php:47
 msgid "Enable to allow this account to log in and stream."
-msgstr ""
+msgstr "Activez cette option pour permettre à ce compte de se connecter et de diffuser en continu."
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Le nom d'affichage attribué à ce relais lors de sa visualisation sur des pages administratives ou publiques. Laissez vide pour en générer automatiquement un."
 
 #: /var/azuracast/www/config/forms/remote.php:22
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Activez cette option pour permettre aux auditeurs de sélectionner ce relais sur les pages publiques de cette station."
 
 #: /var/azuracast/www/config/forms/remote.php:32
 msgid "Remote Station Type"
-msgstr ""
+msgstr "Type de station à distance"
 
 #: /var/azuracast/www/config/forms/remote.php:45
 msgid "Remote Station Listening URL"
-msgstr ""
+msgstr "URL de la station distante"
 
 #: /var/azuracast/www/config/forms/remote.php:46
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
-msgstr ""
+msgstr "Exemple : si l'URL de la radio distante est %s, entrer <code>%s</code>."
 
 #: /var/azuracast/www/config/forms/remote.php:58
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr ""
+msgstr "Station d'écoute à distance Point de montage / SID"
 
 #: /var/azuracast/www/config/forms/remote.php:59
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
-msgstr ""
+msgstr "Spécifiez un point de montage (i.e. <code>%s</code>) ou un SID Shoutcast (i.e. <code>%s</code>) pour spécifier un flux spécifique à utiliser pour les statistiques ou la diffusion."
 
 #: /var/azuracast/www/config/forms/remote.php:70
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr ""
+msgstr "Diffusion AutoDJ vers la station distante"
 
 #: /var/azuracast/www/config/forms/remote.php:71
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr ""
+msgstr "Si cette option est activée, l'AutoDJ de cette installation diffusera automatiquement de la musique à ce point de montage."
 
 #: /var/azuracast/www/config/forms/remote.php:119
 msgid "Remote Station Source Port"
-msgstr ""
+msgstr "Port source de la station distante"
 
 #: /var/azuracast/www/config/forms/remote.php:120
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr ""
+msgstr "Si le port vers lequel vous diffusez est différent de celui que vous avez indiqué dans l'URL ci-dessus, indiquez ici le port source."
 
 #: /var/azuracast/www/config/forms/remote.php:127
 msgid "Remote Station Source Mountpoint/SID"
-msgstr ""
+msgstr "Station à distance Source Point de montage / SID"
 
 #: /var/azuracast/www/config/forms/remote.php:128
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Si le point de montage (c-à-d. <code>/radio.mp3</code>) ou le Shoutcast SID (c-à-d. <code>2</code>) vers lequel vous diffusez est différent de celui indiqué ci-dessus, indiquez ici le point de montage source."
 
 #: /var/azuracast/www/config/forms/remote.php:135
 msgid "Remote Station Source Username"
-msgstr ""
+msgstr "Nom d'utilisateur source de la station distante"
 
 #: /var/azuracast/www/config/forms/remote.php:136
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr ""
+msgstr "Si vous diffusez avec l'AutoDJ, entrez le nom d'utilisateur source ici. Il se peut que ce soit vide."
 
 #: /var/azuracast/www/config/forms/remote.php:143
 msgid "Remote Station Source Password"
-msgstr ""
+msgstr "Mot de passe source de la station distante"
 
 #: /var/azuracast/www/config/forms/remote.php:144
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr ""
+msgstr "Si vous diffusez avec l'AutoDJ, entrez le mot de passe source ici."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
@@ -2712,11 +2712,11 @@ msgstr "Album de la musique"
 
 #: /var/azuracast/www/config/forms/media.php:42
 msgid "Song Lyrics"
-msgstr ""
+msgstr "Paroles de musique"
 
 #: /var/azuracast/www/config/forms/media.php:49
 msgid "Replace Album Cover Art"
-msgstr ""
+msgstr "Remplacer la pochette de l'album"
 
 #: /var/azuracast/www/config/forms/media.php:57
 msgid "ISRC"

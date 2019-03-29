@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 20:00\n"
+"PO-Revision-Date: 2019-03-29 20:30\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1800,51 +1800,51 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:102
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">En savoir plus sur cet en-tête</a>. Définissez sur * pour autoriser toutes les sources, ou spécifiez une liste d'origines séparées par une virgule (,)."
 
 #: /var/azuracast/www/config/forms/settings.php:111
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Contrôles de protection de la vie privée"
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast n'envoie pas les données de votre station ou de vos auditeurs à un serveur externe. Vous pouvez contrôler la quantité de données qu'AzuraCast enregistre sur vos auditeurs ici."
 
 #: /var/azuracast/www/config/forms/settings.php:119
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Enregistrement des analyses des auditeurs"
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Les statistiques globales sur les auditeurs sont utilisées pour afficher les rapports des stations dans l'ensemble du système. Les statistiques d'auditeurs basées sur IP sont utilisées pour visualiser le suivi des auditeurs en direct et peuvent être requises pour les rapports sur les redevances."
 
 #: /var/azuracast/www/config/forms/settings.php:123
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>Complet :</b> Collecte de statistiques globales sur les auditeurs et de statistiques sur les auditeurs basées sur IP"
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>Limité :</b> Recueillir uniquement des statistiques globales sur les auditeurs"
 
 #: /var/azuracast/www/config/forms/settings.php:125
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>Aucune :</b> Ne pas collecter d'analyses de l'auditeur"
 
 #: /var/azuracast/www/config/forms/settings.php:134
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "Télémétrie d'installation AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:135
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Choisissez si votre installation communique avec les serveurs centraux AzuraCast pour vérifier les mises à jour et les annonces.<br>AzuraCast respecte votre vie privée ; voir notre<a href=\"%s\" target=\"_blank\">politique de confidentialité</a> pour plus de détails."
 
 #: /var/azuracast/www/config/forms/settings.php:142
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Vérifier les mises à jour et les annonces"
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Envoyez un minimum de détails sur votre installation AzuraCast au serveur central d'AzuraCast pour vérifier les mises à jour des logiciels et les annonces importantes."
 
 #: /var/azuracast/www/config/forms/settings.php:146
 msgid "<b>None:</b> Do not check for updates or announcements."

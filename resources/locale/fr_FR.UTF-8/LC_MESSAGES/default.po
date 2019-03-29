@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 20:40\n"
+"PO-Revision-Date: 2019-03-29 20:50\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2500,51 +2500,51 @@ msgstr "Personnaliser le point de montage DJ/Streamer"
 
 #: /var/azuracast/www/config/forms/station.php:304
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
-msgstr ""
+msgstr "Si votre logiciel de streaming nécessite un chemin de point de montage spécifique, indiquez-le ici. Sinon, utilisez la valeur par défaut."
 
 #: /var/azuracast/www/config/forms/station.php:313
 msgid "DJ/Streamer Buffer Time (Seconds)"
-msgstr ""
+msgstr "Temps de buffer DJ/Streamer (secondes)"
 
 #: /var/azuracast/www/config/forms/station.php:315
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
-msgstr ""
+msgstr "Le nombre de secondes de signal à mémoriser en cas d'interruption. Réglez la valeur la plus basse que vos DJs peuvent utiliser sans interruption de flux."
 
 #: /var/azuracast/www/config/forms/station.php:327
 msgid "Character Set Encoding"
-msgstr ""
+msgstr "Encodage des jeux de caractères"
 
 #: /var/azuracast/www/config/forms/station.php:329
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
-msgstr ""
+msgstr "Dans la plupart des cas, utilisez l'encodage UTF-8 par défaut. L'ancien codage ISO-8859-1 peut être utilisé si vous acceptez les connexions des DJs SHOUTcast 1 ou si vous utilisez un autre logiciel existant."
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "Manual AutoDJ Mode"
-msgstr ""
+msgstr "Mode AutoDJ manuel"
 
 #: /var/azuracast/www/config/forms/station.php:344
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr ""
+msgstr "Ce mode désactive la gestion AutoDJ d'AzuraCast, utilisant Liquidsoap lui-même pour gérer la lecture des morceaux. \"Chanson suivante\" et d'autres fonctionnalités ne seront pas disponibles."
 
 #: /var/azuracast/www/config/forms/station.php:355
 msgid "Customize Internal Request Processing Port"
-msgstr ""
+msgstr "Personnaliser le port de traitement des demandes internes"
 
 #: /var/azuracast/www/config/forms/station.php:357
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
-msgstr ""
+msgstr "Ce port n'est utilisé par aucun processus externe. Ne modifiez ce port que si le port assigné est utilisé. Laisser vide pour assigner automatiquement un port."
 
 #: /var/azuracast/www/config/forms/station.php:366
 msgid "Use Replaygain Metadata"
-msgstr ""
+msgstr "Utiliser les métadonnées Replaygain"
 
 #: /var/azuracast/www/config/forms/station.php:369
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr ""
+msgstr "Demandez à Liquidsoap d'utiliser toutes les métadonnées de relecture associées à un morceau pour contrôler son niveau de volume."
 
 #: /var/azuracast/www/config/forms/station.php:383
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
-msgstr ""
+msgstr "Ce code sera inséré dans la configuration Liquidsoap de votre station, sous la configuration de la playlist et juste avant la sortie Icecast. Utilisez uniquement le code Liquidsoap valide pour cette section !"
 
 #: /var/azuracast/www/config/forms/station.php:391
 #: /var/azuracast/www/templates/partials/station_form.phtml:34
@@ -2555,27 +2555,27 @@ msgstr "Administration"
 
 #: /var/azuracast/www/config/forms/station.php:398
 msgid "Enable Broadcasting"
-msgstr ""
+msgstr "Autoriser la diffusion"
 
 #: /var/azuracast/www/config/forms/station.php:399
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
-msgstr ""
+msgstr "Si elle est désactivée, la station ne diffusera pas ou ne mélangera pas son AutoDJ."
 
 #: /var/azuracast/www/config/forms/station.php:409
 msgid "Storage Quota"
-msgstr ""
+msgstr "Quota de stockage"
 
 #: /var/azuracast/www/config/forms/station.php:410
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr ""
+msgstr "Définissez un espace disque maximum que cette station peut utiliser. Spécifiez la taille avec l'unité, c'est-à-dire \"8 Go\". Les unités sont mesurées en 1024 octets. Laisser vide par défaut en fonction de l'espace disponible sur le disque."
 
 #: /var/azuracast/www/config/forms/station.php:417
 msgid "Base Station Directory"
-msgstr ""
+msgstr "Répertoire des stations de base"
 
 #: /var/azuracast/www/config/forms/station.php:419
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
-msgstr ""
+msgstr "Le répertoire parent dans lequel sont stockés la liste de lecture et les fichiers de configuration des stations. Laisser vide pour utiliser le répertoire par défaut."
 
 #: /var/azuracast/www/config/forms/station.php:426
 msgid "Custom Media Directory"
@@ -3133,11 +3133,11 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:194
 msgid "Base Directory"
-msgstr ""
+msgstr "Répertoire de base"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:198
 msgid "Media Directory"
-msgstr ""
+msgstr "Répertoire des médias"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:202
 msgid "Player Embed Code"
@@ -3145,7 +3145,7 @@ msgstr "Code du lecteur embarqué"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:216
 msgid "Streams"
-msgstr ""
+msgstr "Flux"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:226
 msgid "Local Streams"
@@ -3174,7 +3174,7 @@ msgstr "SHOUTcast DNAS 2 (Diffusion)"
 #: /var/azuracast/www/templates/stations/profile/index.phtml:291
 #: /var/azuracast/www/templates/stations/profile/index.phtml:364
 msgid "Loading..."
-msgstr ""
+msgstr "Chargement..."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:301
 msgid "Administration URL"
@@ -3190,7 +3190,7 @@ msgstr "Mot de passe de la source"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:320
 msgid "Relay Password"
-msgstr ""
+msgstr "Mot de passe du relais"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:334
 #: /var/azuracast/www/templates/stations/profile/index.phtml:379
@@ -3233,11 +3233,11 @@ msgstr "Arrêté"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
-msgstr ""
+msgstr "Station de diffusion désactivée"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "Votre station n'est actuellement pas activée pour la diffusion. Vous pouvez toujours gérer les médias, les listes de lecture et les autres paramètres de station. Pour réactiver la diffusion, <a href=\"%s\">modifier le profil de votre station</a>."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6
@@ -3262,11 +3262,11 @@ msgstr "Configurer l'affectation automatique"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:6
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
-msgstr ""
+msgstr "Les points de montage sont la façon dont les auditeurs se connectent et écoutent votre station. Chaque point de montage peut avoir un format ou une qualité audio différente. En utilisant des points de montage, vous pouvez configurer un flux de haute qualité pour les auditeurs à large bande et un flux mobile pour les utilisateurs de téléphone."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:34
 msgid "Delete mount point \"%s\"?"
-msgstr ""
+msgstr "Supprimer le point de montage \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:40
 msgid "Default Mount"

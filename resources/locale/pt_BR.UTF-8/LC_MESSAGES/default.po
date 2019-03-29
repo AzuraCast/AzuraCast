@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-24 05:51\n"
+"PO-Revision-Date: 2019-03-29 18:40\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1023,7 +1023,7 @@ msgstr "Sempre que um soft transmissor/DJ desconectar"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:14
 msgid "Mount Point URL"
-msgstr ""
+msgstr "URL do Ponto de Montagem"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"

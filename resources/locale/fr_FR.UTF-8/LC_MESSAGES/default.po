@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-24 05:50\n"
+"PO-Revision-Date: 2019-03-29 19:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "This port is currently in use by another station."
-msgstr ""
+msgstr "Ce port est actuellement utilisé par une autre station."
 
 #: /var/azuracast/www/src/Acl.php:172
 #: /var/azuracast/www/src/Acl.php:183
@@ -115,7 +115,7 @@ msgstr "Gérer la station %s"
 #: /var/azuracast/www/src/Acl.php:188
 #: /var/azuracast/www/templates/partials/station_form.phtml:27
 msgid "Broadcasting"
-msgstr ""
+msgstr "Diffusion"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Streamers"

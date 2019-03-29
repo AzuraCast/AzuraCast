@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 21:10\n"
+"PO-Revision-Date: 2019-03-29 21:50\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -915,7 +915,7 @@ msgstr "Titres à double"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
-msgstr ""
+msgstr "SoundExchange Royalties"
 
 #: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
@@ -995,35 +995,35 @@ msgstr "Utilisez l'API Telegram Bot pour envoyer un message à un canal."
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
-msgstr ""
+msgstr "Post Twitter"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Envoyer automatiquement un tweet."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Chaque fois que la chanson en cours de lecture change"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Chaque fois que le nombre d'auditeurs augmente"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Chaque fois que le nombre d'auditeurs diminue"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "Chaque fois qu'un streamer en direct/DJ se connecte en direct sur le flux"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "Chaque fois qu'un streamer en direct/DJ se déconnecte du flux"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:14
 msgid "Mount Point URL"
-msgstr ""
+msgstr "URL du point de montage"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
@@ -1033,20 +1033,20 @@ msgstr "Ce nom doit toujours commencer par un slash (/) et doit être une URL va
 #: /var/azuracast/www/config/forms/remote.php:13
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:27
 msgid "Display Name"
-msgstr ""
+msgstr "Nom d'affichage"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:24
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Le nom d'affichage attribué à ce point de montage lors de sa visualisation sur des pages administratives ou publiques. Laissez vide pour en générer automatiquement un."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:31
 #: /var/azuracast/www/config/forms/remote.php:21
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Afficher sur les pages publiques"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:32
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Permet de permettre aux auditeurs de sélectionner ce point de montage sur les pages publiques de cette station."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:33
 #: /var/azuracast/www/config/forms/mount/generic.php:44
@@ -1112,7 +1112,7 @@ msgstr "Non"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:42
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Définir comme point de montage par défaut"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:43
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
@@ -1129,7 +1129,7 @@ msgstr "Entrez l’URL complète d’un autre flux pour relayer sa diffusion par
 #: /var/azuracast/www/config/forms/mount/generic.php:62
 #: /var/azuracast/www/config/forms/remote.php:151
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "Publier dans les annuaires \"Pages Jaunes\"(Yellow Pages)"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:63
 #: /var/azuracast/www/config/forms/remote.php:152

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 22:30\n"
+"PO-Revision-Date: 2019-03-29 22:40\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2124,25 +2124,25 @@ msgstr "Personnaliser le message"
 #: /var/azuracast/www/config/forms/webhook/twitter.php:87
 #: /var/azuracast/www/config/forms/webhook/discord.php:48
 msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
-msgstr ""
+msgstr "Les variables se présentent sous la forme de <code>{{ var.name }}</code>. Toutes les valeurs dans le champ <a href=\"%s\" target=\"_blank\">Réponse de l'API de la lecture en cours</a> sont disponibles pour utilisation. Tous les champs vides sont ignorés."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 #: /var/azuracast/www/config/forms/webhook/discord.php:55
 msgid "Main Message Content"
-msgstr ""
+msgstr "Contenu du message principal"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:77
 #: /var/azuracast/www/config/forms/webhook/twitter.php:115
 msgid "Now playing on %s: %s by %s! Tune in now."
-msgstr ""
+msgstr "Actuellement en train de diffuser %s : %s par %s ! Branchez-vous maintenant."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:85
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Mode d'analyse des messages"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:12
 msgid "Twitter Account Details"
-msgstr ""
+msgstr "Détails du compte Twitter"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Steps for configuring a Twitter application:<br>\n"
@@ -2153,40 +2153,47 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below."
-msgstr ""
+msgstr "Étapes de configuration d'une application Twitter :<br>\n"
+"         <ol type=\"1\">\n"
+"              <li>Créez une nouvelle application sur la page <a href=\"%s\" target=\"_blank\">Site des applications Twitter</a>. \n"
+"           Utilisez l'URL de base de cette installation comme URL d'application.</li>\n"
+"              <li>Dans l'application nouvellement créée, cliquez sur l'onglet \"Clés et jetons d'accès\".</li>\n"
+"           <li>En bas de la page, cliquez sur \"Créer mon code d'accès\".</li>\n"
+"         </ol>\n"
+"Une fois ces étapes terminées, entrez les informations de la page \"Clés et jetons d'accès\" dans les champs ci-dessous."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:28
 msgid "Consumer Key (API Key)"
-msgstr ""
+msgstr "Clé consommateur (clé API)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:37
 msgid "Consumer Secret (API Secret)"
-msgstr ""
+msgstr "Secret du consommateur (secret de l'API)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:46
 msgid "Access Token"
-msgstr ""
+msgstr "Jeton d'accès"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:55
 msgid "Access Token Secret"
-msgstr ""
+msgstr "Access Token Secret"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:64
 msgid "Only Send One Tweet Every..."
-msgstr ""
+msgstr "N'envoyez qu'un seul Tweet tous les..."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:68
 msgid "No Limit"
-msgstr ""
+msgstr "Aucune limite"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:86
 #: /var/azuracast/www/config/forms/webhook/generic.php:12
 msgid "Web Hook Details"
-msgstr ""
+msgstr "Détails du Webhook"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:112
 msgid "Message Body"
-msgstr ""
+msgstr "Corps du message"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:13
 msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
@@ -2194,15 +2201,19 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Les Webhooks envoient automatiquement une requête HTTP POST à l'URL que vous spécifiez à \n"
+"          chaque fois qu'un des déclencheurs que vous spécifiez se produit sur votre station. Le corps du message POST\n"
+"          est exactement le même que celui de la <a href=\"%s\" target=\"_blank\">Réponse de l'API de lecture en cours</a> pour votre station. \n"
+"           Afin d'accélérer le traitement, les Webhooks ont un court délai d'attente, donc le service de réponse doit être\n"
+"         optimisé pour traiter la demande en moins de 2 secondes."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:34
 msgid "Web Hook URL"
-msgstr ""
+msgstr "URL du Webhook"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:35
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "URL qui recevra les messages POST chaque fois qu'un événement est déclenché."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:44
 msgid "Optional: HTTP Basic Authentication Username"

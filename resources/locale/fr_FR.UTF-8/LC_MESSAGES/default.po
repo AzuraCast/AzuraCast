@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-03-24T05:46:26+00:00\n"
-"PO-Revision-Date: 2019-03-29 19:50\n"
+"PO-Revision-Date: 2019-03-29 20:00\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1752,7 +1752,7 @@ msgstr "Jours à conserver de l'historique de lecture"
 
 #: /var/azuracast/www/config/forms/settings.php:66
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
-msgstr ""
+msgstr "Set longer to preserve more playback history for stations. Set shorter to save disk space."
 
 #: /var/azuracast/www/config/forms/settings.php:68
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
@@ -1784,7 +1784,7 @@ msgstr "Indéfiniment"
 
 #: /var/azuracast/www/config/forms/settings.php:83
 msgid "Security Controls"
-msgstr ""
+msgstr "Contrôles de sécurité"
 
 #: /var/azuracast/www/config/forms/settings.php:89
 msgid "Always Use HTTPS"
@@ -1792,7 +1792,7 @@ msgstr "Toujours utiliser HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:90
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Réglez sur \"Oui\" pour toujours utiliser les URL sécurisées \"https://\" et pour rediriger automatiquement vers l'URL sécurisée lorsqu'une URL non sécurisée est visitée."
 
 #: /var/azuracast/www/config/forms/settings.php:100
 msgid "API \"Access-Control-Allow-Origin\" header"

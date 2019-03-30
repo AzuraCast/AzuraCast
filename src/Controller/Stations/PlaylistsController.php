@@ -274,8 +274,6 @@ class PlaylistsController
             }
 
             $this->playlist_repo->fromArray($record, $data);
-            $this->em->persist($record);
-            $this->em->flush();
 
             // Handle importing a playlist file, if necessary.
             $files = $request->getUploadedFiles();
@@ -298,6 +296,9 @@ class PlaylistsController
                 $station->setNeedsRestart(true);
                 $this->em->persist($station);
             }
+
+            $this->em->persist($record);
+            $this->em->flush();
 
             // Reshuffle "shuffled" playlists and clear cache.
             $this->playlist_media_repo->reshuffleMedia($record);

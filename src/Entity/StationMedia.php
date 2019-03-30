@@ -46,7 +46,7 @@ class StationMedia
 
     /**
      * @ORM\Column(name="song_id", type="string", length=50, nullable=true)
-     * @var int|null
+     * @var string|null
      */
     protected $song_id;
 
@@ -201,6 +201,14 @@ class StationMedia
     public function setSong(Song $song = null): void
     {
         $this->song = $song;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSongId(): ?string
+    {
+        return $this->song_id;
     }
 
     /**

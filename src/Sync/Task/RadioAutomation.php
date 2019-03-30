@@ -3,6 +3,7 @@ namespace App\Sync\Task;
 
 use Azura\Exception;
 use App\Radio\Adapters;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Monolog\Logger;
@@ -203,7 +204,7 @@ class RadioAutomation extends AbstractTask
      */
     public function generateReport(Entity\Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
     {
-        $threshold = strtotime('-' . (int)$threshold_days . ' days');
+        $threshold = Chronos::now()->subDays((int)$threshold_days)->getTimestamp();
 
         // Pull all SongHistory data points.
         $data_points_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
@@ -218,7 +219,6 @@ class RadioAutomation extends AbstractTask
 
         $total_plays = 0;
         $data_points = [];
-        $data_points_by_hour = [];
 
         foreach ($data_points_raw as $row) {
             $total_plays++;
@@ -226,14 +226,6 @@ class RadioAutomation extends AbstractTask
             if (!isset($data_points[$row['song_id']])) {
                 $data_points[$row['song_id']] = [];
             }
-
-            $row['hour'] = date('H', $row['timestamp_start']);
-
-            if (!isset($totals_by_hour[$row['hour']])) {
-                $data_points_by_hour[$row['hour']] = [];
-            }
-
-            $data_points_by_hour[$row['hour']][] = $row;
 
             $data_points[$row['song_id']][] = $row;
         }

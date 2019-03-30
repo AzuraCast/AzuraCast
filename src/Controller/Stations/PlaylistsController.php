@@ -236,9 +236,12 @@ class PlaylistsController
 
         $record->setIsEnabled($new_value);
         $this->em->persist($record);
-        $this->em->flush($record);
 
         $station = $request->getStation();
+        $station->setNeedsRestart(true);
+        $this->em->persist($station);
+
+        $this->em->flush();
         $this->em->refresh($station);
 
         $flash_message = ($new_value)

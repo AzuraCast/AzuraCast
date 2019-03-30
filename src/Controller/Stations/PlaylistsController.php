@@ -402,6 +402,9 @@ class PlaylistsController
 
         $record = $this->_getRecord($id, $station_id);
         $this->em->remove($record);
+
+        $station->setNeedsRestart(true);
+        $this->em->persist($station);
         $this->em->flush();
 
         $this->em->refresh($station);

@@ -94,15 +94,15 @@ class InternalController
 
         $station = $request->getStation();
 
-            $body = $request->getParsedBody();
+        $body = $request->getParsedBody();
 
-            $this->sync_nowplaying->queueStation($station, [
-                'song_id'   => $body['song'] ?? null,
-                'media_id'  => $body['media'] ?? null,
-                'playlist'  => $body['playlist'] ?? null,
-            ]);
+        $this->sync_nowplaying->queueStation($station, [
+            'song_id'   => $body['song'] ?? null,
+            'media_id'  => $body['media'] ?? null,
+            'playlist_id'  => $body['playlist'] ?? null,
+        ]);
 
-            return $response->write('OK');
+        return $response->write('OK');
     }
 
     /**

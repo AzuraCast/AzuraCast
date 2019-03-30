@@ -66,7 +66,7 @@ class Feedback extends CommandAbstract
             $sync_nowplaying->queueStation($station, [
                 'song_id'   => $input->getOption('song'),
                 'media_id'  => $input->getOption('media'),
-                'playlist'  => $input->getOption('playlist'),
+                'playlist_id' => $input->getOption('playlist'),
             ]);
 
             $output->write('OK');

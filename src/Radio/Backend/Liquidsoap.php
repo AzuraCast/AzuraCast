@@ -218,6 +218,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
                 $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
+                $ls_config[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue_cut', $station).'", '.$playlist_var_name.')';
 
                 if ($playlist->isJingle()) {
                     $ls_config[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
@@ -331,6 +332,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         # Defer to AzuraCast for general rotation playlists if available.
         $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
+        $ls_config[] = 'dynamic = cue_cut(id="'.$this->_getVarName('cue_cut', $station).'", dynamic)';
 
         $error_file = APP_INSIDE_DOCKER
             ? '/usr/local/share/icecast/web/error.mp3'

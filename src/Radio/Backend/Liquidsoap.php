@@ -337,11 +337,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $error_file = APP_INSIDE_DOCKER
             ? '/usr/local/share/icecast/web/error.mp3'
             : APP_INCLUDE_ROOT . '/resources/error.mp3';
-        $ls_config[] = 'error_song = single("'.$error_file.'")';
+        $ls_config[] = 'error_song = sequence([blank(duration=5.), single("'.$error_file.'")])';
 
         $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
 
-        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, transitions=[simple_crossfade], [requests, dynamic, radio, blank(duration=2.), error_song])';
+        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, transitions=[simple_crossfade], [requests, dynamic, radio, error_song])';
         $ls_config[] = '';
 
         // Add in special playlists if necessary.

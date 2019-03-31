@@ -197,7 +197,19 @@ return [
                             StationPlaylist::REMOTE_TYPE_PLAYLIST => __('Playlist (M3U/PLS) URL'),
                         ],
                     ]
-                ]
+                ],
+
+                'remote_buffer' => [
+                    'number',
+                    [
+                        'label' => __('Remote Playback Buffer (Seconds)'),
+                        'label_class' => 'advanced',
+                        'description' => __('The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.'),
+                        'default' => StationPlaylist::DEFAULT_REMOTE_BUFFER,
+                        'min' => 0,
+                        'max' => 120,
+                    ]
+                ],
 
             ]
         ],

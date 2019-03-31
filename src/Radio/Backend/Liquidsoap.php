@@ -236,7 +236,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         $remote_url_scheme = parse_url($remote_url, \PHP_URL_SCHEME);
                         $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
 
-                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'(max=20., "'.$this->_cleanUpString($remote_url).'")))';
+                        $buffer = $playlist->getRemoteBuffer();
+                        $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
+
+                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'(max='.$buffer.'., "'.$this->_cleanUpString($remote_url).'")))';
                         break;
                 }
             }

@@ -18,6 +18,7 @@ class StationPlaylist
     use Traits\TruncateStrings;
 
     public const DEFAULT_WEIGHT = 3;
+    public const DEFAULT_REMOTE_BUFFER = 20;
 
     public const TYPE_DEFAULT = 'default';
     public const TYPE_SCHEDULED = 'scheduled';
@@ -95,6 +96,12 @@ class StationPlaylist
      * @var string|null
      */
     protected $remote_type = self::REMOTE_TYPE_STREAM;
+
+    /**
+     * @ORM\Column(name="remote_timeout", type="smallint")
+     * @var int The total time (in seconds) that Liquidsoap should buffer remote URL streams.
+     */
+    protected $remote_buffer = 0;
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
@@ -318,6 +325,22 @@ class StationPlaylist
     public function setRemoteType(?string $remote_type): void
     {
         $this->remote_type = $remote_type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemoteBuffer(): int
+    {
+        return $this->remote_buffer;
+    }
+
+    /**
+     * @param int $remote_buffer
+     */
+    public function setRemoteBuffer(int $remote_buffer): void
+    {
+        $this->remote_buffer = $remote_buffer;
     }
 
     /**

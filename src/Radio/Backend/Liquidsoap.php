@@ -500,7 +500,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         if (true === (bool)($settings['nrj'] ?? false)) {
             $event->appendLines([
                 '# Normalization and Compression',
-                'radio = nrj(radio)',
+                'radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)',
+                'radio = compress.exponential(radio, mu = 1.0)',
             ]);
         }
 

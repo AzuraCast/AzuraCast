@@ -352,15 +352,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, dynamic, radio, error_song])';
         $ls_config[] = '';
 
-        // Add in special playlists if necessary.
-        $ls_config[] = '# Special playlists';
-        foreach($special_playlists as $playlist_type => $playlist_config_lines) {
-            if (count($playlist_config_lines) > 1) {
-                $ls_config = array_merge($ls_config, $playlist_config_lines);
-                $ls_config[] = '';
-            }
-        }
-
         $ls_config[] = '# Add schedule switches';
         if (!empty($schedule_switches)) {
             $schedule_switches[] = '({true}, radio)';
@@ -369,6 +360,16 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         if (!empty($schedule_switches_interrupting)) {
             $schedule_switches_interrupting[] = '({true}, radio)';
             $ls_config[] = 'radio = switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])';
+        }
+        $ls_config[] = '';
+
+        // Add in special playlists if necessary.
+        $ls_config[] = '# Special playlists';
+        foreach($special_playlists as $playlist_type => $playlist_config_lines) {
+            if (count($playlist_config_lines) > 1) {
+                $ls_config = array_merge($ls_config, $playlist_config_lines);
+                $ls_config[] = '';
+            }
         }
 
         $event->appendLines($ls_config);

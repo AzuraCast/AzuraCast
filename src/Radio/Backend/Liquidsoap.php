@@ -189,7 +189,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         foreach ($playlist_objects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
-            $playlist_func_name = $playlist->loopPlaylistOnce() ? 'playlist.once' : 'playlist';
 
             if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
                 $playlist_file_path = $this->writePlaylistFile($playlist, false);
@@ -213,7 +212,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 }
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
-                $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
+                $playlist_func = 'playlist('.implode(',', $playlist_params).')';
+                $ls_config[] = ($playlist->loopPlaylistOnce())
+                    ? $playlist_var_name . ' = once('.$playlist_func.')'
+                    : $playlist_var_name . ' = '.$playlist_func;
+
+                $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_var_name.')';
                 $ls_config[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue_cut', $station).'", '.$playlist_var_name.')';
 
                 if ($playlist->isJingle()) {
@@ -223,7 +227,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 switch($playlist->getRemoteType())
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
-                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'("'.$this->_cleanUpString($playlist->getRemoteUrl()).'"))';
+
+                        $playlist_func = 'playlist("'.$this->_cleanUpString($playlist->getRemoteUrl()).'")';
+                        $ls_config[] = ($playlist->loopPlaylistOnce())
+                            ? $playlist_var_name . ' = once('.$playlist_func.')'
+                            : $playlist_var_name . ' = '.$playlist_func;
                         break;
 
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:

@@ -190,6 +190,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             /** @var Entity\StationPlaylist $playlist */
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
 
+            $playlist_func_name = ($playlist->loopPlaylistOnce()) ? 'playlist.once' : 'playlist';
+
             if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
                 $playlist_file_path = $this->writePlaylistFile($playlist, false);
 
@@ -212,8 +214,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 }
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
-                $playlist_func = 'playlist('.implode(',', $playlist_params).')';
-                $ls_config[] = ($playlist->loopPlaylistOnce())
+                $playlist_func = $playlist_func_name.'('.implode(',', $playlist_params).')';
+                $ls_config[] = ($playlist->playSingleTrack())
                     ? $playlist_var_name . ' = once('.$playlist_func.')'
                     : $playlist_var_name . ' = '.$playlist_func;
 
@@ -227,9 +229,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 switch($playlist->getRemoteType())
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
-
-                        $playlist_func = 'playlist("'.$this->_cleanUpString($playlist->getRemoteUrl()).'")';
-                        $ls_config[] = ($playlist->loopPlaylistOnce())
+                        $playlist_func = $playlist_func_name.'("'.$this->_cleanUpString($playlist->getRemoteUrl()).'")';
+                        $ls_config[] = ($playlist->playSingleTrack())
                             ? $playlist_var_name . ' = once('.$playlist_func.')'
                             : $playlist_var_name . ' = '.$playlist_func;
                         break;

@@ -257,7 +257,19 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                     ]
-                ]
+                ],
+
+                'play_single_track' => [
+                    'toggle',
+                    [
+                        'label' => __('Only Play One Track at Scheduled Time'),
+                        'label_class' => 'advanced',
+                        'description' => __('This will only play a single track from the specified playlist when it is scheduled to play.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                    ]
+                ],
             ]
         ],
 

@@ -189,9 +189,15 @@ class StationPlaylist
 
     /**
      * @ORM\Column(name="loop_playlist_once", type="boolean")
-     * @var bool
+     * @var bool Whether to loop the playlist at the end of its playback.
      */
     protected $loop_playlist_once = false;
+
+    /**
+     * @ORM\Column(name="play_single_track", type="boolean")
+     * @var bool Whether to only play a single track from the specified playlist when scheduled.
+     */
+    protected $play_single_track = false;
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
@@ -660,6 +666,22 @@ class StationPlaylist
     public function setLoopPlaylistOnce(bool $loop_playlist_once): void
     {
         $this->loop_playlist_once = $loop_playlist_once;
+    }
+
+    /**
+     * @return bool
+     */
+    public function playSingleTrack(): bool
+    {
+        return $this->play_single_track;
+    }
+
+    /**
+     * @param bool $play_single_track
+     */
+    public function setPlaySingleTrack(bool $play_single_track): void
+    {
+        $this->play_single_track = $play_single_track;
     }
 
     /**

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-02 22:50\n"
+"PO-Revision-Date: 2019-04-03 21:50\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -18,25 +18,25 @@ msgstr ""
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "This port is currently in use by another station."
-msgstr ""
+msgstr "Esta porta está atualmente em uso por outra estação."
 
 #: /var/azuracast/www/src/Acl.php:172
 #: /var/azuracast/www/src/Acl.php:183
 msgid "All Permissions"
-msgstr ""
+msgstr "Todas as permissões"
 
 #: /var/azuracast/www/src/Acl.php:173
 msgid "View Administration Page"
-msgstr ""
+msgstr "Ver a página de Administração"
 
 #: /var/azuracast/www/src/Acl.php:174
 msgid "View System Logs"
-msgstr ""
+msgstr "Ver os logs do sistema"
 
 #: /var/azuracast/www/src/Acl.php:175
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
 msgid "Settings"
-msgstr ""
+msgstr "Definições"
 
 #: /var/azuracast/www/src/Acl.php:175
 #: /var/azuracast/www/src/Acl.php:176
@@ -45,19 +45,19 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:179
 #: /var/azuracast/www/src/Acl.php:180
 msgid "Administer %s"
-msgstr ""
+msgstr "Administrar %s"
 
 #: /var/azuracast/www/src/Acl.php:176
 #: /var/azuracast/www/config/menus/admin.php:27
 #: /var/azuracast/www/templates/admin/api/index.phtml:1
 #: /var/azuracast/www/templates/admin/api/index.phtml:5
 msgid "API Keys"
-msgstr ""
+msgstr "Chaves API"
 
 #: /var/azuracast/www/src/Acl.php:177
 #: /var/azuracast/www/config/menus/admin.php:39
 msgid "Users"
-msgstr ""
+msgstr "Utilizadores"
 
 #: /var/azuracast/www/src/Acl.php:178
 #: /var/azuracast/www/config/menus/admin.php:48
@@ -65,14 +65,14 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:5
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:24
 msgid "Permissions"
-msgstr ""
+msgstr "Permissões"
 
 #: /var/azuracast/www/src/Acl.php:179
 #: /var/azuracast/www/config/menus/admin.php:55
 #: /var/azuracast/www/config/menus/admin.php:59
 #: /var/azuracast/www/templates/admin/stations/index.phtml:1
 msgid "Stations"
-msgstr ""
+msgstr "Estações"
 
 #: /var/azuracast/www/src/Acl.php:180
 #: /var/azuracast/www/config/menus/admin.php:64
@@ -80,26 +80,26 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:1
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:5
 msgid "Custom Fields"
-msgstr ""
+msgstr "Campos personalizados"
 
 #: /var/azuracast/www/src/Acl.php:184
 msgid "View Station Page"
-msgstr ""
+msgstr "Ver a página da estação"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View Station Reports"
-msgstr ""
+msgstr "Ver relatórios da estação"
 
 #: /var/azuracast/www/src/Acl.php:186
 msgid "View Station Logs"
-msgstr ""
+msgstr "Ver logs da estação"
 
 #: /var/azuracast/www/src/Acl.php:187
 #: /var/azuracast/www/config/menus/station.php:34
 #: /var/azuracast/www/templates/stations/profile/index.phtml:5
 #: /var/azuracast/www/templates/stations/profile/index.phtml:119
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: /var/azuracast/www/src/Acl.php:187
 #: /var/azuracast/www/src/Acl.php:188
@@ -110,23 +110,23 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:193
 #: /var/azuracast/www/src/Acl.php:194
 msgid "Manage Station %s"
-msgstr ""
+msgstr "Gerir estação %s"
 
 #: /var/azuracast/www/src/Acl.php:188
 #: /var/azuracast/www/templates/partials/station_form.phtml:27
 msgid "Broadcasting"
-msgstr ""
+msgstr "Transmissão"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Streamers"
-msgstr ""
+msgstr "Streamer"
 
 #: /var/azuracast/www/src/Acl.php:190
 #: /var/azuracast/www/config/menus/station.php:74
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:1
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:5
 msgid "Mount Points"
-msgstr ""
+msgstr "Pontos de Montagem"
 
 #: /var/azuracast/www/src/Acl.php:191
 #: /var/azuracast/www/config/menus/station.php:81

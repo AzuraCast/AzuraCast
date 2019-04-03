@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-03 22:30\n"
+"PO-Revision-Date: 2019-04-03 22:40\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -372,7 +372,7 @@ msgstr "Erro na atribuição automática"
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:35
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:26
 msgid "Song Title"
-msgstr ""
+msgstr "Título da música"
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:93
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:111
@@ -380,7 +380,7 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:11
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:44
 msgid "Song Artist"
-msgstr ""
+msgstr "Artista da música"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:80
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:100
@@ -400,7 +400,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:11
 msgid "Web Hook"
-msgstr ""
+msgstr "Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:80
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
@@ -414,7 +414,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:116
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:60
 msgid "%s not found."
-msgstr ""
+msgstr "%s não encontrado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:100
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:108
@@ -426,7 +426,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:83
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:73
 msgid "%s added."
-msgstr ""
+msgstr "%s adicionado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:116
@@ -452,7 +452,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:11
 msgid "Add %s"
-msgstr ""
+msgstr "Adicionar %s"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:143
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:136
@@ -467,7 +467,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:73
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:95
 msgid "%s updated."
-msgstr ""
+msgstr "%s atualizado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:151
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:145
@@ -482,11 +482,11 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:85
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:102
 msgid "Edit %s"
-msgstr ""
+msgstr "Alterar %s"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s enabled."
-msgstr ""
+msgstr "%s ativado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s disabled."

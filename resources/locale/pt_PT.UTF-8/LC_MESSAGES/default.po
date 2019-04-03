@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-03 22:20\n"
+"PO-Revision-Date: 2019-04-03 22:30\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -231,136 +231,136 @@ msgstr "%s não consegue iniciar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."
-msgstr ""
+msgstr "Já está em execução."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s não consegue parar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
-msgstr ""
+msgstr "Não está em execução."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
-msgstr ""
+msgstr "%s encontrou um erro"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
-msgstr ""
+msgstr "Verifique os logs para detalhes."
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "A conta com o email \"%s\" associado foi definida como administrador"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Conta não encontrada."
 
 #: /var/azuracast/www/src/Utilities.php:60
 msgid "%d second"
 msgid_plural "%d seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d segundo"
+msgstr[1] "%d segundos"
 
 #: /var/azuracast/www/src/Utilities.php:65
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d minuto"
+msgstr[1] "%d minutos"
 
 #: /var/azuracast/www/src/Utilities.php:70
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d hora"
+msgstr[1] "%d horas"
 
 #: /var/azuracast/www/src/Utilities.php:75
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d dia"
+msgstr[1] "%d dias"
 
 #: /var/azuracast/www/src/Utilities.php:79
 msgid "%d month"
 msgid_plural "%d months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d mês"
+msgstr[1] "%d meses"
 
 #: /var/azuracast/www/src/Sync/Runner.php:162
 #: /var/azuracast/www/src/Sync/Runner.php:165
 msgid "Now Playing Data"
-msgstr ""
+msgstr "Dados da reprodução atual"
 
 #: /var/azuracast/www/src/Sync/Runner.php:169
 msgid "1-Minute Sync"
-msgstr ""
+msgstr "Sincronização de 1 minuto"
 
 #: /var/azuracast/www/src/Sync/Runner.php:172
 msgid "Song Requests Queue"
-msgstr ""
+msgstr "Fila de pedidos de músicas"
 
 #: /var/azuracast/www/src/Sync/Runner.php:176
 msgid "5-Minute Sync"
-msgstr ""
+msgstr "Sincronização de 5 minutos"
 
 #: /var/azuracast/www/src/Sync/Runner.php:179
 msgid "Check Media Folders"
-msgstr ""
+msgstr "Verificar pastas de multimédia"
 
 #: /var/azuracast/www/src/Sync/Runner.php:183
 msgid "1-Hour Sync"
-msgstr ""
+msgstr "Sincronização de 1 hora"
 
 #: /var/azuracast/www/src/Sync/Runner.php:186
 msgid "Analytics/Statistics"
-msgstr ""
+msgstr "Análise/Estatísticas"
 
 #: /var/azuracast/www/src/Sync/Runner.php:187
 msgid "Cleanup"
-msgstr ""
+msgstr "Limpeza"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Log do Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:91
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Configuração do Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Log de acesso do Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:107
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Log de erros do Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:112
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Configuração do Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:120
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "Log do SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:125
 msgid "SHOUTcast Configuration"
-msgstr ""
+msgstr "Configuração do SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:51
 #: /var/azuracast/www/src/Controller/Admin/Stations/CloneController.php:141
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:43
 msgid "Changes saved."
-msgstr ""
+msgstr "Alterações guardadas."
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:67
 msgid "Automated assignment complete!"
-msgstr ""
+msgstr "Atribuição automática completa!"
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:70
 msgid "Automated assignment error"
-msgstr ""
+msgstr "Erro na atribuição automática"
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:92
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:110

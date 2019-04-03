@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-03 22:00\n"
+"PO-Revision-Date: 2019-04-03 22:10\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -197,11 +197,11 @@ msgstr "Nova versão do AzuraCast disponível"
 
 #: /var/azuracast/www/src/Notification/Manager.php:121
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "Os seguintes melhoramentos foram feitos desde a sua última atualização:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:124
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "A sua instalação está atualmente %d atualização(ões) atrás da última versão."
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."

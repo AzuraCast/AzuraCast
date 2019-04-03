@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-03 22:10\n"
+"PO-Revision-Date: 2019-04-03 22:20\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -205,29 +205,29 @@ msgstr "A sua instalação está atualmente %d atualização(ões) atrás da úl
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Deve atualizar para aproveitar as correções de bugs e segurança."
 
 #: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
-msgstr ""
+msgstr "Novas atualizações do AzuraCast disponíveis"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:137
 #: /var/azuracast/www/src/Radio/Adapters.php:141
 #: /var/azuracast/www/src/Radio/Adapters.php:172
 msgid "Use <b>%s</b> on this server"
-msgstr ""
+msgstr "Utilize <b>%s</b> neste servidor"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:145
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Ligar a um <b>servidor de rádio remoto</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr ""
+msgstr "<b>Não usar</b> um serviço de AutoDJ"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s não consegue iniciar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."

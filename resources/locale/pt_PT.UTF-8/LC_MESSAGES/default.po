@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-03 21:50\n"
+"PO-Revision-Date: 2019-04-03 22:00\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -134,66 +134,66 @@ msgstr "Pontos de Montagem"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr ""
+msgstr "Relays Remotos"
 
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:57
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:136
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:145
 msgid "Media"
-msgstr ""
+msgstr "Multimédia"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Automation"
-msgstr ""
+msgstr "Automação"
 
 #: /var/azuracast/www/src/Acl.php:194
 #: /var/azuracast/www/config/menus/station.php:87
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
-msgstr ""
+msgstr "Web Hooks"
 
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:25
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:63
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
 msgid "This feature is not currently supported on this station."
-msgstr ""
+msgstr "Esta funcionalidade não é suportada nesta estação de momento."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:107
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Deve fazer login para aceder a esta página."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:119
 #: /var/azuracast/www/src/Http/ErrorHandler.php:128
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "Não tem permissão para aceder a esta parte do site."
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "O seu ficheiro <code>docker-compose.yml</code> está desatualizado!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "Deve atualizar o seu ficheiro <code>docker-compose.yml</code> para refletir a mudanças mais recentes. Veja a <a href=\"%s\" target=\"_blank\">última versão do ficheiro</a> e atualize o seu ficheiro de acordo.<br>Também pode usar o script <code>./docker.sh</code> para atualizar automaticamente o ficheiro."
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Veja as <a href=\"%s\" target=\"_blank\">instruções de atualização</a>para atualizar a sua instalação."
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "A versão <a href=\"%s\" target=\"_blank\">%s</a> do AzuraCast está disponível."
 
 #: /var/azuracast/www/src/Notification/Manager.php:106
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr ""
+msgstr "Está a utilizar a versão %s neste momento. Atualizar é altamente recomendado."
 
 #: /var/azuracast/www/src/Notification/Manager.php:111
 msgid "New AzuraCast Release Version Available"
-msgstr ""
+msgstr "Nova versão do AzuraCast disponível"
 
 #: /var/azuracast/www/src/Notification/Manager.php:121
 msgid "The following improvements have been made since your last update:"

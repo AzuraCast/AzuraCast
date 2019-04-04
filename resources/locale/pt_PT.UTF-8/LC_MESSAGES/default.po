@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-04 14:50\n"
+"PO-Revision-Date: 2019-04-04 15:00\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -569,15 +569,15 @@ msgstr "Lista de reprodução ativada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:249
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Lista de reprodução desativada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:290
 msgid "Existing playlist imported."
-msgstr ""
+msgstr "Lista de reprodução existente importada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:290
 msgid "%d song(s) were imported into the playlist."
-msgstr ""
+msgstr "%d música(s) foram importadas para a lista de reprodução."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:314
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:321
@@ -589,7 +589,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:45
 msgid "Playlist"
-msgstr ""
+msgstr "Lista de reprodução"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:100
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:108
@@ -597,7 +597,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:11
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:24
 msgid "Mount Point"
-msgstr ""
+msgstr "Ponto de Montagem"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:82
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:90
@@ -605,11 +605,11 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:11
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:24
 msgid "Remote Relay"
-msgstr ""
+msgstr "Relay Remoto"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
 msgid "SoundExchange Report"
-msgstr ""
+msgstr "Relatório SoundExchange"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:64
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:49
@@ -620,33 +620,33 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/stations/index.phtml:22
 #: /var/azuracast/www/templates/frontend/index/index.phtml:111
 msgid "Station"
-msgstr ""
+msgstr "Estação"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:64
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:115
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:184
 msgid "%s restarted."
-msgstr ""
+msgstr "%s reiniciada."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:96
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:115
 msgid "Frontend"
-msgstr ""
+msgstr "Frontend"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:96
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:165
 msgid "%s stopped."
-msgstr ""
+msgstr "%s parada."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "%s started."
-msgstr ""
+msgstr "%s iniciada."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:151
 msgid "Song skipped."
-msgstr ""
+msgstr "Música ignorada."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:159
 msgid "Streamer disconnected."

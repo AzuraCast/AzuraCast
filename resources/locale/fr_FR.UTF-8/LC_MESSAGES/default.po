@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-02 22:50\n"
+"PO-Revision-Date: 2019-04-04 14:23\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1762,11 +1762,11 @@ msgstr "URL de la playlist (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:205
 msgid "Remote Playback Buffer (Seconds)"
-msgstr ""
+msgstr "Mémoire tampon de la diffusion (secondes)"
 
 #: /var/azuracast/www/config/forms/playlist.php:207
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
-msgstr ""
+msgstr "La durée du temps de lecture que Liquidsoap doit mettre en mémoire tampon lors de la lecture de cette playlist distante. Des durées courtes peuvent entraîner une lecture discontinue sur des connexions instables."
 
 #: /var/azuracast/www/config/forms/playlist.php:218
 #: /var/azuracast/www/config/forms/playlist.php:223
@@ -1792,7 +1792,7 @@ msgstr "Programmé"
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Play during a scheduled time range."
-msgstr ""
+msgstr "Jouez pendant un intervalle de temps programmé."
 
 #: /var/azuracast/www/config/forms/playlist.php:227
 #: /var/azuracast/www/config/forms/playlist.php:339
@@ -1801,7 +1801,7 @@ msgstr "Une fois toutes les x musiques"
 
 #: /var/azuracast/www/config/forms/playlist.php:227
 msgid "Play exactly once every <i>x</i> songs."
-msgstr ""
+msgstr "Jouez exactement une fois toutes les <i>x</i> musiques."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Once Per x Minutes"
@@ -1809,16 +1809,16 @@ msgstr "Une fois toutes les x minutes"
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Play exactly once every <i>x</i> minutes."
-msgstr ""
+msgstr "Jouez exactement une fois toutes les <i>x</i> minutes."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 #: /var/azuracast/www/config/forms/playlist.php:377
 msgid "Once per Hour"
-msgstr ""
+msgstr "Une fois par heure"
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Play once per hour at the specified minute."
-msgstr ""
+msgstr "Jouez une fois par heure à la minute spécifiée."
 
 #: /var/azuracast/www/config/forms/playlist.php:230
 #: /var/azuracast/www/config/forms/playlist.php:396
@@ -1840,23 +1840,23 @@ msgstr "Définissez manuellement comment cette liste de lecture est utilisée da
 
 #: /var/azuracast/www/config/forms/playlist.php:241
 msgid "Interrupt Other Songs"
-msgstr ""
+msgstr "Interrompre les autres musiques"
 
 #: /var/azuracast/www/config/forms/playlist.php:243
 msgid "When this playlist is scheduled to play, it will interrupt any currently playing playlists instead of waiting for the end of a song."
-msgstr ""
+msgstr "Lorsque cette playlist est programmée pour la diffusion, elle interrompt toutes les playlists en cours de lecture au lieu d'attendre la fin d'un morceau."
 
 #: /var/azuracast/www/config/forms/playlist.php:253
 msgid "Only Loop Playlist Once"
-msgstr ""
+msgstr "Bouclez la playlist une seule fois"
 
 #: /var/azuracast/www/config/forms/playlist.php:255
 msgid "If the playlist would play multiple times within its scheduled time, enable this to ensure it only plays once."
-msgstr ""
+msgstr "Si la playlist doit être lue plusieurs fois au cours de la durée programmée, activez cette option pour qu'elle ne soit lue qu'une seule fois."
 
 #: /var/azuracast/www/config/forms/playlist.php:265
 msgid "Only Play One Track at Scheduled Time"
-msgstr ""
+msgstr "Lecture d'un seul titre à l'heure prévue"
 
 #: /var/azuracast/www/config/forms/playlist.php:267
 msgid "This will only play a single track from the specified playlist when it is scheduled to play."

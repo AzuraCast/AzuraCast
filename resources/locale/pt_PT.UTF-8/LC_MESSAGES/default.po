@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-02T22:49:35+00:00\n"
-"PO-Revision-Date: 2019-04-03 22:40\n"
+"PO-Revision-Date: 2019-04-04 14:50\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -490,11 +490,11 @@ msgstr "%s ativado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s disabled."
-msgstr ""
+msgstr "%s desativado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:198
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Saída de teste do Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:220
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:139
@@ -508,64 +508,64 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:103
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:122
 msgid "%s deleted."
-msgstr ""
+msgstr "%s apagado."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
 #: /var/azuracast/www/templates/stations/files/index.phtml:165
 msgid "Directory"
-msgstr ""
+msgstr "Diretório"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:127
 msgid "File Not Processed"
-msgstr ""
+msgstr "Ficheiro não processado"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:125
 msgid "File renamed!"
-msgstr ""
+msgstr "Ficheiro renomeado!"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:135
 msgid "Rename File/Directory"
-msgstr ""
+msgstr "Renomear ficheiro/diretório"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:150
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:208
 msgid "Path \"%s\" is not a folder."
-msgstr ""
+msgstr "O caminho \"%s\" não é uma pasta."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:204
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Esta estação está sem espaço disponível."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:217
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
+msgstr "Não foi possível mover \"%s\" para \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:55
 msgid "Streamers enabled!"
-msgstr ""
+msgstr "Streamers ativados!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:55
 msgid "You can now set up streamer (DJ) accounts."
-msgstr ""
+msgstr "Pode agora configurar contas de streamers (DJ)."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:108
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:116
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:139
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr ""
+msgstr "Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:171
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Esta playlist não é sequencial."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:220
 msgid "Format"
-msgstr ""
+msgstr "Formato"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:248
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Lista de reprodução ativada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:249
 msgid "Playlist disabled."

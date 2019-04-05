@@ -214,9 +214,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 }
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
-                $ls_config[] = $playlist_var_name . ' = '.$playlist_func_name.'('.implode(',', $playlist_params).')';
-                $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_var_name.')';
-                $ls_config[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue_cut', $station).'", '.$playlist_var_name.')';
+                $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
+                $ls_config[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue', $station).'", '.$playlist_var_name.')';
 
                 if ($playlist->isJingle()) {
                     $ls_config[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
@@ -226,7 +225,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
                         $playlist_func = $playlist_func_name.'("'.$this->_cleanUpString($playlist->getRemoteUrl()).'")';
-                        $ls_config[] = $playlist_var_name . ' = '.$playlist_func;
+                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func.')';
                         break;
 
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
@@ -264,9 +263,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
                     $delay_seconds = $playlist->getPlayPerMinutes() * 60;
+                    $delay_track_sensitive = $playlist->interruptOtherSongs() ? 'false' : 'true';
 
-                    $special_playlists['once_per_x_minutes'][] = 'delay_' . $playlist_var_name . ' = delay(' . $delay_seconds . '., ' . $playlist_var_name . ')';
-                    $special_playlists['once_per_x_minutes'][] = 'radio = fallback([delay_' . $playlist_var_name . ', radio])';
+                    $special_playlists['once_per_x_minutes'][] = 'radio = fallback(track_sensitive='.$delay_track_sensitive.', [delay(' . $delay_seconds . '., ' . $playlist_var_name . '), radio])';
                     break;
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_HOUR:
@@ -326,6 +325,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     }
                     break;
             }
+
+            $ls_config[] = '';
         }
 
         $ls_config[] = '';
@@ -346,6 +347,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
 
+        $ls_config[] = '';
         $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, dynamic, radio, error_song])';
         $ls_config[] = '';
 

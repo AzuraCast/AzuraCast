@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-05 06:41\n"
+"PO-Revision-Date: 2019-04-05 14:30\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -88,7 +88,7 @@ msgstr "Alterações guardadas."
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:20
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:29
 msgid "System Settings"
-msgstr ""
+msgstr "Definições do sistema"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."

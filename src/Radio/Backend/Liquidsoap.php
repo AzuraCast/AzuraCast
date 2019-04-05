@@ -171,8 +171,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $playlist_objects[] = $default_playlist;
         }
 
-        $playlist_weights = [];
-        $playlist_vars = [];
+        $gen_playlist_weights = [];
+        $gen_playlist_vars = [];
 
         $special_playlists = [
             'once_per_x_songs' => [
@@ -214,11 +214,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 }
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
-                $playlist_func = $playlist_func_name.'('.implode(',', $playlist_params).')';
-                $ls_config[] = ($playlist->playSingleTrack())
-                    ? $playlist_var_name . ' = once('.$playlist_func.')'
-                    : $playlist_var_name . ' = '.$playlist_func;
-
+                $ls_config[] = $playlist_var_name . ' = '.$playlist_func_name.'('.implode(',', $playlist_params).')';
                 $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_var_name.')';
                 $ls_config[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue_cut', $station).'", '.$playlist_var_name.')';
 
@@ -230,9 +226,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
                         $playlist_func = $playlist_func_name.'("'.$this->_cleanUpString($playlist->getRemoteUrl()).'")';
-                        $ls_config[] = ($playlist->playSingleTrack())
-                            ? $playlist_var_name . ' = once('.$playlist_func.')'
-                            : $playlist_var_name . ' = '.$playlist_func;
+                        $ls_config[] = $playlist_var_name . ' = '.$playlist_func;
                         break;
 
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
@@ -253,11 +247,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $ls_config[] = 'ignore('.$playlist_var_name.')';
             }
 
+            if ($playlist->playSingleTrack()) {
+                $playlist_var_name = 'once('.$playlist_var_name.')';
+            }
+
             switch($playlist->getType())
             {
                 case Entity\StationPlaylist::TYPE_DEFAULT:
-                    $playlist_weights[] = $playlist->getWeight();
-                    $playlist_vars[] = $playlist_var_name;
+                    $gen_playlist_weights[] = $playlist->getWeight();
+                    $gen_playlist_vars[] = $playlist_var_name;
                     break;
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
@@ -334,8 +332,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         // Build "default" type playlists.
         $ls_config[] = '# Standard Playlists';
-        $ls_config[] = 'radio = random(weights=[' . implode(', ', $playlist_weights) . '], [' . implode(', ',
-                $playlist_vars) . ']);';
+        $ls_config[] = 'radio = random(weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . ']);';
         $ls_config[] = '';
 
         # Defer to AzuraCast for general rotation playlists if available.

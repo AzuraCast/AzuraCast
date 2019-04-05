@@ -21,10 +21,18 @@ $user = $request->getUser();
     <div class="col-md-6">
         <section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
             <div class="card-body">
-                <h3 class="card-title"><?=__('On the Air') ?></h3>
+                <div class="d-flex">
+                    <h3 class="flex-shrink card-title"><?=__('On the Air') ?></h3>
+                    <h4 class="text-right flex-fill" style="line-height: 1;">
+                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span>{{ np.listeners.total }}</span> <span v-if="np.listeners.total == 1"><?=__('Listener') ?></span><span v-else><?=__('Listeners') ?></span><br>
+                        <small>
+                            <span>{{ np.listeners.unique }}</span> <?=__('Unique') ?>
+                        </small>
+                    </h4>
+                </div>
 
-                <div class="row">
-                    <div class="col-md-4">
+                <div class="row pt-1">
+                    <div class="col-md-6">
                         <div class="position-relative" style="margin-left: 20px;">
                             <div class="position-absolute" style="top: 0; left: -20px;">
                                 <i class="material-icons sm align-top">music_note</i>
@@ -49,7 +57,7 @@ $user = $request->getUser();
                         </div>
                     </div>
 
-                    <div class="col-md-4" v-if="!np.live.is_live && np.playing_next">
+                    <div class="col-md-6" v-if="!np.live.is_live && np.playing_next">
                         <div class="position-relative" style="margin-left: 20px;">
                             <div class="position-absolute" style="top: 0; left: -20px;">
                                 <i class="material-icons sm align-top">skip_next</i>
@@ -70,7 +78,7 @@ $user = $request->getUser();
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" v-if="np.live.is_live">
+                    <div class="col-md-6" v-if="np.live.is_live">
                         <div class="position-relative" style="margin-left: 20px;">
                             <div class="position-absolute" style="top: 0; left: -20px;">
                                 <i class="material-icons sm align-top">mic</i>
@@ -83,22 +91,6 @@ $user = $request->getUser();
                             </h4>
                         </div>
                     </div>
-
-                    <div class="col-md-4">
-                        <div class="position-relative" style="margin-left: 20px;">
-                            <div class="position-absolute" style="top: 0; left: -20px;">
-                                <i class="material-icons sm align-top">headset</i>
-                            </div>
-
-                            <h6><?=__('Listeners') ?>:</h6>
-
-                            <h4><span>{{ np.listeners.total }}</span> <?=__('Total') ?></h4>
-                            <div>
-                                <span>{{ np.listeners.unique }}</span> <?=__('Unique') ?>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>

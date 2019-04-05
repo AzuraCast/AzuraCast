@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-05 14:30\n"
+"PO-Revision-Date: 2019-04-05 14:40\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -92,12 +92,12 @@ msgstr "Definições do sistema"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "A versão \"%s\" do SHOUTcast está atualmente instalada."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:69
 msgid "Install SHOUTcast"
-msgstr ""
+msgstr "Instalar SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:71
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:49
@@ -131,7 +131,7 @@ msgstr "%s adicionado."
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:95
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Custom Field"
-msgstr ""
+msgstr "Campo personalizado"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:55
@@ -210,7 +210,7 @@ msgstr "Estação"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:18
 #: /var/azuracast/www/templates/admin/api/index.phtml:18
 msgid "API Key"
-msgstr ""
+msgstr "Chave de API"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:56
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:116
@@ -228,7 +228,7 @@ msgstr "%s não encontrado."
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:85
 msgid "Sync Task Output"
-msgstr ""
+msgstr "Saída da Tarefa de Sincronização"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:73
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:85
@@ -236,11 +236,11 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:116
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "User"
-msgstr ""
+msgstr "Utilizador"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:79
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
-msgstr ""
+msgstr "Já existe um utilizador com esse endereço de email. Por favor, mude o endereço de email."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 msgid "You cannot delete your own account."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-07 21:40\n"
+"PO-Revision-Date: 2019-04-07 21:50\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1033,63 +1033,63 @@ msgstr "Nome do Ficheiro"
 #: /var/azuracast/www/config/forms/media.php:14
 #: /var/azuracast/www/config/forms/rename.php:10
 msgid "The relative path of the file in the station's media directory."
-msgstr ""
+msgstr "O caminho relativo do ficheiro no diretório de multimédia da estação."
 
 #: /var/azuracast/www/config/forms/media.php:35
 msgid "Song Album"
-msgstr ""
+msgstr "Álbum da Música"
 
 #: /var/azuracast/www/config/forms/media.php:42
 msgid "Song Lyrics"
-msgstr ""
+msgstr "Letras da Música"
 
 #: /var/azuracast/www/config/forms/media.php:49
 msgid "Replace Album Cover Art"
-msgstr ""
+msgstr "Mudar Capa do Álbum"
 
 #: /var/azuracast/www/config/forms/media.php:57
 msgid "ISRC"
-msgstr ""
+msgstr "Código de Gravação Padrão Internacional"
 
 #: /var/azuracast/www/config/forms/media.php:58
 msgid "International Standard Recording Code, used for licensing reports."
-msgstr ""
+msgstr "Código de Gravação Padrão Internacional, usado para relatórios de licenciamento."
 
 #: /var/azuracast/www/config/forms/media.php:66
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Administradores podem personalizar os campos que aparecem aqui na <a href=\"%s\"> página de administração</a>."
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Controlar Reprodução de Músicas"
 
 #: /var/azuracast/www/config/forms/media.php:83
 msgid "Song Length (seconds)"
-msgstr ""
+msgstr "Duração da Música (segundos)"
 
 #: /var/azuracast/www/config/forms/media.php:91
 msgid "Custom Fading: Overlap Time (seconds)"
-msgstr ""
+msgstr "Desvanecimento personalizado: Tempo de sobreposição (segundos)"
 
 #: /var/azuracast/www/config/forms/media.php:92
 msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
-msgstr ""
+msgstr "O tempo que esta música deve sobrepor as músicas seguintes ao desvanecer. Deixe em branco para usar o padrão do sistema."
 
 #: /var/azuracast/www/config/forms/media.php:100
 msgid "Custom Fading: Fade-In Time (seconds)"
-msgstr ""
+msgstr "Desvanecimento personalizado: Tempo de Fade-In (segundos)"
 
 #: /var/azuracast/www/config/forms/media.php:101
 msgid "The time period that the song should fade in. Leave blank to use the system default."
-msgstr ""
+msgstr "O período de tempo em que a música deve fazer Fade-In. Deixe em branco para usar o padrão do sistema."
 
 #: /var/azuracast/www/config/forms/media.php:108
 msgid "Custom Fading: Fade-Out Time (seconds)"
-msgstr ""
+msgstr "Desvanecimento Personalizado: Tempo de Fade-Out (segundos)"
 
 #: /var/azuracast/www/config/forms/media.php:109
 msgid "The time period that the song should fade out. Leave blank to use the system default."
-msgstr ""
+msgstr "O período de tempo em que a música deve fazer Fade-Out. Deixe em branco para usar o padrão do sistema."
 
 #: /var/azuracast/www/config/forms/media.php:116
 msgid "Custom Cues: Cue-In Point (seconds)"

@@ -124,7 +124,7 @@ class ServicesController
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="action",
-     *     description="The action to perform (start, stop, restart)",
+     *     description="The action to perform (for all: start, stop, restart; for Liquidsoap only: skip, disconnect)",
      *     in="path",
      *     content="restart",
      *     required=false,

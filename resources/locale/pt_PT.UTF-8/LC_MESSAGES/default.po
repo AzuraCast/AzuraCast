@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-07 21:30\n"
+"PO-Revision-Date: 2019-04-07 21:40\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -901,134 +901,134 @@ msgstr "Pedidos de Músicas"
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:1
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:19
 msgid "Song Playback Timeline"
-msgstr ""
+msgstr "Linha do Tempo de Reprodução de Músicas"
 
 #: /var/azuracast/www/config/menus/station.php:116
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:2
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:16
 msgid "Song Listener Impact"
-msgstr ""
+msgstr "Impacto de Músicas nos Ouvintes"
 
 #: /var/azuracast/www/config/menus/station.php:121
 msgid "Duplicate Songs"
-msgstr ""
+msgstr "Músicas Duplicadas"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
-msgstr ""
+msgstr "Direitos do SoundExchange"
 
 #: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
-msgstr ""
+msgstr "Utilitários"
 
 #: /var/azuracast/www/config/menus/station.php:137
 msgid "Automated Assignment"
-msgstr ""
+msgstr "Atribuição Automática"
 
 #: /var/azuracast/www/config/menus/station.php:143
 #: /var/azuracast/www/templates/stations/logs/index.phtml:3
 #: /var/azuracast/www/templates/admin/logs/index.phtml:3
 msgid "Log Viewer"
-msgstr ""
+msgstr "Visualizador de Logs"
 
 #: /var/azuracast/www/config/menus/station.php:148
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "Fila das Próximas Músicas"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
-msgstr ""
+msgstr "Reiniciar Transmissão"
 
 #: /var/azuracast/www/config/menus/admin.php:13
 msgid "System Maintenance"
-msgstr ""
+msgstr "Manutenção do Sistema"
 
 #: /var/azuracast/www/config/menus/admin.php:22
 #: /var/azuracast/www/templates/admin/branding/index.phtml:8
 msgid "Custom Branding"
-msgstr ""
+msgstr "Marca Personalizada"
 
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "Logs do Sistema"
 
 #: /var/azuracast/www/config/menus/admin.php:43
 #: /var/azuracast/www/templates/admin/users/index.phtml:1
 #: /var/azuracast/www/templates/admin/users/index.phtml:5
 msgid "User Accounts"
-msgstr ""
+msgstr "Contas de Utilizador"
 
 #: /var/azuracast/www/config/webhooks.php:18
 msgid "Generic Web Hook"
-msgstr ""
+msgstr "Web Hook Genérico"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "Enviar automaticamente uma mensagem para qualquer URL quando os dados da sua estação mudam."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
-msgstr ""
+msgstr "Enviar alterações de metadados para o TuneIn."
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
-msgstr ""
+msgstr "Webhook do Discord"
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Enviar automaticamente uma mensagem personalizada para o seu servidor no Discord."
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Mensagem do Chat do Telegram"
 
 #: /var/azuracast/www/config/webhooks.php:34
 msgid "Use the Telegram Bot API to send a message to a channel."
-msgstr ""
+msgstr "Utilize a API do Bot do Telegram para enviar uma mensagem para um canal."
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
-msgstr ""
+msgstr "Post no Twitter"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Enviar automaticamente um tweet."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Cada vez que a música atual mudar"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Qualquer vez que a contagem de ouvintes aumentar"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Qualquer vez que a contagem de ouvintes diminuir"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "Qualquer vez que um streamer/DJ se ligue à transmissão"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "Qualquer vez que um streamer/DJ se desligue da transmissão"
 
 #: /var/azuracast/www/config/forms/media.php:8
 msgid "Song Metadata"
-msgstr ""
+msgstr "Metadados da Música"
 
 #: /var/azuracast/www/config/forms/media.php:13
 #: /var/azuracast/www/config/forms/rename.php:9
 msgid "File Name"
-msgstr ""
+msgstr "Nome do Ficheiro"
 
 #: /var/azuracast/www/config/forms/media.php:14
 #: /var/azuracast/www/config/forms/rename.php:10

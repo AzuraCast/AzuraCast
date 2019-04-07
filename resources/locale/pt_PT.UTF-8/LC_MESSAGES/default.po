@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-07 21:20\n"
+"PO-Revision-Date: 2019-04-07 21:30\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -311,82 +311,82 @@ msgstr "Música ignorada."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:159
 msgid "Streamer disconnected."
-msgstr ""
+msgstr "Streamer desconectado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:165
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:184
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:78
 msgid "Setup has already been completed!"
-msgstr ""
+msgstr "A instalação já foi concluída!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:105
 msgid "Super Administrator"
-msgstr ""
+msgstr "Super Administrador"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:157
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "Quer usar o SHOUTcast 2? <a href=\"%s\" target=\"_blank\"> Instale-o aqui</a> e depois atualize esta página."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:210
 msgid "Setup is now complete!"
-msgstr ""
+msgstr "A instalação está concluída!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:210
 msgid "Continue setting up your station in the main AzuraCast app."
-msgstr ""
+msgstr "Continue a configurar a sua estação na aplicação principal do AzuraCast."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
-msgstr ""
+msgstr "Demasiadas tentativas de login"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
+msgstr "Tentou fazer login demasiadas vezes. Por favor, espere 30 segundos e tente novamente."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
 msgid "Login unsuccessful"
-msgstr ""
+msgstr "Login malsucedido"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
 msgid "Your credentials could not be verified."
-msgstr ""
+msgstr "Não foi possível verificar as suas informações."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:98
 msgid "Profile saved!"
-msgstr ""
+msgstr "Perfil guardado!"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:106
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:32
 #: /var/azuracast/www/templates/stations/profile/edit.phtml:1
 #: /var/azuracast/www/templates/stations/profile/index.phtml:117
 msgid "Edit Profile"
-msgstr ""
+msgstr "Alterar Perfil"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:148
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "O token que forneceu é inválido. Por favor, tente novamente."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:171
 msgid "Two-factor authentication enabled."
-msgstr ""
+msgstr "Autenticação de dois fatores ativada."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:205
 msgid "Two-factor authentication disabled."
-msgstr ""
+msgstr "Autenticação de dois fatores desativada."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:217
 msgid "%s Listener Range"
-msgstr ""
+msgstr "%s Intervalo de Ouvintes"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:228
 msgid "%s Daily Average"
-msgstr ""
+msgstr "%s Média Diária"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
 msgid "SoundExchange Report"
@@ -822,30 +822,30 @@ msgstr "Web Hooks"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Ligar Estação"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Pronto para começar a transmitir? Clique para ligar a estação."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Reinicie para aplicar as mudanças"
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Clique para reiniciar a estação e aplicar as mudanças na configuração."
 
 #: /var/azuracast/www/config/menus/station.php:39
 msgid "Public Page"
-msgstr ""
+msgstr "Página Pública"
 
 #: /var/azuracast/www/config/menus/station.php:46
 #: /var/azuracast/www/templates/stations/files/index.phtml:1
 #: /var/azuracast/www/templates/stations/files/index.phtml:24
 #: /var/azuracast/www/templates/stations/profile/index.phtml:362
 msgid "Music Files"
-msgstr ""
+msgstr "Ficheiros Musicais"
 
 #: /var/azuracast/www/config/menus/station.php:53
 #: /var/azuracast/www/templates/stations/files/index.phtml:109
@@ -854,27 +854,27 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:16
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26
 msgid "Playlists"
-msgstr ""
+msgstr "Listas de Reprodução"
 
 #: /var/azuracast/www/config/menus/station.php:60
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:1
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:1
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:7
 msgid "Streamer/DJ Accounts"
-msgstr ""
+msgstr "Contas de Streamer/DJ"
 
 #: /var/azuracast/www/config/menus/station.php:67
 msgid "Web DJ"
-msgstr ""
+msgstr "DJ Online"
 
 #: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
-msgstr ""
+msgstr "Relatórios"
 
 #: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:1
 msgid "Statistics Overview"
-msgstr ""
+msgstr "Visão Geral das Estatísticas"
 
 #: /var/azuracast/www/config/menus/station.php:102
 #: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:37
@@ -888,14 +888,14 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:110
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:33
 msgid "Listeners"
-msgstr ""
+msgstr "Ouvintes"
 
 #: /var/azuracast/www/config/menus/station.php:107
 #: /var/azuracast/www/templates/stations/profile/index.phtml:151
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:1
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:11
 msgid "Song Requests"
-msgstr ""
+msgstr "Pedidos de Músicas"
 
 #: /var/azuracast/www/config/menus/station.php:112
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:1

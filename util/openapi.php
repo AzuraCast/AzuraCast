@@ -1,4 +1,6 @@
 <?php
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(
  *     version=AZURACAST_VERSION,
@@ -48,6 +50,7 @@
  * @OA\Tag(name="Stations: Listeners")
  * @OA\Tag(name="Stations: Media")
  * @OA\Tag(name="Stations: Queue")
+ * @OA\Tag(name="Stations: Streamers/DJs")
  * @OA\Tag(name="Stations: Service Control")
  *
  * @OA\Tag(name="Administration: Custom Fields")

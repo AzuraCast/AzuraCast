@@ -5,6 +5,7 @@ use App\Acl;
 use App\Entity;
 use App\Controller\Api\AbstractGenericCrudController;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use OpenApi\Annotations as OA;
 
 /**
  * @see \App\Provider\ApiProvider

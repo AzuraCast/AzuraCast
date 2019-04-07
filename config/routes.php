@@ -289,6 +289,18 @@ return function(App $app)
 
             $this->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\MediaController::class.':artAction');
 
+            $this->group('', function() {
+                /** @var App $this */
+                $this->get('/streamers', Controller\Api\Stations\StreamersController::class.':listAction')
+                    ->setName('api:stations:streamers');
+                $this->post('/streamers', Controller\Api\Stations\StreamersController::class.':createAction');
+
+                $this->get('/streamer/{id}', Controller\Api\Stations\StreamersController::class.':getAction')
+                    ->setName('api:stations:streamer');
+                $this->put('/streamer/{id}', Controller\Api\Stations\StreamersController::class.':editAction');
+                $this->delete('/streamer/{id}', Controller\Api\Stations\StreamersController::class.':deleteAction');
+            })->add([Middleware\Permissions::class, Acl::STATION_STREAMERS, true]);
+
             $this->get('/status', Controller\Api\Stations\ServicesController::class.':statusAction')
                 ->setName('api:stations:status')
                 ->add([Middleware\Permissions::class, Acl::STATION_VIEW, true]);

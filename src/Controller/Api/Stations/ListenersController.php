@@ -8,6 +8,7 @@ use App\Http\Request;
 use App\Http\Response;
 use MaxMind\Db\Reader;
 use Psr\Http\Message\ResponseInterface;
+use OpenApi\Annotations as OA;
 
 class ListenersController
 {

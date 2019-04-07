@@ -10,6 +10,7 @@ use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use OpenApi\Annotations as OA;
 
 class NowplayingController implements EventSubscriberInterface
 {

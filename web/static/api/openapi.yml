@@ -800,6 +800,139 @@ paths:
       security:
         -
           api_key: []
+  '/station/{station_id}/streamers':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'List all current Streamer/DJ accounts for the specified station.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationStreamer'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Create a new Streamer/DJ account.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationStreamer'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationStreamer'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/streamer/{id}':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Retrieve details for a single Streamer/DJ account.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationStreamer'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Update details of a single Streamer/DJ account.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationStreamer'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Delete a single Streamer/DJ account.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'StationStreamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
 components:
   schemas:
     Api_Admin_Settings:
@@ -918,7 +1051,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1554541360
+          example: 1554547255
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1014,7 +1147,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1554541360
+              example: 1554547255
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1069,7 +1202,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1554541360
+          example: 1554547255
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -1200,7 +1333,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1554541360
+          example: 1554547255
       type: object
     Api_Time:
       properties:
@@ -1262,6 +1395,30 @@ components:
       type: object
     Station:
       type: object
+    StationStreamer:
+      properties:
+        id:
+          type: integer
+          example: 1
+        streamer_username:
+          type: string
+          example: dj_test
+        streamer_password:
+          type: string
+          example: ''
+        display_name:
+          type: string
+          example: 'Test DJ'
+        comments:
+          type: string
+          example: 'This is a test DJ account.'
+        is_active:
+          type: boolean
+          example: true
+        reactivate_at:
+          type: integer
+          example: 1554547255
+      type: object
     User:
       properties:
         id:
@@ -1290,10 +1447,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1554541360
+          example: 1554547255
         updated_at:
           type: integer
-          example: 1554541360
+          example: 1554547255
         roles:
           items: {  }
       type: object
@@ -1330,6 +1487,8 @@ tags:
     name: 'Stations: Media'
   -
     name: 'Stations: Queue'
+  -
+    name: 'Stations: Streamers/DJs'
   -
     name: 'Stations: Service Control'
   -

@@ -9,6 +9,7 @@ use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
+use OpenApi\Annotations as OA;
 
 class HistoryController
 {

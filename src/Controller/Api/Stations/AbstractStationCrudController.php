@@ -16,11 +16,10 @@ abstract class AbstractStationCrudController extends AbstractCrudController
      * @param Response $response
      * @param int|string $station_id
      * @return ResponseInterface
-     * @throws \Azura\Exception
      */
     public function listAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = $this->_getStation($request);
 
         $query = $this->em->createQuery('SELECT e 
             FROM ' . $this->entityClass . ' e 
@@ -53,7 +52,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
      */
     public function createAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = $this->_getStation($request);
         $record = new $this->entityClass($station);
 
         $row = $this->_editRecord($request->getParsedBody(), $record);
@@ -72,7 +71,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
      */
     public function getAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = $this->_getStation($request);
         $record = $this->_getRecord($station, $record_id);
 
         $return = $this->_viewRecord($record, $request->getRouter());
@@ -88,7 +87,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
      */
     public function editAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
     {
-        $record = $this->_getRecord($request->getStation(), $record_id);
+        $record = $this->_getRecord($this->_getStation($request), $record_id);
 
         if (null === $record) {
             return $response
@@ -110,7 +109,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
      */
     public function deleteAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
     {
-        $record = $this->_getRecord($request->getStation(), $record_id);
+        $record = $this->_getRecord($this->_getStation($request), $record_id);
 
         if (null === $record) {
             return $response
@@ -135,5 +134,17 @@ abstract class AbstractStationCrudController extends AbstractCrudController
             'station' => $station,
             'id' => $record_id,
         ]);
+    }
+
+    /**
+     * A placeholder function to retrieve the current station that some controllers can
+     * override to verify that the station can perform the specified task.
+     *
+     * @param Request $request
+     * @return Entity\Station
+     */
+    protected function _getStation(Request $request): Entity\Station
+    {
+        return $request->getStation();
     }
 }

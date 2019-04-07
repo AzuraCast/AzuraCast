@@ -6,6 +6,7 @@ use App\Controller\Api\AbstractGenericCrudController;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
+use OpenApi\Annotations as OA;
 
 /**
  * @see \App\Provider\ApiProvider

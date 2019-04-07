@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
@@ -9,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="station_streamers")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationStreamerRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @OA\Schema(type="object")
  */
 class StationStreamer
 {
@@ -18,6 +22,8 @@ class StationStreamer
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
@@ -39,36 +45,49 @@ class StationStreamer
 
     /**
      * @ORM\Column(name="streamer_username", type="string", length=50, nullable=false)
+     *
+     * @OA\Property(example="dj_test")
+     * @Assert\NotBlank
      * @var string
      */
     protected $streamer_username;
 
     /**
      * @ORM\Column(name="streamer_password", type="string", length=50, nullable=false)
+     *
+     * @OA\Property(example="")
      * @var string
      */
     protected $streamer_password;
 
     /**
      * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="Test DJ")
      * @var string|null
      */
     protected $display_name;
 
     /**
      * @ORM\Column(name="comments", type="text", nullable=true)
+     *
+     * @OA\Property(example="This is a test DJ account.")
      * @var string|null
      */
     protected $comments;
 
     /**
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
      * @var bool
      */
     protected $is_active;
 
 	/**
      * @ORM\Column(name="reactivate_at", type="integer", nullable=true)
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int|null
      */
     protected $reactivate_at;

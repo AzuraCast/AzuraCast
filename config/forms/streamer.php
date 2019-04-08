@@ -19,7 +19,7 @@ return [
                 'description' => __('The streamer will use this password to connect to the radio server.'),
                 'required' => true,
                 'validator' => function($text) {
-                    $avoid_chars = ['@', ':', ','];
+                    $avoid_chars = ['@', ':', ',', '#'];
 
                     if (0 < count(array_intersect(str_split($text), $avoid_chars))) {
                         return __('Password cannot contain the following characters: %s', implode('', $avoid_chars));

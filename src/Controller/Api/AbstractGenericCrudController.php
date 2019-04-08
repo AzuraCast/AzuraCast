@@ -62,7 +62,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @return object
      */
     protected function _createRecord($data): object

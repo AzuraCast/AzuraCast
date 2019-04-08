@@ -121,7 +121,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @param Entity\Station $station
      * @return object
      */

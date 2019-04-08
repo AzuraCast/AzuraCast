@@ -13,14 +13,6 @@ class FormProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[Form\EntityForm::class] = function($di) {
-            return new Form\EntityForm(
-                $di[EntityManager::class],
-                $di[Serializer::class],
-                $di[ValidatorInterface::class]
-            );
-        };
-
         $di[Form\PermissionsForm::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];
@@ -74,6 +66,19 @@ class FormProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Form\EntityFormManager::class] = function($di) {
+            $custom_forms = [
+                Entity\Station::class   => Form\StationForm::class,
+                Entity\User::class      => Form\UserForm::class,
+                Entity\RolePermission::class => Form\PermissionsForm::class,
+            ];
 
+            return new Form\EntityFormManager(
+                $di[EntityManager::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class],
+                new \Pimple\Psr11\ServiceLocator($di, $custom_forms)
+            );
+        };
     }
 }

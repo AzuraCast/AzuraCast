@@ -67,8 +67,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
      */
     protected function _createRecord($data): object
     {
-        $record = new $this->entityClass();
-        return $this->_editRecord($data, $record);
+        return $this->_editRecord($data, null);
     }
 
     /**

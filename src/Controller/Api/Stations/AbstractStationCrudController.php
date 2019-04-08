@@ -8,6 +8,7 @@ use App\Http\Response;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 abstract class AbstractStationCrudController extends AbstractCrudController
 {
@@ -127,8 +128,13 @@ abstract class AbstractStationCrudController extends AbstractCrudController
      */
     protected function _createRecord($data, Entity\Station $station): object
     {
-        $record = new $this->entityClass($station);
-        return $this->_editRecord($data, $record);
+        return $this->_editRecord($data, null, [
+            AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
+                $this->entityClass => [
+                    'station' => $station,
+                ]
+            ],
+        ]);
     }
 
     /**

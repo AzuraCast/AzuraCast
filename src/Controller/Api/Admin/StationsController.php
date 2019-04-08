@@ -128,7 +128,7 @@ class StationsController extends AbstractGenericCrudController
     }
 
     /** @inheritDoc */
-    protected function _editRecord($data, $record): object
+    protected function _editRecord($data, $record = null, array $context = []): object
     {
         return $this->station_repo->edit($data, $record);
     }

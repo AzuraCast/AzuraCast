@@ -1,7 +1,9 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Form\EntityForm;
 use App\Radio\Backend\AbstractBackend;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -16,22 +18,23 @@ class StreamersController
     /** @var string */
     protected $csrf_namespace = 'stations_streamers';
 
-    /** @var array */
-    protected $form_config;
-
     /** @var Entity\Repository\StationStreamerRepository */
     protected $streamers_repo;
 
+    /** @var EntityForm */
+    protected $form;
+
     /**
-     * @param EntityManager $em
-     * @param array $form_config
+     * StreamersController constructor.
+     * @param EntityForm $form
+     *
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em, array $form_config)
+    public function __construct(EntityForm $form)
     {
-        $this->em = $em;
-        $this->form_config = $form_config;
+        $this->form = $form;
 
+        $this->em = $form->getEntityManager();
         $this->streamers_repo = $this->em->getRepository(Entity\StationStreamer::class);
     }
 
@@ -78,31 +81,13 @@ class StreamersController
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
+        $this->form->setStation($station);
 
-        $form = new \AzuraForms\Form($this->form_config);
+        $record = (null !== $id)
+            ? $this->streamers_repo->findOneBy(['id' => $id, 'station_id' => $station_id])
+            : null;
 
-        if (!empty($id)) {
-            $record = $this->streamers_repo->findOneBy([
-                'id' => $id,
-                'station_id' => $station_id
-            ]);
-            $form->populate($this->streamers_repo->toArray($record));
-        } else {
-            $record = null;
-        }
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\StationStreamer)) {
-                $record = new Entity\StationStreamer($station);
-            }
-
-            $this->streamers_repo->fromArray($record, $data);
-
-            $this->em->persist($record);
-            $this->em->flush();
-
+        if (false !== $this->form->process($request, $record)) {
             $this->em->refresh($station);
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
@@ -111,7 +96,7 @@ class StreamersController
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
+            'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Streamer'))
         ]);

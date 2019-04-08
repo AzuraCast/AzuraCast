@@ -1,6 +1,7 @@
 <?php
 namespace App\Form;
 
+use App\Entity\Station;
 use App\Http\Request;
 use Azura\Doctrine\Repository;
 use Azura\Normalizer\DoctrineEntityNormalizer;
@@ -26,6 +27,9 @@ class EntityForm extends \AzuraForms\Form
 
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
     protected $entityClass;
+
+    /** @var array The default context sent to form normalization/denormalization functions. */
+    protected $defaultContext = [];
 
     /**
      * @param EntityManager $em
@@ -148,7 +152,7 @@ class EntityForm extends \AzuraForms\Form
      */
     protected function _normalizeRecord($record, array $context = []): array
     {
-        return $this->serializer->normalize($record, null, array_merge($context, [
+        $context = array_merge($this->defaultContext, $context, [
             DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,
             ObjectNormalizer::ENABLE_MAX_DEPTH => true,
             ObjectNormalizer::MAX_DEPTH_HANDLER => function ($innerObject, $outerObject, string $attributeName, string $format = null, array $context = array()) {
@@ -157,7 +161,9 @@ class EntityForm extends \AzuraForms\Form
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, string $format = null, array $context = array()) {
                 return $this->_displayShortenedObject($object);
             },
-        ]));
+        ]);
+
+        return $this->serializer->normalize($record, null, $context);
     }
 
     /**
@@ -181,10 +187,37 @@ class EntityForm extends \AzuraForms\Form
      */
     protected function _denormalizeToRecord($data, $record = null, array $context = []): object
     {
+        $context = array_merge($this->defaultContext, $context);
+
         if (null !== $record) {
             $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;
         }
 
         return $this->serializer->denormalize($data, $this->entityClass, null, $context);
+    }
+
+    /**
+     * Modify the default context sent to all normalization/denormalization functions.
+     *
+     * @param string|int $key
+     * @param null $value
+     */
+    public function setDefaultContext($key, $value = null): void
+    {
+        $this->defaultContext[$key] = $value;
+    }
+
+    /**
+     * Shortcut function used to specify the station when initializing new classes.
+     *
+     * @param Station $station
+     */
+    public function setStation(Station $station): void
+    {
+        $this->defaultContext[ObjectNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS] = [
+            $this->entityClass => [
+                'station' => $station,
+            ],
+        ];
     }
 }

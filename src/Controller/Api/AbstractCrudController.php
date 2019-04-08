@@ -90,16 +90,17 @@ abstract class AbstractCrudController
 
     /**
      * @param array $data
-     * @param object $record
+     * @param object|null $record
+     * @param array $context
      * @return object
      */
-    protected function _editRecord($data, $record): object
+    protected function _editRecord($data, $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new \InvalidArgumentException('Could not parse input data.');
         }
 
-        $record = $this->_denormalizeToRecord($data, $record);
+        $record = $this->_denormalizeToRecord($data, $record, $context);
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {

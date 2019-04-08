@@ -53,9 +53,7 @@ abstract class AbstractStationCrudController extends AbstractCrudController
     public function createAction(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $this->_getStation($request);
-        $record = new $this->entityClass($station);
-
-        $row = $this->_editRecord($request->getParsedBody(), $record);
+        $row = $this->_createRecord($request->getParsedBody(), $station);
 
         $router = $request->getRouter();
         $return = $this->_viewRecord($row, $router);
@@ -120,6 +118,17 @@ abstract class AbstractStationCrudController extends AbstractCrudController
         $this->_deleteRecord($record);
 
         return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
+    }
+
+    /**
+     * @param $data
+     * @param Entity\Station $station
+     * @return object
+     */
+    protected function _createRecord($data, Entity\Station $station): object
+    {
+        $record = new $this->entityClass($station);
+        return $this->_editRecord($data, $record);
     }
 
     /**

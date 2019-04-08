@@ -41,8 +41,7 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
      */
     public function createAction(Request $request, Response $response): ResponseInterface
     {
-        $record = new $this->entityClass();
-        $row = $this->_editRecord($request->getParsedBody(), $record);
+        $row = $this->_createRecord($request->getParsedBody());
 
         $return = $this->_viewRecord($row, $request->getRouter());
         return $response->withJson($return);
@@ -60,6 +59,16 @@ abstract class AbstractGenericCrudController extends AbstractCrudController
 
         $return = $this->_viewRecord($record, $request->getRouter());
         return $response->withJson($return);
+    }
+
+    /**
+     * @param $data
+     * @return object
+     */
+    protected function _createRecord($data): object
+    {
+        $record = new $this->entityClass();
+        return $this->_editRecord($data, $record);
     }
 
     /**

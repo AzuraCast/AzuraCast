@@ -247,6 +247,18 @@ return function(App $app)
                 $this->put('/settings', Controller\Api\Admin\SettingsController::class.':updateAction');
             })->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
 
+            $this->group('', function() {
+                /** @var App $this */
+                $this->get('/stations', Controller\Api\Admin\StationsController::class.':listAction')
+                    ->setName('api:admin:stations');
+                $this->post('/stations', Controller\Api\Admin\StationsController::class.':createAction');
+
+                $this->get('/station/{id}', Controller\Api\Admin\StationsController::class.':getAction')
+                    ->setName('api:admin:station');
+                $this->put('/station/{id}', Controller\Api\Admin\StationsController::class.':editAction');
+                $this->delete('/station/{id}', Controller\Api\Admin\StationsController::class.':deleteAction');
+            })->add([Middleware\Permissions::class, Acl::GLOBAL_STATIONS]);
+
         });
 
         $this->group('/station/{station}', function () {

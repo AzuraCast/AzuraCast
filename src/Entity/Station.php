@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Remote\AdapterProxy;
@@ -38,84 +39,111 @@ class Station
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="AzuraTest Radio")
      * @var string|null The full display name of the station.
      */
     protected $name;
 
     /**
      * @ORM\Column(name="short_name", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="azuratest_radio")
      * @var string|null The URL-friendly name for the station, typically auto-generated from the full station name.
      */
     protected $short_name;
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
      * @var bool If set to "false", prevents the station from broadcasting but leaves it in the database.
      */
     protected $is_enabled = true;
 
     /**
      * @ORM\Column(name="frontend_type", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="icecast")
      * @var string|null The frontend adapter (icecast,shoutcast,remote,etc)
      */
     protected $frontend_type;
 
     /**
      * @ORM\Column(name="frontend_config", type="json_array", nullable=true)
+     *
+     * @OA\Property(@OA\Items())
      * @var array|null An array containing station-specific frontend configuration
      */
     protected $frontend_config;
 
     /**
      * @ORM\Column(name="backend_type", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="liquidsoap")
      * @var string|null The backend adapter (liquidsoap,etc)
      */
     protected $backend_type;
 
     /**
      * @ORM\Column(name="backend_config", type="json_array", nullable=true)
+     *
+     * @OA\Property(@OA\Items())
      * @var array|null An array containing station-specific backend configuration
      */
     protected $backend_config;
 
     /**
      * @ORM\Column(name="adapter_api_key", type="string", length=150, nullable=true)
+     *
      * @var string|null An internal-use API key used for container-to-container communications from Liquidsoap to AzuraCast
      */
     protected $adapter_api_key;
 
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
+     *
+     * @OA\Property(example="A sample radio station.")
      * @var string|null
      */
     protected $description;
 
     /**
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="https://demo.azuracast.com/")
      * @var string|null
      */
     protected $url;
 
     /**
      * @ORM\Column(name="genre", type="string", length=150, nullable=true)
+     *
+     * @OA\Property(example="Various")
      * @var string|null
      */
     protected $genre;
 
     /**
      * @ORM\Column(name="radio_base_dir", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="/var/azuracast/stations/azuratest_radio")
      * @var string|null
      */
     protected $radio_base_dir;
 
     /**
      * @ORM\Column(name="radio_media_dir", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="/var/azuracast/stations/azuratest_radio/media")
      * @var string|null
      */
     protected $radio_media_dir;
@@ -134,6 +162,8 @@ class Station
 
     /**
      * @ORM\Column(name="automation_settings", type="json_array", nullable=true)
+     *
+     * @OA\Property(@OA\Items())
      * @var array|null
      */
     protected $automation_settings;
@@ -146,42 +176,56 @@ class Station
 
     /**
      * @ORM\Column(name="enable_requests", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
      * @var bool Whether listeners can request songs to play on this station.
      */
     protected $enable_requests = false;
 
     /**
      * @ORM\Column(name="request_delay", type="integer", nullable=true)
+     *
+     * @OA\Property(example=5)
      * @var int|null
      */
     protected $request_delay = self::DEFAULT_REQUEST_DELAY;
 
     /**
      * @ORM\Column(name="request_threshold", type="integer", nullable=true)
+     *
+     * @OA\Property(example=15)
      * @var int|null
      */
     protected $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
 
     /**
      * @ORM\Column(name="disconnect_deactivate_streamer", type="integer", nullable=true, options={"default":0})
+     *
+     * @OA\Property(example=0)
      * @var int
      */
     protected $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;
 
     /**
      * @ORM\Column(name="enable_streamers", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=false)
      * @var bool Whether streamers are allowed to broadcast to this station at all.
      */
     protected $enable_streamers = false;
 
     /**
      * @ORM\Column(name="is_streamer_live", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=false)
      * @var bool Whether a streamer is currently active on the station.
      */
     protected $is_streamer_live = false;
 
     /**
      * @ORM\Column(name="enable_public_page", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
      * @var bool Whether this station is visible as a public page and in a now-playing API response.
      */
     protected $enable_public_page = true;
@@ -200,18 +244,24 @@ class Station
 
     /**
      * @ORM\Column(name="api_history_items", type="smallint")
+     *
+     * @OA\Property(example=5)
      * @var int|null The number of "last played" history items to show for a given station in the Now Playing API responses.
      */
     protected $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
 
     /**
      * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
+     *
+     * @OA\Property(example=52428800)
      * @var string|null
      */
     protected $storage_quota;
 
     /**
      * @ORM\Column(name="storage_used", type="bigint", nullable=true)
+     *
+     * @OA\Property(example=1048576)
      * @var string|null
      */
     protected $storage_used;

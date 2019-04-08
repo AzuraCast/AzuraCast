@@ -312,6 +312,127 @@ paths:
       security:
         -
           api_key: []
+  /admin/stations:
+    get:
+      tags:
+        - 'Administration: Stations'
+      description: 'List all current stations in the system.'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Station'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Administration: Stations'
+      description: 'Create a new station.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Station'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/admin/station/{id}':
+    get:
+      tags:
+        - 'Administration: Stations'
+      description: 'Retrieve details for a single station.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Administration: Stations'
+      description: 'Update details of a single station.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Station'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Administration: Stations'
+      description: 'Delete a single station.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   /admin/users:
     get:
       tags:
@@ -1051,7 +1172,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1554547255
+          example: 1554636757
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1147,7 +1268,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1554547255
+              example: 1554636757
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1202,7 +1323,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1554547255
+          example: 1554636757
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -1333,7 +1454,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1554547255
+          example: 1554636757
       type: object
     Api_Time:
       properties:
@@ -1394,6 +1515,91 @@ components:
           items: {  }
       type: object
     Station:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          description: 'The full display name of the station.'
+          type: string
+          example: 'AzuraTest Radio'
+        short_name:
+          description: 'The URL-friendly name for the station, typically auto-generated from the full station name.'
+          type: string
+          example: azuratest_radio
+        is_enabled:
+          description: 'If set to "false", prevents the station from broadcasting but leaves it in the database.'
+          type: boolean
+          example: true
+        frontend_type:
+          description: 'The frontend adapter (icecast,shoutcast,remote,etc)'
+          type: string
+          example: icecast
+        frontend_config:
+          description: 'An array containing station-specific frontend configuration'
+          type: array
+          items: {  }
+        backend_type:
+          description: 'The backend adapter (liquidsoap,etc)'
+          type: string
+          example: liquidsoap
+        backend_config:
+          description: 'An array containing station-specific backend configuration'
+          type: array
+          items: {  }
+        description:
+          type: string
+          example: 'A sample radio station.'
+        url:
+          type: string
+          example: 'https://demo.azuracast.com/'
+        genre:
+          type: string
+          example: Various
+        radio_base_dir:
+          type: string
+          example: /var/azuracast/stations/azuratest_radio
+        radio_media_dir:
+          type: string
+          example: /var/azuracast/stations/azuratest_radio/media
+        automation_settings:
+          type: array
+          items: {  }
+        enable_requests:
+          description: 'Whether listeners can request songs to play on this station.'
+          type: boolean
+          example: true
+        request_delay:
+          type: integer
+          example: 5
+        request_threshold:
+          type: integer
+          example: 15
+        disconnect_deactivate_streamer:
+          type: integer
+          example: 0
+        enable_streamers:
+          description: 'Whether streamers are allowed to broadcast to this station at all.'
+          type: boolean
+          example: false
+        is_streamer_live:
+          description: 'Whether a streamer is currently active on the station.'
+          type: boolean
+          example: false
+        enable_public_page:
+          description: 'Whether this station is visible as a public page and in a now-playing API response.'
+          type: boolean
+          example: true
+        api_history_items:
+          description: 'The number of "last played" history items to show for a given station in the Now Playing API responses.'
+          type: integer
+          example: 5
+        storage_quota:
+          type: string
+          example: 52428800
+        storage_used:
+          type: string
+          example: 1048576
       type: object
     StationStreamer:
       properties:
@@ -1417,7 +1623,7 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1554547255
+          example: 1554636757
       type: object
     User:
       properties:
@@ -1447,10 +1653,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1554547255
+          example: 1554636757
         updated_at:
           type: integer
-          example: 1554547255
+          example: 1554636757
         roles:
           items: {  }
       type: object
@@ -1499,6 +1705,8 @@ tags:
     name: 'Administration: Roles'
   -
     name: 'Administration: Settings'
+  -
+    name: 'Administration: Stations'
   -
     name: Miscellaneous
 externalDocs:

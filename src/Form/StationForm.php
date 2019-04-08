@@ -90,7 +90,7 @@ class StationForm extends EntityForm
         }
 
         if (null !== $record) {
-            $this->populate($this->_normalizeRecord($record, ['deep' => false]));
+            $this->populate($this->_normalizeRecord($record));
         }
 
         if ($request->isPost() && $this->isValid($request->getParsedBody())) {

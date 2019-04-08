@@ -100,6 +100,7 @@ class ApiProvider implements ServiceProviderInterface
             Api\Admin\UsersController::class,
             Api\Admin\RolesController::class,
             Api\Admin\SettingsController::class,
+            Api\Admin\StationsController::class,
             Api\Stations\StreamersController::class,
         ];
 

@@ -90,13 +90,10 @@ abstract class AbstractCrudController
 
     /**
      * @param array $data
-     * @param object|null $record
+     * @param object $record
      * @return object
-     * @throws \App\Exception\Validation
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function _editRecord($data, $record = null): object
+    protected function _editRecord($data, $record): object
     {
         if (null === $data) {
             throw new \InvalidArgumentException('Could not parse input data.');

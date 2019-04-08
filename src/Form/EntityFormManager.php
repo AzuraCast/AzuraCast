@@ -42,7 +42,7 @@ class EntityFormManager
      * Given a specified entity class and form configuration array, return
      * a configured and initialized EntityForm.
      *
-     * @param $entity_class
+     * @param string $entity_class
      * @param array|null $form_config
      * @return EntityForm
      */

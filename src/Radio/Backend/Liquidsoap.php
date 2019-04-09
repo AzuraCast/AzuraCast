@@ -371,6 +371,18 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         }
 
+        // Handle "jingle mode" on playlists
+        $ls_config[] = '# Handle Jingle Mode';
+        $ls_config[] = 'def handle_jingle_mode(m) =';
+        $ls_config[] = '  if (m["jingle_mode"] == "true") then';
+        $ls_config[] = '    log("Jingle mode; stripping metadata...")';
+        $ls_config[] = '    []';
+        $ls_config[] = '  else';
+        $ls_config[] = '    m';
+        $ls_config[] = '  end';
+        $ls_config[] = 'end';
+        $ls_config[] = 'radio = map_metadata(handle_jingle_mode,update=false,strip=true,insert_missing=false,radio)';
+
         $event->appendLines($ls_config);
     }
 

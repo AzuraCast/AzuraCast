@@ -4,9 +4,11 @@ namespace App\Form;
 use App\Acl;
 use App\Entity;
 use App\Http\Request;
+use App\Radio\Frontend\SHOUTcast;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationForm extends EntityForm
@@ -73,29 +75,43 @@ class StationForm extends EntityForm
             unset($this->options['groups']['admin']);
         }
 
-        // Add the port checker validator (which depends on the current record) to the appropriate fields.
-        $port_checker = function($value) use ($record) {
-            if ($this->station_repo->isPortUsed($value, $record)) {
-                return __('This port is currently in use by another station.');
-            }
-            return true;
-        };
-
-        foreach($this->fields as $field) {
-            $attrs = $field->getAttributes();
-
-            if (isset($attrs['class']) && strpos($attrs['class'], 'input-port') !== false) {
-                $field->addValidator($port_checker);
-            }
+        if (!SHOUTcast::isInstalled()) {
+            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', $request->getRouter()->named('admin:install:shoutcast'));
         }
 
-        if (null !== $record) {
+        $create_mode = (null === $record);
+        if (!$create_mode) {
             $this->populate($this->_normalizeRecord($record));
         }
 
         if ($request->isPost() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
-            return $this->station_repo->editOrCreate($data, $record);
+            $record = $this->_denormalizeToRecord($data, $record);
+
+            $errors = $this->validator->validate($record);
+            if (count($errors) > 0) {
+                foreach($errors as $error) {
+                    /** @var ConstraintViolation $error */
+                    $field_name = $error->getPropertyPath();
+
+                    if (isset($this->fields[$field_name])) {
+                        $this->fields[$field_name]->addError($error->getMessage());
+                    } else {
+                        $this->addError($error->getMessage());
+                    }
+                }
+                return false;
+            }
+
+            if ($create_mode) {
+                $this->station_repo->create($record);
+            } else {
+                $this->station_repo->edit($record);
+            }
+
+            $this->em->persist($record);
+            $this->em->flush($record);
+            return $record;
         }
 
         return false;

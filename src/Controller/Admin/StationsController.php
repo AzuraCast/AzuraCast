@@ -15,6 +15,9 @@ class StationsController
     /** @var Form\StationForm */
     protected $station_form;
 
+    /** @var Form\StationCloneForm */
+    protected $clone_form;
+
     /** @var string */
     protected $csrf_namespace = 'admin_stations';
 
@@ -23,9 +26,13 @@ class StationsController
      *
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(Form\StationForm $station_form)
-    {
+    public function __construct(
+        Form\StationForm $station_form,
+        Form\StationCloneForm $clone_form
+    ) {
         $this->station_form = $station_form;
+        $this->clone_form = $clone_form;
+
         $this->record_repo = $station_form->getEntityRepository();
     }
 
@@ -68,5 +75,24 @@ class StationsController
 
         $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');
         return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+    }
+
+    public function cloneAction(Request $request, Response $response, $id): ResponseInterface
+    {
+        $record = $this->record_repo->find((int)$id);
+        if (!($record instanceof Entity\Station)) {
+            throw new \App\Exception\NotFound(__('%s not found.', __('Station')));
+        }
+
+        if (false !== $this->clone_form->process($request, $record)) {
+            $request->getSession()->flash(__('Changes saved.'), 'green');
+            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+        }
+
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
+            'form' => $this->clone_form,
+            'render_mode' => 'edit',
+            'title' => __('Clone Station: %s', $record->getName())
+        ]);
     }
 }

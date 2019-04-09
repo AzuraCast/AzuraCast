@@ -116,7 +116,6 @@ class EntityForm extends \AzuraForms\Form
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {
-                $other_errors = [];
                 foreach($errors as $error) {
                     /** @var ConstraintViolation $error */
                     $field_name = $error->getPropertyPath();
@@ -124,16 +123,9 @@ class EntityForm extends \AzuraForms\Form
                     if (isset($this->fields[$field_name])) {
                         $this->fields[$field_name]->addError($error->getMessage());
                     } else {
-                        $other_errors[] = $error;
+                        $this->addError($error->getMessage());
                     }
                 }
-
-                if (count($other_errors) > 0) {
-                    $e = new \App\Exception\Validation((string)$errors);
-                    $e->setDetailedErrors($errors);
-                    throw $e;
-                }
-
                 return false;
             }
 
@@ -146,6 +138,8 @@ class EntityForm extends \AzuraForms\Form
     }
 
     /**
+     * The old ->toArray().
+     *
      * @param object $record
      * @param array $context
      * @return array
@@ -180,6 +174,8 @@ class EntityForm extends \AzuraForms\Form
     }
 
     /**
+     * The old ->fromArray().
+     *
      * @param array $data
      * @param object|null $record
      * @param array $context

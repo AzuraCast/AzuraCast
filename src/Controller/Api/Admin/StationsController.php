@@ -122,15 +122,32 @@ class StationsController extends AbstractGenericCrudController
     }
 
     /** @inheritDoc */
-    protected function _createRecord($data): object
-    {
-        return $this->station_repo->create($data);
-    }
-
-    /** @inheritDoc */
     protected function _editRecord($data, $record = null, array $context = []): object
     {
-        return $this->station_repo->edit($data, $record);
+        $create_mode = (null === $record);
+
+        if (null === $data) {
+            throw new \InvalidArgumentException('Could not parse input data.');
+        }
+
+        $record = $this->_denormalizeToRecord($data, $record, $context);
+
+        $errors = $this->validator->validate($record);
+        if (count($errors) > 0) {
+            $e = new \App\Exception\Validation((string)$errors);
+            $e->setDetailedErrors($errors);
+            throw $e;
+        }
+
+        if ($create_mode) {
+            $this->station_repo->create($record);
+        } else {
+            $this->station_repo->edit($record);
+        }
+
+        $this->em->persist($record);
+        $this->em->flush($record);
+        return $record;
     }
 
     /** @inheritDoc */

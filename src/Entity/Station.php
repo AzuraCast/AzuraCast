@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Constraints as AppAssert;
 
 use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Remote\AdapterProxy;
@@ -25,6 +26,7 @@ use Psr\Http\Message\UriInterface;
  * @ORM\HasLifecycleCallbacks
  *
  * @OA\Schema(type="object", schema="Station")
+ * @AppAssert\StationPortChecker()
  */
 class Station
 {
@@ -41,7 +43,7 @@ class Station
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @OA\Property(example=1)
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -343,9 +345,9 @@ class Station
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

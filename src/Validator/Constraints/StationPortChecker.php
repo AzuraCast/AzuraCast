@@ -6,14 +6,19 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class StreamerPassword extends Constraint
+class StationPortChecker extends Constraint
 {
     public $message;
 
     public function __construct($options = null)
     {
-        $this->message = __('Password cannot contain the following characters: %s', '{{ chars }}');
+        $this->message = __('The port %s is in use by another station.', '{{ port }}');
 
         parent::__construct($options);
+    }
+
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
     }
 }

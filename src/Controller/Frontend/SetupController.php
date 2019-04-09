@@ -3,6 +3,7 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Auth;
+use App\Form\StationForm;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\SHOUTcast;
@@ -23,8 +24,8 @@ class SetupController
     /** @var Acl */
     protected $acl;
 
-    /** @var array */
-    protected $station_form_config;
+    /** @var StationForm */
+    protected $station_form;
 
     /** @var array */
     protected $settings_form_config;
@@ -33,7 +34,7 @@ class SetupController
      * @param EntityManager $em
      * @param Auth $auth
      * @param Acl $acl
-     * @param array $station_form_config
+     * @param StationForm $station_form
      * @param array $settings_form_config
      *
      * @see \App\Provider\FrontendProvider
@@ -42,14 +43,14 @@ class SetupController
         EntityManager $em,
         Auth $auth,
         Acl $acl,
-        array $station_form_config,
+        StationForm $station_form,
         array $settings_form_config
     )
     {
         $this->em = $em;
         $this->auth = $auth;
         $this->acl = $acl;
-        $this->station_form_config = $station_form_config;
+        $this->station_form = $station_form;
         $this->settings_form_config = $settings_form_config;
     }
 
@@ -149,28 +150,12 @@ class SetupController
             return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
-        // Set up station form.
-        $form_config = $this->station_form_config;
-        unset($form_config['groups']['profile']['legend']);
-
-        if (!SHOUTcast::isInstalled()) {
-            $form_config['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', $request->getRouter()->named('admin:install:shoutcast'));
-        }
-
-        $form = new \AzuraForms\Form($form_config);
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            /** @var Entity\Repository\StationRepository $station_repo */
-            $station_repo = $this->em->getRepository(Entity\Station::class);
-            $station_repo->create($data);
-
+        if (false !== $this->station_form->process($request)) {
             return $response->withRedirect($request->getRouter()->named('setup:settings'));
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/setup/station', [
-            'form' => $form,
+            'form' => $this->station_form,
         ]);
     }
 

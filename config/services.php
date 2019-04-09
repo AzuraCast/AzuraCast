@@ -64,7 +64,8 @@ return function (\Azura\Container $di)
             $di[\App\Sync\Task\Media::class],
             $di[\App\Radio\Adapters::class],
             $di[\App\Radio\Configuration::class],
-            $di[\Azura\Cache::class]
+            $di[\Azura\Cache::class],
+            $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class]
         );
     };
 
@@ -277,6 +278,12 @@ return function (\Azura\Container $di)
             $di['settings'],
             $di[\App\Version::class],
             $di[\GuzzleHttp\Client::class]
+        );
+    };
+
+    $di[\App\Validator\Constraints\StationPortCheckerValidator::class] = function($di) {
+        return new \App\Validator\Constraints\StationPortCheckerValidator(
+            $di[\App\Radio\Configuration::class]
         );
     };
 

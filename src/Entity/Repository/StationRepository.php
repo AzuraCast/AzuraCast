@@ -10,6 +10,7 @@ use Azura\Cache;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
@@ -22,6 +23,9 @@ class StationRepository extends Repository
     /** @var Configuration */
     protected $configuration;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /** @var Cache */
     protected $cache;
 
@@ -31,7 +35,8 @@ class StationRepository extends Repository
         Media $media_sync,
         Adapters $adapters,
         Configuration $configuration,
-        Cache $cache
+        Cache $cache,
+        ValidatorInterface $validator
     ) {
         parent::__construct($em, $class);
 
@@ -39,6 +44,7 @@ class StationRepository extends Repository
         $this->adapters = $adapters;
         $this->configuration = $configuration;
         $this->cache = $cache;
+        $this->validator = $validator;
     }
 
     /**
@@ -89,30 +95,16 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param array $data
-     * @param Entity\Station|null $record
-     * @return Entity\Station
-     */
-    public function editOrCreate($data, Entity\Station $record = null): Entity\Station
-    {
-        return (null === $record)
-            ? $this->create($data)
-            : $this->edit($data, $record);
-    }
-
-    /**
-     * @param array $data
      * @param Entity\Station $record
-     * @return Entity\Station
      */
-    public function edit($data, Entity\Station $record): Entity\Station
+    public function edit(Entity\Station $record): void
     {
-        $old_frontend = $record->getFrontendType();
-        $old_backend = $record->getBackendType();
+        /** @var Entity\Station $original_record */
+        $original_record = $this->_em->getUnitOfWork()->getOriginalEntityData($record);
 
-        $this->fromArray($record, $data);
-        $this->_em->persist($record);
-        $this->_em->flush($record);
+        // Get the original values to check for changes.
+        $old_frontend = $original_record['frontend_type'];
+        $old_backend = $original_record['backend_type'];
 
         $frontend_changed = ($old_frontend !== $record->getFrontendType());
         $backend_changed = ($old_backend !== $record->getBackendType());
@@ -126,22 +118,15 @@ class StationRepository extends Repository
         $this->configuration->writeConfiguration($record, $adapter_changed);
 
         $this->cache->remove('stations');
-
-        return $record;
     }
 
     /**
-     * Create a station based on the specified data.
+     * Handle tasks necessary to a station's creation.
      *
-     * @param array $data Array of data to populate the station with.
-     * @return Entity\Station
-     * @throws \Exception
+     * @param Entity\Station $station
      */
-    public function create($data): Entity\Station
+    public function create(Entity\Station $station): void
     {
-        $station = new Entity\Station;
-        $this->fromArray($station, $data);
-
         // Create path for station.
         $station_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
 
@@ -179,8 +164,6 @@ class StationRepository extends Repository
         $this->_em->flush();
 
         $this->cache->remove('stations');
-
-        return $station;
     }
 
     /**
@@ -229,22 +212,5 @@ class StationRepository extends Repository
         $this->_em->flush($station);
 
         $this->cache->remove('stations');
-    }
-
-    /**
-     * @param mixed|null $port
-     * @param Entity\Station|null $except_record
-     * @return bool
-     */
-    public function isPortUsed($port, Entity\Station $except_record = null): bool
-    {
-        if (!empty($port)) {
-            $port = (int)$port;
-            $used_ports = $this->configuration->getUsedPorts($except_record);
-
-            return isset($used_ports[$port]);
-        }
-
-        return false;
     }
 }

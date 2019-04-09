@@ -106,7 +106,7 @@ return function(App $app)
             $this->map(['GET', 'POST'], '/add', Controller\Admin\StationsController::class.':editAction')
                 ->setName('admin:stations:add');
 
-            $this->map(['GET', 'POST'], '/clone/{id}', Controller\Admin\Stations\CloneController::class)
+            $this->map(['GET', 'POST'], '/clone/{id}', Controller\Admin\StationsController::class.':cloneAction')
                 ->setName('admin:stations:clone');
 
             $this->get('/delete/{id}/{csrf}', Controller\Admin\StationsController::class.':deleteAction')

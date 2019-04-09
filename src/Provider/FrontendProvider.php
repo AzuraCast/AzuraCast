@@ -70,7 +70,7 @@ class FrontendProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
                 $di[\App\Acl::class],
-                $config->get('forms/station'),
+                $di[\App\Form\StationForm::class],
                 $config->get('forms/settings')
             );
         };

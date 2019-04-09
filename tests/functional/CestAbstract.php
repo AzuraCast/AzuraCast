@@ -86,19 +86,18 @@ abstract class CestAbstract
 
         $this->di[\App\Acl::class]->reload();
 
-        // Create station.
-        $station_info = [
-            'id'            => 25,
-            'name'          => 'Functional Test Radio',
-            'description'   => 'Test radio station.',
-            'frontend_type' => \App\Radio\Adapters::DEFAULT_FRONTEND,
-            'backend_type'  => \App\Radio\Adapters::DEFAULT_BACKEND,
-        ];
-
         /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
 
-        $this->test_station = $station_repo->create($station_info);
+        $test_station = new Entity\Station();
+        $test_station->setName('Functional Test Radio');
+        $test_station->setDescription('Test radio station.');
+        $test_station->setFrontendType(\App\Radio\Adapters::DEFAULT_FRONTEND);
+        $test_station->setBackendType(\App\Radio\Adapters::DEFAULT_BACKEND);
+
+        $station_repo->create($test_station);
+
+        $this->test_station = $test_station;
 
         // Set settings.
 

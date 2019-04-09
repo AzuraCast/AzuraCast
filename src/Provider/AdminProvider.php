@@ -74,19 +74,8 @@ class AdminProvider implements ServiceProviderInterface
 
         $di[Admin\StationsController::class] = function($di) {
             return new Admin\StationsController(
-                $di[\App\Form\StationForm::class]
-            );
-        };
-
-        $di[Admin\Stations\CloneController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
-
-            return new Admin\Stations\CloneController(
-                $di[EntityManager::class],
-                $di[\Azura\Cache::class],
-                $di[\App\Radio\Configuration::class],
-                $config->get('forms/station_clone')
+                $di[\App\Form\StationForm::class],
+                $di[\App\Form\StationCloneForm::class]
             );
         };
 

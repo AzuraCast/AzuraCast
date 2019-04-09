@@ -46,6 +46,20 @@ class FormProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Form\StationCloneForm::class] = function($di) {
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
+
+            return new Form\StationCloneForm(
+                $di[EntityManager::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class],
+                $di[\App\Acl::class],
+                $di[\App\Radio\Configuration::class],
+                $config->get('forms/station_clone')
+            );
+        };
+
         $di[Form\UserForm::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];

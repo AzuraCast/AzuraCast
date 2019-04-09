@@ -23,7 +23,12 @@ abstract class CestAbstract
     }
 
     public function _before(FunctionalTester $I)
-    {}
+    {
+        if (!function_exists('__')) {
+            $translator = new \Gettext\Translator();
+            $translator->register();
+        }
+    }
 
     public function _after(FunctionalTester $I)
     {
@@ -35,8 +40,9 @@ abstract class CestAbstract
         {
             /** @var Entity\Repository\StationRepository $station_repo */
             $station_repo = $this->em->getRepository(Entity\Station::class);
+            $station_repo->destroy($this->test_station);
 
-            $this->test_station = $station_repo->destroy($this->test_station);
+            $this->test_station = null;
         }
     }
 

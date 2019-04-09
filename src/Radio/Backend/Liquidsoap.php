@@ -128,7 +128,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
-        $ls_config = [];
 
         // Clear out existing playlists directory.
         $playlist_path = $station->getRadioPlaylistsDir();
@@ -138,8 +137,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         // Set up playlists using older format as a fallback.
-        $ls_config[] = '# Fallback Playlists';
-
         $has_default_playlist = false;
         $playlist_objects = [];
 
@@ -189,8 +186,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         foreach ($playlist_objects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
-
             $playlist_func_name = ($playlist->loopPlaylistOnce()) ? 'playlist.once' : 'playlist';
+            $playlist_config_lines = [];
 
             if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
                 $playlist_file_path = $this->writePlaylistFile($playlist, false);
@@ -214,18 +211,18 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 }
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
-                $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
-                $ls_config[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue', $station).'", '.$playlist_var_name.')';
+                $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
+                $playlist_config_lines[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue', $station).'", '.$playlist_var_name.')';
 
                 if ($playlist->isJingle()) {
-                    $ls_config[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
+                    $playlist_config_lines[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
                 }
             } else {
                 switch($playlist->getRemoteType())
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
                         $playlist_func = $playlist_func_name.'("'.$this->_cleanUpString($playlist->getRemoteUrl()).'")';
-                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func.')';
+                        $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func.')';
                         break;
 
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
@@ -237,14 +234,16 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         $buffer = $playlist->getRemoteBuffer();
                         $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                        $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'(max='.$buffer.'., "'.$this->_cleanUpString($remote_url).'")))';
+                        $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'(max='.$buffer.'., "'.$this->_cleanUpString($remote_url).'")))';
                         break;
                 }
             }
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
-                $ls_config[] = 'ignore('.$playlist_var_name.')';
+                $playlist_config_lines[] = 'ignore('.$playlist_var_name.')';
             }
+
+            $event->appendLines($playlist_config_lines);
 
             if ($playlist->playSingleTrack()) {
                 $playlist_var_name = 'once('.$playlist_var_name.')';
@@ -325,65 +324,67 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     }
                     break;
             }
-
-            $ls_config[] = '';
         }
 
-        $ls_config[] = '';
-
         // Build "default" type playlists.
-        $ls_config[] = '# Standard Playlists';
-        $ls_config[] = 'radio = random(weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . ']);';
-        $ls_config[] = '';
+        $event->appendLines([
+            '# Standard Playlists',
+            'radio = random(weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . '])',
+        ]);
 
         # Defer to AzuraCast for general rotation playlists if available.
-        $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))';
-        $ls_config[] = 'dynamic = cue_cut(id="'.$this->_getVarName('cue_cut', $station).'", dynamic)';
+        $event->appendLines([
+            'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))',
+            'dynamic = cue_cut(id="'.$this->_getVarName('cue_cut', $station).'", dynamic)',
+        ]);
 
         $error_file = APP_INSIDE_DOCKER
             ? '/usr/local/share/icecast/web/error.mp3'
             : APP_INCLUDE_ROOT . '/resources/error.mp3';
-        $ls_config[] = 'error_song = sequence([blank(duration=5.), single("'.$error_file.'")])';
 
-        $ls_config[] = 'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))';
+        $event->appendLines([
+            'error_song = sequence([blank(duration=5.), single("'.$error_file.'")])',
+            'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))',
+            'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, dynamic, radio, error_song])'
+        ]);
 
-        $ls_config[] = '';
-        $ls_config[] = 'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, dynamic, radio, error_song])';
-        $ls_config[] = '';
-
-        $ls_config[] = '# Add schedule switches';
         if (!empty($schedule_switches)) {
             $schedule_switches[] = '({true}, radio)';
-            $ls_config[] = 'radio = switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])';
+
+            $event->appendLines([
+                '# Standard Schedule Switches',
+                'radio = switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])',
+            ]);
         }
         if (!empty($schedule_switches_interrupting)) {
             $schedule_switches_interrupting[] = '({true}, radio)';
-            $ls_config[] = 'radio = switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])';
+
+            $event->appendLines([
+                '# Interrupting Schedule Switches',
+                'radio = switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])',
+            ]);
         }
-        $ls_config[] = '';
 
         // Add in special playlists if necessary.
-        $ls_config[] = '# Special playlists';
         foreach($special_playlists as $playlist_type => $playlist_config_lines) {
             if (count($playlist_config_lines) > 1) {
-                $ls_config = array_merge($ls_config, $playlist_config_lines);
-                $ls_config[] = '';
+                $event->appendLines($playlist_config_lines);
             }
         }
 
         // Handle "jingle mode" on playlists
-        $ls_config[] = '# Handle Jingle Mode';
-        $ls_config[] = 'def handle_jingle_mode(m) =';
-        $ls_config[] = '  if (m["jingle_mode"] == "true") then';
-        $ls_config[] = '    log("Jingle mode; stripping metadata...")';
-        $ls_config[] = '    []';
-        $ls_config[] = '  else';
-        $ls_config[] = '    m';
-        $ls_config[] = '  end';
-        $ls_config[] = 'end';
-        $ls_config[] = 'radio = map_metadata(handle_jingle_mode,update=false,strip=true,insert_missing=false,radio)';
-
-        $event->appendLines($ls_config);
+        $event->appendLines([
+            '# Handle Jingle Mode',
+            'def handle_jingle_mode(m) =',
+            '  if (m["jingle_mode"] == "true") then',
+            '    log("Jingle mode; stripping metadata...")',
+            '    []',
+            '  else',
+            '    m',
+            '  end',
+            'end',
+            'radio = map_metadata(handle_jingle_mode,update=false,strip=true,insert_missing=false,radio)',
+        ]);
     }
 
     /**

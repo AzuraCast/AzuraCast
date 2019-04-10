@@ -75,6 +75,8 @@ class Sentry
             'error_types'   => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
             'excluded_exceptions' => [
                 \League\Flysystem\FileNotFoundException::class,
+                \fXmlRpc\Exception\FaultException::class,
+                \App\Exception\Supervisor::class,
             ],
         ];
 

@@ -258,9 +258,9 @@ class StationMount implements StationMountInterface
     /**
      * @param null|string $relay_url
      */
-    public function setRelayUrl($relay_url): void
+    public function setRelayUrl(string $relay_url = null): void
     {
-        $this->relay_url = $relay_url;
+        $this->relay_url = $this->_truncateString($relay_url);
     }
 
     /**
@@ -276,7 +276,7 @@ class StationMount implements StationMountInterface
      */
     public function setAuthhash(string $authhash = null): void
     {
-        $this->authhash = $authhash;
+        $this->authhash = $this->_truncateString($authhash);
     }
 
     /**
@@ -308,7 +308,7 @@ class StationMount implements StationMountInterface
      */
     public function setAutodjFormat(string $autodj_format = null): void
     {
-        $this->autodj_format = $autodj_format;
+        $this->autodj_format = $this->_truncateString($autodj_format, 10);
     }
 
     /**
@@ -340,7 +340,7 @@ class StationMount implements StationMountInterface
      */
     public function setCustomListenUrl(string $custom_listen_url = null): void
     {
-        $this->custom_listen_url = $custom_listen_url;
+        $this->custom_listen_url = $this->_truncateString($custom_listen_url);
     }
 
     /**

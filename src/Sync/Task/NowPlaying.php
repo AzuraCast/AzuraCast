@@ -229,6 +229,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     }
                 }
 
+                $sh->sentToAutodj();
+
                 $this->em->persist($sh);
                 $this->em->flush($sh);
             }

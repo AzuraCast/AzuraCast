@@ -303,6 +303,30 @@ return function(App $app)
 
             $this->group('', function() {
                 /** @var App $this */
+                $this->get('/mounts', Controller\Api\Stations\MountsController::class.':listAction')
+                    ->setName('api:stations:mounts');
+                $this->post('/mounts', Controller\Api\Stations\MountsController::class.':createAction');
+
+                $this->get('/mount/{id}', Controller\Api\Stations\MountsController::class.':getAction')
+                    ->setName('api:stations:mount');
+                $this->put('/mount/{id}', Controller\Api\Stations\MountsController::class.':editAction');
+                $this->delete('/mount/{id}', Controller\Api\Stations\MountsController::class.':deleteAction');
+            })->add([Middleware\Permissions::class, Acl::STATION_MOUNTS, true]);
+
+            $this->group('', function() {
+                /** @var App $this */
+                $this->get('/remotes', Controller\Api\Stations\RemotesController::class.':listAction')
+                    ->setName('api:stations:remotes');
+                $this->post('/remotes', Controller\Api\Stations\RemotesController::class.':createAction');
+
+                $this->get('/remote/{id}', Controller\Api\Stations\RemotesController::class.':getAction')
+                    ->setName('api:stations:remote');
+                $this->put('/remote/{id}', Controller\Api\Stations\RemotesController::class.':editAction');
+                $this->delete('/remote/{id}', Controller\Api\Stations\RemotesController::class.':deleteAction');
+            })->add([Middleware\Permissions::class, Acl::STATION_REMOTES, true]);
+
+            $this->group('', function() {
+                /** @var App $this */
                 $this->get('/streamers', Controller\Api\Stations\StreamersController::class.':listAction')
                     ->setName('api:stations:streamers');
                 $this->post('/streamers', Controller\Api\Stations\StreamersController::class.':createAction');

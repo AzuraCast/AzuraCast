@@ -10,7 +10,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
+use App\Radio\Adapters;
 
 use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Remote\AdapterProxy;
@@ -51,6 +53,8 @@ class Station
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      *
      * @OA\Property(example="AzuraTest Radio")
+     *
+     * @Assert\NotBlank()
      * @var string|null The full display name of the station.
      */
     protected $name;
@@ -59,6 +63,8 @@ class Station
      * @ORM\Column(name="short_name", type="string", length=100, nullable=true)
      *
      * @OA\Property(example="azuratest_radio")
+     *
+     * @Assert\NotBlank()
      * @var string|null The URL-friendly name for the station, typically auto-generated from the full station name.
      */
     protected $short_name;
@@ -75,6 +81,8 @@ class Station
      * @ORM\Column(name="frontend_type", type="string", length=100, nullable=true)
      *
      * @OA\Property(example="icecast")
+     *
+     * @Assert\Choice(choices={Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST})
      * @var string|null The frontend adapter (icecast,shoutcast,remote,etc)
      */
     protected $frontend_type;
@@ -90,6 +98,7 @@ class Station
     /**
      * @ORM\Column(name="backend_type", type="string", length=100, nullable=true)
      *
+     * @Assert\Choice(choices={Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE})
      * @OA\Property(example="liquidsoap")
      * @var string|null The backend adapter (liquidsoap,etc)
      */

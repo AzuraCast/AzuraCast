@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
@@ -11,6 +13,8 @@ use Psr\Http\Message\UriInterface;
  * @ORM\Table(name="station_mounts")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @OA\Schema(type="object")
  */
 class StationMount implements StationMountInterface
 {
@@ -20,6 +24,8 @@ class StationMount implements StationMountInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
@@ -41,78 +47,118 @@ class StationMount implements StationMountInterface
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
+     *
+     * @OA\Property(example="/radio.mp3")
+     * @Assert\NotBlank()
+     *
      * @var string
      */
     protected $name = '';
 
     /**
      * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="128kbps MP3")
+     *
      * @var string|null
      */
     protected $display_name;
 
     /**
      * @ORM\Column(name="is_visible_on_public_pages", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
      * @var bool
      */
     protected $is_visible_on_public_pages = true;
 
     /**
      * @ORM\Column(name="is_default", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool
      */
     protected $is_default = false;
 
     /**
      * @ORM\Column(name="is_public", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool
      */
     protected $is_public = false;
 
     /**
      * @ORM\Column(name="fallback_mount", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="/error.mp3")
+     *
      * @var string|null
      */
     protected $fallback_mount;
 
     /**
      * @ORM\Column(name="relay_url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="http://radio.example.com:8000/radio.mp3")
+     *
      * @var string|null
      */
     protected $relay_url;
 
     /**
      * @ORM\Column(name="authhash", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="")
+     *
      * @var string|null
      */
     protected $authhash;
 
     /**
      * @ORM\Column(name="enable_autodj", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
      * @var bool
      */
     protected $enable_autodj = true;
 
     /**
      * @ORM\Column(name="autodj_format", type="string", length=10, nullable=true)
+     *
+     * @OA\Property(example="mp3")
+     *
      * @var string|null
      */
     protected $autodj_format = 'mp3';
 
     /**
      * @ORM\Column(name="autodj_bitrate", type="smallint", nullable=true)
+     *
+     * @OA\Property(example=128)
+     *
      * @var int|null
      */
     protected $autodj_bitrate = 128;
 
     /**
      * @ORM\Column(name="custom_listen_url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="https://custom-listen-url.example.com/stream.mp3")
+     *
      * @var string|null
      */
     protected $custom_listen_url;
 
     /**
      * @ORM\Column(name="frontend_config", type="text", nullable=true)
+     *
+     * @OA\Property(@OA\Items())
+     *
      * @var string|null
      */
     protected $frontend_config;

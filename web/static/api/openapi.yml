@@ -718,6 +718,139 @@ paths:
           description: 'The requested album artwork'
         '404':
           description: 'Image not found; generic filler image.'
+  '/station/{station_id}/mounts':
+    get:
+      tags:
+        - 'Stations: Mounts'
+      description: 'List all current mount points.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationMount'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Mounts'
+      description: 'Create a new mount point.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationMount'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationMount'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/mount/{id}':
+    get:
+      tags:
+        - 'Stations: Mounts'
+      description: 'Retrieve details for a single mount point.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationMount'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Stations: Mounts'
+      description: 'Update details of a single mount point.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationMount'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Mounts'
+      description: 'Delete a single mount point.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'StationMount ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   '/station/{station_id}/queue':
     get:
       tags:
@@ -793,6 +926,139 @@ paths:
                 $ref: '#/components/schemas/Api_Status'
         '404':
           description: 'Station or Queue ID not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/remotes':
+    get:
+      tags:
+        - 'Stations: Remote Relays'
+      description: 'List all current remote relays.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationRemote'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Remote Relays'
+      description: 'Create a new remote relay.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationRemote'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationRemote'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/remote/{id}':
+    get:
+      tags:
+        - 'Stations: Remote Relays'
+      description: 'Retrieve details for a single remote relay.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationRemote'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Stations: Remote Relays'
+      description: 'Update details of a single remote relay.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationRemote'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Remote Relays'
+      description: 'Delete a single remote relay.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'StationRemote ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
         '403':
           description: 'Access denied'
       security:
@@ -1172,7 +1438,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1554636757
+          example: 1554805409
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1268,7 +1534,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1554636757
+              example: 1554805409
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1323,7 +1589,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1554636757
+          example: 1554805409
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -1454,7 +1720,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1554636757
+          example: 1554805409
       type: object
     Api_Time:
       properties:
@@ -1601,6 +1867,99 @@ components:
           type: string
           example: 1048576
       type: object
+    StationMount:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: /radio.mp3
+        display_name:
+          type: string
+          example: '128kbps MP3'
+        is_visible_on_public_pages:
+          type: boolean
+          example: true
+        is_default:
+          type: boolean
+          example: false
+        is_public:
+          type: boolean
+          example: false
+        fallback_mount:
+          type: string
+          example: /error.mp3
+        relay_url:
+          type: string
+          example: 'http://radio.example.com:8000/radio.mp3'
+        authhash:
+          type: string
+          example: ''
+        enable_autodj:
+          type: boolean
+          example: true
+        autodj_format:
+          type: string
+          example: mp3
+        autodj_bitrate:
+          type: integer
+          example: 128
+        custom_listen_url:
+          type: string
+          example: 'https://custom-listen-url.example.com/stream.mp3'
+        frontend_config:
+          type: string
+          items: {  }
+      type: object
+    StationRemote:
+      properties:
+        id:
+          type: integer
+          example: 1
+        display_name:
+          type: string
+          example: '128kbps MP3'
+        is_visible_on_public_pages:
+          type: boolean
+          example: true
+        type:
+          type: string
+          example: icecast
+        enable_autodj:
+          type: boolean
+          example: false
+        autodj_format:
+          type: string
+          example: mp3
+        autodj_bitrate:
+          type: integer
+          example: 128
+        custom_listen_url:
+          type: string
+          example: 'https://custom-listen-url.example.com/stream.mp3'
+        url:
+          type: string
+          example: 'http://custom-url.example.com'
+        mount:
+          type: string
+          example: /stream.mp3
+        source_port:
+          type: integer
+          example: 8000
+        source_mount:
+          type: string
+          example: /
+        source_username:
+          type: string
+          example: source
+        source_password:
+          type: string
+          example: password
+        is_public:
+          type: boolean
+          example: false
+      type: object
     StationStreamer:
       properties:
         id:
@@ -1623,7 +1982,7 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1554636757
+          example: 1554805409
       type: object
     User:
       properties:
@@ -1653,10 +2012,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1554636757
+          example: 1554805409
         updated_at:
           type: integer
-          example: 1554636757
+          example: 1554805409
         roles:
           items: {  }
       type: object

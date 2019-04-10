@@ -32,9 +32,9 @@ return [
                         'label' => __('Remote Station Type'),
                         'required' => true,
                         'choices' => [
-                            'shoutcast1' => 'SHOUTcast v1',
-                            'shoutcast2' => 'SHOUTcast v2',
-                            'icecast' => 'Icecast v2.4+',
+                            StationRemote::TYPE_SHOUTCAST1 => 'SHOUTcast v1',
+                            StationRemote::TYPE_SHOUTCAST2 => 'SHOUTcast v2',
+                            StationRemote::TYPE_ICECAST => 'Icecast v2.4+',
                         ],
                     ]
                 ],

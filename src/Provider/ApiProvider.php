@@ -101,6 +101,8 @@ class ApiProvider implements ServiceProviderInterface
             Api\Admin\RolesController::class,
             Api\Admin\SettingsController::class,
             Api\Admin\StationsController::class,
+            Api\Stations\MountsController::class,
+            Api\Stations\RemotesController::class,
             Api\Stations\StreamersController::class,
         ];
 

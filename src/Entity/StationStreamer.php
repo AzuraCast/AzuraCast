@@ -48,7 +48,7 @@ class StationStreamer
      * @ORM\Column(name="streamer_username", type="string", length=50, nullable=false)
      *
      * @OA\Property(example="dj_test")
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @var string
      */
     protected $streamer_username;

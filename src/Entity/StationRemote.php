@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Radio\Adapters;
 use App\Radio\Remote\AbstractRemote;
@@ -10,15 +12,23 @@ use App\Radio\Remote\AbstractRemote;
  * @ORM\Table(name="station_remotes")
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
+ *
+ * @OA\Schema(type="object")
  */
 class StationRemote implements StationMountInterface
 {
+    public const TYPE_SHOUTCAST1 = 'shoutcast1';
+    public const TYPE_SHOUTCAST2 = 'shoutcast2';
+    public const TYPE_ICECAST = 'icecast';
+
     use Traits\TruncateStrings;
 
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
@@ -40,84 +50,127 @@ class StationRemote implements StationMountInterface
 
     /**
      * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="128kbps MP3")
+     *
      * @var string|null
      */
     protected $display_name;
 
     /**
      * @ORM\Column(name="is_visible_on_public_pages", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
      * @var bool
      */
     protected $is_visible_on_public_pages = true;
 
     /**
      * @ORM\Column(name="type", type="string", length=50)
+     *
+     * @OA\Property(example="icecast")
+     * @Assert\Choice(choices={StationRemote::TYPE_ICECAST, StationRemote::TYPE_SHOUTCAST1, StationRemote::TYPE_SHOUTCAST2})
+     *
      * @var string
      */
     protected $type;
 
     /**
      * @ORM\Column(name="enable_autodj", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool
      */
     protected $enable_autodj = false;
 
     /**
      * @ORM\Column(name="autodj_format", type="string", length=10, nullable=true)
+     *
+     * @OA\Property(example="mp3")
+     *
      * @var string|null
      */
     protected $autodj_format;
 
     /**
      * @ORM\Column(name="autodj_bitrate", type="smallint", nullable=true)
+     *
+     * @OA\Property(example=128)
+     *
      * @var int|null
      */
     protected $autodj_bitrate;
 
     /**
      * @ORM\Column(name="custom_listen_url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="https://custom-listen-url.example.com/stream.mp3")
+     *
      * @var string|null
      */
     protected $custom_listen_url;
 
     /**
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="http://custom-url.example.com")
+     *
      * @var string|null
      */
     protected $url;
 
     /**
      * @ORM\Column(name="mount", type="string", length=150, nullable=true)
+     *
+     * @OA\Property(example="/stream.mp3")
+     *
      * @var string|null
      */
     protected $mount;
 
     /**
      * @ORM\Column(name="source_port", type="smallint", nullable=true)
+     *
+     * @OA\Property(example=8000)
+     *
      * @var int|null
      */
     protected $source_port;
 
     /**
      * @ORM\Column(name="source_mount", type="string", length=150, nullable=true)
+     *
+     * @OA\Property(example="/")
+     *
      * @var string|null
      */
     protected $source_mount;
 
     /**
      * @ORM\Column(name="source_username", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="source")
+     *
      * @var string|null
      */
     protected $source_username;
 
     /**
      * @ORM\Column(name="source_password", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="password")
+     *
      * @var string|null
      */
     protected $source_password;
 
     /**
      * @ORM\Column(name="is_public", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool
      */
     protected $is_public = false;

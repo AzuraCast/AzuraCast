@@ -49,14 +49,12 @@ class SongHistoryRepository extends Repository
      * @param Entity\Song $song
      * @param Entity\Station $station
      * @param array $np
-     * @param array $extra_metadata
      * @return Entity\SongHistory
      */
     public function register(
         Entity\Song $song,
         Entity\Station $station,
-        array $np,
-        array $extra_metadata = []): Entity\SongHistory
+        array $np): Entity\SongHistory
     {
         // Pull the most recent history item for this station.
         $last_sh = $this->_em->createQuery(/** @lang DQL */'SELECT sh 
@@ -124,24 +122,6 @@ class SongHistoryRepository extends Repository
         // Processing a new SongHistory item.
         if (!($sh instanceof Entity\SongHistory)) {
             $sh = new Entity\SongHistory($song, $station);
-        }
-
-        // Set extra metadata (supplied by Liquidsoap, for example)
-        if (!empty($extra_metadata['song_id']) && $song->getId() === $extra_metadata['song_id']) {
-            if (!empty($extra_metadata['media_id']) && null === $sh->getMedia()) {
-                $media = $this->_em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
-                if ($media instanceof Entity\StationMedia) {
-                    $sh->setMedia($media);
-                    $sh->setDuration($media->getCalculatedLength());
-                }
-            }
-
-            if (!empty($extra_metadata['playlist_id']) && null === $sh->getPlaylist()) {
-                $playlist = $this->_em->find(Entity\StationPlaylist::class, $extra_metadata['playlist_id']);
-                if ($playlist instanceof Entity\StationPlaylist) {
-                    $sh->setPlaylist($playlist);
-                }
-            }
         }
 
         $sh->setTimestampStart(time());

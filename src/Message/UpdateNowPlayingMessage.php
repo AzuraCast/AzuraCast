@@ -5,12 +5,9 @@ class UpdateNowPlayingMessage extends AbstractDelayedMessage
 {
     public function __construct()
     {
-        $this->delay = self::ONE_SEC;
+        $this->delay = self::ONE_SEC*2;
     }
 
     /** @var int */
     public $station_id;
-
-    /** @var array */
-    public $extra_metadata = [];
 }

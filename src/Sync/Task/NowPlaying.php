@@ -198,14 +198,45 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      */
     public function queueStation(Entity\Station $station, array $extra_metadata = []): void
     {
+        // Stop Now Playing from processing while doing the steps below.
         $station->setNowPlayingTimestamp(time());
         $this->em->persist($station);
         $this->em->flush($station);
 
+        // Process extra metadata sent by Liquidsoap (if it exists).
+        if (!empty($extra_metadata['song_id'])) {
+            $song = $this->song_repo->find($extra_metadata['song_id']);
+
+            if ($song instanceof Entity\Song) {
+                $sh = $this->history_repo->getCuedSong($song, $station);
+                if (!$sh instanceof Entity\SongHistory) {
+                    $sh = new Entity\SongHistory($song, $station);
+                    $sh->setTimestampCued(time());
+                }
+
+                if (!empty($extra_metadata['media_id']) && null === $sh->getMedia()) {
+                    $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
+                    if ($media instanceof Entity\StationMedia) {
+                        $sh->setMedia($media);
+                        $sh->setDuration($media->getCalculatedLength());
+                    }
+                }
+
+                if (!empty($extra_metadata['playlist_id']) && null === $sh->getPlaylist()) {
+                    $playlist = $this->em->find(Entity\StationPlaylist::class, $extra_metadata['playlist_id']);
+                    if ($playlist instanceof Entity\StationPlaylist) {
+                        $sh->setPlaylist($playlist);
+                    }
+                }
+
+                $this->em->persist($sh);
+                $this->em->flush($sh);
+            }
+        }
+
+        // Trigger a delayed Now Playing update.
         $message = new Message\UpdateNowPlayingMessage;
         $message->station_id = $station->getId();
-        $message->extra_metadata = $extra_metadata;
-
         $this->message_queue->produce($message);
     }
 
@@ -221,7 +252,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $station = $this->em->find(Entity\Station::class, $message->station_id);
 
                 if ($station instanceof Entity\Station) {
-                    $this->processStation($station, $message->extra_metadata, true);
+                    $this->processStation($station, true);
                 }
             }
         } finally {
@@ -233,13 +264,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * Generate Structured NowPlaying Data for a given station.
      *
      * @param Entity\Station $station
-     * @param array $extra_metadata
      * @param bool $standalone Whether the request is for this station alone or part of the regular sync process.
      * @return Entity\Api\NowPlaying
      */
     public function processStation(
         Entity\Station $station,
-        array $extra_metadata = [],
         $standalone = false): Entity\Api\NowPlaying
     {
         $this->logger->pushProcessor(function($record) use ($station) {
@@ -295,7 +324,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 /** @var Entity\Song $song_obj */
                 $song_obj = $this->song_repo->find($current_song_hash);
 
-                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw, $extra_metadata);
+                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
                 $np->song_history = $np_old->song_history;
                 $np->playing_next = $np_old->playing_next;
@@ -303,7 +332,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 // SongHistory registration must ALWAYS come before the history/nextsong calls
                 // otherwise they will not have up-to-date database info!
                 $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
-                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw, $extra_metadata);
+                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
                 $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
 

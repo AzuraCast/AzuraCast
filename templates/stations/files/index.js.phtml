@@ -173,7 +173,7 @@ $(function() {
                 return '<div class="is_dir">'+$icon + row.name +'</div>';
             },
             "commands": function(column, row) {
-                return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="'+window.btoa(row.path)+'"><?=__('Select') ?></a>';
+                return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="'+window.btoa(encodeURIComponent(row.path))+'"><?=__('Select') ?></a>';
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function() {
@@ -186,7 +186,7 @@ $(function() {
                 'do': 'move',
                 'files': $files.join('|'),
                 'csrf': CSRF,
-                'directory': window.atob($(this).data('path'))
+                'directory': decodeURIComponent(window.atob($(this).data('path')))
             },function(data){
                 list();
                 $('#mdl-move-file').modal('hide');

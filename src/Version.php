@@ -131,6 +131,22 @@ class Version
     }
 
     /**
+     * Check if the installation has been modified by the user from the release build.
+     *
+     * @return bool
+     */
+    public function isInstallationModified(): bool
+    {
+        // We can't detect if release builds are changed, so always return true.
+        if (!is_dir($this->repo_dir.'/.git')) {
+            return true;
+        }
+
+        $changed_files = $this->_runProcess(['git', 'status', '-s']);
+        return !empty($changed_files);
+    }
+
+    /**
      * Run the specified process and return its output.
      *
      * @param array $proc

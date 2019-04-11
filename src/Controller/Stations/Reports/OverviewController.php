@@ -121,10 +121,16 @@ class OverviewController
         /** @var Entity\Repository\SongRepository $song_repo */
         $song_repo = $this->em->getRepository(Entity\Song::class);
 
+        $get_song_q = $this->em->createQuery(/** @lang DQL */'SELECT s 
+            FROM App\Entity\Song s
+            WHERE s.id = :song_id');
+
         foreach ($song_totals_raw as $total_type => $total_records) {
             foreach ($total_records as $total_record) {
-                $song = $song_repo->findAsArray($total_record['song_id']);
-                $total_record['song'] = $song;
+                $song = $get_song_q->setParameter('song_id', $total_record['song_id'])
+                    ->getArrayResult();
+
+                $total_record['song'] = $song[0];
 
                 $song_totals[$total_type][] = $total_record;
             }

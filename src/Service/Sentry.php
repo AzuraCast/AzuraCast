@@ -133,6 +133,11 @@ class Sentry
             return;
         }
 
+        // Don't send error reports for installations whose code is modified.
+        if ($this->version->isInstallationModified()) {
+            return;
+        }
+
         $e_level = ($e instanceof \Azura\Exception)
             ? $e->getLoggerLevel()
             : Logger::ERROR;

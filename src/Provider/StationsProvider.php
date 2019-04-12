@@ -105,9 +105,11 @@ class StationsProvider implements ServiceProviderInterface
             /** @var Azura\Config $config */
             $config = $di[Azura\Config::class];
 
+            /** @var App\Form\EntityFormManager $form_manager */
+            $form_manager = $di[App\Form\EntityFormManager::class];
+
             return new Stations\RemotesController(
-                $di[EntityManager::class],
-                $config->get('forms/remote')
+                $form_manager->getForm(App\Entity\StationRemote::class, $config->get('forms/remote'))
             );
         };
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Form\EntityForm;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -12,21 +13,21 @@ class RemotesController
     /** @var EntityManager */
     protected $em;
 
+    /** @var EntityForm */
+    protected $form;
+
     /** @var string */
     protected $csrf_namespace = 'stations_remotes';
 
-    /** @var array */
-    protected $form_config;
-
     /**
-     * @param EntityManager $em
-     * @param array $form_config
+     * @param EntityForm $form
+     *
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em, array $form_config)
+    public function __construct(EntityForm $form)
     {
-        $this->em = $em;
-        $this->form_config = $form_config;
+        $this->form = $form;
+        $this->em = $form->getEntityManager();
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface
@@ -42,41 +43,16 @@ class RemotesController
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
+        $this->form->setStation($station);
 
         /** @var \Azura\Doctrine\Repository $remote_repo */
         $remote_repo = $this->em->getRepository(Entity\StationRemote::class);
 
-        $form = new \AzuraForms\Form($this->form_config);
+        $record = (null !== $id)
+            ? $record = $remote_repo->findOneBy(['id' => $id, 'station_id' => $station_id])
+            : null;
 
-        if (!empty($id)) {
-            $record = $remote_repo->findOneBy([
-                'id' => $id,
-                'station_id' => $station_id,
-            ]);
-            $form->populate($remote_repo->toArray($record));
-        } else {
-            $record = null;
-        }
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\StationRemote)) {
-                $record = new Entity\StationRemote($station);
-            }
-
-            $remote_repo->fromArray($record, $data);
-
-            $this->em->persist($record);
-
-            $uow = $this->em->getUnitOfWork();
-            $uow->computeChangeSets();
-            if ($uow->isEntityScheduled($record)) {
-                $station->setNeedsRestart(true);
-                $this->em->persist($station);
-            }
-
-            $this->em->flush();
+        if (false !== $this->form->process($request, $record)) {
             $this->em->refresh($station);
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Remote Relay')) . '</b>', 'green');
@@ -85,7 +61,7 @@ class RemotesController
         }
 
         return $request->getView()->renderToResponse($response, 'stations/remotes/edit', [
-            'form' => $form,
+            'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Remote Relay'))
         ]);
@@ -106,10 +82,7 @@ class RemotesController
             $this->em->remove($record);
         }
 
-        $station->setNeedsRestart(true);
-        $this->em->persist($station);
         $this->em->flush();
-
         $this->em->refresh($station);
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Remote Relay')) . '</b>', 'green');

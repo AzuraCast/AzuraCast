@@ -76,14 +76,6 @@ class MountsController
             $mount_repo->fromArray($record, $data);
 
             $this->em->persist($record);
-
-            $uow = $this->em->getUnitOfWork();
-            $uow->computeChangeSets();
-            if ($uow->isEntityScheduled($record)) {
-                $station->setNeedsRestart(true);
-                $this->em->persist($station);
-            }
-
             $this->em->flush();
 
             // Unset all other records as default if this one is set.
@@ -124,8 +116,6 @@ class MountsController
             $this->em->remove($record);
         }
 
-        $station->setNeedsRestart(true);
-        $this->em->persist($station);
         $this->em->flush();
 
         $this->em->refresh($station);

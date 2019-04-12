@@ -291,15 +291,6 @@ class PlaylistsController
                 }
             }
 
-            // If using Manual AutoDJ mode, check for changes and flag as needing-restart.
-            $uow = $this->em->getUnitOfWork();
-            $uow->computeChangeSets();
-
-            if ($uow->isEntityScheduled($record)) {
-                $station->setNeedsRestart(true);
-                $this->em->persist($station);
-            }
-
             $this->em->persist($record);
             $this->em->flush();
 
@@ -405,9 +396,6 @@ class PlaylistsController
 
         $record = $this->_getRecord($id, $station_id);
         $this->em->remove($record);
-
-        $station->setNeedsRestart(true);
-        $this->em->persist($station);
         $this->em->flush();
 
         $this->em->refresh($station);

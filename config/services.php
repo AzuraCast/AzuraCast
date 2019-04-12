@@ -141,6 +141,13 @@ return function (\Azura\Container $di)
 
         return $supervisor;
     };
+
+    $di->extend(\Doctrine\ORM\EntityManager::class, function(\Doctrine\ORM\EntityManager $em, \Azura\Container $di) {
+        $event_manager = $em->getEventManager();
+        $event_manager->addEventSubscriber(new \App\Doctrine\Event\StationRequiresRestart);
+
+        return $em;
+    });
     
     $di->extend(\Azura\View::class, function(\Azura\View $view, \Azura\Container $di) {
         $view->registerFunction('mailto', function ($address, $link_text = null) {

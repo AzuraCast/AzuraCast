@@ -76,6 +76,13 @@ class StationCloneForm extends StationForm
                 unset($new_record_data[$unset_value]);
             }
 
+            // Unset ports.
+            unset(
+                $new_record_data['frontend_config']['port'],
+                $new_record_data['backend_config']['dj_port'],
+                $new_record_data['backend_config']['telnet_port']
+            );
+
             if ('share' === $data['clone_media']) {
                 $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();
             } else {

@@ -851,6 +851,139 @@ paths:
       security:
         -
           api_key: []
+  '/station/{station_id}/playlists':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      description: 'List all current playlists.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationPlaylist'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Create a new playlist.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationPlaylist'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationPlaylist'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/playlist/{id}':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Retrieve details for a single playlist.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationPlaylist'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Update details of a single playlist.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationPlaylist'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Delete a single playlist relay.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   '/station/{station_id}/queue':
     get:
       tags:
@@ -988,7 +1121,7 @@ paths:
         -
           name: id
           in: path
-          description: 'Streamer ID'
+          description: 'Remote Relay ID'
           required: true
           schema:
             type: integer
@@ -1015,7 +1148,7 @@ paths:
         -
           name: id
           in: path
-          description: 'Streamer ID'
+          description: 'Remote Relay ID'
           required: true
           schema:
             type: integer
@@ -1047,7 +1180,7 @@ paths:
         -
           name: id
           in: path
-          description: 'StationRemote ID'
+          description: 'Remote Relay ID'
           required: true
           schema:
             type: integer
@@ -1438,7 +1571,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1554805409
+          example: 1555103144
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1534,7 +1667,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1554805409
+              example: 1555103144
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1589,7 +1722,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1554805409
+          example: 1555103144
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -1720,7 +1853,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1554805409
+          example: 1555103144
       type: object
     Api_Time:
       properties:
@@ -1912,6 +2045,85 @@ components:
           type: string
           items: {  }
       type: object
+    StationPlaylist:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Test Playlist'
+        type:
+          type: string
+          example: default
+        source:
+          type: string
+          example: songs
+        order:
+          type: string
+          example: shuffle
+        remote_url:
+          type: string
+          example: 'http://remote-url.example.com/stream.mp3'
+        remote_type:
+          type: string
+          example: stream
+        remote_buffer:
+          description: 'The total time (in seconds) that Liquidsoap should buffer remote URL streams.'
+          type: integer
+          example: 0
+        is_enabled:
+          type: boolean
+          example: true
+        is_jingle:
+          description: 'If yes, do not send jingle metadata to AutoDJ or trigger web hooks.'
+          type: boolean
+          example: false
+        play_per_songs:
+          type: integer
+          example: 5
+        play_per_minutes:
+          type: integer
+          example: 120
+        play_per_hour_minute:
+          type: integer
+          example: 15
+        schedule_start_time:
+          type: integer
+          example: 900
+        schedule_end_time:
+          type: integer
+          example: 2200
+        schedule_days:
+          type: string
+          example: '0,1,2,3'
+        play_once_time:
+          type: integer
+          example: 1500
+        play_once_days:
+          type: string
+          example: '0,1,2,3'
+        weight:
+          type: integer
+          example: 3
+        include_in_requests:
+          type: boolean
+          example: true
+        include_in_automation:
+          type: boolean
+          example: false
+        interrupt_other_songs:
+          type: boolean
+          example: false
+        loop_playlist_once:
+          description: 'Whether to loop the playlist at the end of its playback.'
+          type: boolean
+          example: false
+        play_single_track:
+          description: 'Whether to only play a single track from the specified playlist when scheduled.'
+          type: boolean
+          example: false
+      type: object
     StationRemote:
       properties:
         id:
@@ -1982,7 +2194,7 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1554805409
+          example: 1555103144
       type: object
     User:
       properties:
@@ -2012,10 +2224,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1554805409
+          example: 1555103144
         updated_at:
           type: integer
-          example: 1554805409
+          example: 1555103144
         roles:
           items: {  }
       type: object

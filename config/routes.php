@@ -200,42 +200,6 @@ return function(App $app)
         $this->group('/admin', function() {
             /** @var App $this */
 
-            $this->group('', function() {
-                /** @var App $this */
-                $this->get('/custom_fields', Controller\Api\Admin\CustomFieldsController::class.':listAction')
-                    ->setName('api:admin:custom_fields');
-                $this->post('/custom_fields', Controller\Api\Admin\CustomFieldsController::class.':createAction');
-
-                $this->get('/custom_field/{id}', Controller\Api\Admin\CustomFieldsController::class.':getAction')
-                    ->setName('api:admin:custom_field');
-                $this->put('/custom_field/{id}', Controller\Api\Admin\CustomFieldsController::class.':editAction');
-                $this->delete('/custom_field/{id}', Controller\Api\Admin\CustomFieldsController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::GLOBAL_CUSTOM_FIELDS]);
-
-            $this->group('', function() {
-                /** @var App $this */
-                $this->get('/users', Controller\Api\Admin\UsersController::class.':listAction')
-                    ->setName('api:admin:users');
-                $this->post('/users', Controller\Api\Admin\UsersController::class.':createAction');
-
-                $this->get('/user/{id}', Controller\Api\Admin\UsersController::class.':getAction')
-                    ->setName('api:admin:user');
-                $this->put('/user/{id}', Controller\Api\Admin\UsersController::class.':editAction');
-                $this->delete('/user/{id}', Controller\Api\Admin\UsersController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::GLOBAL_USERS]);
-
-            $this->group('', function() {
-                /** @var App $this */
-                $this->get('/roles', Controller\Api\Admin\RolesController::class.':listAction')
-                    ->setName('api:admin:roles');
-                $this->post('/roles', Controller\Api\Admin\RolesController::class.':createAction');
-
-                $this->get('/role/{id}', Controller\Api\Admin\RolesController::class.':getAction')
-                    ->setName('api:admin:role');
-                $this->put('/role/{id}', Controller\Api\Admin\RolesController::class.':editAction');
-                $this->delete('/role/{id}', Controller\Api\Admin\RolesController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
-
             $this->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                 ->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
 
@@ -247,18 +211,26 @@ return function(App $app)
                 $this->put('/settings', Controller\Api\Admin\SettingsController::class.':updateAction');
             })->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
 
-            $this->group('', function() {
-                /** @var App $this */
-                $this->get('/stations', Controller\Api\Admin\StationsController::class.':listAction')
-                    ->setName('api:admin:stations');
-                $this->post('/stations', Controller\Api\Admin\StationsController::class.':createAction');
+            $admin_api_endpoints = [
+                ['custom_field', 'custom_fields', Controller\Api\Admin\CustomFieldsController::class, Acl::GLOBAL_CUSTOM_FIELDS],
+                ['role', 'roles', Controller\Api\Admin\RolesController::class, Acl::GLOBAL_PERMISSIONS],
+                ['station', 'stations', Controller\Api\Admin\StationsController::class, Acl::GLOBAL_STATIONS],
+                ['user', 'users', Controller\Api\Admin\UsersController::class, Acl::GLOBAL_USERS],
+            ];
 
-                $this->get('/station/{id}', Controller\Api\Admin\StationsController::class.':getAction')
-                    ->setName('api:admin:station');
-                $this->put('/station/{id}', Controller\Api\Admin\StationsController::class.':editAction');
-                $this->delete('/station/{id}', Controller\Api\Admin\StationsController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::GLOBAL_STATIONS]);
+            foreach($admin_api_endpoints as [$singular, $plural, $class, $permission]) {
+                $this->group('', function() use ($singular, $plural, $class) {
+                    /** @var App $this */
+                    $this->get('/'.$plural, $class.':listAction')
+                        ->setName('api:admin:'.$plural);
+                    $this->post('/'.$plural, $class.':createAction');
 
+                    $this->get('/'.$singular.'/{id}', $class.':getAction')
+                        ->setName('api:admin:'.$singular);
+                    $this->put('/'.$singular.'/{id}', $class.':editAction');
+                    $this->delete('/'.$singular.'/{id}', $class.':deleteAction');
+                })->add([Middleware\Permissions::class, $permission]);
+            }
         });
 
         $this->group('/station/{station}', function () {
@@ -301,41 +273,26 @@ return function(App $app)
 
             $this->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\MediaController::class.':artAction');
 
-            $this->group('', function() {
-                /** @var App $this */
-                $this->get('/mounts', Controller\Api\Stations\MountsController::class.':listAction')
-                    ->setName('api:stations:mounts');
-                $this->post('/mounts', Controller\Api\Stations\MountsController::class.':createAction');
+            $station_api_endpoints = [
+                ['mount', 'mounts', Controller\Api\Stations\MountsController::class, Acl::STATION_MOUNTS],
+                ['playlist', 'playlists', Controller\Api\Stations\PlaylistsController::class, Acl::STATION_MEDIA],
+                ['remote', 'remotes', Controller\Api\Stations\RemotesController::class, Acl::STATION_REMOTES],
+                ['streamer', 'streamers', Controller\Api\Stations\StreamersController::class, Acl::STATION_STREAMERS],
+            ];
 
-                $this->get('/mount/{id}', Controller\Api\Stations\MountsController::class.':getAction')
-                    ->setName('api:stations:mount');
-                $this->put('/mount/{id}', Controller\Api\Stations\MountsController::class.':editAction');
-                $this->delete('/mount/{id}', Controller\Api\Stations\MountsController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::STATION_MOUNTS, true]);
+            foreach($station_api_endpoints as [$singular, $plural, $class, $permission]) {
+                $this->group('', function() use ($singular, $plural, $class) {
+                    /** @var App $this */
+                    $this->get('/'.$plural, $class.':listAction')
+                        ->setName('api:stations:'.$plural);
+                    $this->post('/'.$plural, $class.':createAction');
 
-            $this->group('', function() {
-                /** @var App $this */
-                $this->get('/remotes', Controller\Api\Stations\RemotesController::class.':listAction')
-                    ->setName('api:stations:remotes');
-                $this->post('/remotes', Controller\Api\Stations\RemotesController::class.':createAction');
-
-                $this->get('/remote/{id}', Controller\Api\Stations\RemotesController::class.':getAction')
-                    ->setName('api:stations:remote');
-                $this->put('/remote/{id}', Controller\Api\Stations\RemotesController::class.':editAction');
-                $this->delete('/remote/{id}', Controller\Api\Stations\RemotesController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::STATION_REMOTES, true]);
-
-            $this->group('', function() {
-                /** @var App $this */
-                $this->get('/streamers', Controller\Api\Stations\StreamersController::class.':listAction')
-                    ->setName('api:stations:streamers');
-                $this->post('/streamers', Controller\Api\Stations\StreamersController::class.':createAction');
-
-                $this->get('/streamer/{id}', Controller\Api\Stations\StreamersController::class.':getAction')
-                    ->setName('api:stations:streamer');
-                $this->put('/streamer/{id}', Controller\Api\Stations\StreamersController::class.':editAction');
-                $this->delete('/streamer/{id}', Controller\Api\Stations\StreamersController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::STATION_STREAMERS, true]);
+                    $this->get('/'.$singular.'/{id}', $class.':getAction')
+                        ->setName('api:stations:'.$singular);
+                    $this->put('/'.$singular.'/{id}', $class.':editAction');
+                    $this->delete('/'.$singular.'/{id}', $class.':deleteAction');
+                })->add([Middleware\Permissions::class, $permission, true]);
+            }
 
             $this->get('/status', Controller\Api\Stations\ServicesController::class.':statusAction')
                 ->setName('api:stations:status')

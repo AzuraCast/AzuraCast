@@ -89,16 +89,7 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\PlaylistsController::class] = function($di) {
-            /** @var Azura\Config $config */
-            $config = $di[Azura\Config::class];
-
-            return new Stations\PlaylistsController(
-                $di[EntityManager::class],
-                $di['router'],
-                $config->get('forms/playlist', [
-                    'customization' => $di[App\Customization::class]
-                ])
-            );
+            return new Stations\PlaylistsController($di[App\Form\PlaylistForm::class]);
         };
 
         $di[Stations\RemotesController::class] = function($di) {

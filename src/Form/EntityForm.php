@@ -12,7 +12,11 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * A generic class that handles binding an entity to a
+ * A generic class that handles binding an entity to an AzuraForms
+ * instance and moving the data back and forth.
+ *
+ * This class exists primarily to facilitate the switch to Symfony's
+ * Serializer and Validator classes, to allow for API parity.
  */
 class EntityForm extends \AzuraForms\Form
 {
@@ -30,6 +34,9 @@ class EntityForm extends \AzuraForms\Form
 
     /** @var array The default context sent to form normalization/denormalization functions. */
     protected $defaultContext = [];
+
+    /** @var Station|null */
+    protected $station;
 
     /**
      * @param EntityManager $em
@@ -131,6 +138,12 @@ class EntityForm extends \AzuraForms\Form
 
             $this->em->persist($record);
             $this->em->flush($record);
+
+            // Intentionally refresh the station entity in case it didn't refresh elsewhere.
+            if ($this->station instanceof Station && APP_TESTING_MODE) {
+                $this->em->refresh($this->station);
+            }
+
             return $record;
         }
 
@@ -210,6 +223,8 @@ class EntityForm extends \AzuraForms\Form
      */
     public function setStation(Station $station): void
     {
+        $this->station = $station;
+
         $this->defaultContext[ObjectNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS] = [
             $this->entityClass => [
                 'station' => $station,

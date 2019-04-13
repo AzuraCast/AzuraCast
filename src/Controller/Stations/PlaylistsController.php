@@ -1,29 +1,24 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Radio\PlaylistParser;
+use App\Form\EntityForm;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Http\UploadedFile;
 use App\Http\Request;
 use App\Http\Response;
-use App\Http\Router;
 
 class PlaylistsController
 {
     /** @var EntityManager */
     protected $em;
 
-    /** @var Router */
-    protected $router;
-
     /** @var string */
     protected $csrf_namespace = 'stations_playlists';
 
-    /** @var array */
-    protected $form_config;
+    /** @var EntityForm */
+    protected $form;
 
     /** @var \Azura\Doctrine\Repository */
     protected $playlist_repo;
@@ -32,16 +27,14 @@ class PlaylistsController
     protected $playlist_media_repo;
 
     /**
-     * @param EntityManager $em
-     * @param Router $router
-     * @param array $form_config
+     * @param EntityForm $form
+     *
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em, Router $router, array $form_config)
+    public function __construct(EntityForm $form)
     {
-        $this->em = $em;
-        $this->router = $router;
-        $this->form_config = $form_config;
+        $this->form = $form;
+        $this->em = $form->getEntityManager();
 
         $this->playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
         $this->playlist_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
@@ -90,7 +83,7 @@ class PlaylistsController
             'playlists' => $playlists,
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'schedule_now' => Chronos::now()->toIso8601String(),
-            'schedule_url' => $this->router->named('stations:playlists:schedule', ['station' => $station_id]),
+            'schedule_url' => $request->getRouter()->named('stations:playlists:schedule', ['station' => $station_id]),
         ]);
     }
 
@@ -152,7 +145,7 @@ class PlaylistsController
                     'allDay' => $playlist_start->eq($playlist_end),
                     'start' => $playlist_start->toIso8601String(),
                     'end' => $playlist_end->toIso8601String(),
-                    'url' => (string)$this->router->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
+                    'url' => (string)$request->getRouter()->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
                 ];
             }
 
@@ -236,13 +229,7 @@ class PlaylistsController
 
         $record->setIsEnabled($new_value);
         $this->em->persist($record);
-
-        $station = $request->getStation();
-        $station->setNeedsRestart(true);
-        $this->em->persist($station);
-
         $this->em->flush();
-        $this->em->refresh($station);
 
         $flash_message = ($new_value)
             ? __('Playlist enabled.')
@@ -258,134 +245,21 @@ class PlaylistsController
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
+        $this->form->setStation($station);
 
-        $form = new \AzuraForms\Form($this->form_config);
+        $record = (null !== $id)
+            ? $this->_getRecord($id, $station_id)
+            : null;
 
-        if (!empty($id)) {
-            $record = $this->_getRecord($id, $station_id);
-            $data = $this->playlist_repo->toArray($record);
-            $form->populate($data);
-        } else {
-            $record = null;
-        }
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\StationPlaylist)) {
-                $record = new Entity\StationPlaylist($station);
-            }
-
-            $this->playlist_repo->fromArray($record, $data);
-
-            // Handle importing a playlist file, if necessary.
-            $files = $request->getUploadedFiles();
-
-            /** @var UploadedFile $import_file */
-            $import_file = $files['import'];
-            if ($import_file->getError() == UPLOAD_ERR_OK) {
-                $matches = $this->_importPlaylist($record, $import_file, $station_id);
-
-                if (is_int($matches)) {
-                    $request->getSession()->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
-                }
-            }
-
-            $this->em->persist($record);
-            $this->em->flush();
-
-            // Reshuffle "shuffled" playlists and clear cache.
-            $this->playlist_media_repo->reshuffleMedia($record);
-            $this->playlist_media_repo->clearMediaQueue($record->getId());
-
-            $this->em->flush();
-
-            $this->em->refresh($station);
-
+        if (false !== ($result = $this->form->process($request, $record))) {
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
-
             return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/edit', [
-            'form' => $form,
+            'form' => $this->form,
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Playlist'))
         ]);
-    }
-
-    protected function _importPlaylist(
-        Entity\StationPlaylist $playlist,
-        UploadedFile $playlist_file,
-        $station_id
-    )
-    {
-        $playlist_raw = (string)$playlist_file->getStream();
-        if (empty($playlist_raw)) {
-            return false;
-        }
-
-        $paths = PlaylistParser::getSongs($playlist_raw);
-
-        if (empty($paths)) {
-            return false;
-        }
-
-        // Assemble list of station media to match against.
-        $media_lookup = [];
-
-        $media_info_raw = $this->em->createQuery(/** @lang DQL */'SELECT sm.id, sm.path 
-            FROM App\Entity\StationMedia sm 
-            WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $station_id)
-            ->getArrayResult();
-
-        foreach($media_info_raw as $row) {
-            $path_hash = md5($row['path']);
-            $media_lookup[$path_hash] = $row['id'];
-        }
-
-        // Run all paths against the lookup list of hashes.
-        $matches = [];
-
-        foreach($paths as $path_raw) {
-            // De-Windows paths (if applicable)
-            $path_raw = str_replace('\\', '/', $path_raw);
-
-            // Work backwards from the basename to try to find matches.
-            $path_parts = explode('/', $path_raw);
-            for($i = 1; $i <= count($path_parts); $i++) {
-                $path_attempt = implode('/', array_slice($path_parts, 0-$i));
-                $path_hash = md5($path_attempt);
-
-                if (isset($media_lookup[$path_hash])) {
-                    $matches[] = $media_lookup[$path_hash];
-                }
-            }
-        }
-
-        // Assign all matched media to the playlist.
-        if (!empty($matches)) {
-            $matched_media = $this->em->createQuery(/** @lang DQL */'SELECT sm 
-                FROM App\Entity\StationMedia sm
-                WHERE sm.station_id = :station_id AND sm.id IN (:matched_ids)')
-                ->setParameter('station_id', $station_id)
-                ->setParameter('matched_ids', $matches)
-                ->execute();
-
-            $weight = $this->playlist_media_repo->getHighestSongWeight($playlist);
-
-            foreach($matched_media as $media) {
-                $weight++;
-
-                /** @var Entity\StationMedia $media */
-                $this->playlist_media_repo->addMediaToPlaylist($media, $playlist, $weight);
-            }
-
-            $this->em->flush();
-            $this->playlist_media_repo->reshuffleMedia($playlist);
-        }
-
-        return count($matches);
     }
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface

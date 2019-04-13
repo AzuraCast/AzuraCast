@@ -4,6 +4,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Cake\Chronos\Chronos;
 use DateTime;
@@ -12,6 +14,8 @@ use DateTime;
  * @ORM\Table(name="station_playlists")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
+ *
+ * @OA\Schema(type="object")
  */
 class StationPlaylist
 {
@@ -42,6 +46,8 @@ class StationPlaylist
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @OA\Property(example=1)
      * @var int
      */
     protected $id;
@@ -63,138 +69,212 @@ class StationPlaylist
 
     /**
      * @ORM\Column(name="name", type="string", length=200)
+     *
+     * @Assert\NotBlank()
+     * @OA\Property(example="Test Playlist")
+     *
      * @var string
      */
     protected $name;
 
     /**
      * @ORM\Column(name="type", type="string", length=50)
+     *
+     * @Assert\Choice(choices={"default", "scheduled", "once_per_x_songs", "once_per_x_minutes", "once_per_hour", "once_per_day", "custom"})
+     * @OA\Property(example="default")
+     *
      * @var string
      */
     protected $type = self::TYPE_DEFAULT;
 
     /**
      * @ORM\Column(name="source", type="string", length=50)
+     *
+     * @Assert\Choice(choices={"songs", "remote_url"})
+     * @OA\Property(example="songs")
+     *
      * @var string
      */
     protected $source = self::SOURCE_SONGS;
 
     /**
      * @ORM\Column(name="playback_order", type="string", length=50)
+     *
+     * @Assert\Choice(choices={"random", "shuffle", "sequential"})
+     * @OA\Property(example="shuffle")
+     *
      * @var string
      */
     protected $order = self::ORDER_SHUFFLE;
 
     /**
      * @ORM\Column(name="remote_url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="http://remote-url.example.com/stream.mp3")
+     *
      * @var string|null
      */
     protected $remote_url;
 
     /**
      * @ORM\Column(name="remote_type", type="string", length=25, nullable=true)
+     *
+     * @Assert\Choice(choices={"stream", "playlist"})
+     * @OA\Property(example="stream")
+     *
      * @var string|null
      */
     protected $remote_type = self::REMOTE_TYPE_STREAM;
 
     /**
      * @ORM\Column(name="remote_timeout", type="smallint")
+     *
+     * @OA\Property(example=0)
+     *
      * @var int The total time (in seconds) that Liquidsoap should buffer remote URL streams.
      */
     protected $remote_buffer = 0;
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
      * @var bool
      */
     protected $is_enabled = true;
 
     /**
      * @ORM\Column(name="is_jingle", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool If yes, do not send jingle metadata to AutoDJ or trigger web hooks.
      */
     protected $is_jingle = false;
 
     /**
      * @ORM\Column(name="play_per_songs", type="smallint")
+     *
+     * @OA\Property(example=5)
+     *
      * @var int
      */
     protected $play_per_songs = 0;
 
     /**
      * @ORM\Column(name="play_per_minutes", type="smallint")
+     *
+     * @OA\Property(example=120)
+     *
      * @var int
      */
     protected $play_per_minutes = 0;
 
     /**
      * @ORM\Column(name="play_per_hour_minute", type="smallint")
+     *
+     * @OA\Property(example=15)
+     *
      * @var int
      */
     protected $play_per_hour_minute = 0;
 
     /**
      * @ORM\Column(name="schedule_start_time", type="smallint")
+     *
+     * @OA\Property(example=900)
+     *
      * @var int
      */
     protected $schedule_start_time = 0;
 
     /**
      * @ORM\Column(name="schedule_end_time", type="smallint")
+     *
+     * @OA\Property(example=2200)
+     *
      * @var int
      */
     protected $schedule_end_time = 0;
 
     /**
      * @ORM\Column(name="schedule_days", type="string", length=50, nullable=true)
+     *
+     * @OA\Property(example="0,1,2,3")
+     *
      * @var string
      */
     protected $schedule_days;
 
     /**
      * @ORM\Column(name="play_once_time", type="smallint")
+     *
+     * @OA\Property(example=1500)
+     *
      * @var int
      */
     protected $play_once_time = 0;
 
     /**
      * @ORM\Column(name="play_once_days", type="string", length=50, nullable=true)
+     *
+     * @OA\Property(example="0,1,2,3")
+     *
      * @var string
      */
     protected $play_once_days;
 
     /**
      * @ORM\Column(name="weight", type="smallint")
+     *
+     * @OA\Property(example=3)
+     *
      * @var int
      */
     protected $weight = self::DEFAULT_WEIGHT;
 
     /**
      * @ORM\Column(name="include_in_requests", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
      * @var bool
      */
     protected $include_in_requests = true;
 
     /**
      * @ORM\Column(name="include_in_automation", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool
      */
     protected $include_in_automation = false;
 
     /**
      * @ORM\Column(name="interrupt_other_songs", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool
      */
     protected $interrupt_other_songs = false;
 
     /**
      * @ORM\Column(name="loop_playlist_once", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool Whether to loop the playlist at the end of its playback.
      */
     protected $loop_playlist_once = false;
 
     /**
      * @ORM\Column(name="play_single_track", type="boolean")
+     *
+     * @OA\Property(example=false)
+     *
      * @var bool Whether to only play a single track from the specified playlist when scheduled.
      */
     protected $play_single_track = false;

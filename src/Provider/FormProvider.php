@@ -33,6 +33,20 @@ class FormProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Form\PlaylistForm::class] = function($di) {
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
+
+            return new Form\PlaylistForm(
+                $di[EntityManager::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class],
+                $config->get('forms/playlist', [
+                    'customization' => $di[\App\Customization::class]
+                ])
+            );
+        };
+
         $di[Form\StationForm::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];
@@ -85,6 +99,7 @@ class FormProvider implements ServiceProviderInterface
                 Entity\Station::class   => Form\StationForm::class,
                 Entity\User::class      => Form\UserForm::class,
                 Entity\RolePermission::class => Form\PermissionsForm::class,
+                Entity\StationPlaylist::class => Form\PlaylistForm::class,
             ];
 
             return new Form\EntityFormManager(

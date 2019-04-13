@@ -9,7 +9,7 @@ use Slim\Http\UploadedFile;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PlaylistForm extends EntityForm
+class StationPlaylistForm extends EntityForm
 {
     /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected $playlist_media_repo;

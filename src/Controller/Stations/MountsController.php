@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Radio\Frontend\AbstractFrontend;
+use App\Form\EntityForm;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -16,18 +16,18 @@ class MountsController
     /** @var string */
     protected $csrf_namespace = 'stations_mounts';
 
-    /** @var array */
-    protected $mount_form_configs;
+    /** @var EntityForm */
+    protected $form;
 
     /**
-     * @param EntityManager $em
-     * @param array $mount_form_configs
+     * @param EntityForm $form
+     *
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em, array $mount_form_configs)
+    public function __construct(EntityForm $form)
     {
-        $this->em = $em;
-        $this->mount_form_configs = $mount_form_configs;
+        $this->form = $form;
+        $this->em = $form->getEntityManager();
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface
@@ -49,44 +49,16 @@ class MountsController
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         $station = $request->getStation();
+        $this->form->setStation($station);
 
         /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
 
-        $form_config = $this->mount_form_configs[$station->getFrontendType()];
-        $form = new \AzuraForms\Form($form_config);
+        $record = (null !== $id)
+            ? $mount_repo->findOneBy(['id' => $id, 'station_id' => $station_id])
+            : null;
 
-        if (!empty($id)) {
-            $record = $mount_repo->findOneBy([
-                'id' => $id,
-                'station_id' => $station_id,
-            ]);
-            $form->populate($mount_repo->toArray($record));
-        } else {
-            $record = null;
-        }
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\StationMount)) {
-                $record = new Entity\StationMount($station);
-            }
-
-            $mount_repo->fromArray($record, $data);
-
-            $this->em->persist($record);
-            $this->em->flush();
-
-            // Unset all other records as default if this one is set.
-            if ($record->getIsDefault()) {
-                $this->em->createQuery(/** @lang DQL */'UPDATE App\Entity\StationMount sm SET sm.is_default = 0
-                    WHERE sm.station_id = :station_id AND sm.id != :new_default_id')
-                    ->setParameter('station_id', $station->getId())
-                    ->setParameter('new_default_id', $record->getId())
-                    ->execute();
-            }
-
+        if (false !== $this->form->process($request, $record)) {
             $this->em->refresh($station);
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
@@ -95,7 +67,7 @@ class MountsController
         }
 
         return $request->getView()->renderToResponse($response, 'stations/mounts/edit', [
-            'form' => $form,
+            'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Mount Point'))
         ]);

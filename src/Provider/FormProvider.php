@@ -3,6 +3,7 @@ namespace App\Provider;
 
 use App\Form;
 use App\Entity;
+use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
@@ -29,20 +30,6 @@ class FormProvider implements ServiceProviderInterface
                 $di[ValidatorInterface::class],
                 $config->get('forms/role', [
                     'all_stations' => $stations_repo->fetchArray(),
-                ])
-            );
-        };
-
-        $di[Form\PlaylistForm::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
-
-            return new Form\PlaylistForm(
-                $di[EntityManager::class],
-                $di[Serializer::class],
-                $di[ValidatorInterface::class],
-                $config->get('forms/playlist', [
-                    'customization' => $di[\App\Customization::class]
                 ])
             );
         };
@@ -74,6 +61,37 @@ class FormProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Form\StationMountForm::class] = function($di) {
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
+
+            return new Form\StationMountForm(
+                $di[EntityManager::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class],
+                [],
+                [],
+                [
+                    Adapters::FRONTEND_ICECAST => $config->get('forms/mount/icecast'),
+                    Adapters::FRONTEND_SHOUTCAST => $config->get('forms/mount/shoutcast2'),
+                ]
+            );
+        };
+
+        $di[Form\StationPlaylistForm::class] = function($di) {
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
+
+            return new Form\StationPlaylistForm(
+                $di[EntityManager::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class],
+                $config->get('forms/playlist', [
+                    'customization' => $di[\App\Customization::class]
+                ])
+            );
+        };
+
         $di[Form\UserForm::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];
@@ -99,7 +117,8 @@ class FormProvider implements ServiceProviderInterface
                 Entity\Station::class   => Form\StationForm::class,
                 Entity\User::class      => Form\UserForm::class,
                 Entity\RolePermission::class => Form\PermissionsForm::class,
-                Entity\StationPlaylist::class => Form\PlaylistForm::class,
+                Entity\StationPlaylist::class => Form\StationPlaylistForm::class,
+                Entity\StationMount::class => Form\StationMountForm::class,
             ];
 
             return new Form\EntityFormManager(

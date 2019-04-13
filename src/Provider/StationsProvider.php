@@ -76,20 +76,11 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\MountsController::class] = function($di) {
-            /** @var Azura\Config $config */
-            $config = $di[Azura\Config::class];
-
-            return new Stations\MountsController(
-                $di[EntityManager::class],
-                [
-                    'icecast' => $config->get('forms/mount/icecast'),
-                    'shoutcast2' => $config->get('forms/mount/shoutcast2'),
-                ]
-            );
+            return new Stations\MountsController($di[App\Form\StationMountForm::class]);
         };
 
         $di[Stations\PlaylistsController::class] = function($di) {
-            return new Stations\PlaylistsController($di[App\Form\PlaylistForm::class]);
+            return new Stations\PlaylistsController($di[App\Form\StationPlaylistForm::class]);
         };
 
         $di[Stations\RemotesController::class] = function($di) {

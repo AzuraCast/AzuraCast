@@ -23,6 +23,7 @@ $assets->load('jquery-sortable');
                 <th><?=__('Title') ?></th>
                 <th><?=__('Artist') ?></th>
                 <th><?=__('Album') ?></th>
+                <th><?=__('Actions') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -31,6 +32,16 @@ $assets->load('jquery-sortable');
                     <td><big><?=$this->e($row['media']['title']) ?></big></td>
                     <td><?=$this->e($row['media']['artist']) ?></td>
                     <td><?=$this->e($row['media']['album']) ?></td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-sm btn-primary js-order-down" title="<?=__('Down') ?>">
+                                <i class="material-icons">arrow_downward</i>
+                            </button>
+                            <button class="btn btn-sm btn-primary js-order-up" title="<?=__('Up') ?>">
+                                <i class="material-icons">arrow_upward</i>
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -47,16 +58,60 @@ $(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"></tr>',
         onDrop: function ($item, container, _super) {
-            var data = group.sortable("serialize").get();
-            var jsonString = JSON.stringify(data[0], null, ' ');
-
-            $.post('',{
-                csrf: CSRF,
-                order: jsonString
-            },function(data){},'json');
+            saveUpdatedOrder();
 
             _super($item, container);
         }
     });
+
+    $(document).on('click', '.js-order-up', function(e){
+        let currentRow = $(this).closest('tr');
+        let currentRowId = $(currentRow).data('id');
+        let songIds = group.sortable("serialize").get()[0];
+
+        currentRow.prev().before(currentRow);
+
+        songIds.forEach(function(currentSong, index) {
+            if (currentSong.id === currentRowId) {
+                let previousSong = songIds[index-1];
+                songIds[index-1] = currentSong;
+                songIds[index] = previousSong;
+            }
+        });
+
+        group.sort((songIds) => {return songIds});
+
+        saveUpdatedOrder();
+    });
+
+    $(document).on('click', '.js-order-down', function(e){
+        let currentRow = $(this).closest('tr');
+        let currentRowId = $(currentRow).data('id');
+        let songIds = group.sortable("serialize").get()[0];
+
+        currentRow.next().after(currentRow);
+
+        songIds.forEach(function(currentSong, index) {
+            if (currentSong.id === currentRowId) {
+                let nextSong = songIds[index+1];
+                songIds[index+1] = currentSong;
+                songIds[index] = nextSong;
+            }
+        });
+
+        group.sort((songIds) => {return songIds});
+
+        saveUpdatedOrder();
+    });
+
+    function saveUpdatedOrder() {
+        var data = group.sortable("serialize").get();
+        var jsonString = JSON.stringify(data[0], null, ' ');
+
+        $.post('',{
+            csrf: CSRF,
+            order: jsonString
+        },function(data){},'json');
+    }
 });
 </script>

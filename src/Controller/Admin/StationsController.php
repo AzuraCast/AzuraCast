@@ -3,37 +3,28 @@ namespace App\Controller\Admin;
 
 use App\Form;
 use App\Entity;
+use App\Form\EntityForm;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class StationsController
+class StationsController extends AbstractAdminCrudController
 {
-    /** @var Entity\Repository\StationRepository */
-    protected $record_repo;
-
-    /** @var Form\StationForm */
-    protected $station_form;
-
     /** @var Form\StationCloneForm */
     protected $clone_form;
 
-    /** @var string */
-    protected $csrf_namespace = 'admin_stations';
-
     /**
-     * @param Form\StationForm $station_form
+     * @param EntityForm $form
+     * @param EntityForm $clone_form
      *
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(
-        Form\StationForm $station_form,
-        Form\StationCloneForm $clone_form
-    ) {
-        $this->station_form = $station_form;
-        $this->clone_form = $clone_form;
+    public function __construct(EntityForm $form, EntityForm $clone_form)
+    {
+        parent::__construct($form);
 
-        $this->record_repo = $station_form->getEntityRepository();
+        $this->clone_form = $clone_form;
+        $this->csrf_namespace = 'admin_stations';
     }
 
     public function __invoke(Request $request, Response $response): ResponseInterface
@@ -48,27 +39,24 @@ class StationsController
 
     public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
-        $record = (!empty($id))
-            ? $this->record_repo->find((int)$id)
-            : null;
-
-        if (false !== $this->station_form->process($request, $record)) {
+        if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
-            'form' => $this->station_form,
+            'form' => $this->form,
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Station')),
         ]);
     }
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
+        $this->_doDelete($request, $id, $csrf_token);
+
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $record = $this->record_repo->find((int)$id);
-
         if ($record instanceof Entity\Station) {
             $this->record_repo->destroy($record);
         }

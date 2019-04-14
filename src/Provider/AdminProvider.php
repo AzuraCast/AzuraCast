@@ -1,6 +1,8 @@
 <?php
 namespace App\Provider;
 
+use App;
+use Azura;
 use App\Controller\Admin;
 use Doctrine\ORM\EntityManager;
 use Pimple\ServiceProviderInterface;
@@ -12,18 +14,20 @@ class AdminProvider implements ServiceProviderInterface
     public function register(Container $di)
     {
         $di[Admin\ApiController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
+            /** @var Azura\Config $config */
+            $config = $di[Azura\Config::class];
+
+            /** @var App\Form\EntityFormManager $form_manager */
+            $form_manager = $di[App\Form\EntityFormManager::class];
 
             return new Admin\ApiController(
-                $di[EntityManager::class],
-                $config->get('forms/api_key')
+                $form_manager->getForm(App\Entity\ApiKey::class, $config->get('forms/api_key'))
             );
         };
 
         $di[Admin\BrandingController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
+            /** @var Azura\Config $config */
+            $config = $di[Azura\Config::class];
 
             return new Admin\BrandingController(
                 $di[Entity\Repository\SettingsRepository::class],
@@ -32,12 +36,14 @@ class AdminProvider implements ServiceProviderInterface
         };
 
         $di[Admin\CustomFieldsController::class] = function($di) {
-            /** @var \Azura\Config $config */
-            $config = $di[\Azura\Config::class];
+            /** @var Azura\Config $config */
+            $config = $di[Azura\Config::class];
+
+            /** @var App\Form\EntityFormManager $form_manager */
+            $form_manager = $di[App\Form\EntityFormManager::class];
 
             return new Admin\CustomFieldsController(
-                $di[EntityManager::class],
-                $config->get('forms/custom_field')
+                $form_manager->getForm(App\Entity\CustomField::class, $config->get('forms/custom_field'))
             );
         };
 
@@ -57,7 +63,6 @@ class AdminProvider implements ServiceProviderInterface
 
         $di[Admin\PermissionsController::class] = function($di) {
             return new Admin\PermissionsController(
-                $di[EntityManager::class],
                 $di[\App\Form\PermissionsForm::class]
             );
         };
@@ -81,9 +86,8 @@ class AdminProvider implements ServiceProviderInterface
 
         $di[Admin\UsersController::class] = function($di) {
             return new Admin\UsersController(
-                $di[EntityManager::class],
-                $di[\App\Auth::class],
-                $di[\App\Form\UserForm::class]
+                $di[\App\Form\UserForm::class],
+                $di[\App\Auth::class]
             );
         };
 

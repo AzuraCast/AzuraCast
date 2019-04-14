@@ -1,37 +1,23 @@
 <?php
 namespace App\Controller\Admin;
 
-use Doctrine\ORM\EntityManager;
-use App\Entity;
+use App\Form\EntityForm;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class CustomFieldsController
+class CustomFieldsController extends AbstractAdminCrudController
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var array */
-    protected $form_config;
-
-    /** @var \Azura\Doctrine\Repository */
-    protected $record_repo;
-
-    /** @var string */
-    protected $csrf_namespace = 'admin_custom_fields';
-
     /**
-     * @param EntityManager $em
-     * @param array $form_config
+     * @param EntityForm $form
+     *
      * @see \App\Provider\AdminProvider
      */
-    public function __construct(EntityManager $em, array $form_config)
+    public function __construct(EntityForm $form)
     {
-        $this->em = $em;
-        $this->form_config = $form_config;
+        parent::__construct($form);
 
-        $this->record_repo = $this->em->getRepository(Entity\CustomField::class);
+        $this->csrf_namespace = 'admin_custom_fields';
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface
@@ -46,35 +32,13 @@ class CustomFieldsController
 
     public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
-        $form = new \AzuraForms\Form($this->form_config);
-
-        if (!empty($id)) {
-            $record = $this->record_repo->find((int)$id);
-            $record_defaults = $this->record_repo->toArray($record, true, true);
-            $form->populate($record_defaults);
-        } else {
-            $record = null;
-        }
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
-            $data = $form->getValues();
-
-            if (!($record instanceof Entity\CustomField)) {
-                $record = new Entity\CustomField;
-            }
-
-            $this->record_repo->fromArray($record, $data);
-
-            $this->em->persist($record);
-            $this->em->flush();
-
+        if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Custom Field')), 'green');
-
             return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
+            'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Custom Field'))
         ]);
@@ -82,15 +46,7 @@ class CustomFieldsController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
-
-        $user = $this->record_repo->find((int)$id);
-
-        if ($user instanceof Entity\CustomField) {
-            $this->em->remove($user);
-        }
-
-        $this->em->flush();
+        $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Custom Field')) . '</b>', 'green');
 

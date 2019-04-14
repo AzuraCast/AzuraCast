@@ -2,48 +2,32 @@
 namespace App\Controller\Admin;
 
 use App\Auth;
-use App\Form\UserForm;
+use App\Form\EntityForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class UsersController
+class UsersController extends AbstractAdminCrudController
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var Entity\Repository\UserRepository */
-    protected $record_repo;
-
     /** @var Auth */
     protected $auth;
 
-    /** @var UserForm */
-    protected $form;
-
-    /** @var string */
-    protected $csrf_namespace = 'admin_users';
-
     /**
-     * @param EntityManager $em
+     * @param EntityForm $form
      * @param Auth $auth
-     * @param UserForm $form
      *
      * @see \App\Provider\AdminProvider
      */
     public function __construct(
-        EntityManager $em,
-        Auth $auth,
-        UserForm $form)
-    {
-        $this->em = $em;
-        $this->auth = $auth;
-        $this->form = $form;
+        EntityForm $form,
+        Auth $auth
+    ) {
+        parent::__construct($form);
 
-        $this->record_repo = $this->em->getRepository(Entity\User::class);
+        $this->auth = $auth;
+        $this->csrf_namespace = 'admin_users';
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface
@@ -64,12 +48,8 @@ class UsersController
 
     public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
-        $record = (null !== $id)
-            ? $this->record_repo->find((int)$id)
-            : null;
-
         try {
-            if (false !== $this->form->process($request, $record)) {
+            if (false !== $this->_doEdit($request, $id)) {
                 $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')),
                     'green');
 

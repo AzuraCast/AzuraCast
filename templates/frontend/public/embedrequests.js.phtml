@@ -10,7 +10,7 @@ $(function() {
         url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
         formatters: {
             "commands": function(column, row) {
-                return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';
+                return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'" tabindex="0"><?=__('Request') ?></a>';
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function()

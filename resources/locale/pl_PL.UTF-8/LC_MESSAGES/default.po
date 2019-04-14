@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-14 18:20\n"
+"PO-Revision-Date: 2019-04-14 18:40\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -681,7 +681,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Notification/Manager.php:106
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr ""
+msgstr "Obecnie wykorzystujesz wersję %s. Aktualizacja jest wysoce zalecana."
 
 #: /var/azuracast/www/src/Notification/Manager.php:111
 msgid "New AzuraCast Release Version Available"
@@ -689,11 +689,11 @@ msgstr "Dostępna jest nowa wersja oprogramowania AzuraCast"
 
 #: /var/azuracast/www/src/Notification/Manager.php:121
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "Od ostatniej aktualizacji poczyniono następujące ulepszenia:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:124
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "Twoja instalacja jest obecnie %d aktualizacji za najnowszą wersją."
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
@@ -832,19 +832,19 @@ msgstr "Narzędzia dla stron www"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Uruchom stację"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Gotów by rozpocząć nadawanie? Kliknij, aby uruchomić stację."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Zrestartuj, by zastosować zmiany"
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Kliknij, aby zrestartować stację i zastosować zmiany w konfiguracji."
 
 #: /var/azuracast/www/config/menus/station.php:39
 msgid "Public Page"
@@ -875,7 +875,7 @@ msgstr "Konta streamer/DJ"
 
 #: /var/azuracast/www/config/menus/station.php:67
 msgid "Web DJ"
-msgstr ""
+msgstr "Web DJ"
 
 #: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
@@ -884,7 +884,7 @@ msgstr "Zgłoszenia"
 #: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:1
 msgid "Statistics Overview"
-msgstr ""
+msgstr "Przegląd statystyk"
 
 #: /var/azuracast/www/config/menus/station.php:102
 #: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:37
@@ -925,7 +925,7 @@ msgstr "Zduplikowane utwory"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
-msgstr ""
+msgstr "Tantiemy SoundExchange"
 
 #: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
@@ -939,13 +939,13 @@ msgstr "Automatyczne przypisanie"
 #: /var/azuracast/www/templates/stations/logs/index.phtml:3
 #: /var/azuracast/www/templates/admin/logs/index.phtml:3
 msgid "Log Viewer"
-msgstr ""
+msgstr "Podgląd dziennika"
 
 #: /var/azuracast/www/config/menus/station.php:148
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "Następna piosenka w kolejce"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
@@ -963,7 +963,7 @@ msgstr "Własny branding"
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "Dziennik systemowy"
 
 #: /var/azuracast/www/config/menus/admin.php:43
 #: /var/azuracast/www/templates/admin/users/index.phtml:1
@@ -1005,31 +1005,31 @@ msgstr ""
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
-msgstr ""
+msgstr "Post na Twitterze"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Automatycznie wyślij tweeta."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Za każdym razem, gdy zmienia się aktualnie odtwarzany utwór"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Za każdym razem, gdy zwiększa się licznik słuchaczy"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Za każdym razem, gdy zmniejsza się licznik słuchaczy"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "Za każdym razem, gdy nadający/DJ łączy się ze streamem"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "Za każdym razem, gdy nadający/DJ rozłącza się ze streamem"
 
 #: /var/azuracast/www/config/forms/media.php:8
 msgid "Song Metadata"
@@ -1239,7 +1239,7 @@ msgstr "Ciemny"
 #: /var/azuracast/www/config/forms/webhook/discord.php:18
 #: /var/azuracast/www/config/forms/webhook/generic.php:25
 msgid "%s Name"
-msgstr ""
+msgstr "Nazwa %s"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:15
 #: /var/azuracast/www/config/forms/webhook/twitter.php:95
@@ -1464,7 +1464,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/mount/generic.php:23
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:27
 msgid "Display Name"
-msgstr ""
+msgstr "Nazwa wyśwetlana"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
@@ -1473,7 +1473,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/remote.php:21
 #: /var/azuracast/www/config/forms/mount/generic.php:31
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Pokaż na publicznych stronach"
 
 #: /var/azuracast/www/config/forms/remote.php:22
 msgid "Enable to allow listeners to select this relay on this station's public pages."
@@ -1567,7 +1567,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/remote.php:70
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr ""
+msgstr "Nadawaj autopilota na zewnętrzną stację"
 
 #: /var/azuracast/www/config/forms/remote.php:71
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."

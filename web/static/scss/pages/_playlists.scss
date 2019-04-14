@@ -35,4 +35,16 @@ table.sortable {
       border-right: none;
     }
   }
+
+  .btn-group .btn {
+    margin-left: 0;
+  }
+
+  tr:first-child .js-order-up {
+    display: none;
+  }
+
+  tr:last-child .js-order-down {
+    display: none;
+  }
 }

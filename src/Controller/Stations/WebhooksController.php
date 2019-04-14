@@ -35,8 +35,9 @@ class WebhooksController extends AbstractStationCrudController
     ) {
         parent::__construct($form);
 
-        /** @var StationWebhookForm $form */
-        $this->webhook_config = $form->getConfig();
+        if ($form instanceof StationWebhookForm) {
+            $this->webhook_config = $form->getConfig();
+        }
 
         $this->csrf_namespace = 'stations_webhooks';
         $this->dispatcher = $dispatcher;

@@ -58,7 +58,9 @@ class StationsController extends AbstractAdminCrudController
 
         $record = $this->record_repo->find((int)$id);
         if ($record instanceof Entity\Station) {
-            $this->record_repo->destroy($record);
+            /** @var Entity\Repository\StationRepository $record_repo */
+            $record_repo = $this->record_repo;
+            $record_repo->destroy($record);
         }
 
         $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');

@@ -9,10 +9,10 @@ var volume = 55,
 
 function stopAllPlayers()
 {
+    is_playing = false;
+
     player.pause();
     player.src = '';
-
-    is_playing = false;
 
     $('.btn-audio').each(function() {
         var play_icon = $(this).removeClass('playing').find('i');
@@ -41,10 +41,7 @@ function setVolume(new_volume)
 function playAudio(source_url)
 {
     player.src = source_url;
-    player.play().catch(function(error) {
-        console.error(error);
-        stopAllPlayers();
-    });
+    player.play();
 }
 
 function handlePlayClick(audio_source)
@@ -102,8 +99,41 @@ $(function() {
         $('#radio-player-controls').addClass('jp-state-playing');
     });
 
+    $player.on('error', function(e) {
+        switch (e.target.error.code) {
+            case e.target.error.MEDIA_ERR_NETWORK:
+                var original_src = player.src;
+                stopAllPlayers();
+
+                if (original_src !== '') {
+                    console.log('Network interrupted stream. Automatically reocnnecting shortly...');
+                    setTimeout(function() {
+                        handlePlayClick(original_src);
+                    }, 2000);
+                }
+                break;
+
+            case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+            case e.target.error.MEDIA_ERR_ABORTED:
+            case e.target.error.MEDIA_ERR_DECODE:
+            default:
+                console.error(e.target.error.message);
+                break;
+        }
+    });
+
     $player.on('ended', function(e) {
+        var original_src = player.src;
+        var was_playing = is_playing;
+
         stopAllPlayers();
+
+        if (was_playing && original_src !== '') {
+            console.log('Network interrupted stream. Automatically reocnnecting shortly...');
+            setTimeout(function() {
+                handlePlayClick(original_src);
+            }, 5000);
+        }
     });
 
     if ('mediaSession' in navigator) {

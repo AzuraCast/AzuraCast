@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-14 18:40\n"
+"PO-Revision-Date: 2019-04-14 18:50\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1571,7 +1571,7 @@ msgstr "Nadawaj autopilota na zewnętrzną stację"
 
 #: /var/azuracast/www/config/forms/remote.php:71
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr ""
+msgstr "Jeśli włączone, autopilot w tej instalacji będzie automatycznie odtwarzał muzykę na ten punkt montowania."
 
 #: /var/azuracast/www/config/forms/remote.php:82
 #: /var/azuracast/www/config/forms/mount/generic.php:84

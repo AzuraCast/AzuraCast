@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-14 18:50\n"
+"PO-Revision-Date: 2019-04-14 19:30\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1623,12 +1623,12 @@ msgstr ""
 #: /var/azuracast/www/config/forms/remote.php:151
 #: /var/azuracast/www/config/forms/mount/generic.php:62
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "Opublikuj w katalogach \"Yellow Pages\""
 
 #: /var/azuracast/www/config/forms/remote.php:152
 #: /var/azuracast/www/config/forms/mount/generic.php:63
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Włącz rozgłaszanie tego punktu montowania w publicznych katalogach stacji radiowych \"Yellow Pages\"."
 
 #: /var/azuracast/www/config/forms/streamer.php:9
 msgid "Streamer Username"
@@ -1685,7 +1685,7 @@ msgstr "Profil stacji"
 #: /var/azuracast/www/config/forms/station.php:43
 #: /var/azuracast/www/templates/stations/profile/index.phtml:139
 msgid "Genre"
-msgstr ""
+msgstr "Gatunek"
 
 #: /var/azuracast/www/config/forms/station.php:50
 #: /var/azuracast/www/templates/stations/profile/index.phtml:145
@@ -1788,11 +1788,11 @@ msgstr "Ten kod będzie uwzględniany w konfiguracji frontend. Można użyć alb
 
 #: /var/azuracast/www/config/forms/station.php:172
 msgid "Select AutoDJ Service"
-msgstr ""
+msgstr "Wybierz usługę autopilota"
 
 #: /var/azuracast/www/config/forms/station.php:178
 msgid "AutoDJ Service"
-msgstr ""
+msgstr "Usługa autopilota"
 
 #: /var/azuracast/www/config/forms/station.php:179
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
@@ -1800,15 +1800,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:188
 msgid "Configure Liquidsoap"
-msgstr ""
+msgstr "Skonfiguruj Liquidsoap"
 
 #: /var/azuracast/www/config/forms/station.php:196
 msgid "Crossfade Method"
-msgstr ""
+msgstr "Metoda przejścia"
 
 #: /var/azuracast/www/config/forms/station.php:198
 msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
-msgstr ""
+msgstr "Wybierz metodę, jaką chcesz wykorzystywać do tworzenia przejść pomiędzy utworami. Tryb Inteligentny (Smart Mode), dla płynniejszego efektu, sprawdza głośność obydwu utworów, wymaga jednak większego użycia mocy obliczeniowej procesora."
 
 #: /var/azuracast/www/config/forms/station.php:200
 msgid "Smart Mode"
@@ -1939,7 +1939,7 @@ msgstr "Administracja"
 
 #: /var/azuracast/www/config/forms/station.php:385
 msgid "Enable Broadcasting"
-msgstr ""
+msgstr "Włącz nadawanie"
 
 #: /var/azuracast/www/config/forms/station.php:386
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
@@ -1947,7 +1947,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "Storage Quota"
-msgstr ""
+msgstr "Limit przestrzeni dyskowej"
 
 #: /var/azuracast/www/config/forms/station.php:397
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."

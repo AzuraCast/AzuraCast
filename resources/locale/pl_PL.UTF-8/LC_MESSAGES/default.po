@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-05 06:41\n"
+"PO-Revision-Date: 2019-04-14 18:20\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -92,7 +92,7 @@ msgstr "Ustawienia systemu"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "Obecnie jest zainstalowany SHOUTcast w wersji \"%s\"."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:69
@@ -244,7 +244,7 @@ msgstr "Inny użytkownik już istnieje z tym adresem e-mail. Proszę zaktualizow
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "Nie możesz usunąć swojego konta."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:121
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
@@ -370,15 +370,15 @@ msgstr "Edytuj profil"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:148
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "Podany token jest nieprawidłowy. Spróbuj jeszcze raz."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:171
 msgid "Two-factor authentication enabled."
-msgstr ""
+msgstr "Włączono uwierzytelnianie dwuskładnikowe."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:205
 msgid "Two-factor authentication disabled."
-msgstr ""
+msgstr "Wyłączono uwierzytelnianie dwuskładnikowe."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:217
 msgid "%s Listener Range"
@@ -472,7 +472,7 @@ msgstr "Ścieżka \"%s\" nie jest katalogiem."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:204
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Przestrzeń dyskowa dla tej stacji jest zapełniona."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:217
 msgid "Could not move \"%s\" to \"%s\""
@@ -537,11 +537,11 @@ msgstr "Formatuj"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:248
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Playlista włączona."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:249
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Playlista wyłączona."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:290
 msgid "Existing playlist imported."
@@ -629,39 +629,39 @@ msgstr "<b>Nie używaj</b> AutoDJ'a"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s nie może się uruchomić"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."
-msgstr ""
+msgstr "Wskazany element już został uruchomiony."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s nie może się zatrzymać"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
-msgstr ""
+msgstr "Wskazany element nie działa."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
-msgstr ""
+msgstr "%s napotkał błąd"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
-msgstr ""
+msgstr "Sprawdź dziennik, aby uzyskać szczegółowe informacje."
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "Konto połączone z adresem e-mail \"%s\" zostało ustawione jako administrator"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Nie znaleziono konta."
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "This port is currently in use by another station."
-msgstr ""
+msgstr "Ten port jest już wykorzystywany przez inną stację."
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"

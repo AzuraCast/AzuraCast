@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use App\Controller\Api\AbstractCrudController;
+use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
@@ -10,7 +10,7 @@ use Azura\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-abstract class AbstractStationCrudController extends AbstractCrudController
+abstract class AbstractStationApiCrudController extends AbstractApiCrudController
 {
     /**
      * @param Request $request

@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
 /**
  * @see \App\Provider\ApiProvider
  */
-class StreamersController extends AbstractStationCrudController
+class StreamersController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\StationStreamer::class;
     protected $resourceRouteName = 'api:stations:streamer';

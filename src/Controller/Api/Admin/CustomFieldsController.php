@@ -2,16 +2,12 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Controller\Api\AbstractGenericCrudController;
-use App\Http\Request;
-use App\Http\Response;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
 
 /**
  * @see \App\Provider\ApiProvider
  */
-class CustomFieldsController extends AbstractGenericCrudController
+class CustomFieldsController extends AbstractAdminApiCrudController
 {
     protected $entityClass = Entity\CustomField::class;
     protected $resourceRouteName = 'api:admin:custom_field';

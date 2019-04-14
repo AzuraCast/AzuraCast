@@ -10,32 +10,18 @@ use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class StreamersController
+class StreamersController extends AbstractStationCrudController
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var string */
-    protected $csrf_namespace = 'stations_streamers';
-
-    /** @var Entity\Repository\StationStreamerRepository */
-    protected $streamers_repo;
-
-    /** @var EntityForm */
-    protected $form;
-
     /**
-     * StreamersController constructor.
      * @param EntityForm $form
      *
      * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityForm $form)
     {
-        $this->form = $form;
+        parent::__construct($form);
 
-        $this->em = $form->getEntityManager();
-        $this->streamers_repo = $this->em->getRepository(Entity\StationStreamer::class);
+        $this->csrf_namespace = 'stations_streamers';
     }
 
     public function indexAction(Request $request, Response $response, $station_id): ResponseInterface
@@ -80,18 +66,8 @@ class StreamersController
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
-        $station = $request->getStation();
-        $this->form->setStation($station);
-
-        $record = (null !== $id)
-            ? $this->streamers_repo->findOneBy(['id' => $id, 'station_id' => $station_id])
-            : null;
-
-        if (false !== $this->form->process($request, $record)) {
-            $this->em->refresh($station);
-
+        if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
-
             return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
         }
 
@@ -104,25 +80,9 @@ class StreamersController
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
-
-        $station = $request->getStation();
-
-        $record = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy([
-            'id' => $id,
-            'station_id' => $station_id
-        ]);
-
-        if ($record instanceof Entity\StationStreamer) {
-            $this->em->remove($record);
-        }
-
-        $this->em->flush();
-
-        $this->em->refresh($station);
+        $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
-
         return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
     }
 }

@@ -2,23 +2,12 @@
 namespace App\Controller\Stations;
 
 use App\Form\EntityForm;
-use Doctrine\ORM\EntityManager;
-use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class RemotesController
+class RemotesController extends AbstractStationCrudController
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var EntityForm */
-    protected $form;
-
-    /** @var string */
-    protected $csrf_namespace = 'stations_remotes';
-
     /**
      * @param EntityForm $form
      *
@@ -26,8 +15,9 @@ class RemotesController
      */
     public function __construct(EntityForm $form)
     {
-        $this->form = $form;
-        $this->em = $form->getEntityManager();
+        parent::__construct($form);
+
+        $this->csrf_namespace = 'stations_remotes';
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface
@@ -42,21 +32,8 @@ class RemotesController
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
-        $station = $request->getStation();
-        $this->form->setStation($station);
-
-        /** @var \Azura\Doctrine\Repository $remote_repo */
-        $remote_repo = $this->em->getRepository(Entity\StationRemote::class);
-
-        $record = (null !== $id)
-            ? $record = $remote_repo->findOneBy(['id' => $id, 'station_id' => $station_id])
-            : null;
-
-        if (false !== $this->form->process($request, $record)) {
-            $this->em->refresh($station);
-
+        if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Remote Relay')) . '</b>', 'green');
-
             return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
         }
 
@@ -69,21 +46,7 @@ class RemotesController
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
-
-        $station = $request->getStation();
-
-        $record = $this->em->getRepository(Entity\StationRemote::class)->findOneBy([
-            'id' => $id,
-            'station_id' => $station_id
-        ]);
-
-        if ($record instanceof Entity\StationRemote) {
-            $this->em->remove($record);
-        }
-
-        $this->em->flush();
-        $this->em->refresh($station);
+        $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Remote Relay')) . '</b>', 'green');
 

@@ -2,23 +2,13 @@
 namespace App\Controller\Stations;
 
 use App\Form\EntityForm;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class MountsController
+class MountsController extends AbstractStationCrudController
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var string */
-    protected $csrf_namespace = 'stations_mounts';
-
-    /** @var EntityForm */
-    protected $form;
-
     /**
      * @param EntityForm $form
      *
@@ -26,8 +16,9 @@ class MountsController
      */
     public function __construct(EntityForm $form)
     {
-        $this->form = $form;
-        $this->em = $form->getEntityManager();
+        parent::__construct($form);
+
+        $this->csrf_namespace = 'stations_mounts';
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface
@@ -36,7 +27,7 @@ class MountsController
         $frontend = $request->getStationFrontend();
 
         if (!$frontend::supportsMounts()) {
-            throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
+            throw new \App\Exception\StationUnsupported(__('This feature is not currently supported on this station.'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/mounts/index', [
@@ -48,21 +39,8 @@ class MountsController
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
-        $station = $request->getStation();
-        $this->form->setStation($station);
-
-        /** @var Entity\Repository\StationMountRepository $mount_repo */
-        $mount_repo = $this->em->getRepository(Entity\StationMount::class);
-
-        $record = (null !== $id)
-            ? $mount_repo->findOneBy(['id' => $id, 'station_id' => $station_id])
-            : null;
-
-        if (false !== $this->form->process($request, $record)) {
-            $this->em->refresh($station);
-
+        if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
-
             return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
 
@@ -75,25 +53,9 @@ class MountsController
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
-
-        $station = $request->getStation();
-
-        $record = $this->em->getRepository(Entity\StationMount::class)->findOneBy([
-            'id' => $id,
-            'station_id' => $station_id
-        ]);
-
-        if ($record instanceof Entity\StationMount) {
-            $this->em->remove($record);
-        }
-
-        $this->em->flush();
-
-        $this->em->refresh($station);
+        $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
-
         return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
     }
 }

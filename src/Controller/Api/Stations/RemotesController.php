@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
 /**
  * @see \App\Provider\ApiProvider
  */
-class RemotesController extends AbstractStationCrudController
+class RemotesController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\StationRemote::class;
     protected $resourceRouteName = 'api:stations:remote';

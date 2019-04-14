@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class AbstractCrudController
+abstract class AbstractApiCrudController
 {
     /** @var EntityManager */
     protected $em;

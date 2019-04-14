@@ -3,26 +3,13 @@ namespace App\Controller\Stations;
 
 use App\Form\EntityForm;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Psr\Http\Message\ResponseInterface;
 use App\Http\Request;
 use App\Http\Response;
 
-class PlaylistsController
+class PlaylistsController extends AbstractStationCrudController
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var string */
-    protected $csrf_namespace = 'stations_playlists';
-
-    /** @var EntityForm */
-    protected $form;
-
-    /** @var \Azura\Doctrine\Repository */
-    protected $playlist_repo;
-
     /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected $playlist_media_repo;
 
@@ -33,10 +20,9 @@ class PlaylistsController
      */
     public function __construct(EntityForm $form)
     {
-        $this->form = $form;
-        $this->em = $form->getEntityManager();
+        parent::__construct($form);
 
-        $this->playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
+        $this->csrf_namespace = 'stations_playlists';
         $this->playlist_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
@@ -51,7 +37,6 @@ class PlaylistsController
         $station = $request->getStation();
 
         $backend = $request->getStationBackend();
-
         if (!$backend::supportsMedia()) {
             throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
@@ -69,7 +54,7 @@ class PlaylistsController
         $playlists = [];
 
         foreach ($all_playlists as $playlist) {
-            $playlist_row = $this->playlist_repo->toArray($playlist);
+            $playlist_row = $this->record_repo->toArray($playlist);
 
             if ($playlist->getIsEnabled() && $playlist->getType() === 'default') {
                 $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
@@ -157,7 +142,11 @@ class PlaylistsController
 
     public function reorderAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord($id, $station_id);
+        $record = $this->_getRecord($id, $request->getStation());
+
+        if (!$record instanceof Entity\StationPlaylist) {
+            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
+        }
 
         if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
             || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
@@ -223,7 +212,11 @@ class PlaylistsController
 
     public function toggleAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord($id, $station_id);
+        $record = $this->_getRecord($id, $request->getStation());
+
+        if (!$record instanceof Entity\StationPlaylist) {
+            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
+        }
 
         $new_value = !$record->getIsEnabled();
 
@@ -244,14 +237,7 @@ class PlaylistsController
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
-        $station = $request->getStation();
-        $this->form->setStation($station);
-
-        $record = (null !== $id)
-            ? $this->_getRecord($id, $station_id)
-            : null;
-
-        if (false !== ($result = $this->form->process($request, $record))) {
+        if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
         }
@@ -264,38 +250,9 @@ class PlaylistsController
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
-
-        $station = $request->getStation();
-
-        $record = $this->_getRecord($id, $station_id);
-        $this->em->remove($record);
-        $this->em->flush();
-
-        $this->em->refresh($station);
+        $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
-
         return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
-    }
-
-    /**
-     * @param int $id
-     * @param int $station_id
-     * @return Entity\StationPlaylist
-     * @throws \App\Exception\NotFound
-     */
-    protected function _getRecord($id, $station_id): Entity\StationPlaylist
-    {
-        $record = $this->playlist_repo->findOneBy([
-            'id' => $id,
-            'station_id' => $station_id
-        ]);
-
-        if (!($record instanceof Entity\StationPlaylist)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
-        }
-
-        return $record;
     }
 }

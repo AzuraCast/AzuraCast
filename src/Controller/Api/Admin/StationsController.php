@@ -2,7 +2,6 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Controller\Api\AbstractGenericCrudController;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
@@ -12,7 +11,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @see \App\Provider\ApiProvider
  */
-class StationsController extends AbstractGenericCrudController
+class StationsController extends AbstractAdminApiCrudController
 {
     protected $entityClass = Entity\Station::class;
     protected $resourceRouteName = 'api:admin:station';

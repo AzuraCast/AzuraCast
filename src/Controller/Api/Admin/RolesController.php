@@ -3,14 +3,13 @@ namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Entity;
-use App\Controller\Api\AbstractGenericCrudController;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use OpenApi\Annotations as OA;
 
 /**
  * @see \App\Provider\ApiProvider
  */
-class RolesController extends AbstractGenericCrudController
+class RolesController extends AbstractAdminApiCrudController
 {
     protected $entityClass = Entity\Role::class;
     protected $resourceRouteName = 'api:admin:role';

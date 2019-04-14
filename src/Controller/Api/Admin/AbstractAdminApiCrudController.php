@@ -1,6 +1,7 @@
 <?php
-namespace App\Controller\Api;
+namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
@@ -8,7 +9,7 @@ use App\Utilities;
 use Azura\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class AbstractGenericCrudController extends AbstractCrudController
+abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 {
     public function listAction(Request $request, Response $response): ResponseInterface
     {

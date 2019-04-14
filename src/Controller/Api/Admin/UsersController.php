@@ -2,7 +2,6 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Controller\Api\AbstractGenericCrudController;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -11,7 +10,7 @@ use OpenApi\Annotations as OA;
 /**
  * @see \App\Provider\ApiProvider
  */
-class UsersController extends AbstractGenericCrudController
+class UsersController extends AbstractAdminApiCrudController
 {
     protected $entityClass = Entity\User::class;
     protected $resourceRouteName = 'api:admin:user';

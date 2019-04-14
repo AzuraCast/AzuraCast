@@ -16,7 +16,7 @@ use OpenApi\Annotations as OA;
 /**
  * @see \App\Provider\ApiProvider
  */
-class QueueController extends AbstractStationCrudController
+class QueueController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\SongHistory::class;
     protected $resourceRouteName = 'api:stations:queue:record';

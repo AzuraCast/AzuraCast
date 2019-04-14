@@ -278,6 +278,7 @@ return function(App $app)
                 ['playlist', 'playlists', Controller\Api\Stations\PlaylistsController::class, Acl::STATION_MEDIA],
                 ['remote', 'remotes', Controller\Api\Stations\RemotesController::class, Acl::STATION_REMOTES],
                 ['streamer', 'streamers', Controller\Api\Stations\StreamersController::class, Acl::STATION_STREAMERS],
+                ['webhook', 'webhooks', Controller\Api\Stations\WebhooksController::class, Acl::STATION_WEB_HOOKS],
             ];
 
             foreach($station_api_endpoints as [$singular, $plural, $class, $permission]) {

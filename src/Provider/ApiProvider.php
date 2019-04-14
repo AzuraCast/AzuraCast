@@ -105,6 +105,7 @@ class ApiProvider implements ServiceProviderInterface
             Api\Stations\PlaylistsController::class,
             Api\Stations\RemotesController::class,
             Api\Stations\StreamersController::class,
+            Api\Stations\WebhooksController::class,
         ];
 
         foreach($standard_crud_controllers as $controller) {

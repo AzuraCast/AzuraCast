@@ -46,12 +46,17 @@ use OpenApi\Annotations as OA;
  *
  * @OA\Tag(name="Stations: General")
  * @OA\Tag(name="Stations: Song Requests")
+ * @OA\Tag(name="Stations: Service Control")
+ *
  * @OA\Tag(name="Stations: History")
  * @OA\Tag(name="Stations: Listeners")
  * @OA\Tag(name="Stations: Media")
+ * @OA\Tag(name="Stations: Mount Points")
+ * @OA\Tag(name="Stations: Playlists")
  * @OA\Tag(name="Stations: Queue")
+ * @OA\Tag(name="Stations: Remote Relays")
  * @OA\Tag(name="Stations: Streamers/DJs")
- * @OA\Tag(name="Stations: Service Control")
+ * @OA\Tag(name="Stations: Web Hooks")
  *
  * @OA\Tag(name="Administration: Custom Fields")
  * @OA\Tag(name="Administration: Users")

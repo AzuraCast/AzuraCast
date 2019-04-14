@@ -721,7 +721,7 @@ paths:
   '/station/{station_id}/mounts':
     get:
       tags:
-        - 'Stations: Mounts'
+        - 'Stations: Mount Points'
       description: 'List all current mount points.'
       parameters:
         -
@@ -742,7 +742,7 @@ paths:
           api_key: []
     post:
       tags:
-        - 'Stations: Mounts'
+        - 'Stations: Mount Points'
       description: 'Create a new mount point.'
       parameters:
         -
@@ -767,7 +767,7 @@ paths:
   '/station/{station_id}/mount/{id}':
     get:
       tags:
-        - 'Stations: Mounts'
+        - 'Stations: Mount Points'
       description: 'Retrieve details for a single mount point.'
       parameters:
         -
@@ -794,7 +794,7 @@ paths:
           api_key: []
     put:
       tags:
-        - 'Stations: Mounts'
+        - 'Stations: Mount Points'
       description: 'Update details of a single mount point.'
       parameters:
         -
@@ -826,7 +826,7 @@ paths:
           api_key: []
     delete:
       tags:
-        - 'Stations: Mounts'
+        - 'Stations: Mount Points'
       description: 'Delete a single mount point.'
       parameters:
         -
@@ -1453,6 +1453,139 @@ paths:
       security:
         -
           api_key: []
+  '/station/{station_id}/webhooks':
+    get:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'List all current web hooks.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationWebhook'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'Create a new web hook.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationWebhook'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationWebhook'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/webhook/{id}':
+    get:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'Retrieve details for a single web hook.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationWebhook'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'Update details of a single web hook.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationWebhook'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'Delete a single web hook relay.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
 components:
   schemas:
     Api_Admin_Settings:
@@ -1571,7 +1704,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1555103144
+          example: 1555358605
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1667,7 +1800,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1555103144
+              example: 1555358605
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1722,7 +1855,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1555103144
+          example: 1555358605
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -1853,7 +1986,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1555103144
+          example: 1555358605
       type: object
     Api_Time:
       properties:
@@ -2194,7 +2327,36 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1555103144
+          example: 1555358605
+      type: object
+    StationWebhook:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          description: 'The nickname of the webhook connector.'
+          type: string
+          example: 'Twitter Post'
+        type:
+          description: 'The type of webhook connector to use.'
+          type: string
+          example: twitter
+        is_enabled:
+          type: boolean
+          example: true
+        triggers:
+          description: 'List of events that should trigger the webhook notification.'
+          type: array
+          items: {  }
+        config:
+          description: 'Detailed webhook configuration (if applicable)'
+          type: array
+          items: {  }
+        metadata:
+          description: 'Internal details used by the webhook to preserve state.'
+          type: array
+          items: {  }
       type: object
     User:
       properties:
@@ -2224,10 +2386,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1555103144
+          example: 1555358605
         updated_at:
           type: integer
-          example: 1555103144
+          example: 1555358605
         roles:
           items: {  }
       type: object
@@ -2257,17 +2419,25 @@ tags:
   -
     name: 'Stations: Song Requests'
   -
+    name: 'Stations: Service Control'
+  -
     name: 'Stations: History'
   -
     name: 'Stations: Listeners'
   -
     name: 'Stations: Media'
   -
+    name: 'Stations: Mount Points'
+  -
+    name: 'Stations: Playlists'
+  -
     name: 'Stations: Queue'
+  -
+    name: 'Stations: Remote Relays'
   -
     name: 'Stations: Streamers/DJs'
   -
-    name: 'Stations: Service Control'
+    name: 'Stations: Web Hooks'
   -
     name: 'Administration: Custom Fields'
   -

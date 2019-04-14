@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="station_webhooks", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci"})
+ *
+ * @OA\Schema(type="object")
  */
 class StationWebhook
 {

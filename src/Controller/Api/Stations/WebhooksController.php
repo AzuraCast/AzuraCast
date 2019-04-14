@@ -8,66 +8,66 @@ use OpenApi\Annotations as OA;
 /**
  * @see \App\Provider\ApiProvider
  */
-class MountsController extends AbstractStationApiCrudController
+class WebhooksController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\StationMount::class;
-    protected $resourceRouteName = 'api:stations:mount';
+    protected $entityClass = Entity\StationWebhook::class;
+    protected $resourceRouteName = 'api:stations:webhook';
 
     /**
-     * @OA\Get(path="/station/{station_id}/mounts",
-     *   tags={"Stations: Mount Points"},
-     *   description="List all current mount points.",
+     * @OA\Get(path="/station/{station_id}/webhooks",
+     *   tags={"Stations: Web Hooks"},
+     *   description="List all current web hooks.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationMount"))
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationWebhook"))
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
      * )
      *
-     * @OA\Post(path="/station/{station_id}/mounts",
-     *   tags={"Stations: Mount Points"},
-     *   description="Create a new mount point.",
+     * @OA\Post(path="/station/{station_id}/webhooks",
+     *   tags={"Stations: Web Hooks"},
+     *   description="Create a new web hook.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
+     *     @OA\JsonContent(ref="#/components/schemas/StationWebhook")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
+     *     @OA\JsonContent(ref="#/components/schemas/StationWebhook")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
      * )
      *
-     * @OA\Get(path="/station/{station_id}/mount/{id}",
-     *   tags={"Stations: Mount Points"},
-     *   description="Retrieve details for a single mount point.",
+     * @OA\Get(path="/station/{station_id}/webhook/{id}",
+     *   tags={"Stations: Web Hooks"},
+     *   description="Retrieve details for a single web hook.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
-     *     description="Streamer ID",
+     *     description="Web Hook ID",
      *     required=true,
      *     @OA\Schema(type="integer", format="int64")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
+     *     @OA\JsonContent(ref="#/components/schemas/StationWebhook")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
      * )
      *
-     * @OA\Put(path="/station/{station_id}/mount/{id}",
-     *   tags={"Stations: Mount Points"},
-     *   description="Update details of a single mount point.",
+     * @OA\Put(path="/station/{station_id}/webhook/{id}",
+     *   tags={"Stations: Web Hooks"},
+     *   description="Update details of a single web hook.",
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
+     *     @OA\JsonContent(ref="#/components/schemas/StationWebhook")
      *   ),
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
-     *     description="Streamer ID",
+     *     description="Web Hook ID",
      *     required=true,
      *     @OA\Schema(type="integer", format="int64")
      *   ),
@@ -78,14 +78,14 @@ class MountsController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      *
-     * @OA\Delete(path="/station/{station_id}/mount/{id}",
-     *   tags={"Stations: Mount Points"},
-     *   description="Delete a single mount point.",
+     * @OA\Delete(path="/station/{station_id}/webhook/{id}",
+     *   tags={"Stations: Web Hooks"},
+     *   description="Delete a single web hook relay.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
-     *     description="StationMount ID",
+     *     description="Web Hook ID",
      *     required=true,
      *     @OA\Schema(type="integer", format="int64")
      *   ),
@@ -96,19 +96,4 @@ class MountsController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
-
-    /**
-     * @inheritDoc
-     */
-    protected function _getStation(Request $request): Entity\Station
-    {
-        $station = parent::_getStation($request);
-
-        $frontend = $request->getStationFrontend();
-        if (!$frontend::supportsMounts()) {
-            throw new \App\Exception\StationUnsupported;
-        }
-
-        return $station;
-    }
 }

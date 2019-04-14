@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -15,7 +17,10 @@ class StationWebhook
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int
+     *
+     * @OA\Property(example=1)
+     *
+     * @var int|null
      */
     protected $id;
 
@@ -36,36 +41,56 @@ class StationWebhook
 
     /**
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="Twitter Post")
+     *
      * @var string|null The nickname of the webhook connector.
      */
     protected $name;
 
     /**
      * @ORM\Column(name="type", type="string", length=100)
+     *
+     * @OA\Property(example="twitter")
+     *
+     * @Assert\NotBlank()
+     *
      * @var string The type of webhook connector to use.
      */
     protected $type;
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
      * @var bool
      */
-    protected $is_enabled;
+    protected $is_enabled = true;
 
     /**
      * @ORM\Column(name="triggers", type="json_array", nullable=true)
+     *
+     * @OA\Property(@OA\Items())
+     *
      * @var array List of events that should trigger the webhook notification.
      */
     protected $triggers;
 
     /**
      * @ORM\Column(name="config", type="json_array", nullable=true)
+     *
+     * @OA\Property(@OA\Items())
+     *
      * @var array Detailed webhook configuration (if applicable)
      */
     protected $config;
 
     /**
      * @ORM\Column(name="metadata", type="json_array", nullable=true)
+     *
+     * @OA\Property(@OA\Items())
+     *
      * @var array Internal details used by the webhook to preserve state.
      */
     protected $metadata;
@@ -74,14 +99,12 @@ class StationWebhook
     {
         $this->station = $station;
         $this->type = $type;
-
-        $this->is_enabled = true;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

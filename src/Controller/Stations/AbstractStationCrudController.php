@@ -79,6 +79,12 @@ abstract class AbstractStationCrudController
             return null;
         }
 
-        return $this->record_repo->findOneBy(['id' => $id, 'station_id' => $station->getId()]);
+        $record = $this->record_repo->findOneBy(['id' => $id, 'station_id' => $station->getId()]);
+
+        if (!$record instanceof $this->entity_class) {
+            throw new \App\Exception\NotFound(__('%s not found.', $this->entity_class));
+        }
+
+        return $record;
     }
 }

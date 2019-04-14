@@ -149,26 +149,9 @@ class StationsProvider implements ServiceProviderInterface
         };
 
         $di[Stations\WebhooksController::class] = function($di) {
-            /** @var Azura\Config $config */
-            $config = $di[Azura\Config::class];
-
-            $webhook_config = $config->get('webhooks');
-
-            $webhook_forms = [];
-            $config_injections = [
-                'router' => $di['router'],
-                'app_settings' => $di['settings'],
-                'triggers' => $webhook_config['triggers'],
-            ];
-            foreach($webhook_config['webhooks'] as $webhook_key => $webhook_info) {
-                $webhook_forms[$webhook_key] = $config->get('forms/webhook/'.$webhook_key, $config_injections);
-            }
-
             return new Stations\WebhooksController(
-                $di[EntityManager::class],
-                $di[App\Webhook\Dispatcher::class],
-                $webhook_config,
-                $webhook_forms
+                $di[App\Form\StationWebhookForm::class],
+                $di[App\Webhook\Dispatcher::class]
             );
         };
     }

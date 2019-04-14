@@ -142,7 +142,7 @@ class PlaylistsController extends AbstractStationCrudController
 
     public function reorderAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord($id, $request->getStation());
+        $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
@@ -212,7 +212,7 @@ class PlaylistsController extends AbstractStationCrudController
 
     public function toggleAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord($id, $request->getStation());
+        $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));

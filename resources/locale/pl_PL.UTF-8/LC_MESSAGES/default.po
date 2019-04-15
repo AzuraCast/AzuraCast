@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-15 00:30\n"
+"PO-Revision-Date: 2019-04-15 00:40\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -3271,7 +3271,7 @@ msgstr "Domyślna instancja"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:35
 msgid "%s of %s Used"
-msgstr ""
+msgstr "%s z %s używane"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:41
 msgid "%s Files"
@@ -3287,23 +3287,23 @@ msgstr "Przeciągnij pliki tutaj wgrać do tego folderu lub "
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:61
 msgid "Set Playlists"
-msgstr ""
+msgstr "Ustaw listy odtwarzania"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:78
 msgid "New Playlist"
-msgstr ""
+msgstr "Nowa lista odtwarzania"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:83
 msgid "Save"
-msgstr ""
+msgstr "Zapisz"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "Move"
-msgstr ""
+msgstr "Przenieś"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:91
 msgid "New Folder"
-msgstr ""
+msgstr "Nowy folder"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:103
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:27
@@ -3321,27 +3321,27 @@ msgstr "Zmodyfikowano"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:125
 msgid "New Directory"
-msgstr ""
+msgstr "Nowy katalog"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:130
 msgid "Directory Name"
-msgstr ""
+msgstr "Nazwa katalogu"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:136
 msgid "Create Directory"
-msgstr ""
+msgstr "Utwórz katalog"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:148
 msgid "Move {{ selected_files }} File(s) to"
-msgstr ""
+msgstr "Przenieś {{ selected_files }} plik(i) do"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:154
 msgid "Back"
-msgstr ""
+msgstr "Wstecz"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:84
 msgid "Album Artwork"
-msgstr ""
+msgstr "Okładka albumu"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:92
 msgid "Rename"
@@ -3349,11 +3349,11 @@ msgstr "Zmień nazwę"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:176
 msgid "Select"
-msgstr ""
+msgstr "Wybierz"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:396
 msgid "Home"
-msgstr ""
+msgstr "Strona główna"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:6
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
@@ -3365,17 +3365,17 @@ msgstr "Typ"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Triggers"
-msgstr ""
+msgstr "Wyzwalacze"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 msgid "Disable"
-msgstr ""
+msgstr "Dezaktywuj"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 msgid "Enable"
-msgstr ""
+msgstr "Aktywuj"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Trigger the web hook manually and view the raw response."
@@ -3839,27 +3839,27 @@ msgstr "Wczoraj"
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:109
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
 msgid "Last 7 Days"
-msgstr ""
+msgstr "W Ciągu Ostatnich 7 Dni"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:111
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:65
 msgid "This Month"
-msgstr ""
+msgstr "W tym miesiącu"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:112
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:66
 msgid "Last Month"
-msgstr ""
+msgstr "Ostatni miesiąc"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 msgid "Listener Request"
-msgstr ""
+msgstr "Żądania słuchaczy"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 msgid "Playlist:"
-msgstr ""
+msgstr "Lista odtwarzania:"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Broadcast"
@@ -3879,7 +3879,7 @@ msgstr "Notatki"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr ""
+msgstr "Usunąć streamera \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
@@ -3917,23 +3917,23 @@ msgstr "Instrukcje instalacji dla nadawania oprogramowania są dostępne <a href
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:25
 msgid "Cued On"
-msgstr ""
+msgstr "Zakolejkowane"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Usunąć element z kolejki?"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:6
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
-msgstr ""
+msgstr "Zdalne relaye pozwalają na pracę z oprogramowaniem nadawczym poza niniejszym serwerem. Każdy podany tutaj relay będzie ujęty w statystykach Twojej stacji. Możesz również nadawać z tego serwera na zewnętrzne relaye."
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:34
 msgid "Delete remote relay \"%s\"?"
-msgstr ""
+msgstr "Usunąć zdalny relay \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
-msgstr ""
+msgstr "Dostępne dzienniki"
 
 #: /var/azuracast/www/templates/partials/radio_controls.phtml:9
 msgid "Pause"
@@ -3941,27 +3941,27 @@ msgstr "Wstrzymaj"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr ""
+msgstr "Automatycznie przewiń do końca dziennika"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:3
 msgid "Need Help?"
-msgstr ""
+msgstr "Potrzebujesz pomocy?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:5
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
+msgstr "Odpowiedzi na często zadawane pytania możesz znaleźć w naszej <a href=\"%s\" target=\"_blank\">dokumentacji</a>."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:7
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
+msgstr "Jeśli napotkałeś usterkę lub błąd, możesz wysłać zgłoszenie na GitHubie, korzystając z poniższego linku."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:9
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
+msgstr "Twój obecny typ instalacji to <b>%s</b>. Pamiętaj, aby zamieścić tę informację, tworząc nowe zgłoszenie."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:14
 msgid "New GitHub Issue"
-msgstr ""
+msgstr "Nowe zgłoszenie na GitHubie"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3973,7 +3973,7 @@ msgstr "Klonuj"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr ""
+msgstr "Usunąć stację \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:20
 msgid "Owner"
@@ -3981,15 +3981,15 @@ msgstr "Właściciel"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast zainstalowany"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
-msgstr ""
+msgstr "SHOUTcast 2 DNAS jest zainstalowany i gotowy do użycia."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr ""
+msgstr "Usunąć rolę \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "This role cannot be deleted."
@@ -3997,19 +3997,19 @@ msgstr "Tej roli nie można usunąć."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:44
 msgid "Global"
-msgstr ""
+msgstr "Globalne"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr ""
+msgstr "Usunąć użytkownika \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:46
 msgid "(You)"
-msgstr ""
+msgstr "(Ty)"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:22
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Zadania synchronizacji"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:32
 msgid "%s ago"
@@ -4017,31 +4017,31 @@ msgstr "%s temu"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Run Task"
-msgstr ""
+msgstr "Uruchom zadanie"
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr ""
+msgstr "Usunąć własne pole \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:15
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
-msgstr ""
+msgstr "Ponieważ używasz Dockera, niektóre dzienniki są dostępne tylko poprzez sesję powłoki na komputerze-hoście. Możesz uruchomić <code>%s</code> aby uzyskać dostęp do dzienników kontenera z poziomu terminala."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:30
 msgid "Logs by Station"
-msgstr ""
+msgstr "Dzienniki według stacji"
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
-msgstr ""
+msgstr "Skocz do treści głównej"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Przełącz panel boczny"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Przełącz menu"
 
 #: /var/azuracast/www/templates/main.phtml:72
 msgid "System Administration"
@@ -4049,7 +4049,7 @@ msgstr "Administracja systemem"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Przełącz motyw"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"

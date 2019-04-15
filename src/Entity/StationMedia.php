@@ -605,6 +605,22 @@ class StationMedia
             'liq_cue_out'   => $this->cue_out,
         ];
 
+        // Safety checks for cue lengths.
+        if ($annotation_types['liq_cue_out'] < 0) {
+            $cue_out = abs($annotation_types['liq_cue_out']);
+            if (0 === $cue_out || $cue_out > $annotation_types['duration']) {
+                $annotation_types['liq_cue_out'] = null;
+            } else {
+                $annotation_types['liq_cue_out'] = max(0, $annotation_types['duration'] - $cue_out);
+            }
+        }
+        if (($annotation_types['liq_cue_in'] + $annotation_types['liq_cue_out']) > $annotation_types['duration']) {
+            $annotation_types['liq_cue_out'] = null;
+        }
+        if ($annotation_types['liq_cue_in'] > $annotation_types['duration']) {
+            $annotation_types['liq_cue_in'] = null;
+        }
+
         foreach ($annotation_types as $annotation_name => $prop) {
             if (null === $prop) {
                 continue;
@@ -612,10 +628,6 @@ class StationMedia
 
             $prop = mb_convert_encoding($prop, 'UTF-8');
             $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
-
-            if ('liq_cue_out' === $annotation_name && $prop < 0) {
-                $prop = max(0, $this->getLength() - abs($prop));
-            }
 
             // Convert Liquidsoap-specific annotations to floats.
             if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {

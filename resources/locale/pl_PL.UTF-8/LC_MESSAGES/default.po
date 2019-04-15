@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-14 19:30\n"
+"PO-Revision-Date: 2019-04-15 00:20\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -714,7 +714,7 @@ msgstr "Pokaż panel administracyjny"
 
 #: /var/azuracast/www/src/Acl.php:174
 msgid "View System Logs"
-msgstr ""
+msgstr "Przejrzyj dziennik systemowy"
 
 #: /var/azuracast/www/src/Acl.php:175
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
@@ -1388,7 +1388,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:57
 msgid "Now playing on %s:"
-msgstr ""
+msgstr "Teraz gra na %s:"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:64
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
@@ -1404,7 +1404,7 @@ msgstr "Tytuł"
 #: /var/azuracast/www/config/forms/station.php:36
 #: /var/azuracast/www/templates/stations/profile/index.phtml:133
 msgid "Description"
-msgstr ""
+msgstr "Opis"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:82
 msgid "URL"
@@ -1412,7 +1412,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:91
 msgid "Author Name"
-msgstr ""
+msgstr "Imię i nazwisko autora"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Thumbnail Image URL"
@@ -1420,13 +1420,13 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:109
 msgid "Footer Text"
-msgstr ""
+msgstr "Tekst stopki"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:111
 #: /var/azuracast/www/templates/main.phtml:150
 #: /var/azuracast/www/templates/minimal.phtml:45
 msgid "Powered by %s"
-msgstr ""
+msgstr "Powered by %s"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:13
 msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
@@ -1690,7 +1690,7 @@ msgstr "Gatunek"
 #: /var/azuracast/www/config/forms/station.php:50
 #: /var/azuracast/www/templates/stations/profile/index.phtml:145
 msgid "Web Site URL"
-msgstr ""
+msgstr "Adres URL strony www"
 
 #: /var/azuracast/www/config/forms/station.php:51
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
@@ -1812,15 +1812,15 @@ msgstr "Wybierz metodę, jaką chcesz wykorzystywać do tworzenia przejść pomi
 
 #: /var/azuracast/www/config/forms/station.php:200
 msgid "Smart Mode"
-msgstr ""
+msgstr "Tryb inteligentny"
 
 #: /var/azuracast/www/config/forms/station.php:201
 msgid "Normal Mode"
-msgstr ""
+msgstr "Tryb normalny"
 
 #: /var/azuracast/www/config/forms/station.php:202
 msgid "Disable Crossfading"
-msgstr ""
+msgstr "Wyłącz przejścia"
 
 #: /var/azuracast/www/config/forms/station.php:211
 msgid "Crossfade Duration (Seconds)"
@@ -1828,15 +1828,15 @@ msgstr "Czas trwania crossfade (w sekundach)"
 
 #: /var/azuracast/www/config/forms/station.php:213
 msgid "Number of seconds to overlap songs."
-msgstr ""
+msgstr "Długość nakładania się utworów w sekundach."
 
 #: /var/azuracast/www/config/forms/station.php:224
 msgid "Apply Compression and Normalization"
-msgstr ""
+msgstr "Zastosuj kompresję i normalizację"
 
 #: /var/azuracast/www/config/forms/station.php:226
 msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
-msgstr ""
+msgstr "Kompresuj i normalizuj głośność swojej stacji, dając bardziej jednolity i \"pełny\" dźwięk."
 
 #: /var/azuracast/www/config/forms/station.php:236
 msgid "Allow Song Requests"
@@ -1904,11 +1904,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:327
 msgid "Character Set Encoding"
-msgstr ""
+msgstr "Kodowanie znaków"
 
 #: /var/azuracast/www/config/forms/station.php:329
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
-msgstr ""
+msgstr "W większości przypadków, używaj domyślnego kodowania UTF-8. Starsze kodowanie ISO-8859-1 może być wykorzystywane w razie przyjmowania połączeń od prezenterów korzystających z SHOUTcast 1 lub używających innego starego oprogramowania."
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "Customize Internal Request Processing Port"
@@ -1963,7 +1963,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:413
 msgid "Custom Media Directory"
-msgstr ""
+msgstr "Własny katalog mediów"
 
 #: /var/azuracast/www/config/forms/station.php:415
 msgid "The directory where media files are stored. Leave blank to use default directory."
@@ -1999,7 +1999,7 @@ msgstr "Preferuj URL przeglądarki (jeśli dostępne)"
 
 #: /var/azuracast/www/config/forms/settings.php:44
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Jeśli ustawione na \"Tak\", tam gdzie to możliwe, będzie wykorzystywany URL przeglądarki zamiast podstawowego URL. Ustaw na \"Nie\", aby zawsze używać podstawowego URL."
 
 #: /var/azuracast/www/config/forms/settings.php:54
 msgid "Use Web Proxy for Radio"
@@ -2144,7 +2144,7 @@ msgstr "Uprawnienia systemowe"
 
 #: /var/azuracast/www/config/forms/role.php:35
 msgid "Permissions for %s"
-msgstr ""
+msgstr "Uprawnienia dla %s"
 
 #: /var/azuracast/www/config/forms/playlist.php:43
 msgid "Your current local time is <b>%s</b> (%s UTC). You can customize your time zone from the \"My Account\" page."
@@ -2153,7 +2153,7 @@ msgstr "Twój aktualny czas jest <b>%s</b> (%s UTC). Można dostosować swoją s
 #: /var/azuracast/www/config/forms/playlist.php:55
 #: /var/azuracast/www/templates/stations/playlists/edit.phtml:21
 msgid "Basic Information"
-msgstr ""
+msgstr "Podstawowe informacje"
 
 #: /var/azuracast/www/config/forms/playlist.php:61
 msgid "Playlist Name"
@@ -2198,7 +2198,7 @@ msgstr "Utwory bazowane listą odtwarzania"
 
 #: /var/azuracast/www/config/forms/playlist.php:105
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Playlista zawierająca pliki multimedialne hostowane na tym serwerze."
 
 #: /var/azuracast/www/config/forms/playlist.php:106
 #: /var/azuracast/www/config/forms/playlist.php:179

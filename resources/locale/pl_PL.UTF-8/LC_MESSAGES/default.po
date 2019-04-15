@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-15 00:40\n"
+"PO-Revision-Date: 2019-04-15 00:50\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -2909,23 +2909,23 @@ msgstr "Moje konto"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:57
 msgid "Customize"
-msgstr ""
+msgstr "Dostosuj"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:65
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Uwierzytelnianie dwuskładnikowe"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:72
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "Uwierzytelnianie dwuskładnikowe poprawia bezpieczeństwo Twojego konta, ponieważ wymaga podania kodu jednorazowego dostępu oprócz hasła podczas logowania."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:78
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "Wyłącz uwierzytelnianie dwuskładnikowe"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:83
 msgid "Enable Two-Factor"
-msgstr ""
+msgstr "Włącz uwierzytelnianie dwuskładnikowe"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:62
@@ -2946,7 +2946,7 @@ msgstr "Wykonawca"
 #: /var/azuracast/www/templates/stations/files/index.phtml:102
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:25
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
 #: /var/azuracast/www/templates/frontend/public/index.phtml:79
@@ -2969,43 +2969,43 @@ msgstr "Opcje"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
-msgstr ""
+msgstr "Mikrofon"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:13
 msgid "Mixer"
-msgstr ""
+msgstr "Mikser"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"
-msgstr ""
+msgstr "Lista odtwarzania 1"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:15
 msgid "Playlist 2"
-msgstr ""
+msgstr "Lista odtwarzania 2"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:18
 msgid "Encoder"
-msgstr ""
+msgstr "Enkoder"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:19
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:20
 msgid "Raw"
-msgstr ""
+msgstr "Surowy"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
-msgstr ""
+msgstr "Częstotliwość próbkowania"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:22
 msgid "Bit Rate"
-msgstr ""
+msgstr "Bitrate"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:23
 msgid "DJ Credentials"
-msgstr ""
+msgstr "Dane logowania prezentera"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:26
@@ -3014,47 +3014,47 @@ msgstr "Nazwa użytkownika"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:26
 msgid "Use Asynchronous Worker"
-msgstr ""
+msgstr "Użyj pracownika asynchronicznego"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:29
 msgid "Continuous Play"
-msgstr ""
+msgstr "Odtwarzanie bez przerw"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:30
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Powtórz playlistę"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:31
 msgid "Microphone Source"
-msgstr ""
+msgstr "Źródło mikrofonu"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:34
 msgid "Start Streaming"
-msgstr ""
+msgstr "Rozpocznij stream"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:35
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Zatrzymaj stream"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:36
 msgid "Cue"
-msgstr ""
+msgstr "Kolejka"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:37
 msgid "Update Metadata"
-msgstr ""
+msgstr "Aktualizuj metadane"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:40
 msgid "Add Files to Playlist"
-msgstr ""
+msgstr "Dodaj pliki do listy odtwarzania"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:41
 msgid "Unknown Title"
-msgstr ""
+msgstr "Nieznany tytuł"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:42
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Nieznany wykonawca"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:30
 #: /var/azuracast/www/templates/frontend/public/index.phtml:48
@@ -3071,14 +3071,14 @@ msgstr "Żądanie utworu"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:12
 msgid "Album Cover"
-msgstr ""
+msgstr "Okładka albumu"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:50
 #: /var/azuracast/www/templates/frontend/index/index.phtml:81
 #: /var/azuracast/www/templates/stations/profile/index.phtml:225
 #: /var/azuracast/www/templates/stations/profile/index.phtml:247
 msgid "Play/Pause"
-msgstr ""
+msgstr "Odtwarzanie/Pauza"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:68
 msgid "Mute"
@@ -3087,11 +3087,11 @@ msgstr "Wycisz"
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:73
 #: /var/azuracast/www/templates/partials/radio_controls.phtml:15
 msgid "Volume"
-msgstr ""
+msgstr "Głośność"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:76
 msgid "Full Volume"
-msgstr ""
+msgstr "Pełna głośność"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:1
 #: /var/azuracast/www/templates/main.phtml:64
@@ -3129,18 +3129,18 @@ msgstr "Zarządzanie"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
-msgstr ""
+msgstr "Błąd: Brak dostępnych stacji"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:4
 msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
-msgstr ""
+msgstr "Twoje konto jest aktywne, nie jest jednak obecnie skojarzone z żadną stacją. Jeśli uważasz, że to błąd, skontaktuj się z administratorem tego serwera."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:9
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:3
 #: /var/azuracast/www/templates/main.phtml:91
 msgid "My API Keys"
-msgstr ""
+msgstr "Moje klucze API"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:11
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
@@ -3149,7 +3149,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:31
 msgid "Key Identifier"
-msgstr ""
+msgstr "Identyfikator klucza"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:39
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:33
@@ -3173,15 +3173,15 @@ msgstr "Wycofaj"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
 msgid "New Key Generated"
-msgstr ""
+msgstr "Wygenerowano nowy klucz"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:13
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
-msgstr ""
+msgstr "<b>Ważne: Przed kontynuowaniem, skopiuj klucz!</b> Ponowne uzyskanie go nie będzie możliwe."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:15
 msgid "Your full API key is below:"
-msgstr ""
+msgstr "Oto Twój pełny klucz API:"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:24
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
@@ -3189,7 +3189,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:27
 msgid "Continue"
-msgstr ""
+msgstr "Konynuuj"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:1
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:3
@@ -3199,11 +3199,11 @@ msgstr "Instalacja AzuraCast"
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:14
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:23
 msgid "Create Station"
-msgstr ""
+msgstr "Utwórz stację"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:26
 msgid "Customize AzuraCast Settings"
-msgstr ""
+msgstr "Dostosuj ustawienia AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:27
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
@@ -3211,7 +3211,7 @@ msgstr "Ukończ proces instalacji przez dostarczanie informacji o środowisku em
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:35
 msgid "Create a New Radio Station"
-msgstr ""
+msgstr "Utwórz nową radiostację"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:36
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
@@ -3219,23 +3219,23 @@ msgstr "Kontynuuj proces instalacji, tworząc swoją pierwszą stację radiową.
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:15
 msgid "AzuraCast First-Time Setup"
-msgstr ""
+msgstr "Ustawienia podczas pierwszego uruchomienia AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:18
 msgid "Welcome to AzuraCast!"
-msgstr ""
+msgstr "Witaj w AzuraCast!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:19
 msgid "Let's get started by creating your Super Administrator account."
-msgstr ""
+msgstr "Zacznijmy od utworzenia Twojego konta super administratora."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
-msgstr ""
+msgstr "To konto będzie posiadało pełny dostęp do systemu, i zostaniesz na nie zalogowany automatycznie aby dokończyć instalację."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:6
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
-msgstr ""
+msgstr "Punkty montowania umożliwiają słuchaczom połączenie się i słuchanie stacji. Każdy punkt może mieć inny format i jakość dźwięku. Wykorzystując punkty montowania, możesz ustawić wysokiej jakości strumień dla użytkowników szerokopasmowego Internetu oraz strumienie mobilne da słuchających w smartfonach."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:25
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
@@ -3245,7 +3245,7 @@ msgstr "AutoDJ"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:34
 msgid "Delete mount point \"%s\"?"
-msgstr ""
+msgstr "Usunąć punkt montowania \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:34
 #: /var/azuracast/www/templates/stations/files/index.phtml:88

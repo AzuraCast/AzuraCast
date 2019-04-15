@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-15 00:20\n"
+"PO-Revision-Date: 2019-04-15 00:30\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -2207,7 +2207,7 @@ msgstr "Zdalny URL Playlisty"
 
 #: /var/azuracast/www/config/forms/playlist.php:106
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr ""
+msgstr "Playlista, która nakazuje stacji odtwarzać z zewnętrznego URL'a."
 
 #: /var/azuracast/www/config/forms/playlist.php:123
 msgid "Song Playback Order"
@@ -2228,7 +2228,7 @@ msgstr "Sekwencyjny"
 
 #: /var/azuracast/www/config/forms/playlist.php:137
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr ""
+msgstr "Ukryj metadane przed słuchaczami (\"Tryb Dżinglowy\", z ang. Jingle Mode)"
 
 #: /var/azuracast/www/config/forms/playlist.php:139
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
@@ -2269,11 +2269,11 @@ msgstr "URL playlisty (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:205
 msgid "Remote Playback Buffer (Seconds)"
-msgstr ""
+msgstr "Bufor zdalnego odtwarzania (w sekundach)"
 
 #: /var/azuracast/www/config/forms/playlist.php:207
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
-msgstr ""
+msgstr "Długość czasu odtwarzania, jaką Liquidsoap powinien zbuforować przed odtworzeniem tej zdalnej playlisty. Krótsze czasy mogą spowodować przerywanie odtwarzania lub niestabilne połączenia."
 
 #: /var/azuracast/www/config/forms/playlist.php:218
 #: /var/azuracast/www/config/forms/playlist.php:223
@@ -2299,7 +2299,7 @@ msgstr "Zaplanowane"
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Play during a scheduled time range."
-msgstr ""
+msgstr "Odtwarzaj w ustalonym zakresie czasu."
 
 #: /var/azuracast/www/config/forms/playlist.php:227
 #: /var/azuracast/www/config/forms/playlist.php:339
@@ -2308,7 +2308,7 @@ msgstr "Raz na %d utworów"
 
 #: /var/azuracast/www/config/forms/playlist.php:227
 msgid "Play exactly once every <i>x</i> songs."
-msgstr ""
+msgstr "Odtwarzaj raz co <i>x</i> utworów."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Once Per x Minutes"
@@ -2316,16 +2316,16 @@ msgstr "Raz na %d minut"
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Play exactly once every <i>x</i> minutes."
-msgstr ""
+msgstr "Odtwarzaj dokładnie raz co <i>x</i> minut."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 #: /var/azuracast/www/config/forms/playlist.php:377
 msgid "Once per Hour"
-msgstr ""
+msgstr "Raz na godzinę"
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Play once per hour at the specified minute."
-msgstr ""
+msgstr "Odtwarzaj co godzinę w podanej minucie."
 
 #: /var/azuracast/www/config/forms/playlist.php:230
 #: /var/azuracast/www/config/forms/playlist.php:396
@@ -2347,27 +2347,27 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:241
 msgid "Interrupt Other Songs"
-msgstr ""
+msgstr "Przerywaj inne utwory"
 
 #: /var/azuracast/www/config/forms/playlist.php:243
 msgid "When this playlist is scheduled to play, it will interrupt any currently playing playlists instead of waiting for the end of a song."
-msgstr ""
+msgstr "Jeśli ta playlista jest zaplanowana do odtworzenia, przerwie ona każdą obecnie odtwarzaną playlistę, zamiast czekać na koniec utworu."
 
 #: /var/azuracast/www/config/forms/playlist.php:253
 msgid "Only Loop Playlist Once"
-msgstr ""
+msgstr "Zapętl playlistę tylko raz"
 
 #: /var/azuracast/www/config/forms/playlist.php:255
 msgid "If the playlist would play multiple times within its scheduled time, enable this to ensure it only plays once."
-msgstr ""
+msgstr "Gdyby playlista była odtwarzana wiele razy w ustalonym czasie, włączenie tego ustawienia spowoduje odtworzenie jej tylko raz."
 
 #: /var/azuracast/www/config/forms/playlist.php:265
 msgid "Only Play One Track at Scheduled Time"
-msgstr ""
+msgstr "W ustalonym czasie odtwarzaj tylko jeden utwór"
 
 #: /var/azuracast/www/config/forms/playlist.php:267
 msgid "This will only play a single track from the specified playlist when it is scheduled to play."
-msgstr ""
+msgstr "To spowoduje odtworzenie tylko jednego utworu z playlisty, gdy nadejdzie czas jej odtworzenia."
 
 #: /var/azuracast/www/config/forms/playlist.php:284
 msgid "Include in Automated Assignment"
@@ -3579,23 +3579,23 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:60
 msgid "More"
-msgstr ""
+msgstr "Więcej"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:65
 msgid "Reorder"
-msgstr ""
+msgstr "Zmień kolejność"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:68
 msgid "Export %s"
-msgstr ""
+msgstr "Eksportuj %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:77
 msgid "Song-based"
-msgstr ""
+msgstr "Na podstawie utworu"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:79
 msgid "Jingle Mode"
-msgstr ""
+msgstr "Tryb Dżinglowy (Jingle Mode)"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:85
 msgid "Auto-Assigned"
@@ -3619,7 +3619,7 @@ msgstr "Raz na %d minut"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:103
 msgid "Once per Hour (at :%02d)"
-msgstr ""
+msgstr "Raz na godzinę (w: %02d)"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:105
 msgid "Once per Day"
@@ -3635,11 +3635,11 @@ msgstr "Niestandardowe"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:4
 msgid "Reorder Playlist"
-msgstr ""
+msgstr "Zmień kolejność playlisty"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:12
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Zmień kolejność playlisty: %s"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:6
@@ -3679,11 +3679,11 @@ msgstr "Lokalizacja"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 msgid "Mobile Device"
-msgstr ""
+msgstr "Urządzenie mobilne"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:45
 msgid "Desktop Device"
-msgstr ""
+msgstr "Komputer"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:57
 msgid "Unknown"
@@ -3755,11 +3755,11 @@ msgstr "Średnia słuchaczy"
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
 msgid "Report Not Available"
-msgstr ""
+msgstr "Raport niedostępny"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
-msgstr ""
+msgstr "Raport dla tej stacji nie jest dostępny, ponieważ administrator systemu postanowił nie zbierać szczegółowych informacji o słuchaczach w oparciu o IP."
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:24
 msgid "Date Requested"
@@ -3779,11 +3779,11 @@ msgstr "Nie grano"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Słuchacze według dnia"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Słuchacze według godziny"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:29
 msgid "Listeners by Day of Week"
@@ -3829,12 +3829,12 @@ msgstr "Data/Czas"
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:107
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
 msgid "Today"
-msgstr ""
+msgstr "Dziś"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:108
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:61
 msgid "Yesterday"
-msgstr ""
+msgstr "Wczoraj"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:109
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
@@ -4053,7 +4053,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Pomoc"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"
@@ -4065,11 +4065,11 @@ msgstr "Wyloguj się"
 
 #: /var/azuracast/www/templates/main.phtml:151
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "Podoba Ci się nasze oprogramowanie? <a href=\"%s\" target=\"_blank\">Wesprzyj finansowo AzuraCast!</a>"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."
-msgstr ""
+msgstr "Żądana strona nie została odnaleziona."
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:3
 msgid "Select..."
@@ -4081,5 +4081,5 @@ msgstr "Brak wyników!"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
-msgstr ""
+msgstr "Maskotka zaprojektowana przez %s"
 

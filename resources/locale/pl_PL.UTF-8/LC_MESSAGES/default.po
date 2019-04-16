@@ -2,13 +2,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
+"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-15 00:50\n"
+"PO-Revision-Date: 2019-04-16 21:00\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -673,7 +673,7 @@ msgstr "Należy zaktualizować plik<code> docker-compose.yml </code>, aby odzwie
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Zapoznaj się z <a href=\"%s\" target=\"_blank\">instrukcją aktualizacji</a>, aby zaktualizować swoją instalację."
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
@@ -981,7 +981,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
@@ -997,11 +997,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Wiadomość czatu w Telegram"
 
 #: /var/azuracast/www/config/webhooks.php:34
 msgid "Use the Telegram Bot API to send a message to a channel."
-msgstr ""
+msgstr "Wyślij wiadomość do kanału za pomocą interfejsu Telegram Bot API."
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
@@ -1251,23 +1251,23 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:23
 msgid "TuneIn Partner ID"
-msgstr ""
+msgstr "ID Partnera w TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:32
 msgid "TuneIn Partner Key"
-msgstr ""
+msgstr "Klucz Partnera w TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:41
 msgid "TuneIn Station ID"
-msgstr ""
+msgstr "ID stacji w TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:42
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr ""
+msgstr "Identyfikator stacji będzie ciągiem liczbowym, zaczynającym się na literę S."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:12
 msgid "Twitter Account Details"
-msgstr ""
+msgstr "Dane konta na Twitterze"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Steps for configuring a Twitter application:<br>\n"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-16 21:50\n"
+"PO-Revision-Date: 2019-04-16 21:54\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -3427,28 +3427,28 @@ msgstr "Nadawanie stacji wyłączone"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "Dla Twojej stacji, nadawanie jest obecnie wyłączone. Nadal możesz zarządzać multimediami, playlistami i innymi ustawieniami stacji. Aby włączyć nadawanie ponownie, <a href=\"%s\">wyedytuj profil swojej stacji</a>."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:25
 msgid "On the Air"
-msgstr ""
+msgstr "W eterze"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:27
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:47
 msgid "Listener"
-msgstr ""
+msgstr "Słuchacz"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:29
 msgid "Unique"
-msgstr ""
+msgstr "Unikalny"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:66
 msgid "Playing Next"
-msgstr ""
+msgstr "Następnie"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:87
 msgid "Now Streaming"
-msgstr ""
+msgstr "Teraz nadaje"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:100
 msgid "Skip Song"
@@ -3456,12 +3456,12 @@ msgstr "Pomiń utwór"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:104
 msgid "Disconnect Streamer"
-msgstr ""
+msgstr "Rozłącz nadającego prezentera"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:163
 #: /var/azuracast/www/templates/stations/profile/index.phtml:179
 msgid "<a href=\"%s\">Edit station profile</a> to enable."
-msgstr ""
+msgstr "<a href=\"%s\">Edytuj profil stacji</a>, aby włączyć."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:171
 msgid "Streamers/DJs"
@@ -3469,15 +3469,15 @@ msgstr "Streamerzy/DJe"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:175
 msgid "Manage streamer accounts"
-msgstr ""
+msgstr "Zarządzaj kontami prezenterów"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:186
 msgid "Base Directory"
-msgstr ""
+msgstr "Katalog podstawowy"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:190
 msgid "Media Directory"
-msgstr ""
+msgstr "Katalog multimediów"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:194
 msgid "Player Embed Code"
@@ -3485,11 +3485,11 @@ msgstr "Kod osadzenia odtwarzacza"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:208
 msgid "Streams"
-msgstr ""
+msgstr "Strumienie"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:218
 msgid "Local Streams"
-msgstr ""
+msgstr "Strumienie lokalne"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:263
 #: /var/azuracast/www/templates/stations/profile/index.phtml:267
@@ -3498,16 +3498,16 @@ msgstr "Pobierz %s"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:278
 msgid "Icecast (Broadcasting Service)"
-msgstr ""
+msgstr "IceCast (Oprogramowanie do nadawania)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:280
 msgid "SHOUTcast DNAS 2 (Broadcasting Service)"
-msgstr ""
+msgstr "SHOUTcast DNAS 2 (oprogramowanie do nadawania)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:283
 #: /var/azuracast/www/templates/stations/profile/index.phtml:356
 msgid "Loading..."
-msgstr ""
+msgstr "Wcztywanie..."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:293
 msgid "Administration URL"
@@ -3523,22 +3523,22 @@ msgstr "Hasło źródła"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:312
 msgid "Relay Password"
-msgstr ""
+msgstr "Hasło relay'a"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:326
 #: /var/azuracast/www/templates/stations/profile/index.phtml:371
 msgid "Restart"
-msgstr ""
+msgstr "Zrestartuj"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:330
 #: /var/azuracast/www/templates/stations/profile/index.phtml:375
 msgid "Start"
-msgstr ""
+msgstr "Uruchom"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:334
 #: /var/azuracast/www/templates/stations/profile/index.phtml:379
 msgid "Stop"
-msgstr ""
+msgstr "Zatrzymaj"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:344
 msgid "AutoDJ Disabled"
@@ -3550,7 +3550,7 @@ msgstr "AutoDJ została wyłączona dla tej stacji. Żadna muzyka nie będzie od
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:353
 msgid "Liquidsoap (AutoDJ Service)"
-msgstr ""
+msgstr "LiquidSoap (oprogramowanie autopilota)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:358
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
@@ -3566,11 +3566,11 @@ msgstr "Nie Uruchomione"
 
 #: /var/azuracast/www/templates/stations/sidebar.js.phtml:9
 msgid "Please wait..."
-msgstr ""
+msgstr "Proszę, czekaj..."
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:19
 msgid "All Playlists"
-msgstr ""
+msgstr "Wszystkie playlisty"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:22
 msgid "Schedule View"

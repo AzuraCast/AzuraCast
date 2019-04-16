@@ -162,6 +162,14 @@ vueTasks.forEach(function (libName) {
                             test: /\.vue$/,
                             loader: 'vue-loader',
                             options: {}
+                        },
+                        {
+                            test: /\.scss$/,
+                            use: [
+                                'vue-style-loader',
+                                'css-loader',
+                                'sass-loader'
+                            ]
                         }
                     ]
                 }

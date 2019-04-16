@@ -23,12 +23,12 @@ $user = $request->getUser();
             <div class="card-body">
                 <div class="d-flex">
                     <h3 class="flex-shrink card-title"><?=__('On the Air') ?></h3>
-                    <h4 class="text-right flex-fill" style="line-height: 1;">
+                    <h6 class="text-right flex-fill" style="line-height: 1;">
                         <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span>{{ np.listeners.total }}</span> <span v-if="np.listeners.total == 1"><?=__('Listener') ?></span><span v-else><?=__('Listeners') ?></span><br>
                         <small>
                             <span>{{ np.listeners.unique }}</span> <?=__('Unique') ?>
                         </small>
-                    </h4>
+                    </h6>
                 </div>
 
                 <div class="row pt-1">
@@ -41,18 +41,20 @@ $user = $request->getUser();
                             <h6><?=__('Now Playing') ?>:</h6>
 
                             <div v-if="np.now_playing.song.title != ''">
-                                <h4 class="media-heading">{{ np.now_playing.song.title }}</h4>
-                                <div>{{ np.now_playing.song.artist }}</div>
+                                <h5 class="media-heading m-0" style="line-height: 1;">
+                                    {{ np.now_playing.song.title }}<br>
+                                    <small>{{ np.now_playing.song.artist }}</small>
+                                </h5>
                             </div>
                             <div v-else>
-                                <h4 class="media-heading">{{ np.now_playing.song.text }}</h4>
+                                <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
                             </div>
 
                             <div v-if="np.now_playing.playlist">
                                 <small class="text-muted"><?=__('Playlist') ?>: {{ np.now_playing.playlist }}</small>
                             </div>
                             <div class="nowplaying-progress" v-if="time_display">
-                                {{ time_display }}
+                                <small>{{ time_display }}</small>
                             </div>
                         </div>
                     </div>
@@ -66,11 +68,13 @@ $user = $request->getUser();
                             <h6><?=__('Playing Next') ?>:</h6>
 
                             <div v-if="np.playing_next.song.title != ''">
-                                <h4 class="media-heading">{{ np.playing_next.song.title }}</h4>
-                                <div>{{ np.playing_next.song.artist }}</div>
+                                <h5 class="media-heading m-0" style="line-height: 1;">
+                                    {{ np.playing_next.song.title }}<br>
+                                    <small>{{ np.playing_next.song.artist }}</small>
+                                </h5>
                             </div>
                             <div v-else>
-                                <h4 class="media-heading">{{ np.playing_next.song.text }}</h4>
+                                <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
                             </div>
 
                             <div v-if="np.playing_next.playlist">

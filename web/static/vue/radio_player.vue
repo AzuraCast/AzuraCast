@@ -1,51 +1,47 @@
 <template>
-    <div>
-        <div class="media align-items-center">
-            <div class="pr-2" v-if="show_album_art && np.now_playing.song.art">
-                <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" id="album-art" :alt="$t('album_art_alt')"></a>
+    <div class="radio-player-widget">
+        <div class="now-playing-details">
+            <div class="now-playing-art" v-if="show_album_art && np.now_playing.song.art">
+                <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank">
+                    <img v-bind:src="np.now_playing.song.art" :alt="$t('album_art_alt')">
+                </a>
             </div>
-            <div class="media-body" style="min-width: 0;">
+            <div class="now-playing-main">
                 <div v-if="np.now_playing.song.title !== ''">
-                    <h4 class="media-heading might-overflow m-0 nowplaying-title">
-                        {{ np.now_playing.song.title }}
-                    </h4>
-                    <div class="nowplaying-artist might-overflow">
-                        {{ np.now_playing.song.artist }}
-                    </div>
+                    <h4 class="now-playing-title">{{ np.now_playing.song.title }}</h4>
+                    <h5 class="now-playing-artist text-secondary">{{ np.now_playing.song.artist }}</h5>
                 </div>
                 <div v-else>
-                    <h4 class="media-heading might-overflow nowplaying-title">
-                        {{ np.now_playing.song.text }}
-                    </h4>
+                    <h4 class="now-playing-title">{{ np.now_playing.song.text }}</h4>
                 </div>
 
-                <div class="d-flex flex-row align-items-center nowplaying-progress mt-1" v-if="time_display_played">
-                    <div class="mr-2">
+                <div class="time-display" v-if="time_display_played">
+                    <div class="time-display-played">
                         {{ time_display_played }}
                     </div>
-                    <div class="flex-fill">
+                    <div class="time-display-progress">
                         <div class="progress">
                             <div class="progress-bar bg-secondary" role="progressbar" v-bind:style="{ width: time_percent+'%' }"></div>
                         </div>
                     </div>
-                    <div class="ml-2">
+                    <div class="time-display-total">
                         {{ time_display_total }}
                     </div>
                 </div>
             </div>
         </div>
 
-        <hr class="my-2">
+        <hr>
 
-        <div class="d-flex flex-row align-items-center">
-            <div>
-                <a href="javascript:;" id="main-play-btn" role="button" :title="$t('play_pause_btn')" @click.prevent="toggle()">
-                    <i class="material-icons lg" style="line-height: 1" v-if="is_playing">pause_circle_filled</i>
-                    <i class="material-icons lg" style="line-height: 1" v-else>play_circle_filled</i>
+        <div class="radio-controls">
+            <div class="radio-control-play-button">
+                <a href="javascript:;" role="button" :title="$t('play_pause_btn')" @click.prevent="toggle()">
+                    <i class="material-icons lg" v-if="is_playing">pause_circle_filled</i>
+                    <i class="material-icons lg" v-else>play_circle_filled</i>
                 </a>
             </div>
-            <div class="flex-fill ml-1 nowplaying-progress">
-                <div id="stream-selector" v-if="this.streams.length > 1" class="dropdown">
+            <div class="radio-control-select-stream">
+                <div v-if="this.streams.length > 1" class="dropdown">
                     <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="btn-select-stream" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ current_stream.name }}
                     </button>
@@ -57,22 +53,135 @@
                 </div>
             </div>
 
-            <div class="flex-shrink-0">
+            <div class="radio-control-mute-button">
                 <a href="javascript:;" class="text-secondary" :title="$t('mute_btn')" @click.prevent="volume = 0">
-                    <i class="material-icons" style="line-height: 1;" aria-hidden="true">volume_mute</i>
+                    <i class="material-icons" aria-hidden="true">volume_mute</i>
                 </a>
             </div>
-            <div class="flex-fill" style="max-width: 30%;">
-                <input type="range" :title="$t('volume_slider')" class="custom-range" style="height: 10px;" id="jp-volume-range" min="0" max="100" step="1" v-model="volume">
+            <div class="radio-control-volume-slider">
+                <input type="range" :title="$t('volume_slider')" class="custom-range" min="0" max="100" step="1" v-model="volume">
             </div>
-            <div class="flex-shrink-0">
+            <div class="radio-control-max-volume-button">
                 <a href="javascript:;" class="text-secondary" :title="$t('full_volume_btn')" @click.prevent="volume = 100">
-                    <i class="material-icons" style="line-height: 1;" aria-hidden="true">volume_up</i>
+                    <i class="material-icons" aria-hidden="true">volume_up</i>
                 </a>
             </div>
         </div>
     </div>
 </template>
+
+<style lang="scss">
+.radio-player-widget {
+    .now-playing-details {
+        display: flex;
+        align-items: center;
+
+        .now-playing-art {
+            padding-right: .5rem;
+
+            img {
+                width: 75px;
+                height: auto;
+                border-radius: 5px;
+
+                @media (max-width:575px) {
+                    width: 50px;
+                }
+            }
+        }
+        .now-playing-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        h4, h5 {
+            margin: 0;
+            line-height: 1.3;
+        }
+        h4 {
+            font-size: 15px;
+        }
+        h5 {
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .now-playing-title,
+        .now-playing-artist {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
+            &:hover {
+                text-overflow: clip;
+                white-space: normal;
+                word-break: break-all;
+            }
+        }
+
+        .time-display {
+            font-size: 10px;
+            color: rgba(0,0,0,.38);
+            margin-top: .25rem;
+            flex-direction: row;
+            align-items: center;
+            display: flex;
+
+            .time-display-played {
+                margin-right: .5rem;
+            }
+            .time-display-progress {
+                flex: 1 1 auto;
+
+                .progress-bar {
+                    -webkit-transition: width 1s; /* Safari */
+                    transition: width 1s;
+                    transition-timing-function: linear;
+                }
+            }
+            .time-display-total {
+                margin-left: .5rem;
+            }
+        }
+    }
+
+    hr {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
+
+    i.material-icons {
+        line-height: 1;
+    }
+
+    .radio-controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .radio-control-play-button {
+            margin-right: .25rem;
+        }
+        .radio-control-select-stream {
+            flex: 1 1 auto;
+        }
+
+        .radio-control-mute-button,
+        .radio-control-max-volume-button {
+            flex-shrink: 0;
+        }
+
+        .radio-control-volume-slider {
+            flex: 1 1 auto;
+            max-width: 30%;
+
+            input {
+                height: 10px;
+            }
+        }
+    }
+}
+</style>
 
 <script>
 import axios from 'axios';

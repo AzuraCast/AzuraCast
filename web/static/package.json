@@ -32,6 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
+    "css-loader": "^2.1.1",
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
@@ -42,7 +43,9 @@
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
+    "node-sass": "^4.11.0",
     "prettier": "1.12.1",
+    "sass-loader": "^7.1.0",
     "vue-loader": "14.2.2",
     "vue-template-compiler": "^2.5.17",
     "webpack-stream": "^5.1.1"

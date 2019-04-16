@@ -4,7 +4,7 @@
             <div class="pr-2" v-if="show_album_art && np.now_playing.song.art">
                 <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" id="album-art" :alt="$t('album_art_alt')"></a>
             </div>
-            <div class="media-body">
+            <div class="media-body" style="min-width: 0;">
                 <div v-if="np.now_playing.song.title !== ''">
                     <h4 class="media-heading might-overflow m-0 nowplaying-title">
                         {{ np.now_playing.song.title }}

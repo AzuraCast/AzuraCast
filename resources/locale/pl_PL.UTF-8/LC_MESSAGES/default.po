@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-16 21:30\n"
+"PO-Revision-Date: 2019-04-16 21:50\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -2604,11 +2604,11 @@ msgstr "Kod z aplikacji uwierzytelniającej"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
-msgstr ""
+msgstr "Podaj kod obecnie wyświetlany przez aplikację uwierzytelniającą, aby zweryfikować, czy działa ona poprawnie."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:21
 msgid "Verify Authenticator"
-msgstr ""
+msgstr "Zweryfikuj aplikację uwierzytelniającą"
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
@@ -2687,7 +2687,7 @@ msgstr "Jeśli Twój strumień jest ustawiony do reklamowania YP katalogów powy
 
 #: /var/azuracast/www/config/forms/mount/generic.php:14
 msgid "Mount Point URL"
-msgstr ""
+msgstr "URL punktu montowania"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
@@ -2695,15 +2695,15 @@ msgstr "Tą nazwę zawsze należy zaczynać ukośnikiem (/) i musi być prawidł
 
 #: /var/azuracast/www/config/forms/mount/generic.php:24
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Nazwa wyświetlana jest przypisana do tego punktu montowania podczas wyświetlania jej na podstronach panelu administracyjnego lub na stronach publicznych. Pozostaw puste, aby wygenerować ją automatycznie."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:32
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Włącz, aby zezwolić słuchaczom na wybieranie tego punktu montowania na publicznych stronach tej stacji."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:42
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Ustaw jako domyślny punkt montowania"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:43
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
@@ -2723,11 +2723,11 @@ msgstr "Włącz AutoDJ'a"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:74
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "Jeśli włączone, autopilot będzie automatycznie odtwarzał muzykę na ten punkt montowania."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:119
 msgid "Advanced Configuration"
-msgstr ""
+msgstr "Konfiguracja zaawansowana"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:125
 msgid "Custom Stream URL"
@@ -2739,11 +2739,11 @@ msgstr "Można ustawić niestandardowy adres URL dla tego strumienia, który Azu
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:11
 msgid "This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href=\"%s\" target=\"_blank\">SoundExchange web site</a>."
-msgstr ""
+msgstr "Ten raport jest przeznaczony tylko dla celów licencjonowania na terenie Stanów Zjednoczonych, dla nadawców opłacających tantiemy poprzez SoundExchange. Dowiedz się więcej o wymaganiach dotyczących raportów oraz klasyfikacji na <a href=\"%s\" target=\"_blank\">stronie internetowej SoundExchange</a>."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:15
 msgid "AzuraCast assumes that your station fits SoundExchange Transmission Category A, \"Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming.\" If your station does not fall within this category, update the transmission category field accordingly."
-msgstr ""
+msgstr "AzuraCast przyjmuje, że Twoja stacja odpowiada Kategorii Transmisji A w SoundExchange: \"upoważnione transmisje nieabonamentowe inne niż simulcasty i transmisje programów niemuzycznych\" (Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming). Jeśli Twoja stacja nie pasuje do tej kategorii, zmień kategorię na odpowiednią."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:18
 msgid "The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate."
@@ -2751,7 +2751,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:21
 msgid "Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date."
-msgstr ""
+msgstr "Wymagania dotyczące raportów wysyłanych do SoundExchange mogą się w każdej chwili zmienić. AzuraCast to niekomercyjne oprogramowanie tworzone przez społeczność i nie może zagwarantować, że jego format raportów zawsze będzie aktualny."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:23
 msgid "You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href=\"%s\" target=\"_blank\">SoundExchange's ISRC search tool</a>."
@@ -2850,20 +2850,20 @@ msgstr "Zaloguj"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
-msgstr ""
+msgstr "Wprowadź kod jednorazowy weryfikacji dwuetapowej"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
 msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
-msgstr ""
+msgstr "Twoje konto wykorzystuje jednorazowe kody weryfikacji dwuetapowej. Podaj poniżej kod aktualnie wyświetlony na Twoim urządzeniu."
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:17
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
 msgid "Security Code"
-msgstr ""
+msgstr "Kod bezpieczeństwa"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:13
 msgid "Welcome!"
-msgstr ""
+msgstr "Witaj!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:15
 msgid "Welcome to %s!"
@@ -2875,28 +2875,28 @@ msgstr "Proszę, zaloguj się, aby kontynuować."
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:22
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Zapomniałeś hasła?</a>"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "Włącz weryfikację dwuetapową"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:15
 msgid "Step 1: Scan QR Code"
-msgstr ""
+msgstr "Krok 1: Zeskanuj kod QR"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:17
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
-msgstr ""
+msgstr "Używając smartfona, zeskanuj kod po prawej stronie, używając wybranej przez siebie aplikacji uwierzytelniającej (FreeOTP, Authy, itp)."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:19
 msgid "Step 2: Verify Generated Code"
-msgstr ""
+msgstr "Krok 2: Zweryfikuj wygenerowany kod"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:21
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
-msgstr ""
+msgstr "Aby sprawdzić, czy kod został ustawiony poprawnie, wpisz tutaj sześciocyfrowy kod wyświetlany przez aplikację."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:39
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:20
@@ -2906,7 +2906,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/index.phtml:307
 #: /var/azuracast/www/templates/stations/profile/index.phtml:315
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Skopiuj do schowka"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
@@ -3152,7 +3152,7 @@ msgstr "Moje klucze API"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:11
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Klucze API mogą być wykorzystywane do uzyskiwania dostępu do pewnych funkcji systemowych bez konieczności logowania się. Wszystkie wygenerowane przez Ciebie klucze posiadają Twoje uprawnienia w systemie. Aby uzyskać więcej informacji, zajrzyj do <a href=\"%s\">dokumentacji API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:31
 msgid "Key Identifier"
@@ -3192,7 +3192,7 @@ msgstr "Oto Twój pełny klucz API:"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:24
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr ""
+msgstr "Tworząc wywołania API, możesz przekazać tę wartość w nagłówku \"X-API-Key\", aby się uwierzytelnić. Możesz wykonywać tylko operacje dozwolone na Twoim koncie użytkownika."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:27
 msgid "Continue"
@@ -3282,11 +3282,11 @@ msgstr "%s z %s używane"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:41
 msgid "%s Files"
-msgstr ""
+msgstr "%s pliki"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:48
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr ""
+msgstr "Możesz również wysyłać pliki zbiorowo poprzez SFTP, <a href=\"%s\" target=\"_blank\">zgodnie z tą instrukcją</a>. Nowo wgrywane pliki zostaną automatycznie przetworzone w ciągu kilku minut."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:53
 msgid "Drag files here to upload to this folder or "
@@ -3364,7 +3364,7 @@ msgstr "Strona główna"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:6
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
-msgstr ""
+msgstr "Webhooki pozwalają łączyć się z zewnętrznymi serwisami internetowymi i wysyłać do nich zmiany dotyczące Twojej stacji."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:24
 msgid "Type"
@@ -3386,19 +3386,19 @@ msgstr "Aktywuj"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Trigger the web hook manually and view the raw response."
-msgstr ""
+msgstr "Wyzwól webhooka ręcznie i obejrzyj surową odpowiedź."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "Usunąć webhook'a \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 msgid "Select the type of web hook to create."
-msgstr ""
+msgstr "Wybierz typ webhook'a, jaki chcesz utworzyć."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6
@@ -3423,7 +3423,7 @@ msgstr "Konfigurowanie automatycznego przypisania"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
-msgstr ""
+msgstr "Nadawanie stacji wyłączone"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
@@ -3582,7 +3582,7 @@ msgstr "# Utwory"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Delete playlist \"%s\"?"
-msgstr ""
+msgstr "Usunąć playlistę \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:60
 msgid "More"
@@ -3698,7 +3698,7 @@ msgstr "Nieznany"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:64
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr ""
+msgstr "Ten produkt zawiera dane z GeoLite2 utworzone przez MaxMind, dostępne od %s."
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:14
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:16

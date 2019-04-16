@@ -118,6 +118,25 @@ export default {
         this.audio = document.createElement('audio');
         this.clock_interval = setInterval(this.iterateTimer, 1000);
 
+        // Handle audio errors.
+        this.audio.onerror = (e) => {
+            if (e.target.error.code === e.target.error.MEDIA_ERR_NETWORK && this.audio.src !== '') {
+                console.log('Network interrupted stream. Automatically reconnecting shortly...');
+                setTimeout(this.play, 5000);
+            }
+        };
+
+        this.audio.onended = () => {
+            if (this.is_playing) {
+                this.stop();
+
+                console.log('Network interrupted stream. Automatically reconnecting shortly...');
+                setTimeout(this.play, 5000);
+            } else {
+                this.stop();
+            }
+        };
+
         // Check webstorage for existing volume preference.
         if (store.enabled && store.get('player_volume') !== undefined) {
             this.volume = store.get('player_volume', this.volume);

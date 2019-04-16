@@ -102,15 +102,7 @@ $(function() {
     $player.on('error', function(e) {
         switch (e.target.error.code) {
             case e.target.error.MEDIA_ERR_NETWORK:
-                var original_src = player.src;
                 stopAllPlayers();
-
-                if (original_src !== '') {
-                    console.log('Network interrupted stream. Automatically reocnnecting shortly...');
-                    setTimeout(function() {
-                        handlePlayClick(original_src);
-                    }, 2000);
-                }
                 break;
 
             case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
@@ -123,17 +115,7 @@ $(function() {
     });
 
     $player.on('ended', function(e) {
-        var original_src = player.src;
-        var was_playing = is_playing;
-
         stopAllPlayers();
-
-        if (was_playing && original_src !== '') {
-            console.log('Network interrupted stream. Automatically reocnnecting shortly...');
-            setTimeout(function() {
-                handlePlayClick(original_src);
-            }, 5000);
-        }
     });
 
     if ('mediaSession' in navigator) {

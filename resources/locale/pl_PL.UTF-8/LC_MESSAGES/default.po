@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-16 21:26\n"
+"PO-Revision-Date: 2019-04-16 21:30\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -2134,11 +2134,11 @@ msgstr "Automatycznie wysyłaj zgłoszenia o błędach do AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Jeśli aplikacja webowa napotka na błąd, możesz wybrać, czy chcesz automatycznie wysłać anonimowe zgłoszenie błędu do ekipy AzuraCast w celu szybszej diagnozy i naprawy."
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr ""
+msgstr "Zgłoszenia błędów obsługiwane są przez <a href=\"%s\" target=\"_blank\">%s</a>."
 
 #: /var/azuracast/www/config/forms/role.php:13
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:23
@@ -2239,7 +2239,7 @@ msgstr "Ukryj metadane przed słuchaczami (\"Tryb Dżinglowy\", z ang. Jingle Mo
 
 #: /var/azuracast/www/config/forms/playlist.php:139
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
-msgstr ""
+msgstr "Aktywuj to ustawienie, aby zapobiec wysyłaniu metadanych plików z tej playlisty do autopilota Przydatne, gdy playlista zawiera dżingle lub przerywniki."
 
 #: /var/azuracast/www/config/forms/playlist.php:149
 msgid "Allow Requests from This Playlist"
@@ -2247,7 +2247,7 @@ msgstr "Zezwalaj na żądania z tej listy odtwarzania"
 
 #: /var/azuracast/www/config/forms/playlist.php:150
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Jeśli w Twojej stacji włączone są prośby od słuchaczy, będą oni mogli wysyłać prośby o odtworzenie mediów tej playlisty."
 
 #: /var/azuracast/www/config/forms/playlist.php:160
 msgid "Import Existing Playlist"
@@ -2350,7 +2350,7 @@ msgstr "Zaawansowane"
 
 #: /var/azuracast/www/config/forms/playlist.php:231
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr ""
+msgstr "Określ ręcznie, jak ta playlista jest wykorzystywana w konfiguracji Liquidsoap. <a href=\"%s\" target=\"_blank\">Dowiedz się więcej o Zaawansowanych Playlistach</a>"
 
 #: /var/azuracast/www/config/forms/playlist.php:241
 msgid "Interrupt Other Songs"
@@ -2467,11 +2467,11 @@ msgstr "Ta lista odtwarzania będzie grać co minut $x, gdzie $x jest określona
 
 #: /var/azuracast/www/config/forms/playlist.php:384
 msgid "Minute of Hour to Play"
-msgstr ""
+msgstr "Odtwarzanie w podanej minucie godziny"
 
 #: /var/azuracast/www/config/forms/playlist.php:385
 msgid "Specify the minute of every hour that this playlist should play."
-msgstr ""
+msgstr "Określ minutę każdej godziny, kiedy ta playlista powinna być odtwarzana."
 
 #: /var/azuracast/www/config/forms/playlist.php:403
 msgid "Scheduled Play Time"
@@ -2552,11 +2552,11 @@ msgstr "<p>SHOUTcast 2 DNAS nie jest oprogramowaniem wolnym, a jego restrykcyjna
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:19
 msgid "Current Installed Version"
-msgstr ""
+msgstr "Obecnie zainstalowana wersja"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:20
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr ""
+msgstr "SHOUTcast nie jest obecnie zainstalowany w tej instalacji."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:27
 msgid "Select SHOUTcast 64-bit .tar.gz File"
@@ -2600,7 +2600,7 @@ msgstr "%d dni"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:10
 msgid "Code from Authenticator App"
-msgstr ""
+msgstr "Kod z aplikacji uwierzytelniającej"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."

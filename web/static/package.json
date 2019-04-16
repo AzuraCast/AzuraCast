@@ -8,6 +8,7 @@
     "@fancyapps/fancybox": "^3.5.6",
     "@flowjs/flow.js": "^2.13.1",
     "autosize": "^4.0.2",
+    "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "bootstrap-daterangepicker": "^3.0.3",
     "bootstrap-notify": "^3.1.3",

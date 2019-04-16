@@ -420,4 +420,16 @@ return [
             ]
         ]
     ],
+
+    'radio_player' => [
+        'order' => 10,
+        'require' => ['vue', 'vue-i18n'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/radio_player.js',
+                ],
+            ]
+        ]
+    ],
 ];

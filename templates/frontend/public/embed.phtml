@@ -8,15 +8,9 @@ $this->layout('minimal', [
 ]);
 
 /** @var \Azura\Assets $assets */
-$assets
-    ->load('vue')
-    ->load('radio')
-    ->addInlineJs($this->fetch('frontend/public/embed.js', ['station' => $station]));
+$assets->load('vue');
 ?>
 
 <div class="stations nowplaying">
-    <?=$this->fetch('frontend/public/player_component', [
-        'current_stream' => $current_stream,
-        'streams' => $streams
-    ]) ?>
+    <?=$this->fetch('frontend/public/player_component', ['station' => $station]) ?>
 </div>

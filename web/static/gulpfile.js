@@ -129,15 +129,32 @@ gulp.task('concat-js', function() {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build-vue', function() {
-    return gulp.src('vue/webcaster.vue')
-        .pipe(sourcemaps.init())
+var vueProjects = {
+    "webcaster": {
+        "src_file": 'vue/webcaster.vue',
+        "filename": 'webcaster.js',
+        "library": 'Webcaster'
+    },
+    "radio_player": {
+        "src_file": 'vue/radio_player.vue',
+        "filename": 'radio_player.js',
+        "library": 'RadioPlayer'
+    }
+};
+
+var vueTasks = Object.keys(vueProjects);
+
+vueTasks.forEach(function (libName) {
+    gulp.task('vue:'+libName, function () {
+        var vueProject = vueProjects[libName];
+        return gulp.src(vueProject.src_file)
+            .pipe(sourcemaps.init())
             .pipe(webpack({
                 mode: 'production',
                 output: {
                     publicPath: '/static/dist',
-                    filename: 'webcaster.js',
-                    library: 'Webcaster'
+                    filename: vueProject.filename,
+                    library: vueProject.library
                 },
                 module: {
                     rules: [
@@ -153,9 +170,16 @@ gulp.task('build-vue', function() {
                 presets: ['@babel/env']
             }))
             .pipe(uglify())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./dist'));
+            .pipe(sourcemaps.write())
+            .pipe(gulp.dest('./dist'));
+    });
 });
+
+gulp.task('build-vue', gulp.series(
+    vueTasks.map(function(name) {
+        return 'vue:'+name;
+    })
+));
 
 gulp.task('build-js', function() {
     return gulp.src(['./js/*.js'])

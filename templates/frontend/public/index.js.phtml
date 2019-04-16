@@ -1,5 +1,4 @@
 $(function() {
-
     // Song history Vue component
     songHistory = new Vue({
         el: '#station-history',
@@ -12,30 +11,13 @@ $(function() {
                     }
                 }
             ]
+        },
+        created: function() {
+            Vue.prototype.$eventHub.$on('np_updated', function(np_new) {
+                songHistory.history = np_new.song_history;
+            });
         }
     });
-
-    function loadNowPlaying() {
-        $.getJSON('<?=$router->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
-            nowPlaying.np = row;
-            songHistory.history = row.song_history;
-
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: row.now_playing.song.title,
-                    artist: row.now_playing.song.artist,
-                    artwork: [
-                        { src: row.now_playing.song.art }
-                    ]
-                });
-            }
-
-            setTimeout(loadNowPlaying, 15000);
-        }).fail(function() {
-            setTimeout(loadNowPlaying, 30000);
-        });
-    }
-    loadNowPlaying();
 
     $('[data-fancybox]').fancybox({
         buttons: ['close']

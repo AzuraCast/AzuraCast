@@ -38,7 +38,8 @@
   "dist/lib/zxcvbn/zxcvbn.js": "dist/lib/zxcvbn/zxcvbn-9cf6916dc0.js",
   "dist/light.css": "dist/light-4ab1c23f9e.css",
   "dist/material.js": "dist/material-ad7c414bdf.js",
-  "dist/radio.js": "dist/radio-3d0b14967e.js",
+  "dist/radio.js": "dist/radio-d4d92dfe64.js",
+  "dist/radio_player.js": "dist/radio_player-3182bc7bf1.js",
   "dist/webcaster.js": "dist/webcaster-9c100185e9.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

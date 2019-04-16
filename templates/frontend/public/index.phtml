@@ -9,7 +9,6 @@ $this->layout('minimal', [
 /** @var \Azura\Assets $assets */
 $assets
     ->load('vue')
-    ->load('radio')
     ->load('bootgrid')
     ->load('fancybox')
     ->addInlineJs($this->fetch('frontend/public/index.js', ['station' => $station]));
@@ -21,7 +20,7 @@ $assets
             <h2 class="card-title"><?=$this->e($station->getName()) ?></h2>
 
             <div class="stations nowplaying">
-                <?=$this->fetch('frontend/public/player_component', ['current_stream' => $current_stream, 'streams' => $streams]) ?>
+                <?=$this->fetch('frontend/public/player_component', ['station' => $station]) ?>
             </div>
         </div>
 

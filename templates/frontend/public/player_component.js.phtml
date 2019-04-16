@@ -1,143 +1,37 @@
-var nowPlaying;
+<?php
+/** @var \App\Customization $customization */
+$locale_short = substr($customization->getLocale(), 0, 2);
 
-function iterateTimer() {
-    var np_elapsed = nowPlaying.np.now_playing.elapsed;
-    var np_total = nowPlaying.np.now_playing.duration;
+$locale_info = [
+    'locale' => $locale_short,
+    'messages' => [
+        $locale_short => [
+            'play_pause_btn'    => __('Play/Pause'),
+            'mute_btn'          => __('Mute'),
+            'volume_slider'     => __('Volume'),
+            'full_volume_btn'   => __('Full Volume'),
+            'album_art_alt'     => __('Album Art'),
+        ],
+    ],
+];
+?>
 
-    if (np_elapsed < np_total) {
-        nowPlaying.np.now_playing.elapsed = np_elapsed + 1;
-    }
-}
-
-function formatTime(time) {
-    var sec_num = parseInt(time, 10);
-
-    var hours = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
-}
+var i18n, radio_player;
 
 $(function() {
-    nowPlaying = new Vue({
+    Vue.prototype.$eventHub = new Vue();
+
+    i18n = new VueI18n(<?=json_encode($locale_info) ?>)
+    radio_player = new Vue({
+        i18n,
         el: '#station-nowplaying',
-        data: {
-            "np": {
-                "station": {
-                    "listen_url": '',
-                    "mounts": [],
-                    "remotes": []
-                },
-                "now_playing": {
-                    "song": {
-                        "title": <?=$this->escapeJs(__('Song Title')) ?>,
-                        "artist": <?=$this->escapeJs(__('Song Artist')) ?>,
-                        "art": <?=$this->escapeJs((string)$customization->getDefaultAlbumArtUrl()) ?>
-                    },
-                    "is_request": false,
-                    "elapsed": 0,
-                    "duration": 0
+        render: function(createElement) {
+            return createElement(RadioPlayer.default, {
+                props: {
+                    show_album_art: <?=($customization->hideAlbumArt() ? 'false' : 'true') ?>,
+                    now_playing_uri: '<?=$router->named('api:nowplaying:index', ['station' => $station->getId()]) ?>'
                 }
-            },
-            "current_stream": {
-                "name": "",
-                "url": ""
-            }
-        },
-        computed: {
-            "streams": function() {
-                var all_streams = [];
-
-                this.np.station.mounts.forEach(function (mount) {
-                    all_streams.push({
-                        "name": mount.name,
-                        "url": mount.url
-                    });
-                });
-
-                this.np.station.remotes.forEach(function(remote) {
-                    all_streams.push({
-                        "name": remote.name,
-                        "url": remote.url
-                    })
-                });
-
-                return all_streams;
-            },
-            "time_percent": function() {
-                var time_played = this.np.now_playing.elapsed;
-                var time_total = this.np.now_playing.duration;
-
-                if (!time_total) {
-                    return 0;
-                }
-                if (time_played > time_total) {
-                    return 100;
-                }
-
-                return (time_played / time_total) * 100;
-            },
-            "time_display_played": function() {
-                var time_played = this.np.now_playing.elapsed;
-                var time_total = this.np.now_playing.duration;
-
-                if (!time_total) {
-                    return null;
-                }
-
-                if (time_played > time_total) {
-                    time_played = time_total;
-                }
-
-                return formatTime(time_played);
-            },
-            "time_display_total": function() {
-                var time_total = this.np.now_playing.duration;
-                return (time_total) ? formatTime(time_total) : null;
-            }
-        },
-        watch: {
-            "np": function(np_new, np_old) {
-                if (this.current_stream.url == '' && np_new.station.listen_url != '' && this.streams.length > 0) {
-                    var current_stream = null;
-
-                    this.streams.forEach(function(stream) {
-                        if (stream.url === np_new.station.listen_url) {
-                            current_stream = stream;
-                        }
-                    });
-
-                    this.playStream(current_stream);
-                }
-            }
-        },
-        methods: {
-            "playStream": function(new_stream) {
-                // Hackiness to work with jQuery.
-                var play_btn = $('#main-play-btn');
-                var is_playing = play_btn.hasClass('playing');
-
-                stopAllPlayers();
-                this.current_stream = new_stream;
-
-                play_btn.data('url', new_stream.url).attr('data-url', new_stream.url);
-
-                if (is_playing) {
-                    handlePlayClick(new_stream.url);
-                }
-            }
+            });
         }
     });
-
-    setInterval(iterateTimer, 1000);
 });

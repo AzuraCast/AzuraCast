@@ -1,81 +1,11 @@
 <?php
 /** @var \Azura\Assets $assets */
-$assets->addInlineJs($this->fetch('frontend/public/player_component.js', [
-    'station' => $station,
-]), 95);
+$assets
+    ->load('vue')
+    ->load('radio_player')
+    ->addInlineJs($this->fetch('frontend/public/player_component.js', [
+        'station' => $station,
+    ]), 95);
 ?>
 
-<div id="station-nowplaying">
-    <div class="media align-items-center">
-    <?php if (!$customization->hideAlbumArt()): ?>
-        <div class="pr-2" v-if="np.now_playing.song.art">
-            <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" id="album-art" alt="<?=__('Album Cover') ?>"></a>
-        </div>
-    <?php endif; ?>
-        <div class="media-body">
-            <div v-if="np.now_playing.song.title != ''">
-                <h4 class="media-heading might-overflow m-0 nowplaying-title">
-                    {{ np.now_playing.song.title }}
-                </h4>
-                <div class="nowplaying-artist might-overflow">
-                    {{ np.now_playing.song.artist }}
-                </div>
-            </div>
-            <div v-else>
-                <h4 class="media-heading might-overflow nowplaying-title">
-                    {{ np.now_playing.song.text }}
-                </h4>
-            </div>
-
-            <div class="d-flex flex-row align-items-center nowplaying-progress mt-1" v-if="time_display_played">
-                <div class="mr-2">
-                    {{ time_display_played }}
-                </div>
-                <div class="flex-fill">
-                    <div class="progress">
-                        <div class="progress-bar bg-secondary" role="progressbar" v-bind:style="{ width: time_percent+'%' }"></div>
-                    </div>
-                </div>
-                <div class="ml-2">
-                    {{ time_display_total }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <hr class="my-2">
-
-    <div class="d-flex flex-row align-items-center">
-        <div>
-            <a id="main-play-btn" class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" v-bind:data-url="current_stream.url">
-                <i class="material-icons lg" style="line-height: 1">play_circle_filled</i>
-            </a>
-        </div>
-        <div class="flex-fill ml-1 nowplaying-progress">
-            <div id="stream-selector" v-if="this.streams.length > 1" class="dropdown">
-                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="btn-select-stream" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ current_stream.name }}
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btn-select-stream">
-                    <a class="dropdown-item" v-for="stream in streams" href="javascript:;" v-on:click="playStream(stream)">
-                        {{ stream.name }}
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex-shrink-0">
-            <a href="javascript:;" class="text-secondary jp-mute" title="<?=__('Mute') ?>">
-                <i class="material-icons" style="line-height: 1;" aria-hidden="true">volume_mute</i>
-            </a>
-        </div>
-        <div class="flex-fill" style="max-width: 30%;">
-            <input type="range" title="<?=__('Volume') ?>" class="custom-range jp-volume-range" style="height: 10px;" id="jp-volume-range" min="0" max="100" step="1">
-        </div>
-        <div class="flex-shrink-0">
-            <a href="javascript:;" class="text-secondary jp-volume-full" title="<?=__('Full Volume') ?>">
-                <i class="material-icons" style="line-height: 1;" aria-hidden="true">volume_up</i>
-            </a>
-        </div>
-    </div>
-</div>
+<div id="station-nowplaying"></div>

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-16 21:10\n"
+"PO-Revision-Date: 2019-04-16 21:26\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1357,41 +1357,41 @@ msgstr "Chat ID"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:38
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
-msgstr ""
+msgstr "Unikalny identyfikator docelowego czata lub nazwa użytkownika na docelowym kanale (w formacie @nazwa_użytkownika_lub_kanału)."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:47
 msgid "Custom API Base URL"
-msgstr ""
+msgstr "Podstawowy URL własnego API"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:49
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
-msgstr ""
+msgstr "Pozostaw puste, aby użyć domyślnego URL'a API Telegrama (zalecane). Podaj pełen URL, na przykład <code>https://api.pwrtelegram.xyz/</code>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:67
 #: /var/azuracast/www/config/forms/webhook/discord.php:47
 msgid "Customize Message"
-msgstr ""
+msgstr "Dostosuj treść wiadomości"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 #: /var/azuracast/www/config/forms/webhook/discord.php:55
 msgid "Main Message Content"
-msgstr ""
+msgstr "Zawartość wiadomości"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:85
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Tryb parsowania wiadomości"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:12
 msgid "Discord API Details"
-msgstr ""
+msgstr "Dane o API Discorda"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:27
 msgid "Discord Web Hook URL"
-msgstr ""
+msgstr "URL webhook'a Discorda"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:28
 msgid "This URL is provided within the Discord application."
-msgstr ""
+msgstr "Ten URL jest podany w aplikacji Discord."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:57
 msgid "Now playing on %s:"
@@ -1415,7 +1415,7 @@ msgstr "Opis"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:82
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:91
 msgid "Author Name"
@@ -1423,7 +1423,7 @@ msgstr "Imię i nazwisko autora"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Thumbnail Image URL"
-msgstr ""
+msgstr "Adres URL miniatury obrazu"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:109
 msgid "Footer Text"
@@ -1445,23 +1445,23 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:34
 msgid "Web Hook URL"
-msgstr ""
+msgstr "URL webhook'a"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:35
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "URL, który będzie odbierał wiadomość POST za każdym razem, gdy zdarzenie będzie wywoływane."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:44
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "Opcjonalne: Nazwa użytkownika podstawowego uwierzytelnienia HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:45
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Jeśli Twój webhook wymaga podstawowego uwierzytelnienia HTTP, podaj tutaj nazwę użytkownika."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:53
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "Opcjonalnie: Hasło uwierzytelniania podstawowego HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:54
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
@@ -1919,11 +1919,11 @@ msgstr "W większości przypadków, używaj domyślnego kodowania UTF-8. Starsze
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "Customize Internal Request Processing Port"
-msgstr ""
+msgstr "Dostosuj port wewnętrznego przetwarzania żądania"
 
 #: /var/azuracast/www/config/forms/station.php:344
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
-msgstr ""
+msgstr "Ten port nie jest wykorzystywany przez żaden proces zewnętrzny. Zmień port tylko wtedy, gdy ten przypisany jest już używany. Pozostaw puste, aby przypisać port automatycznie."
 
 #: /var/azuracast/www/config/forms/station.php:353
 msgid "Use Replaygain Metadata"
@@ -1962,11 +1962,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:404
 msgid "Base Station Directory"
-msgstr ""
+msgstr "Podstawowy katalog stacji"
 
 #: /var/azuracast/www/config/forms/station.php:406
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
-msgstr ""
+msgstr "Katalog nadrzędny, w którym są przechowywane pliki listy odtwarzania i konfiguracji stacji. Pozostaw puste, aby użyć domyślnego katalogu."
 
 #: /var/azuracast/www/config/forms/station.php:413
 msgid "Custom Media Directory"
@@ -2054,7 +2054,7 @@ msgstr "Czas nieokreślony"
 
 #: /var/azuracast/www/config/forms/settings.php:83
 msgid "Security Controls"
-msgstr ""
+msgstr "Opcje zabezpieczeń"
 
 #: /var/azuracast/www/config/forms/settings.php:89
 msgid "Always Use HTTPS"
@@ -2062,15 +2062,15 @@ msgstr "Zawsze wykorzystuj HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:90
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Ustaw \"Tak\", aby zawsze używać szyfrowanego adresu URL \"https://\" i automatycznie przekierować do szyfrowanego adresu URL podczas w przypadku odwiedzenia nieszyfrowanego URL."
 
 #: /var/azuracast/www/config/forms/settings.php:100
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "Nagłówek API \"Access-Control-Allow-Origin\""
 
 #: /var/azuracast/www/config/forms/settings.php:102
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Dowiedz się więcej o tym nagłówku</a>. Ustaw *, aby zezwolić wszystkim źródłom, lub podaj listę źródeł oddzielonych przecinkiem (,)."
 
 #: /var/azuracast/www/config/forms/settings.php:111
 msgid "Privacy Controls"
@@ -2078,7 +2078,7 @@ msgstr "Kontrolki prywatności"
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast nie wysyła danych o Twojej stacji lub słuchaczach na jakikolwiek zewnętrzny serwer. Tutaj możesz ustawić, ile danych o Twoich słuchaczach ma zapisywać oprogramowanie AzuraCast."
 
 #: /var/azuracast/www/config/forms/settings.php:119
 msgid "Listener Analytics Collection"
@@ -2086,19 +2086,19 @@ msgstr "Zbiór analiz danych o słuchaczach"
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Zbiorcze statystyki słuchalności są wykorzystywane do wyświetlania raportów o stacjach na przestrzeni całego systemu. Statystyki słuchalności w oparciu o IP są wykorzystywane do śledzenia aktualnie słuchających i mogą być wymagane w raportach dotyczących tantiem."
 
 #: /var/azuracast/www/config/forms/settings.php:123
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>Pełne:</b> Zbieraj zbiorcze statystyki słuchalności oraz statystyki słuchaczy w oparciu o IP"
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>Ograniczone:</b> Zbieraj tylko zbiorcze statystyki słuchalności"
 
 #: /var/azuracast/www/config/forms/settings.php:125
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>Brak:</b> Nie zbieraj żadnych statystyk słuchalności"
 
 #: /var/azuracast/www/config/forms/settings.php:134
 msgid "AzuraCast Installation Telemetry"
@@ -2106,31 +2106,31 @@ msgstr "Telemetria instalacji AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:135
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Zdecyduj, czy Twoja instalacja ma się łączyć z centralnymi serwerami AzuraCast, celem sprawdzenia dostępnych aktualizacji i ogłoszeń.<br>AzuraCast szanuje Twoją prywatność - po więcej szczegółów, zajrzyj do <a href=\"%s\" target=\"_blank\">polityki prywatności</a>."
 
 #: /var/azuracast/www/config/forms/settings.php:142
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Sprawdzaj aktualizacje i ogłoszenia"
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Wysyłaj podstawowe informacje o swojej instalacji AzuraCast do centralnego serwera AzuraCast, aby sprawdzać zaktualizowane wersje oprogramowania oraz ważne ogłoszenia."
 
 #: /var/azuracast/www/config/forms/settings.php:146
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>Brak:</b> Nie sprawdzaj aktualizacji ani ogłoszeń."
 
 #: /var/azuracast/www/config/forms/settings.php:147
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>Tylko aktualizacje:</b> Sprawdzaj tylko krytyczne ogłoszenia oraz nowe wersje oprogramowania."
 
 #: /var/azuracast/www/config/forms/settings.php:148
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>Wszystkie aktualizacje:</b> Sprawdzaj wszystkie ogłoszenia oraz mniejsze aktualizacje."
 
 #: /var/azuracast/www/config/forms/settings.php:157
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Automatycznie wysyłaj zgłoszenia o błędach do AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."

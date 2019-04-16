@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-16 21:54\n"
+"PO-Revision-Date: 2019-04-16 22:08\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -677,7 +677,7 @@ msgstr "Zapoznaj się z <a href=\"%s\" target=\"_blank\">instrukcją aktualizacj
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "Dostępna jest <a href=\"%s\" target=\"_blank\">wersja %s</a> oprogramowania AzuraCast."
 
 #: /var/azuracast/www/src/Notification/Manager.php:106
 msgid "You are currently running version %s. Updating is highly recommended."
@@ -697,7 +697,7 @@ msgstr "Twoja instalacja jest obecnie %d aktualizacji za najnowszą wersją."
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Powinieneś dokonać aktualizacji, aby uzyskać poprawki błędów i bezpieczeństwa."
 
 #: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
@@ -973,11 +973,11 @@ msgstr "Konto użytkownika"
 
 #: /var/azuracast/www/config/webhooks.php:18
 msgid "Generic Web Hook"
-msgstr ""
+msgstr "Ogólny webhook"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "Automatycznie wysyłaj wiadomość pod każdy URL, gdy dane Twojej stacji ulegną zmianie."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
@@ -985,15 +985,15 @@ msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
-msgstr ""
+msgstr "Wysyłaj aktualizacje metadanych utworu do TuneIn."
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
-msgstr ""
+msgstr "Webhook Discord'a"
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Automatycznie wysyłaj spersonalizowaną wiadomość na swój serwer Discord."
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
@@ -1247,7 +1247,7 @@ msgstr "Nazwa %s"
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:26
 msgid "Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page."
-msgstr ""
+msgstr "Wybierz dla tego webhook'a nazwę, która pomoże Ci odróżnić go od innych. Będzie ona wyświetlana tylko na stronie panelu administracji."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:23
 msgid "TuneIn Partner ID"
@@ -3574,7 +3574,7 @@ msgstr "Wszystkie playlisty"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:22
 msgid "Schedule View"
-msgstr ""
+msgstr "Widok Harmonogramu"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:47
 msgid "# Songs"

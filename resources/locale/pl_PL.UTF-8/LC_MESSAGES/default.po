@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-16 22:08\n"
+"PO-Revision-Date: 2019-04-17 00:10\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1651,15 +1651,15 @@ msgstr "Hasło streamera"
 
 #: /var/azuracast/www/config/forms/streamer.php:19
 msgid "The streamer will use this password to connect to the radio server. Do not use the colon (:) character."
-msgstr ""
+msgstr "Nadający będzie używał tego hasła do łączenia się z serwerem radiowym. Nie używaj dwukropka (:)."
 
 #: /var/azuracast/www/config/forms/streamer.php:30
 msgid "Streamer Display Name"
-msgstr ""
+msgstr "Nazwa wyświetlana prezentera"
 
 #: /var/azuracast/www/config/forms/streamer.php:31
 msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
-msgstr ""
+msgstr "Nieformalna nazwa wyświetlana, która będzie się ukazywała w odpowiedziach API jeśli prezenter będzie nadawał na żywo."
 
 #: /var/azuracast/www/config/forms/streamer.php:38
 #: /var/azuracast/www/config/forms/api_key.php:10
@@ -1678,11 +1678,11 @@ msgstr "Konto jest aktywne"
 
 #: /var/azuracast/www/config/forms/streamer.php:47
 msgid "Enable to allow this account to log in and stream."
-msgstr ""
+msgstr "Włącz, aby pozwolić temu kontu na logowanie się i streamowanie."
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Opisz przypadek użycia tego klucza API w przyszłości."
 
 #: /var/azuracast/www/config/forms/station.php:23
 #: /var/azuracast/www/templates/partials/station_form.phtml:24

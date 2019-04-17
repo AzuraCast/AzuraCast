@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-17 00:30\n"
+"PO-Revision-Date: 2019-04-17 00:40\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1441,7 +1441,7 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Webhooki automatycznie wysyłają żądanie HTTP POST do podanego URL'a, aby powiadomić go za każdym razem gdy jeden z podanych przez Ciebie wyzwalaczy pojawi się w Twojej stacji. Treść wiadomości POST jest dokładnie taka sama, jak <a href=\"%s\" target=\"_blank\">odpowiedź API Teraz Odtwarzane</a> dla Twojej stacji. W celu szybkiego przetworzenia wiadomości, webhooki mają krótki timeout, więc usługa odpowiadająca powinna być zoptymalizowana by być w stanie przetworzyć żądanie w czasie mniej niż 2 sekund."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:34
 msgid "Web Hook URL"
@@ -1465,7 +1465,7 @@ msgstr "Opcjonalnie: Hasło uwierzytelniania podstawowego HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:54
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Jeśli Twój webhook wymaga podstawowego uwierzytelnienia, podaj tutaj hasło."
 
 #: /var/azuracast/www/config/forms/remote.php:13
 #: /var/azuracast/www/config/forms/mount/generic.php:23
@@ -1475,7 +1475,7 @@ msgstr "Nazwa wyśwetlana"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Nazwa wyświetlana przypisana do tego relaya przy wyświetlaniu w panelu administracyjnym lub na stronach publicznych. Pozostaw puste, aby wygenerować automatycznie."
 
 #: /var/azuracast/www/config/forms/remote.php:21
 #: /var/azuracast/www/config/forms/mount/generic.php:31
@@ -1484,7 +1484,7 @@ msgstr "Pokaż na publicznych stronach"
 
 #: /var/azuracast/www/config/forms/remote.php:22
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Włącz, aby pozwolić słuchaczom wybrać ten relay na stronach publicznych tej stacji."
 
 #: /var/azuracast/www/config/forms/remote.php:23
 #: /var/azuracast/www/config/forms/remote.php:72
@@ -1617,7 +1617,7 @@ msgstr "Nazwa użytkownika zdalnej stacji"
 
 #: /var/azuracast/www/config/forms/remote.php:136
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr ""
+msgstr "Jeśli nadajesz z wykorzystaniem autopilota, podaj tutaj nazwę użytkownika źródła. Możesz zostawić puste."
 
 #: /var/azuracast/www/config/forms/remote.php:143
 msgid "Remote Station Source Password"
@@ -1625,7 +1625,7 @@ msgstr "Hasło źródła stacji zdalnej"
 
 #: /var/azuracast/www/config/forms/remote.php:144
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr ""
+msgstr "Jeśli nadajesz z wykorzystaniem autopilota, podaj tutaj hasło źródła."
 
 #: /var/azuracast/www/config/forms/remote.php:151
 #: /var/azuracast/www/config/forms/mount/generic.php:62
@@ -2747,7 +2747,7 @@ msgstr "AzuraCast przyjmuje, że Twoja stacja odpowiada Kategorii Transmisji A w
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:18
 msgid "The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate."
-msgstr ""
+msgstr "Dane zbierane przez AzuraCast spełniają wymogi standardu SoundExchange pod względem Rzeczywistej Całkowitej Liczby Odtworzeń (Actual Total Performances, ATP), śledząc liczbę unikalnych słuchaczy podczas wszystkich odtworzeń utworu. Wszelkie pozostałe informacje pochodzą z metadanych samych wgrywanych utworów i mogą nie być do końca dokładne."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:21
 msgid "Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date."
@@ -2755,7 +2755,7 @@ msgstr "Wymagania dotyczące raportów wysyłanych do SoundExchange mogą się w
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:23
 msgid "You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href=\"%s\" target=\"_blank\">SoundExchange's ISRC search tool</a>."
-msgstr ""
+msgstr "Przed wysłaniem raportu wygenerowanego przez AzuraCast, zawsze powinieneś go sprawdzić. Szczególnie, ISRC (International Standard Recording Code - międzynarodowy standard używany do identyfikacji poszczególnych nagrań) lub *zarówno* album oraz wytwórnia są wymagane dla każdego rzędu, i mogą nie być podane w metadanych utworu. AzuraCast wykorzysta zewnętrzne API, aby spróbować odnaleźć ISRC, możesz jednak użyć również <a href=\"%s\" target=\"_blank\">narzędzia SoundExchange do wyszukiwania ISRC</a>."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:35
 msgid "Report Start Date"

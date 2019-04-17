@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-17 00:10\n"
+"PO-Revision-Date: 2019-04-17 00:20\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1701,7 +1701,7 @@ msgstr "Adres URL strony www"
 
 #: /var/azuracast/www/config/forms/station.php:51
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
-msgstr ""
+msgstr "Uwaga: Powinna to być dostępna publicznie strona główna radiostacji, nie adres URL AzuraCast. Będzie ona zawarta w szczegółach nadawania."
 
 #: /var/azuracast/www/config/forms/station.php:58
 msgid "Enable Public Page"
@@ -1709,23 +1709,23 @@ msgstr "Włącz stronę publiczną"
 
 #: /var/azuracast/www/config/forms/station.php:59
 msgid "Show the station in public pages and general API results."
-msgstr ""
+msgstr "Umieść stację na stronach publicznych i ogólnych wynikach API."
 
 #: /var/azuracast/www/config/forms/station.php:69
 msgid "URL Stub"
-msgstr ""
+msgstr "Krótki URL"
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
-msgstr ""
+msgstr "Opcjonalnie można określić krótką nazwę przyjaznego adresu URL, taką jak <code>my_station_name</code>, która będzie używana w adresach URL tej stacji. Pozostaw to pole puste, aby automatycznie utworzyć URL'a w oparciu o nazwę stacji."
 
 #: /var/azuracast/www/config/forms/station.php:78
 msgid "Number of Recently Played Songs"
-msgstr ""
+msgstr "Liczba ostatnio odtwarzanych utworów"
 
 #: /var/azuracast/www/config/forms/station.php:80
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr ""
+msgstr "Dostosuj liczbę utworów, które będą wyświetlane w sekcji \"Historia Utworów\" (Song History) dla tej stacji i wszystkich publicznych interfejsów API."
 
 #: /var/azuracast/www/config/forms/station.php:82
 #: /var/azuracast/www/config/forms/automation.php:14
@@ -1741,23 +1741,23 @@ msgstr "Nieaktywne"
 
 #: /var/azuracast/www/config/forms/station.php:95
 msgid "Select Broadcasting Service"
-msgstr ""
+msgstr "Wybierz usługę nadawania"
 
 #: /var/azuracast/www/config/forms/station.php:101
 msgid "Broadcasting Service"
-msgstr ""
+msgstr "Usługa nadawania"
 
 #: /var/azuracast/www/config/forms/station.php:102
 msgid "This software delivers your broadcast to the listening audience."
-msgstr ""
+msgstr "To oprogramowanie wysyła sygnał Twojej stacji do słuchaczy."
 
 #: /var/azuracast/www/config/forms/station.php:111
 msgid "Configure Broadcasting Service"
-msgstr ""
+msgstr "Skonfiguruj usługę nadawania"
 
 #: /var/azuracast/www/config/forms/station.php:119
 msgid "Customize Broadcasting Port"
-msgstr ""
+msgstr "Dostosuj port nadawania"
 
 #: /var/azuracast/www/config/forms/station.php:121
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
@@ -1765,7 +1765,7 @@ msgstr "Żaden inny program nie może korzystać z tego portu. Pozostaw puste, a
 
 #: /var/azuracast/www/config/forms/station.php:130
 msgid "Customize Source Password"
-msgstr ""
+msgstr "Dostosuj hasło źródla"
 
 #: /var/azuracast/www/config/forms/station.php:132
 #: /var/azuracast/www/config/forms/station.php:142
@@ -1774,7 +1774,7 @@ msgstr "Pozostaw puste, aby automatycznie wygenerować nowe hasło."
 
 #: /var/azuracast/www/config/forms/station.php:140
 msgid "Customize Administrator Password"
-msgstr ""
+msgstr "Dostosuj hasło administratora"
 
 #: /var/azuracast/www/config/forms/station.php:150
 msgid "Maximum Listeners"
@@ -1803,7 +1803,7 @@ msgstr "Usługa autopilota"
 
 #: /var/azuracast/www/config/forms/station.php:179
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
-msgstr ""
+msgstr "To oprogramowanie nieprzerwanie losuje utwory z playlisty i odtwarza je, gdy nie jest dostępne żadne inne źródło sygnału radia."
 
 #: /var/azuracast/www/config/forms/station.php:188
 msgid "Configure Liquidsoap"
@@ -1851,7 +1851,7 @@ msgstr "Zezwalaj na żądania piosenki"
 
 #: /var/azuracast/www/config/forms/station.php:237
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
-msgstr ""
+msgstr "Pozwól słuchaczom wysyłać prośby o piosenki. Można prosić tylko o utwory znajdujące się już w Twoich playlistach."
 
 #: /var/azuracast/www/config/forms/station.php:247
 msgid "Request Minimum Delay (Minutes)"
@@ -1875,27 +1875,27 @@ msgstr "Zezwalaj Streamerom/DJ'om"
 
 #: /var/azuracast/www/config/forms/station.php:270
 msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
-msgstr ""
+msgstr "Jeśli włączone, prezenterzy będą mogli łączyć się bezpośrednio z Twoim strumieniem i nadawać utwory, przerywając tym samym strumień autopilota."
 
 #: /var/azuracast/www/config/forms/station.php:280
 msgid "Deactivate Streamer on Disconnect (Seconds)"
-msgstr ""
+msgstr "Deaktywuj prezentera przy rozłączeniu (w sekundach)"
 
 #: /var/azuracast/www/config/forms/station.php:281
 msgid "Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely."
-msgstr ""
+msgstr "Liczba sekund do deaktywowania prezentera w razie ręcznego rozłączenia. Ustaw na 0, aby całkowicie wyłączyć deaktywację."
 
 #: /var/azuracast/www/config/forms/station.php:291
 msgid "Customize DJ/Streamer Port"
-msgstr ""
+msgstr "Dostosuj port prezentera"
 
 #: /var/azuracast/www/config/forms/station.php:293
 msgid "No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections."
-msgstr ""
+msgstr "Żaden inny program nie może używać tego portu. Pozostaw puste, aby przypisać port automatycznie.<br><b>Uwaga:</b> Port następujący po tym porcie (n+1) będzie automatycznie wykorzystywany dla połączeń starego typu."
 
 #: /var/azuracast/www/config/forms/station.php:302
 msgid "Customize DJ/Streamer Mount Point"
-msgstr ""
+msgstr "Dostosuj punkt montowania prezentera"
 
 #: /var/azuracast/www/config/forms/station.php:304
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."

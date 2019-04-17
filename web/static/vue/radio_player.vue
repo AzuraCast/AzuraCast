@@ -35,7 +35,7 @@
 
         <div class="radio-controls">
             <div class="radio-control-play-button">
-                <a href="javascript:;" role="button" :title="$t('play_pause_btn')" @click.prevent="toggle()">
+                <a href="#" role="button" :title="$t('play_pause_btn')" @click.prevent="toggle()">
                     <i class="material-icons lg" v-if="is_playing">pause_circle_filled</i>
                     <i class="material-icons lg" v-else>play_circle_filled</i>
                 </a>
@@ -54,7 +54,7 @@
             </div>
 
             <div class="radio-control-mute-button">
-                <a href="javascript:;" class="text-secondary" :title="$t('mute_btn')" @click.prevent="volume = 0">
+                <a href="#" class="text-secondary" :title="$t('mute_btn')" @click.prevent="volume = 0">
                     <i class="material-icons" aria-hidden="true">volume_mute</i>
                 </a>
             </div>
@@ -62,7 +62,7 @@
                 <input type="range" :title="$t('volume_slider')" class="custom-range" min="0" max="100" step="1" v-model="volume">
             </div>
             <div class="radio-control-max-volume-button">
-                <a href="javascript:;" class="text-secondary" :title="$t('full_volume_btn')" @click.prevent="volume = 100">
+                <a href="#" class="text-secondary" :title="$t('full_volume_btn')" @click.prevent="volume = 100">
                     <i class="material-icons" aria-hidden="true">volume_up</i>
                 </a>
             </div>
@@ -245,6 +245,13 @@ export default {
                 this.stop();
             }
         };
+
+        // Allow pausing from the mobile metadata update.
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setActionHandler('pause', () => {
+                this.stop();
+            });
+        }
 
         // Check webstorage for existing volume preference.
         if (store.enabled && store.get('player_volume') !== undefined) {

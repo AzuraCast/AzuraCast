@@ -3,7 +3,12 @@ var station_dashboard;
 $(function() {
     station_dashboard = new Vue({
         el: '#station_dashboard',
-        data: <?=json_encode($stations) ?>
+        data: <?=json_encode($stations) ?>,
+        methods: {
+            toggle: function(url) {
+                this.$eventHub.$emit('player_toggle', url);
+            }
+        }
     });
 
     setTimeout(loadNowPlaying, 15000);

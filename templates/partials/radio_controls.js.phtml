@@ -1,0 +1,60 @@
+<?php
+/** @var \App\Customization $customization */
+$locale_short = substr($customization->getLocale(), 0, 2);
+
+$locale_info = [
+    'locale' => $locale_short,
+    'messages' => [
+        $locale_short => [
+            'pause'         => __('Pause'),
+            'volume'        => __('Volume'),
+        ],
+    ],
+];
+?>
+
+var i18n, inline_player;
+
+$(function() {
+    i18n = new VueI18n(<?=json_encode($locale_info) ?>)
+    inline_player = new Vue({
+        i18n,
+        el: '#radio-player-controls',
+        render: function(createElement) {
+            return createElement(InlinePlayer.default);
+        }
+    });
+
+    $('.btn-audio').on('click', function(e) {
+        e.preventDefault();
+        inline_player.$eventHub.$emit('player_toggle', $(this).data('url'));
+        return false;
+    });
+
+    inline_player.$eventHub.$on('player_stopped', function() {
+        $('.btn-audio').each(function() {
+            var play_icon = $(this).removeClass('playing').find('i');
+            if (play_icon.hasClass('material-icons')) {
+                play_icon.text('play_circle_filled');
+            }
+        });
+    });
+
+    inline_player.$eventHub.$on('player_playing', function(audio_source) {
+
+        $('.btn-audio').each(function() {
+            var play_icon;
+            if ($(this).is('[data-url="'+audio_source+'"]')) {
+                play_icon = $(this).addClass('playing').find('i');
+                if (play_icon.hasClass('material-icons')) {
+                    play_icon.text('pause_circle_filled');
+                }
+            } else {
+                play_icon = $(this).removeClass('playing').find('i');
+                if (play_icon.hasClass('material-icons')) {
+                    play_icon.text('play_circle_filled');
+                }
+            }
+        });
+    });
+});

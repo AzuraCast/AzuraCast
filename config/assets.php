@@ -30,6 +30,11 @@ return [
                 ],
             ],
         ],
+        'inline' => [
+            'js' => [
+                'Vue.prototype.$eventHub = new Vue();'
+            ],
+        ],
     ],
 
     'vue-i18n' => [
@@ -142,23 +147,6 @@ return [
                 ],
             ],
         ],
-    ],
-    'radio' => [
-        'order' => 20,
-        'require' => ['jquery'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/store/store.min.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/radio.js',
-                    'defer' => true,
-                ],
-            ],
-        ],
-
     ],
     'highcharts' => [
         'order' => 20,
@@ -428,6 +416,18 @@ return [
             'js' => [
                 [
                     'src' => 'dist/radio_player.js',
+                ],
+            ]
+        ]
+    ],
+
+    'inline_player' => [
+        'order' => 10,
+        'require' => ['vue', 'vue-i18n'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/inline_player.js',
                 ],
             ]
         ]

@@ -19,8 +19,6 @@ $locale_info = [
 var i18n, radio_player;
 
 $(function() {
-    Vue.prototype.$eventHub = new Vue();
-
     i18n = new VueI18n(<?=json_encode($locale_info) ?>)
     radio_player = new Vue({
         i18n,

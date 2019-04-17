@@ -51,7 +51,7 @@ echo $assets->js();
         azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
     </a>
 
-    <?=$this->fetch('partials/radio_controls') ?>
+    <div id="radio-player-controls"></div>
 
     <div class="dropdown ml-3">
         <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__('Toggle Menu') ?>" data-toggle="dropdown" type="button">

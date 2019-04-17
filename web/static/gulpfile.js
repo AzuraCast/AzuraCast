@@ -139,6 +139,11 @@ var vueProjects = {
         "src_file": 'vue/radio_player.vue',
         "filename": 'radio_player.js',
         "library": 'RadioPlayer'
+    },
+    "inline_player": {
+        "src_file": 'vue/inline_player.vue',
+        "filename": 'inline_player.js',
+        "library": 'InlinePlayer'
     }
 };
 

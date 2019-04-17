@@ -10,7 +10,8 @@ $this->layout('main', [
 /** @var \Azura\Assets $assets */
 $assets
     ->load('vue')
-    ->load('radio')
+    ->load('inline_player')
+    ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->load('clipboard')
     ->addInlineJs($this->fetch('stations/profile/index.js', ['nowplaying' => $nowplaying]), 99);
 

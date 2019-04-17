@@ -132,7 +132,7 @@ $(function() {
         /* Executes after data is loaded and rendered */
         grid.find(".btn-audio").on("click", function(e) {
             e.preventDefault();
-            handlePlayClick($(this).data('url'));
+            inline_player.$eventHub.$emit('player_toggle', $(this).data('url'));
             return false;
         });
 

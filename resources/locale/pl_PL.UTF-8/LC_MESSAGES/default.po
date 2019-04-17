@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-17 00:20\n"
+"PO-Revision-Date: 2019-04-17 00:30\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1558,19 +1558,19 @@ msgstr "Typ zdalnej stacji"
 
 #: /var/azuracast/www/config/forms/remote.php:45
 msgid "Remote Station Listening URL"
-msgstr ""
+msgstr "URL do słuchania stacji zdalnej"
 
 #: /var/azuracast/www/config/forms/remote.php:46
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
-msgstr ""
+msgstr "Przykład: Jeśli adres URL zdalnego radiowego to %s, wprowadź <code>%s</code>."
 
 #: /var/azuracast/www/config/forms/remote.php:58
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr ""
+msgstr "Punkt montowania/SID odsłuchu zdalnej stacji"
 
 #: /var/azuracast/www/config/forms/remote.php:59
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
-msgstr ""
+msgstr "Podaj punkt montowania (np. <code>%s</code>) lub Shoutcast SID (np. <code>%s</code>), aby określić strumień do wykorzystania w statystykach lub nadawaniu."
 
 #: /var/azuracast/www/config/forms/remote.php:70
 msgid "Broadcast AutoDJ to Remote Station"
@@ -1601,15 +1601,15 @@ msgstr "Port źródłowy zdalnej stacji"
 
 #: /var/azuracast/www/config/forms/remote.php:120
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr ""
+msgstr "Jeśli port, na którym nadajesz, różni się od tego podanego w powyższym URL, podaj tutaj port źródłowy."
 
 #: /var/azuracast/www/config/forms/remote.php:127
 msgid "Remote Station Source Mountpoint/SID"
-msgstr ""
+msgstr "Punkt montowania lub SID źródła zdalnej stacji"
 
 #: /var/azuracast/www/config/forms/remote.php:128
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Jeśli punkt montowania (np. <code>/radio.mp3</code>) lub Shoutcast SID (np. <code>2</code>), na który nadajesz, różni się od tego podanego powyżej, podaj tutaj punkt montowania źródła."
 
 #: /var/azuracast/www/config/forms/remote.php:135
 msgid "Remote Station Source Username"
@@ -1899,15 +1899,15 @@ msgstr "Dostosuj punkt montowania prezentera"
 
 #: /var/azuracast/www/config/forms/station.php:304
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
-msgstr ""
+msgstr "Jeśli Twoje oprogramowanie nadawcze wymaga podania określonej ścieżki punktu montowania, podaj ją tutaj. W przeciwnym razie, użyj domyślnej."
 
 #: /var/azuracast/www/config/forms/station.php:313
 msgid "DJ/Streamer Buffer Time (Seconds)"
-msgstr ""
+msgstr "Czas buforowania prezentera (w sekundach)"
 
 #: /var/azuracast/www/config/forms/station.php:315
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
-msgstr ""
+msgstr "Długość sygnału w sekundach, jaka będzie przechowywana w razie usterki. Ustaw najniższa wartość, jaką mogą wykorzystywać Twoi prezenterzy w razie przerwania się strumienia."
 
 #: /var/azuracast/www/config/forms/station.php:327
 msgid "Character Set Encoding"
@@ -1927,15 +1927,15 @@ msgstr "Ten port nie jest wykorzystywany przez żaden proces zewnętrzny. Zmień
 
 #: /var/azuracast/www/config/forms/station.php:353
 msgid "Use Replaygain Metadata"
-msgstr ""
+msgstr "Użyj metadanych ReplayGain"
 
 #: /var/azuracast/www/config/forms/station.php:356
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr ""
+msgstr "Wymuś, aby Liquidsoap używało metadanych ReplayGain powiązanych z utworem, aby kontrolować jego głośność."
 
 #: /var/azuracast/www/config/forms/station.php:370
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
-msgstr ""
+msgstr "Niniejszy kod zostanie wstawiony do konfiguracji Liquidsoap w Twojej radiostacji, poniżej konfiguracji playlisty i tuż przed wyjściem Icecast. W tej sekcji używaj tylko prawidłowego kodu Liquidsoap!"
 
 #: /var/azuracast/www/config/forms/station.php:378
 #: /var/azuracast/www/templates/partials/station_form.phtml:34
@@ -1950,7 +1950,7 @@ msgstr "Włącz nadawanie"
 
 #: /var/azuracast/www/config/forms/station.php:386
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
-msgstr ""
+msgstr "Jeśli wyłączone, stacja nie będzie nadawała ani mieszała autopilota."
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "Storage Quota"
@@ -1958,7 +1958,7 @@ msgstr "Limit przestrzeni dyskowej"
 
 #: /var/azuracast/www/config/forms/station.php:397
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr ""
+msgstr "Ustaw maksymalną przestrzeń dyskową, jakiej może używać ta stacja. Rozmiar podaj wraz z jednostką, np. \"8 GB\". Jednostki są mierzone w 1024 bajtach. Pozostaw puste, aby domyślnie wykorzystywać całą dostępną przestrzeń dyskową."
 
 #: /var/azuracast/www/config/forms/station.php:404
 msgid "Base Station Directory"

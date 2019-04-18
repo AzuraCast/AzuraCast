@@ -9,14 +9,14 @@
             <div class="now-playing-main">
                 <div v-if="np.now_playing.song.title !== ''">
                     <h4 class="now-playing-title">{{ np.now_playing.song.title }}</h4>
-                    <h5 class="now-playing-artist text-secondary">{{ np.now_playing.song.artist }}</h5>
+                    <h5 class="now-playing-artist">{{ np.now_playing.song.artist }}</h5>
                 </div>
                 <div v-else>
                     <h4 class="now-playing-title">{{ np.now_playing.song.text }}</h4>
                 </div>
 
                 <div class="time-display" v-if="time_display_played">
-                    <div class="time-display-played">
+                    <div class="time-display-played text-secondary">
                         {{ time_display_played }}
                     </div>
                     <div class="time-display-progress">
@@ -24,7 +24,7 @@
                             <div class="progress-bar bg-secondary" role="progressbar" v-bind:style="{ width: time_percent+'%' }"></div>
                         </div>
                     </div>
-                    <div class="time-display-total">
+                    <div class="time-display-total text-secondary">
                         {{ time_display_total }}
                     </div>
                 </div>
@@ -121,7 +121,6 @@
 
         .time-display {
             font-size: 10px;
-            color: rgba(0,0,0,.38);
             margin-top: .25rem;
             flex-direction: row;
             align-items: center;

@@ -191,7 +191,7 @@ class PlaylistsController extends AbstractStationCrudController
 
     public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): ResponseInterface
     {
-        $record = $this->_getRecord($id, $station_id);
+        $record = $this->_getRecord($request->getStation(), $id);
 
         $formats = [
             'pls' => 'audio/x-scpls',

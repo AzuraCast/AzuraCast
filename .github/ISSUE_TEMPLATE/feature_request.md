@@ -4,14 +4,8 @@ about: Suggest an idea for this project
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**PLEASE DO NOT SUBMIT FEATURE REQUESTS THROUGH GITHUB!**
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+We have a special web site dedicated to submitting and voting on new features for completion.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+Submit your feature request at [features.azuracast.com](https://features.azuracast.com/).

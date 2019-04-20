@@ -2,13 +2,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
+"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-07 21:50\n"
+"PO-Revision-Date: 2019-04-20 23:20\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -807,7 +807,7 @@ msgstr "Pontos de Montagem"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr "Relays Remotos"
+msgstr "Relés Remotos"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Automation"
@@ -845,7 +845,7 @@ msgstr "Página Pública"
 #: /var/azuracast/www/templates/stations/files/index.phtml:24
 #: /var/azuracast/www/templates/stations/profile/index.phtml:362
 msgid "Music Files"
-msgstr "Ficheiros Musicais"
+msgstr "Ficheiros Multimédia"
 
 #: /var/azuracast/www/config/menus/station.php:53
 #: /var/azuracast/www/templates/stations/files/index.phtml:109

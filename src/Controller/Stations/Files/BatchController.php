@@ -77,12 +77,24 @@ class BatchController extends FilesControllerAbstract
                 $music_files = $this->_getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
+                /** @var Entity\StationPlaylist[] $playlists */
+                $affected_playlists = [];
+
                 foreach ($music_files as $file) {
                     try {
+                        /** @var Entity\StationMedia $media */
                         $media = $media_repo->findOneBy([
                             'station_id' => $station->getId(),
                             'path' => $file['path'],
                         ]);
+
+                        $media_playlists = $playlists_media_repo->clearPlaylistsFromMedia($media);
+
+                        foreach($media_playlists as $playlist_id => $playlist) {
+                            if (!isset($affected_playlists[$playlist_id])) {
+                                $affected_playlists[$playlist_id] = $playlist;
+                            }
+                        }
 
                         if ($media instanceof Entity\StationMedia) {
                             $this->em->remove($media);
@@ -111,6 +123,16 @@ class BatchController extends FilesControllerAbstract
 
                 $this->em->persist($station);
                 $this->em->flush($station);
+
+                // Write new PLS playlist configuration.
+                $backend = $request->getStationBackend();
+
+                if ($backend instanceof Liquidsoap) {
+                    foreach($affected_playlists as $playlist) {
+                        /** @var Entity\StationPlaylist $playlist */
+                        $backend->writePlaylistFile($playlist);
+                    }
+                }
                 break;
 
             case 'playlist':

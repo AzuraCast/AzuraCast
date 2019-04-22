@@ -7,6 +7,8 @@ use App\Controller\Api;
 use Doctrine\ORM\EntityManager;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiProvider implements ServiceProviderInterface
 {
@@ -43,6 +45,22 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Api\Stations\ArtController::class] = function($di) {
+            return new Api\Stations\ArtController(
+                $di[App\Customization::class],
+                $di[App\Radio\Filesystem::class]
+            );
+        };
+
+        $di[Api\Stations\FilesController::class] = function($di) {
+            return new Api\Stations\FilesController(
+                $di[EntityManager::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class],
+                $di[App\Radio\Filesystem::class]
+            );
+        };
+
         $di[Api\Stations\HistoryController::class] = function($di) {
             return new Api\Stations\HistoryController(
                 $di[EntityManager::class],
@@ -65,18 +83,11 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Api\Stations\MediaController::class] = function($di) {
-            return new Api\Stations\MediaController(
-                $di[App\Customization::class],
-                $di[App\Radio\Filesystem::class]
-            );
-        };
-
         $di[Api\Stations\QueueController::class] = function($di) {
             return new Api\Stations\QueueController(
                 $di[EntityManager::class],
-                $di[\Symfony\Component\Serializer\Serializer::class],
-                $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class],
                 $di[App\ApiUtilities::class]
             );
         };
@@ -112,8 +123,8 @@ class ApiProvider implements ServiceProviderInterface
             $di[$controller] = function($di) use ($controller) {
                 return new $controller(
                     $di[EntityManager::class],
-                    $di[\Symfony\Component\Serializer\Serializer::class],
-                    $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class]
+                    $di[Serializer::class],
+                    $di[ValidatorInterface::class]
                 );
             };
         }

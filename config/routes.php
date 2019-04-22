@@ -268,12 +268,13 @@ return function(App $app)
                 ->setName('api:listeners:index')
                 ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
-            $this->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\MediaController::class.':artAction')
+            $this->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\FilesController::class.':artAction')
                 ->setName('api:stations:media:art');
 
-            $this->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\MediaController::class.':artAction');
+            $this->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\ArtController::class);
 
             $station_api_endpoints = [
+                ['file', 'files', Controller\Api\Stations\FilesController::class, Acl::STATION_MEDIA],
                 ['mount', 'mounts', Controller\Api\Stations\MountsController::class, Acl::STATION_MOUNTS],
                 ['playlist', 'playlists', Controller\Api\Stations\PlaylistsController::class, Acl::STATION_MEDIA],
                 ['remote', 'remotes', Controller\Api\Stations\RemotesController::class, Acl::STATION_REMOTES],

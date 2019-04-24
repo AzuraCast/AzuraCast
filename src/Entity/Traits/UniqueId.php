@@ -1,11 +1,21 @@
 <?php
 namespace App\Entity\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @OA\Schema()
+ */
 trait UniqueId
 {
     /**
      * @ORM\Column(name="unique_id", type="string", length=25, nullable=true)
-     * @var string
+     *
+     * @OA\Property(example="69b536afc7ebbf16457b8645")
+     *
+     * @var string A unique identifier associated with this record.
      */
     protected $unique_id;
 

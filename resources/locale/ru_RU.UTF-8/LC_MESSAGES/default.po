@@ -2,13 +2,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
+"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-05 06:40\n"
+"PO-Revision-Date: 2019-04-24 18:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -92,7 +92,7 @@ msgstr "Настройки системы"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "Установлена версия SHOUTcast \"%s\"."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:69

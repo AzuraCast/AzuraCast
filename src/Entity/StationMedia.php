@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Azura\Normalizer\Annotation\DeepNormalize;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Radio\Backend\Liquidsoap;
@@ -203,6 +205,9 @@ class StationMedia
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
      *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(2)
+     *
      * @OA\Property(@OA\Items())
      *
      * @var Collection
@@ -211,6 +216,10 @@ class StationMedia
 
     /**
      * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     *
      * @var Collection
      */
     protected $custom_fields;

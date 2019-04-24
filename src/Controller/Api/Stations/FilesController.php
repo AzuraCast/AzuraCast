@@ -8,6 +8,7 @@ use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class FilesController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\StationMedia::class;
-    protected $resourceRouteName = 'api:stations:media';
+    protected $resourceRouteName = 'api:stations:file';
 
     /** @var Filesystem */
     protected $filesystem;
@@ -160,4 +161,44 @@ class FilesController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+
+    protected function _normalizeRecord($record, array $context = [])
+    {
+        $row = parent::_normalizeRecord($record, $context);
+
+        if ($record instanceof Entity\StationMedia) {
+            $row['custom_fields'] = $this->media_repo->getCustomFields($record);
+        }
+
+        return $row;
+    }
+
+    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    {
+        return parent::_denormalizeToRecord($data, $record, array_merge($context, [
+            AbstractNormalizer::CALLBACKS => [
+                'custom_fields' => function(array $value, $record) {
+                    $this->media_repo->setCustomFields($record, $value);
+                },
+                'playlists' => function(array $value, $record) {
+
+                },
+            ]
+        ]));
+    }
+
+    protected function _deleteRecord($record): void
+    {
+        if (!($record instanceof Entity\StationMedia)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        // Delete the media file off the filesystem.
+        $fs = $this->filesystem->getForStation($record->getStation());
+        $fs->delete($record->getPathUri());
+
+        // Regular entity deletion.
+        parent::_deleteRecord($record);
+    }
 }

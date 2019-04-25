@@ -46,7 +46,7 @@ class DuplicatesController
 
         // Find exact duplicates and sort other songs into a searchable array.
         foreach ($media_raw as $media_row) {
-            foreach($media_row['playlist_items'] as $playlist_item) {
+            foreach($media_row['playlists'] as $playlist_item) {
                 $media_row['playlists'][] = $playlist_item['playlist'];
             }
 

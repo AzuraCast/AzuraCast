@@ -62,7 +62,7 @@ class RequestsController
         $qb->select('sm, s, spm, sp')
             ->from(Entity\StationMedia::class, 'sm')
             ->join('sm.song', 's')
-            ->leftJoin('sm.playlist_items', 'spm')
+            ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.station_id = :station_id')
             ->andWhere('sp.id IS NOT NULL')

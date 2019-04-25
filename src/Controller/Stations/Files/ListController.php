@@ -53,7 +53,7 @@ class ListController extends FilesControllerAbstract
             ->addSelect('partial smcf.{id, field_id, value}')
             ->from(Entity\StationMedia::class, 'sm')
             ->leftJoin('sm.custom_fields', 'smcf')
-            ->leftJoin('sm.playlist_items', 'spm')
+            ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.station_id = :station_id')
             ->andWhere('sm.path LIKE :path')
@@ -79,7 +79,7 @@ class ListController extends FilesControllerAbstract
         $media_in_dir = [];
         foreach ($media_in_dir_raw as $media_row) {
             $playlists = [];
-            foreach ($media_row['playlist_items'] as $playlist_row) {
+            foreach ($media_row['playlists'] as $playlist_row) {
                 $playlists[] = $playlist_row['playlist']['name'];
             }
 

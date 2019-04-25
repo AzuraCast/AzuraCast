@@ -268,7 +268,7 @@ return function(App $app)
                 ->setName('api:listeners:index')
                 ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
 
-            $this->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\FilesController::class.':artAction')
+            $this->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\ArtController::class)
                 ->setName('api:stations:media:art');
 
             $this->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\ArtController::class);

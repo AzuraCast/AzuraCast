@@ -206,19 +206,16 @@ class StationMedia
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
      *
      * @DeepNormalize(true)
-     * @Serializer\MaxDepth(2)
+     * @Serializer\MaxDepth(1)
      *
      * @OA\Property(@OA\Items())
      *
      * @var Collection
      */
-    protected $playlist_items;
+    protected $playlists;
 
     /**
      * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
-     *
-     * @DeepNormalize(true)
-     * @Serializer\MaxDepth(1)
      *
      * @var Collection
      */
@@ -233,7 +230,7 @@ class StationMedia
 
         $this->mtime = 0;
 
-        $this->playlist_items = new ArrayCollection;
+        $this->playlists = new ArrayCollection;
         $this->custom_fields = new ArrayCollection;
 
         $this->setPath($path);
@@ -597,9 +594,9 @@ class StationMedia
     /**
      * @return Collection
      */
-    public function getPlaylistItems(): Collection
+    public function getPlaylists(): Collection
     {
-        return $this->playlist_items;
+        return $this->playlists;
     }
 
     /**
@@ -608,7 +605,7 @@ class StationMedia
      */
     public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
     {
-        $item = $this->playlist_items->filter(function($spm) use ($playlist) {
+        $item = $this->playlists->filter(function($spm) use ($playlist) {
             /** @var StationPlaylistMedia $spm */
             return $spm->getPlaylist()->getId() === $playlist->getId();
         });
@@ -718,7 +715,7 @@ class StationMedia
      */
     public function isRequestable(): bool
     {
-        $playlists = $this->getPlaylistItems();
+        $playlists = $this->getPlaylists();
         foreach($playlists as $playlist_item) {
             $playlist = $playlist_item->getPlaylist();
             /** @var StationPlaylist $playlist */

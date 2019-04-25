@@ -57,7 +57,8 @@ class ApiProvider implements ServiceProviderInterface
                 $di[EntityManager::class],
                 $di[Serializer::class],
                 $di[ValidatorInterface::class],
-                $di[App\Radio\Filesystem::class]
+                $di[App\Radio\Filesystem::class],
+                $di[App\Radio\Adapters::class]
             );
         };
 

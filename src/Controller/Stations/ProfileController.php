@@ -72,7 +72,7 @@ class ProfileController
         // Statistics about backend playback.
         $num_songs = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) 
             FROM App\Entity\StationMedia sm 
-            LEFT JOIN sm.playlist_items spm 
+            LEFT JOIN sm.playlists spm 
             LEFT JOIN spm.playlist sp 
             WHERE sp.id IS NOT NULL 
             AND sm.station_id = :station_id')

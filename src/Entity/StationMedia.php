@@ -5,6 +5,10 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Azura\Normalizer\Annotation\DeepNormalize;
+use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Radio\Backend\Liquidsoap;
 use Psr\Http\Message\UriInterface;
@@ -16,6 +20,8 @@ use Psr\Http\Message\UriInterface;
  *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
  * })
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMediaRepository")
+ *
+ * @OA\Schema(type="object")
  */
 class StationMedia
 {
@@ -25,6 +31,9 @@ class StationMedia
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @OA\Property(example=1)
+     *
      * @var int
      */
     protected $id;
@@ -46,6 +55,9 @@ class StationMedia
 
     /**
      * @ORM\Column(name="song_id", type="string", length=50, nullable=true)
+     *
+     * @OA\Property(example="098F6BCD4621D373CADE4E832627B4F6")
+     *
      * @var string|null
      */
     protected $song_id;
@@ -61,96 +73,150 @@ class StationMedia
 
     /**
      * @ORM\Column(name="title", type="string", length=200, nullable=true)
-     * @var string|null
+     *
+     * @OA\Property(example="Test Song")
+     *
+     * @var string|null The name of the media file's title.
      */
     protected $title;
 
     /**
      * @ORM\Column(name="artist", type="string", length=200, nullable=true)
-     * @var string|null
+     *
+     * @OA\Property(example="Test Artist")
+     *
+     * @var string|null The name of the media file's artist.
      */
     protected $artist;
 
     /**
      * @ORM\Column(name="album", type="string", length=200, nullable=true)
-     * @var string|null
+     *
+     * @OA\Property(example="Test Album")
+     *
+     * @var string|null The name of the media file's album.
      */
     protected $album;
 
     /**
      * @ORM\Column(name="lyrics", type="text", nullable=true)
-     * @var string|null
+     *
+     * @OA\Property(example="...Never gonna give you up...")
+     *
+     * @var string|null Full lyrics of the track, if available.
      */
     protected $lyrics;
 
     /**
      * @ORM\Column(name="isrc", type="string", length=15, nullable=true)
+     *
+     * @OA\Property(example="GBARL0600786")
+     *
      * @var string|null The track ISRC (International Standard Recording Code), used for licensing purposes.
      */
     protected $isrc;
 
     /**
      * @ORM\Column(name="length", type="integer")
-     * @var int
+     *
+     * @OA\Property(example=240)
+     *
+     * @var int The song duration in seconds.
      */
     protected $length;
 
     /**
      * @ORM\Column(name="length_text", type="string", length=10, nullable=true)
-     * @var string|null
+     *
+     * @OA\Property(example="4:00")
+     *
+     * @var string|null The formatted song duration (in mm:ss format)
      */
     protected $length_text;
 
     /**
      * @ORM\Column(name="path", type="string", length=500, nullable=true)
-     * @var string|null
+     *
+     * @OA\Property(example="test.mp3")
+     *
+     * @var string|null The relative path of the media file.
      */
     protected $path;
 
     /**
      * @ORM\Column(name="mtime", type="integer", nullable=true)
-     * @var int|null
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     *
+     * @var int|null The UNIX timestamp when the database was last modified.
      */
     protected $mtime;
 
     /**
      * @ORM\Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
-     * @var float|null
+     *
+     * @OA\Property(example=2.00)
+     *
+     * @var float|null The length of time (in seconds) before the next song starts in the fade;
+     *                 equivalent to Liquidsoap's "liq_start_next" annotation.
      */
     protected $fade_overlap;
 
     /**
      * @ORM\Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true)
-     * @var float|null
+     *
+     * @OA\Property(example=3.00)
+     *
+     * @var float|null The length of time (in seconds) to fade in the next track;
+     *                 equivalent to Liquidsoap's "liq_fade_in" annotation.
      */
     protected $fade_in;
 
     /**
      * @ORM\Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true)
-     * @var float|null
+     *
+     * @OA\Property(example=3.00)
+     *
+     * @var float|null The length of time (in seconds) to fade out the previous track;
+     *                 equivalent to Liquidsoap's "liq_fade_out" annotation.
      */
     protected $fade_out;
 
     /**
      * @ORM\Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true)
-     * @var float|null
+     *
+     * @OA\Property(example=30.00)
+     *
+     * @var float|null The length of time (in seconds) from the start of the track to start playing;
+     *                 equivalent to Liquidsoap's "liq_cue_in" annotation.
      */
     protected $cue_in;
 
     /**
      * @ORM\Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true)
-     * @var float|null
+     *
+     * @OA\Property(example=30.00)
+     *
+     * @var float|null The length of time (in seconds) from the CUE-IN of the track to stop playing;
+     *                 equivalent to Liquidsoap's "liq_cue_out" annotation.
      */
     protected $cue_out;
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     *
+     * @OA\Property(@OA\Items())
+     *
      * @var Collection
      */
-    protected $playlist_items;
+    protected $playlists;
 
     /**
      * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
+     *
      * @var Collection
      */
     protected $custom_fields;
@@ -164,7 +230,7 @@ class StationMedia
 
         $this->mtime = 0;
 
-        $this->playlist_items = new ArrayCollection;
+        $this->playlists = new ArrayCollection;
         $this->custom_fields = new ArrayCollection;
 
         $this->setPath($path);
@@ -528,9 +594,9 @@ class StationMedia
     /**
      * @return Collection
      */
-    public function getPlaylistItems(): Collection
+    public function getPlaylists(): Collection
     {
-        return $this->playlist_items;
+        return $this->playlists;
     }
 
     /**
@@ -539,7 +605,7 @@ class StationMedia
      */
     public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
     {
-        $item = $this->playlist_items->filter(function($spm) use ($playlist) {
+        $item = $this->playlists->filter(function($spm) use ($playlist) {
             /** @var StationPlaylistMedia $spm */
             return $spm->getPlaylist()->getId() === $playlist->getId();
         });
@@ -649,7 +715,7 @@ class StationMedia
      */
     public function isRequestable(): bool
     {
-        $playlists = $this->getPlaylistItems();
+        $playlists = $this->getPlaylists();
         foreach($playlists as $playlist_item) {
             $playlist = $playlist_item->getPlaylist();
             /** @var StationPlaylist $playlist */

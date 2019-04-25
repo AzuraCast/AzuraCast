@@ -241,9 +241,9 @@ class StationPlaylistMediaRepository extends Repository
 
     protected function _getPlayableMediaIds(Entity\StationPlaylist $playlist): array
     {
-        $all_media = $this->_em->createQuery(/** @lang DQL */'SELECT sm.id 
+        $all_media = $this->_em->createQuery(/** @lang DQL */ 'SELECT sm.id 
             FROM App\Entity\StationMedia sm
-            JOIN sm.playlist_items spm
+            JOIN sm.playlists spm
             WHERE spm.playlist_id = :playlist_id
             ORDER BY spm.weight ASC')
             ->setParameter('playlist_id', $playlist->getId())

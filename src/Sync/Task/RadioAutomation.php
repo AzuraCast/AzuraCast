@@ -233,10 +233,10 @@ class RadioAutomation extends AbstractTask
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $media_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
+        $media_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm, spm, sp 
             FROM App\Entity\StationMedia sm 
-            LEFT JOIN sm.playlist_items spm 
+            LEFT JOIN sm.playlists spm 
             LEFT JOIN spm.playlist sp 
             WHERE sm.station_id = :station_id 
             ORDER BY sm.artist ASC, sm.title ASC')
@@ -272,8 +272,8 @@ class RadioAutomation extends AbstractTask
                 'ratio' => 0,
             ];
 
-            if ($row_obj->getPlaylistItems()->count() > 0) {
-                foreach ($row_obj->getPlaylistItems() as $playlist_item) {
+            if ($row_obj->getPlaylists()->count() > 0) {
+                foreach ($row_obj->getPlaylists() as $playlist_item) {
                     /** @var Entity\StationPlaylistMedia $playlist_item */
                     $playlist = $playlist_item->getPlaylist();
                     $media['playlists'][] = $playlist->getName();

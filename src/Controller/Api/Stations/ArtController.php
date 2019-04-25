@@ -8,7 +8,7 @@ use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
 
-class MediaController
+class ArtController
 {
     /** @var Customization */
     protected $customization;
@@ -46,7 +46,7 @@ class MediaController
      *   @OA\Response(response=404, description="Image not found; generic filler image.")
      * )
      */
-    public function artAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
         $station = $request->getStation();
         $filesystem = $this->filesystem->getForStation($station);

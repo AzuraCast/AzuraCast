@@ -599,6 +599,161 @@ paths:
           description: Success
         '404':
           description: 'Station not found'
+  '/station/{station_id}/art/{media_id}':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Returns the album art for a song, or a generic image.'
+      operationId: 'App\Controller\Api\Stations\ArtController::__invoke'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: media_id
+          in: path
+          description: 'The station media unique ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'The requested album artwork'
+        '404':
+          description: 'Image not found; generic filler image.'
+  '/station/{station_id}/files':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'List all current uploaded files.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationMedia'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Media'
+      description: 'Upload a new file.'
+      operationId: 'App\Controller\Api\Stations\FilesController::createAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Api_UploadFile'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationMedia'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/file/{id}':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Retrieve details for a single file.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationMedia'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Stations: Media'
+      description: 'Update details of a single file.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationMedia'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Media'
+      description: 'Delete a single file.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   '/station/{station_id}/history':
     get:
       tags:
@@ -697,27 +852,6 @@ paths:
       security:
         -
           api_key: []
-  '/station/{station_id}/art/{media_id}':
-    get:
-      tags:
-        - 'Stations: Media'
-      description: 'Returns the album art for a song, or a generic image.'
-      operationId: 'App\Controller\Api\Stations\MediaController::artAction'
-      parameters:
-        -
-          $ref: '#/components/parameters/station_id_required'
-        -
-          name: media_id
-          in: path
-          description: 'The station media unique ID'
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'The requested album artwork'
-        '404':
-          description: 'Image not found; generic filler image.'
   '/station/{station_id}/mounts':
     get:
       tags:
@@ -1704,7 +1838,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1555358605
+          example: 1556160505
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1800,7 +1934,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1555358605
+              example: 1556160505
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1855,7 +1989,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1555358605
+          example: 1556160505
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -1986,7 +2120,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1555358605
+          example: 1556160505
       type: object
     Api_Time:
       properties:
@@ -2024,6 +2158,17 @@ components:
         local_timezone_abbr:
           type: string
           example: UTC
+      type: object
+    Api_UploadFile:
+      properties:
+        path:
+          description: 'The destination path of the uploaded file.'
+          type: string
+          example: relative/path/to/file.mp3
+        file:
+          description: 'The base64-encoded contents of the file to upload.'
+          type: string
+          example: ''
       type: object
     CustomField:
       properties:
@@ -2132,6 +2277,78 @@ components:
         storage_used:
           type: string
           example: 1048576
+      type: object
+    StationMedia:
+      properties:
+        id:
+          type: integer
+          example: 1
+        song_id:
+          type: string
+          example: 098F6BCD4621D373CADE4E832627B4F6
+        title:
+          description: 'The name of the media file''s title.'
+          type: string
+          example: 'Test Song'
+        artist:
+          description: 'The name of the media file''s artist.'
+          type: string
+          example: 'Test Artist'
+        album:
+          description: 'The name of the media file''s album.'
+          type: string
+          example: 'Test Album'
+        lyrics:
+          description: 'Full lyrics of the track, if available.'
+          type: string
+          example: '...Never gonna give you up...'
+        isrc:
+          description: 'The track ISRC (International Standard Recording Code), used for licensing purposes.'
+          type: string
+          example: GBARL0600786
+        length:
+          description: 'The song duration in seconds.'
+          type: integer
+          example: 240
+        length_text:
+          description: 'The formatted song duration (in mm:ss format)'
+          type: string
+          example: '4:00'
+        path:
+          description: 'The relative path of the media file.'
+          type: string
+          example: test.mp3
+        mtime:
+          description: 'The UNIX timestamp when the database was last modified.'
+          type: integer
+          example: 1556160505
+        fade_overlap:
+          description: 'The length of time (in seconds) before the next song starts in the fade;'
+          type: number
+          format: float
+          example: 2
+        fade_in:
+          description: 'The length of time (in seconds) to fade in the next track;'
+          type: number
+          format: float
+          example: 3
+        fade_out:
+          description: 'The length of time (in seconds) to fade out the previous track;'
+          type: number
+          format: float
+          example: 3
+        cue_in:
+          description: 'The length of time (in seconds) from the start of the track to start playing;'
+          type: number
+          format: float
+          example: 30
+        cue_out:
+          description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing;'
+          type: number
+          format: float
+          example: 30
+        playlists:
+          items: {  }
       type: object
     StationMount:
       properties:
@@ -2327,7 +2544,7 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1555358605
+          example: 1556160505
       type: object
     StationWebhook:
       properties:
@@ -2358,6 +2575,13 @@ components:
           type: array
           items: {  }
       type: object
+    '':
+      properties:
+        unique_id:
+          description: 'A unique identifier associated with this record.'
+          type: string
+          example: 69b536afc7ebbf16457b8645
+      type: object
     User:
       properties:
         id:
@@ -2386,10 +2610,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1555358605
+          example: 1556160505
         updated_at:
           type: integer
-          example: 1555358605
+          example: 1556160505
         roles:
           items: {  }
       type: object

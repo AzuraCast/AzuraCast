@@ -38,7 +38,7 @@ class Quota
         $factor = (int)floor((strlen($bytes_str) - 1) / 3);
 
         if (isset($size[$factor])) {
-            $byte_divisor = Math\BigInteger::of(1024)->power($factor);
+            $byte_divisor = Math\BigInteger::of(1000)->power($factor);
             $size_string = $bytes->toBigDecimal()
                 ->dividedBy($byte_divisor, $decimals, Math\RoundingMode::HALF_DOWN);
 
@@ -72,7 +72,7 @@ class Quota
             // Find the position of the unit in the ordered string which is the power
             // of magnitude to multiply a kilobyte by.
             $byte_power = stripos('bkmgtpezy', $unit[0]);
-            $byte_multiplier = Math\BigInteger::of(1024)->power($byte_power);
+            $byte_multiplier = Math\BigInteger::of(1000)->power($byte_power);
 
             return Math\BigDecimal::of($size)
                 ->multipliedBy($byte_multiplier)

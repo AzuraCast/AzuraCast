@@ -264,18 +264,30 @@ class Station
     /**
      * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
      *
-     * @OA\Property(example=52428800)
+     * @OA\Property(example="50 GB")
      * @var string|null
      */
     protected $storage_quota;
 
     /**
+     * @OA\Property(example="50000000000")
+     * @var string|null
+     */
+    protected $storage_quota_bytes;
+
+    /**
      * @ORM\Column(name="storage_used", type="bigint", nullable=true)
      *
-     * @OA\Property(example=1048576)
+     * @OA\Property(example="1 GB")
      * @var string|null
      */
     protected $storage_used;
+
+    /**
+     * @OA\Property(example="1000000000")
+     * @var string|null
+     */
+    protected $storage_used_bytes;
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
@@ -951,7 +963,7 @@ class Station
      */
     public function getStorageQuota(): ?string
     {
-        $raw_quota = $this->getRawStorageQuota();
+        $raw_quota = $this->getStorageQuotaBytes();
 
         return ($raw_quota instanceof BigInteger)
             ? Quota::getReadableSize($raw_quota)
@@ -961,7 +973,7 @@ class Station
     /**
      * @return BigInteger|null
      */
-    public function getRawStorageQuota(): ?BigInteger
+    public function getStorageQuotaBytes(): ?BigInteger
     {
         $size = $this->storage_quota;
 
@@ -984,7 +996,7 @@ class Station
      */
     public function getStorageUsed(): ?string
     {
-        $raw_size = $this->getRawStorageUsed();
+        $raw_size = $this->getStorageUsedBytes();
 
         return ($raw_size instanceof BigInteger)
             ? Quota::getReadableSize($raw_size)
@@ -994,7 +1006,7 @@ class Station
     /**
      * @return BigInteger
      */
-    public function getRawStorageUsed(): BigInteger
+    public function getStorageUsedBytes(): BigInteger
     {
         $size = $this->storage_used;
 
@@ -1025,7 +1037,7 @@ class Station
             return;
         }
 
-        $current_storage_used = $this->getRawStorageUsed();
+        $current_storage_used = $this->getStorageUsedBytes();
         $this->storage_used = (string)$current_storage_used->plus($new_storage_amount);
     }
 
@@ -1040,7 +1052,7 @@ class Station
             return;
         }
 
-        $current_storage_used = $this->getRawStorageUsed();
+        $current_storage_used = $this->getStorageUsedBytes();
         $storage_used = $current_storage_used->minus($amount_to_remove);
         if ($storage_used->isLessThan(0)) {
             $storage_used = BigInteger::zero();
@@ -1066,7 +1078,7 @@ class Station
      */
     public function getRawStorageAvailable(): ?BigInteger
     {
-        $quota = $this->getRawStorageQuota();
+        $quota = $this->getStorageQuotaBytes();
         $total_space = disk_total_space($this->getRadioMediaDir());
 
         if ($quota === null || $quota->compareTo($total_space) === 1) {
@@ -1086,7 +1098,7 @@ class Station
             return true;
         }
 
-        $used = $this->getRawStorageUsed();
+        $used = $this->getStorageUsedBytes();
         if ($used === null) {
             return false;
         }
@@ -1099,7 +1111,7 @@ class Station
      */
     public function getStorageUsePercentage(): int
     {
-        return Quota::getPercentage($this->getRawStorageUsed(), $this->getRawStorageAvailable());
+        return Quota::getPercentage($this->getStorageUsedBytes(), $this->getRawStorageAvailable());
     }
 
     /**

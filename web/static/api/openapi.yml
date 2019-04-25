@@ -1838,7 +1838,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1556160505
+          example: 1556210848
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1934,7 +1934,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1556160505
+              example: 1556210848
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1989,7 +1989,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1556160505
+          example: 1556210848
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2120,7 +2120,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1556160505
+          example: 1556210848
       type: object
     Api_Time:
       properties:
@@ -2273,10 +2273,16 @@ components:
           example: 5
         storage_quota:
           type: string
-          example: 52428800
+          example: '50 GB'
+        storage_quota_bytes:
+          type: string
+          example: '50000000000'
         storage_used:
           type: string
-          example: 1048576
+          example: '1 GB'
+        storage_used_bytes:
+          type: string
+          example: '1000000000'
       type: object
     StationMedia:
       properties:
@@ -2321,7 +2327,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1556160505
+          example: 1556210848
         fade_overlap:
           description: 'The length of time (in seconds) before the next song starts in the fade;'
           type: number
@@ -2544,7 +2550,7 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1556160505
+          example: 1556210848
       type: object
     StationWebhook:
       properties:
@@ -2610,10 +2616,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1556160505
+          example: 1556210848
         updated_at:
           type: integer
-          example: 1556160505
+          example: 1556210848
         roles:
           items: {  }
       type: object

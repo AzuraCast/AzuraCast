@@ -32,6 +32,11 @@ class UploadFile
         return \Azura\File::sanitizeFileName(basename($this->path));
     }
 
+    public function getSanitizedPath(): string
+    {
+        return \Azura\File::sanitizePathPrefix($this->path);
+    }
+
     public function getFileContents(): string
     {
         return base64_decode($this->file);

@@ -112,8 +112,10 @@ class FilesController extends AbstractStationApiCrudController
         $temp_path = $station->getRadioTempDir().'/'.$api_record->getSanitizedFilename();
         file_put_contents($temp_path, $api_record->getFileContents());
 
+        $sanitized_path = 'media://' . $api_record->getSanitizedPath();
+
         // Process temp path as regular media record.
-        $record = $this->media_repo->uploadFile($station, $temp_path, $api_record->path);
+        $record = $this->media_repo->uploadFile($station, $temp_path, $sanitized_path);
 
         $router = $request->getRouter();
         $return = $this->_viewRecord($record, $router);

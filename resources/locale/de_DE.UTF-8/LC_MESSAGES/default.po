@@ -2,13 +2,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
+"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-05 06:40\n"
+"PO-Revision-Date: 2019-04-27 23:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -979,7 +979,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
-msgstr ""
+msgstr "Discord Webhook"
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
@@ -987,7 +987,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Telegram Chat Nachricht"
 
 #: /var/azuracast/www/config/webhooks.php:34
 msgid "Use the Telegram Bot API to send a message to a channel."
@@ -995,31 +995,31 @@ msgstr ""
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
-msgstr ""
+msgstr "Twitter Post"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Automatisch einen Tweet senden."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Jedes Mal, wenn sich der gerade gespielte Song ändert"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Jedes Mal, wenn die Zuhörerzahl steigt"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Jedes Mal, wenn die Zuhörerzahl sinkt"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "Jedes Mal, wenn ein Live-Streamer/DJ sich mit dem Stream verbindet"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "Jedes Mal, wenn sich ein Live-Streamer/DJ vom Stream trennt"
 
 #: /var/azuracast/www/config/forms/media.php:8
 msgid "Song Metadata"

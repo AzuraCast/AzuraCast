@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 00:10\n"
+"PO-Revision-Date: 2019-04-28 00:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1295,16 +1295,16 @@ msgstr "Access Token Secret"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:64
 msgid "Only Send One Tweet Every..."
-msgstr ""
+msgstr "Nur einen Tweet senden jede..."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:68
 msgid "No Limit"
-msgstr ""
+msgstr "Keine Begrenzung"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:86
 #: /var/azuracast/www/config/forms/webhook/generic.php:12
 msgid "Web Hook Details"
-msgstr ""
+msgstr "WebHook Details"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:87
 #: /var/azuracast/www/config/forms/webhook/telegram.php:68
@@ -1321,7 +1321,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:112
 msgid "Message Body"
-msgstr ""
+msgstr "Nachrichtentext"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:115
 #: /var/azuracast/www/config/forms/webhook/telegram.php:77
@@ -1330,11 +1330,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:12
 msgid "Telegram API Details"
-msgstr ""
+msgstr "Telegram API Details"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:27
 msgid "Bot Token"
-msgstr ""
+msgstr "Bot Token"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 #: /var/azuracast/www/config/forms/webhook/telegram.php:86
@@ -1343,11 +1343,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:37
 msgid "Chat ID"
-msgstr ""
+msgstr "Chat ID"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:38
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
-msgstr ""
+msgstr "Eindeutiger Identifikator für den Zielchat oder Benutzernamen des Zielkanals (im Format @channelusername)."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:47
 msgid "Custom API Base URL"
@@ -1360,7 +1360,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/telegram.php:67
 #: /var/azuracast/www/config/forms/webhook/discord.php:47
 msgid "Customize Message"
-msgstr ""
+msgstr "Nachricht anpassen"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 #: /var/azuracast/www/config/forms/webhook/discord.php:55
@@ -1373,19 +1373,19 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:12
 msgid "Discord API Details"
-msgstr ""
+msgstr "Discord API Details"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:27
 msgid "Discord Web Hook URL"
-msgstr ""
+msgstr "Discord WebHook URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:28
 msgid "This URL is provided within the Discord application."
-msgstr ""
+msgstr "Diese URL wird in Discord bereitgestellt."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:57
 msgid "Now playing on %s:"
-msgstr ""
+msgstr "Jetzt zu hören auf %s:"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:64
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
@@ -1405,15 +1405,15 @@ msgstr "Beschreibung"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:82
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:91
 msgid "Author Name"
-msgstr ""
+msgstr "Autor Name"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Thumbnail Image URL"
-msgstr ""
+msgstr "Vorschaubild URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:109
 msgid "Footer Text"

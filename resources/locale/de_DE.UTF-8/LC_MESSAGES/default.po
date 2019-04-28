@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 00:20\n"
+"PO-Revision-Date: 2019-04-28 00:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1417,13 +1417,13 @@ msgstr "Vorschaubild URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:109
 msgid "Footer Text"
-msgstr ""
+msgstr "Fußzeile"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:111
 #: /var/azuracast/www/templates/main.phtml:150
 #: /var/azuracast/www/templates/minimal.phtml:45
 msgid "Powered by %s"
-msgstr ""
+msgstr "Powered by %s"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:13
 msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
@@ -1435,46 +1435,46 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:34
 msgid "Web Hook URL"
-msgstr ""
+msgstr "WebHook URL"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:35
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "Die URL, die jedes Mal wenn ein Ereignis ausgelöst wird die POST-Nachrichten erhält."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:44
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "Optional: HTTP Basic Authentication Benutzername"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:45
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Wenn der WebHook HTTP Basic Authentication benötigt, gib hier den Benutzernamen ein."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:53
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "Optional: HTTP Basic Authentication Passwort"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:54
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Wenn der WebHook HTTP Basic Authentication benötigt, gib hier das Passwort ein."
 
 #: /var/azuracast/www/config/forms/remote.php:13
 #: /var/azuracast/www/config/forms/mount/generic.php:23
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:27
 msgid "Display Name"
-msgstr ""
+msgstr "Anzeigename"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Der Anzeigename dieses Relays der auf administrations oder öffentlichen Seiten angezeigt wird. Leer lassen, um automatisch einen zu erzeugen."
 
 #: /var/azuracast/www/config/forms/remote.php:21
 #: /var/azuracast/www/config/forms/mount/generic.php:31
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Auf öffentlichen Seiten anzeigen"
 
 #: /var/azuracast/www/config/forms/remote.php:22
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Aktivieren, um den Zuhörern die Möglichkeit zu geben, diesen Relay auf den öffentlichen Seiten dieses Senders auszuwählen."
 
 #: /var/azuracast/www/config/forms/remote.php:23
 #: /var/azuracast/www/config/forms/remote.php:72
@@ -1568,7 +1568,7 @@ msgstr "AutoDJ auf Remote Station übertragen"
 
 #: /var/azuracast/www/config/forms/remote.php:71
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr ""
+msgstr "Wenn aktiviert, wird der AutoDJ dieser Installation automatisch Musik auf diesem Mountpoint spielen."
 
 #: /var/azuracast/www/config/forms/remote.php:82
 #: /var/azuracast/www/config/forms/mount/generic.php:84
@@ -1620,7 +1620,7 @@ msgstr "Wenn Sie mit AutoDJ senden, geben Sie hier das source passwort ein."
 #: /var/azuracast/www/config/forms/remote.php:151
 #: /var/azuracast/www/config/forms/mount/generic.php:62
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "In \"Yellow Pages\" Verzeichnis veröffentlichen"
 
 #: /var/azuracast/www/config/forms/remote.php:152
 #: /var/azuracast/www/config/forms/mount/generic.php:63

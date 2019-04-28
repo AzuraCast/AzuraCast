@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 13:30\n"
+"PO-Revision-Date: 2019-04-28 13:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3677,11 +3677,11 @@ msgstr "Ort"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 msgid "Mobile Device"
-msgstr ""
+msgstr "Mobilgerät"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:45
 msgid "Desktop Device"
-msgstr ""
+msgstr "Desktop-Gerät"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:57
 msgid "Unknown"
@@ -3689,7 +3689,7 @@ msgstr "Unbekannt"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:64
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr ""
+msgstr "Dieses Produkt enthält GeoLite2 Daten, die von MaxMind erstellt wurden, erhältlich auf %s."
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:14
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:16

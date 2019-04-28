@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 01:10\n"
+"PO-Revision-Date: 2019-04-28 01:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2686,11 +2686,11 @@ msgstr "Der Name muss mit einem Slash (/) beginnen. Außerdem muss es eine gült
 
 #: /var/azuracast/www/config/forms/mount/generic.php:24
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Der Anzeigename dieses Einhängepunktes der auf administrations oder öffentlichen Seiten angezeigt wird. Leer lassen, um automatisch einen zu erzeugen."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:32
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Aktivieren, um den Zuhörern die Möglichkeit zu geben, diesen Einhängepunkt auf den öffentlichen Seiten dieses Senders auszuwählen."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:42
 msgid "Set as Default Mount Point"
@@ -2841,53 +2841,53 @@ msgstr "Anmelden"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
-msgstr ""
+msgstr "Zwei-Faktor-Code eingeben"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
 msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
-msgstr ""
+msgstr "Dein Account verwendet einen Zwei-Faktor-Sicherheitscode. Gib unten den Code ein, den dein Gerät gerade anzeigt."
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:17
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
 msgid "Security Code"
-msgstr ""
+msgstr "Sicherheitscode"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:13
 msgid "Welcome!"
-msgstr ""
+msgstr "Willkommen!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:15
 msgid "Welcome to %s!"
-msgstr ""
+msgstr "Willkommen bei %s!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:22
 msgid "Please log in to continue."
-msgstr ""
+msgstr "Bitte logge dich ein, um fortzufahren."
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:22
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Passwort vergessen?</a>"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "Zwei-Faktor-Authentifizierung aktivieren"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:15
 msgid "Step 1: Scan QR Code"
-msgstr ""
+msgstr "Schritt 1: QR-Code scannen"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:17
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
-msgstr ""
+msgstr "Scanne den Code rechts mit deinem Smartphone mit einer Authentication App deiner Wahl (FreeOTP, Authy, etc.)."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:19
 msgid "Step 2: Verify Generated Code"
-msgstr ""
+msgstr "Schritt 2: Generierten Code verifizieren"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:21
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
-msgstr ""
+msgstr "Um zu überprüfen, ob der Code korrekt eingerichtet wurde, gib den 6-stelligen Code ein, den die App dir anzeigt."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:39
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:20
@@ -2897,7 +2897,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/index.phtml:307
 #: /var/azuracast/www/templates/stations/profile/index.phtml:315
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "In Zwischenablage kopieren"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
@@ -2907,28 +2907,28 @@ msgstr "Mein Account"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:57
 msgid "Customize"
-msgstr ""
+msgstr "Anpassen"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:65
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Zwei-Faktor-Authentifizierung"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:72
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "Zwei-Faktor-Authentifizierung verbessert die Sicherheit deines Accounts, indem zusätzlich zu deinem Passwort ein zweiter einmaliger Zugangscode benötigt wird."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:78
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "Zwei-Faktor deaktivieren"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:83
 msgid "Enable Two-Factor"
-msgstr ""
+msgstr "Zwei-Faktor aktivieren"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:62
 msgid "Request"
-msgstr ""
+msgstr "Musikwunsch"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:28
@@ -2944,7 +2944,7 @@ msgstr "Interpret"
 #: /var/azuracast/www/templates/stations/files/index.phtml:102
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:25
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
 #: /var/azuracast/www/templates/frontend/public/index.phtml:79
@@ -2967,43 +2967,43 @@ msgstr "Aktionen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
-msgstr ""
+msgstr "Mikrofon"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:13
 msgid "Mixer"
-msgstr ""
+msgstr "Mixer"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"
-msgstr ""
+msgstr "Wiedergabeliste 1"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:15
 msgid "Playlist 2"
-msgstr ""
+msgstr "Wiedergabeliste 2"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:18
 msgid "Encoder"
-msgstr ""
+msgstr "Encoder"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:19
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:20
 msgid "Raw"
-msgstr ""
+msgstr "Raw"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
-msgstr ""
+msgstr "Samplerate"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:22
 msgid "Bit Rate"
-msgstr ""
+msgstr "Bitrate"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:23
 msgid "DJ Credentials"
-msgstr ""
+msgstr "DJ Zugangsdaten"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:26
@@ -3012,52 +3012,52 @@ msgstr "Benutzername"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:26
 msgid "Use Asynchronous Worker"
-msgstr ""
+msgstr "Asynchrone Worker verwenden"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:29
 msgid "Continuous Play"
-msgstr ""
+msgstr "Kontinuierliche Wiedergabe"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:30
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Wiedergabeliste wiederholen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:31
 msgid "Microphone Source"
-msgstr ""
+msgstr "Mikrofon Quelle"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:34
 msgid "Start Streaming"
-msgstr ""
+msgstr "Streaming starten"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:35
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Streaming stoppen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:36
 msgid "Cue"
-msgstr ""
+msgstr "Cue"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:37
 msgid "Update Metadata"
-msgstr ""
+msgstr "Metadaten aktualisieren"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:40
 msgid "Add Files to Playlist"
-msgstr ""
+msgstr "Dateien zur Wiedergabeliste hinzufügen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:41
 msgid "Unknown Title"
-msgstr ""
+msgstr "Unbekannter Titel"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:42
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Unbekannter Künstler"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:30
 #: /var/azuracast/www/templates/frontend/public/index.phtml:48
 msgid "Song History"
-msgstr ""
+msgstr "Song Verlauf"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:34
 msgid "Request Song"

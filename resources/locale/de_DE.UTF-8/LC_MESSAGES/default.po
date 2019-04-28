@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 00:30\n"
+"PO-Revision-Date: 2019-04-28 00:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1625,7 +1625,7 @@ msgstr "In \"Yellow Pages\" Verzeichnis veröffentlichen"
 #: /var/azuracast/www/config/forms/remote.php:152
 #: /var/azuracast/www/config/forms/mount/generic.php:63
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Aktivieren, um diesen Mountpoint auf \"Yellow Pages\" öffentlichen Radioverzeichnis zu bewerben."
 
 #: /var/azuracast/www/config/forms/streamer.php:9
 msgid "Streamer Username"
@@ -1801,23 +1801,23 @@ msgstr "LiquidSoap konfigurieren"
 
 #: /var/azuracast/www/config/forms/station.php:196
 msgid "Crossfade Method"
-msgstr ""
+msgstr "Crossfade Art"
 
 #: /var/azuracast/www/config/forms/station.php:198
 msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
-msgstr ""
+msgstr "Wähle eine Art aus, die beim Übergang von einem Lied zu einem anderen verwendet werden soll. Der Smart Modus beachtet die Lautstärke der beiden Tracks beim Wechsel für einen weicheren Übergang, benötigt aber mehr CPU-Ressourcen."
 
 #: /var/azuracast/www/config/forms/station.php:200
 msgid "Smart Mode"
-msgstr ""
+msgstr "Smart Modus"
 
 #: /var/azuracast/www/config/forms/station.php:201
 msgid "Normal Mode"
-msgstr ""
+msgstr "Normaler Modus"
 
 #: /var/azuracast/www/config/forms/station.php:202
 msgid "Disable Crossfading"
-msgstr ""
+msgstr "Crossfading deaktivieren"
 
 #: /var/azuracast/www/config/forms/station.php:211
 msgid "Crossfade Duration (Seconds)"
@@ -1825,15 +1825,15 @@ msgstr "Übergangszeit (Sekunden)"
 
 #: /var/azuracast/www/config/forms/station.php:213
 msgid "Number of seconds to overlap songs."
-msgstr ""
+msgstr "Anzahl der Sekunden zum Songs überlappen."
 
 #: /var/azuracast/www/config/forms/station.php:224
 msgid "Apply Compression and Normalization"
-msgstr ""
+msgstr "Kompression und Normalisierung anwenden"
 
 #: /var/azuracast/www/config/forms/station.php:226
 msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
-msgstr ""
+msgstr "Komprimiere und normalisiere das Audio Signal des Senders, erzeugt einen gleichmäßigeren und \"volleren\" Sound."
 
 #: /var/azuracast/www/config/forms/station.php:236
 msgid "Allow Song Requests"

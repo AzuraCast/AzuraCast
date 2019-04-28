@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 13:20\n"
+"PO-Revision-Date: 2019-04-28 13:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3613,31 +3613,31 @@ msgstr "Einmal alle %d Lieder"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:101
 msgid "Once per %d Minutes"
-msgstr ""
+msgstr "Einmal alle %d Minuten"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:103
 msgid "Once per Hour (at :%02d)"
-msgstr ""
+msgstr "Einmal pro Stunde (um :%02d)"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:105
 msgid "Once per Day"
-msgstr ""
+msgstr "Einmal am Tag"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:106
 msgid "Plays at %s"
-msgstr ""
+msgstr "Spielt um %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Custom"
-msgstr ""
+msgstr "Individuell"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:4
 msgid "Reorder Playlist"
-msgstr ""
+msgstr "Wiedergabeliste neu ordnen"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:12
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Wiedergabeliste \"%s\" neu ordnen"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:6
@@ -3647,11 +3647,11 @@ msgstr "Doppelte Songs"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:7
 msgid "No duplicates were found. Nice work!"
-msgstr ""
+msgstr "Keine Duplikate gefunden. Gute Arbeit!"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:25
 msgid "Title / File Path"
-msgstr ""
+msgstr "Titel / Dateipfad"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:18
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:7
@@ -3669,11 +3669,11 @@ msgstr "Zeit (Sekunden)"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:30
 msgid "User Agent"
-msgstr ""
+msgstr "User Agent"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:31
 msgid "Location"
-msgstr ""
+msgstr "Ort"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 msgid "Mobile Device"

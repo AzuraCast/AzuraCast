@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 02:10\n"
+"PO-Revision-Date: 2019-04-28 12:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3422,24 +3422,24 @@ msgstr "Dein Sender ist zur Zeit nicht für Übertragungen aktiviert. Du kannst 
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:25
 msgid "On the Air"
-msgstr ""
+msgstr "Auf Sendung"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:27
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:47
 msgid "Listener"
-msgstr ""
+msgstr "Zuhörer"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:29
 msgid "Unique"
-msgstr ""
+msgstr "Einzigartig"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:66
 msgid "Playing Next"
-msgstr ""
+msgstr "Als nächstes spielt"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:87
 msgid "Now Streaming"
-msgstr ""
+msgstr "Jetzt Streamt"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:100
 msgid "Skip Song"
@@ -3447,7 +3447,7 @@ msgstr "Song überspringen"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:104
 msgid "Disconnect Streamer"
-msgstr ""
+msgstr "Streamer trennen"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:163
 #: /var/azuracast/www/templates/stations/profile/index.phtml:179

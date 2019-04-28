@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 13:00\n"
+"PO-Revision-Date: 2019-04-28 13:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3510,26 +3510,26 @@ msgstr "Administrator Passwort"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:304
 msgid "Source Password"
-msgstr ""
+msgstr "Source Passwort"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:312
 msgid "Relay Password"
-msgstr ""
+msgstr "Relay Passwort"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:326
 #: /var/azuracast/www/templates/stations/profile/index.phtml:371
 msgid "Restart"
-msgstr ""
+msgstr "Neu starten"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:330
 #: /var/azuracast/www/templates/stations/profile/index.phtml:375
 msgid "Start"
-msgstr ""
+msgstr "Starten"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:334
 #: /var/azuracast/www/templates/stations/profile/index.phtml:379
 msgid "Stop"
-msgstr ""
+msgstr "Stoppen"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:344
 msgid "AutoDJ Disabled"
@@ -3537,15 +3537,15 @@ msgstr "AutoDJ deaktiviert"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:345
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
-msgstr ""
+msgstr "AutoDJ wurde für diese Station deaktiviert. Keine Musik wird automatisch abgespielt, wenn eine Quelle nicht live ist."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:353
 msgid "Liquidsoap (AutoDJ Service)"
-msgstr ""
+msgstr "Liquidsoap (AutoDJ Dienst)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:358
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
-msgstr ""
+msgstr "LiquidSoap shuffled gerade <b>%d hochgeladene Songs</b> aus <b>%d Wiedergabelisten</b>."
 
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:87
 msgid "Running"
@@ -3557,35 +3557,35 @@ msgstr "Läuft nicht"
 
 #: /var/azuracast/www/templates/stations/sidebar.js.phtml:9
 msgid "Please wait..."
-msgstr ""
+msgstr "Bitte warten..."
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:19
 msgid "All Playlists"
-msgstr ""
+msgstr "Alle Wiedergabelisten"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:22
 msgid "Schedule View"
-msgstr ""
+msgstr "Planungsansicht"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:47
 msgid "# Songs"
-msgstr ""
+msgstr "# Lieder"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Delete playlist \"%s\"?"
-msgstr ""
+msgstr "Wiedergabeliste \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:60
 msgid "More"
-msgstr ""
+msgstr "Mehr"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:65
 msgid "Reorder"
-msgstr ""
+msgstr "Neu anordnen"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:68
 msgid "Export %s"
-msgstr ""
+msgstr "%s exportieren"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:77
 msgid "Song-based"

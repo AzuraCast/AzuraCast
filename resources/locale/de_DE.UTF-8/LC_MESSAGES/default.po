@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 14:20\n"
+"PO-Revision-Date: 2019-04-28 14:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1310,7 +1310,7 @@ msgstr "WebHook Details"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:68
 #: /var/azuracast/www/config/forms/webhook/discord.php:48
 msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
-msgstr ""
+msgstr "Variablen sind werden in Form von <code>{{ var.name }}</code> angegeben. Alle Werte in der <a href=\"%s\" target=\"_blank\">Now Playing API Antwort</a> sind zur Verwendung verfügbar. Alle leeren Felder werden ignoriert."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:103
 #: /var/azuracast/www/config/forms/webhook/telegram.php:57
@@ -1326,7 +1326,7 @@ msgstr "Nachrichtentext"
 #: /var/azuracast/www/config/forms/webhook/twitter.php:115
 #: /var/azuracast/www/config/forms/webhook/telegram.php:77
 msgid "Now playing on %s: %s by %s! Tune in now."
-msgstr ""
+msgstr "Gerade auf %s: %s von %s! Jetzt reinhören."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:12
 msgid "Telegram API Details"
@@ -1339,7 +1339,7 @@ msgstr "Bot Token"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 #: /var/azuracast/www/config/forms/webhook/telegram.php:86
 msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
-msgstr ""
+msgstr "Weitere Details findest du in der <a href=\"%s\" target=\"_blank\">Telegramm Dokumentation</a>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:37
 msgid "Chat ID"
@@ -1351,11 +1351,11 @@ msgstr "Eindeutiger Identifikator für den Zielchat oder Benutzernamen des Zielk
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:47
 msgid "Custom API Base URL"
-msgstr ""
+msgstr "Individuelle API Basis URL"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:49
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
-msgstr ""
+msgstr "Leer lassen, um die Standard Telegram API URL zu verwenden (empfohlen). Gib die vollständige URL an, z.B. <code>https://api.pwrtelegram.xyz/</code>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:67
 #: /var/azuracast/www/config/forms/webhook/discord.php:47
@@ -1365,7 +1365,7 @@ msgstr "Nachricht anpassen"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 #: /var/azuracast/www/config/forms/webhook/discord.php:55
 msgid "Main Message Content"
-msgstr ""
+msgstr "Inhalt der Nachricht"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:85
 msgid "Message parsing mode"
@@ -3923,7 +3923,7 @@ msgstr "Eingereihtes Element löschen?"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:6
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
-msgstr ""
+msgstr "Remote Relays ermöglichen es dir, mit einer Sendesoftware außerhalb dieses Servers zu arbeiten. Jeder Server, den du hier einfügst, wird in die Statistiken deines Senders aufgenommen. Du kannst auch von diesem Server zu entfernten Relays senden."
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:34
 msgid "Delete remote relay \"%s\"?"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 01:40\n"
+"PO-Revision-Date: 2019-04-28 01:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3355,7 +3355,7 @@ msgstr "Startseite"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:6
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
-msgstr ""
+msgstr "WebHooks ermöglichen eine Verbindung zu externen Web-Diensten und übertragen Änderungen an deinem Sender an sie."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:24
 msgid "Type"
@@ -3363,38 +3363,38 @@ msgstr "Typ"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Triggers"
-msgstr ""
+msgstr "Auslöser"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 msgid "Disable"
-msgstr ""
+msgstr "Deaktivieren"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 msgid "Enable"
-msgstr ""
+msgstr "Aktivieren"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Trigger the web hook manually and view the raw response."
-msgstr ""
+msgstr "Löse den WebHook manuell aus und zeige die Antwort an."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "WebHook \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 msgid "Select the type of web hook to create."
-msgstr ""
+msgstr "Wähle den Typ des WebHooks aus, der erstellt werden soll."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6
 msgid "Automated Playlist Assignment"
-msgstr ""
+msgstr "Automatisierte Wiedergabelisten Zuordnung"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:8
 msgid "Based on the previous performance of your station's songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists."

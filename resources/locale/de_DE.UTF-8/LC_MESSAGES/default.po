@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 14:10\n"
+"PO-Revision-Date: 2019-04-28 14:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1317,7 +1317,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/discord.php:37
 #: /var/azuracast/www/config/forms/webhook/generic.php:62
 msgid "Web Hook Triggers"
-msgstr ""
+msgstr "WebHook Auslöser"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:112
 msgid "Message Body"
@@ -1369,7 +1369,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:85
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Nachrichten Verarbeitungsmodus"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:12
 msgid "Discord API Details"
@@ -4023,23 +4023,23 @@ msgstr "Benutzerdefiniertes Feld \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:15
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
-msgstr ""
+msgstr "Da du Docker nutzt, können einige Systemprotokolle nur von einer Shell-Sitzung auf dem Host-Computer abgerufen werden. Du kannst <code>%s</code> ausführen, um auf Containerprotokolle aus dem Terminal zuzugreifen."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:30
 msgid "Logs by Station"
-msgstr ""
+msgstr "Logs nach Sender"
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
-msgstr ""
+msgstr "Zum Hauptinhalt springen"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Seitenleiste umschalten"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Menü umschalten"
 
 #: /var/azuracast/www/templates/main.phtml:72
 msgid "System Administration"
@@ -4047,11 +4047,11 @@ msgstr "System Administration"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Design ändern"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"
@@ -4063,11 +4063,11 @@ msgstr "Logout"
 
 #: /var/azuracast/www/templates/main.phtml:151
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "Gefällt dir uns unsere Software? <a href=\"%s\" target=\"_blank\">Spenden etwas, um AzuraCast zu unterstützen!</a>"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."
-msgstr ""
+msgstr "Die von dir aufgerufene Seite wurde nicht gefunden."
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:3
 msgid "Select..."
@@ -4079,5 +4079,5 @@ msgstr "Keine Ergebnisse gefunden!"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
-msgstr ""
+msgstr "Maskottchen designed von %s"
 

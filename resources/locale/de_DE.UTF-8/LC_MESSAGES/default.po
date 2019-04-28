@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 12:50\n"
+"PO-Revision-Date: 2019-04-28 13:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3452,35 +3452,35 @@ msgstr "Streamer trennen"
 #: /var/azuracast/www/templates/stations/profile/index.phtml:163
 #: /var/azuracast/www/templates/stations/profile/index.phtml:179
 msgid "<a href=\"%s\">Edit station profile</a> to enable."
-msgstr ""
+msgstr "<a href=\"%s\">Sender Profil bearbeiten</a> zum aktivieren."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:171
 msgid "Streamers/DJs"
-msgstr ""
+msgstr "Streamer/DJs"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:175
 msgid "Manage streamer accounts"
-msgstr ""
+msgstr "Streamer Accounts verwalten"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:186
 msgid "Base Directory"
-msgstr ""
+msgstr "Basisverzeichnis"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:190
 msgid "Media Directory"
-msgstr ""
+msgstr "Medienverzeichnis"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:194
 msgid "Player Embed Code"
-msgstr ""
+msgstr "Player Einbettungscode"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:208
 msgid "Streams"
-msgstr ""
+msgstr "Streams"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:218
 msgid "Local Streams"
-msgstr ""
+msgstr "Lokale Streams"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:263
 #: /var/azuracast/www/templates/stations/profile/index.phtml:267
@@ -3489,24 +3489,24 @@ msgstr "%s herunterladen"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:278
 msgid "Icecast (Broadcasting Service)"
-msgstr ""
+msgstr "Icecast (Broadcasting Dienst)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:280
 msgid "SHOUTcast DNAS 2 (Broadcasting Service)"
-msgstr ""
+msgstr "SHOUTcast DNAS 2 (Broadcasting Dienst)"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:283
 #: /var/azuracast/www/templates/stations/profile/index.phtml:356
 msgid "Loading..."
-msgstr ""
+msgstr "Wird geladen..."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:293
 msgid "Administration URL"
-msgstr ""
+msgstr "Administrations URL"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:297
 msgid "Administrator Password"
-msgstr ""
+msgstr "Administrator Passwort"
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:304
 msgid "Source Password"

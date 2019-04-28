@@ -51,8 +51,6 @@ Follow our **[installation guide](https://azuracast.com/install.html)** for inst
 - **Web Log Viewing:** Quickly diagnose problems affecting any part of the AzuraCast system through the system-wide web log viewer.
 - **Automatic Radio Proxies:** Many users can't connect directly to radio station ports (i.e. 8000) by default, so AzuraCast includes an automatic nginx proxy that lets listeners connect via the http (80) and https (443) ports. These proxies are also compatible with services like CloudFlare.
 
-#### You can suggest a feature through [AzuraCast's Feature Request Page](https://features.azuracast.com/).
-
 ### What's Included
 
 Whether you're using the Bare-metal installer or Docker containers, AzuraCast will automatically retrieve and install these components for you:
@@ -84,7 +82,9 @@ AzuraCast is licensed under the [Apache license, version 2.0](https://github.com
 
 If you need help with AzuraCast, the first place you should visit is our [Support readme document](https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md), which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to check your server's log files for more details. If you do need our help via GitHub, supplying these logs is absolutely essential in helping us diagnose and resolve your issue.
 
-We rely exclusively on our [GitHub Issues board](https://github.com/AzuraCast/AzuraCast/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) to track the status of errors, bug reports, questions and enhancement requests for new features. First, check to make sure the issue you're experiencing isn't already reported on GitHub. If it is, you can subscribe to the existing ticket for updates on the issue's progress. If your issue or request isn't already reported, click the "New Issue" button to create it. Make sure to follow the template provided, as it asks important details that are very important to our team.
+New feature requests are powered by FeatureUpvote. You can visit our [Feature Request Page](https://features.azuracast.com/) to submit a new feature request or vote on existing ones.
+
+For bug and error reports, we rely exclusively on our [GitHub Issues board](https://github.com/AzuraCast/AzuraCast/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) to diagnose, track and update these reports. First, check to make sure the issue you're experiencing isn't already reported on GitHub. If it is, you can subscribe to the existing ticket for updates on the issue's progress. If your issue or request isn't already reported, click the "New Issue" button to create it. Make sure to follow the template provided, as it asks important details that are very important to our team.
 
 Please keep in mind that AzuraCast is a free software project built and maintained by volunteers, so there may be some delays in getting back to you. We will make the absolute best effort possible to resolve your issues and answer your questions.
 

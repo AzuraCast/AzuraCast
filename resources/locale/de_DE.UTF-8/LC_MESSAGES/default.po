@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 01:50\n"
+"PO-Revision-Date: 2019-04-28 02:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3398,27 +3398,27 @@ msgstr "Automatisierte Wiedergabelisten Zuordnung"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:8
 msgid "Based on the previous performance of your station's songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists."
-msgstr ""
+msgstr "Basierend auf der bisherigen Performance der Songs deiner Lieder kann %s automatisch Songs gleichmäßig unter deinen Wiedergabelisten verteilen, die am besten performenden werden in den am höchstgewichteten Wiedergabelisten platziert."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:10
 msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
-msgstr ""
+msgstr "Sobald du die automatische Zuweisung konfiguriert hast, klicke auf den Button unten, um den automatisierten Zuweisungsprozess auszuführen. Dieser Vorgang wird nicht ausgeführt, bis du \"Aktivieren\" ausgewählt hast."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:12
 msgid "Run Automated Assignment"
-msgstr ""
+msgstr "Automatische Zuweisung ausführen"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:18
 msgid "Configure Automated Assignment"
-msgstr ""
+msgstr "Automatische Zuweisung anpassen"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
-msgstr ""
+msgstr "Sender Übertragung deaktiviert"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "Dein Sender ist zur Zeit nicht für Übertragungen aktiviert. Du kannst immer noch Musik Dateien, Wiedergabelisten und andere Sendereinstellungen verwalten. Um die Übertragung wieder zu aktivieren, <a href=\"%s\">bearbeite dein Sender Profil</a>."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:25
 msgid "On the Air"

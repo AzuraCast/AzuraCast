@@ -51,6 +51,8 @@ Follow our **[installation guide](https://azuracast.com/install.html)** for inst
 - **Web Log Viewing:** Quickly diagnose problems affecting any part of the AzuraCast system through the system-wide web log viewer.
 - **Automatic Radio Proxies:** Many users can't connect directly to radio station ports (i.e. 8000) by default, so AzuraCast includes an automatic nginx proxy that lets listeners connect via the http (80) and https (443) ports. These proxies are also compatible with services like CloudFlare.
 
+#### You can suggest a feature through [AzuraCast's Feature Request Page](https://features.azuracast.com/).
+
 ### What's Included
 
 Whether you're using the Bare-metal installer or Docker containers, AzuraCast will automatically retrieve and install these components for you:

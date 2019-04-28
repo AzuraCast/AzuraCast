@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 00:40\n"
+"PO-Revision-Date: 2019-04-28 00:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1853,7 +1853,7 @@ msgstr "Wenn Musikwünsche aktiviert sind, wird diese Zeit verwendet bevor ein M
 
 #: /var/azuracast/www/config/forms/station.php:258
 msgid "Request Last Played Threshold (Minutes)"
-msgstr "Anforderung der zuletzt gespielten Schwelle (Minuten)"
+msgstr "Abstand zwischen Musikwünschen (Minuten)"
 
 #: /var/azuracast/www/config/forms/station.php:259
 msgid "If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
@@ -1917,11 +1917,11 @@ msgstr "Dieser Port wird von keinem externen Prozess verwendet. Ändern Sie dies
 
 #: /var/azuracast/www/config/forms/station.php:353
 msgid "Use Replaygain Metadata"
-msgstr ""
+msgstr "Replaygain Metadaten verwenden"
 
 #: /var/azuracast/www/config/forms/station.php:356
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr ""
+msgstr "Liquidsoap anweisen die Replaygain Metadaten eines Songs zu verwenden um die Lautstärke anzupassen."
 
 #: /var/azuracast/www/config/forms/station.php:370
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
@@ -1948,15 +1948,15 @@ msgstr "Speicherkontingent"
 
 #: /var/azuracast/www/config/forms/station.php:397
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr ""
+msgstr "Lege einen maximalen Speicherplatz fest, den diese Station verwenden kann. Gib die Größe mit Einheit an, z.B. \"8 GB\". Einheiten werden in 1024 Bytes gemessen. Leer lassen, um den ganzen verfügbaren Speicherplatz auf der Festplatte zu verwenden."
 
 #: /var/azuracast/www/config/forms/station.php:404
 msgid "Base Station Directory"
-msgstr ""
+msgstr "Sender Basis Verzeichnis"
 
 #: /var/azuracast/www/config/forms/station.php:406
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
-msgstr ""
+msgstr "Das übergeordnete Verzeichnis, in dem die Wiedergabelisten und Konfigurationsdateien gespeichert werden. Leer lassen, um das Standardverzeichnis zu verwenden."
 
 #: /var/azuracast/www/config/forms/station.php:413
 msgid "Custom Media Directory"
@@ -2120,11 +2120,11 @@ msgstr "<b>Alle Updates:</b> Alle Ankündigungen und kleinere Updates."
 
 #: /var/azuracast/www/config/forms/settings.php:157
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Fehlermeldungen automatisch an AzuraCast senden"
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Wenn die Web-Anwendung auf einen Fehler stößt, kann automatisch ein anonymisierter Bericht über den Fehler an das AzuraCast-Team gesendet werden, um eine schnellere Diagnose und Behebung zu ermöglichen."
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."

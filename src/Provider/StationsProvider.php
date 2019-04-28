@@ -19,6 +19,7 @@ class StationsProvider implements ServiceProviderInterface
             return new Stations\AutomationController(
                 $di[EntityManager::class],
                 $di[App\Sync\Task\RadioAutomation::class],
+                $di['settings'],
                 $config->get('forms/automation')
             );
         };

@@ -2,6 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Sync\Task\RadioAutomation;
+use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use App\Http\Request;
 use App\Http\Response;
@@ -15,6 +16,9 @@ class AutomationController
     /** @var RadioAutomation */
     protected $sync_task;
 
+    /** @var Settings */
+    protected $app_settings;
+
     /** @var array */
     protected $form_config;
 
@@ -24,10 +28,11 @@ class AutomationController
      * @param RadioAutomation $sync_task
      * @see \App\Provider\StationsProvider
      */
-    public function __construct(EntityManager $em, RadioAutomation $sync_task, array $form_config)
+    public function __construct(EntityManager $em, RadioAutomation $sync_task, Settings $app_settings, array $form_config)
     {
         $this->em = $em;
         $this->sync_task = $sync_task;
+        $this->app_settings = $app_settings;
         $this->form_config = $form_config;
     }
 
@@ -54,6 +59,7 @@ class AutomationController
         }
 
         return $request->getView()->renderToResponse($response, 'stations/automation/index', [
+            'app_settings' => $this->app_settings,
             'form' => $form,
         ]);
     }

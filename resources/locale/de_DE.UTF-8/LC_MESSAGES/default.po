@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 14:00\n"
+"PO-Revision-Date: 2019-04-28 14:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3939,27 +3939,27 @@ msgstr "Pause"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr ""
+msgstr "Automatisch nach unten scrollen"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:3
 msgid "Need Help?"
-msgstr ""
+msgstr "Brauchst du Hilfe?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:5
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
+msgstr "Antworten auf viele häufig gestellte Fragen findest du in unseren <a href=\"%s\" target=\"_blank\">Hilfeseiten</a>."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:7
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
+msgstr "Wenn du auf einen Fehler stößt, kannst du uns auf unserem GitHub Repository unter dem Link unten einreichen."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:9
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
+msgstr "Dein aktueller Installationstyp ist <b>%s</b>. Bitte gib dies bei der Meldung eines neuen Problems mit an."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:14
 msgid "New GitHub Issue"
-msgstr ""
+msgstr "Neues Problem auf GitHub"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3971,7 +3971,7 @@ msgstr "Duplizieren"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr ""
+msgstr "Sender \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:20
 msgid "Owner"
@@ -3979,35 +3979,35 @@ msgstr "Besitzer"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast installiert"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
-msgstr ""
+msgstr "Der SHOUTcast 2 DNAS ist installiert und für den Einsatz bereit."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr ""
+msgstr "Rolle \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "This role cannot be deleted."
-msgstr ""
+msgstr "Diese Rolle kann nicht gelöscht werden."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:44
 msgid "Global"
-msgstr ""
+msgstr "Global"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr ""
+msgstr "Benutzer \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:46
 msgid "(You)"
-msgstr ""
+msgstr "(Du)"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:22
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Synchronisierungsaufgaben"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:32
 msgid "%s ago"
@@ -4015,11 +4015,11 @@ msgstr "vor %s"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Run Task"
-msgstr ""
+msgstr "Aufgabe ausführen"
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr ""
+msgstr "Benutzerdefiniertes Feld \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:15
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."

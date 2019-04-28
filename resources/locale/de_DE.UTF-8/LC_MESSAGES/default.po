@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 13:10\n"
+"PO-Revision-Date: 2019-04-28 13:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3589,15 +3589,15 @@ msgstr "%s exportieren"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:77
 msgid "Song-based"
-msgstr ""
+msgstr "Lieder basiert"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:79
 msgid "Jingle Mode"
-msgstr ""
+msgstr "Jingle Modus"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:85
 msgid "Auto-Assigned"
-msgstr ""
+msgstr "Automatisch zugewiesen"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:94
 msgid "Weight"
@@ -3605,11 +3605,11 @@ msgstr "Gewichtung"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:97
 msgid "Plays between %s and %s"
-msgstr ""
+msgstr "Spielt zwischen %s und %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:99
 msgid "Once per %d Songs"
-msgstr ""
+msgstr "Einmal alle %d Lieder"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:101
 msgid "Once per %d Minutes"

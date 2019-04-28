@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 13:50\n"
+"PO-Revision-Date: 2019-04-28 14:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3781,15 +3781,15 @@ msgstr "Zuhörer nach Tag"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Zuhörer nach Stunde"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:29
 msgid "Listeners by Day of Week"
-msgstr ""
+msgstr "Zuhörer nach Wochentag"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:53
 msgid "Best Performing Songs"
-msgstr ""
+msgstr "Best laufende Lider"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:54
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:96
@@ -3806,19 +3806,19 @@ msgstr "Ändern"
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:108
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:153
 msgid "Song"
-msgstr ""
+msgstr "Lied"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:95
 msgid "Worst Performing Songs"
-msgstr ""
+msgstr "Schlecht laufendste Lieder"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:140
 msgid "Most Played Songs"
-msgstr ""
+msgstr "Meistgespielte Lieder"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:141
 msgid "in the last month"
-msgstr ""
+msgstr "im letzten Monat"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:32
 msgid "Date/Time"
@@ -3827,41 +3827,41 @@ msgstr "Datum/Zeit"
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:107
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
 msgid "Today"
-msgstr ""
+msgstr "Heute"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:108
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:61
 msgid "Yesterday"
-msgstr ""
+msgstr "Gestern"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:109
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
 msgid "Last 7 Days"
-msgstr ""
+msgstr "Letzte 7 Tage"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:111
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:65
 msgid "This Month"
-msgstr ""
+msgstr "Diesen Monat"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:112
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:66
 msgid "Last Month"
-msgstr ""
+msgstr "Letzter Monat"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 msgid "Listener Request"
-msgstr ""
+msgstr "Zuhörerwunsch"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 msgid "Playlist:"
-msgstr ""
+msgstr "Wiedergabeliste:"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Broadcast"
-msgstr ""
+msgstr "Liveübertragung"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
@@ -3877,7 +3877,7 @@ msgstr "Notizen"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr ""
+msgstr "Streamer \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
@@ -3915,11 +3915,11 @@ msgstr "Eine Anleitung zur Einrichtung der Zugangsdaten findest du <a href=\"%s\
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:25
 msgid "Cued On"
-msgstr ""
+msgstr "Geplant um"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Eingereihtes Element löschen?"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:6
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
@@ -3927,11 +3927,11 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:34
 msgid "Delete remote relay \"%s\"?"
-msgstr ""
+msgstr "Remote Relay \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
-msgstr ""
+msgstr "Verfügbare Logs"
 
 #: /var/azuracast/www/templates/partials/radio_controls.phtml:9
 msgid "Pause"

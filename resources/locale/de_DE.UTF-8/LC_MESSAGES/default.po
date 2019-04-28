@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 00:00\n"
+"PO-Revision-Date: 2019-04-28 00:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1268,23 +1268,30 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below."
-msgstr ""
+msgstr "Schritte zur Konfiguration einer Twitter-App:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>Erstelle eine neue App auf der <a href=\"%s\" target=\"_blank\">Twitter Apps Seite</a>. \n"
+"                    Verwende die Base URL dieser Installation als App URL.</li>\n"
+"                    <li>Klicke in der neu erstellten App auf den Tab \"Keys and Access Tokens\".</li>\n"
+"                    <li>Unten auf der Seite klicken Sie auf \"Create my access token\".</li>\n"
+"                </ol>\n"
+"                Sobald diese Schritte abgeschlossen sind, füge die Informationen von der Seite \"Keys and Access Tokens\" in die Felder unten ein."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:28
 msgid "Consumer Key (API Key)"
-msgstr ""
+msgstr "Consumer Key (API Key)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:37
 msgid "Consumer Secret (API Secret)"
-msgstr ""
+msgstr "Consumer Secret (API Secret)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:46
 msgid "Access Token"
-msgstr ""
+msgstr "Access Token"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:55
 msgid "Access Token Secret"
-msgstr ""
+msgstr "Access Token Secret"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:64
 msgid "Only Send One Tweet Every..."

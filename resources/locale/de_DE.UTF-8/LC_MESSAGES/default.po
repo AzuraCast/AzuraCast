@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 01:20\n"
+"PO-Revision-Date: 2019-04-28 01:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3061,22 +3061,22 @@ msgstr "Song Verlauf"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:34
 msgid "Request Song"
-msgstr ""
+msgstr "Lied wünschen"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:67
 msgid "Request a Song"
-msgstr ""
+msgstr "Wünsche dir ein Lied"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:12
 msgid "Album Cover"
-msgstr ""
+msgstr "Album Cover"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:50
 #: /var/azuracast/www/templates/frontend/index/index.phtml:81
 #: /var/azuracast/www/templates/stations/profile/index.phtml:225
 #: /var/azuracast/www/templates/stations/profile/index.phtml:247
 msgid "Play/Pause"
-msgstr ""
+msgstr "Play/Pause"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:68
 msgid "Mute"
@@ -3085,11 +3085,11 @@ msgstr "Stummschalten"
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:73
 #: /var/azuracast/www/templates/partials/radio_controls.phtml:15
 msgid "Volume"
-msgstr ""
+msgstr "Lautstärke"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.phtml:76
 msgid "Full Volume"
-msgstr ""
+msgstr "Volle Lautstärke"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:1
 #: /var/azuracast/www/templates/main.phtml:64
@@ -3126,27 +3126,28 @@ msgstr "Verwalten"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
-msgstr ""
+msgstr "Fehler: Keine Sender verfügbar"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:4
 msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
-msgstr ""
+msgstr "Dein Account ist aktiv, aber derzeit nicht mit einem Sender verknüpft. Wenn du glaubst, dass das ein Fehler ist, kontaktiere bitte den Administrator dieses Servers."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:9
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:3
 #: /var/azuracast/www/templates/main.phtml:91
 msgid "My API Keys"
-msgstr ""
+msgstr "Meine API-Schlüssel"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:11
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "API-Schlüssel können verwendet werden, um auf einige Systemfunktionen zuzugreifen, ohne sich einzuloggen. Alle erstellten Schlüssel \n"
+"            teilen deine Berechtigungen im System. Weitere Informationen findest du in der <a href=\"%s\">API-Dokumentation</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:31
 msgid "Key Identifier"
-msgstr ""
+msgstr "Schlüssel Bezeichnung"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:39
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:33
@@ -3170,23 +3171,23 @@ msgstr "Entfernen"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
 msgid "New Key Generated"
-msgstr ""
+msgstr "Neuer Schlüssel generiert"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:13
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
-msgstr ""
+msgstr "<b>Wichtig: Kopiere den unten stehenden Schlüssel, bevor du fortfährst!</b> Du wirst ihn nicht wieder abrufen können."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:15
 msgid "Your full API key is below:"
-msgstr ""
+msgstr "Dein vollständiger API-Schlüssel steht unten:"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:24
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr ""
+msgstr "Bei API Aufrufen, kannst du diesen Wert im \"X-API-Key\" Header senden, um dich zu authentifizieren. Du kannst nur die Aktionen ausführen, die dein Account ausführen darf."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:27
 msgid "Continue"
-msgstr ""
+msgstr "Weiter"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:1
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:3
@@ -3196,23 +3197,23 @@ msgstr "AzuraCast Setup"
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:14
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:23
 msgid "Create Station"
-msgstr ""
+msgstr "Sender erstellen"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:26
 msgid "Customize AzuraCast Settings"
-msgstr ""
+msgstr "AzuraCast Einstellungen anpassen"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:27
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
-msgstr ""
+msgstr "Schließe den Installations-Prozess durch Angabe einiger Informationen über deine Broadcast-Umgebung ab. Diese Einstellungen können später im Administrationspanel geändert werden."
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:35
 msgid "Create a New Radio Station"
-msgstr ""
+msgstr "Neuen Radiosender erstellen"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:36
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
-msgstr ""
+msgstr "Setze den Einrichtungsprozess fort, indem du deinen ersten Radiosender unten erstellst. Du kannst deine Eingaben später bearbeiten."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:15
 msgid "AzuraCast First-Time Setup"

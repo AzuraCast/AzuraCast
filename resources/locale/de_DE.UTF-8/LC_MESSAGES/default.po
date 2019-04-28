@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 13:40\n"
+"PO-Revision-Date: 2019-04-28 13:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3703,7 +3703,7 @@ msgstr "Dateiname"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:32
 msgid "Length Text"
-msgstr ""
+msgstr "Länge Text"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:33
 msgid "Playlist(s)"
@@ -3724,7 +3724,7 @@ msgstr "Gesamt"
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:37
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:152
 msgid "Plays"
-msgstr ""
+msgstr "Wiedergaben"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:38
 msgid "Play %"
@@ -3736,28 +3736,28 @@ msgstr "Verhältnis"
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:60
 msgid "Daily Listener Range"
-msgstr ""
+msgstr "Tägliche Zuhörer Reichweite"
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:64
 msgid "Hourly Average Listeners"
-msgstr ""
+msgstr "Stündliche Zuhörer Reichweite"
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Daily Average Listeners"
-msgstr ""
+msgstr "Tägliche Zuhörer Reichweite"
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:120
 msgid "Average Listeners"
-msgstr ""
+msgstr "Durchschnittliche Zuhörer Reichweite"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
 msgid "Report Not Available"
-msgstr ""
+msgstr "Bericht nicht verfügbar"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
-msgstr ""
+msgstr "Dieser Bericht ist für diesen Sender nicht verfügbar, da der Systemadministrator sich dazu entschieden hat, keine detaillierten IP-basierten Zuhörerinformationen zu sammeln."
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:24
 msgid "Date Requested"
@@ -3777,7 +3777,7 @@ msgstr "Nicht gespielt"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Zuhörer nach Tag"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 msgid "Listeners by Hour"

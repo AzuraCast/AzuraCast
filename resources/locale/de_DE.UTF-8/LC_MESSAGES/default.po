@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 01:30\n"
+"PO-Revision-Date: 2019-04-28 01:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3217,23 +3217,23 @@ msgstr "Setze den Einrichtungsprozess fort, indem du deinen ersten Radiosender u
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:15
 msgid "AzuraCast First-Time Setup"
-msgstr ""
+msgstr "AzuraCast Erstinstallation"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:18
 msgid "Welcome to AzuraCast!"
-msgstr ""
+msgstr "Willkommen bei AzuraCast!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:19
 msgid "Let's get started by creating your Super Administrator account."
-msgstr ""
+msgstr "Lass uns mit dem erstellen deines Super Administrator Accounts anfangen."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
-msgstr ""
+msgstr "Dieser Account hat vollen Zugriff auf das System und du wirst automatisch für den Rest der Installation mit diesem angemeldet."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:6
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
-msgstr ""
+msgstr "Einhängepunkte sind die Zugangspunkte für Zuhörer deines Senders. Jeder Einhängepunkt kann ein anderes Audioformat oder eine andere Qualität haben. Mit Einhängepunkten kannst du einen hochwertigen Stream für Festnetz Verbindungen und einen mobilen Stream für Mobile Zuhöhrer einrichten."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:25
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
@@ -3243,7 +3243,7 @@ msgstr "AutoDJ"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:34
 msgid "Delete mount point \"%s\"?"
-msgstr ""
+msgstr "Einhängepunkt \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:34
 #: /var/azuracast/www/templates/stations/files/index.phtml:88
@@ -3265,43 +3265,43 @@ msgstr "Löschen"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:40
 msgid "Default Mount"
-msgstr ""
+msgstr "Standard Einhängepunkt"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:35
 msgid "%s of %s Used"
-msgstr ""
+msgstr "%s von %s verwendet"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:41
 msgid "%s Files"
-msgstr ""
+msgstr "%s Dateien"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:48
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr ""
+msgstr "Du kannst auch Dateien über SFTP hochladen, indem du dieser Anleitung <a href=\"%s\" target=\"_blank\">folgst</a>. Neu hochgeladene Dateien werden automatisch innerhalb weniger Minuten verarbeitet."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:53
 msgid "Drag files here to upload to this folder or "
-msgstr ""
+msgstr "Ziehe Dateien hier hin, um sie in diesen Ordner hochzuladen oder "
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:61
 msgid "Set Playlists"
-msgstr ""
+msgstr "Wiedergabelisten zuweisen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:78
 msgid "New Playlist"
-msgstr ""
+msgstr "Neue Wiedergabeliste"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:83
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "Move"
-msgstr ""
+msgstr "Bewegen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:91
 msgid "New Folder"
-msgstr ""
+msgstr "Neues Verzeichnis"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:103
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:27
@@ -3319,27 +3319,27 @@ msgstr "Geändert"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:125
 msgid "New Directory"
-msgstr ""
+msgstr "Neues Verzeichnis"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:130
 msgid "Directory Name"
-msgstr ""
+msgstr "Verzeichnisname"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:136
 msgid "Create Directory"
-msgstr ""
+msgstr "Verzeichnis erstellen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:148
 msgid "Move {{ selected_files }} File(s) to"
-msgstr ""
+msgstr "Verschiebe {{ selected_files }} Datei(en) nach"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:154
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:84
 msgid "Album Artwork"
-msgstr ""
+msgstr "Album Artwork"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:92
 msgid "Rename"
@@ -3347,11 +3347,11 @@ msgstr "Umbenennen"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:176
 msgid "Select"
-msgstr ""
+msgstr "Auswählen"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:396
 msgid "Home"
-msgstr ""
+msgstr "Startseite"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:6
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."

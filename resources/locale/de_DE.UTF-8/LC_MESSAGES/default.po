@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-28 14:50\n"
+"PO-Revision-Date: 2019-04-28 15:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -967,7 +967,7 @@ msgstr "Generischer WebHook"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr "Automatisch eine Nachricht an eine URL schicken, wenn Sender-Daten geändert werden."
+msgstr "Automatisch eine Nachricht an eine URL schicken, wenn Sender Daten geändert werden."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
@@ -975,7 +975,7 @@ msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
-msgstr "Sende Metadaten-Änderungen an TuneIn."
+msgstr "Sende Metadaten Änderungen an TuneIn."
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
@@ -1431,7 +1431,11 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "WebHooks senden automatisch einen HTTP POST Request an die URL die du eingegeben hast um \n"
+"                sie zu jedes Mal zu benachrichtigen, wenn einer der Auslöser die du aktiviert hast auf deinem Sender ausgelöst wird. Der Inhalt der POST Nachricht\n"
+"                entspricht der <a href=\"%s\" target=\"_blank\">Now Playing API Antwort</a> deines Senders. \n"
+"                Um schnell verarbeitet zu werden haben WebHooks eine kurze Timeout Zeit, der antwortende Dienst sollte also darauf optimiert sein\n"
+"                einen Request in unter 2 Sekunden zu verarbeiten."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:34
 msgid "Web Hook URL"

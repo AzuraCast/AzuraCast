@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-04-29 17:40\n"
+"PO-Revision-Date: 2019-04-29 17:50\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1946,15 +1946,15 @@ msgstr "Przerywaj inne utwory, by odtworzyć w ustalonym czasie."
 
 #: /var/azuracast/www/config/forms/playlist.php:246
 msgid "Only loop through playlist once."
-msgstr ""
+msgstr "Odtwórz playlistę w pętli tylko raz."
 
 #: /var/azuracast/www/config/forms/playlist.php:247
 msgid "Only play one track at scheduled time."
-msgstr ""
+msgstr "Odtwarzaj tylko jeden utwór w ustalonym czasie."
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Merge playlist to play as a single track."
-msgstr ""
+msgstr "Połącz playlistę, aby odtworzyć ją jako pojedynczy utwór."
 
 #: /var/azuracast/www/config/forms/playlist.php:263
 msgid "Include in Automated Assignment"
@@ -2962,7 +2962,7 @@ msgstr "Pełna głośność"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 msgid "Album Art"
-msgstr ""
+msgstr "Okładka albumu"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
@@ -3685,11 +3685,11 @@ msgstr "Zmień kolejność playlisty: %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:37
 msgid "Down"
-msgstr ""
+msgstr "W dół"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Up"
-msgstr ""
+msgstr "W górę"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:19
 msgid "All Playlists"

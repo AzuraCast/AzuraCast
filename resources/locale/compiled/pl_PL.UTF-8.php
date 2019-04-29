@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-04-05T06:27:01+00:00
-PO-Revision-Date: 2019-04-20 21:03
+PO-Revision-Date: 2019-04-29 00:40
 Language: pl_PL
 Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
 X-Generator: crowdin.com
@@ -873,7 +873,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Name' => 
       array (
-        0 => 'Imię',
+        0 => 'Nazwa',
       ),
       'E-mail Address' => 
       array (
@@ -1799,7 +1799,7 @@ Po ukończeniu tej procedury, wklej informacje z podstrony "Klucze i Tokeny Dost
       ),
       'Shuffled' => 
       array (
-        0 => 'Losowo',
+        0 => 'Losowo w trybie shuffle',
       ),
       'Random' => 
       array (

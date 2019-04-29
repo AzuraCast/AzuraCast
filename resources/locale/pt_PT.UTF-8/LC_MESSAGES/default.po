@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-20 21:03\n"
+"PO-Revision-Date: 2019-04-29 00:40\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -420,7 +420,7 @@ msgstr "Pode agora configurar contas de streamers (DJ)."
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:139
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr "Streamer"
+msgstr "Streamer/DJ"
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:92
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:110
@@ -792,7 +792,7 @@ msgstr "Transmissão"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Streamers"
-msgstr "Streamer"
+msgstr "Streamers/DJ's"
 
 #: /var/azuracast/www/src/Acl.php:190
 #: /var/azuracast/www/config/menus/station.php:74
@@ -807,7 +807,7 @@ msgstr "Pontos de Montagem"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr "Relays Remotos"
+msgstr "Relés Remotos"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Automation"
@@ -845,7 +845,7 @@ msgstr "Página Pública"
 #: /var/azuracast/www/templates/stations/files/index.phtml:24
 #: /var/azuracast/www/templates/stations/profile/index.phtml:362
 msgid "Music Files"
-msgstr "Ficheiros Musicais"
+msgstr "Ficheiros Multimédia"
 
 #: /var/azuracast/www/config/menus/station.php:53
 #: /var/azuracast/www/templates/stations/files/index.phtml:109

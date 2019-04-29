@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-04-05T06:27:01+00:00
-PO-Revision-Date: 2019-04-20 21:02
+PO-Revision-Date: 2019-04-29 00:40
 Language: fr_FR
 Plural-Forms: nplurals=2; plural=(n > 1);
 X-Generator: crowdin.com
@@ -663,7 +663,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Duplicate Songs' => 
       array (
-        0 => 'Titres à double',
+        0 => 'Titres en double',
       ),
       'SoundExchange Royalties' => 
       array (

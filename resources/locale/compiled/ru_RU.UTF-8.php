@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-04-05T06:27:01+00:00
-PO-Revision-Date: 2019-04-20 21:03
+PO-Revision-Date: 2019-04-29 00:40
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
 X-Generator: crowdin.com
@@ -94,11 +94,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
-        0 => '',
+        0 => 'Установлена версия SHOUTcast "%s".',
       ),
       'Install SHOUTcast' => 
       array (
-        0 => '',
+        0 => 'Установить SHOUTcast',
       ),
       '%s updated.' => 
       array (
@@ -110,7 +110,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Custom Field' => 
       array (
-        0 => '',
+        0 => 'Пользовательские поля',
       ),
       'Edit %s' => 
       array (
@@ -190,7 +190,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Frontend' => 
       array (
-        0 => '',
+        0 => 'Фронтенд',
       ),
       '%s stopped.' => 
       array (
@@ -206,11 +206,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Streamer disconnected.' => 
       array (
-        0 => '',
+        0 => 'Стример отключен.',
       ),
       'Backend' => 
       array (
-        0 => '',
+        0 => 'Бэкенд',
       ),
       'Setup has already been completed!' => 
       array (
@@ -262,11 +262,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Two-factor authentication enabled.' => 
       array (
-        0 => '',
+        0 => 'Двухфакторная аутентификация включена.',
       ),
       'Two-factor authentication disabled.' => 
       array (
-        0 => '',
+        0 => 'Двухфакторная аутентификация отключена.',
       ),
       '%s Listener Range' => 
       array (
@@ -298,7 +298,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Streamer' => 
       array (
-        0 => '',
+        0 => 'Стример',
       ),
       'Song Title' => 
       array (
@@ -378,11 +378,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Playlist enabled.' => 
       array (
-        0 => '',
+        0 => 'Плейлист включен.',
       ),
       'Playlist disabled.' => 
       array (
-        0 => '',
+        0 => 'Плейлист отключен.',
       ),
       'Existing playlist imported.' => 
       array (
@@ -581,7 +581,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Streamers' => 
       array (
-        0 => '',
+        0 => 'Стримеры',
       ),
       'Mount Points' => 
       array (
@@ -765,7 +765,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song Metadata' => 
       array (
-        0 => '',
+        0 => 'Метаданные песен',
       ),
       'File Name' => 
       array (
@@ -785,7 +785,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Replace Album Cover Art' => 
       array (
-        0 => '',
+        0 => 'Заменить обложку альбома',
       ),
       'ISRC' => 
       array (
@@ -913,19 +913,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Light' => 
       array (
-        0 => '',
+        0 => 'Светлая',
       ),
       'Default' => 
       array (
-        0 => '',
+        0 => 'По умолчанию',
       ),
       'Dark' => 
       array (
-        0 => '',
+        0 => 'Тёмная',
       ),
       '%s Name' => 
       array (
-        0 => '',
+        0 => 'Название %s',
       ),
       'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
@@ -984,7 +984,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'No Limit' => 
       array (
-        0 => '',
+        0 => 'Без ограничения',
       ),
       'Web Hook Details' => 
       array (
@@ -1020,7 +1020,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Chat ID' => 
       array (
-        0 => '',
+        0 => 'Чат ID',
       ),
       'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
       array (
@@ -1072,11 +1072,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'URL' => 
       array (
-        0 => '',
+        0 => 'URL-адрес',
       ),
       'Author Name' => 
       array (
-        0 => '',
+        0 => 'Имя автора',
       ),
       'Thumbnail Image URL' => 
       array (
@@ -1084,11 +1084,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Footer Text' => 
       array (
-        0 => '',
+        0 => 'Текст внизу страницы',
       ),
       'Powered by %s' => 
       array (
-        0 => '',
+        0 => 'Разработано %s',
       ),
       'Web hooks automatically send a HTTP POST request to the URL you specify to 
                 notify it any time one of the triggers you specify occurs on your station. The body of the POST message

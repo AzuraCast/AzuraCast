@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-04-05T06:27:01+00:00
-PO-Revision-Date: 2019-04-20 21:03
+PO-Revision-Date: 2019-04-29 00:40
 Language: pt_PT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -298,7 +298,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Streamer' => 
       array (
-        0 => 'Streamer',
+        0 => 'Streamer/DJ',
       ),
       'Song Title' => 
       array (
@@ -583,7 +583,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Streamers' => 
       array (
-        0 => 'Streamer',
+        0 => 'Streamers/DJ\'s',
       ),
       'Mount Points' => 
       array (
@@ -591,7 +591,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Relays' => 
       array (
-        0 => 'Relays Remotos',
+        0 => 'Relés Remotos',
       ),
       'Automation' => 
       array (
@@ -623,7 +623,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Music Files' => 
       array (
-        0 => 'Ficheiros Musicais',
+        0 => 'Ficheiros Multimédia',
       ),
       'Playlists' => 
       array (

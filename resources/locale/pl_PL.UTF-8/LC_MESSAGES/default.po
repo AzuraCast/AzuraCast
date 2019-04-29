@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-20 21:03\n"
+"PO-Revision-Date: 2019-04-29 00:40\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1158,7 +1158,7 @@ msgstr "Informacje o koncie"
 #: /var/azuracast/www/templates/stations/profile/index.phtml:128
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:23
 msgid "Name"
-msgstr "Imię"
+msgstr "Nazwa"
 
 #: /var/azuracast/www/config/forms/profile.php:24
 #: /var/azuracast/www/config/forms/register.php:13
@@ -2222,7 +2222,7 @@ msgstr "Kolejność odtwarzania utworów"
 
 #: /var/azuracast/www/config/forms/playlist.php:126
 msgid "Shuffled"
-msgstr "Losowo"
+msgstr "Losowo w trybie shuffle"
 
 #: /var/azuracast/www/config/forms/playlist.php:127
 msgid "Random"

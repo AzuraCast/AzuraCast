@@ -61,6 +61,10 @@ class Sentry
             return;
         }
 
+        if (APP_TESTING_MODE) {
+            return;
+        }
+
         $this->is_enabled = true;
 
         $server_uuid = $this->settings_repo->getUniqueIdentifier();

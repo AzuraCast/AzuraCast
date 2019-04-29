@@ -740,7 +740,7 @@ class StationPlaylist
      */
     public function setBackendOptions($backend_options): void
     {
-        $this->backend_options = implode(',', $backend_options);
+        $this->backend_options = implode(',', (array)$backend_options);
     }
 
     /**

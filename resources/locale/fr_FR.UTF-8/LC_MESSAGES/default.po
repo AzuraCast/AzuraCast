@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-05T06:27:01+00:00\n"
-"PO-Revision-Date: 2019-04-20 21:10\n"
+"PO-Revision-Date: 2019-04-29 00:40\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -911,7 +911,7 @@ msgstr "Impact sur le nombre d'auditeurs"
 
 #: /var/azuracast/www/config/menus/station.php:121
 msgid "Duplicate Songs"
-msgstr "Titres à double"
+msgstr "Titres en double"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"

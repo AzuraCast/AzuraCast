@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-04-29 05:31\n"
+"PO-Revision-Date: 2019-04-29 20:50\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -115,11 +115,11 @@ msgstr "Este recurso não é suportada atualmente nessa estação."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr ""
+msgstr "A senha não pode conter os seguintes caracteres: %s"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "A porta %s está sendo usada por outra estação."
 
 #: /var/azuracast/www/src/Acl.php:172
 #: /var/azuracast/www/src/Acl.php:183
@@ -1030,11 +1030,11 @@ msgstr "Senha do streamer"
 
 #: /var/azuracast/www/config/forms/streamer.php:19
 msgid "The streamer will use this password to connect to the radio server."
-msgstr ""
+msgstr "O streamer irá utilizar essa senha para se conectar ao servidor da rádio."
 
 #: /var/azuracast/www/config/forms/streamer.php:27
 msgid "Streamer Display Name"
-msgstr ""
+msgstr "Nome de exibição do Streamer"
 
 #: /var/azuracast/www/config/forms/streamer.php:28
 msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."

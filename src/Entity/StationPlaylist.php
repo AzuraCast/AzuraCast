@@ -42,6 +42,11 @@ class StationPlaylist
     public const ORDER_SHUFFLE = 'shuffle';
     public const ORDER_SEQUENTIAL = 'sequential';
 
+    public const OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
+    public const OPTION_LOOP_PLAYLIST_ONCE = 'loop_once';
+    public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
+    public const OPTION_MERGE = 'merge';
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -253,31 +258,13 @@ class StationPlaylist
     protected $include_in_automation = false;
 
     /**
-     * @ORM\Column(name="interrupt_other_songs", type="boolean")
+     * @ORM\Column(name="backend_options", type="string", length=255, nullable=true)
      *
-     * @OA\Property(example=false)
+     * @OA\Property(example="interrupt,loop_once,single_track,merge")
      *
-     * @var bool
+     * @var string
      */
-    protected $interrupt_other_songs = false;
-
-    /**
-     * @ORM\Column(name="loop_playlist_once", type="boolean")
-     *
-     * @OA\Property(example=false)
-     *
-     * @var bool Whether to loop the playlist at the end of its playback.
-     */
-    protected $loop_playlist_once = false;
-
-    /**
-     * @ORM\Column(name="play_single_track", type="boolean")
-     *
-     * @OA\Property(example=false)
-     *
-     * @var bool Whether to only play a single track from the specified playlist when scheduled.
-     */
-    protected $play_single_track = false;
+    protected $backend_options = [];
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
@@ -717,51 +704,43 @@ class StationPlaylist
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    public function interruptOtherSongs(): bool
+    public function getBackendOptions(): array
     {
-        return $this->interrupt_other_songs;
+        return explode(',', $this->backend_options);
+    }
+
+    public function backendInterruptOtherSongs(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_INTERRUPT_OTHER_SONGS, $backend_options, true);
+    }
+
+    public function backendLoopPlaylistOnce(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_LOOP_PLAYLIST_ONCE, $backend_options, true);
+    }
+
+    public function backendPlaySingleTrack(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backend_options, true);
+    }
+
+    public function backendMerge(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_MERGE, $backend_options, true);
     }
 
     /**
-     * @param bool $interrupt_other_songs
+     * @param array $backend_options
      */
-    public function setInterruptOtherSongs(bool $interrupt_other_songs): void
+    public function setBackendOptions($backend_options): void
     {
-        $this->interrupt_other_songs = $interrupt_other_songs;
-    }
-
-    /**
-     * @return bool
-     */
-    public function loopPlaylistOnce(): bool
-    {
-        return $this->loop_playlist_once;
-    }
-
-    /**
-     * @param bool $loop_playlist_once
-     */
-    public function setLoopPlaylistOnce(bool $loop_playlist_once): void
-    {
-        $this->loop_playlist_once = $loop_playlist_once;
-    }
-
-    /**
-     * @return bool
-     */
-    public function playSingleTrack(): bool
-    {
-        return $this->play_single_track;
-    }
-
-    /**
-     * @param bool $play_single_track
-     */
-    public function setPlaySingleTrack(bool $play_single_track): void
-    {
-        $this->play_single_track = $play_single_track;
+        $this->backend_options = implode(',', $backend_options);
     }
 
     /**

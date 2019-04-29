@@ -235,39 +235,18 @@ return [
                     ]
                 ],
 
-                'interrupt_other_songs' => [
-                    'toggle',
+                'backend_options' => [
+                    'checkboxes',
                     [
-                        'label' => __('Interrupt Other Songs'),
+                        'label' => __('AutoDJ Scheduling Options'),
                         'label_class' => 'advanced',
-                        'description' => __('When this playlist is scheduled to play, it will interrupt any currently playing playlists instead of waiting for the end of a song.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => false,
-                    ]
-                ],
-
-                'loop_playlist_once' => [
-                    'toggle',
-                    [
-                        'label' => __('Only Loop Playlist Once'),
-                        'label_class' => 'advanced',
-                        'description' => __('If the playlist would play multiple times within its scheduled time, enable this to ensure it only plays once.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => false,
-                    ]
-                ],
-
-                'play_single_track' => [
-                    'toggle',
-                    [
-                        'label' => __('Only Play One Track at Scheduled Time'),
-                        'label_class' => 'advanced',
-                        'description' => __('This will only play a single track from the specified playlist when it is scheduled to play.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => false,
+                        'description' => __('Control how this playlist is handled by the AutoDJ software.'),
+                        'choices' => [
+                            StationPlaylist::OPTION_INTERRUPT_OTHER_SONGS => __('Interrupt other songs to play at scheduled time.'),
+                            StationPlaylist::OPTION_LOOP_PLAYLIST_ONCE => __('Only loop through playlist once.'),
+                            StationPlaylist::OPTION_PLAY_SINGLE_TRACK => __('Only play one track at scheduled time.'),
+                            StationPlaylist::OPTION_MERGE => __('Merge playlist to play as a single track.'),
+                        ]
                     ]
                 ],
             ]

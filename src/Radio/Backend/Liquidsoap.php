@@ -186,7 +186,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         foreach ($playlist_objects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
-            $playlist_func_name = ($playlist->loopPlaylistOnce()) ? 'playlist.once' : 'playlist';
+
+            if ($playlist->backendLoopPlaylistOnce()) {
+                $playlist_func_name = 'playlist.once';
+            } else if ($playlist->backendMerge()) {
+                $playlist_func_name = 'playlist.merge';
+            } else {
+                $playlist_func_name = 'playlist';
+            }
+
             $playlist_config_lines = [];
 
             if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
@@ -206,7 +214,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     'id="'.$this->_cleanUpString($playlist_var_name).'"',
                     'reload_mode="watch"'
                 ];
-                if (!$playlist->loopPlaylistOnce()) {
+                if ('playlist' === $playlist_func_name) {
                     $playlist_params[] = 'mode="'.$playlist_modes[$playlist->getOrder()].'"';
                 }
                 $playlist_params[] = '"'.$playlist_file_path.'"';
@@ -245,7 +253,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             $event->appendLines($playlist_config_lines);
 
-            if ($playlist->playSingleTrack()) {
+            if ($playlist->backendPlaySingleTrack()) {
                 $playlist_var_name = 'once('.$playlist_var_name.')';
             }
 
@@ -262,7 +270,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
                     $delay_seconds = $playlist->getPlayPerMinutes() * 60;
-                    $delay_track_sensitive = $playlist->interruptOtherSongs() ? 'false' : 'true';
+                    $delay_track_sensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                     $special_playlists['once_per_x_minutes'][] = 'radio = fallback(track_sensitive='.$delay_track_sensitive.', [delay(' . $delay_seconds . '., ' . $playlist_var_name . '), radio])';
                     break;
@@ -271,7 +279,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     $play_time = $playlist->getPlayPerHourMinute().'m';
 
                     $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
-                    if ($playlist->interruptOtherSongs()) {
+                    if ($playlist->backendInterruptOtherSongs()) {
                         $schedule_switches_interrupting[] = $schedule_timing;
                     } else {
                         $schedule_switches[] = $schedule_timing;
@@ -327,7 +335,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     }
 
                     $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
-                    if ($playlist->interruptOtherSongs()) {
+                    if ($playlist->backendInterruptOtherSongs()) {
                         $schedule_switches_interrupting[] = $schedule_timing;
                     } else {
                         $schedule_switches[] = $schedule_timing;
@@ -350,7 +358,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     }
 
                     $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
-                    if ($playlist->interruptOtherSongs()) {
+                    if ($playlist->backendInterruptOtherSongs()) {
                         $schedule_switches_interrupting[] = $schedule_timing;
                     } else {
                         $schedule_switches[] = $schedule_timing;

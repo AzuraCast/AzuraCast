@@ -264,7 +264,7 @@ class StationPlaylist
      *
      * @var string
      */
-    protected $backend_options = [];
+    protected $backend_options = '';
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")

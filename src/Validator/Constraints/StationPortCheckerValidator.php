@@ -53,6 +53,12 @@ class StationPortCheckerValidator extends ConstraintValidator
                     ->setParameter('{{ port }}', $port)
                     ->addViolation();
             }
+
+            if ($port_path === 'backend_config_dj_port' && isset($used_ports[$port+1])) {
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{ port }}', sprintf('%s (%s + 1)', $port+1, $port))
+                    ->addViolation();
+            }
         }
     }
 }

@@ -335,11 +335,11 @@ class Configuration
                     $backend_config = (array)$row['backend_config'];
 
                     if (!empty($backend_config['dj_port'])) {
-                        $port = (int)$frontend_config['dj_port'];
+                        $port = (int)$backend_config['dj_port'];
                         $used_ports[$port] = $station_reference;
                     }
                     if (!empty($backend_config['telnet_port'])) {
-                        $port = (int)$frontend_config['telnet_port'];
+                        $port = (int)$backend_config['telnet_port'];
                         $used_ports[$port] = $station_reference;
                     }
                 }

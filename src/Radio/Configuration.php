@@ -334,9 +334,11 @@ class Configuration
 
                     $backend_config = (array)$row['backend_config'];
 
+                    // For DJ port, consider both the assigned port and port+1 to be reserved and in-use.
                     if (!empty($backend_config['dj_port'])) {
                         $port = (int)$backend_config['dj_port'];
                         $used_ports[$port] = $station_reference;
+                        $used_ports[$port+1] = $station_reference;
                     }
                     if (!empty($backend_config['telnet_port'])) {
                         $port = (int)$backend_config['telnet_port'];

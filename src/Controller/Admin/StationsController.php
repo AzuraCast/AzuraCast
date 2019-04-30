@@ -52,8 +52,6 @@ class StationsController extends AbstractAdminCrudController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
-        $this->_doDelete($request, $id, $csrf_token);
-
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $record = $this->record_repo->find((int)$id);

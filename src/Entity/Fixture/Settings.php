@@ -12,6 +12,7 @@ class Settings extends AbstractFixture
         $settings = [
             Entity\Settings::BASE_URL   => getenv('INIT_BASE_URL') ?? 'docker.local',
             Entity\Settings::INSTANCE_NAME => getenv('INIT_INSTANCE_NAME') ?? 'local test',
+            Entity\Settings::PREFER_BROWSER_URL => 1,
             Entity\Settings::SETUP_COMPLETE => time(),
             Entity\Settings::USE_RADIO_PROXY => 1,
             Entity\Settings::SEND_ERROR_REPORTS => 1,

@@ -98,7 +98,7 @@ class ListController extends FilesControllerAbstract
                 'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                 'art' => (string)$router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
                 'edit_url' => (string)$router->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
-                'play_url' => (string)$router->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
+                'play_url' => (string)$router->named('stations:files:download', ['station' => $station_id], ['file' => $media_row['path']], true),
                 'playlists' => $playlists,
             ] + $custom_fields;
         }

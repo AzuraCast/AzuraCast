@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 18:10\n"
+"PO-Revision-Date: 2019-05-01 18:25\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2746,11 +2746,11 @@ msgstr "Se l'applicazione Web rileva un errore, è possibile scegliere di inviar
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr ""
+msgstr "I report sugli errori sono gestiti da <a href=\"%s\" target=\"_blank\">%s </a>."
 
 #: /var/azuracast/www/config/forms/media.php:8
 msgid "Song Metadata"
-msgstr ""
+msgstr "Metadati canzone"
 
 #: /var/azuracast/www/config/forms/media.php:35
 msgid "Song Album"
@@ -2758,11 +2758,11 @@ msgstr "Album canzone"
 
 #: /var/azuracast/www/config/forms/media.php:42
 msgid "Song Lyrics"
-msgstr ""
+msgstr "Testo canzone"
 
 #: /var/azuracast/www/config/forms/media.php:49
 msgid "Replace Album Cover Art"
-msgstr ""
+msgstr "Sostituisci copertina album"
 
 #: /var/azuracast/www/config/forms/media.php:57
 msgid "ISRC"
@@ -2774,11 +2774,11 @@ msgstr "Isrc codice standard internazionale per le registrazioni, usato per il r
 
 #: /var/azuracast/www/config/forms/media.php:66
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Gli amministratori possono personalizzare i campi visualizzati qui nella <a href=\"%s\"> pagina di amministrazione </a>."
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Controlla riproduzione brano"
 
 #: /var/azuracast/www/config/forms/media.php:83
 msgid "Song Length (seconds)"
@@ -2826,27 +2826,27 @@ msgstr "Secondi dall'inizio del brano, da cui l'automix dovrebbe smettere di suo
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr ""
+msgstr "Scorri automaticamente fino alla fine del log"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:3
 msgid "Need Help?"
-msgstr ""
+msgstr "Ti serve aiuto?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:5
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
+msgstr "Puoi trovare le risposte per molte domande comuni nei nostri <a href=\"%s\" target=\"_blank\"> documenti di supporto </a>."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:7
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
+msgstr "Se stai riscontrando un bug o un errore, puoi inviare una segnalazione su GitHub utilizzando il link sottostante."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:9
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
+msgstr "La tua attuale installazione è di tipo <b>%s </b>. Assicurati di includere questo dato quando crei una nuova segnalazione."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:14
 msgid "New GitHub Issue"
-msgstr ""
+msgstr "Nuova segnalazione GitHub"
 
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
 msgid "Pause"
@@ -2855,7 +2855,7 @@ msgstr "Pausa"
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:10
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:11
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #: /var/azuracast/www/templates/partials/station_form.phtml:30
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:25
@@ -2865,7 +2865,7 @@ msgstr "Dj automatico"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."
-msgstr ""
+msgstr "La pagina richiesta non è stata trovata."
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:13
 #: /var/azuracast/www/templates/system/error_general.phtml:17
@@ -2884,7 +2884,7 @@ msgstr "Nessun risultato!"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
-msgstr ""
+msgstr "Mascotte disegnata da %s"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:44
@@ -2905,7 +2905,7 @@ msgstr "Artista"
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:25
 #: /var/azuracast/www/templates/stations/files/index.phtml:103
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
 #: /var/azuracast/www/templates/frontend/public/index.phtml:78
@@ -2945,7 +2945,7 @@ msgstr "Richiedi un brano"
 #: /var/azuracast/www/templates/stations/profile/index.phtml:230
 #: /var/azuracast/www/templates/stations/profile/index.phtml:252
 msgid "Play/Pause"
-msgstr ""
+msgstr "Play/Pausa"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 msgid "Mute"
@@ -2953,7 +2953,7 @@ msgstr "Silenzia"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:12
 msgid "Full Volume"
-msgstr ""
+msgstr "Volume al massimo"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 msgid "Album Art"

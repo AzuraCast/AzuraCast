@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 15:10\n"
+"PO-Revision-Date: 2019-05-01 15:20\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2443,7 +2443,7 @@ msgstr "Permetti richieste canzoni"
 
 #: /var/azuracast/www/config/forms/station.php:236
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
-msgstr ""
+msgstr "Autorizza gli ascoltatori a richiedere una canzone nella tua radio. Possono essere richiesti solo brani già presenti nelle tue playlist."
 
 #: /var/azuracast/www/config/forms/station.php:246
 msgid "Request Minimum Delay (Minutes)"
@@ -2467,51 +2467,51 @@ msgstr "Permetti Streamer / DJ"
 
 #: /var/azuracast/www/config/forms/station.php:269
 msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
-msgstr ""
+msgstr "Se abilitato, i curatori (o i DJ) saranno in grado di connettersi direttamente al tuo flusso e trasmettere musica in diretta che interrompe il palinsesto della regia automatica."
 
 #: /var/azuracast/www/config/forms/station.php:279
 msgid "Deactivate Streamer on Disconnect (Seconds)"
-msgstr ""
+msgstr "Disattiva curatore alla disconnessione (secondi)"
 
 #: /var/azuracast/www/config/forms/station.php:280
 msgid "Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely."
-msgstr ""
+msgstr "Numero di secondi per disabilitare il curatore della stazione quando si disconnette manualmente. Imposta a zero per impedire completamente la disattivazione."
 
 #: /var/azuracast/www/config/forms/station.php:290
 msgid "Customize DJ/Streamer Port"
-msgstr ""
+msgstr "Personalizza la porta per il DJ/curatore"
 
 #: /var/azuracast/www/config/forms/station.php:292
 msgid "No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections."
-msgstr ""
+msgstr "Nessun altro programma può utilizzare questa porta. Lascia vuoto per assegnare automaticamente una porta. <br> <b> Nota: </b> la porta successiva a questa (n + 1) verrà utilizzata automaticamente per le connessioni derivate."
 
 #: /var/azuracast/www/config/forms/station.php:300
 msgid "Customize DJ/Streamer Mount Point"
-msgstr ""
+msgstr "Personalizza il mount point del DJ/curatore"
 
 #: /var/azuracast/www/config/forms/station.php:302
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
-msgstr ""
+msgstr "Se il software di streaming richiede uno specifico percorso per il mount point, inserirlo qui. Altrimenti, usa il valore predefinito."
 
 #: /var/azuracast/www/config/forms/station.php:311
 msgid "DJ/Streamer Buffer Time (Seconds)"
-msgstr ""
+msgstr "Tempo di buffer per il DJ/curatore (secondi)"
 
 #: /var/azuracast/www/config/forms/station.php:313
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
-msgstr ""
+msgstr "Il numero di secondi di segnale da memorizzare in caso di interruzione. Imposta il valore più basso che i tuoi DJ possono utilizzare senza interruzioni di flusso."
 
 #: /var/azuracast/www/config/forms/station.php:325
 msgid "Character Set Encoding"
-msgstr ""
+msgstr "Codifica dei caratteri"
 
 #: /var/azuracast/www/config/forms/station.php:327
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
-msgstr ""
+msgstr "Per la maggior parte dei casi, utilizzare la codifica UTF-8 predefinita. La vecchia codifica ISO-8859-1 può essere utilizzata se si accettano connessioni da SHOUTcast 1 DJ o utilizzando altri software derivati."
 
 #: /var/azuracast/www/config/forms/station.php:340
 msgid "Customize Internal Request Processing Port"
-msgstr ""
+msgstr "Personalizza la porta di elaborazione delle richieste interne"
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."

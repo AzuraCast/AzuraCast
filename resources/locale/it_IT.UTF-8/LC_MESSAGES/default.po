@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 14:30\n"
+"PO-Revision-Date: 2019-05-01 14:40\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1260,24 +1260,24 @@ msgstr "Identificativo univoco per la chat di destinazione o il nome utente del 
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:47
 msgid "Custom API Base URL"
-msgstr "URL base per API personalizzata"
+msgstr "Base API URL personalizzato"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:49
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
-msgstr ""
+msgstr "Lascia vuoto per usare l'URL predefinito per le API Telegram (consigliato). Specifica l'URL completo, come <code>https://api.pwrtelegram.xyz/</code>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:77
 #: /var/azuracast/www/config/forms/webhook/twitter.php:115
 msgid "Now playing on %s: %s by %s! Tune in now."
-msgstr ""
+msgstr "In riproduzione su %s: %s di %s! Sintonizzati ora."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:85
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Modalità interpretazione messaggi"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:12
 msgid "Twitter Account Details"
-msgstr ""
+msgstr "Dettagli account Twitter"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Steps for configuring a Twitter application:<br>\n"
@@ -1288,15 +1288,22 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below."
-msgstr ""
+msgstr "Passaggi per configurare un'applicazione Twitter:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>Crea una nuova app sul <a href=\"%s\" target=\"_blank\">sito delle applicazioni Twitter</a>. \n"
+"                    Usa l'URL di base di questa installazione come URL dell'app.</li>\n"
+"                    <li>Nell'applicazione appena creata, fai clic sul pannello \"Chiavi e accessi\".</li>\n"
+"                    <li>In fondo alla pagina, clicca \"Crea il mio token di accesso\".</li>\n"
+"                </ol>\n"
+"                Una volta che questi passaggi sono stati completati, inserisci le informazioni dalla pagina \"Chiavi e accessi\" nei campi sottostanti."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:28
 msgid "Consumer Key (API Key)"
-msgstr ""
+msgstr "Consumer Key (API Key)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:37
 msgid "Consumer Secret (API Secret)"
-msgstr ""
+msgstr "Consumer Secret (API Secret)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:46
 msgid "Access Token"
@@ -1724,7 +1731,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:55
 #: /var/azuracast/www/templates/stations/playlists/edit.phtml:21
 msgid "Basic Information"
-msgstr ""
+msgstr "Informazioni di base"
 
 #: /var/azuracast/www/config/forms/playlist.php:61
 msgid "Playlist Name"
@@ -1748,11 +1755,11 @@ msgstr "Le playlist con peso più alto vengono riprodotte più frequentemente ri
 
 #: /var/azuracast/www/config/forms/playlist.php:86
 msgid "Low"
-msgstr ""
+msgstr "Basso"
 
 #: /var/azuracast/www/config/forms/playlist.php:90
 msgid "High"
-msgstr ""
+msgstr "Alto"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/config/forms/playlist.php:103
@@ -1765,16 +1772,16 @@ msgstr "Sorgente"
 #: /var/azuracast/www/config/forms/playlist.php:105
 #: /var/azuracast/www/config/forms/playlist.php:116
 msgid "Song-Based Playlist"
-msgstr ""
+msgstr "Playlist basata sul brano"
 
 #: /var/azuracast/www/config/forms/playlist.php:105
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Una playlist contenente file multimediali ospitati su questo server."
 
 #: /var/azuracast/www/config/forms/playlist.php:106
 #: /var/azuracast/www/config/forms/playlist.php:179
 msgid "Remote URL Playlist"
-msgstr ""
+msgstr "Playlist da link esterno"
 
 #: /var/azuracast/www/config/forms/playlist.php:106
 msgid "A playlist that instructs the station to play from a remote URL."

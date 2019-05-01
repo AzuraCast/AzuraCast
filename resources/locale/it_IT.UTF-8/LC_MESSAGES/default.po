@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 14:50\n"
+"PO-Revision-Date: 2019-05-01 15:01\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1917,35 +1917,35 @@ msgstr "Suona una volta al giorno all'ora stabilita. Utile per promemoria tempor
 #: /var/azuracast/www/config/forms/playlist.php:231
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzata"
 
 #: /var/azuracast/www/config/forms/playlist.php:231
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr ""
+msgstr "Definisci manualmente come viene utilizzata questa playlist nella configurazione di Liquidsoap. <a href=\"%s\" target=\"_blank\">Maggiori informazioni sulle Playlist avanzate</a>"
 
 #: /var/azuracast/www/config/forms/playlist.php:241
 msgid "AutoDJ Scheduling Options"
-msgstr ""
+msgstr "Opzioni programmazione regia automatica"
 
 #: /var/azuracast/www/config/forms/playlist.php:243
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr ""
+msgstr "Controlla come questa playlist è gestita dal software di regia automatica."
 
 #: /var/azuracast/www/config/forms/playlist.php:245
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Interrompe altri brani da riprodurre al momento programmato."
 
 #: /var/azuracast/www/config/forms/playlist.php:246
 msgid "Only loop through playlist once."
-msgstr ""
+msgstr "Esegui playlist solo una volta."
 
 #: /var/azuracast/www/config/forms/playlist.php:247
 msgid "Only play one track at scheduled time."
-msgstr ""
+msgstr "Suona solo una traccia all'orario programmato."
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Merge playlist to play as a single track."
-msgstr ""
+msgstr "Unisci playlist per farla suonare come fosse una singola traccia."
 
 #: /var/azuracast/www/config/forms/playlist.php:263
 msgid "Include in Automated Assignment"
@@ -1957,7 +1957,7 @@ msgstr "Se l'assegnazione automatica è abilitata, usa questa playlist come una 
 
 #: /var/azuracast/www/config/forms/playlist.php:275
 msgid "Customize Schedule"
-msgstr ""
+msgstr "Personalizza pianificazione"
 
 #: /var/azuracast/www/config/forms/playlist.php:282
 msgid "Start Time"
@@ -1974,47 +1974,47 @@ msgstr "Se l'ora di fine precede l'ora di inizio, la playlist suonerà di notte 
 #: /var/azuracast/www/config/forms/playlist.php:300
 #: /var/azuracast/www/config/forms/playlist.php:391
 msgid "Scheduled Play Days of Week"
-msgstr ""
+msgstr "Giorni della settimana programmati per la riproduzione"
 
 #: /var/azuracast/www/config/forms/playlist.php:301
 #: /var/azuracast/www/config/forms/playlist.php:392
 msgid "Leave blank to play on every day of the week."
-msgstr ""
+msgstr "Lascia vuoto per riprodurre ogni giorno della settimana."
 
 #: /var/azuracast/www/config/forms/playlist.php:303
 #: /var/azuracast/www/config/forms/playlist.php:394
 msgid "Monday"
-msgstr ""
+msgstr "Lunedì"
 
 #: /var/azuracast/www/config/forms/playlist.php:304
 #: /var/azuracast/www/config/forms/playlist.php:395
 msgid "Tuesday"
-msgstr ""
+msgstr "Martedì"
 
 #: /var/azuracast/www/config/forms/playlist.php:305
 #: /var/azuracast/www/config/forms/playlist.php:396
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercoledì"
 
 #: /var/azuracast/www/config/forms/playlist.php:306
 #: /var/azuracast/www/config/forms/playlist.php:397
 msgid "Thursday"
-msgstr ""
+msgstr "Giovedì"
 
 #: /var/azuracast/www/config/forms/playlist.php:307
 #: /var/azuracast/www/config/forms/playlist.php:398
 msgid "Friday"
-msgstr ""
+msgstr "Venerdì"
 
 #: /var/azuracast/www/config/forms/playlist.php:308
 #: /var/azuracast/www/config/forms/playlist.php:399
 msgid "Saturday"
-msgstr ""
+msgstr "Sabato"
 
 #: /var/azuracast/www/config/forms/playlist.php:309
 #: /var/azuracast/www/config/forms/playlist.php:400
 msgid "Sunday"
-msgstr ""
+msgstr "Domenica"
 
 #: /var/azuracast/www/config/forms/playlist.php:325
 msgid "Number of Songs Between Plays"
@@ -2313,7 +2313,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:59
 msgid "Show the station in public pages and general API results."
-msgstr ""
+msgstr "Mostra la stazione in pagine pubbliche e risultati API generali."
 
 #: /var/azuracast/www/config/forms/station.php:69
 msgid "URL Stub"
@@ -2321,27 +2321,27 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
-msgstr ""
+msgstr "Opzione facoltativa, specifica un nome breve utilizzabile su un link, come <code> nome_radio</code>, che verrà utilizzato negli URL di questa stazione. Lascia vuoto questo campo per crearne uno in base al nome della radio."
 
 #: /var/azuracast/www/config/forms/station.php:78
 msgid "Number of Recently Played Songs"
-msgstr ""
+msgstr "Numero di brani riprodotti recentemente"
 
 #: /var/azuracast/www/config/forms/station.php:80
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr ""
+msgstr "Personalizza il numero di brani che verranno visualizzati nella sezione \"Cronologia brani\" per questa stazione e in tutte le API pubbliche."
 
 #: /var/azuracast/www/config/forms/station.php:95
 msgid "Select Broadcasting Service"
-msgstr ""
+msgstr "Seleziona servizio di trasmissione"
 
 #: /var/azuracast/www/config/forms/station.php:101
 msgid "Broadcasting Service"
-msgstr ""
+msgstr "Servizio di trasmissione"
 
 #: /var/azuracast/www/config/forms/station.php:102
 msgid "This software delivers your broadcast to the listening audience."
-msgstr ""
+msgstr "Questo software trasmette i tuoi contenuti al pubblico in ascolto."
 
 #: /var/azuracast/www/config/forms/station.php:111
 msgid "Configure Broadcasting Service"

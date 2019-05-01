@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 13:30\n"
+"PO-Revision-Date: 2019-05-01 13:40\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -42,32 +42,32 @@ msgstr "Disponibile una nuova versione di AzuraCast"
 
 #: /var/azuracast/www/src/Notification/Manager.php:121
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "Dal tuo ultimo aggiornamento, sono state apportate le seguenti modifiche:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:124
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "Attualmente la tua installazione è indietro di %d aggiornamenti rispetto all'ultima versione."
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Dovresti aggiornare per poter correggere errori e vulnerabilità di sicurezza."
 
 #: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
-msgstr ""
+msgstr "Nuovi aggiornamenti AzuraCast disponibili"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "L'account associato all'e-mail \"%s\" è stato impostato come amministratore"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Account non trovato."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:107
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Devi esserti autenticato per poter accedere a questa pagina."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:119
 #: /var/azuracast/www/src/Http/ErrorHandler.php:128

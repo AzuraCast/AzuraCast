@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 16:00\n"
+"PO-Revision-Date: 2019-05-01 16:20\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -478,11 +478,11 @@ msgstr "%s abilitato."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 msgid "%s disabled."
-msgstr ""
+msgstr "%s disabilitato."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Output test interazione web"
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:92
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:110
@@ -522,7 +522,7 @@ msgstr "Errore assegnazione automatica"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:11
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:24
 msgid "Remote Relay"
-msgstr ""
+msgstr "Collegamento remoto"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:148
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:218
@@ -539,28 +539,28 @@ msgstr "Playlist"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:153
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Questa playlist non è una playlist sequenziale."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:202
 msgid "Format"
-msgstr ""
+msgstr "Formato"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:228
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Playlist abilitata."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:229
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Playlist disabilitata."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:150
 msgid "Path \"%s\" is not a folder."
-msgstr ""
+msgstr "Il percorso \"%s\" non è una cartella."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:239
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
+msgstr "Impossibile spostare \"%s\" su \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
 #: /var/azuracast/www/templates/stations/files/index.phtml:166
@@ -581,7 +581,7 @@ msgstr "Rinomina file/cartella"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:204
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Questa stazione ha esaurito lo spazio disponibile."
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:51
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -592,23 +592,23 @@ msgstr "Impostazioni sistema"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
 msgid "AzuraCast Application Log"
-msgstr ""
+msgstr "Log dell'applicazione AzuraCast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:77
 msgid "Nginx Access Log"
-msgstr ""
+msgstr "Log accesso Nginx"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:82
 msgid "Nginx Error Log"
-msgstr ""
+msgstr "Log errori Nginx"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:87
 msgid "PHP Application Log"
-msgstr ""
+msgstr "Log applicazione PHP"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:92
 msgid "Supervisord Log"
-msgstr ""
+msgstr "Log Supervisord"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:53
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:65
@@ -616,15 +616,15 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:96
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "User"
-msgstr ""
+msgstr "Utente"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:59
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
-msgstr ""
+msgstr "Un altro utente esiste già con questo indirizzo e-mail. Si prega di aggiornare l'indirizzo e-mail."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:78
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "Non puoi cancellare il tuo account."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:101
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
@@ -634,14 +634,14 @@ msgstr "Accesso riuscito."
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:85
 msgid "Sync Task Output"
-msgstr ""
+msgstr "Sincronizza output del task"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:36
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:43
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:51
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Custom Field"
-msgstr ""
+msgstr "Campo personalizzato"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:37
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:44
@@ -660,7 +660,7 @@ msgstr "API Key"
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:80
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Permission"
-msgstr ""
+msgstr "Permesso"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:43
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:49
@@ -679,12 +679,12 @@ msgstr "Clona stazione: %s"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:31
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "La versione SHOUTcast \"%s\" è attualmente installata."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:69
 msgid "Install SHOUTcast"
-msgstr ""
+msgstr "Installa SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:217
 msgid "%s Listener Range"
@@ -696,11 +696,11 @@ msgstr "%s media giornaliera"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
-msgstr ""
+msgstr "Troppi tentativi di accesso"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
+msgstr "Hai tentato di accedere troppe volte. Attendi 30 secondi e riprova."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
@@ -725,15 +725,15 @@ msgstr "Modifica profilo"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:148
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "Il token che hai fornito non è valido. Per favore riprova."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:171
 msgid "Two-factor authentication enabled."
-msgstr ""
+msgstr "Autenticazione a due fattori abilitata."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:205
 msgid "Two-factor authentication disabled."
-msgstr ""
+msgstr "Autenticazione a due fattori disabilitata."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:79
 msgid "Setup has already been completed!"
@@ -753,53 +753,53 @@ msgstr "Continua l'impostazione della radio nell'app principale di AzuraCast."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Log Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:91
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Configurazione Liquidsoap"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Log accesso Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:107
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Log errori Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:112
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Configurazione Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:120
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "Log SHOUTCast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:125
 msgid "SHOUTcast Configuration"
-msgstr ""
+msgstr "Configurazione SHOUTCast"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:65
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "%s restarted."
-msgstr ""
+msgstr "%s riavviato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:97
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:103
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend"
-msgstr ""
+msgstr "Frontend"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:97
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:166
 msgid "%s stopped."
-msgstr ""
+msgstr "%s spento."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:103
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
 msgid "%s started."
-msgstr ""
+msgstr "%s avviato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:152
 msgid "Song skipped."

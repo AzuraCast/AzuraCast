@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 15:50\n"
+"PO-Revision-Date: 2019-05-01 16:00\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1252,7 +1252,7 @@ msgstr "Consulta la <a href=\"%s\" target=\"_blank\">documentazione Telegram</a>
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:37
 msgid "Chat ID"
-msgstr "Chat ID"
+msgstr "Identificativo della chat"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:38
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
@@ -3964,15 +3964,15 @@ msgstr "Trasmissione radio disattivata"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "La tua stazione non è attualmente abilitata per la trasmissione. È comunque possibile gestire i file multimediali, le playlist e altre impostazioni della stazione. Per riattivare la trasmissione, <a href=\"%s\"> modifica il profilo della tua stazione </a>."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:6
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
-msgstr ""
+msgstr "I mountpoint sono il modo in cui gli ascoltatori si connettono e ascoltano la tua stazione. Ogni mountpoint può essere un diverso formato audio o qualità. Utilizzando i mountpoint, puoi configurare uno stream di alta qualità per gli ascoltatori connessi a banda larga e uno streaming mobile per gli utenti di telefonia."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:34
 msgid "Delete mount point \"%s\"?"
-msgstr ""
+msgstr "Elimina mount point \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:40
 msgid "Default Mount"
@@ -3980,23 +3980,23 @@ msgstr "Mount predefinito"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:6
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
-msgstr ""
+msgstr "I collegamenti remoti consentono di lavorare con il software di trasmissione al di fuori di questo server. Qualsiasi flusso che imposti qui sarà incluso nelle statistiche della tua stazione. È inoltre possibile trasmettere da questo server ai collegamenti remoti."
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:34
 msgid "Delete remote relay \"%s\"?"
-msgstr ""
+msgstr "Elimina collegamento remoto \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Elimina elemento della coda?"
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:25
 msgid "Cued On"
-msgstr ""
+msgstr "Inserito segnale su"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:83
 msgid "Album Artwork"
-msgstr ""
+msgstr "Copertina disco"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:95
 msgid "Rename"
@@ -4004,23 +4004,23 @@ msgstr "Rinomina"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:182
 msgid "Select"
-msgstr ""
+msgstr "Seleziona"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:403
 msgid "Home"
-msgstr ""
+msgstr "Pagina iniziale"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:36
 msgid "%s of %s Used"
-msgstr ""
+msgstr "%s di %s Utilizzato"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:42
 msgid "%s Files"
-msgstr ""
+msgstr "%s File"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:49
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr ""
+msgstr "Puoi anche caricare file in blocco tramite SFTP <a href=\"%s\" target=\"_blank\"> seguendo queste istruzioni </a>. I file appena caricati verranno automaticamente elaborati in pochi minuti."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:54
 msgid "Drag files here to upload to this folder or "
@@ -4028,23 +4028,23 @@ msgstr "Trascina qui i file per caricarli su questa cartella o "
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:62
 msgid "Set Playlists"
-msgstr ""
+msgstr "Imposta le playlist"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:79
 msgid "New Playlist"
-msgstr ""
+msgstr "Nuova playlist"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:84
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:88
 msgid "Move"
-msgstr ""
+msgstr "Sposta"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:92
 msgid "New Folder"
-msgstr ""
+msgstr "Nuova cartella"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:108
 msgid "Size"
@@ -4056,7 +4056,7 @@ msgstr "Modificato"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:126
 msgid "New Directory"
-msgstr ""
+msgstr "Nuova cartella"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:131
 msgid "Directory Name"

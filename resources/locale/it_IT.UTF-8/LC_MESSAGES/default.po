@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 16:40\n"
+"PO-Revision-Date: 2019-05-01 16:50\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2214,79 +2214,79 @@ msgstr "Versione attualmente installata"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:20
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr ""
+msgstr "Attualmente ShoutCast non è presente in questa installazione."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:27
 msgid "Select SHOUTcast 64-bit .tar.gz File"
-msgstr ""
+msgstr "Seleziona il file SHOUTcast 64-bit .tar.gz"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:37
 msgid "Upload"
-msgstr ""
+msgstr "Carica"
 
 #: /var/azuracast/www/config/forms/branding.php:12
 msgid "Base Theme for Public Pages"
-msgstr ""
+msgstr "Tema di base per pagine pubbliche"
 
 #: /var/azuracast/www/config/forms/branding.php:13
 msgid "Select a theme to use as a base for station public pages and the login page."
-msgstr ""
+msgstr "Seleziona un tema da utilizzare come base per le pagine pubbliche della stazione e la pagina di accesso."
 
 #: /var/azuracast/www/config/forms/branding.php:25
 msgid "Hide Album Art on Public Pages"
-msgstr ""
+msgstr "Nascondi la copertina dell'album sulle pagine pubbliche"
 
 #: /var/azuracast/www/config/forms/branding.php:26
 msgid "If selected, album art will not display on public-facing radio pages."
-msgstr ""
+msgstr "Se selezionato, la copertina dell'album non verrà visualizzata sulle pagine pubbliche della radio."
 
 #: /var/azuracast/www/config/forms/branding.php:36
 msgid "Homepage Redirect URL"
-msgstr ""
+msgstr "URl di rimando all'home page"
 
 #: /var/azuracast/www/config/forms/branding.php:37
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
-msgstr ""
+msgstr "Se un utente non ha effettuato l'accesso e visita la home page di AzuraCast, è possibile reindirizzarlo automaticamente all'URL specificato qui. Lascia vuoto per reindirizzare per default alla schermata di accesso."
 
 #: /var/azuracast/www/config/forms/branding.php:45
 msgid "Default Album Art URL"
-msgstr ""
+msgstr "URL predefinito per le copertine"
 
 #: /var/azuracast/www/config/forms/branding.php:46
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
-msgstr ""
+msgstr "Se una canzone non ha copertina, questo URL verrà utilizzato. Lascia vuoto per utilizzare la copertina standard."
 
 #: /var/azuracast/www/config/forms/branding.php:54
 msgid "Hide AzuraCast Branding on Public Pages"
-msgstr ""
+msgstr "Nascondi il marchio AzuraCast nelle pagine pubbliche"
 
 #: /var/azuracast/www/config/forms/branding.php:55
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
-msgstr ""
+msgstr "Se selezionato, rimuoverà il marchio AzuraCast dalle pagine rivolte al pubblico."
 
 #: /var/azuracast/www/config/forms/branding.php:65
 msgid "Custom CSS for Public Pages"
-msgstr ""
+msgstr "CSS personalizzato per le pagine pubbliche"
 
 #: /var/azuracast/www/config/forms/branding.php:66
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Questo CSS verrà applicato alle pagine pubbliche della radio e alla pagina di accesso."
 
 #: /var/azuracast/www/config/forms/branding.php:76
 msgid "Custom JS for Public Pages"
-msgstr ""
+msgstr "JS personalizzato per pagine pubbliche"
 
 #: /var/azuracast/www/config/forms/branding.php:77
 msgid "This javascript code will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Questo codice javascript verrà applicato alle pagine pubbliche della radio e alla pagina di accesso."
 
 #: /var/azuracast/www/config/forms/branding.php:87
 msgid "Custom CSS for Internal Pages"
-msgstr ""
+msgstr "CSS personalizzato per pagine interne"
 
 #: /var/azuracast/www/config/forms/branding.php:88
 msgid "This CSS will be applied to the main management pages, like this one."
-msgstr ""
+msgstr "Questo CSS verrà applicato alle pagine di gestione principali, come questa."
 
 #: /var/azuracast/www/config/forms/station.php:23
 #: /var/azuracast/www/templates/partials/station_form.phtml:24
@@ -2296,20 +2296,20 @@ msgstr "Profilo stazione"
 #: /var/azuracast/www/config/forms/station.php:43
 #: /var/azuracast/www/templates/stations/profile/index.phtml:144
 msgid "Genre"
-msgstr ""
+msgstr "Genere"
 
 #: /var/azuracast/www/config/forms/station.php:50
 #: /var/azuracast/www/templates/stations/profile/index.phtml:150
 msgid "Web Site URL"
-msgstr ""
+msgstr "URL sito web"
 
 #: /var/azuracast/www/config/forms/station.php:51
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
-msgstr ""
+msgstr "Nota: questa dovrebbe essere la home page pubblica della stazione radio, non l'URL AzuraCast. Sarà inclusa nei dettagli della web radio."
 
 #: /var/azuracast/www/config/forms/station.php:58
 msgid "Enable Public Page"
-msgstr ""
+msgstr "Abilita pagina pubblica"
 
 #: /var/azuracast/www/config/forms/station.php:59
 msgid "Show the station in public pages and general API results."
@@ -2317,7 +2317,7 @@ msgstr "Mostra la stazione in pagine pubbliche e risultati API generali."
 
 #: /var/azuracast/www/config/forms/station.php:69
 msgid "URL Stub"
-msgstr ""
+msgstr "URL breve"
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
@@ -3205,12 +3205,13 @@ msgstr "Quando si effettuano chiamate API, è possibile passare questo valore ne
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:27
 msgid "Continue"
-msgstr ""
+msgstr "Continua"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:11
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Le API key possono essere utilizzate per accedere ad alcune funzionalità del sistema senza dover effettuare l'accesso. Tutte le chiavi \n"
+" create condividono le autorizzazioni nel sistema. Per ulteriori informazioni, consulta la <a href=\"%s\"> documentazione dell'API </a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:31
 msgid "Key Identifier"

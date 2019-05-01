@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-04-29 05:30\n"
+"PO-Revision-Date: 2019-05-01 11:05\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -115,11 +115,11 @@ msgstr "Cette fonctionnalité n'est pas compatible avec cette station."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr ""
+msgstr "Le mot de passe ne peut contenir les caractères suivants : %s"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "Le port %s est actuellement utilisé par une autre station."
 
 #: /var/azuracast/www/src/Acl.php:172
 #: /var/azuracast/www/src/Acl.php:183
@@ -1030,7 +1030,7 @@ msgstr "Mot de passe du streamer"
 
 #: /var/azuracast/www/config/forms/streamer.php:19
 msgid "The streamer will use this password to connect to the radio server."
-msgstr ""
+msgstr "Le streamer utilisera ce mot de passe pour se connecter au serveur radio."
 
 #: /var/azuracast/www/config/forms/streamer.php:27
 msgid "Streamer Display Name"
@@ -1928,27 +1928,27 @@ msgstr "Définissez manuellement comment cette liste de lecture est utilisée da
 
 #: /var/azuracast/www/config/forms/playlist.php:241
 msgid "AutoDJ Scheduling Options"
-msgstr ""
+msgstr "Options de programmation AutoDJ"
 
 #: /var/azuracast/www/config/forms/playlist.php:243
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr ""
+msgstr "Contrôlez la façon dont cette playlist est gérée par le logiciel AutoDJ."
 
 #: /var/azuracast/www/config/forms/playlist.php:245
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Interruption de la lecture d'autres chansons pour jouer à l'heure prévue."
 
 #: /var/azuracast/www/config/forms/playlist.php:246
 msgid "Only loop through playlist once."
-msgstr ""
+msgstr "Boucler une seule fois la liste de lecture."
 
 #: /var/azuracast/www/config/forms/playlist.php:247
 msgid "Only play one track at scheduled time."
-msgstr ""
+msgstr "Lecture d'un seul titre à l'heure prévue."
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Merge playlist to play as a single track."
-msgstr ""
+msgstr "Fusionner la liste de lecture pour jouer en une seule piste."
 
 #: /var/azuracast/www/config/forms/playlist.php:263
 msgid "Include in Automated Assignment"
@@ -2956,7 +2956,7 @@ msgstr "Volume maximum"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 msgid "Album Art"
-msgstr ""
+msgstr "Pochette d'album"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
@@ -3679,11 +3679,11 @@ msgstr "Réorganiser la playlist : %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:37
 msgid "Down"
-msgstr ""
+msgstr "En bas"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Up"
-msgstr ""
+msgstr "En haut"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:19
 msgid "All Playlists"

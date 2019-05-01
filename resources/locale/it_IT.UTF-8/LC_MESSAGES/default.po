@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-04-29 05:30\n"
+"PO-Revision-Date: 2019-05-01 13:00\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "Il file <code>docker-compose.yml</code> è obsoleto!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."

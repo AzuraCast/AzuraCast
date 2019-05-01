@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 15:20\n"
+"PO-Revision-Date: 2019-05-01 15:30\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2515,19 +2515,19 @@ msgstr "Personalizza la porta di elaborazione delle richieste interne"
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
-msgstr ""
+msgstr "Questa porta non è utilizzata da alcun processo esterno. Modificare questa porta solo se la porta assegnata è in uso. Lascia vuoto per assegnare automaticamente una porta."
 
 #: /var/azuracast/www/config/forms/station.php:350
 msgid "Use Replaygain Metadata"
-msgstr ""
+msgstr "Utilizza i metadati di Replaygain"
 
 #: /var/azuracast/www/config/forms/station.php:353
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr ""
+msgstr "Istruire Liquidsoap per utilizzare qualsiasi metadata di replaygain associato a un brano per controllarne il livello del volume."
 
 #: /var/azuracast/www/config/forms/station.php:367
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
-msgstr ""
+msgstr "Questo codice verrà inserito nella configurazione di Liquidsoap della tua stazione, sotto la configurazione della playlist e poco prima dell'output di Icecast. Utilizzare solo codice Liquidsoap valido per questa sezione!"
 
 #: /var/azuracast/www/config/forms/station.php:375
 #: /var/azuracast/www/templates/partials/station_form.phtml:34
@@ -2538,31 +2538,31 @@ msgstr "Amministrazione"
 
 #: /var/azuracast/www/config/forms/station.php:382
 msgid "Enable Broadcasting"
-msgstr ""
+msgstr "Abilita trasmissione"
 
 #: /var/azuracast/www/config/forms/station.php:383
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
-msgstr ""
+msgstr "Se disabilitato, la stazione non trasmetterà o farà partire la regia automatica."
 
 #: /var/azuracast/www/config/forms/station.php:393
 msgid "Storage Quota"
-msgstr ""
+msgstr "Limite di archiviazione"
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr ""
+msgstr "Imposta un limite di spazio su disco che questa stazione può utilizzare. Specifica la dimensione con l'unità, ad esempio \"8 GB\". Le unità sono misurate in 1024 byte. Lascia vuoto per mantenere impostato come configurazione predefinita lo spazio disponibile su disco."
 
 #: /var/azuracast/www/config/forms/station.php:401
 msgid "Base Station Directory"
-msgstr ""
+msgstr "Cartella radice per la stazione"
 
 #: /var/azuracast/www/config/forms/station.php:403
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
-msgstr ""
+msgstr "La cartella principale in cui sono memorizzati la playlist della stazione e i file di configurazione. Lascia vuoto per utilizzare la cartella predefinita."
 
 #: /var/azuracast/www/config/forms/station.php:410
 msgid "Custom Media Directory"
-msgstr ""
+msgstr "Cartella personalizzata file multimediali"
 
 #: /var/azuracast/www/config/forms/station.php:412
 msgid "The directory where media files are stored. Leave blank to use default directory."
@@ -2570,15 +2570,15 @@ msgstr "Cartella dove vengono salvati i file multimediali. Lascia vuoto per usar
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:10
 msgid "Code from Authenticator App"
-msgstr ""
+msgstr "Codice dall'app di autenticazione"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
-msgstr ""
+msgstr "Inserisci il codice attuale fornito dall'app di autenticazione per verificare che funzioni correttamente."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:21
 msgid "Verify Authenticator"
-msgstr ""
+msgstr "Verifica autenticazione"
 
 #: /var/azuracast/www/config/forms/settings.php:12
 msgid "Site Base URL"
@@ -2598,7 +2598,7 @@ msgstr "Questo nome apparirà come sottotitolo accanto al logo AzuraCast, per ai
 
 #: /var/azuracast/www/config/forms/settings.php:33
 msgid "System Default Time Zone"
-msgstr ""
+msgstr "Fuso orario predefinito del sistema"
 
 #: /var/azuracast/www/config/forms/settings.php:34
 msgid "For users who have not customized their time zone, all times displayed on the site will be based on this time zone."
@@ -2953,15 +2953,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 msgid "Album Art"
-msgstr ""
+msgstr "Copertina disco"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
-msgstr ""
+msgstr "Microfono"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:13
 msgid "Mixer"
-msgstr ""
+msgstr "Mixer"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"

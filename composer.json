@@ -33,6 +33,7 @@
     "lstrojny/fxmlrpc": "^0.14.0",
     "maxmind-db/reader": "~1.0",
     "mobiledetect/mobiledetectlib": "^2.8",
+    "myclabs/deep-copy": "^1.9",
     "php-http/socket-client": "^1.2",
     "php-http/message": "^1.4",
     "php-http/guzzle6-adapter": "^1.1",

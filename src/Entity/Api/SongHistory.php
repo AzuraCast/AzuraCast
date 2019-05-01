@@ -60,14 +60,6 @@ class SongHistory implements ResolvableUrlInterface
     public $song;
 
     /**
-     * Special handling for deep cloning.
-     */
-    public function __clone()
-    {
-        $this->song = clone $this->song;
-    }
-
-    /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
      * @param Router $router

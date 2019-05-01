@@ -5,6 +5,7 @@ use App\Entity\Api\NowPlaying;
 use App\Entity\Station;
 use App\Http\Router;
 use Symfony\Component\EventDispatcher\Event;
+use function DeepCopy\deep_copy;
 
 class SendWebhooks extends Event
 {
@@ -33,7 +34,7 @@ class SendWebhooks extends Event
     {
         $this->station = $station;
 
-        $this->np = clone $np;
+        $this->np = deep_copy($np);
 
         $this->is_standalone = $is_standalone;
 

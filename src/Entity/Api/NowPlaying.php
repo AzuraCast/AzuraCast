@@ -83,22 +83,6 @@ class NowPlaying implements ResolvableUrlInterface
     }
 
     /**
-     * Implement special cloning rules.
-     */
-    public function __clone()
-    {
-        $this->station = clone $this->station;
-        $this->now_playing = clone $this->now_playing;
-        $this->playing_next = clone $this->playing_next;
-
-        $new_history = [];
-        foreach($this->song_history as $history_obj) {
-            $new_history[] = clone $history_obj;
-        }
-        $this->song_history = $new_history;
-    }
-
-    /**
      * Iterate through sub-items and re-resolve any Uri instances to reflect base URL changes.
      *
      * @param Router $router

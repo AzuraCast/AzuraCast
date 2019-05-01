@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 14:20\n"
+"PO-Revision-Date: 2019-05-01 14:30\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1145,7 +1145,7 @@ msgstr "Salva modifiche"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:12
 msgid "Discord API Details"
-msgstr ""
+msgstr "Dettagli API Discord"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:18
 #: /var/azuracast/www/config/forms/webhook/telegram.php:18
@@ -1153,7 +1153,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/generic.php:25
 #: /var/azuracast/www/config/forms/webhook/tunein.php:14
 msgid "%s Name"
-msgstr ""
+msgstr "Nome %s"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/telegram.php:19
@@ -1161,42 +1161,43 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/generic.php:26
 #: /var/azuracast/www/config/forms/webhook/tunein.php:15
 msgid "Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page."
-msgstr ""
+msgstr "Scegli un nome per questa interazione web che ti aiuterà a distinguerla dalle altre. Questo verrà mostrato solo nella pagina di amministrazione."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:27
 msgid "Discord Web Hook URL"
-msgstr ""
+msgstr "URL interazione Discord"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:28
 msgid "This URL is provided within the Discord application."
-msgstr ""
+msgstr "Questo URL è fornito all'interno dell'applicazione Discord."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:37
 #: /var/azuracast/www/config/forms/webhook/telegram.php:57
 #: /var/azuracast/www/config/forms/webhook/twitter.php:103
 #: /var/azuracast/www/config/forms/webhook/generic.php:62
 msgid "Web Hook Triggers"
-msgstr ""
+msgstr "Condizioni per l'interazione web"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:47
 #: /var/azuracast/www/config/forms/webhook/telegram.php:67
 msgid "Customize Message"
-msgstr ""
+msgstr "Personalizza messaggio"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:48
 #: /var/azuracast/www/config/forms/webhook/telegram.php:68
 #: /var/azuracast/www/config/forms/webhook/twitter.php:87
 msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
-msgstr ""
+msgstr "Le variabili sono nella forma <code>{{ var.name }}</code>. \n"
+"Tutti i valori nella <a href=\"%s\" target=\"_blank\">risposta dell'API In Riproduzione</a> sono disponibili per l'uso. Ogni campo vuoto viene ignorato."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:55
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 msgid "Main Message Content"
-msgstr ""
+msgstr "Contenuto messaggio principale"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:57
 msgid "Now playing on %s:"
-msgstr ""
+msgstr "In riproduzione su %s:"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:64
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
@@ -1212,54 +1213,54 @@ msgstr "Titolo"
 #: /var/azuracast/www/config/forms/station.php:36
 #: /var/azuracast/www/templates/stations/profile/index.phtml:138
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:82
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:91
 msgid "Author Name"
-msgstr ""
+msgstr "Nome dell'autore"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Thumbnail Image URL"
-msgstr ""
+msgstr "URL immagine miniatura"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:109
 msgid "Footer Text"
-msgstr ""
+msgstr "Testo piè pagina"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:111
 #: /var/azuracast/www/templates/minimal.phtml:45
 #: /var/azuracast/www/templates/main.phtml:150
 msgid "Powered by %s"
-msgstr ""
+msgstr "Patrocinato da %s"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:12
 msgid "Telegram API Details"
-msgstr ""
+msgstr "Dettagli API Telegram"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:27
 msgid "Bot Token"
-msgstr ""
+msgstr "Token del Bot"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 #: /var/azuracast/www/config/forms/webhook/telegram.php:86
 msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
-msgstr ""
+msgstr "Consulta la <a href=\"%s\" target=\"_blank\">documentazione Telegram</a> per maggiori dettagli."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:37
 msgid "Chat ID"
-msgstr ""
+msgstr "Chat ID"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:38
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
-msgstr ""
+msgstr "Identificativo univoco per la chat di destinazione o il nome utente del canale di destinazione (nella forma @NomeCanale)."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:47
 msgid "Custom API Base URL"
-msgstr ""
+msgstr "URL base per API personalizzata"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:49
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."

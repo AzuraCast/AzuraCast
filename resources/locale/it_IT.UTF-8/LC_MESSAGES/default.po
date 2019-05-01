@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 16:30\n"
+"PO-Revision-Date: 2019-05-01 16:40\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2100,31 +2100,31 @@ msgstr "Porta sorgente per stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:120
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr "Se la porta in cui trasmetti è diversa da quella che hai elencato nell'URL sopra, specifica qui la porta sorgente."
+msgstr "Se la porta verso cui trasmetti è diversa da quella che hai elencato nell'URL sopra, specifica qui la porta sorgente."
 
 #: /var/azuracast/www/config/forms/remote.php:127
 msgid "Remote Station Source Mountpoint/SID"
-msgstr ""
+msgstr "Mountpoint/SID sorgente per la stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:128
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Se il mountpoint (ad esempio <code>/radio.mp3</code>) o SID Shoutcast (ad esempio <code>2</code>) verso cui trasmetti da quello elencato sopra, specifica qui il mount point sorgente."
 
 #: /var/azuracast/www/config/forms/remote.php:135
 msgid "Remote Station Source Username"
-msgstr ""
+msgstr "Nome utente sorgente per la stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:136
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr ""
+msgstr "Se stai trasmettendo usando la regia automatica, inserisci qui il nome utente sorgente. Questo potrebbe essere vuoto."
 
 #: /var/azuracast/www/config/forms/remote.php:143
 msgid "Remote Station Source Password"
-msgstr ""
+msgstr "Password sorgente stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:144
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr ""
+msgstr "Se stai trasmettendo usando la regia automatica, inserire qui la password sorgente."
 
 #: /var/azuracast/www/config/forms/station_clone.php:9
 msgid "New Station Details"
@@ -2185,20 +2185,20 @@ msgstr "Crea nuova stazione"
 
 #: /var/azuracast/www/config/forms/custom_field.php:10
 msgid "Field Name"
-msgstr ""
+msgstr "Nome campo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:11
 msgid "This will be used as the label when editing individual songs, and will show in API results."
-msgstr ""
+msgstr "Questo sarà usato come etichetta quando si modificano singoli brani e verrà mostrato nelle API dei risultati."
 
 #: /var/azuracast/www/config/forms/custom_field.php:18
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:24
 msgid "Programmatic Name"
-msgstr ""
+msgstr "Nome programmatico"
 
 #: /var/azuracast/www/config/forms/custom_field.php:19
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
-msgstr ""
+msgstr "Specificare facoltativamente un nome utilizzabile dalle API, come <code>nome_campo</code>. Lascia vuoto questo campo per crearne uno in base al nome."
 
 #: /var/azuracast/www/config/forms/login.php:29
 msgid "Log in"
@@ -2206,11 +2206,11 @@ msgstr "Accedi"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:12
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr ""
+msgstr "<p> SHOUTcast 2 DNAS non è un software gratuito e la sua licenza restrittiva non consente a AzuraCast di distribuire l'eseguibile SHOUTcast. Per installare SHOUTcast, devi scaricare l'eseguibile Linux x64 dal <a href=\"%s\" target=\"_blank\">sito web SHOUTcast Radio Manager</a>. Carica il <code>sc_serv2_linux_x64-latest.tar.gz</code> nel campo sottostante per estrarlo automaticamente nella directory corretta. </p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:19
 msgid "Current Installed Version"
-msgstr ""
+msgstr "Versione attualmente installata"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:20
 msgid "SHOUTcast is not currently installed on this installation."

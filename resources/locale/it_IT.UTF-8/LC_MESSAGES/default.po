@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 15:01\n"
+"PO-Revision-Date: 2019-05-01 15:10\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2345,11 +2345,11 @@ msgstr "Questo software trasmette i tuoi contenuti al pubblico in ascolto."
 
 #: /var/azuracast/www/config/forms/station.php:111
 msgid "Configure Broadcasting Service"
-msgstr ""
+msgstr "Configura servizio di trasmissione"
 
 #: /var/azuracast/www/config/forms/station.php:119
 msgid "Customize Broadcasting Port"
-msgstr ""
+msgstr "Personalizza porta di trasmissione"
 
 #: /var/azuracast/www/config/forms/station.php:121
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
@@ -2357,7 +2357,7 @@ msgstr "Nessun altro programma può usare questa porta. Lascia vuoto per assegna
 
 #: /var/azuracast/www/config/forms/station.php:129
 msgid "Customize Source Password"
-msgstr ""
+msgstr "Personalizza password sorgente"
 
 #: /var/azuracast/www/config/forms/station.php:131
 #: /var/azuracast/www/config/forms/station.php:141
@@ -2366,7 +2366,7 @@ msgstr "Lascia vuoto per generare una nuova password."
 
 #: /var/azuracast/www/config/forms/station.php:139
 msgid "Customize Administrator Password"
-msgstr ""
+msgstr "Personalizza password amministratore"
 
 #: /var/azuracast/www/config/forms/station.php:149
 msgid "Maximum Listeners"
@@ -2387,39 +2387,39 @@ msgstr "Questo codice verrà incluso nella configurazione dell'interfaccia utent
 
 #: /var/azuracast/www/config/forms/station.php:171
 msgid "Select AutoDJ Service"
-msgstr ""
+msgstr "Seleziona servizio di regia automatica"
 
 #: /var/azuracast/www/config/forms/station.php:177
 msgid "AutoDJ Service"
-msgstr ""
+msgstr "Servizio regia automatica"
 
 #: /var/azuracast/www/config/forms/station.php:178
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
-msgstr ""
+msgstr "Questo software sceglie continuamente le playlist di musica e le riproduce in ordine sparso quando non ci sono altre sorgenti radio disponibili."
 
 #: /var/azuracast/www/config/forms/station.php:187
 msgid "Configure Liquidsoap"
-msgstr ""
+msgstr "Configura Liquidsoap"
 
 #: /var/azuracast/www/config/forms/station.php:195
 msgid "Crossfade Method"
-msgstr ""
+msgstr "Metodo di dissolvenza incrociata"
 
 #: /var/azuracast/www/config/forms/station.php:197
 msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
-msgstr ""
+msgstr "Scegli un metodo da utilizzare nel passaggio da una canzone all'altra. La modalità Smart considera il volume delle due tracce quando si sfuma per un effetto più fluido, ma richiede più risorse della CPU."
 
 #: /var/azuracast/www/config/forms/station.php:199
 msgid "Smart Mode"
-msgstr ""
+msgstr "Modo smart"
 
 #: /var/azuracast/www/config/forms/station.php:200
 msgid "Normal Mode"
-msgstr ""
+msgstr "Modo normale"
 
 #: /var/azuracast/www/config/forms/station.php:201
 msgid "Disable Crossfading"
-msgstr ""
+msgstr "Disabilita dissolvenza incrociata"
 
 #: /var/azuracast/www/config/forms/station.php:210
 msgid "Crossfade Duration (Seconds)"
@@ -2427,15 +2427,15 @@ msgstr "Durata crossfade (secondi)"
 
 #: /var/azuracast/www/config/forms/station.php:212
 msgid "Number of seconds to overlap songs."
-msgstr ""
+msgstr "Numero di secondi per sovrapporre i brani."
 
 #: /var/azuracast/www/config/forms/station.php:223
 msgid "Apply Compression and Normalization"
-msgstr ""
+msgstr "Applica compressione e normalizzazione"
 
 #: /var/azuracast/www/config/forms/station.php:225
 msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
-msgstr ""
+msgstr "Comprimi e normalizza l'audio della tua stazione, producendo un suono più uniforme e \"pieno\"."
 
 #: /var/azuracast/www/config/forms/station.php:235
 msgid "Allow Song Requests"

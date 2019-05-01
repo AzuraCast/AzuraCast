@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 16:50\n"
+"PO-Revision-Date: 2019-05-01 17:00\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1307,28 +1307,28 @@ msgstr "Consumer Secret (API Secret)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:46
 msgid "Access Token"
-msgstr ""
+msgstr "Token di accesso"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:55
 msgid "Access Token Secret"
-msgstr ""
+msgstr "Token segreto di accesso"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:64
 msgid "Only Send One Tweet Every..."
-msgstr ""
+msgstr "Invia un tweet soltanto ogni..."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:68
 msgid "No Limit"
-msgstr ""
+msgstr "Nessun limite"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:86
 #: /var/azuracast/www/config/forms/webhook/generic.php:12
 msgid "Web Hook Details"
-msgstr ""
+msgstr "Dettagli interazione web"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:112
 msgid "Message Body"
-msgstr ""
+msgstr "Corpo del messaggio"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:13
 msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
@@ -3215,7 +3215,7 @@ msgstr "Le API key possono essere utilizzate per accedere ad alcune funzionalit�
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:31
 msgid "Key Identifier"
-msgstr ""
+msgstr "Identificatore della chiave"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:39
 #: /var/azuracast/www/templates/admin/api/index.phtml:27
@@ -3239,11 +3239,11 @@ msgstr "Revoca"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
-msgstr ""
+msgstr "Errore: nessuna radio disponibile"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:4
 msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
-msgstr ""
+msgstr "Il tuo account è attivo, ma non è attualmente associato ad alcuna stazione. Se ritieni che si tratti di un errore, contatta l'amministratore di questo server."
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:39
 msgid "Listeners Across All Stations"
@@ -3273,15 +3273,15 @@ msgstr "Gestisci"
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
-msgstr ""
+msgstr "Vai al contenuto"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Barra laterale"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Menu"
 
 #: /var/azuracast/www/templates/main.phtml:72
 msgid "System Administration"
@@ -3289,11 +3289,11 @@ msgstr "Amministrazione sistema"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Cambia tema"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Aiuto"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"
@@ -3305,19 +3305,19 @@ msgstr "Esci"
 
 #: /var/azuracast/www/templates/main.phtml:151
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "Apprezzi il nostro software? <a href=\"%s\" target=\"_blank\"> Dona per supportare AzuraCast! </a>"
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:15
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
-msgstr ""
+msgstr "Poiché si esegue Docker, è possibile accedere a alcuni registri di sistema solo da una sessione shell sul computer ospitante. Puoi eseguire <code>%s</code> per accedere ai log del sistema dal terminale."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:30
 msgid "Logs by Station"
-msgstr ""
+msgstr "Log per stazione"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast Installato"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."

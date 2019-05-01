@@ -808,20 +808,23 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         switch(strtolower($mount->getAutodjFormat()))
         {
             case $mount::FORMAT_AAC:
-                $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
+                $afterburner = ($bitrate >= 160) ? 'true' : 'false';
+                $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
+
+                $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.$bitrate.', afterburner='.$afterburner.', aot="'.$aot.'", sbr_mode=true)';
                 break;
 
             case $mount::FORMAT_OGG:
-                $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . (int)$bitrate . ')';
+                $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
                 break;
 
             case $mount::FORMAT_OPUS:
-                $output_format = '%opus(samplerate=48000, bitrate='.(int)$bitrate.', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+                $output_format = '%opus(samplerate=48000, bitrate='.$bitrate.', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
                 break;
 
             case $mount::FORMAT_MP3:
             default:
-                $output_format = '%mp3(samplerate=44100, stereo=true, bitrate=' . (int)$bitrate . ', id3v2=true)';
+                $output_format = '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
                 break;
         }
 

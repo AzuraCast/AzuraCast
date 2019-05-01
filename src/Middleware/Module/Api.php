@@ -92,7 +92,13 @@ class Api
         }
 
         // Set default cache control for API pages.
-        $response = $response->withCacheLifetime(30);
+        $prefer_browser_url = (bool)$this->settings_repo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
+
+        if ($prefer_browser_url || $request->getAttribute(Request::ATTRIBUTE_USER) instanceof Entity\User) {
+            $response = $response->withNoCache();
+        } else {
+            $response = $response->withCacheLifetime(15);
+        }
 
         return $next($request, $response);
     }

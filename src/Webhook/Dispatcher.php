@@ -4,6 +4,7 @@ namespace App\Webhook;
 use App\Entity;
 use App\Event\SendWebhooks;
 use App\Http\Router;
+use App\Webhook\Connector\Local;
 use Azura\Exception;
 use App\Provider\WebhookProvider;
 use Monolog\Handler\TestHandler;
@@ -42,10 +43,25 @@ class Dispatcher implements EventSubscriberInterface
 
         return [
             SendWebhooks::NAME => [
-                ['resolveNowPlayingUrls', 100],
+                ['localDispatch', 10],
+                ['resolveNowPlayingUrls', 5],
                 ['dispatch', 0],
             ],
         ];
+    }
+
+    /**
+     * Always dispatch the special "local" updater task for standalone updates.
+     *
+     * @param SendWebhooks $event
+     */
+    public function localDispatch(SendWebhooks $event): void
+    {
+        if ($event->isStandalone()) {
+            /** @var Connector\Local $connector_obj */
+            $connector_obj = $this->connectors->get(Connector\Local::NAME);
+            $connector_obj->dispatch($event);
+        }
     }
 
     /**
@@ -74,25 +90,20 @@ class Dispatcher implements EventSubscriberInterface
         // Assemble list of webhooks for the station
         $station_webhooks = $event->getStation()->getWebhooks();
 
+        if (0 === $station_webhooks->count()) {
+            return;
+        }
+
         /** @var Entity\StationWebhook[] $connectors */
         $connectors = [];
-        if ($station_webhooks->count() > 0) {
-            foreach($station_webhooks as $webhook) {
-                /** @var Entity\StationWebhook $webhook */
-                if ($webhook->isEnabled()) {
-                    $connectors[] = $webhook;
-                }
+        foreach($station_webhooks as $webhook) {
+            /** @var Entity\StationWebhook $webhook */
+            if ($webhook->isEnabled()) {
+                $connectors[] = $webhook;
             }
         }
 
         $this->logger->debug('Triggering events: '.implode(', ', $event->getTriggers()));
-
-        // Always dispatch the special "local" updater task for standalone updates.
-        if ($event->isStandalone()) {
-            /** @var Connector\Local $connector_obj */
-            $connector_obj = $this->connectors->get(Connector\Local::NAME);
-            $connector_obj->dispatch($event);
-        }
 
         // Trigger all appropriate webhooks.
         foreach($connectors as $connector) {

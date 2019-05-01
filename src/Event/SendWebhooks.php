@@ -3,6 +3,7 @@ namespace App\Event;
 
 use App\Entity\Api\NowPlaying;
 use App\Entity\Station;
+use App\Http\Router;
 use Symfony\Component\EventDispatcher\Event;
 
 class SendWebhooks extends Event
@@ -15,16 +16,25 @@ class SendWebhooks extends Event
     /** @var NowPlaying */
     protected $np;
 
+    /** @var Router */
+    protected $router;
+
     /** @var array */
     protected $triggers = [];
 
     /** @var bool */
     protected $is_standalone = true;
 
-    public function __construct(Station $station, NowPlaying $np, $np_old = null, $is_standalone = true)
+    public function __construct(
+        Station $station,
+        NowPlaying $np,
+        $np_old = null,
+        $is_standalone = true)
     {
         $this->station = $station;
+
         $this->np = clone $np;
+
         $this->is_standalone = $is_standalone;
 
         $to_trigger = ['all'];

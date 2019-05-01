@@ -151,13 +151,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $this->influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
         }
 
-        // Generate API cache.
         $this->cache->save($nowplaying, 'api_nowplaying_data', 120);
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $settings_repo->setSetting('nowplaying', $nowplaying);
+        $this->settings_repo->setSetting('nowplaying', $nowplaying);
     }
 
     /**

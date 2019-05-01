@@ -97,16 +97,7 @@ class NowplayingController implements EventSubscriberInterface
      */
     public function __invoke(Request $request, Response $response, $id = null): ResponseInterface
     {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $prefer_browser_url = (bool)$settings_repo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
-
-        if ($prefer_browser_url) {
-            $response = $response->withNoCache();
-        } else {
-            $response = $response->withCacheLifetime(15);
-        }
+        $router = $request->getRouter();
 
         // Pull NP data from the fastest/first available source using the EventDispatcher.
         $event = new LoadNowPlaying();
@@ -121,7 +112,7 @@ class NowplayingController implements EventSubscriberInterface
         if (!empty($id)) {
             foreach ($np as $np_row) {
                 if ($np_row->station->id == (int)$id || $np_row->station->shortcode === $id) {
-                    $np_row->resolveUrls($request->getRouter());
+                    $np_row->resolveUrls($router);
                     $np_row->now_playing->recalculate();
                     return $response->withJson($np_row);
                 }
@@ -138,7 +129,7 @@ class NowplayingController implements EventSubscriberInterface
         }
 
         foreach ($np as $np_row) {
-            $np_row->resolveUrls($request->getRouter());
+            $np_row->resolveUrls($router);
             $np_row->now_playing->recalculate();
         }
 

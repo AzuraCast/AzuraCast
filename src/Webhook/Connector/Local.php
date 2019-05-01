@@ -1,6 +1,7 @@
 <?php
 namespace App\Webhook\Connector;
 
+use App\Http\Router;
 use Azura\Cache;
 use App\Entity;
 use App\Event\SendWebhooks;
@@ -39,15 +40,16 @@ class Local
     public function dispatch(SendWebhooks $event): void
     {
         $np = $event->getNowPlaying();
+        $station = $event->getStation();
 
         $this->logger->debug('Writing entry to InfluxDB...');
 
         // Post statistics to InfluxDB.
         $influx_point = new \InfluxDB\Point(
-            'station.' . $event->getStation()->getId() . '.listeners',
+            'station.' . $station->getId() . '.listeners',
             (int)$np->listeners->current,
             [],
-            ['station' => $event->getStation()->getId()],
+            ['station' => $station->getId()],
             time()
         );
 
@@ -62,7 +64,7 @@ class Local
             $np_new = [];
             foreach($np_full as $np_old) {
                 /** @var Entity\Api\NowPlaying $np_old */
-                if ($np_old->station->id === $event->getStation()->getId()) {
+                if ($np_old->station->id === $station->getId()) {
                     $np_new[] = $np;
                 } else {
                     $np_new[] = $np_old;

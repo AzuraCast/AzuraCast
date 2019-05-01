@@ -78,6 +78,15 @@ class Station implements ResolvableUrlInterface
      */
     public $remotes;
 
+    public function __clone()
+    {
+        $new_mounts = [];
+        foreach($this->mounts as $mount) {
+            $new_mounts[] = clone $mount;
+        }
+        $this->mounts = $new_mounts;
+    }
+
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *

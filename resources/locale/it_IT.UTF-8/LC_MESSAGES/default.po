@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 18:00\n"
+"PO-Revision-Date: 2019-05-01 18:10\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2658,91 +2658,91 @@ msgstr "Ultimi 2 anni"
 
 #: /var/azuracast/www/config/forms/settings.php:73
 msgid "Indefinitely"
-msgstr ""
+msgstr "Indefinito"
 
 #: /var/azuracast/www/config/forms/settings.php:83
 msgid "Security Controls"
-msgstr ""
+msgstr "Controlli di sicurezza"
 
 #: /var/azuracast/www/config/forms/settings.php:89
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "Usa sempre HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:90
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Impostare su \"Sì\" per utilizzare sempre URL \"https://\" protetti e per reindirizzare automaticamente all'URL protetto quando viene visitato un URL non protetto."
 
 #: /var/azuracast/www/config/forms/settings.php:100
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "Intestazione API \"Access-Control-Allow-Origin\""
 
 #: /var/azuracast/www/config/forms/settings.php:102
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
 
 #: /var/azuracast/www/config/forms/settings.php:111
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Privacy Controls"
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast non invia i dati della stazione o dell'ascoltatore a nessun server esterno. Puoi controllare quanti dati AzuraCast registra sui tuoi ascoltatori qui."
 
 #: /var/azuracast/www/config/forms/settings.php:119
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Raccolta analisi degli ascolti"
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Le statistiche aggregate degli ascolti vengono utilizzate per mostrare i report delle stazioni attraverso il sistema. Le statistiche degli ascolti basate su IP vengono utilizzate per visualizzare il monitoraggio degli ascoltatori in tempo reale e potrebbero essere richieste per i report di royalty."
 
 #: /var/azuracast/www/config/forms/settings.php:123
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b> Completo: </b> raccoglie statistiche di ascolti aggregate e statistiche ascolti basate su IP"
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b> Limitato: </b> raccoglie solo statistiche di ascolto aggregate"
 
 #: /var/azuracast/www/config/forms/settings.php:125
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b> Nessuno: </b> non raccoglie alcuna analisi degli ascolti"
 
 #: /var/azuracast/www/config/forms/settings.php:134
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "Telemetria di installazione AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:135
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Scegli se l'installazione comunica con i server centrali AzuraCast per verificare la disponibilità di aggiornamenti e annunci. <br> AzuraCast rispetta la tua privacy; consulta la nostra <a href=\"%s\" target=\"_blank\"> informativa sulla privacy </a> per ulteriori dettagli."
 
 #: /var/azuracast/www/config/forms/settings.php:142
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Controlla aggiornamenti e annunci"
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Invia dettagli minimi sull'installazione di AzuraCast al server centrale per verificare la disponibilità di aggiornamenti software e annunci importanti."
 
 #: /var/azuracast/www/config/forms/settings.php:146
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b> Nessuno: </b> non controllare aggiornamenti o annunci."
 
 #: /var/azuracast/www/config/forms/settings.php:147
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b> Solo rilasci: </b> solo annunci critici e nuovi rilasci rilevanti."
 
 #: /var/azuracast/www/config/forms/settings.php:148
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b> Tutti gli aggiornamenti: </b> include tutti gli annunci e gli aggiornamenti minori."
 
 #: /var/azuracast/www/config/forms/settings.php:157
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Invia automaticamente segnalazioni di errori ad AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Se l'applicazione Web rileva un errore, è possibile scegliere di inviare automaticamente un report anonimo dell'errore al team AzuraCast per una diagnosi e una risoluzione più rapida."
 
 #: /var/azuracast/www/config/forms/settings.php:158
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."

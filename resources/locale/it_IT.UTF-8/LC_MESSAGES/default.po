@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 17:40\n"
+"PO-Revision-Date: 2019-05-01 18:00\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2606,15 +2606,15 @@ msgstr "Fuso orario predefinito del sistema"
 
 #: /var/azuracast/www/config/forms/settings.php:34
 msgid "For users who have not customized their time zone, all times displayed on the site will be based on this time zone."
-msgstr ""
+msgstr "Per gli utenti che non hanno personalizzato il proprio fuso orario, tutte le ore visualizzate sul sito saranno basate su questo fuso orario."
 
 #: /var/azuracast/www/config/forms/settings.php:43
 msgid "Prefer Browser URL (If Available)"
-msgstr ""
+msgstr "Preferisci URL del browser (se disponibile)"
 
 #: /var/azuracast/www/config/forms/settings.php:44
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Se questa impostazione è configurata su \"Sì\", verrà utilizzato l'URL del browser anziché l'URL di base quando è disponibile. Impostare su \"No\" per utilizzare sempre l'URL di base."
 
 #: /var/azuracast/www/config/forms/settings.php:54
 msgid "Use Web Proxy for Radio"
@@ -2626,35 +2626,35 @@ msgstr "Per default, le radio trasmettono sulla loro porta (es. 8000). Se usi se
 
 #: /var/azuracast/www/config/forms/settings.php:65
 msgid "Days of Playback History to Keep"
-msgstr ""
+msgstr "Giorni di cronologia di riproduzione da conservare"
 
 #: /var/azuracast/www/config/forms/settings.php:66
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
-msgstr ""
+msgstr "Imposta più tempo per conservare più cronologia di riproduzione per le stazioni. Imposta più breve per risparmiare spazio sul disco."
 
 #: /var/azuracast/www/config/forms/settings.php:68
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:14
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
 msgid "Last 14 Days"
-msgstr ""
+msgstr "Ultimi 14 giorni"
 
 #: /var/azuracast/www/config/forms/settings.php:69
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:64
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:110
 msgid "Last 30 Days"
-msgstr ""
+msgstr "Ultimi 30 giorni"
 
 #: /var/azuracast/www/config/forms/settings.php:70
 msgid "Last 60 Days"
-msgstr ""
+msgstr "Ultimi 60 giorni"
 
 #: /var/azuracast/www/config/forms/settings.php:71
 msgid "Last Year"
-msgstr ""
+msgstr "L'anno scorso"
 
 #: /var/azuracast/www/config/forms/settings.php:72
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Ultimi 2 anni"
 
 #: /var/azuracast/www/config/forms/settings.php:73
 msgid "Indefinitely"

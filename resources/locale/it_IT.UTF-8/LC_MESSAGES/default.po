@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 17:20\n"
+"PO-Revision-Date: 2019-05-01 17:30\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr "Il file <code>docker-compose.yml</code> è obsoleto!"
+msgstr "Il tuo file <code> docker-compose.yml </code> non è aggiornato!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
@@ -789,7 +789,7 @@ msgstr "%s riavviato."
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:103
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend"
-msgstr "Frontend"
+msgstr "Interfaccia utente"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:97
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:166
@@ -813,7 +813,7 @@ msgstr "Curatore disconnesso."
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend"
-msgstr "Backend"
+msgstr "Interfaccia di amministrazione"
 
 #: /var/azuracast/www/config/menus/admin.php:13
 msgid "System Maintenance"
@@ -3629,12 +3629,12 @@ msgstr "Non riprodotto"
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 msgid "Listener Request"
-msgstr ""
+msgstr "Richiesta ascoltatore"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 msgid "Playlist:"
-msgstr ""
+msgstr "Playlist:"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Broadcast"
@@ -3643,48 +3643,48 @@ msgstr "Trasmetti in diretta"
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:107
 msgid "Today"
-msgstr ""
+msgstr "Oggi"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:61
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:108
 msgid "Yesterday"
-msgstr ""
+msgstr "Ieri"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:109
 msgid "Last 7 Days"
-msgstr ""
+msgstr "Ultimi 7 giorni"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:65
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:111
 msgid "This Month"
-msgstr ""
+msgstr "Questo mese"
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:66
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:112
 msgid "Last Month"
-msgstr ""
+msgstr "Il mese scorso"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:47
 #: /var/azuracast/www/templates/stations/profile/index.phtml:28
 msgid "Listener"
-msgstr ""
+msgstr "Ascoltatore"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:4
 msgid "Reorder Playlist"
-msgstr ""
+msgstr "Riordina playlist"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:12
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Riordina Playlist: %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:37
 msgid "Down"
-msgstr ""
+msgstr "Giù"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Up"
-msgstr ""
+msgstr "Su"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:19
 msgid "All Playlists"
@@ -4065,21 +4065,21 @@ msgstr "Nuova cartella"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:131
 msgid "Directory Name"
-msgstr ""
+msgstr "Nome cartella"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:137
 msgid "Create Directory"
-msgstr ""
+msgstr "Crea cartella"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:149
 msgid "Move {{ selected_files }} File(s) to"
-msgstr ""
+msgstr "Sposta {{ selected_files }} File(s) in"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:155
 msgid "Back"
-msgstr ""
+msgstr "Indietro"
 
 #: /var/azuracast/www/templates/stations/sidebar.js.phtml:9
 msgid "Please wait..."
-msgstr ""
+msgstr "Attendere prego..."
 

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 17:10\n"
+"PO-Revision-Date: 2019-05-01 17:20\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1653,11 +1653,11 @@ msgstr "Mostra su pagine pubbliche"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:32
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Abilita per consentire agli ascoltatori di selezionare questo mount point sulle pagine pubbliche di questa stazione."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:42
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Imposta come mount point predefinito"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:43
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
@@ -1674,12 +1674,12 @@ msgstr "Inserisci la URL completa di un altro streaming, da ritrasmettere attrav
 #: /var/azuracast/www/config/forms/mount/generic.php:62
 #: /var/azuracast/www/config/forms/remote.php:151
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "Condividi su database di consultazione pubblici"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:63
 #: /var/azuracast/www/config/forms/remote.php:152
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Abilita questa opzione per pubblicizzare la tua radio negli elenchi pubblici di stazioni."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:73
 msgid "Enable AutoDJ"
@@ -1687,12 +1687,12 @@ msgstr "Abilita Dj automatico"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:74
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "Se abilitato, la regia automatica riprodurrà la musica in automatico su questo mount point."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:84
 #: /var/azuracast/www/config/forms/remote.php:82
 msgid "Configure AutoDJ Broadcasting"
-msgstr ""
+msgstr "Configura trasmissione regia automatica"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:91
 #: /var/azuracast/www/config/forms/remote.php:88
@@ -1706,31 +1706,31 @@ msgstr "Bitrate Dj automatico (kbps)"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:119
 msgid "Advanced Configuration"
-msgstr ""
+msgstr "Configurazione avanzata"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:125
 msgid "Custom Stream URL"
-msgstr ""
+msgstr "URL flusso personalizzato"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:127
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
-msgstr ""
+msgstr "È possibile impostare un URL personalizzato per questo flusso che AzuraCast utilizzerà quando farà riferimento ad esso. Lascia vuoto per utilizzare il valore predefinito."
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:11
 msgid "Stream path cannot include reserved keywords: %s"
-msgstr ""
+msgstr "Il percorso del flusso non può includere parole chiave riservate: %s"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"
-msgstr ""
+msgstr "Hash di autorizzazione alla directory di YP"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr ""
+msgstr "Se lo stream è impostato per la pubblicità nelle directory YP di cui sopra, è necessario specificare un hash di autorizzazione. Puoi gestire i codici di autorizzazione <a href=\"%s\" target=\"_blank\"> sul sito web SHOUTcast </a>."
 
 #: /var/azuracast/www/config/forms/playlist.php:43
 msgid "Your current local time is <b>%s</b> (%s UTC). You can customize your time zone from the \"My Account\" page."
-msgstr ""
+msgstr "Attualmente l'ora locale è <b>%s </b> (%s UTC). Puoi personalizzare il tuo fuso orario dalla pagina \"Il mio account\"."
 
 #: /var/azuracast/www/config/forms/playlist.php:55
 #: /var/azuracast/www/templates/stations/playlists/edit.phtml:21
@@ -3333,7 +3333,7 @@ msgstr "Proprietario"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr ""
+msgstr "Elimina ruolo \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
@@ -3359,15 +3359,15 @@ msgstr "Questo ruolo non può essere eliminato."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:44
 msgid "Global"
-msgstr ""
+msgstr "Globale"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr ""
+msgstr "Elimina utente \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:46
 msgid "(You)"
-msgstr ""
+msgstr "(Tu)"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3379,15 +3379,15 @@ msgstr "Clona"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr ""
+msgstr "Elimina stazione \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr ""
+msgstr "Elimina campo personalizzato \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:22
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Compiti di sincronizzazione"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:32
 msgid "%s ago"
@@ -3395,15 +3395,15 @@ msgstr "%s fa"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Run Task"
-msgstr ""
+msgstr "Esegui compito"
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 msgid "Select the type of web hook to create."
-msgstr ""
+msgstr "Seleziona il tipo di interazione web da creare."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:6
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
-msgstr ""
+msgstr "Le interazioni Web ti consentono di collegarti a servizi Web esterni e notificare a questi, le modifiche alla tua stazione."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:24
 msgid "Type"
@@ -3411,29 +3411,29 @@ msgstr "Tipo"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Triggers"
-msgstr ""
+msgstr "Eventi"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 msgid "Disable"
-msgstr ""
+msgstr "Disabilita"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:63
 msgid "Enable"
-msgstr ""
+msgstr "Abilita"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Trigger the web hook manually and view the raw response."
-msgstr ""
+msgstr "Attiva manualmente l'interazione web e visualizza la risposta non elaborata."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "Elimina interazione web \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:18
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:7
@@ -3459,11 +3459,11 @@ msgstr "Località"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 msgid "Mobile Device"
-msgstr ""
+msgstr "Dispositivo mobile"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:45
 msgid "Desktop Device"
-msgstr ""
+msgstr "Dispositivo desktop"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:57
 msgid "Unknown"
@@ -3471,15 +3471,15 @@ msgstr "Sconosciuto"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:64
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr ""
+msgstr "Questo prodotto include dati GeoLite2 creati da MaxMind, disponibili da %s."
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Ascoltatori per giorno"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Ascoltatori per ora"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:29
 msgid "Listeners by Day of Week"
@@ -3574,11 +3574,11 @@ msgstr "Ratio"
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
 msgid "Report Not Available"
-msgstr ""
+msgstr "Report non disponibile"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
-msgstr ""
+msgstr "Questo report non è disponibile per questa stazione, perché l'amministratore di sistema ha scelto di non raccogliere informazioni dettagliate sugli ascoltatori basate su IP."
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:6

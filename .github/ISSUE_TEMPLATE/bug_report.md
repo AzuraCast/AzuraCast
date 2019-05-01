@@ -14,11 +14,11 @@ https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#troubleshooting-by
 Do not include your responses inside the "!--" comments. Add them outside these sections.
 -->
 
-**Installation method**
-<!-- Indicate whether you are using the "Docker" or "Bare-metal" installation method. -->
+**Using Docker installation method**
+<!-- Yes/No (Indicate "No" if you are using the Ansible (Bare-metal/Traditional) installation method. -->
 
-**Host OS (for Docker installations)**
-<!-- Indicate what your host operating system is (i.e. Ubuntu 16.04, MacOS High Sierra, Windows 10), if you're using the Docker installation method. -->
+**Host Operating System**
+<!-- Indicate what your host operating system is (i.e. Ubuntu 16.04, MacOS High Sierra, Windows 10). -->
 
 **Describe the bug**
 <!-- A clear and concise description of what the bug is. -->

@@ -21,9 +21,9 @@ docker-compose logs -f
 
 This command will show you a running log of all containers. You can also get detailed logs by running `docker-compose logs -f service`, where "service" is one of `web`, `stations`, etc.
 
-#### Bare-metal
+#### Ansible
 
-Since the Bare-metal installation interacts directly with your host server, its logs are in various locations across the system.
+Since the Ansible installation interacts directly with your host server, its logs are in various locations across the system.
 
 - AzuraCast: `/var/azuracast/www_tmp/azuracast.log`
 - Nginx Access: `/var/azuracast/www_tmp/access.log`
@@ -55,7 +55,7 @@ Replace `YOUREMAILADDRESS` with the e-mail address whose password you intend to 
 ./docker.sh cli azuracast:account:reset-password YOUREMAILADDRESS
 ``` 
 
-##### Bare-metal
+##### Ansible
 
 ```bash
 php /var/azuracast/www/bin/azuracast.php azuracast:account:reset-password YOUREMAILADDRESS
@@ -70,7 +70,7 @@ date, and they may cause errors. You can always flush all site-wide caches using
 ./docker.sh cli cache:clear
 ``` 
 
-##### Bare-metal
+##### Ansible
 
 ```bash
 php /var/azuracast/www/bin/azuracast.php cache:clear
@@ -102,13 +102,13 @@ As long as you leave this script running, it will create a connection that you c
 
 If you intend to leave this script running for long term periods, you must change the password to something more secure.
 
-### Force a Full Update (Bare-metal Installations)
+### Force a Full Update (Ansible Installations)
 
-Normally, the Bare-metal installer's update script only updates the portion of the system that have been modified since
+Normally, the Ansible installer's update script only updates the portion of the system that have been modified since
 your last update. If an update was interrupted or otherwise is causing trouble, you can force the update script to process
 all components, which can often fix any issues:
 
-##### Bare-metal
+##### Ansible
 
 ```bash
 ./update.sh --full
@@ -136,7 +136,7 @@ You will need to recycle your Docker containers using `docker-compose down`, the
 
 To override more complex functionality in your Docker installation, see the "Customizing Docker" section below.
 
-#### Bare-metal
+#### Ansible
 
 To modify the port your web application runs on, modify the configuration file in `/etc/nginx/sites-available/00-azuracast`.
 Note that some updates may overwrite this file.

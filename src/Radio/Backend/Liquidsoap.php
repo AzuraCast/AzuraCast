@@ -694,7 +694,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $command .= ' --form ' . $param_key . '="^quote(' . $param_val . ')^"';
             }
         } else {
-            // Bare-metal shell-script call.
+            // Ansible shell-script call.
             $shell_path = '/usr/bin/php '.APP_INCLUDE_ROOT.'/bin/azuracast';
 
             $shell_args = [];

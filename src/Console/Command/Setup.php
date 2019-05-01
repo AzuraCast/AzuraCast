@@ -38,7 +38,7 @@ class Setup extends CommandAbstract
 
         $io->listing([
             'Environment: '.ucfirst(APP_APPLICATION_ENV),
-            'Installation Method: '.((APP_INSIDE_DOCKER) ? 'Docker' : 'Traditional'),
+            'Installation Method: '.((APP_INSIDE_DOCKER) ? 'Docker' : 'Ansible'),
         ]);
 
         if ($update_only) {

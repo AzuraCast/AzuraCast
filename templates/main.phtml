@@ -147,7 +147,7 @@ echo $assets->js();
 </section>
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$settings['name'].'</a> &bull; '.$version->getVersionText().' &bull; '.(APP_INSIDE_DOCKER ? 'Docker' : 'Bare-metal').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
+    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$settings['name'].'</a> &bull; '.$version->getVersionText().' &bull; '.(APP_INSIDE_DOCKER ? 'Docker' : 'Ansible').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
     <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>', 'https://www.azuracast.com/donate.html') ?>
 </footer>
 

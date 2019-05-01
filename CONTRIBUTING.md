@@ -16,7 +16,7 @@ We do our best to incorporate translation changes as frequently as possible, but
 
 Getting a project as large and complex as AzuraCast to work on many platforms is a huge effort, and is often far too complex for a single-developer project such as this.
 
-Thankfully, we've adopted support for Docker, a tool that allows us to create prebuilt images with all of our software stack properly configured and arranged, which you can then run on just about any host that will run the latest version of Docker. It's portable, it's cross-platform, and pulling down new updates are far easier than before; for these reasons, we heavily emphasize using Docker over our older, Ubuntu-specific "Bare-metal" installation.
+Thankfully, we've adopted support for Docker, a tool that allows us to create prebuilt images with all of our software stack properly configured and arranged, which you can then run on just about any host that will run the latest version of Docker. It's portable, it's cross-platform, and pulling down new updates are far easier than before; for these reasons, we heavily emphasize using Docker over our older, Ubuntu-specific Ansible installation.
 
 Although we use Docker in local development and on our testing and demonstration servers, sometimes a problem will occur that stops a particular host from working with our application. If you're a user affected by such an issue, we encourage you to advise us by creating a Github issue, especially if there is a known solution to the issue that we can apply.
 
@@ -31,7 +31,7 @@ Accessibility, security, and modern best practices are very important in AzuraCa
 Contributions are also welcome in the supporting technologies used to make AzuraCast possible, such as:
 
  - Dockerfiles (see [our separate repositories](https://github.com/AzuraCast) for Docker containers)
- - [Ansible configuration](https://github.com/AzuraCast/AzuraCast/tree/master/util/ansible) for Bare-metal installs and Docker installation/updates
+ - [Ansible configuration](https://github.com/AzuraCast/AzuraCast/tree/master/util/ansible) for Ansible installs and Docker installation/updates
  - Python for our auxiliary [station monitoring scripts](https://github.com/AzuraCast/station-watcher-python)
  
 Instructions for developing with AzuraCast locally are [available here](https://www.azuracast.com/developing.html).
@@ -44,7 +44,7 @@ While we appreciate everyone who is eager to contribute to this project and help
 
  - Please **do not e-mail the project developer directly** with questions or issues specific to AzuraCast, unless you were specifically requested to do so as part of an ongoing issue. Contacting me directly prevents me from tracking all outstanding issues in one place, and harms the transparency that is essential to FOSS development. If, however, you are e-mailing me to offer me a paying job...go nuts.
 
- - Please **do not create "this doesn't work" issues** that are just one sentence long and don't provide any insight into the scope of the issue, what changes might have triggered it, or what platform you're running on. At the very minimum, please always include what host OS you're using (i.e. Ubuntu 16.04), whether you're using the Docker or "Bare-metal" installation, and whether the problem first occurred after a recent update. For visual issues, screenshots are also greatly appreciated.
+ - Please **do not create "this doesn't work" issues** that are just one sentence long and don't provide any insight into the scope of the issue, what changes might have triggered it, or what platform you're running on. At the very minimum, please always include what host OS you're using (i.e. Ubuntu 16.04), whether you're using the Docker or Ansible installation, and whether the problem first occurred after a recent update. For visual issues, screenshots are also greatly appreciated.
  
  - Please **refer to existing Github issues** if you are curious about the status of outstanding bug reports or new enhancement requests. Always remember that this is a volunteer project primarily built and maintained by a single developer, and manage your expectations accordingly.
 

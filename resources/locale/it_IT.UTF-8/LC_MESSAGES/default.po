@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 17:00\n"
+"PO-Revision-Date: 2019-05-01 17:10\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1336,47 +1336,51 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Le interazioni Web inviano automaticamente una richiesta POST HTTP all'URL specificato per \n"
+" notificarlo ogni volta che una delle condizioni specificate si verifica sulla tua stazione. Il corpo del messaggio POST \n"
+" è esattamente lo stesso della <a href=\"%s\" target=\"_blank\"> risposta dell'API attualmente in riproduzione </a> per la tua stazione. \n"
+" Per elaborare rapidamente, le interazioni web hanno un breve timeout, quindi il servizio di risposta dovrebbe essere \n"
+" ottimizzato per gestire la richiesta in meno di 2 secondi."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:34
 msgid "Web Hook URL"
-msgstr ""
+msgstr "URL interazione web"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:35
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "L'URL che riceverà i messaggi POST ogni volta che viene attivato un evento."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:44
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "Facoltativo: Nome utente autenticazione di base HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:45
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Se la tua interazione web richiede l'autenticazione di base HTTP, fornisci qui il nome utente."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:53
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "Opzionale: password autenticazione http di base"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:54
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Se la tua interazione Web richiede l'autenticazione di base HTTP, fornisci qui la password."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:23
 msgid "TuneIn Partner ID"
-msgstr ""
+msgstr "Partner ID TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:32
 msgid "TuneIn Partner Key"
-msgstr ""
+msgstr "Partner key TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:41
 msgid "TuneIn Station ID"
-msgstr ""
+msgstr "Station ID TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:42
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr ""
+msgstr "Lo Station ID sarà una stringa numerica che inizia con la lettera S."
 
 #: /var/azuracast/www/config/forms/automation.php:10
 msgid "Enable Automated Assignment"
@@ -1420,7 +1424,7 @@ msgstr "Basandosi su questa impostazione, il sistema riassegnerà automaticament
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d giorni"
 
 #: /var/azuracast/www/config/forms/profile.php:3
 msgid "Use Browser Default"
@@ -1459,19 +1463,19 @@ msgstr "Reimposta Password"
 
 #: /var/azuracast/www/config/forms/profile.php:36
 msgid "Leave these fields blank to continue using your current password."
-msgstr ""
+msgstr "Lascia questi campi vuoti per continuare a utilizzare la password attuale."
 
 #: /var/azuracast/www/config/forms/profile.php:42
 msgid "Current Password"
-msgstr ""
+msgstr "Password attuale"
 
 #: /var/azuracast/www/config/forms/profile.php:56
 msgid "New Password"
-msgstr ""
+msgstr "Nuova password"
 
 #: /var/azuracast/www/config/forms/profile.php:66
 msgid "Confirm New Password"
-msgstr ""
+msgstr "Conferma nuova password"
 
 #: /var/azuracast/www/config/forms/profile.php:75
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:50
@@ -1501,18 +1505,18 @@ msgstr "Tema del sito"
 #: /var/azuracast/www/config/forms/profile.php:103
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Light"
-msgstr ""
+msgstr "Leggero"
 
 #: /var/azuracast/www/config/forms/profile.php:103
 #: /var/azuracast/www/config/forms/playlist.php:88
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Default"
-msgstr ""
+msgstr "Predefinito"
 
 #: /var/azuracast/www/config/forms/profile.php:104
 #: /var/azuracast/www/config/forms/branding.php:16
 msgid "Dark"
-msgstr ""
+msgstr "Scuro"
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:10
 #: /var/azuracast/www/config/forms/install_shoutcast.php:11
@@ -1521,23 +1525,23 @@ msgstr "Note Importanti"
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:11
 msgid "This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href=\"%s\" target=\"_blank\">SoundExchange web site</a>."
-msgstr ""
+msgstr "Questo report è destinato esclusivamente alle licenze negli Stati Uniti, per i webcaster che pagano royalty tramite SoundExchange. Ulteriori informazioni sui requisiti per la creazione di report e la classificazione nel <a href=\"%s\" target=\"_blank\"> sito Web SoundExchange </a>."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:15
 msgid "AzuraCast assumes that your station fits SoundExchange Transmission Category A, \"Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming.\" If your station does not fall within this category, update the transmission category field accordingly."
-msgstr ""
+msgstr "AzuraCast presuppone che la tua stazione si adatti alla Categoria di trasmissione A di SoundExchange, \"Trasmissioni non soggette a sottoscrizione diverse dalle trasmissioni in simulcast e trasmissioni di programmi non musicali.\" Se la tua stazione non rientra in questa categoria, aggiorna il campo della categoria di trasmissione di conseguenza."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:18
 msgid "The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate."
-msgstr ""
+msgstr "I dati raccolti da AzuraCast soddisfano lo standard SoundExchange per le effettive performance totali (ATP) monitorando ascoltatori unici per tutte le riproduzioni di brani. Tutte le altre informazioni derivano dai metadati delle canzoni caricate e potrebbero non essere completamente accurate."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:21
 msgid "Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date."
-msgstr ""
+msgstr "I requisiti di reporting per SoundExchange possono cambiare in qualsiasi momento. AzuraCast è un software non commerciale della comunità e non può garantire che il suo formato di segnalazione sia sempre aggiornato."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:23
 msgid "You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href=\"%s\" target=\"_blank\">SoundExchange's ISRC search tool</a>."
-msgstr ""
+msgstr "È necessario verificare sempre il report generato da AzuraCast prima di inviarlo. In particolare, sia l'ISRC (International Standard Recording Code) sia * sia * l'album e l'etichetta sono richiesti per ogni riga e potrebbero non essere forniti nei metadati della canzone. AzuraCast utilizzerà API esterne per cercare di trovare l'ISRC, ma puoi anche utilizzare lo <a href=\"%s\" target=\"_blank\"> strumento di ricerca ISRC di SoundExchange </a>."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:35
 msgid "Report Start Date"
@@ -1553,7 +1557,7 @@ msgstr "Genera Report"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Descrivi il caso d'uso per questa chiave API per riferimento futuro."
 
 #: /var/azuracast/www/config/forms/rename.php:9
 #: /var/azuracast/www/config/forms/media.php:13
@@ -1593,7 +1597,7 @@ msgstr "Permessi globali sistema"
 
 #: /var/azuracast/www/config/forms/role.php:35
 msgid "Permissions for %s"
-msgstr ""
+msgstr "Permessi per %s"
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
@@ -1618,7 +1622,7 @@ msgstr "Se il mount point predefinito non riproduce audio, gli ascoltatori verra
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:26
 msgid "Custom Frontend Configuration"
-msgstr ""
+msgstr "Configurazione personalizzata dell'interfaccia utente"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:28
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
@@ -1626,7 +1630,7 @@ msgstr "Qui puoi includere qualsiasi impostazione speciale del mount point, sia 
 
 #: /var/azuracast/www/config/forms/mount/generic.php:14
 msgid "Mount Point URL"
-msgstr ""
+msgstr "URL mount point"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
@@ -1636,16 +1640,16 @@ msgstr "Questo nome dovrebbe sempre iniziare con una barra (/), ed essere una UR
 #: /var/azuracast/www/config/forms/remote.php:13
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:27
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:24
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Il nome assegnato a questo mount point quando viene visualizzato su pagine pubbliche o amministrative. Lascia vuoto per generarne automaticamente uno."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:31
 #: /var/azuracast/www/config/forms/remote.php:21
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Mostra su pagine pubbliche"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:32
 msgid "Enable to allow listeners to select this mount point on this station's public pages."

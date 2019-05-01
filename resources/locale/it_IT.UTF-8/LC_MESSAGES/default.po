@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 14:10\n"
+"PO-Revision-Date: 2019-05-01 14:20\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -994,27 +994,27 @@ msgstr "Posta su Twitter"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Manda un tweet in automatico."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Ogni volta che cambia il brano in riproduzione"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Ogni volta che aumenta il numero di ascoltatori"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Ogni volta che diminuisce il numero di ascoltatori"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "Ogni volta che un curatore/DJ si collega alla radio"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "Ogni volta che un curatore/DJ si disconnette dalla radio"
 
 #: /var/azuracast/www/config/forms/streamer.php:9
 msgid "Streamer Username"
@@ -1030,15 +1030,15 @@ msgstr "Password streamer"
 
 #: /var/azuracast/www/config/forms/streamer.php:19
 msgid "The streamer will use this password to connect to the radio server."
-msgstr ""
+msgstr "Il curatore userà questa password per connettersi al server della radio."
 
 #: /var/azuracast/www/config/forms/streamer.php:27
 msgid "Streamer Display Name"
-msgstr ""
+msgstr "Nome visualizzato del curatore"
 
 #: /var/azuracast/www/config/forms/streamer.php:28
 msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
-msgstr ""
+msgstr "Questo è il nome visualizzato che verrà mostrato nelle risposte dell'API quando il curatore / DJ è in diretta."
 
 #: /var/azuracast/www/config/forms/streamer.php:35
 #: /var/azuracast/www/config/forms/api_key.php:10
@@ -1057,7 +1057,7 @@ msgstr "L'account è attivo"
 
 #: /var/azuracast/www/config/forms/streamer.php:44
 msgid "Enable to allow this account to log in and stream."
-msgstr ""
+msgstr "Abilita per consentire a questo account di accedere e trasmettere."
 
 #: /var/azuracast/www/config/forms/streamer.php:45
 #: /var/azuracast/www/config/forms/mount/generic.php:33

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 15:30\n"
+"PO-Revision-Date: 2019-05-01 15:40\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2965,35 +2965,35 @@ msgstr "Mixer"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"
-msgstr ""
+msgstr "Playlist 1"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:15
 msgid "Playlist 2"
-msgstr ""
+msgstr "Playlist 2"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:18
 msgid "Encoder"
-msgstr ""
+msgstr "Encoder"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:19
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:20
 msgid "Raw"
-msgstr ""
+msgstr "Raw"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
-msgstr ""
+msgstr "Frequenza di campionamento"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:22
 msgid "Bit Rate"
-msgstr ""
+msgstr "Bit Rate"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:23
 msgid "DJ Credentials"
-msgstr ""
+msgstr "Credenziali DJ"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:26
@@ -3002,47 +3002,47 @@ msgstr "Nome utente"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:26
 msgid "Use Asynchronous Worker"
-msgstr ""
+msgstr "Usa Asynchronous Worker"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:29
 msgid "Continuous Play"
-msgstr ""
+msgstr "Riproduzione continua"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:30
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Ripeti playlist"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:31
 msgid "Microphone Source"
-msgstr ""
+msgstr "Sorgente microfono"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:34
 msgid "Start Streaming"
-msgstr ""
+msgstr "Inizia streaming"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:35
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Ferma streaming"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:36
 msgid "Cue"
-msgstr ""
+msgstr "Segnale"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:37
 msgid "Update Metadata"
-msgstr ""
+msgstr "Aggiorna metadati"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:40
 msgid "Add Files to Playlist"
-msgstr ""
+msgstr "Aggiungi file alla playlist"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:41
 msgid "Unknown Title"
-msgstr ""
+msgstr "Titolo sconosciuto"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:42
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Artista sconosciuto"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
@@ -3052,44 +3052,44 @@ msgstr "Il mio account"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:57
 msgid "Customize"
-msgstr ""
+msgstr "Personalizza"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:65
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Verifica a due fattori"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:72
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "L'autenticazione a due fattori migliora la sicurezza del tuo account richiedendo un secondo codice di accesso valido una sola volta oltre alla tua password quando effettui il login."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:78
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "Disabilita autenticazione a due fattori"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:83
 msgid "Enable Two-Factor"
-msgstr ""
+msgstr "Abilita autenticazione a due fattori"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "Abilita autenticazione a due fattori"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:15
 msgid "Step 1: Scan QR Code"
-msgstr ""
+msgstr "Passo 1: scansiona codice QR"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:17
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
-msgstr ""
+msgstr "Dal tuo smartphone, scansiona il codice a destra usando un'app di autenticazione a tua scelta (FreeOTP, Authy, ecc.)."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:19
 msgid "Step 2: Verify Generated Code"
-msgstr ""
+msgstr "Passo 2: verifica codice generato"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:21
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
-msgstr ""
+msgstr "Per verificare che il codice sia stato impostato correttamente, inserisci il codice a 6 cifre mostrato dall'app."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:39
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:20
@@ -3099,7 +3099,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/index.phtml:312
 #: /var/azuracast/www/templates/stations/profile/index.phtml:320
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Copia negli appunti"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:1
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:3
@@ -3109,7 +3109,7 @@ msgstr "Installazione AzuraCast"
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:14
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:23
 msgid "Create Station"
-msgstr ""
+msgstr "Crea stazione"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:26
 msgid "Customize AzuraCast Settings"

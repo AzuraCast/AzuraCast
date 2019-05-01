@@ -2,6 +2,7 @@
 namespace App\Http;
 
 use App\Entity\Repository\SettingsRepository;
+use App\Entity\Settings;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 
@@ -23,13 +24,13 @@ class Router extends \Azura\Http\Router
             /** @var SettingsRepository $settings_repo */
             $settings_repo = $this->container[SettingsRepository::class];
 
-            $settings_base_url = $settings_repo->getSetting('base_url', '');
+            $settings_base_url = $settings_repo->getSetting(Settings::BASE_URL, '');
 
             if (!empty($settings_base_url)) {
                 $base_url = new Uri('http://'.$settings_base_url);
             }
 
-            $use_https = (bool)$settings_repo->getSetting('always_use_ssl', 0);
+            $use_https = (bool)$settings_repo->getSetting(Settings::ALWAYS_USE_SSL, 0);
 
             if ($this->current_request instanceof Request) {
                 $current_uri = $this->current_request->getUri();
@@ -38,7 +39,7 @@ class Router extends \Azura\Http\Router
                     $use_https = true;
                 }
 
-                $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
+                $prefer_browser_url = (bool)$settings_repo->getSetting(Settings::PREFER_BROWSER_URL, 0);
                 if ($prefer_browser_url || $base_url->getHost() === '') {
                     $ignored_hosts = ['web', 'nginx', 'localhost'];
                     if (!in_array($current_uri->getHost(), $ignored_hosts)) {

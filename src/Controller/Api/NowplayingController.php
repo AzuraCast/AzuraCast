@@ -97,9 +97,16 @@ class NowplayingController implements EventSubscriberInterface
      */
     public function __invoke(Request $request, Response $response, $id = null): ResponseInterface
     {
-        $response = $response
-            ->withHeader('Cache-Control', 'public, max-age=15')
-            ->withHeader('X-Accel-Expires', 15); // CloudFlare caching
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        $prefer_browser_url = (bool)$settings_repo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
+
+        if ($prefer_browser_url) {
+            $response = $response->withNoCache();
+        } else {
+            $response = $response->withCacheLifetime(15);
+        }
 
         // Pull NP data from the fastest/first available source using the EventDispatcher.
         $event = new LoadNowPlaying();

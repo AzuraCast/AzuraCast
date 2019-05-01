@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 16:20\n"
+"PO-Revision-Date: 2019-05-01 16:30\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -807,13 +807,13 @@ msgstr "Brano saltato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:160
 msgid "Streamer disconnected."
-msgstr ""
+msgstr "Curatore disconnesso."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:166
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: /var/azuracast/www/config/menus/admin.php:13
 msgid "System Maintenance"
@@ -822,12 +822,12 @@ msgstr "Manutenzione del sistema"
 #: /var/azuracast/www/config/menus/admin.php:22
 #: /var/azuracast/www/templates/admin/branding/index.phtml:8
 msgid "Custom Branding"
-msgstr ""
+msgstr "Marchio personalizzato"
 
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "Log di sistema"
 
 #: /var/azuracast/www/config/menus/admin.php:43
 #: /var/azuracast/www/templates/admin/users/index.phtml:1
@@ -837,19 +837,19 @@ msgstr "Account utenti"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Avvia radio"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Pronto per iniziare a trasmettere? Clicca per avviare la tua radio."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Riavvia per applicare le modifiche"
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Fare clic per riavviare la radio e applicare le modifiche alla configurazione."
 
 #: /var/azuracast/www/config/menus/station.php:39
 msgid "Public Page"
@@ -880,7 +880,7 @@ msgstr "Account streamer/Dj"
 
 #: /var/azuracast/www/config/menus/station.php:67
 msgid "Web DJ"
-msgstr ""
+msgstr "Web DJ"
 
 #: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
@@ -889,7 +889,7 @@ msgstr "Report"
 #: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:1
 msgid "Statistics Overview"
-msgstr ""
+msgstr "Panoramica statistiche"
 
 #: /var/azuracast/www/config/menus/station.php:102
 #: /var/azuracast/www/templates/frontend/index/index.phtml:74
@@ -930,7 +930,7 @@ msgstr "Duplica brani"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
-msgstr ""
+msgstr "Royalty di SoundExchange"
 
 #: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
@@ -2026,7 +2026,7 @@ msgstr "Questa playlist suonerà ogni $x brani, dove $x è specificato sotto."
 
 #: /var/azuracast/www/config/forms/playlist.php:337
 msgid "Once per x Minutes"
-msgstr ""
+msgstr "Una volta ogni x minuti"
 
 #: /var/azuracast/www/config/forms/playlist.php:344
 msgid "Number of Minutes Between Plays"
@@ -2038,11 +2038,11 @@ msgstr "Questa playlist suonerà ogni $x minuti, dove $x è specificato sotto."
 
 #: /var/azuracast/www/config/forms/playlist.php:363
 msgid "Minute of Hour to Play"
-msgstr ""
+msgstr "Minuto dell'ora quando suonare"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."
-msgstr ""
+msgstr "Specifica il minuto di ogni ora in cui questa playlist dovrebbe suonare."
 
 #: /var/azuracast/www/config/forms/playlist.php:382
 msgid "Scheduled Play Time"
@@ -2060,47 +2060,47 @@ msgstr "Ruoli"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Il nome visibile assegnato a questo collegamento durante la visualizzazione su pagine di amministrazione o pubbliche. Lascia vuoto per generarne automaticamente uno."
 
 #: /var/azuracast/www/config/forms/remote.php:22
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Abilita per consentire agli ascoltatori di selezionare questo collegamento sulle pagine pubbliche di questa stazione."
 
 #: /var/azuracast/www/config/forms/remote.php:32
 msgid "Remote Station Type"
-msgstr ""
+msgstr "Tipo di stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:45
 msgid "Remote Station Listening URL"
-msgstr ""
+msgstr "URL per ascoltare la stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:46
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
-msgstr ""
+msgstr "Esempio: se l'URL della radio remota è %s, inserisci <code>%s </code>."
 
 #: /var/azuracast/www/config/forms/remote.php:58
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr ""
+msgstr "Mountpoint/SID per ascoltare la stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:59
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
-msgstr ""
+msgstr "Inserisci un mountpoint (ad esempio <code>%s</code>) o un SID di Shoutcast (ad esempio <code>%s</code>) per indicare un flusso specifico da utilizzare per le statistiche o la trasmissione."
 
 #: /var/azuracast/www/config/forms/remote.php:70
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr ""
+msgstr "Trasmetti regia automatica a stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:71
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr ""
+msgstr "Se abilitata, la regia automatica su questa installazione riprodurrà la musica in automatico su questo mount point."
 
 #: /var/azuracast/www/config/forms/remote.php:119
 msgid "Remote Station Source Port"
-msgstr ""
+msgstr "Porta sorgente per stazione remota"
 
 #: /var/azuracast/www/config/forms/remote.php:120
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr ""
+msgstr "Se la porta in cui trasmetti è diversa da quella che hai elencato nell'URL sopra, specifica qui la porta sorgente."
 
 #: /var/azuracast/www/config/forms/remote.php:127
 msgid "Remote Station Source Mountpoint/SID"

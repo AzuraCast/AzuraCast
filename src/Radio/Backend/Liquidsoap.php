@@ -819,7 +819,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 break;
 
             case $mount::FORMAT_OPUS:
-                $output_format = '%opus(samplerate=44100, bitrate='.$bitrate.', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+                $output_format = '%opus(samplerate=48000, bitrate='.$bitrate.', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
                 break;
 
             case $mount::FORMAT_MP3:

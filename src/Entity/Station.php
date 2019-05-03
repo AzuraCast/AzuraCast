@@ -349,7 +349,7 @@ class Station
     protected $remotes;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationWebhook", mappedBy="station", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="StationWebhook", mappedBy="station", fetch="EXTRA_LAZY", cascade={"persist"})
      * @var Collection
      */
     protected $webhooks;

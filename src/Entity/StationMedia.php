@@ -203,7 +203,7 @@ class StationMedia
     protected $cue_out;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
+     * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media", cascade={"persist"})
      *
      * @DeepNormalize(true)
      * @Serializer\MaxDepth(1)
@@ -215,7 +215,7 @@ class StationMedia
     protected $playlists;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
+     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media", cascade={"persist"})
      *
      * @var Collection
      */

@@ -64,9 +64,18 @@ class StationCloneForm extends StationForm
             $copier->addFilter(new DeepCopy\Filter\Doctrine\DoctrineProxyFilter, new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher);
             $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song'));
             $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role'));
+            $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field'));
             $copier->addFilter(
                 new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
                 new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'history')
+            );
+            $copier->addFilter(
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'mounts')
+            );
+            $copier->addFilter(
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylist::class, 'media_items')
             );
 
             // Unset some properties across all copied record types.
@@ -81,11 +90,8 @@ class StationCloneForm extends StationForm
                 'radio_base_dir',
                 'nowplaying',
                 'nowplaying_timestamp',
-                'is_streamer_live',
                 'current_streamer_id',
                 'current_streamer',
-                'needs_restart',
-                'has_started',
             ];
 
             if ('share' !== $data['clone_media']) {
@@ -103,6 +109,19 @@ class StationCloneForm extends StationForm
                 $copier->addFilter(new DeepCopy\Filter\ReplaceFilter(function($orig_value) use ($data, $prop) {
                     return $data[$prop];
                 }), new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop));
+            }
+
+            // Unset booleans
+            $set_false_values = [
+                'is_streamer_live',
+                'needs_restart',
+                'has_started',
+            ];
+            foreach($set_false_values as $prop) {
+                $copier->addFilter(
+                    new DeepCopy\Filter\ReplaceFilter(function() { return false; }),
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop)
+                );
             }
 
             // Unset ports.

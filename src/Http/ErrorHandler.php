@@ -79,6 +79,9 @@ class ErrorHandler
             $e_extra['trace'] = array_slice($e->getTrace(), 0, 5);
         }
 
+        print_r($e->getMessage());
+        exit;
+
         $this->logger->addRecord($e_level, $e->getMessage(), [
             'file' => $e->getFile(),
             'line' => $e->getLine(),

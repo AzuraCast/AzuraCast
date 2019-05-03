@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-03 10:46\n"
+"PO-Revision-Date: 2019-05-03 10:50\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3901,7 +3901,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/index.phtml:288
 #: /var/azuracast/www/templates/stations/profile/index.phtml:361
 msgid "Loading..."
-msgstr ""
+msgstr "Cargando..."
 
 #: /var/azuracast/www/templates/stations/profile/index.phtml:298
 msgid "Administration URL"

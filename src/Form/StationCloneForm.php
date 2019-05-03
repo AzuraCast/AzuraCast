@@ -7,6 +7,8 @@ use App\Http\Request;
 use App\Radio\Configuration;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Doctrine\Repository;
+use DeepCopy;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -58,82 +60,109 @@ class StationCloneForm extends StationForm
         if ($request->isPost() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
 
-            $new_record_data = $this->_normalizeRecord($record);
-            $new_record_data['name'] = $data['name'];
-            $new_record_data['description'] = $data['description'];
+            $copier = new DeepCopy\DeepCopy;
+            $copier->addFilter(new DeepCopy\Filter\Doctrine\DoctrineProxyFilter, new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher);
+            $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song'));
+            $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role'));
+            $copier->addFilter(
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'history')
+            );
 
+            // Unset some properties across all copied record types.
+            $global_unsets = ['id', 'station_id'];
+            foreach($global_unsets as $prop) {
+                $copier->addFilter(new DeepCopy\Filter\SetNullFilter, new DeepCopy\Matcher\PropertyNameMatcher($prop));
+            }
+
+            // Unset some values only on Station entities.
             $unset_values = [
                 'short_name',
                 'radio_base_dir',
                 'nowplaying',
                 'nowplaying_timestamp',
                 'is_streamer_live',
+                'current_streamer_id',
+                'current_streamer',
                 'needs_restart',
                 'has_started',
             ];
 
-            foreach($unset_values as $unset_value) {
-                unset($new_record_data[$unset_value]);
+            if ('share' !== $data['clone_media']) {
+                $unset_values[] = 'radio_media_dir';
+                $unset_values[] = 'storage_used';
+            }
+
+            foreach($unset_values as $prop) {
+                $copier->addFilter(new DeepCopy\Filter\SetNullFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop));
+            }
+
+            // Set some properties from the form submission.
+            $set_from_data = ['name', 'description'];
+            foreach($set_from_data as $prop) {
+                $copier->addFilter(new DeepCopy\Filter\ReplaceFilter(function($orig_value) use ($data, $prop) {
+                    return $data[$prop];
+                }), new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop));
             }
 
             // Unset ports.
-            unset(
-                $new_record_data['frontend_config']['port'],
-                $new_record_data['backend_config']['dj_port'],
-                $new_record_data['backend_config']['telnet_port']
-            );
+            $copier->addFilter(new DeepCopy\Filter\ReplaceFilter(function($orig_value) {
+                $orig_value = (array)$orig_value;
+                unset($orig_value['port']);
+                return $orig_value;
+            }), new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'frontend_config'));
 
-            if ('share' === $data['clone_media']) {
-                $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();
-            } else {
-                unset($new_record_data['radio_media_dir'], $new_record_data['storage_used']);
+            $copier->addFilter(new DeepCopy\Filter\ReplaceFilter(function($orig_value) {
+                $orig_value = (array)$orig_value;
+                unset($orig_value['dj_port'], $orig_value['telnet_port']);
+                return $orig_value;
+            }), new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'backend_config'));
+
+            if (!$data['clone_playlists']) {
+                $copier->addFilter(
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'playlists')
+                );
+                $copier->addFilter(
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'playlists')
+                );
             }
 
-            $new_record = $this->_denormalizeToRecord($new_record_data);
-            $this->station_repo->create($new_record);
+            if (!$data['clone_streamers']) {
+                $copier->addFilter(
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'streamers')
+                );
+            }
 
+            if (!$data['clone_permissions']) {
+                $copier->addFilter(
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'permissions')
+                );
+            }
+
+            if ('none' === $data['clone_media']) {
+                $copier->addFilter(
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'media')
+                );
+            }
+
+            // Execute the Doctrine entity copy.
+            $copier->addFilter(new DeepCopy\Filter\Doctrine\DoctrineCollectionFilter, new DeepCopy\Matcher\PropertyTypeMatcher(Collection::class));
+
+            /** @var Entity\Station $new_record */
+            $new_record = $copier->copy($record);
+
+            $this->station_repo->create($new_record);
             $this->configuration->assignRadioPorts($new_record, true);
             $this->configuration->writeConfiguration($new_record);
 
             // Copy associated records if applicable.
             if ('copy' === $data['clone_media']) {
                 copy($record->getRadioMediaDir(), $new_record->getRadioMediaDir());
-            }
-
-            if (1 == $data['clone_playlists']) {
-                foreach ($record->getPlaylists() as $source_record) {
-                    $dest_record_data = $this->_normalizeRecord($source_record);
-                    unset($dest_record_data['id'], $dest_record_data['station_id']);
-
-                    $dest_record = $this->serializer->denormalize($data, Entity\StationPlaylist::class, null, [
-                        ObjectNormalizer::OBJECT_TO_POPULATE => new Entity\StationPlaylist($new_record),
-                    ]);
-                    $this->em->persist($dest_record);
-                }
-            }
-
-            if (1 == $data['clone_streamers']) {
-                foreach ($record->getStreamers() as $source_record) {
-                    $dest_record_data = $this->_normalizeRecord($source_record);
-                    unset($dest_record_data['id'], $dest_record_data['station_id']);
-
-                    $dest_record = $this->serializer->denormalize($data, Entity\StationStreamer::class, null, [
-                        ObjectNormalizer::OBJECT_TO_POPULATE => new Entity\StationStreamer($new_record),
-                    ]);
-                    $this->em->persist($dest_record);
-                }
-            }
-
-            if (1 == $data['clone_permissions']) {
-                foreach ($record->getPermissions() as $source_record) {
-                    $dest_record_data = $this->_normalizeRecord($source_record);
-                    unset($dest_record_data['id'], $dest_record_data['station_id']);
-
-                    $dest_record = $this->serializer->denormalize($data, Entity\RolePermission::class, null, [
-                        ObjectNormalizer::OBJECT_TO_POPULATE => new Entity\RolePermission($source_record->getRole(), $new_record),
-                    ]);
-                    $this->em->persist($dest_record);
-                }
             }
 
             $this->em->flush();

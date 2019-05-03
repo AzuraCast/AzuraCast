@@ -137,7 +137,6 @@ class StationRepository extends Repository
 
         // Generate station ID.
         $this->_em->flush();
-        $this->_em->refresh($station);
 
         // Scan directory for any existing files.
         set_time_limit(600);

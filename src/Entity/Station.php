@@ -297,13 +297,13 @@ class Station
     protected $history;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="station", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="station")
      * @var Collection
      */
     protected $media;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationStreamer", mappedBy="station", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StationStreamer", mappedBy="station")
      * @var Collection
      */
     protected $streamers;
@@ -324,26 +324,26 @@ class Station
     protected $current_streamer;
 
     /**
-     * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="station", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="station")
      * @var Collection
      */
     protected $permissions;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationPlaylist", mappedBy="station", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StationPlaylist", mappedBy="station")
      * @ORM\OrderBy({"type" = "ASC","weight" = "DESC"})
      * @var Collection
      */
     protected $playlists;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationMount", mappedBy="station", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StationMount", mappedBy="station")
      * @var Collection
      */
     protected $mounts;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationRemote", mappedBy="station", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StationRemote", mappedBy="station")
      * @var Collection
      */
     protected $remotes;

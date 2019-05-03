@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-01 18:25\n"
+"PO-Revision-Date: 2019-05-03 09:30\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3325,7 +3325,7 @@ msgstr "SHOUTcast Installato"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
-msgstr ""
+msgstr "SHOUTcast 2 DNAS è installato e pronto per essere utilizzato."
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:20
 msgid "Owner"

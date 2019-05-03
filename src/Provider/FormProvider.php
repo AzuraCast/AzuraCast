@@ -57,6 +57,7 @@ class FormProvider implements ServiceProviderInterface
                 $di[ValidatorInterface::class],
                 $di[\App\Acl::class],
                 $di[\App\Radio\Configuration::class],
+                $di[\App\Sync\Task\Media::class],
                 $config->get('forms/station_clone')
             );
         };

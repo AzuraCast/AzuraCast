@@ -164,6 +164,10 @@ return [
                     'src' => 'dist/lib/highcharts/exporting.js',
                     'defer' => true,
                 ],
+                [
+                    'src' => 'dist/lib/highcharts/accessibility.js',
+                    'defer' => true,
+                ],
             ]
         ]
     ],

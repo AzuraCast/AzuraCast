@@ -50,7 +50,8 @@ var jsFiles = {
         "node_modules/highcharts/highcharts.js",
         "node_modules/highcharts/highcharts-more.js",
         "node_modules/highcharts/modules/exporting.js",
-        "node_modules/highcharts/modules/map.js"
+        "node_modules/highcharts/modules/map.js",
+        "node_modules/highcharts/modules/accessibility.js"
     ],
     "proj4": [
         "node_modules/proj4/dist/proj4.js"

@@ -1,7 +1,7 @@
 {
-  "dist/app.js": "dist/app-1f26a189c3.js",
-  "dist/bootgrid.js": "dist/bootgrid-862d128fa2.js",
-  "dist/dark.css": "dist/dark-bb108be737.css",
+  "dist/app.js": "dist/app-6879bec03a.js",
+  "dist/bootgrid.js": "dist/bootgrid-acbc545ec1.js",
+  "dist/dark.css": "dist/dark-d3ba395eb6.css",
   "dist/inline_player.js": "dist/inline_player-cc8f01f2dd.js",
   "dist/lib/autosize/autosize.min.js": "dist/lib/autosize/autosize-ad0656589d.min.js",
   "dist/lib/bootstrap-notify/bootstrap-notify.min.js": "dist/lib/bootstrap-notify/bootstrap-notify-a02f92a499.min.js",
@@ -21,6 +21,7 @@
   "dist/lib/fullcalendar/fullcalendar.min.css": "dist/lib/fullcalendar/fullcalendar-96cda8d2e4.min.css",
   "dist/lib/fullcalendar/fullcalendar.min.js": "dist/lib/fullcalendar/fullcalendar-6c6cad1ac0.min.js",
   "dist/lib/fullcalendar/locale-all.js": "dist/lib/fullcalendar/locale-all-5ad636203b.js",
+  "dist/lib/highcharts/accessibility.js": "dist/lib/highcharts/accessibility-2644759619.js",
   "dist/lib/highcharts/exporting.js": "dist/lib/highcharts/exporting-2aa199d986.js",
   "dist/lib/highcharts/highcharts-more.js": "dist/lib/highcharts/highcharts-more-76677a4954.js",
   "dist/lib/highcharts/highcharts.js": "dist/lib/highcharts/highcharts-f271cabe5a.js",
@@ -37,9 +38,9 @@
   "dist/lib/vue/vue.js": "dist/lib/vue/vue-5424a463b5.js",
   "dist/lib/vue/vue.min.js": "dist/lib/vue/vue-f15aee8488.min.js",
   "dist/lib/zxcvbn/zxcvbn.js": "dist/lib/zxcvbn/zxcvbn-9cf6916dc0.js",
-  "dist/light.css": "dist/light-87207a9346.css",
-  "dist/material.js": "dist/material-ad7c414bdf.js",
+  "dist/light.css": "dist/light-3a058b216a.css",
+  "dist/material.js": "dist/material-4f1d9f4f98.js",
   "dist/radio_player.js": "dist/radio_player-7b3f1ad547.js",
   "dist/webcaster.js": "dist/webcaster-9c100185e9.js",
-  "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
+  "dist/zxcvbn.js": "dist/zxcvbn-82c9dedeea.js"
 }

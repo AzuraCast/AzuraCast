@@ -34,12 +34,17 @@
         <hr>
 
         <div class="radio-controls">
-            <div class="radio-control-play-button">
-                <a href="#" role="button" :title="$t('play_pause_btn')" @click.prevent="toggle()">
-                    <i class="material-icons lg" v-if="is_playing">pause_circle_filled</i>
-                    <i class="material-icons lg" v-else>play_circle_filled</i>
+            <div class="radio-control-play-button" v-if="is_playing">
+                <a href="#" role="button" :title="$t('pause_btn')" :aria-label="$t('pause_btn')" @click.prevent="toggle()">
+                    <i class="material-icons lg" aria-hidden="true">pause_circle_filled</i>
                 </a>
             </div>
+            <div class="radio-control-play-button" v-else>
+                <a href="#" role="button" :title="$t('play_btn')" :aria-label="$t('play_btn')" @click.prevent="toggle()">
+                    <i class="material-icons lg" aria-hidden="true">play_circle_filled</i>
+                </a>
+            </div>
+
             <div class="radio-control-select-stream">
                 <div v-if="this.streams.length > 1" class="dropdown">
                     <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="btn-select-stream" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

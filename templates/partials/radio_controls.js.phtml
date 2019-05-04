@@ -15,6 +15,9 @@ $locale_info = [
 
 var i18n, inline_player;
 
+var pause_text = <?=$this->escapeJs(__('Pause')) ?>;
+var play_text = <?=$this->escapeJs(__('Play')) ?>;
+
 $(function() {
     i18n = new VueI18n(<?=json_encode($locale_info) ?>)
     inline_player = new Vue({
@@ -25,6 +28,15 @@ $(function() {
         }
     });
 
+    $('.btn-audio').each(function() {
+        $(this).removeClass('playing')
+            .attr('role', 'button')
+            .attr('title', play_text)
+            .attr('aria-label', play_text);
+
+        $(this).find('i').attr('aria-hidden', true);
+    });
+
     $('.btn-audio').on('click', function(e) {
         e.preventDefault();
         inline_player.$eventHub.$emit('player_toggle', $(this).data('url'));
@@ -33,7 +45,11 @@ $(function() {
 
     inline_player.$eventHub.$on('player_stopped', function() {
         $('.btn-audio').each(function() {
-            var play_icon = $(this).removeClass('playing').find('i');
+            $(this).removeClass('playing')
+                .attr('title', play_text)
+                .attr('aria-label', play_text);
+
+            var play_icon = $(this).find('i');
             if (play_icon.hasClass('material-icons')) {
                 play_icon.text('play_circle_filled');
             }
@@ -45,12 +61,20 @@ $(function() {
         $('.btn-audio').each(function() {
             var play_icon;
             if ($(this).is('[data-url="'+audio_source+'"]')) {
-                play_icon = $(this).addClass('playing').find('i');
+                $(this).addClass('playing')
+                    .attr('title', pause_text)
+                    .attr('aria-label', pause_text);
+
+                play_icon = $(this).find('i');
                 if (play_icon.hasClass('material-icons')) {
                     play_icon.text('pause_circle_filled');
                 }
             } else {
-                play_icon = $(this).removeClass('playing').find('i');
+                $(this).removeClass('playing')
+                    .attr('title', play_text)
+                    .attr('aria-label', play_text);
+
+                play_icon = $(this).find('i');
                 if (play_icon.hasClass('material-icons')) {
                     play_icon.text('play_circle_filled');
                 }

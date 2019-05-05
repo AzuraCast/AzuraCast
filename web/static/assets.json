@@ -27,7 +27,7 @@
   "dist/lib/highcharts/highcharts.js": "dist/lib/highcharts/highcharts-f271cabe5a.js",
   "dist/lib/highcharts/map.js": "dist/lib/highcharts/map-bf59b1beb1.js",
   "dist/lib/jquery-sortable/jquery-sortable-min.js": "dist/lib/jquery-sortable/jquery-sortable-min-e711561b1b.js",
-  "dist/lib/jquery/jquery.min.js": "dist/lib/jquery/jquery-a09e13ee94.min.js",
+  "dist/lib/jquery/jquery.min.js": "dist/lib/jquery/jquery-220afd743d.min.js",
   "dist/lib/lodash/lodash.min.js": "dist/lib/lodash/lodash-62acde2a26.min.js",
   "dist/lib/moment-timezone/moment-timezone-with-data.min.js": "dist/lib/moment-timezone/moment-timezone-with-data-a3f47b4858.min.js",
   "dist/lib/moment/moment-with-locales.min.js": "dist/lib/moment/moment-with-locales-ecfccffc84.min.js",

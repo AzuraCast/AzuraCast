@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-05 09:40\n"
+"PO-Revision-Date: 2019-05-05 09:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1936,7 +1936,7 @@ msgstr "Lege fest, wie diese Widedergabliste vom AutoDJ behandeln werden soll."
 
 #: /var/azuracast/www/config/forms/playlist.php:245
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Andere Songs unterbrechen, um das Element zu geplanten Zeit abzuspielen."
 
 #: /var/azuracast/www/config/forms/playlist.php:246
 msgid "Only loop through playlist once."

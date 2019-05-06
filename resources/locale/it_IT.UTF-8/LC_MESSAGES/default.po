@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-06 19:10\n"
+"PO-Revision-Date: 2019-05-06 19:20\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -962,7 +962,7 @@ msgstr "Interazione web generica"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr "Invia automaticamente un messaggio a una URL qualsiasi quando cambiano i metadati della radio."
+msgstr "Invia automaticamente un messaggio ad un URL qualsiasi quando cambiano i metadati della radio."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"

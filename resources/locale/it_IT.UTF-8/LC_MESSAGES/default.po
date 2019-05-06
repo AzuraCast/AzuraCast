@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-04-29T05:21:12+00:00\n"
-"PO-Revision-Date: 2019-05-03 20:50\n"
+"PO-Revision-Date: 2019-05-06 19:10\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -58,7 +58,7 @@ msgstr "Nuovi aggiornamenti AzuraCast disponibili"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr "L'account associato all'e-mail \"%s\" è stato impostato come amministratore"
+msgstr "L'account associato all'indirizzo mail \"%s\" è stato impostato come amministratore"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."

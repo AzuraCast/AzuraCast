@@ -36,8 +36,8 @@ $assets->load('fullcalendar')
                     <colgroup>
                         <col width="30%">
                         <col width="30%">
-                        <col width="28%">
-                        <col width="12%">
+                        <col width="25%">
+                        <col width="15%">
                     </colgroup>
                     <thead>
                     <tr>
@@ -110,6 +110,7 @@ $assets->load('fullcalendar')
                             </td>
                             <td>
                                 <a href="<?=$router->fromHere('stations:files:index').'#playlist:'.urlencode($row['name']) ?>"><?=$row['num_songs'] ?></a>
+                                (<?=$row['total_length'] ?>)
                             </td>
                         </tr>
                     <?php endforeach; ?>

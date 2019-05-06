@@ -2,6 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Form\EntityForm;
+use App\Utilities;
 use Cake\Chronos\Chronos;
 use App\Entity;
 use Psr\Http\Message\ResponseInterface;
@@ -53,6 +54,12 @@ class PlaylistsController extends AbstractStationCrudController
 
         $playlists = [];
 
+        $songs_query = $this->em->createQuery(/** @lang DQL */'
+            SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
+            FROM App\Entity\StationMedia sm
+            JOIN sm.playlists spm
+            WHERE spm.playlist = :playlist');
+
         foreach ($all_playlists as $playlist) {
             $playlist_row = $this->record_repo->toArray($playlist);
 
@@ -60,7 +67,11 @@ class PlaylistsController extends AbstractStationCrudController
                 $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
             }
 
-            $playlist_row['num_songs'] = $playlist->getMediaItems()->count();
+            $song_totals = $songs_query->setParameter('playlist', $playlist)
+                ->getArrayResult();
+
+            $playlist_row['num_songs'] = $song_totals[0]['num_songs'];
+            $playlist_row['total_length'] = Utilities::timeToSplitDisplay($song_totals[0]['total_length']);
             $playlists[$playlist->getId()] = $playlist_row;
         }
 

@@ -32,6 +32,45 @@ class Utilities
     }
 
     /**
+     * Converts a time from seconds into its constituent time periods.
+     *
+     * @param int $timestamp
+     * @return string The time displayed as years:months:days:hours:minutes:seconds
+     */
+    public static function timeToSplitDisplay(int $timestamp, $delimiter = ':'): string
+    {
+        $d1 = new \DateTime;
+        $d2 = new \DateTime;
+        $d2->add(new \DateInterval('PT'.$timestamp.'S'));
+
+        $iv = $d2->diff($d1);
+        $components = [
+            $iv->y,
+            $iv->m,
+            $iv->d,
+            $iv->h,
+            $iv->i,
+            $iv->s
+        ];
+
+        $show = false;
+        $display = [];
+        foreach($components as $k => $component) {
+            if (0 !== $component || $show || $k >= 4) {
+                if ($show && $k >= 4) {
+                    $display[] = str_pad($component, 2, '0', \STR_PAD_LEFT);
+                } else {
+                    $display[] = $component;
+                }
+
+                $show = true;
+            }
+        }
+
+        return implode($delimiter, $display);
+    }
+
+    /**
      * Convert a specified number of seconds into a date range.
      *
      * @param int $timestamp

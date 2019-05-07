@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9f0cd0e8a111155deae8e797726f75a",
+    "content-hash": "7bd732b2169236fbb7439da6e16e9dee",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -94,12 +94,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "2814b6f4d99c28afa1b6e12c13662ee84b2547aa"
+                "reference": "f4f25ddeaa4b941154947a88f8509fa37649163a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/2814b6f4d99c28afa1b6e12c13662ee84b2547aa",
-                "reference": "2814b6f4d99c28afa1b6e12c13662ee84b2547aa",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/f4f25ddeaa4b941154947a88f8509fa37649163a",
+                "reference": "f4f25ddeaa4b941154947a88f8509fa37649163a",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +149,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-04-26T16:38:01+00:00"
+            "time": "2019-05-07T14:25:24+00:00"
         },
         {
             "name": "azuracast/azuraforms",

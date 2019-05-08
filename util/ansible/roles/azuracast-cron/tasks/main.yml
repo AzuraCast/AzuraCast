@@ -1,4 +1,13 @@
 ---
+- name: Install cron-related packages
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - cron
+      - tmpreaper
+
 - name: Generate Cron Template
   template: src=azuracast_cron.j2 dest="{{ tmp_base }}/azuracast_cron" force=true
 

@@ -30,7 +30,6 @@ class SyncProvider implements ServiceProviderInterface
                 ]),
                 new \Pimple\ServiceIterator($di, [
                     // Every hour tasks
-                    Task\TempCleanup::class,
                     Task\Analytics::class,
                     Task\RadioAutomation::class,
                     Task\HistoryCleanup::class,
@@ -116,14 +115,6 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\Monolog\Logger::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\Supervisor\Supervisor::class]
-            );
-        };
-
-        $di[Task\TempCleanup::class] = function($di) {
-            return new Task\TempCleanup(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\Monolog\Logger::class],
-                $di[\App\Radio\Filesystem::class]
             );
         };
     }

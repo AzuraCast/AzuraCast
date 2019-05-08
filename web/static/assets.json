@@ -40,7 +40,7 @@
   "dist/lib/zxcvbn/zxcvbn.js": "dist/lib/zxcvbn/zxcvbn-9cf6916dc0.js",
   "dist/light.css": "dist/light-9767b83557.css",
   "dist/material.js": "dist/material-ad7c414bdf.js",
-  "dist/radio_player.js": "dist/radio_player-7b3f1ad547.js",
+  "dist/radio_player.js": "dist/radio_player-7987ae4284.js",
   "dist/webcaster.js": "dist/webcaster-6989962a2d.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

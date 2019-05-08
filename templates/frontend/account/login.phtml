@@ -8,45 +8,54 @@ $this->layout('minimal', [
 <div class="public-page">
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title mb-0">
-            <?php if ($customization->hideProductName()): ?>
-                <?=__('Welcome!') ?>
-            <?php else: ?>
-                <?=sprintf(__('Welcome to %s!'), $settings['name']) ?>
-            <?php endif; ?>
-            <?php if (!empty($customization->getInstanceName())): ?>
-                <small class="text-muted"><?=$this->e($customization->getInstanceName()) ?></small>
-            <?php endif; ?>
-            </h2>
+            <div class="row mb-4">
+                <div class="col-sm">
+                    <h2 class="card-title mb-0 text-center">
+                        <?php if ($customization->hideProductName()): ?>
+                            <?=__('Welcome!') ?>
+                        <?php else: ?>
+                            <?=sprintf(__('Welcome to %s!'), $settings['name']) ?>
+                        <?php endif; ?>
+                    </h2>
+                    <h3 class="text-center">
+                        <?php if (!empty($customization->getInstanceName())): ?>
+                            <small class="text-muted"><?=$this->e($customization->getInstanceName()) ?></small>
+                        <?php endif; ?>
+                    </h3>
+                </div>
+            </div>
 
-            <p class="text-left"><?=__('Please log in to continue.') ?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
-
-            <form id="login-form" class="pr-5" action="" method="post">
-                <div class="input-group">
-                    <div class="floating-label">
-                        <label for="username"><?=__('E-mail Address') ?></label>
-                        <input type="email" name="username" class="form-control" placeholder="" aria-label="<?=__('E-mail Address') ?>" required>
+            <form id="login-form" action="" method="post">
+                <div class="row">
+                    <div class="form-group col-sm">
+                        <label for="username" class="mb-2">
+                            <i class="material-icons mr-1" aria-hidden="true">email</i>
+                            <strong><?=__('E-mail Address') ?></strong>
+                        </label>
+                        <input type="email" name="username" class="form-control" placeholder="<?=__('name@example.com') ?>" aria-label="<?=__('E-mail Address') ?>" required>
                     </div>
-                    <span class="input-group-icon">
-                        <i class="material-icons" aria-hidden="true">email</i>
-                    </span>
                 </div>
 
-                <div class="input-group mt-2">
-                    <div class="floating-label">
-                        <label for="password"><?=__('Password') ?></label>
-                        <input type="password" name="password" class="form-control" aria-label="<?=__('Password') ?>" placeholder="" required>
+                <div class="row mt-2">
+                    <div class="form-group col-sm">
+                        <label for="password" class="mb-2">
+                            <i class="material-icons mr-1" aria-hidden="true">vpn_key</i>
+                            <strong><?=__('Password') ?></strong>
+                        </label>
+                        <input type="password" name="password" class="form-control" placeholder="<?=__('Enter your password') ?>" aria-label="<?=__('Password') ?>" required>
                     </div>
-
-                    <span class="input-group-icon">
-                        <i class="material-icons" aria-hidden="true">vpn_key</i>
-                    </span>
                 </div>
 
-                <button type="submit" role="button" title="<?=__('Log In') ?>" class="btn btn-login btn-primary btn-float">
-                    <i class="material-icons" aria-hidden="true">arrow_forward_ios</i>
-                </button>
+                <div class="row">
+                    <div class="col-sm">
+                        <button type="submit" role="button" title="<?=__('Log In') ?>" class="btn btn-login btn-primary btn-block mt-2 mb-3">
+                            <?=__('Sign in') ?>
+                        </button>
+                    </div>
+                </div>
             </form>
+
+            <p class="text-center"><?=__('Please log in to continue.') ?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
         </div>
     </div>
 </div>

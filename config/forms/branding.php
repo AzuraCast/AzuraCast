@@ -16,6 +16,7 @@ return [
                     'dark' => __('Dark'),
                 ],
                 'default' => \App\Customization::DEFAULT_THEME,
+                'form_group_class' => 'col-md-6 mt-3',
             ]
         ],
 
@@ -27,6 +28,7 @@ return [
                 'selected_text' => __('Yes'),
                 'deselected_text' => __('No'),
                 'default' => false,
+                'form_group_class' => 'col-md-6 mt-3',
             ]
         ],
 
@@ -36,6 +38,8 @@ return [
                 'label' => __('Homepage Redirect URL'),
                 'description' => __('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.'),
                 'default' => '',
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-md-6 mt-3',
             ]
         ],
 
@@ -45,6 +49,8 @@ return [
                 'label' => __('Default Album Art URL'),
                 'description' => __('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.'),
                 'default' => '',
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-md-6 mt-3',
             ],
         ],
 
@@ -56,6 +62,8 @@ return [
                 'selected_text' => __('Yes'),
                 'deselected_text' => __('No'),
                 'default' => false,
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 
@@ -66,7 +74,9 @@ return [
                 'description' => __('This CSS will be applied to the station public pages and login page.'),
                 'spellcheck' => 'false',
                 'class' => 'css-editor',
-                'filter' => function($val) { return strip_tags($val); }
+                'filter' => function($val) { return strip_tags($val); },
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 
@@ -77,7 +87,9 @@ return [
                 'description' => __('This javascript code will be applied to the station public pages and login page.'),
                 'spellcheck' => 'false',
                 'class' => 'js-editor',
-                'filter' => function($val) { return strip_tags($val); }
+                'filter' => function($val) { return strip_tags($val); },
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 
@@ -88,7 +100,9 @@ return [
                 'description' => __('This CSS will be applied to the main management pages, like this one.'),
                 'spellcheck' => 'false',
                 'class' => 'css-editor',
-                'filter' => function($val) { return strip_tags($val); }
+                'filter' => function($val) { return strip_tags($val); },
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-sm-12 mt-3',
             ],
         ],
 
@@ -98,6 +112,7 @@ return [
                 'type' => 'submit',
                 'label' => __('Save Changes'),
                 'class' => 'btn btn-lg btn-primary',
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 

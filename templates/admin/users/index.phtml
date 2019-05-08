@@ -1,7 +1,7 @@
 <?php $this->layout('main', ['title' => __('User Accounts'), 'manual' => true]); ?>
 
 <div class="card">
-    <div class="card-body">
+    <div class="card-header bg-primary-dark">
         <h2 class="card-title"><?=__('User Accounts') ?></h2>
     </div>
     <div class="card-actions">
@@ -29,15 +29,17 @@
                 <?php /** @var \App\Entity\User $user_row */ ?>
                 <tr class="align-middle">
                     <td>
-                    <?php if ($user_row->getId() !== $user->getId()): ?>
-                        <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Log In') ?></a>
-                    <?php endif; ?>
-                        <a class="btn btn-sm btn-default" href="<?=$router->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=__('Edit') ?></a>
-                    <?php if ($user_row->getId() !== $user->getId()): ?>
-                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete user "%s"?', $user_row->getEmail())) ?>" href="<?=$router->named('admin:users:delete', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
-                    <?php else: ?>
-                        <a class="btn btn-sm btn-danger disabled" href=""><?=__('Delete') ?></a>
-                    <?php endif; ?>
+                        <div class="btn-group btn-group-sm">
+                        <?php if ($user_row->getId() !== $user->getId()): ?>
+                            <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Log In') ?></a>
+                        <?php endif; ?>
+                            <a class="btn btn-sm btn-dark" href="<?=$router->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <?php if ($user_row->getId() !== $user->getId()): ?>
+                            <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete user "%s"?', $user_row->getEmail())) ?>" href="<?=$router->named('admin:users:delete', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <?php else: ?>
+                            <a class="btn btn-sm btn-danger disabled" href=""><?=__('Delete') ?></a>
+                        <?php endif; ?>
+                        </div>
                     </td>
                     <td>
                         <div class="text-lg-left"><?=$this->e($user_row->getName()) ?></div>

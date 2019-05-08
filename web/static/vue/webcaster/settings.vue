@@ -1,108 +1,115 @@
 <template>
     <div class="card settings">
-        <div class="card-header">
-            <h5>{{ stationName }}</h5>
-
-            <ul class="nav nav-tabs card-header-tabs mt-0">
-                <li class="nav-item ml-1">
-                    <a class="nav-link active" href="#settings" data-toggle="tab">{{ $t('headers.settings') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#metadata" data-toggle="tab">{{ $t('headers.metadata') }}</a>
-                </li>
-            </ul>
+        <div class="card-header bg-primary-dark">
+            <h5 class="card-title">{{ stationName }}</h5>
         </div>
-        <div class="card-body">
-            <div class="tab-content">
-                <div class="tab-pane active" id="settings">
-                    <div class="form-group">
-                        <label>{{ $t('settings.encoder') }}</label>
-                        <div class="controls">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input id="encoder_mp3" type="radio" v-model="encoder" value="mp3" class="custom-control-input">
-                                <label for="encoder_mp3" class="custom-control-label">{{ $t('settings.encoder_mp3') }}</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input id="encoder_raw" type="radio" v-model="encoder" value="raw" class="custom-control-input">
-                                <label for="encoder_raw" class="custom-control-label">{{ $t('settings.encoder_raw') }}</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="select_samplerate">{{ $t('settings.samplerate') }}</label>
-                        <div class="controls">
-                            <select id="select_samplerate" class="form-control" v-model.number="samplerate">
-                                <option value="8000">8 kHz</option>
-                                <option value="11025">11.025 kHz</option>
-                                <option value="12000">12 kHz</option>
-                                <option value="16000">16 kHz</option>
-                                <option value="22050">22.05 kHz</option>
-                                <option value="24000">24 kHz</option>
-                                <option value="32000">32 kHz</option>
-                                <option value="44100">44.1 kHz</option>
-                                <option value="48000">48 kHz</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="select_bitrate">{{ $t('settings.bitrate') }}</label>
-                        <div class="controls">
-                            <select id="select_bitrate" class="form-control" v-model.number="bitrate">
-                                <option value="8">8 kbps</option>
-                                <option value="16">16 kbps</option>
-                                <option value="24">24 kbps</option>
-                                <option value="32">32 kbps</option>
-                                <option value="40">40 kbps</option>
-                                <option value="48">48 kbps</option>
-                                <option value="56">56 kbps</option>
-                                <option value="64">64 kbps</option>
-                                <option value="80">80 kbps</option>
-                                <option value="96">96 kbps</option>
-                                <option value="112">112 kbps</option>
-                                <option value="128">128 kbps</option>
-                                <option value="144">144 kbps</option>
-                                <option value="160">160 kbps</option>
-                                <option value="192">192 kbps</option>
-                                <option value="224">224 kbps</option>
-                                <option value="256">256 kbps</option>
-                                <option value="320">320 kbps</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>{{ $t('settings.djCredentials') }}</label>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <input type="text" v-model="djUsername" class="form-control" v-bind:placeholder="$t('settings.djUsername')">
-                            </div>
-                            <div class="col-6">
-                                <input type="text" v-model="djPassword" class="form-control" v-bind:placeholder="$t('settings.djPassword')">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group mb-0">
-                        <div class="custom-control custom-checkbox">
-                            <input id="use_async_worker" type="checkbox" v-model="asynchronous" class="custom-control-input">
-                            <label for="use_async_worker" class="custom-control-label">{{ $t('settings.asynchronous') }}</label>
-                        </div>
-                    </div>
+        <div class="card-body pt-0">
+            <div class="row pb-4">
+                <div class="col-sm-12">
+                    <ul class="nav nav-tabs card-header-tabs mt-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#settings" data-toggle="tab">{{ $t('headers.settings') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#metadata" data-toggle="tab">{{ $t('headers.metadata') }}</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="tab-pane" id="metadata">
-                    <div class="form-group">
-                        <label for="metadata_title">{{ $t('settings.metadataTitle') }}</label>
-                        <div class="controls">
-                            <input id="metadata_title" class="form-control" type="text" v-model="metadata.title" v-bind:disabled="!isStreaming">
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="tab-content mt-1">
+                        <div class="tab-pane active" id="settings">
+                            <div class="form-group">
+                                <label class="mb-2">{{ $t('settings.encoder') }}</label>
+                                <div class="controls">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input id="encoder_mp3" type="radio" v-model="encoder" value="mp3" class="custom-control-input">
+                                        <label for="encoder_mp3" class="custom-control-label">{{ $t('settings.encoder_mp3') }}</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input id="encoder_raw" type="radio" v-model="encoder" value="raw" class="custom-control-input">
+                                        <label for="encoder_raw" class="custom-control-label">{{ $t('settings.encoder_raw') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="select_samplerate" class="mb-2">{{ $t('settings.samplerate') }}</label>
+                                <div class="controls">
+                                    <select id="select_samplerate" class="form-control" v-model.number="samplerate">
+                                        <option value="8000">8 kHz</option>
+                                        <option value="11025">11.025 kHz</option>
+                                        <option value="12000">12 kHz</option>
+                                        <option value="16000">16 kHz</option>
+                                        <option value="22050">22.05 kHz</option>
+                                        <option value="24000">24 kHz</option>
+                                        <option value="32000">32 kHz</option>
+                                        <option value="44100">44.1 kHz</option>
+                                        <option value="48000">48 kHz</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="select_bitrate" class="mb-2">{{ $t('settings.bitrate') }}</label>
+                                <div class="controls">
+                                    <select id="select_bitrate" class="form-control" v-model.number="bitrate">
+                                        <option value="8">8 kbps</option>
+                                        <option value="16">16 kbps</option>
+                                        <option value="24">24 kbps</option>
+                                        <option value="32">32 kbps</option>
+                                        <option value="40">40 kbps</option>
+                                        <option value="48">48 kbps</option>
+                                        <option value="56">56 kbps</option>
+                                        <option value="64">64 kbps</option>
+                                        <option value="80">80 kbps</option>
+                                        <option value="96">96 kbps</option>
+                                        <option value="112">112 kbps</option>
+                                        <option value="128">128 kbps</option>
+                                        <option value="144">144 kbps</option>
+                                        <option value="160">160 kbps</option>
+                                        <option value="192">192 kbps</option>
+                                        <option value="224">224 kbps</option>
+                                        <option value="256">256 kbps</option>
+                                        <option value="320">320 kbps</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="mb-2">{{ $t('settings.djCredentials') }}</label>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="text" v-model="djUsername" class="form-control" v-bind:placeholder="$t('settings.djUsername')">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" v-model="djPassword" class="form-control" v-bind:placeholder="$t('settings.djPassword')">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <div class="custom-control custom-checkbox">
+                                    <input id="use_async_worker" type="checkbox" v-model="asynchronous" class="custom-control-input">
+                                    <label for="use_async_worker" class="custom-control-label">{{ $t('settings.asynchronous') }}</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="metadata_artist">{{ $t('settings.metadataArtist') }}</label>
-                        <div class="controls">
-                            <input id="metadata_artist" class="form-control" type="text" v-model="metadata.artist" v-bind:disabled="!isStreaming">
+                        <div class="tab-pane" id="metadata">
+                            <div class="form-group">
+                                <label for="metadata_title" class="mb-2">{{ $t('settings.metadataTitle') }}</label>
+                                <div class="controls">
+                                    <input id="metadata_title" class="form-control" type="text" v-model="metadata.title" v-bind:disabled="!isStreaming">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="metadata_artist" class="mb-2">{{ $t('settings.metadataArtist') }}</label>
+                                <div class="controls">
+                                    <input id="metadata_artist" class="form-control" type="text" v-model="metadata.artist" v-bind:disabled="!isStreaming">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" v-on:click="updateMetadata" v-bind:disabled="!isStreaming">{{ $t('buttons.updateMetadata') }}</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" v-on:click="updateMetadata" v-bind:disabled="!isStreaming">{{ $t('buttons.updateMetadata') }}</button>
                     </div>
                 </div>
             </div>

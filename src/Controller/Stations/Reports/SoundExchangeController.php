@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
+use App\Form\Form;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -40,7 +41,7 @@ class SoundExchangeController
     {
         $station = $request->getStation();
 
-        $form = new \AzuraForms\Form($this->form_config);
+        $form = new Form($this->form_config);
         $form->populate([
             'start_date' => date('Y-m-d', strtotime('first day of last month')),
             'end_date' => date('Y-m-d', strtotime('last day of last month')),

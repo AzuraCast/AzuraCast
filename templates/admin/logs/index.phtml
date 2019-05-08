@@ -8,9 +8,10 @@ $this->layout('main', [
 <div class="row">
     <div class="col-md-8">
         <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h2 class="card-title"><?=__('System Logs') ?></h2>
-
+            </div>
+            <div class="card-body">
                 <?php if (APP_INSIDE_DOCKER): ?>
                     <p><?=__('Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.', 'docker-compose logs -f (nginx|web|stations|...)') ?></p>
                 <?php endif; ?>
@@ -26,8 +27,10 @@ $this->layout('main', [
         </div>
 
         <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-primary-dark">
                 <h2 class="card-title"><?=__('Logs by Station') ?></h2>
+            </div>
+            <div class="card-body pb-0">
                 <ul class="nav nav-pills nav-pills-scrollable card-header-pills">
                 <?php foreach($station_logs as $station_id => $station_row): ?>
                     <li class="nav-item">

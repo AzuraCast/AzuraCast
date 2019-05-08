@@ -8,12 +8,14 @@ $assets
 ?>
 
 <div class="card">
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=__('Song Listener Impact') ?></h2>
+    </div>
     <div class="card-body">
         <a class="btn btn-primary float-right" href="<?=$router->fromHere(null, ['format' => 'csv']) ?>">
             <i class="material-icons" aria-hidden="true">file_download</i>
             <?=__('Download CSV') ?>
         </a>
-        <h2 class="card-title"><?=__('Song Listener Impact') ?></h2>
     </div>
     <!--
     <div class="card-body card-padding">

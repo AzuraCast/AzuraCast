@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Frontend;
 
+use App\Form\Form;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -47,7 +48,7 @@ class ProfileController
         $user = $request->getUser();
         $user_profile = $this->user_repo->toArray($user);
 
-        $customization_form = new \AzuraForms\Form($this->profile_form['groups']['customization'], $user_profile);
+        $customization_form = new Form($this->profile_form['groups']['customization'], $user_profile);
 
         return $request->getView()->renderToResponse($response, 'frontend/profile/index', [
             'user' => $request->getUser(),
@@ -75,7 +76,7 @@ class ProfileController
             return true;
         };
 
-        $form = new \AzuraForms\Form($form_config);
+        $form = new Form($form_config);
 
         $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
@@ -137,7 +138,7 @@ class ProfileController
     public function enableTwoFactorAction(Request $request, Response $response): ResponseInterface
     {
         $user = $request->getUser();
-        $form = new \AzuraForms\Form($this->two_factor_form);
+        $form = new Form($this->two_factor_form);
 
         $form->getField('otp')->addValidator(function($otp, \AzuraForms\Field\AbstractField $element) {
             $secret = $element->getForm()->getField('secret')->getValue();

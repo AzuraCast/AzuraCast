@@ -2,6 +2,7 @@
 namespace App\Controller\Stations\Files;
 
 use App\Entity;
+use App\Form\Form;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Filesystem;
@@ -85,7 +86,7 @@ class FilesController extends FilesControllerAbstract
             throw new \Azura\Exception('File not specified.');
         }
 
-        $form = new \AzuraForms\Form($this->form_config);
+        $form = new Form($this->form_config);
         $form->populate([
             'new_file'  => $path,
         ]);

@@ -1,8 +1,10 @@
 <?php $this->layout('main', ['title' => __('Mount Points'), 'manual' => true]) ?>
 
 <div class="card">
-    <div class="card-body">
+    <div class="card-header bg-primary-dark">
         <h2 class="card-title"><?=__('Mount Points') ?></h2>
+    </div>
+    <div class="card-body">
         <p><?=__('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.') ?></p>
     </div>
     <div class="card-actions">
@@ -30,8 +32,10 @@
                 <?php /** @var App\Entity\StationMount $row */ ?>
                 <tr class="align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                            <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        </div>
                     </td>
                     <td>
                         <h5 class="m-0"><a href="<?=$this->e($frontend->getUrlForMount($station, $row)) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>

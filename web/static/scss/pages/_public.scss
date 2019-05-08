@@ -42,7 +42,6 @@ body.page-minimal {
 
       @include media-breakpoint-only('xs') {
         width: calc(100% - 40px);
-        left: 20px;
         margin-left: 0;
       }
     }

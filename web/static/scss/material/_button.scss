@@ -5,7 +5,6 @@
   background-color: transparent;
   background-image: none;
   border: 0;
-  box-shadow: map-get($btn-elevation-shadow, shadow);
   color: $btn-color;
   display: inline-block;
   font-size: $btn-font-size;
@@ -35,14 +34,12 @@
   &:active {
     background-color: $btn-bg-active;
     background-image: none;
-    box-shadow: map-get($btn-elevation-shadow-active, shadow);
   }
 
   &.disabled,
   &:disabled {
     background-color: $btn-bg-disabled;
     background-image: none;
-    box-shadow: none;
     color: $btn-color-disabled;
     opacity: 1;
   }
@@ -133,7 +130,6 @@ fieldset:disabled a.btn {
 .btn-link {
   background-color: transparent;
   border-radius: 0;
-  box-shadow: none;
   color: $link-color;
   font-weight: $font-weight-regular;
   text-decoration: $link-decoration;
@@ -151,7 +147,6 @@ fieldset:disabled a.btn {
   &.active,
   &:active {
     background-color: transparent;
-    box-shadow: none;
   }
 
   &.disabled,

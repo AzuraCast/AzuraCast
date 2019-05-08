@@ -9,14 +9,15 @@ $assets
 <div class="row">
     <div class="col-8">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h2 class="card-title"><?=__('Enable Two-Factor Authentication') ?></h2>
-
-                <h3 class="card-subtitle"><?=__('Step 1: Scan QR Code') ?></h3>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title mt-2"><?=__('Step 1: Scan QR Code') ?></h3>
 
                 <p class="card-text"><?=__('From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).') ?></p>
 
-                <h3 class="card-subtitle mt-0"><?=__('Step 2: Verify Generated Code') ?></h3>
+                <h3 class="card-title mt-0"><?=__('Step 2: Verify Generated Code') ?></h3>
 
                 <p class="card-text"><?=__('To verify that the code was set up correctly, enter the 6-digit code the app shows you.') ?></p>
 
@@ -26,6 +27,9 @@ $assets
     </div>
     <div class="col-4">
         <div class="card">
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title"><?=__('QR-Code') ?></h2>
+            </div>
             <div class="card-body">
                 <figure>
                     <?=$qr_code ?>

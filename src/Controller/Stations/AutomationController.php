@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Form\Form;
 use App\Sync\Task\RadioAutomation;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
@@ -42,7 +43,7 @@ class AutomationController
 
         $automation_settings = (array)$station->getAutomationSettings();
 
-        $form = new \AzuraForms\Form($this->form_config);
+        $form = new Form($this->form_config);
         $form->populate($automation_settings);
 
         if (!empty($_POST) && $form->isValid($_POST)) {

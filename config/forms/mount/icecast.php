@@ -9,6 +9,8 @@ $form_config['groups']['basic_info']['elements']['fallback_mount'] = [
         'label' => __('Fallback Mount'),
         'description' => __('If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.'),
         'default' => '/error.mp3',
+        'label_class' => 'mb-2',
+        'form_group_class' => 'col-md-6 mt-1',
     ]
 ];
 
@@ -24,8 +26,9 @@ $form_config['groups']['advanced_items']['elements']['frontend_config'] = [
     'textarea',
     [
         'label' => __('Custom Frontend Configuration'),
-        'label_class' => 'advanced',
+        'label_class' => 'advanced mb-2',
         'description' => __('You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;'),
+        'form_group_class' => 'col-sm-12 mt-1',
     ]
 ];
 

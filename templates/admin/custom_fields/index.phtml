@@ -1,7 +1,7 @@
 <?php $this->layout('main', ['title' => __('Custom Fields'), 'manual' => true]); ?>
 
 <div class="card">
-    <div class="card-body">
+    <div class="card-header bg-primary-dark">
         <h2 class="card-title"><?=__('Custom Fields') ?></h2>
     </div>
     <div class="card-actions">
@@ -28,8 +28,10 @@
             <?php foreach($records as $row): ?>
                 <tr class="align-middle">
                     <td>
-                        <a class="btn btn-sm btn-default" href="<?=$router->named('admin:custom_fields:edit', ['id' => $row['id']]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete custom field "%s"?', $row['name'])) ?>" href="<?=$router->named('admin:custom_fields:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:custom_fields:edit', ['id' => $row['id']]) ?>"><?=__('Edit') ?></a>
+                            <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete custom field "%s"?', $row['name'])) ?>" href="<?=$router->named('admin:custom_fields:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        </div>
                     </td>
                     <td>
                         <?=$this->e($row['name']) ?>

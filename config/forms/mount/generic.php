@@ -14,6 +14,8 @@ return [
                         'label' => __('Mount Point URL'),
                         'description' => __('This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3'),
                         'required' => true,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -22,6 +24,8 @@ return [
                     [
                         'label' => __('Display Name'),
                         'description' => __('The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.'),
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -33,6 +37,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => true,
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -44,6 +49,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -53,6 +59,8 @@ return [
                         'label' => __('Relay Stream URL'),
                         'description' => __('Enter the full URL of another stream to relay its broadcast through this mount point.'),
                         'default' => '',
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -64,6 +72,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -75,6 +84,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => true,
+                        'form_group_class' => 'col-sm-12 mt-1',
                     ]
                 ],
             ],
@@ -82,6 +92,7 @@ return [
 
         'autodj' => [
             'legend' => __('Configure AutoDJ Broadcasting'),
+            'legend_class' => 'd-none',
             'class' => 'fieldset_autodj',
             'elements' => [
 
@@ -90,6 +101,7 @@ return [
                     [
                         'label' => __('AutoDJ Format'),
                         'choices' => [],
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -108,6 +120,7 @@ return [
                             320 => '320',
                         ],
                         'default' => 128,
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -117,14 +130,16 @@ return [
 
         'advanced_items' => [
             'legend' => __('Advanced Configuration'),
+            'legend_class' => 'd-none',
             'elements' => [
 
                 'custom_listen_url' => [
                     'text',
                     [
                         'label' => __('Custom Stream URL'),
-                        'label_class' => 'advanced',
-                        'description' => __('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')
+                        'label_class' => 'advanced mb-2',
+                        'description' => __('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.'),
+                        'form_group_class' => 'col-sm-12 mt-1',
                     ]
                 ],
 
@@ -140,6 +155,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
+                        'form_group_class' => 'col-sm-12 mt-1',
                     ]
                 ],
 

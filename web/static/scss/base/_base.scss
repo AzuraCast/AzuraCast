@@ -167,6 +167,16 @@ input {
     padding: 0;
   }
 
+  &[type='checkbox'] + label,
+  &[type='radio'] + label {
+    cursor: pointer;
+  }
+
+  &[type='checkbox'][disabled] + label,
+  &[type='radio'][disabled] + label {
+    cursor: default;
+  }
+
   &[type='date'],
   &[type='datetime-local'],
   &[type='month'],

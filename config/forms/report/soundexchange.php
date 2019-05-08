@@ -27,6 +27,8 @@ return [
                     provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can
                     also use <a href="https://isrc.soundexchange.com" target="_blank">SoundExchange\'s ISRC search tool</a>.</li>
                 </ul>',
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-sm-12 mt-1',
             ]
         ],
 
@@ -36,6 +38,8 @@ return [
                 'type' => 'date',
                 'label' => _('Report Start Date'),
                 'required' => true,
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-md-6 mt-1',
             ]
         ],
 
@@ -45,6 +49,8 @@ return [
                 'type' => 'date',
                 'label' => _('Report End Date'),
                 'required' => true,
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-md-6 mt-1',
             ]
         ],
 
@@ -54,6 +60,7 @@ return [
                 'type' => 'submit',
                 'label' => _('Generate Report'),
                 'class' => 'btn btn-lg btn-primary',
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 

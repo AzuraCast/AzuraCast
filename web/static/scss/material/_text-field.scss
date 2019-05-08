@@ -2,20 +2,19 @@
   background-clip: padding-box;
   background-color: transparent;
   border-color: $textfield-border-color;
-  border-radius: 0;
+  border-radius: 4px;
   border-style: solid;
-  border-width: 0 0 $textfield-border-width;
+  border-width: $textfield-border-width;
   box-shadow: none;
   color: $textfield-color;
   display: block;
   font-size: $textfield-font-size;
   line-height: $textfield-line-height;
-  padding: $textfield-padding-y $textfield-padding-x calc(#{$textfield-padding-y} - #{$textfield-border-width});
+  padding: $textfield-padding-y $textfield-padding-x;
   width: 100%;
 
   @include hover {
     border-color: $textfield-border-color-hover;
-    box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) $textfield-border-color-hover;
   }
 
   &::-ms-expand {
@@ -42,7 +41,6 @@
 
   &:focus {
     border-color: $textfield-border-color-focus;
-    box-shadow: inset 0 ($textfield-border-width-focus * -1) 0 ($textfield-border-width * -1) $textfield-border-color-focus;
     outline: 0;
   }
 
@@ -104,9 +102,9 @@
 
 %form-textarea {
   border-radius: $textfield-box-border-radius;
-  border-width: 0 0 $textfield-border-width 0;
+  border-width: $textfield-border-width;
   min-height: $textfield-box-height;
-  padding: calc(#{$textfield-box-padding-y} - #{$textfield-border-width}) $textfield-box-padding-x;
+  padding: $textfield-box-padding-y $textfield-box-padding-x;
 }
 
 // stylelint-disable selector-no-qualifying-type

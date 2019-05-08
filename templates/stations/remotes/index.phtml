@@ -1,8 +1,10 @@
 <?php $this->layout('main', ['title' => __('Remote Relays'), 'manual' => true]) ?>
 
 <div class="card">
-    <div class="card-body">
+    <div class="card-header bg-primary-dark">
         <h2 class="card-title"><?=__('Remote Relays') ?></h2>
+    </div>
+    <div class="card-body">
         <p><?=__('Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.') ?></p>
     </div>
     <div class="card-actions">
@@ -30,8 +32,10 @@
                 <?php /** @var App\Entity\StationRemote $row */ ?>
                 <tr class="align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:remotes:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete remote relay "%s"?', $row->getUrl())) ?>" href="<?=$router->fromHere('stations:remotes:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:remotes:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                            <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete remote relay "%s"?', $row->getUrl())) ?>" href="<?=$router->fromHere('stations:remotes:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        </div>
                     </td>
                     <td>
                         <h5 class="m-0"><a href="<?=$this->e($row->getUrl()) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>

@@ -2,6 +2,7 @@
 namespace App\Controller\Stations\Files;
 
 use App\Entity;
+use App\Form\Form;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Filesystem;
@@ -74,7 +75,7 @@ class EditController extends FilesControllerAbstract
             ];
         }
 
-        $form = new \AzuraForms\Form($form_config);
+        $form = new Form($form_config);
 
         // Populate custom fields in form.
         $media_array = $media_repo->toArray($media);

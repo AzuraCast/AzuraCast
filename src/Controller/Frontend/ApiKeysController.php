@@ -2,6 +2,7 @@
 namespace App\Controller\Frontend;
 
 use App\Exception\NotFound;
+use App\Form\Form;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -50,7 +51,7 @@ class ApiKeysController
         $user = $request->getUser();
         $view = $request->getView();
 
-        $form = new \AzuraForms\Form($this->form_config);
+        $form = new Form($this->form_config);
 
         if (!empty($id)) {
             $new_record = false;

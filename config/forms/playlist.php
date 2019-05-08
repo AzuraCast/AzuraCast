@@ -53,16 +53,8 @@ return [
 
         'basic_info' => [
             'legend' => __('Basic Information'),
+            'legend_class' => 'd-none',
             'elements' => [
-
-                'name' => [
-                    'text',
-                    [
-                        'label' => __('Playlist Name'),
-                        'required' => true,
-                    ]
-                ],
-
                 'is_enabled' => [
                     'toggle',
                     [
@@ -72,6 +64,17 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => true,
+                        'form_group_class' => 'col-sm-12 mt-3',
+                    ]
+                ],
+
+                'name' => [
+                    'text',
+                    [
+                        'label' => __('Playlist Name'),
+                        'required' => true,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -89,6 +92,8 @@ return [
                             4 => '4',
                             5 => '5 - '.__('High'),
                         ] + array_combine(range(6, 25), range(6, 25)),
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
             ],
@@ -96,6 +101,7 @@ return [
 
         'select_source' => [
             'legend' => __('Source'),
+            'legend_class' => 'd-none',
             'elements' => [
                 'source' => [
                     'radio',
@@ -107,6 +113,8 @@ return [
                         ],
                         'default' => StationPlaylist::SOURCE_SONGS,
                         'required' => true,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
             ],
@@ -114,6 +122,7 @@ return [
 
         'source_'.StationPlaylist::SOURCE_SONGS => [
             'legend' => __('Song-Based Playlist'),
+            'legend_class' => 'd-none',
             'class' => 'source_fieldset',
             'elements' => [
 
@@ -128,30 +137,9 @@ return [
                             StationPlaylist::ORDER_SEQUENTIAL => __('Sequential'),
                         ],
                         'default' => StationPlaylist::ORDER_SHUFFLE,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ],
-                ],
-
-                'is_jingle' => [
-                    'toggle',
-                    [
-                        'label' => __('Hide Metadata from Listeners ("Jingle Mode")'),
-                        'label_class' => 'advanced',
-                        'description' => __('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => false,
-                    ]
-                ],
-
-                'include_in_requests' => [
-                    'toggle',
-                    [
-                        'label' => __('Allow Requests from This Playlist'),
-                        'description' => __('If requests are enabled for your station, users will be able to request media that is on this playlist.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => true,
-                    ]
                 ],
 
                 'import' => [
@@ -169,6 +157,35 @@ return [
                             'audio/x-mpegurl',
                             'application/octet-stream',
                         ],
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
+                        'button_text' => __('Select File'),
+                        'button_icon' => 'cloud_upload'
+                    ]
+                ],
+
+                'include_in_requests' => [
+                    'toggle',
+                    [
+                        'label' => __('Allow Requests from This Playlist'),
+                        'description' => __('If requests are enabled for your station, users will be able to request media that is on this playlist.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                        'form_group_class' => 'col-md-6 mt-3',
+                    ]
+                ],
+
+                'is_jingle' => [
+                    'toggle',
+                    [
+                        'label' => __('Hide Metadata from Listeners ("Jingle Mode")'),
+                        'label_class' => 'advanced',
+                        'description' => __('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -177,6 +194,7 @@ return [
 
         'source_'.StationPlaylist::SOURCE_REMOTE_URL => [
             'legend' => __('Remote URL Playlist'),
+            'legend_class' => 'd-none',
             'class' => 'source_fieldset',
             'elements' => [
 
@@ -184,6 +202,8 @@ return [
                     'text',
                     [
                         'label' => __('Remote URL'),
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -196,6 +216,7 @@ return [
                             StationPlaylist::REMOTE_TYPE_STREAM => __('Direct Stream URL'),
                             StationPlaylist::REMOTE_TYPE_PLAYLIST => __('Playlist (M3U/PLS) URL'),
                         ],
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -203,11 +224,12 @@ return [
                     'number',
                     [
                         'label' => __('Remote Playback Buffer (Seconds)'),
-                        'label_class' => 'advanced',
+                        'label_class' => 'advanced mb-2',
                         'description' => __('The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.'),
                         'default' => StationPlaylist::DEFAULT_REMOTE_BUFFER,
                         'min' => 0,
                         'max' => 120,
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -216,6 +238,7 @@ return [
 
         'select_type' => [
             'legend' => __('Scheduling'),
+            'legend_class' => 'd-none',
             'elements' => [
                 'type' => [
                     'radio',
@@ -232,6 +255,7 @@ return [
                         ],
                         'default' => StationPlaylist::TYPE_DEFAULT,
                         'required' => true,
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -246,7 +270,8 @@ return [
                             StationPlaylist::OPTION_LOOP_PLAYLIST_ONCE => __('Only loop through playlist once.'),
                             StationPlaylist::OPTION_PLAY_SINGLE_TRACK => __('Only play one track at scheduled time.'),
                             StationPlaylist::OPTION_MERGE => __('Merge playlist to play as a single track.'),
-                        ]
+                        ],
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
             ]
@@ -254,6 +279,7 @@ return [
 
         'type_'.StationPlaylist::TYPE_DEFAULT => [
             'legend' => __('General Rotation'),
+            'legend_class' => 'd-none',
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -265,6 +291,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -273,6 +300,7 @@ return [
 
         'type_'.StationPlaylist::TYPE_SCHEDULED => [
             'legend' => __('Customize Schedule'),
+            'legend_class' => 'd-none',
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -282,6 +310,8 @@ return [
                         'label' => __('Start Time'),
                         'description' => $server_time,
                         'options' => $hour_select,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -291,6 +321,8 @@ return [
                         'label' => __('End Time'),
                         'description' => __('If the end time is before the start time, the playlist will play overnight until this time on the next day.'),
                         'options' => $hour_select,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -307,7 +339,8 @@ return [
                             5 => __('Friday'),
                             6 => __('Saturday'),
                             7 => __('Sunday'),
-                        ]
+                        ],
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -316,6 +349,7 @@ return [
 
         'type_'.StationPlaylist::TYPE_ONCE_PER_X_SONGS => [
             'legend' => __('Once per x Songs'),
+            'legend_class' => 'd-none',
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -327,6 +361,8 @@ return [
                         'default' => 1,
                         'min' => 0,
                         'max' => 150,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -335,6 +371,7 @@ return [
 
         'type_'.StationPlaylist::TYPE_ONCE_PER_X_MINUTES => [
             'legend' => __('Once per x Minutes'),
+            'legend_class' => 'd-none',
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -346,6 +383,8 @@ return [
                         'default' => 1,
                         'min' => 0,
                         'max' => 360,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -354,6 +393,7 @@ return [
 
         'type_'.StationPlaylist::TYPE_ONCE_PER_HOUR => [
             'legend' => __('Once per Hour'),
+            'legend_class' => 'd-none',
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -365,6 +405,8 @@ return [
                         'default' => 0,
                         'min' => 0,
                         'max' => 59,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -373,6 +415,7 @@ return [
 
         'type_'.StationPlaylist::TYPE_ONCE_PER_DAY => [
             'legend' => __('Daily'),
+            'legend_class' => 'd-none',
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -382,6 +425,8 @@ return [
                         'label' => __('Scheduled Play Time'),
                         'description' => $server_time,
                         'options' => $hour_select,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -398,7 +443,8 @@ return [
                             5 => __('Friday'),
                             6 => __('Saturday'),
                             7 => __('Sunday'),
-                        ]
+                        ],
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -414,6 +460,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 

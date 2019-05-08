@@ -1,15 +1,14 @@
 <?php $this->layout('main', ['title' => __('Song Duplicates'), 'manual' => true]) ?>
 
 <div class="card">
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=__('Song Duplicates') ?></h2>
+    </div>
     <?php if (empty($dupes)): ?>
     <div class="card-body">
-        <h2 class="card-title"><?=__('Song Duplicates') ?></h2>
         <p><?=__('No duplicates were found. Nice work!') ?></p>
     </div>
     <?php else: ?>
-    <div class="card-body">
-        <h2 class="card-title"><?=__('Song Duplicates') ?></h2>
-    </div>
         <?php foreach($dupes as $dupe_row): ?>
             <div class="table-responsive">
                 <table class="table table-striped">

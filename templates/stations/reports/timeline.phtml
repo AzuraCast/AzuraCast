@@ -9,6 +9,9 @@ $assets
 ?>
 
 <div class="card">
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=__('Song Playback Timeline') ?></h2>
+    </div>
     <div class="card-body">
         <a class="btn btn-primary float-right dropdown-toggle" id="reportrange" href="#">
             <i class="material-icons" aria-hidden="true">date_range</i> <span><?=__('Last 14 Days') ?></span>
@@ -16,7 +19,6 @@ $assets
         <a class="btn btn-primary float-right mr-2" id="btn-export" href="<?=$router->fromHere('api:stations:history', [], ['format' => 'csv']) ?>" target="_blank" title="<?=__('Download CSV') ?>">
             <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Download CSV') ?>
         </a>
-        <h2 class="card-title"><?=__('Song Playback Timeline') ?></h2>
     </div>
     <div class="table-responsive">
         <table class="data-table table table-striped">

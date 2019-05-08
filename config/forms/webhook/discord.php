@@ -10,6 +10,7 @@ return [
 
         'api_info' => [
             'legend' => __('Discord API Details'),
+            'legend_class' => 'd-none',
             'elements' => [
 
                 'name' => [
@@ -18,6 +19,8 @@ return [
                         'label' => __('%s Name', __('Web Hook')),
                         'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
                         'required' => true,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -28,6 +31,8 @@ return [
                         'description' => __('This URL is provided within the Discord application.'),
                         'belongsTo' => 'config',
                         'required' => true,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -37,6 +42,7 @@ return [
                         'label' => __('Web Hook Triggers'),
                         'options' => array_diff_key($triggers, ['listener_lost' => 1, 'listener_gained' => 1]),
                         'required' => true,
+                        'form_group_class' => 'col-sm-12 mt-1',
                     ]
                 ],
 
@@ -45,7 +51,9 @@ return [
 
         'message' => [
             'legend' => __('Customize Message'),
+            'legend_class' => 'd-none',
             'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $router->named('api:nowplaying:index')),
+            'description_class' => 'col-sm-12',
 
             'elements' => [
 
@@ -55,6 +63,8 @@ return [
                         'label' => __('Main Message Content'),
                         'belongsTo' => 'config',
                         'default' => sprintf(__('Now playing on %s:'), '{{ station.name }}'),
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -64,6 +74,8 @@ return [
                         'label' => __('Title'),
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.title }}',
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -73,6 +85,8 @@ return [
                         'label' => __('Description'),
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.artist }}',
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -82,6 +96,8 @@ return [
                         'label' => __('URL'),
                         'belongsTo' => 'config',
                         'default' => '{{ station.listen_url }}',
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -91,6 +107,8 @@ return [
                         'label' => __('Author Name'),
                         'belongsTo' => 'config',
                         'default' => '{{ live.streamer_name }}',
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -100,6 +118,8 @@ return [
                         'label' => __('Thumbnail Image URL'),
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.art }}',
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -109,6 +129,8 @@ return [
                         'label' => __('Footer Text'),
                         'belongsTo' => 'config',
                         'default' => sprintf(__('Powered by %s'), $app_settings['name']),
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -124,6 +146,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
+                        'form_group_class' => 'col-sm-12 mt-3',
                     ]
                 ],
 

@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity;
+use App\Form\Form;
 use App\Http\Request;
 use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -33,7 +34,7 @@ class SettingsController
     protected function renderSettingsForm(Request $request, Response $response, $form_template): ResponseInterface
     {
         $existing_settings = $this->settings_repo->fetchArray(false);
-        $form = new \AzuraForms\Form($this->form_config, $existing_settings);
+        $form = new Form($this->form_config, $existing_settings);
 
         if ($request->isPost() && $form->isValid($_POST)) {
             $data = $form->getValues();

@@ -1,12 +1,14 @@
 <template>
     <div class="card">
-        <h5 class="card-header">
-            {{ $t('headers.microphone') }}
+        <div class="card-header bg-primary-dark">
+            <h5 class="card-title">
+                {{ $t('headers.microphone') }}
 
-            <div class="float-right">
-                <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
-            </div>
-        </h5>
+                <div class="float-right">
+                    <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
+                </div>
+            </h5>
+        </div>
 
         <div class="card-body">
             <div class="control-group d-flex justify-content-center mb-3">
@@ -26,7 +28,7 @@
             </div>
 
             <div class="form-group microphone-entry">
-                <label for="select_microphone_source">{{ $t('settings.micSource') }}</label>
+                <label for="select_microphone_source" class="mb-2">{{ $t('settings.micSource') }}</label>
                 <div class="controls">
                     <select id="select_microphone_source" v-model="device" class="form-control">
                         <option v-for="device_row in devices" v-bind:value="device_row.deviceId">{{ device_row.label }}</option>

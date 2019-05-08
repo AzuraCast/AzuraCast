@@ -19,19 +19,20 @@ $user = $request->getUser();
 ?>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-lg-6">
         <section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <div class="d-flex">
-                    <h3 class="flex-shrink card-title"><?=__('On the Air') ?></h3>
-                    <h6 class="text-right flex-fill" style="line-height: 1;">
+                    <h3 class="flex-shrink card-title mt-1 mb-0"><?=__('On the Air') ?></h3>
+                    <h6 class="card-subtitle text-right flex-fill mt-1 mb-0" style="line-height: 1;">
                         <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span>{{ np.listeners.total }}</span> <span v-if="np.listeners.total == 1"><?=__('Listener') ?></span><span v-else><?=__('Listeners') ?></span><br>
                         <small>
                             <span>{{ np.listeners.unique }}</span> <?=__('Unique') ?>
                         </small>
                     </h6>
                 </div>
-
+            </div>
+            <div class="card-body">
                 <div class="row pt-1">
                     <div class="col-md-6">
                         <div class="position-relative" style="margin-left: 20px;">
@@ -112,7 +113,7 @@ $user = $request->getUser();
             <?php endif; ?>
         </section>
         <section class="card mb-4" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title"><?=__('Profile') ?></h3>
             </div>
         <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
@@ -206,10 +207,10 @@ $user = $request->getUser();
             </table>
         </section>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-6">
     <?php if (count($stream_urls['local']) > 0 || count($stream_urls['remote']) > 0): ?>
         <section class="card mb-4" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title"><?=__('Streams') ?></h3>
             </div>
             <table class="table table-sm table-striped mb-0">
@@ -277,7 +278,7 @@ $user = $request->getUser();
 
     <?php if ($frontend_type !== \App\Radio\Adapters::FRONTEND_REMOTE): ?>
         <section class="card mb-4" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
                     <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
                         <?=__('Icecast (Broadcasting Service)') ?>
@@ -285,7 +286,10 @@ $user = $request->getUser();
                         <?=__('SHOUTcast DNAS 2 (Broadcasting Service)') ?>
                     <?php endif; ?>
                 </h3>
-                <h5 class="card-subtitle" id="frontend_status"><?=__('Loading...') ?></h5>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-subtitle mt-1" id="frontend_status"><?=__('Loading...') ?></h5>
             </div>
 
             <table class="table table-striped table-responsive mb-0">
@@ -330,11 +334,11 @@ $user = $request->getUser();
                         <i class="material-icons" aria-hidden="true">update</i>
                         <?=__('Restart') ?>
                     </a>
-                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
+                    <a class="api-call no-reload btn btn-success" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
                         <i class="material-icons" aria-hidden="true">play_arrow</i>
                         <?=__('Start') ?>
                     </a>
-                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
+                    <a class="api-call no-reload btn btn-danger" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
                         <i class="material-icons" aria-hidden="true">stop</i>
                         <?=__('Stop') ?>
                     </a>
@@ -345,20 +349,24 @@ $user = $request->getUser();
 
         <?php if ($backend_type == 'none'): ?>
         <section class="card" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title"><?=__('AutoDJ Disabled') ?></h3>
+            </div>
+            <div class="card-body">
                 <p><?=__('AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.') ?></p>
             </div>
         </section>
         <?php else: ?>
         <section class="card" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
-                    <?=__('Liquidsoap (AutoDJ Service)') ?><br>
-                <?php endif; ?>
+                    <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
+                        <?=__('Liquidsoap (AutoDJ Service)') ?><br>
+                    <?php endif; ?>
                 </h3>
-                <h5 class="card-subtitle" id="backend_status"><?=__('Loading...') ?></h5>
+            </div>
+            <div class="card-body">
+                <h5 class="card-subtitle mt-1" id="backend_status"><?=__('Loading...') ?></h5>
 
                 <p><?=sprintf(__('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
 
@@ -375,11 +383,11 @@ $user = $request->getUser();
                         <i class="material-icons" aria-hidden="true">update</i>
                         <?=__('Restart') ?>
                     </a>
-                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>">
+                    <a class="api-call no-reload btn btn-success" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>">
                         <i class="material-icons" aria-hidden="true">play_arrow</i>
                         <?=__('Start') ?>
                     </a>
-                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>">
+                    <a class="api-call no-reload btn btn-danger" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>">
                         <i class="material-icons" aria-hidden="true">stop</i>
                         <?=__('Stop') ?>
                     </a>

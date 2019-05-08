@@ -3,3 +3,9 @@
   padding: $card-padding-y $card-padding-x;
   margin-bottom: $card-inner-spacer-y;
 }
+
+.form fieldset > .row > legend > div {
+  border-bottom: 2px dashed;
+  border-color: theme-color-dark(primary);
+  padding-bottom: 8px;
+}

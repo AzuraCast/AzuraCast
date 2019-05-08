@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * This class exists primarily to facilitate the switch to Symfony's
  * Serializer and Validator classes, to allow for API parity.
  */
-class EntityForm extends \AzuraForms\Form
+class EntityForm extends Form
 {
     /** @var EntityManager */
     protected $em;

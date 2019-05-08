@@ -21,8 +21,10 @@ if ($metrics) {
     <?php foreach($notifications as $notification): ?>
         <?php /** @var \App\Notification\Notification $notification */ ?>
         <section class="card mb-4 border-<?=$notification->getType() ?>" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title"><?=$notification->getTitle() ?></h3>
+            </div>
+            <div class="card-body">
                 <p class="card-text">
                     <?=$notification->getBody() ?>
                 </p>
@@ -35,16 +37,20 @@ if ($metrics) {
 <div class="row">
     <div class="col-sm-6">
         <section class="card mb-4" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title"><?=__('Listeners Across All Stations') ?></h3>
+            </div>
+            <div class="card-body">
                 <div id="network_chart" style="height: 250px;"></div>
             </div>
         </section>
     </div>
     <div class="col-sm-6">
         <section class="card mb-4" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title"><?=__('Listeners Per Station') ?></h3>
+            </div>
+            <div class="card-body">
                 <div id="station_chart" style="height: 250px;"></div>
             </div>
         </section>
@@ -55,7 +61,7 @@ if ($metrics) {
 <div class="row">
     <div class="col-sm-12">
         <section class="card" role="region">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h3 class="card-title"><?=__('Station Overview') ?></h3>
             </div>
             <div class="table-responsive">

@@ -22,6 +22,8 @@ $form_config['groups']['basic_info']['elements']['authhash'] = [
         'description' => sprintf(__('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.'),
             'https://rmo.shoutcast.com'),
         'default' => '',
+        'label_class' => 'mb-2',
+        'form_group_class' => 'col-sm-12 mt-1',
     ]
 ];
 

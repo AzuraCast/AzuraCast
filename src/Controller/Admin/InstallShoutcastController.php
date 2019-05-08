@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Form\Form;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Frontend\SHOUTcast;
@@ -31,7 +32,7 @@ class InstallShoutcastController
             $form_config['elements']['current_version'][1]['markup'] = '<p class="text-success">'.__('SHOUTcast version "%s" is currently installed.', $version).'</p>';
         }
 
-        $form = new \AzuraForms\Form($form_config, []);
+        $form = new Form($form_config, []);
 
         if ($request->isPost() && $form->isValid($_POST)) {
             try

@@ -19,11 +19,13 @@ $assets
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title"><?=__('Music Files') ?></h2>
+            </div>
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-7">
-                        <h2 class="card-title"><?=__('Music Files') ?></h2>
-                        <h3 class="card-subtitle" id="breadcrumb">&nbsp;</h3>
+                        <h3 class="card-subtitle mt-1" id="breadcrumb">&nbsp;</h3>
                     </div>
                     <div class="col-md-5 text-right">
                         <div class="row">
@@ -52,13 +54,17 @@ $assets
                 <div id="upload_progress"></div>
                 <div id="file_drop_target">
                     <?=__('Drag files here to upload to this folder or ') ?>
-                    <input id="file_browse_target" type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,.flac,audio/*" multiple />
+                    <button id="file_browse_target" class="file-upload btn btn-primary text-center ml-1" type="button">
+                        <?=__('Select File') ?> <i class="material-icons" aria-hidden="true">cloud_upload</i>
+                    </button>
+                    <small class="file-name"></small>
+                    <input type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,.flac,audio/*" multiple style="visibility: hidden; position: absolute;" />
                 </div>
 
                 <div class="row pt-4" id="app-toolbar">
-                    <div class="col-sm-8">&nbsp;
+                    <div class="col-md-8">
                         <div class="btn-group dropdown allow-focus">
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle mb-1" data-toggle="dropdown" aria-expanded="false">
                                 <i class="material-icons" aria-hidden="true">clear_all</i> <?=__('Set Playlists') ?>
                                 <span class="caret"></span>
                             </button>
@@ -76,7 +82,7 @@ $assets
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="chk_playlist_new" name="playlists[]" value="new">
                                             <label class="custom-control-label" for="chk_playlist_new">
-                                                <input type="text" class="form-control p-0" id="new_playlist_name" name="new_playlist_name" placeholder="<?=__('New Playlist') ?>">
+                                                <input type="text" class="form-control" id="new_playlist_name" name="new_playlist_name" placeholder="<?=__('New Playlist') ?>">
                                             </label>
                                         </div>
                                     </div>
@@ -85,11 +91,11 @@ $assets
                                 </form>
                             </div>
                         </div>
-                        <a href="#" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mdl-move-file"><i class="material-icons" aria-hidden="true">open_with</i> <?=__('Move') ?></a>
-                        <button type="button" class="btn btn-sm btn-danger" v-on:click="doBatch" data-action="delete"><i class="material-icons" aria-hidden="true">delete</i> <?=__('Delete') ?></button>
+                        <a href="#" class="btn btn-sm btn-primary mb-1" data-toggle="modal" data-target="#mdl-move-file"><i class="material-icons" aria-hidden="true">open_with</i> <?=__('Move') ?></a>
+                        <button type="button" class="btn btn-sm btn-danger mb-1" v-on:click="doBatch" data-action="delete"><i class="material-icons" aria-hidden="true">delete</i> <?=__('Delete') ?></button>
                     </div>
-                    <div class="col-sm-4 text-right">
-                        <a class="btn btn-sm btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="material-icons" aria-hidden="true">folder</i> <?=__('New Folder') ?></a>
+                    <div class="col-md-4 text-right">
+                        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="material-icons" aria-hidden="true">folder</i> <?=__('New Folder') ?></a>
                     </div>
                 </div>
             </div>

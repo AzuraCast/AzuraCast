@@ -3,7 +3,6 @@
   @include border-radius($btn-border-radius);
 
   background-color: $btn-group-bg;
-  box-shadow: map-get($btn-elevation-shadow, shadow);
   display: inline-flex;
   position: relative;
   vertical-align: middle;

@@ -1,12 +1,14 @@
 <template>
     <div class="card">
-        <h5 class="card-header">
-            {{ $t('headers.'+id) }}
+        <div class="card-header bg-primary-dark">
+            <h5 class="card-title">
+                {{ $t('headers.'+id) }}
 
-            <div class="float-right">
-                <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
-            </div>
-        </h5>
+                <div class="float-right">
+                    <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
+                </div>
+            </h5>
+        </div>
         <div class="card-body">
             <div class="control-group d-flex justify-content-center">
                 <div class="btn-group btn-group-sm">

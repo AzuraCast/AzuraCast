@@ -3,6 +3,7 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Auth;
+use App\Form\Form;
 use App\Form\StationForm;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
@@ -175,7 +176,7 @@ class SetupController
             return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
-        $form = new \AzuraForms\Form($this->settings_form_config);
+        $form = new Form($this->settings_form_config);
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);

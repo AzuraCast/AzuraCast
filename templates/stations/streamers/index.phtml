@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-8">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h2 class="card-title"><?=__('Streamer/DJ Accounts') ?></h2>
             </div>
             <div class="card-actions">
@@ -33,8 +33,10 @@
                         <?php /** @var App\Entity\StationStreamer $row */ ?>
                         <tr class="align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
                             <td>
-                                <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:streamers:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                                <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete streamer "%s"?', $row->getStreamerUsername())) ?>" href="<?=$router->fromHere('stations:streamers:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:streamers:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                                    <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete streamer "%s"?', $row->getStreamerUsername())) ?>" href="<?=$router->fromHere('stations:streamers:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                                </div>
                             </td>
                             <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
                             <td><?=$this->e($row->getDisplayName()) ?></td>
@@ -48,32 +50,33 @@
     </div>
     <div class="col-md-4">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h2 class="card-title"><?=__('Connection Information') ?></h2>
-
-                <h3 class="card-subtitle"><?=__('IceCast Clients') ?></h3>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title"><?=__('IceCast Clients') ?></h3>
                 <dl>
-                    <dt><?=__('Server') ?>:</dt>
-                    <dd><?=$this->e($server_url) ?></dd>
+                    <dt class="mb-1"><?=__('Server') ?>:</dt>
+                    <dd><code><?=$this->e($server_url) ?></code></dd>
 
-                    <dt><?=__('Port') ?>:</dt>
-                    <dd><?=(int)$stream_port ?></dd>
+                    <dt class="mb-1"><?=__('Port') ?>:</dt>
+                    <dd><code><?=(int)$stream_port ?></code></dd>
 
-                    <dt><?=__('Mount Name') ?>:</dt>
-                    <dd><?=$this->e($dj_mount_point) ?></dd>
+                    <dt class="mb-1"><?=__('Mount Name') ?>:</dt>
+                    <dd><code><?=$this->e($dj_mount_point) ?></code></dd>
                 </dl>
 
-                <h3 class="card-subtitle mt-3"><?=__('ShoutCast v1 Clients') ?></h3>
+                <h3 class="card-title mt-3"><?=__('ShoutCast v1 Clients') ?></h3>
                 <dl>
-                    <dt><?=__('Server') ?>:</dt>
-                    <dd><?=$this->e($server_url) ?></dd>
+                    <dt class="mb-1"><?=__('Server') ?>:</dt>
+                    <dd><code><?=$this->e($server_url) ?></code></dd>
 
-                    <dt><?=__('Port') ?>:</dt>
-                    <dd><?=((int)$stream_port + 1) ?></dd>
+                    <dt class="mb-1"><?=__('Port') ?>:</dt>
+                    <dd><code><?=((int)$stream_port + 1) ?></code></dd>
 
-                    <dt><?=__('Password') ?>:</dt>
+                    <dt class="mb-1"><?=__('Password') ?>:</dt>
                     <dd>
-                        dj_username:dj_password<br>
+                        <code>dj_username:dj_password</code><br/>
                         <small><?=__('(DJ username and password separated by a colon)') ?></small>
                     </dd>
                 </dl>

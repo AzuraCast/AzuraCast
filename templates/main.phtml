@@ -40,7 +40,7 @@ echo $assets->js();
 
 <a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content') ?></a>
 
-<header class="navbar bg-primary-dark fixed-top">
+<header class="navbar bg-primary-dark shadow-sm fixed-top">
 <?php if (!empty($sidebar)): ?>
     <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__('Toggle Sidebar') ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
         <span class="navbar-toggler-icon"></span>
@@ -135,9 +135,10 @@ echo $assets->js();
                 </div>
             <?php endif; ?>
             <div class="card">
-                <div class="card-body">
+                <div class="card-header bg-primary-dark">
                     <h3 class="card-title"><?=$title ?></h3>
-
+                </div>
+                <div class="card-body">
                     <?=$this->section('content') ?>
                 </div>
             </div>

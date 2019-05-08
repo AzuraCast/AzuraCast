@@ -5,7 +5,7 @@
 <div class="card-columns">
 <?php foreach($admin_panels as $category_id => $category): ?>
     <section class="card" role="region">
-        <div class="card-body">
+        <div class="card-header bg-primary-dark">
             <h2 class="card-title"><?=$category['label'] ?></h2>
         </div>
         <div class="list-group list-group-flush">
@@ -24,7 +24,7 @@
 <div class="card-deck">
 <?php foreach($sync_times as $sync_key => $sync_info): ?>
     <section class="card" role="region">
-        <div class="card-header">
+        <div class="card-header bg-primary-dark">
             <h2 class="card-title"><?=$sync_info['name'] ?></h2>
             <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents']) ?></h3>
         </div>

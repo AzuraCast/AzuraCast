@@ -64,3 +64,14 @@ function styleForm(form, translations) {
     }
 
 }
+
+$('form button.file-upload').on('click', function(e) {
+    let inputElement = $(this).siblings('input[type=file]')[0];
+
+    $(inputElement).trigger('click');
+});
+
+$('form input[type=file]').change(function (e){
+    let fileNameElement = $(this).siblings('.file-name')[0];
+    $(fileNameElement).text($(this).val().split('\\').pop());
+});

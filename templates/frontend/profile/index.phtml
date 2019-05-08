@@ -34,7 +34,7 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
             </div>
         </div>
         <div class="card">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h2 class="card-title"><?=__('Roles') ?></h2>
             </div>
             <ul class="list-group list-group-flush">
@@ -46,9 +46,10 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
     </div>
     <div class="col-4">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark">
                 <h2 class="card-title"><?=__('Customization') ?></h2>
-
+            </div>
+            <div class="card-body">
                 <?=$customization_form->renderView() ?>
             </div>
             <div class="card-actions">
@@ -61,13 +62,15 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
     </div>
     <div class="col-4">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header bg-primary-dark mb-3">
                 <h2 class="card-title"><?=__('Two-Factor Authentication') ?></h2>
-            <?php if (null !== $user->getTwoFactorSecret()): ?>
-                <h3 class="card-subtitle text-success"><?=__('Enabled') ?></h3>
-            <?php else: ?>
-                <h3 class="card-subtitle text-danger"><?=__('Disabled') ?></h3>
-            <?php endif; ?>
+            </div>
+            <div class="card-body">
+                <?php if (null !== $user->getTwoFactorSecret()): ?>
+                    <h3 class="card-subtitle text-success"><?=__('Enabled') ?></h3>
+                <?php else: ?>
+                    <h3 class="card-subtitle text-danger"><?=__('Disabled') ?></h3>
+                <?php endif; ?>
 
                 <p class="card-text mt-3"><?=__('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.') ?></p>
             </div>

@@ -192,6 +192,13 @@
   margin: ($card-padding-y * -1) ($card-padding-x * -1) calc(#{$card-padding-y * -1} - #{$card-border-width});
 }
 
+.card-header.bg-primary-dark {
+  .card-title,
+  .card-subtitle {
+    color: #fff;
+  }
+}
+
 // Image
 
 .card-img {

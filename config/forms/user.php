@@ -9,6 +9,8 @@ return [
             [
                 'label' => __('Name'),
                 'class' => 'half-width',
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-md-6 mt-3',
             ]
         ],
 
@@ -18,6 +20,8 @@ return [
                 'label' => __('E-mail Address'),
                 'required' => true,
                 'autocomplete' => 'off',
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-md-6 mt-3',
             ]
         ],
 
@@ -28,6 +32,8 @@ return [
                 'description' => __('Leave blank to use the current password.'),
                 'autocomplete' => 'off',
                 'required' => false,
+                'label_class' => 'mb-2',
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 
@@ -36,6 +42,7 @@ return [
             [
                 'label' => __('Roles'),
                 'options' => $roles,
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 
@@ -46,6 +53,7 @@ return [
                 'label' => __('Save Changes'),
 
                 'class' => 'btn btn-lg btn-primary',
+                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
     ],

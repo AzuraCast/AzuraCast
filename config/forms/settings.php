@@ -16,6 +16,8 @@ return [
                             return str_replace(['http://', 'https://'], ['', ''], trim($str));
                         },
                         'required' => true,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -24,6 +26,8 @@ return [
                     [
                         'label' => __('AzuraCast Instance Name'),
                         'description' => __('This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.'),
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-md-6 mt-3',
                     ],
                 ],
 
@@ -34,6 +38,8 @@ return [
                         'description' => __('For users who have not customized their time zone, all times displayed on the site will be based on this time zone.'),
                         'options' => \Azura\Timezone::fetchSelect(),
                         'default' => 'UTC',
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-sm-12 mt-3',
                     ],
                 ],
 
@@ -45,6 +51,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -56,6 +63,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'form_group_class' => 'col-md-6 mt-3',
                     ]
                 ],
 
@@ -73,6 +81,8 @@ return [
                             0 => __('Indefinitely'),
                         ],
                         'default' => \App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
+                        'class' => 'mb-4',
+                        'form_group_class' => 'col-sm-12 mt-2',
                     ]
                 ],
 
@@ -81,6 +91,7 @@ return [
 
         'security' => [
             'legend' => __('Security Controls'),
+            'class' => 'col-sm-12 mt-4',
             'elements' => [
 
                 Entity\Settings::ALWAYS_USE_SSL => [
@@ -91,6 +102,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'label_class' => 'mt-3',
                     ]
                 ],
 
@@ -101,6 +113,7 @@ return [
                         'class' => 'advanced',
                         'description' => __('<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).', 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin'),
                         'default' => '',
+                        'label_class' => 'mb-2 mt-3',
                     ]
                 ],
 
@@ -110,6 +123,7 @@ return [
         'privacy' => [
             'legend' => __('Privacy Controls'),
             'description' => __('AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here.'),
+            'class' => 'col-sm-12 mt-3',
 
             'elements' => [
 
@@ -125,6 +139,7 @@ return [
                             Entity\Analytics::LEVEL_NONE => __('<b>None:</b> Do not collect any listener analytics'),
                         ],
                         'default' => Entity\Analytics::LEVEL_ALL,
+                        'label_class' => 'mt-3',
                     ]
                 ],
             ],
@@ -133,6 +148,7 @@ return [
         'channels' => [
             'legend' => __('AzuraCast Installation Telemetry'),
             'description' => __('Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.', 'https://www.azuracast.com/privacy.html'),
+            'class' => 'col-sm-12 mt-3',
 
             'elements' => [
 
@@ -148,6 +164,7 @@ return [
                             Entity\Settings::UPDATES_ALL => __('<b>All Updates:</b> Include all announcements and minor updates.'),
                         ],
                         'default' => Entity\Settings::UPDATES_RELEASE_ONLY,
+                        'label_class' => 'mt-3',
                     ]
                 ],
 
@@ -159,6 +176,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'label_class' => 'mt-3',
                     ]
                 ],
 
@@ -174,6 +192,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
+                        'form_group_class' => 'col-sm-12 mt-3',
                     ]
                 ],
             ],

@@ -240,11 +240,11 @@ msgstr "Пользователь"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:79
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
-msgstr ""
+msgstr "Другой пользователь имеет такую-же почту. Пожалуйста смените почтовый адресс"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "Вы не можете удалить аккаунт вашего владельца"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:121
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
@@ -329,7 +329,7 @@ msgstr "Супер администратор"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:157
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "Если вы хотиете использовать SHOUTcast? <a href=\"%s\" target=\"_blank\">Установите тут</a>, затем обнавите страницу."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:210
 msgid "Setup is now complete!"
@@ -337,7 +337,7 @@ msgstr "Установка завершена!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:210
 msgid "Continue setting up your station in the main AzuraCast app."
-msgstr ""
+msgstr "Продолжить настроюку вашей станции в AzureCast app"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
@@ -345,7 +345,7 @@ msgstr "Слишком много попыток входа"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
+msgstr "Вы слишком много раз пытались авторизироватся. Пожалуйста подождите 30 секунд и попробуйте ещё раз"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
@@ -370,7 +370,7 @@ msgstr "Редактировать профиль"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:148
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "Токен который вы вели не валидный. Пожалуйста попробуйте ещё раз"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:171
 msgid "Two-factor authentication enabled."
@@ -382,7 +382,7 @@ msgstr "Двухфакторная аутентификация отключен
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:217
 msgid "%s Listener Range"
-msgstr ""
+msgstr "%s Регион слушателей"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:228
 msgid "%s Daily Average"
@@ -398,7 +398,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:11
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:24
 msgid "Remote Relay"
-msgstr ""
+msgstr "Удалённое реле"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
@@ -409,11 +409,11 @@ msgstr "В данный момент, на этой станции, функци
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:55
 msgid "Streamers enabled!"
-msgstr ""
+msgstr "Вещатели/Стримеры свободны!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:55
 msgid "You can now set up streamer (DJ) accounts."
-msgstr ""
+msgstr "Вы можете настроить вещателя/стримера аккаунт"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:108
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:116
@@ -472,7 +472,7 @@ msgstr "Путь \"%s\" не является директорией."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:204
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Не хватает свободного места на диске для станции"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:217
 msgid "Could not move \"%s\" to \"%s\""
@@ -513,19 +513,19 @@ msgstr "Точка монтирования"
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:11
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 msgid "Web Hook"
-msgstr ""
+msgstr "Веб Хук"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s enabled."
-msgstr ""
+msgstr "%s работает"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:174
 msgid "%s disabled."
-msgstr ""
+msgstr "%s не доступен"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:198
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Веб Хук тестовый вывод"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:171
 msgid "This playlist is not a sequential playlist."
@@ -574,54 +574,54 @@ msgstr[3] "%d секунд"
 #: /var/azuracast/www/src/Utilities.php:65
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d минута"
+msgstr[1] "%d минуты"
+msgstr[2] "%d минут"
+msgstr[3] "%d минут"
 
 #: /var/azuracast/www/src/Utilities.php:70
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d час"
+msgstr[1] "%d часа"
+msgstr[2] "%d часа"
+msgstr[3] "%d часа"
 
 #: /var/azuracast/www/src/Utilities.php:75
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d день"
+msgstr[1] "%d дня"
+msgstr[2] "%d дня"
+msgstr[3] "%d дня"
 
 #: /var/azuracast/www/src/Utilities.php:79
 msgid "%d month"
 msgid_plural "%d months"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d месяц"
+msgstr[1] "%d месяца"
+msgstr[2] "%d месяцы"
+msgstr[3] "%d месяца"
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:107
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Вы должны быть автороизованы на этой страницы"
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:119
 #: /var/azuracast/www/src/Http/ErrorHandler.php:128
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "У вас не достаточно прав для разрешение этой части страницы"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:137
 #: /var/azuracast/www/src/Radio/Adapters.php:141
 #: /var/azuracast/www/src/Radio/Adapters.php:172
 msgid "Use <b>%s</b> on this server"
-msgstr ""
+msgstr "Используйте <b>%s</b> на этом сервере"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:145
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Подключиитесь к <b>удалённому серверу радио</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"
@@ -629,19 +629,19 @@ msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s невозможно запустить"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."
-msgstr ""
+msgstr "Уже запущен"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s невозможно остоновить"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
-msgstr ""
+msgstr "Это ещё не запущен"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
@@ -649,7 +649,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
-msgstr ""
+msgstr "Проверите логи для деталей"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -657,11 +657,11 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Аккаунт не найден"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "This port is currently in use by another station."
-msgstr ""
+msgstr "Уже этот порт используется в другой станции"
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"

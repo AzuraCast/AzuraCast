@@ -1,5 +1,8 @@
 <?php
-/** @var App\Entity\Station $station */
+/**
+ * @var App\Entity\Station $station
+ * @var \Azura\Assets $assets
+ */
 
 $this->layout('main', [
     'title' => __('Profile'),
@@ -7,393 +10,49 @@ $this->layout('main', [
     'sidebar_tab' => 'profile',
 ]);
 
-/** @var \Azura\Assets $assets */
 $assets
     ->load('vue')
     ->load('inline_player')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->load('clipboard')
     ->addInlineJs($this->fetch('stations/profile/index.js', ['nowplaying' => $nowplaying]), 99);
-
-$user = $request->getUser();
 ?>
 
 <div class="row">
-    <div class="col-lg-6">
-        <section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
-            <div class="card-header bg-primary-dark">
-                <div class="d-flex">
-                    <h3 class="flex-shrink card-title mt-1 mb-0"><?=__('On the Air') ?></h3>
-                    <h6 class="card-subtitle text-right flex-fill mt-1 mb-0" style="line-height: 1;">
-                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span>{{ np.listeners.total }}</span> <span v-if="np.listeners.total == 1"><?=__('Listener') ?></span><span v-else><?=__('Listeners') ?></span><br>
-                        <small>
-                            <span>{{ np.listeners.unique }}</span> <?=__('Unique') ?>
-                        </small>
-                    </h6>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row pt-1">
-                    <div class="col-md-6">
-                        <div class="position-relative" style="margin-left: 20px;">
-                            <div class="position-absolute" style="top: 0; left: -20px;">
-                                <i class="material-icons sm align-top">music_note</i>
-                            </div>
+    <div class="col-lg-7">
+        <?=$this->fetch('stations/profile/panel_header') ?>
 
-                            <h6><?=__('Now Playing') ?>:</h6>
+        <?=$this->fetch('stations/profile/panel_nowplaying') ?>
 
-                            <div v-if="np.now_playing.song.title != ''">
-                                <h5 class="media-heading m-0" style="line-height: 1;">
-                                    {{ np.now_playing.song.title }}<br>
-                                    <small>{{ np.now_playing.song.artist }}</small>
-                                </h5>
-                            </div>
-                            <div v-else>
-                                <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
-                            </div>
-
-                            <div v-if="np.now_playing.playlist">
-                                <small class="text-muted"><?=__('Playlist') ?>: {{ np.now_playing.playlist }}</small>
-                            </div>
-                            <div class="nowplaying-progress" v-if="time_display">
-                                <small>{{ time_display }}</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6" v-if="!np.live.is_live && np.playing_next">
-                        <div class="position-relative" style="margin-left: 20px;">
-                            <div class="position-absolute" style="top: 0; left: -20px;">
-                                <i class="material-icons sm align-top">skip_next</i>
-                            </div>
-
-                            <h6><?=__('Playing Next') ?>:</h6>
-
-                            <div v-if="np.playing_next.song.title != ''">
-                                <h5 class="media-heading m-0" style="line-height: 1;">
-                                    {{ np.playing_next.song.title }}<br>
-                                    <small>{{ np.playing_next.song.artist }}</small>
-                                </h5>
-                            </div>
-                            <div v-else>
-                                <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
-                            </div>
-
-                            <div v-if="np.playing_next.playlist">
-                                <small class="text-muted"><?=__('Playlist') ?>: {{ np.playing_next.playlist }}</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6" v-if="np.live.is_live">
-                        <div class="position-relative" style="margin-left: 20px;">
-                            <div class="position-absolute" style="top: 0; left: -20px;">
-                                <i class="material-icons sm align-top">mic</i>
-                            </div>
-
-                            <h6><?=__('Now Streaming') ?>:</h6>
-
-                            <h4 class="media-heading">
-                                {{ np.live.streamer_name }}
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
-                <div class="card-actions">
-                    <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
-                        <i class="material-icons" aria-hidden="true">skip_next</i>
-                        <?=__('Skip Song') ?>
-                    </a>
-                    <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
-                        <i class="material-icons" aria-hidden="true">volume_off</i>
-                        <?=__('Disconnect Streamer') ?>
-                    </a>
-                </div>
-            <?php endif; ?>
-        </section>
-        <section class="card mb-4" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title"><?=__('Profile') ?></h3>
-            </div>
-        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:profile:edit') ?>">
-                    <i class="material-icons" aria-hidden="true">edit</i>
-                    <?=__('Edit Profile') ?>
-                </a>
+    <?php if ($backend::supportsRequests() || $backend::supportsStreamers()): ?>
+        <div class="row">
+        <?php if ($backend::supportsRequests()): ?>
+            <div class="col">
+                <?=$this->fetch('stations/profile/panel_requests') ?>
             </div>
         <?php endif; ?>
-            <table class="table table-striped table-responsive mb-0">
-                <colgroup>
-                    <col width="30%">
-                    <col width="70%">
-                </colgroup>
-                <tbody>
-                <tr>
-                    <td><?=__('Name') ?></td>
-                    <td><?=$this->e($station->getName()) ?></td>
-                </tr>
-            <?php if (!empty($station->getDescription())): ?>
-                <tr>
-                    <td><?=__('Description') ?></td>
-                    <td><?=$this->e($station->getDescription()) ?></td>
-                </tr>
-            <?php endif; ?>
-            <?php if (!empty($station->getGenre())): ?>
-                <tr>
-                    <td><?=__('Genre') ?></td>
-                    <td><?=$this->e($station->getGenre()) ?></td>
-                </tr>
-            <?php endif; ?>
-            <?php if (!empty($station->getUrl())): ?>
-                <tr>
-                    <td><?=__('Web Site URL') ?></td>
-                    <td><a href="<?=$this->e($station->getUrl()) ?>" target="_blank"><?=$this->e($this->truncateUrl($station->getUrl())) ?></a></td>
-                </tr>
-            <?php endif; ?>
-            <?php if ($backend::supportsRequests()): ?>
-                <tr>
-                    <td><?=__('Song Requests') ?></td>
-                    <td>
-                        <?php if ($station->getEnableRequests()): ?>
-                            <span class="text-success"><?=__('Enabled') ?></span>
-
-                            <div class="form-field">
-                                <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
-                            </div>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
-                        <?php else: ?>
-                            <span class="text-danger"><?=__('Disabled') ?></span>
-                            <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-                                <br><small><?=__('<a href="%s">Edit station profile</a> to enable.', $router->fromHere('stations:profile:edit')) ?></small>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endif; ?>
-            <?php if ($backend::supportsStreamers()): ?>
-                <tr>
-                    <td><?=__('Streamers/DJs') ?></td>
-                    <td>
-                        <?php if ($station->getEnableStreamers()): ?>
-                            <span class="text-success"><?=__('Enabled') ?></span><br>
-                            <a href="<?=$router->fromHere('stations:streamers:index') ?>"><?=__('Manage streamer accounts') ?></a>
-                        <?php else: ?>
-                            <span class="text-danger"><?=__('Disabled') ?></span>
-                            <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-                                <br><small><?=__('<a href="%s">Edit station profile</a> to enable.', $router->fromHere('stations:profile:edit')) ?></small>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endif; ?>
-                <tr>
-                    <td><?=__('Base Directory') ?></td>
-                    <td class="text-preformatted"><?=$this->e($station->getRadioBaseDir()) ?></td>
-                </tr>
-                <tr>
-                    <td><?=__('Media Directory') ?></td>
-                    <td class="text-preformatted"><?=$this->e($station->getRadioMediaDir()) ?></td>
-                </tr>
-                <tr>
-                    <td><?=__('Player Embed Code') ?></td>
-                    <td class="form-field">
-                        <textarea id="player_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
-                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#player_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-    </div>
-    <div class="col-lg-6">
-    <?php if (count($stream_urls['local']) > 0 || count($stream_urls['remote']) > 0): ?>
-        <section class="card mb-4" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title"><?=__('Streams') ?></h3>
+        <?php if ($backend::supportsStreamers()): ?>
+            <div class="col">
+                <?=$this->fetch('stations/profile/panel_streamers') ?>
             </div>
-            <table class="table table-sm table-striped mb-0">
-                <colgroup>
-                    <col width="10%">
-                    <col width="90%">
-                </colgroup>
-            <?php if (count($stream_urls['local']) > 0): ?>
-                <thead>
-                    <tr>
-                        <th colspan="2"><?=__('Local Streams') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php foreach($stream_urls['local'] as [$stream_name, $stream_url]): ?>
-                    <tr class="align-middle">
-                        <td>
-                            <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
-                                <i class="material-icons" aria-hidden="true">play_circle_filled</i>
-                            </a>
-                        </td>
-                        <td>
-                            <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
-                            <a href="<?=$this->e($stream_url) ?>"><?=$this->truncateUrl($stream_url) ?></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            <?php endif; ?>
-            <?php if (count($stream_urls['remote']) > 0): ?>
-                <thead>
-                <tr>
-                    <th colspan="2"><?=__('Remote Relays') ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach($stream_urls['remote'] as [$stream_name, $stream_url]): ?>
-                    <tr class="align-middle">
-                        <td>
-                            <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
-                                <i class="material-icons" aria-hidden="true">play_circle_filled</i>
-                            </a>
-                        </td>
-                        <td>
-                            <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
-                            <a href="<?=$this->e($stream_url) ?>"><?=$this->truncateUrl($stream_url) ?></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            <?php endif; ?>
-            </table>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'pls']) ?>">
-                    <i class="material-icons" aria-hidden="true">file_download</i>
-                    <?=__('Download %s', 'PLS') ?>
-                </a>
-                <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'm3u']) ?>">
-                    <i class="material-icons" aria-hidden="true">file_download</i>
-                    <?=__('Download %s', 'M3U') ?>
-                </a>
-            </div>
-        </section>
+        <?php endif; ?>
+        </div>
     <?php endif; ?>
 
-    <?php if ($frontend_type !== \App\Radio\Adapters::FRONTEND_REMOTE): ?>
-        <section class="card mb-4" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
-                    <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
-                        <?=__('Icecast (Broadcasting Service)') ?>
-                    <?php elseif ($frontend_type === \App\Radio\Adapters::FRONTEND_SHOUTCAST): ?>
-                        <?=__('SHOUTcast DNAS 2 (Broadcasting Service)') ?>
-                    <?php endif; ?>
-                </h3>
-            </div>
+        <?=$this->fetch('stations/profile/panel_publicpages') ?>
+    </div>
 
-            <div class="card-body">
-                <h5 class="card-subtitle mt-1" id="frontend_status"><?=__('Loading...') ?></h5>
-            </div>
+    <div class="col-lg-5">
+        <?=$this->fetch('stations/profile/panel_streams') ?>
 
-            <table class="table table-striped table-responsive mb-0">
-                <colgroup>
-                    <col width="30%">
-                    <col width="70%">
-                </colgroup>
-                <tbody>
-                    <tr>
-                        <td><?=__('Administration URL') ?></td>
-                        <td><a href="<?=$this->e($frontend->getAdminUrl($station)) ?>"><?=$this->e($frontend->getAdminUrl($station)) ?></a></td>
-                    </tr>
-                    <tr>
-                        <td><?=__('Administrator Password') ?></td>
-                        <td>
-                            <span id="frontend_admin_pw"><?=$this->e($frontend_config['admin_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw"><i class="material-icons sm">file_copy</i></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><?=__('Source Password') ?></td>
-                        <td>
-                            <span id="frontend_source_pw"><?=$this->e($frontend_config['source_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
-                        </td>
-                    </tr>
-                <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
-                    <tr>
-                        <td><?=__('Relay Password') ?></td>
-                        <td>
-                            <span id="frontend_relay_pw"><?=$this->e($frontend_config['relay_pw']) ?></span>
-                            <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-                </tbody>
-            </table>
+    <?php if (\App\Radio\Adapters::FRONTEND_REMOTE !== $frontend_type): ?>
+        <?=$this->fetch('stations/profile/panel_frontend') ?>
+    <?php endif; ?>
 
-            <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <div class="card-actions">
-                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'restart']) ?>">
-                        <i class="material-icons" aria-hidden="true">update</i>
-                        <?=__('Restart') ?>
-                    </a>
-                    <a class="api-call no-reload btn btn-success" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
-                        <i class="material-icons" aria-hidden="true">play_arrow</i>
-                        <?=__('Start') ?>
-                    </a>
-                    <a class="api-call no-reload btn btn-danger" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
-                        <i class="material-icons" aria-hidden="true">stop</i>
-                        <?=__('Stop') ?>
-                    </a>
-                </div>
-            <?php endif; ?>
-        </section>
-        <?php endif; ?>
-
-        <?php if ($backend_type == 'none'): ?>
-        <section class="card" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title"><?=__('AutoDJ Disabled') ?></h3>
-            </div>
-            <div class="card-body">
-                <p><?=__('AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.') ?></p>
-            </div>
-        </section>
-        <?php else: ?>
-        <section class="card" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
-                    <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
-                        <?=__('Liquidsoap (AutoDJ Service)') ?><br>
-                    <?php endif; ?>
-                </h3>
-            </div>
-            <div class="card-body">
-                <h5 class="card-subtitle mt-1" id="backend_status"><?=__('Loading...') ?></h5>
-
-                <p><?=sprintf(__('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
-
-                <?php if ($acl->userAllowed($user, 'manage station media', $station->getId())): ?>
-                    <div class="buttons">
-                        <a class="btn btn-primary" href="<?=$router->fromHere('stations:files:index') ?>"><?=__('Music Files') ?></a>
-                        <a class="btn btn-primary" href="<?=$router->fromHere('stations:playlists:index') ?>"><?=__('Playlists') ?></a>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <div class="card-actions">
-                    <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'restart']) ?>">
-                        <i class="material-icons" aria-hidden="true">update</i>
-                        <?=__('Restart') ?>
-                    </a>
-                    <a class="api-call no-reload btn btn-success" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>">
-                        <i class="material-icons" aria-hidden="true">play_arrow</i>
-                        <?=__('Start') ?>
-                    </a>
-                    <a class="api-call no-reload btn btn-danger" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>">
-                        <i class="material-icons" aria-hidden="true">stop</i>
-                        <?=__('Stop') ?>
-                    </a>
-                </div>
-            <?php endif; ?>
-        </section>
-        <?php endif; ?>
+    <?php if (\App\Radio\Adapters::BACKEND_NONE === $backend_type): ?>
+        <?=$this->fetch('stations/profile/panel_backend_none') ?>
+    <?php else: ?>
+        <?=$this->fetch('stations/profile/panel_backend') ?>
+    <?php endif; ?>
     </div>
 </div>

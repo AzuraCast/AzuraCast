@@ -168,6 +168,17 @@ return function (\Azura\Container $di)
         $view->registerFunction('truncateUrl', function($url) {
             return \App\Utilities::truncateUrl($url);
         });
+        $view->registerFunction('link', function($url, $external = true, $truncate = true) {
+            $url = htmlspecialchars($url, \ENT_QUOTES, 'UTF-8');
+
+            $a = ['href="'.$url.'"'];
+            if ($external) {
+                $a[] = 'target="_blank"';
+            }
+
+            $a_body = ($truncate) ? \App\Utilities::truncateUrl($url) : $url;
+            return '<a '.implode(' ', $a).'>'.$a_body.'</a>';
+        });
 
         $view->addData([
             'assets' => $di[\Azura\Assets::class],

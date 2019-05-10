@@ -7,26 +7,19 @@ $assets
 ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('Song Requests') ?></h2>
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=__('Song Requests') ?></h2>
     </div>
     <div class="table-responsive">
         <table class="data-table table table-striped">
-            <colgroup>
-                <col width="20%">
-                <col width="20%">
-                <col width="30%">
-                <col width="15%">
-                <col width="15%">
-            </colgroup>
             <thead>
-            <tr>
-                <th data-column-id="timestamp"><?=__('Date Requested') ?></th>
-                <th data-column-id="played_at"><?=__('Date Played') ?></th>
-                <th data-column-id="song"><?=__('Song Title') ?></th>
-                <th data-column-id="ip"><?=__('Requester IP') ?></th>
-                <th data-column-id="actions"><?=__('Actions') ?></th>
-            </tr>
+                <tr>
+                    <th style="width: 20%;" data-column-id="timestamp"><?=__('Date Requested') ?></th>
+                    <th style="width: 20%;" data-column-id="played_at"><?=__('Date Played') ?></th>
+                    <th style="width: 30%;" data-column-id="song"><?=__('Song Title') ?></th>
+                    <th style="width: 15%;" data-column-id="ip"><?=__('Requester IP') ?></th>
+                    <th style="width: 15%;" data-column-id="actions"><?=__('Actions') ?></th>
+                </tr>
             </thead>
             <tbody>
             <?php foreach($requests as $request_row): ?>

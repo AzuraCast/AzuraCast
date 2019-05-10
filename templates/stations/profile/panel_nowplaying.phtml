@@ -1,0 +1,103 @@
+<?php
+/**
+ * @var \App\Entity\Station $station
+ * @var \App\Acl $acl
+ * @var \App\Http\Router $router
+ * @var \App\Http\Request $request
+ */
+
+$user = $request->getUser();
+?>
+
+<section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
+    <div class="card-header bg-primary-dark">
+        <div class="d-flex">
+            <h3 class="flex-shrink card-title mt-1 mb-0"><?=__('On the Air') ?></h3>
+            <h6 class="card-subtitle text-right flex-fill mt-1 mb-0" style="line-height: 1;">
+                <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span>{{ np.listeners.total }}</span> <span v-if="np.listeners.total == 1"><?=__('Listener') ?></span><span v-else><?=__('Listeners') ?></span><br>
+                <small>
+                    <span>{{ np.listeners.unique }}</span> <?=__('Unique') ?>
+                </small>
+            </h6>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row pt-1">
+            <div class="col-md-6">
+                <div class="position-relative" style="margin-left: 20px;">
+                    <div class="position-absolute" style="top: 0; left: -20px;">
+                        <i class="material-icons sm align-top">music_note</i>
+                    </div>
+
+                    <h6><?=__('Now Playing') ?>:</h6>
+
+                    <div v-if="np.now_playing.song.title != ''">
+                        <h5 class="media-heading m-0" style="line-height: 1;">
+                            {{ np.now_playing.song.title }}<br>
+                            <small>{{ np.now_playing.song.artist }}</small>
+                        </h5>
+                    </div>
+                    <div v-else>
+                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
+                    </div>
+
+                    <div v-if="np.now_playing.playlist">
+                        <small class="text-muted"><?=__('Playlist') ?>: {{ np.now_playing.playlist }}</small>
+                    </div>
+                    <div class="nowplaying-progress" v-if="time_display">
+                        <small>{{ time_display }}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6" v-if="!np.live.is_live && np.playing_next">
+                <div class="position-relative" style="margin-left: 20px;">
+                    <div class="position-absolute" style="top: 0; left: -20px;">
+                        <i class="material-icons sm align-top">skip_next</i>
+                    </div>
+
+                    <h6><?=__('Playing Next') ?>:</h6>
+
+                    <div v-if="np.playing_next.song.title != ''">
+                        <h5 class="media-heading m-0" style="line-height: 1;">
+                            {{ np.playing_next.song.title }}<br>
+                            <small>{{ np.playing_next.song.artist }}</small>
+                        </h5>
+                    </div>
+                    <div v-else>
+                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
+                    </div>
+
+                    <div v-if="np.playing_next.playlist">
+                        <small class="text-muted"><?=__('Playlist') ?>: {{ np.playing_next.playlist }}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" v-if="np.live.is_live">
+                <div class="position-relative" style="margin-left: 20px;">
+                    <div class="position-absolute" style="top: 0; left: -20px;">
+                        <i class="material-icons sm align-top">mic</i>
+                    </div>
+
+                    <h6><?=__('Now Streaming') ?>:</h6>
+
+                    <h4 class="media-heading">
+                        {{ np.live.streamer_name }}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
+        <div class="card-actions">
+            <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
+                <i class="material-icons" aria-hidden="true">skip_next</i>
+                <?=__('Skip Song') ?>
+            </a>
+            <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
+                <i class="material-icons" aria-hidden="true">volume_off</i>
+                <?=__('Disconnect Streamer') ?>
+            </a>
+        </div>
+    <?php endif; ?>
+</section>

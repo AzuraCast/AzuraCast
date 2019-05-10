@@ -1,0 +1,78 @@
+<?php
+/**
+ * @var \App\Entity\Station $station
+ * @var \App\Acl $acl
+ * @var \App\Http\Router $router
+ * @var \App\Http\Request $request
+ */
+
+$user = $request->getUser();
+?>
+
+<section class="card mb-4" role="region">
+    <?php if ($station->getEnablePublicPage()): ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Public Pages') ?>
+                <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
+            </h3>
+        </div>
+        <table class="table table-striped table-responsive mb-0">
+            <tbody>
+                <tr>
+                    <td style="width: 30%;"><?=__('Public Page') ?></td>
+                    <td style="width: 70%;">
+                        <?=$this->link($router->named('public:index', ['station' => $station->getShortName()], [], true)) ?>
+                    </td>
+                </tr>
+            <?php if ($backend::supportsStreamers() && $station->getEnableStreamers()): ?>
+                <tr>
+                    <td><?=__('Web DJ') ?></td>
+                    <td>
+                        <?=$this->link($router->named('public:dj', ['station' => $station->getShortName()], [], true)) ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
+                <tr>
+                    <td><?=__('Player Embed Code') ?></td>
+                    <td class="form-field">
+                        <textarea id="player_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
+                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#player_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
+                    </td>
+                </tr>
+            <?php if ($backend::supportsRequests() && $station->getEnableRequests()): ?>
+                <tr>
+                    <td><?=__('Request Embed Code') ?></td>
+                    <td class="form-field">
+                        <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
+                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station)): ?>
+            <div class="card-actions">
+                <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable public pages?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'public', 'csrf' => $csrf]) ?>">
+                    <i class="material-icons" aria-hidden="true">highlight_off</i>
+                    <?=__('Disable') ?>
+                </a>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Public Pages') ?>
+                <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
+            </h3>
+        </div>
+        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station)): ?>
+            <div class="card-actions">
+                <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable public pages?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'public', 'csrf' => $csrf]) ?>">
+                    <i class="material-icons" aria-hidden="true">check_circle_outline</i>
+                    <?=__('Enable') ?>
+                </a>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+</section>

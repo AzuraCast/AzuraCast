@@ -1,0 +1,50 @@
+<?php
+/**
+ * @var \App\Entity\Station $station
+ * @var \App\Acl $acl
+ * @var \App\Http\Router $router
+ * @var \App\Http\Request $request
+ */
+
+$user = $request->getUser();
+?>
+
+<section class="card mb-4" role="region">
+<?php if ($station->getEnableStreamers()): ?>
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title">
+            <?=__('Streamers/DJs') ?>
+            <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
+        </h3>
+    </div>
+    <div class="card-actions">
+    <?php if ($acl->userAllowed($user, \App\Acl::STATION_STREAMERS, $station)): ?>
+        <a class="btn btn-outline-primary" href="<?=$router->fromHere('stations:streamers:index') ?>">
+            <i class="material-icons" aria-hidden="true">mic</i>
+            <?=__('Manage') ?>
+        </a>
+    <?php endif; ?>
+    <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station)): ?>
+        <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable streamers?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'streamers', 'csrf' => $csrf]) ?>">
+            <i class="material-icons" aria-hidden="true">highlight_off</i>
+            <?=__('Disable') ?>
+        </a>
+    <?php endif; ?>
+    </div>
+<?php else: ?>
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title">
+            <?=__('Streamers/DJs') ?>
+            <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
+        </h3>
+    </div>
+    <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station)): ?>
+    <div class="card-actions">
+        <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable streamers?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'streamers', 'csrf' => $csrf]) ?>">
+            <i class="material-icons" aria-hidden="true">check_circle_outline</i>
+            <?=__('Enable') ?>
+        </a>
+    </div>
+    <?php endif; ?>
+<?php endif; ?>
+</section>

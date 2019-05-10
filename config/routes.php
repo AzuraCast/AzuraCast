@@ -528,6 +528,10 @@ return function(App $app)
         $this->get('/profile', Controller\Stations\ProfileController::class)
             ->setName('stations:profile:index');
 
+        $this->get('/profile/toggle/{feature}/{csrf}', Controller\Stations\ProfileController::class.':toggleAction')
+            ->setName('stations:profile:toggle')
+            ->add([Middleware\Permissions::class, Acl::STATION_PROFILE, true]);
+
         $this->map(['GET', 'POST'], '/profile/edit', Controller\Stations\ProfileController::class.':editAction')
             ->setName('stations:profile:edit')
             ->add([Middleware\Permissions::class, Acl::STATION_PROFILE, true]);

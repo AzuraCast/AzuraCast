@@ -1,3 +1,7 @@
+small.badge {
+  font-size: 70%;
+}
+
 .badge {
   @include border-radius($badge-border-radius);
 

@@ -1,0 +1,80 @@
+<?php
+/**
+ * @var \App\Entity\Station $station
+ * @var \App\Acl $acl
+ * @var \App\Http\Router $router
+ * @var \App\Http\Request $request
+ */
+
+$user = $request->getUser();
+?>
+
+<section class="card mb-4" role="region">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title">
+            <?=__('Broadcasting Service') ?>
+            <small class="badge badge-pill" id="frontend_status"><?=__('Loading...') ?></small>
+            <br>
+            <small>
+            <?php if (\App\Radio\Adapters::FRONTEND_ICECAST === $frontend_type): ?>
+                Icecast
+            <?php elseif (\App\Radio\Adapters::FRONTEND_SHOUTCAST === $frontend_type): ?>
+                SHOUTcast
+            <?php endif; ?>
+            </small>
+        </h3>
+    </div>
+
+    <table class="table table-striped table-responsive mb-0">
+        <colgroup>
+            <col width="30%">
+            <col width="70%">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td><?=__('Administration URL') ?></td>
+            <td><a href="<?=$this->e($frontend->getAdminUrl($station)) ?>"><?=$this->e($frontend->getAdminUrl($station)) ?></a></td>
+        </tr>
+        <tr>
+            <td><?=__('Administrator Password') ?></td>
+            <td>
+                <span id="frontend_admin_pw"><?=$this->e($frontend_config['admin_pw']) ?></span>
+                <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw"><i class="material-icons sm">file_copy</i></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+            </td>
+        </tr>
+        <tr>
+            <td><?=__('Source Password') ?></td>
+            <td>
+                <span id="frontend_source_pw"><?=$this->e($frontend_config['source_pw']) ?></span>
+                <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+            </td>
+        </tr>
+        <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
+            <tr>
+                <td><?=__('Relay Password') ?></td>
+                <td>
+                    <span id="frontend_relay_pw"><?=$this->e($frontend_config['relay_pw']) ?></span>
+                    <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                </td>
+            </tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
+
+    <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+        <div class="card-actions">
+            <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'restart']) ?>">
+                <i class="material-icons" aria-hidden="true">update</i>
+                <?=__('Restart') ?>
+            </a>
+            <a class="api-call no-reload btn btn-outline-success" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
+                <i class="material-icons" aria-hidden="true">play_arrow</i>
+                <?=__('Start') ?>
+            </a>
+            <a class="api-call no-reload btn btn-outline-danger" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
+                <i class="material-icons" aria-hidden="true">stop</i>
+                <?=__('Stop') ?>
+            </a>
+        </div>
+    <?php endif; ?>
+</section>

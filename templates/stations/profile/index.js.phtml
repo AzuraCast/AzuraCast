@@ -97,21 +97,21 @@ $(function() {
             url: '<?=$router->fromHere('api:stations:status') ?>',
             success: function(data) {
                 var backend_status = $('#backend_status');
-                backend_status.removeClass('text-success text-danger');
+                backend_status.removeClass('badge-success badge-danger');
 
                 if (data.backend_running) {
-                    backend_status.addClass('text-success').text(service_status_lang.running);
+                    backend_status.addClass('badge-success').text(service_status_lang.running);
                 } else {
-                    backend_status.addClass('text-danger').text(service_status_lang.not_running);
+                    backend_status.addClass('badge-danger').text(service_status_lang.not_running);
                 }
 
                 var frontend_status = $('#frontend_status');
-                frontend_status.removeClass('text-success text-danger');
+                frontend_status.removeClass('badge-success badge-danger');
 
                 if (data.frontend_running) {
-                    frontend_status.addClass('text-success').text(service_status_lang.running);
+                    frontend_status.addClass('badge-success').text(service_status_lang.running);
                 } else {
-                    frontend_status.addClass('text-danger').text(service_status_lang.not_running);
+                    frontend_status.addClass('badge-danger').text(service_status_lang.not_running);
                 }
 
                 if (is_first_load) {

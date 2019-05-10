@@ -1,0 +1,51 @@
+<?php
+/**
+ * @var \App\Entity\Station $station
+ * @var \App\Acl $acl
+ * @var \App\Http\Router $router
+ * @var \App\Http\Request $request
+ */
+
+$user = $request->getUser();
+?>
+
+<section class="card" role="region">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title">
+            <?=__('AutoDJ Service') ?>
+            <small class="badge badge-pill" id="backend_status"><?=__('Loading...') ?></small>
+            <br>
+            <small>
+            <?php if (\App\Radio\Adapters::BACKEND_LIQUIDSOAP === $backend_type): ?>
+                Liquidsoap
+            <?php endif; ?>
+            </small>
+        </h3>
+    </div>
+    <div class="card-body">
+        <p><?=sprintf(__('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
+
+        <?php if ($acl->userAllowed($user, 'manage station media', $station->getId())): ?>
+            <div class="buttons">
+                <a class="btn btn-primary" href="<?=$router->fromHere('stations:files:index') ?>"><?=__('Music Files') ?></a>
+                <a class="btn btn-primary" href="<?=$router->fromHere('stations:playlists:index') ?>"><?=__('Playlists') ?></a>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+        <div class="card-actions">
+            <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'restart']) ?>">
+                <i class="material-icons" aria-hidden="true">update</i>
+                <?=__('Restart') ?>
+            </a>
+            <a class="api-call no-reload btn btn-outline-success" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>">
+                <i class="material-icons" aria-hidden="true">play_arrow</i>
+                <?=__('Start') ?>
+            </a>
+            <a class="api-call no-reload btn btn-outline-danger" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>">
+                <i class="material-icons" aria-hidden="true">stop</i>
+                <?=__('Stop') ?>
+            </a>
+        </div>
+    <?php endif; ?>
+</section>

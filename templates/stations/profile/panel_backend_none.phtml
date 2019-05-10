@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var \App\Entity\Station $station
+ * @var \App\Acl $acl
+ * @var \App\Http\Router $router
+ * @var \App\Http\Request $request
+ */
+
+$user = $request->getUser();
+?>
+
+<section class="card" role="region">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title"><?=__('AutoDJ Disabled') ?></h3>
+    </div>
+    <div class="card-body">
+        <p><?=__('AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.') ?></p>
+    </div>
+</section>

@@ -19,6 +19,9 @@ class ProfileController
     /** @var StationForm */
     protected $station_form;
 
+    /** @var string */
+    protected $csrf_namespace = 'stations_profile';
+
     /**
      * @param EntityManager $em
      * @param StationForm $station_form
@@ -119,7 +122,7 @@ class ProfileController
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 
-        return $view->renderToResponse($response, 'stations/profile/index', [
+        $view->addData([
             'num_songs' => $num_songs,
             'num_playlists' => $num_playlists,
             'stream_urls' => $stream_urls,
@@ -128,7 +131,10 @@ class ProfileController
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
             'nowplaying' => $np,
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
+
+        return $view->renderToResponse($response, 'stations/profile/index');
     }
 
     public function editAction(Request $request, Response $response, $station_id): ResponseInterface
@@ -142,5 +148,33 @@ class ProfileController
         return $request->getView()->renderToResponse($response, 'stations/profile/edit', [
             'form' => $this->station_form,
         ]);
+    }
+
+    public function toggleAction(Request $request, Response $response, $station_id, $feature, $csrf_token): ResponseInterface
+    {
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+
+        $station = $request->getStation();
+
+        switch($feature) {
+            case 'requests':
+                $station->setEnableRequests(!$station->getEnableRequests());
+            break;
+
+            case 'streamers':
+                $station->setEnableStreamers(!$station->getEnableStreamers());
+            break;
+
+            case 'public':
+                $station->setEnablePublicPage(!$station->getEnablePublicPage());
+            break;
+        }
+
+        $this->em->persist($station);
+        $this->em->flush($station);
+
+        $this->em->refresh($station);
+
+        return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
     }
 }

@@ -91,7 +91,7 @@ class Acl
      *
      * @param int|array $role_id
      * @param string|array $action
-     * @param int|Station|null $station_id
+     * @param int|Entity\Station|null $station_id
      * @return bool
      */
     public function roleAllowed($role_id, $action, $station_id = null): bool

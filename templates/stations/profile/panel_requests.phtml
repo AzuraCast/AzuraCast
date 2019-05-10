@@ -4,9 +4,10 @@
  * @var \App\Acl $acl
  * @var \App\Http\Router $router
  * @var \App\Http\Request $request
+ * @var \App\Entity\User $user
+ * @var string $backend_type
+ * @var string $frontend_type
  */
-
-$user = $request->getUser();
 ?>
 
 <section class="card mb-4" role="region">
@@ -27,7 +28,7 @@ $user = $request->getUser();
         <?php endif; ?>
         <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
             <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable song requests?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'requests', 'csrf' => $csrf]) ?>">
-                <i class="material-icons" aria-hidden="true">highlight_off</i>
+                <i class="material-icons" aria-hidden="true">close</i>
                 <?=__('Disable') ?>
             </a>
         <?php endif; ?>
@@ -43,7 +44,7 @@ $user = $request->getUser();
     <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
         <div class="card-actions">
             <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable song requests?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'requests', 'csrf' => $csrf]) ?>">
-                <i class="material-icons" aria-hidden="true">check_circle_outline</i>
+                <i class="material-icons" aria-hidden="true">check</i>
                 <?=__('Enable') ?>
             </a>
         </div>

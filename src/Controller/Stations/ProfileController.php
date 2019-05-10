@@ -123,15 +123,16 @@ class ProfileController
         }
 
         $view->addData([
-            'num_songs' => $num_songs,
+            'num_songs'     => $num_songs,
             'num_playlists' => $num_playlists,
-            'stream_urls' => $stream_urls,
-            'backend_type' => $station->getBackendType(),
+            'stream_urls'   => $stream_urls,
+            'backend_type'  => $station->getBackendType(),
             'backend_config' => (array)$station->getBackendConfig(),
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
-            'nowplaying' => $np,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'nowplaying'    => $np,
+            'user'          => $request->getUser(),
+            'csrf'          => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
 
         return $view->renderToResponse($response, 'stations/profile/index');

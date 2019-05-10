@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use App\Entity;
+
 class Acl
 {
     public const GLOBAL_ALL            = 'administer all';
@@ -51,13 +53,17 @@ class Acl
      *
      * @param Entity\User|null $user
      * @param string|array $action
-     * @param null $station_id
+     * @param int|Entity\Station|null $station_id
      * @return bool
      */
     public function userAllowed(?Entity\User $user = null, $action, $station_id = null): bool
     {
         if (!($user instanceof Entity\User)) {
             return false;
+        }
+
+        if ($station_id instanceof Entity\Station) {
+            $station_id = $station_id->getId();
         }
 
         $num_roles = $user->getRoles()->count();
@@ -85,11 +91,15 @@ class Acl
      *
      * @param int|array $role_id
      * @param string|array $action
-     * @param int|null $station_id
+     * @param int|Station|null $station_id
      * @return bool
      */
     public function roleAllowed($role_id, $action, $station_id = null): bool
     {
+        if ($station_id instanceof Entity\Station) {
+            $station_id = $station_id->getId();
+        }
+
         // Iterate through an array of roles and return with the first "true" response, or "false" otherwise.
         if (\is_array($role_id)) {
             foreach ($role_id as $r) {

@@ -51,7 +51,7 @@ $user = $request->getUser();
             <?php endif; ?>
             </tbody>
         </table>
-        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station)): ?>
+        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
             <div class="card-actions">
                 <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable public pages?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'public', 'csrf' => $csrf]) ?>">
                     <i class="material-icons" aria-hidden="true">highlight_off</i>
@@ -66,7 +66,7 @@ $user = $request->getUser();
                 <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
             </h3>
         </div>
-        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station)): ?>
+        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
             <div class="card-actions">
                 <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable public pages?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'public', 'csrf' => $csrf]) ?>">
                     <i class="material-icons" aria-hidden="true">check_circle_outline</i>

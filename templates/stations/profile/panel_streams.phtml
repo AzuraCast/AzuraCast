@@ -15,8 +15,8 @@ $user = $request->getUser();
     </div>
     <table class="table table-sm table-striped mb-0">
         <colgroup>
-            <col style="width: 10%;">
-            <col style="width: 90%;">
+            <col style="width: 2%;">
+            <col style="width: 98%;">
         </colgroup>
         <?php if (count($stream_urls['local']) > 0): ?>
             <thead>
@@ -27,12 +27,12 @@ $user = $request->getUser();
             <tbody>
             <?php foreach($stream_urls['local'] as [$stream_name, $stream_url]): ?>
                 <tr class="align-middle">
-                    <td>
+                    <td class="pr-1">
                         <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>
                     </td>
-                    <td>
+                    <td class="pl-1">
                         <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
                         <?=$this->link($stream_url) ?>
                     </td>
@@ -49,12 +49,12 @@ $user = $request->getUser();
             <tbody>
             <?php foreach($stream_urls['remote'] as [$stream_name, $stream_url]): ?>
                 <tr class="align-middle">
-                    <td>
+                    <td class="pr-1">
                         <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>
                     </td>
-                    <td>
+                    <td class="pl-1">
                         <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
                         <?=$this->link($stream_url) ?>
                     </td>

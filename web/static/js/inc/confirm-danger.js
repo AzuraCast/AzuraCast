@@ -1,17 +1,23 @@
 function confirmDangerousAction(el) {
+    let $el = $(el);
+
+    if (!$el.is('a')) {
+        $el = $el.closest('a');
+    }
+
     let confirmTitle = 'Are you sure?';
-    if ($(el).data('confirm-title')) {
-        confirmTitle = $(el).data('confirm-title');
+    if ($el.data('confirm-title')) {
+        confirmTitle = $el.data('confirm-title');
     }
 
     let dangerMode = true;
-    if ($(el).hasClass('btn-success') || $(el).hasClass('btn-outline-success')) {
+    if ($el.hasClass('btn-success') || $el.hasClass('btn-outline-success')) {
         dangerMode = false;
     }
 
     // jQuery trick to pull an item's text without inner HTML elements.
     // https://stackoverflow.com/questions/8624592/how-to-get-only-direct-text-without-tags-with-jquery-in-html
-    let buttonText = $(el).clone().children().remove().end().text();
+    let buttonText = $el.clone().children().remove().end().text();
 
     return swal({
         title: confirmTitle,

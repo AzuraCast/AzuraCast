@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-10T05:43:38+00:00\n"
-"PO-Revision-Date: 2019-05-10 05:50\n"
+"PO-Revision-Date: 2019-05-10 17:00\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2974,15 +2974,15 @@ msgstr "Benvenuto in %s!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:35
 msgid "name@example.com"
-msgstr ""
+msgstr "nome@esempio.com"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:45
 msgid "Enter your password"
-msgstr ""
+msgstr "Inserisci la tua password"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:52
 msgid "Sign in"
-msgstr ""
+msgstr "Accedi"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:58
 msgid "Please log in to continue."
@@ -3110,7 +3110,7 @@ msgstr "Per verificare che il codice sia stato impostato correttamente, inserisc
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "QR-Code"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
@@ -3264,7 +3264,7 @@ msgstr "Richiedi un brano"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 msgid "Play"
-msgstr ""
+msgstr "Play"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9

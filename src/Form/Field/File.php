@@ -2,9 +2,7 @@
 
 namespace App\Form\Field;
 
-use AzuraForms\Field\AbstractField;
-
-class File extends AbstractField
+class File extends \AzuraForms\Field\File
 {
     public function configure(array $config = []): void
     {
@@ -36,25 +34,5 @@ class File extends AbstractField
             $class,
             $button_text
         );
-    }
-
-    protected function _attributeString()
-    {
-        $class = '';
-
-        if (!empty($this->error)) {
-            $class = 'error';
-        }
-
-        $attribute_string = '';
-        foreach ($this->attributes as $attribute => $val) {
-            if ($attribute == 'class') {
-                $class .= ' ' . $val;
-            } else if ($val !== false) {
-                $attribute_string .= ' '.($val === true ? $attribute : "$attribute=\"$val\"");
-            }
-        }
-
-        return [$attribute_string, $class];
     }
 }

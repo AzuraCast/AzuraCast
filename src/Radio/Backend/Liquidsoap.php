@@ -210,13 +210,23 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     Entity\StationPlaylist::ORDER_RANDOM        => 'random',
                 ];
 
+                // Liquidsoap's playlist functions support very different argument patterns. :/
                 $playlist_params = [
                     'id="'.$this->_cleanUpString($playlist_var_name).'"',
-                    'reload_mode="watch"'
                 ];
+
+                if ('playlist.merge' === $playlist_func_name) {
+                    if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()) {
+                        $playlist_params[] = 'random=true';
+                    }
+                } else {
+                    $playlist_params[] = 'reload_mode="watch"';
+                }
+
                 if ('playlist' === $playlist_func_name) {
                     $playlist_params[] = 'mode="'.$playlist_modes[$playlist->getOrder()].'"';
                 }
+
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
                 $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';

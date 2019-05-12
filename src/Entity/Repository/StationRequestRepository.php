@@ -122,7 +122,7 @@ class StationRequestRepository extends Repository
     {
         $last_play_threshold_mins = (int)($station->getRequestThreshold() ?? 15);
 
-        if ($last_play_threshold_mins == 0) {
+        if (0 === $last_play_threshold_mins) {
             return true;
         }
 

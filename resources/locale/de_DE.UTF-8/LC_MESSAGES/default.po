@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-10T05:43:38+00:00\n"
-"PO-Revision-Date: 2019-05-10 05:50\n"
+"PO-Revision-Date: 2019-05-12 10:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3724,7 +3724,7 @@ msgstr "Streamer trennen"
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:16
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:65
 msgid "Public Pages"
-msgstr ""
+msgstr "Öffentliche Seiten"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:37
 msgid "Player Embed Code"
@@ -3740,19 +3740,19 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:71
 msgid "Enable public pages?"
-msgstr ""
+msgstr "Öffentliche Seiten aktivieren?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:24
 msgid "View"
-msgstr ""
+msgstr "Ansehen"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:28
 msgid "Disable song requests?"
-msgstr ""
+msgstr "Musikwünsche Deaktivieren?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:43
 msgid "Enable song requests?"
-msgstr ""
+msgstr "Musikwünsche aktivieren?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:16
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:37

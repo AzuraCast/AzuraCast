@@ -105,7 +105,8 @@ class SyncProvider implements ServiceProviderInterface
             return new Task\RadioRequests(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Monolog\Logger::class],
-                $di[\App\Radio\Adapters::class]
+                $di[\App\Radio\Adapters::class],
+                $di[\Azura\EventDispatcher::class]
             );
         };
 

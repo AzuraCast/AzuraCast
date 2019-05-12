@@ -895,9 +895,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param string $music_file
      * @return array
-     * @throws \Azura\Exception
      */
-    public function request(Entity\Station $station, $music_file)
+    public function request(Entity\Station $station, $music_file): array
     {
         $requests_var = $this->_getVarName('requests', $station);
 
@@ -915,9 +914,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @return array
-     * @throws \Azura\Exception
      */
-    public function skip(Entity\Station $station)
+    public function skip(Entity\Station $station): array
     {
         return $this->command(
             $station,
@@ -930,9 +928,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @return array
-     * @throws \Azura\Exception
      */
-    public function disconnectStreamer(Entity\Station $station)
+    public function disconnectStreamer(Entity\Station $station): array
     {
         $current_streamer = $station->getCurrentStreamer();
         $disconnect_timeout = (int)$station->getDisconnectDeactivateStreamer();

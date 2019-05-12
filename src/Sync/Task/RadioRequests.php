@@ -1,7 +1,9 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Monolog\Logger;
@@ -11,17 +13,26 @@ class RadioRequests extends AbstractTask
     /** @var Adapters */
     protected $adapters;
 
+    /** @var EventDispatcher */
+    protected $dispatcher;
+
     /**
      * @param EntityManager $em
      * @param Logger $logger
      * @param Adapters $adapters
+     * @param EventDispatcher $dispatcher
      *
      * @see \App\Provider\SyncProvider
      */
-    public function __construct(EntityManager $em, Logger $logger, Adapters $adapters)
-    {
+    public function __construct(
+        EntityManager $em,
+        Logger $logger,
+        Adapters $adapters,
+        EventDispatcher $dispatcher
+    ) {
         parent::__construct($em, $logger);
 
+        $this->dispatcher = $dispatcher;
         $this->adapters = $adapters;
     }
 
@@ -63,35 +74,56 @@ class RadioRequests extends AbstractTask
 
             foreach($requests as $request) {
                 /** @var Entity\StationRequest $request */
-                try {
-                    $request_repo->checkRecentPlay($request->getTrack(), $station);
-                    $this->_submitRequest($station, $request);
-                    break;
-                } catch(\Exception $e) {
-                    continue;
-                }
+                $request_repo->checkRecentPlay($request->getTrack(), $station);
+                $this->_submitRequest($station, $request);
+                break;
             }
         }
     }
 
-    protected function _submitRequest(Entity\Station $station, Entity\StationRequest $request)
+    protected function _submitRequest(Entity\Station $station, Entity\StationRequest $request): bool
     {
         // Send request to the station to play the request.
         $backend = $this->adapters->getBackendAdapter($station);
-
         if (!method_exists($backend, 'request')) {
             return false;
         }
 
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+        /** @var Entity\Repository\SongHistoryRepository $sh_repo */
+        $sh_repo = $this->em->getRepository(Entity\SongHistory::class);
 
-        try {
-            $media_path = $media_repo->getFullPath($request->getTrack());
-            $backend->request($station, $media_path);
-        } catch(\Exception $e) {
-            return false;
+        // Check for an existing SongHistory record and skip if one exists.
+        $sh = $sh_repo->findOneBy([
+            'station' => $station,
+            'request' => $request,
+        ]);
+
+        if (!$sh instanceof Entity\SongHistory) {
+            // Log the item in SongHistory.
+            $media = $request->getTrack();
+
+            $sh = new Entity\SongHistory($media->getSong(), $station);
+            $sh->setTimestampCued(time());
+            $sh->setMedia($media);
+            $sh->setDuration($media->getCalculatedLength());
+            $sh->setRequest($request);
+            $sh->sentToAutodj();
+
+            $this->em->persist($sh);
+            $this->em->flush($sh);
         }
+
+        // Generate full Liquidsoap annotations
+        $event = new AnnotateNextSong($station, $sh);
+        $this->dispatcher->dispatch(AnnotateNextSong::NAME, $event);
+
+        $track = $event->buildAnnotations();
+
+        // Queue request with Liquidsoap.
+        $this->logger->debug('Submitting request to AutoDJ.', ['track' => $track]);
+        $response = $backend->request($station, $track);
+
+        $this->logger->debug('AutoDJ request response', ['response' => $response]);
 
         // Log the request as played.
         $request->setPlayedAt(time());

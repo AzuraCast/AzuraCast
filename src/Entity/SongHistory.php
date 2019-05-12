@@ -251,6 +251,10 @@ class SongHistory
     public function setMedia(StationMedia $media = null): void
     {
         $this->media = $media;
+
+        if ($media instanceof StationMedia) {
+            $this->setDuration($media->getCalculatedLength());
+        }
     }
 
     /**

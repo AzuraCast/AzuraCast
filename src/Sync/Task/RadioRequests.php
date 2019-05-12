@@ -105,7 +105,6 @@ class RadioRequests extends AbstractTask
             $sh = new Entity\SongHistory($media->getSong(), $station);
             $sh->setTimestampCued(time());
             $sh->setMedia($media);
-            $sh->setDuration($media->getCalculatedLength());
             $sh->setRequest($request);
             $sh->sentToAutodj();
 

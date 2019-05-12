@@ -259,8 +259,6 @@ class AutoDJ implements EventSubscriberInterface
             $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
             $sh->setPlaylist($playlist);
             $sh->setMedia($media_to_play);
-
-            $sh->setDuration($media_to_play->getCalculatedLength());
             $sh->setTimestampCued(time());
 
             $this->em->persist($sh);

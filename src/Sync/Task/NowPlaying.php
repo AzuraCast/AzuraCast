@@ -213,7 +213,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
                     if ($media instanceof Entity\StationMedia) {
                         $sh->setMedia($media);
-                        $sh->setDuration($media->getCalculatedLength());
                     }
                 }
 

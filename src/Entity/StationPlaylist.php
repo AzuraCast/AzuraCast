@@ -29,7 +29,6 @@ class StationPlaylist
     public const TYPE_ONCE_PER_X_SONGS = 'once_per_x_songs';
     public const TYPE_ONCE_PER_X_MINUTES = 'once_per_x_minutes';
     public const TYPE_ONCE_PER_HOUR = 'once_per_hour';
-    public const TYPE_ONCE_PER_DAY = 'once_per_day';
     public const TYPE_ADVANCED = 'custom';
 
     public const SOURCE_SONGS = 'songs';
@@ -186,6 +185,14 @@ class StationPlaylist
     protected $play_per_hour_minute = 0;
 
     /**
+     * @ORM\Column(name="schedule_tz", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="UTC")
+     * @var string|null
+     */
+    protected $schedule_tz = 'UTC';
+
+    /**
      * @ORM\Column(name="schedule_start_time", type="smallint")
      *
      * @OA\Property(example=900)
@@ -211,24 +218,6 @@ class StationPlaylist
      * @var string
      */
     protected $schedule_days;
-
-    /**
-     * @ORM\Column(name="play_once_time", type="smallint")
-     *
-     * @OA\Property(example=1500)
-     *
-     * @var int
-     */
-    protected $play_once_time = 0;
-
-    /**
-     * @ORM\Column(name="play_once_days", type="string", length=50, nullable=true)
-     *
-     * @OA\Property(example="0,1,2,3")
-     *
-     * @var string
-     */
-    protected $play_once_days;
 
     /**
      * @ORM\Column(name="weight", type="smallint")

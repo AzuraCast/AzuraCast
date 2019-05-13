@@ -185,14 +185,6 @@ class StationPlaylist
     protected $play_per_hour_minute = 0;
 
     /**
-     * @ORM\Column(name="schedule_tz", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="UTC")
-     * @var string|null
-     */
-    protected $schedule_tz = 'UTC';
-
-    /**
      * @ORM\Column(name="schedule_start_time", type="smallint")
      *
      * @OA\Property(example=900)
@@ -516,14 +508,6 @@ class StationPlaylist
     }
 
     /**
-     * @return string
-     */
-    public function getScheduleStartTimeText(): string
-    {
-        return self::formatTimeCodeForInput($this->schedule_start_time);
-    }
-
-    /**
      * @param int $schedule_start_time
      */
     public function setScheduleStartTime(int $schedule_start_time): void
@@ -537,14 +521,6 @@ class StationPlaylist
     public function getScheduleEndTime(): int
     {
         return (int)$this->schedule_end_time;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScheduleEndTimeText(): string
-    {
-        return self::formatTimeCodeForInput($this->schedule_end_time);
     }
 
     /**
@@ -564,10 +540,13 @@ class StationPlaylist
             return 0;
         }
 
-        $start_time = self::getTimestamp($this->schedule_start_time);
-        $end_time = self::getTimestamp($this->schedule_end_time);
+        $start_time = self::getDateTime($this->schedule_start_time)
+            ->getTimestamp();
+        $end_time = self::getDateTime($this->schedule_end_time)
+            ->getTimestamp();
 
         if ($start_time > $end_time) {
+            /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
             return 86400 - ($start_time - $end_time);
         }
 
@@ -588,46 +567,6 @@ class StationPlaylist
     public function setScheduleDays($schedule_days): void
     {
         $this->schedule_days = implode(',', (array)$schedule_days);
-    }
-
-    /**
-     * @return int
-     */
-    public function getPlayOnceTime(): int
-    {
-        return $this->play_once_time;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPlayOnceTimeText(): string
-    {
-        return self::formatTimeCodeForInput($this->play_once_time);
-    }
-
-    /**
-     * @param int $play_once_time
-     */
-    public function setPlayOnceTime(int $play_once_time): void
-    {
-        $this->play_once_time = $play_once_time;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPlayOnceDays(): array
-    {
-        return explode(',', $this->play_once_days);
-    }
-
-    /**
-     * @param array $play_once_days
-     */
-    public function setPlayOnceDays($play_once_days): void
-    {
-        $this->play_once_days = implode(',', (array)$play_once_days);
     }
 
     /**
@@ -792,31 +731,6 @@ class StationPlaylist
     }
 
     /**
-     * Given a time code i.e. "2300", return a UNIX timestamp that can be used to format the time for display.
-     *
-     * @param string|int $time_code
-     * @return int
-     */
-    public static function getTimestamp($time_code): int
-    {
-        return self::getDateTime($time_code)
-            ->getTimestamp();
-    }
-
-    /**
-     * Given a time code i.e. "2300", return a time suitable for HTML5 inputs, i.e. "23:00".
-     *
-     * @param string|int $time_code
-     * @return string
-     */
-    public static function formatTimeCodeForInput($time_code): string
-    {
-        $now = Chronos::now(new \DateTimeZone(date_default_timezone_get()));
-        return self::getDateTime($time_code, $now)
-            ->format('H:i');
-    }
-
-    /**
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
      * @param string|int $time_code
@@ -831,20 +745,5 @@ class StationPlaylist
 
         $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
         return $now->setTime(substr($time_code, 0, 2), substr($time_code, 2));
-    }
-
-    /**
-     * Return the current UTC time in "time code" style.
-     *
-     * @param Chronos|null $now
-     * @return int
-     */
-    public static function getCurrentTimeCode(Chronos $now = null): int
-    {
-        if ($now === null) {
-            $now = Chronos::now(new \DateTimeZone('UTC'));
-        }
-
-        return (int)$now->format('Hi');
     }
 }

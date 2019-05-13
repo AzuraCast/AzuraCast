@@ -52,6 +52,9 @@ class PlaylistsController extends AbstractStationCrudController
             }
         }
 
+        $tz = new \DateTimeZone($station->getTimezone());
+        $now = Chronos::now($tz);
+
         $playlists = [];
 
         $songs_query = $this->em->createQuery(/** @lang DQL */'
@@ -63,8 +66,16 @@ class PlaylistsController extends AbstractStationCrudController
         foreach ($all_playlists as $playlist) {
             $playlist_row = $this->record_repo->toArray($playlist);
 
-            if ($playlist->getIsEnabled() && $playlist->getType() === 'default') {
-                $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
+            if ($playlist->getIsEnabled()) {
+                if (Entity\StationPlaylist::TYPE_DEFAULT === $playlist->getType()) {
+                    $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
+                } elseif (Entity\StationPlaylist::TYPE_SCHEDULED === $playlist->getType()) {
+                    $schedule_start = Entity\StationPlaylist::getDateTime($playlist->getScheduleStartTime(), $now);
+                    $schedule_end = Entity\StationPlaylist::getDateTime($playlist->getScheduleEndTime(), $now);
+
+                    $playlist_row['schedule_start'] = $schedule_start->toIso8601String();
+                    $playlist_row['schedule_end'] = $schedule_end->toIso8601String();
+                }
             }
 
             $song_totals = $songs_query->setParameter('playlist', $playlist)
@@ -93,22 +104,20 @@ class PlaylistsController extends AbstractStationCrudController
      */
     public function scheduleAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $utc = new \DateTimeZone('UTC');
-        $user_tz = new \DateTimeZone(date_default_timezone_get());
+        $station = $request->getStation();
+        $tz = new \DateTimeZone($station->getTimezone());
 
         $start_date_str = substr($request->getParam('start'), 0, 10);
-        $start_date = Chronos::createFromFormat('Y-m-d', $start_date_str, $utc)
+        $start_date = Chronos::createFromFormat('Y-m-d', $start_date_str, $tz)
             ->subDay();
 
         $end_date_str = substr($request->getParam('end'), 0, 10);
-        $end_date = Chronos::createFromFormat('Y-m-d', $end_date_str, $utc);
-
-        $station = $request->getStation();
+        $end_date = Chronos::createFromFormat('Y-m-d', $end_date_str, $tz);
 
         /** @var Entity\StationPlaylist[] $all_playlists */
         $playlists = $station->getPlaylists()->filter(function($record) {
             /** @var Entity\StationPlaylist $record */
-            return ($record->getType() === 'scheduled');
+            return ($record->getType() === Entity\StationPlaylist::TYPE_SCHEDULED);
         });
 
         $events = [];
@@ -131,9 +140,6 @@ class PlaylistsController extends AbstractStationCrudController
                 if ($playlist_end < $playlist_start) {
                     $playlist_end = $playlist_end->addDay();
                 }
-
-                $playlist_start = $playlist_start->setTimezone($user_tz);
-                $playlist_end = $playlist_end->setTimezone($user_tz);
 
                 $events[] = [
                     'id' => $playlist->getId(),

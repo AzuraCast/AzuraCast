@@ -29,7 +29,7 @@
             <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents']) ?></h3>
         </div>
         <div class="card-body">
-            <p class="card-text"><?=$customization->formatDateTime($sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
+            <p class="card-text"><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></p>
         </div>
         <div class="card-actions">
             <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>">

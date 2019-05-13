@@ -281,18 +281,6 @@ return [
                     ]
                 ],
 
-                'schedule_tz' => [
-                    'select',
-                    [
-                        'label' => __('Time Zone'),
-                        'label_class' => 'mb-2',
-                        'description' => __('The time zone for these scheduled times and the days specified below.'),
-                        'options' => \Azura\Timezone::fetchSelect(),
-                        'default' => $customization->getTimeZone(),
-                        'form_group_class' => 'col-md-6 mt-1',
-                    ]
-                ],
-
                 'schedule_days' => [
                     'checkbox',
                     [
@@ -307,7 +295,7 @@ return [
                             6 => __('Saturday'),
                             7 => __('Sunday'),
                         ],
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-12 mt-3',
                     ]
                 ],
 

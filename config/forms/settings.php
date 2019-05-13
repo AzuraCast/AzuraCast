@@ -31,18 +31,6 @@ return [
                     ],
                 ],
 
-                Entity\Settings::TIMEZONE => [
-                    'select',
-                    [
-                        'label' => __('System Default Time Zone'),
-                        'description' => __('For users who have not customized their time zone, all times displayed on the site will be based on this time zone.'),
-                        'options' => \Azura\Timezone::fetchSelect(),
-                        'default' => 'UTC',
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-sm-12 mt-3',
-                    ],
-                ],
-
                 Entity\Settings::PREFER_BROWSER_URL => [
                     'toggle',
                     [

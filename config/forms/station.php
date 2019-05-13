@@ -61,6 +61,18 @@ return [
                     ]
                 ],
 
+                'timezone' => [
+                    'select',
+                    [
+                        'label' => __('Time Zone'),
+                        'description' => __('Scheduled playlists and other timed items will be controlled by this time zone.'),
+                        'options' => \Azura\Timezone::fetchSelect(),
+                        'default' => \App\Customization::DEFAULT_TIMEZONE,
+                        'label_class' => 'mb-2',
+                        'form_group_class' => 'col-sm-12 mt-3',
+                    ]
+                ],
+
                 'enable_public_page' => [
                     'toggle',
                     [

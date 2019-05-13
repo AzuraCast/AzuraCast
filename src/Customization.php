@@ -38,10 +38,8 @@ class Customization
     public function init(Request $request): Request
     {
         if (!$this->app_settings->isCli() || $this->app_settings->isTesting()) {
-            $timezone = $this->getTimeZone();
             $locale = $this->getLocale();
         } else {
-            $timezone = self::DEFAULT_TIMEZONE;
             $locale = self::DEFAULT_LOCALE;
         }
 
@@ -57,11 +55,8 @@ class Customization
         // Register translation superglobal functions
         $translator->register();
 
-        self::setGlobalValues($timezone, $locale);
-
-        return $request
-            ->withAttribute('locale', $locale)
-            ->withAttribute('timezone', $timezone);
+        self::setGlobalValues($locale);
+        return $request->withAttribute('locale', $locale);
     }
 
     /**
@@ -72,94 +67,6 @@ class Customization
     public function setUser(Entity\User $user = null): void
     {
         $this->user = $user;
-    }
-
-    /**
-     * Get the user's custom time zone or the system default.
-     *
-     * @return string
-     */
-    public function getTimeZone(): string
-    {
-        if ($this->user !== null && !empty($this->user->getTimezone())) {
-            return $this->user->getTimezone();
-        }
-
-        return $this->getDefaultTimeZone();
-    }
-
-    /**
-     * Return either the configured global default timezone or the system's regular default.
-     *
-     * @return string
-     */
-    public function getDefaultTimeZone(): string
-    {
-        $global_tz = $this->settings_repo->getSetting(Entity\Settings::TIMEZONE);
-
-        if (!empty($global_tz)) {
-            return $global_tz;
-        }
-
-        return date_default_timezone_get();
-    }
-
-    /**
-     * Format the given UNIX timestamp into a locale-friendly time.
-     *
-     * @param int $timestamp
-     * @param bool $use_utc
-     * @param bool $show_timezone_abbr
-     * @return string Formatted time for presentation.
-     */
-    public function formatTime($timestamp = null, $use_utc = false, $show_timezone_abbr = false): string
-    {
-        $timestamp = $timestamp ?? time();
-
-        $time_formats = $this->app_settings['time_formats'];
-        $locale = $this->getLocale();
-
-        $time_format = $time_formats[$locale] ?? $time_formats['default'];
-
-        if ($show_timezone_abbr) {
-            $time_format .= ($use_utc) ? ' \U\T\C' : ' T';
-        }
-
-        return ($use_utc) ? gmdate($time_format, $timestamp) : date($time_format, $timestamp);
-    }
-
-    /**
-     * Format a date/time using PHP's IntlDateFormatter constants.
-     *
-     * @param int $timestamp
-     * @param bool $use_utc
-     * @param int|null $date_display One of:
-     *     IntlDateFormatter::NONE - Do not include
-     *     IntlDateFormatter::FULL - (Tuesday, April 12, 1952 AD or 3:30:42pm PST)
-     *     IntlDateFormatter::LONG (default) - (January 12, 1952 or 3:30:32pm)
-     *     IntlDateFormatter::MEDIUM - (Jan 12, 1952)
-     *     IntlDateFormatter::SHORT - (12/13/52 or 3:30pm)
-     * @param int|null $time_display One of the above.
-     * @return string
-     */
-    public function formatDateTime(
-        $timestamp,
-        $use_utc = false,
-        $date_display = \IntlDateFormatter::LONG,
-        $time_display = \IntlDateFormatter::LONG): string
-    {
-        $timezone = ($use_utc) ? 'UTC' : date_default_timezone_get();
-        $locale = str_replace('.UTF-8', '', $this->getLocale());
-
-        $fmt = new \IntlDateFormatter(
-            $locale,
-            $date_display,
-            $time_display,
-            $timezone,
-            \IntlDateFormatter::GREGORIAN
-        );
-
-        return $fmt->format($timestamp);
     }
 
     /**
@@ -340,19 +247,13 @@ class Customization
     }
 
     /**
-     * @param null $timezone
      * @param null $locale
      */
-    public static function setGlobalValues($timezone = null, $locale = null): void
+    public static function setGlobalValues($locale = null): void
     {
-        if (empty($timezone)) {
-            $timezone = self::DEFAULT_TIMEZONE;
-        }
         if (empty($locale)) {
             $locale = self::DEFAULT_LOCALE;
         }
-
-        date_default_timezone_set($timezone);
 
         putenv("LANG=" . $locale);
         setlocale(\LC_ALL, $locale);

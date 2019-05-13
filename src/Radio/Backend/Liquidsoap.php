@@ -379,15 +379,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      */
     protected function _getScheduledPlaylistPlayTime(Entity\StationPlaylist $playlist): string
     {
-        $playlist_tz = 'UTC'; // TODO
-        $playlist_start_time = $playlist->getScheduleStartTime();
-        $playlist_end_time = $playlist->getScheduleEndTime();
-
-        $start_time = $this->_getOffsetTimeCode($playlist_start_time, $playlist_tz);
-        $end_time = $this->_getOffsetTimeCode($playlist_end_time, $playlist_tz);
+        $start_time = $playlist->getScheduleStartTime();
+        $end_time = $playlist->getScheduleEndTime();
 
         // Handle multi-day playlists.
-        if ($playlist_start_time > $playlist_end_time) {
+        if ($start_time > $end_time) {
             $play_times = [
                 $this->_formatTimeCode($start_time).'-23h59m',
                 '00h00m-'.$this->_formatTimeCode($end_time),
@@ -417,7 +413,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         // Handle once-per-day playlists.
-        $play_time = ($playlist_start_time === $playlist_end_time)
+        $play_time = ($start_time === $end_time)
             ? $this->_formatTimeCode($start_time)
             : $this->_formatTimeCode($start_time) . '-' . $this->_formatTimeCode($end_time);
 
@@ -434,6 +430,20 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         return $play_time;
+    }
+
+    /**
+     * Configure the time offset
+     *
+     * @param int $time_code
+     * @return string
+     */
+    protected function _formatTimeCode($time_code): string
+    {
+        $hours = floor($time_code / 100);
+        $mins = $time_code % 100;
+
+        return $hours . 'h' . $mins . 'm';
     }
 
     /**
@@ -717,57 +727,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         return 'list.hd(get_process_lines("'.$command.'"), default="")';
-    }
-
-    /**
-     * Configure the time offset
-     *
-     * @param int $time_code
-     * @return string
-     */
-    protected function _formatTimeCode($time_code): string
-    {
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
-
-        return $hours . 'h' . $mins . 'm';
-    }
-
-    /**
-     * Given a time code (i.e. from a playlist), calculate the offset time code
-     *
-     * @param int $time_code
-     * @param string $tz
-     * @return int
-     */
-    protected function _getOffsetTimeCode($time_code, $tz = 'UTC'): int
-    {
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
-
-        $system_time_zone = \App\Utilities::getSystemTimeZone();
-
-        if ($system_time_zone !== $tz) {
-            $system_tz = new \DateTimeZone($system_time_zone);
-            $system_dt = new \DateTime('now', $system_tz);
-            $system_offset = $system_tz->getOffset($system_dt);
-
-            $app_tz = new \DateTimeZone($tz);
-            $app_dt = new \DateTime('now', $app_tz);
-            $app_offset = $app_tz->getOffset($app_dt);
-
-            $offset = $system_offset - $app_offset;
-            $offset_hours = floor($offset / 3600);
-
-            $hours += $offset_hours;
-        }
-
-        $hours %= 24;
-        if ($hours < 0) {
-            $hours += 24;
-        }
-
-        return (int)(($hours*100)+$mins);
     }
 
     /**

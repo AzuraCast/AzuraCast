@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.9.4
+  version: 0.9.5
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -1838,7 +1838,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1556210848
+          example: 1557817578
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1934,7 +1934,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1556210848
+              example: 1557817578
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1989,7 +1989,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1556210848
+          example: 1557817578
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2120,7 +2120,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1556210848
+          example: 1557817578
       type: object
     Api_Time:
       properties:
@@ -2283,6 +2283,10 @@ components:
         storage_used_bytes:
           type: string
           example: '1000000000'
+        timezone:
+          description: 'The time zone that station operations should take place in.'
+          type: string
+          example: UTC
       type: object
     StationMedia:
       properties:
@@ -2327,7 +2331,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1556210848
+          example: 1557817578
         fade_overlap:
           description: 'The length of time (in seconds) before the next song starts in the fade;'
           type: number
@@ -2453,12 +2457,6 @@ components:
         schedule_days:
           type: string
           example: '0,1,2,3'
-        play_once_time:
-          type: integer
-          example: 1500
-        play_once_days:
-          type: string
-          example: '0,1,2,3'
         weight:
           type: integer
           example: 3
@@ -2468,17 +2466,9 @@ components:
         include_in_automation:
           type: boolean
           example: false
-        interrupt_other_songs:
-          type: boolean
-          example: false
-        loop_playlist_once:
-          description: 'Whether to loop the playlist at the end of its playback.'
-          type: boolean
-          example: false
-        play_single_track:
-          description: 'Whether to only play a single track from the specified playlist when scheduled.'
-          type: boolean
-          example: false
+        backend_options:
+          type: string
+          example: 'interrupt,loop_once,single_track,merge'
       type: object
     StationRemote:
       properties:
@@ -2550,7 +2540,7 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1556210848
+          example: 1557817578
       type: object
     StationWebhook:
       properties:
@@ -2602,9 +2592,6 @@ components:
         name:
           type: string
           example: 'Demo Account'
-        timezone:
-          type: string
-          example: America/Chicago
         locale:
           type: string
           example: en_US
@@ -2616,10 +2603,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1556210848
+          example: 1557817578
         updated_at:
           type: integer
-          example: 1556210848
+          example: 1557817578
         roles:
           items: {  }
       type: object

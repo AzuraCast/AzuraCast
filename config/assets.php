@@ -254,7 +254,7 @@ return [
                     }
 
                     $locale = str_replace('_', '-', explode('.', $request->getAttribute('locale'))[0]);
-                    return '$(function() { moment.locale('.json_encode($locale).'); });';
+                    return 'moment.locale('.json_encode($locale).');';
                 },
             ],
         ],
@@ -368,11 +368,9 @@ return [
             'js' => [
                 [
                     'src' => 'dist/lib/fullcalendar/fullcalendar.min.js',
-                    'defer' => true,
                 ],
                 [
                     'src' => 'dist/lib/fullcalendar/locale-all.js',
-                    'defer' => true,
                 ],
             ],
             'css' => [

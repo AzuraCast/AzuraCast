@@ -144,7 +144,6 @@ class PlaylistsController extends AbstractStationCrudController
                 $events[] = [
                     'id' => $playlist->getId(),
                     'title' => $playlist->getName(),
-                    'allDay' => $playlist_start->eq($playlist_end),
                     'start' => $playlist_start->toIso8601String(),
                     'end' => $playlist_end->toIso8601String(),
                     'url' => (string)$request->getRouter()->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),

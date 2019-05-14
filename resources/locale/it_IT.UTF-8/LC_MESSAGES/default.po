@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-14 08:16\n"
+"PO-Revision-Date: 2019-05-14 21:06\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -649,7 +649,7 @@ msgstr "Configurazione SHOUTCast"
 #: /var/azuracast/www/config/forms/playlist.php:120
 #: /var/azuracast/www/templates/stations/files/index.phtml:58
 msgid "Select File"
-msgstr ""
+msgstr "Seleziona File"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
@@ -657,11 +657,11 @@ msgstr "Vuoi usare SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Installa da qui
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:40
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "Il fuso orario di questa stazione è attualmente %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:42
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "L'ora attuale nel fuso orario della stazione è %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "Existing playlist imported."
@@ -1548,7 +1548,7 @@ msgstr "Ora di inizio"
 
 #: /var/azuracast/www/config/forms/playlist.php:269
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Per suonare una volta al giorno, imposta le ore di inizio e di fine allo stesso valore."
 
 #: /var/azuracast/www/config/forms/playlist.php:277
 msgid "End Time"
@@ -1556,11 +1556,11 @@ msgstr "Ora di fine"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Se l'ora di fine è precedente all'ora di inizio, la playlist verrà riprodotta durante la notte."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Fuso orario della stazione"
 
 #: /var/azuracast/www/config/forms/playlist.php:297
 msgid "Scheduled Play Days of Week"
@@ -2008,7 +2008,7 @@ msgstr "Fuso orario"
 
 #: /var/azuracast/www/config/forms/station.php:68
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Le playlist programmate e gli altri elementi temporizzati saranno controllati da questo fuso orario."
 
 #: /var/azuracast/www/config/forms/station.php:79
 msgid "Enable Public Page"

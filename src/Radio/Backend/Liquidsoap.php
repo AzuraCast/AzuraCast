@@ -190,12 +190,17 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             /** @var Entity\StationPlaylist $playlist */
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
 
+            $uses_random = true;
+            $uses_reload_mode = true;
+
             if ($playlist->backendLoopPlaylistOnce()) {
                 $playlist_func_name = 'playlist.once';
             } else if ($playlist->backendMerge()) {
                 $playlist_func_name = 'playlist.merge';
+                $uses_reload_mode = false;
             } else {
                 $playlist_func_name = 'playlist';
+                $uses_random = false;
             }
 
             $playlist_config_lines = [];
@@ -207,27 +212,27 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     continue;
                 }
 
-                $playlist_modes = [
-                    Entity\StationPlaylist::ORDER_SEQUENTIAL    => 'normal',
-                    Entity\StationPlaylist::ORDER_SHUFFLE       => 'randomize',
-                    Entity\StationPlaylist::ORDER_RANDOM        => 'random',
-                ];
-
                 // Liquidsoap's playlist functions support very different argument patterns. :/
                 $playlist_params = [
                     'id="'.$this->_cleanUpString($playlist_var_name).'"',
                 ];
 
-                if ('playlist.merge' === $playlist_func_name) {
+                if ($uses_random) {
                     if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()) {
                         $playlist_params[] = 'random=true';
                     }
                 } else {
-                    $playlist_params[] = 'reload_mode="watch"';
+                    $playlist_modes = [
+                        Entity\StationPlaylist::ORDER_SEQUENTIAL    => 'normal',
+                        Entity\StationPlaylist::ORDER_SHUFFLE       => 'randomize',
+                        Entity\StationPlaylist::ORDER_RANDOM        => 'random',
+                    ];
+
+                    $playlist_params[] = 'mode="'.$playlist_modes[$playlist->getOrder()].'"';
                 }
 
-                if ('playlist' === $playlist_func_name) {
-                    $playlist_params[] = 'mode="'.$playlist_modes[$playlist->getOrder()].'"';
+                if ($uses_reload_mode) {
+                    $playlist_params[] = 'reload_mode="watch"';
                 }
 
                 $playlist_params[] = '"'.$playlist_file_path.'"';

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-14 21:11\n"
+"PO-Revision-Date: 2019-05-14 21:25\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2574,7 +2574,21 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <div class=\"col-sm-12 mb-4\">Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</div>"
-msgstr ""
+msgstr "Passaggi per configurare un'applicazione Twitter:<br>\n"
+"\n"
+"                <ol type=\"1\">\n"
+"\n"
+"                    <li>Crea un'app sul <a href=\"%s\" target=\"_blank\">sito applicazioni twitter</a>. \n"
+"\n"
+"                    Utilizza l'URL di base di questa installazione come URL dell'applicazione.</li>\n"
+"\n"
+"                    <li>Nell'applicazione appena creata, clicca il pannello \"Chiavi di accesso e token\".</li>\n"
+"\n"
+"                    <li>Nella parte inferiore della pagina, fai clic su \"Crea il mio token di accesso\".</li>\n"
+"\n"
+"                </ol>\n"
+"\n"
+"                <div class=\"col-sm-12 mb-4\">Una volta completati questi passaggi, inserisci le informazioni ottenute dalla pagina \"Chiavi e accessi\" nei campi sottostanti.</div>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -2999,7 +3013,8 @@ msgstr "Le mie API key"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Le chiavi API possono essere utilizzate per usufruire di alcune funzionalità del sistema senza la necessità di accedere. Tutte le chiavi \n"
+"            che crei, condividono nel sistema i tuoi permessi. Per maggiori informazioni, consulta la <a href=\"%s\">documentazione delle API.</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3700,7 +3715,7 @@ msgstr "Disconnetti curatore"
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
 msgid "Public Pages"
-msgstr ""
+msgstr "Pagine pubbliche"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:37
 msgid "Player Embed Code"
@@ -3708,27 +3723,27 @@ msgstr "Codice integrazione player"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:45
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Richiedi codice da incorporare"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"
-msgstr ""
+msgstr "Disabilita pagine pubbliche?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
 msgid "Enable public pages?"
-msgstr ""
+msgstr "Abilita pagine pubbliche?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:26
 msgid "View"
-msgstr ""
+msgstr "Mostra"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:30
 msgid "Disable song requests?"
-msgstr ""
+msgstr "Disabilita richiesta brani?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:46
 msgid "Enable song requests?"
-msgstr ""
+msgstr "Abilita richiesta brani?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:40
@@ -3737,11 +3752,11 @@ msgstr "Streamer/DJ"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:30
 msgid "Disable streamers?"
-msgstr ""
+msgstr "Disabilita curatori?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:46
 msgid "Enable streamers?"
-msgstr ""
+msgstr "Abilita curatori?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
 msgid "Streams"

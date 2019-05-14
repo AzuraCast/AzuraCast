@@ -11,10 +11,6 @@ class UtilitiesTest extends \Codeception\Test\Unit
         $test_result = \App\Utilities::generatePassword(10);
         $this->assertTrue(strlen($test_result) == 10);
 
-        $test_result = \App\Utilities::timeToText(8640000);
-        $expected_result = '100 days';
-        $this->assertEquals($expected_result, $test_result);
-
         $test_string = 'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet';
         $test_result = \App\Utilities::truncateText($test_string, 15);
         $expected_result = 'Lorem ipsum...';

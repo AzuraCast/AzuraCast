@@ -65,10 +65,8 @@ var jsFiles = {
         "node_modules/chosen-js/chosen-sprite*.png"
     ],
     "moment": [
-        "node_modules/moment/min/moment-with-locales.min.js"
-    ],
-    "moment-timezone": [
-        "node_modules/moment-timezone/builds/moment-timezone-with-data.min.js"
+        "node_modules/moment/min/moment.min.js",
+        "node_modules/moment/min/locales.min.js"
     ],
     "daterangepicker": [
         "node_modules/bootstrap-daterangepicker/daterangepicker.*"

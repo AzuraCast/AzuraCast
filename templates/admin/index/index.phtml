@@ -1,4 +1,11 @@
-<?php $this->layout('main', ['title' => 'Administration', 'manual' => true]); ?>
+<?php
+$this->layout('main', ['title' => 'Administration', 'manual' => true]);
+
+/** @var \Azura\Assets $assets */
+$assets
+    ->load('moment')
+    ->addInlineJs($this->fetch('admin/index/index.js'), 99);
+?>
 
 <h2 class="outside-card-header"><?=__('Administration') ?></h2>
 
@@ -29,7 +36,7 @@
             <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents']) ?></h3>
         </div>
         <div class="card-body">
-            <p class="card-text"><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></p>
+            <p class="card-text"><?=__('Last run: %s', '<time data-duration="'.$sync_info['diff'].'"></time>') ?></p>
         </div>
         <div class="card-actions">
             <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>">

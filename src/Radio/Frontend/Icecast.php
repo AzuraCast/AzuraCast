@@ -105,7 +105,7 @@ class Icecast extends AbstractFrontend
         if (!empty($frontend_config['custom_config'])) {
             $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
             if (!empty($custom_conf)) {
-                $config = Utilities::arrayMergeRecursiveDistinct($config, $custom_conf);
+                $config = self::arrayMergeRecursiveDistinct($config, $custom_conf);
             }
         }
 
@@ -163,7 +163,7 @@ class Icecast extends AbstractFrontend
             $reader = new \App\Xml\Reader;
             $data = $reader->fromFile($icecast_path);
 
-            return Utilities::arrayMergeRecursiveDistinct($defaults, $data);
+            return self::arrayMergeRecursiveDistinct($defaults, $data);
         }
 
         return $defaults;
@@ -273,7 +273,7 @@ class Icecast extends AbstractFrontend
                 $mount_conf = $this->_processCustomConfig($mount_row->getFrontendConfig());
 
                 if (!empty($mount_conf)) {
-                    $mount = Utilities::arrayMergeRecursiveDistinct($mount, $mount_conf);
+                    $mount = self::arrayMergeRecursiveDistinct($mount, $mount_conf);
                 }
             }
 
@@ -306,5 +306,44 @@ class Icecast extends AbstractFrontend
         } else {
             return false;
         }
+    }
+
+    /**
+     * array_merge_recursive does indeed merge arrays, but it converts values with duplicate
+     * keys to arrays rather than overwriting the value in the first array with the duplicate
+     * value in the second array, as array_merge does. I.e., with array_merge_recursive,
+     * this happens (documented behavior):
+     *
+     * array_merge_recursive(array('key' => 'org value'), array('key' => 'new value'));
+     *     => array('key' => array('org value', 'new value'));
+     *
+     * array_merge_recursive_distinct does not change the datatypes of the values in the arrays.
+     * Matching keys' values in the second array overwrite those in the first array, as is the
+     * case with array_merge, i.e.:
+     *
+     * array_merge_recursive_distinct(array('key' => 'org value'), array('key' => 'new value'));
+     *     => array('key' => array('new value'));
+     *
+     * Parameters are passed by reference, though only for performance reasons. They're not
+     * altered by this function.
+     *
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
+     * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+     */
+    public static function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
+    {
+        $merged = $array1;
+        foreach ($array2 as $key => &$value) {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                $merged[$key] = self::arrayMergeRecursiveDistinct($merged[$key], $value);
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+
+        return $merged;
     }
 }

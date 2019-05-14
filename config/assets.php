@@ -237,33 +237,40 @@ return [
         ],
     ],
 
-    'moment' => [
+    'moment_base' => [
         'order' => 8,
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/moment/moment-with-locales.min.js',
-                    'charset' => 'UTF-8',
-                ],
-                [
-                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data.min.js',
-                ],
+                    'src' => 'dist/lib/moment/moment.min.js',
+                ]
             ]
         ],
         'inline' => [
             'js' => [
                 function(Request $request) {
-                    if (!$request->hasAttribute('timezone')) {
+                    if (!$request->hasAttribute('locale')) {
                         return '';
                     }
 
-                    $tz = $request->getAttribute('timezone');
                     $locale = str_replace('_', '-', explode('.', $request->getAttribute('locale'))[0]);
-
-                    return 'moment.tz.setDefault('.json_encode($tz).');'."\n"
-                        .'moment.locale('.json_encode($locale).');';
+                    return '$(function() { moment.locale('.json_encode($locale).'); });';
                 },
             ],
+        ],
+    ],
+
+    // Moment standalone (with locales)
+    'moment' => [
+        'order' => 8,
+        'require' => ['moment_base'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/moment/locales.min.js',
+                    'charset' => 'UTF-8',
+                ]
+            ]
         ],
     ],
 
@@ -356,7 +363,7 @@ return [
 
     'fullcalendar' => [
         'order' => 10,
-        'require' => ['moment'],
+        'require' => ['moment_base'],
         'files' => [
             'js' => [
                 [

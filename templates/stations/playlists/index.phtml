@@ -109,7 +109,7 @@ $assets->load('fullcalendar')
                             </td>
                             <td>
                                 <a href="<?=$router->fromHere('stations:files:index').'#playlist:'.urlencode($row['name']) ?>"><?=$row['num_songs'] ?></a>
-                                (<?=$row['total_length'] ?>)
+                                (<time data-duration="<?=$row['total_length'] ?>"></time>)
                             </td>
                         </tr>
                     <?php endforeach; ?>

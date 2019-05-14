@@ -82,7 +82,7 @@ class PlaylistsController extends AbstractStationCrudController
                 ->getArrayResult();
 
             $playlist_row['num_songs'] = (int)$song_totals[0]['num_songs'];
-            $playlist_row['total_length'] = Utilities::timeToSplitDisplay((int)$song_totals[0]['total_length']);
+            $playlist_row['total_length'] = (int)$song_totals[0]['total_length'];
             $playlists[$playlist->getId()] = $playlist_row;
         }
 

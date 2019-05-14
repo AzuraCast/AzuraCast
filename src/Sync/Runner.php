@@ -189,11 +189,8 @@ class Runner
             ],
         ];
 
-        foreach ($syncs as $sync_key => $sync_info) {
-            $sync_latest = $sync_info['latest'];
-
-            $syncs[$sync_key]['diff'] = time() - $sync_latest;
-            $syncs[$sync_key]['diff_text'] = \App\Utilities::timeDifferenceText($sync_latest, time());
+        foreach ($syncs as &$sync_info) {
+            $sync_info['diff'] = time() - $sync_info['latest'];
         }
 
         return $syncs;

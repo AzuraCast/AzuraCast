@@ -1,0 +1,8 @@
+jQuery(function($) {
+    moment.relativeTimeThreshold('ss', 1);
+    moment.relativeTimeRounding(Math.round);
+
+    $('time').each(function () {
+        $(this).text(moment.duration(0-$(this).data('duration'), "seconds").humanize(true));
+    });
+});

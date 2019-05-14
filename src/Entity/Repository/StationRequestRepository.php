@@ -62,8 +62,7 @@ class StationRequestRepository extends Repository
                 ->getArrayResult();
 
             if (count($recent_requests) > 0) {
-                $threshold_text = \App\Utilities::timeToText($threshold_seconds);
-                throw new \Azura\Exception('You have submitted a request too recently! Please wait '.$threshold_text.' before submitting another one.');
+                throw new \Azura\Exception(__('You have submitted a request too recently! Please wait before submitting another one.'));
             }
         }
 
@@ -118,7 +117,7 @@ class StationRequestRepository extends Repository
      * @return bool
      * @throws \Azura\Exception
      */
-    public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station)
+    public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
     {
         $last_play_threshold_mins = (int)($station->getRequestThreshold() ?? 15);
 
@@ -145,8 +144,7 @@ class StationRequestRepository extends Repository
         }
 
         if ($last_play_time > 0) {
-            $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
-            throw new \Azura\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
+            throw new \Azura\Exception(__('This song was already played too recently. Wait a while before requesting it again.'));
         }
 
         return true;

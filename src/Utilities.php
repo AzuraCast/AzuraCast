@@ -32,93 +32,6 @@ class Utilities
     }
 
     /**
-     * Converts a time from seconds into its constituent time periods.
-     *
-     * @param int $timestamp
-     * @return string The time displayed as years:months:days:hours:minutes:seconds
-     */
-    public static function timeToSplitDisplay(int $timestamp, $delimiter = ':'): string
-    {
-        $d1 = new \DateTime;
-        $d2 = new \DateTime;
-        $d2->add(new \DateInterval('PT'.$timestamp.'S'));
-
-        $iv = $d2->diff($d1);
-        $components = [
-            $iv->y,
-            $iv->m,
-            $iv->d,
-            $iv->h,
-            $iv->i,
-            $iv->s
-        ];
-
-        $show = false;
-        $display = [];
-        foreach($components as $k => $component) {
-            if (0 !== $component || $show || $k >= 4) {
-                if ($show && $k >= 4) {
-                    $display[] = str_pad($component, 2, '0', \STR_PAD_LEFT);
-                } else {
-                    $display[] = $component;
-                }
-
-                $show = true;
-            }
-        }
-
-        return implode($delimiter, $display);
-    }
-
-    /**
-     * Convert a specified number of seconds into a date range.
-     *
-     * @param int $timestamp
-     * @return string
-     */
-    public static function timeToText($timestamp): string
-    {
-        return self::timeDifferenceText(0, $timestamp);
-    }
-
-    /**
-     * Get the textual difference between two strings.
-     *
-     * @param int $timestamp1
-     * @param int $timestamp2
-     * @param int $precision
-     * @return string
-     */
-    public static function timeDifferenceText($timestamp1, $timestamp2, $precision = 1): string
-    {
-        $time_diff = abs($timestamp1 - $timestamp2);
-
-        if ($time_diff < 60) {
-            $time_num = (int)$time_diff;
-
-            return sprintf(n__("%d second", "%d seconds", $time_num), $time_num);
-        }
-        if ($time_diff >= 60 && $time_diff < 3600) {
-            $time_num = round($time_diff / 60, $precision);
-
-            return sprintf(n__("%d minute", "%d minutes", $time_num), $time_num);
-        }
-        if ($time_diff >= 3600 && $time_diff < 216000) {
-            $time_num = round($time_diff / 3600, $precision);
-
-            return sprintf(n__("%d hour", "%d hours", $time_num), $time_num);
-        }
-        if ($time_diff >= 216000 && $time_diff < 10368000) {
-            $time_num = round($time_diff / 86400);
-
-            return sprintf(n__("%d day", "%d days", $time_num), $time_num);
-        }
-
-        $time_num = round($time_diff / 2592000);
-        return sprintf(n__("%d month", "%d months", $time_num), $time_num);
-    }
-
-    /**
      * Truncate text (adding "..." if needed)
      *
      * @param string $text
@@ -204,45 +117,6 @@ class Utilities
     }
 
     /**
-     * array_merge_recursive does indeed merge arrays, but it converts values with duplicate
-     * keys to arrays rather than overwriting the value in the first array with the duplicate
-     * value in the second array, as array_merge does. I.e., with array_merge_recursive,
-     * this happens (documented behavior):
-     *
-     * array_merge_recursive(array('key' => 'org value'), array('key' => 'new value'));
-     *     => array('key' => array('org value', 'new value'));
-     *
-     * array_merge_recursive_distinct does not change the datatypes of the values in the arrays.
-     * Matching keys' values in the second array overwrite those in the first array, as is the
-     * case with array_merge, i.e.:
-     *
-     * array_merge_recursive_distinct(array('key' => 'org value'), array('key' => 'new value'));
-     *     => array('key' => array('new value'));
-     *
-     * Parameters are passed by reference, though only for performance reasons. They're not
-     * altered by this function.
-     *
-     * @param array $array1
-     * @param array $array2
-     * @return array
-     * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
-     * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
-     */
-    public static function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
-    {
-        $merged = $array1;
-        foreach ($array2 as $key => &$value) {
-            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-                $merged[$key] = self::arrayMergeRecursiveDistinct($merged[$key], $value);
-            } else {
-                $merged[$key] = $value;
-            }
-        }
-
-        return $merged;
-    }
-
-    /**
      * Sort a supplied array (the first argument) by one or more indices, specified in this format:
      * arrayOrderBy($data, [ 'index_name', SORT_ASC, 'index2_name', SORT_DESC ])
      *
@@ -295,43 +169,6 @@ class Utilities
         }
 
         return false;
-    }
-
-    /**
-     * Get the system time zone.
-     * @return string
-     */
-    public static function getSystemTimeZone(): string
-    {
-        if (APP_INSIDE_DOCKER) {
-            return 'UTC';
-        }
-
-        if (file_exists('/etc/timezone')) {
-            // Ubuntu / Debian.
-            $data = file_get_contents('/etc/timezone');
-            $data = trim($data);
-
-            if (!empty($data)) {
-                return $data;
-            }
-        } elseif (is_link('/etc/localtime')) {
-            // Mac OS X (and older Linuxes)
-            // /etc/localtime is a symlink to the
-            // timezone in /usr/share/zoneinfo.
-            $filename = readlink('/etc/localtime');
-            if (strpos($filename, '/usr/share/zoneinfo/') === 0) {
-                return substr($filename, 20);
-            }
-        } elseif (file_exists('/etc/sysconfig/clock')) {
-            // RHEL / CentOS
-            $data = parse_ini_file('/etc/sysconfig/clock');
-            if (!empty($data['ZONE'])) {
-                return trim($data['ZONE']);
-            }
-        }
-
-        return 'UTC';
     }
 
     /**

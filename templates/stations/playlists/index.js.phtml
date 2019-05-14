@@ -1,7 +1,15 @@
 $(function() {
-    $('time').each(function() {
-        var tz_display = $(this).data('content');
+
+    moment.relativeTimeThreshold('ss', 1);
+    moment.relativeTimeRounding(function(value) { return Math.round(value * 10) / 10; });
+
+    $('time[data-content]').each(function() {
+        let tz_display = $(this).data('content');
         $(this).text(moment(tz_display).format('LT'));
+    });
+
+    $('time[data-duration]').each(function () {
+        $(this).text(moment.duration($(this).data('duration'), "seconds").humanize());
     });
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

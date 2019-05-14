@@ -1,4 +1,9 @@
 $(function() {
+    $('time').each(function() {
+        var tz_display = $(this).data('content');
+        $(this).text(moment(tz_display).format('LT'));
+    });
+
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var target = $(e.target).attr("href");
 

@@ -8,6 +8,7 @@ $this->layout('main', [
 /** @var \Azura\Assets $assets */
 $assets
     ->load('chosen')
+    ->load('moment')
     ->addInlineJs($this->fetch('stations/playlists/edit.js'), 99)
     ->addInlineJs($this->fetch('system/form_edit.js'));
 ?>

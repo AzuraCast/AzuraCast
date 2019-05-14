@@ -4,6 +4,8 @@ namespace App\Form;
 use App\Entity;
 use App\Http\Request;
 use App\Radio\PlaylistParser;
+use AzuraForms\Field\Markup;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Slim\Http\UploadedFile;
 use Symfony\Component\Serializer\Serializer;
@@ -29,6 +31,21 @@ class StationPlaylistForm extends EntityForm
 
     public function process(Request $request, $record = null)
     {
+        // Set the "Station Time Zone" field.
+        $station = $request->getStation();
+        $station_tz = $station->getTimezone();
+
+        $now_station = Chronos::now(new \DateTimeZone($station_tz))->toIso8601String();
+
+        $tz_string = __('This station\'s time zone is currently %s.', '<b>'.$station_tz.'</b>')
+            . '<br>'
+            . __('The current time in the station\'s time zone is %s.', '<b><time data-content="'.$now_station.'"></time></b>');
+
+        /** @var Markup $tz_field */
+        $tz_field = $this->fields['station_time_zone'];
+        $tz_field->setAttribute('markup', $tz_string);
+
+        // Resume regular record processing.
         $record = parent::process($request, $record);
 
         if ($record instanceof Entity\StationPlaylist) {

@@ -60,14 +60,6 @@ class User
     protected $name;
 
     /**
-     * @ORM\Column(name="timezone", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="America/Chicago")
-     * @var string|null
-     */
-    protected $timezone;
-
-    /**
      * @ORM\Column(name="locale", type="string", length=25, nullable=true)
      *
      * @OA\Property(example="en_US")
@@ -234,22 +226,6 @@ class User
     public function setName($name): void
     {
         $this->name = $this->_truncateString($name, 100);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTimezone(): ?string
-    {
-        return $this->timezone;
-    }
-
-    /**
-     * @param null|string $timezone
-     */
-    public function setTimezone($timezone): void
-    {
-        $this->timezone = $timezone;
     }
 
     /**

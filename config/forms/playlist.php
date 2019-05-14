@@ -3,48 +3,6 @@ use \App\Entity\StationPlaylist;
 
 /** @var \App\Customization $customization */
 
-$local_time_offset = \Azura\Timezone::getOffsetMinutes(null);
-$local_time_hours = floor($local_time_offset / 60);
-$local_time_mins = $local_time_offset % 60;
-
-$hour_select_utc = [];
-$local_to_utc = [];
-
-for ($hr = 0; $hr <= 23; $hr++) {
-    foreach ([0, 15, 30, 45] as $min) {
-        $time_num = ($hr * 100) + $min;
-        $local_time = $time_num + ($local_time_hours * 100) + $local_time_mins;
-
-        if ($local_time > 2400) {
-            $local_time = 2400-$local_time;
-        } else if ($local_time < 0) {
-            $local_time = 2400 + $local_time;
-        }
-
-        $local_to_utc[$local_time] = $time_num;
-
-        $hour_timestamp = StationPlaylist::getTimestamp($time_num);
-
-        $hour_select_utc[$time_num] = sprintf('%s (%s)',
-            $customization->formatTime($hour_timestamp, false, true),
-            $customization->formatTime($hour_timestamp, true, true)
-        );
-    }
-}
-
-// Sort select so 12:00AM appears at the top.
-ksort($local_to_utc, \SORT_NUMERIC);
-
-$hour_select = [];
-foreach($local_to_utc as $local_time => $utc_time) {
-    $hour_select[$utc_time] = $hour_select_utc[$utc_time];
-}
-
-$server_time = __('Your current local time is <b>%s</b> (%s UTC). You can customize your time zone from the "My Account" page.',
-    $customization->formatTime(),
-    $customization->formatTime(null, true)
-);
-
 return [
     'method' => 'post',
     'enctype' => 'multipart/form-data',
@@ -250,7 +208,6 @@ return [
                             StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs.'),
                             StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes.'),
                             StationPlaylist::TYPE_ONCE_PER_HOUR => '<b>'.__('Once per Hour') . ':</b> '.__('Play once per hour at the specified minute.'),
-                            StationPlaylist::TYPE_ONCE_PER_DAY => '<b>' . __('Daily') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
                             StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/azuracast.com/blob/master/AdvancedPlaylists.md'),
                         ],
                         'default' => StationPlaylist::TYPE_DEFAULT,
@@ -305,23 +262,31 @@ return [
             'elements' => [
 
                 'schedule_start_time' => [
-                    'select',
+                    'PlaylistTime', // Custom form field
                     [
                         'label' => __('Start Time'),
-                        'description' => $server_time,
-                        'options' => $hour_select,
                         'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'description' => __('To play once per day, set the start and end times to the same value.'),
+                        'form_group_class' => 'col-md-3 mt-1',
                     ]
                 ],
 
                 'schedule_end_time' => [
-                    'select',
+                    'PlaylistTime',
                     [
                         'label' => __('End Time'),
-                        'description' => __('If the end time is before the start time, the playlist will play overnight until this time on the next day.'),
-                        'options' => $hour_select,
                         'label_class' => 'mb-2',
+                        'description' => __('If the end time is before the start time, the playlist will play overnight.'),
+                        'form_group_class' => 'col-md-3 mt-1',
+                    ]
+                ],
+
+                'station_time_zone' => [
+                    'markup',
+                    [
+                        'label' => __('Station Time Zone'),
+                        'label_class' => 'mb-2',
+                        'description' => '',
                         'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
@@ -340,7 +305,7 @@ return [
                             6 => __('Saturday'),
                             7 => __('Sunday'),
                         ],
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-12 mt-3',
                     ]
                 ],
 
@@ -411,44 +376,6 @@ return [
                 ],
 
             ]
-        ],
-
-        'type_'.StationPlaylist::TYPE_ONCE_PER_DAY => [
-            'legend' => __('Daily'),
-            'legend_class' => 'd-none',
-            'class' => 'type_fieldset',
-            'elements' => [
-
-                'play_once_time' => [
-                    'select',
-                    [
-                        'label' => __('Scheduled Play Time'),
-                        'description' => $server_time,
-                        'options' => $hour_select,
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
-                    ]
-                ],
-
-                'play_once_days' => [
-                    'checkbox',
-                    [
-                        'label' => __('Scheduled Play Days of Week'),
-                        'description' => __('Leave blank to play on every day of the week.'),
-                        'choices' => [
-                            1 => __('Monday'),
-                            2 => __('Tuesday'),
-                            3 => __('Wednesday'),
-                            4 => __('Thursday'),
-                            5 => __('Friday'),
-                            6 => __('Saturday'),
-                            7 => __('Sunday'),
-                        ],
-                        'form_group_class' => 'col-md-6 mt-1',
-                    ]
-                ],
-
-            ],
         ],
 
         'grp_submit' => [

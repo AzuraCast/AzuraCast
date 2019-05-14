@@ -89,19 +89,6 @@ return [
             'legend_class' => 'col-sm-12',
             'elements' => [
 
-                'timezone' => [
-                    'select',
-                    [
-                        'label' => __('Time Zone'),
-                        'description' => __('All times displayed on the site will be based on this time zone.') . '<br>' . sprintf(__('Current server time is <b>%s</b>.'),
-                                date('g:ia')),
-                        'options' => \Azura\Timezone::fetchSelect(),
-                        'default' => \App\Customization::DEFAULT_TIMEZONE,
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-sm-12 mt-3',
-                    ]
-                ],
-
                 'locale' => [
                     'radio',
                     [

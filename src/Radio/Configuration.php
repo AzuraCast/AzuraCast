@@ -127,23 +127,23 @@ class Configuration
         [,$program_name] = explode(':', $adapter->getProgramName($station));
 
         $config_lines = [
-            'user' => 'azuracast',
-            'priority' => $priority,
-            'command' => $adapter->getCommand($station),
-            'directory' => $config_path,
-            'stdout_logfile' => $adapter->getLogPath($station),
+            'user'              => 'azuracast',
+            'priority'          => $priority,
+            'command'           => $adapter->getCommand($station),
+            'directory'         => $config_path,
+            'environment'       => 'TZ="'.$station->getTimezone().'"',
+            'stdout_logfile'    => $adapter->getLogPath($station),
             'stdout_logfile_maxbytes' => '5MB',
             'stdout_logfile_backups' => '10',
-            'redirect_stderr' => 'true',
+            'redirect_stderr'   => 'true',
         ];
 
         $supervisor_config[] = '[program:' . $program_name . ']';
-
         foreach($config_lines as $config_key => $config_value) {
             $supervisor_config[] = $config_key . '=' . $config_value;
         }
-
         $supervisor_config[] = '';
+
         return implode("\n", $supervisor_config);
     }
 

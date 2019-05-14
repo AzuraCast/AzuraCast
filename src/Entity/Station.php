@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Customization;
 use App\Radio\Quota;
 use Azura\Normalizer\Annotation\DeepNormalize;
 use Brick\Math\BigInteger;
@@ -288,6 +289,14 @@ class Station
      * @var string|null
      */
     protected $storage_used_bytes;
+
+    /**
+     * @ORM\Column(name="timezone", type="string", length=100, nullable=true)
+     *
+     * @OA\Property(example="UTC")
+     * @var string|null The time zone that station operations should take place in.
+     */
+    protected $timezone = 'UTC';
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
@@ -1112,6 +1121,26 @@ class Station
     public function getStorageUsePercentage(): int
     {
         return Quota::getPercentage($this->getStorageUsedBytes(), $this->getRawStorageAvailable());
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimezone(): string
+    {
+        if (!empty($this->timezone)) {
+            return $this->timezone;
+        }
+
+        return Customization::DEFAULT_TIMEZONE;
+    }
+
+    /**
+     * @param string|null $timezone
+     */
+    public function setTimezone(?string $timezone): void
+    {
+        $this->timezone = $timezone;
     }
 
     /**

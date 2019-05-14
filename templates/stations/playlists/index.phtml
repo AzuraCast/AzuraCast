@@ -96,16 +96,13 @@ $assets->load('fullcalendar')
                                     <?=__('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_SCHEDULED): ?>
                                     <?=__('Scheduled') ?><br>
-                                    <?=__('Plays between %s and %s', $customization->formatTime(StationPlaylist::getTimestamp($row['schedule_start_time'])), $customization->formatTime(StationPlaylist::getTimestamp($row['schedule_end_time']))) ?>
+                                    <?=__('Plays between %s and %s', '<time data-content="'.$row['schedule_start'].'"></time>', '<time data-content="'.$row['schedule_end'].'"></time>') ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_SONGS): ?>
                                     <?=__('Once per %d Songs', $row['play_per_songs']) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_MINUTES): ?>
                                     <?=__('Once per %d Minutes', $row['play_per_minutes']) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_HOUR): ?>
                                     <?=__('Once per Hour (at :%02d)', $row['play_per_hour_minute']) ?>
-                                <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_DAY): ?>
-                                    <?=__('Once per Day') ?><br>
-                                    <?=__('Plays at %s', $customization->formatTime(StationPlaylist::getTimestamp($row['play_once_time']))) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ADVANCED): ?>
                                     <?=__('Custom') ?>
                                 <?php endif; ?>

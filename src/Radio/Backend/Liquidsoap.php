@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+
 namespace App\Radio\Backend;
 
 use App\Event\Radio\WriteLiquidsoapConfiguration;
@@ -108,6 +109,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '',
             'set("tag.encodings",["UTF-8","ISO-8859-1"])',
             'set("encoder.encoder.export",["artist","title","album","song"])',
+            '',
+            'setenv("TZ", "'.$this->_cleanUpString($station->getTimezone()).'")',
             '',
             '# AutoDJ Next Song Script',
             'def azuracast_next_song() =',
@@ -297,75 +300,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     break;
 
                 case Entity\StationPlaylist::TYPE_SCHEDULED:
-                    $start_time = $this->_getOffsetTimeCode($playlist->getScheduleStartTime());
-                    $end_time = $this->_getOffsetTimeCode($playlist->getScheduleEndTime());
-
-                    // Handle multi-day playlists.
-                    if ($start_time > $end_time) {
-                        $play_times = [
-                            $this->_formatTimeCode($start_time).'-23h59m',
-                            '00h00m-'.$this->_formatTimeCode($end_time),
-                        ];
-
-                        $playlist_schedule_days = $playlist->getScheduleDays();
-                        if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
-                            $current_play_days = [];
-                            $next_play_days = [];
-
-                            foreach($playlist_schedule_days as $day) {
-                                $day = (int)$day;
-                                $current_play_days[] = (($day === 7) ? '0' : $day).'w';
-
-                                $day++;
-                                if ($day > 7) {
-                                    $day = 1;
-                                }
-                                $next_play_days[] = (($day === 7) ? '0' : $day).'w';
-                            }
-
-                            $play_times[0] = '('.implode(' or ', $current_play_days).') and '.$play_times[0];
-                            $play_times[1] = '('.implode(' or ', $next_play_days).') and '.$play_times[1];
-                        }
-
-                        $play_time = '('.implode(') or (', $play_times).')';
-                    } else {
-                        $play_time = $this->_formatTimeCode($start_time) . '-' . $this->_formatTimeCode($end_time);
-
-                        $playlist_schedule_days = $playlist->getScheduleDays();
-                        if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
-                            $play_days = [];
-
-                            foreach($playlist_schedule_days as $day) {
-                                $day = (int)$day;
-                                $play_days[] = (($day === 7) ? '0' : $day).'w';
-                            }
-
-                            $play_time = '('.implode(' or ', $play_days).') and '.$play_time;
-                        }
-                    }
-
-                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
-                    if ($playlist->backendInterruptOtherSongs()) {
-                        $schedule_switches_interrupting[] = $schedule_timing;
-                    } else {
-                        $schedule_switches[] = $schedule_timing;
-                    }
-                    break;
-
-                case Entity\StationPlaylist::TYPE_ONCE_PER_DAY:
-                    $play_time = $this->_formatTimeCode($this->_getOffsetTimeCode($playlist->getPlayOnceTime()));
-
-                    $playlist_once_days = $playlist->getPlayOnceDays();
-                    if (!empty($playlist_once_days) && count($playlist_once_days) < 7) {
-                        $play_days = [];
-
-                        foreach($playlist_once_days as $day) {
-                            $day = (int)$day;
-                            $play_days[] = (($day === 7) ? '0' : $day).'w';
-                        }
-
-                        $play_time = '('.implode(' or ', $play_days).') and '.$play_time;
-                    }
+                    $play_time = $this->_getScheduledPlaylistPlayTime($playlist);
 
                     $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
                     if ($playlist->backendInterruptOtherSongs()) {
@@ -436,6 +371,81 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'end',
             'radio = map_metadata(handle_jingle_mode,update=false,strip=true,insert_missing=false,radio)',
         ]);
+    }
+
+    /**
+     * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
+     *
+     * @param Entity\StationPlaylist $playlist
+     * @return string
+     */
+    protected function _getScheduledPlaylistPlayTime(Entity\StationPlaylist $playlist): string
+    {
+        $start_time = $playlist->getScheduleStartTime();
+        $end_time = $playlist->getScheduleEndTime();
+
+        // Handle multi-day playlists.
+        if ($start_time > $end_time) {
+            $play_times = [
+                $this->_formatTimeCode($start_time).'-23h59m',
+                '00h00m-'.$this->_formatTimeCode($end_time),
+            ];
+
+            $playlist_schedule_days = $playlist->getScheduleDays();
+            if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
+                $current_play_days = [];
+                $next_play_days = [];
+
+                foreach($playlist_schedule_days as $day) {
+                    $day = (int)$day;
+                    $current_play_days[] = (($day === 7) ? '0' : $day).'w';
+
+                    $day++;
+                    if ($day > 7) {
+                        $day = 1;
+                    }
+                    $next_play_days[] = (($day === 7) ? '0' : $day).'w';
+                }
+
+                $play_times[0] = '('.implode(' or ', $current_play_days).') and '.$play_times[0];
+                $play_times[1] = '('.implode(' or ', $next_play_days).') and '.$play_times[1];
+            }
+
+            return '('.implode(') or (', $play_times).')';
+        }
+
+        // Handle once-per-day playlists.
+        $play_time = ($start_time === $end_time)
+            ? $this->_formatTimeCode($start_time)
+            : $this->_formatTimeCode($start_time) . '-' . $this->_formatTimeCode($end_time);
+
+        $playlist_schedule_days = $playlist->getScheduleDays();
+        if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
+            $play_days = [];
+
+            foreach($playlist_schedule_days as $day) {
+                $day = (int)$day;
+                $play_days[] = (($day === 7) ? '0' : $day).'w';
+            }
+
+            $play_time = '('.implode(' or ', $play_days).') and '.$play_time;
+        }
+
+        return $play_time;
+    }
+
+    /**
+     * Configure the time offset
+     *
+     * @param int $time_code
+     * @return string
+     */
+    protected function _formatTimeCode($time_code): string
+    {
+        $hours = floor($time_code / 100);
+        $mins = $time_code % 100;
+
+        return $hours . 'h' . $mins . 'm';
     }
 
     /**
@@ -719,58 +729,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         return 'list.hd(get_process_lines("'.$command.'"), default="")';
-    }
-
-    /**
-     * Configure the time offset
-     *
-     * @param int $time_code
-     * @return string
-     */
-    protected function _formatTimeCode($time_code): string
-    {
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
-
-        return $hours . 'h' . $mins . 'm';
-    }
-
-    /**
-     * Given a time code (i.e. from a playlist), calculate the offset time code
-     *
-     * @param int $time_code
-     * @param string $tz
-     * @return int
-     */
-    protected function _getOffsetTimeCode($time_code, $tz = 'UTC'): int
-    {
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
-
-        $system_time_zone = \App\Utilities::getSystemTimeZone();
-        $app_time_zone = 'UTC';
-
-        if ($system_time_zone !== $app_time_zone) {
-            $system_tz = new \DateTimeZone($system_time_zone);
-            $system_dt = new \DateTime('now', $system_tz);
-            $system_offset = $system_tz->getOffset($system_dt);
-
-            $app_tz = new \DateTimeZone($app_time_zone);
-            $app_dt = new \DateTime('now', $app_tz);
-            $app_offset = $app_tz->getOffset($app_dt);
-
-            $offset = $system_offset - $app_offset;
-            $offset_hours = floor($offset / 3600);
-
-            $hours += $offset_hours;
-        }
-
-        $hours %= 24;
-        if ($hours < 0) {
-            $hours += 24;
-        }
-
-        return (int)(($hours*100)+$mins);
     }
 
     /**

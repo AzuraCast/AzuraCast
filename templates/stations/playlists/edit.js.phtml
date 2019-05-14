@@ -1,5 +1,10 @@
 $(function() {
 
+    $('time').each(function() {
+        var tz_display = $(this).data('content');
+        $(this).text(moment(tz_display).format('LT'));
+    });
+
     if ($('.tab-content').length > 0) {
         $('.tab-content').prependTo('form.form');
 

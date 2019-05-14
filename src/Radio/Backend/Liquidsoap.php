@@ -110,6 +110,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'set("tag.encodings",["UTF-8","ISO-8859-1"])',
             'set("encoder.encoder.export",["artist","title","album","song"])',
             '',
+            'setenv("TZ", "'.$this->_cleanUpString($station->getTimezone()).'")',
+            '',
             '# AutoDJ Next Song Script',
             'def azuracast_next_song() =',
             '  uri = '.$this->_getApiUrlCommand($station, 'nextsong'),

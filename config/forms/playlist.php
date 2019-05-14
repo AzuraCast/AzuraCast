@@ -266,7 +266,7 @@ return [
                     [
                         'label' => __('Start Time'),
                         'label_class' => 'mb-2',
-                        'description' => __('To play once per day, set the start and end times to the same time.'),
+                        'description' => __('To play once per day, set the start and end times to the same value.'),
                         'form_group_class' => 'col-md-3 mt-1',
                     ]
                 ],
@@ -278,6 +278,16 @@ return [
                         'label_class' => 'mb-2',
                         'description' => __('If the end time is before the start time, the playlist will play overnight.'),
                         'form_group_class' => 'col-md-3 mt-1',
+                    ]
+                ],
+
+                'station_time_zone' => [
+                    'markup',
+                    [
+                        'label' => __('Station Time Zone'),
+                        'label_class' => 'mb-2',
+                        'description' => '',
+                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 

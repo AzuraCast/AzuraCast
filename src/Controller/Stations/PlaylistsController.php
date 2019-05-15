@@ -118,7 +118,7 @@ class PlaylistsController extends AbstractStationCrudController
         /** @var Entity\StationPlaylist[] $all_playlists */
         $playlists = $station->getPlaylists()->filter(function($record) {
             /** @var Entity\StationPlaylist $record */
-            return ($record->getType() === Entity\StationPlaylist::TYPE_SCHEDULED);
+            return ($record->getType() === Entity\StationPlaylist::TYPE_SCHEDULED && !$record->isJingle());
         });
 
         $events = [];

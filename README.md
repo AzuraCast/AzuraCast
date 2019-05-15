@@ -53,7 +53,7 @@ Follow our **[installation guide](https://azuracast.com/install.html)** for inst
 
 ### What's Included
 
-Whether you're using the Ansible or Docker installer, AzuraCast will automatically retrieve and install these components for you:
+AzuraCast will automatically retrieve and install these components for you:
 
 #### Radio Software
 

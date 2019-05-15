@@ -1,5 +1,7 @@
 # Support for AzuraCast
 
+**Note:** This support document is specific to users of our standard installation method (using Docker). If you're using the Ansible ("traditional" or "bare-metal") installation, see [this support guide](https://github.com/AzuraCast/azuracast.com/blob/master/LegacySupport.md) instead.
+
 Having trouble with your AzuraCast installation? These pointers may be able to help.
 
 If you still don't find what you're looking for, check the GitHub Issues section for an existing issue relating to the 
@@ -11,34 +13,13 @@ Before submitting any GitHub issues, you should take a look at the terminal logs
 
 Users with the appropriate permissions can also view many logs directly through AzuraCast itself. The Log Viewer feature is available under "Utilities" in each station's management page.
 
-#### Docker
-
-To view logs in Docker, from the directory where your `docker-compose.yml` file is located, you can run:
+From the directory where your `docker-compose.yml` file is located, you can run:
 
 ```bash
 docker-compose logs -f
 ```
 
 This command will show you a running log of all containers. You can also get detailed logs by running `docker-compose logs -f service`, where "service" is one of `web`, `stations`, etc.
-
-#### Ansible
-
-Since the Ansible installation interacts directly with your host server, its logs are in various locations across the system.
-
-- AzuraCast: `/var/azuracast/www_tmp/azuracast.log`
-- Nginx Access: `/var/azuracast/www_tmp/access.log`
-- Nginx Errors: `/var/azuracast/www_tmp/error.log`
-- PHP: `/var/azuracast/www_tmp/php_errors.log`
-- Supervisord: `/var/azuracast/www_tmp/supervisord.log`
-- Redis: `/var/log/redis/redis-server.log`
-- MariaDB: `/var/log/mysql`
-- InfluxDB: `/var/log/influxdb`
-
-For each station, logs for radio software will be inside `/var/azuracast/stations/{station_short_name}/config`, with the following filenames:
-
-- Liquidsoap: `liquidsoap.log`
-- Icecast: `icecast.log`
-- SHOUTcast: `sc_serv.log`
 
 ## Common Solutions
 
@@ -49,17 +30,9 @@ execute the following command to generate a new random password for an account i
 
 Replace `YOUREMAILADDRESS` with the e-mail address whose password you intend to reset.
 
-##### Docker
-
 ```bash
 ./docker.sh cli azuracast:account:reset-password YOUREMAILADDRESS
 ``` 
-
-##### Ansible
-
-```bash
-php /var/azuracast/www/bin/azuracast.php azuracast:account:reset-password YOUREMAILADDRESS
-```
 
 ### Manually Flush the System Cache
 
@@ -70,13 +43,7 @@ date, and they may cause errors. You can always flush all site-wide caches using
 ./docker.sh cli cache:clear
 ``` 
 
-##### Ansible
-
-```bash
-php /var/azuracast/www/bin/azuracast.php cache:clear
-```
-
-### Access Files via SFTP (Docker Installations)
+### Access Files via SFTP
 
 By default, SFTP access isn't set up for Docker based installations. If you have a large volume of media files, you may 
 prefer to upload them via SFTP instead of using the web updater. You should *not* use the host operating system's SFTP,
@@ -85,7 +52,6 @@ however, as Docker stores station media inside a Docker-specific volume.
 The script below will set up a temporary SFTP server that points to your station media directory inside Docker. The server
 will stay running inside the terminal window, so you can easily hit `Ctrl+C` to terminate it when you are finished.
 
-##### Docker
 ```bash
 docker run --rm \
     -v azuracast_station_data:/home/azuracast/stations \
@@ -102,24 +68,10 @@ As long as you leave this script running, it will create a connection that you c
 
 If you intend to leave this script running for long term periods, you must change the password to something more secure.
 
-### Force a Full Update (Ansible Installations)
-
-Normally, the Ansible installer's update script only updates the portion of the system that have been modified since
-your last update. If an update was interrupted or otherwise is causing trouble, you can force the update script to process
-all components, which can often fix any issues:
-
-##### Ansible
-
-```bash
-./update.sh --full
-```
-
 ### Use Non-standard Ports
 
 You may want to serve the AzuraCast web application itself on a different port, or host your radio station on a port that 
 isn't within the default range AzuraCast serves (8000-8999).
-
-#### Docker
 
 To change the ports on which AzuraCast serves HTTP and HTTPS traffic, you can edit the `.env` file on the host to modify the public-facing port numbers as needed. (Note: this file should already exist on your system, but if it doesn't, you can [use this version for reference](https://github.com/AzuraCast/AzuraCast/blob/master/.env).)
 
@@ -136,18 +88,7 @@ You will need to recycle your Docker containers using `docker-compose down`, the
 
 To override more complex functionality in your Docker installation, see the "Customizing Docker" section below.
 
-#### Ansible
-
-To modify the port your web application runs on, modify the configuration file in `/etc/nginx/sites-available/00-azuracast`.
-Note that some updates may overwrite this file.
-
-You can specify any port in any range for your station to use, provided the port isn't already in use.
-
-By default, AzuraCast installs and enables the ufw (uncomplicated firewall) and sets it to lock down traffic to only SSH 
-and the ports used by AzuraCast. If you're using a nonstandard port, you will likely also want to enable incoming traffic
-on that port using the command `ufw allow PORTNUM`, where `PORTNUM` is the new port number.
-
-### Customizing Docker
+## Customizing Docker
 
 Docker installations come with four files by default:
 

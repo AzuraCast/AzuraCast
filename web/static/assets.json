@@ -29,6 +29,7 @@
   "dist/lib/jquery-sortable/jquery-sortable-min.js": "dist/lib/jquery-sortable/jquery-sortable-min-e711561b1b.js",
   "dist/lib/jquery/jquery.min.js": "dist/lib/jquery/jquery-220afd743d.min.js",
   "dist/lib/lodash/lodash.min.js": "dist/lib/lodash/lodash-62acde2a26.min.js",
+  "dist/lib/moment-timezone/moment-timezone-with-data.min.js": "dist/lib/moment-timezone/moment-timezone-with-data-5c8ed7bc8a.min.js",
   "dist/lib/moment/locales.min.js": "dist/lib/moment/locales-473153bad8.min.js",
   "dist/lib/moment/moment.min.js": "dist/lib/moment/moment-761502841c.min.js",
   "dist/lib/proj4/proj4.js": "dist/lib/proj4/proj4-d679f3b9a0.js",

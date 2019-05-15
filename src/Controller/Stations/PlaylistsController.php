@@ -52,8 +52,8 @@ class PlaylistsController extends AbstractStationCrudController
             }
         }
 
-        $tz = new \DateTimeZone($station->getTimezone());
-        $now = Chronos::now($tz);
+        $station_tz = $station->getTimezone();
+        $now = Chronos::now(new \DateTimeZone($station_tz));
 
         $playlists = [];
 
@@ -89,7 +89,8 @@ class PlaylistsController extends AbstractStationCrudController
         return $request->getView()->renderToResponse($response, 'stations/playlists/index', [
             'playlists' => $playlists,
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
-            'schedule_now' => Chronos::now()->toIso8601String(),
+            'station_tz' => $station_tz,
+            'station_now' => $now->toIso8601String(),
             'schedule_url' => $request->getRouter()->named('stations:playlists:schedule', ['station' => $station_id]),
         ]);
     }

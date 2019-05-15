@@ -262,13 +262,25 @@ return [
 
     // Moment standalone (with locales)
     'moment' => [
-        'order' => 8,
+        'order' => 9,
         'require' => ['moment_base'],
         'files' => [
             'js' => [
                 [
                     'src' => 'dist/lib/moment/locales.min.js',
                     'charset' => 'UTF-8',
+                ]
+            ]
+        ],
+    ],
+
+    'moment_timezone' => [
+        'order' => 9,
+        'require' => ['moment_base'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data.min.js',
                 ]
             ]
         ],
@@ -363,7 +375,7 @@ return [
 
     'fullcalendar' => [
         'order' => 10,
-        'require' => ['moment_base'],
+        'require' => ['moment_base', 'moment_timezone'],
         'files' => [
             'js' => [
                 [

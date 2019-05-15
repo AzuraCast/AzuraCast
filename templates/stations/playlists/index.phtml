@@ -6,8 +6,9 @@ $this->layout('main', ['title' => __('Playlists'), 'manual' => true]);
 /** @var \Azura\Assets $assets */
 $assets->load('fullcalendar')
     ->addInlineJs($this->fetch('stations/playlists/index.js', [
-        'schedule_now' => $schedule_now,
-        'schedule_url' => $schedule_url,
+        'station_tz'    => $station_tz,
+        'station_now'   => $station_now,
+        'schedule_url'  => $schedule_url,
     ]));
 ?>
 
@@ -16,14 +17,21 @@ $assets->load('fullcalendar')
         <h2 class="card-title"><?=__('Playlists') ?></h2>
     </div>
     <div class="card-header">
-        <ul class="nav nav-pills card-header-pills">
-            <li class="nav-item">
-                <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="all-playlists" href="#all-playlists"><?=__('All Playlists') ?></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" role="tab" data-toggle="tab" aria-controls="schedule-view" href="#schedule-view"><?=__('Schedule View') ?></a>
-            </li>
-        </ul>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="all-playlists" href="#all-playlists"><?=__('All Playlists') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" role="tab" data-toggle="tab" aria-controls="schedule-view" href="#schedule-view"><?=__('Schedule View') ?></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 text-muted text-right">
+                <?=__('This station\'s time zone is currently %s.', '<b>'.$station_tz.'</b>') ?>
+            </div>
+        </div>
     </div>
     <div role="tabpanel">
         <div class="tab-content">

@@ -5,7 +5,7 @@ $(function() {
 
     $('time[data-content]').each(function() {
         let tz_display = $(this).data('content');
-        $(this).text(moment(tz_display).format('LT'));
+        $(this).text(moment(tz_display).tz('<?=$station_tz ?>').format('LT'));
     });
 
     $('time[data-duration]').each(function () {
@@ -18,6 +18,8 @@ $(function() {
         if (target == '#schedule-view') {
 
             $('#playlist-calendar').fullCalendar({
+                plugins: [ 'momentTimezone' ],
+                timeZone: '<?=$station_tz ?>',
                 themeSystem: 'bootstrap4',
                 nowIndicator: true,
                 defaultView: 'agendaWeek',
@@ -25,7 +27,7 @@ $(function() {
                 header: false,
                 footer: false,
                 height: 'auto',
-                now: '<?=$schedule_now ?>',
+                now: '<?=$station_now ?>',
                 events: '<?=$schedule_url ?>'
             });
 

@@ -104,7 +104,11 @@ $assets->load('fullcalendar')
                                     <?=__('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_SCHEDULED): ?>
                                     <?=__('Scheduled') ?><br>
-                                    <?=__('Plays between %s and %s', '<time data-content="'.$row['schedule_start'].'"></time>', '<time data-content="'.$row['schedule_end'].'"></time>') ?>
+                                    <?php if ($row['schedule_start'] === $row['schedule_end']): ?>
+                                        <?=__('Plays at %s', '<time data-content="'.$row['schedule_start'].'"></time>') ?>
+                                    <?php else: ?>
+                                        <?=__('Plays between %s and %s', '<time data-content="'.$row['schedule_start'].'"></time>', '<time data-content="'.$row['schedule_end'].'"></time>') ?>
+                                    <?php endif; ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_SONGS): ?>
                                     <?=__('Once per %d Songs', $row['play_per_songs']) ?>
                                 <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_MINUTES): ?>

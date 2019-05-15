@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-14 08:16\n"
+"PO-Revision-Date: 2019-05-15 06:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3241,7 +3241,7 @@ msgstr "Demander un titre"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 msgid "Play"
-msgstr ""
+msgstr "Lecture"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
@@ -3595,7 +3595,7 @@ msgstr "En bas"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Up"
-msgstr "En haut"
+msgstr "Haut"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
@@ -3693,7 +3693,7 @@ msgstr "Déconnecter le streamer"
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
 msgid "Public Pages"
-msgstr ""
+msgstr "Page publique"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:37
 msgid "Player Embed Code"
@@ -3701,7 +3701,7 @@ msgstr "Code du lecteur embarqué"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:45
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Demande de code intégré"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"

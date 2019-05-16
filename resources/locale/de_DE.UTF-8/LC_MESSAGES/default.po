@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-14 08:16\n"
+"PO-Revision-Date: 2019-05-16 13:57\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -824,11 +824,11 @@ msgstr[1] "%d Monate"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr "Dieser Port wird bereits von einer anderen Station verwendet."
+msgstr "Der Port %s wird bereits von einer anderen Station verwendet."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr "Das Passwort darf die folgenden Zeichen nicht erhalten: %s"
+msgstr "Das Passwort darf die folgenden Zeichen nicht enthalten: %s"
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:52
@@ -1513,15 +1513,15 @@ msgstr "Optionen für die Audio DJ-Zeitplanung"
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr "Lege fest, wie diese Widedergabliste vom AutoDJ behandeln werden soll."
+msgstr "Lege fest, wie diese Wiedergabliste vom AutoDJ behandelt werden soll."
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Interrupt other songs to play at scheduled time."
-msgstr "Andere Songs unterbrechen, um das Element zu geplanten Zeit abzuspielen."
+msgstr "Andere Songs zur geplanten Zeit unterbrechen."
 
 #: /var/azuracast/www/config/forms/playlist.php:227
 msgid "Only loop through playlist once."
-msgstr "Nur einmaliges Durchlaufen der Playlist"
+msgstr "Wiedergabeliste nur einmal abspielen."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Only play one track at scheduled time."

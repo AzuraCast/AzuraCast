@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-16 13:57\n"
+"PO-Revision-Date: 2019-05-16 14:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1525,11 +1525,11 @@ msgstr "Wiedergabeliste nur einmal abspielen."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Only play one track at scheduled time."
-msgstr "Nur einen Track zur geplanten Zeit spielen"
+msgstr "Nur ein Lied zur geplanten Zeit spielen."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Merge playlist to play as a single track."
-msgstr "Playlist zusammenführen, um sie wie einen einzelnen Track abzuspielen."
+msgstr "Wiedergabeliste zusammenführen, um sie als ein Lied abzuspielen."
 
 #: /var/azuracast/www/config/forms/playlist.php:246
 msgid "Include in Automated Assignment"

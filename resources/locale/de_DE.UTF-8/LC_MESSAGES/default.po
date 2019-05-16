@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-16 14:00\n"
+"PO-Revision-Date: 2019-05-16 14:11\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1513,7 +1513,7 @@ msgstr "Optionen für die Audio DJ-Zeitplanung"
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr "Lege fest, wie diese Wiedergabliste vom AutoDJ behandelt werden soll."
+msgstr "Lege fest, wie diese Wiedergabeliste vom AutoDJ behandelt werden soll."
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Interrupt other songs to play at scheduled time."
@@ -3592,7 +3592,7 @@ msgstr "Wiedergabeliste \"%s\" neu ordnen"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:37
 msgid "Down"
-msgstr "Pfeiltaste Runter"
+msgstr "Nach unten"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Up"

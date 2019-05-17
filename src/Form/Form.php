@@ -25,10 +25,22 @@ class Form extends \AzuraForms\Form
     {
         $output = $this->openForm();
 
-        if ($this->hasErrors()) {
-            foreach($this->errors as $error) {
-                $output .= '<div class="alert alert-danger" role="alert">'.$error.'</div>';
+        if ($this->hasAnyErrors()) {
+            $output .= '<div class="alert alert-danger form-errors d-flex" role="alert">';
+            $output .= '<div class="flex-shrink-0 mt-3 mr-3"><i class="material-icons lg" aria-hidden="true">warning</i></div>';
+            $output .= '<div class="flex-fill">';
+            $output .= '<p>'.__('Errors were encountered when trying to save changes:').'</p>';
+            $output .= '<dl class="row mb-0">';
+
+            foreach($this->getAllErrors() as $error) {
+                $label = ($error->hasLabel()) ? $error->getLabel() : __('General');
+                $output .= '<dt class="col-sm-3 text-truncate">' . $label . '</dt>';
+                $output .= '<dd class="col-sm-9">' . $error->getMessage() . '</dd>';
             }
+
+            $output .= '</dl>';
+            $output .= '</div>';
+            $output .= '</div>';
         }
 
         foreach($this->options['groups'] as $fieldset_id => $fieldset) {

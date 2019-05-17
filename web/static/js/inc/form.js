@@ -55,6 +55,19 @@ function styleForm(form, translations) {
 
     $form.find('input[type=button],input[type=submit],input[type=reset]').addClass('btn m-t-10');
 
+    // Pull errors to the top.
+    let form_errors_block = $form.find('.form-errors');
+    if (form_errors_block.length > 0) {
+        let header_bar = $form.closest('.card').find('.card-header:first');
+
+        if (header_bar.length > 0) {
+            form_errors_block.removeClass('alert')
+                .addClass('card-body');
+
+            header_bar.after(form_errors_block);
+        }
+    }
+
     // Scroll to errors.
     var error_fields = $form.find('.has-error:visible');
     if (error_fields.length > 0) {

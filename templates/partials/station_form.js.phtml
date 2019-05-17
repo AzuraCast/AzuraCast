@@ -3,10 +3,6 @@ $(function() {
     if ($('.tab-content').length > 0) {
         $('.tab-content').prependTo('form.form');
 
-        if ($('form .alert').length > 0) {
-            $('form .alert').appendTo('.card-header:first');
-        }
-
         $('form fieldset#profile').appendTo('#tab-profile');
 
         $('form fieldset#select_frontend_type').appendTo('#tab-frontend');

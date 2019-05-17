@@ -1,14 +1,10 @@
 <?php
-$this->layout('main', [
-    'title' => __('AzuraCast Setup'),
-    'manual' => true
-]);
-
 /** @var \Azura\Assets $assets */
 $assets
     ->addInlineJs($this->fetch('partials/station_form.js'), 99);
-?>
 
+$this->start('stepper');
+?>
 <div class="stepper-horiz">
     <div class="stepper done">
         <div class="stepper-icon">
@@ -29,12 +25,22 @@ $assets
         <span class="stepper-text"><?=__('System Settings') ?></span>
     </div>
 </div>
-
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title"><?=__('Create a New Radio Station') ?></h2>
-        <p><?=__('Continue the setup process by creating your first radio station below. You can edit any of these details later.') ?></p>
-
-        <?=$this->fetch('system/form_edit', ['form' => $form]) ?>
-    </div>
+<?php
+$this->stop();
+$this->start('prefix');
+?>
+<div class="card-body">
+    <p>
+        <?=__('Continue the setup process by creating your first radio station below. You can edit any of these details later.') ?>
+    </p>
 </div>
+<?php
+$this->stop();
+
+echo $this->fetch('system/form_page', [
+    'title'     => __('Create a New Radio Station'),
+    'form'      => $form,
+    'prefix'    => $this->section('prefix'),
+    'stepper'   => $this->section('stepper'),
+]);
+?>

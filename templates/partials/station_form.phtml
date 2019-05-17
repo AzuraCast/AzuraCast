@@ -1,51 +1,11 @@
 <?php
-$this->layout('main', [
-    'title' => $title,
-    'header' => $header,
-    'manual' => true,
-]);
+/**
+ * @var string|null $title
+ * @var string|null $header
+ * @var \Azura\Assets $assets
+ * @var \App\Form\StationForm $form
+ */
 
-/** @var \App\Form\StationForm $form */
+$assets->addInlineJs($this->fetch('partials/station_form.js'), 99);
 
-/** @var \Azura\Assets $assets */
-$assets
-    ->load('chosen')
-    ->addInlineJs($this->fetch('partials/station_form.js'), 99)
-    ->addInlineJs($this->fetch('system/form_edit.js'));
-?>
-
-<section class="card mb-3" role="region">
-    <div class="card-header bg-primary-dark">
-        <h2 class="card-title"><?=$title ?></h2>
-    </div>
-    <div class="card-header">
-        <ul class="nav nav-justified nav-tabs card-header-tabs" role="tablist">
-            <li class="nav-item">
-                <a aria-controls="home" aria-selected="true" class="nav-link active" data-toggle="tab" href="#tab-profile" id="tab-profile-link" role="tab"><?=__('Station Profile') ?></a>
-            </li>
-            <li class="nav-item">
-                <a aria-controls="frontend" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-frontend" id="tab-frontend-link" role="tab"><?=__('Broadcasting') ?></a>
-            </li>
-            <li class="nav-item">
-                <a aria-controls="backend" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-backend" id="tab-backend-link" role="tab"><?=__('AutoDJ') ?></a>
-            </li>
-        <?php if ($form->canSeeAdministration()): ?>
-            <li class="nav-item">
-                <a aria-controls="admin" aria-selected="false" class="nav-link" data-toggle="tab" href="#tab-admin" id="tab-admin-link" role="tab"><?=__('Administration') ?></a>
-            </li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <div class="card-body">
-        <div class="tab-content">
-            <div aria-labelledby="tab-profile-link" class="tab-pane fade show active" id="tab-profile" role="tabpanel"></div>
-            <div aria-labelledby="tab-frontend-link" class="tab-pane fade" id="tab-frontend" role="tabpanel"></div>
-            <div aria-labelledby="tab-backend-link" class="tab-pane fade" id="tab-backend" role="tabpanel"></div>
-        <?php if ($form->canSeeAdministration()): ?>
-            <div aria-labelledby="tab-admin-link" class="tab-pane fade" id="tab-admin" role="tabpanel"></div>
-        <?php endif; ?>
-        </div>
-
-        <?=$form->render() ?>
-    </div>
-</section>
+echo $this->fetch('system/form_page', ['title' => $title, 'header' => $header, 'form' => $form]);

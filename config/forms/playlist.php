@@ -7,11 +7,19 @@ return [
     'method' => 'post',
     'enctype' => 'multipart/form-data',
 
+    'tabs' => [
+        'info'      => __('Basic Information'),
+        'source'    => __('Source'),
+        'scheduling' => __('Scheduling'),
+    ],
+
     'groups' => [
 
         'basic_info' => [
             'legend' => __('Basic Information'),
             'legend_class' => 'd-none',
+            'tab' => 'info',
+
             'elements' => [
                 'is_enabled' => [
                     'toggle',
@@ -60,6 +68,8 @@ return [
         'select_source' => [
             'legend' => __('Source'),
             'legend_class' => 'd-none',
+            'tab' => 'source',
+
             'elements' => [
                 'source' => [
                     'radio',
@@ -82,6 +92,8 @@ return [
             'legend' => __('Song-Based Playlist'),
             'legend_class' => 'd-none',
             'class' => 'source_fieldset',
+            'tab' => 'source',
+
             'elements' => [
 
                 'order' => [
@@ -154,6 +166,8 @@ return [
             'legend' => __('Remote URL Playlist'),
             'legend_class' => 'd-none',
             'class' => 'source_fieldset',
+            'tab' => 'source',
+
             'elements' => [
 
                 'remote_url' => [
@@ -197,6 +211,8 @@ return [
         'select_type' => [
             'legend' => __('Scheduling'),
             'legend_class' => 'd-none',
+            'tab' => 'scheduling',
+
             'elements' => [
                 'type' => [
                     'radio',
@@ -238,6 +254,8 @@ return [
             'legend' => __('General Rotation'),
             'legend_class' => 'd-none',
             'class' => 'type_fieldset',
+            'tab' => 'scheduling',
+
             'elements' => [
 
                 'include_in_automation' => [
@@ -259,6 +277,8 @@ return [
             'legend' => __('Customize Schedule'),
             'legend_class' => 'd-none',
             'class' => 'type_fieldset',
+            'tab' => 'scheduling',
+
             'elements' => [
 
                 'schedule_start_time' => [
@@ -316,6 +336,8 @@ return [
             'legend' => __('Once per x Songs'),
             'legend_class' => 'd-none',
             'class' => 'type_fieldset',
+            'tab' => 'scheduling',
+
             'elements' => [
 
                 'play_per_songs' => [
@@ -338,6 +360,8 @@ return [
             'legend' => __('Once per x Minutes'),
             'legend_class' => 'd-none',
             'class' => 'type_fieldset',
+            'tab' => 'scheduling',
+
             'elements' => [
 
                 'play_per_minutes' => [
@@ -360,6 +384,8 @@ return [
             'legend' => __('Once per Hour'),
             'legend_class' => 'd-none',
             'class' => 'type_fieldset',
+            'tab' => 'scheduling',
+
             'elements' => [
 
                 'play_per_hour_minute' => [

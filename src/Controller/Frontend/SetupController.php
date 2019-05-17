@@ -94,7 +94,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step !== 'register') {
+        if ($current_step !== 'register' && APP_IN_PRODUCTION) {
             return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
@@ -147,7 +147,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step !== 'station') {
+        if ($current_step !== 'station' && APP_IN_PRODUCTION) {
             return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
@@ -172,7 +172,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step !== 'settings') {
+        if ($current_step !== 'settings' && APP_IN_PRODUCTION) {
             return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 

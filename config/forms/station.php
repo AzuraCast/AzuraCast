@@ -18,10 +18,19 @@ return [
     'method' => 'post',
     'enctype' => 'multipart/form-data',
 
+    'tabs' => [
+        'profile'   => __('Station Profile'),
+        'frontend'  => __('Broadcasting'),
+        'backend'   => __('AutoDJ'),
+        'admin'     => __('Administration'),
+    ],
+
     'groups' => [
         'profile' => [
             'legend' => __('Station Profile'),
             'legend_class' => 'd-none',
+            'tab' => 'profile',
+
             'elements' => [
                 'name' => [
                     'text',
@@ -119,6 +128,7 @@ return [
             'legend' => __('Select Broadcasting Service'),
             'legend_class' => 'd-none',
             'class' => 'col-sm-12 mt-3',
+            'tab' => 'frontend',
 
             'elements' => [
                 'frontend_type' => [
@@ -137,6 +147,7 @@ return [
             'legend' => __('Configure Broadcasting Service'),
             'legend_class' => 'd-none',
             'class' => 'frontend_fieldset',
+            'tab' => 'frontend',
 
             'elements' => [
 
@@ -202,6 +213,7 @@ return [
         'select_backend_type' => [
             'legend' => __('Select AutoDJ Service'),
             'legend_class' => 'd-none',
+            'tab' => 'backend',
 
             'elements' => [
                 'backend_type' => [
@@ -221,6 +233,7 @@ return [
             'legend' => __('Configure Liquidsoap'),
             'legend_class' => 'd-none',
             'class' => 'backend_fieldset',
+            'tab' => 'backend',
 
             'elements' => [
 
@@ -427,6 +440,7 @@ return [
         'admin' => [
             'legend' => __('Administration'),
             'legend_class' => 'd-none',
+            'tab' => 'admin',
 
             'elements' => [
 

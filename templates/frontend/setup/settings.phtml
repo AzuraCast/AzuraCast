@@ -1,5 +1,10 @@
-<?php $this->layout('main', ['title' => __('AzuraCast Setup'), 'manual' => true]); ?>
+<?php
+/** @var \Azura\Assets $assets */
+$assets
+    ->addInlineJs($this->fetch('partials/station_form.js'), 99);
 
+$this->start('stepper');
+?>
 <div class="stepper-horiz">
     <div class="stepper done">
         <div class="stepper-icon">
@@ -21,11 +26,22 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title"><?=__('Customize AzuraCast Settings') ?></h2>
-        <p><?=__('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.') ?></p>
-
-        <?=$this->fetch('system/form_edit', ['form' => $form]) ?>
-    </div>
+<?php
+$this->stop();
+$this->start('prefix');
+?>
+<div class="card-body">
+    <p>
+        <?=__('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.') ?>
+    </p>
 </div>
+<?php
+$this->stop();
+
+echo $this->fetch('system/form_page', [
+    'title'     => __('Customize AzuraCast Settings'),
+    'form'      => $form,
+    'prefix'    => $this->section('prefix'),
+    'stepper'   => $this->section('stepper'),
+]);
+?>

@@ -1,11 +1,115 @@
 <?php
+/**
+ * @var string|null $title
+ * @var string|null $header
+ * @var string|null $stepper
+ * @var string|null $prefix
+ * @var \Azura\Assets $assets
+ * @var \App\Form\Form $form
+ */
+
 $this->layout('main', [
     'title' => $title,
-    'header' => $header
+    'header' => $header,
+    'manual' => true,
 ]);
 
-if ($render_mode === 'edit') {
-    echo $this->fetch('system/form_edit', ['form' => $form]);
-} else {
-    echo $form->renderView();
+$assets
+    ->load('chosen')
+    ->load('zxcvbn')
+    ->addInlineJs($this->fetch('system/form_edit.js'));
+
+$options = $form->getOptions();
+
+$tabs = [];
+$groups = $options['groups'] ?? [];
+
+if (isset($options['tabs'])) {
+    $i = 0;
+    foreach($options['tabs'] as $tab_key => $tab_name) {
+        $i++;
+
+        $tabs[$tab_key] = [
+            'label' => $tab_name,
+            'is_active' => 1 === $i,
+            'groups' => [],
+        ];
+    }
+
+    foreach($groups as $group_key => $group) {
+        if (isset($group['tab'])) {
+            $tab = $group['tab'];
+            if (isset($tabs[$tab])) {
+                $tabs[$tab]['groups'][$group_key] = $group;
+                unset($groups[$group_key]);
+            }
+        }
+    }
+
+    $tabs = array_filter($tabs, function($tab) {
+        return !empty($tab['groups']);
+    });
 }
+?>
+
+<?=($stepper ?? '') ?>
+
+<section class="card mb-3" role="region">
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=$title ?></h2>
+    </div>
+<?php if ($form->hasAnyErrors()): ?>
+    <div class="card-body alert-danger form-errors d-flex" role="alert">
+        <div class="flex-shrink-0 mt-3 mr-3">
+            <i class="material-icons lg" aria-hidden="true">warning</i>
+        </div>
+        <div class="flex-fill">
+            <p><?=__('Errors were encountered when trying to save changes:') ?></p>
+            <dl class="row mb-0">
+            <?php foreach($form->getAllErrors() as $error): ?>
+                <dt class="col-sm-3 text-truncate"><?=($error->hasLabel() ? $error->getLabel() : __('General')) ?></dt>
+                <dd class="col-sm-9"><?=$error->getMessage() ?></dd>
+            <?php endforeach; ?>
+            </dl>
+        </div>
+    </div>
+<?php endif; ?>
+
+    <?=($prefix ?? '') ?>
+
+<?php if (!empty($tabs)): ?>
+    <div class="card-header">
+        <ul class="nav nav-justified nav-tabs card-header-tabs" role="tablist">
+        <?php foreach($tabs as $tab_key => $tab): ?>
+            <li class="nav-item">
+                <a aria-controls="<?=$tab_key ?>" aria-selected="true" class="nav-link <?=($tab['is_active'] ? 'active' : '') ?>" data-toggle="tab" href="#tab-<?=$tab_key ?>" id="tab-<?=$tab_key ?>-link" role="tab"><?=$tab['label'] ?></a>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+    <div class="card-body">
+        <?=$form->openForm() ?>
+
+    <?php if (!empty($tabs)): ?>
+        <div class="tab-content">
+        <?php foreach($tabs as $tab_key => $tab): ?>
+            <div aria-labelledby="tab-<?=$tab_key ?>-link" class="tab-pane fade <?=($tab['is_active'] ? 'show active' : '') ?>" id="tab-<?=$tab_key ?>" role="tabpanel">
+                <?php foreach($tab['groups'] as $fieldset_id => $fieldset): ?>
+                    <?=$this->fetch('system/form_group', ['fieldset_id' => $fieldset_id, 'fieldset' => $fieldset, 'form' => $form]) ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php foreach($groups as $fieldset_id => $fieldset): ?>
+        <?=$this->fetch('system/form_group', ['fieldset_id' => $fieldset_id, 'fieldset' => $fieldset, 'form' => $form]) ?>
+    <?php endforeach; ?>
+
+        <?=$form->renderHidden() ?>
+
+        <?=$form->closeForm() ?>
+    </div>
+
+</section>

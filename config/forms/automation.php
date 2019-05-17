@@ -14,7 +14,6 @@ return [
                     0 => __('Disabled'),
                     1 => __('Enabled'),
                 ],
-                'form_group_class' => 'col-sm-12 mt-1',
             ]
         ],
 
@@ -31,7 +30,6 @@ return [
                     30 => sprintf(__('%d days'), 30),
                     60 => sprintf(__('%d days'), 60),
                 ],
-                'form_group_class' => 'col-sm-12 mt-1',
             ]
         ],
 
@@ -41,7 +39,6 @@ return [
                 'type' => 'submit',
                 'label' => __('Save Changes'),
                 'class' => 'btn btn-lg btn-primary',
-                'form_group_class' => 'col-sm-12 mt-1',
             ]
         ],
 

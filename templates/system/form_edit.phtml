@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var \Azura\Assets $assets
+ * @var \App\Form\Form $form
+ */
+
+$assets
+    ->load('chosen')
+    ->load('zxcvbn')
+    ->addInlineJs($this->fetch('system/form_edit.js'));
+
+echo $form->render();

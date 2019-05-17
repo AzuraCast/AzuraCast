@@ -260,7 +260,7 @@ class Icecast extends AbstractFrontend
                 'stream-name' => $station->getName(),
                 'stream-description' => $station->getDescription(),
                 'stream-url' => $station->getUrl(),
-                'stream-genre' => $station->getGenre(),
+                'genre' => $station->getGenre(),
             ];
 
             if (!empty($mount_row->getFallbackMount())) {

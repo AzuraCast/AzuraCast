@@ -150,7 +150,8 @@ class DashboardController
 
             $cache_name = 'homepage/metrics/' . implode(',', $stats_cache_stations);
 
-            $metrics = $this->cache->getOrSet($cache_name, function () use ($stations) {
+            // $metrics = $this->cache->getOrSet($cache_name, function () use ($stations) {
+            $metrics = function() use ($stations) {
 
                 // Statistics by day.
                 $station_averages = [];
@@ -181,17 +182,16 @@ class DashboardController
                     $series_split = explode('.', $stat_series);
 
                     if ($series_split[1] === 'all') {
-                        $network_name = 'All Stations';
                         foreach ($stat_rows as $stat_row) {
                             // Add 12 hours to statistics so they always land inside the day they represent.
                             $stat_row['time'] = $stat_row['time'] + (60 * 60 * 12 * 1000);
 
-                            $network_data[$network_name]['ranges'][$stat_row['time']] = [
+                            $network_data['ranges'][$stat_row['time']] = [
                                 $stat_row['time'],
                                 $stat_row['min'],
                                 $stat_row['max']
                             ];
-                            $network_data[$network_name]['averages'][$stat_row['time']] = [
+                            $network_data['averages'][$stat_row['time']] = [
                                 $stat_row['time'],
                                 round($stat_row['value'], 2)
                             ];
@@ -211,31 +211,39 @@ class DashboardController
                 }
 
                 $network_metrics = [];
-                foreach ($network_data as $network_name => $data_charts) {
-                    if (isset($data_charts['ranges'])) {
-                        $metric_row = new \stdClass;
-                        $metric_row->name = __('%s Listener Range', $network_name);
-                        $metric_row->type = 'arearange';
+                $network_metrics_alt = [];
 
-                        ksort($data_charts['ranges']);
-                        $metric_row->data = array_values($data_charts['ranges']);
+                if (isset($network_data['averages'])) {
+                    $metric_row = new \stdClass;
+                    $metric_row->label = __('All Stations Daily Average');
+                    $metric_row->type = 'line';
+                    $metric_row->fill = false;
 
-                        $network_metrics[] = $metric_row;
+                    $network_metrics_alt[] = '<p>'.$metric_row->label.'</p>';
+                    $network_metrics_alt[] = '<dl>';
+
+                    ksort($network_data['averages']);
+
+                    $series_data = [];
+                    foreach($network_data['averages'] as $serie) {
+                        $series_row = new \stdClass;
+                        $series_row->t = $serie[0];
+                        $series_row->y = $serie[1];
+                        $series_data[] = $series_row;
+
+                        $serie_date = gmdate('Y-m-d', $serie[0]/1000);
+                        $network_metrics_alt[] = '<dt><time data-original="'.$serie[0].'">'.$serie_date.'</time></dt>';
+                        $network_metrics_alt[] = '<dd>'.$serie[1].' '.__('Listeners').'</dd>';
                     }
 
-                    if (isset($data_charts['averages'])) {
-                        $metric_row = new \stdClass;
-                        $metric_row->name = __('%s Daily Average', $network_name);
-                        $metric_row->type = 'spline';
+                    $network_metrics_alt[] = '</dl>';
 
-                        ksort($data_charts['averages']);
-                        $metric_row->data = array_values($data_charts['averages']);
-
-                        $network_metrics[] = $metric_row;
-                    }
+                    $metric_row->data = $series_data;
+                    $network_metrics[] = $metric_row;
                 }
 
                 $station_metrics = [];
+                $station_metrics_alt = [];
 
                 foreach ($stations as $station) {
                     /** @var Entity\Station $station */
@@ -243,21 +251,46 @@ class DashboardController
 
                     if (isset($station_averages[$station_id])) {
                         $series_obj = new \stdClass;
-                        $series_obj->name = $station->getName();
-                        $series_obj->type = 'spline';
+                        $series_obj->label = $station->getName();
+                        $series_obj->type = 'line';
+                        $series_obj->fill = false;
+
+                        $station_metrics_alt[] = '<p>'.$series_obj->label.'</p>';
+                        $station_metrics_alt[] = '<dl>';
 
                         ksort($station_averages[$station_id]);
-                        $series_obj->data = array_values($station_averages[$station_id]);
+
+                        $series_data = [];
+                        foreach($station_averages[$station_id] as $serie) {
+                            $series_row = new \stdClass;
+                            $series_row->t = $serie[0];
+                            $series_row->y = $serie[1];
+                            $series_data[] = $series_row;
+
+                            $serie_date = gmdate('Y-m-d', $serie[0]/1000);
+                            $station_metrics_alt[] = '<dt><time data-original="'.$serie[0].'">'.$serie_date.'</time></dt>';
+                            $station_metrics_alt[] = '<dd>'.$serie[1].' '.__('Listeners').'</dd>';
+                        }
+
+                        $station_metrics_alt[] = '</dl>';
+
+                        $series_obj->data = $series_data;
+
                         $station_metrics[] = $series_obj;
                     }
                 }
 
                 return [
                     'network' => json_encode($network_metrics),
+                    'network_alt' => implode('', $network_metrics_alt),
                     'station' => json_encode($station_metrics),
+                    'station_alt' => implode('', $station_metrics_alt),
                 ];
 
-            }, 600);
+                // }, 600);
+            };
+
+            $metrics = $metrics();
         }
 
         return $view->renderToResponse($response, 'frontend/index/index', [

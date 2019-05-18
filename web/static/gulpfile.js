@@ -59,6 +59,11 @@ var jsFiles = {
     "zxcvbn": [
         "node_modules/zxcvbn/dist/zxcvbn.js"
     ],
+    "chartjs": [
+        "node_modules/chart.js/dist/Chart.min.js",
+        "node_modules/chart.js/dist/Chart.min.css",
+        "node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js"
+    ],
     "chosen": [
         "node_modules/chosen-js/chosen.jquery.min.js",
         "node_modules/chosen-js/chosen.min.css",

@@ -148,6 +148,30 @@ return [
             ],
         ],
     ],
+
+    'chartjs' => [
+        'order' => 20,
+        'require' => ['moment_timezone'],
+
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/chartjs/Chart.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/lib/chartjs/chartjs-plugin-colorschemes.min.js',
+                    'defer' => true,
+                ],
+            ],
+            'css' => [
+                [
+                    'href' => 'dist/lib/chartjs/Chart.min.css',
+                ]
+            ],
+        ]
+    ],
+
     'highcharts' => [
         'order' => 20,
         'files' => [

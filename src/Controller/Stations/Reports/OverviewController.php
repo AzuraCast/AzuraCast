@@ -107,7 +107,7 @@ class OverviewController
         $day_of_week_stats = [];
 
         foreach($days_of_week_names as $day_index => $day_name) {
-            $day_totals = $days_of_week[$day_index] ?? [];
+            $day_totals = $days_of_week[$day_index] ?? [0];
 
             $stat_value = round(array_sum($day_totals) / count($day_totals), 2);
             $day_of_week_stats[] = $stat_value;

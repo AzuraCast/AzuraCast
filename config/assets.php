@@ -172,62 +172,6 @@ return [
         ]
     ],
 
-    'highcharts' => [
-        'order' => 20,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/highcharts/highcharts.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/highcharts/highcharts-more.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/highcharts/exporting.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/highcharts/accessibility.js',
-                    'defer' => true,
-                ],
-            ]
-        ]
-    ],
-    'highmaps' => [
-        'order' => 22,
-        'require' => ['jquery', 'highcharts'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/proj4/proj4.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/highcharts/map.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'js/highmaps/world.js',
-                    'defer' => true,
-                ],
-            ]
-        ],
-    ],
-    'highcharts_theme_dark' => [
-        'order' => 21,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'js/highcharts/dark-blue.js',
-                    'defer' => true,
-                ],
-            ]
-        ]
-    ],
-    'highcharts_theme_light' => [], //empty placeholder
-
     'zxcvbn' => [
         'order' => 10,
         'files' => [

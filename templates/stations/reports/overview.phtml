@@ -1,17 +1,14 @@
-<?php $this->layout('main', ['title' => __('Statistics Overview'), 'manual' => true]) ?>
-
 <?php
-/** @var \Azura\Assets $assets */
+/**
+ * @var \Azura\Assets $assets
+ * @var array $charts
+ */
+
+$this->layout('main', ['title' => __('Statistics Overview'), 'manual' => true]);
+
 $assets
-    ->load('highcharts')
-    ->load('highcharts_theme_'.$customization->getTheme())
-    ->addInlineJs($this->fetch('stations/reports/overview.js', [
-        'daily_ranges' => $daily_ranges,
-        'hourly_averages' => $hourly_averages,
-        'daily_averages' => $daily_averages,
-        'day_of_week_stats' => $day_of_week_stats,
-        'averages_by_hour' => $averages_by_hour,
-    ]));
+    ->load('chartjs')
+    ->addInlineJs($this->fetch('stations/reports/overview.js', ['charts' => $charts]));
 ?>
 
 <div class="row">
@@ -32,13 +29,19 @@ $assets
             </div>
             <div class="tab-content">
                 <div class="tab-pane px-0 card-body active" id="listeners-by-day" role="tabpanel">
-                    <div id="listeners_by_day" style="height: 250px;"></div>
+                    <canvas id="listeners_by_day" style="width: 100%;" aria-label="<?=__('Listeners by Day') ?>" role="img">
+                        <?=$charts['daily_alt'] ?>
+                    </canvas>
                 </div>
                 <div class="tab-pane px-0 card-body" id="listeners-by-hour" role="tabpanel">
-                    <div id="listeners_by_hour" style="height: 250px;"></div>
+                    <canvas id="listeners_by_hour" style="width: 100%;" aria-label="<?=__('Listeners by Hour') ?>" role="img">
+                        <?=$charts['hourly_alt'] ?>
+                    </canvas>
                 </div>
                 <div class="tab-pane px-0 card-body" id="listeners-by-day-of-week" role="tabpanel">
-                    <div id="listeners_by_day_of_week" style="height: 250px;"></div>
+                    <canvas id="listeners_by_day_of_week" style="width: 100%;" aria-label="<?=__('Listeners by Day of Week') ?>" role="img">
+                        <?=$charts['day_of_week_alt'] ?>
+                    </canvas>
                 </div>
             </div>
         </section>

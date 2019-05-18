@@ -41,7 +41,6 @@ class OverviewController
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
-
             return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
         }
 
@@ -49,32 +48,81 @@ class OverviewController
         $threshold = strtotime('-1 month');
 
         // Statistics by day.
-        $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d',
-            [
-                'epoch' => 'ms',
-            ]);
+        $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d', [
+            'epoch' => 'ms',
+        ]);
 
-        $daily_stats = $resultset->getPoints();
+        $daily_chart = new \stdClass;
+        $daily_chart->label = __('Listeners by Day');
+        $daily_chart->type = 'line';
+        $daily_chart->fill = false;
 
-        $daily_ranges = [];
+        $daily_alt = [
+            '<p>'.$daily_chart->label.'</p>',
+            '<dl>',
+        ];
         $daily_averages = [];
+
         $days_of_week = [];
 
-        foreach ($daily_stats as $stat) {
-            // Add 12 hours to statistics so they always land inside the day they represent.
-            $stat['time'] = $stat['time'] + (60 * 60 * 12 * 1000);
+        foreach ($resultset->getPoints() as $stat) {
+            $avg_row = new \stdClass;
+            $avg_row->t = $stat['time'];
+            $avg_row->y = round($stat['value'], 2);
+            $daily_averages[] = $avg_row;
 
-            $daily_ranges[] = [$stat['time'], $stat['min'], $stat['max']];
-            $daily_averages[] = [$stat['time'], round($stat['value'], 2)];
+            $row_date = gmdate('Y-m-d', $avg_row->t/1000);
+            $daily_alt[] = '<dt><time data-original="'.$avg_row->t.'">'.$row_date.'</time></dt>';
+            $daily_alt[] = '<dd>'.$avg_row->y.' '.__('Listeners').'</dd>';
 
-            $day_of_week = date('l', round($stat['time'] / 1000));
+            $day_of_week = (int)gmdate('N', round($stat['time'] / 1000)) - 1;
             $days_of_week[$day_of_week][] = $stat['value'];
         }
 
+        $daily_alt[] = '</dl>';
+        $daily_chart->data = $daily_averages;
+
+        $daily_data = [
+            'datasets' => [$daily_chart],
+        ];
+
+        $day_of_week_chart = new \stdClass;
+        $day_of_week_chart->label = __('Listeners by Day of Week');
+
+        $day_of_week_alt = [
+            '<p>'.$day_of_week_chart->label.'</p>',
+            '<dl>',
+        ];
+
+        $days_of_week_names = [
+            __('Monday'),
+            __('Tuesday'),
+            __('Wednesday'),
+            __('Thursday'),
+            __('Friday'),
+            __('Saturday'),
+            __('Sunday'),
+        ];
+
         $day_of_week_stats = [];
-        foreach ($days_of_week as $day_name => $day_totals) {
-            $day_of_week_stats[] = [$day_name, round(array_sum($day_totals) / count($day_totals), 2)];
+
+        foreach($days_of_week_names as $day_index => $day_name) {
+            $day_totals = $days_of_week[$day_index] ?? [];
+
+            $stat_value = round(array_sum($day_totals) / count($day_totals), 2);
+            $day_of_week_stats[] = $stat_value;
+
+            $day_of_week_alt[] = '<dt>'.$day_name.'</dt>';
+            $day_of_week_alt[] = '<dd>'.$stat_value.' '.__('Listeners').'</dd>';
         }
+
+        $day_of_week_alt[] = '</dl>';
+        $day_of_week_chart->data = $day_of_week_stats;
+
+        $day_of_week_data = [
+            'datasets' => [$day_of_week_chart],
+            'labels' => $days_of_week_names,
+        ];
 
         // Statistics by hour.
         $resultset = $this->influx->query('SELECT * FROM "1h"."station.' . $station->getId() . '.listeners"', [
@@ -91,15 +139,38 @@ class OverviewController
             $hourly_ranges[] = [$stat['time'], $stat['min'], $stat['max']];
             $hourly_averages[] = [$stat['time'], round($stat['value'], 2)];
 
-            $hour = (int)date('G', round($stat['time'] / 1000));
+            $hour = (int)gmdate('G', round($stat['time'] / 1000));
             $totals_by_hour[$hour][] = $stat['value'];
         }
 
-        $averages_by_hour = [];
+        $hourly_labels = [];
+        $hourly_chart = new \stdClass;
+        $hourly_chart->label = __('Listeners by Hour');
+
+        $hourly_rows = [];
+        $hourly_alt = [
+            '<p>'.$hourly_chart->label.'</p>',
+            '<dl>',
+        ];
+
         for ($i = 0; $i < 24; $i++) {
+            $hourly_labels[] = $i.':00';
             $totals = $totals_by_hour[$i] ?: [0];
-            $averages_by_hour[] = [$i . ':00', round(array_sum($totals) / count($totals), 2)];
+
+            $stat_value = round(array_sum($totals) / count($totals), 2);
+            $hourly_rows[] = $stat_value;
+
+            $hourly_alt[] = '<dt>'.$i.':00</dt>';
+            $hourly_alt[] = '<dd>'.$stat_value.' '.__('Listeners').'</dd>';
         }
+
+        $hourly_alt[] = '</dl>';
+        $hourly_chart->data = $hourly_rows;
+
+        $hourly_data = [
+            'datasets' => [$hourly_chart],
+            'labels' => $hourly_labels,
+        ];
 
         /* Play Count Statistics */
 
@@ -181,12 +252,14 @@ class OverviewController
         });
 
         return $request->getView()->renderToResponse($response, 'stations/reports/overview', [
-            'day_of_week_stats' => json_encode((array)$day_of_week_stats),
-            'daily_ranges' => json_encode((array)$daily_ranges),
-            'daily_averages' => json_encode((array)$daily_averages),
-            'hourly_ranges' => json_encode((array)$hourly_ranges),
-            'hourly_averages' => json_encode((array)$hourly_averages),
-            'averages_by_hour' => json_encode((array)$averages_by_hour),
+            'charts' => [
+                'daily'         => json_encode($daily_data),
+                'daily_alt'     => implode('', $daily_alt),
+                'hourly'        => json_encode($hourly_data),
+                'hourly_alt'    => implode('', $hourly_alt),
+                'day_of_week'   => json_encode($day_of_week_data),
+                'day_of_week_alt' => implode('', $day_of_week_alt),
+            ],
             'song_totals' => $song_totals,
             'best_performing_songs' => \array_reverse(\array_slice($songs, -5)),
             'worst_performing_songs' => \array_slice($songs, 0, 5),

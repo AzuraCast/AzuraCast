@@ -6,70 +6,10 @@ function cb(start, end) {
     if (is_live) {
         $('#reportrange span').html(<?=$this->escapeJs(__('Live Listeners')) ?>);
     } else {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        $('#reportrange span').html(start.format('ll') + ' - ' + end.format('ll'));
     }
 
     updateListeners(start, end);
-}
-
-function initMap() {
-    chart = Highcharts.mapChart('map', {
-        chart: {
-            map: 'custom/world'
-        },
-        title: {
-            text: null
-        },
-        tooltip: {
-            pointFormat: 'IP: {point.ip}<br>' +
-                'Country: {point.location.country}<br>' +
-                'Region: {point.location.region}<br>' +
-                'City: {point.location.city}<br>' +
-                'Time connected: {point.connected_time}<br>' +
-                'User Agent: {point.user_agent}'
-        },
-        mapNavigation: {
-            enabled: true,
-            buttonOptions: {
-                verticalAlign: 'bottom'
-            }
-        },
-        series: [
-            {
-                name: 'Basemap',
-                borderColor: '#A0A0A0',
-                nullColor: 'rgba(200, 200, 200, 0.7)',
-                showInLegend: false
-            },
-            {
-                type: 'mappoint',
-                data: [],
-                name: <?=$this->escapeJs(__('Listener')) ?>
-            }
-        ]
-    });
-}
-
-/*
- * Live map updating based on parasprite-Radio by djazz:
- * https://github.com/daniel-j
- */
-function setMapPoints(points) {
-    $.each(chart.series[1].data, function(i, existing_point) {
-        chart.series[1].removePoint(i, false);
-    });
-
-    $.each(points, function(i, l) {
-        if (l.location.status !== 'success')
-            return null;
-
-        l.lat = l.location.lat;
-        l.lon = l.location.lon;
-
-        chart.series[1].addPoint(l, false);
-    });
-
-    chart.redraw();
 }
 
 var updateListeners = function(start, end) {
@@ -86,8 +26,6 @@ var updateListeners = function(start, end) {
 
         $('#listener-count').text(data.length);
 
-        setMapPoints(data);
-
         if (is_live) {
             load_timeout = setTimeout(updateListeners, 15 * 1000);
         }
@@ -103,13 +41,13 @@ $(function() {
         endDate: live_time,
         opens: "left",
         ranges: {
-            "<?=__('Live Listeners') ?>": [moment(0), moment(0)],
-            "<?=__('Today') ?>": [moment(), moment()],
-            "<?=__('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            "<?=__('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
-            "<?=__('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
-            "<?=__('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
-            "<?=__('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            <?=$this->escapeJs(__('Live Listeners')) ?>: [moment(0), moment(0)],
+            <?=$this->escapeJs(__('Today')) ?>: [moment(), moment()],
+            <?=$this->escapeJs(__('Yesterday')) ?>: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            <?=$this->escapeJs(__('Last 7 Days')) ?>: [moment().subtract(6, 'days'), moment()],
+            <?=$this->escapeJs(__('Last 30 Days')) ?>: [moment().subtract(29, 'days'), moment()],
+            <?=$this->escapeJs(__('This Month')) ?>: [moment().startOf('month'), moment().endOf('month')],
+            <?=$this->escapeJs(__('Last Month')) ?>: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
     }, cb);
 

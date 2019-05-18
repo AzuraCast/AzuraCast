@@ -1,12 +1,14 @@
-<?php $this->layout('main', ['title' => __('Listeners'), 'manual' => true]) ?>
-
 <?php
-/** @var \Azura\Assets $assets */
+/**
+ * @var \Azura\Assets $assets
+ * @var \App\Entity\Station $station
+ */
+
+$this->layout('main', ['title' => __('Listeners'), 'manual' => true]);
+
 $assets
     ->load('vue')
     ->load('daterangepicker')
-    ->load('highmaps')
-    ->load('highcharts_theme_'.$customization->getTheme())
     ->addInlineJs($this->fetch('stations/reports/listeners.js', ['station' => $station]));
 ?>
 
@@ -15,17 +17,21 @@ $assets
         <div class="card">
             <div class="card-header bg-primary-dark">
                 <div class="d-flex">
-                    <h2 class="card-title flex-shrink mt-1 mb-0"><?=__('Listeners') ?></h2>
-                    <h3 class="card-subtitle text-right flex-fill mt-1 mb-0"><span id="listener-count">0</span> Unique</h3>
+                    <h2 class="card-title flex-fill mt-1 mb-0">
+                        <?=__('Listeners') ?><br>
+                        <small><span id="listener-count">0</span> Unique</small>
+                    </h2>
+                    <div class="flex-shrink">
+                        <a class="btn btn-light dropdown-toggle" id="reportrange" href="#">
+                            <i class="material-icons" aria-hidden="true">date_range</i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="card-body">
-                <a class="btn btn-primary float-right dropdown-toggle" id="reportrange" href="#">
-                    <i class="material-icons" aria-hidden="true">date_range</i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
-                </a>
-            </div>
+            <!--
             <div id="map" style="height: 350px;">
             </div>
+            -->
             <table class="data-table table table-responsive table-striped" id="app-datatable">
                 <thead>
                     <tr>

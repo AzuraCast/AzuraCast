@@ -150,8 +150,7 @@ class DashboardController
 
             $cache_name = 'homepage/metrics/' . implode(',', $stats_cache_stations);
 
-            // $metrics = $this->cache->getOrSet($cache_name, function () use ($stations) {
-            $metrics = function() use ($stations) {
+            $metrics = $this->cache->getOrSet($cache_name, function () use ($stations) {
 
                 // Statistics by day.
                 $station_averages = [];
@@ -183,9 +182,6 @@ class DashboardController
 
                     if ($series_split[1] === 'all') {
                         foreach ($stat_rows as $stat_row) {
-                            // Add 12 hours to statistics so they always land inside the day they represent.
-                            $stat_row['time'] = $stat_row['time'] + (60 * 60 * 12 * 1000);
-
                             $network_data['ranges'][$stat_row['time']] = [
                                 $stat_row['time'],
                                 $stat_row['min'],
@@ -199,9 +195,6 @@ class DashboardController
                     } else {
                         $station_id = $series_split[1];
                         foreach ($stat_rows as $stat_row) {
-                            // Add 12 hours to statistics so they always land inside the day they represent.
-                            $stat_row['time'] = $stat_row['time'] + (60 * 60 * 12 * 1000);
-
                             $station_averages[$station_id][$stat_row['time']] = [
                                 $stat_row['time'],
                                 round($stat_row['value'], 2)
@@ -287,10 +280,7 @@ class DashboardController
                     'station_alt' => implode('', $station_metrics_alt),
                 ];
 
-                // }, 600);
-            };
-
-            $metrics = $metrics();
+            }, 600);
         }
 
         return $view->renderToResponse($response, 'frontend/index/index', [

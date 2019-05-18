@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-14 08:16\n"
+"PO-Revision-Date: 2019-05-18 17:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -416,7 +416,7 @@ msgstr "Ваши учетные данные не могут быть прове
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:217
 msgid "%s Listener Range"
-msgstr ""
+msgstr "%s диапазон слушателей"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:228
 msgid "%s Daily Average"
@@ -566,7 +566,7 @@ msgstr "Исполнитель"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:26
 msgid "Remote Relay"
-msgstr ""
+msgstr "Удаленный перключатель"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:175
 msgid "SoundExchange Report"

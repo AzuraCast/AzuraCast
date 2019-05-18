@@ -12,7 +12,6 @@ return [
                 'class' => 'half-width',
                 'required' => true,
                 'label_class' => 'mb-2',
-                'form_group_class' => 'col-sm-12 mt-3',
             ]
         ],
 
@@ -22,7 +21,6 @@ return [
                 'type' => 'submit',
                 'label' => __('Verify Authenticator'),
                 'class' => 'btn btn-lg btn-primary',
-                'form_group_class' => 'col-sm-12 mt-3',
             ],
         ],
 

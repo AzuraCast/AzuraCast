@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-14T07:47:38+00:00\n"
-"PO-Revision-Date: 2019-05-16 14:11\n"
+"PO-Revision-Date: 2019-05-18 14:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3343,7 +3343,7 @@ msgstr "Logout"
 
 #: /var/azuracast/www/templates/main.phtml:152
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr "Gefällt dir uns unsere Software? <a href=\"%s\" target=\"_blank\">Spenden etwas, um AzuraCast zu unterstützen!</a>"
+msgstr "Gefällt dir uns unsere Software? <a href=\"%s\" target=\"_blank\">Spende etwas, um AzuraCast zu unterstützen!</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"

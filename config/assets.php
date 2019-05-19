@@ -374,6 +374,23 @@ return [
         ],
     ],
 
+    'leaflet' => [
+        'order' => 20,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/leaflet/leaflet.js',
+                    'defer' => true,
+                ]
+            ],
+            'css' => [
+                [
+                    'href' => 'dist/lib/leaflet/leaflet.css',
+                ]
+            ],
+        ],
+    ],
+
     'webcaster' => [
         'order' => 10,
         'require' => ['vue', 'vue-i18n', 'lodash'],

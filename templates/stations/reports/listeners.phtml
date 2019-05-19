@@ -9,6 +9,7 @@ $this->layout('main', ['title' => __('Listeners'), 'manual' => true]);
 $assets
     ->load('vue')
     ->load('daterangepicker')
+    ->load('leaflet')
     ->addInlineJs($this->fetch('stations/reports/listeners.js', ['station' => $station]));
 ?>
 
@@ -28,10 +29,8 @@ $assets
                     </div>
                 </div>
             </div>
-            <!--
             <div id="map" style="height: 350px;">
             </div>
-            -->
             <table class="data-table table table-responsive table-striped" id="app-datatable">
                 <thead>
                     <tr>

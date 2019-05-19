@@ -14,90 +14,162 @@ const webpack = require('webpack-stream');
 
 var jsFiles = {
     // Core Libraries
-    "jquery": [
-        "node_modules/jquery/dist/jquery.min.js"
-    ],
-    "vue": [
-        "node_modules/vue/dist/vue.js",
-        "node_modules/vue/dist/vue.min.js"
-    ],
-    "vue-i18n": [
-        "node_modules/vue-i18n/dist/vue-i18n.min.js"
-    ],
-    "lodash": [
-        "node_modules/lodash/lodash.min.js"
-    ],
+    "jquery": {
+        base: 'node_modules/jquery/dist',
+        files: [
+            "node_modules/jquery/dist/jquery.min.js"
+        ]
+    },
+    "vue": {
+        base: 'node_modules/vue/dist',
+        files: [
+            "node_modules/vue/dist/vue.js",
+            "node_modules/vue/dist/vue.min.js",
+        ]
+    },
+    "vue-i18n": {
+        base: 'node_modules/vue-i18n/dist',
+        files: [
+            "node_modules/vue-i18n/dist/vue-i18n.min.js"
+        ]
+    },
+    "lodash": {
+        base: 'node_modules/lodash',
+        files: [
+            "node_modules/lodash/lodash.min.js"
+        ]
+    },
 
     // Main per-layout dependencies
-    "bootstrap": [
-        "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-    ],
-    "bootstrap-notify": [
-        "node_modules/bootstrap-notify/bootstrap-notify.min.js"
-    ],
-    "sweetalert": [
-        "node_modules/sweetalert/dist/sweetalert.min.js"
-    ],
-    "autosize": [
-        "node_modules/autosize/dist/autosize.min.js"
-    ],
+    "bootstrap": {
+        base: null,
+        files: [
+            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+        ]
+    },
+    "bootstrap-notify": {
+        base: 'node_modules/bootstrap-notify',
+        files: [
+            "node_modules/bootstrap-notify/bootstrap-notify.min.js"
+        ]
+    },
+    "sweetalert": {
+        base: 'node_modules/sweetalert/dist',
+        files: [
+            "node_modules/sweetalert/dist/sweetalert.min.js"
+        ]
+    },
+    "autosize": {
+        base: 'node_modules/autosize/dist',
+        files: [
+            "node_modules/autosize/dist/autosize.min.js"
+        ]
+    },
 
     // Individual libraries
-    "store": [
-        "node_modules/store/store.min.js"
-    ],
-    "zxcvbn": [
-        "node_modules/zxcvbn/dist/zxcvbn.js"
-    ],
-    "chartjs": [
-        "node_modules/chart.js/dist/Chart.min.js",
-        "node_modules/chart.js/dist/Chart.min.css",
-        "node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js"
-    ],
-    "chosen": [
-        "node_modules/chosen-js/chosen.jquery.min.js",
-        "node_modules/chosen-js/chosen.min.css",
-        "node_modules/chosen-js/chosen-sprite*.png"
-    ],
-    "moment": [
-        "node_modules/moment/min/moment.min.js",
-        "node_modules/moment/min/locales.min.js"
-    ],
-    "moment-timezone": [
-        "node_modules/moment-timezone/builds/moment-timezone-with-data.min.js"
-    ],
-    "daterangepicker": [
-        "node_modules/bootstrap-daterangepicker/daterangepicker.*"
-    ],
-    "codemirror": [
-        "node_modules/codemirror/lib/codemirror.*",
-        "node_modules/codemirror/mode/css/css.js",
-        "node_modules/codemirror/theme/material.css"
-    ],
-    "clipboard": [
-        "node_modules/clipboard/dist/clipboard.min.js"
-    ],
-    "fancybox": [
-        "node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.*"
-    ],
-    "flowjs": [
-        "node_modules/@flowjs/flow.js/dist/flow.min.js"
-    ],
-    "fullcalendar": [
-        "node_modules/fullcalendar/dist/fullcalendar.min.*",
-        "node_modules/fullcalendar/dist/locale-all.js"
-    ],
-    "jquery-sortable": [
-        "node_modules/jquery-sortable/source/js/jquery-sortable-min.js"
-    ],
+    "store": {
+        base: 'node_modules/store',
+        files: [
+            "node_modules/store/store.min.js"
+        ]
+    },
+    "zxcvbn": {
+        base: 'node_modules/zxcvbn/dist',
+        files: [
+            "node_modules/zxcvbn/dist/zxcvbn.js"
+        ]
+    },
+    "chartjs": {
+        base: null,
+        files: [
+            "node_modules/chart.js/dist/Chart.min.js",
+            "node_modules/chart.js/dist/Chart.min.css",
+            "node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js"
+        ]
+    },
+    "chosen": {
+        base: 'node_modules/chosen-js',
+        files: [
+            "node_modules/chosen-js/chosen.jquery.min.js",
+            "node_modules/chosen-js/chosen.min.css",
+            "node_modules/chosen-js/chosen-sprite*.png"
+        ]
+    },
+    "moment": {
+        base: 'node_modules/moment/min',
+        files: [
+            "node_modules/moment/min/moment.min.js",
+            "node_modules/moment/min/locales.min.js"
+        ]
+    },
+    "moment-timezone": {
+        base: 'node_modules/moment-timezone/builds',
+        files: [
+            "node_modules/moment-timezone/builds/moment-timezone-with-data.min.js"
+        ]
+    },
+    "daterangepicker": {
+        base: 'node_modules/bootstrap-daterangepicker',
+        files: [
+            "node_modules/bootstrap-daterangepicker/daterangepicker.*"
+        ]
+    },
+    "codemirror": {
+        base: null,
+        files: [
+            "node_modules/codemirror/lib/codemirror.*",
+            "node_modules/codemirror/mode/css/css.js",
+            "node_modules/codemirror/theme/material.css"
+        ]
+    },
+    "clipboard": {
+        base: 'node_modules/clipboard/dist',
+        files: [
+            "node_modules/clipboard/dist/clipboard.min.js"
+        ]
+    },
+    "fancybox": {
+        base: 'node_modules/@fancyapps/fancybox/dist',
+        files: [
+            "node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.*"
+        ]
+    },
+    "flowjs": {
+        base: 'node_modules/@flowjs/flow.js/dist',
+        files: [
+            "node_modules/@flowjs/flow.js/dist/flow.min.js"
+        ]
+    },
+    "fullcalendar": {
+        base: 'node_modules/fullcalendar/dist',
+        files: [
+            "node_modules/fullcalendar/dist/fullcalendar.min.*",
+            "node_modules/fullcalendar/dist/locale-all.js"
+        ]
+    },
+    "jquery-sortable": {
+        base: null,
+        files: [
+            "node_modules/jquery-sortable/source/js/jquery-sortable-min.js"
+        ]
+    },
+    "leaflet": {
+        base: 'node_modules/leaflet/dist',
+        files: [
+            "node_modules/leaflet/dist/leaflet.js",
+            "node_modules/leaflet/dist/leaflet.css",
+            "node_modules/leaflet/dist/images/*",
+        ]
+    }
 };
 
 var defaultTasks = Object.keys(jsFiles);
 
 defaultTasks.forEach(function (libName) {
     gulp.task('scripts:'+libName, function () {
-       return gulp.src(jsFiles[libName])
-          .pipe(gulp.dest('dist/lib/'+libName));
+       return gulp.src(jsFiles[libName].files, {
+           base: jsFiles[libName].base
+       }).pipe(gulp.dest('dist/lib/'+libName));
     });
 });
 

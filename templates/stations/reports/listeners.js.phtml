@@ -1,4 +1,4 @@
-var live_time, load_timeout, app_datatable, chart;
+var live_time, load_timeout, app_datatable, map;
 
 function cb(start, end) {
     is_live = live_time.isSame(start, 'day');
@@ -23,6 +23,7 @@ var updateListeners = function(start, end) {
 
     $.getJSON('<?=$router->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
         app_datatable.listeners = data;
+        setMapPoints(data);
 
         $('#listener-count').text(data.length);
 
@@ -32,8 +33,41 @@ var updateListeners = function(start, end) {
     });
 };
 
-$(function() {
+function initMap()
+{
+    map = L.map('map').setView([40, 0], 1);
 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+}
+
+var markers = new Array();
+
+function setMapPoints(points) {
+    for(i=0;i<markers.length;i++) {
+        map.removeLayer(markers[i]);
+    }
+    markers = new Array();
+
+    $.each(points, function(i, l) {
+        if (l.location.status !== 'success')
+            return null;
+
+        var marker = new L.marker([l.location.lat, l.location.lon])
+            .bindPopup('IP: '+l.ip+'<br>' +
+                'Country: '+l.location.country+'<br>' +
+                'Region: '+l.location.region+'<br>' +
+                'City: '+l.location.city+'<br>' +
+                'Time connected: '+l.connected_time+'<br>' +
+                'User Agent: '+l.user_agent)
+            .addTo(map);
+
+        markers.push(marker);
+    });
+}
+
+$(function() {
     live_time = moment(0);
 
     $('#reportrange').daterangepicker({

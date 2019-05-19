@@ -16,8 +16,6 @@ function styleForm(form, translations) {
         $(window).off('beforeunload');
     });
 
-    $form.find('fieldset').addClass('form-group');
-
     $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');
 
     $form.find('select').wrap('<div class="select" />').chosen({
@@ -31,12 +29,12 @@ function styleForm(form, translations) {
 
     $form.find('input[type=radio]').each(function() {
         $(this).addClass('custom-control-input');
-        $(this).closest('.form-field').addClass('mt-3');
+        $(this).closest('.form-field');
         $(this).next('label').addClass('custom-control-label').addBack().wrapAll('<div class="custom-control custom-radio" />');
     });
     $form.find('input[type=checkbox]').each(function() {
         $(this).addClass('custom-control-input');
-        $(this).closest('.form-field').addClass('mt-3');
+        $(this).closest('.form-field');
 
         $(this).next('label')
             .addClass('custom-control-label')

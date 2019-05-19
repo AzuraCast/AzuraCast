@@ -27,9 +27,8 @@ return [
 
     'groups' => [
         'profile' => [
-            'legend' => __('Station Profile'),
-            'legend_class' => 'd-none',
             'tab' => 'profile',
+            'use_grid' => true,
 
             'elements' => [
                 'name' => [
@@ -37,8 +36,7 @@ return [
                     [
                         'label' => __('Name'),
                         'required' => true,
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -46,8 +44,7 @@ return [
                     'textarea',
                     [
                         'label' => __('Description'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -55,8 +52,7 @@ return [
                     'text',
                     [
                         'label' => __('Genre'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -65,8 +61,7 @@ return [
                     [
                         'label' => __('Web Site URL'),
                         'description' => __('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -77,8 +72,7 @@ return [
                         'description' => __('Scheduled playlists and other timed items will be controlled by this time zone.'),
                         'options' => \Azura\Timezone::fetchSelect(),
                         'default' => \App\Customization::DEFAULT_TIMEZONE,
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -90,7 +84,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => true,
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -98,9 +92,9 @@ return [
                     'text',
                     [
                         'label' => __('URL Stub'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'),
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -108,7 +102,7 @@ return [
                     'select',
                     [
                         'label' => __('Number of Recently Played Songs'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.'),
                         'choices' => [
                             0 => __('Disabled'),
@@ -118,16 +112,13 @@ return [
                             15 => '15',
                         ],
                         'default' => Station::DEFAULT_API_HISTORY_ITEMS,
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ]
             ],
         ],
 
         'select_frontend_type' => [
-            'legend' => __('Select Broadcasting Service'),
-            'legend_class' => 'd-none',
-            'class' => 'col-sm-12 mt-3',
             'tab' => 'frontend',
 
             'elements' => [
@@ -144,8 +135,7 @@ return [
         ],
 
         'frontend_local' => [
-            'legend' => __('Configure Broadcasting Service'),
-            'legend_class' => 'd-none',
+            'use_grid' => true,
             'class' => 'frontend_fieldset',
             'tab' => 'frontend',
 
@@ -155,10 +145,10 @@ return [
                     'text',
                     [
                         'label' => __('Customize Broadcasting Port'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'frontend_config',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -166,10 +156,10 @@ return [
                     'text',
                     [
                         'label' => __('Maximum Listeners'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('Maximum number of total listeners across all streams. Leave blank to use the default (250).'),
                         'belongsTo' => 'frontend_config',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -177,10 +167,10 @@ return [
                     'text',
                     [
                         'label' => __('Customize Source Password'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -188,10 +178,10 @@ return [
                     'text',
                     [
                         'label' => __('Customize Administrator Password'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -199,11 +189,11 @@ return [
                     'textarea',
                     [
                         'label' => __('Custom Configuration'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'belongsTo' => 'frontend_config',
                         'class' => 'text-preformatted',
                         'description' => __('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -211,10 +201,7 @@ return [
         ],
 
         'select_backend_type' => [
-            'legend' => __('Select AutoDJ Service'),
-            'legend_class' => 'd-none',
             'tab' => 'backend',
-
             'elements' => [
                 'backend_type' => [
                     'radio',
@@ -223,15 +210,13 @@ return [
                         'description' => __('This software shuffles from playlists of music constantly and plays when no other radio source is available.'),
                         'options' => $backend_types,
                         'default' => Adapters::DEFAULT_BACKEND,
-                        'form_group_class' => 'col-sm-12 mt-3',
                     ]
                 ],
             ],
         ],
 
         'backend_liquidsoap' => [
-            'legend' => __('Configure Liquidsoap'),
-            'legend_class' => 'd-none',
+            'use_grid' => true,
             'class' => 'backend_fieldset',
             'tab' => 'backend',
 
@@ -249,7 +234,7 @@ return [
                             \App\Radio\Backend\Liquidsoap::CROSSFADE_DISABLED => __('Disable Crossfading')
                         ],
                         'default' => \App\Radio\Backend\Liquidsoap::CROSSFADE_NORMAL,
-                        'form_group_class' => 'col-md-8 mt-3',
+                        'form_group_class' => 'col-md-8',
                     ]
                 ],
 
@@ -263,8 +248,7 @@ return [
                         'min' => '0.0',
                         'max' => '30.0',
                         'step' => '0.1',
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-4 mt-3',
+                        'form_group_class' => 'col-md-4',
                     ]
                 ],
 
@@ -277,7 +261,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -289,7 +273,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -301,8 +285,7 @@ return [
                         'default' => Station::DEFAULT_REQUEST_DELAY,
                         'min' => '0',
                         'max' => '1440',
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -314,8 +297,7 @@ return [
                         'default' => Station::DEFAULT_REQUEST_THRESHOLD,
                         'min' => '0',
                         'max' => '1440',
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -327,7 +309,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                        'form_group_class' => 'col-md-8 mt-3',
+                        'form_group_class' => 'col-md-8',
                     ]
                 ],
 
@@ -339,7 +321,7 @@ return [
                         'default' => 0,
                         'min' => '0',
                         'step' => '1',
-                        'form_group_class' => 'col-md-4 mt-3',
+                        'form_group_class' => 'col-md-4',
                     ]
                 ],
 
@@ -347,10 +329,10 @@ return [
                     'text',
                     [
                         'label' => __('Customize DJ/Streamer Port'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.'),
                         'belongsTo' => 'backend_config',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -358,10 +340,10 @@ return [
                     'text',
                     [
                         'label' => __('Customize Internal Request Processing Port'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'backend_config',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -369,14 +351,14 @@ return [
                     'number',
                     [
                         'label' => __('DJ/Streamer Buffer Time (Seconds)'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'),
                         'default' => 5,
                         'min' => 0,
                         'max' => 60,
                         'step' => 1,
                         'belongsTo' => 'backend_config',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -384,11 +366,11 @@ return [
                     'text',
                     [
                         'label' => __('Customize DJ/Streamer Mount Point'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.'),
                         'belongsTo' => 'backend_config',
                         'default' => '/',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ],
                 ],
 
@@ -402,7 +384,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -418,7 +400,7 @@ return [
                             'UTF-8' => 'UTF-8',
                             'ISO-8859-1' => 'ISO-8859-1',
                         ],
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ],
                 ],
 
@@ -426,11 +408,11 @@ return [
                     'textarea',
                     [
                         'label' => __('Custom Configuration'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'belongsTo' => 'backend_config',
                         'class' => 'text-preformatted',
                         'description' => __('This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!'),
-                        'form_group_class' => 'col-sm-12 mt-3',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -438,8 +420,7 @@ return [
         ],
 
         'admin' => [
-            'legend' => __('Administration'),
-            'legend_class' => 'd-none',
+            'use_grid' => true,
             'tab' => 'admin',
 
             'elements' => [
@@ -452,7 +433,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => true,
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -461,8 +442,7 @@ return [
                     [
                         'label' => __('Storage Quota'),
                         'description' => __('Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6 ',
                     ]
                 ],
 
@@ -470,9 +450,9 @@ return [
                     'text',
                     [
                         'label' => __('Base Station Directory'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'),
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -480,9 +460,9 @@ return [
                     'text',
                     [
                         'label' => __('Custom Media Directory'),
-                        'label_class' => 'advanced mb-2',
+                        'label_class' => 'advanced',
                         'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -497,7 +477,6 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
-                        'form_group_class' => 'col-sm-12 mt-3',
                     ]
                 ],
             ],

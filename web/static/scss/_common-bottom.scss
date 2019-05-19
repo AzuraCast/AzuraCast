@@ -63,12 +63,12 @@
 @import 'vendors/daterangepicker';
 
 // Overrides for the Daemonite Material theme
-@import 'overrides/header';
 @import 'overrides/body';
+@import 'overrides/card';
 @import 'overrides/footer';
 @import 'overrides/forms';
+@import 'overrides/header';
 @import 'overrides/tables';
-@import 'overrides/typography';
 
 // Individual AzuraCast pages
 @import 'pages/embed';

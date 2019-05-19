@@ -6,13 +6,12 @@ return [
     'groups' => [
 
         'profile' => [
-            'legend' => __('New Station Details'),
             'elements' => [
 
                 'name' => [
                     'text',
                     [
-                        'label' => __('Station Name'),
+                        'label' => __('New Station Name'),
                         'class' => 'half-width',
                         'required' => true,
                     ]
@@ -21,7 +20,7 @@ return [
                 'description' => [
                     'textarea',
                     [
-                        'label' => __('Station Description'),
+                        'label' => __('New Station Description'),
                         'class' => 'full-width full-height',
                     ]
                 ],
@@ -30,6 +29,7 @@ return [
         ],
 
         'cloning' => [
+            'use_grid' => true,
             'legend' => __('Customize Station Cloning'),
             'elements' => [
 
@@ -43,6 +43,7 @@ return [
                             'share' => __('Share the same folder on disk between the stations'),
                             'copy' => __('Copy the existing station\'s media to the new station'),
                         ],
+                        'form_group_class' => 'col-sm-12',
                         'default' => 'none',
                     ]
                 ],
@@ -55,6 +56,7 @@ return [
                             0 => __('No'),
                             1 => __('Yes'),
                         ],
+                        'form_group_class' => 'col-sm-4',
                         'default' => 0,
                     ]
                 ],
@@ -68,6 +70,7 @@ return [
                             1 => __('Yes'),
                         ],
                         'default' => 0,
+                        'form_group_class' => 'col-sm-4',
                     ]
                 ],
 
@@ -81,6 +84,7 @@ return [
                             1 => __('Yes'),
                         ],
                         'default' => 0,
+                        'form_group_class' => 'col-sm-4',
                     ]
                 ],
 

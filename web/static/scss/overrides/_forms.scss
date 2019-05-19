@@ -12,6 +12,33 @@ select {
   }
 }
 
+.form {
+  fieldset {
+    margin-bottom: 1rem;
+
+    div.fieldset-legend {
+      border-bottom: 2px dotted;
+      border-color: theme-color-dark(primary);
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      & > label {
+        margin-bottom: .5rem!important;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  & > fieldset:last-of-type {
+    margin-bottom: 0;
+  }
+
+}
+
 .form-group {
   &.has-error {
     .form-text {

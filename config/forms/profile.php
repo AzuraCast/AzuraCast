@@ -7,8 +7,7 @@ return [
     'groups' => [
 
         'account_info' => [
-            'legend' => __('Account Information'),
-            'legend_class' => 'd-none',
+            'use_grid' => true,
             'elements' => [
 
                 'name' => [
@@ -16,8 +15,7 @@ return [
                     [
                         'label' => __('Name'),
                         'class' => 'half-width',
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -28,8 +26,7 @@ return [
                         'class' => 'half-width',
                         'required' => true,
                         'autocomplete' => 'off',
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -37,10 +34,9 @@ return [
         ],
 
         'reset_password' => [
+            'use_grid' => true,
             'legend' => __('Reset Password'),
-            'legend_class' => 'col-sm-12',
             'description' => __('Leave these fields blank to continue using your current password.'),
-            'description_class' => 'col-sm-12',
             'elements' => [
 
                 'password' => [
@@ -54,7 +50,6 @@ return [
                         'validator' => function($val, $element) {
                             return false; // Safe default.
                         },
-                        'label_class' => 'mb-2',
                         'form_group_class' => 'col-md-4',
                     ]
                 ],
@@ -66,7 +61,6 @@ return [
                         'autocomplete' => 'off',
                         'class' => 'strength',
                         'confirm' => 'new_password_confirm',
-                        'label_class' => 'mb-2',
                         'form_group_class' => 'col-md-4',
                     ]
                 ],
@@ -76,7 +70,6 @@ return [
                     [
                         'label' => __('Confirm New Password'),
                         'autocomplete' => 'off',
-                        'label_class' => 'mb-2',
                         'form_group_class' => 'col-md-4',
                     ]
                 ],
@@ -85,8 +78,8 @@ return [
         ],
 
         'customization' => [
+            'use_grid' => true,
             'legend' => __('Customization'),
-            'legend_class' => 'col-sm-12',
             'elements' => [
 
                 'locale' => [
@@ -95,8 +88,7 @@ return [
                         'label' => __('Language'),
                         'options' => $locale_select,
                         'default' => 'default',
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -109,8 +101,7 @@ return [
                             'dark' => __('Dark'),
                         ],
                         'default' => \App\Customization::DEFAULT_THEME,
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-3',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -125,7 +116,6 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
-                        'form_group_class' => 'col-sm-12 mt-3',
                     ]
                 ],
             ],

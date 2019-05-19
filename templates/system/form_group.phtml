@@ -6,17 +6,23 @@
  */
 
 $hide_fieldset = (bool)($fieldset['hide_fieldset'] ?? false);
+$use_grid = (bool)($fieldset['use_grid'] ?? false);
 ?>
 
 <?php if (!$hide_fieldset): ?>
     <fieldset id="<?=$fieldset_id ?>" class="<?=($fieldset['class'] ?? '') ?>">
-        <div class="row">
-    <?php if (!empty($fieldset['legend'])): ?>
-        <legend class="<?=($fieldset['legend_class'] ?? '') ?>"><div><?=$fieldset['legend'] ?></div></legend>
 
+    <?php if (!empty($fieldset['legend'])): ?>
+        <div class="fieldset-legend">
+            <legend class="<?=($fieldset['legend_class'] ?? '') ?>"><?=$fieldset['legend'] ?></legend>
         <?php if (!empty($fieldset['description'])): ?>
             <p class="<?=($fieldset['description_class'] ?? '') ?>"><?=$fieldset['description'] ?></p>
         <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($use_grid): ?>
+        <div class="row">
     <?php endif; ?>
 <?php endif; ?>
 
@@ -30,6 +36,8 @@ foreach($fieldset['elements'] as $element_id => $element_info) {
 ?>
 
 <?php if (!$hide_fieldset): ?>
+    <?php if ($use_grid): ?>
         </div>
+    <?php endif; ?>
     </fieldset>
 <?php endif; ?>

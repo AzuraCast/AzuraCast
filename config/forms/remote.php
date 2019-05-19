@@ -5,6 +5,7 @@ return [
     'groups' => [
 
         'basic_info' => [
+            'use_grid' => true,
             'elements' => [
                 'is_visible_on_public_pages' => [
                     'toggle',
@@ -14,7 +15,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => true,
-                        'form_group_class' => 'col-sm-12 mt-1',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -28,7 +29,7 @@ return [
                             StationRemote::TYPE_SHOUTCAST2 => 'SHOUTcast v2',
                             StationRemote::TYPE_ICECAST => 'Icecast v2.4+',
                         ],
-                        'form_group_class' => 'col-sm-12 mt-1',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -37,8 +38,7 @@ return [
                     [
                         'label' => __('Display Name'),
                         'description' => __('The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -52,8 +52,7 @@ return [
                             'http://station.example.com:8000'
                         ),
                         'required' => true,
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -66,8 +65,7 @@ return [
                             '/radio.mp3',
                             '2'
                         ),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -79,7 +77,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => 0,
-                        'form_group_class' => 'col-sm-12 mt-1',
+                        'form_group_class' => 'col-sm-12',
                     ]
                 ],
 
@@ -87,8 +85,10 @@ return [
         ],
 
         'autodj' => [
+            'use_grid' => true,
             'legend' => __('Configure AutoDJ Broadcasting'),
             'class' => 'fieldset_autodj',
+
             'elements' => [
                 'autodj_format' => [
                     'radio',
@@ -100,7 +100,7 @@ return [
                             StationRemote::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
                         ],
                         'default' => StationRemote::FORMAT_MP3,
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -119,7 +119,7 @@ return [
                             320 => '320',
                         ],
                         'default' => 128,
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -128,8 +128,7 @@ return [
                     [
                         'label' => __('Remote Station Source Port'),
                         'description' => __('If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -138,8 +137,7 @@ return [
                     [
                         'label' => __('Remote Station Source Mountpoint/SID'),
                         'description' => __('If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -148,8 +146,7 @@ return [
                     [
                         'label' => __('Remote Station Source Username'),
                         'description' => __('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -158,8 +155,7 @@ return [
                     [
                         'label' => __('Remote Station Source Password'),
                         'description' => __('If you are broadcasting using AutoDJ, enter the source password here.'),
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -171,7 +167,7 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                        'form_group_class' => 'col-md-6 mt-1',
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -187,7 +183,6 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
-                        'form_group_class' => 'col-sm-12 mt-4',
                     ]
                 ],
 

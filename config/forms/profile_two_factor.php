@@ -11,7 +11,6 @@ return [
                 'description' => __('Enter the current code provided by your authenticator app to verify that it\'s working correctly.'),
                 'class' => 'half-width',
                 'required' => true,
-                'label_class' => 'mb-2',
             ]
         ],
 

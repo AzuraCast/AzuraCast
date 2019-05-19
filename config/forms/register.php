@@ -14,8 +14,6 @@ return [
                         'class' => 'half-width',
                         'required' => true,
                         'validators' => ['EmailAddress'],
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -24,8 +22,6 @@ return [
                     [
                         'label' => __('Password'),
                         'required' => true,
-                        'label_class' => 'mb-2',
-                        'form_group_class' => 'col-md-6 mt-1',
                     ]
                 ],
 
@@ -40,7 +36,6 @@ return [
                         'type' => 'submit',
                         'label' => __('Create Account'),
                         'class' => 'btn btn-lg btn-primary',
-                        'form_group_class' => 'col-sm-12 mt-3',
                     ]
                 ],
             ],

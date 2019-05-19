@@ -37,8 +37,8 @@ function initMap()
 {
     map = L.map('map').setView([40, 0], 1);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/<?=$customization->getTheme() ?>_all/{z}/{x}/{y}.png', {
+        attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
     }).addTo(map);
 }
 

@@ -153,6 +153,8 @@ class StationCloneForm extends StationForm
 
             $new_record->setName($data['name']);
             $new_record->setDescription($data['description']);
+            $new_record->clearPorts();
+
             $new_record->setIsStreamerLive(false);
             $new_record->setNeedsRestart(false);
             $new_record->setHasStarted(false);

@@ -241,7 +241,7 @@ class Configuration
             $frontend_config = (array)$station->getFrontendConfig();
             $backend_config = (array)$station->getBackendConfig();
 
-            if (empty($frontend_config['port']) || $force) {
+            if ($force || empty($frontend_config['port'])) {
                 $base_port = $this->getFirstAvailableRadioPort($station);
 
                 $station->setFrontendConfig([
@@ -251,13 +251,13 @@ class Configuration
                 $base_port = (int)$frontend_config['port'];
             }
 
-            if (empty($backend_config['dj_port'])) {
+            if ($force || empty($backend_config['dj_port'])) {
                 $station->setBackendConfig([
                     'dj_port' => $base_port + 5,
                 ]);
             }
 
-            if (empty($backend_config['telnet_port'])) {
+            if ($force || empty($backend_config['telnet_port'])) {
                 $station->setBackendConfig([
                     'telnet_port' => $base_port + 4,
                 ]);

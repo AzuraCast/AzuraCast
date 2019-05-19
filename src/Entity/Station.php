@@ -542,6 +542,22 @@ class Station
     }
 
     /**
+     * Clear all port assignments for the station (useful after cloning).
+     */
+    public function clearPorts(): void
+    {
+        $fe_config = (array)$this->frontend_config;
+        unset($fe_config['port']);
+
+        $this->frontend_config = $fe_config;
+
+        $be_config = (array)$this->backend_config;
+        unset($be_config['dj_port'], $be_config['telnet_port']);
+
+        $this->backend_config = $be_config;
+    }
+
+    /**
      * Whether the station uses AzuraCast to directly manage the AutoDJ or lets the backend handle it.
      *
      * @return bool

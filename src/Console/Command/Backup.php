@@ -133,10 +133,15 @@ class Backup extends CommandAbstract
 
             foreach($stations as $station) {
                 /** @var Entity\Station $station */
-                $media_dir = $station->getRadioMediaDir();
 
+                $media_dir = $station->getRadioMediaDir();
                 if (!in_array($media_dir, $files_to_backup, true)) {
                     $files_to_backup[] = $media_dir;
+                }
+
+                $art_dir = $station->getRadioAlbumArtDir();
+                if (!in_array($art_dir, $files_to_backup, true)) {
+                    $files_to_backup[] = $art_dir;
                 }
             }
         }

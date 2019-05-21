@@ -35,10 +35,6 @@ class Configuration
      * @param Station $station
      * @param bool $regen_auth_key
      * @param bool $force_restart Always restart this station's supervisor instances, even if nothing changed.
-     *
-     * @throws \App\Exception\NotFound
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function writeConfiguration(Station $station, $regen_auth_key = false, $force_restart = false): void
     {

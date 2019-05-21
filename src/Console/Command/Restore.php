@@ -135,7 +135,7 @@ class Restore extends CommandAbstract
         // Update from current version to latest.
         $io->section('Running standard updates...');
 
-        $this->runCommand($output, 'azuracast:setup', ['--update']);
+        $this->runCommand($output, 'azuracast:setup', ['--update' => true]);
 
         $io->success([
             'Restore complete!',

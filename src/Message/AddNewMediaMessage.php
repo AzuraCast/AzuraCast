@@ -1,7 +1,7 @@
 <?php
 namespace App\Message;
 
-class AddNewMedia extends AbstractMessage
+class AddNewMediaMessage extends AbstractMessage
 {
     /** @var int The numeric identifier for the station. */
     public $station_id;

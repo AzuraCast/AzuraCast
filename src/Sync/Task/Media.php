@@ -52,7 +52,7 @@ class Media extends AbstractTask
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
         try {
-            if ($message instanceof Message\ReprocessMedia) {
+            if ($message instanceof Message\ReprocessMediaMessage) {
                 $media_row = $media_repo->find($message->media_id);
 
                 if ($media_row instanceof Entity\StationMedia) {
@@ -60,7 +60,7 @@ class Media extends AbstractTask
 
                     $this->em->flush($media_row);
                 }
-            } else if ($message instanceof Message\AddNewMedia) {
+            } else if ($message instanceof Message\AddNewMediaMessage) {
                 $station = $this->em->find(Entity\Station::class, $message->station_id);
 
                 if ($station instanceof Entity\Station) {
@@ -151,7 +151,7 @@ class Media extends AbstractTask
 
                 $file_info = $music_files[$path_hash];
                 if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
-                    $message = new Message\ReprocessMedia;
+                    $message = new Message\ReprocessMediaMessage;
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
 
@@ -182,7 +182,7 @@ class Media extends AbstractTask
 
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
-            $message = new Message\AddNewMedia;
+            $message = new Message\AddNewMediaMessage;
             $message->station_id = $station->getId();
             $message->path = $new_music_file['path'];
 

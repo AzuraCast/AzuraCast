@@ -4,6 +4,7 @@ namespace App\Console\Command;
 use App\Entity;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
+use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -43,7 +44,7 @@ class Backup extends CommandAbstract
     {
         $destination_path = $input->getArgument('path');
         if ('/' !== $destination_path[0]) {
-            $destination_path = '/var/azuracast/backups/'.$destination_path;
+            $destination_path = \App\Sync\Task\Backup::BASE_DIR.$destination_path;
         }
 
         $include_media = !(bool)$input->getOption('exclude-media');
@@ -174,13 +175,36 @@ class Backup extends CommandAbstract
             $process = Process::fromShellCommandline($cmd, $cwd);
         }
 
-        $process->run(function($type, $data) use ($process, $io) {
+        $stdout = [];
+        $stderr = [];
+
+        $process->run(function($type, $data) use ($process, $io, &$stdout, &$stderr) {
             if ($process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
+                $stderr[] = $data;
             } else {
                 $io->write($data);
+                $stdout[] = $data;
             }
         }, $env);
+
+        if (!empty($stderr) || !empty($stdout)) {
+            /** @var Logger $logger */
+            $logger = $this->get(Logger::class);
+
+            if (!empty($stdout)) {
+                $logger->debug('Backup process output', [
+                    'cmd' => $cmd,
+                    'output' => $stdout,
+                ]);
+            }
+            if (!empty($stderr)) {
+                $logger->error('Backup process error', [
+                    'cmd' => $cmd,
+                    'output' => $stderr,
+                ]);
+            }
+        }
 
         return $process;
     }

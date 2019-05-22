@@ -25,13 +25,34 @@ class AdminProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Admin\BrandingController::class] = function($di) {
+        $di[Admin\BackupsController::class] = function($di) {
             /** @var Azura\Config $config */
             $config = $di[Azura\Config::class];
 
+            $settings_form = new App\Form\SettingsForm(
+                $di[EntityManager::class],
+                $config->get('forms/backup')
+            );
+
+            $backup_run_form = new App\Form\Form(
+                $config->get('forms/backup_run')
+            );
+
+            return new Admin\BackupsController(
+                $settings_form,
+                $backup_run_form,
+                $di[App\Sync\Task\Backup::class]
+            );
+        };
+
+        $di[Admin\BrandingController::class] = function($di) {
+            /** @var \Azura\Config $config */
+            $config = $di[\Azura\Config::class];
+
+            $form_config = $config->get('forms/branding', ['settings' => $di['settings']]);
+
             return new Admin\BrandingController(
-                $di[Entity\Repository\SettingsRepository::class],
-                $config->get('forms/branding', ['settings' => $di['settings']])
+                new App\Form\SettingsForm($di[EntityManager::class], $form_config)
             );
         };
 
@@ -72,8 +93,7 @@ class AdminProvider implements ServiceProviderInterface
             $config = $di[\Azura\Config::class];
 
             return new Admin\SettingsController(
-                $di[Entity\Repository\SettingsRepository::class],
-                $config->get('forms/settings')
+                new App\Form\SettingsForm($di[EntityManager::class], $config->get('forms/settings'))
             );
         };
 

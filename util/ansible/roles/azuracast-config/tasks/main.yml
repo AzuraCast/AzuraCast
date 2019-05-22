@@ -21,6 +21,7 @@
      - "{{ tmp_base }}/proxies"
      - "{{ app_base }}/stations"
      - "{{ app_base }}/geoip"
+     - "{{ app_base }}/backups"
      - "{{ app_base }}/servers"
      - "{{ app_base }}/servers/shoutcast2"
      - "{{ app_base }}/servers/icecast2"

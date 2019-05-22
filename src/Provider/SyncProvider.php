@@ -46,6 +46,15 @@ class SyncProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Task\Backup::class] = function($di) {
+            return new Task\Backup(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
+                $di[\App\MessageQueue::class],
+                $di[\Azura\Console\Application::class]
+            );
+        };
+
         $di[Task\CheckForUpdates::class] = function($di) {
             return new Task\CheckForUpdates(
                 $di[\Doctrine\ORM\EntityManager::class],

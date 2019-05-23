@@ -17,6 +17,21 @@ class Station extends AbstractFixture
         $station->setBackendType(Adapters::BACKEND_LIQUIDSOAP);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
 
+        // Ensure all directories exist.
+        $radio_dirs = [
+            $station->getRadioBaseDir(),
+            $station->getRadioMediaDir(),
+            $station->getRadioAlbumArtDir(),
+            $station->getRadioPlaylistsDir(),
+            $station->getRadioConfigDir(),
+            $station->getRadioTempDir(),
+        ];
+        foreach ($radio_dirs as $radio_dir) {
+            if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
+            }
+        }
+
         $station_quota = getenv('INIT_STATION_QUOTA');
         if (!empty($station_quota)) {
             $station->setStorageQuota($station_quota);

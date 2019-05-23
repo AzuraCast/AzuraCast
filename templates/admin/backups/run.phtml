@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var array $backups
+ * @var \Azura\Assets $assets
+ */
+
+$this->layout('main', [
+    'title' => __('Run Manual Backup'),
+    'manual' => true
+]);
+?>
+
+<div class="card mb-3">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title"><?=__('Run Manual Backup') ?></h3>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:index') ?>">
+            <i class="material-icons" aria-hidden="true">arrow_back</i>
+            <?=__('Backups Home') ?>
+        </a>
+    </div>
+    <div class="card-body">
+    <?php if ($is_successful): ?>
+        <p class="card-text text-success"><?=__('Backup was run successfully.') ?></p>
+    <?php else: ?>
+        <p class="card-text text-danger"><?=__('Backup encountered errors when running. Check the log below for details.') ?></p>
+    <?php endif; ?>
+
+        <pre id="modal-log-view-contents">
+            <?=$this->e($output) ?>
+        </pre>
+    </div>
+</div>

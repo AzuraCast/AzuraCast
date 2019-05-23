@@ -1,0 +1,45 @@
+$(function() {
+
+    moment.relativeTimeThreshold('ss', 1);
+    moment.relativeTimeRounding(function (value) {
+        return Math.round(value * 10) / 10;
+    });
+
+    $('time[data-content]').each(function () {
+        let tz_display = $(this).data('content');
+        $(this).text(moment.unix(tz_display).format('lll'));
+    });
+
+    $('time[data-duration]').each(function () {
+        $(this).text(moment.duration($(this).data('duration'), "seconds").humanize(true));
+    });
+
+    $('span[data-file-size]').each(function() {
+        let original_size = $(this).data('file-size');
+        $(this).text(formatFileSize(original_size));
+    });
+
+    function formatFileSize(bytes) {
+        var s = ['bytes', 'KB','MB','GB','TB','PB','EB'];
+        for(var pos = 0;bytes >= 1000; pos++,bytes /= 1000);
+        var d = Math.round(bytes*10);
+        return pos ? [parseInt(d/10),".",d%10," ",s[pos]].join('') : bytes + ' bytes';
+    }
+
+    var log_modal = $('#modal-log-view');
+
+    if (log_modal.length > 0) {
+        log_modal.modal({
+            focus: false,
+            show: false
+        });
+
+        $('#btn-view-log').on('click', function(e) {
+            e.preventDefault();
+
+            log_modal.modal('show');
+            return false;
+        });
+
+    }
+});

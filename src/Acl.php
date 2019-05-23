@@ -14,6 +14,7 @@ class Acl
     public const GLOBAL_PERMISSIONS    = 'administer permissions';
     public const GLOBAL_STATIONS       = 'administer stations';
     public const GLOBAL_CUSTOM_FIELDS  = 'administer custom fields';
+    public const GLOBAL_BACKUPS        = 'administer backups';
 
     public const STATION_ALL           = 'administer all';
     public const STATION_VIEW          = 'view station management';
@@ -188,6 +189,7 @@ class Acl
                     self::GLOBAL_PERMISSIONS     => __('Administer %s', __('Permissions')),
                     self::GLOBAL_STATIONS        => __('Administer %s', __('Stations')),
                     self::GLOBAL_CUSTOM_FIELDS   => __('Administer %s', __('Custom Fields')),
+                    self::GLOBAL_BACKUPS         => __('Administer %s', __('Backups')),
                 ],
                 'station' => [
                     self::STATION_ALL            => __('All Permissions'),

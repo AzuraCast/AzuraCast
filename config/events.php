@@ -66,6 +66,8 @@ return function (\Azura\EventDispatcher $dispatcher)
             new Command\SetAdministrator,
             new Command\ListSettings,
             new Command\SetSetting,
+            new Command\Backup,
+            new Command\Restore,
         ]);
     }, 0);
 

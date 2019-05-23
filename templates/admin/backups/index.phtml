@@ -1,0 +1,141 @@
+<?php
+/**
+ * @var array $backups
+ * @var \Azura\Assets $assets
+ */
+
+$this->layout('main', [
+    'title' => __('Backups'),
+    'manual' => true
+]);
+
+$assets
+    ->load('moment')
+    ->addInlineJs($this->fetch('admin/backups/index.js'), 99);
+?>
+
+<div class="card-deck">
+    <div class="card mb-3">
+    <?php if ($is_enabled): ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Automatic Backups') ?>
+                <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
+            </h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                <?php if ($last_run > 0): ?>
+                    <?=__('Last run: %s', '<time data-duration="'.(0-(time()-$last_run)).'"></time>') ?>
+                <?php else: ?>
+                    <?=__('Never run') ?>
+                <?php endif; ?>
+            </p>
+        </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
+                <i class="material-icons" aria-hidden="true">settings</i>
+                <?=__('Configure') ?>
+            </a>
+        <?php if (!empty($last_output)): ?>
+            <a class="btn btn-outline-secondary" id="btn-view-log" href="#">
+                <i class="material-icons" aria-hidden="true">assignment</i>
+                <?=__('Most Recent Backup Log') ?>
+            </a>
+        <?php endif; ?>
+        </div>
+    <?php else: ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Automatic Backups') ?>
+                <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
+            </h3>
+        </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
+                <i class="material-icons" aria-hidden="true">settings</i>
+                <?=__('Configure') ?>
+            </a>
+        </div>
+    <?php endif; ?>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title"><?=__('Restoring Backups') ?></h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><?=__('To restore a backup from your host computer, run:') ?></p>
+
+        <?php if (APP_INSIDE_DOCKER): ?>
+            <pre><code>./docker.sh restore path_to_backup.tar.gz</code></pre>
+        <?php else: ?>
+            <pre><code>/var/azuracast/www/bin/azuracast azuracast:restore path_to_backup.tar.gz</code></pre>
+        <?php endif; ?>
+
+            <p class="card-text text-warning"><?=__('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.') ?></p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title"><?=__('Backups') ?></h3>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:backups:run') ?>">
+            <i class="material-icons" aria-hidden="true">send</i>
+            <?=__('Run Manual Backup') ?>
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="20%">
+                <col width="35%">
+                <col width="25%">
+                <col width="20%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th><?=__('Actions') ?></th>
+                <th><?=__('Backup') ?></th>
+                <th><?=__('Last Modified') ?></th>
+                <th><?=__('Size') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($backups as $row): ?>
+                <tr class="align-middle">
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('admin:backups:download', ['path' => base64_encode($row['path'])]) ?>"><?=__('Download') ?></a>
+                            <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('admin:backups:delete', ['path' => base64_encode($row['path']), 'csrf' => $csrf]) ?>"  data-confirm-title="<?=$this->e(__('Delete backup "%s"?', $row['filename'])) ?>"><?=__('Delete') ?></a>
+                        </div>
+                    </td>
+                    <td>
+                        <big><?=$this->e($row['basename']) ?></big>
+                    </td>
+                    <td><time data-content="<?=$row['timestamp'] ?>"><?=gmdate('Y-m-d', $row['timestamp']) ?></time></td>
+                    <td><span data-file-size="<?=$row['size'] ?>"><?=$row['size'] ?></span></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php if (!empty($last_output)): ?>
+    <div class="modal fade" id="modal-log-view" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-log-view-label"><?=__('Most Recent Backup Log') ?></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="modal-log-view-contents"><?=$last_output ?></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

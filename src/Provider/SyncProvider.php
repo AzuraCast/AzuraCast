@@ -22,6 +22,7 @@ class SyncProvider implements ServiceProviderInterface
                 new \Pimple\ServiceIterator($di, [
                     // Every minute tasks
                     Task\RadioRequests::class,
+                    Task\Backup::class,
                 ]),
                 new \Pimple\ServiceIterator($di, [
                     // Every 5 minutes tasks
@@ -43,6 +44,15 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Monolog\Logger::class],
                 $di[\InfluxDB\Database::class]
+            );
+        };
+
+        $di[Task\Backup::class] = function($di) {
+            return new Task\Backup(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class],
+                $di[\App\MessageQueue::class],
+                $di[\Azura\Console\Application::class]
             );
         };
 

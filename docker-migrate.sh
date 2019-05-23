@@ -18,23 +18,11 @@ fi
 
 BASE_DIR=`pwd`
 
-mkdir -p ${BASE_DIR}/migration
-mkdir -p ${BASE_DIR}/migration/influxdb
+# Create backup from existing installation.
+chmod a+x bin/azuracast
+./bin/azuracast azuracast:backup --exclude-media ./migration.tar.gz
 
-# Dump MySQL data into fixtures folder
-MYSQL_USERNAME=`awk -F "=" '/db_username/ {print $2}' env.ini | tr -d ' '`
-MYSQL_PASSWORD=`awk -F "=" '/db_password/ {print $2}' env.ini | tr -d ' '`
-
-mysqldump --add-drop-table -u$MYSQL_USERNAME -p$MYSQL_PASSWORD azuracast > migration/database.sql
-
-read -n 1 -s -r -p "MySQL exported. Press any key to continue (Export InfluxDB)..."
-
-# Dump InfluxDB data
-mkdir -p /var/azuracast/migration
-
-influxd backup -database stations ${BASE_DIR}/migration/influxdb
-
-read -n 1 -s -r -p "InfluxDB exported. Press any key to continue (Install Docker)..."
+read -n 1 -s -r -p "Database backed up. Press any key to continue (Install Docker)..."
 
 # Install Docker
 wget -qO- https://get.docker.com/ | sh
@@ -55,30 +43,22 @@ read -n 1 -s -r -p "Uninstall complete. Press any key to continue (Install Azura
 
 # Spin up Docker
 docker-compose pull
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml up -d
+sleep 5
 
-sleep 15
+# Copy media.
+docker-compose run --user="azuracast" --rm \
+    -v /var/azuracast/stations:/tmp/migration \
+    mv /tmp/migration/* /var/azuracast/stations
 
-# Run Docker AzuraCast-specific installer
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm influxdb import_folder /tmp/migration/
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml exec mariadb import_file /tmp/database.sql
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --user="azuracast" --rm web azuracast_migrate_stations /tmp/migration
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --user="azuracast" --rm web azuracast_install
-
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml down
-docker-compose up -d
-
-# Docker cleanup
-docker-compose rm -f
-
-docker volume prune -f
-docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')
+# Copy all other settings.
+chmod a+x docker.sh
+./docker.sh restore ./migration.tar.gz
 
 read -n 1 -s -r -p "Docker is running. Press any key to continue (cleanup)..."
 
 # Codebase cleanup
 rm -rf /var/azuracast/stations
 
-find -maxdepth 1 ! -name migration ! -name . ! -name docker-compose.yml \
+find -maxdepth 1 ! -name migration.tar.gz ! -name . ! -name docker-compose.yml \
      ! -name docker.sh ! -name .env ! -name azuracast.env ! -name plugins \
      -exec rm -rv {} \;

@@ -35,10 +35,6 @@ class Configuration
      * @param Station $station
      * @param bool $regen_auth_key
      * @param bool $force_restart Always restart this station's supervisor instances, even if nothing changed.
-     *
-     * @throws \App\Exception\NotFound
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function writeConfiguration(Station $station, $regen_auth_key = false, $force_restart = false): void
     {
@@ -74,6 +70,21 @@ class Configuration
             @unlink($supervisor_config_path);
             $this->_reloadSupervisorForStation($station, false);
             return;
+        }
+
+        // Ensure all directories exist.
+        $radio_dirs = [
+            $station->getRadioBaseDir(),
+            $station->getRadioMediaDir(),
+            $station->getRadioAlbumArtDir(),
+            $station->getRadioPlaylistsDir(),
+            $station->getRadioConfigDir(),
+            $station->getRadioTempDir(),
+        ];
+        foreach ($radio_dirs as $radio_dir) {
+            if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
+            }
         }
 
         // Write config files for both backend and frontend.

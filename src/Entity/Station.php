@@ -656,25 +656,7 @@ class Station
      */
     public function setRadioBaseDir($new_dir): void
     {
-        $new_dir = $this->_truncateString(trim($new_dir));
-
-        if (strcmp($this->radio_base_dir, $new_dir) !== 0) {
-            $this->radio_base_dir = $new_dir;
-
-            $radio_dirs = [
-                $this->radio_base_dir,
-                $this->getRadioMediaDir(),
-                $this->getRadioAlbumArtDir(),
-                $this->getRadioPlaylistsDir(),
-                $this->getRadioConfigDir(),
-                $this->getRadioTempDir(),
-            ];
-            foreach ($radio_dirs as $radio_dir) {
-                if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
-                }
-            }
-        }
+        $this->radio_base_dir = $this->_truncateString(trim($new_dir));
     }
 
     /**

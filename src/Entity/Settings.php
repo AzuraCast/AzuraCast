@@ -35,6 +35,12 @@ class Settings
     public const CUSTOM_JS_PUBLIC      = 'custom_js_public';
     public const CUSTOM_CSS_INTERNAL   = 'custom_css_internal';
 
+    // Backup settings
+    public const BACKUP_ENABLED        = 'backup_enabled';
+    public const BACKUP_TIME           = 'backup_time';
+    public const BACKUP_EXCLUDE_MEDIA  = 'backup_exclude_media';
+    public const BACKUP_KEEP_COPIES    = 'backup_keep_copies';
+
     // Internal settings
     public const SETUP_COMPLETE        = 'setup_complete';
 
@@ -51,6 +57,10 @@ class Settings
     public const UNIQUE_IDENTIFIER     = 'central_app_uuid';
     public const UPDATE_RESULTS        = 'central_update_results';
     public const UPDATE_LAST_RUN       = 'central_update_last_run';
+
+    public const BACKUP_LAST_RUN       = 'backup_last_run';
+    public const BACKUP_LAST_RESULT    = 'backup_last_result';
+    public const BACKUP_LAST_OUTPUT    = 'backup_last_output';
 
     /**
      * @ORM\Column(name="setting_key", type="string", length=64)

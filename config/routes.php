@@ -39,6 +39,26 @@ return function(App $app)
 
         })->add([Middleware\Permissions::class, Acl::GLOBAL_API_KEYS]);
 
+        $this->group('/backups', function() {
+            /** @var App $this */
+
+            $this->get('', Controller\Admin\BackupsController::class)
+                ->setName('admin:backups:index');
+
+            $this->map(['GET', 'POST'], '/configure', Controller\Admin\BackupsController::class.':configureAction')
+                ->setName('admin:backups:configure');
+
+            $this->map(['GET', 'POST'], '/run', Controller\Admin\BackupsController::class.':runAction')
+                ->setName('admin:backups:run');
+
+            $this->get('/delete/{path}', Controller\Admin\BackupsController::class.':downloadAction')
+                ->setName('admin:backups:download');
+
+            $this->get('/delete/{path}/{csrf}', Controller\Admin\BackupsController::class.':deleteAction')
+                ->setName('admin:backups:delete');
+
+        })->add([Middleware\Permissions::class, Acl::GLOBAL_BACKUPS]);
+
         $this->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class.':indexAction')
             ->setName('admin:branding:index')
             ->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);

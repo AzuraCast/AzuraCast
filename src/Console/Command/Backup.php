@@ -27,7 +27,7 @@ class Backup extends CommandAbstract
                 'path',
                 InputArgument::OPTIONAL,
                 'The absolute (or relative to /var/azuracast/backups) path to generate the backup.',
-                'backup_'.date('Y-m-d').'.tar.gz'
+                ''
             )
             ->addOption(
                 'exclude-media',
@@ -43,8 +43,11 @@ class Backup extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $destination_path = $input->getArgument('path');
+        if (empty($destination_path)) {
+            $destination_path = 'backup_'.gmdate('Y-m-d').'.tar.gz';
+        }
         if ('/' !== $destination_path[0]) {
-            $destination_path = \App\Sync\Task\Backup::BASE_DIR.$destination_path;
+            $destination_path = \App\Sync\Task\Backup::BASE_DIR.'/'.$destination_path;
         }
 
         $include_media = !(bool)$input->getOption('exclude-media');

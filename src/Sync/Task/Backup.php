@@ -77,11 +77,7 @@ class Backup extends AbstractTask
      */
     public function runBackup($path = null, $exclude_media = false): array
     {
-        $command = $this->console->find('azuracast:backup');
-
-        $input_params = [
-            'command' => 'azuracast:backup',
-        ];
+        $input_params = [];
         if (null !== $path) {
             $input_params['path'] = $path;
         }
@@ -89,22 +85,7 @@ class Backup extends AbstractTask
             $input_params['--exclude-media'] = true;
         }
 
-        $input = new ArrayInput($input_params);
-        $input->setInteractive(false);
-
-        $temp_stream = fopen('php://temp', 'w+');
-        $output = new StreamOutput($temp_stream);
-
-        $result_code = $command->run($input, $output);
-
-        rewind($temp_stream);
-        $result_output = stream_get_contents($temp_stream);
-        fclose($temp_stream);
-
-        return [
-            $result_code,
-            $result_output
-        ];
+        return $this->console->runCommand('azuracast:backup', $input_params);
     }
 
     /**

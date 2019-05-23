@@ -51,7 +51,10 @@ return function(App $app)
             $this->map(['GET', 'POST'], '/run', Controller\Admin\BackupsController::class.':runAction')
                 ->setName('admin:backups:run');
 
-            $this->get('/delete/{id}/{csrf}', Controller\Admin\BackupsController::class.':deleteAction')
+            $this->get('/delete/{path}', Controller\Admin\BackupsController::class.':downloadAction')
+                ->setName('admin:backups:download');
+
+            $this->get('/delete/{path}/{csrf}', Controller\Admin\BackupsController::class.':deleteAction')
                 ->setName('admin:backups:delete');
 
         })->add([Middleware\Permissions::class, Acl::GLOBAL_BACKUPS]);

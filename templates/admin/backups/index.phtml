@@ -1,0 +1,102 @@
+<?php
+/**
+ * @var array $backups
+ * @var \Azura\Assets $assets
+ */
+
+$this->layout('main', [
+    'title' => __('Backups'),
+    'manual' => true
+]);
+
+$assets
+    ->load('moment')
+    ->addInlineJs($this->fetch('admin/backups/index.js'), 99);
+?>
+
+<div class="card mb-3">
+<?php if ($is_enabled): ?>
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title">
+            <?=__('Automatic Backups') ?>
+            <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
+        </h3>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+        <?php if ($last_run > 0): ?>
+            <?=__('Last run: %s', '<time data-duration="'.$last_run.'"></time>') ?>
+        <?php else: ?>
+            <?=__('Never run') ?>
+        <?php endif; ?>
+        </p>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
+            <i class="material-icons" aria-hidden="true">settings</i>
+            <?=__('Configure') ?>
+        </a>
+    </div>
+<?php else: ?>
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title">
+            <?=__('Automatic Backups') ?>
+            <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
+        </h3>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
+            <i class="material-icons" aria-hidden="true">settings</i>
+            <?=__('Configure') ?>
+        </a>
+    </div>
+<?php endif; ?>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title"><?=__('Backups') ?></h3>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:backups:run') ?>">
+            <i class="material-icons" aria-hidden="true">send</i>
+            <?=__('Run Manual Backup') ?>
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="20%">
+                <col width="35%">
+                <col width="25%">
+                <col width="20%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th><?=__('Actions') ?></th>
+                <th><?=__('Backup') ?></th>
+                <th><?=__('Last Modified') ?></th>
+                <th><?=__('Size') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($backups as $row): ?>
+                <tr class="align-middle">
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('admin:backups:download', ['path' => base64_encode($row['path'])]) ?>"><?=__('Download') ?></a>
+                            <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('admin:backups:delete', ['path' => base64_encode($row['path']), 'csrf' => $csrf]) ?>"  data-confirm-title="<?=$this->e(__('Delete backup "%s"?', $row['filename'])) ?>"><?=__('Delete') ?></a>
+                        </div>
+                    </td>
+                    <td>
+                        <big><?=$this->e($row['filename']) ?></big>
+                    </td>
+                    <td><time data-content="<?=$row['timestamp'] ?>"><?=gmdate('Y-m-d', $row['timestamp']) ?></time></td>
+                    <td><span data-file-size="<?=$row['size'] ?>"><?=$row['size'] ?></span></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+

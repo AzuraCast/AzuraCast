@@ -41,7 +41,8 @@ class AdminProvider implements ServiceProviderInterface
             return new Admin\BackupsController(
                 $settings_form,
                 $backup_run_form,
-                $di[App\Sync\Task\Backup::class]
+                $di[App\Sync\Task\Backup::class],
+                $di[\Monolog\Logger::class]
             );
         };
 

@@ -73,7 +73,7 @@ class RotateLogs extends AbstractTask
         $backups_to_keep = (int)$settings_repo->getSetting(Entity\Settings::BACKUP_KEEP_COPIES, 0);
 
         if ($backups_to_keep > 0) {
-            $rotate = new Rotate\Rotate(Backup::BASE_DIR . '/automated_backup.tar.gz');
+            $rotate = new Rotate\Rotate(Backup::BASE_DIR . '/automatic_backup.tar.gz');
             $rotate->keep($backups_to_keep);
             $rotate->run();
         }

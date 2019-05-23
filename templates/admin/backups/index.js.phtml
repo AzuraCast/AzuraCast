@@ -11,7 +11,7 @@ $(function() {
     });
 
     $('time[data-duration]').each(function () {
-        $(this).text(moment.duration($(this).data('duration'), "seconds").humanize());
+        $(this).text(moment.duration($(this).data('duration'), "seconds").humanize(true));
     });
 
     $('span[data-file-size]').each(function() {

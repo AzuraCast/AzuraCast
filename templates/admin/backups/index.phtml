@@ -25,7 +25,7 @@ $assets
     <div class="card-body">
         <p class="card-text">
         <?php if ($last_run > 0): ?>
-            <?=__('Last run: %s', '<time data-duration="'.$last_run.'"></time>') ?>
+            <?=__('Last run: %s', '<time data-duration="'.(0-(time()-$last_run)).'"></time>') ?>
         <?php else: ?>
             <?=__('Never run') ?>
         <?php endif; ?>
@@ -89,7 +89,7 @@ $assets
                         </div>
                     </td>
                     <td>
-                        <big><?=$this->e($row['filename']) ?></big>
+                        <big><?=$this->e($row['basename']) ?></big>
                     </td>
                     <td><time data-content="<?=$row['timestamp'] ?>"><?=gmdate('Y-m-d', $row['timestamp']) ?></time></td>
                     <td><span data-file-size="<?=$row['size'] ?>"><?=$row['size'] ?></span></td>

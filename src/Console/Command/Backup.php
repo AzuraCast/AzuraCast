@@ -44,7 +44,7 @@ class Backup extends CommandAbstract
     {
         $destination_path = $input->getArgument('path');
         if (empty($destination_path)) {
-            $destination_path = 'backup_'.gmdate('Y-m-d').'.tar.gz';
+            $destination_path = 'manual_backup_'.gmdate('Ymd_Hi').'.tar.gz';
         }
         if ('/' !== $destination_path[0]) {
             $destination_path = \App\Sync\Task\Backup::BASE_DIR.'/'.$destination_path;
@@ -152,6 +152,14 @@ class Backup extends CommandAbstract
 
         // Compress backup files.
         $io->section('Creating backup archive...');
+
+        // Strip leading slashes from backup paths.
+        $files_to_backup = array_map(function($val) {
+            if (0 === strpos($val, '/')) {
+                return substr($val, 1);
+            }
+            return $val;
+        }, $files_to_backup);
 
         $process = $this->passThruProcess($io, array_merge([
             'tar',

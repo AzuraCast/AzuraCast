@@ -22,6 +22,7 @@ class SyncProvider implements ServiceProviderInterface
                 new \Pimple\ServiceIterator($di, [
                     // Every minute tasks
                     Task\RadioRequests::class,
+                    Task\Backup::class,
                 ]),
                 new \Pimple\ServiceIterator($di, [
                     // Every 5 minutes tasks

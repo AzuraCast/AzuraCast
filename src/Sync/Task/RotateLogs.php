@@ -65,6 +65,18 @@ class RotateLogs extends AbstractTask
         $rotate->keep(5);
         $rotate->size('5MB');
         $rotate->run();
+
+        // Rotate the automated backups.
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        $backups_to_keep = (int)$settings_repo->getSetting(Entity\Settings::BACKUP_KEEP_COPIES, 0);
+
+        if ($backups_to_keep > 0) {
+            $rotate = new Rotate\Rotate(Backup::BASE_DIR . '/automated_backup.tar.gz');
+            $rotate->keep($backups_to_keep);
+            $rotate->run();
+        }
     }
 
     /**

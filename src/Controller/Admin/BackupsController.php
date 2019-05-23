@@ -1,20 +1,15 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Acl;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Form\Form;
 use App\Form\SettingsForm;
 use App\Http\Request;
 use App\Http\Response;
-use App\Sync\Runner;
 use App\Sync\Task\Backup;
-use Doctrine\ORM\EntityManager;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use Monolog\Handler\TestHandler;
-use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 class BackupsController
@@ -34,9 +29,6 @@ class BackupsController
     /** @var Filesystem */
     protected $backup_fs;
 
-    /** @var Logger */
-    protected $logger;
-
     /** @var string */
     protected $csrf_namespace = 'admin_backups';
 
@@ -44,15 +36,13 @@ class BackupsController
      * @param SettingsForm $settings_form
      * @param Form $backup_run_form
      * @param Backup $backup_task
-     * @param Logger $logger
      *
      * @see \App\Provider\AdminProvider
      */
     public function __construct(
         SettingsForm $settings_form,
         Form $backup_run_form,
-        Backup $backup_task,
-        Logger $logger
+        Backup $backup_task
     )
     {
         $this->settings_form = $settings_form;
@@ -62,8 +52,6 @@ class BackupsController
 
         $this->backup_task = $backup_task;
         $this->backup_fs = new Filesystem(new Local(Backup::BASE_DIR));
-
-        $this->logger = $logger;
     }
 
     public function __invoke(Request $request, Response $response): ResponseInterface
@@ -98,16 +86,15 @@ class BackupsController
         if ($request->isPost() && $this->backup_run_form->isValid($request->getParsedBody())) {
             $data = $this->backup_run_form->getValues();
 
-            $handler = new TestHandler(Logger::DEBUG, false);
-            $this->logger->pushHandler($handler);
+            [$result_code, $result_output] = $this->backup_task->runBackup($data['path'], $data['exclude_media']);
 
-            $this->backup_task->runBackup($data['path'], $data['exclude_media']);
+            $is_successful = (0 === $result_code);
 
-            $this->logger->popHandler();
-
-            return $request->getView()->renderToResponse($response, 'system/log_view', [
+            return $request->getView()->renderToResponse($response, 'admin/backups/run', [
                 'title'     => __('Run Manual Backup'),
-                'log_records' => $handler->getRecords(),
+                'path'      => $data['path'],
+                'is_successful' => $is_successful,
+                'output'    => $result_output,
             ]);
         }
 

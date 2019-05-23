@@ -14,43 +14,67 @@ $assets
     ->addInlineJs($this->fetch('admin/backups/index.js'), 99);
 ?>
 
-<div class="card mb-3">
-<?php if ($is_enabled): ?>
-    <div class="card-header bg-primary-dark">
-        <h3 class="card-title">
-            <?=__('Automatic Backups') ?>
-            <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
-        </h3>
-    </div>
-    <div class="card-body">
-        <p class="card-text">
-        <?php if ($last_run > 0): ?>
-            <?=__('Last run: %s', '<time data-duration="'.(0-(time()-$last_run)).'"></time>') ?>
-        <?php else: ?>
-            <?=__('Never run') ?>
+<div class="card-deck">
+    <div class="card mb-3">
+    <?php if ($is_enabled): ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Automatic Backups') ?>
+                <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
+            </h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                <?php if ($last_run > 0): ?>
+                    <?=__('Last run: %s', '<time data-duration="'.(0-(time()-$last_run)).'"></time>') ?>
+                <?php else: ?>
+                    <?=__('Never run') ?>
+                <?php endif; ?>
+            </p>
+        </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
+                <i class="material-icons" aria-hidden="true">settings</i>
+                <?=__('Configure') ?>
+            </a>
+        <?php if (!empty($last_output)): ?>
+            <a class="btn btn-outline-secondary" id="btn-view-log" href="#">
+                <i class="material-icons" aria-hidden="true">assignment</i>
+                <?=__('Most Recent Backup Log') ?>
+            </a>
         <?php endif; ?>
-        </p>
+        </div>
+    <?php else: ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Automatic Backups') ?>
+                <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
+            </h3>
+        </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
+                <i class="material-icons" aria-hidden="true">settings</i>
+                <?=__('Configure') ?>
+            </a>
+        </div>
+    <?php endif; ?>
     </div>
-    <div class="card-actions">
-        <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
-            <i class="material-icons" aria-hidden="true">settings</i>
-            <?=__('Configure') ?>
-        </a>
+    <div class="card mb-3">
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title"><?=__('Restoring Backups') ?></h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><?=__('To restore a backup from your host computer, run:') ?></p>
+
+        <?php if (APP_INSIDE_DOCKER): ?>
+            <pre><code>./docker.sh restore path_to_backup.tar.gz</code></pre>
+        <?php else: ?>
+            <pre><code>/var/azuracast/www/bin/azuracast azuracast:restore path_to_backup.tar.gz</code></pre>
+        <?php endif; ?>
+
+            <p class="card-text text-warning"><?=__('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.') ?></p>
+        </div>
     </div>
-<?php else: ?>
-    <div class="card-header bg-primary-dark">
-        <h3 class="card-title">
-            <?=__('Automatic Backups') ?>
-            <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
-        </h3>
-    </div>
-    <div class="card-actions">
-        <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure') ?>">
-            <i class="material-icons" aria-hidden="true">settings</i>
-            <?=__('Configure') ?>
-        </a>
-    </div>
-<?php endif; ?>
 </div>
 
 <div class="card">
@@ -100,3 +124,18 @@ $assets
     </div>
 </div>
 
+<?php if (!empty($last_output)): ?>
+    <div class="modal fade" id="modal-log-view" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-log-view-label"><?=__('Most Recent Backup Log') ?></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="modal-log-view-contents"><?=$last_output ?></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

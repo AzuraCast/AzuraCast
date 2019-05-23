@@ -26,4 +26,20 @@ $(function() {
         return pos ? [parseInt(d/10),".",d%10," ",s[pos]].join('') : bytes + ' bytes';
     }
 
+    var log_modal = $('#modal-log-view');
+
+    if (log_modal.length > 0) {
+        log_modal.modal({
+            focus: false,
+            show: false
+        });
+
+        $('#btn-view-log').on('click', function(e) {
+            e.preventDefault();
+
+            log_modal.modal('show');
+            return false;
+        });
+
+    }
 });

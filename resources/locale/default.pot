@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-05-23T11:38:29+00:00\n"
-"PO-Revision-Date: 2019-05-23T11:38:29+00:00\n"
+"POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
+"PO-Revision-Date: 2019-05-23T14:09:12+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/src/Acl.php:183
@@ -77,7 +77,7 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/config/menus/admin.php:37
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
-#: /var/azuracast/www/templates/admin/backups/index.phtml:58
+#: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
 msgstr ""
 
@@ -244,14 +244,14 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:94
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:104
-#: /var/azuracast/www/templates/admin/backups/index.phtml:63
+#: /var/azuracast/www/templates/admin/backups/index.phtml:87
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
-#: /var/azuracast/www/templates/admin/backups/index.phtml:77
+#: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Backup"
 msgstr ""
 
@@ -946,7 +946,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/automation.php:14
 #: /var/azuracast/www/config/forms/station.php:108
-#: /var/azuracast/www/templates/admin/backups/index.phtml:44
+#: /var/azuracast/www/templates/admin/backups/index.phtml:51
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:72
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:52
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:101
@@ -959,7 +959,7 @@ msgid "Disabled"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/automation.php:15
-#: /var/azuracast/www/templates/admin/backups/index.phtml:22
+#: /var/azuracast/www/templates/admin/backups/index.phtml:23
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:70
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:50
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:18
@@ -2875,26 +2875,43 @@ msgstr ""
 msgid "Revoke"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:21
-#: /var/azuracast/www/templates/admin/backups/index.phtml:43
+#: /var/azuracast/www/templates/admin/backups/index.phtml:22
+#: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:28
+#: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:39
 msgid "Last run: %s"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:30
+#: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:37
-#: /var/azuracast/www/templates/admin/backups/index.phtml:50
+#: /var/azuracast/www/templates/admin/backups/index.phtml:38
+#: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:76
+#: /var/azuracast/www/templates/admin/backups/index.phtml:43
+#: /var/azuracast/www/templates/admin/backups/index.phtml:132
+msgid "Most Recent Backup Log"
+msgstr ""
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:64
+msgid "Restoring Backups"
+msgstr ""
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:67
+msgid "To restore a backup from your host computer, run:"
+msgstr ""
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:75
+msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
+msgstr ""
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:100
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:22
 #: /var/azuracast/www/templates/admin/stations/index.phtml:20
@@ -2915,24 +2932,24 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:78
+#: /var/azuracast/www/templates/admin/backups/index.phtml:102
 msgid "Last Modified"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:79
+#: /var/azuracast/www/templates/admin/backups/index.phtml:103
 #: /var/azuracast/www/templates/stations/files/index.phtml:114
 msgid "Size"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:87
+#: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Download"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:88
+#: /var/azuracast/www/templates/admin/backups/index.phtml:112
 msgid "Delete backup \"%s\"?"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/backups/index.phtml:88
+#: /var/azuracast/www/templates/admin/backups/index.phtml:112
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:33
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:35
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:37
@@ -3464,6 +3481,10 @@ msgstr ""
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "New GitHub Issue"
+msgstr ""
+
+#: /var/azuracast/www/templates/partials/log_viewer.phtml:11
+msgid "Log View"
 msgstr ""
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18

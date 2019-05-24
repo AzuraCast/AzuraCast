@@ -43,6 +43,8 @@ class Backup extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $start_time = microtime(true);
+
         $destination_path = $input->getArgument('path');
         if (empty($destination_path)) {
             $destination_path = 'manual_backup_'.gmdate('Ymd_Hi').'.zip';
@@ -98,11 +100,6 @@ class Backup extends CommandAbstract
             ]
         );
 
-        if (!$process->isSuccessful()) {
-            $io->getErrorStyle()->error('An error occurred with MariaDB.');
-            return 1;
-        }
-
         $files_to_backup[] = $path_db_dump;
         $io->newLine();
 
@@ -113,7 +110,7 @@ class Backup extends CommandAbstract
         $influxdb = $this->get(\InfluxDB\Database::class);
         $influxdb_client = $influxdb->getClient();
 
-        $process = $this->passThruProcess($io, [
+        $this->passThruProcess($io, [
             'influxd',
             'backup',
             '-database', 'stations',
@@ -122,11 +119,6 @@ class Backup extends CommandAbstract
             $influxdb_client->getHost().':8088',
             $tmp_dir_influxdb,
         ], $tmp_dir_influxdb);
-
-        if (!$process->isSuccessful()) {
-            $io->getErrorStyle()->error('An error occurred with InfluxDB.');
-            return 1;
-        }
 
         $files_to_backup[] = $tmp_dir_influxdb;
         $io->newLine();
@@ -167,7 +159,7 @@ class Backup extends CommandAbstract
         switch($file_ext) {
             case 'gz':
             case 'tgz':
-                $process = $this->passThruProcess($io, array_merge([
+                $this->passThruProcess($io, array_merge([
                     'tar',
                     'zcvf',
                     $destination_path
@@ -176,20 +168,15 @@ class Backup extends CommandAbstract
 
             case 'zip':
             default:
-                $dont_compress = ['.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
+                $dont_compress = ['.tar.gz', '.zip', '.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
 
-                $process = $this->passThruProcess($io, array_merge([
+                $this->passThruProcess($io, array_merge([
                     'zip',
                     '-r',
                     '-n', implode(':', $dont_compress),
                     $destination_path
                 ], $files_to_backup),'/');
                 break;
-        }
-
-        if (!$process->isSuccessful()) {
-            $io->getErrorStyle()->error('An error occurred with the archive process.');
-            return 1;
         }
 
         $io->newLine();
@@ -202,24 +189,32 @@ class Backup extends CommandAbstract
 
         $io->newLine();
 
+        $end_time = microtime(true);
+        $time_diff = $end_time - $start_time;
+
         $io->success([
-            'Backup complete!',
+            'Backup complete in '.round($time_diff, 3).' seconds.',
         ]);
         return 0;
     }
 
     protected function passThruProcess(SymfonyStyle $io, $cmd, $cwd = null, array $env = []): Process
     {
+        set_time_limit(3600);
+
         if (is_array($cmd)) {
             $process = new Process($cmd, $cwd);
         } else {
             $process = Process::fromShellCommandline($cmd, $cwd);
         }
 
+        $process->setTimeout(3500);
+        $process->setIdleTimeout(60);
+
         $stdout = [];
         $stderr = [];
 
-        $process->run(function($type, $data) use ($process, $io, &$stdout, &$stderr) {
+        $process->mustRun(function($type, $data) use ($process, $io, &$stdout, &$stderr) {
             if ($process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
                 $stderr[] = $data;
@@ -229,22 +224,13 @@ class Backup extends CommandAbstract
             }
         }, $env);
 
-        if (!empty($stderr) || !empty($stdout)) {
+        if (!empty($stderr)) {
             /** @var Logger $logger */
             $logger = $this->get(Logger::class);
-
-            if (!empty($stdout)) {
-                $logger->debug('Backup process output', [
-                    'cmd' => $cmd,
-                    'output' => $stdout,
-                ]);
-            }
-            if (!empty($stderr)) {
-                $logger->error('Backup process error', [
-                    'cmd' => $cmd,
-                    'output' => $stderr,
-                ]);
-            }
+            $logger->error('Backup process error', [
+                'cmd' => $cmd,
+                'output' => $stderr,
+            ]);
         }
 
         return $process;

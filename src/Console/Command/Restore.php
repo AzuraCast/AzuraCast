@@ -5,6 +5,7 @@ use App\Entity;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
+use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,6 +38,8 @@ class Restore extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $start_time = microtime(true);
+
         $io = new SymfonyStyle($input, $output);
         $io->title('AzuraCast Restore');
         $io->writeln('Please wait while the backup is restored...');
@@ -75,11 +78,6 @@ class Restore extends CommandAbstract
                 break;
         }
 
-        if (!$process->isSuccessful()) {
-            $io->getErrorStyle()->error('An error occurred with the archive extraction.');
-            return 1;
-        }
-
         $io->newLine();
 
         // Handle DB dump
@@ -110,11 +108,6 @@ class Restore extends CommandAbstract
             ]
         );
 
-        if (!$process->isSuccessful()) {
-            $io->getErrorStyle()->error('An error occurred with MariaDB.');
-            return 1;
-        }
-
         Utilities::rmdirRecursive($tmp_dir_mariadb);
         $io->newLine();
 
@@ -139,11 +132,6 @@ class Restore extends CommandAbstract
             $tmp_dir_influxdb,
         ], $tmp_dir_influxdb);
 
-        if (!$process->isSuccessful()) {
-            $io->getErrorStyle()->error('An error occurred with InfluxDB.');
-            return 1;
-        }
-
         Utilities::rmdirRecursive($tmp_dir_influxdb);
         $io->newLine();
 
@@ -152,27 +140,49 @@ class Restore extends CommandAbstract
 
         $this->runCommand($output, 'azuracast:setup', ['--update' => true]);
 
+        $end_time = microtime(true);
+        $time_diff = $end_time - $start_time;
+
         $io->success([
-            'Restore complete!',
+            'Restore complete in '.round($time_diff, 3).' seconds.',
         ]);
         return 0;
     }
 
     protected function passThruProcess(SymfonyStyle $io, $cmd, $cwd = null, array $env = []): Process
     {
+        set_time_limit(3600);
+
         if (is_array($cmd)) {
             $process = new Process($cmd, $cwd);
         } else {
             $process = Process::fromShellCommandline($cmd, $cwd);
         }
 
-        $process->run(function($type, $data) use ($process, $io) {
+        $process->setTimeout(3500);
+        $process->setIdleTimeout(60);
+
+        $stdout = [];
+        $stderr = [];
+
+        $process->mustRun(function($type, $data) use ($process, $io, &$stdout, &$stderr) {
             if ($process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
+                $stderr[] = $data;
             } else {
                 $io->write($data);
+                $stdout[] = $data;
             }
         }, $env);
+
+        if (!empty($stderr)) {
+            /** @var Logger $logger */
+            $logger = $this->get(Logger::class);
+            $logger->error('Backup process error', [
+                'cmd' => $cmd,
+                'output' => $stderr,
+            ]);
+        }
 
         return $process;
     }

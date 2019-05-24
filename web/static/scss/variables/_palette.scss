@@ -49,6 +49,13 @@ $light: (
   light: $material-color-grey-050
 ) !default;
 
+// "-bg" is light for light themes, dark for dark themes.
+$bg: (
+  color: $material-color-grey-100,
+  dark:  $material-color-grey-300,
+  light: $material-color-grey-050
+) !default;
+
 $theme-colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $theme-colors: map-merge(
@@ -60,7 +67,8 @@ $theme-colors: map-merge(
     success:   $success,
     warning:   $warning,
     dark:      $dark,
-    light:     $light
+    light:     $light,
+    bg:        $bg
   ),
   $theme-colors
 );

@@ -20,7 +20,7 @@
         </div>
         <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
             <div class="flex-shrink-0">
-                <a class="btn btn-light" role="button" href="<?=$router->fromHere('stations:profile:edit') ?>">
+                <a class="btn btn-bg" role="button" href="<?=$router->fromHere('stations:profile:edit') ?>">
                     <i class="material-icons" aria-hidden="true">edit</i>
                     <?=__('Edit Profile') ?>
                 </a>

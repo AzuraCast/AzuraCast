@@ -1,7 +1,8 @@
-$secondary: (
-  color: $material-color-amber-600,
-  dark:  $material-color-amber-900,
-  light: $material-color-amber-200
+// "-bg" is light for light themes, dark for dark themes.
+$bg: (
+  color: $material-color-grey-800,
+  dark:  $material-color-grey-900,
+  light: $material-color-grey-600
 );
 
 $theme-colors: map-merge(
@@ -14,6 +15,7 @@ $theme-colors: map-merge(
     success:   $success,
     warning:   $warning,
     dark:      $dark,
-    light:     $light
+    light:     $light,
+    bg:        $bg
   )
 );

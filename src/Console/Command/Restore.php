@@ -54,11 +54,26 @@ class Restore extends CommandAbstract
         // Extract tar.gz archive
         $io->section('Extracting backup file...');
 
-        $process = $this->passThruProcess($io, [
-            'tar',
-            'zxvf',
-            $archive_path
-        ],'/');
+        $file_ext = strtolower(pathinfo($archive_path, \PATHINFO_EXTENSION));
+
+        switch($file_ext) {
+            case 'gz':
+            case 'tgz':
+                $process = $this->passThruProcess($io, [
+                    'tar',
+                    'zxvf',
+                    $archive_path
+                ],'/');
+                break;
+
+            case 'zip':
+            default:
+                $process = $this->passThruProcess($io, [
+                    'unzip',
+                    $archive_path
+                ],'/');
+                break;
+        }
 
         if (!$process->isSuccessful()) {
             $io->getErrorStyle()->error('An error occurred with the archive extraction.');

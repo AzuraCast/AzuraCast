@@ -69,7 +69,7 @@ $assets
         <?php if (APP_INSIDE_DOCKER): ?>
             <pre><code>./docker.sh restore path_to_backup.tar.gz</code></pre>
         <?php else: ?>
-            <pre><code>/var/azuracast/www/bin/azuracast azuracast:restore path_to_backup.tar.gz</code></pre>
+            <pre><code>/var/azuracast/www/bin/azuracast azuracast:restore path_to_backup.zip</code></pre>
         <?php endif; ?>
 
             <p class="card-text text-warning"><?=__('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.') ?></p>

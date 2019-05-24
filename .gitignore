@@ -36,7 +36,10 @@ tmp/cache/*---*
 # Docker files
 /docker-compose.yml
 /docker-compose.override.yml
+
+# Backups
 /*.tar.gz
+/*.zip
 
 # Plugins
 /plugins/*

@@ -174,7 +174,7 @@ bash() {
 #
 # Back up the Docker volumes to a .tar.gz file.
 # Usage:
-# ./docker.sh backup [/custom/backup/dir/custombackupname.tar.gz]
+# ./docker.sh backup [/custom/backup/dir/custombackupname.zip]
 #
 backup() {
     APP_BASE_DIR=$(pwd)
@@ -199,7 +199,7 @@ backup() {
 #
 # Restore an AzuraCast backup into Docker.
 # Usage:
-# ./docker.sh restore [/custom/backup/dir/custombackupname.tar.gz]
+# ./docker.sh restore [/custom/backup/dir/custombackupname.zip]
 #
 restore() {
     APP_BASE_DIR=$(pwd)

@@ -2,6 +2,7 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
@@ -44,7 +45,7 @@ class Backup extends CommandAbstract
     {
         $destination_path = $input->getArgument('path');
         if (empty($destination_path)) {
-            $destination_path = 'manual_backup_'.gmdate('Ymd_Hi').'.tar.gz';
+            $destination_path = 'manual_backup_'.gmdate('Ymd_Hi').'.zip';
         }
         if ('/' !== $destination_path[0]) {
             $destination_path = \App\Sync\Task\Backup::BASE_DIR.'/'.$destination_path;
@@ -161,16 +162,45 @@ class Backup extends CommandAbstract
             return $val;
         }, $files_to_backup);
 
-        $process = $this->passThruProcess($io, array_merge([
-            'tar',
-            'zcvf',
-            $destination_path
-        ], $files_to_backup),'/');
+        $file_ext = strtolower(pathinfo($destination_path, \PATHINFO_EXTENSION));
+
+        switch($file_ext) {
+            case 'gz':
+            case 'tgz':
+                $process = $this->passThruProcess($io, array_merge([
+                    'tar',
+                    'zcvf',
+                    $destination_path
+                ], $files_to_backup),'/');
+                break;
+
+            case 'zip':
+            default:
+                $dont_compress = ['.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
+
+                $process = $this->passThruProcess($io, array_merge([
+                    'zip',
+                    '-r',
+                    '-n', implode(':', $dont_compress),
+                    $destination_path
+                ], $files_to_backup),'/');
+                break;
+        }
 
         if (!$process->isSuccessful()) {
             $io->getErrorStyle()->error('An error occurred with the archive process.');
             return 1;
         }
+
+        $io->newLine();
+
+        // Cleanup
+        $io->section('Cleaning up temporary files...');
+
+        Utilities::rmdirRecursive($tmp_dir_mariadb);
+        Utilities::rmdirRecursive($tmp_dir_influxdb);
+
+        $io->newLine();
 
         $io->success([
             'Backup complete!',

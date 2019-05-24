@@ -24,6 +24,7 @@ services:
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
+      - backups:/var/azuracast/backups
     restart: always
     logging: &default-logging
       options:
@@ -120,3 +121,4 @@ volumes:
   station_data: {}
   shoutcast2_install: {}
   tmp_data: {}
+  backups: {}

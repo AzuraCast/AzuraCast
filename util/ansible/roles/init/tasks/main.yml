@@ -45,6 +45,8 @@
         - pwgen
         - whois
         - python-pip
+        - zip
+        - unzip
 
   - name: Install software-properties (18.04 only)
     apt:

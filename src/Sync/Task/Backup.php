@@ -114,7 +114,7 @@ class Backup extends AbstractTask
 
             // Trigger a new backup.
             $message = new Message\BackupMessage;
-            $message->path = 'automatic_backup.tar.gz';
+            $message->path = 'automatic_backup.zip';
             $message->exclude_media = (bool)$this->settings_repo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
             $this->message_queue->produce($message);
         }

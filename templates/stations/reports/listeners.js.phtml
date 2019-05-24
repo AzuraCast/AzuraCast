@@ -68,12 +68,13 @@ function setMapPoints(points) {
 }
 
 $(function() {
-    live_time = moment(0);
+    live_time = moment();
 
     $('#reportrange').daterangepicker({
         startDate: live_time,
         endDate: live_time,
         opens: "left",
+        showDropdowns: true,
         ranges: {
             <?=$this->escapeJs(__('Live Listeners')) ?>: [moment(0), moment(0)],
             <?=$this->escapeJs(__('Today')) ?>: [moment(), moment()],

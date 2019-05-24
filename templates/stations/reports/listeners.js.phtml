@@ -1,4 +1,4 @@
-var live_time, load_timeout, app_datatable, map;
+var live_time, is_live, load_timeout, app_datatable, map;
 
 function cb(start, end) {
     is_live = live_time.isSame(start, 'day');
@@ -68,14 +68,17 @@ function setMapPoints(points) {
 }
 
 $(function() {
-    live_time = moment(0);
+    live_time = moment().add(1, 'days');
 
     $('#reportrange').daterangepicker({
+        showDropdowns: true,
+        minYear: 2016,
+        maxYear: parseInt(moment().format('YYYY'),10),
         startDate: live_time,
         endDate: live_time,
         opens: "left",
         ranges: {
-            <?=$this->escapeJs(__('Live Listeners')) ?>: [moment(0), moment(0)],
+            <?=$this->escapeJs(__('Live Listeners')) ?>: [live_time, live_time],
             <?=$this->escapeJs(__('Today')) ?>: [moment(), moment()],
             <?=$this->escapeJs(__('Yesterday')) ?>: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             <?=$this->escapeJs(__('Last 7 Days')) ?>: [moment().subtract(6, 'days'), moment()],

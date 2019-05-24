@@ -13,8 +13,8 @@
 <section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
     <div class="card-header bg-primary-dark">
         <div class="d-flex">
-            <h3 class="flex-shrink card-title mt-1 mb-0"><?=__('On the Air') ?></h3>
-            <h6 class="card-subtitle text-right flex-fill mt-1 mb-0" style="line-height: 1;">
+            <h3 class="flex-shrink card-title mt-0 mb-0"><?=__('On the Air') ?></h3>
+            <h6 class="card-subtitle text-right flex-fill mt-0 mb-0" style="line-height: 1;">
                 <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span>{{ np.listeners.total }}</span> <span v-if="np.listeners.total == 1"><?=__('Listener') ?></span><span v-else><?=__('Listeners') ?></span><br>
                 <small>
                     <span>{{ np.listeners.unique }}</span> <?=__('Unique') ?>

@@ -112,19 +112,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '',
             'setenv("TZ", "'.$this->_cleanUpString($station->getTimezone()).'")',
             '',
-            '# AutoDJ Next Song Script',
-            'def azuracast_next_song() =',
-            '  uri = '.$this->_getApiUrlCommand($station, 'nextsong'),
-            '  log("AzuraCast Raw Response: #{uri}")',
-            '  ',
-            '  if uri == "" or string.match(pattern="Error", uri) then',
-            '    log("AzuraCast Error: Delaying subsequent requests...")',
-            '    system("sleep 5")',
-            '    request.create("")',
-            '  else',
-            '    request.create(uri)',
-            '  end',
-            'end',
         ]);
     }
 
@@ -323,12 +310,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'radio = random(weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . '])',
         ]);
 
-        # Defer to AzuraCast for general rotation playlists if available.
-        $event->appendLines([
-            'dynamic = audio_to_stereo(request.dynamic(id="'.$this->_getVarName('next_song', $station).'", timeout=20., azuracast_next_song))',
-            'dynamic = cue_cut(id="'.$this->_getVarName('cue_cut', $station).'", dynamic)',
-        ]);
-
         $error_file = APP_INSIDE_DOCKER
             ? '/usr/local/share/icecast/web/error.mp3'
             : APP_INCLUDE_ROOT . '/resources/error.mp3';
@@ -336,7 +317,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $event->appendLines([
             'error_song = sequence([blank(duration=5.), single("'.$error_file.'")])',
             'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))',
-            'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, dynamic, radio, error_song])'
+            'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, radio, error_song])'
         ]);
 
         if (!empty($schedule_switches)) {

@@ -303,14 +303,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $np->now_playing = $offline_sh;
 
             $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
-
-            $next_song = $this->autodj->getNextSong($station);
-            if ($next_song instanceof Entity\SongHistory) {
-                $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
-            } else {
-                $np->playing_next = null;
-            }
-
             $np->live = new Entity\Api\NowPlayingLive(false);
         } else {
             // Pull from current NP data if song details haven't changed.
@@ -323,7 +315,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
                 $np->song_history = $np_old->song_history;
-                $np->playing_next = $np_old->playing_next;
             } else {
                 // SongHistory registration must ALWAYS come before the history/nextsong calls
                 // otherwise they will not have up-to-date database info!
@@ -331,12 +322,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
                 $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
-
-                $next_song = $this->autodj->getNextSong($station);
-
-                if ($next_song instanceof Entity\SongHistory && $next_song->showInApis()) {
-                    $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
-                }
             }
 
             // Update detailed listener statistics, if they exist for the station

@@ -12,8 +12,8 @@ $this->layout('main', [
 
 $assets
     ->load('vue')
-    ->load('inline_player')
-    ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
+    ->load('vue')
+    ->load('radio_player')
     ->load('clipboard')
     ->addInlineJs($this->fetch('stations/profile/index.js', ['nowplaying' => $nowplaying]), 99);
 ?>

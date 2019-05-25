@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-23 15:31\n"
+"PO-Revision-Date: 2019-05-25 13:50\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -84,7 +84,7 @@ msgstr "Champs personnalisés"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Sauvegardes"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
@@ -245,7 +245,7 @@ msgstr "Modifications enregistrées."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 msgid "Configure Backups"
-msgstr ""
+msgstr "Configurer les sauvegardes"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:94
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:104
@@ -253,12 +253,12 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr ""
+msgstr "Exécuter la sauvegarde manuelle"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Backup"
-msgstr ""
+msgstr "Sauvegarde"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:36
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:65
@@ -445,7 +445,7 @@ msgstr "Vos informations d'identification n'ont pas pu être vérifiées."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:211
 msgid "All Stations Daily Average"
-msgstr ""
+msgstr "Moyenne quotidienne pour toutes les stations"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:229
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:265
@@ -740,7 +740,7 @@ msgstr "Configuration de SHOUTcast"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "Vous avez fait une demande trop récemment ! Veuillez patienter avant d'en soumettre un autre."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."

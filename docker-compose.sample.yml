@@ -27,6 +27,7 @@ services:
     env_file: azuracast.env
     environment: &default-environment
       AZURACAST_DC_REVISION: 5
+      ADDITIONAL_MEDIA_SYNC_WORKER_COUNT: ${ADDITIONAL_MEDIA_SYNC_WORKER_COUNT:-0}
     volumes:
       - letsencrypt:/etc/letsencrypt
       - www_data:/var/azuracast/www

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-25 14:00\n"
+"PO-Revision-Date: 2019-05-25 14:10\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2530,7 +2530,15 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Les Web Hooks envoient automatiquement une requête HTTP POST à l'URL que vous spécifiez à\n"
+"\n"
+"               pour l'avertir chaque fois qu'un des déclencheurs que vous spécifiez se produit sur votre station. Le corps du message POST\n"
+"\n"
+"               est exactement le même que le <a href=\"%s\" target=\"_blank\">Réponse de l'API de diffusion</a> de votre station.\n"
+"\n"
+"               Afin de traiter rapidement, les Web Hooks ont un court délai d'attente, donc le service de réponse doit être\n"
+"\n"
+"               optimisé pour traiter la demande en moins de 2 secondes."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"
@@ -2619,7 +2627,21 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Étapes pour configurer une demande Twitter :<br>\n"
+"\n"
+"                   <ol type=\"1\">\n"
+"\n"
+"                        <li>Créer une nouvelle demande sur <a href=\"%s\" target=\"_blank\">site d'applications Twitter</a>.\n"
+"\n"
+"                        Utilisez l'URL de base de cette installation comme URL d'application.</li>\n"
+"\n"
+"                        <li>Dans l'application nouvellement créée, cliquez sur l'onglet \"Clés et jetons d'accès\".</li>\n"
+"\n"
+"                        <li>En bas de la page, cliquez sur \"Créer mon code d'accès\".</li>\n"
+"\n"
+"                    </ol>\n"
+"\n"
+"                    <p>Une fois ces étapes terminées, entrez les informations de la page \" Clés et jetons d'accès \" dans les champs ci-dessous.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -2649,7 +2671,7 @@ msgstr "Aucune limite"
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
 #: /var/azuracast/www/config/forms/webhook/twitter.php:77
 msgid "%d seconds"
-msgstr ""
+msgstr "%d secondes"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:78
 #: /var/azuracast/www/config/forms/webhook/twitter.php:79
@@ -2658,7 +2680,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/twitter.php:82
 #: /var/azuracast/www/config/forms/webhook/twitter.php:83
 msgid "%d minutes"
-msgstr ""
+msgstr "%d minutes"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:119
 msgid "Message Body"
@@ -2881,38 +2903,38 @@ msgstr "Révoquer"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
-msgstr ""
+msgstr "Sauvegardes automatiques"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:39
 msgid "Last run: %s"
-msgstr ""
+msgstr "Dernière exécution : %s"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
-msgstr ""
+msgstr "Jamais exécuté"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:38
 #: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
-msgstr ""
+msgstr "Configurer"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:43
 #: /var/azuracast/www/templates/admin/backups/index.phtml:132
 msgid "Most Recent Backup Log"
-msgstr ""
+msgstr "Journaux de sauvegardes les plus récents"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:64
 msgid "Restoring Backups"
-msgstr ""
+msgstr "Restauration des sauvegardes"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Pour restaurer une sauvegarde à partir de votre ordinateur hôte, exécutez :"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Notez que la restauration d'une sauvegarde effacera votre base de données existante. Ne restaurez jamais les fichiers de sauvegarde d'utilisateurs non fiables."
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
@@ -2937,7 +2959,7 @@ msgstr "Actions"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 msgid "Last Modified"
-msgstr ""
+msgstr "Dernière modification"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:103
 #: /var/azuracast/www/templates/stations/files/index.phtml:114
@@ -2946,11 +2968,11 @@ msgstr "Taille"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Download"
-msgstr ""
+msgstr "Télécharger"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:112
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "Supprimer la sauvegarde \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:112
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:33
@@ -2973,15 +2995,15 @@ msgstr "Supprimer"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
-msgstr ""
+msgstr "Accueil des sauvegardes"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:25
 msgid "Backup was run successfully."
-msgstr ""
+msgstr "La sauvegarde a été exécutée avec succès."
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:27
 msgid "Backup encountered errors when running. Check the log below for details."
-msgstr ""
+msgstr "La sauvegarde a rencontré des erreurs lors de son exécution. Consultez le journal ci-dessous pour plus de détails."
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:33
 msgid "Delete custom field \"%s\"?"
@@ -3067,15 +3089,15 @@ msgstr "Bienvenue sur %s !"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:35
 msgid "name@example.com"
-msgstr ""
+msgstr "name@example.com"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:45
 msgid "Enter your password"
-msgstr ""
+msgstr "Saisissez votre mot de passe"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:52
 msgid "Sign in"
-msgstr ""
+msgstr "Se connecter"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:58
 msgid "Please log in to continue."

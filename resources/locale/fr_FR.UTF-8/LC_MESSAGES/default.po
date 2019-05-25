@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-25 13:50\n"
+"PO-Revision-Date: 2019-05-25 14:00\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -744,7 +744,7 @@ msgstr "Vous avez fait une demande trop récemment ! Veuillez patienter avant d'
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Cette chanson a déjà été jouée récemment. Attendez un peu avant de la demander à nouveau."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -752,7 +752,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:58
 msgid "Select File"
-msgstr ""
+msgstr "Sélectionner un fichier"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
@@ -761,11 +761,11 @@ msgstr "Vous souhaitez utiliser SHOUTcast 2 ? <a href=\"%s\" target=\"_blank\">
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:40
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "Le fuseau horaire de cette station est actuellement %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:42
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "Pour le fuseau horaire de la station, l'heure actuelle est %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "Existing playlist imported."
@@ -991,11 +991,11 @@ msgstr "%d jours"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Exécuter des sauvegardes automatiques de nuit"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Permet à AzuraCast d'exécuter automatiquement des sauvegardes de nuit à l'heure spécifiée."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1065,43 +1065,43 @@ msgstr "Non"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Heure de la sauvegarde planifiée"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr ""
+msgstr "Le délai (en UTC) d'exécution de la sauvegarde automatique, si elle est activée."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr ""
+msgstr "Exclure les médias des sauvegardes"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Exclure les médias des sauvegardes automatiques vous permettra d'économiser de l'espace, mais vous devriez vous assurer de sauvegarder vos médias ailleurs."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "Nombre de copies des sauvegardes à conserver"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "Les copies plus anciennes que le nombre de jours spécifié seront automatiquement supprimées. Mettez la valeur à zéro pour désactiver la suppression automatique."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr ""
+msgstr "Nom de la sauvegarde"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Facultatif : chemin absolu ou relatif où le fichier de sauvegarde doit se trouver."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Exclure un média de la sauvegarde"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Cela produira une sauvegarde beaucoup plus petite, mais vous devriez vous assurer de sauvegarder votre média ailleurs."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
@@ -1655,7 +1655,7 @@ msgstr "Heure de début"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Pour diffuser une fois par jour, réglez les heures de début et de fin à la même valeur."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
@@ -1663,11 +1663,11 @@ msgstr "Heure de fin"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Si l'heure de fin est antérieure à l'heure de début, la playlist sera diffusée pendant la nuit."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Fuseau horaire de la station"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
@@ -2097,7 +2097,7 @@ msgstr "Fuseau horaire"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Les playlists programmées et autres éléments programmés seront contrôlés par ce fuseau horaire."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
@@ -2341,11 +2341,11 @@ msgstr "Le répertoire où sont stockés les fichiers multimédias. Laissez vide
 
 #: /var/azuracast/www/config/forms/station_clone.php:14
 msgid "New Station Name"
-msgstr ""
+msgstr "Nouveau nom de station"
 
 #: /var/azuracast/www/config/forms/station_clone.php:23
 msgid "New Station Description"
-msgstr ""
+msgstr "Nouvelle description de la station"
 
 #: /var/azuracast/www/config/forms/station_clone.php:33
 msgid "Customize Station Cloning"

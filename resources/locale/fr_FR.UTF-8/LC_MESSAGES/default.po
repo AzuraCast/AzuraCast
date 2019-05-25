@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-25 14:10\n"
+"PO-Revision-Date: 2019-05-25 14:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3130,7 +3130,9 @@ msgstr "Mes clés API"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Les clés API peuvent être utilisées pour accéder à certaines fonctionnalités du système sans avoir besoin de se connecter. Toutes les clés\n"
+"\n"
+"                que vous créez partagent vos permissions dans le système. Pour plus d'informations, voir la documentation <a href=\"%s\">Documentation de l'API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3231,7 +3233,7 @@ msgstr "Pour vérifier que le code a été correctement configuré, entrez le co
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "QR code"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
@@ -3509,7 +3511,7 @@ msgstr "Nouveau sujet GitHub"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
-msgstr ""
+msgstr "Visionneuse de journaux"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
@@ -3696,7 +3698,7 @@ msgstr "Poids"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Plays at %s"
-msgstr ""
+msgstr "Diffuse à %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:110
 msgid "Plays between %s and %s"
@@ -3841,23 +3843,23 @@ msgstr "Demande de code intégré"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"
-msgstr ""
+msgstr "Désactiver les pages publiques ?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
 msgid "Enable public pages?"
-msgstr ""
+msgstr "Activer les pages publiques ?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:26
 msgid "View"
-msgstr ""
+msgstr "Afficher"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:30
 msgid "Disable song requests?"
-msgstr ""
+msgstr "Désactiver les demandes de musique ?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:46
 msgid "Enable song requests?"
-msgstr ""
+msgstr "Activer les demandes de musique ?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:40
@@ -3866,11 +3868,11 @@ msgstr "Streamers/DJs"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:30
 msgid "Disable streamers?"
-msgstr ""
+msgstr "Désactiver les streamers ?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:46
 msgid "Enable streamers?"
-msgstr ""
+msgstr "Activer les streamers ?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
 msgid "Streams"
@@ -3989,7 +3991,7 @@ msgstr "Ce produit inclut les données GeoLite2 créées par MaxMind, disponible
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
-msgstr ""
+msgstr "Heure"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
@@ -4196,9 +4198,9 @@ msgstr "Aucun résultat trouvé!"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:67
 msgid "Errors were encountered when trying to save changes:"
-msgstr ""
+msgstr "Des erreurs ont été rencontrées lors de l'enregistrement des modifications :"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:70
 msgid "General"
-msgstr ""
+msgstr "Général"
 

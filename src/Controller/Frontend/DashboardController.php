@@ -2,7 +2,7 @@
 namespace App\Controller\Frontend;
 
 use App\Acl;
-use App\Event\GetNotifications;
+use App\Event;
 use Azura\Cache;
 use App\Http\Router;
 use App\Radio\Adapters;
@@ -69,6 +69,8 @@ class DashboardController
         $user = $request->getUser();
         $router = $request->getRouter();
 
+        $show_admin = $this->acl->userAllowed($user, Acl::GLOBAL_VIEW);
+
         /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
 
@@ -82,13 +84,13 @@ class DashboardController
                 $this->acl->userAllowed($user, Acl::STATION_VIEW, $station->getId());
         });
 
-        if (empty($stations)) {
+        if (empty($stations) && !$show_admin) {
             return $view->renderToResponse($response, 'frontend/index/noaccess');
         }
 
         // Get administrator notifications.
-        $notification_event = new GetNotifications($user);
-        $this->dispatcher->dispatch(GetNotifications::NAME, $notification_event);
+        $notification_event = new Event\GetNotifications($user);
+        $this->dispatcher->dispatch(Event\GetNotifications::NAME, $notification_event);
 
         $notifications = $notification_event->getNotifications();
 
@@ -148,18 +150,12 @@ class DashboardController
                 $stats_cache_stations[$station->getId()] = $station->getId();
             }
 
-            $cache_name = 'homepage/metrics/' . implode(',', $stats_cache_stations);
+            $cache_name = 'homepage/metrics/' . implode(',', $stats_cache_stations).random_int(10000,99999);
 
-            $metrics = $this->cache->getOrSet($cache_name, function () use ($stations) {
+            $metrics = $this->cache->getOrSet($cache_name, function () use ($view_stations, $show_admin) {
 
                 // Statistics by day.
                 $station_averages = [];
-                $network_data = [
-                    'All Stations' => [
-                        'ranges' => [],
-                        'averages' => [],
-                    ],
-                ];
 
                 // Query InfluxDB database.
                 $resultset = $this->influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
@@ -179,72 +175,31 @@ class DashboardController
 
                 foreach ($results as $stat_series => $stat_rows) {
                     $series_split = explode('.', $stat_series);
+                    $station_id = $series_split[1];
 
-                    if ($series_split[1] === 'all') {
-                        foreach ($stat_rows as $stat_row) {
-                            $network_data['ranges'][$stat_row['time']] = [
-                                $stat_row['time'],
-                                $stat_row['min'],
-                                $stat_row['max']
-                            ];
-                            $network_data['averages'][$stat_row['time']] = [
-                                $stat_row['time'],
-                                round($stat_row['value'], 2)
-                            ];
-                        }
-                    } else {
-                        $station_id = $series_split[1];
-                        foreach ($stat_rows as $stat_row) {
-                            $station_averages[$station_id][$stat_row['time']] = [
-                                $stat_row['time'],
-                                round($stat_row['value'], 2)
-                            ];
-                        }
+                    foreach ($stat_rows as $stat_row) {
+                        $station_averages[$station_id][$stat_row['time']] = [
+                            $stat_row['time'],
+                            round($stat_row['value'], 2)
+                        ];
                     }
                 }
 
-                $network_metrics = [];
-                $network_metrics_alt = [];
-
-                if (isset($network_data['averages'])) {
-                    $metric_row = new \stdClass;
-                    $metric_row->label = __('All Stations Daily Average');
-                    $metric_row->type = 'line';
-                    $metric_row->fill = false;
-
-                    $network_metrics_alt[] = '<p>'.$metric_row->label.'</p>';
-                    $network_metrics_alt[] = '<dl>';
-
-                    ksort($network_data['averages']);
-
-                    $series_data = [];
-                    foreach($network_data['averages'] as $serie) {
-                        $series_row = new \stdClass;
-                        $series_row->t = $serie[0];
-                        $series_row->y = $serie[1];
-                        $series_data[] = $series_row;
-
-                        $serie_date = gmdate('Y-m-d', $serie[0]/1000);
-                        $network_metrics_alt[] = '<dt><time data-original="'.$serie[0].'">'.$serie_date.'</time></dt>';
-                        $network_metrics_alt[] = '<dd>'.$serie[1].' '.__('Listeners').'</dd>';
-                    }
-
-                    $network_metrics_alt[] = '</dl>';
-
-                    $metric_row->data = $series_data;
-                    $network_metrics[] = $metric_row;
+                $metric_stations = [];
+                if ($show_admin && count($view_stations) > 1) {
+                    $metric_stations['all'] = __('All Stations');
+                }
+                foreach($view_stations as $station_id => $station_info) {
+                    $metric_stations[$station_id] = $station_info['station']['name'];
                 }
 
                 $station_metrics = [];
                 $station_metrics_alt = [];
 
-                foreach ($stations as $station) {
-                    /** @var Entity\Station $station */
-                    $station_id = $station->getId();
-
+                foreach ($metric_stations as $station_id => $station_name) {
                     if (isset($station_averages[$station_id])) {
                         $series_obj = new \stdClass;
-                        $series_obj->label = $station->getName();
+                        $series_obj->label = $station_name;
                         $series_obj->type = 'line';
                         $series_obj->fill = false;
 
@@ -274,8 +229,6 @@ class DashboardController
                 }
 
                 return [
-                    'network' => json_encode($network_metrics),
-                    'network_alt' => implode('', $network_metrics_alt),
                     'station' => json_encode($station_metrics),
                     'station_alt' => implode('', $station_metrics_alt),
                 ];
@@ -283,9 +236,19 @@ class DashboardController
             }, 600);
         }
 
+        $admin_panels = [];
+        if ($show_admin) {
+            $event = new Event\BuildAdminMenu($this->acl, $request->getUser(), $request->getRouter());
+            $this->dispatcher->dispatch(Event\BuildAdminMenu::NAME, $event);
+
+            $admin_panels = $event->getFilteredMenu();
+        }
+
         return $view->renderToResponse($response, 'frontend/index/index', [
             'stations' => ['stations' => $view_stations],
             'station_ids' => $station_ids,
+            'show_admin' => $show_admin,
+            'admin_panels' => $admin_panels,
             'metrics' => $metrics,
             'notifications' => $notifications,
         ]);

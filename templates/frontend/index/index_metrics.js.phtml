@@ -2,64 +2,55 @@ $(function () {
     Chart.platform.disableCSSInjection = true;
     moment.tz.setDefault("UTC");
 
-    var chartOptions = {
-        plugins: {
-            colorschemes: {
-                scheme: 'tableau.Tableau20'
-            }
-        },
-        scales: {
-            xAxes: [{
-                type: 'time',
-                distribution: 'linear',
-                time: {
-                    unit: 'day'
-                },
-                ticks: {
-                    source: 'data',
-                    autoSkip: true
-                }
-            }],
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: <?=$this->escapeJs(__('Listeners')) ?>
-                },
-                ticks: {
-                    min: 0
-                }
-            }]
-        },
-        tooltips: {
-            intersect: false,
-            mode: 'index',
-            callbacks: {
-                label: function(tooltipItem, myData) {
-                    var label = myData.datasets[tooltipItem.datasetIndex].label || '';
-                    if (label) {
-                        label += ': ';
-                    }
-                    label += parseFloat(tooltipItem.value).toFixed(2);
-                    return label;
-                }
-            }
-        }
-    };
-
-    var network_chart = new Chart(document.getElementById('network_chart').getContext('2d'), {
-        type: 'bar',
-        data: {
-            datasets: <?=$metrics['network'] ?>
-        },
-        options: chartOptions
-    });
-
     var station_chart = new Chart(document.getElementById('station_chart').getContext('2d'), {
         type: 'bar',
         data: {
             datasets: <?=$metrics['station'] ?>
         },
-        options: chartOptions
+        options: {
+            aspectRatio: <?=($show_admin ? 2 : 4) ?>,
+            plugins: {
+                colorschemes: {
+                    scheme: 'tableau.Tableau20'
+                }
+            },
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    distribution: 'linear',
+                    time: {
+                        unit: 'day'
+                    },
+                    ticks: {
+                        source: 'data',
+                        autoSkip: true
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: <?=$this->escapeJs(__('Listeners')) ?>
+                    },
+                    ticks: {
+                        min: 0
+                    }
+                }]
+            },
+            tooltips: {
+                intersect: false,
+                mode: 'index',
+                callbacks: {
+                    label: function(tooltipItem, myData) {
+                        var label = myData.datasets[tooltipItem.datasetIndex].label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        label += parseFloat(tooltipItem.value).toFixed(2);
+                        return label;
+                    }
+                }
+            }
+        }
     });
 
     $('canvas time').each(function() {

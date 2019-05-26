@@ -1,7 +1,11 @@
 <?php
+/**
+ * @var \Azura\Assets $assets
+ * @var array $admin_panels
+ */
+
 $this->layout('main', ['title' => 'Administration', 'manual' => true]);
 
-/** @var \Azura\Assets $assets */
 $assets
     ->load('moment')
     ->addInlineJs($this->fetch('admin/index/index.js'), 99);

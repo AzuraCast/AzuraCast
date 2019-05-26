@@ -4,6 +4,8 @@
  * @var \Azura\Assets $assets
  * @var array $metrics
  * @var array $stations
+ * @var array $admin_panels
+ * @var bool $show_admin
  */
 
 $this->layout('main', ['title' => __('Dashboard'), 'manual' => true]);
@@ -17,7 +19,10 @@ $assets
 if ($metrics) {
     $assets
         ->load('chartjs')
-        ->addInlineJs($this->fetch('frontend/index/index_metrics.js', ['metrics' => $metrics]));
+        ->addInlineJs($this->fetch('frontend/index/index_metrics.js', [
+            'metrics' => $metrics,
+            'show_admin' => $show_admin
+        ]));
 }
 ?>
 
@@ -37,96 +42,103 @@ if ($metrics) {
     <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if ($metrics): ?>
-<div class="row">
-    <div class="col-sm-6">
-        <section class="card mb-4" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title"><?=__('Listeners Across All Stations') ?></h3>
+<div class="card-deck">
+<?php if ($show_admin): ?>
+    <section class="card mb-4" role="region">
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title"><?=__('Administration') ?></h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+            <?php foreach($admin_panels as $category_id => $category): ?>
+                <dl class="col">
+                    <dt class="pb-2"><?=$category['label'] ?></dt>
+                    <?php foreach($category['items'] as $item): ?>
+                    <dd><a href="<?=$item['url'] ?>" title="<?=$item['title'] ?>">
+                            <?=$item['label'] ?>
+                        </a></dd>
+                    <?php endforeach; ?>
+                </dl>
+            <?php endforeach; ?>
             </div>
-            <div class="card-body">
-                <canvas id="network_chart" style="width: 100%;" aria-label="<?=__('Listeners Across All Stations') ?>" role="img">
-                    <?=$metrics['network_alt'] ?>
-                </canvas>
-            </div>
-        </section>
-    </div>
-    <div class="col-sm-6">
-        <section class="card mb-4" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title"><?=__('Listeners Per Station') ?></h3>
-            </div>
-            <div class="card-body">
-                <canvas id="station_chart" style="width: 100%;" aria-label="<?=__('Listeners Per Station') ?>" role="img">
-                    <?=$metrics['station_alt'] ?>
-                </canvas>
-            </div>
-        </section>
-    </div>
-</div>
+        </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-primary" href="<?=$router->named('admin:index:index') ?>">
+                <i class="material-icons" aria-hidden="true">settings</i>
+                <?=__('Administration Home') ?>
+            </a>
+        </div>
+    </section>
 <?php endif; ?>
-
-<div class="row">
-    <div class="col-sm-12">
-        <section class="card" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title"><?=__('Station Overview') ?></h3>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-striped" id="station_dashboard">
-                    <colgroup>
-                        <col width="5%">
-                        <col width="30%">
-                        <col width="10%">
-                        <col width="40%">
-                        <col width="15%">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th><?=__('Station Name') ?></th>
-                            <th class="text-center"><?=__('Listeners') ?></th>
-                            <th><?=__('Now Playing') ?></th>
-                            <th><?=__('Options') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="align-middle" v-bind:id="'station_' + row.station.id" v-for="row in stations" >
-                            <td class="text-center">
-                                <a class="btn-audio" href="#" v-bind:data-url="row.stream_url" @click.prevent="toggle(row.stream_url)">
-                                    <i class="material-icons lg align-middle" aria-hidden="true">play_circle_filled</i>
-                                </a>
-                            </td>
-                            <td>
-                                <big><a v-bind:href="row.public_url" target="_blank">{{ row.station.name }}</a></big>
-                            </td>
-                            <td class="text-center">
-                                <span class="nowplaying-listeners">{{ row.np.listeners.current }}</span>
-                            </td>
-                            <td>
-                                <div v-if="row.np.now_playing.song.title != ''">
-                                    <strong><span class="nowplaying-title">{{ row.np.now_playing.song.title }}</span></strong><br>
-                                    <span class="nowplaying-artist">{{ row.np.now_playing.song.artist }}</span>
-                                </div>
-                                <div v-else>
-                                    <strong><span class="nowplaying-title">{{ row.np.now_playing.song.text }}</span></strong>
-                                </div>
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" role="button" v-bind:href="row.manage_url"><?=__('Manage') ?></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        <?php if ($acl->userAllowed($user, 'administer stations')): ?>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" href="<?=$router->named('admin:stations:add') ?>">
-                    <i class="material-icons" aria-hidden="true">add</i>
-                    <?=sprintf(__('Add %s'), __('Station')) ?>
-                </a>
-            </div>
-        <?php endif; ?>
-        </section>
-    </div>
+<?php if ($metrics): ?>
+    <section class="card mb-4" role="region">
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title"><?=__('Listeners Per Station') ?></h3>
+        </div>
+        <div class="card-body">
+            <canvas id="station_chart" style="width: 100%;" aria-label="<?=__('Listeners Per Station') ?>" role="img">
+                <?=$metrics['station_alt'] ?>
+            </canvas>
+        </div>
+    </section>
+<?php endif; ?>
 </div>
+
+<section class="card" role="region">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title"><?=__('Station Overview') ?></h3>
+    </div>
+    <table class="table table-striped table-responsive mb-0" id="station_dashboard">
+        <colgroup>
+            <col width="5%">
+            <col width="30%">
+            <col width="10%">
+            <col width="40%">
+            <col width="15%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="pr-3">&nbsp;</th>
+                <th class="pl-2"><?=__('Station Name') ?></th>
+                <th class="text-center"><?=__('Listeners') ?></th>
+                <th><?=__('Now Playing') ?></th>
+                <th class="text-right"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="align-middle" v-bind:id="'station_' + row.station.id" v-for="row in stations" >
+                <td class="text-center pr-3">
+                    <a class="btn-audio" href="#" v-bind:data-url="row.stream_url" @click.prevent="toggle(row.stream_url)">
+                        <i class="material-icons lg align-middle" aria-hidden="true">play_circle_filled</i>
+                    </a>
+                </td>
+                <td class="pl-2">
+                    <big><a v-bind:href="row.public_url" target="_blank">{{ row.station.name }}</a></big>
+                </td>
+                <td class="text-center">
+                    <span class="nowplaying-listeners">{{ row.np.listeners.current }}</span>
+                </td>
+                <td>
+                    <div v-if="row.np.now_playing.song.title != ''">
+                        <strong><span class="nowplaying-title">{{ row.np.now_playing.song.title }}</span></strong><br>
+                        <span class="nowplaying-artist">{{ row.np.now_playing.song.artist }}</span>
+                    </div>
+                    <div v-else>
+                        <strong><span class="nowplaying-title">{{ row.np.now_playing.song.text }}</span></strong>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-primary" role="button" v-bind:href="row.manage_url"><?=__('Manage') ?></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<?php if ($acl->userAllowed($request->getUser(), 'administer stations')): ?>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" href="<?=$router->named('admin:stations:add') ?>">
+            <i class="material-icons" aria-hidden="true">add</i>
+            <?=__('Add %s', __('Station')) ?>
+        </a>
+    </div>
+<?php endif; ?>
+</section>

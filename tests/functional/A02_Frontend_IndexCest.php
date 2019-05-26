@@ -12,7 +12,6 @@ class A02_Frontend_IndexCest extends CestAbstract
         $I->amOnPage('/dashboard');
         $I->see('Dashboard');
 
-        $I->see('Listeners Across All Stations');
         $I->see('Listeners Per Station');
     }
 }

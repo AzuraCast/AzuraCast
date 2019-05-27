@@ -6,9 +6,6 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Run system update first
-chmod a+x update.sh
-./update.sh
-
 if [ ! -f ./docker-compose.yml ]; then
     cp ./docker-compose.sample.yml ./docker-compose.yml
 fi
@@ -48,15 +45,15 @@ cp docker-compose.migrate.yml docker-compose.override.yml
 docker-compose pull
 sleep 5
 
-# Copy all other settings.
+# Run restore op
 chmod a+x docker.sh
-./docker.sh restore migration.zip
+
+docker-compose run --rm --user="azuracast" web azuracast_restore migration.zip
+docker-compose up -d
 
 read -n 1 -s -r -p "Docker is running. Press any key to continue (cleanup)..."
 
 # Codebase cleanup
-rm -rf /var/azuracast/stations
-
 find -maxdepth 1 ! -name . ! -name docker-compose.yml ! -name docker-compose.override.yml \
      ! -name docker.sh ! -name .env ! -name azuracast.env ! -name plugins \
      -exec rm -rv {} \;

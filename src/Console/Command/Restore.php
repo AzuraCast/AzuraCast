@@ -46,7 +46,7 @@ class Restore extends CommandAbstract
 
         $archive_path = $input->getArgument('path');
         if ('/' !== $archive_path[0]) {
-            $archive_path = \App\Sync\Task\Backup::BASE_DIR.$archive_path;
+            $archive_path = \App\Sync\Task\Backup::BASE_DIR.'/'.$archive_path;
         }
 
         if (!file_exists($archive_path)) {

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-23 15:31\n"
+"PO-Revision-Date: 2019-05-27 19:00\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -84,7 +84,7 @@ msgstr "Campi personalizzati"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Backup"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
@@ -245,7 +245,7 @@ msgstr "Modifiche salvate."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 msgid "Configure Backups"
-msgstr ""
+msgstr "Configura backup"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:94
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:104
@@ -253,12 +253,12 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr ""
+msgstr "Esegui backup manuale"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Backup"
-msgstr ""
+msgstr "Backup"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:36
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:65
@@ -991,11 +991,11 @@ msgstr "%d giorni"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Esegui i backup automatici durante la notte"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Consente ad Azuracast di eseguire automaticamente i backup notturni all'ora specificata."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38

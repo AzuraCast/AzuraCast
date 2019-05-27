@@ -7,6 +7,7 @@ use App\Http\Response;
 use App\Radio\Frontend\SHOUTcast;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\UploadedFile;
+use Symfony\Component\Process\Process;
 
 class InstallShoutcastController
 {
@@ -29,7 +30,7 @@ class InstallShoutcastController
         $version = SHOUTcast::getVersion();
 
         if (null !== $version) {
-            $form_config['elements']['current_version'][1]['markup'] = '<p class="text-success">'.__('SHOUTcast version "%s" is currently installed.', $version).'</p>';
+            $form_config['groups'][0]['elements']['current_version'][1]['markup'] = '<p class="text-success">'.__('SHOUTcast version "%s" is currently installed.', $version).'</p>';
         }
 
         $form = new Form($form_config, []);
@@ -51,16 +52,13 @@ class InstallShoutcastController
 
                     $import_file->moveTo($sc_tgz_path);
 
-                    $sc_tar_path = $sc_base_dir.'/sc_serv.tar';
-                    if (file_exists($sc_tar_path)) {
-                        unlink($sc_tar_path);
-                    }
+                    $process = new Process([
+                        'tar',
+                        'xvzf',
+                        $sc_tgz_path
+                    ], $sc_base_dir);
 
-                    $sc_tgz = new \PharData($sc_tgz_path);
-                    $sc_tgz->decompress();
-
-                    $sc_tar = new \PharData($sc_tar_path);
-                    $sc_tar->extractTo($sc_base_dir, null, true);
+                    $process->mustRun();
                 }
 
                 return $response->withRedirect($request->getUri()->getPath());

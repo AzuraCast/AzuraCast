@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-27 19:00\n"
+"PO-Revision-Date: 2019-05-27 19:10\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1065,15 +1065,15 @@ msgstr "No"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Orario di backup pianificato"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr ""
+msgstr "L'ora (in UTC) in cui verrà eseguito il backup, se abilitato."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr ""
+msgstr "Escludi i file multimediali dai Backup"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."

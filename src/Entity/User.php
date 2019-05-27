@@ -328,6 +328,6 @@ class User
      */
     public function getAvatar($size = 50): string
     {
-        return \App\Service\Gravatar::get($this->email, $size, 'identicon');
+        return \App\Service\Gravatar::get($this->email, $size, 'https://www.azuracast.com/img/avatar.png');
     }
 }

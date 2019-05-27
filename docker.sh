@@ -226,7 +226,6 @@ restore() {
         echo "File $BACKUP_PATH does not exist in this directory. Nothing to restore."
         exit 1
     fi
-    echo 'test'
 }
 
 #

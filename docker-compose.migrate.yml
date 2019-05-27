@@ -1,0 +1,11 @@
+version: '2.2'
+
+services:
+  web:
+    volumes:
+      - /var/azuracast/stations:/var/azuracast/stations
+      - /var/azuracast/backups:/var/azuracast/backups
+
+  stations:
+    volumes:
+      - /var/azuracast/stations:/var/azuracast/stations

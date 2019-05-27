@@ -20,7 +20,7 @@ BASE_DIR=`pwd`
 
 # Create backup from existing installation.
 chmod a+x bin/azuracast
-./bin/azuracast azuracast:backup --exclude-media ./migration.tar.gz
+./bin/azuracast azuracast:backup --exclude-media migration.zip
 
 read -n 1 -s -r -p "Database backed up. Press any key to continue (Install Docker)..."
 
@@ -41,24 +41,22 @@ chmod a+x uninstall.sh
 
 read -n 1 -s -r -p "Uninstall complete. Press any key to continue (Install AzuraCast in Docker)..."
 
+# Copy override file.
+cp docker-compose.migrate.yml docker-compose.override.yml
+
 # Spin up Docker
 docker-compose pull
 sleep 5
 
-# Copy media.
-docker-compose run --user="azuracast" --rm \
-    -v /var/azuracast/stations:/tmp/migration \
-    mv /tmp/migration/* /var/azuracast/stations
-
 # Copy all other settings.
 chmod a+x docker.sh
-./docker.sh restore ./migration.tar.gz
+./docker.sh restore migration.zip
 
 read -n 1 -s -r -p "Docker is running. Press any key to continue (cleanup)..."
 
 # Codebase cleanup
 rm -rf /var/azuracast/stations
 
-find -maxdepth 1 ! -name migration.tar.gz ! -name . ! -name docker-compose.yml \
+find -maxdepth 1 ! -name . ! -name docker-compose.yml ! -name docker-compose.override.yml \
      ! -name docker.sh ! -name .env ! -name azuracast.env ! -name plugins \
      -exec rm -rv {} \;

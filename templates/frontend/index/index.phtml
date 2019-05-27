@@ -20,69 +20,76 @@ if ($metrics) {
     $assets
         ->load('chartjs')
         ->addInlineJs($this->fetch('frontend/index/index_metrics.js', [
-            'metrics' => $metrics,
-            'show_admin' => $show_admin
+            'metrics' => $metrics
         ]));
 }
+
+$user = $request->getUser();
 ?>
+
+<section class="card mb-4" role="region">
+    <div class="card-header bg-primary-dark d-flex align-items-center">
+        <a class="flex-shrink-0" href="http://www.gravatar.com/" target="_blank">
+            <img src="<?=$user->getAvatar(64) ?>" alt="">
+        </a>
+        <div class="flex-fill">
+            <h2 class="card-title mt-0">
+                <?php if (!empty($user->getName())): ?>
+                    <?=$this->e($user->getName()) ?>
+                <?php else: ?>
+                    <?=__('AzuraCast User') ?>
+                <?php endif; ?>
+            </h2>
+            <h3 class="card-subtitle">
+                <?=$this->e($user->getEmail()) ?>
+            </h3>
+        </div>
+        <div class="flex-shrink-0">
+            <a class="btn btn-bg" role="button" href="<?=$router->named('profile:index') ?>">
+                <i class="material-icons" aria-hidden="true">account_circle</i>
+                <?=__('My Account') ?>
+            </a>
+        <?php if ($show_admin): ?>
+            <a class="btn btn-bg ml-2" role="button" href="<?=$router->named('admin:index:index') ?>">
+                <i class="material-icons" aria-hidden="true">settings</i>
+                <?=__('Administration') ?>
+            </a>
+        <?php endif; ?>
+        </div>
+    </div>
 
 <?php if (!empty($notifications)): ?>
     <?php foreach($notifications as $notification): ?>
         <?php /** @var \App\Notification\Notification $notification */ ?>
-        <section class="card mb-4 border-<?=$notification->getType() ?>" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title"><?=$notification->getTitle() ?></h3>
+        <div class="card-body alert-<?=$notification->getType() ?> d-flex" role="alert">
+            <div class="flex-shrink-0 mt-3 mr-3">
+            <?php if (\App\Notification\Notification::INFO === $notification->getType()): ?>
+                <i class="material-icons lg" aria-hidden="true">info</i>
+            <?php else: ?>
+                <i class="material-icons lg" aria-hidden="true">warning</i>
+            <?php endif; ?>
             </div>
-            <div class="card-body">
+            <div class="flex-fill">
+                <h4><?=$notification->getTitle() ?></h4>
                 <p class="card-text">
                     <?=$notification->getBody() ?>
                 </p>
             </div>
-        </section>
+        </div>
     <?php endforeach; ?>
 <?php endif; ?>
+</section>
 
-<div class="card-deck">
-<?php if ($show_admin): ?>
-    <section class="card mb-4" role="region">
-        <div class="card-header bg-primary-dark">
-            <h3 class="card-title"><?=__('Administration') ?></h3>
-        </div>
-        <div class="card-body">
-            <div class="row">
-            <?php foreach($admin_panels as $category_id => $category): ?>
-                <dl class="col">
-                    <dt class="pb-2"><?=$category['label'] ?></dt>
-                    <?php foreach($category['items'] as $item): ?>
-                    <dd><a href="<?=$item['url'] ?>" title="<?=$item['title'] ?>">
-                            <?=$item['label'] ?>
-                        </a></dd>
-                    <?php endforeach; ?>
-                </dl>
-            <?php endforeach; ?>
-            </div>
-        </div>
-        <div class="card-actions">
-            <a class="btn btn-outline-primary" href="<?=$router->named('admin:index:index') ?>">
-                <i class="material-icons" aria-hidden="true">settings</i>
-                <?=__('Administration Home') ?>
-            </a>
-        </div>
-    </section>
-<?php endif; ?>
-<?php if ($metrics): ?>
-    <section class="card mb-4" role="region">
-        <div class="card-header bg-primary-dark">
-            <h3 class="card-title"><?=__('Listeners Per Station') ?></h3>
-        </div>
-        <div class="card-body">
-            <canvas id="station_chart" style="width: 100%;" aria-label="<?=__('Listeners Per Station') ?>" role="img">
-                <?=$metrics['station_alt'] ?>
-            </canvas>
-        </div>
-    </section>
-<?php endif; ?>
-</div>
+<section class="card mb-4" role="region">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title"><?=__('Listeners Per Station') ?></h3>
+    </div>
+    <div class="card-body">
+        <canvas id="station_chart" style="width: 100%;" aria-label="<?=__('Listeners Per Station') ?>" role="img">
+            <?=$metrics['station_alt'] ?>
+        </canvas>
+    </div>
+</section>
 
 <section class="card" role="region">
     <div class="card-header bg-primary-dark">

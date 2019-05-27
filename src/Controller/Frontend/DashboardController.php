@@ -236,19 +236,10 @@ class DashboardController
             }, 600);
         }
 
-        $admin_panels = [];
-        if ($show_admin) {
-            $event = new Event\BuildAdminMenu($this->acl, $request->getUser(), $request->getRouter());
-            $this->dispatcher->dispatch(Event\BuildAdminMenu::NAME, $event);
-
-            $admin_panels = $event->getFilteredMenu();
-        }
-
         return $view->renderToResponse($response, 'frontend/index/index', [
             'stations' => ['stations' => $view_stations],
             'station_ids' => $station_ids,
             'show_admin' => $show_admin,
-            'admin_panels' => $admin_panels,
             'metrics' => $metrics,
             'notifications' => $notifications,
         ]);

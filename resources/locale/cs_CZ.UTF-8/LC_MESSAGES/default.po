@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 13:41\n"
+"PO-Revision-Date: 2019-05-28 13:51\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -673,14 +673,14 @@ msgstr "Streameři povoleni!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "You can now set up streamer (DJ) accounts."
-msgstr ""
+msgstr "Nyní můžete nastavit účty streamerů (DJ)."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:85
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr ""
+msgstr "Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:71
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
@@ -696,27 +696,27 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Web Hook"
-msgstr ""
+msgstr "Webový háček"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 msgid "%s enabled."
-msgstr ""
+msgstr "%s povoleno."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 msgid "%s disabled."
-msgstr ""
+msgstr "%s zakázáno."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Výstupní test webového háčku"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Liquidsoap protokol"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:91
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Liquidsoap konfigurace"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
 msgid "Icecast Access Log"

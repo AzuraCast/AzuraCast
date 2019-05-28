@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-23 15:31\n"
+"POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
+"PO-Revision-Date: 2019-05-28 17:50\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -133,7 +133,7 @@ msgstr "Mount points"
 
 #: /var/azuracast/www/src/Acl.php:203
 #: /var/azuracast/www/config/menus/station.php:81
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:48
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:39
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
@@ -294,7 +294,7 @@ msgstr "Aangepast veld"
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
-#: /var/azuracast/www/templates/frontend/index/index.phtml:126
+#: /var/azuracast/www/templates/frontend/index/index.phtml:147
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
@@ -309,11 +309,11 @@ msgstr "%s toevoegen"
 msgid "Sync Task Output"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:32
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:33
 msgid "SHOUTcast version \"%s\" is currently installed."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:77
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:75
 #: /var/azuracast/www/config/menus/admin.php:74
 msgid "Install SHOUTcast"
 msgstr "Installeer SHOUTcast"
@@ -359,7 +359,7 @@ msgstr "Systeeminstellingen"
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:65
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
-#: /var/azuracast/www/templates/frontend/index/index.phtml:126
+#: /var/azuracast/www/templates/frontend/index/index.phtml:147
 msgid "Station"
 msgstr "Station"
 
@@ -443,18 +443,17 @@ msgstr "Fout tijdens inloggen"
 msgid "Your credentials could not be verified."
 msgstr "Je logingegevens zijn incorrect."
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:211
-msgid "All Stations Daily Average"
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:190
+msgid "All Stations"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:229
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:265
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:220
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:76
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:116
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:164
 #: /var/azuracast/www/config/menus/station.php:102
-#: /var/azuracast/www/templates/frontend/index/index.phtml:88
-#: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:26
+#: /var/azuracast/www/templates/frontend/index/index.phtml:110
+#: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:32
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:18
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:7
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:22
@@ -563,8 +562,6 @@ msgstr "Mount point"
 #: /var/azuracast/www/templates/frontend/public/index.phtml:37
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:46
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:73
 msgid "Playlist"
 msgstr "Afspeellijst"
 
@@ -1936,7 +1933,7 @@ msgid "Last 14 Days"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:65
-#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:82
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:85
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:64
 msgid "Last 30 Days"
 msgstr ""
@@ -2069,8 +2066,9 @@ msgid "AutoDJ"
 msgstr "AutoDJ"
 
 #: /var/azuracast/www/config/forms/station.php:25
-#: /var/azuracast/www/templates/admin/index/index.phtml:10
+#: /var/azuracast/www/templates/admin/index/index.phtml:14
 #: /var/azuracast/www/templates/admin/sidebar.phtml:3
+#: /var/azuracast/www/templates/frontend/index/index.phtml:55
 msgid "Administration"
 msgstr "Administratie"
 
@@ -2884,7 +2882,7 @@ msgid "Automatic Backups"
 msgstr ""
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
-#: /var/azuracast/www/templates/admin/index/index.phtml:39
+#: /var/azuracast/www/templates/admin/index/index.phtml:43
 msgid "Last run: %s"
 msgstr ""
 
@@ -2987,11 +2985,11 @@ msgstr ""
 msgid "Delete custom field \"%s\"?"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/index/index.phtml:29
+#: /var/azuracast/www/templates/admin/index/index.phtml:33
 msgid "Synchronization Tasks"
 msgstr ""
 
-#: /var/azuracast/www/templates/admin/index/index.phtml:44
+#: /var/azuracast/www/templates/admin/index/index.phtml:48
 msgid "Run Task"
 msgstr ""
 
@@ -3028,7 +3026,7 @@ msgid "Manage Stations"
 msgstr "Stations Beheren"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:29
-#: /var/azuracast/www/templates/frontend/index/index.phtml:116
+#: /var/azuracast/www/templates/frontend/index/index.phtml:138
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:26
 msgid "Manage"
 msgstr "Beheer"
@@ -3144,39 +3142,40 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:9
+#: /var/azuracast/www/templates/frontend/index/index.phtml:11
 #: /var/azuracast/www/templates/main.phtml:64
 #: /var/azuracast/www/templates/system/error_general.phtml:17
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:13
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:45
-#: /var/azuracast/www/templates/frontend/index/index.phtml:48
-msgid "Listeners Across All Stations"
-msgstr "Luisteraars over alle stations"
+#: /var/azuracast/www/templates/frontend/index/index.phtml:40
+msgid "AzuraCast User"
+msgstr ""
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:57
-#: /var/azuracast/www/templates/frontend/index/index.phtml:60
+#: /var/azuracast/www/templates/frontend/index/index.phtml:50
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:2
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:20
+#: /var/azuracast/www/templates/main.phtml:79
+msgid "My Account"
+msgstr "Mijn account"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:85
+#: /var/azuracast/www/templates/frontend/index/index.phtml:88
 msgid "Listeners Per Station"
 msgstr "Luisteraars per station"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:73
+#: /var/azuracast/www/templates/frontend/index/index.phtml:96
 msgid "Station Overview"
 msgstr "Overzicht van radiostations"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:87
+#: /var/azuracast/www/templates/frontend/index/index.phtml:109
 msgid "Station Name"
 msgstr "Zender Naam"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:89
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:33
+#: /var/azuracast/www/templates/frontend/index/index.phtml:111
 msgid "Now Playing"
 msgstr "Nu speelt"
-
-#: /var/azuracast/www/templates/frontend/index/index.phtml:90
-msgid "Options"
-msgstr "Opties"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
@@ -3210,12 +3209,6 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
 msgstr ""
-
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:2
-#: /var/azuracast/www/templates/frontend/profile/index.phtml:20
-#: /var/azuracast/www/templates/main.phtml:79
-msgid "My Account"
-msgstr "Mijn account"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:58
 msgid "Customize"
@@ -3362,29 +3355,35 @@ msgstr "Vraag een nummer aan"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:9
 msgid "Play"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:18
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:10
 msgid "Pause"
 msgstr "Pauzeer"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:11
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:11
 msgid "Mute"
 msgstr "Geluid dempen"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:12
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:10
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:12
 msgid "Volume"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:13
 msgid "Full Volume"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:14
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:14
 msgid "Album Art"
 msgstr ""
 
@@ -3720,11 +3719,11 @@ msgstr ""
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:87
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:58
 msgid "Running"
 msgstr "Wordt uitgevoerd"
 
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:88
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:59
 msgid "Not Running"
 msgstr "Wordt niet uitgevoerd"
 
@@ -3788,19 +3787,11 @@ msgstr ""
 msgid "Unique"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:60
-msgid "Playing Next"
-msgstr ""
-
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:83
-msgid "Now Streaming"
-msgstr ""
-
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:96
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:32
 msgid "Skip Song"
 msgstr "Nummer overslaan"
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:100
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:36
 msgid "Disconnect Streamer"
 msgstr ""
 
@@ -3854,12 +3845,12 @@ msgstr ""
 msgid "Streams"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:26
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:22
 msgid "Local Streams"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:71
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:75
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:57
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:61
 msgid "Download %s"
 msgstr "Download %s"
 
@@ -3903,32 +3894,32 @@ msgid "Title / File Path"
 msgstr "Titel / Bestandsnaam"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:7
-#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:78
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:81
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:27
 msgid "Live Listeners"
 msgstr "Live luisteraars"
 
-#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:79
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:82
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
 msgid "Today"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:80
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:83
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:61
 msgid "Yesterday"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:81
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:84
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
 msgid "Last 7 Days"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:83
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:86
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:65
 msgid "This Month"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:84
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:87
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:66
 msgid "Last Month"
 msgstr ""

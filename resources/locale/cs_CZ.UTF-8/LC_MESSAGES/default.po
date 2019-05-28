@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 14:31\n"
+"PO-Revision-Date: 2019-05-28 14:40\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -381,35 +381,35 @@ msgstr "S touto e-mailovou adresou již existuje jiný uživatel, prosím, použ
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:78
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "Vlastní účet nelze odstranit."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:101
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:126
 msgid "Logged in successfully."
-msgstr ""
+msgstr "Přihlášení proběhlo úspěšně."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:65
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "%s restarted."
-msgstr ""
+msgstr "%s restartováno."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:97
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:103
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend"
-msgstr ""
+msgstr "Frontend"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:97
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:166
 msgid "%s stopped."
-msgstr ""
+msgstr "%s zastaveno."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:103
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
 msgid "%s started."
-msgstr ""
+msgstr "%s spuštěno."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:152
 msgid "Song skipped."

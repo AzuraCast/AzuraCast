@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 10:41\n"
+"PO-Revision-Date: 2019-05-28 11:51\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -307,28 +307,28 @@ msgstr "Přidat %s"
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:85
 msgid "Sync Task Output"
-msgstr ""
+msgstr "Výstup úlohy synchronizace"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:32
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "V současné době je nainstalováno SHOUTcast verze \"%s\"."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:77
 #: /var/azuracast/www/config/menus/admin.php:74
 msgid "Install SHOUTcast"
-msgstr ""
+msgstr "Instalovat SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
 msgid "AzuraCast Application Log"
-msgstr ""
+msgstr "Protokol aplikace AzuraCast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:77
 msgid "Nginx Access Log"
-msgstr ""
+msgstr "Přístupový protokol Nginx"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:82
 msgid "Nginx Error Log"
-msgstr ""
+msgstr "Chybový protokol Nginx"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:87
 msgid "PHP Application Log"

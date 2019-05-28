@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 09:50\n"
+"PO-Revision-Date: 2019-05-28 10:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -19,20 +19,20 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:183
 #: /var/azuracast/www/src/Acl.php:195
 msgid "All Permissions"
-msgstr ""
+msgstr "Všechna oprávnění"
 
 #: /var/azuracast/www/src/Acl.php:184
 msgid "View Administration Page"
-msgstr ""
+msgstr "Zobrazit administrační stránku"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View System Logs"
-msgstr ""
+msgstr "Zobrazení systémových protokolů"
 
 #: /var/azuracast/www/src/Acl.php:186
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
 msgid "Settings"
-msgstr ""
+msgstr "Nastavení"
 
 #: /var/azuracast/www/src/Acl.php:186
 #: /var/azuracast/www/src/Acl.php:187
@@ -42,19 +42,19 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:191
 #: /var/azuracast/www/src/Acl.php:192
 msgid "Administer %s"
-msgstr ""
+msgstr "Spravovat %s"
 
 #: /var/azuracast/www/src/Acl.php:187
 #: /var/azuracast/www/config/menus/admin.php:27
 #: /var/azuracast/www/templates/admin/api/index.phtml:1
 #: /var/azuracast/www/templates/admin/api/index.phtml:5
 msgid "API Keys"
-msgstr ""
+msgstr "API klíče"
 
 #: /var/azuracast/www/src/Acl.php:188
 #: /var/azuracast/www/config/menus/admin.php:44
 msgid "Users"
-msgstr ""
+msgstr "Uživatelé"
 
 #: /var/azuracast/www/src/Acl.php:189
 #: /var/azuracast/www/config/menus/admin.php:53
@@ -62,14 +62,14 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:5
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:24
 msgid "Permissions"
-msgstr ""
+msgstr "Oprávnění"
 
 #: /var/azuracast/www/src/Acl.php:190
 #: /var/azuracast/www/config/menus/admin.php:60
 #: /var/azuracast/www/config/menus/admin.php:64
 #: /var/azuracast/www/templates/admin/stations/index.phtml:1
 msgid "Stations"
-msgstr ""
+msgstr "Stanice"
 
 #: /var/azuracast/www/src/Acl.php:191
 #: /var/azuracast/www/config/forms/media.php:74
@@ -77,18 +77,18 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:1
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:5
 msgid "Custom Fields"
-msgstr ""
+msgstr "Vlastní pole"
 
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/config/menus/admin.php:37
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Zálohy"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
-msgstr ""
+msgstr "Zobrazit stránku stanice"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Reports"

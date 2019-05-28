@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 14:40\n"
+"PO-Revision-Date: 2019-05-28 14:59\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -413,39 +413,39 @@ msgstr "%s spuštěno."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:152
 msgid "Song skipped."
-msgstr ""
+msgstr "Skladba přeskočena."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:160
 msgid "Streamer disconnected."
-msgstr ""
+msgstr "Streamer odpojen."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:166
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
-msgstr ""
+msgstr "Příliš mnoho pokusů o přihlášení"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
+msgstr "Snažili jste se přihlásit příliš často, prosím, počkejte 30 sekund a zkuste to znovu."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
 msgid "Login unsuccessful"
-msgstr ""
+msgstr "Přihlášení bylo neúspěšné"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:136
 msgid "Your credentials could not be verified."
-msgstr ""
+msgstr "Vaše oprávnění nebylo možné ověřit."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:211
 msgid "All Stations Daily Average"
-msgstr ""
+msgstr "Denní průměr všech stanic"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:229
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:265
@@ -462,42 +462,42 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:74
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:35
 msgid "Listeners"
-msgstr ""
+msgstr "Posluchači"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:99
 msgid "Profile saved!"
-msgstr ""
+msgstr "Profil uložen!"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:107
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:32
 #: /var/azuracast/www/templates/stations/profile/edit.phtml:1
 #: /var/azuracast/www/templates/stations/profile/panel_header.phtml:25
 msgid "Edit Profile"
-msgstr ""
+msgstr "Upravit profil"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:149
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "Tento token není platný, zkuste to prosím znovu."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:172
 msgid "Two-factor authentication enabled."
-msgstr ""
+msgstr "Dvoufaktorové ověřování povoleno."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:206
 msgid "Two-factor authentication disabled."
-msgstr ""
+msgstr "Dvoufaktorové ověřování zakázáno."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:80
 msgid "Setup has already been completed!"
-msgstr ""
+msgstr "Nastavení již bylo dokončeno!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:107
 msgid "Super Administrator"
-msgstr ""
+msgstr "Superadministrátor"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:196
 msgid "Setup is now complete!"
-msgstr ""
+msgstr "Nastavení je nyní dokončeno!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:196
 msgid "Continue setting up your station in the main AzuraCast app."

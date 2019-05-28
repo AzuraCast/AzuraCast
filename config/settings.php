@@ -17,6 +17,7 @@ return [
     'locale' => [
         'supported' => [
             'en_US.UTF-8' => 'English (Default)',
+            'cs_CZ.UTF-8' => 'čeština',             // Czech
             'de_DE.UTF-8' => 'Deutsch',             // German
             'es_ES.UTF-8' => 'Español',             // Spanish
             'fr_FR.UTF-8' => 'Français',            // French

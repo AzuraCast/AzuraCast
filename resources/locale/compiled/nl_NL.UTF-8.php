@@ -14,8 +14,8 @@ Language-Team: Dutch
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-04-05T06:27:01+00:00
-PO-Revision-Date: 2019-04-20 21:03
+POT-Creation-Date: 2019-05-23T14:09:12+00:00
+PO-Revision-Date: 2019-05-28 17:46
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -24,85 +24,141 @@ X-Crowdin-Language: nl
 X-Crowdin-File: /master/resources/locale/default.pot
 ',
       ),
-      'Now Playing Data' => 
-      array (
-        0 => 'Nu speelt gegevens',
-      ),
-      '1-Minute Sync' => 
-      array (
-        0 => '1 minuut synchronisatie',
-      ),
-      'Song Requests Queue' => 
-      array (
-        0 => 'Verzoeknummers in wachtrij',
-      ),
-      '5-Minute Sync' => 
-      array (
-        0 => '5 minuten synchronisatie',
-      ),
-      'Check Media Folders' => 
-      array (
-        0 => 'Check media mappen',
-      ),
-      '1-Hour Sync' => 
-      array (
-        0 => '1 uur synchronisatie',
-      ),
-      'Analytics/Statistics' => 
-      array (
-        0 => 'Analytics/Statistieken',
-      ),
-      'Cleanup' => 
-      array (
-        0 => 'Opschonen',
-      ),
-      'Liquidsoap Log' => 
+      'All Permissions' => 
       array (
         0 => '',
       ),
-      'Liquidsoap Configuration' => 
+      'View Administration Page' => 
       array (
         0 => '',
       ),
-      'Icecast Access Log' => 
+      'View System Logs' => 
       array (
         0 => '',
       ),
-      'Icecast Error Log' => 
+      'Settings' => 
       array (
         0 => '',
       ),
-      'Icecast Configuration' => 
+      'Administer %s' => 
       array (
         0 => '',
       ),
-      'SHOUTcast Log' => 
+      'API Keys' => 
+      array (
+        0 => 'API-Sleutels',
+      ),
+      'Users' => 
+      array (
+        0 => 'Gebruikers',
+      ),
+      'Permissions' => 
+      array (
+        0 => 'Machtigingen',
+      ),
+      'Stations' => 
+      array (
+        0 => 'Stations',
+      ),
+      'Custom Fields' => 
       array (
         0 => '',
       ),
-      'SHOUTcast Configuration' => 
+      'Backups' => 
       array (
         0 => '',
+      ),
+      'View Station Page' => 
+      array (
+        0 => '',
+      ),
+      'View Station Reports' => 
+      array (
+        0 => '',
+      ),
+      'View Station Logs' => 
+      array (
+        0 => '',
+      ),
+      'Profile' => 
+      array (
+        0 => 'Profiel',
+      ),
+      'Manage Station %s' => 
+      array (
+        0 => '',
+      ),
+      'Broadcasting' => 
+      array (
+        0 => '',
+      ),
+      'Streamers' => 
+      array (
+        0 => '',
+      ),
+      'Mount Points' => 
+      array (
+        0 => 'Mount points',
+      ),
+      'Remote Relays' => 
+      array (
+        0 => '',
+      ),
+      'Media' => 
+      array (
+        0 => 'Media',
+      ),
+      'Automation' => 
+      array (
+        0 => '',
+      ),
+      'Web Hooks' => 
+      array (
+        0 => '',
+      ),
+      'The account associated with e-mail address "%s" has been set as an administrator' => 
+      array (
+        0 => '',
+      ),
+      'Account not found.' => 
+      array (
+        0 => '',
+      ),
+      '%s not found.' => 
+      array (
+        0 => '%s niet gevonden.',
+      ),
+      'API Key' => 
+      array (
+        0 => 'API code',
+      ),
+      '%s updated.' => 
+      array (
+        0 => '%s bijgewerkt.',
+      ),
+      'Edit %s' => 
+      array (
+        0 => 'Bewerk %s',
+      ),
+      '%s deleted.' => 
+      array (
+        0 => '%s verwijderd.',
       ),
       'Changes saved.' => 
       array (
         0 => 'Wijzigingen opgeslagen.',
       ),
-      'System Settings' => 
-      array (
-        0 => 'Systeeminstellingen',
-      ),
-      'SHOUTcast version "%s" is currently installed.' => 
+      'Configure Backups' => 
       array (
         0 => '',
       ),
-      'Install SHOUTcast' => 
+      'Run Manual Backup' => 
       array (
-        0 => 'Installeer SHOUTcast',
+        0 => '',
       ),
-      '%s updated.' => 
+      'Backup' => 
       array (
-        0 => '%s bijgewerkt.',
+        0 => '',
       ),
       '%s added.' => 
       array (
@@ -112,53 +168,21 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Aangepast veld',
       ),
-      'Edit %s' => 
-      array (
-        0 => 'Bewerk %s',
-      ),
       'Add %s' => 
       array (
         0 => '%s toevoegen',
-      ),
-      '%s deleted.' => 
-      array (
-        0 => '%s verwijderd.',
-      ),
-      'Station' => 
-      array (
-        0 => 'Station',
-      ),
-      'API Key' => 
-      array (
-        0 => 'API code',
-      ),
-      '%s not found.' => 
-      array (
-        0 => '%s niet gevonden.',
       ),
       'Sync Task Output' => 
       array (
         0 => '',
       ),
-      'User' => 
-      array (
-        0 => 'Gebruiker',
-      ),
-      'Another user already exists with this e-mail address. Please update the e-mail address.' => 
-      array (
-        0 => 'Er bestaat al een andere gebruiker met dit e-mailadres. Gelieve het e-mailadres aan te passen.',
-      ),
-      'You cannot delete your own account.' => 
+      'SHOUTcast version "%s" is currently installed.' => 
       array (
         0 => '',
       ),
-      'Logged in successfully.' => 
+      'Install SHOUTcast' => 
       array (
-        0 => 'Succesvol ingelogd.',
-      ),
-      'Clone Station: %s' => 
-      array (
-        0 => 'Kloon station: %s',
+        0 => 'Installeer SHOUTcast',
       ),
       'AzuraCast Application Log' => 
       array (
@@ -183,6 +207,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Permission' => 
       array (
         0 => 'Permissie',
+      ),
+      'System Settings' => 
+      array (
+        0 => 'Systeeminstellingen',
+      ),
+      'Station' => 
+      array (
+        0 => 'Station',
+      ),
+      'Clone Station: %s' => 
+      array (
+        0 => 'Kloon station: %s',
+      ),
+      'User' => 
+      array (
+        0 => 'Gebruiker',
+      ),
+      'Another user already exists with this e-mail address. Please update the e-mail address.' => 
+      array (
+        0 => 'Er bestaat al een andere gebruiker met dit e-mailadres. Gelieve het e-mailadres aan te passen.',
+      ),
+      'You cannot delete your own account.' => 
+      array (
+        0 => '',
+      ),
+      'Logged in successfully.' => 
+      array (
+        0 => 'Succesvol ingelogd.',
       ),
       '%s restarted.' => 
       array (
@@ -212,26 +264,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Setup has already been completed!' => 
-      array (
-        0 => 'De installatie is al voltooid!',
-      ),
-      'Super Administrator' => 
-      array (
-        0 => 'Super administrator',
-      ),
-      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
-      array (
-        0 => '',
-      ),
-      'Setup is now complete!' => 
-      array (
-        0 => 'De installatie is voltooid!',
-      ),
-      'Continue setting up your station in the main AzuraCast app.' => 
-      array (
-        0 => 'Ga verder met het instellen van je station in de AzuraCast app.',
-      ),
       'Too many login attempts' => 
       array (
         0 => 'Te veel inlogpogingen',
@@ -247,6 +279,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Your credentials could not be verified.' => 
       array (
         0 => 'Je logingegevens zijn incorrect.',
+      ),
+      'All Stations Daily Average' => 
+      array (
+        0 => '',
+      ),
+      'Listeners' => 
+      array (
+        0 => 'Luisteraars',
       ),
       'Profile saved!' => 
       array (
@@ -268,45 +308,21 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      '%s Listener Range' => 
+      'Setup has already been completed!' => 
       array (
-        0 => '%s luisteraar bereik',
+        0 => 'De installatie is al voltooid!',
       ),
-      '%s Daily Average' => 
+      'Super Administrator' => 
       array (
-        0 => '%s dagelijks gemiddelde',
+        0 => 'Super administrator',
       ),
-      'SoundExchange Report' => 
+      'Setup is now complete!' => 
       array (
-        0 => 'Rapporteer SoundExchange',
+        0 => 'De installatie is voltooid!',
       ),
-      'Remote Relay' => 
+      'Continue setting up your station in the main AzuraCast app.' => 
       array (
-        0 => '',
-      ),
-      'This feature is not currently supported on this station.' => 
-      array (
-        0 => 'Deze functionaliteit is momenteel niet toegestaan op dit station.',
-      ),
-      'Streamers enabled!' => 
-      array (
-        0 => 'Streamers ingeschakeld!',
-      ),
-      'You can now set up streamer (DJ) accounts.' => 
-      array (
-        0 => 'Je kunt nu streamer (DJ) accounts toevoegen.',
-      ),
-      'Streamer' => 
-      array (
-        0 => '',
-      ),
-      'Song Title' => 
-      array (
-        0 => 'Titel',
-      ),
-      'Song Artist' => 
-      array (
-        0 => 'Artiest',
+        0 => 'Ga verder met het instellen van je station in de AzuraCast app.',
       ),
       'Automated assignment complete!' => 
       array (
@@ -316,9 +332,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Fout bij automatisch toewijzen',
       ),
-      'Media' => 
+      'Path "%s" is not a folder.' => 
       array (
-        0 => 'Media',
+        0 => '',
+      ),
+      'Could not move "%s" to "%s"' => 
+      array (
+        0 => '',
       ),
       'File renamed!' => 
       array (
@@ -328,15 +348,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Wijzig bestand/map',
       ),
-      'Path "%s" is not a folder.' => 
-      array (
-        0 => '',
-      ),
       'This station is out of available storage space.' => 
-      array (
-        0 => '',
-      ),
-      'Could not move "%s" to "%s"' => 
       array (
         0 => '',
       ),
@@ -348,25 +360,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Bestand niet verwerkt',
       ),
+      'This feature is not currently supported on this station.' => 
+      array (
+        0 => 'Deze functionaliteit is momenteel niet toegestaan op dit station.',
+      ),
       'Mount Point' => 
       array (
         0 => 'Mount point',
       ),
-      'Web Hook' => 
+      'Playlist' => 
       array (
-        0 => '',
-      ),
-      '%s enabled.' => 
-      array (
-        0 => '',
-      ),
-      '%s disabled.' => 
-      array (
-        0 => '',
-      ),
-      'Web Hook Test Output' => 
-      array (
-        0 => '',
+        0 => 'Afspeellijst',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
@@ -384,6 +388,142 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Song Title' => 
+      array (
+        0 => 'Titel',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Artiest',
+      ),
+      'Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Listeners by Day' => 
+      array (
+        0 => '',
+      ),
+      'Listeners by Day of Week' => 
+      array (
+        0 => 'Luisteraars per dag van de week',
+      ),
+      'Monday' => 
+      array (
+        0 => '',
+      ),
+      'Tuesday' => 
+      array (
+        0 => '',
+      ),
+      'Wednesday' => 
+      array (
+        0 => '',
+      ),
+      'Thursday' => 
+      array (
+        0 => '',
+      ),
+      'Friday' => 
+      array (
+        0 => '',
+      ),
+      'Saturday' => 
+      array (
+        0 => '',
+      ),
+      'Sunday' => 
+      array (
+        0 => '',
+      ),
+      'Listeners by Hour' => 
+      array (
+        0 => '',
+      ),
+      'SoundExchange Report' => 
+      array (
+        0 => 'Rapporteer SoundExchange',
+      ),
+      'Streamers enabled!' => 
+      array (
+        0 => 'Streamers ingeschakeld!',
+      ),
+      'You can now set up streamer (DJ) accounts.' => 
+      array (
+        0 => 'Je kunt nu streamer (DJ) accounts toevoegen.',
+      ),
+      'Streamer' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook' => 
+      array (
+        0 => '',
+      ),
+      '%s enabled.' => 
+      array (
+        0 => '',
+      ),
+      '%s disabled.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook Test Output' => 
+      array (
+        0 => '',
+      ),
+      'Liquidsoap Log' => 
+      array (
+        0 => '',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => '',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => '',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => '',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => '',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => '',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => '',
+      ),
+      'You have submitted a request too recently! Please wait before submitting another one.' => 
+      array (
+        0 => '',
+      ),
+      'This song was already played too recently. Wait a while before requesting it again.' => 
+      array (
+        0 => '',
+      ),
+      'Select File' => 
+      array (
+        0 => '',
+      ),
+      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
+      array (
+        0 => '',
+      ),
+      'This station\'s time zone is currently %s.' => 
+      array (
+        0 => '',
+      ),
+      'The current time in the station\'s time zone is %s.' => 
+      array (
+        0 => '',
+      ),
       'Existing playlist imported.' => 
       array (
         0 => 'Bestaande afspeellijst geïmporteerd.',
@@ -392,88 +532,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '%d nummer(s) is/zijn aan de afspeellijst toegevoegd.',
       ),
-      'Playlist' => 
-      array (
-        0 => 'Afspeellijst',
-      ),
-      '%d second' => 
-      array (
-        0 => '%d seconde',
-        1 => '%d seconden',
-      ),
-      '%d minute' => 
-      array (
-        0 => '%d minuut',
-        1 => '%d minuut',
-      ),
-      '%d hour' => 
-      array (
-        0 => '%d uur',
-        1 => '%d uren',
-      ),
-      '%d day' => 
-      array (
-        0 => '%d dag',
-        1 => '%d dagen',
-      ),
-      '%d month' => 
-      array (
-        0 => '%d maand',
-        1 => '%d maanden',
-      ),
       'You must be logged in to access this page.' => 
       array (
         0 => '',
       ),
       'You do not have permission to access this portion of the site.' => 
-      array (
-        0 => '',
-      ),
-      'Use <b>%s</b> on this server' => 
-      array (
-        0 => '',
-      ),
-      'Connect to a <b>remote radio server</b>' => 
-      array (
-        0 => '',
-      ),
-      '<b>Do not use</b> an AutoDJ service' => 
-      array (
-        0 => '',
-      ),
-      '%s cannot start' => 
-      array (
-        0 => '',
-      ),
-      'It is already running.' => 
-      array (
-        0 => '',
-      ),
-      '%s cannot stop' => 
-      array (
-        0 => '',
-      ),
-      'It is not running.' => 
-      array (
-        0 => '',
-      ),
-      '%s encountered an error' => 
-      array (
-        0 => '',
-      ),
-      'Check the log for details.' => 
-      array (
-        0 => '',
-      ),
-      'The account associated with e-mail address "%s" has been set as an administrator' => 
-      array (
-        0 => '',
-      ),
-      'Account not found.' => 
-      array (
-        0 => '',
-      ),
-      'This port is currently in use by another station.' => 
       array (
         0 => '',
       ),
@@ -517,257 +580,305 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'All Permissions' => 
+      '%s cannot start' => 
       array (
         0 => '',
       ),
-      'View Administration Page' => 
+      'It is already running.' => 
       array (
         0 => '',
       ),
-      'View System Logs' => 
+      '%s cannot stop' => 
       array (
         0 => '',
       ),
-      'Settings' => 
+      'It is not running.' => 
       array (
         0 => '',
       ),
-      'Administer %s' => 
+      '%s encountered an error' => 
       array (
         0 => '',
       ),
-      'API Keys' => 
-      array (
-        0 => 'API-Sleutels',
-      ),
-      'Users' => 
-      array (
-        0 => 'Gebruikers',
-      ),
-      'Permissions' => 
-      array (
-        0 => 'Machtigingen',
-      ),
-      'Stations' => 
-      array (
-        0 => 'Stations',
-      ),
-      'Custom Fields' => 
+      'Check the log for details.' => 
       array (
         0 => '',
       ),
-      'View Station Page' => 
+      'Use <b>%s</b> on this server' => 
       array (
         0 => '',
       ),
-      'View Station Reports' => 
+      'Connect to a <b>remote radio server</b>' => 
       array (
         0 => '',
       ),
-      'View Station Logs' => 
+      '<b>Do not use</b> an AutoDJ service' => 
       array (
         0 => '',
       ),
-      'Profile' => 
+      'Now Playing Data' => 
       array (
-        0 => 'Profiel',
+        0 => 'Nu speelt gegevens',
       ),
-      'Manage Station %s' => 
+      '1-Minute Sync' => 
+      array (
+        0 => '1 minuut synchronisatie',
+      ),
+      'Song Requests Queue' => 
+      array (
+        0 => 'Verzoeknummers in wachtrij',
+      ),
+      '5-Minute Sync' => 
+      array (
+        0 => '5 minuten synchronisatie',
+      ),
+      'Check Media Folders' => 
+      array (
+        0 => 'Check media mappen',
+      ),
+      '1-Hour Sync' => 
+      array (
+        0 => '1 uur synchronisatie',
+      ),
+      'Analytics/Statistics' => 
+      array (
+        0 => 'Analytics/Statistieken',
+      ),
+      'Cleanup' => 
+      array (
+        0 => 'Opschonen',
+      ),
+      'The port %s is in use by another station.' => 
       array (
         0 => '',
       ),
-      'Broadcasting' => 
+      'Password cannot contain the following characters: %s' => 
       array (
         0 => '',
       ),
-      'Streamers' => 
+      'Comments' => 
+      array (
+        0 => 'Reacties',
+      ),
+      'Describe the use-case for this API key for future reference.' => 
       array (
         0 => '',
       ),
-      'Mount Points' => 
+      'Save Changes' => 
       array (
-        0 => 'Mount points',
+        0 => 'Instellingen Opslaan',
       ),
-      'Remote Relays' => 
+      'Enable Automated Assignment' => 
+      array (
+        0 => 'Automatische toewijzing inschakelen',
+      ),
+      'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
+      array (
+        0 => 'Laat het systeem periodiek nummers toewijzen aan afspeellijsten op basis van hun prestaties. Dit proces zal uitgevoerd worden op de achtergrond, en kan alleen worden uitgevoerd als deze optie is ingeschakeld en als tenminste één station \'automatische toewijzing\' heeft ingeschakeld.',
+      ),
+      'Disabled' => 
+      array (
+        0 => 'Uitgeschakeld',
+      ),
+      'Enabled' => 
+      array (
+        0 => 'Geactiveerd',
+      ),
+      'Days Between Automated Assignments' => 
+      array (
+        0 => 'Dagen tussen geautomatiseerde toewijzingen',
+      ),
+      'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
+      array (
+        0 => 'Op basis van deze instelling zal het systeem elke (dit) dag(en) nummers automatisch opnieuw toewijzen van de vorige (dit) aantal dagen.',
+      ),
+      '%d days' => 
       array (
         0 => '',
       ),
-      'Automation' => 
+      'Run Automatic Nightly Backups' => 
       array (
         0 => '',
       ),
-      'Web Hooks' => 
+      'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
         0 => '',
       ),
-      'Start Station' => 
+      'Yes' => 
+      array (
+        0 => 'Ja',
+      ),
+      'No' => 
+      array (
+        0 => 'Nee',
+      ),
+      'Scheduled Backup Time' => 
       array (
         0 => '',
       ),
-      'Ready to start broadcasting? Click to start your station.' => 
+      'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
         0 => '',
       ),
-      'Restart to Apply Changes' => 
+      'Exclude Media from Backups' => 
       array (
         0 => '',
       ),
-      'Click to restart your station and apply configuration changes.' => 
+      'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere.' => 
       array (
         0 => '',
       ),
-      'Public Page' => 
-      array (
-        0 => 'Publieke pagina',
-      ),
-      'Music Files' => 
-      array (
-        0 => 'Muziek bestanden',
-      ),
-      'Playlists' => 
-      array (
-        0 => 'Afspeellijsten',
-      ),
-      'Streamer/DJ Accounts' => 
-      array (
-        0 => 'Streamer/DJ accounts',
-      ),
-      'Web DJ' => 
+      'Number of Backup Copies to Keep' => 
       array (
         0 => '',
       ),
-      'Reports' => 
-      array (
-        0 => 'Rapportages',
-      ),
-      'Statistics Overview' => 
+      'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
         0 => '',
       ),
-      'Listeners' => 
-      array (
-        0 => 'Luisteraars',
-      ),
-      'Song Requests' => 
-      array (
-        0 => 'Verzoeknummers',
-      ),
-      'Song Playback Timeline' => 
-      array (
-        0 => 'Nummer Afspeeltijdlijn',
-      ),
-      'Song Listener Impact' => 
-      array (
-        0 => 'Impact van nummer op luisteraar',
-      ),
-      'Duplicate Songs' => 
-      array (
-        0 => 'Dupliceer nummers',
-      ),
-      'SoundExchange Royalties' => 
+      'Backup Filename' => 
       array (
         0 => '',
       ),
-      'Utilities' => 
-      array (
-        0 => 'Hulpprogramma’s',
-      ),
-      'Automated Assignment' => 
-      array (
-        0 => 'Automatisch toegewezen',
-      ),
-      'Log Viewer' => 
+      'Optional absolute or relative path where the backup file should be located.' => 
       array (
         0 => '',
       ),
-      'Upcoming Song Queue' => 
+      'Exclude Media from Backup' => 
       array (
         0 => '',
       ),
-      'Restart Broadcasting' => 
-      array (
-        0 => 'Herstart uitzending',
-      ),
-      'System Maintenance' => 
-      array (
-        0 => 'Systeem Onderhoud',
-      ),
-      'Custom Branding' => 
+      'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere.' => 
       array (
         0 => '',
       ),
-      'System Logs' => 
+      'Base Theme for Public Pages' => 
       array (
         0 => '',
       ),
-      'User Accounts' => 
-      array (
-        0 => 'Gebruikers account',
-      ),
-      'Generic Web Hook' => 
+      'Select a theme to use as a base for station public pages and the login page.' => 
       array (
         0 => '',
       ),
-      'Automatically send a message to any URL when your station data changes.' => 
+      'Light' => 
       array (
         0 => '',
       ),
-      'TuneIn AIR' => 
+      'Default' => 
       array (
         0 => '',
       ),
-      'Send song metadata changes to TuneIn.' => 
+      'Dark' => 
       array (
         0 => '',
       ),
-      'Discord Webhook' => 
+      'Hide Album Art on Public Pages' => 
       array (
         0 => '',
       ),
-      'Automatically send a customized message to your Discord server.' => 
+      'If selected, album art will not display on public-facing radio pages.' => 
       array (
         0 => '',
       ),
-      'Telegram Chat Message' => 
+      'Homepage Redirect URL' => 
       array (
         0 => '',
       ),
-      'Use the Telegram Bot API to send a message to a channel.' => 
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
       array (
         0 => '',
       ),
-      'Twitter Post' => 
+      'Default Album Art URL' => 
       array (
         0 => '',
       ),
-      'Automatically send a tweet.' => 
+      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
         0 => '',
       ),
-      'Any time the currently playing song changes' => 
+      'Hide AzuraCast Branding on Public Pages' => 
       array (
         0 => '',
       ),
-      'Any time the listener count increases' => 
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
       array (
         0 => '',
       ),
-      'Any time the listener count decreases' => 
+      'Custom CSS for Public Pages' => 
       array (
         0 => '',
       ),
-      'Any time a live streamer/DJ connects to the stream' => 
+      'This CSS will be applied to the station public pages and login page.' => 
       array (
         0 => '',
       ),
-      'Any time a live streamer/DJ disconnects from the stream' => 
+      'Custom JS for Public Pages' => 
       array (
         0 => '',
       ),
-      'Song Metadata' => 
+      'This javascript code will be applied to the station public pages and login page.' => 
       array (
         0 => '',
+      ),
+      'Custom CSS for Internal Pages' => 
+      array (
+        0 => '',
+      ),
+      'This CSS will be applied to the main management pages, like this one.' => 
+      array (
+        0 => '',
+      ),
+      'Field Name' => 
+      array (
+        0 => '',
+      ),
+      'This will be used as the label when editing individual songs, and will show in API results.' => 
+      array (
+        0 => '',
+      ),
+      'Programmatic Name' => 
+      array (
+        0 => '',
+      ),
+      'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
+      array (
+        0 => '',
+      ),
+      'Important Notes' => 
+      array (
+        0 => 'Belangrijke notities',
+      ),
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      array (
+        0 => '',
+      ),
+      'Current Installed Version' => 
+      array (
+        0 => '',
+      ),
+      'SHOUTcast is not currently installed on this installation.' => 
+      array (
+        0 => '',
+      ),
+      'Select SHOUTcast 64-bit .tar.gz File' => 
+      array (
+        0 => '',
+      ),
+      'Upload' => 
+      array (
+        0 => '',
+      ),
+      'E-mail Address' => 
+      array (
+        0 => 'E-mailadres',
+      ),
+      'Password' => 
+      array (
+        0 => 'Wachtwoord',
+      ),
+      'Log in' => 
+      array (
+        0 => 'Inloggen',
       ),
       'File Name' => 
       array (
@@ -849,25 +960,365 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Aantal seconden vanaf de start van het nummer waarop de AutoDJ moet stoppen met spelen.',
       ),
-      'Save Changes' => 
+      'Mount Point URL' => 
       array (
-        0 => 'Instellingen Opslaan',
+        0 => '',
+      ),
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
+      array (
+        0 => 'De naam dient te beginnen met een schuine streep (/), en een geldige URL te bevatten. Bijv: /autodj.mp3',
+      ),
+      'Display Name' => 
+      array (
+        0 => '',
+      ),
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      array (
+        0 => '',
+      ),
+      'Set as Default Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
+      array (
+        0 => 'Als deze mount standaard is, zal deze gebruikt worden in de radiospeler op de publieke radio pagina van dit systeem.',
+      ),
+      'Relay Stream URL' => 
+      array (
+        0 => 'Doorstuur Stream URL',
+      ),
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
+      array (
+        0 => 'Voer de volledige URL in van een andere stream om deze opnieuw uit te zenden via dit mount punt.',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => '',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable AutoDJ' => 
+      array (
+        0 => 'AutoDJ inschakelen',
+      ),
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'AutoDJ Formaat',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'AutoDJ Bitrate (kbps)',
+      ),
+      'Custom Stream URL' => 
+      array (
+        0 => '',
+      ),
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      array (
+        0 => '',
+      ),
+      'Fallback Mount' => 
+      array (
+        0 => 'Terugval Mount',
+      ),
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
+      array (
+        0 => 'Wanneer dit mount punt geen audio speelt, zullen luisteraars doorverwezen worden naar dit mount punt. De standaard is /error.mp3, welke herhaaldelijk een foutmelding laat horen.',
+      ),
+      'Custom Frontend Configuration' => 
+      array (
+        0 => '',
+      ),
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
+      array (
+        0 => 'Je kan hier alle speciale mount point instelling instellen, in JSON-formaat { key: \'value\' } of XML &lt;key&gt;value&lt;/key&gt;',
+      ),
+      'Stream path cannot include reserved keywords: %s' => 
+      array (
+        0 => '',
+      ),
+      'YP Directory Authorization Hash' => 
+      array (
+        0 => '',
+      ),
+      'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
+      array (
+        0 => '',
+      ),
+      'Basic Information' => 
+      array (
+        0 => '',
+      ),
+      'Source' => 
+      array (
+        0 => 'Bron',
+      ),
+      'Scheduling' => 
+      array (
+        0 => '',
+      ),
+      'Enable Playlist' => 
+      array (
+        0 => 'Activeer afspeellijst',
+      ),
+      'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
+      array (
+        0 => 'Wanneer gekozen voor "Nee", zal de afspeellijst niet worden afgespeeld op de radio. De afspeellijst kan nog steeds worden beheert.',
+      ),
+      'Playlist Name' => 
+      array (
+        0 => 'Naam van afspeellijst',
+      ),
+      'Playlist Weight' => 
+      array (
+        0 => 'Gewicht van afspeellijst',
+      ),
+      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
+      array (
+        0 => 'Afspeellijsten met een hoger gewicht worden vaker afgespeeld dan afspeellijsten met een lager gewicht.',
+      ),
+      'Low' => 
+      array (
+        0 => '',
+      ),
+      'High' => 
+      array (
+        0 => '',
+      ),
+      'Song-Based Playlist' => 
+      array (
+        0 => '',
+      ),
+      'A playlist containing media files hosted on this server.' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL Playlist' => 
+      array (
+        0 => '',
+      ),
+      'A playlist that instructs the station to play from a remote URL.' => 
+      array (
+        0 => '',
+      ),
+      'Song Playback Order' => 
+      array (
+        0 => '',
+      ),
+      'Shuffled' => 
+      array (
+        0 => '',
+      ),
+      'Random' => 
+      array (
+        0 => '',
+      ),
+      'Sequential' => 
+      array (
+        0 => '',
+      ),
+      'Import Existing Playlist' => 
+      array (
+        0 => 'Importeer bestaande afspeellijst',
+      ),
+      'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
+      array (
+        0 => 'Selecteer een bestaand afspeellijst bestand om de inhoud ervan toe te voegen aan deze afspeellijst. PLS en M3U bestanden worden ondersteund.',
+      ),
+      'Allow Requests from This Playlist' => 
+      array (
+        0 => '',
+      ),
+      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
+      array (
+        0 => '',
+      ),
+      'Hide Metadata from Listeners ("Jingle Mode")' => 
+      array (
+        0 => '',
+      ),
+      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL Type' => 
+      array (
+        0 => '',
+      ),
+      'Direct Stream URL' => 
+      array (
+        0 => '',
+      ),
+      'Playlist (M3U/PLS) URL' => 
+      array (
+        0 => '',
+      ),
+      'Remote Playback Buffer (Seconds)' => 
+      array (
+        0 => '',
+      ),
+      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
+      array (
+        0 => '',
+      ),
+      'General Rotation' => 
+      array (
+        0 => '',
+      ),
+      'Plays all day, shuffles with other standard playlists based on weight.' => 
+      array (
+        0 => 'Speelt de hele dag, samen met andere afspeellijsten in een willekeurige volgorde, op basis van het gewicht van de afspeellijst.',
+      ),
+      'Scheduled' => 
+      array (
+        0 => '',
+      ),
+      'Play during a scheduled time range.' => 
+      array (
+        0 => '',
+      ),
+      'Once per x Songs' => 
+      array (
+        0 => '',
+      ),
+      'Play exactly once every <i>x</i> songs.' => 
+      array (
+        0 => '',
+      ),
+      'Once Per x Minutes' => 
+      array (
+        0 => '',
+      ),
+      'Play exactly once every <i>x</i> minutes.' => 
+      array (
+        0 => '',
+      ),
+      'Once per Hour' => 
+      array (
+        0 => '',
+      ),
+      'Play once per hour at the specified minute.' => 
+      array (
+        0 => '',
+      ),
+      'Advanced' => 
+      array (
+        0 => '',
+      ),
+      'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
+      array (
+        0 => '',
+      ),
+      'AutoDJ Scheduling Options' => 
+      array (
+        0 => '',
+      ),
+      'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => '',
+      ),
+      'Interrupt other songs to play at scheduled time.' => 
+      array (
+        0 => '',
+      ),
+      'Only loop through playlist once.' => 
+      array (
+        0 => '',
+      ),
+      'Only play one track at scheduled time.' => 
+      array (
+        0 => '',
+      ),
+      'Merge playlist to play as a single track.' => 
+      array (
+        0 => '',
+      ),
+      'Include in Automated Assignment' => 
+      array (
+        0 => 'Automatische toewijzing inschakelen',
+      ),
+      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
+      array (
+        0 => 'Wanneer automatische toewijzig is ingeschakeld, gebruik dan deze afspeellijst als een bron van herverdeelbare nummers. Hiermee wordt de bestaande inhoud van deze afspeellijst overschreven.',
+      ),
+      'Start Time' => 
+      array (
+        0 => 'Starttijd',
+      ),
+      'To play once per day, set the start and end times to the same value.' => 
+      array (
+        0 => '',
+      ),
+      'End Time' => 
+      array (
+        0 => 'Eindtijd',
+      ),
+      'If the end time is before the start time, the playlist will play overnight.' => 
+      array (
+        0 => '',
+      ),
+      'Station Time Zone' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled Play Days of Week' => 
+      array (
+        0 => '',
+      ),
+      'Leave blank to play on every day of the week.' => 
+      array (
+        0 => '',
+      ),
+      'Number of Songs Between Plays' => 
+      array (
+        0 => 'Aantal nummers tussen spelen',
+      ),
+      'This playlist will play every $x songs, where $x is specified below.' => 
+      array (
+        0 => 'Deze afspeellijst zal om $x nummers worden afgespeeld, waar $x hieronder is opgegeven.',
+      ),
+      'Number of Minutes Between Plays' => 
+      array (
+        0 => 'Aantal minuten tussen spelen',
+      ),
+      'This playlist will play every $x minutes, where $x is specified below.' => 
+      array (
+        0 => 'Deze afspeellijst zal elke $x minuten spelen, waar $x hieronder is opgegeven.',
+      ),
+      'Minute of Hour to Play' => 
+      array (
+        0 => '',
+      ),
+      'Specify the minute of every hour that this playlist should play.' => 
+      array (
+        0 => '',
       ),
       'Use Browser Default' => 
       array (
         0 => 'Gebruik standaard browser',
       ),
-      'Account Information' => 
-      array (
-        0 => 'Account informatie',
-      ),
       'Name' => 
       array (
         0 => 'Naam',
-      ),
-      'E-mail Address' => 
-      array (
-        0 => 'E-mailadres',
       ),
       'Reset Password' => 
       array (
@@ -893,18 +1344,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Aanpassen',
       ),
-      'Time Zone' => 
-      array (
-        0 => 'Tijdzone',
-      ),
-      'All times displayed on the site will be based on this time zone.' => 
-      array (
-        0 => 'Alle tijden die worden getoond op de site zal worden gebaseerd op deze tijdzone.',
-      ),
-      'Current server time is <b>%s</b>.' => 
-      array (
-        0 => 'Huidige servertijd is <b>%s</b>.',
-      ),
       'Language' => 
       array (
         0 => 'Taal',
@@ -913,242 +1352,35 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Website Thema',
       ),
-      'Light' => 
+      'Code from Authenticator App' => 
       array (
         0 => '',
       ),
-      'Default' => 
+      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
       array (
         0 => '',
       ),
-      'Dark' => 
+      'Verify Authenticator' => 
       array (
         0 => '',
       ),
-      '%s Name' => 
+      'Account Information' => 
       array (
-        0 => '',
+        0 => 'Account informatie',
       ),
-      'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
+      'Create Account' => 
       array (
-        0 => '',
-      ),
-      'TuneIn Partner ID' => 
-      array (
-        0 => '',
-      ),
-      'TuneIn Partner Key' => 
-      array (
-        0 => '',
-      ),
-      'TuneIn Station ID' => 
-      array (
-        0 => '',
-      ),
-      'The station ID will be a numeric string that starts with the letter S.' => 
-      array (
-        0 => '',
-      ),
-      'Twitter Account Details' => 
-      array (
-        0 => '',
-      ),
-      'Steps for configuring a Twitter application:<br>
-                <ol type="1">
-                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>. 
-                    Use this installation\'s base URL as the application URL.</li>
-                    <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
-                    <li>At the bottom of the page, click "Create my access token".</li>
-                </ol>
-                Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.' => 
-      array (
-        0 => '',
-      ),
-      'Consumer Key (API Key)' => 
-      array (
-        0 => '',
-      ),
-      'Consumer Secret (API Secret)' => 
-      array (
-        0 => '',
-      ),
-      'Access Token' => 
-      array (
-        0 => '',
-      ),
-      'Access Token Secret' => 
-      array (
-        0 => '',
-      ),
-      'Only Send One Tweet Every...' => 
-      array (
-        0 => '',
-      ),
-      'No Limit' => 
-      array (
-        0 => '',
-      ),
-      'Web Hook Details' => 
-      array (
-        0 => '',
-      ),
-      'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
-      array (
-        0 => '',
-      ),
-      'Web Hook Triggers' => 
-      array (
-        0 => '',
-      ),
-      'Message Body' => 
-      array (
-        0 => '',
-      ),
-      'Now playing on %s: %s by %s! Tune in now.' => 
-      array (
-        0 => '',
-      ),
-      'Telegram API Details' => 
-      array (
-        0 => '',
-      ),
-      'Bot Token' => 
-      array (
-        0 => '',
-      ),
-      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
-      array (
-        0 => '',
-      ),
-      'Chat ID' => 
-      array (
-        0 => '',
-      ),
-      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
-      array (
-        0 => '',
-      ),
-      'Custom API Base URL' => 
-      array (
-        0 => '',
-      ),
-      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
-      array (
-        0 => '',
-      ),
-      'Customize Message' => 
-      array (
-        0 => '',
-      ),
-      'Main Message Content' => 
-      array (
-        0 => '',
-      ),
-      'Message parsing mode' => 
-      array (
-        0 => '',
-      ),
-      'Discord API Details' => 
-      array (
-        0 => '',
-      ),
-      'Discord Web Hook URL' => 
-      array (
-        0 => '',
-      ),
-      'This URL is provided within the Discord application.' => 
-      array (
-        0 => '',
-      ),
-      'Now playing on %s:' => 
-      array (
-        0 => '',
-      ),
-      'Title' => 
-      array (
-        0 => 'Titel',
-      ),
-      'Description' => 
-      array (
-        0 => '',
-      ),
-      'URL' => 
-      array (
-        0 => '',
-      ),
-      'Author Name' => 
-      array (
-        0 => '',
-      ),
-      'Thumbnail Image URL' => 
-      array (
-        0 => '',
-      ),
-      'Footer Text' => 
-      array (
-        0 => '',
-      ),
-      'Powered by %s' => 
-      array (
-        0 => '',
-      ),
-      'Web hooks automatically send a HTTP POST request to the URL you specify to 
-                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
-                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station. 
-                In order to process quickly, web hooks have a short timeout, so the responding service should be
-                optimized to handle the request in under 2 seconds.' => 
-      array (
-        0 => '',
-      ),
-      'Web Hook URL' => 
-      array (
-        0 => '',
-      ),
-      'The URL that will receive the POST messages any time an event is triggered.' => 
-      array (
-        0 => '',
-      ),
-      'Optional: HTTP Basic Authentication Username' => 
-      array (
-        0 => '',
-      ),
-      'If your web hook requires HTTP basic authentication, provide the username here.' => 
-      array (
-        0 => '',
-      ),
-      'Optional: HTTP Basic Authentication Password' => 
-      array (
-        0 => '',
-      ),
-      'If your web hook requires HTTP basic authentication, provide the password here.' => 
-      array (
-        0 => '',
-      ),
-      'Display Name' => 
-      array (
-        0 => '',
-      ),
-      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
-      array (
-        0 => '',
-      ),
-      'Show on Public Pages' => 
-      array (
-        0 => '',
+        0 => 'Account Aanmaken',
       ),
       'Enable to allow listeners to select this relay on this station\'s public pages.' => 
       array (
         0 => '',
       ),
-      'Yes' => 
-      array (
-        0 => 'Ja',
-      ),
-      'No' => 
-      array (
-        0 => 'Nee',
-      ),
       'Remote Station Type' => 
+      array (
+        0 => '',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
         0 => '',
       ),
@@ -1179,14 +1411,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Configure AutoDJ Broadcasting' => 
       array (
         0 => '',
-      ),
-      'AutoDJ Format' => 
-      array (
-        0 => 'AutoDJ Formaat',
-      ),
-      'AutoDJ Bitrate (kbps)' => 
-      array (
-        0 => 'AutoDJ Bitrate (kbps)',
       ),
       'Remote Station Source Port' => 
       array (
@@ -1220,333 +1444,49 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Publish to "Yellow Pages" Directories' => 
+      'This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href="%s" target="_blank">SoundExchange web site</a>.' => 
       array (
         0 => '',
       ),
-      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      'AzuraCast assumes that your station fits SoundExchange Transmission Category A, "Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming." If your station does not fall within this category, update the transmission category field accordingly.' => 
       array (
         0 => '',
       ),
-      'Streamer Username' => 
-      array (
-        0 => 'Streamer gebruikersnaam',
-      ),
-      'The streamer will use this username to connect to the radio server.' => 
-      array (
-        0 => 'De streamer dient de gebruikersnaam te gebruiken om met de radio server te verbinden.',
-      ),
-      'Streamer Password' => 
-      array (
-        0 => 'Streamer wachtwoord',
-      ),
-      'The streamer will use this password to connect to the radio server. Do not use the colon (:) character.' => 
+      'The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate.' => 
       array (
         0 => '',
       ),
-      'Streamer Display Name' => 
+      'Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date.' => 
       array (
         0 => '',
       ),
-      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      'You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href="%s" target="_blank">SoundExchange\'s ISRC search tool</a>.' => 
       array (
         0 => '',
       ),
-      'Comments' => 
+      'Report Start Date' => 
       array (
-        0 => 'Reacties',
+        0 => 'Verslag start datum',
       ),
-      'Internal notes or comments about the user, visible only on this control panel.' => 
+      'Report End Date' => 
       array (
-        0 => 'Interne notities of commentaar over de gebruiker, alleen zichtbaar vanuit dit controle paneel.',
+        0 => 'Verslag stop datum',
       ),
-      'Account is Active' => 
+      'Generate Report' => 
       array (
-        0 => 'Account is actief',
+        0 => 'Rapport aanmaken',
       ),
-      'Enable to allow this account to log in and stream.' => 
+      'Role Name' => 
       array (
-        0 => '',
+        0 => 'Bestandsnaam',
       ),
-      'Describe the use-case for this API key for future reference.' => 
+      'System-Wide Permissions' => 
       array (
-        0 => '',
+        0 => 'Systeem Machtigingen',
       ),
-      'Station Profile' => 
-      array (
-        0 => 'Stationsprofiel',
-      ),
-      'Genre' => 
+      'Permissions for %s' => 
       array (
         0 => '',
-      ),
-      'Web Site URL' => 
-      array (
-        0 => '',
-      ),
-      'Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.' => 
-      array (
-        0 => '',
-      ),
-      'Enable Public Page' => 
-      array (
-        0 => '',
-      ),
-      'Show the station in public pages and general API results.' => 
-      array (
-        0 => '',
-      ),
-      'URL Stub' => 
-      array (
-        0 => '',
-      ),
-      'Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.' => 
-      array (
-        0 => '',
-      ),
-      'Number of Recently Played Songs' => 
-      array (
-        0 => '',
-      ),
-      'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
-      array (
-        0 => '',
-      ),
-      'Disabled' => 
-      array (
-        0 => 'Uitgeschakeld',
-      ),
-      'Select Broadcasting Service' => 
-      array (
-        0 => '',
-      ),
-      'Broadcasting Service' => 
-      array (
-        0 => '',
-      ),
-      'This software delivers your broadcast to the listening audience.' => 
-      array (
-        0 => '',
-      ),
-      'Configure Broadcasting Service' => 
-      array (
-        0 => '',
-      ),
-      'Customize Broadcasting Port' => 
-      array (
-        0 => '',
-      ),
-      'No other program can be using this port. Leave blank to automatically assign a port.' => 
-      array (
-        0 => 'Deze poort kan niet door een ander programma gebruikt worden. Laat dit veld leeg om automatisch een poort toe te laten kennen.',
-      ),
-      'Customize Source Password' => 
-      array (
-        0 => '',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => 'Laat leeg om automatisch een wachtwoord te genereren.',
-      ),
-      'Customize Administrator Password' => 
-      array (
-        0 => '',
-      ),
-      'Maximum Listeners' => 
-      array (
-        0 => 'Maximaal aantal luisteraars',
-      ),
-      'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
-      array (
-        0 => 'Maximaal aantal luisteraars, over alle stations. Laat leeg om de standaard waarde (250) te gebruiken.',
-      ),
-      'Custom Configuration' => 
-      array (
-        0 => 'Aangepaste configuratie',
-      ),
-      'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
-      array (
-        0 => 'Deze code zal toegepast worden op de front-end configuratie. Dit kan in JSON-formaat {"new_key": "new_value"} of XML &lt;new_key&gt;new_value&lt;/new_key&gt;.',
-      ),
-      'Select AutoDJ Service' => 
-      array (
-        0 => '',
-      ),
-      'AutoDJ Service' => 
-      array (
-        0 => '',
-      ),
-      'This software shuffles from playlists of music constantly and plays when no other radio source is available.' => 
-      array (
-        0 => '',
-      ),
-      'Configure Liquidsoap' => 
-      array (
-        0 => '',
-      ),
-      'Crossfade Method' => 
-      array (
-        0 => '',
-      ),
-      'Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.' => 
-      array (
-        0 => '',
-      ),
-      'Smart Mode' => 
-      array (
-        0 => '',
-      ),
-      'Normal Mode' => 
-      array (
-        0 => '',
-      ),
-      'Disable Crossfading' => 
-      array (
-        0 => '',
-      ),
-      'Crossfade Duration (Seconds)' => 
-      array (
-        0 => 'Lengte van crossfade (seconden)',
-      ),
-      'Number of seconds to overlap songs.' => 
-      array (
-        0 => '',
-      ),
-      'Apply Compression and Normalization' => 
-      array (
-        0 => '',
-      ),
-      'Compress and normalize your station\'s audio, producing a more uniform and "full" sound.' => 
-      array (
-        0 => '',
-      ),
-      'Allow Song Requests' => 
-      array (
-        0 => 'Accepteer verzoeknummers',
-      ),
-      'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.' => 
-      array (
-        0 => '',
-      ),
-      'Request Minimum Delay (Minutes)' => 
-      array (
-        0 => 'Minimale vertraging van verzoeknummers (minuten)',
-      ),
-      'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
-      array (
-        0 => 'Wanneer verzoeken zijn ingeschakeld, dan specifieerd dit de minimum tijd (in minuten) tussen een aangevraagd verzoek en het afspelen ervan. Wanneer ingesteld als 0, zal er geen uitstel toegepast worden.<br><b>Belangrijk:</b> Sommige regels op stream licenties verplichten een minimum uitgestelde tijd tussen verzoeken. Kijk dit na in jouw lokale regulering voor meer informatie.',
-      ),
-      'Request Last Played Threshold (Minutes)' => 
-      array (
-        0 => 'Tijdsverschil ter verzoeken met afgespeelde nummers (in minuten)',
-      ),
-      'If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.' => 
-      array (
-        0 => 'Als verzoeken ingeschakeld zijn, dan specifieerd deze waarde de minimale tijd (in minuten) tussen het afspelen van een nummer op de radio en het terug verzoekbaar maken van een nummer. Stel in als 0 voor geen tijdsverschil.',
-      ),
-      'Allow Streamers / DJs' => 
-      array (
-        0 => 'Streamers / DJ\'s toestaan',
-      ),
-      'If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.' => 
-      array (
-        0 => '',
-      ),
-      'Deactivate Streamer on Disconnect (Seconds)' => 
-      array (
-        0 => '',
-      ),
-      'Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely.' => 
-      array (
-        0 => '',
-      ),
-      'Customize DJ/Streamer Port' => 
-      array (
-        0 => '',
-      ),
-      'No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.' => 
-      array (
-        0 => '',
-      ),
-      'Customize DJ/Streamer Mount Point' => 
-      array (
-        0 => '',
-      ),
-      'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
-      array (
-        0 => '',
-      ),
-      'DJ/Streamer Buffer Time (Seconds)' => 
-      array (
-        0 => '',
-      ),
-      'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.' => 
-      array (
-        0 => '',
-      ),
-      'Character Set Encoding' => 
-      array (
-        0 => '',
-      ),
-      'For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.' => 
-      array (
-        0 => '',
-      ),
-      'Customize Internal Request Processing Port' => 
-      array (
-        0 => '',
-      ),
-      'This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.' => 
-      array (
-        0 => '',
-      ),
-      'Use Replaygain Metadata' => 
-      array (
-        0 => '',
-      ),
-      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
-      array (
-        0 => '',
-      ),
-      'This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!' => 
-      array (
-        0 => '',
-      ),
-      'Administration' => 
-      array (
-        0 => 'Administratie',
-      ),
-      'Enable Broadcasting' => 
-      array (
-        0 => '',
-      ),
-      'If disabled, the station will not broadcast or shuffle its AutoDJ.' => 
-      array (
-        0 => '',
-      ),
-      'Storage Quota' => 
-      array (
-        0 => '',
-      ),
-      'Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
-      array (
-        0 => '',
-      ),
-      'Base Station Directory' => 
-      array (
-        0 => '',
-      ),
-      'The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.' => 
-      array (
-        0 => '',
-      ),
-      'Custom Media Directory' => 
-      array (
-        0 => '',
-      ),
-      'The directory where media files are stored. Leave blank to use default directory.' => 
-      array (
-        0 => 'Locatie waar bestanden opgeslagen worden. Laat dit veld leeg om de standaard locatie te gebruiken.',
       ),
       'Site Base URL' => 
       array (
@@ -1563,14 +1503,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
       array (
         0 => 'Deze naam wordt weergegeven als subtitel naast het AzuraCast logo, ter herkenning van deze server.',
-      ),
-      'System Default Time Zone' => 
-      array (
-        0 => '',
-      ),
-      'For users who have not customized their time zone, all times displayed on the site will be based on this time zone.' => 
-      array (
-        0 => '',
       ),
       'Prefer Browser URL (If Available)' => 
       array (
@@ -1708,438 +1640,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Role Name' => 
-      array (
-        0 => 'Bestandsnaam',
-      ),
-      'System-Wide Permissions' => 
-      array (
-        0 => 'Systeem Machtigingen',
-      ),
-      'Permissions for %s' => 
-      array (
-        0 => '',
-      ),
-      'Your current local time is <b>%s</b> (%s UTC). You can customize your time zone from the "My Account" page.' => 
-      array (
-        0 => '',
-      ),
-      'Basic Information' => 
-      array (
-        0 => '',
-      ),
-      'Playlist Name' => 
-      array (
-        0 => 'Naam van afspeellijst',
-      ),
-      'Enable Playlist' => 
-      array (
-        0 => 'Activeer afspeellijst',
-      ),
-      'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
-      array (
-        0 => 'Wanneer gekozen voor "Nee", zal de afspeellijst niet worden afgespeeld op de radio. De afspeellijst kan nog steeds worden beheert.',
-      ),
-      'Playlist Weight' => 
-      array (
-        0 => 'Gewicht van afspeellijst',
-      ),
-      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
-      array (
-        0 => 'Afspeellijsten met een hoger gewicht worden vaker afgespeeld dan afspeellijsten met een lager gewicht.',
-      ),
-      'Low' => 
-      array (
-        0 => '',
-      ),
-      'High' => 
-      array (
-        0 => '',
-      ),
-      'Source' => 
-      array (
-        0 => 'Bron',
-      ),
-      'Song-Based Playlist' => 
-      array (
-        0 => '',
-      ),
-      'A playlist containing media files hosted on this server.' => 
-      array (
-        0 => '',
-      ),
-      'Remote URL Playlist' => 
-      array (
-        0 => '',
-      ),
-      'A playlist that instructs the station to play from a remote URL.' => 
-      array (
-        0 => '',
-      ),
-      'Song Playback Order' => 
-      array (
-        0 => '',
-      ),
-      'Shuffled' => 
-      array (
-        0 => '',
-      ),
-      'Random' => 
-      array (
-        0 => '',
-      ),
-      'Sequential' => 
-      array (
-        0 => '',
-      ),
-      'Hide Metadata from Listeners ("Jingle Mode")' => 
-      array (
-        0 => '',
-      ),
-      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
-      array (
-        0 => '',
-      ),
-      'Allow Requests from This Playlist' => 
-      array (
-        0 => '',
-      ),
-      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
-      array (
-        0 => '',
-      ),
-      'Import Existing Playlist' => 
-      array (
-        0 => 'Importeer bestaande afspeellijst',
-      ),
-      'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
-      array (
-        0 => 'Selecteer een bestaand afspeellijst bestand om de inhoud ervan toe te voegen aan deze afspeellijst. PLS en M3U bestanden worden ondersteund.',
-      ),
-      'Remote URL' => 
-      array (
-        0 => '',
-      ),
-      'Remote URL Type' => 
-      array (
-        0 => '',
-      ),
-      'Direct Stream URL' => 
-      array (
-        0 => '',
-      ),
-      'Playlist (M3U/PLS) URL' => 
-      array (
-        0 => '',
-      ),
-      'Remote Playback Buffer (Seconds)' => 
-      array (
-        0 => '',
-      ),
-      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
-      array (
-        0 => '',
-      ),
-      'Scheduling' => 
-      array (
-        0 => '',
-      ),
-      'General Rotation' => 
-      array (
-        0 => '',
-      ),
-      'Plays all day, shuffles with other standard playlists based on weight.' => 
-      array (
-        0 => 'Speelt de hele dag, samen met andere afspeellijsten in een willekeurige volgorde, op basis van het gewicht van de afspeellijst.',
-      ),
-      'Scheduled' => 
-      array (
-        0 => '',
-      ),
-      'Play during a scheduled time range.' => 
-      array (
-        0 => '',
-      ),
-      'Once per x Songs' => 
-      array (
-        0 => '',
-      ),
-      'Play exactly once every <i>x</i> songs.' => 
-      array (
-        0 => '',
-      ),
-      'Once Per x Minutes' => 
-      array (
-        0 => '',
-      ),
-      'Play exactly once every <i>x</i> minutes.' => 
-      array (
-        0 => '',
-      ),
-      'Once per Hour' => 
-      array (
-        0 => '',
-      ),
-      'Play once per hour at the specified minute.' => 
-      array (
-        0 => '',
-      ),
-      'Daily' => 
-      array (
-        0 => '',
-      ),
-      'Play once per day at the specified time. Useful for timely reminders.' => 
-      array (
-        0 => 'Speelt eens per dag op een specifiek tijdstip.',
-      ),
-      'Advanced' => 
-      array (
-        0 => '',
-      ),
-      'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
-      array (
-        0 => '',
-      ),
-      'Interrupt Other Songs' => 
-      array (
-        0 => '',
-      ),
-      'When this playlist is scheduled to play, it will interrupt any currently playing playlists instead of waiting for the end of a song.' => 
-      array (
-        0 => '',
-      ),
-      'Only Loop Playlist Once' => 
-      array (
-        0 => '',
-      ),
-      'If the playlist would play multiple times within its scheduled time, enable this to ensure it only plays once.' => 
-      array (
-        0 => '',
-      ),
-      'Only Play One Track at Scheduled Time' => 
-      array (
-        0 => '',
-      ),
-      'This will only play a single track from the specified playlist when it is scheduled to play.' => 
-      array (
-        0 => '',
-      ),
-      'Include in Automated Assignment' => 
-      array (
-        0 => 'Automatische toewijzing inschakelen',
-      ),
-      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
-      array (
-        0 => 'Wanneer automatische toewijzig is ingeschakeld, gebruik dan deze afspeellijst als een bron van herverdeelbare nummers. Hiermee wordt de bestaande inhoud van deze afspeellijst overschreven.',
-      ),
-      'Customize Schedule' => 
-      array (
-        0 => '',
-      ),
-      'Start Time' => 
-      array (
-        0 => 'Starttijd',
-      ),
-      'End Time' => 
-      array (
-        0 => 'Eindtijd',
-      ),
-      'If the end time is before the start time, the playlist will play overnight until this time on the next day.' => 
-      array (
-        0 => 'Als de eindtijd vóór de starttijd ligt, wordt de afspeellijst \'s nachts afgespeeld tot deze tijd op de volgende dag.',
-      ),
-      'Scheduled Play Days of Week' => 
-      array (
-        0 => '',
-      ),
-      'Leave blank to play on every day of the week.' => 
-      array (
-        0 => '',
-      ),
-      'Monday' => 
-      array (
-        0 => '',
-      ),
-      'Tuesday' => 
-      array (
-        0 => '',
-      ),
-      'Wednesday' => 
-      array (
-        0 => '',
-      ),
-      'Thursday' => 
-      array (
-        0 => '',
-      ),
-      'Friday' => 
-      array (
-        0 => '',
-      ),
-      'Saturday' => 
-      array (
-        0 => '',
-      ),
-      'Sunday' => 
-      array (
-        0 => '',
-      ),
-      'Number of Songs Between Plays' => 
-      array (
-        0 => 'Aantal nummers tussen spelen',
-      ),
-      'This playlist will play every $x songs, where $x is specified below.' => 
-      array (
-        0 => 'Deze afspeellijst zal om $x nummers worden afgespeeld, waar $x hieronder is opgegeven.',
-      ),
-      'Once per x Minutes' => 
-      array (
-        0 => '',
-      ),
-      'Number of Minutes Between Plays' => 
-      array (
-        0 => 'Aantal minuten tussen spelen',
-      ),
-      'This playlist will play every $x minutes, where $x is specified below.' => 
-      array (
-        0 => 'Deze afspeellijst zal elke $x minuten spelen, waar $x hieronder is opgegeven.',
-      ),
-      'Minute of Hour to Play' => 
-      array (
-        0 => '',
-      ),
-      'Specify the minute of every hour that this playlist should play.' => 
-      array (
-        0 => '',
-      ),
-      'Scheduled Play Time' => 
-      array (
-        0 => 'Ingestelde afspeeltijd',
-      ),
-      'Base Theme for Public Pages' => 
-      array (
-        0 => '',
-      ),
-      'Select a theme to use as a base for station public pages and the login page.' => 
-      array (
-        0 => '',
-      ),
-      'Hide Album Art on Public Pages' => 
-      array (
-        0 => '',
-      ),
-      'If selected, album art will not display on public-facing radio pages.' => 
-      array (
-        0 => '',
-      ),
-      'Homepage Redirect URL' => 
-      array (
-        0 => '',
-      ),
-      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
-      array (
-        0 => '',
-      ),
-      'Default Album Art URL' => 
-      array (
-        0 => '',
-      ),
-      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
-      array (
-        0 => '',
-      ),
-      'Hide AzuraCast Branding on Public Pages' => 
-      array (
-        0 => '',
-      ),
-      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
-      array (
-        0 => '',
-      ),
-      'Custom CSS for Public Pages' => 
-      array (
-        0 => '',
-      ),
-      'This CSS will be applied to the station public pages and login page.' => 
-      array (
-        0 => '',
-      ),
-      'Custom JS for Public Pages' => 
-      array (
-        0 => '',
-      ),
-      'This javascript code will be applied to the station public pages and login page.' => 
-      array (
-        0 => '',
-      ),
-      'Custom CSS for Internal Pages' => 
-      array (
-        0 => '',
-      ),
-      'This CSS will be applied to the main management pages, like this one.' => 
-      array (
-        0 => '',
-      ),
-      'Important Notes' => 
-      array (
-        0 => 'Belangrijke notities',
-      ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
-      array (
-        0 => '',
-      ),
-      'Current Installed Version' => 
-      array (
-        0 => '',
-      ),
-      'SHOUTcast is not currently installed on this installation.' => 
-      array (
-        0 => '',
-      ),
-      'Select SHOUTcast 64-bit .tar.gz File' => 
-      array (
-        0 => '',
-      ),
-      'Upload' => 
-      array (
-        0 => '',
-      ),
-      'Enable Automated Assignment' => 
-      array (
-        0 => 'Automatische toewijzing inschakelen',
-      ),
-      'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
-      array (
-        0 => 'Laat het systeem periodiek nummers toewijzen aan afspeellijsten op basis van hun prestaties. Dit proces zal uitgevoerd worden op de achtergrond, en kan alleen worden uitgevoerd als deze optie is ingeschakeld en als tenminste één station \'automatische toewijzing\' heeft ingeschakeld.',
-      ),
-      'Enabled' => 
-      array (
-        0 => 'Geactiveerd',
-      ),
-      'Days Between Automated Assignments' => 
-      array (
-        0 => 'Dagen tussen geautomatiseerde toewijzingen',
-      ),
-      'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
-      array (
-        0 => 'Op basis van deze instelling zal het systeem elke (dit) dag(en) nummers automatisch opnieuw toewijzen van de vorige (dit) aantal dagen.',
-      ),
-      '%d days' => 
-      array (
-        0 => '',
-      ),
-      'Code from Authenticator App' => 
-      array (
-        0 => '',
-      ),
-      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
-      array (
-        0 => '',
-      ),
-      'Verify Authenticator' => 
-      array (
-        0 => '',
-      ),
       'Metadata' => 
       array (
         0 => 'Metagegevens',
@@ -2152,161 +1652,285 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Artiestenaam',
       ),
-      'Field Name' => 
+      'Station Profile' => 
+      array (
+        0 => 'Stationsprofiel',
+      ),
+      'AutoDJ' => 
+      array (
+        0 => 'AutoDJ',
+      ),
+      'Administration' => 
+      array (
+        0 => 'Administratie',
+      ),
+      'Description' => 
       array (
         0 => '',
       ),
-      'This will be used as the label when editing individual songs, and will show in API results.' => 
+      'Genre' => 
       array (
         0 => '',
       ),
-      'Programmatic Name' => 
+      'Web Site URL' => 
       array (
         0 => '',
       ),
-      'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
+      'Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.' => 
       array (
         0 => '',
       ),
-      'Password' => 
+      'Time Zone' => 
       array (
-        0 => 'Wachtwoord',
+        0 => 'Tijdzone',
       ),
-      'Create Account' => 
-      array (
-        0 => 'Account Aanmaken',
-      ),
-      'Fallback Mount' => 
-      array (
-        0 => 'Terugval Mount',
-      ),
-      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
-      array (
-        0 => 'Wanneer dit mount punt geen audio speelt, zullen luisteraars doorverwezen worden naar dit mount punt. De standaard is /error.mp3, welke herhaaldelijk een foutmelding laat horen.',
-      ),
-      'Custom Frontend Configuration' => 
+      'Scheduled playlists and other timed items will be controlled by this time zone.' => 
       array (
         0 => '',
       ),
-      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
-      array (
-        0 => 'Je kan hier alle speciale mount point instelling instellen, in JSON-formaat { key: \'value\' } of XML &lt;key&gt;value&lt;/key&gt;',
-      ),
-      'Stream path cannot include reserved keywords: %s' => 
+      'Enable Public Page' => 
       array (
         0 => '',
       ),
-      'YP Directory Authorization Hash' => 
+      'Show the station in public pages and general API results.' => 
       array (
         0 => '',
       ),
-      'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
+      'URL Stub' => 
       array (
         0 => '',
       ),
-      'Mount Point URL' => 
+      'Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.' => 
       array (
         0 => '',
       ),
-      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
-      array (
-        0 => 'De naam dient te beginnen met een schuine streep (/), en een geldige URL te bevatten. Bijv: /autodj.mp3',
-      ),
-      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      'Number of Recently Played Songs' => 
       array (
         0 => '',
       ),
-      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
         0 => '',
       ),
-      'Set as Default Mount Point' => 
+      'Broadcasting Service' => 
       array (
         0 => '',
       ),
-      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
-      array (
-        0 => 'Als deze mount standaard is, zal deze gebruikt worden in de radiospeler op de publieke radio pagina van dit systeem.',
-      ),
-      'Relay Stream URL' => 
-      array (
-        0 => 'Doorstuur Stream URL',
-      ),
-      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
-      array (
-        0 => 'Voer de volledige URL in van een andere stream om deze opnieuw uit te zenden via dit mount punt.',
-      ),
-      'Enable AutoDJ' => 
-      array (
-        0 => 'AutoDJ inschakelen',
-      ),
-      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      'This software delivers your broadcast to the listening audience.' => 
       array (
         0 => '',
       ),
-      'Advanced Configuration' => 
+      'Customize Broadcasting Port' => 
       array (
         0 => '',
       ),
-      'Custom Stream URL' => 
+      'No other program can be using this port. Leave blank to automatically assign a port.' => 
+      array (
+        0 => 'Deze poort kan niet door een ander programma gebruikt worden. Laat dit veld leeg om automatisch een poort toe te laten kennen.',
+      ),
+      'Maximum Listeners' => 
+      array (
+        0 => 'Maximaal aantal luisteraars',
+      ),
+      'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
+      array (
+        0 => 'Maximaal aantal luisteraars, over alle stations. Laat leeg om de standaard waarde (250) te gebruiken.',
+      ),
+      'Customize Source Password' => 
       array (
         0 => '',
       ),
-      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => 'Laat leeg om automatisch een wachtwoord te genereren.',
+      ),
+      'Customize Administrator Password' => 
       array (
         0 => '',
       ),
-      'This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href="%s" target="_blank">SoundExchange web site</a>.' => 
+      'Custom Configuration' => 
+      array (
+        0 => 'Aangepaste configuratie',
+      ),
+      'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
+      array (
+        0 => 'Deze code zal toegepast worden op de front-end configuratie. Dit kan in JSON-formaat {"new_key": "new_value"} of XML &lt;new_key&gt;new_value&lt;/new_key&gt;.',
+      ),
+      'AutoDJ Service' => 
       array (
         0 => '',
       ),
-      'AzuraCast assumes that your station fits SoundExchange Transmission Category A, "Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming." If your station does not fall within this category, update the transmission category field accordingly.' => 
+      'This software shuffles from playlists of music constantly and plays when no other radio source is available.' => 
       array (
         0 => '',
       ),
-      'The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate.' => 
+      'Crossfade Method' => 
       array (
         0 => '',
       ),
-      'Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date.' => 
+      'Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.' => 
       array (
         0 => '',
       ),
-      'You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href="%s" target="_blank">SoundExchange\'s ISRC search tool</a>.' => 
+      'Smart Mode' => 
       array (
         0 => '',
       ),
-      'Report Start Date' => 
+      'Normal Mode' => 
       array (
-        0 => 'Verslag start datum',
+        0 => '',
       ),
-      'Report End Date' => 
+      'Disable Crossfading' => 
       array (
-        0 => 'Verslag stop datum',
+        0 => '',
       ),
-      'Generate Report' => 
+      'Crossfade Duration (Seconds)' => 
       array (
-        0 => 'Rapport aanmaken',
+        0 => 'Lengte van crossfade (seconden)',
       ),
-      'Leave blank to use the current password.' => 
+      'Number of seconds to overlap songs.' => 
       array (
-        0 => 'Laat leeg om het huidige wachtword te gebruiken.',
+        0 => '',
       ),
-      'Roles' => 
+      'Apply Compression and Normalization' => 
       array (
-        0 => 'Rollen',
+        0 => '',
       ),
-      'New Station Details' => 
+      'Compress and normalize your station\'s audio, producing a more uniform and "full" sound.' => 
       array (
-        0 => 'Nieuwe station gegevens',
+        0 => '',
       ),
-      'Station Name' => 
+      'Allow Song Requests' => 
       array (
-        0 => 'Zender Naam',
+        0 => 'Accepteer verzoeknummers',
       ),
-      'Station Description' => 
+      'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.' => 
       array (
-        0 => 'Zender omschrijving',
+        0 => '',
+      ),
+      'Request Minimum Delay (Minutes)' => 
+      array (
+        0 => 'Minimale vertraging van verzoeknummers (minuten)',
+      ),
+      'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
+      array (
+        0 => 'Wanneer verzoeken zijn ingeschakeld, dan specifieerd dit de minimum tijd (in minuten) tussen een aangevraagd verzoek en het afspelen ervan. Wanneer ingesteld als 0, zal er geen uitstel toegepast worden.<br><b>Belangrijk:</b> Sommige regels op stream licenties verplichten een minimum uitgestelde tijd tussen verzoeken. Kijk dit na in jouw lokale regulering voor meer informatie.',
+      ),
+      'Request Last Played Threshold (Minutes)' => 
+      array (
+        0 => 'Tijdsverschil ter verzoeken met afgespeelde nummers (in minuten)',
+      ),
+      'If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.' => 
+      array (
+        0 => 'Als verzoeken ingeschakeld zijn, dan specifieerd deze waarde de minimale tijd (in minuten) tussen het afspelen van een nummer op de radio en het terug verzoekbaar maken van een nummer. Stel in als 0 voor geen tijdsverschil.',
+      ),
+      'Allow Streamers / DJs' => 
+      array (
+        0 => 'Streamers / DJ\'s toestaan',
+      ),
+      'If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.' => 
+      array (
+        0 => '',
+      ),
+      'Deactivate Streamer on Disconnect (Seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely.' => 
+      array (
+        0 => '',
+      ),
+      'Customize DJ/Streamer Port' => 
+      array (
+        0 => '',
+      ),
+      'No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.' => 
+      array (
+        0 => '',
+      ),
+      'Customize Internal Request Processing Port' => 
+      array (
+        0 => '',
+      ),
+      'This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.' => 
+      array (
+        0 => '',
+      ),
+      'DJ/Streamer Buffer Time (Seconds)' => 
+      array (
+        0 => '',
+      ),
+      'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.' => 
+      array (
+        0 => '',
+      ),
+      'Customize DJ/Streamer Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
+      array (
+        0 => '',
+      ),
+      'Use Replaygain Metadata' => 
+      array (
+        0 => '',
+      ),
+      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
+      array (
+        0 => '',
+      ),
+      'Character Set Encoding' => 
+      array (
+        0 => '',
+      ),
+      'For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.' => 
+      array (
+        0 => '',
+      ),
+      'This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!' => 
+      array (
+        0 => '',
+      ),
+      'Enable Broadcasting' => 
+      array (
+        0 => '',
+      ),
+      'If disabled, the station will not broadcast or shuffle its AutoDJ.' => 
+      array (
+        0 => '',
+      ),
+      'Storage Quota' => 
+      array (
+        0 => '',
+      ),
+      'Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
+      array (
+        0 => '',
+      ),
+      'Base Station Directory' => 
+      array (
+        0 => '',
+      ),
+      'The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.' => 
+      array (
+        0 => '',
+      ),
+      'Custom Media Directory' => 
+      array (
+        0 => '',
+      ),
+      'The directory where media files are stored. Leave blank to use default directory.' => 
+      array (
+        0 => 'Locatie waar bestanden opgeslagen worden. Laat dit veld leeg om de standaard locatie te gebruiken.',
+      ),
+      'New Station Name' => 
+      array (
+        0 => '',
+      ),
+      'New Station Description' => 
+      array (
+        0 => '',
       ),
       'Customize Station Cloning' => 
       array (
@@ -2352,13 +1976,580 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Creëer een nieuw radiostation',
       ),
-      'Log in' => 
+      'Account is Active' => 
       array (
-        0 => 'Inloggen',
+        0 => 'Account is actief',
+      ),
+      'Enable to allow this account to log in and stream.' => 
+      array (
+        0 => '',
+      ),
+      'Streamer Username' => 
+      array (
+        0 => 'Streamer gebruikersnaam',
+      ),
+      'The streamer will use this username to connect to the radio server.' => 
+      array (
+        0 => 'De streamer dient de gebruikersnaam te gebruiken om met de radio server te verbinden.',
+      ),
+      'Streamer Password' => 
+      array (
+        0 => 'Streamer wachtwoord',
+      ),
+      'The streamer will use this password to connect to the radio server.' => 
+      array (
+        0 => '',
+      ),
+      'Streamer Display Name' => 
+      array (
+        0 => '',
+      ),
+      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      array (
+        0 => '',
+      ),
+      'Internal notes or comments about the user, visible only on this control panel.' => 
+      array (
+        0 => 'Interne notities of commentaar over de gebruiker, alleen zichtbaar vanuit dit controle paneel.',
+      ),
+      'Leave blank to use the current password.' => 
+      array (
+        0 => 'Laat leeg om het huidige wachtword te gebruiken.',
+      ),
+      'Roles' => 
+      array (
+        0 => 'Rollen',
+      ),
+      '%s Name' => 
+      array (
+        0 => '',
+      ),
+      'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
+      array (
+        0 => '',
+      ),
+      'Discord Web Hook URL' => 
+      array (
+        0 => '',
+      ),
+      'This URL is provided within the Discord application.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook Triggers' => 
+      array (
+        0 => '',
+      ),
+      'Customize Message' => 
+      array (
+        0 => '',
+      ),
+      'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
+      array (
+        0 => '',
+      ),
+      'Main Message Content' => 
+      array (
+        0 => '',
+      ),
+      'Now playing on %s:' => 
+      array (
+        0 => '',
+      ),
+      'Title' => 
+      array (
+        0 => 'Titel',
+      ),
+      'URL' => 
+      array (
+        0 => '',
+      ),
+      'Author Name' => 
+      array (
+        0 => '',
+      ),
+      'Thumbnail Image URL' => 
+      array (
+        0 => '',
+      ),
+      'Footer Text' => 
+      array (
+        0 => '',
+      ),
+      'Powered by %s' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook Details' => 
+      array (
+        0 => '',
+      ),
+      'Web hooks automatically send a HTTP POST request to the URL you specify to 
+                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
+                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station. 
+                In order to process quickly, web hooks have a short timeout, so the responding service should be
+                optimized to handle the request in under 2 seconds.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook URL' => 
+      array (
+        0 => '',
+      ),
+      'The URL that will receive the POST messages any time an event is triggered.' => 
+      array (
+        0 => '',
+      ),
+      'Optional: HTTP Basic Authentication Username' => 
+      array (
+        0 => '',
+      ),
+      'If your web hook requires HTTP basic authentication, provide the username here.' => 
+      array (
+        0 => '',
+      ),
+      'Optional: HTTP Basic Authentication Password' => 
+      array (
+        0 => '',
+      ),
+      'If your web hook requires HTTP basic authentication, provide the password here.' => 
+      array (
+        0 => '',
+      ),
+      'Bot Token' => 
+      array (
+        0 => '',
+      ),
+      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
+      array (
+        0 => '',
+      ),
+      'Chat ID' => 
+      array (
+        0 => '',
+      ),
+      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
+      array (
+        0 => '',
+      ),
+      'Custom API Base URL' => 
+      array (
+        0 => '',
+      ),
+      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
+      array (
+        0 => '',
+      ),
+      'Now playing on %s: %s by %s! Tune in now.' => 
+      array (
+        0 => '',
+      ),
+      'Message parsing mode' => 
+      array (
+        0 => '',
+      ),
+      'TuneIn Station ID' => 
+      array (
+        0 => '',
+      ),
+      'The station ID will be a numeric string that starts with the letter S.' => 
+      array (
+        0 => '',
+      ),
+      'TuneIn Partner ID' => 
+      array (
+        0 => '',
+      ),
+      'TuneIn Partner Key' => 
+      array (
+        0 => '',
+      ),
+      'Twitter Account Details' => 
+      array (
+        0 => '',
+      ),
+      'Steps for configuring a Twitter application:<br>
+                <ol type="1">
+                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>. 
+                    Use this installation\'s base URL as the application URL.</li>
+                    <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
+                    <li>At the bottom of the page, click "Create my access token".</li>
+                </ol>
+                <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
+      array (
+        0 => '',
+      ),
+      'Consumer Key (API Key)' => 
+      array (
+        0 => '',
+      ),
+      'Consumer Secret (API Secret)' => 
+      array (
+        0 => '',
+      ),
+      'Access Token' => 
+      array (
+        0 => '',
+      ),
+      'Access Token Secret' => 
+      array (
+        0 => '',
+      ),
+      'Only Send One Tweet Every...' => 
+      array (
+        0 => '',
+      ),
+      'No Limit' => 
+      array (
+        0 => '',
+      ),
+      '%d seconds' => 
+      array (
+        0 => '',
+      ),
+      '%d minutes' => 
+      array (
+        0 => '',
+      ),
+      'Message Body' => 
+      array (
+        0 => '',
+      ),
+      'System Maintenance' => 
+      array (
+        0 => 'Systeem Onderhoud',
+      ),
+      'Custom Branding' => 
+      array (
+        0 => '',
+      ),
+      'System Logs' => 
+      array (
+        0 => '',
+      ),
+      'User Accounts' => 
+      array (
+        0 => 'Gebruikers account',
+      ),
+      'Start Station' => 
+      array (
+        0 => '',
+      ),
+      'Ready to start broadcasting? Click to start your station.' => 
+      array (
+        0 => '',
+      ),
+      'Restart to Apply Changes' => 
+      array (
+        0 => '',
+      ),
+      'Click to restart your station and apply configuration changes.' => 
+      array (
+        0 => '',
+      ),
+      'Public Page' => 
+      array (
+        0 => 'Publieke pagina',
+      ),
+      'Music Files' => 
+      array (
+        0 => 'Muziek bestanden',
+      ),
+      'Playlists' => 
+      array (
+        0 => 'Afspeellijsten',
+      ),
+      'Streamer/DJ Accounts' => 
+      array (
+        0 => 'Streamer/DJ accounts',
+      ),
+      'Web DJ' => 
+      array (
+        0 => '',
+      ),
+      'Reports' => 
+      array (
+        0 => 'Rapportages',
+      ),
+      'Statistics Overview' => 
+      array (
+        0 => '',
+      ),
+      'Song Requests' => 
+      array (
+        0 => 'Verzoeknummers',
+      ),
+      'Song Playback Timeline' => 
+      array (
+        0 => 'Nummer Afspeeltijdlijn',
+      ),
+      'Song Listener Impact' => 
+      array (
+        0 => 'Impact van nummer op luisteraar',
+      ),
+      'Duplicate Songs' => 
+      array (
+        0 => 'Dupliceer nummers',
+      ),
+      'SoundExchange Royalties' => 
+      array (
+        0 => '',
+      ),
+      'Utilities' => 
+      array (
+        0 => 'Hulpprogramma’s',
+      ),
+      'Automated Assignment' => 
+      array (
+        0 => 'Automatisch toegewezen',
+      ),
+      'Log Viewer' => 
+      array (
+        0 => '',
+      ),
+      'Upcoming Song Queue' => 
+      array (
+        0 => '',
+      ),
+      'Restart Broadcasting' => 
+      array (
+        0 => 'Herstart uitzending',
+      ),
+      'Generic Web Hook' => 
+      array (
+        0 => '',
+      ),
+      'Automatically send a message to any URL when your station data changes.' => 
+      array (
+        0 => '',
+      ),
+      'TuneIn AIR' => 
+      array (
+        0 => '',
+      ),
+      'Send song metadata changes to TuneIn.' => 
+      array (
+        0 => '',
+      ),
+      'Discord Webhook' => 
+      array (
+        0 => '',
+      ),
+      'Automatically send a customized message to your Discord server.' => 
+      array (
+        0 => '',
+      ),
+      'Telegram Chat Message' => 
+      array (
+        0 => '',
+      ),
+      'Use the Telegram Bot API to send a message to a channel.' => 
+      array (
+        0 => '',
+      ),
+      'Twitter Post' => 
+      array (
+        0 => '',
+      ),
+      'Automatically send a tweet.' => 
+      array (
+        0 => '',
+      ),
+      'Any time the currently playing song changes' => 
+      array (
+        0 => '',
+      ),
+      'Any time the listener count increases' => 
+      array (
+        0 => '',
+      ),
+      'Any time the listener count decreases' => 
+      array (
+        0 => '',
+      ),
+      'Any time a live streamer/DJ connects to the stream' => 
+      array (
+        0 => '',
+      ),
+      'Any time a live streamer/DJ disconnects from the stream' => 
+      array (
+        0 => '',
+      ),
+      'Owner' => 
+      array (
+        0 => 'Eigenaar',
+      ),
+      'Edit' => 
+      array (
+        0 => 'Wijzig',
+      ),
+      'Revoke' => 
+      array (
+        0 => 'Intrekken',
+      ),
+      'Automatic Backups' => 
+      array (
+        0 => '',
+      ),
+      'Last run: %s' => 
+      array (
+        0 => '',
+      ),
+      'Never run' => 
+      array (
+        0 => '',
+      ),
+      'Configure' => 
+      array (
+        0 => '',
+      ),
+      'Most Recent Backup Log' => 
+      array (
+        0 => '',
+      ),
+      'Restoring Backups' => 
+      array (
+        0 => '',
+      ),
+      'To restore a backup from your host computer, run:' => 
+      array (
+        0 => '',
+      ),
+      'Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.' => 
+      array (
+        0 => '',
+      ),
+      'Actions' => 
+      array (
+        0 => 'Acties',
+      ),
+      'Last Modified' => 
+      array (
+        0 => '',
+      ),
+      'Size' => 
+      array (
+        0 => 'Grootte',
+      ),
+      'Download' => 
+      array (
+        0 => '',
+      ),
+      'Delete backup "%s"?' => 
+      array (
+        0 => '',
+      ),
+      'Delete' => 
+      array (
+        0 => 'Verwijderen',
+      ),
+      'Backups Home' => 
+      array (
+        0 => '',
+      ),
+      'Backup was run successfully.' => 
+      array (
+        0 => '',
+      ),
+      'Backup encountered errors when running. Check the log below for details.' => 
+      array (
+        0 => '',
+      ),
+      'Delete custom field "%s"?' => 
+      array (
+        0 => '',
+      ),
+      'Synchronization Tasks' => 
+      array (
+        0 => '',
+      ),
+      'Run Task' => 
+      array (
+        0 => '',
+      ),
+      'SHOUTcast Installed' => 
+      array (
+        0 => '',
+      ),
+      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
+      array (
+        0 => '',
+      ),
+      'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
+      array (
+        0 => '',
+      ),
+      'Logs by Station' => 
+      array (
+        0 => '',
+      ),
+      'Delete role "%s"?' => 
+      array (
+        0 => '',
+      ),
+      'This role cannot be deleted.' => 
+      array (
+        0 => 'Deze rol kan niet worden verwijderd.',
+      ),
+      'Global' => 
+      array (
+        0 => '',
+      ),
+      'Manage Stations' => 
+      array (
+        0 => 'Stations Beheren',
+      ),
+      'Manage' => 
+      array (
+        0 => 'Beheer',
+      ),
+      'Clone' => 
+      array (
+        0 => 'Kloon',
+      ),
+      'Delete station "%s"?' => 
+      array (
+        0 => '',
       ),
       'Log In' => 
       array (
         0 => 'Inloggen',
+      ),
+      'Delete user "%s"?' => 
+      array (
+        0 => '',
+      ),
+      '(You)' => 
+      array (
+        0 => '',
+      ),
+      'Welcome!' => 
+      array (
+        0 => '',
+      ),
+      'Welcome to %s!' => 
+      array (
+        0 => 'Welkom bij %s!',
+      ),
+      'name@example.com' => 
+      array (
+        0 => '',
+      ),
+      'Enter your password' => 
+      array (
+        0 => '',
+      ),
+      'Sign in' => 
+      array (
+        0 => '',
+      ),
+      'Please log in to continue.' => 
+      array (
+        0 => 'Log-in om verder te gaan.',
+      ),
+      '<a href="%s" target="_blank">Forgot your password?</a>' => 
+      array (
+        0 => '',
       ),
       'Enter Two-Factor Code' => 
       array (
@@ -2372,19 +2563,76 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Welcome!' => 
+      'My API Keys' => 
       array (
         0 => '',
       ),
-      'Welcome to %s!' => 
+      'API keys can be used to access some system functionality without needing to log in. All of the keys 
+            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => 'Welkom bij %s!',
+        0 => '',
       ),
-      'Please log in to continue.' => 
+      'Key Identifier' => 
       array (
-        0 => 'Log-in om verder te gaan.',
+        0 => '',
       ),
-      '<a href="%s" target="_blank">Forgot your password?</a>' => 
+      'New Key Generated' => 
+      array (
+        0 => '',
+      ),
+      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
+      array (
+        0 => '',
+      ),
+      'Your full API key is below:' => 
+      array (
+        0 => '',
+      ),
+      'Copy to Clipboard' => 
+      array (
+        0 => '',
+      ),
+      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
+      array (
+        0 => '',
+      ),
+      'Continue' => 
+      array (
+        0 => '',
+      ),
+      'Dashboard' => 
+      array (
+        0 => 'Dashboard',
+      ),
+      'Listeners Across All Stations' => 
+      array (
+        0 => 'Luisteraars over alle stations',
+      ),
+      'Listeners Per Station' => 
+      array (
+        0 => 'Luisteraars per station',
+      ),
+      'Station Overview' => 
+      array (
+        0 => 'Overzicht van radiostations',
+      ),
+      'Station Name' => 
+      array (
+        0 => 'Zender Naam',
+      ),
+      'Now Playing' => 
+      array (
+        0 => 'Nu speelt',
+      ),
+      'Options' => 
+      array (
+        0 => 'Opties',
+      ),
+      'Error: No Available Stations' => 
+      array (
+        0 => '',
+      ),
+      'Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server\'s administrator.' => 
       array (
         0 => '',
       ),
@@ -2408,7 +2656,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Copy to Clipboard' => 
+      'QR-Code' => 
       array (
         0 => '',
       ),
@@ -2435,22 +2683,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Enable Two-Factor' => 
       array (
         0 => '',
-      ),
-      'Request' => 
-      array (
-        0 => 'Verzoek',
-      ),
-      'Artist' => 
-      array (
-        0 => 'Artiest',
-      ),
-      'Album' => 
-      array (
-        0 => '',
-      ),
-      'Actions' => 
-      array (
-        0 => 'Acties',
       ),
       'Microphone' => 
       array (
@@ -2500,6 +2732,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Artist' => 
+      array (
+        0 => 'Artiest',
+      ),
       'Continuous Play' => 
       array (
         0 => '',
@@ -2540,6 +2776,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Request' => 
+      array (
+        0 => 'Verzoek',
+      ),
+      'Album' => 
+      array (
+        0 => '',
+      ),
       'Song History' => 
       array (
         0 => 'Afspeelgeschiedenis',
@@ -2552,13 +2796,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vraag een nummer aan',
       ),
-      'Album Cover' => 
+      'Play' => 
       array (
         0 => '',
       ),
-      'Play/Pause' => 
+      'Pause' => 
       array (
-        0 => '',
+        0 => 'Pauzeer',
       ),
       'Mute' => 
       array (
@@ -2572,106 +2816,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Dashboard' => 
-      array (
-        0 => 'Dashboard',
-      ),
-      'Listeners Across All Stations' => 
-      array (
-        0 => 'Luisteraars over alle stations',
-      ),
-      'Listeners Per Station' => 
-      array (
-        0 => 'Luisteraars per station',
-      ),
-      'Station Overview' => 
-      array (
-        0 => 'Overzicht van radiostations',
-      ),
-      'Now Playing' => 
-      array (
-        0 => 'Nu speelt',
-      ),
-      'Options' => 
-      array (
-        0 => 'Opties',
-      ),
-      'Manage' => 
-      array (
-        0 => 'Beheer',
-      ),
-      'Error: No Available Stations' => 
+      'Album Art' => 
       array (
         0 => '',
-      ),
-      'Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server\'s administrator.' => 
-      array (
-        0 => '',
-      ),
-      'My API Keys' => 
-      array (
-        0 => '',
-      ),
-      'API keys can be used to access some system functionality without needing to log in. All of the keys 
-            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
-      array (
-        0 => '',
-      ),
-      'Key Identifier' => 
-      array (
-        0 => '',
-      ),
-      'Edit' => 
-      array (
-        0 => 'Wijzig',
-      ),
-      'Revoke' => 
-      array (
-        0 => 'Intrekken',
-      ),
-      'New Key Generated' => 
-      array (
-        0 => '',
-      ),
-      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
-      array (
-        0 => '',
-      ),
-      'Your full API key is below:' => 
-      array (
-        0 => '',
-      ),
-      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
-      array (
-        0 => '',
-      ),
-      'Continue' => 
-      array (
-        0 => '',
-      ),
-      'AzuraCast Setup' => 
-      array (
-        0 => 'AzuraCast Setup',
-      ),
-      'Create Station' => 
-      array (
-        0 => '',
-      ),
-      'Customize AzuraCast Settings' => 
-      array (
-        0 => '',
-      ),
-      'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
-      array (
-        0 => 'Voltooi de installatie door het verstrekken van informatie over je uitzendomgeving. Deze instellingen kunnen later gewijzigd worden vanuit het administratiepaneel.',
-      ),
-      'Create a New Radio Station' => 
-      array (
-        0 => '',
-      ),
-      'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
-      array (
-        0 => 'Ga verder met de installatie door je eerste radiostation aan te maken. Je kunt alle instellingen later nogmaals aanpassen.',
       ),
       'AzuraCast First-Time Setup' => 
       array (
@@ -2689,25 +2836,129 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      'Create Station' => 
       array (
         0 => '',
       ),
-      'AutoDJ' => 
+      'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
       array (
-        0 => 'AutoDJ',
+        0 => 'Voltooi de installatie door het verstrekken van informatie over je uitzendomgeving. Deze instellingen kunnen later gewijzigd worden vanuit het administratiepaneel.',
       ),
-      'Delete mount point "%s"?' => 
+      'Customize AzuraCast Settings' => 
       array (
         0 => '',
       ),
-      'Delete' => 
+      'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
-        0 => 'Verwijderen',
+        0 => 'Ga verder met de installatie door je eerste radiostation aan te maken. Je kunt alle instellingen later nogmaals aanpassen.',
       ),
-      'Default Mount' => 
+      'Create a New Radio Station' => 
       array (
-        0 => 'Standaard Mount',
+        0 => '',
+      ),
+      'Skip to main content' => 
+      array (
+        0 => '',
+      ),
+      'Toggle Sidebar' => 
+      array (
+        0 => '',
+      ),
+      'Toggle Menu' => 
+      array (
+        0 => '',
+      ),
+      'System Administration' => 
+      array (
+        0 => 'Systeembeheer',
+      ),
+      'Switch Theme' => 
+      array (
+        0 => '',
+      ),
+      'Help' => 
+      array (
+        0 => '',
+      ),
+      'End Session' => 
+      array (
+        0 => 'Sessie beëindigen',
+      ),
+      'Sign Out' => 
+      array (
+        0 => 'Uitloggen',
+      ),
+      'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
+      array (
+        0 => '',
+      ),
+      'Mascot designed by %s' => 
+      array (
+        0 => '',
+      ),
+      'Need Help?' => 
+      array (
+        0 => '',
+      ),
+      'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
+      array (
+        0 => '',
+      ),
+      'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
+      array (
+        0 => '',
+      ),
+      'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
+      array (
+        0 => '',
+      ),
+      'New GitHub Issue' => 
+      array (
+        0 => '',
+      ),
+      'Log View' => 
+      array (
+        0 => '',
+      ),
+      'Automatically scroll to the bottom of the log' => 
+      array (
+        0 => '',
+      ),
+      'Automated Playlist Assignment' => 
+      array (
+        0 => 'Automatische toewijzing van afspeellijsten',
+      ),
+      'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
+      array (
+        0 => 'Op basis van eerdere prestaties van de muziek in jouw station kan %s automatisch nummers gelijkmatig spreiden over je afspeellijsten door het plaatsen van goed presterende nummers in de afspeellijsten met een zwaarder gewicht.',
+      ),
+      'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
+      array (
+        0 => 'Wanneer je automatische toewijzing hebt ingesteld, klik dan op de knop hieronder om het proces te laten lopen. Dit proces zal niet werken zonder dat je "Ingeschakeld" hebt geselecteerd.',
+      ),
+      'Run Automated Assignment' => 
+      array (
+        0 => 'Automatische toewijzing uitvoeren',
+      ),
+      'Configure Automated Assignment' => 
+      array (
+        0 => 'Configureer automatische toewijzing',
+      ),
+      'Album Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Rename' => 
+      array (
+        0 => 'Naam aanpassen',
+      ),
+      'Select' => 
+      array (
+        0 => '',
+      ),
+      'Home' => 
+      array (
+        0 => '',
       ),
       '%s of %s Used' => 
       array (
@@ -2749,10 +3000,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Lengte',
       ),
-      'Size' => 
-      array (
-        0 => 'Grootte',
-      ),
       'Modified' => 
       array (
         0 => 'Gewijzigd',
@@ -2777,31 +3024,39 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Album Artwork' => 
+      'Available Logs' => 
       array (
         0 => '',
       ),
-      'Rename' => 
-      array (
-        0 => 'Naam aanpassen',
-      ),
-      'Select' => 
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
       array (
         0 => '',
       ),
-      'Home' => 
+      'Delete mount point "%s"?' => 
       array (
         0 => '',
       ),
-      'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
+      'Default Mount' => 
+      array (
+        0 => 'Standaard Mount',
+      ),
+      'All Playlists' => 
       array (
         0 => '',
       ),
-      'Type' => 
+      'Schedule View' => 
       array (
-        0 => 'Type',
+        0 => '',
       ),
-      'Triggers' => 
+      '# Songs' => 
+      array (
+        0 => '# Nummers',
+      ),
+      'Delete playlist "%s"?' => 
+      array (
+        0 => '',
+      ),
+      'More' => 
       array (
         0 => '',
       ),
@@ -2813,47 +3068,127 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Trigger the web hook manually and view the raw response.' => 
+      'Reorder' => 
       array (
         0 => '',
       ),
-      'Test' => 
+      'Export %s' => 
       array (
         0 => '',
       ),
-      'Delete web hook "%s"?' => 
+      'Song-based' => 
       array (
         0 => '',
       ),
-      'Select the type of web hook to create.' => 
+      'Jingle Mode' => 
       array (
         0 => '',
       ),
-      'Automated Playlist Assignment' => 
+      'Auto-Assigned' => 
       array (
-        0 => 'Automatische toewijzing van afspeellijsten',
+        0 => 'Automatisch toegewezen',
       ),
-      'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
+      'Weight' => 
       array (
-        0 => 'Op basis van eerdere prestaties van de muziek in jouw station kan %s automatisch nummers gelijkmatig spreiden over je afspeellijsten door het plaatsen van goed presterende nummers in de afspeellijsten met een zwaarder gewicht.',
+        0 => 'Gewicht',
       ),
-      'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
+      'Plays at %s' => 
       array (
-        0 => 'Wanneer je automatische toewijzing hebt ingesteld, klik dan op de knop hieronder om het proces te laten lopen. Dit proces zal niet werken zonder dat je "Ingeschakeld" hebt geselecteerd.',
+        0 => '',
       ),
-      'Run Automated Assignment' => 
+      'Plays between %s and %s' => 
       array (
-        0 => 'Automatische toewijzing uitvoeren',
+        0 => 'Speelt tussen %s and %s',
       ),
-      'Configure Automated Assignment' => 
+      'Once per %d Songs' => 
       array (
-        0 => 'Configureer automatische toewijzing',
+        0 => 'Eens per %d nummers',
+      ),
+      'Once per %d Minutes' => 
+      array (
+        0 => 'Eens in de %d minuten',
+      ),
+      'Once per Hour (at :%02d)' => 
+      array (
+        0 => '',
+      ),
+      'Custom' => 
+      array (
+        0 => 'Aangepast',
+      ),
+      'Reorder Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Reorder Playlist: %s' => 
+      array (
+        0 => '',
+      ),
+      'Down' => 
+      array (
+        0 => '',
+      ),
+      'Up' => 
+      array (
+        0 => '',
       ),
       'Station Broadcasting Disabled' => 
       array (
         0 => '',
       ),
       'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
+      array (
+        0 => '',
+      ),
+      'Running' => 
+      array (
+        0 => 'Wordt uitgevoerd',
+      ),
+      'Not Running' => 
+      array (
+        0 => 'Wordt niet uitgevoerd',
+      ),
+      'Loading...' => 
+      array (
+        0 => '',
+      ),
+      'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
+      array (
+        0 => 'LiquidSoap speelt momenteel <b>%d geüploade nummers</b> uit <b>%d afspeellijsten</b> in een willekeurige volgorde.',
+      ),
+      'Restart' => 
+      array (
+        0 => '',
+      ),
+      'Start' => 
+      array (
+        0 => '',
+      ),
+      'Stop' => 
+      array (
+        0 => '',
+      ),
+      'AutoDJ Disabled' => 
+      array (
+        0 => 'AutoDJ uitgeschakeld',
+      ),
+      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
+      array (
+        0 => 'AutoDJ is uitgeschakeld. Er zal geen muziek worden afgespeeld wanneer er niet live wordt uitgezonden.',
+      ),
+      'Administration URL' => 
+      array (
+        0 => 'Administratie URL',
+      ),
+      'Administrator Password' => 
+      array (
+        0 => 'Administrator wachtwoord',
+      ),
+      'Source Password' => 
+      array (
+        0 => 'Source wachtwoord',
+      ),
+      'Relay Password' => 
       array (
         0 => '',
       ),
@@ -2885,7 +3220,35 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      '<a href="%s">Edit station profile</a> to enable.' => 
+      'Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Player Embed Code' => 
+      array (
+        0 => 'Player embed-code',
+      ),
+      'Request Embed Code' => 
+      array (
+        0 => '',
+      ),
+      'Disable public pages?' => 
+      array (
+        0 => '',
+      ),
+      'Enable public pages?' => 
+      array (
+        0 => '',
+      ),
+      'View' => 
+      array (
+        0 => '',
+      ),
+      'Disable song requests?' => 
+      array (
+        0 => '',
+      ),
+      'Enable song requests?' => 
       array (
         0 => '',
       ),
@@ -2893,21 +3256,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Streamers / DJ\'s',
       ),
-      'Manage streamer accounts' => 
+      'Disable streamers?' => 
       array (
         0 => '',
       ),
-      'Base Directory' => 
+      'Enable streamers?' => 
       array (
         0 => '',
-      ),
-      'Media Directory' => 
-      array (
-        0 => '',
-      ),
-      'Player Embed Code' => 
-      array (
-        0 => 'Player embed-code',
       ),
       'Streams' => 
       array (
@@ -2921,151 +3276,27 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Download %s',
       ),
-      'Icecast (Broadcasting Service)' => 
+      'Listener Request' => 
       array (
         0 => '',
       ),
-      'SHOUTcast DNAS 2 (Broadcasting Service)' => 
+      'Playlist:' => 
       array (
         0 => '',
       ),
-      'Loading...' => 
+      'Delete queue item?' => 
       array (
         0 => '',
       ),
-      'Administration URL' => 
-      array (
-        0 => 'Administratie URL',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Administrator wachtwoord',
-      ),
-      'Source Password' => 
-      array (
-        0 => 'Source wachtwoord',
-      ),
-      'Relay Password' => 
+      'Cued On' => 
       array (
         0 => '',
       ),
-      'Restart' => 
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
         0 => '',
       ),
-      'Start' => 
-      array (
-        0 => '',
-      ),
-      'Stop' => 
-      array (
-        0 => '',
-      ),
-      'AutoDJ Disabled' => 
-      array (
-        0 => 'AutoDJ uitgeschakeld',
-      ),
-      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
-      array (
-        0 => 'AutoDJ is uitgeschakeld. Er zal geen muziek worden afgespeeld wanneer er niet live wordt uitgezonden.',
-      ),
-      'Liquidsoap (AutoDJ Service)' => 
-      array (
-        0 => '',
-      ),
-      'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
-      array (
-        0 => 'LiquidSoap speelt momenteel <b>%d geüploade nummers</b> uit <b>%d afspeellijsten</b> in een willekeurige volgorde.',
-      ),
-      'Running' => 
-      array (
-        0 => 'Wordt uitgevoerd',
-      ),
-      'Not Running' => 
-      array (
-        0 => 'Wordt niet uitgevoerd',
-      ),
-      'Please wait...' => 
-      array (
-        0 => '',
-      ),
-      'All Playlists' => 
-      array (
-        0 => '',
-      ),
-      'Schedule View' => 
-      array (
-        0 => '',
-      ),
-      '# Songs' => 
-      array (
-        0 => '# Nummers',
-      ),
-      'Delete playlist "%s"?' => 
-      array (
-        0 => '',
-      ),
-      'More' => 
-      array (
-        0 => '',
-      ),
-      'Reorder' => 
-      array (
-        0 => '',
-      ),
-      'Export %s' => 
-      array (
-        0 => '',
-      ),
-      'Song-based' => 
-      array (
-        0 => '',
-      ),
-      'Jingle Mode' => 
-      array (
-        0 => '',
-      ),
-      'Auto-Assigned' => 
-      array (
-        0 => 'Automatisch toegewezen',
-      ),
-      'Weight' => 
-      array (
-        0 => 'Gewicht',
-      ),
-      'Plays between %s and %s' => 
-      array (
-        0 => 'Speelt tussen %s and %s',
-      ),
-      'Once per %d Songs' => 
-      array (
-        0 => 'Eens per %d nummers',
-      ),
-      'Once per %d Minutes' => 
-      array (
-        0 => 'Eens in de %d minuten',
-      ),
-      'Once per Hour (at :%02d)' => 
-      array (
-        0 => '',
-      ),
-      'Once per Day' => 
-      array (
-        0 => 'Eens per dag',
-      ),
-      'Plays at %s' => 
-      array (
-        0 => 'Speelt op %s',
-      ),
-      'Custom' => 
-      array (
-        0 => 'Aangepast',
-      ),
-      'Reorder Playlist' => 
-      array (
-        0 => '',
-      ),
-      'Reorder Playlist: %s' => 
+      'Delete remote relay "%s"?' => 
       array (
         0 => '',
       ),
@@ -3084,6 +3315,26 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Live Listeners' => 
       array (
         0 => 'Live luisteraars',
+      ),
+      'Today' => 
+      array (
+        0 => '',
+      ),
+      'Yesterday' => 
+      array (
+        0 => '',
+      ),
+      'Last 7 Days' => 
+      array (
+        0 => '',
+      ),
+      'This Month' => 
+      array (
+        0 => '',
+      ),
+      'Last Month' => 
+      array (
+        0 => '',
       ),
       'IP' => 
       array (
@@ -3117,97 +3368,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Download CSV' => 
-      array (
-        0 => 'Download CSV',
-      ),
-      'Filename' => 
-      array (
-        0 => 'Bestandsnaam',
-      ),
-      'Length Text' => 
-      array (
-        0 => 'Lengte van tekst',
-      ),
-      'Playlist(s)' => 
-      array (
-        0 => 'Afspeellijst(en)',
-      ),
-      'Joins' => 
-      array (
-        0 => 'Ingeschakeld',
-      ),
-      'Losses' => 
-      array (
-        0 => 'Verliest',
-      ),
-      'Total' => 
-      array (
-        0 => 'Totaal',
-      ),
-      'Plays' => 
-      array (
-        0 => 'Speelt',
-      ),
-      'Play %' => 
-      array (
-        0 => 'Speel %',
-      ),
-      'Ratio' => 
-      array (
-        0 => 'Verhouding',
-      ),
-      'Daily Listener Range' => 
-      array (
-        0 => 'Dagelijks luisteraar bereik',
-      ),
-      'Hourly Average Listeners' => 
-      array (
-        0 => 'Gemiddeld aantal luisteraars per uur',
-      ),
-      'Daily Average Listeners' => 
-      array (
-        0 => 'Gemiddeld aantal luisteraars per dag',
-      ),
-      'Average Listeners' => 
-      array (
-        0 => 'Gemiddeld aantal luisteraars',
-      ),
-      'Report Not Available' => 
+      'Hour' => 
       array (
         0 => '',
-      ),
-      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
-      array (
-        0 => '',
-      ),
-      'Date Requested' => 
-      array (
-        0 => 'Datum aangevraagd',
-      ),
-      'Date Played' => 
-      array (
-        0 => 'Datum afgespeeld',
-      ),
-      'Requester IP' => 
-      array (
-        0 => 'IP van aanvrager',
-      ),
-      'Not Played' => 
-      array (
-        0 => 'Niet afgespeeld',
-      ),
-      'Listeners by Day' => 
-      array (
-        0 => '',
-      ),
-      'Listeners by Hour' => 
-      array (
-        0 => '',
-      ),
-      'Listeners by Day of Week' => 
-      array (
-        0 => 'Luisteraars per dag van de week',
       ),
       'Best Performing Songs' => 
       array (
@@ -3237,41 +3400,81 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'in de laatste maand',
       ),
-      'Date/Time' => 
+      'Plays' => 
       array (
-        0 => 'Datum / tijd',
+        0 => 'Speelt',
       ),
-      'Today' => 
+      'Download CSV' => 
+      array (
+        0 => 'Download CSV',
+      ),
+      'Filename' => 
+      array (
+        0 => 'Bestandsnaam',
+      ),
+      'Length Text' => 
+      array (
+        0 => 'Lengte van tekst',
+      ),
+      'Playlist(s)' => 
+      array (
+        0 => 'Afspeellijst(en)',
+      ),
+      'Joins' => 
+      array (
+        0 => 'Ingeschakeld',
+      ),
+      'Losses' => 
+      array (
+        0 => 'Verliest',
+      ),
+      'Total' => 
+      array (
+        0 => 'Totaal',
+      ),
+      'Play %' => 
+      array (
+        0 => 'Speel %',
+      ),
+      'Ratio' => 
+      array (
+        0 => 'Verhouding',
+      ),
+      'Date Requested' => 
+      array (
+        0 => 'Datum aangevraagd',
+      ),
+      'Date Played' => 
+      array (
+        0 => 'Datum afgespeeld',
+      ),
+      'Requester IP' => 
+      array (
+        0 => 'IP van aanvrager',
+      ),
+      'Not Played' => 
+      array (
+        0 => 'Niet afgespeeld',
+      ),
+      'Report Not Available' => 
       array (
         0 => '',
       ),
-      'Yesterday' => 
-      array (
-        0 => '',
-      ),
-      'Last 7 Days' => 
-      array (
-        0 => '',
-      ),
-      'This Month' => 
-      array (
-        0 => '',
-      ),
-      'Last Month' => 
-      array (
-        0 => '',
-      ),
-      'Listener Request' => 
-      array (
-        0 => '',
-      ),
-      'Playlist:' => 
+      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
       array (
         0 => '',
       ),
       'Live Broadcast' => 
       array (
         0 => 'Live-uitzending',
+      ),
+      'Date/Time' => 
+      array (
+        0 => 'Datum / tijd',
+      ),
+      'Please wait...' => 
+      array (
+        0 => '',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (
@@ -3321,155 +3524,31 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Installatie instructies voor uitzendsoftware zijn beschikbaar <a href="%s" target="_blank">op de AzuraCast Wiki</a>.',
       ),
-      'Cued On' => 
+      'Select the type of web hook to create.' => 
       array (
         0 => '',
       ),
-      'Delete queue item?' => 
+      'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
       array (
         0 => '',
       ),
-      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      'Type' => 
+      array (
+        0 => 'Type',
+      ),
+      'Triggers' => 
       array (
         0 => '',
       ),
-      'Delete remote relay "%s"?' => 
+      'Trigger the web hook manually and view the raw response.' => 
       array (
         0 => '',
       ),
-      'Available Logs' => 
+      'Test' => 
       array (
         0 => '',
       ),
-      'Pause' => 
-      array (
-        0 => 'Pauzeer',
-      ),
-      'Automatically scroll to the bottom of the log' => 
-      array (
-        0 => '',
-      ),
-      'Need Help?' => 
-      array (
-        0 => '',
-      ),
-      'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
-      array (
-        0 => '',
-      ),
-      'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
-      array (
-        0 => '',
-      ),
-      'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
-      array (
-        0 => '',
-      ),
-      'New GitHub Issue' => 
-      array (
-        0 => '',
-      ),
-      'Manage Stations' => 
-      array (
-        0 => 'Stations Beheren',
-      ),
-      'Clone' => 
-      array (
-        0 => 'Kloon',
-      ),
-      'Delete station "%s"?' => 
-      array (
-        0 => '',
-      ),
-      'Owner' => 
-      array (
-        0 => 'Eigenaar',
-      ),
-      'SHOUTcast Installed' => 
-      array (
-        0 => '',
-      ),
-      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
-      array (
-        0 => '',
-      ),
-      'Delete role "%s"?' => 
-      array (
-        0 => '',
-      ),
-      'This role cannot be deleted.' => 
-      array (
-        0 => 'Deze rol kan niet worden verwijderd.',
-      ),
-      'Global' => 
-      array (
-        0 => '',
-      ),
-      'Delete user "%s"?' => 
-      array (
-        0 => '',
-      ),
-      '(You)' => 
-      array (
-        0 => '',
-      ),
-      'Synchronization Tasks' => 
-      array (
-        0 => '',
-      ),
-      '%s ago' => 
-      array (
-        0 => '%s geleden',
-      ),
-      'Run Task' => 
-      array (
-        0 => '',
-      ),
-      'Delete custom field "%s"?' => 
-      array (
-        0 => '',
-      ),
-      'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
-      array (
-        0 => '',
-      ),
-      'Logs by Station' => 
-      array (
-        0 => '',
-      ),
-      'Skip to main content' => 
-      array (
-        0 => '',
-      ),
-      'Toggle Sidebar' => 
-      array (
-        0 => '',
-      ),
-      'Toggle Menu' => 
-      array (
-        0 => '',
-      ),
-      'System Administration' => 
-      array (
-        0 => 'Systeembeheer',
-      ),
-      'Switch Theme' => 
-      array (
-        0 => '',
-      ),
-      'Help' => 
-      array (
-        0 => '',
-      ),
-      'End Session' => 
-      array (
-        0 => 'Sessie beëindigen',
-      ),
-      'Sign Out' => 
-      array (
-        0 => 'Uitloggen',
-      ),
-      'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
+      'Delete web hook "%s"?' => 
       array (
         0 => '',
       ),
@@ -3485,7 +3564,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Geen resultaten gevonden!',
       ),
-      'Mascot designed by %s' => 
+      'Errors were encountered when trying to save changes:' => 
+      array (
+        0 => '',
+      ),
+      'General' => 
       array (
         0 => '',
       ),

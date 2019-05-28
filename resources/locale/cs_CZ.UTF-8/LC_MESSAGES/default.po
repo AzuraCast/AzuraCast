@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 13:32\n"
+"PO-Revision-Date: 2019-05-28 13:41\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -650,26 +650,26 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:103
 #: /var/azuracast/www/config/forms/playlist.php:304
 msgid "Saturday"
-msgstr ""
+msgstr "Sobota"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:104
 #: /var/azuracast/www/config/forms/playlist.php:305
 msgid "Sunday"
-msgstr ""
+msgstr "Neděle"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:148
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Posluchači podle hodiny"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:175
 msgid "SoundExchange Report"
-msgstr ""
+msgstr "SoundExchange report"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "Streamers enabled!"
-msgstr ""
+msgstr "Streameři povoleni!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "You can now set up streamer (DJ) accounts."

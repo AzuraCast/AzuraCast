@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 09:21\n"
+"PO-Revision-Date: 2019-05-28 09:31\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -3350,43 +3350,43 @@ msgstr "Album"
 #: /var/azuracast/www/templates/frontend/public/index.phtml:29
 #: /var/azuracast/www/templates/frontend/public/index.phtml:47
 msgid "Song History"
-msgstr ""
+msgstr "Historie skladeb"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:33
 msgid "Request Song"
-msgstr ""
+msgstr "Na přání"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:66
 msgid "Request a Song"
-msgstr ""
+msgstr "Žádost o skladbu na přání"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 msgid "Play"
-msgstr ""
+msgstr "Hrát"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:18
 msgid "Pause"
-msgstr ""
+msgstr "Pozastavit"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:11
 msgid "Mute"
-msgstr ""
+msgstr "Umlčet"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:12
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:10
 msgid "Volume"
-msgstr ""
+msgstr "Hlasitost"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 msgid "Full Volume"
-msgstr ""
+msgstr "Plná hlasitost"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:14
 msgid "Album Art"
-msgstr ""
+msgstr "Obal alba"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:17
 msgid "AzuraCast First-Time Setup"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 10:20\n"
+"PO-Revision-Date: 2019-05-28 10:30\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -92,17 +92,17 @@ msgstr "Zobrazit stránku stanice"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Reports"
-msgstr ""
+msgstr "Zobrazit přehledy stanice"
 
 #: /var/azuracast/www/src/Acl.php:198
 msgid "View Station Logs"
-msgstr ""
+msgstr "Zobrazit protokoly stanice"
 
 #: /var/azuracast/www/src/Acl.php:199
 #: /var/azuracast/www/config/menus/station.php:34
 #: /var/azuracast/www/templates/stations/profile/index.phtml:8
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: /var/azuracast/www/src/Acl.php:199
 #: /var/azuracast/www/src/Acl.php:200
@@ -113,23 +113,23 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:205
 #: /var/azuracast/www/src/Acl.php:206
 msgid "Manage Station %s"
-msgstr ""
+msgstr "Správa stanice %s"
 
 #: /var/azuracast/www/src/Acl.php:200
 #: /var/azuracast/www/config/forms/station.php:23
 msgid "Broadcasting"
-msgstr ""
+msgstr "Vysílání"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Streamers"
-msgstr ""
+msgstr "Streameři"
 
 #: /var/azuracast/www/src/Acl.php:202
 #: /var/azuracast/www/config/menus/station.php:74
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:1
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:5
 msgid "Mount Points"
-msgstr ""
+msgstr "Přípojné body"
 
 #: /var/azuracast/www/src/Acl.php:203
 #: /var/azuracast/www/config/menus/station.php:81
@@ -137,33 +137,33 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr ""
+msgstr "Vzdálená relé"
 
 #: /var/azuracast/www/src/Acl.php:204
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:58
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:137
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:146
 msgid "Media"
-msgstr ""
+msgstr "Média"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Automation"
-msgstr ""
+msgstr "Automatizace"
 
 #: /var/azuracast/www/src/Acl.php:206
 #: /var/azuracast/www/config/menus/station.php:87
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
-msgstr ""
+msgstr "Webové háčky"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "Účet spojený s e-mailovou adresou \"%s\" byl nastaven jako správce"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Účet nenalezen."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:148
@@ -176,7 +176,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:219
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:235
 msgid "%s not found."
-msgstr ""
+msgstr "%s nenalezen."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:37
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:44
@@ -188,7 +188,7 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/api/index.phtml:18
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "API Key"
-msgstr ""
+msgstr "API klíč"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:37
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:36
@@ -203,7 +203,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:85
 msgid "%s updated."
-msgstr ""
+msgstr "%s aktualizováno."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:44
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:43
@@ -218,7 +218,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:92
 msgid "Edit %s"
-msgstr ""
+msgstr "Upravit %s"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:52
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
@@ -233,7 +233,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:85
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:134
 msgid "%s deleted."
-msgstr ""
+msgstr "%s smazáno."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:72
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:27
@@ -241,11 +241,11 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:76
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:57
 msgid "Changes saved."
-msgstr ""
+msgstr "Změny byly uloženy."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 msgid "Configure Backups"
-msgstr ""
+msgstr "Nastavení záloh"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:94
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:104
@@ -253,7 +253,7 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr ""
+msgstr "Spustit ruční zálohu"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101

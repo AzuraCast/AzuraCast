@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-27 20:41\n"
+"PO-Revision-Date: 2019-05-28 09:11\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -3293,7 +3293,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:24
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:31
 msgid "Artist"
-msgstr ""
+msgstr "Interpret"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:29
 msgid "Continuous Play"

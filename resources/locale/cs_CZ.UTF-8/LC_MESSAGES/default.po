@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-23T14:09:12+00:00\n"
-"PO-Revision-Date: 2019-05-28 09:40\n"
+"PO-Revision-Date: 2019-05-28 09:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -593,7 +593,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:19
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:37
 msgid "Song Title"
-msgstr ""
+msgstr "Název skladby"
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:96
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:114
@@ -744,7 +744,7 @@ msgstr "Skladbu na přání jste žádali nedávno, před další žádostí je 
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Tato skladba byla nedávno v playlistu, před další žádostí o ni je potřeba nějakou dobu počkat."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -874,7 +874,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Sync/Runner.php:172
 msgid "Song Requests Queue"
-msgstr ""
+msgstr "Fronta požadavků"
 
 #: /var/azuracast/www/src/Sync/Runner.php:176
 msgid "5-Minute Sync"
@@ -961,7 +961,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:47
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:42
 msgid "Disabled"
-msgstr ""
+msgstr "Zakázáno"
 
 #: /var/azuracast/www/config/forms/automation.php:15
 #: /var/azuracast/www/templates/admin/backups/index.phtml:23
@@ -972,7 +972,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:18
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:45
 msgid "Enabled"
-msgstr ""
+msgstr "Povoleno"
 
 #: /var/azuracast/www/config/forms/automation.php:23
 msgid "Days Between Automated Assignments"
@@ -2496,7 +2496,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:23
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:30
 msgid "Title"
-msgstr ""
+msgstr "Název"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:90
 msgid "URL"
@@ -2748,7 +2748,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:1
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:11
 msgid "Song Requests"
-msgstr ""
+msgstr "Žádosti o skladby"
 
 #: /var/azuracast/www/config/menus/station.php:112
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:1
@@ -2933,7 +2933,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:25
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Actions"
-msgstr ""
+msgstr "Akce"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 msgid "Last Modified"
@@ -2969,7 +2969,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:38
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:38
 msgid "Delete"
-msgstr ""
+msgstr "Odstranit"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
@@ -3638,7 +3638,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:32
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Disable"
-msgstr ""
+msgstr "Zakázáno"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:73
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:72
@@ -3646,7 +3646,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:48
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Enable"
-msgstr ""
+msgstr "Povoleno"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:75
 msgid "Reorder"
@@ -3827,15 +3827,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:26
 msgid "View"
-msgstr ""
+msgstr "Zobrazit"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:30
 msgid "Disable song requests?"
-msgstr ""
+msgstr "Zakázat požadavky na skladby?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:46
 msgid "Enable song requests?"
-msgstr ""
+msgstr "Povolit požadavky na skladby?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:40
@@ -4047,19 +4047,19 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:17
 msgid "Date Requested"
-msgstr ""
+msgstr "Datum žádosti"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:18
 msgid "Date Played"
-msgstr ""
+msgstr "Datum odehrání"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:20
 msgid "Requester IP"
-msgstr ""
+msgstr "IP žadatele"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:32
 msgid "Not Played"
-msgstr ""
+msgstr "Nehráno"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5

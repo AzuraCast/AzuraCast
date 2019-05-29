@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 13:51\n"
+"PO-Revision-Date: 2019-05-29 14:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -504,28 +504,28 @@ msgstr "Pokračujte v nastavení stanice v hlavní aplikaci AzuraCast."
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:74
 msgid "Automated assignment complete!"
-msgstr ""
+msgstr "Automatizované přiřazení dokončeno!"
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:77
 msgid "Automated assignment error"
-msgstr ""
+msgstr "Chyba automatizovaného přiřazení"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:151
 msgid "Path \"%s\" is not a folder."
-msgstr ""
+msgstr "Cesta \"%s\" není složka."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:239
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
+msgstr "Nelze přesunout \"%s\" do \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:126
 msgid "File renamed!"
-msgstr ""
+msgstr "Soubor byl přejmenován!"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:136
 msgid "Rename File/Directory"
-msgstr ""
+msgstr "Přejmenování souboru/adresáře"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:205
 msgid "This station is out of available storage space."

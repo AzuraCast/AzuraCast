@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-28 17:51\n"
+"PO-Revision-Date: 2019-05-29 13:51\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -445,7 +445,7 @@ msgstr "Vaše oprávnění nebylo možné ověřit."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:190
 msgid "All Stations"
-msgstr ""
+msgstr "Všechny stanice"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:220
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:76
@@ -500,7 +500,7 @@ msgstr "Nastavení je nyní dokončeno!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:196
 msgid "Continue setting up your station in the main AzuraCast app."
-msgstr ""
+msgstr "Pokračujte v nastavení stanice v hlavní aplikaci AzuraCast."
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:74
 msgid "Automated assignment complete!"

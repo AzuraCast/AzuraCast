@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 11:51\n"
+"PO-Revision-Date: 2019-05-29 12:10\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3695,7 +3695,7 @@ msgstr "Peso"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Plays at %s"
-msgstr ""
+msgstr "Suona alle %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:110
 msgid "Plays between %s and %s"
@@ -3980,7 +3980,7 @@ msgstr "Questo prodotto include dati GeoLite2 creati da MaxMind, disponibili da 
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
-msgstr ""
+msgstr "Ora"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
@@ -4187,9 +4187,9 @@ msgstr "Nessun risultato!"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:67
 msgid "Errors were encountered when trying to save changes:"
-msgstr ""
+msgstr "Errori riscontrati tentando di salvare le modifiche:"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:70
 msgid "General"
-msgstr ""
+msgstr "Generale"
 

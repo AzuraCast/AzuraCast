@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 11:40\n"
+"PO-Revision-Date: 2019-05-29 11:51\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2668,7 +2668,7 @@ msgstr "Nessun limite"
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
 #: /var/azuracast/www/config/forms/webhook/twitter.php:77
 msgid "%d seconds"
-msgstr ""
+msgstr "%d secondi"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:78
 #: /var/azuracast/www/config/forms/webhook/twitter.php:79
@@ -2677,7 +2677,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/twitter.php:82
 #: /var/azuracast/www/config/forms/webhook/twitter.php:83
 msgid "%d minutes"
-msgstr ""
+msgstr "%d minuti"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:119
 msgid "Message Body"
@@ -2900,38 +2900,38 @@ msgstr "Revoca"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
-msgstr ""
+msgstr "Backup automatici"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:43
 msgid "Last run: %s"
-msgstr ""
+msgstr "Ultima esecuzione: %s"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
-msgstr ""
+msgstr "Mai eseguito"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:38
 #: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
-msgstr ""
+msgstr "Configura"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:43
 #: /var/azuracast/www/templates/admin/backups/index.phtml:132
 msgid "Most Recent Backup Log"
-msgstr ""
+msgstr "Log del backup più recente"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:64
 msgid "Restoring Backups"
-msgstr ""
+msgstr "Ripristino dei backup in corso"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Per ripristinare un backup dal tuo computer locale, esegui:"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Nota che ripristinare un backup eliminerà il tuo database esistente. Non recuperare mai backup da utenti non fidati."
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
@@ -2956,7 +2956,7 @@ msgstr "Azioni"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 msgid "Last Modified"
-msgstr ""
+msgstr "Ultima modifica"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:103
 #: /var/azuracast/www/templates/stations/files/index.phtml:114
@@ -2965,11 +2965,11 @@ msgstr "Dimensione"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Download"
-msgstr ""
+msgstr "Scarica"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:112
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "Elimina backup \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:112
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:33
@@ -2992,15 +2992,15 @@ msgstr "Elimina"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
-msgstr ""
+msgstr "Homepage dei backup"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:25
 msgid "Backup was run successfully."
-msgstr ""
+msgstr "Backup eseguito con successo."
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:27
 msgid "Backup encountered errors when running. Check the log below for details."
-msgstr ""
+msgstr "Il backup ha riscontrato degli errori durante l'esecuzione. Controlla i log per ulteriori dettagli."
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:33
 msgid "Delete custom field \"%s\"?"
@@ -3173,7 +3173,7 @@ msgstr "Bacheca"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "Utente AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
@@ -3508,7 +3508,7 @@ msgstr "Nuova segnalazione GitHub"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
-msgstr ""
+msgstr "Visualizzazione log"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"

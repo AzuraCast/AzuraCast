@@ -80,6 +80,7 @@ $user = $request->getUser();
 <?php endif; ?>
 </section>
 
+<?php if ($metrics): ?>
 <section class="card mb-4" role="region">
     <div class="card-header bg-primary-dark">
         <h3 class="card-title"><?=__('Listeners Per Station') ?></h3>
@@ -90,6 +91,7 @@ $user = $request->getUser();
         </canvas>
     </div>
 </section>
+<?php endif; ?>
 
 <section class="card" role="region">
     <div class="card-header bg-primary-dark">

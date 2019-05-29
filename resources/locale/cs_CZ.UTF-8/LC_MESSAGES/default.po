@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 14:30\n"
+"PO-Revision-Date: 2019-05-29 14:40\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -611,38 +611,38 @@ msgstr "Vzdálené připojení"
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Posluchači podle dne"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:90
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:42
 msgid "Listeners by Day of Week"
-msgstr ""
+msgstr "Posluchači podle dne v týdnu"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:98
 #: /var/azuracast/www/config/forms/playlist.php:299
 msgid "Monday"
-msgstr ""
+msgstr "Pondělí"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:99
 #: /var/azuracast/www/config/forms/playlist.php:300
 msgid "Tuesday"
-msgstr ""
+msgstr "Úterý"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:100
 #: /var/azuracast/www/config/forms/playlist.php:301
 msgid "Wednesday"
-msgstr ""
+msgstr "Středa"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
 #: /var/azuracast/www/config/forms/playlist.php:302
 msgid "Thursday"
-msgstr ""
+msgstr "Čtvrtek"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:102
 #: /var/azuracast/www/config/forms/playlist.php:303
 msgid "Friday"
-msgstr ""
+msgstr "Pátek"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:103
 #: /var/azuracast/www/config/forms/playlist.php:304
@@ -717,23 +717,23 @@ msgstr "Liquidsoap konfigurace"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Přístupový protokol Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:107
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Chybový protokol Icecast"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:112
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Icecast konfigurace"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:120
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "SHOUTcast protokol"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:125
 msgid "SHOUTcast Configuration"
-msgstr ""
+msgstr "SHOUTcast konfigurace"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
@@ -749,7 +749,7 @@ msgstr "Tato skladba byla nedávno v playlistu, před další žádostí o ni je
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:58
 msgid "Select File"
-msgstr ""
+msgstr "Zvolte soubor"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."

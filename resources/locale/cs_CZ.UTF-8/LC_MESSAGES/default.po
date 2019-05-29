@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 14:40\n"
+"PO-Revision-Date: 2019-05-29 14:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -753,20 +753,20 @@ msgstr "Zvolte soubor"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "Chcete použít SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Instalaci proveďte zde</a> a znovu načtěte tuto stránku."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:40
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "Časové pásmo této stanice je v současné době %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:42
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "Současný čas v časovém pásmu stanice je %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "Existing playlist imported."
-msgstr ""
+msgstr "Stávající playlist importován."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "%d song(s) were imported into the playlist."

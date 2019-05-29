@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 14:10\n"
+"PO-Revision-Date: 2019-05-29 14:22\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -529,22 +529,22 @@ msgstr "Přejmenování souboru/adresáře"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:205
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Tato stanice je mimo dostupný úložný prostor."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
 #: /var/azuracast/www/templates/stations/files/index.phtml:172
 msgid "Directory"
-msgstr ""
+msgstr "Adresář"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:127
 msgid "File Not Processed"
-msgstr ""
+msgstr "Soubor není zpracován"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:30
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:42
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:25
 msgid "This feature is not currently supported on this station."
-msgstr ""
+msgstr "Tato funkce není v současné době na této stanici podporována."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:43
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:50
@@ -552,7 +552,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:26
 msgid "Mount Point"
-msgstr ""
+msgstr "Přípojný bod"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:235
@@ -563,23 +563,23 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
 msgid "Playlist"
-msgstr ""
+msgstr "Playlist"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Tento playlist není sekvenční playlist."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:219
 msgid "Format"
-msgstr ""
+msgstr "Formát"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:245
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Playlist povolen."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:246
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Playlist zakázán."
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:95
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:113
@@ -597,7 +597,7 @@ msgstr "Název skladby"
 #: /var/azuracast/www/config/forms/media.php:30
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:10
 msgid "Song Artist"
-msgstr ""
+msgstr "Interpret skladby"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:36
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:43

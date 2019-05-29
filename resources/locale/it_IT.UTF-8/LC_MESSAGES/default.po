@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 11:30\n"
+"PO-Revision-Date: 2019-05-29 11:40\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -737,11 +737,11 @@ msgstr "Configurazione SHOUTCast"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "Hai mandato una richiesta troppo presto! Aspetta prima di poterne inviare un'altra."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Questo brano è già stato riprodotto di recente. Attendi prima di poterlo richiedere un'altra volta."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -1082,7 +1082,7 @@ msgstr "Numero delle Copie di Backup da conservare"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "Le copie precedenti al numero di giorni specificato verranno eliminate in automatico. Imposta a zero per disattivare l'eliminazione automatica."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
@@ -1090,15 +1090,15 @@ msgstr "Nome File di Backup"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Percorso assoluto o relativo opzionale dove verranno salvati i file di backup."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Escludi media dal backup"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Creerà un backup drasticamente più piccolo, ma assicurati di salvare i media altrove."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
@@ -2339,11 +2339,11 @@ msgstr "Cartella dove vengono salvati i file multimediali. Lascia vuoto per usar
 
 #: /var/azuracast/www/config/forms/station_clone.php:14
 msgid "New Station Name"
-msgstr ""
+msgstr "Nuovo nome stazione"
 
 #: /var/azuracast/www/config/forms/station_clone.php:23
 msgid "New Station Description"
-msgstr ""
+msgstr "Nuova descrizione stazione"
 
 #: /var/azuracast/www/config/forms/station_clone.php:33
 msgid "Customize Station Cloning"
@@ -2624,7 +2624,21 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Passi per configurare un'applicazione twitter:<br>\n"
+"\n"
+"                <ol type=\"1\">\n"
+"\n"
+"                    <li>Crea una nuova app nel <a href=\"%s\" target=\"_blank\">sito delle applicazioni twitter</a>. \n"
+"\n"
+"                    Usa l'URL di base di questa installazione, come URL di base.</li>\n"
+"\n"
+"                    <li>Nella nuova applicazione, clicca il pannello \"Token e chiavi di accesso\".</li>\n"
+"\n"
+"                    <li>In fondo alla pagina, clicca su \"Crea il mio token di accesso\".</li>\n"
+"\n"
+"                </ol>\n"
+"\n"
+"                <p>Una volta completati questi passaggi, inserisci le informazioni ricavate dai \"Token e chiavi di accesso\" nei campi sottostanti.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"

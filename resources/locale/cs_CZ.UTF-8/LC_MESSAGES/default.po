@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-30 11:20\n"
+"PO-Revision-Date: 2019-05-30 11:36\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -858,16 +858,16 @@ msgstr "Připojení ke <b>vzdálenému rádiovému serveru</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr ""
+msgstr "<b>Nepoužívejte</b> službu AutoDJ"
 
 #: /var/azuracast/www/src/Sync/Runner.php:162
 #: /var/azuracast/www/src/Sync/Runner.php:165
 msgid "Now Playing Data"
-msgstr ""
+msgstr "Právě přehrávaná data"
 
 #: /var/azuracast/www/src/Sync/Runner.php:169
 msgid "1-Minute Sync"
-msgstr ""
+msgstr "1-minutové synchro"
 
 #: /var/azuracast/www/src/Sync/Runner.php:172
 msgid "Song Requests Queue"
@@ -875,38 +875,38 @@ msgstr "Fronta požadavků"
 
 #: /var/azuracast/www/src/Sync/Runner.php:176
 msgid "5-Minute Sync"
-msgstr ""
+msgstr "5-minutové synchro"
 
 #: /var/azuracast/www/src/Sync/Runner.php:179
 msgid "Check Media Folders"
-msgstr ""
+msgstr "Kontrola složky médií"
 
 #: /var/azuracast/www/src/Sync/Runner.php:183
 msgid "1-Hour Sync"
-msgstr ""
+msgstr "1-hodinové synchro"
 
 #: /var/azuracast/www/src/Sync/Runner.php:186
 msgid "Analytics/Statistics"
-msgstr ""
+msgstr "Analytiky/Statistiky"
 
 #: /var/azuracast/www/src/Sync/Runner.php:187
 msgid "Cleanup"
-msgstr ""
+msgstr "Čištění"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "Port %s je používán jinou stanicí."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr ""
+msgstr "Heslo nemůže obsahovat následující znaky: %s"
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
 #: /var/azuracast/www/templates/admin/api/index.phtml:19
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:34
 msgid "Comments"
-msgstr ""
+msgstr "Poznámky"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."

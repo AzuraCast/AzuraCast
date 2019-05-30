@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-30 11:16\n"
+"PO-Revision-Date: 2019-05-30 11:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -850,11 +850,11 @@ msgstr "Podrobnosti naleznete v protokolu."
 #: /var/azuracast/www/src/Radio/Adapters.php:141
 #: /var/azuracast/www/src/Radio/Adapters.php:172
 msgid "Use <b>%s</b> on this server"
-msgstr ""
+msgstr "Na tomto serveru použijte <b>%s</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:145
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Připojení ke <b>vzdálenému rádiovému serveru</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"

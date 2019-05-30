@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-30 12:00\n"
+"PO-Revision-Date: 2019-05-30 12:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1090,39 +1090,39 @@ msgstr "Název souboru zálohy"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Volitelná absolutní nebo relativní cesta, kam má být záložní soubor umístěn."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Vyloučit média ze záloh"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Vyloučení médií z automatických záloh ušetří místo, ale měli byste se ujistit, že si média zálohujete jinde."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
-msgstr ""
+msgstr "Základní téma pro veřejné stránky"
 
 #: /var/azuracast/www/config/forms/branding.php:16
 msgid "Select a theme to use as a base for station public pages and the login page."
-msgstr ""
+msgstr "Vyberte téma, které se použije jako základní pro veřejné stránky stanice a přihlašovací stránku."
 
 #: /var/azuracast/www/config/forms/branding.php:18
 #: /var/azuracast/www/config/forms/profile.php:100
 msgid "Light"
-msgstr ""
+msgstr "Světlé"
 
 #: /var/azuracast/www/config/forms/branding.php:18
 #: /var/azuracast/www/config/forms/playlist.php:55
 #: /var/azuracast/www/config/forms/profile.php:100
 msgid "Default"
-msgstr ""
+msgstr "Výchozí"
 
 #: /var/azuracast/www/config/forms/branding.php:19
 #: /var/azuracast/www/config/forms/profile.php:101
 msgid "Dark"
-msgstr ""
+msgstr "Tmavé"
 
 #: /var/azuracast/www/config/forms/branding.php:29
 msgid "Hide Album Art on Public Pages"

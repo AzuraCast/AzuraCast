@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-30 11:40\n"
+"PO-Revision-Date: 2019-05-30 11:56\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -944,7 +944,7 @@ msgstr "Povolit automatizované přiřazení"
 
 #: /var/azuracast/www/config/forms/automation.php:11
 msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
-msgstr ""
+msgstr "Tento proces bude spuštěn na pozadí, a to pouze tehdy, pokud se tato volba nastaví na \"Povoleno\" a alespoň jeden playlist je nastaven na \"Zahrnout do automatizovaného přiřazení\"."
 
 #: /var/azuracast/www/config/forms/automation.php:14
 #: /var/azuracast/www/config/forms/station.php:108
@@ -973,26 +973,26 @@ msgstr "Povoleno"
 
 #: /var/azuracast/www/config/forms/automation.php:23
 msgid "Days Between Automated Assignments"
-msgstr ""
+msgstr "Dny mezi automatizovaným přiřazením"
 
 #: /var/azuracast/www/config/forms/automation.php:24
 msgid "Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days."
-msgstr ""
+msgstr "Na základě tohoto nastavení systém automaticky znovu vyhodnotí skladby každých (těchto) dnů za použití dat z předchozích (těchto) dní."
 
 #: /var/azuracast/www/config/forms/automation.php:28
 #: /var/azuracast/www/config/forms/automation.php:29
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d dní"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Spustit automatické noční zálohování"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Povolit, aby AzuraCast v určeném čase automaticky spouštěla noční zálohování."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1025,7 +1025,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/station_clone.php:84
 #: /var/azuracast/www/config/forms/streamer.php:14
 msgid "Yes"
-msgstr ""
+msgstr "Ano"
 
 #: /var/azuracast/www/config/forms/backup.php:18
 #: /var/azuracast/www/config/forms/backup.php:39
@@ -1058,11 +1058,11 @@ msgstr ""
 #: /var/azuracast/www/config/forms/station_clone.php:83
 #: /var/azuracast/www/config/forms/streamer.php:15
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Plánovaný čas zálohování"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
@@ -1640,7 +1640,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Include in Automated Assignment"
-msgstr ""
+msgstr "Zahrnout do automatizovaného přiřazení"
 
 #: /var/azuracast/www/config/forms/playlist.php:249
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-29 14:50\n"
+"PO-Revision-Date: 2019-05-30 10:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -770,21 +770,21 @@ msgstr "Stávající playlist importován."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "%d song(s) were imported into the playlist."
-msgstr ""
+msgstr "%d skladeb bylo importována do playlistu."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:107
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Pro přístup na tuto stránku musíte být přihlášeni."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:119
 #: /var/azuracast/www/src/Http/ErrorHandler.php:128
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "Nemáte oprávnění pro přístup k této části webu."
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "Soubor <code>docker-compose.yml</code> je zastaralý!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."

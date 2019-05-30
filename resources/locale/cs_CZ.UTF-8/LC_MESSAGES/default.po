@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-30 11:56\n"
+"PO-Revision-Date: 2019-05-30 12:00\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1066,27 +1066,27 @@ msgstr "Plánovaný čas zálohování"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr ""
+msgstr "Čas (v UTC) pro spuštění automatického zálohování, pokud je povoleno."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr ""
+msgstr "Vyloučit média ze záloh"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Vyloučení médií z automatických záloh ušetří místo, ale měli byste se ujistit, že si média zálohujete jinde."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "Počet záložních kopií pro uchování"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "Kopie starší než stanovený počet dní budou automaticky smazány."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr ""
+msgstr "Název souboru zálohy"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."

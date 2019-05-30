@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-30 10:10\n"
+"PO-Revision-Date: 2019-05-30 10:30\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -788,7 +788,7 @@ msgstr "Soubor <code>docker-compose.yml</code> je zastaralý!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "Soubor <code>docker-compose.yml</code> byste měli aktualizovat tak, aby odrážel nejnovější změny. Zobrazte <a href=\"%s\" target=\"_blank\"> nejnovější verzi souboru</a> a soubor odpovídajícím způsobem aktualizujte.<br>Můžete také použít obslužný skript <code>./docker.sh</code> pro automatickou aktualizaci vašeho souboru."
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."

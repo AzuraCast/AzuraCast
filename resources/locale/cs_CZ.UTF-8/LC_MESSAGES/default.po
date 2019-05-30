@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-30 11:36\n"
+"PO-Revision-Date: 2019-05-30 11:40\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -910,7 +910,7 @@ msgstr "Poznámky"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Popište způsob využití tohoto API klíče pro případ pozdější potřeby."
 
 #: /var/azuracast/www/config/forms/api_key.php:20
 #: /var/azuracast/www/config/forms/automation.php:40
@@ -936,11 +936,11 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/tunein.php:59
 #: /var/azuracast/www/config/forms/webhook/twitter.php:138
 msgid "Save Changes"
-msgstr ""
+msgstr "Uložit změny"
 
 #: /var/azuracast/www/config/forms/automation.php:10
 msgid "Enable Automated Assignment"
-msgstr ""
+msgstr "Povolit automatizované přiřazení"
 
 #: /var/azuracast/www/config/forms/automation.php:11
 msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."

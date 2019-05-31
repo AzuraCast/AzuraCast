@@ -225,7 +225,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
                 $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
-                $playlist_config_lines[] = $playlist_var_name . ' = cue_cut(id="'.$this->_getVarName($playlist_var_name.'_cue', $station).'", '.$playlist_var_name.')';
 
                 if ($playlist->isJingle()) {
                     $playlist_config_lines[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
@@ -310,14 +309,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'radio = random(weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . '])',
         ]);
 
-        $error_file = APP_INSIDE_DOCKER
-            ? '/usr/local/share/icecast/web/error.mp3'
-            : APP_INCLUDE_ROOT . '/resources/error.mp3';
-
         $event->appendLines([
-            'error_song = sequence([blank(duration=5.), single("'.$error_file.'")])',
             'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))',
-            'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, radio, error_song])'
+            'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, radio, blank(duration=2.)])'
         ]);
 
         if (!empty($schedule_switches)) {
@@ -344,18 +338,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         }
 
-        // Handle "jingle mode" on playlists
         $event->appendLines([
-            '# Handle Jingle Mode',
-            'def handle_jingle_mode(m) =',
-            '  if (m["jingle_mode"] == "true") then',
-            '    log("Jingle mode; stripping metadata...")',
-            '    []',
-            '  else',
-            '    m',
-            '  end',
-            'end',
-            'radio = map_metadata(handle_jingle_mode,update=false,strip=true,insert_missing=false,radio)',
+            'radio = cue_cut(id="'.$this->_getVarName('radio_cue', $station).'", radio)',
+            'add_skip_command(radio)',
         ]);
     }
 
@@ -863,7 +848,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     {
         return $this->command(
             $station,
-            $this->_getVarName('local_1', $station).'.skip'
+            $this->_getVarName('radio_cue', $station).'.skip'
         );
     }
 

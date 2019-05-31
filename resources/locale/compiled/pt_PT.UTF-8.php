@@ -14,8 +14,8 @@ Language-Team: Portuguese
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:38
 Language: pt_PT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -280,7 +280,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Não foi possível verificar as suas informações.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
         0 => '',
       ),
@@ -2604,7 +2604,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
+      array (
+        0 => '',
+      ),
+      'My Account' => 
       array (
         0 => '',
       ),
@@ -2621,10 +2625,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Now Playing' => 
-      array (
-        0 => '',
-      ),
-      'Options' => 
       array (
         0 => '',
       ),
@@ -2657,10 +2657,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'QR-Code' => 
-      array (
-        0 => '',
-      ),
-      'My Account' => 
       array (
         0 => '',
       ),
@@ -3201,14 +3197,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Unique' => 
-      array (
-        0 => '',
-      ),
-      'Playing Next' => 
-      array (
-        0 => '',
-      ),
-      'Now Streaming' => 
       array (
         0 => '',
       ),

@@ -14,8 +14,8 @@ Language-Team: French
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:37
 Language: fr_FR
 Plural-Forms: nplurals=2; plural=(n > 1);
 X-Generator: crowdin.com
@@ -280,9 +280,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vos informations d\'identification n\'ont pas pu être vérifiées.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
-        0 => 'Moyenne quotidienne pour toutes les stations',
+        0 => '',
       ),
       'Listeners' => 
       array (
@@ -2628,9 +2628,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Tableau de bord',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
       array (
-        0 => 'Auditeurs à travers toutes les stations',
+        0 => '',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Mon compte',
       ),
       'Listeners Per Station' => 
       array (
@@ -2647,10 +2651,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Now Playing' => 
       array (
         0 => 'Titre en cours',
-      ),
-      'Options' => 
-      array (
-        0 => 'Options',
       ),
       'Error: No Available Stations' => 
       array (
@@ -2683,10 +2683,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'QR-Code' => 
       array (
         0 => 'QR code',
-      ),
-      'My Account' => 
-      array (
-        0 => 'Mon compte',
       ),
       'Customize' => 
       array (
@@ -3227,14 +3223,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Unique' => 
       array (
         0 => 'Unique',
-      ),
-      'Playing Next' => 
-      array (
-        0 => 'À suivre',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Actuellement en streaming',
       ),
       'Skip Song' => 
       array (

@@ -14,8 +14,8 @@ Language-Team: Portuguese, Brazilian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:38
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -280,7 +280,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Suas credenciais não puderam ser verificadas.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
         0 => '',
       ),
@@ -2605,9 +2605,13 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Dashboard',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
       array (
-        0 => 'Ouvintes em todas as estações',
+        0 => '',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Minha conta',
       ),
       'Listeners Per Station' => 
       array (
@@ -2624,10 +2628,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Now Playing' => 
       array (
         0 => 'Reproduzindo agora',
-      ),
-      'Options' => 
-      array (
-        0 => 'Opções',
       ),
       'Error: No Available Stations' => 
       array (
@@ -2660,10 +2660,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'QR-Code' => 
       array (
         0 => '',
-      ),
-      'My Account' => 
-      array (
-        0 => 'Minha conta',
       ),
       'Customize' => 
       array (
@@ -3204,14 +3200,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Unique' => 
       array (
         0 => 'Único',
-      ),
-      'Playing Next' => 
-      array (
-        0 => 'Tocar próxima',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Iniciar transmissão',
       ),
       'Skip Song' => 
       array (

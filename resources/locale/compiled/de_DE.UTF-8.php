@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:37
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -280,7 +280,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ihre Anmeldeinformationen konnten nicht bestätigt werden.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
         0 => '',
       ),
@@ -2605,9 +2605,13 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Dashboard',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
       array (
-        0 => 'Zuhörer über alle Sender',
+        0 => '',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Mein Account',
       ),
       'Listeners Per Station' => 
       array (
@@ -2624,10 +2628,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Now Playing' => 
       array (
         0 => 'Jetzt läuft',
-      ),
-      'Options' => 
-      array (
-        0 => 'Optionen',
       ),
       'Error: No Available Stations' => 
       array (
@@ -2660,10 +2660,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'QR-Code' => 
       array (
         0 => '',
-      ),
-      'My Account' => 
-      array (
-        0 => 'Mein Account',
       ),
       'Customize' => 
       array (
@@ -3204,14 +3200,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Unique' => 
       array (
         0 => 'Einzigartig',
-      ),
-      'Playing Next' => 
-      array (
-        0 => 'Als nächstes spielt',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Jetzt Streamt',
       ),
       'Skip Song' => 
       array (

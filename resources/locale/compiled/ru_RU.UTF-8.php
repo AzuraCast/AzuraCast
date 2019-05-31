@@ -14,8 +14,8 @@ Language-Team: Russian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:38
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
 X-Generator: crowdin.com
@@ -280,7 +280,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ваши учетные данные не могут быть проверены.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
         0 => '',
       ),
@@ -2604,9 +2604,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Панель управления',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
       array (
-        0 => 'Слушатели на всех станциях',
+        0 => '',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Мой аккаунт',
       ),
       'Listeners Per Station' => 
       array (
@@ -2623,10 +2627,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Now Playing' => 
       array (
         0 => 'Сейчас играет',
-      ),
-      'Options' => 
-      array (
-        0 => 'Настройки',
       ),
       'Error: No Available Stations' => 
       array (
@@ -2659,10 +2659,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'QR-Code' => 
       array (
         0 => '',
-      ),
-      'My Account' => 
-      array (
-        0 => 'Мой аккаунт',
       ),
       'Customize' => 
       array (
@@ -3203,14 +3199,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Unique' => 
       array (
         0 => 'Уникальный',
-      ),
-      'Playing Next' => 
-      array (
-        0 => 'След. трек',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Проигрывается',
       ),
       'Skip Song' => 
       array (

@@ -14,8 +14,8 @@ Language-Team: Italian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:37
 Language: it_IT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -280,9 +280,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Impossibile verificare le tue credenziali.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
-        0 => '',
+        0 => 'Tutte le stazioni',
       ),
       'Listeners' => 
       array (
@@ -502,11 +502,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
-        0 => '',
+        0 => 'Hai mandato una richiesta troppo presto! Aspetta prima di poterne inviare un\'altra.',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => '',
+        0 => 'Questo brano è già stato riprodotto di recente. Attendi prima di poterlo richiedere un\'altra volta.',
       ),
       'Select File' => 
       array (
@@ -734,7 +734,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => '',
+        0 => 'Le copie precedenti al numero di giorni specificato verranno eliminate in automatico. Imposta a zero per disattivare l\'eliminazione automatica.',
       ),
       'Backup Filename' => 
       array (
@@ -742,15 +742,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Optional absolute or relative path where the backup file should be located.' => 
       array (
-        0 => '',
+        0 => 'Percorso assoluto o relativo opzionale dove verranno salvati i file di backup.',
       ),
       'Exclude Media from Backup' => 
       array (
-        0 => '',
+        0 => 'Escludi media dal backup',
       ),
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'Creerà un backup drasticamente più piccolo, ma assicurati di salvare i media altrove.',
       ),
       'Base Theme for Public Pages' => 
       array (
@@ -1926,11 +1926,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'New Station Name' => 
       array (
-        0 => '',
+        0 => 'Nuovo nome stazione',
       ),
       'New Station Description' => 
       array (
-        0 => '',
+        0 => 'Nuova descrizione stazione',
       ),
       'Customize Station Cloning' => 
       array (
@@ -2184,7 +2184,21 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => '',
+        0 => 'Passi per configurare un\'applicazione twitter:<br>
+
+                <ol type="1">
+
+                    <li>Crea una nuova app nel <a href="%s" target="_blank">sito delle applicazioni twitter</a>. 
+
+                    Usa l\'URL di base di questa installazione, come URL di base.</li>
+
+                    <li>Nella nuova applicazione, clicca il pannello "Token e chiavi di accesso".</li>
+
+                    <li>In fondo alla pagina, clicca su "Crea il mio token di accesso".</li>
+
+                </ol>
+
+                <p>Una volta completati questi passaggi, inserisci le informazioni ricavate dai "Token e chiavi di accesso" nei campi sottostanti.</p>',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -2212,11 +2226,11 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       '%d seconds' => 
       array (
-        0 => '',
+        0 => '%d secondi',
       ),
       '%d minutes' => 
       array (
-        0 => '',
+        0 => '%d minuti',
       ),
       'Message Body' => 
       array (
@@ -2396,35 +2410,35 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Automatic Backups' => 
       array (
-        0 => '',
+        0 => 'Backup automatici',
       ),
       'Last run: %s' => 
       array (
-        0 => '',
+        0 => 'Ultima esecuzione: %s',
       ),
       'Never run' => 
       array (
-        0 => '',
+        0 => 'Mai eseguito',
       ),
       'Configure' => 
       array (
-        0 => '',
+        0 => 'Configura',
       ),
       'Most Recent Backup Log' => 
       array (
-        0 => '',
+        0 => 'Log del backup più recente',
       ),
       'Restoring Backups' => 
       array (
-        0 => '',
+        0 => 'Ripristino dei backup in corso',
       ),
       'To restore a backup from your host computer, run:' => 
       array (
-        0 => '',
+        0 => 'Per ripristinare un backup dal tuo computer locale, esegui:',
       ),
       'Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.' => 
       array (
-        0 => '',
+        0 => 'Nota che ripristinare un backup eliminerà il tuo database esistente. Non recuperare mai backup da utenti non fidati.',
       ),
       'Actions' => 
       array (
@@ -2432,7 +2446,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Last Modified' => 
       array (
-        0 => '',
+        0 => 'Ultima modifica',
       ),
       'Size' => 
       array (
@@ -2440,11 +2454,11 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Download' => 
       array (
-        0 => '',
+        0 => 'Scarica',
       ),
       'Delete backup "%s"?' => 
       array (
-        0 => '',
+        0 => 'Elimina backup "%s"?',
       ),
       'Delete' => 
       array (
@@ -2452,15 +2466,15 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Backups Home' => 
       array (
-        0 => '',
+        0 => 'Homepage dei backup',
       ),
       'Backup was run successfully.' => 
       array (
-        0 => '',
+        0 => 'Backup eseguito con successo.',
       ),
       'Backup encountered errors when running. Check the log below for details.' => 
       array (
-        0 => '',
+        0 => 'Il backup ha riscontrato degli errori durante l\'esecuzione. Controlla i log per ulteriori dettagli.',
       ),
       'Delete custom field "%s"?' => 
       array (
@@ -2612,9 +2626,13 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Bacheca',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
       array (
-        0 => 'Ascoltatori di tutte le radio',
+        0 => 'Utente AzuraCast',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Il mio account',
       ),
       'Listeners Per Station' => 
       array (
@@ -2631,10 +2649,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Now Playing' => 
       array (
         0 => 'In riproduzione',
-      ),
-      'Options' => 
-      array (
-        0 => 'Opzioni',
       ),
       'Error: No Available Stations' => 
       array (
@@ -2667,10 +2681,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'QR-Code' => 
       array (
         0 => 'QR-Code',
-      ),
-      'My Account' => 
-      array (
-        0 => 'Il mio account',
       ),
       'Customize' => 
       array (
@@ -2926,7 +2936,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Log View' => 
       array (
-        0 => '',
+        0 => 'Visualizzazione log',
       ),
       'Automatically scroll to the bottom of the log' => 
       array (
@@ -3102,7 +3112,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Plays at %s' => 
       array (
-        0 => '',
+        0 => 'Suona alle %s',
       ),
       'Plays between %s and %s' => 
       array (
@@ -3211,14 +3221,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Unique' => 
       array (
         0 => 'Univoco',
-      ),
-      'Playing Next' => 
-      array (
-        0 => 'Riproduce in seguito',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Attualmente in onda',
       ),
       'Skip Song' => 
       array (
@@ -3378,7 +3380,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Hour' => 
       array (
-        0 => '',
+        0 => 'Ora',
       ),
       'Best Performing Songs' => 
       array (
@@ -3574,11 +3576,11 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Errors were encountered when trying to save changes:' => 
       array (
-        0 => '',
+        0 => 'Errori riscontrati tentando di salvare le modifiche:',
       ),
       'General' => 
       array (
-        0 => '',
+        0 => 'Generale',
       ),
     ),
   ),

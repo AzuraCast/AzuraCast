@@ -14,8 +14,8 @@ Language-Team: Hungarian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:37
 Language: hu_HU
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -280,7 +280,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'A hitelesítő adatok nem ellenőrizhetőek',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
         0 => '',
       ),
@@ -2604,9 +2604,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vezérlőpult',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
       array (
-        0 => 'Hallgatók az összes állomást lefedve',
+        0 => '',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Saját fiókom',
       ),
       'Listeners Per Station' => 
       array (
@@ -2623,10 +2627,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Now Playing' => 
       array (
         0 => 'Most játszott',
-      ),
-      'Options' => 
-      array (
-        0 => 'Beállítások',
       ),
       'Error: No Available Stations' => 
       array (
@@ -2659,10 +2659,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'QR-Code' => 
       array (
         0 => '',
-      ),
-      'My Account' => 
-      array (
-        0 => 'Saját fiókom',
       ),
       'Customize' => 
       array (
@@ -3201,14 +3197,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Unique' => 
-      array (
-        0 => '',
-      ),
-      'Playing Next' => 
-      array (
-        0 => '',
-      ),
-      'Now Streaming' => 
       array (
         0 => '',
       ),

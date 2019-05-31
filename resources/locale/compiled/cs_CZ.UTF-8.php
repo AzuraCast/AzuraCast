@@ -14,8 +14,8 @@ Language-Team: Czech
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:37
 Language: cs_CZ
 Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;
 X-Generator: crowdin.com
@@ -280,9 +280,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vaše oprávnění nebylo možné ověřit.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
-        0 => 'Denní průměr všech stanic',
+        0 => 'Všechny stanice',
       ),
       'Listeners' => 
       array (
@@ -322,71 +322,71 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Continue setting up your station in the main AzuraCast app.' => 
       array (
-        0 => '',
+        0 => 'Pokračujte v nastavení stanice v hlavní aplikaci AzuraCast.',
       ),
       'Automated assignment complete!' => 
       array (
-        0 => '',
+        0 => 'Automatizované přiřazení dokončeno!',
       ),
       'Automated assignment error' => 
       array (
-        0 => '',
+        0 => 'Chyba automatizovaného přiřazení',
       ),
       'Path "%s" is not a folder.' => 
       array (
-        0 => '',
+        0 => 'Cesta "%s" není složka.',
       ),
       'Could not move "%s" to "%s"' => 
       array (
-        0 => '',
+        0 => 'Nelze přesunout "%s" do "%s"',
       ),
       'File renamed!' => 
       array (
-        0 => '',
+        0 => 'Soubor byl přejmenován!',
       ),
       'Rename File/Directory' => 
       array (
-        0 => '',
+        0 => 'Přejmenování souboru/adresáře',
       ),
       'This station is out of available storage space.' => 
       array (
-        0 => '',
+        0 => 'Tato stanice je mimo dostupný úložný prostor.',
       ),
       'Directory' => 
       array (
-        0 => '',
+        0 => 'Adresář',
       ),
       'File Not Processed' => 
       array (
-        0 => '',
+        0 => 'Soubor není zpracován',
       ),
       'This feature is not currently supported on this station.' => 
       array (
-        0 => '',
+        0 => 'Tato funkce není v současné době na této stanici podporována.',
       ),
       'Mount Point' => 
       array (
-        0 => '',
+        0 => 'Přípojný bod',
       ),
       'Playlist' => 
       array (
-        0 => '',
+        0 => 'Playlist',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
-        0 => '',
+        0 => 'Tento playlist není sekvenční playlist.',
       ),
       'Format' => 
       array (
-        0 => '',
+        0 => 'Formát',
       ),
       'Playlist enabled.' => 
       array (
-        0 => '',
+        0 => 'Playlist povolen.',
       ),
       'Playlist disabled.' => 
       array (
-        0 => '',
+        0 => 'Playlist zakázán.',
       ),
       'Song Title' => 
       array (
@@ -394,39 +394,39 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song Artist' => 
       array (
-        0 => '',
+        0 => 'Interpret skladby',
       ),
       'Remote Relay' => 
       array (
-        0 => '',
+        0 => 'Vzdálené připojení',
       ),
       'Listeners by Day' => 
       array (
-        0 => '',
+        0 => 'Posluchači podle dne',
       ),
       'Listeners by Day of Week' => 
       array (
-        0 => '',
+        0 => 'Posluchači podle dne v týdnu',
       ),
       'Monday' => 
       array (
-        0 => '',
+        0 => 'Pondělí',
       ),
       'Tuesday' => 
       array (
-        0 => '',
+        0 => 'Úterý',
       ),
       'Wednesday' => 
       array (
-        0 => '',
+        0 => 'Středa',
       ),
       'Thursday' => 
       array (
-        0 => '',
+        0 => 'Čtvrtek',
       ),
       'Friday' => 
       array (
-        0 => '',
+        0 => 'Pátek',
       ),
       'Saturday' => 
       array (
@@ -482,23 +482,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Icecast Access Log' => 
       array (
-        0 => '',
+        0 => 'Přístupový protokol Icecast',
       ),
       'Icecast Error Log' => 
       array (
-        0 => '',
+        0 => 'Chybový protokol Icecast',
       ),
       'Icecast Configuration' => 
       array (
-        0 => '',
+        0 => 'Icecast konfigurace',
       ),
       'SHOUTcast Log' => 
       array (
-        0 => '',
+        0 => 'SHOUTcast protokol',
       ),
       'SHOUTcast Configuration' => 
       array (
-        0 => '',
+        0 => 'SHOUTcast konfigurace',
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
@@ -510,119 +510,119 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Select File' => 
       array (
-        0 => '',
+        0 => 'Zvolte soubor',
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
-        0 => '',
+        0 => 'Chcete použít SHOUTcast 2? <a href="%s" target="_blank">Instalaci proveďte zde</a> a znovu načtěte tuto stránku.',
       ),
       'This station\'s time zone is currently %s.' => 
       array (
-        0 => '',
+        0 => 'Časové pásmo této stanice je v současné době %s.',
       ),
       'The current time in the station\'s time zone is %s.' => 
       array (
-        0 => '',
+        0 => 'Současný čas v časovém pásmu stanice je %s.',
       ),
       'Existing playlist imported.' => 
       array (
-        0 => '',
+        0 => 'Stávající playlist importován.',
       ),
       '%d song(s) were imported into the playlist.' => 
       array (
-        0 => '',
+        0 => '%d skladeb bylo importována do playlistu.',
       ),
       'You must be logged in to access this page.' => 
       array (
-        0 => '',
+        0 => 'Pro přístup na tuto stránku musíte být přihlášeni.',
       ),
       'You do not have permission to access this portion of the site.' => 
       array (
-        0 => '',
+        0 => 'Nemáte oprávnění pro přístup k této části webu.',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (
-        0 => '',
+        0 => 'Soubor <code>docker-compose.yml</code> je zastaralý!',
       ),
       'You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href="%s" target="_blank">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file.' => 
       array (
-        0 => '',
+        0 => 'Soubor <code>docker-compose.yml</code> byste měli aktualizovat tak, aby odrážel nejnovější změny. Zobrazte <a href="%s" target="_blank"> nejnovější verzi souboru</a> a soubor odpovídajícím způsobem aktualizujte.<br>Můžete také použít obslužný skript <code>./docker.sh</code> pro automatickou aktualizaci vašeho souboru.',
       ),
       'Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.' => 
       array (
-        0 => '',
+        0 => 'Instalaci aktualizujte podle <a href="%s" target="_blank">pokynů pro aktualizace</a>.',
       ),
       'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
       array (
-        0 => '',
+        0 => 'AzuraCast <a href="%s" target="_blank">verze %s</a> je nyní k dispozici.',
       ),
       'You are currently running version %s. Updating is highly recommended.' => 
       array (
-        0 => '',
+        0 => 'Momentálně používáte verzi %s. Důrazně doporučujeme aktualizovat.',
       ),
       'New AzuraCast Release Version Available' => 
       array (
-        0 => '',
+        0 => 'Nová verze AzuraCast je k dispozici',
       ),
       'The following improvements have been made since your last update:' => 
       array (
-        0 => '',
+        0 => 'Od poslední aktualizace byla provedena následující zlepšení:',
       ),
       'Your installation is currently %d update(s) behind the latest version.' => 
       array (
-        0 => '',
+        0 => 'Vaše instalace je v současné době %d aktualizací za nejnovější verzí.',
       ),
       'You should update to take advantage of bug and security fixes.' => 
       array (
-        0 => '',
+        0 => 'Měli byste aktualizovat, abyste využili opravy chyb a zabezpečení.',
       ),
       'New AzuraCast Updates Available' => 
       array (
-        0 => '',
+        0 => 'Nové aktualizace AzuraCast jsou k dispozici',
       ),
       '%s cannot start' => 
       array (
-        0 => '',
+        0 => '%s nelze spustit',
       ),
       'It is already running.' => 
       array (
-        0 => '',
+        0 => 'Již běží.',
       ),
       '%s cannot stop' => 
       array (
-        0 => '',
+        0 => '%s nelze zastavit',
       ),
       'It is not running.' => 
       array (
-        0 => '',
+        0 => 'Neběží.',
       ),
       '%s encountered an error' => 
       array (
-        0 => '',
+        0 => '%s došlo k chybě',
       ),
       'Check the log for details.' => 
       array (
-        0 => '',
+        0 => 'Podrobnosti naleznete v protokolu.',
       ),
       'Use <b>%s</b> on this server' => 
       array (
-        0 => '',
+        0 => 'Na tomto serveru použijte <b>%s</b>',
       ),
       'Connect to a <b>remote radio server</b>' => 
       array (
-        0 => '',
+        0 => 'Připojení ke <b>vzdálenému rádiovému serveru</b>',
       ),
       '<b>Do not use</b> an AutoDJ service' => 
       array (
-        0 => '',
+        0 => '<b>Nepoužívejte</b> službu AutoDJ',
       ),
       'Now Playing Data' => 
       array (
-        0 => '',
+        0 => 'Právě přehrávaná data',
       ),
       '1-Minute Sync' => 
       array (
-        0 => '',
+        0 => '1-minutové synchro',
       ),
       'Song Requests Queue' => 
       array (
@@ -630,51 +630,51 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '5-Minute Sync' => 
       array (
-        0 => '',
+        0 => '5-minutové synchro',
       ),
       'Check Media Folders' => 
       array (
-        0 => '',
+        0 => 'Kontrola složky médií',
       ),
       '1-Hour Sync' => 
       array (
-        0 => '',
+        0 => '1-hodinové synchro',
       ),
       'Analytics/Statistics' => 
       array (
-        0 => '',
+        0 => 'Analytiky/Statistiky',
       ),
       'Cleanup' => 
       array (
-        0 => '',
+        0 => 'Čištění',
       ),
       'The port %s is in use by another station.' => 
       array (
-        0 => '',
+        0 => 'Port %s je používán jinou stanicí.',
       ),
       'Password cannot contain the following characters: %s' => 
       array (
-        0 => '',
+        0 => 'Heslo nemůže obsahovat následující znaky: %s',
       ),
       'Comments' => 
       array (
-        0 => '',
+        0 => 'Poznámky',
       ),
       'Describe the use-case for this API key for future reference.' => 
       array (
-        0 => '',
+        0 => 'Popište způsob využití tohoto API klíče pro případ pozdější potřeby.',
       ),
       'Save Changes' => 
       array (
-        0 => '',
+        0 => 'Uložit změny',
       ),
       'Enable Automated Assignment' => 
       array (
-        0 => '',
+        0 => 'Povolit automatizované přiřazení',
       ),
       'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => '',
+        0 => 'Tento proces bude spuštěn na pozadí, a to pouze tehdy, pokud se tato volba nastaví na "Povoleno" a alespoň jeden playlist je nastaven na "Zahrnout do automatizovaného přiřazení".',
       ),
       'Disabled' => 
       array (
@@ -686,91 +686,91 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Days Between Automated Assignments' => 
       array (
-        0 => '',
+        0 => 'Dny mezi automatizovaným přiřazením',
       ),
       'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => '',
+        0 => 'Na základě tohoto nastavení systém automaticky znovu vyhodnotí skladby každých (těchto) dnů za použití dat z předchozích (těchto) dní.',
       ),
       '%d days' => 
       array (
-        0 => '',
+        0 => '%d dní',
       ),
       'Run Automatic Nightly Backups' => 
       array (
-        0 => '',
+        0 => 'Spustit automatické noční zálohování',
       ),
       'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
-        0 => '',
+        0 => 'Povolit, aby AzuraCast v určeném čase automaticky spouštěla noční zálohování.',
       ),
       'Yes' => 
       array (
-        0 => '',
+        0 => 'Ano',
       ),
       'No' => 
       array (
-        0 => '',
+        0 => 'Ne',
       ),
       'Scheduled Backup Time' => 
       array (
-        0 => '',
+        0 => 'Plánovaný čas zálohování',
       ),
       'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => '',
+        0 => 'Čas (v UTC) pro spuštění automatického zálohování, pokud je povoleno.',
       ),
       'Exclude Media from Backups' => 
       array (
-        0 => '',
+        0 => 'Vyloučit média ze záloh',
       ),
       'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'Vyloučení médií z automatických záloh ušetří místo, ale měli byste se ujistit, že si média zálohujete jinde.',
       ),
       'Number of Backup Copies to Keep' => 
       array (
-        0 => '',
+        0 => 'Počet záložních kopií pro uchování',
       ),
       'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => '',
+        0 => 'Kopie starší než stanovený počet dní budou automaticky smazány.',
       ),
       'Backup Filename' => 
       array (
-        0 => '',
+        0 => 'Název souboru zálohy',
       ),
       'Optional absolute or relative path where the backup file should be located.' => 
       array (
-        0 => '',
+        0 => 'Volitelná absolutní nebo relativní cesta, kam má být záložní soubor umístěn.',
       ),
       'Exclude Media from Backup' => 
       array (
-        0 => '',
+        0 => 'Vyloučit média ze záloh',
       ),
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'Vyloučení médií z automatických záloh ušetří místo, ale měli byste se ujistit, že si média zálohujete jinde.',
       ),
       'Base Theme for Public Pages' => 
       array (
-        0 => '',
+        0 => 'Základní téma pro veřejné stránky',
       ),
       'Select a theme to use as a base for station public pages and the login page.' => 
       array (
-        0 => '',
+        0 => 'Vyberte téma, které se použije jako základní pro veřejné stránky stanice a přihlašovací stránku.',
       ),
       'Light' => 
       array (
-        0 => '',
+        0 => 'Světlé',
       ),
       'Default' => 
       array (
-        0 => '',
+        0 => 'Výchozí',
       ),
       'Dark' => 
       array (
-        0 => '',
+        0 => 'Tmavé',
       ),
       'Hide Album Art on Public Pages' => 
       array (
@@ -1254,7 +1254,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Include in Automated Assignment' => 
       array (
-        0 => '',
+        0 => 'Zahrnout do automatizovaného přiřazení',
       ),
       'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
       array (
@@ -2604,7 +2604,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
+      array (
+        0 => '',
+      ),
+      'My Account' => 
       array (
         0 => '',
       ),
@@ -2621,10 +2625,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Now Playing' => 
-      array (
-        0 => '',
-      ),
-      'Options' => 
       array (
         0 => '',
       ),
@@ -2657,10 +2657,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'QR-Code' => 
-      array (
-        0 => '',
-      ),
-      'My Account' => 
       array (
         0 => '',
       ),
@@ -3201,14 +3197,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Unique' => 
-      array (
-        0 => '',
-      ),
-      'Playing Next' => 
-      array (
-        0 => '',
-      ),
-      'Now Streaming' => 
       array (
         0 => '',
       ),

@@ -14,8 +14,8 @@ Language-Team: Polish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-23T14:09:12+00:00
-PO-Revision-Date: 2019-05-28 17:46
+POT-Creation-Date: 2019-05-28T17:48:37+00:00
+PO-Revision-Date: 2019-05-31 09:38
 Language: pl_PL
 Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
 X-Generator: crowdin.com
@@ -280,7 +280,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Nie można zweryfikować poświadczeń.',
       ),
-      'All Stations Daily Average' => 
+      'All Stations' => 
       array (
         0 => '',
       ),
@@ -2604,9 +2604,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Panel',
       ),
-      'Listeners Across All Stations' => 
+      'AzuraCast User' => 
       array (
-        0 => 'Słuchaczy na wszystkich stacjach',
+        0 => '',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Moje konto',
       ),
       'Listeners Per Station' => 
       array (
@@ -2624,10 +2628,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Teraz
 Odtwarzane',
-      ),
-      'Options' => 
-      array (
-        0 => 'Ustawienia',
       ),
       'Error: No Available Stations' => 
       array (
@@ -2660,10 +2660,6 @@ Odtwarzane',
       'QR-Code' => 
       array (
         0 => '',
-      ),
-      'My Account' => 
-      array (
-        0 => 'Moje konto',
       ),
       'Customize' => 
       array (
@@ -3204,14 +3200,6 @@ Odtwarzane',
       'Unique' => 
       array (
         0 => 'Unikalny',
-      ),
-      'Playing Next' => 
-      array (
-        0 => 'Następnie',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Teraz nadaje',
       ),
       'Skip Song' => 
       array (

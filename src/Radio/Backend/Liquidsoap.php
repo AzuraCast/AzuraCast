@@ -179,6 +179,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             $uses_random = true;
             $uses_reload_mode = true;
+            $uses_conservative = false;
 
             if ($playlist->backendLoopPlaylistOnce()) {
                 $playlist_func_name = 'playlist.once';
@@ -188,6 +189,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             } else {
                 $playlist_func_name = 'playlist';
                 $uses_random = false;
+                $uses_conservative = true;
             }
 
             $playlist_config_lines = [];
@@ -220,6 +222,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 if ($uses_reload_mode) {
                     $playlist_params[] = 'reload_mode="watch"';
+                }
+
+                if ($uses_conservative) {
+                    $playlist_params[] = 'conservative=true';
                 }
 
                 $playlist_params[] = '"'.$playlist_file_path.'"';
@@ -338,9 +344,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         }
 
+        $error_file = APP_INSIDE_DOCKER
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : APP_INCLUDE_ROOT . '/resources/error.mp3';
+
         $event->appendLines([
             'radio = cue_cut(id="'.$this->_getVarName('radio_cue', $station).'", radio)',
             'add_skip_command(radio)',
+            '',
+            'radio = fallback(id="'.$this->_getVarName('safe_fallback', $station).'", track_sensitive = false, [radio, single("'.$error_file.'")])',
         ]);
     }
 

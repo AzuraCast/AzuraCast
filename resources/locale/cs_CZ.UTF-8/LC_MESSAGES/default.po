@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-02 11:40\n"
+"PO-Revision-Date: 2019-06-02 11:56\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -705,7 +705,7 @@ msgstr "%s zakázáno."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook Test Output"
-msgstr "Výstupní test webového háčku"
+msgstr "Výstupní test webhooku"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
 msgid "Liquidsoap Log"

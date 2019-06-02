@@ -87,41 +87,39 @@ $assets
             <?=__('Run Manual Backup') ?>
         </a>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <colgroup>
-                <col width="20%">
-                <col width="35%">
-                <col width="25%">
-                <col width="20%">
-            </colgroup>
-            <thead>
-            <tr>
-                <th><?=__('Actions') ?></th>
-                <th><?=__('Backup') ?></th>
-                <th><?=__('Last Modified') ?></th>
-                <th><?=__('Size') ?></th>
+    <table class="table table-responsive-md table-striped mb-0">
+        <colgroup>
+            <col width="20%">
+            <col width="35%">
+            <col width="25%">
+            <col width="20%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th><?=__('Actions') ?></th>
+            <th><?=__('Backup') ?></th>
+            <th><?=__('Last Modified') ?></th>
+            <th><?=__('Size') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($backups as $row): ?>
+            <tr class="align-middle">
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('admin:backups:download', ['path' => base64_encode($row['path'])]) ?>"><?=__('Download') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('admin:backups:delete', ['path' => base64_encode($row['path']), 'csrf' => $csrf]) ?>"  data-confirm-title="<?=$this->e(__('Delete backup "%s"?', $row['filename'])) ?>"><?=__('Delete') ?></a>
+                    </div>
+                </td>
+                <td>
+                    <big><?=$this->e($row['basename']) ?></big>
+                </td>
+                <td><time data-content="<?=$row['timestamp'] ?>"><?=gmdate('Y-m-d', $row['timestamp']) ?></time></td>
+                <td><span data-file-size="<?=$row['size'] ?>"><?=$row['size'] ?></span></td>
             </tr>
-            </thead>
-            <tbody>
-            <?php foreach($backups as $row): ?>
-                <tr class="align-middle">
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('admin:backups:download', ['path' => base64_encode($row['path'])]) ?>"><?=__('Download') ?></a>
-                            <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('admin:backups:delete', ['path' => base64_encode($row['path']), 'csrf' => $csrf]) ?>"  data-confirm-title="<?=$this->e(__('Delete backup "%s"?', $row['filename'])) ?>"><?=__('Delete') ?></a>
-                        </div>
-                    </td>
-                    <td>
-                        <big><?=$this->e($row['basename']) ?></big>
-                    </td>
-                    <td><time data-content="<?=$row['timestamp'] ?>"><?=gmdate('Y-m-d', $row['timestamp']) ?></time></td>
-                    <td><span data-file-size="<?=$row['size'] ?>"><?=$row['size'] ?></span></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>
 
 <?php if (!empty($last_output)): ?>

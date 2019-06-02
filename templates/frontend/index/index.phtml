@@ -97,6 +97,14 @@ $user = $request->getUser();
     <div class="card-header bg-primary-dark">
         <h3 class="card-title"><?=__('Station Overview') ?></h3>
     </div>
+    <?php if ($acl->userAllowed($request->getUser(), 'administer stations')): ?>
+        <div class="card-actions">
+            <a class="btn btn-outline-primary" href="<?=$router->named('admin:stations:add') ?>">
+                <i class="material-icons" aria-hidden="true">add</i>
+                <?=__('Add %s', __('Station')) ?>
+            </a>
+        </div>
+    <?php endif; ?>
     <table class="table table-striped table-responsive mb-0" id="station_dashboard">
         <colgroup>
             <col width="5%">
@@ -142,12 +150,4 @@ $user = $request->getUser();
             </tr>
         </tbody>
     </table>
-<?php if ($acl->userAllowed($request->getUser(), 'administer stations')): ?>
-    <div class="card-actions">
-        <a class="btn btn-outline-primary" href="<?=$router->named('admin:stations:add') ?>">
-            <i class="material-icons" aria-hidden="true">add</i>
-            <?=__('Add %s', __('Station')) ?>
-        </a>
-    </div>
-<?php endif; ?>
 </section>

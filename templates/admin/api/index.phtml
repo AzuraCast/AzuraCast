@@ -4,37 +4,35 @@
     <div class="card-header bg-primary-dark">
         <h2 class="card-title"><?=__('API Keys') ?></h2>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <colgroup>
-                <col width="20%">
-                <col width="25%">
-                <col width="30%">
-                <col width="25%">
-            </colgroup>
-            <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <th><?=__('API Key') ?></th>
-                <th><?=__('Comments') ?></th>
-                <th><?=__('Owner') ?></th>
+    <table class="table table-responsive-md table-striped mb-0">
+        <colgroup>
+            <col width="20%">
+            <col width="25%">
+            <col width="30%">
+            <col width="25%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th><?=__('API Key') ?></th>
+            <th><?=__('Comments') ?></th>
+            <th><?=__('Owner') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($records as $record): ?>
+            <tr class="align-middle">
+                <td class="center">
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:api:edit', ['id' => $record['id']]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$router->named('admin:api:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=__('Revoke') ?></a>
+                    </div>
+                </td>
+                <td><code><?=$record['id'] ?></code></td>
+                <td><?=$this->e($record['comment']) ?></td>
+                <td><?=$this->e($record['user']['email']) ?></td>
             </tr>
-            </thead>
-            <tbody>
-            <?php foreach($records as $record): ?>
-                <tr class="align-middle">
-                    <td class="center">
-                        <div class="btn-group btn-group-sm">
-                            <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:api:edit', ['id' => $record['id']]) ?>"><?=__('Edit') ?></a>
-                            <a class="btn btn-sm btn-danger" href="<?=$router->named('admin:api:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=__('Revoke') ?></a>
-                        </div>
-                    </td>
-                    <td><code><?=$record['id'] ?></code></td>
-                    <td><?=$this->e($record['comment']) ?></td>
-                    <td><?=$this->e($record['user']['email']) ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>

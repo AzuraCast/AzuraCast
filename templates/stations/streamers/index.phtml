@@ -12,40 +12,38 @@
                     <?=__('Add %s', __('Streamer')) ?>
                 </a>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <colgroup>
-                        <col width="25%">
-                        <col width="15%">
-                        <col width="20%">
-                        <col width="40%">
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th><?=__('Actions') ?></th>
-                        <th><?=__('Username') ?></th>
-                        <th><?=__('Display Name') ?></th>
-                        <th><?=__('Notes') ?></th>
+            <table class="table table-responsive-lg table-striped mb-0">
+                <colgroup>
+                    <col width="25%">
+                    <col width="15%">
+                    <col width="20%">
+                    <col width="40%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th><?=__('Actions') ?></th>
+                    <th><?=__('Username') ?></th>
+                    <th><?=__('Display Name') ?></th>
+                    <th><?=__('Notes') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($streamers as $row): ?>
+                    <?php /** @var App\Entity\StationStreamer $row */ ?>
+                    <tr class="align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:streamers:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                                <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete streamer "%s"?', $row->getStreamerUsername())) ?>" href="<?=$router->fromHere('stations:streamers:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                            </div>
+                        </td>
+                        <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
+                        <td><?=$this->e($row->getDisplayName()) ?></td>
+                        <td><?=nl2br($this->e($row->getComments())) ?></td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach($streamers as $row): ?>
-                        <?php /** @var App\Entity\StationStreamer $row */ ?>
-                        <tr class="align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:streamers:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                                    <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete streamer "%s"?', $row->getStreamerUsername())) ?>" href="<?=$router->fromHere('stations:streamers:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
-                                </div>
-                            </td>
-                            <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
-                            <td><?=$this->e($row->getDisplayName()) ?></td>
-                            <td><?=nl2br($this->e($row->getComments())) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="col-md-4">

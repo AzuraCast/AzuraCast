@@ -13,48 +13,46 @@
             <?=__('Add %s', __('Mount Point')) ?>
         </a>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <colgroup>
-                <col width="25%">
-                <col width="45%">
-                <col width="30%">
-            </colgroup>
-            <thead>
-            <tr>
-                <th><?=__('Actions') ?></th>
-                <th><?=__('Mount Point') ?></th>
-                <th><?=__('AutoDJ') ?></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($mounts as $row): ?>
-                <?php /** @var App\Entity\StationMount $row */ ?>
-                <tr class="align-middle">
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                            <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
-                        </div>
-                    </td>
-                    <td>
-                        <h5 class="m-0"><a href="<?=$this->e($frontend->getUrlForMount($station, $row)) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>
-                        <div>
-                        <?php if ($row->getIsDefault()): ?>
-                            <span class="badge badge-success"><?=__('Default Mount') ?></span>
-                        <?php endif; ?>
-                        </div>
-                    </td>
-                    <td>
-                    <?php if ($row->getEnableAutodj()): ?>
-                        <?=__('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
-                    <?php else: ?>
-                        <?=__('Disabled') ?>
+    <table class="table table-responsive-md table-striped mb-0">
+        <colgroup>
+            <col width="25%">
+            <col width="45%">
+            <col width="30%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th><?=__('Actions') ?></th>
+            <th><?=__('Mount Point') ?></th>
+            <th><?=__('AutoDJ') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($mounts as $row): ?>
+            <?php /** @var App\Entity\StationMount $row */ ?>
+            <tr class="align-middle">
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                    </div>
+                </td>
+                <td>
+                    <h5 class="m-0"><a href="<?=$this->e($frontend->getUrlForMount($station, $row)) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>
+                    <div>
+                    <?php if ($row->getIsDefault()): ?>
+                        <span class="badge badge-success"><?=__('Default Mount') ?></span>
                     <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+                    </div>
+                </td>
+                <td>
+                <?php if ($row->getEnableAutodj()): ?>
+                    <?=__('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
+                <?php else: ?>
+                    <?=__('Disabled') ?>
+                <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>

@@ -13,43 +13,41 @@
             <?=__('Add %s', __('Remote Relay')) ?>
         </a>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <colgroup>
-                <col width="25%">
-                <col width="45%">
-                <col width="30%">
-            </colgroup>
-            <thead>
-            <tr>
-                <th><?=__('Actions') ?></th>
-                <th><?=__('Remote Relay') ?></th>
-                <th><?=__('AutoDJ') ?></th>
+    <table class="table table-responsive-md table-striped mb-0">
+        <colgroup>
+            <col width="25%">
+            <col width="45%">
+            <col width="30%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th><?=__('Actions') ?></th>
+            <th><?=__('Remote Relay') ?></th>
+            <th><?=__('AutoDJ') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($remotes as $row): ?>
+            <?php /** @var App\Entity\StationRemote $row */ ?>
+            <tr class="align-middle">
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:remotes:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete remote relay "%s"?', $row->getUrl())) ?>" href="<?=$router->fromHere('stations:remotes:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                    </div>
+                </td>
+                <td>
+                    <h5 class="m-0"><a href="<?=$this->e($row->getUrl()) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>
+                </td>
+                <td>
+                <?php if ($row->getEnableAutodj()): ?>
+                    <?=__('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
+                <?php else: ?>
+                    <?=__('Disabled') ?>
+                <?php endif; ?>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            <?php foreach($remotes as $row): ?>
-                <?php /** @var App\Entity\StationRemote $row */ ?>
-                <tr class="align-middle">
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:remotes:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                            <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete remote relay "%s"?', $row->getUrl())) ?>" href="<?=$router->fromHere('stations:remotes:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
-                        </div>
-                    </td>
-                    <td>
-                        <h5 class="m-0"><a href="<?=$this->e($row->getUrl()) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>
-                    </td>
-                    <td>
-                    <?php if ($row->getEnableAutodj()): ?>
-                        <?=__('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
-                    <?php else: ?>
-                        <?=__('Disabled') ?>
-                    <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>

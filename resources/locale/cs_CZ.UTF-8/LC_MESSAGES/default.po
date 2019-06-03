@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-03 10:00\n"
+"PO-Revision-Date: 2019-06-03 11:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1134,15 +1134,15 @@ msgstr "Pokud je vybráno, nebude se obal alba zobrazovat na veřejně přístup
 
 #: /var/azuracast/www/config/forms/branding.php:41
 msgid "Homepage Redirect URL"
-msgstr ""
+msgstr "URL adresa přesměrování z úvodní stránky"
 
 #: /var/azuracast/www/config/forms/branding.php:42
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
-msgstr ""
+msgstr "Pokud není návštěvník přihlášen a navštíví domovskou stránku AzuraCast, můžete ho automaticky přesměrovat na zde uvedenou URL adresu. Chcete-li ho přesměrovat na výchozí přihlašovací obrazovku, ponechte prázdné."
 
 #: /var/azuracast/www/config/forms/branding.php:51
 msgid "Default Album Art URL"
-msgstr ""
+msgstr "URL adresa výchozího obrázku alba"
 
 #: /var/azuracast/www/config/forms/branding.php:52
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."

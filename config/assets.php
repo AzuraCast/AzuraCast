@@ -344,6 +344,7 @@ return [
     'fullcalendar' => [
         'order' => 10,
         'require' => ['moment_base', 'moment_timezone'],
+        'replace' => ['moment'],
         'files' => [
             'js' => [
                 [

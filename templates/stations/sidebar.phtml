@@ -1,12 +1,29 @@
 <?php
-$assets->addInlineJs($this->fetch('stations/sidebar.js'));
+/**
+ * @var \App\Entity\Station $station
+ * @var \Azura\Assets $assets
+ */
 
-$user = $request->getUser();
+$tz_str = $station->getTimezone();
+$tz = new DateTimeZone($tz_str);
+
+$now = \Cake\Chronos\Chronos::now($tz);
+
+$assets
+    ->load('moment')
+    ->load('moment_timezone')
+    ->addInlineJs($this->fetch('stations/sidebar.js'), 99);
 ?>
+
 <div class="navdrawer-header">
     <a class="navbar-brand px-0" href="<?=$router->fromHere('stations:profile:index') ?>">
-        <?=$this->e($station->getName()) ?>
+        <div><?=$this->e($station->getName()) ?></div>
+        <div class="xs" id="station-time" data-tz="<?=$tz_str ?>" title="<?=$this->e(__('Station Time')) ?>">
+            <?=$now->format('H:i:s T') ?>
+        </div>
     </a>
 </div>
 
-<?=$this->fetch('partials/sidebar_menu', ['menu' => $menu, 'active' => $active]) ?>
+<?php
+echo $this->fetch('partials/sidebar_menu', ['menu' => $menu, 'active' => $active]);
+?>

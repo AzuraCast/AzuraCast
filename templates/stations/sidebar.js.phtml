@@ -1,5 +1,15 @@
 $(function() {
-    $('.api-call').on('click', function(e) {
+    function updateClock() {
+        var station_time = $('#station-time');
+        var station_tz = station_time.data('tz');
+
+        station_time.text(moment().tz(station_tz).format('LTS z'));
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    $(document).on('click', '.api-call', function(e) {
         e.stopPropagation();
         var btn = $(this);
 

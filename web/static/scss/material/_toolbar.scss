@@ -8,6 +8,10 @@
   padding: $toolbar-padding-y $toolbar-padding-x;
   position: relative;
 
+  .navbar-brand {
+    height: $toolbar-element-height;
+  }
+
   // Vertically align some elements normally placed in `.navbar`
 
   .form-control {
@@ -176,8 +180,7 @@
 
   align-items: center;
   color: inherit;
-  display: inline-flex;
-  height: $toolbar-element-height;
+  display: block;
   position: relative;
   white-space: nowrap;
 

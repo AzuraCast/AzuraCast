@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-03 14:30\n"
+"PO-Revision-Date: 2019-06-03 14:41\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1315,37 +1315,37 @@ msgstr "Časová sekvence, ve které by se měla skladba překrývat na konci. C
 
 #: /var/azuracast/www/config/forms/media.php:126
 msgid "Custom Cues: Cue-In Point (seconds)"
-msgstr ""
+msgstr "Vlastní střih: místo nástupu (v sekundách)"
 
 #: /var/azuracast/www/config/forms/media.php:127
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
-msgstr ""
+msgstr "Počet sekund od začátku skladby, kde má AutoDJ začít přehrávat."
 
 #: /var/azuracast/www/config/forms/media.php:135
 msgid "Custom Cues: Cue-Out Point (seconds)"
-msgstr ""
+msgstr "Vlastní střih: místo ukončení (v sekundách)"
 
 #: /var/azuracast/www/config/forms/media.php:136
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
-msgstr ""
+msgstr "Počet sekund od začátku skladby, kde má AutoDJ přestat přehrávat."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "Mount Point URL"
-msgstr ""
+msgstr "URL přípojného bodu"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:16
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
-msgstr ""
+msgstr "Tento řetězec by měl vždy začínat lomítkem (/) a musí být platnou adresou URL, například /autodj.mp3"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:25
 #: /var/azuracast/www/config/forms/remote.php:39
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:27
 msgid "Display Name"
-msgstr ""
+msgstr "Zobrazovaný název"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:26
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Zobrazovaný název přiřazený tomuto přípojnému bodu při zobrazení na administrativních nebo veřejných stránkách. Nechte prázdné pro automatické vygenerování."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13

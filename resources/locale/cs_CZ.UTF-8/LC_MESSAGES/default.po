@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-03 14:12\n"
+"PO-Revision-Date: 2019-06-03 14:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1291,15 +1291,15 @@ msgstr "Délka skladby (v sekundách)"
 
 #: /var/azuracast/www/config/forms/media.php:99
 msgid "Custom Fading: Overlap Time (seconds)"
-msgstr ""
+msgstr "Vlastní přechod: doba překrytí (v sekundách)"
 
 #: /var/azuracast/www/config/forms/media.php:100
 msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
-msgstr ""
+msgstr "Doba, po kterou by se tato skladba měla při přechodu překrývat se sousedními. Chcete-li použít výchozí nastavení systému, ponechte prázdné."
 
 #: /var/azuracast/www/config/forms/media.php:108
 msgid "Custom Fading: Fade-In Time (seconds)"
-msgstr ""
+msgstr "Vlastní přechod: zesilování zvuku (v sekundách)"
 
 #: /var/azuracast/www/config/forms/media.php:109
 msgid "The time period that the song should fade in. Leave blank to use the system default."

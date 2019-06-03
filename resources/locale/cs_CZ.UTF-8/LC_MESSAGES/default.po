@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-03 12:00\n"
+"PO-Revision-Date: 2019-06-03 12:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1200,7 +1200,7 @@ msgstr "Volitelně zadejte název přátelský k rozhraní API, například <cod
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
 #: /var/azuracast/www/config/forms/report_soundexchange.php:10
 msgid "Important Notes"
-msgstr ""
+msgstr "Důležité poznámky"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"

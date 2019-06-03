@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-03 14:00\n"
+"PO-Revision-Date: 2019-06-03 14:12\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1279,15 +1279,15 @@ msgstr "Mezinárodní standardní kód záznamů, který se používá pro zprá
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Správci mohou přizpůsobit pole, která se zde zobrazují, na <a href=\"%s\">stránce pro správu</a>."
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Ovládání přehrávání skladeb"
 
 #: /var/azuracast/www/config/forms/media.php:90
 msgid "Song Length (seconds)"
-msgstr ""
+msgstr "Délka skladby (v sekundách)"
 
 #: /var/azuracast/www/config/forms/media.php:99
 msgid "Custom Fading: Overlap Time (seconds)"

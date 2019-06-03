@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-03 14:50\n"
+"PO-Revision-Date: 2019-06-03 15:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1366,55 +1366,55 @@ msgstr "Pokud je toto připojení výchozí, bude přehráno v náhledu rádia a
 
 #: /var/azuracast/www/config/forms/mount/generic.php:58
 msgid "Relay Stream URL"
-msgstr ""
+msgstr "URL jiného streamu"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:59
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
-msgstr ""
+msgstr "Zadejte úplnou adresu URL jiného streamu, aby bylo možné přenášet vysílání prostřednictvím tohoto bodu připojení."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:68
 #: /var/azuracast/www/config/forms/remote.php:165
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "Publikovat do adresářů \"Zlaté stránky\""
 
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Povolit publikování tohoto přípojného bodu do veřejných adresářů rádiových stanic typu \"Zlaté stránky\"."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
-msgstr ""
+msgstr "Povolit funkci AutoDJ"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:81
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "Pokud je povoleno, funkce AutoDJ bude do tohoto přípojného bodu automaticky přehrávat playlisty."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:99
 #: /var/azuracast/www/config/forms/remote.php:96
 msgid "AutoDJ Format"
-msgstr ""
+msgstr "Formát funkce AutoDJ"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:108
 #: /var/azuracast/www/config/forms/remote.php:110
 msgid "AutoDJ Bitrate (kbps)"
-msgstr ""
+msgstr "Přenosová rychlost funkce AutoDJ (kbps)"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:135
 msgid "Custom Stream URL"
-msgstr ""
+msgstr "Vlastní URL streamu"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:137
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
-msgstr ""
+msgstr "Pro tento stream můžete nastavit vlastní adresu URL, kterou bude služba AzuraCast používat, když na ni bude odkazováno. Chcete-li použít výchozí hodnotu, ponechte prázdné."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:9
 msgid "Fallback Mount"
-msgstr ""
+msgstr "Nouzový přípojný bod"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:10
 msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
-msgstr ""
+msgstr "Pokud tento přípojný bod nepřehrává zvuk, posluchači budou automaticky přesměrováni na tento přípojný bod. Výchozí hodnota je /error.mp3, opakující se chybová zpráva."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:27
 msgid "Custom Frontend Configuration"

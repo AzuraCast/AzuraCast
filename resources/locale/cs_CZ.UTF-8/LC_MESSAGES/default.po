@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-03 14:41\n"
+"PO-Revision-Date: 2019-06-03 14:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1350,19 +1350,19 @@ msgstr "Zobrazovaný název přiřazený tomuto přípojnému bodu při zobrazen
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Zobrazit na veřejných stránkách"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:35
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Umožněte posluchačům vybrat tento přípojný bod na veřejných stránkách této stanice."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Nastavit jako výchozí přípojný bod"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:47
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
-msgstr ""
+msgstr "Pokud je toto připojení výchozí, bude přehráno v náhledu rádia a na veřejné stránce rádia."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:58
 msgid "Relay Stream URL"

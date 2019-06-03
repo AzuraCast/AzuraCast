@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-02 11:56\n"
+"PO-Revision-Date: 2019-06-03 10:00\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1126,11 +1126,11 @@ msgstr "Tmavé"
 
 #: /var/azuracast/www/config/forms/branding.php:29
 msgid "Hide Album Art on Public Pages"
-msgstr ""
+msgstr "Skrýt obal alba na veřejných stránkách"
 
 #: /var/azuracast/www/config/forms/branding.php:30
 msgid "If selected, album art will not display on public-facing radio pages."
-msgstr ""
+msgstr "Pokud je vybráno, nebude se obal alba zobrazovat na veřejně přístupných stránkách."
 
 #: /var/azuracast/www/config/forms/branding.php:41
 msgid "Homepage Redirect URL"

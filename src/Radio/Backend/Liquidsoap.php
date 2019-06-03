@@ -226,6 +226,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 if ($uses_conservative) {
                     $playlist_params[] = 'conservative=true';
+                    $playlist_params[] = 'default_duration=10.';
+                    $playlist_params[] = 'length=20.';
                 }
 
                 $playlist_params[] = '"'.$playlist_file_path.'"';
@@ -312,12 +314,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         // Build "default" type playlists.
         $event->appendLines([
             '# Standard Playlists',
-            'radio = random(weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . '])',
+            'radio = random(id="'.$this->_getVarName('standard_playlists', $station).'", weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . '])',
         ]);
 
         $event->appendLines([
             'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))',
-            'radio = fallback(id="'.$this->_getVarName('autodj_fallback', $station).'", track_sensitive = true, [requests, radio, blank(duration=2.)])'
+            'radio = fallback(id="'.$this->_getVarName('requests_fallback', $station).'", track_sensitive = true, [requests, radio])'
         ]);
 
         if (!empty($schedule_switches)) {
@@ -325,7 +327,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             $event->appendLines([
                 '# Standard Schedule Switches',
-                'radio = switch(track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])',
+                'radio = switch(id="'.$this->_getVarName('schedule_switch', $station).'", track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])',
             ]);
         }
         if (!empty($schedule_switches_interrupting)) {
@@ -333,7 +335,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             $event->appendLines([
                 '# Interrupting Schedule Switches',
-                'radio = switch(track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])',
+                'radio = switch(id="'.$this->_getVarName('interrupt_switch', $station).'", track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])',
             ]);
         }
 
@@ -352,7 +354,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'radio = cue_cut(id="'.$this->_getVarName('radio_cue', $station).'", radio)',
             'add_skip_command(radio)',
             '',
-            'radio = fallback(id="'.$this->_getVarName('safe_fallback', $station).'", track_sensitive = false, [radio, single("'.$error_file.'")])',
+            'radio = fallback(id="'.$this->_getVarName('safe_fallback', $station).'", track_sensitive = false, [radio, single(id="error_jingle", "'.$error_file.'")])',
         ]);
     }
 

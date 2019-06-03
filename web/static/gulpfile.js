@@ -105,7 +105,7 @@ var jsFiles = {
     "moment-timezone": {
         base: 'node_modules/moment-timezone/builds',
         files: [
-            "node_modules/moment-timezone/builds/moment-timezone-with-data.min.js"
+            "node_modules/moment-timezone/builds/moment-timezone-with-data-10-year-range.min.js"
         ]
     },
     "daterangepicker": {

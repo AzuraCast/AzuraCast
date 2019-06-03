@@ -248,7 +248,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data.min.js',
+                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data-10-year-range.min.js',
                 ]
             ]
         ],

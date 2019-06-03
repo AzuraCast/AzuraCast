@@ -147,10 +147,10 @@ var jsFiles = {
             "node_modules/fullcalendar/dist/locale-all.js"
         ]
     },
-    "jquery-sortable": {
+    "sortable": {
         base: null,
         files: [
-            "node_modules/jquery-sortable/source/js/jquery-sortable-min.js"
+            "node_modules/sortablejs/Sortable.min.js"
         ]
     },
     "leaflet": {

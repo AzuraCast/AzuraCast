@@ -361,13 +361,12 @@ return [
         ],
     ],
 
-    'jquery-sortable' => [
+    'sortable' => [
         'order' => 10,
-        'require' => ['jquery'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/jquery-sortable/jquery-sortable-min.js',
+                    'src' => 'dist/lib/sortable/Sortable.min.js',
                     'defer' => true,
                 ],
             ],

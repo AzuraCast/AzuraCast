@@ -1,0 +1,30 @@
+$(function() {
+    var CSRF = '<?=$csrf ?>';
+
+    var sortable = Sortable.create(document.getElementById('reorder'), {
+        onUpdate: function() {
+            updateSavedOrder();
+        }
+    });
+
+    function updateSavedOrder() {
+        $.post('', {
+            csrf: CSRF,
+            order: JSON.stringify(sortable.toArray())
+        }, function(data){},'json');
+    }
+
+    $(document).on('click', '.js-order-up', function(e){
+        let currentRow = $(this).closest('tr');
+        currentRow.prev().before(currentRow);
+
+        updateSavedOrder();
+    });
+
+    $(document).on('click', '.js-order-down', function(e){
+        let currentRow = $(this).closest('tr');
+        currentRow.next().after(currentRow);
+
+        updateSavedOrder();
+    });
+});

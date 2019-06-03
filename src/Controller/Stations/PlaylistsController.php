@@ -182,8 +182,8 @@ class PlaylistsController extends AbstractStationCrudController
             $order = json_decode($order_raw, true);
 
             $mapping = [];
-            foreach($order as $weight => $row) {
-                $mapping[$row['id']] = $weight+1;
+            foreach($order as $weight => $row_id) {
+                $mapping[$row_id] = $weight+1;
             }
 
             $this->playlist_media_repo->setMediaOrder($record, $mapping);

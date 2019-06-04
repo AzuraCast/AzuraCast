@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 12:50\n"
+"PO-Revision-Date: 2019-06-04 13:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1520,15 +1520,15 @@ msgstr "Importovat existující playlist"
 
 #: /var/azuracast/www/config/forms/playlist.php:109
 msgid "Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported."
-msgstr ""
+msgstr "Vyberte soubor existujícího playlistu a přidejte jeho obsah do tohoto playlistu. Podporované typy jsou PLS a M3U."
 
 #: /var/azuracast/www/config/forms/playlist.php:129
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "Povolit žádosti o skladby z tohoto playlistu"
 
 #: /var/azuracast/www/config/forms/playlist.php:130
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Pokud jsou pro vaši stanici povoleny žádosti, uživatelé budou moci požádat o skladby, které jsou v tomto playlistu."
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"

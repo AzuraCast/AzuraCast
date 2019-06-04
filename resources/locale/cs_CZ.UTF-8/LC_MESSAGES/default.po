@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 13:41\n"
+"PO-Revision-Date: 2019-06-04 14:00\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1549,15 +1549,15 @@ msgstr "Typ vzdáleného URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:175
 msgid "Direct Stream URL"
-msgstr ""
+msgstr "URL přímého streamu"
 
 #: /var/azuracast/www/config/forms/playlist.php:176
 msgid "Playlist (M3U/PLS) URL"
-msgstr ""
+msgstr "URL playlistu (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:185
 msgid "Remote Playback Buffer (Seconds)"
-msgstr ""
+msgstr "Vzdálená vyrovnávací paměť (sekundy)"
 
 #: /var/azuracast/www/config/forms/playlist.php:187
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."

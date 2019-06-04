@@ -232,7 +232,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
-                $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func_name.'('.implode(',', $playlist_params).'))';
+                $playlist_config_lines[] = $playlist_var_name . ' = '.$playlist_func_name.'('.implode(',', $playlist_params).')';
 
                 if ($playlist->isJingle()) {
                     $playlist_config_lines[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
@@ -242,7 +242,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
                         $playlist_func = $playlist_func_name.'("'.$this->_cleanUpString($playlist->getRemoteUrl()).'")';
-                        $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo('.$playlist_func.')';
+                        $playlist_config_lines[] = $playlist_var_name . ' = '.$playlist_func;
                         break;
 
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
@@ -254,7 +254,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         $buffer = $playlist->getRemoteBuffer();
                         $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                        $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo(mksafe('.$remote_url_function.'(max='.$buffer.'., "'.$this->_cleanUpString($remote_url).'")))';
+                        $playlist_config_lines[] = $playlist_var_name . ' = mksafe('.$remote_url_function.'(max='.$buffer.'., "'.$this->_cleanUpString($remote_url).'"))';
                         break;
                 }
             }
@@ -317,11 +317,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'radio = random(id="'.$this->_getVarName('standard_playlists', $station).'", weights=[' . implode(', ', $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . '])',
         ]);
 
-        $event->appendLines([
-            'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))',
-            'radio = fallback(id="'.$this->_getVarName('requests_fallback', $station).'", track_sensitive = true, [requests, radio])'
-        ]);
-
         if (!empty($schedule_switches)) {
             $schedule_switches[] = '({true}, radio)';
 
@@ -351,9 +346,13 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             : APP_INCLUDE_ROOT . '/resources/error.mp3';
 
         $event->appendLines([
+            'requests = audio_to_stereo(request.queue(id="'.$this->_getVarName('requests', $station).'"))',
+            'radio = fallback(id="'.$this->_getVarName('requests_fallback', $station).'", track_sensitive = true, [requests, radio])',
+            '',
             'radio = cue_cut(id="'.$this->_getVarName('radio_cue', $station).'", radio)',
             'add_skip_command(radio)',
             '',
+            'radio = audio_to_stereo(id="'.$this->_getVarName('radio_stereo', $station).'", radio)',
             'radio = fallback(id="'.$this->_getVarName('safe_fallback', $station).'", track_sensitive = false, [radio, single(id="error_jingle", "'.$error_file.'")])',
         ]);
     }

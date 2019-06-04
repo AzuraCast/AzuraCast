@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 12:10\n"
+"PO-Revision-Date: 2019-06-04 12:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1491,15 +1491,15 @@ msgstr "Playlist obsahující mediální soubory hostované na tomto serveru."
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "Remote URL Playlist"
-msgstr ""
+msgstr "Vzdálený playlist"
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr ""
+msgstr "Seznam stop, který instruuje stanici, aby hrála ze vzdálené URL adresy."
 
 #: /var/azuracast/www/config/forms/playlist.php:93
 msgid "Song Playback Order"
-msgstr ""
+msgstr "Pořadí přehrávání skladeb"
 
 #: /var/azuracast/www/config/forms/playlist.php:96
 msgid "Shuffled"

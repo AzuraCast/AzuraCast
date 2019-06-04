@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 18:40\n"
+"PO-Revision-Date: 2019-06-04 18:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1652,31 +1652,31 @@ msgstr "Čas zahájení"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Chcete-li hrát jednou za den, nastavte začátek a konec času na stejnou hodnotu."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
-msgstr ""
+msgstr "Čas ukončení"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Pokud je čas ukončení před časem zahájení, bude playlist hrát přes noc."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Časové pásmo stanice"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
-msgstr ""
+msgstr "Plánované dny v týdnu"
 
 #: /var/azuracast/www/config/forms/playlist.php:297
 msgid "Leave blank to play on every day of the week."
-msgstr ""
+msgstr "Nechte prázdné, aby playlist hrál každý den v týdnu."
 
 #: /var/azuracast/www/config/forms/playlist.php:323
 msgid "Number of Songs Between Plays"
-msgstr ""
+msgstr "Počet skladeb mezi přehráním"
 
 #: /var/azuracast/www/config/forms/playlist.php:324
 msgid "This playlist will play every $x songs, where $x is specified below."

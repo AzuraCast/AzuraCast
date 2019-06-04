@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 18:50\n"
+"PO-Revision-Date: 2019-06-04 19:00\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1680,27 +1680,27 @@ msgstr "Počet skladeb mezi přehráním"
 
 #: /var/azuracast/www/config/forms/playlist.php:324
 msgid "This playlist will play every $x songs, where $x is specified below."
-msgstr ""
+msgstr "Tento playlist bude hrát každých $x skladeb, kde $x je uvedeno výše."
 
 #: /var/azuracast/www/config/forms/playlist.php:343
 msgid "Number of Minutes Between Plays"
-msgstr ""
+msgstr "Počet minut mezi přehráním"
 
 #: /var/azuracast/www/config/forms/playlist.php:344
 msgid "This playlist will play every $x minutes, where $x is specified below."
-msgstr ""
+msgstr "Tento playlist bude hrát každých $x minut, kde $x je uvedeno výše."
 
 #: /var/azuracast/www/config/forms/playlist.php:363
 msgid "Minute of Hour to Play"
-msgstr ""
+msgstr "Minuta hodiny pro přehrání"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."
-msgstr ""
+msgstr "Zvolte minutu každé hodiny, kterou by měl hrát tento playlist."
 
 #: /var/azuracast/www/config/forms/profile.php:3
 msgid "Use Browser Default"
-msgstr ""
+msgstr "Automaticky podle prohlížeče"
 
 #: /var/azuracast/www/config/forms/profile.php:16
 #: /var/azuracast/www/config/forms/station.php:37
@@ -1709,41 +1709,41 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/files/index.phtml:106
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:26
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 #: /var/azuracast/www/config/forms/profile.php:38
 #: /var/azuracast/www/config/forms/user.php:30
 msgid "Reset Password"
-msgstr ""
+msgstr "Obnovit heslo"
 
 #: /var/azuracast/www/config/forms/profile.php:39
 msgid "Leave these fields blank to continue using your current password."
-msgstr ""
+msgstr "Ponechte tato pole prázdná k pokračování v používání aktuálního hesla."
 
 #: /var/azuracast/www/config/forms/profile.php:45
 msgid "Current Password"
-msgstr ""
+msgstr "Stávající heslo"
 
 #: /var/azuracast/www/config/forms/profile.php:60
 msgid "New Password"
-msgstr ""
+msgstr "Nové heslo"
 
 #: /var/azuracast/www/config/forms/profile.php:71
 msgid "Confirm New Password"
-msgstr ""
+msgstr "Potvrzení nového hesla"
 
 #: /var/azuracast/www/config/forms/profile.php:82
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:50
 msgid "Customization"
-msgstr ""
+msgstr "Přizpůsobení"
 
 #: /var/azuracast/www/config/forms/profile.php:88
 msgid "Language"
-msgstr ""
+msgstr "Jazyk"
 
 #: /var/azuracast/www/config/forms/profile.php:98
 msgid "Site Theme"
-msgstr ""
+msgstr "Motiv webu"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:10
 msgid "Code from Authenticator App"

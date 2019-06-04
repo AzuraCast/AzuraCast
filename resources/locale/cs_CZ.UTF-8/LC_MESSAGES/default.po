@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 10:20\n"
+"PO-Revision-Date: 2019-06-04 12:00\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1445,17 +1445,17 @@ msgstr "Základní Informace"
 #: /var/azuracast/www/templates/stations/queue/index.phtml:27
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:38
 msgid "Source"
-msgstr ""
+msgstr "Zdroj"
 
 #: /var/azuracast/www/config/forms/playlist.php:13
 #: /var/azuracast/www/config/forms/playlist.php:206
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Scheduling"
-msgstr ""
+msgstr "Plánování"
 
 #: /var/azuracast/www/config/forms/playlist.php:26
 msgid "Enable Playlist"
-msgstr ""
+msgstr "Povolit playlist"
 
 #: /var/azuracast/www/config/forms/playlist.php:28
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."

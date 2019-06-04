@@ -26,7 +26,7 @@ class File extends \AzuraForms\Field\File
         $output .= '%4$s';
         $output .= '</button>';
         $output .= '<small class="file-name"></small>';
-        $output .= '<input type="file" name="%1$s" id="%2$s_%1$s" style="visibility: hidden; position: absolute;">';
+        $output .= '<input type="file" name="%1$s" id="%2$s_%1$s" style="visibility: hidden; position: absolute; left: -9999px;">';
 
         return sprintf($output,
             $this->getFullName(),

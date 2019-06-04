@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 14:41\n"
+"PO-Revision-Date: 2019-06-04 14:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1575,35 +1575,35 @@ msgstr "Hraje po celý den, zamíchá se s dalšími standardními playlisty na 
 #: /var/azuracast/www/config/forms/playlist.php:209
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:106
 msgid "Scheduled"
-msgstr ""
+msgstr "Rozvrh"
 
 #: /var/azuracast/www/config/forms/playlist.php:209
 msgid "Play during a scheduled time range."
-msgstr ""
+msgstr "Přehrávání v naplánovaném časovém rozmezí."
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Once per x Songs"
-msgstr ""
+msgstr "Jednou za x skladeb"
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Play exactly once every <i>x</i> songs."
-msgstr ""
+msgstr "Hraje přesně jednou každých <i>x</i> skladeb."
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "Jednou za x minut"
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Play exactly once every <i>x</i> minutes."
-msgstr ""
+msgstr "Hraje přesně jednou každých <i>x</i> minut."
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Once per Hour"
-msgstr ""
+msgstr "Jednou za hodinu"
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Play once per hour at the specified minute."
-msgstr ""
+msgstr "Hraje jednou za hodinu ve stanovené minutě."
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5

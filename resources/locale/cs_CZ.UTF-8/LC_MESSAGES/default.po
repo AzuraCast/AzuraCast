@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 15:01\n"
+"PO-Revision-Date: 2019-06-04 18:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1624,11 +1624,11 @@ msgstr "Ovládejte, jak bude tento playlist přehrávat software AutoDJ."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Přerušit přehrávání ostatních skladeb v naplánovaném čase."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Only loop through playlist once."
-msgstr ""
+msgstr "Přehrát playlist pouze jednou."
 
 #: /var/azuracast/www/config/forms/playlist.php:230
 msgid "Only play one track at scheduled time."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 19:30\n"
+"PO-Revision-Date: 2019-06-04 19:40\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1823,23 +1823,23 @@ msgstr "Přípojný bod/SID vzdálené stanice"
 
 #: /var/azuracast/www/config/forms/remote.php:139
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Pokud je přípojný bod (tj. <code>/radio.mp3</code>) nebo SHOUTcast SID (tj. <code>2</code>) vysílání odlišný od výše uvedeného, určete zdrojový přípojný bod zde."
 
 #: /var/azuracast/www/config/forms/remote.php:147
 msgid "Remote Station Source Username"
-msgstr ""
+msgstr "Zdrojové uživatelské jméno vzdálené stanice"
 
 #: /var/azuracast/www/config/forms/remote.php:148
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr ""
+msgstr "Pokud se vysílá pomocí funkce AutoDJ, zadejte zde zdrojové uživatelské jméno. Může být prázdné."
 
 #: /var/azuracast/www/config/forms/remote.php:156
 msgid "Remote Station Source Password"
-msgstr ""
+msgstr "Zdrojové heslo vzdálené stanice"
 
 #: /var/azuracast/www/config/forms/remote.php:157
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr ""
+msgstr "Pokud se vysílá pomocí funkce AutoDJ, zadejte zde zdrojové heslo."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:11
 msgid "This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href=\"%s\" target=\"_blank\">SoundExchange web site</a>."

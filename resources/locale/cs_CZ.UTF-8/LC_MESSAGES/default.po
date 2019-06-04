@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 14:00\n"
+"PO-Revision-Date: 2019-06-04 14:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1561,7 +1561,7 @@ msgstr "Vzdálená vyrovnávací paměť (sekundy)"
 
 #: /var/azuracast/www/config/forms/playlist.php:187
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
-msgstr ""
+msgstr "Délka přehrávání, kterou by měl Liquidsoap při použití tohoto vzdáleného playlistu přednačítat. Kratší časy mohou vést k přerušovanému přehrávání na nestabilních připojeních."
 
 #: /var/azuracast/www/config/forms/playlist.php:208
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:103

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 19:10\n"
+"PO-Revision-Date: 2019-06-04 19:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1783,19 +1783,19 @@ msgstr "Zobrazovaný název přiřazený tomuto vzdálenému připojení při zo
 
 #: /var/azuracast/www/config/forms/remote.php:48
 msgid "Remote Station Listening URL"
-msgstr ""
+msgstr "URL adresa pro vzdálenou stanici"
 
 #: /var/azuracast/www/config/forms/remote.php:49
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
-msgstr ""
+msgstr "Příklad: je-li URL adresa vzdáleného rádia %s, zadejte <code>%s</code>."
 
 #: /var/azuracast/www/config/forms/remote.php:62
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr ""
+msgstr "Přípojný bod/SID vzdálené stanice"
 
 #: /var/azuracast/www/config/forms/remote.php:63
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
-msgstr ""
+msgstr "Zadejte přípojný bod (tj. <code>%s</code>) nebo SHOUTcast SID (tj. <code>%s</code>) k určení konkrétního streamu, který se má použít pro statistiky nebo vysílání."
 
 #: /var/azuracast/www/config/forms/remote.php:75
 msgid "Broadcast AutoDJ to Remote Station"

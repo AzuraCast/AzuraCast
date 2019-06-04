@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 13:10\n"
+"PO-Revision-Date: 2019-06-04 13:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1532,7 +1532,7 @@ msgstr "Pokud jsou pro vaši stanici povoleny žádosti, uživatelé budou moci 
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr ""
+msgstr "Skrýt posluchačům metadata (\"Jingle mód\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."

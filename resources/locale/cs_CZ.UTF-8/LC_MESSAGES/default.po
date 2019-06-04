@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 19:40\n"
+"PO-Revision-Date: 2019-06-04 19:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1843,7 +1843,7 @@ msgstr "Pokud se vysílá pomocí funkce AutoDJ, zadejte zde zdrojové heslo."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:11
 msgid "This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href=\"%s\" target=\"_blank\">SoundExchange web site</a>."
-msgstr ""
+msgstr "Tento přehled je primárně určen pro licencování ve Spojených státech, pro webcastery, kteří platí licenční poplatky prostřednictvím služby SoundExchange. Využitelný ale může být i pro evropské zastupující agentury. Další informace o požadavcích na přehledy a klasifikaci naleznete na <a href=\"%s\" target=\"_blank\">webových stránkách SoundExchange</a>."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:15
 msgid "AzuraCast assumes that your station fits SoundExchange Transmission Category A, \"Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming.\" If your station does not fall within this category, update the transmission category field accordingly."

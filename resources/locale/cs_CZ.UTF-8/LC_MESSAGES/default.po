@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 19:00\n"
+"PO-Revision-Date: 2019-06-04 19:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1747,19 +1747,19 @@ msgstr "Motiv webu"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:10
 msgid "Code from Authenticator App"
-msgstr ""
+msgstr "Kód z autentizační aplikace"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
-msgstr ""
+msgstr "Zadejte aktuální kód poskytnutý autentizační aplikací, abyste ověřili, zda funguje správně."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:21
 msgid "Verify Authenticator"
-msgstr ""
+msgstr "Ověření autentizační app"
 
 #: /var/azuracast/www/config/forms/register.php:7
 msgid "Account Information"
-msgstr ""
+msgstr "Informace o účtu"
 
 #: /var/azuracast/www/config/forms/register.php:37
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:55
@@ -1767,19 +1767,19 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:13
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:13
 msgid "Create Account"
-msgstr ""
+msgstr "Vytvořit účet"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Umožněte posluchačům vybrat toto vzdálené připojení na veřejných stránkách této stanice."
 
 #: /var/azuracast/www/config/forms/remote.php:25
 msgid "Remote Station Type"
-msgstr ""
+msgstr "Typ vzdálené stanice"
 
 #: /var/azuracast/www/config/forms/remote.php:40
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Zobrazovaný název přiřazený tomuto vzdálenému připojení při zobrazení na administrativních nebo veřejných stránkách. Nechte prázdné pro automatické vygenerování."
 
 #: /var/azuracast/www/config/forms/remote.php:48
 msgid "Remote Station Listening URL"

@@ -88,6 +88,29 @@ You will need to recycle your Docker containers using `docker-compose down`, the
 
 To override more complex functionality in your Docker installation, see the "Customizing Docker" section below.
 
+## Expand the Docker Radio Station Port Range
+
+For performance reasons, by default Docker installations only open radio ports from port 8000 to 8099. This allows for 10 unique stations to operate.
+
+You can certainly run more than 10 stations on one AzuraCast instance, but if you want to directly access the additional radio ports, you can follow this simple process.
+
+In the same folder where your Docker installation is (if using recommended instructions, this is `/var/azuracast`), create a new file named `docker-compose.override.yml`.
+
+In this file, paste the following contents:
+
+```yaml
+version: '2.2'
+
+services:
+  stations:
+    ports:
+      - "8100-8500:8100-8500"
+```
+
+You can modify the port range in this file to meet your needs, such as expanding it to port 8999 instead of 8500.
+
+You will need to recycle your Docker containers using `docker-compose down`, then `docker-compose up -d` to apply any changes made to this file.
+
 ## Customizing Docker
 
 Docker installations come with four files by default:

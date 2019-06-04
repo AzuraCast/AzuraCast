@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 12:00\n"
+"PO-Revision-Date: 2019-06-04 12:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1459,35 +1459,35 @@ msgstr "Povolit playlist"
 
 #: /var/azuracast/www/config/forms/playlist.php:28
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."
-msgstr ""
+msgstr "Pokud je nastaveno na \"Ne\", seznam skladeb nebude zahrnut do přehrávání rádia, ale může být stále spravován."
 
 #: /var/azuracast/www/config/forms/playlist.php:39
 msgid "Playlist Name"
-msgstr ""
+msgstr "Název playlistu"
 
 #: /var/azuracast/www/config/forms/playlist.php:48
 msgid "Playlist Weight"
-msgstr ""
+msgstr "Váha playlistu"
 
 #: /var/azuracast/www/config/forms/playlist.php:49
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
-msgstr ""
+msgstr "Playlisty s vyšší váhou se přehrávají častěji než ostatní playlisty s nižší váhou."
 
 #: /var/azuracast/www/config/forms/playlist.php:53
 msgid "Low"
-msgstr ""
+msgstr "Nižší"
 
 #: /var/azuracast/www/config/forms/playlist.php:57
 msgid "High"
-msgstr ""
+msgstr "Vyšší"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "Song-Based Playlist"
-msgstr ""
+msgstr "Playlist založený na skladbách"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Playlist obsahující mediální soubory hostované na tomto serveru."
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "Remote URL Playlist"

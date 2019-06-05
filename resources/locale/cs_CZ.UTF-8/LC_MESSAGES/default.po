@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 14:42\n"
+"PO-Revision-Date: 2019-06-05 14:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -2020,27 +2020,27 @@ msgstr "Na centrální servery AzuraCast se posílají minimální informace o i
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>Nekontrolovat:</b> Neprovádět kontrolu aktualizací nebo oznámení."
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>Pouze vydání:</b> Kontrolovat pouze kritická oznámení a nové verze."
 
 #: /var/azuracast/www/config/forms/settings.php:145
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>Všechny aktualizace:</b>Kontrolovat všechna oznámení, vydání i drobné aktualizace."
 
 #: /var/azuracast/www/config/forms/settings.php:154
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Automaticky odesílat chybové zprávy AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Pokud webová aplikace narazí na chybu, můžete se rozhodnout automaticky odeslat anonymní zprávu o chybě týmu AzuraCast pro rychlejší diagnostiku a řešení."
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr ""
+msgstr "Chybové zprávy jsou spravovány <a href=\"%s\" target=\"_blank\">%s</a>."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12

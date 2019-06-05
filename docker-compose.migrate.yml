@@ -9,3 +9,5 @@ services:
   stations:
     volumes:
       - /var/azuracast/stations:/var/azuracast/stations
+    ports:
+      - '8100-8500:8100-8500'

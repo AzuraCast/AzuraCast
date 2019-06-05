@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 14:01\n"
+"PO-Revision-Date: 2019-06-05 14:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1972,11 +1972,11 @@ msgstr "Záhlaví API \"Access-Control-Allow-Origin\""
 
 #: /var/azuracast/www/config/forms/settings.php:99
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Další informace o tomto záhlaví</a>. Nastavte na *, chcete-li povolit všechny zdroje, nebo zadejte seznam zdrojů oddělených čárkou (,)."
 
 #: /var/azuracast/www/config/forms/settings.php:108
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Ochrana soukromí"
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."

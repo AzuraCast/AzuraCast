@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 08:50\n"
+"PO-Revision-Date: 2019-06-05 13:10\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1892,7 +1892,7 @@ msgstr "Základní URL webu"
 
 #: /var/azuracast/www/config/forms/settings.php:15
 msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."
-msgstr ""
+msgstr "Základní URL adresa, na které se tato služba nachází. Použijte externí adresu IP nebo úplný název domény (pokud existuje) směřující na tento server."
 
 #: /var/azuracast/www/config/forms/settings.php:28
 msgid "AzuraCast Instance Name"

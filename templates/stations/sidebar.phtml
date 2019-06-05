@@ -12,13 +12,13 @@ $now = \Cake\Chronos\Chronos::now($tz);
 $assets
     ->load('moment')
     ->load('moment_timezone')
-    ->addInlineJs($this->fetch('stations/sidebar.js'), 99);
+    ->addInlineJs($this->fetch('stations/sidebar.js', ['station' => $station]), 95);
 ?>
 
 <div class="navdrawer-header">
     <a class="navbar-brand px-0" href="<?=$router->fromHere('stations:profile:index') ?>">
         <div><?=$this->e($station->getName()) ?></div>
-        <div class="xs" id="station-time" data-tz="<?=$tz_str ?>" title="<?=$this->e(__('Station Time')) ?>">
+        <div class="xs" id="station-time" title="<?=$this->e(__('Station Time')) ?>">
             <?=$now->format('H:i:s T') ?>
         </div>
     </a>

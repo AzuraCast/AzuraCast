@@ -116,7 +116,7 @@ $(function() {
                     return '';
                 }
 
-                return formatTimestamp(row.mtime);
+                return moment.unix(row.mtime).format('lll');
             },
             "playlists": function(column, row) {
                 if (row.media_playlists.length > 0) {
@@ -409,10 +409,6 @@ $(function() {
             }
         });
         return $html;
-    }
-
-    function formatTimestamp(unix_timestamp) {
-        return moment.unix(unix_timestamp).format('lll');
     }
 
     function formatFileSize(bytes) {

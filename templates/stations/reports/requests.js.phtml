@@ -1,0 +1,12 @@
+$(function() {
+    var grid = $(".data-table").bootgrid({
+        caseSensitive: false,
+        sorting: false
+    }).on("loaded.rs.jquery.bootgrid", function() {
+        /* Executes after data is loaded and rendered */
+        grid.find("time[data-original]").each(function() {
+            $(this).text(moment.unix($(this).data('original')).format('lll'));
+        });
+    });
+});
+

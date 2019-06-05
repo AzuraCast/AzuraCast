@@ -1,9 +1,9 @@
 $(function() {
+    moment.tz.setDefault(<?=$this->escapeJs($station->getTimezone()) ?>);
+
     function updateClock() {
         var station_time = $('#station-time');
-        var station_tz = station_time.data('tz');
-
-        station_time.text(moment().tz(station_tz).format('LTS z'));
+        station_time.text(moment().format('LTS z'));
     }
 
     setInterval(updateClock, 1000);

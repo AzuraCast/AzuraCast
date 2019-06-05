@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 13:41\n"
+"PO-Revision-Date: 2019-06-05 13:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1904,39 +1904,39 @@ msgstr "Tento název se zobrazí jako dílčí záhlaví vedle loga AzuraCast, a
 
 #: /var/azuracast/www/config/forms/settings.php:37
 msgid "Prefer Browser URL (If Available)"
-msgstr ""
+msgstr "Preferovat URL adresu prohlížeče (je-li k dispozici)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Pokud je nastaveno na hodnotu „Ano“, bude URL adresa prohlížeče použita místo základní URL adresy, pokud je k dispozici. Chcete-li vždy použít základní URL adresu, nastavte hodnotu „Ne“."
 
 #: /var/azuracast/www/config/forms/settings.php:49
 msgid "Use Web Proxy for Radio"
-msgstr ""
+msgstr "Použít pro rádio web proxy"
 
 #: /var/azuracast/www/config/forms/settings.php:50
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
-msgstr ""
+msgstr "Standardně rozhlasové stanice vysílají na svých vlastních portech (tj. 8000). Pokud používáte službu jako CloudFlare nebo přistupujete k vaší rozhlasové stanici pomocí protokolu SSL, měli byste tuto funkci povolit, aby rádio směrovalo přes webové porty (80 a 443)."
 
 #: /var/azuracast/www/config/forms/settings.php:61
 msgid "Days of Playback History to Keep"
-msgstr ""
+msgstr "Doba udržování historie přehrávání"
 
 #: /var/azuracast/www/config/forms/settings.php:62
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
-msgstr ""
+msgstr "Nastavte delší dobu, abyste zachovali více historie přehrávání. Chcete-li ušetřit místo na disku, nastavte kratší."
 
 #: /var/azuracast/www/config/forms/settings.php:64
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:17
 msgid "Last 14 Days"
-msgstr ""
+msgstr "Posledních 14 dní"
 
 #: /var/azuracast/www/config/forms/settings.php:65
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:85
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:64
 msgid "Last 30 Days"
-msgstr ""
+msgstr "Posledních 30 dní"
 
 #: /var/azuracast/www/config/forms/settings.php:66
 msgid "Last 60 Days"

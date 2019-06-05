@@ -4,11 +4,6 @@
  * @var \Azura\Assets $assets
  */
 
-$tz_str = $station->getTimezone();
-$tz = new DateTimeZone($tz_str);
-
-$now = \Cake\Chronos\Chronos::now($tz);
-
 $assets
     ->load('moment')
     ->load('moment_timezone')
@@ -19,7 +14,7 @@ $assets
     <a class="navbar-brand px-0" href="<?=$router->fromHere('stations:profile:index') ?>">
         <div><?=$this->e($station->getName()) ?></div>
         <div class="xs" id="station-time" title="<?=$this->e(__('Station Time')) ?>">
-            <?=$now->format('H:i:s T') ?>
+            <?=date('H:i:s T') ?>
         </div>
     </a>
 </div>

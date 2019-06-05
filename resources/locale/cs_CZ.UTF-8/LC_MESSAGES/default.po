@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 14:20\n"
+"PO-Revision-Date: 2019-06-05 14:30\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1988,31 +1988,31 @@ msgstr "Analytický sběr nad posluchači"
 
 #: /var/azuracast/www/config/forms/settings.php:117
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Agregované statistiky posluchačů se používají k zobrazení zpráv o stanicích v systému. Statistiky posluchačů založené na protokolu IP slouží k zobrazení aktivních posluchačů a mohou být vyžadovány pro zprávy o licenčních poplatcích."
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>Úplný:</b> Sbírejte jak souhrnné statistiky posluchačů, tak statistiky posluchačů založené na protokolu IP"
 
 #: /var/azuracast/www/config/forms/settings.php:121
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>Omezený:</b> Sbírejte pouze souhrnné statistiky posluchačů"
 
 #: /var/azuracast/www/config/forms/settings.php:122
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>Žádný:</b> Neshromažďovat žádné analýzy posluchačů"
 
 #: /var/azuracast/www/config/forms/settings.php:131
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "Instalační telemetrie AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Vyberte si, zda vaše instalace komunikuje s centrálními servery AzuraCast a kontroluje aktualizace a oznámení.<br>AzuraCast respektuje vaše soukromí; další podrobnosti naleznete v <a href=\"%s\" target=\"_blank\">zásadách ochrany osobních údajů</a>."
 
 #: /var/azuracast/www/config/forms/settings.php:139
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Kontrola aktualizací a oznámení"
 
 #: /var/azuracast/www/config/forms/settings.php:140
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."

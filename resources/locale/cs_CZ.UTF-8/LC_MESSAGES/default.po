@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-04 20:10\n"
+"PO-Revision-Date: 2019-06-05 08:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1876,19 +1876,19 @@ msgstr "Generovat přehled"
 #: /var/azuracast/www/config/forms/role.php:13
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:23
 msgid "Role Name"
-msgstr ""
+msgstr "Název role"
 
 #: /var/azuracast/www/config/forms/role.php:22
 msgid "System-Wide Permissions"
-msgstr ""
+msgstr "Systémová oprávnění"
 
 #: /var/azuracast/www/config/forms/role.php:35
 msgid "Permissions for %s"
-msgstr ""
+msgstr "Oprávnění pro %s"
 
 #: /var/azuracast/www/config/forms/settings.php:14
 msgid "Site Base URL"
-msgstr ""
+msgstr "Základní URL webu"
 
 #: /var/azuracast/www/config/forms/settings.php:15
 msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."

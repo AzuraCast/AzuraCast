@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 14:10\n"
+"PO-Revision-Date: 2019-06-05 14:20\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1980,11 +1980,11 @@ msgstr "Ochrana soukromí"
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast neposílá data stanice nebo posluchače na žádný externí server. Zde můžete ovládat, kolik dat AzuraCast zaznamenává o vašich posluchačích."
 
 #: /var/azuracast/www/config/forms/settings.php:116
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Analytický sběr nad posluchači"
 
 #: /var/azuracast/www/config/forms/settings.php:117
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."

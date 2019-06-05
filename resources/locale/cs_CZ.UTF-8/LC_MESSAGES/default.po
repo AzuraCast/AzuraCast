@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 13:50\n"
+"PO-Revision-Date: 2019-06-05 14:01\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1940,35 +1940,35 @@ msgstr "Posledních 30 dní"
 
 #: /var/azuracast/www/config/forms/settings.php:66
 msgid "Last 60 Days"
-msgstr ""
+msgstr "Posledních 60 dní"
 
 #: /var/azuracast/www/config/forms/settings.php:67
 msgid "Last Year"
-msgstr ""
+msgstr "Poslední rok"
 
 #: /var/azuracast/www/config/forms/settings.php:68
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Poslední dva roky"
 
 #: /var/azuracast/www/config/forms/settings.php:69
 msgid "Indefinitely"
-msgstr ""
+msgstr "Na neurčito"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Security Controls"
-msgstr ""
+msgstr "Možnosti zabezpečení"
 
 #: /var/azuracast/www/config/forms/settings.php:86
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "Vždy používat HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:87
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Chcete-li vždy používat zabezpečené URL adresy „https: //“, nastavte možnost „Ano“ a při navštívení nezabezpečené URL adresy automaticky přesměrujete na zabezpečenou URL adresu."
 
 #: /var/azuracast/www/config/forms/settings.php:97
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "Záhlaví API \"Access-Control-Allow-Origin\""
 
 #: /var/azuracast/www/config/forms/settings.php:99
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."

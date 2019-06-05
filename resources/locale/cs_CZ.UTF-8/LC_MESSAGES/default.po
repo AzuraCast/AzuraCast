@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-05 13:10\n"
+"PO-Revision-Date: 2019-06-05 13:41\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -1896,11 +1896,11 @@ msgstr "Základní URL adresa, na které se tato služba nachází. Použijte ex
 
 #: /var/azuracast/www/config/forms/settings.php:28
 msgid "AzuraCast Instance Name"
-msgstr ""
+msgstr "Název instance AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:29
 msgid "This name will appear as a sub-header next to the AzuraCast logo, to help identify this server."
-msgstr ""
+msgstr "Tento název se zobrazí jako dílčí záhlaví vedle loga AzuraCast, aby bylo možné tento server identifikovat."
 
 #: /var/azuracast/www/config/forms/settings.php:37
 msgid "Prefer Browser URL (If Available)"

@@ -4,8 +4,10 @@ namespace App\Entity\Repository;
 use App\Entity;
 use App\Radio\Filesystem;
 use Azura\Doctrine\Repository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
+use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe\DataMapping\Stream;
+use Ramsey\Uuid\Uuid;
 
 class StationMediaRepository extends Repository
 {
@@ -136,48 +138,42 @@ class StationMediaRepository extends Repository
      */
     public function loadFromFile(Entity\StationMedia $media, $file_path = null): void
     {
-        // Load metadata from supported files.
-        $id3 = new \getID3();
- 
-        $id3->option_md5_data = true;
-        $id3->option_md5_data_source = true;
-        $id3->encoding = 'UTF-8';
+        $ffmpeg = FFMpeg::create();
 
-        $file_info = $id3->analyze($file_path);
+        $media_audio = $ffmpeg->open($file_path);
+        $media_audio_format = $media_audio->getFormat();
 
-        // Report any errors found by the file analysis to the logs
-        if (!empty($file_info['error'])) {
+        $media_tags = $media_audio_format->get('tags');
 
-            $media_warning = 'Warning for uploaded media file "'.pathinfo($media->getPath(), PATHINFO_FILENAME).'": '.json_encode($file_info['error']);
-            error_log($media_warning);
-        }
+        $media->setLength((int) $media_audio_format->get('duration'));
 
-        // Set playtime length if the analysis was able to determine it
-        if ( is_numeric($file_info['playtime_seconds']) ) {
-            $media->setLength($file_info['playtime_seconds']);
-        }
+        $media->setTitle($media_tags['title'] ?? '');
+        $media->setArtist($media_tags['artist'] ?? '');
+        $media->setAlbum($media_tags['album'] ?? '');
+        $media->setLyrics($media_tags['lyrics'] ?? '');
 
-        $tags_to_set = ['title', 'artist', 'album'];
-        if (!empty($file_info['tags'])) {
-            foreach ($file_info['tags'] as $tag_type => $tag_data) {
-                foreach ($tags_to_set as $tag) {
-                    if (!empty($tag_data[$tag][0])) {
-                        $media->{'set'.ucfirst($tag)}(mb_convert_encoding($tag_data[$tag][0], "UTF-8"));
-                    }
-                }
+        /** @var Stream $videoStream */
+        foreach ($media_audio->getStreams()->videos()->all() as $videoStream) {
+            $codec_name = $videoStream->get('codec_name');
 
-                if (!empty($tag_data['unsynchronized_lyric'][0])) {
-                    $media->setLyrics($tag_data['unsynchronized_lyric'][0]);
-                }
+            if ($codec_name === 'mjpeg') {
+                $image_file_name =  Uuid::uuid4()->toString();
+                $image_file_path = '/tmp/' . $image_file_name . '.jpg';
+
+                $ffmpeg->getFFMpegDriver()->command([
+                    '-i', $file_path,
+                    '-an', '-vcodec',
+                    'copy', $image_file_path
+                ]);
+
+                $image_file_data = file_get_contents($image_file_path);
+
+                $this->writeAlbumArt($media, $image_file_data);
+
+                unlink($image_file_path);
+
+                break;
             }
-        }
-
-        if (!empty($file_info['attached_picture'][0])) {
-            $picture = $file_info['attached_picture'][0];
-            $this->writeAlbumArt($media, $picture['data']);
-        } else if (!empty($file_info['comments']['picture'][0])) {
-            $picture = $file_info['comments']['picture'][0];
-            $this->writeAlbumArt($media, $picture['data']);
         }
 
         // Attempt to derive title and artist from filename.

@@ -5,6 +5,7 @@ use App\MessageQueue;
 use App\Message;
 use App\Radio\Filesystem;
 use App\Radio\Quota;
+use Bernard\Envelope;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
@@ -94,6 +95,7 @@ class Media extends AbstractTask
         $stats = [
             'total_size' => '0',
             'total_files' => 0,
+            'already_queued' => 0,
             'unchanged' => 0,
             'updated' => 0,
             'created' => 0,
@@ -121,6 +123,36 @@ class Media extends AbstractTask
 
         $stats['total_size'] = $total_size.' ('.Quota::getReadableSize($total_size).')';
         $stats['total_files'] = count($music_files);
+
+        // Check existing queue.
+        $queued_media_updates = [];
+        $queued_new_files = [];
+
+        $queue = $this->message_queue->getGlobalQueue();
+
+        $queue_position = 0;
+        $queue_iteration = 20;
+
+        while(true) {
+            $record_subset = $queue->peek($queue_position, $queue_iteration);
+
+            foreach($record_subset as $envelope) {
+                /** @var Envelope $envelope */
+                $message = $envelope->getMessage();
+
+                if ($message instanceof Message\ReprocessMediaMessage) {
+                    $queued_media_updates[$message->media_id] = true;
+                } else if ($message instanceof Message\AddNewMediaMessage && $message->station_id === $station->getId()) {
+                    $queued_new_files[$message->path] = true;
+                }
+            }
+
+            if (count($record_subset) < $queue_iteration) {
+                break;
+            }
+
+            $queue_position += $queue_iteration;
+        }
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
@@ -150,7 +182,9 @@ class Media extends AbstractTask
                 }
 
                 $file_info = $music_files[$path_hash];
-                if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+                if (isset($queued_media_updates[$media_row->getId()])) {
+                    $stats['already_queued']++;
+                } else if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
                     $message = new Message\ReprocessMediaMessage;
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
@@ -182,13 +216,17 @@ class Media extends AbstractTask
 
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
-            $message = new Message\AddNewMediaMessage;
-            $message->station_id = $station->getId();
-            $message->path = $new_music_file['path'];
+            if (isset($queued_new_files[$new_music_file['path']])) {
+                $stats['already_queued']++;
+            } else {
+                $message = new Message\AddNewMediaMessage;
+                $message->station_id = $station->getId();
+                $message->path = $new_music_file['path'];
 
-            $this->message_queue->produce($message);
+                $this->message_queue->produce($message);
 
-            $stats['created']++;
+                $stats['created']++;
+            }
         }
 
         $this->_flushAndClearRecords();

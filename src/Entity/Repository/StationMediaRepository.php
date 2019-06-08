@@ -291,27 +291,27 @@ class StationMediaRepository extends Repository
         $source_image_width = imagesx($source_gd_image);
         $source_image_height = imagesy($source_gd_image);
 
-        $source_aspect_ratio = $source_image_width / $source_image_height;
-        $thumbnail_aspect_ratio = $dest_max_width / $dest_max_height;
-
         if ($source_image_width <= $dest_max_width && $source_image_height <= $dest_max_height) {
-            $thumbnail_image_width = $source_image_width;
-            $thumbnail_image_height = $source_image_height;
-        } elseif ($thumbnail_aspect_ratio > $source_aspect_ratio) {
-            $thumbnail_image_width = (int) ($dest_max_height * $source_aspect_ratio);
-            $thumbnail_image_height = $dest_max_height;
+            $thumbnail_gd_image = $source_gd_image;
         } else {
-            $thumbnail_image_width = $dest_max_width;
-            $thumbnail_image_height = (int) ($dest_max_width / $source_aspect_ratio);
-        }
+            $source_aspect_ratio = $source_image_width / $source_image_height;
+            $thumbnail_aspect_ratio = $dest_max_width / $dest_max_height;
 
-        $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
-        imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
+            if ($thumbnail_aspect_ratio > $source_aspect_ratio) {
+                $thumbnail_image_width = (int)($dest_max_height * $source_aspect_ratio);
+                $thumbnail_image_height = $dest_max_height;
+            } else {
+                $thumbnail_image_width = $dest_max_width;
+                $thumbnail_image_height = (int)($dest_max_width / $source_aspect_ratio);
+            }
+
+            $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
+            imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
+        }
 
         ob_start();
         imagejpeg($thumbnail_gd_image, NULL, 90);
-        $album_art = ob_get_contents();
-        ob_end_clean();
+        $album_art = ob_get_clean();
 
         imagedestroy($source_gd_image);
         imagedestroy($thumbnail_gd_image);

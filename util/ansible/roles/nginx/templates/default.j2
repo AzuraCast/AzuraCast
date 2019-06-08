@@ -37,6 +37,7 @@ server {
         include fastcgi_params;
 
         fastcgi_read_timeout 1800;
+        fastcgi_buffering off;
     }
 
     # Reverse proxy all possible radio listening ports (8000, 8010...8480, 8490)

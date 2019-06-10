@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-05-31 09:37
+PO-Revision-Date: 2019-06-10 10:30
 Language: cs_CZ
 Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;
 X-Generator: crowdin.com
@@ -102,7 +102,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Relays' => 
       array (
-        0 => 'Vzdálená relé',
+        0 => 'Vzdálená připojení',
       ),
       'Media' => 
       array (
@@ -114,7 +114,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Web Hooks' => 
       array (
-        0 => 'Webové háčky',
+        0 => 'Webhooky',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
@@ -458,7 +458,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Web Hook' => 
       array (
-        0 => 'Webový háček',
+        0 => 'Webhook',
       ),
       '%s enabled.' => 
       array (
@@ -470,7 +470,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Web Hook Test Output' => 
       array (
-        0 => 'Výstupní test webového háčku',
+        0 => 'Výstupní test webhooku',
       ),
       'Liquidsoap Log' => 
       array (
@@ -774,483 +774,483 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Hide Album Art on Public Pages' => 
       array (
-        0 => '',
+        0 => 'Skrýt obal alba na veřejných stránkách',
       ),
       'If selected, album art will not display on public-facing radio pages.' => 
       array (
-        0 => '',
+        0 => 'Pokud je vybráno, nebude se obal alba zobrazovat na veřejně přístupných stránkách.',
       ),
       'Homepage Redirect URL' => 
       array (
-        0 => '',
+        0 => 'URL adresa přesměrování z úvodní stránky',
       ),
       'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
       array (
-        0 => '',
+        0 => 'Pokud není návštěvník přihlášen a navštíví domovskou stránku AzuraCast, můžete ho automaticky přesměrovat na zde uvedenou URL adresu. Chcete-li ho přesměrovat na výchozí přihlašovací obrazovku, ponechte prázdné.',
       ),
       'Default Album Art URL' => 
       array (
-        0 => '',
+        0 => 'URL adresa výchozího obrázku alba',
       ),
       'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
-        0 => '',
+        0 => 'Pokud skladba nemá žádný obrázek alba, bude zobrazen obrázek z této URL adresy. Chcete-li použít standardní zástupný obrázek, ponechte prázdné.',
       ),
       'Hide AzuraCast Branding on Public Pages' => 
       array (
-        0 => '',
+        0 => 'Skrýt AzuraCast značku na veřejných stránkách',
       ),
       'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
       array (
-        0 => '',
+        0 => 'Pokud je tato možnost vybrána, odstraní se značka AzuraCast ze stránek, které jsou veřejně přístupné.',
       ),
       'Custom CSS for Public Pages' => 
       array (
-        0 => '',
+        0 => 'Vlastní CSS pro veřejné stránky',
       ),
       'This CSS will be applied to the station public pages and login page.' => 
       array (
-        0 => '',
+        0 => 'Tento CSS bude aplikován na veřejné stránky stanice a na přihlašovací stránku.',
       ),
       'Custom JS for Public Pages' => 
       array (
-        0 => '',
+        0 => 'Vlastní JS pro veřejné stránky',
       ),
       'This javascript code will be applied to the station public pages and login page.' => 
       array (
-        0 => '',
+        0 => 'Tento javascript bude aplikován na veřejné stránky stanice a na přihlašovací stránku.',
       ),
       'Custom CSS for Internal Pages' => 
       array (
-        0 => '',
+        0 => 'Vlastní CSS pro interní stránky',
       ),
       'This CSS will be applied to the main management pages, like this one.' => 
       array (
-        0 => '',
+        0 => 'Tento CSS bude aplikován na hlavní správcovské stránky, jako je tato.',
       ),
       'Field Name' => 
       array (
-        0 => '',
+        0 => 'Název pole',
       ),
       'This will be used as the label when editing individual songs, and will show in API results.' => 
       array (
-        0 => '',
+        0 => 'Toto bude použito jako popisek při úpravách jednotlivých skladeb a bude zobrazeno ve výsledcích API.',
       ),
       'Programmatic Name' => 
       array (
-        0 => '',
+        0 => 'Systémový název',
       ),
       'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
       array (
-        0 => '',
+        0 => 'Volitelně zadejte název přátelský k rozhraní API, například <code>nazev_pole</code>. Ponechte toto pole prázdné, aby se vytvořilo automaticky.',
       ),
       'Important Notes' => 
       array (
-        0 => '',
+        0 => 'Důležité poznámky',
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => '',
+        0 => '<p>SHOUTcast 2 DNAS není volný software a jeho restriktivní licence neumožňuje AzuraCast jeho distribuci. Aby bylo možné nainstalovat SHOUTcast, je potřeba si stáhnout variantu Linux x64 z webové stránky <a href="%s" target="_blank">SHOUTcast Radio Manager</a>. Níže nahrajte soubor <code>sc_serv2_linux_x64-latest.tar.gz</code> pro automatické rozbalení do správného adresáře. Vezměte prosím na vědomí, že při používání SHOUTcast neposkytujeme žádnou uživatelskou podporu.</p>',
       ),
       'Current Installed Version' => 
       array (
-        0 => '',
+        0 => 'Aktuálně nainstalovaná verze',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => '',
+        0 => 'SHOUTcast není v této instalaci aktuálně nainstalován.',
       ),
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
-        0 => '',
+        0 => 'Vyberte soubor SHOUTcast 64-bit .tar.gz',
       ),
       'Upload' => 
       array (
-        0 => '',
+        0 => 'Nahrát',
       ),
       'E-mail Address' => 
       array (
-        0 => '',
+        0 => 'Emailová adresa',
       ),
       'Password' => 
       array (
-        0 => '',
+        0 => 'Heslo',
       ),
       'Log in' => 
       array (
-        0 => '',
+        0 => 'Přihlášení',
       ),
       'File Name' => 
       array (
-        0 => '',
+        0 => 'Jméno souboru',
       ),
       'The relative path of the file in the station\'s media directory.' => 
       array (
-        0 => '',
+        0 => 'Relativní cesta souboru v mediálním adresáři stanice.',
       ),
       'Song Album' => 
       array (
-        0 => '',
+        0 => 'Album skladby',
       ),
       'Song Lyrics' => 
       array (
-        0 => '',
+        0 => 'Texty skladby',
       ),
       'Replace Album Cover Art' => 
       array (
-        0 => '',
+        0 => 'Vyměnit přebal alba',
       ),
       'ISRC' => 
       array (
-        0 => '',
+        0 => 'ISRC',
       ),
       'International Standard Recording Code, used for licensing reports.' => 
       array (
-        0 => '',
+        0 => 'Mezinárodní standardní kód záznamů, který se používá pro zprávy o licencích.',
       ),
       'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
       array (
-        0 => '',
+        0 => 'Správci mohou přizpůsobit pole, která se zde zobrazují, na <a href="%s">stránce pro správu</a>.',
       ),
       'Control Song Playback' => 
       array (
-        0 => '',
+        0 => 'Ovládání přehrávání skladeb',
       ),
       'Song Length (seconds)' => 
       array (
-        0 => '',
+        0 => 'Délka skladby (v sekundách)',
       ),
       'Custom Fading: Overlap Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Vlastní přechod: doba překrytí (v sekundách)',
       ),
       'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'Doba, po kterou by se tato skladba měla při přechodu překrývat se sousedními. Chcete-li použít výchozí nastavení systému, ponechte prázdné.',
       ),
       'Custom Fading: Fade-In Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Vlastní přechod: zesilování zvuku (v sekundách)',
       ),
       'The time period that the song should fade in. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'Časová sekvence, ve které by se měla skladba překrývat na začátku. Chcete-li použít výchozí nastavení systému, ponechte prázdné.',
       ),
       'Custom Fading: Fade-Out Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Vlastní přechod: zeslabování zvuku (v sekundách)',
       ),
       'The time period that the song should fade out. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'Časová sekvence, ve které by se měla skladba překrývat na konci. Chcete-li použít výchozí nastavení systému, ponechte prázdné.',
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'Vlastní střih: místo nástupu (v sekundách)',
       ),
       'Seconds from the start of the song that the AutoDJ should start playing.' => 
       array (
-        0 => '',
+        0 => 'Počet sekund od začátku skladby, kde má AutoDJ začít přehrávat.',
       ),
       'Custom Cues: Cue-Out Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'Vlastní střih: místo ukončení (v sekundách)',
       ),
       'Seconds from the start of the song that the AutoDJ should stop playing.' => 
       array (
-        0 => '',
+        0 => 'Počet sekund od začátku skladby, kde má AutoDJ přestat přehrávat.',
       ),
       'Mount Point URL' => 
       array (
-        0 => '',
+        0 => 'URL přípojného bodu',
       ),
       'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
-        0 => '',
+        0 => 'Tento řetězec by měl vždy začínat lomítkem (/) a musí být platnou adresou URL, například /autodj.mp3',
       ),
       'Display Name' => 
       array (
-        0 => '',
+        0 => 'Zobrazovaný název',
       ),
       'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
-        0 => '',
+        0 => 'Zobrazovaný název přiřazený tomuto přípojnému bodu při zobrazení na administrativních nebo veřejných stránkách. Nechte prázdné pro automatické vygenerování.',
       ),
       'Show on Public Pages' => 
       array (
-        0 => '',
+        0 => 'Zobrazit na veřejných stránkách',
       ),
       'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
       array (
-        0 => '',
+        0 => 'Umožněte posluchačům vybrat tento přípojný bod na veřejných stránkách této stanice.',
       ),
       'Set as Default Mount Point' => 
       array (
-        0 => '',
+        0 => 'Nastavit jako výchozí přípojný bod',
       ),
       'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => '',
+        0 => 'Pokud je toto připojení výchozí, bude přehráno v náhledu rádia a na veřejné stránce rádia.',
       ),
       'Relay Stream URL' => 
       array (
-        0 => '',
+        0 => 'URL jiného streamu',
       ),
       'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => '',
+        0 => 'Zadejte úplnou adresu URL jiného streamu, aby bylo možné přenášet vysílání prostřednictvím tohoto bodu připojení.',
       ),
       'Publish to "Yellow Pages" Directories' => 
       array (
-        0 => '',
+        0 => 'Publikovat do adresářů "Zlaté stránky"',
       ),
       'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
       array (
-        0 => '',
+        0 => 'Povolit publikování tohoto přípojného bodu do veřejných adresářů rádiových stanic typu "Zlaté stránky".',
       ),
       'Enable AutoDJ' => 
       array (
-        0 => '',
+        0 => 'Povolit funkci AutoDJ',
       ),
       'If enabled, the AutoDJ will automatically play music to this mount point.' => 
       array (
-        0 => '',
+        0 => 'Pokud je povoleno, funkce AutoDJ bude do tohoto přípojného bodu automaticky přehrávat playlisty.',
       ),
       'AutoDJ Format' => 
       array (
-        0 => '',
+        0 => 'Formát funkce AutoDJ',
       ),
       'AutoDJ Bitrate (kbps)' => 
       array (
-        0 => '',
+        0 => 'Přenosová rychlost funkce AutoDJ (kbps)',
       ),
       'Custom Stream URL' => 
       array (
-        0 => '',
+        0 => 'Vlastní URL streamu',
       ),
       'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
       array (
-        0 => '',
+        0 => 'Pro tento stream můžete nastavit vlastní adresu URL, kterou bude služba AzuraCast používat, když na ni bude odkazováno. Chcete-li použít výchozí hodnotu, ponechte prázdné.',
       ),
       'Fallback Mount' => 
       array (
-        0 => '',
+        0 => 'Nouzový přípojný bod',
       ),
       'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => '',
+        0 => 'Pokud tento přípojný bod nepřehrává zvuk, posluchači budou automaticky přesměrováni na tento přípojný bod. Výchozí hodnota je /error.mp3, opakující se chybová zpráva.',
       ),
       'Custom Frontend Configuration' => 
       array (
-        0 => '',
+        0 => 'Vlastní konfigurace frontendu',
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => '',
+        0 => 'Zde můžete zahrnout všechna speciální nastavení přípojného bodu, a to buď ve formátu JSON { key: \'value\' } nebo XML &lt;key&gt;value&lt;/key&gt;',
       ),
       'Stream path cannot include reserved keywords: %s' => 
       array (
-        0 => '',
+        0 => 'Cesta streamu nemůže obsahovat vyhrazená klíčová slova: %s',
       ),
       'YP Directory Authorization Hash' => 
       array (
-        0 => '',
+        0 => 'Autorizační hash adresáře YP',
       ),
       'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
       array (
-        0 => '',
+        0 => 'Pokud je váš stream výše nastaven na publikování do adresáře YP, musíte zadat hash pro autorizaci. Autorizační hashe můžete spravovat <a href="%s" target="_blank">na webové stránce SHOUTcast</a>.',
       ),
       'Basic Information' => 
       array (
-        0 => '',
+        0 => 'Základní Informace',
       ),
       'Source' => 
       array (
-        0 => '',
+        0 => 'Zdroj',
       ),
       'Scheduling' => 
       array (
-        0 => '',
+        0 => 'Plánování',
       ),
       'Enable Playlist' => 
       array (
-        0 => '',
+        0 => 'Povolit playlist',
       ),
       'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
       array (
-        0 => '',
+        0 => 'Pokud je nastaveno na "Ne", seznam skladeb nebude zahrnut do přehrávání rádia, ale může být stále spravován.',
       ),
       'Playlist Name' => 
       array (
-        0 => '',
+        0 => 'Název playlistu',
       ),
       'Playlist Weight' => 
       array (
-        0 => '',
+        0 => 'Váha playlistu',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
-        0 => '',
+        0 => 'Playlisty s vyšší váhou se přehrávají častěji než ostatní playlisty s nižší váhou.',
       ),
       'Low' => 
       array (
-        0 => '',
+        0 => 'Nižší',
       ),
       'High' => 
       array (
-        0 => '',
+        0 => 'Vyšší',
       ),
       'Song-Based Playlist' => 
       array (
-        0 => '',
+        0 => 'Playlist založený na skladbách',
       ),
       'A playlist containing media files hosted on this server.' => 
       array (
-        0 => '',
+        0 => 'Playlist obsahující mediální soubory hostované na tomto serveru.',
       ),
       'Remote URL Playlist' => 
       array (
-        0 => '',
+        0 => 'Vzdálený playlist',
       ),
       'A playlist that instructs the station to play from a remote URL.' => 
       array (
-        0 => '',
+        0 => 'Seznam stop, který instruuje stanici, aby hrála ze vzdálené URL adresy.',
       ),
       'Song Playback Order' => 
       array (
-        0 => '',
+        0 => 'Pořadí přehrávání skladeb',
       ),
       'Shuffled' => 
       array (
-        0 => '',
+        0 => 'Zamíchané',
       ),
       'Random' => 
       array (
-        0 => '',
+        0 => 'Náhodné',
       ),
       'Sequential' => 
       array (
-        0 => '',
+        0 => 'Postupné',
       ),
       'Import Existing Playlist' => 
       array (
-        0 => '',
+        0 => 'Importovat existující playlist',
       ),
       'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
       array (
-        0 => '',
+        0 => 'Vyberte soubor existujícího playlistu a přidejte jeho obsah do tohoto playlistu. Podporované typy jsou PLS a M3U.',
       ),
       'Allow Requests from This Playlist' => 
       array (
-        0 => '',
+        0 => 'Povolit žádosti o skladby z tohoto playlistu',
       ),
       'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
       array (
-        0 => '',
+        0 => 'Pokud jsou pro vaši stanici povoleny žádosti, uživatelé budou moci požádat o skladby, které jsou v tomto playlistu.',
       ),
       'Hide Metadata from Listeners ("Jingle Mode")' => 
       array (
-        0 => '',
+        0 => 'Skrýt posluchačům metadata ("Jingle mód")',
       ),
       'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
       array (
-        0 => '',
+        0 => 'Povolte toto nastavení, abyste pro soubory v tomto playlistu zabránili odesílání metadat do AutoDJe. To je užitečné v případě, že playlist obsahuje znělky, reklamy a podobně.',
       ),
       'Remote URL' => 
       array (
-        0 => '',
+        0 => 'Vzdálené URL',
       ),
       'Remote URL Type' => 
       array (
-        0 => '',
+        0 => 'Typ vzdáleného URL',
       ),
       'Direct Stream URL' => 
       array (
-        0 => '',
+        0 => 'URL přímého streamu',
       ),
       'Playlist (M3U/PLS) URL' => 
       array (
-        0 => '',
+        0 => 'URL playlistu (M3U/PLS)',
       ),
       'Remote Playback Buffer (Seconds)' => 
       array (
-        0 => '',
+        0 => 'Vzdálená vyrovnávací paměť (sekundy)',
       ),
       'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
       array (
-        0 => '',
+        0 => 'Délka přehrávání, kterou by měl Liquidsoap při použití tohoto vzdáleného playlistu přednačítat. Kratší časy mohou vést k přerušovanému přehrávání na nestabilních připojeních.',
       ),
       'General Rotation' => 
       array (
-        0 => '',
+        0 => 'Obecná rotace',
       ),
       'Plays all day, shuffles with other standard playlists based on weight.' => 
       array (
-        0 => '',
+        0 => 'Hraje po celý den, zamíchá se s dalšími standardními playlisty na základě váhy.',
       ),
       'Scheduled' => 
       array (
-        0 => '',
+        0 => 'Rozvrh',
       ),
       'Play during a scheduled time range.' => 
       array (
-        0 => '',
+        0 => 'Přehrávání v naplánovaném časovém rozmezí.',
       ),
       'Once per x Songs' => 
       array (
-        0 => '',
+        0 => 'Jednou za x skladeb',
       ),
       'Play exactly once every <i>x</i> songs.' => 
       array (
-        0 => '',
+        0 => 'Hraje přesně jednou každých <i>x</i> skladeb.',
       ),
       'Once Per x Minutes' => 
       array (
-        0 => '',
+        0 => 'Jednou za x minut',
       ),
       'Play exactly once every <i>x</i> minutes.' => 
       array (
-        0 => '',
+        0 => 'Hraje přesně jednou každých <i>x</i> minut.',
       ),
       'Once per Hour' => 
       array (
-        0 => '',
+        0 => 'Jednou za hodinu',
       ),
       'Play once per hour at the specified minute.' => 
       array (
-        0 => '',
+        0 => 'Hraje jednou za hodinu ve stanovené minutě.',
       ),
       'Advanced' => 
       array (
-        0 => '',
+        0 => 'Pokročilé',
       ),
       'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
       array (
-        0 => '',
+        0 => 'Manuálně definujte, jak bude tento playlist použit v konfiguraci Liquidsoap. <a href="%s" target="_blank">Další informace o pokročilých playlistech</a>',
       ),
       'AutoDJ Scheduling Options' => 
       array (
-        0 => '',
+        0 => 'Možnosti plánování funkce AutoDJ',
       ),
       'Control how this playlist is handled by the AutoDJ software.' => 
       array (
-        0 => '',
+        0 => 'Ovládejte, jak bude tento playlist přehrávat software AutoDJ.',
       ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
-        0 => '',
+        0 => 'Přerušit přehrávání ostatních skladeb v naplánovaném čase.',
       ),
       'Only loop through playlist once.' => 
       array (
-        0 => '',
+        0 => 'Přehrát playlist pouze jednou.',
       ),
       'Only play one track at scheduled time.' => 
       array (
-        0 => '',
+        0 => 'V naplánovaném čase přehrát pouze jednu skladbu.',
       ),
       'Merge playlist to play as a single track.' => 
       array (
-        0 => '',
+        0 => 'Sloučit playlist pro přehrání jako jednu skladbu.',
       ),
       'Include in Automated Assignment' => 
       array (
@@ -1258,387 +1258,387 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
       array (
-        0 => '',
+        0 => 'Pokud je povoleno automatizované přiřazení, použije se tento playlist jako jeden z cílů pro distribuci skladeb. Tím dojde k přepsání existujícího obsahu tohoto playlistu.',
       ),
       'Start Time' => 
       array (
-        0 => '',
+        0 => 'Čas zahájení',
       ),
       'To play once per day, set the start and end times to the same value.' => 
       array (
-        0 => '',
+        0 => 'Chcete-li hrát jednou za den, nastavte začátek a konec času na stejnou hodnotu.',
       ),
       'End Time' => 
       array (
-        0 => '',
+        0 => 'Čas ukončení',
       ),
       'If the end time is before the start time, the playlist will play overnight.' => 
       array (
-        0 => '',
+        0 => 'Pokud je čas ukončení před časem zahájení, bude playlist hrát přes noc.',
       ),
       'Station Time Zone' => 
       array (
-        0 => '',
+        0 => 'Časové pásmo stanice',
       ),
       'Scheduled Play Days of Week' => 
       array (
-        0 => '',
+        0 => 'Plánované dny v týdnu',
       ),
       'Leave blank to play on every day of the week.' => 
       array (
-        0 => '',
+        0 => 'Nechte prázdné, aby playlist hrál každý den v týdnu.',
       ),
       'Number of Songs Between Plays' => 
       array (
-        0 => '',
+        0 => 'Počet skladeb mezi přehráním',
       ),
       'This playlist will play every $x songs, where $x is specified below.' => 
       array (
-        0 => '',
+        0 => 'Tento playlist bude hrát každých $x skladeb, kde $x je uvedeno výše.',
       ),
       'Number of Minutes Between Plays' => 
       array (
-        0 => '',
+        0 => 'Počet minut mezi přehráním',
       ),
       'This playlist will play every $x minutes, where $x is specified below.' => 
       array (
-        0 => '',
+        0 => 'Tento playlist bude hrát každých $x minut, kde $x je uvedeno výše.',
       ),
       'Minute of Hour to Play' => 
       array (
-        0 => '',
+        0 => 'Minuta hodiny pro přehrání',
       ),
       'Specify the minute of every hour that this playlist should play.' => 
       array (
-        0 => '',
+        0 => 'Zvolte minutu každé hodiny, kterou by měl hrát tento playlist.',
       ),
       'Use Browser Default' => 
       array (
-        0 => '',
+        0 => 'Automaticky podle prohlížeče',
       ),
       'Name' => 
       array (
-        0 => '',
+        0 => 'Název',
       ),
       'Reset Password' => 
       array (
-        0 => '',
+        0 => 'Obnovit heslo',
       ),
       'Leave these fields blank to continue using your current password.' => 
       array (
-        0 => '',
+        0 => 'Ponechte tato pole prázdná k pokračování v používání aktuálního hesla.',
       ),
       'Current Password' => 
       array (
-        0 => '',
+        0 => 'Stávající heslo',
       ),
       'New Password' => 
       array (
-        0 => '',
+        0 => 'Nové heslo',
       ),
       'Confirm New Password' => 
       array (
-        0 => '',
+        0 => 'Potvrzení nového hesla',
       ),
       'Customization' => 
       array (
-        0 => '',
+        0 => 'Přizpůsobení',
       ),
       'Language' => 
       array (
-        0 => '',
+        0 => 'Jazyk',
       ),
       'Site Theme' => 
       array (
-        0 => '',
+        0 => 'Motiv webu',
       ),
       'Code from Authenticator App' => 
       array (
-        0 => '',
+        0 => 'Kód z autentizační aplikace',
       ),
       'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
       array (
-        0 => '',
+        0 => 'Zadejte aktuální kód poskytnutý autentizační aplikací, abyste ověřili, zda funguje správně.',
       ),
       'Verify Authenticator' => 
       array (
-        0 => '',
+        0 => 'Ověření autentizační app',
       ),
       'Account Information' => 
       array (
-        0 => '',
+        0 => 'Informace o účtu',
       ),
       'Create Account' => 
       array (
-        0 => '',
+        0 => 'Vytvořit účet',
       ),
       'Enable to allow listeners to select this relay on this station\'s public pages.' => 
       array (
-        0 => '',
+        0 => 'Umožněte posluchačům vybrat toto vzdálené připojení na veřejných stránkách této stanice.',
       ),
       'Remote Station Type' => 
       array (
-        0 => '',
+        0 => 'Typ vzdálené stanice',
       ),
       'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
-        0 => '',
+        0 => 'Zobrazovaný název přiřazený tomuto vzdálenému připojení při zobrazení na administrativních nebo veřejných stránkách. Nechte prázdné pro automatické vygenerování.',
       ),
       'Remote Station Listening URL' => 
       array (
-        0 => '',
+        0 => 'URL adresa pro vzdálenou stanici',
       ),
       'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
       array (
-        0 => '',
+        0 => 'Příklad: je-li URL adresa vzdáleného rádia %s, zadejte <code>%s</code>.',
       ),
       'Remote Station Listening Mountpoint/SID' => 
       array (
-        0 => '',
+        0 => 'Přípojný bod/SID vzdálené stanice',
       ),
       'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
       array (
-        0 => '',
+        0 => 'Zadejte přípojný bod (tj. <code>%s</code>) nebo SHOUTcast SID (tj. <code>%s</code>) k určení konkrétního streamu, který se má použít pro statistiky nebo vysílání.',
       ),
       'Broadcast AutoDJ to Remote Station' => 
       array (
-        0 => '',
+        0 => 'Vysílání AutoDJ do vzdálené stanice',
       ),
       'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
       array (
-        0 => '',
+        0 => 'Pokud je povoleno, funkce AutoDJ této instalace bude do tohoto přípojného bodu automaticky přehrávat playlisty.',
       ),
       'Configure AutoDJ Broadcasting' => 
       array (
-        0 => '',
+        0 => 'Konfigurace funkce AutoDJ vysílání',
       ),
       'Remote Station Source Port' => 
       array (
-        0 => '',
+        0 => 'Zdrojový port vzdálené stanice',
       ),
       'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
       array (
-        0 => '',
+        0 => 'Pokud se port, na který se vysílá, liší od portu uvedeného výše, určete zdrojový port zde.',
       ),
       'Remote Station Source Mountpoint/SID' => 
       array (
-        0 => '',
+        0 => 'Přípojný bod/SID vzdálené stanice',
       ),
       'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
       array (
-        0 => '',
+        0 => 'Pokud je přípojný bod (tj. <code>/radio.mp3</code>) nebo SHOUTcast SID (tj. <code>2</code>) vysílání odlišný od výše uvedeného, určete zdrojový přípojný bod zde.',
       ),
       'Remote Station Source Username' => 
       array (
-        0 => '',
+        0 => 'Zdrojové uživatelské jméno vzdálené stanice',
       ),
       'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
       array (
-        0 => '',
+        0 => 'Pokud se vysílá pomocí funkce AutoDJ, zadejte zde zdrojové uživatelské jméno. Může být prázdné.',
       ),
       'Remote Station Source Password' => 
       array (
-        0 => '',
+        0 => 'Zdrojové heslo vzdálené stanice',
       ),
       'If you are broadcasting using AutoDJ, enter the source password here.' => 
       array (
-        0 => '',
+        0 => 'Pokud se vysílá pomocí funkce AutoDJ, zadejte zde zdrojové heslo.',
       ),
       'This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href="%s" target="_blank">SoundExchange web site</a>.' => 
       array (
-        0 => '',
+        0 => 'Tento přehled je PRIMÁRNĚ určen pro licencování ve Spojených státech - pro webcastery, kteří platí licenční poplatky prostřednictvím služby SoundExchange. Využitelný ale může být i pro evropské zastupující agentury. Další informace o požadavcích na přehledy a klasifikaci naleznete na <a href="%s" target="_blank">webových stránkách SoundExchange</a>.',
       ),
       'AzuraCast assumes that your station fits SoundExchange Transmission Category A, "Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming." If your station does not fall within this category, update the transmission category field accordingly.' => 
       array (
-        0 => '',
+        0 => 'AzuraCast předpokládá, že vaše stanice vyhovuje SoundExchange přenosu kategorie A, "Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming." Pokud vaše stanice nespadá do této kategorie, odpovídajícím způsobem aktualizujte pole kategorie přenosu.',
       ),
       'The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate.' => 
       array (
-        0 => '',
+        0 => 'Údaje shromážděné AzuraCast splňují standard SoundExchange pro skutečné celkové výkony (ATP) sledováním jedinečných posluchačů napříč všemi skladbami. Všechny ostatní informace jsou odvozeny od samotných metadat nahraných skladeb a nemusí být zcela přesné.',
       ),
       'Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date.' => 
       array (
-        0 => '',
+        0 => 'Požadavky na podávání zpráv pro SoundExchange se mohou kdykoli změnit. AzuraCast je komunitní software a nemůže zaručit, že jeho formát bude vždy aktuální.',
       ),
       'You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href="%s" target="_blank">SoundExchange\'s ISRC search tool</a>.' => 
       array (
-        0 => '',
+        0 => 'Před odesláním byste měli vždy zkontrolovat sestavu vytvořenou AzuraCast. Pro každý řádek je vyžadováno buď ISRC (International Standard Recording Code) nebo album a označení, což nemusí být vždy uvedeno v metadatech skladby. AzuraCast bude používat externí API, aby se pokusil najít ISRC, ale můžete také použít <a href="%s" target="_blank">vyhledávací nástroj ISRC SoundExchange</a>.',
       ),
       'Report Start Date' => 
       array (
-        0 => '',
+        0 => 'Počáteční datum',
       ),
       'Report End Date' => 
       array (
-        0 => '',
+        0 => 'Koncové datum',
       ),
       'Generate Report' => 
       array (
-        0 => '',
+        0 => 'Generovat přehled',
       ),
       'Role Name' => 
       array (
-        0 => '',
+        0 => 'Název role',
       ),
       'System-Wide Permissions' => 
       array (
-        0 => '',
+        0 => 'Systémová oprávnění',
       ),
       'Permissions for %s' => 
       array (
-        0 => '',
+        0 => 'Oprávnění pro %s',
       ),
       'Site Base URL' => 
       array (
-        0 => '',
+        0 => 'Základní URL webu',
       ),
       'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
       array (
-        0 => '',
+        0 => 'Základní URL adresa, na které se tato služba nachází. Použijte externí adresu IP nebo úplný název domény (pokud existuje) směřující na tento server.',
       ),
       'AzuraCast Instance Name' => 
       array (
-        0 => '',
+        0 => 'Název instance AzuraCast',
       ),
       'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
       array (
-        0 => '',
+        0 => 'Tento název se zobrazí jako dílčí záhlaví vedle loga AzuraCast, aby bylo možné tento server identifikovat.',
       ),
       'Prefer Browser URL (If Available)' => 
       array (
-        0 => '',
+        0 => 'Preferovat URL adresu prohlížeče (je-li k dispozici)',
       ),
       'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
       array (
-        0 => '',
+        0 => 'Pokud je nastaveno na hodnotu „Ano“, bude URL adresa prohlížeče použita místo základní URL adresy, pokud je k dispozici. Chcete-li vždy použít základní URL adresu, nastavte hodnotu „Ne“.',
       ),
       'Use Web Proxy for Radio' => 
       array (
-        0 => '',
+        0 => 'Použít pro rádio web proxy',
       ),
       'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
       array (
-        0 => '',
+        0 => 'Standardně rozhlasové stanice vysílají na svých vlastních portech (tj. 8000). Pokud používáte službu jako CloudFlare nebo přistupujete k vaší rozhlasové stanici pomocí protokolu SSL, měli byste tuto funkci povolit, aby rádio směrovalo přes webové porty (80 a 443).',
       ),
       'Days of Playback History to Keep' => 
       array (
-        0 => '',
+        0 => 'Doba udržování historie přehrávání',
       ),
       'Set longer to preserve more playback history for stations. Set shorter to save disk space.' => 
       array (
-        0 => '',
+        0 => 'Nastavte delší dobu, abyste zachovali více historie přehrávání. Chcete-li ušetřit místo na disku, nastavte kratší.',
       ),
       'Last 14 Days' => 
       array (
-        0 => '',
+        0 => 'Posledních 14 dní',
       ),
       'Last 30 Days' => 
       array (
-        0 => '',
+        0 => 'Posledních 30 dní',
       ),
       'Last 60 Days' => 
       array (
-        0 => '',
+        0 => 'Posledních 60 dní',
       ),
       'Last Year' => 
       array (
-        0 => '',
+        0 => 'Poslední rok',
       ),
       'Last 2 Years' => 
       array (
-        0 => '',
+        0 => 'Poslední dva roky',
       ),
       'Indefinitely' => 
       array (
-        0 => '',
+        0 => 'Na neurčito',
       ),
       'Security Controls' => 
       array (
-        0 => '',
+        0 => 'Možnosti zabezpečení',
       ),
       'Always Use HTTPS' => 
       array (
-        0 => '',
+        0 => 'Vždy používat HTTPS',
       ),
       'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
       array (
-        0 => '',
+        0 => 'Chcete-li vždy používat zabezpečené URL adresy „https: //“, nastavte možnost „Ano“ a při navštívení nezabezpečené URL adresy automaticky přesměrujete na zabezpečenou URL adresu.',
       ),
       'API "Access-Control-Allow-Origin" header' => 
       array (
-        0 => '',
+        0 => 'Záhlaví API "Access-Control-Allow-Origin"',
       ),
       '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
       array (
-        0 => '',
+        0 => '<a href="%s" target="_blank">Další informace o tomto záhlaví</a>. Nastavte na *, chcete-li povolit všechny zdroje, nebo zadejte seznam zdrojů oddělených čárkou (,).',
       ),
       'Privacy Controls' => 
       array (
-        0 => '',
+        0 => 'Ochrana soukromí',
       ),
       'AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here.' => 
       array (
-        0 => '',
+        0 => 'AzuraCast neposílá data stanice nebo posluchače na žádný externí server. Zde můžete ovládat, kolik dat AzuraCast zaznamenává o vašich posluchačích.',
       ),
       'Listener Analytics Collection' => 
       array (
-        0 => '',
+        0 => 'Analytický sběr nad posluchači',
       ),
       'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
       array (
-        0 => '',
+        0 => 'Agregované statistiky posluchačů se používají k zobrazení zpráv o stanicích v systému. Statistiky posluchačů založené na protokolu IP slouží k zobrazení aktivních posluchačů a mohou být vyžadovány pro zprávy o licenčních poplatcích.',
       ),
       '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
       array (
-        0 => '',
+        0 => '<b>Úplný:</b> Sbírejte jak souhrnné statistiky posluchačů, tak statistiky posluchačů založené na protokolu IP',
       ),
       '<b>Limited:</b> Only collect aggregate listener statistics' => 
       array (
-        0 => '',
+        0 => '<b>Omezený:</b> Sbírejte pouze souhrnné statistiky posluchačů',
       ),
       '<b>None:</b> Do not collect any listener analytics' => 
       array (
-        0 => '',
+        0 => '<b>Žádný:</b> Neshromažďovat žádné analýzy posluchačů',
       ),
       'AzuraCast Installation Telemetry' => 
       array (
-        0 => '',
+        0 => 'Instalační telemetrie AzuraCast',
       ),
       'Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.' => 
       array (
-        0 => '',
+        0 => 'Vyberte si, zda vaše instalace komunikuje s centrálními servery AzuraCast a kontroluje aktualizace a oznámení.<br>AzuraCast respektuje vaše soukromí; další podrobnosti naleznete v <a href="%s" target="_blank">zásadách ochrany osobních údajů</a>.',
       ),
       'Check for Updates and Announcements' => 
       array (
-        0 => '',
+        0 => 'Kontrola aktualizací a oznámení',
       ),
       'Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements.' => 
       array (
-        0 => '',
+        0 => 'Na centrální servery AzuraCast se posílají minimální informace o instalaci AzuraCast za účelem kontroly nových aktualizací softwaru a důležitých oznámení.',
       ),
       '<b>None:</b> Do not check for updates or announcements.' => 
       array (
-        0 => '',
+        0 => '<b>Nekontrolovat:</b> Neprovádět kontrolu aktualizací nebo oznámení.',
       ),
       '<b>Release Only:</b> Critical announcements and new release versions only.' => 
       array (
-        0 => '',
+        0 => '<b>Pouze vydání:</b> Kontrolovat pouze kritická oznámení a nové verze.',
       ),
       '<b>All Updates:</b> Include all announcements and minor updates.' => 
       array (
-        0 => '',
+        0 => '<b>Všechny aktualizace:</b>Kontrolovat všechna oznámení, vydání i drobné aktualizace.',
       ),
       'Automatically Send Error Reports to AzuraCast' => 
       array (
-        0 => '',
+        0 => 'Automaticky odesílat chybové zprávy AzuraCast',
       ),
       'If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution.' => 
       array (
-        0 => '',
+        0 => 'Pokud webová aplikace narazí na chybu, můžete se rozhodnout automaticky odeslat anonymní zprávu o chybě týmu AzuraCast pro rychlejší diagnostiku a řešení.',
       ),
       'Error reports are powered by <a href="%s" target="_blank">%s</a>.' => 
       array (
-        0 => '',
+        0 => 'Chybové zprávy jsou spravovány <a href="%s" target="_blank">%s</a>.',
       ),
       'Metadata' => 
       array (

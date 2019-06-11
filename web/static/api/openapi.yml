@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.9.5
+  version: 0.9.5.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -1838,7 +1838,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1557817578
+          example: 1560192630
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1934,7 +1934,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1557817578
+              example: 1560192630
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -1989,7 +1989,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1557817578
+          example: 1560192630
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2120,7 +2120,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1557817578
+          example: 1560192630
       type: object
     Api_Time:
       properties:
@@ -2331,7 +2331,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1557817578
+          example: 1560192630
         fade_overlap:
           description: 'The length of time (in seconds) before the next song starts in the fade;'
           type: number
@@ -2540,7 +2540,7 @@ components:
           example: true
         reactivate_at:
           type: integer
-          example: 1557817578
+          example: 1560192630
       type: object
     StationWebhook:
       properties:
@@ -2603,10 +2603,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1557817578
+          example: 1560192630
         updated_at:
           type: integer
-          example: 1557817578
+          example: 1560192630
         roles:
           items: {  }
       type: object

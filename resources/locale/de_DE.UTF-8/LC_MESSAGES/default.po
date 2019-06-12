@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-28 17:50\n"
+"PO-Revision-Date: 2019-06-12 13:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -84,7 +84,7 @@ msgstr "Benutzerdefinierte Felder"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Datensicherung"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
@@ -245,7 +245,7 @@ msgstr "Änderungen gespeichert."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 msgid "Configure Backups"
-msgstr ""
+msgstr "Datensicherung konfigurieren"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:94
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:104
@@ -253,12 +253,12 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr ""
+msgstr "Manuelle Datensicherung ausführen"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Backup"
-msgstr ""
+msgstr "Datensicherung"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:36
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:65
@@ -445,7 +445,7 @@ msgstr "Ihre Anmeldeinformationen konnten nicht bestätigt werden."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:190
 msgid "All Stations"
-msgstr ""
+msgstr "Alle Sender"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:220
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:76
@@ -749,7 +749,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:58
 msgid "Select File"
-msgstr ""
+msgstr "Datei auswählen"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
@@ -1062,7 +1062,7 @@ msgstr "Nein"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Geplanter Zeitpunkt für Datensicherung"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
@@ -1070,15 +1070,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr ""
+msgstr "Medien aus Datensicherung ausschließen"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Das Ausschließen von Medien aus automatisierten Datensicherungen wird Platz sparen, aber du solltest sicherstellen, dass du deine Medien separat sicherst."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "Anzahl der zu behaltenden Datensicherungen"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
@@ -1086,7 +1086,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr ""
+msgstr "Datensicherung Dateiname"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
@@ -1094,7 +1094,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Medien aus Datensicherung ausschließen"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."

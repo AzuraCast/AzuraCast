@@ -202,7 +202,7 @@ class FilesController extends FilesControllerAbstract
         $station = $request->getStation();
 
         if ($station->isStorageFull()) {
-            throw new \App\Exception\OutOfSpace(__('This station is out of available storage space.'));
+            return $this->_err($response, 500, __('This station is out of available storage space.'));
         }
 
         try {
@@ -212,53 +212,53 @@ class FilesController extends FilesControllerAbstract
             if ($flow_response instanceof Response) {
                 return $flow_response;
             }
-        } catch (\Exception | \Error $e) {
-            return $this->_err($response, 500, $e->getMessage());
-        }
 
-        if (is_array($flow_response)) {
-            /** @var Entity\Repository\StationMediaRepository $media_repo */
-            $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+            if (is_array($flow_response)) {
+                /** @var Entity\Repository\StationMediaRepository $media_repo */
+                $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-            /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
-            $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+                /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
+                $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
 
-            $file = $request->getAttribute('file');
-            $file_path = $request->getAttribute('file_path');
+                $file = $request->getAttribute('file');
+                $file_path = $request->getAttribute('file_path');
 
-            $sanitized_name = $flow_response['filename'];
+                $sanitized_name = $flow_response['filename'];
 
-            $final_path = empty($file)
-                ? $file_path.$sanitized_name
-                : $file_path.'/'.$sanitized_name;
+                $final_path = empty($file)
+                    ? $file_path.$sanitized_name
+                    : $file_path.'/'.$sanitized_name;
 
-            $station_media = $media_repo->uploadFile($station, $flow_response['path'], $final_path);
+                $station_media = $media_repo->uploadFile($station, $flow_response['path'], $final_path);
 
-            // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-            if ($request->hasParam('searchPhrase')) {
-                $search_phrase = $request->getParam('searchPhrase');
+                // If the user is looking at a playlist's contents, add uploaded media to that playlist.
+                if ($request->hasParam('searchPhrase')) {
+                    $search_phrase = $request->getParam('searchPhrase');
 
-                if (0 === strpos($search_phrase, 'playlist:')) {
-                    $playlist_name = substr($search_phrase, 9);
+                    if (0 === strpos($search_phrase, 'playlist:')) {
+                        $playlist_name = substr($search_phrase, 9);
 
-                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                        'station_id' => $station->getId(),
-                        'name' => $playlist_name,
-                    ]);
+                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                            'station_id' => $station->getId(),
+                            'name' => $playlist_name,
+                        ]);
 
-                    if ($playlist instanceof Entity\StationPlaylist) {
-                        $playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
-                        $this->em->flush();
+                        if ($playlist instanceof Entity\StationPlaylist) {
+                            $playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
+                            $this->em->flush();
 
-                        $playlists_media_repo->reshuffleMedia($playlist);
+                            $playlists_media_repo->reshuffleMedia($playlist);
+                        }
                     }
                 }
+
+                $station->addStorageUsed($flow_response['size']);
+                $this->em->flush();
+
+                return $response->withJson(['success' => true]);
             }
-
-            $station->addStorageUsed($flow_response['size']);
-            $this->em->flush();
-
-            return $response->withJson(['success' => true]);
+        } catch (\Exception | \Error $e) {
+            return $this->_err($response, 500, $e->getMessage());
         }
 
         return $response->withJson(['success' => false]);

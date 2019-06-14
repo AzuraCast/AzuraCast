@@ -82,7 +82,7 @@
                                         <input type="text" v-model="djUsername" class="form-control" v-bind:placeholder="$t('settings.djUsername')">
                                     </div>
                                     <div class="col-6">
-                                        <input type="text" v-model="djPassword" class="form-control" v-bind:placeholder="$t('settings.djPassword')">
+                                        <input type="password" v-model="djPassword" class="form-control" v-bind:placeholder="$t('settings.djPassword')">
                                     </div>
                                 </div>
                             </div>

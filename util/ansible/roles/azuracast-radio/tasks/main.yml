@@ -15,7 +15,7 @@
 
   - name: Download IceCast-KH-AC Source
     get_url:
-      url: https://github.com/AzuraCast/icecast-kh-ac/archive/master.tar.gz
+      url: https://github.com/AzuraCast/icecast-kh-ac/archive/2.4.0-kh10-ac4.tar.gz
       dest: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
       force: yes
 

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-16 09:00\n"
+"PO-Revision-Date: 2019-06-16 09:10\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1146,73 +1146,73 @@ msgstr "Endereço de Arte do Álbum Padrão"
 
 #: /var/azuracast/www/config/forms/branding.php:52
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
-msgstr ""
+msgstr "Se uma música não tiver arte do álbum, este endereço será mostrado. Deixe em branco para usar a arte padrão."
 
 #: /var/azuracast/www/config/forms/branding.php:61
 msgid "Hide AzuraCast Branding on Public Pages"
-msgstr ""
+msgstr "Esconder a Marca do AzuraCast nas Páginas Públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:62
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
-msgstr ""
+msgstr "Se selecionado, isto irá remover a marca do AzuraCast nas páginas públicas."
 
 #: /var/azuracast/www/config/forms/branding.php:73
 msgid "Custom CSS for Public Pages"
-msgstr ""
+msgstr "CSS Personalizado para as Páginas Públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:74
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Este CSS será aplicado às páginas públicas da estação e a página de login."
 
 #: /var/azuracast/www/config/forms/branding.php:85
 msgid "Custom JS for Public Pages"
-msgstr ""
+msgstr "JavaScript Personalizado para as Páginas Públicas"
 
 #: /var/azuracast/www/config/forms/branding.php:86
 msgid "This javascript code will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Este código JavaScript será aplicado às páginas públicas da estação e a página de login."
 
 #: /var/azuracast/www/config/forms/branding.php:97
 msgid "Custom CSS for Internal Pages"
-msgstr ""
+msgstr "CSS Personalizado para as Páginas Internas"
 
 #: /var/azuracast/www/config/forms/branding.php:98
 msgid "This CSS will be applied to the main management pages, like this one."
-msgstr ""
+msgstr "Este CSS será aplicado às páginas principais de gestão, como esta."
 
 #: /var/azuracast/www/config/forms/custom_field.php:13
 msgid "Field Name"
-msgstr ""
+msgstr "Nome do Campo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:14
 msgid "This will be used as the label when editing individual songs, and will show in API results."
-msgstr ""
+msgstr "Isto será usado como rótulo ao editar músicas individuais, e será exibido nos resultados da API."
 
 #: /var/azuracast/www/config/forms/custom_field.php:22
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:24
 msgid "Programmatic Name"
-msgstr ""
+msgstr "Nome Programático"
 
 #: /var/azuracast/www/config/forms/custom_field.php:23
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
-msgstr ""
+msgstr "Especifique um nome amigável (opcional) para a API, como <code>nome_campo</code>. Deixe em branco para automaticamente criar um baseado no nome."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
 #: /var/azuracast/www/config/forms/report_soundexchange.php:10
 msgid "Important Notes"
-msgstr ""
+msgstr "Notas Importantes"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr ""
+msgstr "<p>O SHOUTcast 2 DNAS não é software gratuito, e a sua licença restritiva não permite ao AzuraCast distribuir o executável do SHOUTcast. Para instalar SHOUTcast, você deve transferir o executável Linux x64 da página <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a>. Envie o <code>sc_serv2_linux_x64-latest.tar.gz</code> para o campo abaixo para extraí-lo automaticamente no diretório apropriado.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
-msgstr ""
+msgstr "Versão Atualmente Instalada"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:23
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr ""
+msgstr "O SHOUTcast não está atualmente instalado nesta instalação do AzuraCast."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:31
 msgid "Select SHOUTcast 64-bit .tar.gz File"

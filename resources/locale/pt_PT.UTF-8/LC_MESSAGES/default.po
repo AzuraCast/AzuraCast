@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-16 09:10\n"
+"PO-Revision-Date: 2019-06-16 09:20\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1216,11 +1216,11 @@ msgstr "O SHOUTcast não está atualmente instalado nesta instalação do AzuraC
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:31
 msgid "Select SHOUTcast 64-bit .tar.gz File"
-msgstr ""
+msgstr "Selecione o Ficheiro SHOUTcast 64-bit .tar.gz"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:44
 msgid "Upload"
-msgstr ""
+msgstr "Enviar"
 
 #: /var/azuracast/www/config/forms/login.php:9
 #: /var/azuracast/www/config/forms/profile.php:25
@@ -1231,7 +1231,7 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/account/login.phtml:35
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:37
 msgid "E-mail Address"
-msgstr ""
+msgstr "Endereço de Email"
 
 #: /var/azuracast/www/config/forms/login.php:19
 #: /var/azuracast/www/config/forms/register.php:23
@@ -1241,11 +1241,11 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:47
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:77
 msgid "Password"
-msgstr ""
+msgstr "Palavra-Passe"
 
 #: /var/azuracast/www/config/forms/login.php:29
 msgid "Log in"
-msgstr ""
+msgstr "Entrar"
 
 #: /var/azuracast/www/config/forms/media.php:13
 #: /var/azuracast/www/config/forms/rename.php:9
@@ -1315,58 +1315,58 @@ msgstr "O período de tempo em que a música deve fazer Fade-Out. Deixe em branc
 
 #: /var/azuracast/www/config/forms/media.php:126
 msgid "Custom Cues: Cue-In Point (seconds)"
-msgstr ""
+msgstr "POI Personalizado: POI de Entrada (segundos)"
 
 #: /var/azuracast/www/config/forms/media.php:127
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
-msgstr ""
+msgstr "Segundos desde o início da música que o AutoDJ deve começar a tocar."
 
 #: /var/azuracast/www/config/forms/media.php:135
 msgid "Custom Cues: Cue-Out Point (seconds)"
-msgstr ""
+msgstr "POI Personalizado: POI de Saída (segundos)"
 
 #: /var/azuracast/www/config/forms/media.php:136
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
-msgstr ""
+msgstr "Segundos desde o início da música que o AutoDJ deve parar de tocar."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "Mount Point URL"
-msgstr ""
+msgstr "Endereço do Ponto de Montagem"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:16
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
-msgstr ""
+msgstr "Este nome deve começar sempre com uma barra (/), e deve ser um endereço válido, como /autodj.mp3"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:25
 #: /var/azuracast/www/config/forms/remote.php:39
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:27
 msgid "Display Name"
-msgstr ""
+msgstr "Nome de Exibição"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:26
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Um nome de exibição atribuído a este ponto de montagem para mostrar em páginas de gestão ou páginas públicas. Deixe em branco para automaticamente criar um."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Mostrar em Páginas Públicas"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:35
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Ative para permitir que os ouvintes selecionem este ponto de montagem nas página públicas da estação."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Definir como Ponto de Montagem Padrão"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:47
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
-msgstr ""
+msgstr "Se este ponto de montagem é o padrão, ele será reproduzido no pré-visualização da emissão e na página pública do sistema."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:58
 msgid "Relay Stream URL"
-msgstr ""
+msgstr "Endereço do Relé de Transmissão"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:59
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."

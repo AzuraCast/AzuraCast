@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-16 08:40\n"
+"PO-Revision-Date: 2019-06-16 08:50\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -758,11 +758,11 @@ msgstr "Quer usar o SHOUTcast 2? <a href=\"%s\" target=\"_blank\"> Instale-o aqu
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:40
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "O fuso horário da estação é %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:42
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "O tempo atual no fuso horário da estação é %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "Existing playlist imported."
@@ -895,22 +895,22 @@ msgstr "Limpeza"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "A porta %s está em uso por outra estação."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr ""
+msgstr "A palavra-passe não pode conter os seguintes caracteres: %s"
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
 #: /var/azuracast/www/templates/admin/api/index.phtml:19
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:34
 msgid "Comments"
-msgstr ""
+msgstr "Comentários"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Descreva o uso para esta chave de API para referência futura."
 
 #: /var/azuracast/www/config/forms/api_key.php:20
 #: /var/azuracast/www/config/forms/automation.php:40
@@ -936,15 +936,15 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/tunein.php:59
 #: /var/azuracast/www/config/forms/webhook/twitter.php:138
 msgid "Save Changes"
-msgstr ""
+msgstr "Guardar Alterações"
 
 #: /var/azuracast/www/config/forms/automation.php:10
 msgid "Enable Automated Assignment"
-msgstr ""
+msgstr "Ativar Atribuição Automática"
 
 #: /var/azuracast/www/config/forms/automation.php:11
 msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
-msgstr ""
+msgstr "Permitir que o sistema atribua periodicamente músicas a listas de reprodução com base no seu desempenho. Este processo será executado em segundo plano, e só será executado se esta opção for definida como \"Ativada\" e pelo menos uma lista de reprodução for definida para \"Incluir em Atribuição Automática\"."
 
 #: /var/azuracast/www/config/forms/automation.php:14
 #: /var/azuracast/www/config/forms/station.php:108
@@ -958,7 +958,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:47
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:42
 msgid "Disabled"
-msgstr ""
+msgstr "Desativado"
 
 #: /var/azuracast/www/config/forms/automation.php:15
 #: /var/azuracast/www/templates/admin/backups/index.phtml:23
@@ -969,30 +969,30 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:18
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:45
 msgid "Enabled"
-msgstr ""
+msgstr "Ativo"
 
 #: /var/azuracast/www/config/forms/automation.php:23
 msgid "Days Between Automated Assignments"
-msgstr ""
+msgstr "Dias Entre Atribuições Automáticas"
 
 #: /var/azuracast/www/config/forms/automation.php:24
 msgid "Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days."
-msgstr ""
+msgstr "Com base nesta configuração, o sistema irá automaticamente reatribuir músicas a cada (estes) dias usando dados dos (estes) dias anteriores."
 
 #: /var/azuracast/www/config/forms/automation.php:28
 #: /var/azuracast/www/config/forms/automation.php:29
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d dias"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Executar Cópias de Segurança Noturnas Automáticas"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Ativar para que o AzuraCast execute automaticamente cópias de segurança noturnas automaticamente no tempo especificado."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1025,7 +1025,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/station_clone.php:84
 #: /var/azuracast/www/config/forms/streamer.php:14
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: /var/azuracast/www/config/forms/backup.php:18
 #: /var/azuracast/www/config/forms/backup.php:39
@@ -1058,11 +1058,11 @@ msgstr ""
 #: /var/azuracast/www/config/forms/station_clone.php:83
 #: /var/azuracast/www/config/forms/streamer.php:15
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Tempo Agendado para Cópias de Segurança"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."

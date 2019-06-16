@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-28 17:50\n"
+"PO-Revision-Date: 2019-06-16 08:40\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -84,7 +84,7 @@ msgstr "Campos personalizados"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Cópias de Segurança"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
@@ -245,7 +245,7 @@ msgstr "Alterações guardadas."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 msgid "Configure Backups"
-msgstr ""
+msgstr "Configurar Cópias de Segurança"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:94
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:104
@@ -253,12 +253,12 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr ""
+msgstr "Executar Cópia de Segurança Manual"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Backup"
-msgstr ""
+msgstr "Cópia de Segurança"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:36
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:65
@@ -445,7 +445,7 @@ msgstr "Não foi possível verificar as suas informações."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:190
 msgid "All Stations"
-msgstr ""
+msgstr "Todas as Estações"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:220
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:76
@@ -611,54 +611,54 @@ msgstr "Relay Remoto"
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Ouvintes por Dia"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:90
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:42
 msgid "Listeners by Day of Week"
-msgstr ""
+msgstr "Ouvintes por Dia da Semana"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:98
 #: /var/azuracast/www/config/forms/playlist.php:299
 msgid "Monday"
-msgstr ""
+msgstr "Segunda-Feira"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:99
 #: /var/azuracast/www/config/forms/playlist.php:300
 msgid "Tuesday"
-msgstr ""
+msgstr "Terça-Feira"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:100
 #: /var/azuracast/www/config/forms/playlist.php:301
 msgid "Wednesday"
-msgstr ""
+msgstr "Quarta-Feira"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
 #: /var/azuracast/www/config/forms/playlist.php:302
 msgid "Thursday"
-msgstr ""
+msgstr "Quinta-Feira"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:102
 #: /var/azuracast/www/config/forms/playlist.php:303
 msgid "Friday"
-msgstr ""
+msgstr "Sexta-Feira"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:103
 #: /var/azuracast/www/config/forms/playlist.php:304
 msgid "Saturday"
-msgstr ""
+msgstr "Sábado"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:104
 #: /var/azuracast/www/config/forms/playlist.php:305
 msgid "Sunday"
-msgstr ""
+msgstr "Domingo"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:148
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Ouvintes por Hora"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:175
 msgid "SoundExchange Report"
@@ -737,11 +737,11 @@ msgstr "Configuração do SHOUTcast"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "Você enviou um pedido recentemente. Por favor espere antes de enviar outro."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Esta música já foi reproduzida recentemente. Por favor espere antes de solicitar novamente."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -749,7 +749,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:58
 msgid "Select File"
-msgstr ""
+msgstr "Selecionar Ficheiro"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."

@@ -90,8 +90,8 @@ class Backup extends AbstractTask
      */
     public function run($force = false): void
     {
-        $logging_enabled = (bool)$this->settings_repo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
-        if (!$logging_enabled) {
+        $backup_enabled = (bool)$this->settings_repo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
+        if (!$backup_enabled) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
         }
@@ -105,7 +105,7 @@ class Backup extends AbstractTask
             // Check if the backup time matches (if it's set).
             $backup_timecode = (int)$this->settings_repo->getSetting(Entity\Settings::BACKUP_TIME);
             if (0 !== $backup_timecode) {
-                $current_timecode = $now_utc->format('Hi');
+                $current_timecode = (int)$now_utc->format('Hi');
 
                 if ($backup_timecode !== $current_timecode) {
                     return;

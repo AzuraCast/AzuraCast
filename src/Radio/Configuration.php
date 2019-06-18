@@ -292,8 +292,11 @@ class Configuration
         // Iterate from port 8000 to 9000, in increments of 10
         $protected_ports = [8080];
 
-        for($port = 8000; $port < 9000; $port += 10) {
-            if (in_array($port, $protected_ports)) {
+        $port_min = (int)($_ENV['AUTO_ASSIGN_PORT_MIN'] ?? 8000);
+        $port_max = (int)($_ENV['AUTO_ASSIGN_PORT_MAX'] ?? 8499);
+
+        for($port = $port_min; $port <= $port_max; $port += 10) {
+            if (in_array($port, $protected_ports, true)) {
                 continue;
             }
 

@@ -88,7 +88,7 @@ You will need to recycle your Docker containers using `docker-compose down`, the
 
 To override more complex functionality in your Docker installation, see the "Customizing Docker" section below.
 
-## Expand the Docker Radio Station Port Range
+### Expand the Docker Radio Station Port Range
 
 For performance reasons, by default Docker installations only open radio ports from port 8000 to 8099. This allows for 10 unique stations to operate.
 
@@ -104,7 +104,7 @@ version: '2.2'
 services:
   stations:
     ports:
-      - "8100-8500:8100-8500"
+      - "8500-8999:8500-8999"
 ```
 
 You can modify the port range in this file to meet your needs, such as expanding it to port 8999 instead of 8500.

@@ -65,6 +65,20 @@ var jsFiles = {
             "node_modules/autosize/dist/autosize.min.js"
         ]
     },
+    "material-icons": {
+        base: null,
+        files: [
+            "node_modules/material-icons/iconfont/material-icons.css",
+            "node_modules/material-icons/iconfont/MaterialIcons-Regular*"
+        ],
+    },
+    "roboto-fontface": {
+        base: "node_modules/roboto-fontface",
+        files: [
+            "node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
+            "node_modules/roboto-fontface/fonts/roboto/*"
+        ]
+    },
 
     // Individual libraries
     "store": {

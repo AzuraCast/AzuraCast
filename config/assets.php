@@ -81,7 +81,15 @@ return [
                 [
                     'src' => 'dist/material.js',
                 ]
-            ]
+            ],
+            'css' => [
+                [
+                    'href' => 'dist/lib/roboto-fontface/css/roboto/roboto-fontface.css',
+                ],
+                [
+                    'href' => 'dist/lib/material-icons/material-icons.css',
+                ],
+            ],
         ],
     ],
 

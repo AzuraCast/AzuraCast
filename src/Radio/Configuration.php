@@ -1,8 +1,10 @@
 <?php
 namespace App\Radio;
 
+use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\EntityManager;
 use App\Entity\Station;
+use Monolog\Logger;
 use Supervisor\Supervisor;
 
 class Configuration
@@ -16,17 +18,27 @@ class Configuration
     /** @var Supervisor */
     protected $supervisor;
 
+    /** @var Logger */
+    protected $logger;
+
     /**
      * Configuration constructor.
+     *
      * @param EntityManager $em
      * @param Adapters $adapters
      * @param Supervisor $supervisor
+     * @param Logger $logger
      */
-    public function __construct(EntityManager $em, Adapters $adapters, Supervisor $supervisor)
+    public function __construct(
+        EntityManager $em,
+        Adapters $adapters,
+        Supervisor $supervisor,
+        Logger $logger)
     {
         $this->em = $em;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
+        $this->logger = $logger;
     }
 
     /**
@@ -43,9 +55,8 @@ class Configuration
         }
 
         // Initialize adapters.
-        $config_path = $station->getRadioConfigDir();
         $supervisor_config = [];
-        $supervisor_config_path = $config_path . '/supervisord.conf';
+        $supervisor_config_path = $this->getSupervisorConfigFile($station);
 
         if (!$station->isEnabled()) {
             @unlink($supervisor_config_path);
@@ -147,6 +158,8 @@ class Configuration
             'stdout_logfile_maxbytes' => '5MB',
             'stdout_logfile_backups' => '10',
             'redirect_stderr'   => 'true',
+            'stopasgroup' => true,
+            'killasgroup' => true,
         ];
 
         $supervisor_config[] = '[program:' . $program_name . ']';
@@ -169,12 +182,16 @@ class Configuration
             return;
         }
 
-        $config_path = $station->getRadioConfigDir();
-        $supervisor_config_path = $config_path . '/supervisord.conf';
-
+        $supervisor_config_path = $this->getSupervisorConfigFile($station);
         @unlink($supervisor_config_path);
 
-        $this->_reloadSupervisor();
+        $station_group = 'station_'.$station->getId();
+        $affected_groups = $this->_reloadSupervisor();
+
+        if (!in_array($station_group, $affected_groups, true)) {
+            $this->supervisor->stopProcessGroup($station_group, true);
+            $this->supervisor->removeProcessGroup($station_group);
+        }
     }
 
     /**
@@ -219,25 +236,47 @@ class Configuration
 
         [$reload_added, $reload_changed, $reload_removed] = $reload_result[0];
 
-        foreach ($reload_removed as $group) {
-            $affected_groups[] = $group;
-            $this->supervisor->stopProcessGroup($group);
-            $this->supervisor->removeProcessGroup($group);
+        if (!empty($reload_removed)) {
+            $this->logger->debug('Removing supervisor groups.', $reload_removed);
+
+            foreach ($reload_removed as $group) {
+                $affected_groups[] = $group;
+                $this->supervisor->stopProcessGroup($group);
+                $this->supervisor->removeProcessGroup($group);
+            }
         }
 
-        foreach ($reload_changed as $group) {
-            $affected_groups[] = $group;
-            $this->supervisor->stopProcessGroup($group);
-            $this->supervisor->removeProcessGroup($group);
-            $this->supervisor->addProcessGroup($group);
+        if (!empty($reload_changed)) {
+            $this->logger->debug('Reloading modified supervisor groups.', $reload_changed);
+
+            foreach ($reload_changed as $group) {
+                $affected_groups[] = $group;
+                $this->supervisor->stopProcessGroup($group);
+                $this->supervisor->removeProcessGroup($group);
+                $this->supervisor->addProcessGroup($group);
+            }
         }
 
-        foreach ($reload_added as $group) {
-            $affected_groups[] = $group;
-            $this->supervisor->addProcessGroup($group);
+        if (!empty($reload_added)) {
+            $this->logger->debug('Adding new supervisor groups.', $reload_added);
+
+            foreach ($reload_added as $group) {
+                $affected_groups[] = $group;
+                $this->supervisor->addProcessGroup($group);
+            }
         }
 
         return $affected_groups;
+    }
+
+    /**
+     * @param Station $station
+     * @return string
+     */
+    protected function getSupervisorConfigFile(Station $station): string
+    {
+        $config_path = $station->getRadioConfigDir();
+        return $config_path . '/supervisord.conf';
     }
 
     /**

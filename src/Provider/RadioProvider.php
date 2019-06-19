@@ -35,7 +35,8 @@ class RadioProvider implements ServiceProviderInterface
             return new Radio\Configuration(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[Radio\Adapters::class],
-                $di[\Supervisor\Supervisor::class]
+                $di[\Supervisor\Supervisor::class],
+                $di[\Monolog\Logger::class]
             );
         };
 

@@ -477,7 +477,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         file_put_contents($playlist_file_path, $playlist_file_contents);
 
         if ($notify) {
-            $this->command($station, $playlist_var_name.'.reload');
+            try {
+                $this->command($station, $playlist_var_name.'.reload');
+            } catch(\Exception $e) {
+                $this->logger->error('Could not reload playlist with AutoDJ.', [
+                    'message' => $e->getMessage(),
+                    'playlist' => $playlist_var_name,
+                    'station' => $station->getId(),
+                ]);
+            }
         }
 
         return $playlist_file_path;

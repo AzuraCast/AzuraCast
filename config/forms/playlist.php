@@ -210,7 +210,7 @@ return [
                             StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs.'),
                             StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes.'),
                             StationPlaylist::TYPE_ONCE_PER_HOUR => '<b>'.__('Once per Hour') . ':</b> '.__('Play once per hour at the specified minute.'),
-                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/azuracast.com/blob/master/AdvancedPlaylists.md'),
+                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://www.azuracast.com/help/advanced_playlists.html'),
                         ],
                         'default' => StationPlaylist::TYPE_DEFAULT,
                         'required' => true,

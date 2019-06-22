@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-05-28 17:50\n"
+"PO-Revision-Date: 2019-06-22 23:50\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -445,7 +445,7 @@ msgstr "Vos informations d'identification n'ont pas pu être vérifiées."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:190
 msgid "All Stations"
-msgstr ""
+msgstr "Toutes les stations"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:220
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:76
@@ -3175,7 +3175,7 @@ msgstr "Tableau de bord"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "Utilisateur AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2

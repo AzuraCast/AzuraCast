@@ -19,7 +19,7 @@ To install AzuraCast, you should have a basic understanding of the Linux shell t
 
 ## Live Demo
 
-Want to see AzuraCast for yourself? Check out [screenshots](https://www.azuracast.com/about/#screenshots) or visit
+Want to see AzuraCast for yourself? Check out [screenshots](https://www.azuracast.com/about/screenshots.html) or visit
 our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 * Username: `demo@azuracast.com`

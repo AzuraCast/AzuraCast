@@ -11,7 +11,7 @@
 
 ![](https://www.azuracast.com/img/ScreenshotTour.gif)
 
-AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. AzuraCast's mascot is [Azura Ruisselante](https://azuracast.com/mascot.html), created by [Tyson Tan](https://tysontan.deviantart.com/).
+AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. AzuraCast's mascot is [Azura Ruisselante](https://www.azuracast.com/about/mascot.html), created by [Tyson Tan](https://tysontan.deviantart.com/).
 
 **AzuraCast is currently in beta.** Many web radio stations already run AzuraCast, but keeping your server up-to-date with the latest code from the GitHub repository is strongly recommended for security, bug fixes and new feature releases. It's unlikely, but updates may result in unexpected issues or data loss, so always make sure to keep your station's media files backed up in a second location.
 
@@ -19,7 +19,7 @@ To install AzuraCast, you should have a basic understanding of the Linux shell t
 
 ## Live Demo
 
-Want to see AzuraCast for yourself? Check out [screenshots](https://azuracast.com/screenshots.html) or visit
+Want to see AzuraCast for yourself? Check out [screenshots](https://www.azuracast.com/about/#screenshots) or visit
 our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 * Username: `demo@azuracast.com`
@@ -27,7 +27,7 @@ our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 ## Install AzuraCast
 
-Follow our **[installation guide](https://azuracast.com/install.html)** for instructions on how to install AzuraCast on your own server.
+Follow our **[installation guide](https://azuracast.com/install/)** for instructions on how to install AzuraCast on your own server.
 
 ## Features
 
@@ -76,11 +76,11 @@ Once installed and running, AzuraCast exposes an API that allows you to monitor 
 
 ## License
 
-AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/License.txt). This project is free and open-source software, and pull requests are always welcome.
+AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/LICENSE.txt). This project is free and open-source software, and pull requests are always welcome.
 
 ## Need Help?
 
-If you need help with AzuraCast, the first place you should visit is our [Support readme document](https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md), which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to check your server's log files for more details. If you do need our help via GitHub, supplying these logs is absolutely essential in helping us diagnose and resolve your issue.
+If you need help with AzuraCast, the first place you should visit is our [Support page](https://www.azuracast.com/help/), which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to check your server's log files for more details. If you do need our help via GitHub, supplying these logs is absolutely essential in helping us diagnose and resolve your issue.
 
 New feature requests are powered by FeatureUpvote. You can visit our [Feature Request Page](https://features.azuracast.com/) to submit a new feature request or vote on existing ones.
 

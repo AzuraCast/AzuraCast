@@ -42,37 +42,57 @@ class Local
         $np = $event->getNowPlaying();
         $station = $event->getStation();
 
-        $this->logger->debug('Writing entry to InfluxDB...');
+        if ($event->isStandalone()) {
+            $this->logger->debug('Writing entry to InfluxDB...');
 
-        // Post statistics to InfluxDB.
-        $influx_point = new \InfluxDB\Point(
-            'station.' . $station->getId() . '.listeners',
-            (int)$np->listeners->current,
-            [],
-            ['station' => $station->getId()],
-            time()
-        );
+            // Post statistics to InfluxDB.
+            $influx_point = new \InfluxDB\Point(
+                'station.' . $station->getId() . '.listeners',
+                (int)$np->listeners->current,
+                [],
+                ['station' => $station->getId()],
+                time()
+            );
 
-        $this->influx->writePoints([$influx_point], Database::PRECISION_SECONDS);
+            $this->influx->writePoints([$influx_point], Database::PRECISION_SECONDS);
 
-        // Replace the relevant station information in the cache and database.
-        $this->logger->debug('Updating NowPlaying cache...');
+            // Replace the relevant station information in the cache and database.
+            $this->logger->debug('Updating NowPlaying cache...');
 
-        $np_full = $this->cache->get('api_nowplaying_data');
+            $np_full = $this->cache->get('api_nowplaying_data');
 
-        if ($np_full) {
-            $np_new = [];
-            foreach($np_full as $np_old) {
-                /** @var Entity\Api\NowPlaying $np_old */
-                if ($np_old->station->id === $station->getId()) {
-                    $np_new[] = $np;
-                } else {
-                    $np_new[] = $np_old;
+            if ($np_full) {
+                $np_new = [];
+                foreach($np_full as $np_old) {
+                    /** @var Entity\Api\NowPlaying $np_old */
+                    if ($np_old->station->id === $station->getId()) {
+                        $np_new[] = $np;
+                    } else {
+                        $np_new[] = $np_old;
+                    }
                 }
-            }
 
-            $this->cache->save($np_new, 'api_nowplaying_data', 120);
-            $this->settings_repo->setSetting('nowplaying', $np_new);
+                $this->cache->save($np_new, 'api_nowplaying_data', 120);
+                $this->settings_repo->setSetting('nowplaying', $np_new);
+            }
         }
+
+        $this->logger->debug('Writing local nowplaying text file...');
+
+        $config_dir = $station->getRadioConfigDir();
+        $np_file = $config_dir.'/nowplaying.txt';
+
+        $np_text = implode(' - ', array_filter([
+            $np->now_playing->song->artist ?? null,
+            $np->now_playing->song->title ?? null,
+        ]));
+
+        if (empty($np_text)) {
+            $np_text = $station->getName();
+        }
+
+        // Atomic rename to ensure the file is always there.
+        file_put_contents($np_file.'.new', $np_text);
+        rename($np_file.'.new', $np_file);
     }
 }

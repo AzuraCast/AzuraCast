@@ -57,11 +57,9 @@ class Dispatcher implements EventSubscriberInterface
      */
     public function localDispatch(SendWebhooks $event): void
     {
-        if ($event->isStandalone()) {
-            /** @var Connector\Local $connector_obj */
-            $connector_obj = $this->connectors->get(Connector\Local::NAME);
-            $connector_obj->dispatch($event);
-        }
+        /** @var Connector\Local $connector_obj */
+        $connector_obj = $this->connectors->get(Connector\Local::NAME);
+        $connector_obj->dispatch($event);
     }
 
     /**

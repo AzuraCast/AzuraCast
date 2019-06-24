@@ -131,7 +131,7 @@ class StationRemote implements StationMountInterface
     protected $mount;
 
     /**
-     * @ORM\Column(name="source_port", type="smallint", nullable=true)
+     * @ORM\Column(name="source_port", type="smallint", nullable=true, options={"unsigned"=true})
      *
      * @OA\Property(example=8000)
      *

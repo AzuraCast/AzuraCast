@@ -25,8 +25,9 @@
     <div class="card-body">
         <radio-player></radio-player>
     </div>
+    <div class="d-flex align-items-center">
     <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
-        <div class="card-actions">
+        <div class="card-actions flex-shrink">
             <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
                 <i class="material-icons" aria-hidden="true">skip_next</i>
                 <?=__('Skip Song') ?>
@@ -37,4 +38,19 @@
             </a>
         </div>
     <?php endif; ?>
+        <div class="card-subtitle text-right flex-fill my-3 mr-3" style="line-height: 1">
+            <span v-if="np.live.is_live">
+                <i class="material-icons sm align-middle" aria-hidden="true">mic</i>
+                <small>
+                    <b><?=__('Live') ?>:</b> {{ np.live.streamer_name }}
+                </small>
+            </span>
+            <span v-else-if="np.now_playing.playlist">
+                <i class="material-icons sm align-middle" aria-hidden="true">queue_music</i>
+                <small>
+                    <b><?=__('Playlist') ?>:</b> {{ np.now_playing.playlist }}
+                </small>
+            </span>
+        </div>
+    </div>
 </section>

@@ -48,6 +48,9 @@ sleep 5
 # Run restore op
 chmod a+x docker.sh
 
+# Set appropriate permissions on the stations directory
+chown -R 1001 /var/azuracast/stations
+
 docker-compose run --rm --user="azuracast" web azuracast_restore migration.zip
 docker-compose up -d
 

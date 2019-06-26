@@ -3,10 +3,6 @@
       msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
 
   - fail:
-      msg: "AzuraCast cannot currently be installed on non-x86 architectures."
-    when: ansible_architecture != 'x86_64' and ansible_architecture != 'i386'
-
-  - fail:
       msg: "AzuraCast can only be installed onto computers running Ubuntu 16.04 or 18.04 LTS."
     when: ansible_distribution != 'Ubuntu'
 

@@ -119,6 +119,7 @@ install() {
     docker-compose pull
     docker-compose run --user="azuracast" --rm web azuracast_install
     docker-compose up -d
+    exit
 }
 
 #
@@ -156,6 +157,7 @@ update() {
     docker rmi $(docker images | grep "none" | awk '/ / { print $3 }') 2> /dev/null
 
     echo "Update complete!"
+    exit
 }
 
 #
@@ -167,6 +169,7 @@ update-self() {
     chmod a+x docker.sh
 
     echo "New Docker utility script downloaded."
+    exit
 }
 
 #
@@ -175,6 +178,7 @@ update-self() {
 #
 cli() {
     docker-compose run --user="azuracast" --rm web azuracast_cli $*
+    exit
 }
 
 #
@@ -183,6 +187,7 @@ cli() {
 #
 bash() {
     docker-compose exec --user="azuracast" web bash
+    exit
 }
 
 #
@@ -208,6 +213,7 @@ backup() {
     docker-compose run --rm --user="azuracast" \
         -v $BACKUP_DIR:/backup \
         web azuracast_cli azuracast:backup /backup/$BACKUP_FILENAME $*
+    exit
 }
 
 #
@@ -240,6 +246,8 @@ restore() {
         echo "File $BACKUP_PATH does not exist in this directory. Nothing to restore."
         exit 1
     fi
+
+    exit
 }
 
 #
@@ -275,6 +283,8 @@ restore-legacy() {
         echo "File $BACKUP_PATH does not exist in this directory. Nothing to restore."
         exit 1
     fi
+
+    exit
 }
 
 #
@@ -285,6 +295,7 @@ restore-legacy() {
 static() {
     docker-compose -f docker-compose.static.yml build
     docker-compose -f docker-compose.static.yml run --rm static $*
+    exit
 }
 
 #
@@ -295,6 +306,7 @@ dev-tests() {
     dev-lint
     dev-phpstan
     dev-codeception
+    exit
 }
 
 #
@@ -340,6 +352,8 @@ uninstall() {
         echo "  docker volume prune -f"
         echo ""
     fi
+
+    exit
 }
 
 #
@@ -348,6 +362,7 @@ uninstall() {
 #
 letsencrypt-create() {
     docker-compose exec --user="azuracast" web letsencrypt_connect $*
+    exit
 }
 
 #
@@ -356,6 +371,7 @@ letsencrypt-create() {
 #
 letsencrypt-renew() {
     docker-compose exec --user="azuracast" web letsencrypt_renew $*
+    exit
 }
 
 $*

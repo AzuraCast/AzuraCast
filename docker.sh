@@ -80,17 +80,24 @@ install() {
                 exit 1
             fi
 
-            if [[ ! $(which sudo) ]]; then
-                echo "Sudo does not appear to be installed."
-                echo "Install sudo using your host's package manager,"
-                echo "then continue installing using this script."
-                exit 1
-            fi
-
             COMPOSE_VERSION=`git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1`
-            sudo sh -c "curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
-            sudo chmod +x /usr/local/bin/docker-compose
-            sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
+
+            if [[ $EUID -ne 0 ]]; then
+                if [[ ! $(which sudo) ]]; then
+                    echo "Sudo does not appear to be installed."
+                    echo "Install sudo using your host's package manager,"
+                    echo "then continue installing using this script."
+                    exit 1
+                fi
+
+                sudo sh -c "curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+                sudo chmod +x /usr/local/bin/docker-compose
+                sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
+            else
+                curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+                chmod +x /usr/local/bin/docker-compose
+                curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose
+            fi
         fi
     fi
 

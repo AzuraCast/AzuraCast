@@ -79,6 +79,12 @@ var jsFiles = {
             "node_modules/roboto-fontface/fonts/roboto/*"
         ]
     },
+    "dirrty": {
+        base: null,
+        files: [
+            "node_modules/dirrty/dist/jquery.dirrty.js"
+        ]
+    },
 
     // Individual libraries
     "store": {

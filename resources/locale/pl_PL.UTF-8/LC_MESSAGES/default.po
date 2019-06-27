@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-27 19:20\n"
+"PO-Revision-Date: 2019-06-27 19:30\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -1074,31 +1074,31 @@ msgstr "Wyklucz multimedia z kopii zapasowych"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Wykluczenie multimediów z automatycznych kopii zapasowych oszczędzi miejsce na dysku, powinieneś jednak przechowywać kopie tych plików w innym miejscu."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "Liczba kopii zapasowych przechowywanych na dysku"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "Kopie starsze niż podana liczba dni będą automatycznie usuwane. Ustaw zero, aby wyłączyć automatyczne usuwanie."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr ""
+msgstr "Nazwa pliku kopii zapasowej"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Opcjonalna bezwzględna lub względna ścieżka, w której będzie umieszczany plik kopii zapasowej."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Wyklucz multimedia z kopii zapasowych"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "To spowoduje powstanie znacznie mniejszego pliku kopii zapasowej, powinieneś jednak upewnić się, że przechowujesz kopie twoich plików w innym miejscu."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
@@ -1652,7 +1652,7 @@ msgstr "Czas rozpoczęcia"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Aby odtwarzać raz dziennie, ustaw takie same czasy start i stop."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
@@ -1660,11 +1660,11 @@ msgstr "Czas zakończenia"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Jeśli czas końca jest ustawiony przed czasem początku, playlista będzie odtwarzana w ciągu nocy."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Strefa czasowa stacji"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
@@ -2095,7 +2095,7 @@ msgstr "Strefa czasowa"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Zaplanowane playlisty i inne elementy związane z czasem będą kontrolowane przez tę strefę czasową."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
@@ -2339,11 +2339,11 @@ msgstr "Katalog, w którym przechowywane są pliki multimedialne. Pozostaw puste
 
 #: /var/azuracast/www/config/forms/station_clone.php:14
 msgid "New Station Name"
-msgstr ""
+msgstr "Nazwa nowej stacji"
 
 #: /var/azuracast/www/config/forms/station_clone.php:23
 msgid "New Station Description"
-msgstr ""
+msgstr "Opis nowej stacji"
 
 #: /var/azuracast/www/config/forms/station_clone.php:33
 msgid "Customize Station Cloning"
@@ -2528,7 +2528,7 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Webhooki automatycznie wysyłają żądanie HTTP POST do podanego URL'a, aby powiadomić go za każdym razem gdy jeden z podanych przez Ciebie wyzwalaczy pojawi się w Twojej stacji. Treść wiadomości POST jest dokładnie taka sama, jak <a href=\"%s\" target=\"_blank\">odpowiedź API Teraz Odtwarzane</a> dla Twojej stacji. W celu szybkiego przetworzenia wiadomości, webhooki mają krótki timeout, więc usługa odpowiadająca powinna być zoptymalizowana by być w stanie przetworzyć żądanie w czasie mniej niż 2 sekund."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"
@@ -2617,7 +2617,14 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Wykonaj następujące kroki, aby skonfigurować aplikację na Twitterze:<br>\n"
+"<ol type=\"1\">\n"
+"<li>Utwórz nową aplikację na <a href=\"%s\" target=\"_blank\">podstronie Aplikacje Twittera</a>.\n"
+" Jako URL aplikacji podaj podstawowy URL tej instalacji.</li>\n"
+"<li>W nowo utworzonej aplikacji, przejdź do karty \"Klucze i Tokeny Dostępu\" (Keys and Access Tokens).</li>\n"
+"<li>W dolnej części strony, kliknij \"Utwórz mój token dostępu\" (Create my access token).</li>\n"
+"</ol>\n"
+"Po ukończeniu tej procedury, wklej informacje z podstrony \"Klucze i Tokeny Dostępu\" (Keys and Access Tokens) w poniższych polach"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -2647,7 +2654,7 @@ msgstr "Bez limitu"
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
 #: /var/azuracast/www/config/forms/webhook/twitter.php:77
 msgid "%d seconds"
-msgstr ""
+msgstr "%d sekund"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:78
 #: /var/azuracast/www/config/forms/webhook/twitter.php:79
@@ -2656,7 +2663,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/twitter.php:82
 #: /var/azuracast/www/config/forms/webhook/twitter.php:83
 msgid "%d minutes"
-msgstr ""
+msgstr "%d minut"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:119
 msgid "Message Body"
@@ -2879,38 +2886,38 @@ msgstr "Wycofaj"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
-msgstr ""
+msgstr "Automatyczne kopie zapasowe"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:43
 msgid "Last run: %s"
-msgstr ""
+msgstr "Ostatnie uruchomienie: %s"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
-msgstr ""
+msgstr "Nigdy nie uruchamiane"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:38
 #: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
-msgstr ""
+msgstr "Konfiguracja"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:43
 #: /var/azuracast/www/templates/admin/backups/index.phtml:132
 msgid "Most Recent Backup Log"
-msgstr ""
+msgstr "Najświeższy dziennik kopii zapasowej"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:64
 msgid "Restoring Backups"
-msgstr ""
+msgstr "Przywracanie kopii zapasowych"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Aby przywrócić kopię zapasową z własnego komputera, uruchom:"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Miej na uwadze, że przywrócenie kopii zapasowej wyczyści Twoją obecną bazę danych. Nigdy nie przywracaj kopii zapasowych pochodzących od użytkowników, którym nie ufasz."
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
@@ -2935,7 +2942,7 @@ msgstr "Opcje"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 msgid "Last Modified"
-msgstr ""
+msgstr "Ostatnio zmodyfikowane"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:103
 #: /var/azuracast/www/templates/stations/files/index.phtml:114
@@ -2944,11 +2951,11 @@ msgstr "Rozmiar"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Download"
-msgstr ""
+msgstr "Pobierz"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:112
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "Usunąć kopię zapasową \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:112
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:33
@@ -2971,15 +2978,15 @@ msgstr "Usuń"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
-msgstr ""
+msgstr "Strona główna kopii zapasowych"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:25
 msgid "Backup was run successfully."
-msgstr ""
+msgstr "Pomyślnie uruchomiono tworzenie kopii zapasowej."
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:27
 msgid "Backup encountered errors when running. Check the log below for details."
-msgstr ""
+msgstr "Podczas tworzenia kopii zapasowej wystąpiły błędy. Szczegółowe informacje znajdziesz w dzienniku."
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:33
 msgid "Delete custom field \"%s\"?"
@@ -3065,15 +3072,15 @@ msgstr "Witaj w %s!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:35
 msgid "name@example.com"
-msgstr ""
+msgstr "ktoś@domena.pl"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:45
 msgid "Enter your password"
-msgstr ""
+msgstr "Podaj swoje hasło"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:52
 msgid "Sign in"
-msgstr ""
+msgstr "Zaloguj się"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:58
 msgid "Please log in to continue."

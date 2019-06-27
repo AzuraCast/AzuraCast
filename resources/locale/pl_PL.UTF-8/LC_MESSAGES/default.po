@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-05-28T17:48:37+00:00\n"
-"PO-Revision-Date: 2019-06-27 19:30\n"
+"PO-Revision-Date: 2019-06-27 19:40\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -3113,7 +3113,7 @@ msgstr "Moje klucze API"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Klucze API mogą być wykorzystywane do uzyskiwania dostępu do pewnych funkcji systemowych bez konieczności logowania się. Wszystkie wygenerowane przez Ciebie klucze posiadają Twoje uprawnienia w systemie. Aby uzyskać więcej informacji, zajrzyj do <a href=\"%s\">dokumentacji API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3158,7 +3158,7 @@ msgstr "Panel"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "Użytkownik AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
@@ -3216,7 +3216,7 @@ msgstr "Aby sprawdzić, czy kod został ustawiony poprawnie, wpisz tutaj sześci
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "Kod QR"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:58
 msgid "Customize"
@@ -3365,7 +3365,7 @@ msgstr "Żądanie utworu"
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:9
 msgid "Play"
-msgstr ""
+msgstr "Odtwórz"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
@@ -3494,7 +3494,7 @@ msgstr "Nowe zgłoszenie na GitHubie"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
-msgstr ""
+msgstr "Podgląd dziennika"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
@@ -3681,7 +3681,7 @@ msgstr "Waga"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Plays at %s"
-msgstr ""
+msgstr "Gra o %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:110
 msgid "Plays between %s and %s"
@@ -3806,7 +3806,7 @@ msgstr "Rozłącz nadającego prezentera"
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
 msgid "Public Pages"
-msgstr ""
+msgstr "Strony publiczne"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:37
 msgid "Player Embed Code"
@@ -3814,27 +3814,27 @@ msgstr "Kod osadzenia odtwarzacza"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:45
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Poproś o kod do osadzenia"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"
-msgstr ""
+msgstr "Wyłączyć publiczne strony?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
 msgid "Enable public pages?"
-msgstr ""
+msgstr "Włączyć publiczne strony?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:26
 msgid "View"
-msgstr ""
+msgstr "Wyświetl"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:30
 msgid "Disable song requests?"
-msgstr ""
+msgstr "Wyłączyć prośby o piosenki?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:46
 msgid "Enable song requests?"
-msgstr ""
+msgstr "Włączyć prośby o piosenki?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:40
@@ -3843,11 +3843,11 @@ msgstr "Streamerzy/DJe"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:30
 msgid "Disable streamers?"
-msgstr ""
+msgstr "Deaktywować streamerów?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:46
 msgid "Enable streamers?"
-msgstr ""
+msgstr "Aktywować streamerów?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
 msgid "Streams"
@@ -3966,7 +3966,7 @@ msgstr "Ten produkt zawiera dane z GeoLite2 utworzone przez MaxMind, dostępne o
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
-msgstr ""
+msgstr "Godzina"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
@@ -4173,9 +4173,9 @@ msgstr "Brak wyników!"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:67
 msgid "Errors were encountered when trying to save changes:"
-msgstr ""
+msgstr "Podczas zapisywania zmian wystąpiły następujące błędy:"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:70
 msgid "General"
-msgstr ""
+msgstr "Ogólne"
 

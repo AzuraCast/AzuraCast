@@ -8,8 +8,21 @@ function styleForm(form, translations) {
 
     var $form = $(form);
 
+    $form.find(':input').each(function() {
+        $(this).data('initialValue', $(this).val());
+    });
+
     $(window).on('beforeunload', function() {
-        return false;
+        var isDirty = false;
+        $form.find(':input').each(function () {
+            if ($(this).data('initialValue') !== $(this).val()) {
+                isDirty = true;
+            }
+        });
+
+        if (isDirty) {
+            return false;
+        }
     });
 
     $form.on('submit', function() {

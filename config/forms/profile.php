@@ -44,12 +44,6 @@ return [
                     [
                         'label' => __('Current Password'),
                         'autocomplete' => 'off',
-                        'filter' => function($val) {
-                            return '';
-                        },
-                        'validator' => function($val, $element) {
-                            return false; // Safe default.
-                        },
                         'form_group_class' => 'col-md-4',
                     ]
                 ],

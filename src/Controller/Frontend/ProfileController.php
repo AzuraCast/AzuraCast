@@ -60,8 +60,9 @@ class ProfileController
     {
         $user = $request->getUser();
 
-        $form_config = $this->profile_form;
-        $form_config['groups']['reset_password']['elements']['password'][1]['validator'] = function($val, \AzuraForms\Field\AbstractField $field) use ($user) {
+        $form = new Form($this->profile_form);
+
+        $form->getField('password')->addValidator(function($val, \AzuraForms\Field\AbstractField $field) use ($user) {
             $form = $field->getForm();
 
             $new_password = $form->getField('new_password')->getValue();
@@ -74,9 +75,7 @@ class ProfileController
             }
 
             return true;
-        };
-
-        $form = new Form($form_config);
+        });
 
         $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
@@ -85,6 +84,7 @@ class ProfileController
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             $data = $form->getValues();
+            unset($data['password']);
 
             $this->user_repo->fromArray($user, $data);
 

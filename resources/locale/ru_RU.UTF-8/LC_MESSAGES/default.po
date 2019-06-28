@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-06-28 03:31\n"
+"PO-Revision-Date: 2019-06-28 16:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -84,7 +84,7 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Бекап"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
@@ -754,7 +754,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "Хотите использовать SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Установите его здесь</a>, затем перезагрузите эту страницу."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:40
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
@@ -4093,7 +4093,7 @@ msgstr "Пожалуйста, подождите..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:16
 msgid "Station Time"
-msgstr ""
+msgstr "Название станции"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
@@ -4191,5 +4191,5 @@ msgstr ""
 
 #: /var/azuracast/www/templates/system/form_page.phtml:69
 msgid "General"
-msgstr ""
+msgstr "Главная"
 

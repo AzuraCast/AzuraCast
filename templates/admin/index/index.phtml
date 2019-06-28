@@ -39,28 +39,28 @@ $assets
 <div class="card-deck system-statistics">
     <div class="card cpu-usage-card" role="region">
         <div class="card-body bg-primary-dark">
-            <h3>
+            <h3 class="text-white">
                 <?=round($load[0], 2) ?><br>
                 <small><?=__('Current CPU Load') ?></small>
             </h3>
         </div>
     </div>
     <div class="card cpu-usage-card" role="region">
-        <div class="card-body bg-primary-dark">
-            <h3>
+        <div class="card-body bg-primary-dark text-white">
+            <h3 class="text-white">
                 <?=round($load[2], 2) ?><br>
                 <small><?=__('15-Minute CPU Load Average') ?></small>
             </h3>
         </div>
     </div>
     <div class="card storage-card" role="region">
-        <div class="card-body bg-primary-dark">
+        <div class="card-body bg-primary-dark text-white">
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
                     <span class="sr-only"><?=$space_percent ?>%</span>
                 </div>
             </div>
-            <h3><small><?=__('%s of %s Used', $space_used, $space_total) ?></small></h3>
+            <h3 class="text-white"><small><?=__('%s of %s Used', $space_used, $space_total) ?></small></h3>
         </div>
     </div>
 </div>

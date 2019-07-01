@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-06-28 03:31\n"
+"PO-Revision-Date: 2019-07-01 12:40\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3009,15 +3009,15 @@ msgstr "Elimina campo personalizzato \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
-msgstr ""
+msgstr "Stato del server"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
-msgstr ""
+msgstr "Carico CPU attuale"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
-msgstr ""
+msgstr "Media di carico CPU in 15 minuti"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"
@@ -3571,7 +3571,7 @@ msgstr "Pagina iniziale"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:33
 msgid "%s of %s Used (%d Files)"
-msgstr ""
+msgstr "%s di %s Usati (%d File)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:43
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
@@ -3833,7 +3833,7 @@ msgstr "Disconnetti curatore"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:45
 msgid "Live"
-msgstr ""
+msgstr "Dal vivo"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
@@ -4115,7 +4115,7 @@ msgstr "Attendere prego..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:16
 msgid "Station Time"
-msgstr ""
+msgstr "Orario stazione"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."

@@ -196,23 +196,14 @@ bash() {
 # ./docker.sh backup [/custom/backup/dir/custombackupname.zip]
 #
 backup() {
-    APP_BASE_DIR=$(pwd)
-
     BACKUP_PATH=${1:-"./backup.tar.gz"}
-    BACKUP_DIR=$(cd `dirname "$BACKUP_PATH"` && pwd)
-    BACKUP_FILENAME=`basename "$BACKUP_PATH"`
+    BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
+    BACKUP_EXT="${BACKUP_FILENAME##*.}"
     shift
 
-    cd $APP_BASE_DIR
-
-    if [ ! -f .env ]; then
-        echo "Writing default .env file..."
-        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env > .env
-    fi
-
-    docker-compose run --rm --user="azuracast" \
-        -v $BACKUP_DIR:/backup \
-        web azuracast_cli azuracast:backup /backup/$BACKUP_FILENAME $*
+    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web_1 azuracast_cli azuracast:backup /tmp/cli_backup.${BACKUP_EXT} $*
+    docker cp azuracast_web_1:tmp/cli_backup.${BACKUP_EXT} ${BACKUP_PATH}
+    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web_1 rm -f /tmp/cli_backup.${BACKUP_EXT}
     exit
 }
 
@@ -222,31 +213,31 @@ backup() {
 # ./docker.sh restore [/custom/backup/dir/custombackupname.zip]
 #
 restore() {
-    APP_BASE_DIR=$(pwd)
-
     BACKUP_PATH=${1:-"./backup.tar.gz"}
-    BACKUP_DIR=$(cd `dirname "$BACKUP_PATH"` && pwd)
-    BACKUP_FILENAME=`basename "$BACKUP_PATH"`
+    BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
+    BACKUP_EXT="${BACKUP_FILENAME##*.}"
     shift
 
-    cd $APP_BASE_DIR
-
-    if [ ! -f .env ]; then
-        echo "Writing default .env file..."
-        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env > .env
-    fi
-
-    if [ -f $BACKUP_PATH ]; then
-        docker-compose run --rm --user="azuracast" \
-            -v $BACKUP_DIR:/backup \
-            web azuracast_restore /backup/$BACKUP_FILENAME $*
-
-        docker-compose up -d
-    else
-        echo "File $BACKUP_PATH does not exist in this directory. Nothing to restore."
+    if [[ ! -f .env ]] || [[ ! -f azuracast.env ]]; then
+        echo "AzuraCast hasn't been installed yet on this server."
+        echo "You should run './docker.sh install' first before restoring."
         exit 1
     fi
 
+    if [[ ! -f ${BACKUP_PATH} ]]; then
+        echo "File '${BACKUP_PATH}' does not exist. Nothing to restore."
+        exit 1
+    fi
+
+    if ask "Restoring will remove any existing AzuraCast installation data, replacing it with your backup. Continue?" Y; then
+        docker-compose down -v
+        docker-compose up -d web
+        docker cp ${BACKUP_PATH} azuracast_web_1:tmp/cli_backup.${BACKUP_EXT}
+        MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web_1 azuracast_restore /tmp/cli_backup.${BACKUP_EXT} $*
+
+        docker-compose down
+        docker-compose up -d
+    fi
     exit
 }
 

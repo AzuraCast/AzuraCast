@@ -377,14 +377,16 @@ class Configuration
             foreach($station_configs as $row) {
                 $station_reference = ['id' => $row['id'], 'name' => $row['name']];
 
-                if ($row['frontend_type'] !== Adapters::FRONTEND_REMOTE && $row['backend_type'] !== Adapters::BACKEND_NONE) {
+                if ($row['frontend_type'] !== Adapters::FRONTEND_REMOTE) {
                     $frontend_config = (array)$row['frontend_config'];
 
                     if (!empty($frontend_config['port'])) {
                         $port = (int)$frontend_config['port'];
                         $used_ports[$port] = $station_reference;
                     }
+                }
 
+                if ($row['backend_type'] !== Adapters::BACKEND_NONE) {
                     $backend_config = (array)$row['backend_config'];
 
                     // For DJ port, consider both the assigned port and port+1 to be reserved and in-use.

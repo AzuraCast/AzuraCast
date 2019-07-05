@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-07-05 07:50\n"
+"PO-Revision-Date: 2019-07-05 08:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1139,64 +1139,64 @@ msgstr "URL van homepage omleiden"
 
 #: /var/azuracast/www/config/forms/branding.php:42
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
-msgstr ""
+msgstr "Als een bezoeker niet is aangemeld en de homepage van AzuraCast bezoekt, kunt u ze automatisch doorverwijzen naar de hier opgegeven URL. Laat leeg om ze standaard naar het login scherm te verwijzen."
 
 #: /var/azuracast/www/config/forms/branding.php:51
 msgid "Default Album Art URL"
-msgstr ""
+msgstr "Standaard albumhoes URL"
 
 #: /var/azuracast/www/config/forms/branding.php:52
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
-msgstr ""
+msgstr "Als een nummer geen albumhoes heeft, zal deze URL in plaats daarvan worden weergegeven. Laat leeg om de standaard hoes te gebruiken."
 
 #: /var/azuracast/www/config/forms/branding.php:61
 msgid "Hide AzuraCast Branding on Public Pages"
-msgstr ""
+msgstr "Verberg AzuraCast reclame op openbare pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:62
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
-msgstr ""
+msgstr "Indien geselecteerd, zal dit AzuraCast reclame van publieke pagina's verwijderen."
 
 #: /var/azuracast/www/config/forms/branding.php:73
 msgid "Custom CSS for Public Pages"
-msgstr ""
+msgstr "Aangepaste CSS voor openbare pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:74
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Deze CSS zal worden toegepast op openbare pagina's van het station en op inlogpagina."
 
 #: /var/azuracast/www/config/forms/branding.php:85
 msgid "Custom JS for Public Pages"
-msgstr ""
+msgstr "Aangepaste JS voor openbare pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:86
 msgid "This javascript code will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Deze javascript code zal worden toegepast op de openbare pagina's van het station en op de inlogpagina."
 
 #: /var/azuracast/www/config/forms/branding.php:97
 msgid "Custom CSS for Internal Pages"
-msgstr ""
+msgstr "Aangepaste CSS voor interne pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:98
 msgid "This CSS will be applied to the main management pages, like this one."
-msgstr ""
+msgstr "Deze CSS zal worden toegevoegd aan alle pagina's binnen de beheeromgeving, zoals deze pagina."
 
 #: /var/azuracast/www/config/forms/custom_field.php:13
 msgid "Field Name"
-msgstr ""
+msgstr "Veldnaam"
 
 #: /var/azuracast/www/config/forms/custom_field.php:14
 msgid "This will be used as the label when editing individual songs, and will show in API results."
-msgstr ""
+msgstr "Dit wordt gebruikt als label bij het bewerken van individuele nummers, en zal worden weergegeven in API resultaten."
 
 #: /var/azuracast/www/config/forms/custom_field.php:22
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:23
 msgid "Programmatic Name"
-msgstr ""
+msgstr "Programmatische naam"
 
 #: /var/azuracast/www/config/forms/custom_field.php:23
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
-msgstr ""
+msgstr "Geef optioneel een API-vriendelijke naam op, zoals <code>veld_naam</code>. Laat dit veld leeg om er automatisch een te maken op basis van de naam."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
 #: /var/azuracast/www/config/forms/report_soundexchange.php:10
@@ -1205,23 +1205,23 @@ msgstr "Belangrijke notities"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr ""
+msgstr "<p>SHOUTcast 2 DNAS is geen gratis software en de restrictieve licentie staat AzuraCast niet toe de SHOUTcast binary te verspreiden. Om SHOUTcast te installeren, moet u de Linux x64 binary downloaden van de <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload de <code>sc_serv2_linux_x64-latest.tar.gz</code> naar het veld hieronder om het automatisch in de juiste map uit te laten pakken.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
-msgstr ""
+msgstr "Huidige geïnstalleerde versie"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:23
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr ""
+msgstr "SHOUTcast is momenteel niet geïnstalleerd op deze installatie."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:31
 msgid "Select SHOUTcast 64-bit .tar.gz File"
-msgstr ""
+msgstr "Selecteer SHOUTcast 64-bit .tar.gz bestand"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:44
 msgid "Upload"
-msgstr ""
+msgstr "Uploaden"
 
 #: /var/azuracast/www/config/forms/login.php:9
 #: /var/azuracast/www/config/forms/profile.php:25
@@ -1264,11 +1264,11 @@ msgstr "Album"
 
 #: /var/azuracast/www/config/forms/media.php:46
 msgid "Song Lyrics"
-msgstr ""
+msgstr "Songtekst van nummer"
 
 #: /var/azuracast/www/config/forms/media.php:54
 msgid "Replace Album Cover Art"
-msgstr ""
+msgstr "Vervang albumhoes"
 
 #: /var/azuracast/www/config/forms/media.php:65
 msgid "ISRC"
@@ -1280,7 +1280,7 @@ msgstr "International Standard Recording Code, wordt gebruikt voor licentierappo
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Beheerders kunnen de velden aanpassen die hier verschijnen op de <a href=\"%s\">beheerpagina</a>."
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
@@ -1342,7 +1342,7 @@ msgstr "De naam dient te beginnen met een schuine streep (/), en een geldige URL
 #: /var/azuracast/www/config/forms/remote.php:39
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:26
 msgid "Display Name"
-msgstr ""
+msgstr "Weergavenaam"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:26
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
@@ -1351,7 +1351,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Toon op openbare pagina's"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:35
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
@@ -1359,7 +1359,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Instellen als standaard Mount Punt"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:47
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
@@ -1625,7 +1625,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Onderbreek andere nummers om af te spelen op de ingestelde tijd."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Only loop through playlist once."
@@ -1637,7 +1637,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:231
 msgid "Merge playlist to play as a single track."
-msgstr ""
+msgstr "Voeg afspeellijst samen om af te spelen als één nummer."
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Include in Automated Assignment"
@@ -1653,7 +1653,7 @@ msgstr "Starttijd"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Stel de start- en eindtijd in op dezelfde waarde om één keer per dag te spelen."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
@@ -1661,19 +1661,19 @@ msgstr "Eindtijd"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Als de eindtijd voor de begintijd is, zal de afspeellijst van de ene op de andere dag afspelen."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Station tijdzone"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
-msgstr ""
+msgstr "Geplande speeldagen van de week"
 
 #: /var/azuracast/www/config/forms/playlist.php:297
 msgid "Leave blank to play on every day of the week."
-msgstr ""
+msgstr "Laat leeg om elke dag van de week te spelen."
 
 #: /var/azuracast/www/config/forms/playlist.php:323
 msgid "Number of Songs Between Plays"
@@ -1693,7 +1693,7 @@ msgstr "Deze afspeellijst zal elke $x minuten spelen, waar $x hieronder is opgeg
 
 #: /var/azuracast/www/config/forms/playlist.php:363
 msgid "Minute of Hour to Play"
-msgstr ""
+msgstr "Minuten van het uur om te spelen"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."

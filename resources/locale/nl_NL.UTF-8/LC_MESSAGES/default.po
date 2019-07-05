@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-06-28 03:30\n"
+"PO-Revision-Date: 2019-07-05 07:40\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -19,20 +19,20 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:183
 #: /var/azuracast/www/src/Acl.php:195
 msgid "All Permissions"
-msgstr ""
+msgstr "Alle permissies"
 
 #: /var/azuracast/www/src/Acl.php:184
 msgid "View Administration Page"
-msgstr ""
+msgstr "Bekijk beheerders pagina"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View System Logs"
-msgstr ""
+msgstr "Bekijk systeemlogs"
 
 #: /var/azuracast/www/src/Acl.php:186
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #: /var/azuracast/www/src/Acl.php:186
 #: /var/azuracast/www/src/Acl.php:187
@@ -42,7 +42,7 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:191
 #: /var/azuracast/www/src/Acl.php:192
 msgid "Administer %s"
-msgstr ""
+msgstr "Beheren %s"
 
 #: /var/azuracast/www/src/Acl.php:187
 #: /var/azuracast/www/config/menus/admin.php:27
@@ -77,22 +77,22 @@ msgstr "Stations"
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:1
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:5
 msgid "Custom Fields"
-msgstr ""
+msgstr "Aangepaste velden"
 
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/config/menus/admin.php:37
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Back-ups"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
-msgstr ""
+msgstr "Bekijk stationspagina"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Reports"
-msgstr ""
+msgstr "Bekijk station rapportages"
 
 #: /var/azuracast/www/src/Acl.php:198
 msgid "View Station Logs"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-07-05 08:10\n"
+"PO-Revision-Date: 2019-07-05 08:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2595,19 +2595,19 @@ msgstr "TuneIn Station ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:28
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr ""
+msgstr "Het station ID zal een numerieke reeks zijn die begint met de letter S."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:38
 msgid "TuneIn Partner ID"
-msgstr ""
+msgstr "TuneIn partner-ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:48
 msgid "TuneIn Partner Key"
-msgstr ""
+msgstr "TuneIn partner sleutel"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Twitter Account Details"
-msgstr ""
+msgstr "Twitter accountgegevens"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:15
 msgid "Steps for configuring a Twitter application:<br>\n"
@@ -2622,33 +2622,33 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
-msgstr ""
+msgstr "Consumer Key (API-sleutel)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:40
 msgid "Consumer Secret (API Secret)"
-msgstr ""
+msgstr "Consumer Secret (Geheime API sleutel)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:50
 msgid "Access Token"
-msgstr ""
+msgstr "Toegangstoken"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:60
 msgid "Access Token Secret"
-msgstr ""
+msgstr "Geheime toegangstoken"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:70
 msgid "Only Send One Tweet Every..."
-msgstr ""
+msgstr "Stuur slechts één Tweet elke..."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:74
 msgid "No Limit"
-msgstr ""
+msgstr "Geen limiet"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:75
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
 #: /var/azuracast/www/config/forms/webhook/twitter.php:77
 msgid "%d seconds"
-msgstr ""
+msgstr "%d seconden"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:78
 #: /var/azuracast/www/config/forms/webhook/twitter.php:79
@@ -2657,11 +2657,11 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/twitter.php:82
 #: /var/azuracast/www/config/forms/webhook/twitter.php:83
 msgid "%d minutes"
-msgstr ""
+msgstr "%d minuten"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:119
 msgid "Message Body"
-msgstr ""
+msgstr "Berichtinhoud"
 
 #: /var/azuracast/www/config/menus/admin.php:13
 msgid "System Maintenance"
@@ -2670,12 +2670,12 @@ msgstr "Systeem Onderhoud"
 #: /var/azuracast/www/config/menus/admin.php:22
 #: /var/azuracast/www/templates/admin/branding/index.phtml:12
 msgid "Custom Branding"
-msgstr ""
+msgstr "Aangepaste merk"
 
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "Systeemlogs"
 
 #: /var/azuracast/www/config/menus/admin.php:48
 #: /var/azuracast/www/templates/admin/users/index.phtml:1
@@ -2685,19 +2685,19 @@ msgstr "Gebruikers account"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Start station"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Klaar om te beginnen met uitzenden? Klik om uw station te starten."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Herstart om wijzigingen toe te passen"
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Klik om uw station te herstarten en de configuratie wijzigingen toe te passen."
 
 #: /var/azuracast/www/config/menus/station.php:39
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:23
@@ -2730,7 +2730,7 @@ msgstr "Streamer/DJ accounts"
 #: /var/azuracast/www/config/menus/station.php:67
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:30
 msgid "Web DJ"
-msgstr ""
+msgstr "Web DJ"
 
 #: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
@@ -2739,7 +2739,7 @@ msgstr "Rapportages"
 #: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:7
 msgid "Statistics Overview"
-msgstr ""
+msgstr "Statistieken overzicht"
 
 #: /var/azuracast/www/config/menus/station.php:107
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:17
@@ -2767,7 +2767,7 @@ msgstr "Dupliceer nummers"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
-msgstr ""
+msgstr "SoundExchange Royalties"
 
 #: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
@@ -2787,7 +2787,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "Aankomende nummers in wachtrij"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
@@ -2795,63 +2795,63 @@ msgstr "Herstart uitzending"
 
 #: /var/azuracast/www/config/webhooks.php:18
 msgid "Generic Web Hook"
-msgstr ""
+msgstr "Algemene Webhook"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "Stuur automatisch een bericht naar elke URL wanneer uw station data verandert."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
-msgstr ""
+msgstr "Stuur metadata van het nummer naar TuneIn."
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
-msgstr ""
+msgstr "Discord Webhook"
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Stuur automatisch een aangepast bericht naar je Discord server."
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Telegram Chat Bericht"
 
 #: /var/azuracast/www/config/webhooks.php:34
 msgid "Use the Telegram Bot API to send a message to a channel."
-msgstr ""
+msgstr "Gebruik de Telegram Bot API om een bericht naar een kanaal te sturen."
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
-msgstr ""
+msgstr "Twitter post"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Automatisch een tweet verzenden."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Elke keer dat het huidige nummer verandert"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Elke keer dat de luisteraar telt stijgt"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Elke keer dat het aantal luisteraars afneemt"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "Elke keer dat een live streamer/DJ verbinding maakt met de stream"
 
 #: /var/azuracast/www/config/webhooks.php:49
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "Elke keer dat een live streamer/DJ verbinding verbreekt van de stream"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:19
 msgid "Owner"
@@ -2880,38 +2880,38 @@ msgstr "Intrekken"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
-msgstr ""
+msgstr "Automatische back-ups"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:78
 msgid "Last run: %s"
-msgstr ""
+msgstr "Laatst uitgevoerd: %s"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
-msgstr ""
+msgstr "Nooit uitvoeren"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:38
 #: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
-msgstr ""
+msgstr "Configureren"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:43
 #: /var/azuracast/www/templates/admin/backups/index.phtml:130
 msgid "Most Recent Backup Log"
-msgstr ""
+msgstr "Meest recente back-up log"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:64
 msgid "Restoring Backups"
-msgstr ""
+msgstr "Herstellen van back-ups"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Om een back-up te herstellen vanaf uw computer, voer uit:"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Let op dat het herstellen van een back-up uw bestaande database zal wissen. Herstel nooit back-up bestanden van niet-vertrouwde gebruikers."
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:21
@@ -2936,7 +2936,7 @@ msgstr "Acties"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Last Modified"
-msgstr ""
+msgstr "Laatst gewijzigd"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 #: /var/azuracast/www/templates/stations/files/index.phtml:110
@@ -3234,47 +3234,47 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:66
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Tweestapsverificatie"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:75
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "Tweestapsverificatie verbetert de veiligheid van uw account door een tweede eenmalige toegangscode te eisen naast uw wachtwoord wanneer u inlogt."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:81
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "Twee-factor uitschakelen"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:86
 msgid "Enable Two-Factor"
-msgstr ""
+msgstr "Twee-factor inschakelen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
-msgstr ""
+msgstr "Microfoon"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:13
 msgid "Mixer"
-msgstr ""
+msgstr "Mixer"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"
-msgstr ""
+msgstr "Afspeellijst 1"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:15
 msgid "Playlist 2"
-msgstr ""
+msgstr "Afspeellijst 2"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:18
 msgid "Encoder"
-msgstr ""
+msgstr "Encoder"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:19
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:20
 msgid "Raw"
-msgstr ""
+msgstr "Raw"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
@@ -3282,11 +3282,11 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:22
 msgid "Bit Rate"
-msgstr ""
+msgstr "Bitrate"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:23
 msgid "DJ Credentials"
-msgstr ""
+msgstr "DJ Aanmeldgegevens"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:25
@@ -3308,43 +3308,43 @@ msgstr "Artiest"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:29
 msgid "Continuous Play"
-msgstr ""
+msgstr "Continu spelen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:30
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Herhaal afspeellijst"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:31
 msgid "Microphone Source"
-msgstr ""
+msgstr "Microfoon bron"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:34
 msgid "Start Streaming"
-msgstr ""
+msgstr "Start streamen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:35
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Stoppen met streamen"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:36
 msgid "Cue"
-msgstr ""
+msgstr "Cue"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:37
 msgid "Update Metadata"
-msgstr ""
+msgstr "Metadata bijwerken"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:40
 msgid "Add Files to Playlist"
-msgstr ""
+msgstr "Bestanden toevoegen aan afspeellijst"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:41
 msgid "Unknown Title"
-msgstr ""
+msgstr "Onbekende titel"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:42
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Onbekende artiest"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:44
@@ -3356,7 +3356,7 @@ msgstr "Verzoek"
 #: /var/azuracast/www/templates/stations/files/index.phtml:105
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:28
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:29
 #: /var/azuracast/www/templates/frontend/public/index.phtml:47
@@ -3375,7 +3375,7 @@ msgstr "Vraag een nummer aan"
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:9
 msgid "Play"
-msgstr ""
+msgstr "Speel"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
@@ -3393,7 +3393,7 @@ msgstr "Geluid dempen"
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:10
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:12
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:13
@@ -3403,19 +3403,19 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:14
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:14
 msgid "Album Art"
-msgstr ""
+msgstr "Albumhoes"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:17
 msgid "AzuraCast First-Time Setup"
-msgstr ""
+msgstr "AzuraCast installatie"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "Welcome to AzuraCast!"
-msgstr ""
+msgstr "Welkom bij AzuraCast!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:27
 msgid "Let's get started by creating your Super Administrator account."
-msgstr ""
+msgstr "Laten we beginnen met het maken van een Super Administrator account."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:28
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
@@ -3424,7 +3424,7 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:19
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:19
 msgid "Create Station"
-msgstr ""
+msgstr "Station toevoegen"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:35
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
@@ -3432,7 +3432,7 @@ msgstr "Voltooi de installatie door het verstrekken van informatie over je uitze
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:42
 msgid "Customize AzuraCast Settings"
-msgstr ""
+msgstr "AzuraCast Instellingen aanpassen"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:34
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
@@ -3440,19 +3440,19 @@ msgstr "Ga verder met de installatie door je eerste radiostation aan te maken. J
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:41
 msgid "Create a New Radio Station"
-msgstr ""
+msgstr "Maak een nieuw radiostation"
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
-msgstr ""
+msgstr "Ga naar hoofdinhoud"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Sidebar aan/uit"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Menu aan/uit"
 
 #: /var/azuracast/www/templates/main.phtml:72
 msgid "System Administration"
@@ -3460,11 +3460,11 @@ msgstr "Systeembeheer"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Thema veranderen"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Help"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"
@@ -3476,27 +3476,27 @@ msgstr "Uitloggen"
 
 #: /var/azuracast/www/templates/main.phtml:152
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "Vind je onze software leuk? <a href=\"%s\" target=\"_blank\">Doneer om AzuraCast te ondersteunen!</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
-msgstr ""
+msgstr "Mascotte ontworpen door %s"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:3
 msgid "Need Help?"
-msgstr ""
+msgstr "Hulp nodig?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:6
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
+msgstr "U kunt antwoorden vinden op veelgestelde vragen in onze <a href=\"%s\" target=\"_blank\">ondersteuningsdocumenten</a>."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:8
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
+msgstr "Als je een bug of fout ondervindt, kun je een GitHub probleem indienen met behulp van de onderstaande link."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:10
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
+msgstr "Uw huidige installatie type is <b>%s</b>. Zorg ervoor dat dit wordt vermeld bij het toevoegen van een probleem."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "New GitHub Issue"

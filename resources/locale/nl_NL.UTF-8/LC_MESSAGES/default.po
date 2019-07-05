@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-07-05 07:40\n"
+"PO-Revision-Date: 2019-07-05 07:50\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -96,7 +96,7 @@ msgstr "Bekijk station rapportages"
 
 #: /var/azuracast/www/src/Acl.php:198
 msgid "View Station Logs"
-msgstr ""
+msgstr "Bekijk station logs"
 
 #: /var/azuracast/www/src/Acl.php:199
 #: /var/azuracast/www/config/menus/station.php:34
@@ -113,16 +113,16 @@ msgstr "Profiel"
 #: /var/azuracast/www/src/Acl.php:205
 #: /var/azuracast/www/src/Acl.php:206
 msgid "Manage Station %s"
-msgstr ""
+msgstr "Beheer station %s"
 
 #: /var/azuracast/www/src/Acl.php:200
 #: /var/azuracast/www/config/forms/station.php:23
 msgid "Broadcasting"
-msgstr ""
+msgstr "Uitzenden"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Streamers"
-msgstr ""
+msgstr "Streames"
 
 #: /var/azuracast/www/src/Acl.php:202
 #: /var/azuracast/www/config/menus/station.php:74
@@ -148,7 +148,7 @@ msgstr "Media"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Automation"
-msgstr ""
+msgstr "Automatisering"
 
 #: /var/azuracast/www/src/Acl.php:206
 #: /var/azuracast/www/config/menus/station.php:87
@@ -159,11 +159,11 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
+msgstr "Het account dat gekoppeld is aan het e-mailadres \"%s\" is ingesteld als administrator"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."
-msgstr ""
+msgstr "Account niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:148
@@ -245,7 +245,7 @@ msgstr "Wijzigingen opgeslagen."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 msgid "Configure Backups"
-msgstr ""
+msgstr "Back-ups configureren"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:94
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:104
@@ -253,12 +253,12 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr ""
+msgstr "Handmatige back-up uitvoeren"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 msgid "Backup"
-msgstr ""
+msgstr "Back-up"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:36
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:65
@@ -311,7 +311,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:33
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "SHOUTcast versie \"%s\" is momenteel geïnstalleerd."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:75
 #: /var/azuracast/www/config/menus/admin.php:74
@@ -320,23 +320,23 @@ msgstr "Installeer SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
 msgid "AzuraCast Application Log"
-msgstr ""
+msgstr "AzuraCast Applicatie Log"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:77
 msgid "Nginx Access Log"
-msgstr ""
+msgstr "Nginx toegangslogboek"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:82
 msgid "Nginx Error Log"
-msgstr ""
+msgstr "Nginx foutlog"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:87
 msgid "PHP Application Log"
-msgstr ""
+msgstr "PHP Applicatie Log"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:92
 msgid "Supervisord Log"
-msgstr ""
+msgstr "Supervisord log"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:65
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:72
@@ -381,7 +381,7 @@ msgstr "Er bestaat al een andere gebruiker met dit e-mailadres. Gelieve het e-ma
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:78
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "U kunt uw eigen account niet verwijderen."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:101
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
@@ -399,7 +399,7 @@ msgstr "%s herstart."
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:103
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend"
-msgstr ""
+msgstr "Frontend"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:97
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:166
@@ -423,7 +423,7 @@ msgstr "Streamer ontkoppeld."
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
 msgid "Too many login attempts"
@@ -445,7 +445,7 @@ msgstr "Je logingegevens zijn incorrect."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:190
 msgid "All Stations"
-msgstr ""
+msgstr "Alle stations"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:220
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:76
@@ -476,15 +476,15 @@ msgstr "Wijzig profiel"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:149
 msgid "The token you supplied is invalid. Please try again."
-msgstr ""
+msgstr "De token die u hebt opgegeven is ongeldig. Probeer het opnieuw."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:172
 msgid "Two-factor authentication enabled."
-msgstr ""
+msgstr "Tweestapsverificatie ingeschakeld."
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:206
 msgid "Two-factor authentication disabled."
-msgstr ""
+msgstr "Tweestapsverificatie uitgeschakeld."
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:80
 msgid "Setup has already been completed!"
@@ -513,11 +513,11 @@ msgstr "Fout bij automatisch toewijzen"
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:151
 msgid "Path \"%s\" is not a folder."
-msgstr ""
+msgstr "Pad \"%s\" is geen map."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:239
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
+msgstr "Kan \"%s\" niet verplaatsen naar \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:126
 msgid "File renamed!"
@@ -529,7 +529,7 @@ msgstr "Wijzig bestand/map"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:205
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Dit station gebruikt teveel opslagruimte."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
 #: /var/azuracast/www/templates/stations/files/index.phtml:168
@@ -572,15 +572,15 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:219
 msgid "Format"
-msgstr ""
+msgstr "Formaat"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:245
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Afspeellijst ingeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:246
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Afspeellijst uitgeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:95
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:113
@@ -612,7 +612,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Luisteraars per dag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:90
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
@@ -623,32 +623,32 @@ msgstr "Luisteraars per dag van de week"
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:98
 #: /var/azuracast/www/config/forms/playlist.php:299
 msgid "Monday"
-msgstr ""
+msgstr "Maandag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:99
 #: /var/azuracast/www/config/forms/playlist.php:300
 msgid "Tuesday"
-msgstr ""
+msgstr "Dinsdag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:100
 #: /var/azuracast/www/config/forms/playlist.php:301
 msgid "Wednesday"
-msgstr ""
+msgstr "Woensdag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
 #: /var/azuracast/www/config/forms/playlist.php:302
 msgid "Thursday"
-msgstr ""
+msgstr "Donderdag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:102
 #: /var/azuracast/www/config/forms/playlist.php:303
 msgid "Friday"
-msgstr ""
+msgstr "Vrijdag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:103
 #: /var/azuracast/www/config/forms/playlist.php:304
 msgid "Saturday"
-msgstr ""
+msgstr "Zaterdag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:104
 #: /var/azuracast/www/config/forms/playlist.php:305
@@ -993,7 +993,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Inschakelen om AzuraCast automatisch nachtelijke back-ups te laten uitvoeren op het opgegeven tijdstip."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1063,31 +1063,31 @@ msgstr "Nee"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Geplande back-up tijd"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr ""
+msgstr "De tijd (in UTC) om de geautomatiseerde back-up te draaien, indien ingeschakeld."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr ""
+msgstr "Media uitsluiten van back-ups"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Het uitsluiten van media van geautomatiseerde backups bespaart ruimte, echter dient u ervoor te zorgen dat u op een andere manier een back-up maakt van uw media."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "Aantal te bewaren back-up kopieën"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "Kopies ouder dan het opgegeven aantal dagen zullen automatisch worden verwijderd. Zet op nul om automatische verwijdering uit te schakelen."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr ""
+msgstr "Backup bestandsnaam"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
@@ -1095,47 +1095,47 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Media uitsluiten van back-up"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Dit zal een aanzienlijk kleinere back-up opleveren, echter dient u ervoor te zorgen dat u op een andere manier een back-up maakt van uw media."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
-msgstr ""
+msgstr "Basis thema voor openbare pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:16
 msgid "Select a theme to use as a base for station public pages and the login page."
-msgstr ""
+msgstr "Selecteer een thema dat als basis moet worden gebruikt voor openbare stations en de inlogpagina."
 
 #: /var/azuracast/www/config/forms/branding.php:18
 #: /var/azuracast/www/config/forms/profile.php:94
 msgid "Light"
-msgstr ""
+msgstr "Licht"
 
 #: /var/azuracast/www/config/forms/branding.php:18
 #: /var/azuracast/www/config/forms/playlist.php:55
 #: /var/azuracast/www/config/forms/profile.php:94
 msgid "Default"
-msgstr ""
+msgstr "Standaard"
 
 #: /var/azuracast/www/config/forms/branding.php:19
 #: /var/azuracast/www/config/forms/profile.php:95
 msgid "Dark"
-msgstr ""
+msgstr "Donker"
 
 #: /var/azuracast/www/config/forms/branding.php:29
 msgid "Hide Album Art on Public Pages"
-msgstr ""
+msgstr "Verberg albumhoezen op openbare pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:30
 msgid "If selected, album art will not display on public-facing radio pages."
-msgstr ""
+msgstr "Indien geselecteerd, worden albumhoezen niet weergegeven op publieke radio-pagina's."
 
 #: /var/azuracast/www/config/forms/branding.php:41
 msgid "Homepage Redirect URL"
-msgstr ""
+msgstr "URL van homepage omleiden"
 
 #: /var/azuracast/www/config/forms/branding.php:42
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."

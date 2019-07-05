@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-07-05 08:50\n"
+"PO-Revision-Date: 2019-07-05 09:01\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -155,7 +155,7 @@ msgstr "Automatisering"
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
 msgid "Web Hooks"
-msgstr ""
+msgstr "Webhooks"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -1403,7 +1403,7 @@ msgstr "AutoDJ Bitrate (kbps)"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:135
 msgid "Custom Stream URL"
-msgstr ""
+msgstr "Aangepaste Stream URL"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:137
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
@@ -1419,7 +1419,7 @@ msgstr "Wanneer dit mount punt geen audio speelt, zullen luisteraars doorverweze
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:27
 msgid "Custom Frontend Configuration"
-msgstr ""
+msgstr "Aangepaste Frontend configuratie"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:29
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
@@ -1439,7 +1439,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
-msgstr ""
+msgstr "Basisinformatie"
 
 #: /var/azuracast/www/config/forms/playlist.php:12
 #: /var/azuracast/www/config/forms/playlist.php:71
@@ -1452,7 +1452,7 @@ msgstr "Bron"
 #: /var/azuracast/www/config/forms/playlist.php:206
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Scheduling"
-msgstr ""
+msgstr "Planning"
 
 #: /var/azuracast/www/config/forms/playlist.php:26
 msgid "Enable Playlist"
@@ -1488,7 +1488,7 @@ msgstr "Afspeellijst op Nummer gebaseerd"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Een afspeellijst met mediabestanden die op deze server worden gehost."
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "Remote URL Playlist"
@@ -1496,7 +1496,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr ""
+msgstr "Een afspeellijst die het station opdracht geeft om te spelen vanaf een externe URL."
 
 #: /var/azuracast/www/config/forms/playlist.php:93
 msgid "Song Playback Order"
@@ -1508,7 +1508,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
-msgstr ""
+msgstr "Willekeurig"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92
@@ -1554,7 +1554,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:176
 msgid "Playlist (M3U/PLS) URL"
-msgstr ""
+msgstr "Afspeellijst (M3U/PLS) URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:185
 msgid "Remote Playback Buffer (Seconds)"
@@ -1567,7 +1567,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:208
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:103
 msgid "General Rotation"
-msgstr ""
+msgstr "Algemene rotatie"
 
 #: /var/azuracast/www/config/forms/playlist.php:208
 msgid "Plays all day, shuffles with other standard playlists based on weight."
@@ -1629,7 +1629,7 @@ msgstr "Onderbreek andere nummers om af te spelen op de ingestelde tijd."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Only loop through playlist once."
-msgstr ""
+msgstr "Eenmalig door playlist lopen."
 
 #: /var/azuracast/www/config/forms/playlist.php:230
 msgid "Only play one track at scheduled time."
@@ -1965,11 +1965,11 @@ msgstr "Gebruik altijd HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:87
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Stel in op \"Ja\" om altijd \"https://\" (veilige) URL's te gebruiken en automatisch naar de beveiligde URL te verwijzen wanneer een onveilige URL wordt bezocht."
 
 #: /var/azuracast/www/config/forms/settings.php:97
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "API \"Access-Control-Allow-Origin\" header"
 
 #: /var/azuracast/www/config/forms/settings.php:99
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
@@ -1981,7 +1981,7 @@ msgstr "Privacy-instellingen"
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast stuurt geen gegevens van uw stations of luisteraars naar externe servers. U kunt hier instellen hoeveel data AzuraCast over uw luisteraars moet loggen."
 
 #: /var/azuracast/www/config/forms/settings.php:116
 msgid "Listener Analytics Collection"
@@ -2013,15 +2013,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:139
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Controleer op updates en aankondigingen"
 
 #: /var/azuracast/www/config/forms/settings.php:140
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Stuur minimale details over uw AzuraCast installatie naar de centrale server van AzuraCast om te controleren op de update software releases en belangrijke aankondigingen."
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>Geen:</b> Controleer niet op updates of aankondigingen."
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
@@ -2029,11 +2029,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:145
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>Alle updates:</b> bevat alle aankondigingen en kleine updates."
 
 #: /var/azuracast/www/config/forms/settings.php:154
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Automatisch foutrapporten verzenden naar AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
@@ -2084,7 +2084,7 @@ msgstr "Genre"
 
 #: /var/azuracast/www/config/forms/station.php:62
 msgid "Web Site URL"
-msgstr ""
+msgstr "Website URL"
 
 #: /var/azuracast/www/config/forms/station.php:63
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
@@ -3398,7 +3398,7 @@ msgstr "Volume"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:13
 msgid "Full Volume"
-msgstr ""
+msgstr "Volledige volume"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:14
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:14
@@ -3508,7 +3508,7 @@ msgstr "Log weergave"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr ""
+msgstr "Automatisch scrollen naar de onderkant van het logboek"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6
@@ -3631,7 +3631,7 @@ msgstr "Alle afspeellijsten"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:27
 msgid "Schedule View"
-msgstr ""
+msgstr "Planningsweergave"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:57
 msgid "# Songs"
@@ -3667,15 +3667,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Export %s"
-msgstr ""
+msgstr "Exporteer %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
 msgid "Song-based"
-msgstr ""
+msgstr "Nummer-gebaseerd"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:89
 msgid "Jingle Mode"
-msgstr ""
+msgstr "Jingle modus"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:95
 msgid "Auto-Assigned"
@@ -3687,7 +3687,7 @@ msgstr "Gewicht"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Plays at %s"
-msgstr ""
+msgstr "Speelt op %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:110
 msgid "Plays between %s and %s"
@@ -3703,7 +3703,7 @@ msgstr "Eens in de %d minuten"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:117
 msgid "Once per Hour (at :%02d)"
-msgstr ""
+msgstr "Eenmaal per uur (op:%02d)"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:119
 msgid "Custom"
@@ -3719,15 +3719,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Down"
-msgstr ""
+msgstr "Omlaag"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:43
 msgid "Up"
-msgstr ""
+msgstr "Omhoog"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
-msgstr ""
+msgstr "Station uitzending uitgeschakeld"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
@@ -3744,7 +3744,7 @@ msgstr "Wordt niet uitgevoerd"
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:17
 msgid "Loading..."
-msgstr ""
+msgstr "Laden..."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:27
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
@@ -3753,17 +3753,17 @@ msgstr "LiquidSoap speelt momenteel <b>%d geüploade nummers</b> uit <b>%d afspe
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:40
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:69
 msgid "Restart"
-msgstr ""
+msgstr "Herstart"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:44
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:73
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:48
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:77
 msgid "Stop"
-msgstr ""
+msgstr "Stop"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend_none.phtml:15
 msgid "AutoDJ Disabled"
@@ -3795,11 +3795,11 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:18
 msgid "Listener"
-msgstr ""
+msgstr "Luisteraar"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:20
 msgid "Unique"
-msgstr ""
+msgstr "Uniek"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:33
 msgid "Skip Song"

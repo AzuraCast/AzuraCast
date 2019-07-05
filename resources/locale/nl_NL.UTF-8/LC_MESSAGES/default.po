@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-07-05 08:30\n"
+"PO-Revision-Date: 2019-07-05 08:41\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1476,15 +1476,15 @@ msgstr "Afspeellijsten met een hoger gewicht worden vaker afgespeeld dan afspeel
 
 #: /var/azuracast/www/config/forms/playlist.php:53
 msgid "Low"
-msgstr ""
+msgstr "Laag"
 
 #: /var/azuracast/www/config/forms/playlist.php:57
 msgid "High"
-msgstr ""
+msgstr "Hoog"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "Song-Based Playlist"
-msgstr ""
+msgstr "Afspeellijst op Nummer gebaseerd"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "A playlist containing media files hosted on this server."
@@ -1584,7 +1584,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Once per x Songs"
-msgstr ""
+msgstr "Eenmaal per x nummers"
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Play exactly once every <i>x</i> songs."
@@ -1633,7 +1633,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:230
 msgid "Only play one track at scheduled time."
-msgstr ""
+msgstr "Slechts één track afspelen op geplande tijd."
 
 #: /var/azuracast/www/config/forms/playlist.php:231
 msgid "Merge playlist to play as a single track."
@@ -1949,19 +1949,19 @@ msgstr "Vorig jaar"
 
 #: /var/azuracast/www/config/forms/settings.php:68
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Laatste 2 jaar"
 
 #: /var/azuracast/www/config/forms/settings.php:69
 msgid "Indefinitely"
-msgstr ""
+msgstr "Onvoltooid"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Security Controls"
-msgstr ""
+msgstr "Beveiligingscontroles"
 
 #: /var/azuracast/www/config/forms/settings.php:86
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "Gebruik altijd HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:87
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
@@ -1977,7 +1977,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:108
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Privacy-instellingen"
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
@@ -2037,7 +2037,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Als de webapplicatie een fout tegenkomt, kunt u ervoor kiezen om automatisch een geanonimiseerd rapport van de fout naar het AzuraCast team te sturen voor snelle diagnose."
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
@@ -2076,11 +2076,11 @@ msgstr "Administratie"
 #: /var/azuracast/www/config/forms/station.php:46
 #: /var/azuracast/www/config/forms/webhook/discord.php:80
 msgid "Description"
-msgstr ""
+msgstr "Omschrijving"
 
 #: /var/azuracast/www/config/forms/station.php:54
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: /var/azuracast/www/config/forms/station.php:62
 msgid "Web Site URL"
@@ -2499,11 +2499,11 @@ msgstr "Titel"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:90
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Author Name"
-msgstr ""
+msgstr "Auteur naam"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:110
 msgid "Thumbnail Image URL"
@@ -2511,7 +2511,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:120
 msgid "Footer Text"
-msgstr ""
+msgstr "Voettekst"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:122
 #: /var/azuracast/www/templates/main.phtml:151
@@ -2566,24 +2566,24 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:39
 msgid "Chat ID"
-msgstr ""
+msgstr "Chat-ID"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:40
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
-msgstr ""
+msgstr "Unieke id voor de doelchat of gebruikersnaam van het doelkanaal (in het formaat @channelgebruikersnaam)."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:50
 msgid "Custom API Base URL"
-msgstr ""
+msgstr "Aangepaste API basis URL"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:52
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
-msgstr ""
+msgstr "Laat leeg om de standaard Telegram API URL (aanbevolen) te gebruiken. Geef de volledige URL op, zoals <code>https://api.pwrtelegram.xyz/</code>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:84
 #: /var/azuracast/www/config/forms/webhook/twitter.php:122
 msgid "Now playing on %s: %s by %s! Tune in now."
-msgstr ""
+msgstr "Nu aan het spelen op %s: %s door %s! Schakel nu in."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:93
 msgid "Message parsing mode"
@@ -2945,11 +2945,11 @@ msgstr "Grootte"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:110
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "Back-up \"%s\" verwijderen?"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
@@ -2976,19 +2976,19 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:25
 msgid "Backup was run successfully."
-msgstr ""
+msgstr "Back-up is succesvol uitgevoerd."
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:27
 msgid "Backup encountered errors when running. Check the log below for details."
-msgstr ""
+msgstr "Back-up fouten opgetreden tijdens het uitvoeren. Controleer het onderstaande logboek voor details."
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr ""
+msgstr "Verwijder aangepast veld \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
-msgstr ""
+msgstr "Server status"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
@@ -3000,11 +3000,11 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"
-msgstr ""
+msgstr "%s van %s gebruikt"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:68
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Synchronisatie taken"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:83
 msgid "Run Task"
@@ -3107,19 +3107,19 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
 msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
-msgstr ""
+msgstr "Uw account gebruikt tweestapsverificatie. Voer de code in die op uw apparaat wordt weergegeven."
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:20
 msgid "Security Code"
-msgstr ""
+msgstr "Beveiligingscode"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:9
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:3
 #: /var/azuracast/www/templates/main.phtml:91
 msgid "My API Keys"
-msgstr ""
+msgstr "Mijn API sleutels"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
@@ -3128,19 +3128,19 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
-msgstr ""
+msgstr "Sleutel id"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
 msgid "New Key Generated"
-msgstr ""
+msgstr "Nieuwe sleutel gegenereerd"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:14
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
-msgstr ""
+msgstr "<b>Belangrijk: kopieer de onderstaande sleutel voordat u doorgaat!</b> U kunt deze niet opnieuw opvragen."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:16
 msgid "Your full API key is below:"
-msgstr ""
+msgstr "Uw volledige API-sleutel wordt hieronder weergegeven:"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:21
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:43
@@ -3150,15 +3150,15 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:40
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:48
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Kopiëren naar klembord"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:25
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr ""
+msgstr "Wanneer u API-oproepen maakt, kunt u deze waarde doorgeven in de \"X-API-Key\" header om als uzelf te verifiëren. U kunt alleen de acties uitvoeren die uw gebruikersaccount mag uitvoeren."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:28
 msgid "Continue"
-msgstr ""
+msgstr "Doorgaan"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:11
 #: /var/azuracast/www/templates/main.phtml:64
@@ -3169,7 +3169,7 @@ msgstr "Dashboard"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "AzuraCast gebruiker"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
@@ -3197,40 +3197,40 @@ msgstr "Nu speelt"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
-msgstr ""
+msgstr "Fout: Geen beschikbare stations"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:4
 msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
-msgstr ""
+msgstr "Uw account is actief, maar is momenteel niet gekoppeld aan een station. Als u denkt dat dit een fout is, neem dan contact op met de beheerder van deze server."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "Tweestapsverificatie inschakelen"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:16
 msgid "Step 1: Scan QR Code"
-msgstr ""
+msgstr "Stap 1: Scan QR Code"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:18
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
-msgstr ""
+msgstr "Scan de code via een authenticatie app naar keuze (FreeOTP, Authy, etc) op uw mobiele telefoon."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:20
 msgid "Step 2: Verify Generated Code"
-msgstr ""
+msgstr "Stap 2: Controleer gegenereerde code"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:22
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
-msgstr ""
+msgstr "Om te controleren of de code correct is ingesteld, voer de 6-cijferige code in die in de app wordt weergegeven."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "QR-Code"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:58
 msgid "Customize"
-msgstr ""
+msgstr "Aanpassen"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:66
 msgid "Two-Factor Authentication"
@@ -3533,7 +3533,7 @@ msgstr "Configureer automatische toewijzing"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:83
 msgid "Album Artwork"
-msgstr ""
+msgstr "Albumhoes"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:95
 msgid "Rename"
@@ -3541,19 +3541,19 @@ msgstr "Naam aanpassen"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:182
 msgid "Select"
-msgstr ""
+msgstr "Selecteer"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:403
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:33
 msgid "%s of %s Used (%d Files)"
-msgstr ""
+msgstr "%s van %s gebruikt (%d bestanden)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:43
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr ""
+msgstr "U kunt ook bestanden in bulk uploaden via SFTP door <a href=\"%s\" target=\"_blank\">deze instructies</a>te volgen. Nieuw geüploade bestanden worden automatisch binnen enkele minuten verwerkt."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:52
 msgid "Drag files here to upload to this folder or "
@@ -3561,23 +3561,23 @@ msgstr "Plaats bestanden hier om te uploaden naar deze map of "
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:64
 msgid "Set Playlists"
-msgstr ""
+msgstr "Afspeellijsten instellen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:81
 msgid "New Playlist"
-msgstr ""
+msgstr "Nieuwe afspeellijst"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:86
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:90
 msgid "Move"
-msgstr ""
+msgstr "Verplaats"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:94
 msgid "New Folder"
-msgstr ""
+msgstr "Nieuwe map"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:106
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26

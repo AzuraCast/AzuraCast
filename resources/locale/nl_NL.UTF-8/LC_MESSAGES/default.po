@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-07-05 08:20\n"
+"PO-Revision-Date: 2019-07-05 08:30\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -19,11 +19,11 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:183
 #: /var/azuracast/www/src/Acl.php:195
 msgid "All Permissions"
-msgstr "Alle permissies"
+msgstr "Alle machtigingen"
 
 #: /var/azuracast/www/src/Acl.php:184
 msgid "View Administration Page"
-msgstr "Bekijk beheerders pagina"
+msgstr "Bekijk beheerpagina"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View System Logs"
@@ -653,13 +653,13 @@ msgstr "Zaterdag"
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:104
 #: /var/azuracast/www/config/forms/playlist.php:305
 msgid "Sunday"
-msgstr ""
+msgstr "Zondag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:148
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Luisteraars per uur"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:175
 msgid "SoundExchange Report"
@@ -678,7 +678,7 @@ msgstr "Je kunt nu streamer (DJ) accounts toevoegen."
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:85
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr ""
+msgstr "Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:71
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
@@ -694,15 +694,15 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Web Hook"
-msgstr ""
+msgstr "Webhook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 msgid "%s enabled."
-msgstr ""
+msgstr "%s ingeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 msgid "%s disabled."
-msgstr ""
+msgstr "%s uitgeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook Test Output"
@@ -710,39 +710,39 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Liquidsoap Log"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:91
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Liquidsoap configuratie"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Icecast toegangslogboek"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:107
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Icecast foutenlogboek"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:112
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Icecast configuratie"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:120
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "SHOUTcast log"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:125
 msgid "SHOUTcast Configuration"
-msgstr ""
+msgstr "SHOUTcast configuratie"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "U heeft een verzoek te kort ingediend! Wacht even voordat u een andere indient."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Dit nummer is kortgeleden afgespeeld. Wacht even voordat u dit nummer opnieuw aanvraagt."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -750,20 +750,20 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:54
 msgid "Select File"
-msgstr ""
+msgstr "Selecteer bestand"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "Wilt u SHOUTcast 2 gebruiken? <a href=\"%s\" target=\"_blank\">Installeer het hier</a>, en laad deze pagina opnieuw."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:40
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "De tijdzone van dit station is momenteel %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:42
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "De huidige tijd in de tijdzone van het station is %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "Existing playlist imported."
@@ -776,16 +776,16 @@ msgstr "%d nummer(s) is/zijn aan de afspeellijst toegevoegd."
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:107
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "U moet ingelogd zijn om toegang te krijgen tot deze pagina."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:119
 #: /var/azuracast/www/src/Http/ErrorHandler.php:128
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "U heeft geen toestemming om toegang te krijgen tot dit deel van de site."
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "Uw <code>docker-compose.yml</code> bestand is verouderd!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
@@ -793,39 +793,39 @@ msgstr ""
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Volg de <a href=\"%s\" target=\"_blank\">update instructies</a> om uw installatie bij te werken."
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">versie %s</a> is nu beschikbaar."
 
 #: /var/azuracast/www/src/Notification/Manager.php:106
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr ""
+msgstr "U draait momenteel versie %s. Bijwerken is zeer aanbevolen."
 
 #: /var/azuracast/www/src/Notification/Manager.php:111
 msgid "New AzuraCast Release Version Available"
-msgstr ""
+msgstr "Nieuwe versie van AzuraCast beschikbaar"
 
 #: /var/azuracast/www/src/Notification/Manager.php:121
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "De volgende verbeteringen zijn aangebracht sinds de laatste update:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:124
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "Uw installatie is momenteel %d update(s) achter de laatste versie."
 
 #: /var/azuracast/www/src/Notification/Manager.php:125
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "U moet bijwerken om gebruik te maken van bug en beveiligingsfixes."
 
 #: /var/azuracast/www/src/Notification/Manager.php:131
 msgid "New AzuraCast Updates Available"
-msgstr ""
+msgstr "Nieuwe AzuraCast updates beschikbaar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s kan niet beginnen"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It is already running."
@@ -833,7 +833,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s kan niet stoppen"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
@@ -841,25 +841,25 @@ msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
-msgstr ""
+msgstr "%s heeft een fout ondervonden"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
-msgstr ""
+msgstr "Controleer het logboek voor details."
 
 #: /var/azuracast/www/src/Radio/Adapters.php:137
 #: /var/azuracast/www/src/Radio/Adapters.php:141
 #: /var/azuracast/www/src/Radio/Adapters.php:172
 msgid "Use <b>%s</b> on this server"
-msgstr ""
+msgstr "Gebruik <b>%s</b> op deze server"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:145
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Verbind met een <b>externe radioserver</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:176
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr ""
+msgstr "<b>Gebruik geen</b> een AutoDJ-service"
 
 #: /var/azuracast/www/src/Sync/Runner.php:162
 #: /var/azuracast/www/src/Sync/Runner.php:165
@@ -896,11 +896,11 @@ msgstr "Opschonen"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "De poort %s is in gebruik door een ander station."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr ""
+msgstr "Wachtwoord kan de volgende tekens niet bevatten: %s"
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
@@ -911,7 +911,7 @@ msgstr "Reacties"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Beschrijf de gebruikscase voor deze API-sleutel voor toekomstige referentie."
 
 #: /var/azuracast/www/config/forms/api_key.php:20
 #: /var/azuracast/www/config/forms/automation.php:40
@@ -985,7 +985,7 @@ msgstr "Op basis van deze instelling zal het systeem elke (dit) dag(en) nummers 
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d dagen"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
@@ -1588,40 +1588,40 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Play exactly once every <i>x</i> songs."
-msgstr ""
+msgstr "Speel precies eenmaal elke <i>x</i> nummers."
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "Eenmaal per x minuten"
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Play exactly once every <i>x</i> minutes."
-msgstr ""
+msgstr "Speel precies één keer per <i>x</i> minuten."
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Once per Hour"
-msgstr ""
+msgstr "Eenmaal per uur"
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Play once per hour at the specified minute."
-msgstr ""
+msgstr "Speel één keer per uur op de opgegeven minuut."
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5
 msgid "Advanced"
-msgstr ""
+msgstr "Geavanceerd"
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr ""
+msgstr "Handmatig definiëren hoe deze afspeellijst wordt gebruikt in de Liquidsoap configuratie. <a href=\"%s\" target=\"_blank\">Lees meer over geavanceerde afspeellijsten</a>"
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "AutoDJ Scheduling Options"
-msgstr ""
+msgstr "AutoDJ planning opties"
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr ""
+msgstr "Bepaal hoe deze afspeellijst wordt behandeld door de AutoDJ software."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
@@ -3492,19 +3492,19 @@ msgstr "U kunt antwoorden vinden op veelgestelde vragen in onze <a href=\"%s\" t
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:8
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr "Als je een bug of fout ondervindt, kun je een GitHub probleem indienen met behulp van de onderstaande link."
+msgstr "Als je een bug of fout ondervindt, kun je een GitHub issue indienen met behulp van de onderstaande link."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:10
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr "Uw huidige installatie type is <b>%s</b>. Zorg ervoor dat dit wordt vermeld bij het toevoegen van een probleem."
+msgstr "Uw huidige installatie type is <b>%s</b>. Zorg ervoor dat dit wordt vermeld bij het toevoegen van een issue."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "New GitHub Issue"
-msgstr ""
+msgstr "GitHub issue toevoegen"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
-msgstr ""
+msgstr "Log weergave"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
@@ -3811,12 +3811,12 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:45
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
 msgid "Public Pages"
-msgstr ""
+msgstr "Publieke pagina's"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:37
 msgid "Player Embed Code"
@@ -3828,15 +3828,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"
-msgstr ""
+msgstr "Publieke pagina's uitschakelen?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
 msgid "Enable public pages?"
-msgstr ""
+msgstr "Openbare pagina's inschakelen?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:26
 msgid "View"
-msgstr ""
+msgstr "Bekijk"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:30
 msgid "Disable song requests?"
@@ -3853,19 +3853,19 @@ msgstr "Streamers / DJ's"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:30
 msgid "Disable streamers?"
-msgstr ""
+msgstr "Streamers uitschakelen?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:46
 msgid "Enable streamers?"
-msgstr ""
+msgstr "Streamers inschakelen?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
 msgid "Streams"
-msgstr ""
+msgstr "Streams"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:22
 msgid "Local Streams"
-msgstr ""
+msgstr "Lokale streams"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:57
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:61
@@ -3880,15 +3880,15 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
 msgid "Playlist:"
-msgstr ""
+msgstr "Afspeellijst:"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Wachtrij item verwijderen?"
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:24
 msgid "Cued On"
-msgstr ""
+msgstr "Gekozen op"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:8
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
@@ -3920,27 +3920,27 @@ msgstr "Live luisteraars"
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:82
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
 msgid "Today"
-msgstr ""
+msgstr "Vandaag"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:83
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:61
 msgid "Yesterday"
-msgstr ""
+msgstr "Gisteren"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:84
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
 msgid "Last 7 Days"
-msgstr ""
+msgstr "Laatste 7 dagen"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:86
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:65
 msgid "This Month"
-msgstr ""
+msgstr "Deze maand"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:87
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:66
 msgid "Last Month"
-msgstr ""
+msgstr "Laatste maand"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:37
 msgid "IP"
@@ -3960,11 +3960,11 @@ msgstr "Locatie"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:50
 msgid "Mobile Device"
-msgstr ""
+msgstr "Mobiel apparaat"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:54
 msgid "Desktop Device"
-msgstr ""
+msgstr "Desktop apparaat"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:66
 msgid "Unknown"
@@ -3972,11 +3972,11 @@ msgstr "Onbekend"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:73
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr ""
+msgstr "Dit product bevat GeoLite2 gegevens gemaakt door MaxMind, beschikbaar van %s."
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
-msgstr ""
+msgstr "Uur"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
@@ -4073,7 +4073,7 @@ msgstr "Niet afgespeeld"
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
 msgid "Report Not Available"
-msgstr ""
+msgstr "Rapport niet beschikbaar"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
@@ -4089,11 +4089,11 @@ msgstr "Datum / tijd"
 
 #: /var/azuracast/www/templates/stations/sidebar.js.phtml:19
 msgid "Please wait..."
-msgstr ""
+msgstr "Even geduld..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:16
 msgid "Station Time"
-msgstr ""
+msgstr "Station tijd"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
@@ -4109,7 +4109,7 @@ msgstr "Notities"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr ""
+msgstr "Verwijder streamer \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
@@ -4147,7 +4147,7 @@ msgstr "Installatie instructies voor uitzendsoftware zijn beschikbaar <a href=\"
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 msgid "Select the type of web hook to create."
-msgstr ""
+msgstr "Selecteer het type web hook om te maken."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:8
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
@@ -4159,7 +4159,7 @@ msgstr "Type"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:26
 msgid "Triggers"
-msgstr ""
+msgstr "Triggers"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Trigger the web hook manually and view the raw response."
@@ -4167,15 +4167,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:37
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "Webhook \"%s\" verwijderen?"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."
-msgstr ""
+msgstr "De opgevraagde pagina is niet gevonden."
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:3
 msgid "Select..."
@@ -4187,9 +4187,9 @@ msgstr "Geen resultaten gevonden!"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:66
 msgid "Errors were encountered when trying to save changes:"
-msgstr ""
+msgstr "Er zijn fouten opgetreden bij het opslaan van wijzigingen:"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:69
 msgid "General"
-msgstr ""
+msgstr "Algemeen"
 

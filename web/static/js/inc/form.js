@@ -8,26 +8,10 @@ function styleForm(form, translations) {
 
     var $form = $(form);
 
-    $form.find(':input').each(function() {
-        $(this).data('initialValue', $(this).val());
-    });
-
-    $(window).on('beforeunload', function() {
-        var isDirty = false;
-        $form.find(':input').each(function () {
-            if ($(this).data('initialValue') !== $(this).val()) {
-                isDirty = true;
-            }
-        });
-
-        if (isDirty) {
-            return false;
-        }
-    });
-
-    $form.on('submit', function() {
-        $(window).off('beforeunload');
-    });
+    // Prevent leaving the page if the form is "dirty" (has unsaved changes).
+    if ($.fn.dirrty) {
+        $form.dirrty();
+    }
 
     $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');
 

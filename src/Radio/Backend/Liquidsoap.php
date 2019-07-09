@@ -371,7 +371,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         // Handle multi-day playlists.
         if ($start_time > $end_time) {
             $play_times = [
-                $this->_formatTimeCode($start_time).'-23h59m',
+                $this->_formatTimeCode($start_time).'-23h59m59s',
                 '00h00m-'.$this->_formatTimeCode($end_time),
             ];
 

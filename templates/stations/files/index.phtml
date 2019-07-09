@@ -20,36 +20,32 @@ $assets
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Music Files') ?></h2>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
+                <div class="row align-items-center">
                     <div class="col-md-7">
-                        <h3 class="card-subtitle mt-1" id="breadcrumb">&nbsp;</h3>
+                        <h2 class="card-title"><?=__('Music Files') ?></h2>
                     </div>
                     <div class="col-md-5 text-right">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
-                                        <span class="sr-only"><?=$space_percent ?>%</span>
-                                    </div>
-                                </div>
-                                <?=sprintf(__('%s of %s Used'), $space_used, $space_total) ?>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
+                                <span class="sr-only"><?=$space_percent ?>%</span>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <?=sprintf(__('%s Files', $files_count)) ?>
-                            </div>
-                        </div>
+                        <?=__('%s of %s Used (%d Files)', $space_used, $space_total, $files_count) ?>
                     </div>
                 </div>
-
-                <?php if (APP_INSIDE_DOCKER): ?>
-                    <p><i class="material-icons sm">info</i> <?=sprintf(__('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.'), 'https://www.azuracast.com/help/faq_docker.html#access-files-via-sftp') ?></p>
-                <?php endif; ?>
+            </div>
+        <?php if (APP_INSIDE_DOCKER): ?>
+            <div class="card-body alert-info d-flex align-items-center" role="alert">
+                <div class="flex-shrink-0 mr-2">
+                    <i class="material-icons" aria-hidden="true">info</i>
+                </div>
+                <div class="flex-fill">
+                    <p class="mb-0"><?=sprintf(__('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.'), 'https://www.azuracast.com/help/faq_docker.html#access-files-via-sftp') ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+            <div class="card-body">
+                <h3 class="card-subtitle mt-0 mb-2" id="breadcrumb">&nbsp;</h3>
 
                 <div id="upload_progress"></div>
                 <div id="file_drop_target">

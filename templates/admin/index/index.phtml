@@ -4,14 +4,18 @@
  * @var array $admin_panels
  */
 
-$this->layout('main', ['title' => 'Administration', 'manual' => true]);
+$this->layout('main', [
+    'title' => 'Administration',
+    'manual' => true,
+    'page_class' => 'page-admin'
+]);
 
 $assets
     ->load('moment')
     ->addInlineJs($this->fetch('admin/index/index.js'), 99);
 ?>
 
-<h2 class="outside-card-header"><?=__('Administration') ?></h2>
+<h2 class="outside-card-header mb-1"><?=__('Administration') ?></h2>
 
 <div class="card-columns">
 <?php foreach($admin_panels as $category_id => $category): ?>
@@ -30,7 +34,38 @@ $assets
 <?php endforeach; ?>
 </div>
 
-<h2 class="outside-card-header"><?=__('Synchronization Tasks') ?></h2>
+<h2 class="outside-card-header mb-1"><?=__('Server Status') ?></h2>
+
+<div class="card-deck system-statistics">
+    <div class="card cpu-usage-card" role="region">
+        <div class="card-body bg-primary-dark">
+            <h3 class="text-white">
+                <?=round($load[0], 2) ?><br>
+                <small><?=__('Current CPU Load') ?></small>
+            </h3>
+        </div>
+    </div>
+    <div class="card cpu-usage-card" role="region">
+        <div class="card-body bg-primary-dark text-white">
+            <h3 class="text-white">
+                <?=round($load[2], 2) ?><br>
+                <small><?=__('15-Minute CPU Load Average') ?></small>
+            </h3>
+        </div>
+    </div>
+    <div class="card storage-card" role="region">
+        <div class="card-body bg-primary-dark text-white">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
+                    <span class="sr-only"><?=$space_percent ?>%</span>
+                </div>
+            </div>
+            <h3 class="text-white"><small><?=__('%s of %s Used', $space_used, $space_total) ?></small></h3>
+        </div>
+    </div>
+</div>
+
+<h2 class="outside-card-header mb-1"><?=__('Synchronization Tasks') ?></h2>
 
 <div class="card-deck">
 <?php foreach($sync_times as $sync_key => $sync_info): ?>

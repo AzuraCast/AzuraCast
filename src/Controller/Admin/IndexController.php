@@ -4,7 +4,9 @@ namespace App\Controller\Admin;
 use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
+use App\Radio\Quota;
 use App\Sync\Runner;
+use Brick\Math\BigInteger;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
@@ -49,7 +51,18 @@ class IndexController
             $view->sync_times = $this->sync->getSyncTimes();
         }
 
-        return $view->renderToResponse($response, 'admin/index/index');
+        $stations_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
+
+        $space_total = BigInteger::of(disk_total_space($stations_base_dir));
+        $space_free = BigInteger::of(disk_free_space($stations_base_dir));
+        $space_used = $space_total->minus($space_free);
+
+        return $view->renderToResponse($response, 'admin/index/index', [
+            'load' => sys_getloadavg(),
+            'space_percent' => Quota::getPercentage($space_used, $space_total),
+            'space_used' => Quota::getReadableSize($space_used),
+            'space_total' => Quota::getReadableSize($space_total),
+        ]);
     }
 
     public function syncAction(Request $request, Response $response, $type): ResponseInterface

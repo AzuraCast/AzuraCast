@@ -15,6 +15,7 @@ use GuzzleHttp\Psr7\Uri;
 use InfluxDB\Database;
 use App\Entity;
 use Monolog\Logger;
+use NowPlaying\Adapter\AdapterAbstract;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
@@ -284,9 +285,18 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $np_old = $station->getNowplaying();
 
         // Build the new "raw" NowPlaying data.
-        $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null, $include_clients);
-        $this->event_dispatcher->dispatch(GenerateRawNowPlaying::NAME, $event);
-        $np_raw = $event->getRawResponse();
+        try {
+            $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null, $include_clients);
+            $this->event_dispatcher->dispatch(GenerateRawNowPlaying::NAME, $event);
+            $np_raw = $event->getRawResponse();
+        } catch(\Exception $e) {
+            $this->logger->error($e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+            ]);
+            $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
+        }
 
         $np = new Entity\Api\NowPlaying;
         $uri_empty = new Uri('');

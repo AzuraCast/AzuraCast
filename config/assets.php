@@ -135,6 +135,13 @@ return [
     ],
 
     /*
+     * Asset collections
+     */
+    'forms_common' => [
+        'require' => ['zxcvbn', 'chosen', 'dirrty'],
+    ],
+
+    /*
      * Individual libraries
      */
     'bootgrid' => [
@@ -318,6 +325,19 @@ return [
                 "new ClipboardJS('.btn-copy');",
             ],
         ],
+    ],
+
+    'dirrty' => [
+        'order' => 10,
+        'require' => ['jquery'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/dirrty/jquery.dirrty.js',
+                    'defer' => true,
+                ]
+            ],
+        ]
     ],
 
     'fancybox' => [

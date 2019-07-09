@@ -5,8 +5,7 @@
  */
 
 $assets
-    ->load('chosen')
-    ->load('zxcvbn')
+    ->load('forms_common')
     ->addInlineJs($this->fetch('system/form_edit.js'));
 
 echo $form->render();

@@ -1,9 +1,11 @@
 <?php
 namespace App\Radio;
 
+use App\Http\ErrorHandler;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\EntityManager;
 use App\Entity\Station;
+use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
 use Supervisor\Supervisor;
 
@@ -189,8 +191,13 @@ class Configuration
         $affected_groups = $this->_reloadSupervisor();
 
         if (!in_array($station_group, $affected_groups, true)) {
-            $this->supervisor->stopProcessGroup($station_group, true);
-            $this->supervisor->removeProcessGroup($station_group);
+            // Try forcing the group to stop, but don't hard-fail if it doesn't.
+            try {
+                $this->supervisor->stopProcessGroup($station_group, true);
+                $this->supervisor->removeProcessGroup($station_group);
+            } catch(FaultException $e) {
+                ErrorHandler::logException($this->logger, $e);
+            }
         }
     }
 

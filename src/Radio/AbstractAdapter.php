@@ -187,7 +187,16 @@ abstract class AbstractAdapter
         $class_parts = explode('\\', static::class);
         $class_name = array_pop($class_parts);
 
-        if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
+        if (false !== stripos($e->getMessage(), 'BAD_NAME')) {
+            $e_headline = __('%s is not recognized as a service.', $class_name);
+            $e_body = __('It may not be registered with Supervisor yet. Restarting broadcasting may help.');
+
+            $app_e = new \App\Exception\Supervisor\BadName(
+                $e_headline.'; '.$e_body,
+                $e->getCode(),
+                $e
+            );
+        } else if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
             $e_headline = __('%s cannot start', $class_name);
             $e_body = __('It is already running.');
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Http\ErrorHandler;
 use App\MessageQueue;
 use Azura\Cache;
 use App\Event\Radio\GenerateRawNowPlaying;
@@ -290,11 +291,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $this->event_dispatcher->dispatch(GenerateRawNowPlaying::NAME, $event);
             $np_raw = $event->getRawResponse();
         } catch(\Exception $e) {
-            $this->logger->error($e->getMessage(), [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'code' => $e->getCode(),
-            ]);
+            ErrorHandler::logException($this->logger, $e);
             $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
         }
 

@@ -64,26 +64,8 @@ class ErrorHandler
         }
 
         // Don't log errors that are internal to the application.
-        $e_level = ($e instanceof \Azura\Exception)
-            ? $e->getLoggerLevel()
-            : Logger::ERROR;
-
-        $show_detailed = !APP_IN_PRODUCTION && $e_level >= Logger::ERROR;
-
-        $e_extra = [];
-        if ($e instanceof \Azura\Exception) {
-            $e_extra['context'] = $e->getLoggingContext();
-            $e_extra = array_merge($e_extra, $e->getExtraData());
-        }
-        if ($show_detailed) {
-            $e_extra['trace'] = array_slice($e->getTrace(), 0, 5);
-        }
-
-        $this->logger->addRecord($e_level, $e->getMessage(), [
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'code' => $e->getCode(),
-        ] + $e_extra);
+        $e_extra = self::logException($this->logger, $e);
+        $show_detailed = isset($e_extra['trace']);
 
         // Special handling for cURL (i.e. Liquidsoap) requests.
         $ua = $req->getHeaderLine('User-Agent');
@@ -186,5 +168,40 @@ class ErrorHandler
         }
 
         return false;
+    }
+
+    /**
+     * @param Logger $logger
+     * @param \Throwable $e
+     * @param bool|null $include_trace
+     * @return array The logging context.
+     */
+    public static function logException(Logger $logger, \Throwable $e, $include_trace = null): array
+    {
+        $e_level = ($e instanceof \Azura\Exception)
+            ? $e->getLoggerLevel()
+            : Logger::ERROR;
+
+        if (null === $include_trace) {
+            $include_trace = !APP_IN_PRODUCTION && $e_level >= Logger::ERROR;
+        }
+
+        $context = [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'code' => $e->getCode(),
+        ];
+
+        if ($e instanceof \Azura\Exception) {
+            $context['context'] = $e->getLoggingContext();
+            $context = array_merge($context, $e->getExtraData());
+        }
+
+        if ($include_trace) {
+            $context['trace'] = array_slice($e->getTrace(), 0, 5);
+        }
+
+        $logger->addRecord($e_level, $e->getMessage(), $context);
+        return $context;
     }
 }

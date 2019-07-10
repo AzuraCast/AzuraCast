@@ -459,6 +459,7 @@ class StationMount implements StationMountInterface
         $response = new Api\StationMount;
 
         $response->name = $this->getDisplayName();
+        $response->path = $this->getName();
         $response->is_default = (bool)$this->is_default;
         $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
 

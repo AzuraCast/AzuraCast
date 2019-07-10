@@ -223,6 +223,9 @@ return function(App $app)
             $this->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                 ->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
 
+            $this->get('/relays', Controller\Api\Admin\RelaysController::class)
+                ->add(Middleware\RequireLogin::class);
+
             $this->group('', function() {
                 /** @var App $this */
                 $this->get('/settings', Controller\Api\Admin\SettingsController::class.':listAction')

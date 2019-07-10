@@ -24,7 +24,7 @@ class IndexController
      *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @OA\Schema(ref="#/components/schemas/Api_SystemStatus")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_SystemStatus")
      *   )
      * )
      */
@@ -41,7 +41,7 @@ class IndexController
      *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @OA\Schema(ref="#/components/schemas/Api_Time")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Time")
      *   )
      * )
      */

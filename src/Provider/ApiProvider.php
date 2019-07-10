@@ -18,6 +18,14 @@ class ApiProvider implements ServiceProviderInterface
             return new Api\Admin\PermissionsController;
         };
 
+        $di[Api\Admin\RelaysController::class] = function($di) {
+            return new Api\Admin\RelaysController(
+                $di[App\Acl::class],
+                $di[EntityManager::class],
+                $di[App\Radio\Adapters::class]
+            );
+        };
+
         $di[Api\IndexController::class] = function() {
             return new Api\IndexController;
         };

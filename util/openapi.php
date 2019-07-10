@@ -60,6 +60,7 @@ use OpenApi\Annotations as OA;
  *
  * @OA\Tag(name="Administration: Custom Fields")
  * @OA\Tag(name="Administration: Users")
+ * @OA\Tag(name="Administration: Relays")
  * @OA\Tag(name="Administration: Roles")
  * @OA\Tag(name="Administration: Settings")
  * @OA\Tag(name="Administration: Stations")

@@ -10,6 +10,14 @@ use OpenApi\Annotations as OA;
 class StationMount extends StationRemote implements ResolvableUrlInterface
 {
     /**
+     * The relative path that corresponds to this mount point
+     *
+     * @OA\Property(example="/radio.mp3")
+     * @var string
+     */
+    public $path;
+
+    /**
      * If the mount is the default mount for the parent station
      *
      * @OA\Property(example=true)

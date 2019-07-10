@@ -21,14 +21,4 @@ $di = $app->getContainer();
 
 /** @var \Azura\Console\Application $cli */
 $cli = $di[\Azura\Console\Application::class];
-
-/** @var \App\Version $version */
-$version = $di[\App\Version::class];
-
-/** @var \Azura\Settings $settings */
-$settings = $di['settings'];
-
-$cli->setName($settings[\Azura\Settings::APP_NAME].' Command Line Tools ('.$settings[\Azura\Settings::APP_ENV].')');
-$cli->setVersion($version->getVersion());
-
 $cli->run();

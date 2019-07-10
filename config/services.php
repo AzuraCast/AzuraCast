@@ -209,6 +209,19 @@ return function (\Azura\Container $di)
         return $dispatcher;
     });
 
+    $di->extend(\Azura\Console\Application::class, function(\Azura\Console\Application $console, $di) {
+        /** @var \App\Version $version */
+        $version = $di[\App\Version::class];
+
+        /** @var \Azura\Settings $settings */
+        $settings = $di['settings'];
+
+        $console->setName($settings[\Azura\Settings::APP_NAME].' Command Line Tools ('.$settings[\Azura\Settings::APP_ENV].')');
+        $console->setVersion($version->getVersion());
+
+        return $console;
+    });
+
     $di[\App\MessageQueue::class] = function($di) {
         // Build QueueFactory
         /** @var \Redis $redis */

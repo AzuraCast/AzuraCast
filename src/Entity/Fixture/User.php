@@ -17,6 +17,8 @@ class User extends AbstractFixture implements DependentFixtureInterface
         $demo_user->getRoles()->add($this->getReference('demo_role'));
         $em->persist($demo_user);
 
+        $this->addReference('demo_user', $demo_user);
+
         $admin_username = getenv('INIT_ADMIN_USERNAME');
         $admin_password = getenv('INIT_ADMIN_PASSWORD');
 
@@ -36,6 +38,8 @@ class User extends AbstractFixture implements DependentFixtureInterface
             }
 
             $em->persist($admin_user);
+
+            $this->addReference('admin_user', $admin_user);
         }
 
         $em->flush();

@@ -16,7 +16,7 @@ $assets->load('clipboard');
         <p><?=__('Your full API key is below:') ?></p>
 
         <div class="well">
-            <code id="api_key"><?=$key_identifier ?>:<?=$key_verifier ?></code>
+            <code id="api_key"><?=$key_identifier ?><?=\App\Entity\ApiKey::SEPARATOR ?><?=$key_verifier ?></code>
             <div class="buttons">
                 <button class="btn btn-copy btn-default btn-sm" data-clipboard-target="#api_key"><?=__('Copy to Clipboard') ?></button>
             </div>

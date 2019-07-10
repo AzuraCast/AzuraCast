@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ApiKey implements \JsonSerializable
 {
+    public const SEPARATOR = ':';
+
     use Traits\TruncateStrings;
 
     /**
@@ -45,9 +47,16 @@ class ApiKey implements \JsonSerializable
      */
     protected $comment;
 
-    public function __construct(User $user)
+    public function __construct(User $user, $key = null)
     {
         $this->user = $user;
+
+        if (null !== $key) {
+            [$identifier, $verifier] = explode(self::SEPARATOR, $key);
+
+            $this->id = $identifier;
+            $this->verifier = $this->hashVerifier($verifier);
+        }
     }
 
     /**
@@ -64,7 +73,7 @@ class ApiKey implements \JsonSerializable
         $verifier = substr($random_str, 16, 32);
 
         $this->id = $identifier;
-        $this->verifier = hash('sha512', $verifier);
+        $this->verifier = $this->hashVerifier($verifier);
 
         return [$identifier, $verifier];
     }
@@ -84,8 +93,7 @@ class ApiKey implements \JsonSerializable
      */
     public function verify($verifier): bool
     {
-        $verifier_to_compare = hash('sha512', $verifier);
-        return hash_equals($this->verifier, $verifier_to_compare);
+        return hash_equals($this->verifier, $this->hashVerifier($verifier));
     }
 
     /**
@@ -118,5 +126,14 @@ class ApiKey implements \JsonSerializable
             'id' => $this->id,
             'comment' => $this->comment,
         ];
+    }
+
+    /**
+     * @param $original
+     * @return string The hashed verifier.
+     */
+    protected function hashVerifier($original): string
+    {
+        return hash('sha512', $original);
     }
 }

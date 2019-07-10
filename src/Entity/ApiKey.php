@@ -47,6 +47,10 @@ class ApiKey implements \JsonSerializable
      */
     protected $comment;
 
+    /**
+     * @param User $user
+     * @param string|null $key An existing API key to import (if one exists).
+     */
     public function __construct(User $user, $key = null)
     {
         $this->user = $user;
@@ -129,10 +133,10 @@ class ApiKey implements \JsonSerializable
     }
 
     /**
-     * @param $original
+     * @param string $original
      * @return string The hashed verifier.
      */
-    protected function hashVerifier($original): string
+    protected function hashVerifier(string $original): string
     {
         return hash('sha512', $original);
     }

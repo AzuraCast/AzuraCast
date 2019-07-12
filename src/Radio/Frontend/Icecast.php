@@ -195,7 +195,7 @@ class Icecast extends AbstractFrontend
             'admin' => 'icemaster@localhost',
             'hostname' => $settings_repo->getSetting('base_url', 'localhost'),
             'limits' => [
-                'clients' => 250,
+                'clients' => 2500,
                 'sources' => $station->getMounts()->count(),
                 // 'threadpool' => 5,
                 'queue-size' => 524288,

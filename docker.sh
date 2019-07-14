@@ -44,6 +44,13 @@ ask() {
 # Usage: ./docker.sh install
 #
 install() {
+    if [[ ! $(which curl) ]]; then
+        echo "cURL does not appear to be installed."
+        echo "Install curl using your host's package manager,"
+        echo "then continue installing using this script."
+        exit 1
+    fi
+    
     if [[ $(which docker) && $(docker --version) ]]; then
         echo "Docker is already installed! Continuing..."
     else
@@ -73,13 +80,6 @@ install() {
                 exit 1
             fi
 
-            if [[ ! $(which curl) ]]; then
-                echo "cURL does not appear to be installed."
-                echo "Install curl using your host's package manager,"
-                echo "then continue installing using this script."
-                exit 1
-            fi
-
             COMPOSE_VERSION=`git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1`
 
             if [[ $EUID -ne 0 ]]; then
@@ -90,30 +90,30 @@ install() {
                     exit 1
                 fi
 
-                sudo sh -c "curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+                sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose"
                 sudo chmod +x /usr/local/bin/docker-compose
-                sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
+                sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
             else
-                curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+                curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
                 chmod +x /usr/local/bin/docker-compose
-                curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose
+                curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
             fi
         fi
     fi
 
     if [[ ! -f .env ]]; then
         echo "Writing default .env file..."
-        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env > .env
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env -o .env
     fi
 
     if [[ ! -f azuracast.env ]]; then
         echo "Creating default AzuraCast settings file..."
-        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
     fi
 
     if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."
-        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
     fi
 
     docker-compose pull
@@ -135,14 +135,14 @@ update() {
         cp docker-compose.yml docker-compose.backup.yml
         echo "Your existing docker-compose.yml file has been backed up to docker-compose.backup.yml."
 
-        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
         echo "New docker-compose.yml file loaded."
 
     fi
 
     if [[ ! -f azuracast.env ]]; then
 
-        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env > azuracast.env
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
         echo "Default environment file loaded."
         
     fi
@@ -165,7 +165,7 @@ update() {
 # Usage: ./docker.sh update-self
 #
 update-self() {
-    curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh > docker.sh
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh -o docker.sh
     chmod a+x docker.sh
 
     echo "New Docker utility script downloaded."

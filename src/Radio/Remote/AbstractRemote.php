@@ -11,12 +11,6 @@ abstract class AbstractRemote
     /** @var Client */
     protected $http_client;
 
-    /** @var Entity\Station */
-    protected $station;
-
-    /** @var Entity\StationRemote */
-    protected $remote;
-
     /** @var Logger */
     protected $logger;
 
@@ -51,22 +45,30 @@ abstract class AbstractRemote
 
         try {
             $np_new = $np_adapter->getNowPlaying($remote->getMount());
-
-            $this->logger->debug('NowPlaying adapter response', ['response' => $np_new]);
-
-            if ($np['meta']['status'] === 'offline' && $np_new['meta']['status'] === 'online') {
-                $np['current_song'] = $np_new['current_song'];
-                $np['meta'] = $np_new['meta'];
-            }
-
-            $np['listeners']['current'] += $np_new['listeners']['current'];
-            $np['listeners']['unique'] += $np_new['listeners']['unique'];
-            $np['listeners']['total'] += $np_new['listeners']['total'];
+            $this->_mergeNowPlaying($np_new, $np);
             return true;
         } catch(\NowPlaying\Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
             return false;
         }
+    }
+
+    /**
+     * @param array|null $np_new
+     * @param array $np
+     */
+    protected function _mergeNowPlaying($np_new, &$np): void
+    {
+        $this->logger->debug('NowPlaying adapter response', ['response' => $np_new]);
+
+        if ($np['meta']['status'] === 'offline' && $np_new['meta']['status'] === 'online') {
+            $np['current_song'] = $np_new['current_song'];
+            $np['meta'] = $np_new['meta'];
+        }
+
+        $np['listeners']['current'] += $np_new['listeners']['current'];
+        $np['listeners']['unique'] += $np_new['listeners']['unique'];
+        $np['listeners']['total'] += $np_new['listeners']['total'];
     }
 
     /**

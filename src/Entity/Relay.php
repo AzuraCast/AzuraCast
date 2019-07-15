@@ -31,11 +31,11 @@ class Relay
     protected $id;
 
     /**
-     * @ORM\Column(name="base_url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="base_url", type="string", length=255)
      *
      * @OA\Property(example="http://custom-url.example.com")
      *
-     * @var string|null
+     * @var string
      */
     protected $base_url;
 
@@ -46,6 +46,14 @@ class Relay
      * @var string|null
      */
     protected $name = 'Relay';
+
+    /**
+     * @ORM\Column(name="is_visible_on_public_pages", type="boolean")
+     *
+     * @OA\Property(example=true)
+     * @var bool
+     */
+    protected $is_visible_on_public_pages = true;
 
     /**
      * @ORM\Column(name="nowplaying", type="array", nullable=true)
@@ -76,9 +84,9 @@ class Relay
     protected $remotes;
 
     /**
-     * @param string|null $base_url
+     * @param string $base_url
      */
-    public function __construct(?string $base_url)
+    public function __construct(string $base_url)
     {
         $this->base_url = $this->_truncateString($base_url);
 
@@ -105,7 +113,7 @@ class Relay
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getBaseUrl(): ?string
     {
@@ -126,6 +134,22 @@ class Relay
     public function setName(?string $name): void
     {
         $this->name = $this->_truncateString($name, 100);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIsVisibleOnPublicPages(): bool
+    {
+        return $this->is_visible_on_public_pages;
+    }
+
+    /**
+     * @param bool $is_visible_on_public_pages
+     */
+    public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
+    {
+        $this->is_visible_on_public_pages = $is_visible_on_public_pages;
     }
 
     /**

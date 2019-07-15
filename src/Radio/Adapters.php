@@ -209,6 +209,10 @@ class Adapters
                 'name' => 'Icecast',
                 'class' => Remote\Icecast::class,
             ],
+            self::REMOTE_AZURARELAY => [
+                'name' => 'AzuraRelay',
+                'class' => Remote\AzuraRelay::class,
+            ],
         ];
     }
 }

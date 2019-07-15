@@ -101,6 +101,14 @@ class RadioProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Radio\Remote\AzuraRelay::class] = function($di) {
+            return new Radio\Remote\AzuraRelay(
+                $di[\GuzzleHttp\Client::class],
+                $di[\Monolog\Logger::class],
+                $di[\Doctrine\ORM\EntityManager::class]
+            );
+        };
+
         $di[Radio\Remote\Icecast::class] = function($di) {
             return new Radio\Remote\Icecast(
                 $di[\GuzzleHttp\Client::class],

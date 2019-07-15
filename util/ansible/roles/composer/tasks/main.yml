@@ -21,7 +21,7 @@
 - name: Install Composer Dependencies (Production)
   become: true
   become_user: azuracast
-  shell: composer install --no-dev
+  shell: composer install --no-dev --optimize-autoloader
   args:
     chdir: "{{ www_base }}"
   when: app_env == "production"

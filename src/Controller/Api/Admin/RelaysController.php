@@ -9,6 +9,8 @@ use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RelaysController
 {
@@ -21,16 +23,33 @@ class RelaysController
     /** @var Adapters */
     protected $adapters;
 
+    /** @var Serializer */
+    protected $serializer;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /**
      * @param Acl $acl
      * @param EntityManager $em
      * @param Adapters $adapters
+     * @param Serializer $serializer
+     * @param ValidatorInterface $validator
+     *
+     * @see \App\Provider\ApiProvider
      */
-    public function __construct(Acl $acl, EntityManager $em, Adapters $adapters)
-    {
+    public function __construct(
+        Acl $acl,
+        EntityManager $em,
+        Adapters $adapters,
+        Serializer $serializer,
+        ValidatorInterface $validator
+    ) {
         $this->acl = $acl;
         $this->em = $em;
         $this->adapters = $adapters;
+        $this->serializer = $serializer;
+        $this->validator = $validator;
     }
 
     /**
@@ -84,7 +103,8 @@ class RelaysController
 
             $frontend_config = (array)$station->getFrontendConfig();
             $row->port = $frontend_config['port'] ?? null;
-            $row->password = $frontend_config['relay_pw'] ?? null;
+            $row->relay_pw = $frontend_config['relay_pw'] ?? null;
+            $row->admin_pw = $frontend_config['admin_pw'] ?? null;
 
             $mounts = [];
             if ($station->getMounts()->count() > 0) {
@@ -101,5 +121,10 @@ class RelaysController
         }
 
         return $response->withJson($return);
+    }
+
+    public function updateAction(Request $request, Response $response): ResponseInterface
+    {
+
     }
 }

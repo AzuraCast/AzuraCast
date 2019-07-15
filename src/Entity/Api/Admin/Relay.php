@@ -71,7 +71,14 @@ class Relay implements Entity\Api\ResolvableUrlInterface
      * @OA\Property(example="p4ssw0rd")
      * @var string
      */
-    public $password;
+    public $relay_pw;
+
+    /**
+     * The administrator password for the frontend (if applicable).
+     * @OA\Property(example="p4ssw0rd")
+     * @var string
+     */
+    public $admin_pw;
 
     /**
      * @OA\Property()

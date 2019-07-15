@@ -22,7 +22,9 @@ class ApiProvider implements ServiceProviderInterface
             return new Api\Admin\RelaysController(
                 $di[App\Acl::class],
                 $di[EntityManager::class],
-                $di[App\Radio\Adapters::class]
+                $di[App\Radio\Adapters::class],
+                $di[Serializer::class],
+                $di[ValidatorInterface::class]
             );
         };
 

@@ -17,10 +17,6 @@ use App\Radio\Remote\AbstractRemote;
  */
 class StationRemote implements StationMountInterface
 {
-    public const TYPE_SHOUTCAST1 = 'shoutcast1';
-    public const TYPE_SHOUTCAST2 = 'shoutcast2';
-    public const TYPE_ICECAST = 'icecast';
-
     use Traits\TruncateStrings;
 
     /**
@@ -49,6 +45,21 @@ class StationRemote implements StationMountInterface
     protected $station;
 
     /**
+     * @ORM\Column(name="relay_id", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $relay_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Relay", inversedBy="remotes")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="relay_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var Relay|null
+     */
+    protected $relay;
+
+    /**
      * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
      *
      * @OA\Property(example="128kbps MP3")
@@ -70,7 +81,7 @@ class StationRemote implements StationMountInterface
      * @ORM\Column(name="type", type="string", length=50)
      *
      * @OA\Property(example="icecast")
-     * @Assert\Choice(choices={StationRemote::TYPE_ICECAST, StationRemote::TYPE_SHOUTCAST1, StationRemote::TYPE_SHOUTCAST2})
+     * @Assert\Choice(choices={Adapters::REMOTE_ICECAST, Adapters::REMOTE_SHOUTCAST1, Adapters::REMOTE_SHOUTCAST2})
      *
      * @var string
      */
@@ -194,6 +205,22 @@ class StationRemote implements StationMountInterface
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    /**
+     * @return Relay|null
+     */
+    public function getRelay(): ?Relay
+    {
+        return $this->relay;
+    }
+
+    /**
+     * @param Relay|null $relay
+     */
+    public function setRelay(?Relay $relay): void
+    {
+        $this->relay = $relay;
     }
 
     /**
@@ -502,6 +529,14 @@ class StationRemote implements StationMountInterface
     public function setIsPublic(bool $is_public)
     {
         $this->is_public = $is_public;
+    }
+
+    /**
+     * @return bool Whether this remote relay can be hand-edited.
+     */
+    public function isEditable(): bool
+    {
+        return (Adapters::REMOTE_AZURARELAY !== $this->type);
     }
 
     /**

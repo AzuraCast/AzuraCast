@@ -31,10 +31,12 @@
             <?php /** @var App\Entity\StationRemote $row */ ?>
             <tr class="align-middle">
                 <td>
+                <?php if ($row->isEditable()): ?>
                     <div class="btn-group btn-group-sm">
                         <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:remotes:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
                         <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete remote relay "%s"?', $row->getUrl())) ?>" href="<?=$router->fromHere('stations:remotes:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </div>
+                <?php endif; ?>
                 </td>
                 <td>
                     <h5 class="m-0"><a href="<?=$this->e($row->getUrl()) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>

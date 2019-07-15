@@ -21,6 +21,7 @@ class Adapters
     public const REMOTE_SHOUTCAST1 = 'shoutcast1';
     public const REMOTE_SHOUTCAST2 = 'shoutcast2';
     public const REMOTE_ICECAST = 'icecast';
+    public const REMOTE_AZURARELAY = 'azurarelay';
 
     public const DEFAULT_FRONTEND = self::FRONTEND_ICECAST;
     public const DEFAULT_BACKEND = self::BACKEND_LIQUIDSOAP;

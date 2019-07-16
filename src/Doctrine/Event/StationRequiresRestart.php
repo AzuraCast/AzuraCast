@@ -40,6 +40,10 @@ class StationRequiresRestart implements EventSubscriber
         foreach($collections_to_check as $collection) {
             foreach ($collection as $entity) {
                 foreach ($restart_classes as $restart_class) {
+                    if ($entity instanceof Entity\StationRemote && !$entity->isEditable()) {
+                        continue;
+                    }
+
                     if ($entity instanceof $restart_class) {
                         /** @var Entity\Station $station */
                         $station = $entity->getStation();

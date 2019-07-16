@@ -233,10 +233,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $playlist_params[] = '"'.$playlist_file_path.'"';
 
                 $playlist_config_lines[] = $playlist_var_name . ' = '.$playlist_func_name.'('.implode(',', $playlist_params).')';
-
-                if ($playlist->isJingle()) {
-                    $playlist_config_lines[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
-                }
             } else {
                 switch($playlist->getRemoteType())
                 {
@@ -257,6 +253,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         $playlist_config_lines[] = $playlist_var_name . ' = mksafe('.$remote_url_function.'(max='.$buffer.'., "'.$this->_cleanUpString($remote_url).'"))';
                         break;
                 }
+            }
+
+            $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo(id="stereo_'.$this->_cleanUpString($playlist_var_name).'", '.$playlist_var_name.')';
+
+            if ($playlist->isJingle()) {
+                $playlist_config_lines[] = $playlist_var_name . ' = drop_metadata('.$playlist_var_name.')';
             }
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
@@ -352,7 +354,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'radio = cue_cut(id="'.$this->_getVarName('radio_cue', $station).'", radio)',
             'add_skip_command(radio)',
             '',
-            'radio = audio_to_stereo(id="'.$this->_getVarName('radio_stereo', $station).'", radio)',
             'radio = fallback(id="'.$this->_getVarName('safe_fallback', $station).'", track_sensitive = false, [radio, single(id="error_jingle", "'.$error_file.'")])',
         ]);
     }

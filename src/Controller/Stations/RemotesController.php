@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Entity\Station;
+use App\Entity\StationRemote;
 use App\Form\EntityForm;
 use App\Http\Request;
 use App\Http\Response;
@@ -51,5 +53,16 @@ class RemotesController extends AbstractStationCrudController
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Remote Relay')) . '</b>', 'green');
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
+    }
+
+    protected function _getRecord(Station $station, $id = null): ?object
+    {
+        $record = parent::_getRecord($station, $id);
+
+        if ($record instanceof StationRemote && !$record->isEditable()) {
+            throw new \App\Exception\PermissionDenied('This record cannot be edited.');
+        }
+
+        return $record;
     }
 }

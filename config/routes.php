@@ -226,6 +226,9 @@ return function(App $app)
             $this->get('/relays', Controller\Api\Admin\RelaysController::class)
                 ->add(Middleware\RequireLogin::class);
 
+            $this->post('/relays', Controller\Api\Admin\RelaysController::class.':updateAction')
+                ->add(Middleware\RequireLogin::class);
+
             $this->group('', function() {
                 /** @var App $this */
                 $this->get('/settings', Controller\Api\Admin\SettingsController::class.':listAction')

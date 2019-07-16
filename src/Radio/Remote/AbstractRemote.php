@@ -38,7 +38,7 @@ abstract class AbstractRemote
      * @param bool $include_clients
      * @return bool
      */
-    protected function _updateNowPlayingFromAdapter(Entity\StationRemote $remote, &$np, $adapter_class, $include_clients = false): bool
+    protected function _updateNowPlayingFromAdapter(Entity\StationRemote $remote, &$np, $adapter_class, bool $include_clients = false): bool
     {
         /** @var \NowPlaying\Adapter\AdapterAbstract $np_adapter */
         $np_adapter = new $adapter_class($remote->getUrl(), $this->http_client);
@@ -47,7 +47,7 @@ abstract class AbstractRemote
             $np_new = $np_adapter->getNowPlaying($remote->getMount());
             $this->logger->debug('NowPlaying adapter response', ['response' => $np_new]);
 
-            $this->_mergeNowPlaying($np_new, $np);
+            $this->_mergeNowPlaying($np_new, $np, $include_clients);
             return true;
         } catch(\NowPlaying\Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
@@ -58,8 +58,9 @@ abstract class AbstractRemote
     /**
      * @param array|null $np_new
      * @param array $np
+     * @param bool $include_clients
      */
-    protected function _mergeNowPlaying($np_new, &$np): void
+    protected function _mergeNowPlaying($np_new, &$np, bool $include_clients = false): void
     {
         if ($np['meta']['status'] === 'offline' && $np_new['meta']['status'] === 'online') {
             $np['current_song'] = $np_new['current_song'];
@@ -67,8 +68,18 @@ abstract class AbstractRemote
         }
 
         $np['listeners']['current'] += $np_new['listeners']['current'];
-        $np['listeners']['unique'] += $np_new['listeners']['unique'];
         $np['listeners']['total'] += $np_new['listeners']['total'];
+
+        if ($include_clients && !empty($np_new['listeners']['clients'])) {
+            if (!isset($np['listeners']['clients'])) {
+                $np['listeners']['clients'] = [];
+            }
+
+            $np['listeners']['unique'] += count($np_new['listeners']['clients']);
+            $np['listeners']['clients'] = array_merge($np['listeners']['clients'], $np_new['listeners']['clients']);
+        } else {
+            $np['listeners']['unique'] += $np_new['listeners']['unique'];
+        }
     }
 
     /**

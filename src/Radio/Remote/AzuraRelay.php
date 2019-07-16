@@ -24,6 +24,10 @@ class AzuraRelay extends AbstractRemote
         $this->em = $em;
     }
 
+    /**
+     * @inheritDoc
+     */
+
     public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
     {
         $station = $remote->getStation();
@@ -40,7 +44,7 @@ class AzuraRelay extends AbstractRemote
 
             $this->logger->debug('AzuraRelay stored NP response', ['response' => $np_new]);
 
-            $this->_mergeNowPlaying($np_new, $np);
+            $this->_mergeNowPlaying($np_new, $np, $include_clients);
             return true;
         }
 

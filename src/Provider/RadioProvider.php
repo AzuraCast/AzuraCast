@@ -19,6 +19,7 @@ class RadioProvider implements ServiceProviderInterface
                 Radio\Remote\Icecast::class,
                 Radio\Remote\SHOUTcast1::class,
                 Radio\Remote\SHOUTcast2::class,
+                Radio\Remote\AzuraRelay::class,
             ]));
         };
 

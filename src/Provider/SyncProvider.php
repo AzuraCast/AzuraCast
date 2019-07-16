@@ -23,6 +23,7 @@ class SyncProvider implements ServiceProviderInterface
                     // Every minute tasks
                     Task\RadioRequests::class,
                     Task\Backup::class,
+                    Task\RelayCleanup::class,
                 ]),
                 new \Pimple\ServiceIterator($di, [
                     // Every 5 minutes tasks
@@ -117,6 +118,13 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\Monolog\Logger::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\Azura\EventDispatcher::class]
+            );
+        };
+
+        $di[Task\RelayCleanup::class] = function($di) {
+            return new Task\RelayCleanup(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Monolog\Logger::class]
             );
         };
 

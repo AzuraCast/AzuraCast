@@ -37,6 +37,9 @@ class AzuraRelay extends AbstractRemote
 
         if (isset($relay_np[$station->getId()][$remote->getMount()])) {
             $np_new = $relay_np[$station->getId()][$remote->getMount()];
+
+            $this->logger->debug('AzuraRelay stored NP response', ['response' => $np_new]);
+
             $this->_mergeNowPlaying($np_new, $np);
             return true;
         }
@@ -71,12 +74,12 @@ class AzuraRelay extends AbstractRemote
             || 'https' === $base_url->getScheme()) {
             // Web proxy support.
             return (string)$base_url
-                ->withPath($base_url->getPath().'/radio/' . $radio_port . '/' . $remote->getMount());
+                ->withPath($base_url->getPath().'/radio/' . $radio_port . $remote->getMount());
         } else {
             // Remove port number and other decorations.
             return (string)$base_url
                 ->withPort($radio_port)
-                ->withPath('/' . $remote->getMount());
+                ->withPath($remote->getMount());
         }
     }
 }

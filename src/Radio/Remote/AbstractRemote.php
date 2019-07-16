@@ -45,6 +45,8 @@ abstract class AbstractRemote
 
         try {
             $np_new = $np_adapter->getNowPlaying($remote->getMount());
+            $this->logger->debug('NowPlaying adapter response', ['response' => $np_new]);
+
             $this->_mergeNowPlaying($np_new, $np);
             return true;
         } catch(\NowPlaying\Exception $e) {
@@ -59,8 +61,6 @@ abstract class AbstractRemote
      */
     protected function _mergeNowPlaying($np_new, &$np): void
     {
-        $this->logger->debug('NowPlaying adapter response', ['response' => $np_new]);
-
         if ($np['meta']['status'] === 'offline' && $np_new['meta']['status'] === 'online') {
             $np['current_song'] = $np_new['current_song'];
             $np['meta'] = $np_new['meta'];

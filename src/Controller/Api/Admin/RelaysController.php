@@ -148,6 +148,7 @@ class RelaysController
                     $remote = new Entity\StationRemote($station);
                 }
 
+                $remote->setRelay($relay);
                 $remote->setType(Adapters::REMOTE_AZURARELAY);
                 $remote->setDisplayName($mount->getDisplayName().' ('.$relay->getName().')');
                 $remote->setIsVisibleOnPublicPages($relay->isIsVisibleOnPublicPages());

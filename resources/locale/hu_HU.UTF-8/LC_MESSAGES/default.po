@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-06-28T03:23:34+00:00\n"
-"PO-Revision-Date: 2019-06-28 03:30\n"
+"POT-Creation-Date: 2019-07-17T21:29:45+00:00\n"
+"PO-Revision-Date: 2019-07-17 21:31\n"
 "Language: hu_HU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -133,7 +133,7 @@ msgstr "Csatolási pontok"
 
 #: /var/azuracast/www/src/Acl.php:203
 #: /var/azuracast/www/config/menus/station.php:81
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:39
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:48
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
@@ -199,7 +199,7 @@ msgstr "API-kulcs"
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:137
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:43
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:258
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:36
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:38
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:85
 msgid "%s updated."
@@ -214,7 +214,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:146
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:50
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:264
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:43
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:45
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:92
 msgid "Edit %s"
@@ -229,7 +229,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:123
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:58
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:272
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:51
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:53
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:85
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:134
 msgid "%s deleted."
@@ -266,7 +266,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:53
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:43
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:258
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:36
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:38
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:71
 msgid "%s added."
@@ -286,7 +286,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:50
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:264
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:43
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:45
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
@@ -562,7 +562,8 @@ msgstr "Csatolásipont"
 #: /var/azuracast/www/templates/frontend/public/index.phtml:37
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:51
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:46
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:73
 msgid "Playlist"
 msgstr "Játszási lista"
 
@@ -600,9 +601,9 @@ msgstr "Dalcím"
 msgid "Song Artist"
 msgstr "Előadó"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:36
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:43
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:51
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:38
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:45
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:53
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
 msgid "Remote Relay"
@@ -773,13 +774,13 @@ msgstr ""
 msgid "%d song(s) were imported into the playlist."
 msgstr ""
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:98
-#: /var/azuracast/www/src/Http/ErrorHandler.php:107
+#: /var/azuracast/www/src/Http/ErrorHandler.php:80
+#: /var/azuracast/www/src/Http/ErrorHandler.php:89
 msgid "You must be logged in to access this page."
 msgstr ""
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:119
-#: /var/azuracast/www/src/Http/ErrorHandler.php:128
+#: /var/azuracast/www/src/Http/ErrorHandler.php:101
+#: /var/azuracast/www/src/Http/ErrorHandler.php:110
 msgid "You do not have permission to access this portion of the site."
 msgstr ""
 
@@ -824,40 +825,48 @@ msgid "New AzuraCast Updates Available"
 msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
-msgid "%s cannot start"
+msgid "%s is not recognized as a service."
 msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
-msgid "It is already running."
+msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
 msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
-msgid "%s cannot stop"
+msgid "%s cannot start"
 msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
-msgid "It is not running."
+msgid "It is already running."
 msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
-msgid "%s encountered an error"
+msgid "%s cannot stop"
+msgstr ""
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:210
+msgid "It is not running."
 msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
+msgid "%s encountered an error"
+msgstr ""
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:227
 msgid "Check the log for details."
 msgstr ""
 
-#: /var/azuracast/www/src/Radio/Adapters.php:137
-#: /var/azuracast/www/src/Radio/Adapters.php:141
-#: /var/azuracast/www/src/Radio/Adapters.php:172
+#: /var/azuracast/www/src/Radio/Adapters.php:138
+#: /var/azuracast/www/src/Radio/Adapters.php:142
+#: /var/azuracast/www/src/Radio/Adapters.php:173
 msgid "Use <b>%s</b> on this server"
 msgstr ""
 
-#: /var/azuracast/www/src/Radio/Adapters.php:145
+#: /var/azuracast/www/src/Radio/Adapters.php:146
 msgid "Connect to a <b>remote radio server</b>"
 msgstr ""
 
-#: /var/azuracast/www/src/Radio/Adapters.php:176
+#: /var/azuracast/www/src/Radio/Adapters.php:177
 msgid "<b>Do not use</b> an AutoDJ service"
 msgstr ""
 
@@ -928,7 +937,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/role.php:46
 #: /var/azuracast/www/config/forms/settings.php:172
 #: /var/azuracast/www/config/forms/song.php:53
-#: /var/azuracast/www/config/forms/station.php:478
+#: /var/azuracast/www/config/forms/station.php:492
 #: /var/azuracast/www/config/forms/streamer.php:63
 #: /var/azuracast/www/config/forms/user.php:52
 #: /var/azuracast/www/config/forms/webhook/discord.php:137
@@ -956,7 +965,7 @@ msgstr "Engedélyezze a rendszer számára, hogy rendszeresen automatikusan hozz
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:65
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:41
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:41
-#: /var/azuracast/www/templates/stations/remotes/index.phtml:46
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:48
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:41
 msgid "Disabled"
 msgstr "Nem engedélyezett"
@@ -968,7 +977,7 @@ msgstr "Nem engedélyezett"
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:18
-#: /var/azuracast/www/templates/stations/remotes/index.phtml:44
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:46
 msgid "Enabled"
 msgstr "Engedélyezve"
 
@@ -1020,7 +1029,8 @@ msgstr ""
 #: /var/azuracast/www/config/forms/station.php:273
 #: /var/azuracast/www/config/forms/station.php:309
 #: /var/azuracast/www/config/forms/station.php:384
-#: /var/azuracast/www/config/forms/station.php:433
+#: /var/azuracast/www/config/forms/station.php:397
+#: /var/azuracast/www/config/forms/station.php:447
 #: /var/azuracast/www/config/forms/station_clone.php:57
 #: /var/azuracast/www/config/forms/station_clone.php:70
 #: /var/azuracast/www/config/forms/station_clone.php:84
@@ -1053,7 +1063,8 @@ msgstr "Igen"
 #: /var/azuracast/www/config/forms/station.php:274
 #: /var/azuracast/www/config/forms/station.php:310
 #: /var/azuracast/www/config/forms/station.php:385
-#: /var/azuracast/www/config/forms/station.php:434
+#: /var/azuracast/www/config/forms/station.php:398
+#: /var/azuracast/www/config/forms/station.php:448
 #: /var/azuracast/www/config/forms/station_clone.php:56
 #: /var/azuracast/www/config/forms/station_clone.php:69
 #: /var/azuracast/www/config/forms/station_clone.php:83
@@ -1623,6 +1634,10 @@ msgstr ""
 msgid "Control how this playlist is handled by the AutoDJ software."
 msgstr ""
 
+#: /var/azuracast/www/config/forms/playlist.php:226
+msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
+msgstr ""
+
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
 msgstr ""
@@ -2161,7 +2176,7 @@ msgid "Customize Administrator Password"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:191
-#: /var/azuracast/www/config/forms/station.php:410
+#: /var/azuracast/www/config/forms/station.php:424
 msgid "Custom Configuration"
 msgstr "Egyéni beállítás"
 
@@ -2295,46 +2310,54 @@ msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song
 msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:394
-msgid "Character Set Encoding"
+msgid "Manual AutoDJ Mode"
 msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:396
+msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/station.php:408
+msgid "Character Set Encoding"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/station.php:410
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:414
+#: /var/azuracast/www/config/forms/station.php:428
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:431
+#: /var/azuracast/www/config/forms/station.php:445
 msgid "Enable Broadcasting"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:432
+#: /var/azuracast/www/config/forms/station.php:446
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:443
+#: /var/azuracast/www/config/forms/station.php:457
 msgid "Storage Quota"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:444
+#: /var/azuracast/www/config/forms/station.php:458
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:452
+#: /var/azuracast/www/config/forms/station.php:466
 msgid "Base Station Directory"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:454
+#: /var/azuracast/www/config/forms/station.php:468
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:462
+#: /var/azuracast/www/config/forms/station.php:476
 msgid "Custom Media Directory"
 msgstr ""
 
-#: /var/azuracast/www/config/forms/station.php:464
+#: /var/azuracast/www/config/forms/station.php:478
 msgid "The directory where media files are stored. Leave blank to use default directory."
 msgstr ""
 
@@ -2866,7 +2889,7 @@ msgstr "Tulajdonos"
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:92
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:35
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:65
-#: /var/azuracast/www/templates/stations/remotes/index.phtml:35
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:36
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:36
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 msgid "Edit"
@@ -2962,7 +2985,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
-#: /var/azuracast/www/templates/stations/remotes/index.phtml:36
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:37
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:33
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:49
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
@@ -3144,9 +3167,9 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:21
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:43
-#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:43
-#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:50
-#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:58
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:44
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:51
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:59
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:40
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:48
 msgid "Copy to Clipboard"
@@ -3192,6 +3215,7 @@ msgid "Station Name"
 msgstr "Állomás neve"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:121
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:33
 msgid "Now Playing"
 msgstr "Most játszott"
 
@@ -3373,35 +3397,29 @@ msgstr "Dal kérése"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:9
 msgid "Play"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:18
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:10
 msgid "Pause"
 msgstr "Szünet"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:11
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:11
 msgid "Mute"
 msgstr "Némítás"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:12
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:10
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:12
 msgid "Volume"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:13
 msgid "Full Volume"
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:14
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:14
 msgid "Album Art"
 msgstr ""
 
@@ -3733,11 +3751,11 @@ msgstr ""
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:61
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:87
 msgid "Running"
 msgstr "Fut"
 
-#: /var/azuracast/www/templates/stations/profile/index.js.phtml:62
+#: /var/azuracast/www/templates/stations/profile/index.js.phtml:88
 msgid "Not Running"
 msgstr "Nem fut"
 
@@ -3773,19 +3791,19 @@ msgstr "AutoDJ letiltva"
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
 msgstr "Az AutoDJ letiltva ezen az állomáson. Amikor a forrás nem aktív, nem lesznek lejátszva zenék."
 
-#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:36
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:37
 msgid "Administration URL"
 msgstr "Adminisztráció URL-je"
 
-#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:40
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:41
 msgid "Administrator Password"
 msgstr "Adminisztrációs jelszó"
 
-#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:47
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:48
 msgid "Source Password"
 msgstr "Forrás jelszava"
 
-#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:55
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:56
 msgid "Relay Password"
 msgstr ""
 
@@ -3801,16 +3819,20 @@ msgstr ""
 msgid "Unique"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:33
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:60
+msgid "Playing Next"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:83
+msgid "Now Streaming"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:97
 msgid "Skip Song"
 msgstr "Dal kihagyása"
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:37
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:101
 msgid "Disconnect Streamer"
-msgstr ""
-
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:45
-msgid "Live"
 msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
@@ -3863,12 +3885,12 @@ msgstr ""
 msgid "Streams"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:22
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:26
 msgid "Local Streams"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:57
-#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:61
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:71
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:75
 msgid "Download %s"
 msgstr ""
 
@@ -3894,7 +3916,7 @@ msgstr ""
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/remotes/index.phtml:36
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:37
 msgid "Delete remote relay \"%s\"?"
 msgstr ""
 

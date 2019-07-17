@@ -51,7 +51,7 @@ class RadioRequests extends AbstractTask
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
-            if (!$station->getEnableRequests()) {
+            if (!$station->getEnableRequests() || !$station->useManualAutoDJ()) {
                 continue;
             }
 

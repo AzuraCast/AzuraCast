@@ -343,6 +343,31 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         }
 
+        if (!$station->useManualAutoDJ()) {
+            $event->appendLines([
+                '# AutoDJ Next Song Script',
+                'def azuracast_next_song() =',
+                '  uri = ' . $this->_getApiUrlCommand($station, 'nextsong'),
+                '  log("AzuraCast Raw Response: #{uri}")',
+                '  ',
+                '  if uri == "" or string.match(pattern="Error", uri) then',
+                '    log("AzuraCast Error: Delaying subsequent requests...")',
+                '    system("sleep 2")',
+                '    request.create("")',
+                '  else',
+                '    request.create(uri)',
+                '  end',
+                'end',
+            ]);
+
+            $event->appendLines([
+                'dynamic = audio_to_stereo(request.dynamic(id="' . $this->_getVarName('next_song',
+                    $station) . '", timeout=20., azuracast_next_song))',
+                'radio = fallback(id="' . $this->_getVarName('autodj_fallback',
+                    $station) . '", track_sensitive = true, [dynamic, radio])',
+            ]);
+        }
+
         $error_file = APP_INSIDE_DOCKER
             ? '/usr/local/share/icecast/web/error.mp3'
             : APP_INCLUDE_ROOT . '/resources/error.mp3';

@@ -223,7 +223,7 @@ return [
                     [
                         'label' => __('AutoDJ Scheduling Options'),
                         'label_class' => 'advanced',
-                        'description' => __('Control how this playlist is handled by the AutoDJ software.'),
+                        'description' => __('Control how this playlist is handled by the AutoDJ software.').'<br>'.__('<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.'),
                         'choices' => [
                             StationPlaylist::OPTION_INTERRUPT_OTHER_SONGS => __('Interrupt other songs to play at scheduled time.'),
                             StationPlaylist::OPTION_LOOP_PLAYLIST_ONCE => __('Only loop through playlist once.'),

@@ -16,16 +16,25 @@
         <h3 class="card-title"><?=__('Streams') ?></h3>
     </div>
     <table class="table table-sm table-striped mb-0">
+        <colgroup>
+            <col style="width: 2%;">
+            <col style="width: 98%;">
+        </colgroup>
         <?php if (count($stream_urls['local']) > 0): ?>
             <thead>
             <tr>
-                <th><?=__('Local Streams') ?></th>
+                <th colspan="2"><?=__('Local Streams') ?></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach($stream_urls['local'] as [$stream_name, $stream_url]): ?>
                 <tr class="align-middle">
-                    <td>
+                    <td class="pr-1">
+                        <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
+                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
+                        </a>
+                    </td>
+                    <td class="pl-1">
                         <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
                         <?=$this->link($stream_url) ?>
                     </td>
@@ -36,13 +45,18 @@
         <?php if (count($stream_urls['remote']) > 0): ?>
             <thead>
             <tr>
-                <th><?=__('Remote Relays') ?></th>
+                <th colspan="2"><?=__('Remote Relays') ?></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach($stream_urls['remote'] as [$stream_name, $stream_url]): ?>
                 <tr class="align-middle">
-                    <td>
+                    <td class="pr-1">
+                        <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
+                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
+                        </a>
+                    </td>
+                    <td class="pl-1">
                         <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
                         <?=$this->link($stream_url) ?>
                     </td>

@@ -6,6 +6,7 @@ use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
 use App\Radio\Backend\Liquidsoap;
 use Azura\EventDispatcher;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -55,6 +56,7 @@ class AutoDJ implements EventSubscriberInterface
             ],
             GetNextSong::NAME => [
                 ['checkDatabaseForNextSong', 10],
+                ['getNextSongFromRequests', 5],
                 ['calculateNextSong', 0],
             ],
         ];
@@ -142,6 +144,10 @@ class AutoDJ implements EventSubscriberInterface
      */
     public function getNextSong(Entity\Station $station, $is_autodj = false): ?Entity\SongHistory
     {
+        if ($station->useManualAutoDJ()) {
+            return null;
+        }
+
         $this->logger->pushProcessor(function($record) use ($station) {
             $record['extra']['station'] = [
                 'id' => $station->getId(),
@@ -202,33 +208,137 @@ class AutoDJ implements EventSubscriberInterface
     public function calculateNextSong(GetNextSong $event): void
     {
         $station = $event->getStation();
+        $now = Chronos::now(new \DateTimeZone($station->getTimezone()));
 
-        $eligible_playlists = [];
-        $general_playlists = [];
+        $songHistoryCount = 15;
+
+        // Pull all active, non-empty playlists and sort by type.
+        $playlists_by_type = [];
         foreach($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            if (Entity\StationPlaylist::TYPE_DEFAULT === $playlist->getType() && $playlist->isPlayable()) {
-                $general_playlists[$playlist->getId()] = $playlist;
-                $eligible_playlists[$playlist->getId()] = $playlist->getWeight();
+            if ($playlist->isPlayable()) {
+                $type = $playlist->getType();
+
+                if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $type) {
+                    $songHistoryCount = max($songHistoryCount, $playlist->getPlayPerSongs());
+                }
+
+                $playlists_by_type[$type][$playlist->getId()] = $playlist;
             }
         }
 
-        if (empty($general_playlists)) {
-            return;
-        }
+        // Pull all recent cued songs for easy referencing below.
+        $cued_song_history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh 
+            FROM App\Entity\SongHistory sh
+            WHERE sh.station_id = :station_id
+            AND (sh.timestamp_cued != 0 AND sh.timestamp_cued IS NOT NULL)
+            AND sh.timestamp_cued >= :threshold
+            ORDER BY sh.timestamp_cued DESC')
+            ->setParameter('station_id', $station->getId())
+            ->setParameter('threshold', time()-86399)
+            ->getArrayResult();
 
-        // Shuffle playlists by weight.
-        $rand = random_int(1, (int)array_sum($eligible_playlists));
-        foreach ($eligible_playlists as $playlist_id => $weight) {
-            $rand -= $weight;
-            if ($rand <= 0) {
-                $playlist = $general_playlists[$playlist_id];
+        // Types of playlists that should play, sorted by priority.
+        $typesToPlay = [
+            Entity\StationPlaylist::TYPE_ONCE_PER_HOUR,
+            Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS,
+            Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES,
+            Entity\StationPlaylist::TYPE_SCHEDULED,
+            Entity\StationPlaylist::TYPE_DEFAULT,
+        ];
 
-                if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
-                    return;
+        foreach($typesToPlay as $type) {
+            if (empty($playlists_by_type[$type])) {
+                continue;
+            }
+
+            $eligible_playlists = [];
+            foreach($playlists_by_type[$type] as $playlist_id => $playlist) {
+                /** @var Entity\StationPlaylist $playlist */
+                if ($playlist->shouldPlayNow($now, $cued_song_history)) {
+                    $eligible_playlists[$playlist_id] = $playlist->getWeight();
+                }
+            }
+
+            if (empty($eligible_playlists)) {
+                continue;
+            }
+
+            $this->logger->debug(sprintf('Playable playlists of type "%s" found.', $type), $eligible_playlists);
+
+            // Shuffle playlists by weight.
+            $rand = random_int(1, (int)array_sum($eligible_playlists));
+            foreach ($eligible_playlists as $playlist_id => $weight) {
+                $rand -= $weight;
+                if ($rand <= 0) {
+                    $playlist = $playlists_by_type[$type][$playlist_id];
+
+                    if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
+                        return;
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * @param GetNextSong $event
+     */
+    public function getNextSongFromRequests(GetNextSong $event): void
+    {
+        $station = $event->getStation();
+
+        // Process requests first (if applicable)
+        if ($station->getEnableRequests()) {
+
+            $min_minutes = (int)$station->getRequestDelay();
+            $threshold_minutes = $min_minutes + mt_rand(0, $min_minutes);
+
+            $threshold = time() - ($threshold_minutes * 60);
+
+            // Look up all requests that have at least waited as long as the threshold.
+            $request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
+                FROM App\Entity\StationRequest sr JOIN sr.track sm
+                WHERE sr.played_at = 0 
+                AND sr.station_id = :station_id 
+                AND sr.timestamp <= :threshold
+                ORDER BY sr.id ASC')
+                ->setParameter('station_id', $station->getId())
+                ->setParameter('threshold', $threshold)
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
+
+            if ($request instanceof Entity\StationRequest) {
+                $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
+
+                $event->setNextSong($this->_playSongFromRequest($request));
+            }
+        }
+    }
+
+    /**
+     * Given a StationRequest object, create a new SongHistory entry that cues the requested song to play next.
+     *
+     * @param Entity\StationRequest $request
+     * @return Entity\SongHistory
+     */
+    protected function _playSongFromRequest(Entity\StationRequest $request): Entity\SongHistory
+    {
+        // Log in history
+        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+        $sh->setRequest($request);
+        $sh->setMedia($request->getTrack());
+
+        $sh->setDuration($request->getTrack()->getCalculatedLength());
+        $sh->setTimestampCued(time());
+        $this->em->persist($sh);
+
+        $request->setPlayedAt(time());
+        $this->em->persist($request);
+
+        $this->em->flush();
+
+        return $sh;
     }
 
     /**
@@ -236,8 +346,6 @@ class AutoDJ implements EventSubscriberInterface
      *
      * @param Entity\StationPlaylist $playlist
      * @return Entity\SongHistory|string|null
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist)
     {

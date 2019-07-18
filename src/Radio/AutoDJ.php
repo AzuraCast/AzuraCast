@@ -5,6 +5,7 @@ use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
 use App\Radio\Backend\Liquidsoap;
+use Azura\Cache;
 use Azura\EventDispatcher;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
@@ -13,6 +14,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
 {
+    /** @var int The time to live (in seconds) of cached playlist queues. */
+    public const CACHE_TTL = 43200;
+
     /** @var EntityManager */
     protected $em;
 
@@ -25,11 +29,15 @@ class AutoDJ implements EventSubscriberInterface
     /** @var Logger */
     protected $logger;
 
+    /** @var Cache */
+    protected $cache;
+
     /**
      * @param EntityManager $em
      * @param EventDispatcher $dispatcher
      * @param Filesystem $filesystem
      * @param Logger $logger
+     * @param Cache $cache
      *
      * @see \App\Provider\RadioProvider
      */
@@ -37,12 +45,14 @@ class AutoDJ implements EventSubscriberInterface
         EntityManager $em,
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
-        Logger $logger)
+        Logger $logger,
+        Cache $cache)
     {
         $this->em = $em;
         $this->dispatcher = $dispatcher;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
+        $this->cache = $cache;
     }
 
     /**
@@ -210,7 +220,7 @@ class AutoDJ implements EventSubscriberInterface
         $station = $event->getStation();
         $now = Chronos::now(new \DateTimeZone($station->getTimezone()));
 
-        $songHistoryCount = 15;
+        $song_history_count = 15;
 
         // Pull all active, non-empty playlists and sort by type.
         $playlists_by_type = [];
@@ -220,7 +230,7 @@ class AutoDJ implements EventSubscriberInterface
                 $type = $playlist->getType();
 
                 if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $type) {
-                    $songHistoryCount = max($songHistoryCount, $playlist->getPlayPerSongs());
+                    $song_history_count = max($song_history_count, $playlist->getPlayPerSongs());
                 }
 
                 $playlists_by_type[$type][$playlist->getId()] = $playlist;
@@ -228,14 +238,15 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         // Pull all recent cued songs for easy referencing below.
-        $cued_song_history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh 
-            FROM App\Entity\SongHistory sh
+        $cued_song_history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s 
+            FROM App\Entity\SongHistory sh JOIN sh.song s  
             WHERE sh.station_id = :station_id
             AND (sh.timestamp_cued != 0 AND sh.timestamp_cued IS NOT NULL)
             AND sh.timestamp_cued >= :threshold
             ORDER BY sh.timestamp_cued DESC')
             ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', time()-86399)
+            ->setMaxResults($song_history_count)
             ->getArrayResult();
 
         // Types of playlists that should play, sorted by priority.
@@ -273,12 +284,174 @@ class AutoDJ implements EventSubscriberInterface
                 if ($rand <= 0) {
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
-                    if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
+                    if ($event->setNextSong($this->_playSongFromPlaylist($playlist, $cued_song_history))) {
                         return;
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
+     *
+     * @param Entity\StationPlaylist $playlist
+     * @param array $recent_song_history
+     * @return Entity\SongHistory|string|null
+     */
+    protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist, array $recent_song_history)
+    {
+        /** @var Entity\Repository\SongRepository $song_repo */
+        $song_repo = $this->em->getRepository(Entity\Song::class);
+
+        $media_to_play = $this->_getQueuedSong($playlist, $recent_song_history);
+
+        if ($media_to_play instanceof Entity\StationMedia) {
+            $spm = $media_to_play->getItemForPlaylist($playlist);
+            $spm->played();
+
+            $this->em->persist($spm);
+
+            // Log in history
+            $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
+            $sh->setPlaylist($playlist);
+            $sh->setMedia($media_to_play);
+            $sh->setTimestampCued(time());
+
+            $this->em->persist($sh);
+            $this->em->flush();
+
+            return $sh;
+        }
+
+        if (is_array($media_to_play)) {
+            [$media_uri, $media_duration] = $media_to_play;
+
+            $sh = new Entity\SongHistory($song_repo->getOrCreate([
+                'text' => 'Remote Playlist URL',
+            ]), $playlist->getStation());
+
+            $sh->setPlaylist($playlist);
+            $sh->setAutodjCustomUri($media_uri);
+            $sh->setDuration($media_duration);
+            $sh->setTimestampCued(time());
+
+            $this->em->persist($sh);
+            $this->em->flush();
+
+            return $sh;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Entity\StationPlaylist $playlist
+     * @param array $recent_song_history
+     * @return Entity\StationMedia|array|null
+     */
+    protected function _getQueuedSong(Entity\StationPlaylist $playlist, array $recent_song_history)
+    {
+        if (Entity\StationPlaylist::SOURCE_REMOTE_URL === $playlist->getSource()) {
+            return $this->_playRemoteUrl($playlist);
+        }
+
+        /** @var Entity\Repository\StationPlaylistMediaRepository $spm_repo */
+        $spm_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+
+        if (Entity\StationPlaylist::ORDER_RANDOM === $playlist->getOrder()) {
+            $media_queue = $spm_repo->getPlayableMedia($playlist);
+
+            shuffle($media_queue);
+
+            [$media_id, $media_queue] = $this->_preventDuplicates($media_queue, $recent_song_history);
+        } else {
+            $cache_name = self::getPlaylistCacheName($playlist->getId());
+            $media_queue = (array)$this->cache->get($cache_name);
+
+            if (empty($media_queue)) {
+                $media_queue = $spm_repo->getPlayableMedia($playlist);
+            }
+
+            [$media_id, $media_queue] = $this->_preventDuplicates($media_queue, $recent_song_history);
+
+            // Save the modified cache, sans the now-missing entry.
+            $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+        }
+
+        return ($media_id)
+            ? $this->em->find(Entity\StationMedia::class, $media_id)
+            : null;
+    }
+
+    /**
+     * @param array $eligible_media
+     * @param array $played_media
+     * @return array
+     */
+    protected function _preventDuplicates(array $eligible_media = [], array $played_media = []): array
+    {
+        $media_id_to_play = null;
+        $artists = [];
+        $titles = [];
+        foreach($played_media as $history) {
+            $artists[] = $history['song']['artist'];
+            $titles[] = $history['song']['title'];
+        }
+
+        foreach($eligible_media as $media_id => $media) {
+            if (!in_array($media['artist'], $artists, true) && !in_array($media['title'], $titles, true)) {
+                $media_id_to_play = $media_id;
+                unset($eligible_media[$media_id]);
+                break;
+            }
+        }
+
+        if (null === $media_id_to_play) {
+            $media = array_shift($eligible_media);
+            $media_id_to_play = $media['id'];
+        }
+
+        return [
+            $media_id_to_play,
+            $eligible_media
+        ];
+    }
+
+    protected function _playRemoteUrl(Entity\StationPlaylist $playlist): ?array
+    {
+        $remote_type = $playlist->getRemoteType() ?? Entity\StationPlaylist::REMOTE_TYPE_STREAM;
+
+        // Handle a raw stream URL of possibly indeterminate length.
+        if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remote_type) {
+            // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
+            if (Entity\StationPlaylist::TYPE_SCHEDULED === $playlist->getType()) {
+                $duration = $playlist->getScheduleDuration();
+                return [$playlist->getRemoteUrl(), $duration];
+            }
+
+            return [$playlist->getRemoteUrl(), 0];
+        }
+
+        // Handle a remote playlist containing songs or streams.
+        $cache_name = self::getPlaylistCacheName($playlist->getId());
+        $media_queue = (array)$this->cache->get($cache_name);
+
+        if (empty($media_queue)) {
+            $playlist_raw = file_get_contents($playlist->getRemoteUrl());
+            $media_queue = PlaylistParser::getSongs($playlist_raw);
+        }
+
+        if (!empty($media_queue)) {
+            $media_id = array_shift($media_queue);
+        } else {
+            $media_id = null;
+        }
+
+        // Save the modified cache, sans the now-missing entry.
+        $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+
+        return ($media_id) ? [$media_id, 0] : null;
     }
 
     /**
@@ -341,58 +514,8 @@ class AutoDJ implements EventSubscriberInterface
         return $sh;
     }
 
-    /**
-     * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
-     *
-     * @param Entity\StationPlaylist $playlist
-     * @return Entity\SongHistory|string|null
-     */
-    protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist)
+    public static function getPlaylistCacheName(int $playlist_id): string
     {
-        /** @var Entity\Repository\StationPlaylistMediaRepository $spm_repo */
-        $spm_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
-
-        /** @var Entity\Repository\SongRepository $song_repo */
-        $song_repo = $this->em->getRepository(Entity\Song::class);
-
-        $media_to_play = $spm_repo->getQueuedSong($playlist);
-
-        if ($media_to_play instanceof Entity\StationMedia) {
-            $spm = $media_to_play->getItemForPlaylist($playlist);
-            $spm->played();
-
-            $this->em->persist($spm);
-
-            // Log in history
-            $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
-            $sh->setPlaylist($playlist);
-            $sh->setMedia($media_to_play);
-            $sh->setTimestampCued(time());
-
-            $this->em->persist($sh);
-            $this->em->flush();
-
-            return $sh;
-        }
-
-        if (is_array($media_to_play)) {
-            [$media_uri, $media_duration] = $media_to_play;
-
-            $sh = new Entity\SongHistory($song_repo->getOrCreate([
-                'text' => 'Remote Playlist URL',
-            ]), $playlist->getStation());
-
-            $sh->setPlaylist($playlist);
-            $sh->setAutodjCustomUri($media_uri);
-            $sh->setDuration($media_duration);
-            $sh->setTimestampCued(time());
-
-            $this->em->persist($sh);
-            $this->em->flush();
-
-            return $sh;
-        }
-
-        return null;
+        return 'autodj/playlist_'.$playlist_id;
     }
 }

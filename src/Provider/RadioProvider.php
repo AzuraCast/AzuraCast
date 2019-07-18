@@ -28,7 +28,8 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Azura\EventDispatcher::class],
                 $di[Radio\Filesystem::class],
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\Azura\Cache::class]
             );
         };
 

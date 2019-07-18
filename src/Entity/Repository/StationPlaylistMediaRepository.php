@@ -2,8 +2,7 @@
 
 namespace App\Entity\Repository;
 
-use App\Radio\Backend\Liquidsoap;
-use App\Radio\PlaylistParser;
+use App\Radio\AutoDJ;
 use Azura\Cache;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,9 +12,6 @@ use App\Entity;
 
 class StationPlaylistMediaRepository extends Repository
 {
-    /** @var int The time to live (in seconds) of cached playlist queues. */
-    const CACHE_TTL = 43200;
-
     protected $cache;
 
     public function __construct(
@@ -37,7 +33,7 @@ class StationPlaylistMediaRepository extends Repository
      * @param int $weight
      * @return int The weight assigned to the newly added record.
      */
-    public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, $weight = 0): int
+    public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, int $weight = 0): int
     {
         if ($playlist->getSource() !== Entity\StationPlaylist::SOURCE_SONGS) {
             throw new \Exception('This playlist is not meant to contain songs!');
@@ -53,13 +49,13 @@ class StationPlaylistMediaRepository extends Repository
             $record = null;
         }
 
-        if (($record instanceof Entity\StationPlaylistMedia)) {
-            if ($weight != 0) {
+        if ($record instanceof Entity\StationPlaylistMedia) {
+            if (0 !== $weight) {
                 $record->setWeight($weight);
                 $this->_em->persist($record);
             }
         } else {
-            if ($weight === 0) {
+            if (0 === $weight) {
                 $weight = $this->getHighestSongWeight($playlist) + 1;
             }
 
@@ -70,7 +66,7 @@ class StationPlaylistMediaRepository extends Repository
 
         // Add the newly added song into the cached queue.
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_RANDOM) {
-            $cache_name = $this->_getCacheName($playlist->getId());
+            $cache_name = AutoDJ::getPlaylistCacheName($playlist->getId());
             $media_queue = (array)$this->cache->get($cache_name);
 
             if (!empty($media_queue)) {
@@ -123,7 +119,7 @@ class StationPlaylistMediaRepository extends Repository
                 AND spm.media_id = :media_id')
                 ->setParameter('playlist_id', $playlist->getId());
 
-            $media_ids = $this->_getPlayableMediaIds($playlist);
+            $media_ids = array_keys($this->getPlayableMedia($playlist));
             shuffle($media_ids);
 
             $new_weight = 1;
@@ -184,7 +180,7 @@ class StationPlaylistMediaRepository extends Repository
      * @param Entity\StationPlaylist $playlist
      * @param array $mapping
      */
-    public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping)
+    public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping): void
     {
         $update_query = $this->_em->createQuery(/** @lang DQL */'UPDATE 
             App\Entity\StationPlaylistMedia e 
@@ -203,45 +199,10 @@ class StationPlaylistMediaRepository extends Repository
         }
     }
 
-    /**
-     * Return a song from the cached playback queue for a playlist, if applicable.
-     *
-     * @param Entity\StationPlaylist $playlist
-     * @return Entity\StationMedia|array|null
-     */
-    public function getQueuedSong(Entity\StationPlaylist $playlist)
+    public function getPlayableMedia(Entity\StationPlaylist $playlist): array
     {
-        if (Entity\StationPlaylist::SOURCE_REMOTE_URL === $playlist->getSource()) {
-            return $this->_playRemoteUrl($playlist);
-        }
-
-        if (Entity\StationPlaylist::ORDER_RANDOM === $playlist->getOrder()) {
-            $media_queue = $this->_getPlayableMediaIds($playlist);
-
-            shuffle($media_queue);
-            $media_id = array_pop($media_queue);
-        } else {
-            $cache_name = $this->_getCacheName($playlist->getId());
-            $media_queue = (array)$this->cache->get($cache_name);
-
-            if (empty($media_queue)) {
-                $media_queue = $this->_getPlayableMediaIds($playlist);
-            }
-
-            $media_id = array_shift($media_queue);
-
-            // Save the modified cache, sans the now-missing entry.
-            $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
-        }
-
-        return ($media_id)
-            ? $this->_em->find(Entity\StationMedia::class, $media_id)
-            : null;
-    }
-
-    protected function _getPlayableMediaIds(Entity\StationPlaylist $playlist): array
-    {
-        $all_media = $this->_em->createQuery(/** @lang DQL */ 'SELECT sm.id 
+        $all_media = $this->_em->createQuery(/** @lang DQL */ 'SELECT 
+            sm.id, sm.artist, sm.title
             FROM App\Entity\StationMedia sm
             JOIN sm.playlists spm
             WHERE spm.playlist_id = :playlist_id
@@ -251,64 +212,17 @@ class StationPlaylistMediaRepository extends Repository
 
         $media_queue = [];
         foreach($all_media as $media_row) {
-            $media_queue[] = $media_row['id'];
+            $media_queue[$media_row['id']] = $media_row;
         }
 
         return $media_queue;
     }
 
-    protected function _playRemoteUrl(Entity\StationPlaylist $playlist): ?array
-    {
-        $remote_type = $playlist->getRemoteType() ?? Entity\StationPlaylist::REMOTE_TYPE_STREAM;
-
-        // Handle a raw stream URL of possibly indeterminate length.
-        if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remote_type) {
-            // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
-            if (Entity\StationPlaylist::TYPE_SCHEDULED === $playlist->getType()) {
-                $duration = $playlist->getScheduleDuration();
-                return [$playlist->getRemoteUrl(), $duration];
-            }
-
-            return [$playlist->getRemoteUrl(), 0];
-        }
-
-        // Handle a remote playlist containing songs or streams.
-        $cache_name = $this->_getCacheName($playlist->getId());
-        $media_queue = (array)$this->cache->get($cache_name);
-
-        if (empty($media_queue)) {
-            $playlist_raw = file_get_contents($playlist->getRemoteUrl());
-            $media_queue = PlaylistParser::getSongs($playlist_raw);
-        }
-
-        if (!empty($media_queue)) {
-            $media_id = array_shift($media_queue);
-        } else {
-            $media_id = null;
-        }
-
-        // Save the modified cache, sans the now-missing entry.
-        $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
-
-        return ($media_id) ? [$media_id, 0] : null;
-    }
-
     /**
      * @param int $playlist_id
      */
-    public function clearMediaQueue(int $playlist_id)
+    public function clearMediaQueue(int $playlist_id): void
     {
-        $this->cache->remove($this->_getCacheName($playlist_id));
-    }
-
-    /**
-     * Get the cache name for the given playlist.
-     *
-     * @param int $playlist_id
-     * @return string
-     */
-    protected function _getCacheName(int $playlist_id): string
-    {
-        return 'autodj/playlist_'.$playlist_id;
+        $this->cache->remove(AutoDJ::getPlaylistCacheName($playlist_id));
     }
 }

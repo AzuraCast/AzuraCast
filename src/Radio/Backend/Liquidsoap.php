@@ -172,6 +172,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         $schedule_switches = [];
         $schedule_switches_interrupting = [];
+        $use_azuracast_autodj = true;
 
         foreach ($playlist_objects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
@@ -194,7 +195,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             $playlist_config_lines = [];
 
-            if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
+            if (Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
                 $playlist_file_path = $this->writePlaylistFile($playlist, false);
 
                 if (!$playlist_file_path) {
@@ -234,6 +235,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                 $playlist_config_lines[] = $playlist_var_name . ' = '.$playlist_func_name.'('.implode(',', $playlist_params).')';
             } else {
+                $use_azuracast_autodj = false;
+
                 switch($playlist->getRemoteType())
                 {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
@@ -327,14 +330,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 'radio = switch(id="'.$this->_getVarName('schedule_switch', $station).'", track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])',
             ]);
         }
-        if (!empty($schedule_switches_interrupting)) {
-            $schedule_switches_interrupting[] = '({true}, radio)';
-
-            $event->appendLines([
-                '# Interrupting Schedule Switches',
-                'radio = switch(id="'.$this->_getVarName('interrupt_switch', $station).'", track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])',
-            ]);
-        }
 
         // Add in special playlists if necessary.
         foreach($special_playlists as $playlist_type => $playlist_config_lines) {
@@ -343,7 +338,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         }
 
-        if (!$station->useManualAutoDJ()) {
+        if ($use_azuracast_autodj && !$station->useManualAutoDJ()) {
             $event->appendLines([
                 '# AutoDJ Next Song Script',
                 'def azuracast_next_song() =',
@@ -365,6 +360,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                     $station) . '", timeout=20., azuracast_next_song))',
                 'radio = fallback(id="' . $this->_getVarName('autodj_fallback',
                     $station) . '", track_sensitive = true, [dynamic, radio])',
+            ]);
+        }
+
+        if (!empty($schedule_switches_interrupting)) {
+            $schedule_switches_interrupting[] = '({true}, radio)';
+
+            $event->appendLines([
+                '# Interrupting Schedule Switches',
+                'radio = switch(id="'.$this->_getVarName('interrupt_switch', $station).'", track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])',
             ]);
         }
 

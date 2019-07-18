@@ -12,6 +12,7 @@ use App\Entity;
 
 class StationPlaylistMediaRepository extends Repository
 {
+    /** @var Cache */
     protected $cache;
 
     public function __construct(
@@ -76,7 +77,7 @@ class StationPlaylistMediaRepository extends Repository
                     shuffle($media_queue);
                 }
 
-                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+                $this->cache->set($media_queue, $cache_name, AutoDJ::CACHE_TTL);
             }
         }
 

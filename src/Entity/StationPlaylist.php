@@ -687,19 +687,11 @@ class StationPlaylist
      */
     public function isPlayable(): bool
     {
-        if (!$this->is_enabled) {
-            return false;
-        }
-
-        if (self::SOURCE_SONGS === $this->source) {
-            return ($this->media_items->count() > 0);
-        }
-
-        if ($this->backendInterruptOtherSongs() || $this->backendMerge() || $this->backendLoopPlaylistOnce()) {
-            return false;
-        }
-
-        return true;
+        return ($this->is_enabled
+            && (self::SOURCE_SONGS !== $this->source || $this->media_items->count() > 0)
+            && !$this->backendInterruptOtherSongs()
+            && !$this->backendMerge()
+            && !$this->backendLoopPlaylistOnce());
     }
 
     /**

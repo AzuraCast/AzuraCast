@@ -60,7 +60,6 @@ class StationPlaylistMedia implements \JsonSerializable
     protected $last_played;
 
     /**
-     * StationPlaylistMedia constructor.
      * @param StationPlaylist $playlist
      * @param StationMedia $media
      */
@@ -120,7 +119,7 @@ class StationPlaylistMedia implements \JsonSerializable
         return $this->last_played;
     }
 
-    public function played()
+    public function played(): void
     {
         $this->last_played = time();
     }

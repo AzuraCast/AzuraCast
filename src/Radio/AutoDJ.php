@@ -427,6 +427,11 @@ class AutoDJ implements EventSubscriberInterface
 
         // Handle a raw stream URL of possibly indeterminate length.
         if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remote_type) {
+            // Temporarily disable remote URL streams being served via the Azura-AutoDJ.
+            // TODO: Evaluate a potential fix for this.
+            return null;
+
+            /*
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
             if (Entity\StationPlaylist::TYPE_SCHEDULED === $playlist->getType()) {
                 $duration = $playlist->getScheduleDuration();
@@ -434,6 +439,7 @@ class AutoDJ implements EventSubscriberInterface
             }
 
             return [$playlist->getRemoteUrl(), 0];
+            */
         }
 
         // Handle a remote playlist containing songs or streams.
@@ -454,7 +460,9 @@ class AutoDJ implements EventSubscriberInterface
         // Save the modified cache, sans the now-missing entry.
         $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
 
-        return ($media_id) ? [$media_id, 0] : null;
+        return ($media_id)
+            ? [$media_id, 0]
+            : null;
     }
 
     /**
@@ -464,57 +472,46 @@ class AutoDJ implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        // Process requests first (if applicable)
-        if ($station->getEnableRequests()) {
-
-            $min_minutes = (int)$station->getRequestDelay();
-            $threshold_minutes = $min_minutes + mt_rand(0, $min_minutes);
-
-            $threshold = time() - ($threshold_minutes * 60);
-
-            // Look up all requests that have at least waited as long as the threshold.
-            $request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
-                FROM App\Entity\StationRequest sr JOIN sr.track sm
-                WHERE sr.played_at = 0 
-                AND sr.station_id = :station_id 
-                AND sr.timestamp <= :threshold
-                ORDER BY sr.id ASC')
-                ->setParameter('station_id', $station->getId())
-                ->setParameter('threshold', $threshold)
-                ->setMaxResults(1)
-                ->getOneOrNullResult();
-
-            if ($request instanceof Entity\StationRequest) {
-                $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
-
-                $event->setNextSong($this->_playSongFromRequest($request));
-            }
+        if (!$station->getEnableRequests()) {
+            return;
         }
-    }
 
-    /**
-     * Given a StationRequest object, create a new SongHistory entry that cues the requested song to play next.
-     *
-     * @param Entity\StationRequest $request
-     * @return Entity\SongHistory
-     */
-    protected function _playSongFromRequest(Entity\StationRequest $request): Entity\SongHistory
-    {
-        // Log in history
-        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
-        $sh->setRequest($request);
-        $sh->setMedia($request->getTrack());
+        $min_minutes = (int)$station->getRequestDelay();
+        $threshold_minutes = $min_minutes + random_int(0, $min_minutes);
 
-        $sh->setDuration($request->getTrack()->getCalculatedLength());
-        $sh->setTimestampCued(time());
-        $this->em->persist($sh);
+        $threshold = time() - ($threshold_minutes * 60);
 
-        $request->setPlayedAt(time());
-        $this->em->persist($request);
+        // Look up all requests that have at least waited as long as the threshold.
+        $request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
+            FROM App\Entity\StationRequest sr JOIN sr.track sm
+            WHERE sr.played_at = 0 
+            AND sr.station_id = :station_id 
+            AND sr.timestamp <= :threshold
+            ORDER BY sr.id ASC')
+            ->setParameter('station_id', $station->getId())
+            ->setParameter('threshold', $threshold)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
 
-        $this->em->flush();
+        if ($request instanceof Entity\StationRequest) {
+            $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
-        return $sh;
+            // Log in history
+            $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+            $sh->setRequest($request);
+            $sh->setMedia($request->getTrack());
+
+            $sh->setDuration($request->getTrack()->getCalculatedLength());
+            $sh->setTimestampCued(time());
+            $this->em->persist($sh);
+
+            $request->setPlayedAt(time());
+            $this->em->persist($request);
+
+            $this->em->flush();
+
+            $event->setNextSong($sh);
+        }
     }
 
     public static function getPlaylistCacheName(int $playlist_id): string

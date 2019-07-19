@@ -248,6 +248,12 @@ class StationPlaylist
     protected $backend_options = '';
 
     /**
+     * @ORM\Column(name="played_at", type="integer")
+     * @var int The UNIX timestamp at which a track from this playlist was last played.
+     */
+    protected $played_at = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"weight" = "ASC"})
      * @var Collection
@@ -654,6 +660,19 @@ class StationPlaylist
     }
 
     /**
+     * @return int
+     */
+    public function getPlayedAt(): int
+    {
+        return $this->played_at;
+    }
+
+    public function played(): void
+    {
+        $this->played_at = time();
+    }
+
+    /**
      * @return Collection
      */
     public function getMediaItems(): Collection
@@ -698,7 +717,7 @@ class StationPlaylist
 
         switch($this->type) {
             case self::TYPE_ONCE_PER_HOUR:
-                return $this->shouldPlayNowPerHour($now, $recentSongHistory);
+                return $this->shouldPlayNowPerHour($now);
                 break;
 
             case self::TYPE_ONCE_PER_X_SONGS:
@@ -706,16 +725,16 @@ class StationPlaylist
                 break;
 
             case self::TYPE_ONCE_PER_X_MINUTES:
-                return $this->shouldPlayNowPerMinute($recentSongHistory);
+                return $this->shouldPlayNowPerMinute($now);
                 break;
 
             case self::TYPE_SCHEDULED:
                 // If the times match, it's a "play once" playlist.
                 if ($this->getScheduleStartTime() === $this->getScheduleEndTime()) {
-                    return $this->shouldPlayNowOnce($now, $recentSongHistory);
+                    return $this->shouldPlayNowOnce($now);
                 }
 
-                return $this->shouldPlayNowScheduled($now, $recentSongHistory);
+                return $this->shouldPlayNowScheduled($now);
                 break;
 
             case self::TYPE_ADVANCED:
@@ -733,10 +752,9 @@ class StationPlaylist
      * Returns whether the playlist is scheduled to play according to schedule rules.
      *
      * @param Chronos $now
-     * @param array $songHistoryEntries
      * @return bool
      */
-    public function shouldPlayNowScheduled(Chronos $now, array $songHistoryEntries = []): bool
+    public function shouldPlayNowScheduled(Chronos $now): bool
     {
         $day_to_check = (int)$now->format('N');
         $current_timecode = (int)$now->format('Hi');
@@ -769,7 +787,7 @@ class StationPlaylist
         }
 
         return ($this->backendPlaySingleTrack())
-            ? $this->wasPlayedRecently($songHistoryEntries)
+            ? !$this->wasPlayedInLastXMinutes($now, 720)
             : true;
     }
 
@@ -779,7 +797,7 @@ class StationPlaylist
      * @param int $day_to_check
      * @return bool
      */
-    protected function isScheduledToPlayToday($day_to_check): bool
+    protected function isScheduledToPlayToday(int $day_to_check): bool
     {
         $play_once_days = $this->getScheduleDays();
         return empty($play_once_days)
@@ -787,35 +805,19 @@ class StationPlaylist
     }
 
     /**
-     * @param array $songHistoryEntries
+     * @param Chronos $now
      * @return bool
      */
-    public function shouldPlayNowPerMinute(array $songHistoryEntries = []): bool
+    public function shouldPlayNowPerMinute(Chronos $now): bool
     {
-        $threshold = time() - ($this->getPlayPerMinutes() * 60);
-
-        $was_played = false;
-        foreach($songHistoryEntries as $sh_row) {
-            if ($sh_row['timestamp_cued'] < $threshold) {
-                break;
-            }
-
-            if ((int)$sh_row['playlist_id'] === $this->getId()) {
-                $was_played = true;
-                break;
-            }
-        }
-
-        reset($songHistoryEntries);
-        return !$was_played;
+        return !$this->wasPlayedInLastXMinutes($now, $this->getPlayPerMinutes());
     }
 
     /**
      * @param Chronos $now
-     * @param array $songHistoryEntries
      * @return bool
      */
-    public function shouldPlayNowPerHour(Chronos $now, array $songHistoryEntries = []): bool
+    public function shouldPlayNowPerHour(Chronos $now): bool
     {
         $current_minute = (int)$now->format('i');
         $target_minute = $this->getPlayPerHourMinute();
@@ -826,22 +828,21 @@ class StationPlaylist
             $play_time = $now->minute($target_minute);
         }
 
-        $playlist_diff = $now->diffInMinutes($play_time);
+        $playlist_diff = $now->diffInMinutes($play_time, false);
         if ($playlist_diff <= 0 || $playlist_diff > 15) {
             return false;
         }
 
-        return !$this->wasPlayedRecently($songHistoryEntries);
+        return !$this->wasPlayedInLastXMinutes($now, 30);
     }
 
     /**
      * Returns whether the playlist is scheduled to play once.
      *
      * @param Chronos $now
-     * @param array $songHistoryEntries
      * @return bool
      */
-    public function shouldPlayNowOnce(Chronos $now, array $songHistoryEntries = []): bool
+    public function shouldPlayNowOnce(Chronos $now): bool
     {
         if (!$this->isScheduledToPlayToday((int)$now->format('N'))) {
             return false;
@@ -851,11 +852,11 @@ class StationPlaylist
 
         $playlist_play_time = $this->getScheduleStartTime();
         $playlist_diff = $current_timecode - $playlist_play_time;
-        if ($playlist_diff <= 0 || $playlist_diff > 15) {
+        if ($playlist_diff < 0 || $playlist_diff > 15) {
             return false;
         }
 
-        return !$this->wasPlayedRecently($songHistoryEntries);
+        return !$this->wasPlayedInLastXMinutes($now, 720);
     }
 
     /**
@@ -882,6 +883,18 @@ class StationPlaylist
 
         reset($songHistoryEntries);
         return $was_played;
+    }
+
+    public function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
+    {
+        if (0 === $this->played_at) {
+            return false;
+        }
+
+        $played_time = Chronos::createFromTimestamp($this->played_at, $now->getTimezone());
+        $played_diff = $now->diffInMinutes($played_time, true);
+
+        return ($played_diff <= $minutes);
     }
 
     /**

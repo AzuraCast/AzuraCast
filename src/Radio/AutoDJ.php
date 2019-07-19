@@ -301,6 +301,9 @@ class AutoDJ implements EventSubscriberInterface
      */
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist, array $recent_song_history)
     {
+        $playlist->played();
+        $this->em->persist($playlist);
+
         /** @var Entity\Repository\SongRepository $song_repo */
         $song_repo = $this->em->getRepository(Entity\Song::class);
 

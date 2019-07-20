@@ -811,17 +811,18 @@ class StationPlaylist
      */
     public function shouldPlayNowPerHour(Chronos $now): bool
     {
-        $current_minute = (int)$now->format('i');
+        $current_minute = (int)$now->minute;
         $target_minute = $this->getPlayPerHourMinute();
 
         if ($current_minute < $target_minute) {
-            $play_time = $now->addHour()->minute($target_minute);
+            $target_time = $now->addHour(-1)->minute($target_minute);
         } else {
-            $play_time = $now->minute($target_minute);
+            $target_time = $now->minute($target_minute);
         }
 
-        $playlist_diff = $now->diffInMinutes($play_time, false);
-        if ($playlist_diff <= 0 || $playlist_diff > 15) {
+        $playlist_diff = $target_time->diffInMinutes($now, false);
+
+        if ($playlist_diff < 0 || $playlist_diff > 15) {
             return false;
         }
 
@@ -883,9 +884,7 @@ class StationPlaylist
             return false;
         }
 
-        $played_time = Chronos::createFromTimestamp($this->played_at, $now->getTimezone());
-        $played_diff = $now->diffInMinutes($played_time, true);
-
+        $played_diff = abs($now->getTimestamp() - $this->played_at);
         return ($played_diff <= $minutes);
     }
 

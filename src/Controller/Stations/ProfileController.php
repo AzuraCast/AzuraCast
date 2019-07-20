@@ -94,6 +94,7 @@ class ProfileController
                 'song' => [
                     'title' => __('Song Title'),
                     'artist' => __('Song Artist'),
+                    'art' => '',
                 ],
                 'playlist' => '',
                 'is_request' => false,
@@ -112,6 +113,7 @@ class ProfileController
                 'song' => [
                     'title' => __('Song Title'),
                     'artist' => __('Song Artist'),
+                    'art' => '',
                 ],
                 'playlist' => '',
             ],
@@ -119,6 +121,7 @@ class ProfileController
 
         $station_np = $station->getNowplaying();
         if ($station_np instanceof Entity\Api\NowPlaying) {
+            $station_np->resolveUrls($request->getRouter());
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 

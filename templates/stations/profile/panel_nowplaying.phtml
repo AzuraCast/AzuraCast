@@ -23,84 +23,86 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="row pt-1">
+        <div class="row">
             <div class="col-md-6">
-                <div class="position-relative" style="margin-left: 20px;">
-                    <div class="position-absolute" style="top: 0; left: -20px;">
-                        <i class="material-icons sm align-top">music_note</i>
-                    </div>
+                <h6 style="margin-left: 32px;">
+                    <i class="material-icons">music_note</i>
+                    <?=__('Now Playing') ?>
+                </h6 style="margin-left: 32px;">
+                <div class="media">
+                    <a class="mr-2" v-bind:href="np.now_playing.song.art" data-fancybox target="_blank">
+                        <img v-bind:src="np.now_playing.song.art" alt="<?=__('Album Art') ?>" style="width: 50px;">
+                    </a>
+                    <div class="media-body">
 
-                    <h6><?=__('Now Playing') ?>:</h6>
-
-                    <div v-if="np.now_playing.song.title != ''">
-                        <h5 class="media-heading m-0" style="line-height: 1;">
-                            {{ np.now_playing.song.title }}<br>
-                            <small>{{ np.now_playing.song.artist }}</small>
-                        </h5>
-                    </div>
-                    <div v-else>
-                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
-                    </div>
-
-                    <div v-if="np.now_playing.playlist">
-                        <small class="text-muted"><?=__('Playlist') ?>: {{ np.now_playing.playlist }}</small>
-                    </div>
-                    <div class="nowplaying-progress" v-if="time_display">
-                        <small>{{ time_display }}</small>
+                        <div v-if="np.now_playing.song.title != ''">
+                            <h5 class="media-heading m-0" style="line-height: 1;">
+                                {{ np.now_playing.song.title }}<br>
+                                <small>{{ np.now_playing.song.artist }}</small>
+                            </h5>
+                        </div>
+                        <div v-else>
+                            <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
+                        </div>
+                        <div v-if="np.now_playing.playlist">
+                            <small class="text-muted"><?=__('Playlist') ?>: {{ np.now_playing.playlist }}</small>
+                        </div>
+                        <div class="nowplaying-progress" v-if="time_display">
+                            <small>{{ time_display }}</small>
+                        </div>
                     </div>
                 </div>
             </div>
-
             <div class="col-md-6" v-if="!np.live.is_live && np.playing_next">
-                <div class="position-relative" style="margin-left: 20px;">
-                    <div class="position-absolute" style="top: 0; left: -20px;">
-                        <i class="material-icons sm align-top">skip_next</i>
-                    </div>
+                <h6 style="margin-left: 22px;">
+                    <i class="material-icons">skip_next</i>
+                    <?=__('Playing Next') ?>
+                </h6>
 
-                    <h6><?=__('Playing Next') ?>:</h6>
+                <div class="media">
+                    <a class="mr-2" v-bind:href="np.playing_next.song.art" data-fancybox target="_blank">
+                        <img v-bind:src="np.playing_next.song.art" alt="<?=__('Album Art') ?>" style="width: 40px;">
+                    </a>
+                    <div class="media-body">
+                        <div v-if="np.playing_next.song.title != ''">
+                            <h5 class="media-heading m-0" style="line-height: 1;">
+                                {{ np.playing_next.song.title }}<br>
+                                <small>{{ np.playing_next.song.artist }}</small>
+                            </h5>
+                        </div>
+                        <div v-else>
+                            <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
+                        </div>
 
-                    <div v-if="np.playing_next.song.title != ''">
-                        <h5 class="media-heading m-0" style="line-height: 1;">
-                            {{ np.playing_next.song.title }}<br>
-                            <small>{{ np.playing_next.song.artist }}</small>
-                        </h5>
-                    </div>
-                    <div v-else>
-                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
-                    </div>
-
-                    <div v-if="np.playing_next.playlist">
-                        <small class="text-muted"><?=__('Playlist') ?>: {{ np.playing_next.playlist }}</small>
+                        <div v-if="np.playing_next.playlist">
+                            <small class="text-muted"><?=__('Playlist') ?>: {{ np.playing_next.playlist }}</small>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6" v-if="np.live.is_live">
-                <div class="position-relative" style="margin-left: 20px;">
-                    <div class="position-absolute" style="top: 0; left: -20px;">
-                        <i class="material-icons sm align-top">mic</i>
-                    </div>
+                <h6>
+                    <i class="material-icons">mic</i>
+                    <?=__('Now Streaming') ?>
+                </h6>
 
-                    <h6><?=__('Now Streaming') ?>:</h6>
-
-                    <h4 class="media-heading">
-                        {{ np.live.streamer_name }}
-                    </h4>
-                </div>
+                <h4 class="media-heading">
+                    {{ np.live.streamer_name }}
+                </h4>
             </div>
         </div>
     </div>
-    <div class="d-flex align-items-center">
-    <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
-        <div class="card-actions flex-shrink">
-            <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
-                <i class="material-icons" aria-hidden="true">skip_next</i>
-                <?=__('Skip Song') ?>
-            </a>
-            <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
-                <i class="material-icons" aria-hidden="true">volume_off</i>
-                <?=__('Disconnect Streamer') ?>
-            </a>
-        </div>
-    <?php endif; ?>
+
+<?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP && $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
+    <div class="card-actions flex-shrink">
+        <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'skip']) ?>" v-if="!np.live.is_live">
+            <i class="material-icons" aria-hidden="true">skip_next</i>
+            <?=__('Skip Song') ?>
+        </a>
+        <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button" href="<?=$router->fromHere('api:stations:backend', ['do' => 'disconnect']) ?>" v-if="np.live.is_live">
+            <i class="material-icons" aria-hidden="true">volume_off</i>
+            <?=__('Disconnect Streamer') ?>
+        </a>
     </div>
+<?php endif; ?>
 </section>

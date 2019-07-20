@@ -249,6 +249,16 @@ class AutoDJ implements EventSubscriberInterface
             ->setMaxResults($song_history_count)
             ->getArrayResult();
 
+        // If the currently playing song is known, calculate the "next song" based on what the time will be
+        //   at the *end* of the currently playing song, instead of right now.
+        if (count($cued_song_history) > 0) {
+            $most_recent_sh = $cued_song_history[0];
+
+            if (0 !== $most_recent_sh['duration']) {
+                $now = $now->addSeconds($most_recent_sh['duration']);
+            }
+        }
+
         // Types of playlists that should play, sorted by priority.
         $typesToPlay = [
             Entity\StationPlaylist::TYPE_ONCE_PER_HOUR,

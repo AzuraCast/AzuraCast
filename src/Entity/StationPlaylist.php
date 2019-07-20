@@ -884,8 +884,8 @@ class StationPlaylist
             return false;
         }
 
-        $played_diff = abs($now->getTimestamp() - $this->played_at);
-        return ($played_diff <= $minutes);
+        $threshold = $now->addMinutes(0-$minutes)->getTimestamp();
+        return ($this->played_at > $threshold);
     }
 
     /**

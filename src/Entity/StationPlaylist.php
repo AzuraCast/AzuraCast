@@ -667,6 +667,14 @@ class StationPlaylist
         return $this->played_at;
     }
 
+    /**
+     * @param int $played_at
+     */
+    public function setPlayedAt(int $played_at): void
+    {
+        $this->played_at = $played_at;
+    }
+
     public function played(): void
     {
         $this->played_at = time();
@@ -746,7 +754,7 @@ class StationPlaylist
      * @param Chronos $now
      * @return bool
      */
-    public function shouldPlayNowScheduled(Chronos $now): bool
+    protected function shouldPlayNowScheduled(Chronos $now): bool
     {
         $day_to_check = (int)$now->format('N');
         $current_timecode = (int)$now->format('Hi');
@@ -800,7 +808,7 @@ class StationPlaylist
      * @param Chronos $now
      * @return bool
      */
-    public function shouldPlayNowPerMinute(Chronos $now): bool
+    protected function shouldPlayNowPerMinute(Chronos $now): bool
     {
         return !$this->wasPlayedInLastXMinutes($now, $this->getPlayPerMinutes());
     }
@@ -809,7 +817,7 @@ class StationPlaylist
      * @param Chronos $now
      * @return bool
      */
-    public function shouldPlayNowPerHour(Chronos $now): bool
+    protected function shouldPlayNowPerHour(Chronos $now): bool
     {
         $current_minute = (int)$now->minute;
         $target_minute = $this->getPlayPerHourMinute();
@@ -835,7 +843,7 @@ class StationPlaylist
      * @param Chronos $now
      * @return bool
      */
-    public function shouldPlayNowOnce(Chronos $now): bool
+    protected function shouldPlayNowOnce(Chronos $now): bool
     {
         if (!$this->isScheduledToPlayToday((int)$now->format('N'))) {
             return false;
@@ -857,7 +865,7 @@ class StationPlaylist
      * @param int $length
      * @return bool
      */
-    public function wasPlayedRecently(array $songHistoryEntries = [], $length = 15): bool
+    protected function wasPlayedRecently(array $songHistoryEntries = [], $length = 15): bool
     {
         if (empty($songHistoryEntries)) {
             return true;
@@ -878,7 +886,7 @@ class StationPlaylist
         return $was_played;
     }
 
-    public function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
+    protected function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
     {
         if (0 === $this->played_at) {
             return false;

@@ -18,7 +18,7 @@ return [
             [
                 'label' => __('E-mail Address'),
                 'required' => true,
-                'autocomplete' => 'off',
+                'autocomplete' => 'new-password',
                 'label_class' => 'mb-2',
                 'form_group_class' => 'mt-3',
             ]

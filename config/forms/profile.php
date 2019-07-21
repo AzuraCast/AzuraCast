@@ -52,7 +52,7 @@ return [
                     'password',
                     [
                         'label' => __('New Password'),
-                        'autocomplete' => 'off',
+                        'autocomplete' => 'new-password',
                         'class' => 'strength',
                         'confirm' => 'new_password_confirm',
                         'form_group_class' => 'col-md-4',
@@ -63,7 +63,7 @@ return [
                     'password',
                     [
                         'label' => __('Confirm New Password'),
-                        'autocomplete' => 'off',
+                        'autocomplete' => 'new-password',
                         'form_group_class' => 'col-md-4',
                     ]
                 ],

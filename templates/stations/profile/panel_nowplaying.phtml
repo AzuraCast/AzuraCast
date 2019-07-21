@@ -26,15 +26,14 @@
         <div class="row">
             <div class="col-md-6">
                 <h6 style="margin-left: 32px;">
-                    <i class="material-icons">music_note</i>
+                    <i class="material-icons" aria-hidden="true">music_note</i>
                     <?=__('Now Playing') ?>
                 </h6 style="margin-left: 32px;">
                 <div class="media">
                     <a class="mr-2" v-bind:href="np.now_playing.song.art" data-fancybox target="_blank">
-                        <img v-bind:src="np.now_playing.song.art" alt="<?=__('Album Art') ?>" style="width: 50px;">
+                        <img class="rounded" v-bind:src="np.now_playing.song.art" alt="<?=__('Album Art') ?>" style="width: 50px;">
                     </a>
                     <div class="media-body">
-
                         <div v-if="np.now_playing.song.title != ''">
                             <h5 class="media-heading m-0" style="line-height: 1;">
                                 {{ np.now_playing.song.title }}<br>
@@ -55,13 +54,13 @@
             </div>
             <div class="col-md-6" v-if="!np.live.is_live && np.playing_next">
                 <h6 style="margin-left: 22px;">
-                    <i class="material-icons">skip_next</i>
+                    <i class="material-icons" aria-hidden="true">skip_next</i>
                     <?=__('Playing Next') ?>
                 </h6>
 
                 <div class="media">
                     <a class="mr-2" v-bind:href="np.playing_next.song.art" data-fancybox target="_blank">
-                        <img v-bind:src="np.playing_next.song.art" alt="<?=__('Album Art') ?>" style="width: 40px;">
+                        <img v-bind:src="np.playing_next.song.art" class="rounded" alt="<?=__('Album Art') ?>" style="width: 40px;">
                     </a>
                     <div class="media-body">
                         <div v-if="np.playing_next.song.title != ''">
@@ -82,7 +81,7 @@
             </div>
             <div class="col-md-6" v-if="np.live.is_live">
                 <h6>
-                    <i class="material-icons">mic</i>
+                    <i class="material-icons" aria-hidden="true">mic</i>
                     <?=__('Now Streaming') ?>
                 </h6>
 

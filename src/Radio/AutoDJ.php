@@ -362,24 +362,48 @@ class AutoDJ implements EventSubscriberInterface
         /** @var Entity\Repository\StationPlaylistMediaRepository $spm_repo */
         $spm_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
 
-        if (Entity\StationPlaylist::ORDER_RANDOM === $playlist->getOrder()) {
-            $media_queue = $spm_repo->getPlayableMedia($playlist);
-
-            shuffle($media_queue);
-
-            [$media_id, $media_queue] = $this->_preventDuplicates($media_queue, $recent_song_history);
-        } else {
-            $cache_name = self::getPlaylistCacheName($playlist->getId());
-            $media_queue = (array)$this->cache->get($cache_name);
-
-            if (empty($media_queue)) {
+        switch($playlist->getOrder()) {
+            case Entity\StationPlaylist::ORDER_RANDOM:
                 $media_queue = $spm_repo->getPlayableMedia($playlist);
-            }
 
-            [$media_id, $media_queue] = $this->_preventDuplicates($media_queue, $recent_song_history);
+                shuffle($media_queue);
 
-            // Save the modified cache, sans the now-missing entry.
-            $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+                $media_id = $this->_preventDuplicates($media_queue, $recent_song_history);
+                break;
+
+            case Entity\StationPlaylist::ORDER_SEQUENTIAL:
+                $cache_name = self::getPlaylistCacheName($playlist->getId());
+                $media_queue = (array)$this->cache->get($cache_name);
+
+                if (empty($media_queue)) {
+                    $media_queue = $spm_repo->getPlayableMedia($playlist);
+                }
+
+                $media_arr = array_shift($media_queue);
+                $media_id = $media_arr['id'];
+
+                // Save the modified cache, sans the now-missing entry.
+                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+                break;
+
+            case Entity\StationPlaylist::ORDER_SHUFFLE:
+            default:
+                $cache_name = self::getPlaylistCacheName($playlist->getId());
+                $media_queue = (array)$this->cache->get($cache_name);
+
+                if (empty($media_queue)) {
+                    $media_queue = $spm_repo->getPlayableMedia($playlist);
+                }
+
+                $media_id = $this->_preventDuplicates($media_queue, $recent_song_history);
+
+                if (null !== $media_id) {
+                    unset($media_queue[$media_id]);
+                }
+
+                // Save the modified cache, sans the now-missing entry.
+                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+                break;
         }
 
         return ($media_id)
@@ -390,12 +414,12 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * @param array $eligible_media
      * @param array $played_media
-     * @return array
+     * @return int|null
      */
-    protected function _preventDuplicates(array $eligible_media = [], array $played_media = []): array
+    protected function _preventDuplicates(array $eligible_media = [], array $played_media = []): ?int
     {
         if (empty($eligible_media)) {
-            return [null, $played_media];
+            return null;
         }
 
         $media_id_to_play = null;
@@ -431,14 +455,7 @@ class AutoDJ implements EventSubscriberInterface
             $media_id_to_play = key($eligible_media);
         }
 
-        if (null !== $media_id_to_play) {
-            unset($eligible_media[$media_id_to_play]);
-        }
-
-        return [
-            $media_id_to_play,
-            $eligible_media
-        ];
+        return $media_id_to_play;
     }
 
     protected function _playRemoteUrl(Entity\StationPlaylist $playlist): ?array

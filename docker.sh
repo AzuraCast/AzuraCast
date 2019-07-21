@@ -127,30 +127,39 @@ install() {
 # Usage: ./docker.sh update
 #
 update() {
-    docker-compose down
-    docker-compose rm -f
 
-    if ask "Update docker-compose.yml file? This will overwrite any customizations you made to this file?" N; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
+
+    FILES_MATCH="$(cmp --silent docker-compose.yml docker-compose.new.yml; echo $?)"
+    UPDATE_NEW=0
+
+    if [[ ${FILES_MATCH} -ne 0 ]]; then
+        if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
+            UPDATE_NEW=1
+        fi
+    fi
+
+    if [[ ${UPDATE_NEW} -ne 0 ]]; then
+        docker-compose -f docker-compose.new.yml pull
+        docker-compose down
 
         cp docker-compose.yml docker-compose.backup.yml
-        echo "Your existing docker-compose.yml file has been backed up to docker-compose.backup.yml."
+        mv docker-compose.new.yml docker-compose.yml
+    else
+        rm docker-compose.new.yml
 
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
-        echo "New docker-compose.yml file loaded."
-
+        docker-compose pull
+        docker-compose down
     fi
 
     if [[ ! -f azuracast.env ]]; then
-
         curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
         echo "Default environment file loaded."
-        
     fi
 
     docker volume rm azuracast_www_data
     docker volume rm azuracast_tmp_data
 
-    docker-compose pull
     docker-compose run --user="azuracast" --rm web azuracast_update
     docker-compose up -d
 

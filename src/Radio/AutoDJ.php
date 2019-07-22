@@ -393,10 +393,16 @@ class AutoDJ implements EventSubscriberInterface
             case Entity\StationPlaylist::ORDER_SHUFFLE:
             default:
                 $cache_name = self::getPlaylistCacheName($playlist->getId());
-                $media_queue = (array)$this->cache->get($cache_name);
+                $media_queue_cached = (array)$this->cache->get($cache_name);
 
-                if (empty($media_queue)) {
+                if (empty($media_queue_cached)) {
                     $media_queue = $spm_repo->getPlayableMedia($playlist);
+                } else {
+                    // Rekey the media queue because redis won't always properly store keys.
+                    $media_queue = [];
+                    foreach($media_queue_cached as $media) {
+                        $media_queue[$media['id']] = $media;
+                    }
                 }
 
                 $media_id = $this->_preventDuplicates($media_queue, $recent_song_history);

@@ -453,12 +453,14 @@ class AutoDJ implements EventSubscriberInterface
             if (!empty($without_same_artist)) {
                 // If any track has neither the same artist OR title, use it.
                 reset($without_same_artist);
-                $media_id_to_play = key($without_same_artist);
+                $media = current($without_same_artist);
+                $media_id_to_play = $media['id'];
 
                 $this->logger->debug('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
             } else {
                 reset($without_same_title);
-                $media_id_to_play = key($without_same_title);
+                $media = current($without_same_title);
+                $media_id_to_play = $media['id'];
 
                 $this->logger->debug('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
             }
@@ -467,7 +469,9 @@ class AutoDJ implements EventSubscriberInterface
         reset($eligible_media);
 
         if (null === $media_id_to_play) {
-            $media_id_to_play = key($eligible_media);
+            $media = current($eligible_media);
+            $media_id_to_play = $media['id'];
+
             $this->logger->debug('No way to avoid same title OR same artist; using queue unmodified.', ['media_id' => $media_id_to_play]);
         }
 

@@ -78,6 +78,8 @@ export default {
     methods: {
         "play": function(url) {
             this.audio.src = url;
+
+            this.audio.load();
             this.audio.play();
 
             this.is_playing = true;
@@ -90,6 +92,10 @@ export default {
 
             this.audio.pause();
             this.audio.src = '';
+
+            setTimeout(() => {
+                this.audio.load();
+            });
         }
     }
 }

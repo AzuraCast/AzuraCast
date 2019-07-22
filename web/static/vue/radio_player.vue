@@ -333,6 +333,8 @@ export default {
     methods: {
         "play": function() {
             this.audio.src = this.current_stream.url;
+            this.audio.load();
+
             this.audio.play();
 
             this.is_playing = true;
@@ -342,6 +344,10 @@ export default {
 
             this.audio.pause();
             this.audio.src = '';
+
+            setTimeout(() => {
+                this.audio.load();
+            });
         },
         "toggle": function() {
             if (this.is_playing) {

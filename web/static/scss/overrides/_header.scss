@@ -1,8 +1,8 @@
 header.navbar {
-  background-image: url('../img/header_bg.png');
-  background-position: left center;
+  background-image: url('../img/header_bg.png'), linear-gradient(90deg, #2196f3 0%, #0a6fc2 100%);
+  background-position: left center, center;
   background-repeat: no-repeat;
-  background-size: 500px 100px;
+  background-size: 500px 100px, cover;
 
   .navbar-brand {
     font-size: 2.5rem;

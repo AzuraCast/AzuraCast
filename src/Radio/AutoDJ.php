@@ -177,6 +177,13 @@ class AutoDJ implements EventSubscriberInterface
             $next_song->sentToAutodj();
             $this->em->persist($next_song);
 
+            // Mark the playlist itself as played at this time.
+            $playlist = $next_song->getPlaylist();
+            if ($playlist instanceof Entity\StationPlaylist) {
+                $playlist->played();
+                $this->em->persist($playlist);
+            }
+
             // The "get next song" function is only called when a streamer is not live
             $station->setIsStreamerLive(false);
             $this->em->persist($station);
@@ -301,9 +308,6 @@ class AutoDJ implements EventSubscriberInterface
      */
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist, array $recent_song_history)
     {
-        $playlist->played();
-        $this->em->persist($playlist);
-
         /** @var Entity\Repository\SongRepository $song_repo */
         $song_repo = $this->em->getRepository(Entity\Song::class);
 
@@ -419,6 +423,7 @@ class AutoDJ implements EventSubscriberInterface
     protected function _preventDuplicates(array $eligible_media = [], array $played_media = []): ?int
     {
         if (empty($eligible_media)) {
+            $this->logger->debug('Eligible song queue is empty!');
             return null;
         }
 
@@ -443,9 +448,13 @@ class AutoDJ implements EventSubscriberInterface
                 // If any track has neither the same artist OR title, use it.
                 reset($without_same_artist);
                 $media_id_to_play = key($without_same_artist);
+
+                $this->logger->debug('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
             } else {
                 reset($without_same_title);
                 $media_id_to_play = key($without_same_title);
+
+                $this->logger->debug('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
             }
         }
 
@@ -453,6 +462,7 @@ class AutoDJ implements EventSubscriberInterface
 
         if (null === $media_id_to_play) {
             $media_id_to_play = key($eligible_media);
+            $this->logger->debug('No way to avoid same title OR same artist; using queue unmodified.', ['media_id' => $media_id_to_play]);
         }
 
         return $media_id_to_play;

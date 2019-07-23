@@ -4,24 +4,88 @@ $(function() {
     var appToolbar = new Vue({
         el: '#app-toolbar',
         data: {
-            playlists: <?=json_encode($playlists) ?>
+            playlists: <?=json_encode($playlists) ?>,
+            checkedPlaylists: [],
+            newPlaylist: ''
+        },
+        watch: {
+            newPlaylist: function (text) {
+                if (text !== '') {
+                    if (!this.checkedPlaylists.includes('new')) {
+                        this.checkedPlaylists.push('new');
+                    }
+                }
+            }
+        },
+        computed: {
+            newPlaylistIsChecked: function() {
+                return this.newPlaylist !== '';
+            }
         },
         methods: {
-            doBatch: function (e) {
-                e.preventDefault();
+            doDelete: function (e) {
+                var buttonText = <?=$this->escapeJs(__('Delete')) ?>;
+                var buttonConfirm = <?=$this->escapeJs(__('Delete {NUM} media file(s)?')) ?>;
 
                 var $files = getSelectedFiles();
+                swal({
+                    title: buttonConfirm.replace('{NUM}', $files.length),
+                    buttons: [true, buttonText],
+                    dangerMode: true
+                }).then(function(value) {
+                    if (value) {
+                        var notifyMessage = <?=$this->escapeJs(__('Files removed:')) ?>;
+                        appToolbar.doBatch('delete', notifyMessage);
+                    }
+                });
+            },
+            doBatch: function (action, notifyMessage) {
+                var $files = getSelectedFiles();
                 $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
-                    'do': $(e.target).data('action'),
+                    'do': action,
                     'files': $files.join('|'),
                     'csrf': CSRF,
                     'file': getUrlHash()
-                },function(data){
+                }, function() {
+                    notify('<b>'+notifyMessage+'</b><br>'+$files.join('<br>'), 'success', false);
+
                     list();
                 },'json');
+            },
+            clearPlaylists: function(e) {
+                this.checkedPlaylists = [];
+                this.newPlaylist = '';
 
-                $(this).closest('.btn-group').removeClass('open');
-                return false;
+                this.setPlaylists(e);
+            },
+            setPlaylists: function(e) {
+                var $files = getSelectedFiles();
+                $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
+                    'do': 'playlist',
+                    'playlists': this.checkedPlaylists,
+                    'new_playlist_name': this.newPlaylist,
+                    'files': $files.join('|'),
+                    'csrf': CSRF,
+                    'file': getUrlHash()
+                }, function(data) {
+                    if (data.success && data.record) {
+                        appToolbar.playlists.push(data.record);
+                    }
+
+                    if (appToolbar.checkedPlaylists.length > 0) {
+                        var notifyMessage = <?=$this->escapeJs(__('Playlists updated for selected files:')) ?>;
+                    } else {
+                        var notifyMessage = <?=$this->escapeJs(__('Playlists cleared for selected files:')) ?>;
+                    }
+                    notify('<b>'+notifyMessage+'</b><br>'+$files.join('<br>'), 'success', false);
+
+                    appToolbar.checkedPlaylists = [];
+                    appToolbar.newPlaylist = '';
+
+                    $(e.target).closest('.dropdown').find('[data-toggle=dropdown]').dropdown('toggle');
+
+                    list();
+                },'json');
             }
         }
     });
@@ -243,43 +307,6 @@ $(function() {
     });
 
     // Allow playlist dropdown to stay open.
-    $(document).on('click', '.allow-focus .dropdown-menu', function (e) {
-        e.stopPropagation();
-    });
-
-    $('input#new_playlist_name').on('change', function(e) {
-        $(this).closest('div').find('input[type=checkbox]').attr('checked', $(this).val() != '');
-    });
-
-    $('form#frm_set_playlists').on('submit', function(e) {
-        e.preventDefault();
-
-        var new_playlist_field = $(this).find('input#new_playlist_name');
-        var playlist_checkboxes = $(this).find("input[name='playlists[]']");
-
-        var playlists = playlist_checkboxes.filter(':checked').map(function(){return $(this).val();}).get();
-
-        var files = getSelectedFiles();
-        files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
-            'do': 'playlist',
-            'playlists': playlists,
-            'new_playlist_name': new_playlist_field.val(),
-            'files': files.join('|'),
-            'csrf': CSRF,
-            'file': getUrlHash()
-        },function(data){
-            if (data.success && data.record) {
-                appToolbar.playlists.push(data.record);
-            }
-            list();
-        },'json');
-
-        playlist_checkboxes.prop('checked', false);
-        new_playlist_field.val('');
-
-        $(this).closest('.dropdown').find('[data-toggle=dropdown]').dropdown('toggle');
-    });
-
     $('#frm-create-directory').submit(function(e) {
         e.preventDefault();
 

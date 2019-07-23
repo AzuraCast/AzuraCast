@@ -61,14 +61,15 @@ $assets
                     <div class="col-md-8">
                         <div class="btn-group dropdown allow-focus">
                             <button type="button" class="btn btn-sm btn-primary dropdown-toggle mb-1" data-toggle="dropdown" aria-expanded="false">
-                                <i class="material-icons" aria-hidden="true">clear_all</i> <?=__('Set Playlists') ?>
+                                <i class="material-icons" aria-hidden="true">clear_all</i>
+                                <?=__('Set Playlists') ?>
                                 <span class="caret"></span>
                             </button>
-                            <div class="dropdown-menu" role="menu"  style="line-height: inherit">
-                                <form id="frm_set_playlists" class="px-3 py-3">
+                            <div class="dropdown-menu" role="menu" v-on:click.stop="" style="line-height: inherit">
+                                <form id="frm_set_playlists" v-on:submit.stop.prevent="setPlaylists" class="px-3 py-3">
                                     <div v-for="playlist in playlists" class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" v-bind:id="'chk_playlist_' + playlist.id" name="playlists[]" v-bind:value="playlist.id">
+                                            <input type="checkbox" class="custom-control-input" v-bind:id="'chk_playlist_' + playlist.id" name="playlists[]" v-model="checkedPlaylists" v-bind:value="playlist.id">
                                             <label class="custom-control-label" v-bind:for="'chk_playlist_'+playlist.id">
                                                 {{ playlist.name }}
                                             </label>
@@ -76,9 +77,9 @@ $assets
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="chk_playlist_new" name="playlists[]" value="new">
+                                            <input type="checkbox" class="custom-control-input" id="chk_playlist_new" v-model="checkedPlaylists" value="new">
                                             <label class="custom-control-label" for="chk_playlist_new">
-                                                <input type="text" class="form-control" id="new_playlist_name" name="new_playlist_name" placeholder="<?=__('New Playlist') ?>">
+                                                <input type="text" class="form-control p-2" id="new_playlist_name" name="new_playlist_name" v-model="newPlaylist" placeholder="<?=__('New Playlist') ?>">
                                             </label>
                                         </div>
                                     </div>
@@ -87,8 +88,18 @@ $assets
                                 </form>
                             </div>
                         </div>
-                        <a href="#" class="btn btn-sm btn-primary mb-1" data-toggle="modal" data-target="#mdl-move-file"><i class="material-icons" aria-hidden="true">open_with</i> <?=__('Move') ?></a>
-                        <button type="button" class="btn btn-sm btn-danger mb-1" v-on:click="doBatch" data-action="delete"><i class="material-icons" aria-hidden="true">delete</i> <?=__('Delete') ?></button>
+                        <button type="button" class="btn btn-sm btn-warning mb-1" v-on:click.stop.prevent="clearPlaylists">
+                            <i class="material-icons" aria-hidden="true">clear_all</i>
+                            <?=__('Clear Playlists') ?>
+                        </button>
+                        <a href="#" class="btn btn-sm btn-primary mb-1" data-toggle="modal" data-target="#mdl-move-file">
+                            <i class="material-icons" aria-hidden="true">open_with</i>
+                            <?=__('Move') ?>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-danger mb-1" v-on:click.stop.prevent="doDelete">
+                            <i class="material-icons" aria-hidden="true">delete</i>
+                            <?=__('Delete') ?>
+                        </button>
                     </div>
                     <div class="col-md-4 text-right">
                         <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="material-icons" aria-hidden="true">folder</i> <?=__('New Folder') ?></a>

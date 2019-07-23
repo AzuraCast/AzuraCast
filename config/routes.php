@@ -208,6 +208,13 @@ return function(App $app)
 
             })->add(Middleware\GetStation::class);
 
+            $this->get('/relays', Controller\Api\Admin\RelaysController::class)
+                ->setName('api:internal:relays')
+                ->add(Middleware\RequireLogin::class);
+
+            $this->post('/relays', Controller\Api\Admin\RelaysController::class.':updateAction')
+                ->add(Middleware\RequireLogin::class);
+
         });
 
         $this->get('/nowplaying[/{station}]', Controller\Api\NowplayingController::class)
@@ -223,11 +230,9 @@ return function(App $app)
             $this->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                 ->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
 
-            $this->get('/relays', Controller\Api\Admin\RelaysController::class)
-                ->add(Middleware\RequireLogin::class);
-
-            $this->post('/relays', Controller\Api\Admin\RelaysController::class.':updateAction')
-                ->add(Middleware\RequireLogin::class);
+            $this->map(['GET', 'POST'], '/relays', function (\App\Http\Request $request, \App\Http\Response $response) {
+                return $response->withRedirect($request->getRouter()->fromHere('api:internal:relays'));
+            });
 
             $this->group('', function() {
                 /** @var App $this */

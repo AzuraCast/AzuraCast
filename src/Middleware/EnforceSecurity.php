@@ -44,27 +44,14 @@ class EnforceSecurity
         $csp = [];
 
         if ($request->isSecure()) {
-
-            $csp[] = 'upgrade-insecure-requests';
-
-        } elseif ($always_use_ssl && !$internal_api_url) {
-
             // Enforce secure cookies.
             ini_set('session.cookie_secure', 1);
 
-            // Redirect if URL is not currently secure.
-            if (!$request->isSecure()) {
-                $uri = $request->getUri();
-                if (!$uri->getPort()) {
-                    $uri = $uri->withPort(443);
-                }
-                return $response->withRedirect((string)$uri->withScheme('https'), 302);
-            }
-
-            // Set HSTS header.
-            $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
-
             $csp[] = 'upgrade-insecure-requests';
+
+            $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
+        } elseif ($always_use_ssl && !$internal_api_url) {
+            return $response->withRedirect((string)$request->getUri()->withScheme('https'), 302);
         }
 
         // Set frame-deny header before next middleware, so it can be overwritten.

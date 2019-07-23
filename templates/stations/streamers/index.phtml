@@ -70,7 +70,7 @@
                     <dd><code><?=$this->e($server_url) ?></code></dd>
 
                     <dt class="mb-1"><?=__('Port') ?>:</dt>
-                    <dd><code><?=((int)$stream_port) . "(" . ((int)$stream_port + 1) . " for some clients)" ?></code></dd>
+                    <dd><code><?=__('%d (%d for some clients)', (int)$stream_port, ((int)$stream_port + 1)) ?></code></dd>
 
                     <dt class="mb-1"><?=__('Password') ?>:</dt>
                     <dd>

@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-07-17T21:29:45+00:00\n"
-"PO-Revision-Date: 2019-07-17 21:31\n"
+"POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
+"PO-Revision-Date: 2019-07-23 19:51\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -532,7 +532,7 @@ msgid "This station is out of available storage space."
 msgstr "Questa stazione ha esaurito lo spazio disponibile."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
-#: /var/azuracast/www/templates/stations/files/index.phtml:168
+#: /var/azuracast/www/templates/stations/files/index.phtml:179
 msgid "Directory"
 msgstr "Cartella"
 
@@ -562,8 +562,8 @@ msgstr "Mount Point"
 #: /var/azuracast/www/templates/frontend/public/index.phtml:37
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:46
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:73
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:47
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:77
 msgid "Playlist"
 msgstr "Playlist"
 
@@ -584,7 +584,7 @@ msgid "Playlist disabled."
 msgstr "Playlist disabilitata."
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:95
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:113
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:114
 #: /var/azuracast/www/config/forms/media.php:22
 #: /var/azuracast/www/config/forms/song.php:37
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:9
@@ -595,7 +595,7 @@ msgid "Song Title"
 msgstr "Titolo canzone"
 
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:96
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:114
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:115
 #: /var/azuracast/www/config/forms/media.php:30
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:10
 msgid "Song Artist"
@@ -1722,7 +1722,7 @@ msgstr "Usa impostazione browser predefinita"
 #: /var/azuracast/www/config/forms/station.php:37
 #: /var/azuracast/www/config/forms/user.php:10
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
-#: /var/azuracast/www/templates/stations/files/index.phtml:102
+#: /var/azuracast/www/templates/stations/files/index.phtml:113
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Name"
 msgstr "Nome"
@@ -2515,7 +2515,7 @@ msgstr "In riproduzione su %s:"
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:27
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
 #: /var/azuracast/www/templates/frontend/public/index.phtml:75
-#: /var/azuracast/www/templates/stations/files/index.phtml:103
+#: /var/azuracast/www/templates/stations/files/index.phtml:114
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:30
 msgid "Title"
@@ -2756,7 +2756,7 @@ msgid "Music Files"
 msgstr "File musicali"
 
 #: /var/azuracast/www/config/menus/station.php:53
-#: /var/azuracast/www/templates/stations/files/index.phtml:112
+#: /var/azuracast/www/templates/stations/files/index.phtml:123
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:4
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:32
@@ -2907,7 +2907,7 @@ msgstr "Proprietario"
 #: /var/azuracast/www/templates/admin/stations/index.phtml:30
 #: /var/azuracast/www/templates/admin/users/index.phtml:35
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:42
-#: /var/azuracast/www/templates/stations/files/index.js.phtml:92
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:156
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:35
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:65
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:36
@@ -2964,8 +2964,8 @@ msgstr "Nota che ripristinare un backup eliminerà il tuo database esistente. No
 #: /var/azuracast/www/templates/admin/users/index.phtml:21
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
 #: /var/azuracast/www/templates/frontend/public/index.phtml:78
-#: /var/azuracast/www/templates/stations/files/index.phtml:113
-#: /var/azuracast/www/templates/stations/files/index.phtml:169
+#: /var/azuracast/www/templates/stations/files/index.phtml:124
+#: /var/azuracast/www/templates/stations/files/index.phtml:180
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:24
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:54
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:29
@@ -2983,7 +2983,7 @@ msgid "Last Modified"
 msgstr "Ultima modifica"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
-#: /var/azuracast/www/templates/stations/files/index.phtml:110
+#: /var/azuracast/www/templates/stations/files/index.phtml:121
 msgid "Size"
 msgstr "Dimensione"
 
@@ -3002,7 +3002,8 @@ msgstr "Elimina backup \"%s\"?"
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 #: /var/azuracast/www/templates/admin/users/index.phtml:39
-#: /var/azuracast/www/templates/stations/files/index.phtml:91
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:27
+#: /var/azuracast/www/templates/stations/files/index.phtml:101
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
@@ -3237,7 +3238,7 @@ msgid "Station Name"
 msgstr "Nome stazione"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:121
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:33
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:30
 msgid "Now Playing"
 msgstr "In riproduzione"
 
@@ -3346,7 +3347,7 @@ msgstr "Usa Asynchronous Worker"
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:28
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
 #: /var/azuracast/www/templates/frontend/public/index.phtml:76
-#: /var/azuracast/www/templates/stations/files/index.phtml:104
+#: /var/azuracast/www/templates/stations/files/index.phtml:115
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:27
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:31
 msgid "Artist"
@@ -3399,7 +3400,7 @@ msgstr "Richiesta"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
 #: /var/azuracast/www/templates/frontend/public/index.phtml:77
-#: /var/azuracast/www/templates/stations/files/index.phtml:105
+#: /var/azuracast/www/templates/stations/files/index.phtml:116
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:28
 msgid "Album"
 msgstr "Album"
@@ -3442,6 +3443,8 @@ msgid "Full Volume"
 msgstr "Volume al massimo"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:14
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:34
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:63
 msgid "Album Art"
 msgstr "Copertina disco"
 
@@ -3571,19 +3574,35 @@ msgstr "Esegui assegnazione automatica"
 msgid "Configure Automated Assignment"
 msgstr "Configura assegnazione automatica"
 
-#: /var/azuracast/www/templates/stations/files/index.js.phtml:83
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:28
+msgid "Delete {NUM} media file(s)?"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:37
+msgid "Files removed:"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:76
+msgid "Playlists updated for selected files:"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:78
+msgid "Playlists cleared for selected files:"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:147
 msgid "Album Artwork"
 msgstr "Copertina disco"
 
-#: /var/azuracast/www/templates/stations/files/index.js.phtml:95
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:159
 msgid "Rename"
 msgstr "Rinomina"
 
-#: /var/azuracast/www/templates/stations/files/index.js.phtml:182
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:246
 msgid "Select"
 msgstr "Seleziona"
 
-#: /var/azuracast/www/templates/stations/files/index.js.phtml:403
+#: /var/azuracast/www/templates/stations/files/index.js.phtml:430
 msgid "Home"
 msgstr "Pagina iniziale"
 
@@ -3599,53 +3618,57 @@ msgstr "Puoi anche caricare file in blocco tramite SFTP <a href=\"%s\" target=\"
 msgid "Drag files here to upload to this folder or "
 msgstr "Trascina qui i file per caricarli su questa cartella o "
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:64
+#: /var/azuracast/www/templates/stations/files/index.phtml:65
 msgid "Set Playlists"
 msgstr "Imposta le playlist"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:81
+#: /var/azuracast/www/templates/stations/files/index.phtml:82
 msgid "New Playlist"
 msgstr "Nuova playlist"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:86
+#: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "Save"
 msgstr "Salva"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:90
+#: /var/azuracast/www/templates/stations/files/index.phtml:93
+msgid "Clear Playlists"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:97
 msgid "Move"
 msgstr "Sposta"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:94
+#: /var/azuracast/www/templates/stations/files/index.phtml:105
 msgid "New Folder"
 msgstr "Nuova cartella"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:106
+#: /var/azuracast/www/templates/stations/files/index.phtml:117
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:33
 msgid "Length"
 msgstr "Lunghezza"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:111
+#: /var/azuracast/www/templates/stations/files/index.phtml:122
 msgid "Modified"
 msgstr "Modificato"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:128
+#: /var/azuracast/www/templates/stations/files/index.phtml:139
 msgid "New Directory"
 msgstr "Nuova cartella"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:133
+#: /var/azuracast/www/templates/stations/files/index.phtml:144
 msgid "Directory Name"
 msgstr "Nome cartella"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:139
+#: /var/azuracast/www/templates/stations/files/index.phtml:150
 msgid "Create Directory"
 msgstr "Crea cartella"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:151
+#: /var/azuracast/www/templates/stations/files/index.phtml:162
 msgid "Move {{ selected_files }} File(s) to"
 msgstr "Sposta {{ selected_files }} File(s) in"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:157
+#: /var/azuracast/www/templates/stations/files/index.phtml:168
 msgid "Back"
 msgstr "Indietro"
 
@@ -3841,19 +3864,19 @@ msgstr "Ascoltatore"
 msgid "Unique"
 msgstr "Univoco"
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:60
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:83
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Now Streaming"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:97
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"
 msgstr "Salta brano"
 
-#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:101
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:103
 msgid "Disconnect Streamer"
 msgstr "Disconnetti curatore"
 

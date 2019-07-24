@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-23 19:51\n"
+"PO-Revision-Date: 2019-07-24 00:10\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -830,7 +830,7 @@ msgstr "%s não é reconhecido como um serviço."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Pode ainda não estar registado com o Supervisor. Reiniciar a transmissão poderá ajudar."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot start"
@@ -1382,63 +1382,63 @@ msgstr "Endereço do Relé de Transmissão"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:59
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
-msgstr ""
+msgstr "Introduza o URL completo de outra transmissão para transmitir através de este ponto de montagem."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:68
 #: /var/azuracast/www/config/forms/remote.php:165
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "Publicar para diretórios \"Páginas Amarelas\""
 
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Ative para publicar este ponto de montagem nos diretórios de \"Páginas Amarelas\" de rádios públicas."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
-msgstr ""
+msgstr "Ativar AutoDJ"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:81
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "Se ativado, o AutoDJ irá reproduzir automaticamente música para este ponto de montagem."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:99
 #: /var/azuracast/www/config/forms/remote.php:96
 msgid "AutoDJ Format"
-msgstr ""
+msgstr "Formato do AutoDJ"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:108
 #: /var/azuracast/www/config/forms/remote.php:110
 msgid "AutoDJ Bitrate (kbps)"
-msgstr ""
+msgstr "Taxa de bits do AutoDJ (kbps)"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:135
 msgid "Custom Stream URL"
-msgstr ""
+msgstr "URL de transmissão personalizado"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:137
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
-msgstr ""
+msgstr "Você pode definir uma URL personalizada para esta transmissão que o AzuraCast usará quando se referir a ele. Deixe vazio para usar o valor padrão."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:9
 msgid "Fallback Mount"
-msgstr ""
+msgstr "Ponto de montagem de reserva"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:10
 msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
-msgstr ""
+msgstr "Se este ponto de montagem não estiver a reproduzir áudio, os ouvintes serão automaticamente redirecionados para este ponto de montagem. O padrão é /error.mp3, uma mensagem de erro."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:27
 msgid "Custom Frontend Configuration"
-msgstr ""
+msgstr "Configuração Personalizada do Frontend"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:29
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
-msgstr ""
+msgstr "Você pode incluir qualquer configuração especial de ponto de montagem aqui, no formato JSON { key: 'value' } ou um &lt;key&gt;valor &lt;/key&gt; XML"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:11
 msgid "Stream path cannot include reserved keywords: %s"
-msgstr ""
+msgstr "O caminho da transmissão não pode incluir as palavras reservadas: %s"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"

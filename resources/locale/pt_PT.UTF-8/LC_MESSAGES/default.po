@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-24 00:20\n"
+"PO-Revision-Date: 2019-07-24 00:30\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1561,11 +1561,11 @@ msgstr "Tipo de URL Remoto"
 
 #: /var/azuracast/www/config/forms/playlist.php:175
 msgid "Direct Stream URL"
-msgstr ""
+msgstr "URL de Transmissão Direto"
 
 #: /var/azuracast/www/config/forms/playlist.php:176
 msgid "Playlist (M3U/PLS) URL"
-msgstr ""
+msgstr "URL de Lista de Reprodução (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:185
 msgid "Remote Playback Buffer (Seconds)"
@@ -1587,7 +1587,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:209
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:106
 msgid "Scheduled"
-msgstr ""
+msgstr "Agendado"
 
 #: /var/azuracast/www/config/forms/playlist.php:209
 msgid "Play during a scheduled time range."

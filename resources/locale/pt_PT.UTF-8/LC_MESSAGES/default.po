@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-24 00:10\n"
+"PO-Revision-Date: 2019-07-24 00:20\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1442,109 +1442,109 @@ msgstr "O caminho da transmissão não pode incluir as palavras reservadas: %s"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"
-msgstr ""
+msgstr "Chave de Autorização do Diretório YP"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr ""
+msgstr "Se a sua transmissão está definida para anunciar para diretórios YP acima, você deve especificar uma chave de autorização. Pode gerir as suas chaves de autorização<a href=\"%s\" target=\"_blank\">no site do SHOUTcast</a>."
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
-msgstr ""
+msgstr "Informação Básica"
 
 #: /var/azuracast/www/config/forms/playlist.php:12
 #: /var/azuracast/www/config/forms/playlist.php:71
 #: /var/azuracast/www/templates/stations/queue/index.phtml:26
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:38
 msgid "Source"
-msgstr ""
+msgstr "Fonte"
 
 #: /var/azuracast/www/config/forms/playlist.php:13
 #: /var/azuracast/www/config/forms/playlist.php:206
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Scheduling"
-msgstr ""
+msgstr "Agendamento"
 
 #: /var/azuracast/www/config/forms/playlist.php:26
 msgid "Enable Playlist"
-msgstr ""
+msgstr "Ativar Lista de Reprodução"
 
 #: /var/azuracast/www/config/forms/playlist.php:28
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."
-msgstr ""
+msgstr "Se definido como \"Não\", a lista de reprodução não vai ser incluída na programação da rádio, mas ainda pode ser gerida."
 
 #: /var/azuracast/www/config/forms/playlist.php:39
 msgid "Playlist Name"
-msgstr ""
+msgstr "Nome da Lista de Reprodução"
 
 #: /var/azuracast/www/config/forms/playlist.php:48
 msgid "Playlist Weight"
-msgstr ""
+msgstr "Peso da Lista de Reprodução"
 
 #: /var/azuracast/www/config/forms/playlist.php:49
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
-msgstr ""
+msgstr "Listas de reprodução com maior peso são reproduzidas com mais frequência em relação às listas de reprodução com peso inferior."
 
 #: /var/azuracast/www/config/forms/playlist.php:53
 msgid "Low"
-msgstr ""
+msgstr "Baixo"
 
 #: /var/azuracast/www/config/forms/playlist.php:57
 msgid "High"
-msgstr ""
+msgstr "Alto"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "Song-Based Playlist"
-msgstr ""
+msgstr "Lista de Reprodução baseada em Músicas"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Uma lista de reprodução contendo ficheiros multimédia hospedados neste servidor."
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "Remote URL Playlist"
-msgstr ""
+msgstr "Lista de Reprodução de URL Remoto"
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr ""
+msgstr "Uma lista de reprodução que informa a rádio para reproduzir um URL remoto."
 
 #: /var/azuracast/www/config/forms/playlist.php:93
 msgid "Song Playback Order"
-msgstr ""
+msgstr "Ordem de Reprodução de Música"
 
 #: /var/azuracast/www/config/forms/playlist.php:96
 msgid "Shuffled"
-msgstr ""
+msgstr "Shuffled"
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
-msgstr ""
+msgstr "Aleatório"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92
 msgid "Sequential"
-msgstr ""
+msgstr "Sequencial"
 
 #: /var/azuracast/www/config/forms/playlist.php:108
 msgid "Import Existing Playlist"
-msgstr ""
+msgstr "Importar Lista de Reprodução Existente"
 
 #: /var/azuracast/www/config/forms/playlist.php:109
 msgid "Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported."
-msgstr ""
+msgstr "Selecione um ficheiro de lista de reprodução existente para adicionar os seus conteúdos a esta lista de reprodução. Os formatos PLS e M3U são suportados."
 
 #: /var/azuracast/www/config/forms/playlist.php:129
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "Permitir Pedidos nesta Lista de Reprodução"
 
 #: /var/azuracast/www/config/forms/playlist.php:130
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Se os pedidos estiverem ativos para a estação, os utilizadores vão poder pedir ficheiros multimédia que estiverem disponíveis nesta lista de reprodução."
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr ""
+msgstr "Ocultar Metadados dos Ouvintes (\"Modo de Jingle\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
@@ -1553,11 +1553,11 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:164
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
 msgid "Remote URL"
-msgstr ""
+msgstr "URL Remoto"
 
 #: /var/azuracast/www/config/forms/playlist.php:172
 msgid "Remote URL Type"
-msgstr ""
+msgstr "Tipo de URL Remoto"
 
 #: /var/azuracast/www/config/forms/playlist.php:175
 msgid "Direct Stream URL"

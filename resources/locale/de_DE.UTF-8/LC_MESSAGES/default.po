@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-23 19:51\n"
+"PO-Revision-Date: 2019-07-25 13:59\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3013,7 +3013,7 @@ msgstr "Benutzerdefiniertes Feld \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
-msgstr ""
+msgstr "Server Status"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
@@ -3116,7 +3116,7 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:22
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:23
 msgid "Sign in"
-msgstr ""
+msgstr "Anmelden"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "Please log in to continue."
@@ -3194,7 +3194,7 @@ msgstr "Dashboard"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "AzuraCast Benutzer"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
@@ -3252,7 +3252,7 @@ msgstr "Um zu überprüfen, ob der Code korrekt eingerichtet wurde, gib den 6-st
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "QR-Code"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:58
 msgid "Customize"

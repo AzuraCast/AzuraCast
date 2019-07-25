@@ -77,6 +77,7 @@ class Local
             }
         }
 
+        // Write local static file that the video stream (and other scripts) can use.
         $this->logger->debug('Writing local nowplaying text file...');
 
         $config_dir = $station->getRadioConfigDir();
@@ -90,6 +91,10 @@ class Local
         if (empty($np_text)) {
             $np_text = $station->getName();
         }
+
+        // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
+        echo json_encode($event->getNowPlaying());
+        exit;
 
         // Atomic rename to ensure the file is always there.
         file_put_contents($np_file.'.new', $np_text);

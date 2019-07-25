@@ -5,6 +5,7 @@ namespace App\Entity\Api;
 use App\Entity;
 use Azura\Http\Router;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @OA\Schema(type="object", schema="Api_Song")
@@ -81,10 +82,10 @@ class Song implements ResolvableUrlInterface
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
-     * @param Router $router
+     * @param UriInterface $base
      */
-    public function resolveUrls(Router $router): void
+    public function resolveUrls(UriInterface $base): void
     {
-        $this->art = (string)$router->getUri($this->art, true);
+        $this->art = (string)Router::resolveUri($base, $this->art, true);
     }
 }

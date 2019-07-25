@@ -1,14 +1,14 @@
 <?php
 namespace App\Entity\Api;
 
-use Azura\Http\Router;
+use Psr\Http\Message\UriInterface;
 
 interface ResolvableUrlInterface
 {
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
-     * @param Router $router
+     * @param UriInterface $base
      */
-    public function resolveUrls(Router $router): void;
+    public function resolveUrls(UriInterface $base): void;
 }

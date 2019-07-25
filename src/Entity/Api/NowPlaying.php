@@ -4,6 +4,7 @@ namespace App\Entity\Api;
 use OpenApi\Annotations as OA;
 use App\Entity;
 use Azura\Http\Router;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @OA\Schema(type="object", schema="Api_NowPlaying")
@@ -85,25 +86,25 @@ class NowPlaying implements ResolvableUrlInterface
     /**
      * Iterate through sub-items and re-resolve any Uri instances to reflect base URL changes.
      *
-     * @param Router $router
+     * @param UriInterface $base
      */
-    public function resolveUrls(Router $router): void
+    public function resolveUrls(UriInterface $base): void
     {
         if ($this->station instanceof ResolvableUrlInterface) {
-            $this->station->resolveUrls($router);
+            $this->station->resolveUrls($base);
         }
 
         if ($this->now_playing instanceof ResolvableUrlInterface) {
-            $this->now_playing->resolveUrls($router);
+            $this->now_playing->resolveUrls($base);
         }
 
         if ($this->playing_next instanceof ResolvableUrlInterface) {
-            $this->playing_next->resolveUrls($router);
+            $this->playing_next->resolveUrls($base);
         }
 
         foreach($this->song_history as $history_obj) {
             if ($history_obj instanceof ResolvableUrlInterface) {
-                $history_obj->resolveUrls($router);
+                $history_obj->resolveUrls($base);
             }
         }
     }

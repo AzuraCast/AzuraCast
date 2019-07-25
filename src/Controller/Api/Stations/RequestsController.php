@@ -110,7 +110,7 @@ class RequestsController
                 'media_id' => $media_row->getUniqueId(),
             ]);
 
-            $row->resolveUrls($router);
+            $row->resolveUrls($router->getBaseUrl());
 
             if ($is_bootgrid) {
                 return Utilities::flattenArray($row, '_');

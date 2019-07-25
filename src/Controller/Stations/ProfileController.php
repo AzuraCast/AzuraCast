@@ -121,7 +121,7 @@ class ProfileController
 
         $station_np = $station->getNowplaying();
         if ($station_np instanceof Entity\Api\NowPlaying) {
-            $station_np->resolveUrls($request->getRouter());
+            $station_np->resolveUrls($request->getRouter()->getBaseUrl());
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 

@@ -43,11 +43,22 @@ class Dispatcher implements EventSubscriberInterface
 
         return [
             SendWebhooks::NAME => [
-                ['localDispatch', 10],
-                ['resolveNowPlayingUrls', 5],
+                ['resolveNowPlayingUrls', 10],
+                ['localDispatch', 5],
                 ['dispatch', 0],
             ],
         ];
+    }
+
+    /**
+     * Resolve URLs that are included in the NowPlaying response.
+     *
+     * @param SendWebhooks $event
+     */
+    public function resolveNowPlayingUrls(SendWebhooks $event): void
+    {
+        $np = $event->getNowPlaying();
+        $np->resolveUrls($this->router->getBaseUrl(false));
     }
 
     /**
@@ -60,17 +71,6 @@ class Dispatcher implements EventSubscriberInterface
         /** @var Connector\Local $connector_obj */
         $connector_obj = $this->connectors->get(Connector\Local::NAME);
         $connector_obj->dispatch($event);
-    }
-
-    /**
-     * Resolve URLs that are included in the NowPlaying response.
-     *
-     * @param SendWebhooks $event
-     */
-    public function resolveNowPlayingUrls(SendWebhooks $event): void
-    {
-        $np = $event->getNowPlaying();
-        $np->resolveUrls($this->router);
     }
 
     /**

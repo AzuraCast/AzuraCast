@@ -3,6 +3,7 @@ namespace App\Entity\Api;
 
 use Azura\Http\Router;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @OA\Schema(type="object", schema="Api_StationMount")
@@ -28,10 +29,10 @@ class StationMount extends StationRemote implements ResolvableUrlInterface
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
-     * @param Router $router
+     * @param UriInterface $base
      */
-    public function resolveUrls(Router $router): void
+    public function resolveUrls(UriInterface $base): void
     {
-        $this->url = (string)$router->getUri($this->url, true);
+        $this->url = (string)Router::resolveUri($base, $this->url, true);
     }
 }

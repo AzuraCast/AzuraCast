@@ -130,7 +130,7 @@ class QueueController extends AbstractStationApiCrudController
         /** @var Entity\SongHistory $record */
         /** @var Entity\Api\QueuedSong $row */
         $row = $record->api(new Entity\Api\QueuedSong, $this->apiUtils);
-        $row->resolveUrls($router);
+        $row->resolveUrls($router->getBaseUrl());
 
         $row->links = [
             'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),

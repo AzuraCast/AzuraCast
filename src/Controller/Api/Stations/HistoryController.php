@@ -150,7 +150,7 @@ class HistoryController
 
             /** @var Entity\SongHistory $sh_row */
             $row = $sh_row->api(new Entity\Api\DetailedSongHistory, $this->api_utils);
-            $row->resolveUrls($router);
+            $row->resolveUrls($router->getBaseUrl());
 
             if ($is_bootgrid) {
                 return App\Utilities::flattenArray($row, '_');

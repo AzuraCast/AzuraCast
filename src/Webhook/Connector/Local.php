@@ -92,12 +92,19 @@ class Local
             $np_text = $station->getName();
         }
 
-        // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
-        echo json_encode($event->getNowPlaying());
-        exit;
-
         // Atomic rename to ensure the file is always there.
         file_put_contents($np_file.'.new', $np_text);
         rename($np_file.'.new', $np_file);
+
+        // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
+        $this->logger->debug('Writing static nowplaying text file...');
+
+        $static_np_dir = APP_INCLUDE_TEMP.'/nowplaying';
+        if (!mkdir($static_np_dir) && !is_dir($static_np_dir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $static_np_dir));
+        }
+
+        $static_path = $static_np_dir.'/'.$station->getShortName().'.json';
+        file_put_contents($static_path, json_encode($event->getNowPlaying(), \JSON_PRETTY_PRINT));
     }
 }

@@ -4,6 +4,7 @@ namespace App\Entity\Api\Admin;
 use App\Entity;
 use Azura\Http\Router;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @OA\Schema(type="object", schema="Api_Admin_Relay")
@@ -89,13 +90,13 @@ class Relay implements Entity\Api\ResolvableUrlInterface
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
-     * @param Router $router
+     * @param UriInterface $base
      */
-    public function resolveUrls(Router $router): void
+    public function resolveUrls(UriInterface $base): void
     {
         foreach ($this->mounts as $mount) {
             if ($mount instanceof Entity\Api\ResolvableUrlInterface) {
-                $mount->resolveUrls($router);
+                $mount->resolveUrls($base);
             }
         }
     }

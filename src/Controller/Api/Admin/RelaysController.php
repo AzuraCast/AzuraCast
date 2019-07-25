@@ -89,7 +89,7 @@ class RelaysController
             }
 
             $row->mounts = $mounts;
-            $row->resolveUrls($router);
+            $row->resolveUrls($router->getBaseUrl());
 
             $return[] = $row;
         }

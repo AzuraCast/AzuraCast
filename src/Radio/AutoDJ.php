@@ -433,7 +433,6 @@ class AutoDJ implements EventSubscriberInterface
             return null;
         }
 
-        $media_id_to_play = null;
         $artists = [];
         $titles = [];
         foreach($played_media as $history) {
@@ -441,40 +440,39 @@ class AutoDJ implements EventSubscriberInterface
             $titles[] = $history['song']['title'];
         }
 
-        $without_same_title = array_filter($eligible_media, function($media) use ($titles) {
-            return !in_array($media['title'], $titles, true);
-        });
+        $without_same_title = [];
 
-        if (!empty($without_same_title)) {
-            $without_same_artist = array_filter($without_same_title, function($media) use ($artists) {
-                return !in_array($media['artist'], $artists, true);
-            });
-
-            if (!empty($without_same_artist)) {
-                // If any track has neither the same artist OR title, use it.
-                reset($without_same_artist);
-                $media = current($without_same_artist);
-                $media_id_to_play = $media['id'];
-
-                $this->logger->debug('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
-            } else {
-                reset($without_same_title);
-                $media = current($without_same_title);
-                $media_id_to_play = $media['id'];
-
-                $this->logger->debug('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
+        foreach($eligible_media as $media) {
+            if (in_array($media['title'], $titles, true)) {
+                continue;
             }
+
+            if (!in_array($media['artist'], $artists, true)) {
+                $media_id_to_play = $media['id'];
+                $this->logger->debug('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
+                return $media_id_to_play;
+            }
+
+            $without_same_title[] = $media;
         }
 
-        reset($eligible_media);
+        // If we reach this point, there was no match for avoiding same artist AND title.
+        if (!empty($without_same_title)) {
+            reset($without_same_title);
 
-        if (null === $media_id_to_play) {
-            $media = current($eligible_media);
+            $media = current($without_same_title);
             $media_id_to_play = $media['id'];
 
-            $this->logger->debug('No way to avoid same title OR same artist; using queue unmodified.', ['media_id' => $media_id_to_play]);
+            $this->logger->debug('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
+            return $media_id_to_play;
         }
 
+        // If we reach this point, there's no way to avoid a duplicate title.
+        reset($eligible_media);
+        $media = current($eligible_media);
+        $media_id_to_play = $media['id'];
+
+        $this->logger->debug('No way to avoid same title OR same artist; using queue unmodified.', ['media_id' => $media_id_to_play]);
         return $media_id_to_play;
     }
 

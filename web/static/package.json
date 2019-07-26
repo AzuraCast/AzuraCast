@@ -26,6 +26,7 @@
     "material-icons": "^0.3.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.25",
+    "nchan": "^1.0.10",
     "popper.js": "^1.15.0",
     "roboto-fontface": "^0.10.0",
     "sortablejs": "^1.9.0",

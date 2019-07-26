@@ -180,7 +180,13 @@ var jsFiles = {
             "node_modules/leaflet/dist/leaflet.css",
             "node_modules/leaflet/dist/images/*",
         ]
-    }
+    },
+    "nchan": {
+        base: null,
+        files: [
+            "node_modules/nchan/NchanSubscriber.js"
+        ]
+    },
 };
 
 var defaultTasks = Object.keys(jsFiles);

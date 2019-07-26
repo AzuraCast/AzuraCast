@@ -189,6 +189,7 @@
 
 <script>
 import axios from 'axios';
+import NchanSubscriber from 'nchan';
 import store from 'store';
 
 export default {

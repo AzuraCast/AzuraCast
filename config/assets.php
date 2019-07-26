@@ -395,7 +395,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/nchan.js',
+                    'src' => 'dist/lib/nchan/NchanSubscriber.js',
                     'defer' => true,
                 ],
             ],

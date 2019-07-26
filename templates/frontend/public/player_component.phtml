@@ -6,10 +6,6 @@ $assets
     ->addInlineJs($this->fetch('frontend/public/player_component.js', [
         'station' => $station,
     ]), 95);
-
-if (\App\Service\NChan::isSupported()) {
-    $assets->load('nchan');
-}
 ?>
 
 <div id="station-nowplaying"></div>

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-23 19:51\n"
+"PO-Revision-Date: 2019-07-26 07:51\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -826,11 +826,11 @@ msgstr "Nuovi aggiornamenti AzuraCast disponibili"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s non è riconosciuto come un servizio."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Potrebbe non essere ancora registrato con Supervisor. Riavviare la trasmissione potrebbe aiutare."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot start"
@@ -1636,7 +1636,7 @@ msgstr "Controlla come questa playlist è gestita dal software di regia automati
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr ""
+msgstr "<b>Attenzione:</b> Queste funzioni sono interne a liquidsoap e coinvolgeranno il funzionamento del tuo AutoDJ."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
@@ -2311,7 +2311,7 @@ msgstr "Istruire Liquidsoap per utilizzare qualsiasi metadata di replaygain asso
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"
-msgstr ""
+msgstr "Modalità AutoDJ manuale"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."

@@ -26,6 +26,10 @@ services:
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
       - backups:/var/azuracast/backups
     restart: always
+    ulimits: &default-ulimits
+      nofile:
+        soft: "65536"
+        hard: "65536"
     logging: &default-logging
       options:
         max-size: "1m"
@@ -91,6 +95,7 @@ services:
      - tmp_data:/var/azuracast/www_tmp
     init: true
     restart: always
+    ulimits: *default-ulimits
     logging: *default-logging
 
 #  chronograf:

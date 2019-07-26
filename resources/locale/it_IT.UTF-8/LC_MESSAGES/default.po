@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-26 07:51\n"
+"PO-Revision-Date: 2019-07-26 08:00\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2315,7 +2315,7 @@ msgstr "Modalità AutoDJ manuale"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr ""
+msgstr "Questa modalità disabilita la gestione AutoDJ di AzuraCast, utilizzando Liquidsoap stesso per gestire la riproduzione dei brani. \"Brano successivo\" e alcune altre funzionalità non saranno disponibili."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
@@ -3576,19 +3576,19 @@ msgstr "Configura assegnazione automatica"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:28
 msgid "Delete {NUM} media file(s)?"
-msgstr ""
+msgstr "Cancellare {NUM} file multimediali?"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:37
 msgid "Files removed:"
-msgstr ""
+msgstr "File rimossi:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:76
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Playlist aggiornate per i file selezionati:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:78
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Playlist svuotate per i file selezionati:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:147
 msgid "Album Artwork"
@@ -3632,7 +3632,7 @@ msgstr "Salva"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:93
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Svuota le playlist"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:97
 msgid "Move"
@@ -3866,11 +3866,11 @@ msgstr "Univoco"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
-msgstr ""
+msgstr "Prossimo in riproduzione"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Now Streaming"
-msgstr ""
+msgstr "Ora in trasmissione"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"

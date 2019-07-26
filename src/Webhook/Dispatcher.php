@@ -22,16 +22,12 @@ class Dispatcher implements EventSubscriberInterface
     /** @var Logger */
     protected $logger;
 
-    /** @var Router */
-    protected $router;
-
     /** @var ServiceLocator */
     protected $connectors;
 
-    public function __construct(Logger $logger, Router $router, ServiceLocator $connectors)
+    public function __construct(Logger $logger, ServiceLocator $connectors)
     {
         $this->logger = $logger;
-        $this->router = $router;
         $this->connectors = $connectors;
     }
 
@@ -43,22 +39,10 @@ class Dispatcher implements EventSubscriberInterface
 
         return [
             SendWebhooks::NAME => [
-                ['resolveNowPlayingUrls', 10],
                 ['localDispatch', 5],
                 ['dispatch', 0],
             ],
         ];
-    }
-
-    /**
-     * Resolve URLs that are included in the NowPlaying response.
-     *
-     * @param SendWebhooks $event
-     */
-    public function resolveNowPlayingUrls(SendWebhooks $event): void
-    {
-        $np = $event->getNowPlaying();
-        $np->resolveUrls($this->router->getBaseUrl(false));
     }
 
     /**

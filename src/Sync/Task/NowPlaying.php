@@ -11,6 +11,7 @@ use Azura\EventDispatcher;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
+use function DeepCopy\deep_copy;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\Uri;
 use InfluxDB\Database;
@@ -373,8 +374,23 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->em->flush();
 
         // Trigger the dispatching of webhooks.
-        $webhook_event = new SendWebhooks($station, $np, $np_old, $standalone);
+
+        /** @var Entity\Api\NowPlaying $np_event */
+        $np_event = deep_copy($np);
+        $np_event->resolveUrls($this->api_utils->getRouter()->getBaseUrl(false));
+        $np_event->cache = 'event';
+
+        $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
         $this->event_dispatcher->dispatch(SendWebhooks::NAME, $webhook_event);
+
+        // Trigger a delayed NChan notification.
+        if ($webhook_event->hasAnyTrigger()) {
+            $message = new Message\NotifyNChanMessage();
+            $message->station_id = $station->getId();
+            $message->nowplaying = $np_event;
+
+            $this->message_queue->produce($message);
+        }
 
         $this->logger->popProcessor();
 

@@ -38,6 +38,14 @@ class ApiUtilities
     }
 
     /**
+     * @return Router
+     */
+    public function getRouter(): Router
+    {
+        return $this->router;
+    }
+
+    /**
      * Get the album art URL for a given unique StationMedia identifier.
      *
      * @param int $station_id

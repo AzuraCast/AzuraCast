@@ -16,6 +16,10 @@ $assets
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->addInlineJs($this->fetch('frontend/index/index.js', ['stations' => $stations]));
 
+if (\App\Service\NChan::isSupported()) {
+    $assets->load('nchan');
+}
+
 if ($metrics) {
     $assets
         ->load('chartjs')

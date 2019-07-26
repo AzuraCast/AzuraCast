@@ -68,7 +68,7 @@ class NowPlaying implements ResolvableUrlInterface
     /**
      * Update any variable items in the feed.
      */
-    public function update()
+    public function update(): void
     {
         $this->now_playing->recalculate();
     }

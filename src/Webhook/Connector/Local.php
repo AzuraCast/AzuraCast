@@ -100,7 +100,7 @@ class Local
         $this->logger->debug('Writing static nowplaying text file...');
 
         $static_np_dir = APP_INCLUDE_TEMP.'/nowplaying';
-        if (!mkdir($static_np_dir) && !is_dir($static_np_dir)) {
+        if (!is_dir($static_np_dir) && !mkdir($static_np_dir) && !is_dir($static_np_dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $static_np_dir));
         }
 

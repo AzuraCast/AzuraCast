@@ -312,6 +312,12 @@ return function (\Azura\Container $di)
         );
     };
 
+    $di[\App\Service\NChan::class] = function($di) {
+        return new \App\Service\NChan(
+            $di[\GuzzleHttp\Client::class]
+        );
+    };
+
     $di[\App\Validator\Constraints\StationPortCheckerValidator::class] = function($di) {
         return new \App\Validator\Constraints\StationPortCheckerValidator(
             $di[\App\Radio\Configuration::class]

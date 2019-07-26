@@ -1,27 +1,5 @@
 var nowPlaying, nowPlayingTimeout;
 
-function loadNowPlaying() {
-    $.ajax({
-        cache: false,
-        dataType: "json",
-        url: '<?=$router->fromHere('api:nowplaying:index') ?>',
-        success: function(row) {
-            nowPlaying.np = row;
-
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: row.now_playing.song.title,
-                    artist: row.now_playing.song.artist
-                });
-            }
-
-            nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
-        }
-    }).fail(function() {
-        nowPlayingTimeout = setTimeout(loadNowPlaying, 30000);
-    });
-}
-
 function iterateTimer() {
     var np_elapsed = nowPlaying.np.now_playing.elapsed;
     var np_total = nowPlaying.np.now_playing.duration;
@@ -81,8 +59,6 @@ $(function() {
 
     setInterval(iterateTimer, 1000);
 
-    nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
-
     var service_status_lang = {
         "running": <?=$this->escapeJs(__('Running')) ?>,
         "not_running": <?=$this->escapeJs(__('Not Running')) ?>
@@ -128,3 +104,39 @@ $(function() {
 
     checkServiceStatus();
 });
+
+<?php
+if (\App\Service\NChan::isSupported()):
+?>
+$(function() {
+    var sub = new NchanSubscriber('/api/live/nowplaying/<?=$station->getId() ?>');
+
+    sub.on("message", function(message, message_metadata) {
+        nowPlaying.np = JSON.parse(message);
+    });
+    sub.start();
+});
+<?php
+else:
+?>
+$(function() {
+    setTimeout(loadNowPlaying, 15000);
+});
+
+function loadNowPlaying() {
+    $.ajax({
+        cache: false,
+        dataType: "json",
+        url: '<?=$router->fromHere('api:nowplaying:index') ?>',
+        success: function(row) {
+            nowPlaying.np = row;
+
+            nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
+        }
+    }).fail(function() {
+        nowPlayingTimeout = setTimeout(loadNowPlaying, 30000);
+    });
+}
+<?php
+endif;
+?>

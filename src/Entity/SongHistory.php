@@ -13,6 +13,10 @@ use Psr\Http\Message\UriInterface;
  */
 class SongHistory
 {
+    /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
+    public const PLAYBACK_DELAY_SECONDS=10;
+
+    /** @var int */
     public const DEFAULT_DAYS_TO_KEEP = 60;
 
     /**
@@ -516,7 +520,7 @@ class SongHistory
     public function api(Api\SongHistory $response, \App\ApiUtilities $api, UriInterface $base_url = null)
     {
         $response->sh_id = (int)$this->id;
-        $response->played_at = (int)$this->timestamp_start;
+        $response->played_at = (int)$this->timestamp_start + self::PLAYBACK_DELAY_SECONDS;
         $response->duration = (int)$this->duration;
         $response->is_request = $this->request !== null;
 

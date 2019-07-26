@@ -34,8 +34,7 @@ class SendWebhooks extends Event
     {
         $this->station = $station;
 
-        $this->np = deep_copy($np);
-
+        $this->np = $np;
         $this->is_standalone = $is_standalone;
 
         $to_trigger = ['all'];
@@ -92,6 +91,14 @@ class SendWebhooks extends Event
     public function hasTrigger($trigger_name): bool
     {
         return in_array($trigger_name, $this->triggers, true);
+    }
+
+    /**
+     * @return bool Whether this event has any triggers (besides the default "all").
+     */
+    public function hasAnyTrigger(): bool
+    {
+        return count($this->triggers) > 1;
     }
 
     /**

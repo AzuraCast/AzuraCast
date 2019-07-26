@@ -390,6 +390,18 @@ return [
         ],
     ],
 
+    'nchan' => [
+        'order' => 10,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/nchan.js',
+                    'defer' => true,
+                ],
+            ],
+        ],
+    ],
+
     'sortable' => [
         'order' => 10,
         'files' => [

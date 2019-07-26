@@ -17,6 +17,10 @@ $assets
     ->load('clipboard')
     ->load('fancybox')
     ->addInlineJs($this->fetch('stations/profile/index.js', ['nowplaying' => $nowplaying]), 99);
+
+if (\App\Service\NChan::isSupported()) {
+    $assets->load('nchan');
+}
 ?>
 
 <div class="row">

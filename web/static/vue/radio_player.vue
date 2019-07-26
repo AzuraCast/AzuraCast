@@ -193,6 +193,7 @@ import store from 'store';
 
 export default {
     props: {
+        use_nchan: Boolean,
         now_playing_uri: String,
         show_album_art: Boolean
     },
@@ -211,6 +212,7 @@ export default {
                         "art": "",
                     },
                     "is_request": false,
+                    "played_at": 0,
                     "elapsed": 0,
                     "duration": 0
                 },
@@ -224,7 +226,8 @@ export default {
             },
             "audio": null,
             "np_timeout": null,
-            "clock_interval": null,
+            "nchan_subscriber": null,
+            "clock_interval": null
         };
     },
     created: function() {
@@ -361,42 +364,54 @@ export default {
             this.play();
         },
         "checkNowPlaying": function() {
-            axios.get(this.now_playing_uri).then((response) => {
-                let np_new = response.data;
+            if (this.use_nchan) {
+                this.nchan_subscriber = new NchanSubscriber(this.now_playing_uri);
+                this.nchan_subscriber.on("message", (message, message_metadata) => {
+                    this.handleNewNowPlaying(JSON.parse(message));
+                });
+                this.nchan_subscriber.start();
+            } else {
+                axios.get(this.now_playing_uri).then((response) => {
+                    this.handleNewNowPlaying(response.data);
+                }).catch((error) => {
+                    console.error(error);
+                }).then(() => {
+                    clearTimeout(this.np_timeout);
+                    this.np_timeout = setTimeout(this.checkNowPlaying, 15000);
+                });
+            }
+        },
+        "handleNewNowPlaying": function(np_new) {
+            this.np = np_new;
 
-                this.np = np_new;
+            let current_time = Math.floor(Date.now() / 1000);
+            this.np.now_playing.elapsed = current_time - this.np.now_playing.played_at;
 
-                // Set a "default" current stream if none exists.
-                if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
-                    let current_stream = null;
+            // Set a "default" current stream if none exists.
+            if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
+                let current_stream = null;
 
-                    this.streams.forEach(function(stream) {
-                        if (stream.url === np_new.station.listen_url) {
-                            current_stream = stream;
-                        }
-                    });
+                this.streams.forEach(function(stream) {
+                    if (stream.url === np_new.station.listen_url) {
+                        current_stream = stream;
+                    }
+                });
 
-                    this.current_stream = current_stream;
-                }
+                this.current_stream = current_stream;
+            }
 
-                // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
-                if ('mediaSession' in navigator) {
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: np_new.now_playing.song.title,
-                        artist: np_new.now_playing.song.artist,
-                        artwork: [
-                            { src: np_new.now_playing.song.art }
-                        ]
-                    });
-                }
+            // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: np_new.now_playing.song.title,
+                    artist: np_new.now_playing.song.artist,
+                    artwork: [
+                        { src: np_new.now_playing.song.art }
+                    ]
+                });
+            }
 
-                Vue.prototype.$eventHub.$emit('np_updated', np_new);
-            }).catch((error) => {
-                console.error(error);
-            }).then(() => {
-                clearTimeout(this.np_timeout);
-                this.np_timeout = setTimeout(this.checkNowPlaying, 15000);
-            });
+            Vue.prototype.$eventHub.$emit('np_updated', np_new);
         },
         "iterateTimer": function() {
             let np_elapsed = this.np.now_playing.elapsed;

@@ -23,7 +23,6 @@ class WebhookProvider implements ServiceProviderInterface
 
             return new Webhook\Dispatcher(
                 $di[\Monolog\Logger::class],
-                $di['router'],
                 new \Pimple\Psr11\ServiceLocator($di, $services)
             );
         };

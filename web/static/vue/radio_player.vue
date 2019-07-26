@@ -384,9 +384,6 @@ export default {
         "handleNewNowPlaying": function(np_new) {
             this.np = np_new;
 
-            let current_time = Math.floor(Date.now() / 1000);
-            this.np.now_playing.elapsed = current_time - this.np.now_playing.played_at;
-
             // Set a "default" current stream if none exists.
             if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
                 let current_stream = null;
@@ -414,12 +411,14 @@ export default {
             Vue.prototype.$eventHub.$emit('np_updated', np_new);
         },
         "iterateTimer": function() {
-            let np_elapsed = this.np.now_playing.elapsed;
-            let np_total = this.np.now_playing.duration;
-
-            if (np_elapsed < np_total) {
-                this.np.now_playing.elapsed = np_elapsed + 1;
+            let current_time = Math.floor(Date.now() / 1000);
+            let np_elapsed = current_time - this.np.now_playing.played_at;
+            if (np_elapsed < 0) {
+                np_elapsed = 0;
+            } else if (np_elapsed >= this.np.now_playing.duration) {
+                np_elapsed = this.np.now_playing.duration;
             }
+            this.np.now_playing.elapsed = np_elapsed;
         },
         "formatTime": function(time) {
             let sec_num = parseInt(time, 10);

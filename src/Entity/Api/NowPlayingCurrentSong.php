@@ -33,6 +33,10 @@ class NowPlayingCurrentSong extends SongHistory
     public function recalculate()
     {
         $this->elapsed = time() + Entity\SongHistory::PLAYBACK_DELAY_SECONDS - $this->played_at;
+        if ($this->elapsed < 0) {
+            $this->elapsed = 0;
+        }
+
         $this->remaining = 0;
 
         if ($this->duration !== 0) {

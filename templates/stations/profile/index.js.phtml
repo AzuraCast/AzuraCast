@@ -1,19 +1,15 @@
 var nowPlaying, nowPlayingTimeout;
 
 function iterateTimer() {
-    var np_elapsed = nowPlaying.np.now_playing.elapsed;
-    var np_total = nowPlaying.np.now_playing.duration;
-
-    if (np_elapsed < np_total) {
-        np_elapsed++;
-        nowPlaying.np.now_playing.elapsed = np_elapsed;
-
-        if (np_elapsed == np_total) {
-            // If the song JUST reached its endpoint, check now-playing much sooner.
-            clearTimeout(nowPlayingTimeout);
-            nowPlayingTimeout = setTimeout(loadNowPlaying, 3000);
-        }
+    var current_time = Math.floor(Date.now() / 1000);
+    var np_elapsed = current_time - nowPlaying.np.now_playing.played_at;
+    if (np_elapsed < 0) {
+        np_elapsed = 0;
+    } else if (np_elapsed >= nowPlaying.np.now_playing.duration) {
+        np_elapsed = nowPlaying.np.now_playing.duration;
     }
+
+    nowPlaying.np.now_playing.elapsed = np_elapsed;
 }
 
 function formatTime(time) {

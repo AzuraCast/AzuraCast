@@ -14,7 +14,7 @@ use Psr\Http\Message\UriInterface;
 class SongHistory
 {
     /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
-    public const PLAYBACK_DELAY_SECONDS=10;
+    public const PLAYBACK_DELAY_SECONDS = 5;
 
     /** @var int */
     public const DEFAULT_DAYS_TO_KEEP = 60;

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-23 19:51\n"
+"PO-Revision-Date: 2019-07-27 17:10\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -826,11 +826,11 @@ msgstr "Nouvelles mises à jour d'AzuraCast disponibles"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s n'est pas reconnu comme un service."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Il se peut qu'il ne soit pas encore enregistré auprès du superviseur. Le redémarrage de la diffusion peut aider."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot start"
@@ -1636,7 +1636,7 @@ msgstr "Contrôlez la façon dont cette playlist est gérée par le logiciel Aut
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr ""
+msgstr "<b>Attention :</b> Ces fonctions sont internes à Liquidsoap et affecteront le fonctionnement de votre AutoDJ."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
@@ -2311,11 +2311,11 @@ msgstr "Demandez à Liquidsoap d'utiliser toutes les métadonnées de relecture 
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"
-msgstr ""
+msgstr "Mode manuel de l'AutoDJ"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr ""
+msgstr "Ce mode désactive la gestion AutoDJ d'AzuraCast, utilisant Liquidsoap pour gérer la lecture des morceaux. Diverses fonctionnalités comme \"Chanson suivante\" ne seront pas disponibles."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
@@ -3034,15 +3034,15 @@ msgstr "Supprimer le champ personnalisé \"%s\" ?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
-msgstr ""
+msgstr "Statut du serveur"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
-msgstr ""
+msgstr "Charge actuelle du processeur"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
-msgstr ""
+msgstr "Moyenne de la charge du processeur sur 15 minutes"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"

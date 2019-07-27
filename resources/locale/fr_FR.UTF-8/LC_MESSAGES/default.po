@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-27 17:10\n"
+"PO-Revision-Date: 2019-07-27 17:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3578,19 +3578,19 @@ msgstr "Configurer l'affectation automatique"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:28
 msgid "Delete {NUM} media file(s)?"
-msgstr ""
+msgstr "Supprimer {NUM} fichier(s) ?"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:37
 msgid "Files removed:"
-msgstr ""
+msgstr "Fichiers supprimés :"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:76
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Mise à jour des playlists pour les fichiers sélectionnés :"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:78
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Playlists effacées pour les fichiers sélectionnés :"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:147
 msgid "Album Artwork"
@@ -3610,7 +3610,7 @@ msgstr "Accueil"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:33
 msgid "%s of %s Used (%d Files)"
-msgstr ""
+msgstr "%s de %s utilisé (%d fichiers)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:43
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
@@ -3634,7 +3634,7 @@ msgstr "Sauvegarder"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:93
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Effacer les playlists"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:97
 msgid "Move"
@@ -3868,11 +3868,11 @@ msgstr "Unique"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
-msgstr ""
+msgstr "Jouer le prochain morceau"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Now Streaming"
-msgstr ""
+msgstr "Actuellement en direct"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"
@@ -4162,7 +4162,7 @@ msgstr "Veuillez patienter..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:16
 msgid "Station Time"
-msgstr ""
+msgstr "Heure de la station"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."

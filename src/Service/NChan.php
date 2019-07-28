@@ -51,6 +51,6 @@ class NChan
         }
 
         $os_details = Utilities::getOperatingSystemDetails();
-        return 'bionic' === $os_details['DISTRIB_CODENAME'];
+        return 'bionic' === $os_details['VERSION_CODENAME'];
     }
 }

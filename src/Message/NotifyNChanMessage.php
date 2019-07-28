@@ -14,6 +14,9 @@ class NotifyNChanMessage extends AbstractDelayedMessage
     /** @var int */
     public $station_id;
 
+    /** @var string */
+    public $station_shortcode;
+
     /** @var NowPlaying */
     public $nowplaying;
 }

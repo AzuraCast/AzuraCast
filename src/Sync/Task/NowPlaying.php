@@ -387,6 +387,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         if ($webhook_event->hasAnyTrigger()) {
             $message = new Message\NotifyNChanMessage();
             $message->station_id = $station->getId();
+            $message->station_shortcode = $station->getShortName();
             $message->nowplaying = $np_event;
 
             $this->message_queue->produce($message);

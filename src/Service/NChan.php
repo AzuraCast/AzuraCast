@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Message;
+use App\Utilities;
 use GuzzleHttp\Client;
 
 /**
@@ -31,7 +32,7 @@ class NChan
             return;
         }
 
-        $this->http_client->post('http://localhost:9010/pub/'.urlencode($message->station_id), [
+        $this->http_client->post('http://localhost:9010/pub/'.urlencode($message->station_shortcode), [
             'json' => $message->nowplaying,
         ]);
     }
@@ -41,8 +42,15 @@ class NChan
      */
     public static function isSupported(): bool
     {
-        return (APP_INSIDE_DOCKER
-            && APP_DOCKER_REVISION >= 5
-            && !APP_TESTING_MODE);
+        if (APP_TESTING_MODE) {
+            return false;
+        }
+
+        if (APP_INSIDE_DOCKER) {
+            return APP_DOCKER_REVISION >= 5;
+        }
+
+        $os_details = Utilities::getOperatingSystemDetails();
+        return 'bionic' === $os_details['DISTRIB_CODENAME'];
     }
 }

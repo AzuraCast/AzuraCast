@@ -1,7 +1,7 @@
 <?php
 $station_ids = [];
 foreach($stations['stations'] as $station) {
-    $station_ids[] = $station['station']['id'];
+    $station_ids[] = urlencode($station['station']['short_name']);
 }
 ?>
 

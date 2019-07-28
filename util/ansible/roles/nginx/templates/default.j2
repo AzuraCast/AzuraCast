@@ -1,3 +1,23 @@
+{% if ansible_distribution_release == 'bionic' %}
+upstream redis_server {
+    nchan_redis_server "redis://localhost:6379";
+}
+
+server {
+    listen 127.0.0.1:9010;
+
+    location ~ /pub/(\w+)$ {
+        nchan_publisher;
+        nchan_redis_pass redis_server;
+
+        nchan_channel_group "azuracast_nowplaying";
+        nchan_channel_id $1;
+
+        nchan_message_buffer_length 1;
+    }
+}
+{% endif %}
+
 server {
     listen 80;
     listen 443 default_server ssl;
@@ -19,12 +39,30 @@ server {
     
     client_max_body_size 50M;
 
+    # Serve a static version of the nowplaying data for non-PHP-blocking delivery.
+    location /api/nowplaying_static {
+        expires 10s;
+        add_header Access-Control-Allow-Origin *;
+
+        alias {{ app_base }}/www_tmp/nowplaying;
+        try_files $uri =404;
+    }
+
     location / {
         try_files $uri @clean_url;
     }
 
     location @clean_url {
         rewrite ^(.*)$ /index.php last;
+    }
+
+    # Set up caching for static assets.
+    location /static {
+        add_header Access-Control-Allow-Origin *;
+    }
+
+    location /static/dist {
+        expires 365d;
     }
 
     location ~ \.php$ {
@@ -71,6 +109,18 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";
     }
+
+    {% if ansible_distribution_release == 'bionic' %}
+    # pub/sub endpoints
+    location ~ /api/live/nowplaying/(\w+)$ {
+        nchan_subscriber;
+        nchan_redis_pass redis_server;
+
+        nchan_channel_group "azuracast_nowplaying";
+        nchan_channel_id "$1";
+        nchan_channel_id_split_delimiter ",";
+    }
+    {% endif %}
 
     # deny access to .htaccess files, if Apache's document root
     # concurs with nginx's one

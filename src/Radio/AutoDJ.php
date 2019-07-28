@@ -405,7 +405,13 @@ class AutoDJ implements EventSubscriberInterface
                     }
                 }
 
-                $media_id = $this->_preventDuplicates($media_queue, $recent_song_history);
+                $media_id = $this->_preventDuplicates($media_queue, $recent_song_history, false);
+
+                if (null === $media_id) {
+                    // Pull the entire shuffled playlist if a duplicate title can't be avoided.
+                    $media_queue = $spm_repo->getPlayableMedia($playlist);
+                    $media_id = $this->_preventDuplicates($media_queue, $recent_song_history, true);
+                }
 
                 if (null !== $media_id) {
                     unset($media_queue[$media_id]);
@@ -424,9 +430,10 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * @param array $eligible_media
      * @param array $played_media
+     * @param bool $accept_same_title Whether to return a media ID even if duplicates can't be prevented.
      * @return int|null
      */
-    protected function _preventDuplicates(array $eligible_media = [], array $played_media = []): ?int
+    protected function _preventDuplicates(array $eligible_media = [], array $played_media = [], $accept_same_title = true): ?int
     {
         if (empty($eligible_media)) {
             $this->logger->debug('Eligible song queue is empty!');
@@ -468,12 +475,16 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         // If we reach this point, there's no way to avoid a duplicate title.
-        reset($eligible_media);
-        $media = current($eligible_media);
-        $media_id_to_play = $media['id'];
+        if ($accept_same_title) {
+            reset($eligible_media);
+            $media = current($eligible_media);
+            $media_id_to_play = $media['id'];
 
-        $this->logger->debug('No way to avoid same title OR same artist; using queue unmodified.', ['media_id' => $media_id_to_play]);
-        return $media_id_to_play;
+            $this->logger->debug('No way to avoid same title OR same artist; using queue unmodified.', ['media_id' => $media_id_to_play]);
+            return $media_id_to_play;
+        }
+
+        return null;
     }
 
     protected function _playRemoteUrl(Entity\StationPlaylist $playlist): ?array

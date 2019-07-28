@@ -2,6 +2,7 @@
 /**
  * @var \App\Customization $customization
  * @var \App\Entity\Station $station
+ * @var \App\Http\Router $router
  */
 
 $locale_short = substr($customization->getLocale(), 0, 2);
@@ -29,7 +30,7 @@ if (\App\Service\NChan::isSupported()) {
     $props['now_playing_uri'] = '/api/live/nowplaying/'.urlencode($station->getShortName());
 } else {
     $props['use_nchan'] = false;
-    $props['now_playing_uri'] = $router->named('api:nowplaying:index', ['station' => $station->getId()]);
+    $props['now_playing_uri'] = (string)$router->named('api:nowplaying:index', ['station' => $station->getId()]);
 }
 ?>
 

@@ -241,7 +241,7 @@ class Utilities
                 }, file($file)));
 
                 foreach($lines as $line) {
-                    $vars[$line[0]] = $line[1];
+                    $vars[$line[0]] = trim($line[1]);
                 }
             }
         }

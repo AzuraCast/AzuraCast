@@ -5,6 +5,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use App\Radio\Remote\AdapterProxy;
 use Psr\Http\Message\ResponseInterface;
 
 class PublicController
@@ -43,15 +44,45 @@ class PublicController
     public function playlistAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
     {
         $station = $request->getStation();
-        $fa = $request->getStationFrontend();
 
-        $stream_urls = $fa->getStreamUrls($station);
+        $streams = [];
+        $stream_urls = [];
+
+        $fa = $request->getStationFrontend();
+        foreach ($station->getMounts() as $mount) {
+            /** @var Entity\StationMount $mount */
+            if (!$mount->isVisibleOnPublicPages()) {
+                continue;
+            }
+
+            $stream_url = $fa->getUrlForMount($station, $mount, null, false);
+
+            $stream_urls[] = $stream_url;
+            $streams[] = [
+                'name'  => $station->getName().' - '.$mount->getDisplayName(),
+                'url'   => $stream_url,
+            ];
+        }
+
+        $remotes = $request->getStationRemotes();
+        foreach($remotes as $remote_proxy) {
+            /** @var AdapterProxy $remote_proxy */
+            $adapter = $remote_proxy->getAdapter();
+            $remote = $remote_proxy->getRemote();
+
+            $stream_url = $adapter->getPublicUrl($remote);
+
+            $stream_urls[] = $stream_url;
+            $streams[] = [
+                'name'  => $station->getName().' - '.$remote->getDisplayName(),
+                'url'   => $stream_url,
+            ];
+        }
 
         $format = strtolower($format);
-
         switch ($format) {
             // M3U Playlist Format
-            case "m3u":
+            case 'm3u':
                 $m3u_file = implode("\n", $stream_urls);
 
                 return $response
@@ -61,21 +92,22 @@ class PublicController
                 break;
 
             // PLS Playlist Format
-            case "pls":
+            case 'pls':
             default:
                 $output = [
                     '[playlist]'
                 ];
 
                 $i = 1;
-                foreach ($stream_urls as $stream_url) {
-                    $output[] = 'File' . $i . '=' . $stream_url;
+                foreach ($streams as $stream) {
+                    $output[] = 'File' . $i . '=' . $stream['url'];
+                    $output[] = 'Title' . $i . '=' . $stream['name'];
                     $output[] = 'Length' . $i . '=-1';
+                    $output[] = '';
                     $i++;
                 }
 
-                $output[] = '';
-                $output[] = 'NumberOfEntries=' . count($stream_urls);
+                $output[] = 'NumberOfEntries=' . count($streams);
                 $output[] = 'Version=2';
 
                 return $response

@@ -77,9 +77,16 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
      * @param Entity\Station $station
      * @param Entity\StationMount|null $mount
      * @param UriInterface|null $base_url
+     * @param bool $append_timestamp Add the "?12345" timestamp to the end of URLs for "cache-busting".
+     *
      * @return UriInterface
      */
-    public function getUrlForMount(Entity\Station $station, Entity\StationMount $mount = null, UriInterface $base_url = null): UriInterface
+    public function getUrlForMount(
+        Entity\Station $station,
+        Entity\StationMount $mount = null,
+        UriInterface $base_url = null,
+        bool $append_timestamp = true
+    ): UriInterface
     {
         if ($mount === null) {
             return $this->getPublicUrl($station, $base_url);
@@ -90,9 +97,12 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
         }
 
         $public_url = $this->getPublicUrl($station, $base_url);
-        return $public_url
-            ->withPath($public_url->getPath().$mount->getName())
-            ->withQuery((string)time());
+
+        $listen_url = $public_url->withPath($public_url->getPath().$mount->getName());
+
+        return ($append_timestamp)
+            ? $listen_url->withQuery((string)time())
+            : $listen_url;
     }
 
     abstract public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface;

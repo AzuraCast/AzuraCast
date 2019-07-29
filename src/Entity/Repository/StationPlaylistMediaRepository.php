@@ -203,7 +203,7 @@ class StationPlaylistMediaRepository extends Repository
     public function getPlayableMedia(Entity\StationPlaylist $playlist): array
     {
         $all_media = $this->_em->createQuery(/** @lang DQL */ 'SELECT 
-            sm.id, sm.artist, sm.title
+            sm.id, sm.song_id, sm.artist, sm.title
             FROM App\Entity\StationMedia sm
             JOIN sm.playlists spm
             WHERE spm.playlist_id = :playlist_id

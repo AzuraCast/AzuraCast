@@ -441,16 +441,24 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         $artists = [];
-        $titles = [];
+        $song_ids = [];
+        $latest_song_ids_played = [];
+
         foreach($played_media as $history) {
+            $song_id = $history['song']['id'];
+
             $artists[] = $history['song']['artist'];
-            $titles[] = $history['song']['title'];
+            $song_ids[] = $song_id;
+
+            if (!isset($latest_song_ids_played[$song_id])) {
+                $latest_song_ids_played[$song_id] = $history['timestamp_cued'];
+            }
         }
 
         $without_same_title = [];
 
         foreach($eligible_media as $media) {
-            if (in_array($media['title'], $titles, true)) {
+            if (in_array($media['song_id'], $song_ids, true)) {
                 continue;
             }
 
@@ -476,11 +484,25 @@ class AutoDJ implements EventSubscriberInterface
 
         // If we reach this point, there's no way to avoid a duplicate title.
         if ($accept_same_title) {
-            reset($eligible_media);
-            $media = current($eligible_media);
-            $media_id_to_play = $media['id'];
+            // Produce an array of recent song history and latest timestamp played.
+            $media_ids_by_time_played = [];
 
-            $this->logger->debug('No way to avoid same title OR same artist; using queue unmodified.', ['media_id' => $media_id_to_play]);
+            // For each piece of eligible media, get its latest played timestamp.
+            foreach($eligible_media as $media) {
+                $song_id = $media['song_id'];
+
+                if (isset($latest_song_ids_played[$song_id])) {
+                    $media_ids_by_time_played[$media['id']] = $latest_song_ids_played[$song_id];
+                }
+            }
+
+            // Pull the lowest value, which corresponds to the least recently played song.
+            asort($media_ids_by_time_played);
+            reset($media_ids_by_time_played);
+
+            $media_id_to_play = key($media_ids_by_time_played);
+
+            $this->logger->debug('No way to avoid same title OR same artist; using least recently played song.', ['media_id' => $media_id_to_play]);
             return $media_id_to_play;
         }
 

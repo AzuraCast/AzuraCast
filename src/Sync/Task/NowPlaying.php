@@ -384,14 +384,12 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->event_dispatcher->dispatch(SendWebhooks::NAME, $webhook_event);
 
         // Trigger a delayed NChan notification.
-        if ($webhook_event->hasAnyTrigger()) {
-            $message = new Message\NotifyNChanMessage();
-            $message->station_id = $station->getId();
-            $message->station_shortcode = $station->getShortName();
-            $message->nowplaying = $np_event;
+        $message = new Message\NotifyNChanMessage();
+        $message->station_id = $station->getId();
+        $message->station_shortcode = $station->getShortName();
+        $message->nowplaying = $np_event;
 
-            $this->message_queue->produce($message);
-        }
+        $this->message_queue->produce($message);
 
         $this->logger->popProcessor();
 

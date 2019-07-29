@@ -28,8 +28,8 @@ services:
     restart: always
     ulimits: &default-ulimits
       nofile:
-        soft: "65536"
-        hard: "65536"
+        soft: 65536
+        hard: 65536
     logging: &default-logging
       options:
         max-size: "1m"

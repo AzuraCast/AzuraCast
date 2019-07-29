@@ -430,10 +430,10 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * @param array $eligible_media
      * @param array $played_media
-     * @param bool $accept_same_title Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $accept_imperfect_match Whether to return a media ID even if duplicates can't be prevented.
      * @return int|null
      */
-    protected function _preventDuplicates(array $eligible_media = [], array $played_media = [], $accept_same_title = true): ?int
+    protected function _preventDuplicates(array $eligible_media = [], array $played_media = [], $accept_imperfect_match = true): ?int
     {
         if (empty($eligible_media)) {
             $this->logger->debug('Eligible song queue is empty!');
@@ -471,20 +471,20 @@ class AutoDJ implements EventSubscriberInterface
             $without_same_title[] = $media;
         }
 
-        // If we reach this point, there was no match for avoiding same artist AND title.
-        if (!empty($without_same_title)) {
-            reset($without_same_title);
+        if ($accept_imperfect_match) {
 
-            $media = current($without_same_title);
-            $media_id_to_play = $media['id'];
+            // If we reach this point, there was no match for avoiding same artist AND title.
+            if (!empty($without_same_title)) {
+                reset($without_same_title);
 
-            $this->logger->debug('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
-            return $media_id_to_play;
-        }
+                $media = current($without_same_title);
+                $media_id_to_play = $media['id'];
 
-        // If we reach this point, there's no way to avoid a duplicate title.
-        if ($accept_same_title) {
-            // Produce an array of recent song history and latest timestamp played.
+                $this->logger->debug('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
+                return $media_id_to_play;
+            }
+
+            // If we reach this point, there's no way to avoid a duplicate title.
             $media_ids_by_time_played = [];
 
             // For each piece of eligible media, get its latest played timestamp.

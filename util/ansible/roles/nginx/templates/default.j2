@@ -14,6 +14,7 @@ server {
         nchan_channel_id $1;
 
         nchan_message_buffer_length 1;
+        nchan_message_timeout 16s;
     }
 }
 {% endif %}
@@ -119,6 +120,8 @@ server {
         nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id "$1";
         nchan_channel_id_split_delimiter ",";
+
+        nchan_subscriber_first_message -1;
     }
     {% endif %}
 

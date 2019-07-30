@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 20:10\n"
+"PO-Revision-Date: 2019-07-30 20:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -19,7 +19,7 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:183
 #: /var/azuracast/www/src/Acl.php:195
 msgid "All Permissions"
-msgstr ""
+msgstr "Все права доступа"
 
 #: /var/azuracast/www/src/Acl.php:184
 msgid "View Administration Page"
@@ -786,11 +786,11 @@ msgstr "У вас нет прав на доступ к этой части са�
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "Ваш файл <code>docker-compose.yml</code> устарел!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:75
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "Вам следует обновить файл <code>docker-compose.yml</code> чтобы отразить последние изменения. Посмотрите <a href=\"%s\" target=\"_blank\">последнюю версию файла</a> и обновите файл соответствующим образом..<br>Вы также можете использовать скрипт <code>./docker.sh</code> для автоматического обновления вашего файла."
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 22:00\n"
+"PO-Revision-Date: 2019-07-30 22:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1158,23 +1158,23 @@ msgstr "URL обложки альбома по умолчанию"
 
 #: /var/azuracast/www/config/forms/branding.php:52
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
-msgstr ""
+msgstr "Если у песни нет обложки альбома, то будет показано изображение поэтому URL-адресу. Оставьте пустым, чтобы использовать стандартное заменяющее изображение."
 
 #: /var/azuracast/www/config/forms/branding.php:61
 msgid "Hide AzuraCast Branding on Public Pages"
-msgstr ""
+msgstr "Скрыть бренд AzuraCast на публичных страницах"
 
 #: /var/azuracast/www/config/forms/branding.php:62
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
-msgstr ""
+msgstr "Если выбрано, то будет удалён бренд AzuraCast с публично расположенных страниц."
 
 #: /var/azuracast/www/config/forms/branding.php:73
 msgid "Custom CSS for Public Pages"
-msgstr ""
+msgstr "Пользовательский CSS для публичных страниц"
 
 #: /var/azuracast/www/config/forms/branding.php:74
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Этот CSS будет применен к публичным страницам станции и странице входа."
 
 #: /var/azuracast/www/config/forms/branding.php:85
 msgid "Custom JS for Public Pages"

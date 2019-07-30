@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 19:50\n"
+"PO-Revision-Date: 2019-07-30 20:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -668,11 +668,11 @@ msgstr "Отчет SoundExchange"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "Streamers enabled!"
-msgstr ""
+msgstr "Муз-потоки включены!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "You can now set up streamer (DJ) accounts."
-msgstr ""
+msgstr "Теперь вы можете настроить учетные записи (DJ) муз-потоков."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
@@ -695,19 +695,19 @@ msgstr "Стример"
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Web Hook"
-msgstr ""
+msgstr "Веб-хук"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 msgid "%s enabled."
-msgstr ""
+msgstr "%s включен."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:108
 msgid "%s disabled."
-msgstr ""
+msgstr "%s отключен."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Тест выходящего сигнала веб-хука"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
 msgid "Liquidsoap Log"
@@ -739,11 +739,11 @@ msgstr "SHOUTcast - Настройки"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "Вы недавно отправили запрос! Пожалуйста, подождите, прежде чем отправить ещё один."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Эта песня была сыграна совсем недавно. Подождите некоторое время, прежде чем запросить её снова."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -751,7 +751,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:54
 msgid "Select File"
-msgstr ""
+msgstr "Выбрать файл"
 
 #: /var/azuracast/www/src/Form/StationForm.php:79
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
@@ -760,11 +760,11 @@ msgstr "Хотите использовать SHOUTcast 2? <a href=\"%s\" target
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:40
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "Часовой пояс этой станции в настоящее время %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:42
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "Текущее время в часовом поясе станции - %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:60
 msgid "Existing playlist imported."

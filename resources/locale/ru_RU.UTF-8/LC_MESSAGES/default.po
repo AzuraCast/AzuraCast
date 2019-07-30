@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 20:00\n"
+"PO-Revision-Date: 2019-07-30 20:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -777,12 +777,12 @@ msgstr "%d песен было импортировано в плейлист."
 #: /var/azuracast/www/src/Http/ErrorHandler.php:80
 #: /var/azuracast/www/src/Http/ErrorHandler.php:89
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Вы должны войти в систему для доступа к этой странице."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:101
 #: /var/azuracast/www/src/Http/ErrorHandler.php:110
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "У вас нет прав на доступ к этой части сайта."
 
 #: /var/azuracast/www/src/Notification/Manager.php:74
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
@@ -1178,27 +1178,27 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/branding.php:85
 msgid "Custom JS for Public Pages"
-msgstr ""
+msgstr "Пользовательский JS для публичных страниц"
 
 #: /var/azuracast/www/config/forms/branding.php:86
 msgid "This javascript code will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Этот код javascript будет применен к публичным страницам станции и странице входа."
 
 #: /var/azuracast/www/config/forms/branding.php:97
 msgid "Custom CSS for Internal Pages"
-msgstr ""
+msgstr "Пользовательский CSS для внутренних страниц"
 
 #: /var/azuracast/www/config/forms/branding.php:98
 msgid "This CSS will be applied to the main management pages, like this one."
-msgstr ""
+msgstr "Этот CSS будет применен к основным страницам управления, таким как эта."
 
 #: /var/azuracast/www/config/forms/custom_field.php:13
 msgid "Field Name"
-msgstr ""
+msgstr "Название поля"
 
 #: /var/azuracast/www/config/forms/custom_field.php:14
 msgid "This will be used as the label when editing individual songs, and will show in API results."
-msgstr ""
+msgstr "Это будет использоваться как метка при редактировании отдельных песен и будет отображаться в результатах API."
 
 #: /var/azuracast/www/config/forms/custom_field.php:22
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:23

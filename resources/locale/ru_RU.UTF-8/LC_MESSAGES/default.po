@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 23:10\n"
+"PO-Revision-Date: 2019-07-30 23:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1503,28 +1503,28 @@ msgstr "Плейлист содержит медиа файлы, размеще�
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "Remote URL Playlist"
-msgstr ""
+msgstr "Дистанционный URL-адрес"
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr "Плейлист, который указывает станции для воспроизведения с удаленного URL-адреса."
+msgstr "Плейлист, который указывает станции для воспроизведения с дистанционного URL-адреса."
 
 #: /var/azuracast/www/config/forms/playlist.php:93
 msgid "Song Playback Order"
-msgstr ""
+msgstr "Сортировка воспроизведения песен"
 
 #: /var/azuracast/www/config/forms/playlist.php:96
 msgid "Shuffled"
-msgstr ""
+msgstr "Перетасованный"
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
-msgstr ""
+msgstr "Случайный"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92
 msgid "Sequential"
-msgstr ""
+msgstr "Последовательный"
 
 #: /var/azuracast/www/config/forms/playlist.php:108
 msgid "Import Existing Playlist"
@@ -1536,15 +1536,15 @@ msgstr "Выберите существующий файл списка восп
 
 #: /var/azuracast/www/config/forms/playlist.php:129
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "Разрешить запросы из этого плейлиста"
 
 #: /var/azuracast/www/config/forms/playlist.php:130
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Если запросы включены для вашей станции, пользователи смогут заказать песни, которые находятся в этом плейлисте."
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr ""
+msgstr "Скрыть метаданные от слушателей (\"Режим Джингла\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."

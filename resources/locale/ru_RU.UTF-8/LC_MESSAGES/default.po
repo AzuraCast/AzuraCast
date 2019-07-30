@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 21:30\n"
+"PO-Revision-Date: 2019-07-30 21:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1110,15 +1110,15 @@ msgstr "Исключить медиа из резервной копии"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Это приведет к гораздо меньшему объёму резервной копии, но вы должны убедиться, что имеется резервная копия вашего медиа в другом месте."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
-msgstr ""
+msgstr "Базовая тема для публичных страниц"
 
 #: /var/azuracast/www/config/forms/branding.php:16
 msgid "Select a theme to use as a base for station public pages and the login page."
-msgstr ""
+msgstr "Выберите тему для использования в качестве основной для публичных страниц станции и страницы входа."
 
 #: /var/azuracast/www/config/forms/branding.php:18
 #: /var/azuracast/www/config/forms/profile.php:94
@@ -1138,19 +1138,19 @@ msgstr "Тёмная"
 
 #: /var/azuracast/www/config/forms/branding.php:29
 msgid "Hide Album Art on Public Pages"
-msgstr ""
+msgstr "Скрыть обложку альбома на публичных страницах"
 
 #: /var/azuracast/www/config/forms/branding.php:30
 msgid "If selected, album art will not display on public-facing radio pages."
-msgstr ""
+msgstr "Если выбрано, то обложка альбома не будет отображаться на публичных страницах радио."
 
 #: /var/azuracast/www/config/forms/branding.php:41
 msgid "Homepage Redirect URL"
-msgstr ""
+msgstr "URL перенаправления главной страницы"
 
 #: /var/azuracast/www/config/forms/branding.php:42
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
-msgstr ""
+msgstr "Если посетитель не авторизован и посещает главную страницу AzuraCast, вы можете автоматически перенаправить его на указанный здесь URL. Оставьте пустым, чтобы перенаправить его на страницу входа по умолчанию."
 
 #: /var/azuracast/www/config/forms/branding.php:51
 msgid "Default Album Art URL"

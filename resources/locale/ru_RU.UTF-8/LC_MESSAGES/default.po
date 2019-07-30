@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 21:10\n"
+"PO-Revision-Date: 2019-07-30 21:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -842,33 +842,33 @@ msgstr "Он уже работает."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s не может остановиться"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:210
 msgid "It is not running."
-msgstr ""
+msgstr "Он не запущен."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "%s encountered an error"
-msgstr ""
+msgstr "%s столкнулся с ошибкой"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:227
 msgid "Check the log for details."
-msgstr ""
+msgstr "Проверьте журнал для подробностей."
 
 #: /var/azuracast/www/src/Radio/Adapters.php:138
 #: /var/azuracast/www/src/Radio/Adapters.php:142
 #: /var/azuracast/www/src/Radio/Adapters.php:173
 msgid "Use <b>%s</b> on this server"
-msgstr ""
+msgstr "Использовать <b>%s</b> на этом сервере"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:146
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "Подключиться к <b>удаленному радиосерверу</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:177
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr ""
+msgstr "<b>Не использовать</b> сервис AutoDJ"
 
 #: /var/azuracast/www/src/Sync/Runner.php:162
 #: /var/azuracast/www/src/Sync/Runner.php:165
@@ -905,11 +905,11 @@ msgstr "Очистка"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "Порт %s уже используется другой станцией."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr ""
+msgstr "Пароль не может содержать следующие символы: %s"
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
@@ -920,7 +920,7 @@ msgstr "Коментарийи"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Опишите вариант использования этого ключа API для будущего ориентира."
 
 #: /var/azuracast/www/config/forms/api_key.php:20
 #: /var/azuracast/www/config/forms/automation.php:40
@@ -994,15 +994,15 @@ msgstr "Исходя из этого параметра, система буде
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d дней"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Запустить автоматическое ночное резервное копирование"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Включите, чтобы AzuraCast автоматически запускал ночное резервное копирование в указанное время."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1074,7 +1074,7 @@ msgstr "Нет"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Запланированное время резервного копирования"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."

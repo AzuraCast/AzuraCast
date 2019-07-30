@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 19:16\n"
+"PO-Revision-Date: 2019-07-30 19:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -137,7 +137,7 @@ msgstr "Точки монтирования"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr ""
+msgstr "Дистанционная Трансляция"
 
 #: /var/azuracast/www/src/Acl.php:204
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:58
@@ -148,7 +148,7 @@ msgstr "Медиа"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Automation"
-msgstr ""
+msgstr "Автоматизация"
 
 #: /var/azuracast/www/src/Acl.php:206
 #: /var/azuracast/www/config/menus/station.php:87

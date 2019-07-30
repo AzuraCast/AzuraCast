@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 22:40\n"
+"PO-Revision-Date: 2019-07-30 22:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1442,15 +1442,15 @@ msgstr "Путь потока не может включать зарезерв�
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"
-msgstr ""
+msgstr "Хэш авторизации в каталогах \"YP\""
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr ""
+msgstr "Если ваш поток установлен для рекламы в каталогах \"YP\", вы должны указать хэш авторизации. Вы можете управлять хэшом авторизации<a href=\"%s\" target=\"_blank\">на SHOUTcast веб-сайте</a>."
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
-msgstr ""
+msgstr "Основная информация"
 
 #: /var/azuracast/www/config/forms/playlist.php:12
 #: /var/azuracast/www/config/forms/playlist.php:71

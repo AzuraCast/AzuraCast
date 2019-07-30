@@ -95,7 +95,7 @@ We frequently post to social media any time there are significant updates to our
 - On Twitter at [@AzuraCast](https://twitter.com/azuracast), or
 - On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
 
-We also have a [dedicated Slack server](https://join.slack.com/t/azuracast/shared_invite/enQtNDgyNzA4NzY2MzU3LWNmZjY3MmZlZGI1NzQ0OWEzMDBlMDk4MWVkMGMwMjAwYWQxZjdjYzRkYmM2NDkwZjc3ODI0N2UxY2M3ZjIxZWI) for developers, translators and radio station operators to help us collaborate in real time. You are welcome to join us and chat with us directly there.
+We also have a [Mattermost team server](https://chat.azuracast.com/) for developers, translators and radio station operators to help us collaborate in real time. You are welcome to join us and chat with us directly there.
 
 Note that our social media channels aren't the best way to report issues to us; instead, you should use the GitHub issues instructions above, as this allows our whole team to help resolve and track the progress of the issue in one location.
 

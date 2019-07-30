@@ -11,6 +11,9 @@ use Supervisor\Supervisor;
 
 class Configuration
 {
+    public const DEFAULT_PORT_MIN = 8000;
+    public const DEFAULT_PORT_MAX = 8499;
+
     /** @var EntityManager */
     protected $em;
 
@@ -338,8 +341,15 @@ class Configuration
         // Iterate from port 8000 to 9000, in increments of 10
         $protected_ports = [8080];
 
-        $port_min = (int)(getenv('AUTO_ASSIGN_PORT_MIN') ?? 8000);
-        $port_max = (int)(getenv('AUTO_ASSIGN_PORT_MAX') ?? 8499);
+        $port_min = (int)getenv('AUTO_ASSIGN_PORT_MIN');
+        if (0 === $port_min) {
+            $port_min = self::DEFAULT_PORT_MIN;
+        }
+
+        $port_max = (int)getenv('AUTO_ASSIGN_PORT_MAX');
+        if (0 === $port_max) {
+            $port_max = self::DEFAULT_PORT_MAX;
+        }
 
         for($port = $port_min; $port <= $port_max; $port += 10) {
             if (in_array($port, $protected_ports, true)) {

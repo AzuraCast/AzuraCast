@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 17:20\n"
+"PO-Revision-Date: 2019-07-31 17:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1668,7 +1668,7 @@ msgstr "Время начала"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Чтобы играть один раз в день, установите время начала и окончания в одно и то же значение."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
@@ -1676,19 +1676,19 @@ msgstr "Время окончания"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Если время окончания до времени начала, плейлист будет воспроизводиться всю ночь."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Часовой пояс станции"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
-msgstr ""
+msgstr "Запланированные дни недели для воспроизведения"
 
 #: /var/azuracast/www/config/forms/playlist.php:297
 msgid "Leave blank to play on every day of the week."
-msgstr ""
+msgstr "Оставьте пустым, чтобы играть каждый день недели."
 
 #: /var/azuracast/www/config/forms/playlist.php:323
 msgid "Number of Songs Between Plays"
@@ -1708,7 +1708,7 @@ msgstr "Этот плейлист будет воспроизводить каж
 
 #: /var/azuracast/www/config/forms/playlist.php:363
 msgid "Minute of Hour to Play"
-msgstr ""
+msgstr "Минуты Часа для проигрывания"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."

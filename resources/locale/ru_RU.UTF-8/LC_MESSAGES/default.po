@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 00:00\n"
+"PO-Revision-Date: 2019-07-31 00:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1996,15 +1996,15 @@ msgstr "Контроль конфиденциальности"
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast не отправляет данные вашей станции или слушателя на какой-либо внешний сервер. Вы можете контролировать сколько данных о ваших слушателях здесь."
 
 #: /var/azuracast/www/config/forms/settings.php:116
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Коллекция аналитики слушателя"
 
 #: /var/azuracast/www/config/forms/settings.php:117
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Собираемая статистика слушателей используется для отображения отчетов о станциях в системе. Статистика слушателей на основе IP-адреса используется для просмотра отслеживания живых слушателей и может потребоваться для роялти отчетов."
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"

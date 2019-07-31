@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 17:30\n"
+"PO-Revision-Date: 2019-07-31 17:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1712,7 +1712,7 @@ msgstr "Минуты Часа для проигрывания"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."
-msgstr ""
+msgstr "В указанную минуту каждый час будет играть этот плейлист."
 
 #: /var/azuracast/www/config/forms/profile.php:3
 msgid "Use Browser Default"
@@ -1734,19 +1734,19 @@ msgstr "Восстановление пароля"
 
 #: /var/azuracast/www/config/forms/profile.php:39
 msgid "Leave these fields blank to continue using your current password."
-msgstr ""
+msgstr "Оставьте эти поля пустыми, чтобы продолжить использовать текущий пароль."
 
 #: /var/azuracast/www/config/forms/profile.php:45
 msgid "Current Password"
-msgstr ""
+msgstr "Текущий пароль"
 
 #: /var/azuracast/www/config/forms/profile.php:54
 msgid "New Password"
-msgstr ""
+msgstr "Новый Пароль"
 
 #: /var/azuracast/www/config/forms/profile.php:65
 msgid "Confirm New Password"
-msgstr ""
+msgstr "Подтвердите новый пароль"
 
 #: /var/azuracast/www/config/forms/profile.php:76
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:50

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 18:50\n"
+"PO-Revision-Date: 2019-07-31 19:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1863,7 +1863,7 @@ msgstr "Этот отчет предназначен для лицензиров
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:15
 msgid "AzuraCast assumes that your station fits SoundExchange Transmission Category A, \"Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming.\" If your station does not fall within this category, update the transmission category field accordingly."
-msgstr ""
+msgstr "AzuraCast предполагает, что на вашей станции передачи соответствует категории A SoundExchange, \"Допустимы передачи без подписки, отличные от широковещательных трансляций и передач не музыкальных программ.\" Если ваша станция не подпадает под эту категорию, обновите поле категории передачи соответственно."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:18
 msgid "The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate."

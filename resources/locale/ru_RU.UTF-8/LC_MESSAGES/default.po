@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 21:00\n"
+"PO-Revision-Date: 2019-07-31 21:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3766,23 +3766,23 @@ msgstr "Изменить порядок плейлиста"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:16
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Перезапустить плейлист: %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Down"
-msgstr ""
+msgstr "Вниз"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:43
 msgid "Up"
-msgstr ""
+msgstr "Вверх"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
-msgstr ""
+msgstr "Трансляция станции отключена"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "Ваша станция в настоящее время не включена для трансляции. Вы можете управлять медиа, плейлистами и другими настройками станции. Чтобы включить трансляцию, <a href=\"%s\">отредактируйте профиль станции</a>."
 
 #: /var/azuracast/www/templates/stations/profile/index.js.phtml:87
 msgid "Running"
@@ -3795,7 +3795,7 @@ msgstr "Не запущено"
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:17
 msgid "Loading..."
-msgstr ""
+msgstr "Загрузка..."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:27
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
@@ -3838,7 +3838,7 @@ msgstr "Source Пароль"
 
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:56
 msgid "Relay Password"
-msgstr ""
+msgstr "Relay Пароль"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:16
 msgid "On the Air"
@@ -3854,11 +3854,11 @@ msgstr "Уникальный"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
-msgstr ""
+msgstr "Следующее Играет"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Now Streaming"
-msgstr ""
+msgstr "Сейчас Вещает"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"
@@ -3866,12 +3866,12 @@ msgstr "Пропустить песню"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:103
 msgid "Disconnect Streamer"
-msgstr ""
+msgstr "Отключить стримера"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
 msgid "Public Pages"
-msgstr ""
+msgstr "Публичные страницы"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:37
 msgid "Player Embed Code"
@@ -3879,15 +3879,15 @@ msgstr "Код вставки плеера"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:45
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Запросить код для вставки"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"
-msgstr ""
+msgstr "Отключить публичные страницы?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
 msgid "Enable public pages?"
-msgstr ""
+msgstr "Включить публичные страницы?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:26
 msgid "View"

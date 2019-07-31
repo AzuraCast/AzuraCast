@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 20:06\n"
+"PO-Revision-Date: 2019-07-31 20:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2552,31 +2552,39 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Веб-хуки автоматически отправляют HTTP-запрос POST на указанный вами URL-адрес \n"
+"\n"
+"                уведомляя его каждый раз, когда на вашей станции происходит один из указанных вами триггеров. Основа POST сообщения\n"
+"\n"
+"                это то же самое, что и <a href=\"%s\" target=\"_blank\">Ответ API Now Playing</a> для вашей станции. \n"
+"\n"
+"                Для быстрой обработки веб-хуки имеют короткий тайм-аут, поэтому отвечающая служба должна быть\n"
+"\n"
+"                оптимизирована для обработки запроса менее чем за 2 секунды."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"
-msgstr ""
+msgstr "URL веб-хука"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:38
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "URL, который будет получать POST сообщения в любое время, когда событие будет запущено."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:49
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "По желанию: имя пользователя базовой аутентификации HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:50
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Если ваш веб-хук требует базовой аутентификации HTTP, укажите имя пользователя здесь."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:59
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "По желанию: пароль базовой аутентификации HTTP"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:60
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Если ваш веб-хук требует базовой аутентификации HTTP, введите пароль здесь."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 msgid "Bot Token"

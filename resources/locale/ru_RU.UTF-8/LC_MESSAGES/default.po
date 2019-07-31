@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 20:20\n"
+"PO-Revision-Date: 2019-07-31 20:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3052,15 +3052,15 @@ msgstr "DNAS SHOUTcast 2 установлен и готов к использо�
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:16
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
-msgstr ""
+msgstr "Поскольку вы используете Docker, доступ к некоторым системным журналам возможен только с shell session на компьютере хоста. Вы можете запустить <code>%s</code> для доступа к журналам контейнеров из терминала."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:31
 msgid "Logs by Station"
-msgstr ""
+msgstr "Сист.Журналы по станции"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr ""
+msgstr "Удалить роль \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "This role cannot be deleted."
@@ -3068,7 +3068,7 @@ msgstr "Эта роль не может быть удалена."
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:45
 msgid "Global"
-msgstr ""
+msgstr "Основное"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3086,7 +3086,7 @@ msgstr "Клонировать"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr ""
+msgstr "Удалить станцию \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:33
 #: /var/azuracast/www/templates/frontend/account/login.phtml:3
@@ -3096,11 +3096,11 @@ msgstr "Войти"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr ""
+msgstr "Удалить пользователя \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:47
 msgid "(You)"
-msgstr ""
+msgstr "(Вы)"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:15
 msgid "Welcome!"
@@ -3112,18 +3112,18 @@ msgstr "Добро пожаловать в %s!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:34
 msgid "name@example.com"
-msgstr ""
+msgstr "name@example.com"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 msgid "Enter your password"
-msgstr ""
+msgstr "Введите свой пароль"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:43
 #: /var/azuracast/www/templates/frontend/account/login.phtml:44
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:22
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:23
 msgid "Sign in"
-msgstr ""
+msgstr "Войти"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "Please log in to continue."
@@ -3131,40 +3131,42 @@ msgstr "Пожалуйста, войдите чтобы продолжить."
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Забыли пароль?</a>"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
-msgstr ""
+msgstr "Введите двухфакторный код"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
 msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
-msgstr ""
+msgstr "Ваш аккаунт использует двухфакторный код безопасности. Введите код, который ваше устройство в настоящее время показывает ниже."
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:20
 msgid "Security Code"
-msgstr ""
+msgstr "Код безопасности"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:9
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:3
 #: /var/azuracast/www/templates/main.phtml:91
 msgid "My API Keys"
-msgstr ""
+msgstr "Мои API ключи"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Ключи API можно использовать для доступа к некоторым функциям системы без необходимости входа в систему. Все ключи\n"
+"\n"
+"            вы создаете общие права доступа в системе. Для получения дополнительной информации см. <a href=\"%s\">документацию по API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
-msgstr ""
+msgstr "Идентификатор ключа"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
 msgid "New Key Generated"
-msgstr ""
+msgstr "Создан новый ключ"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:14
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 22:30\n"
+"PO-Revision-Date: 2019-07-31 22:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1519,12 +1519,12 @@ msgstr "Перетасованный"
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
-msgstr "Случайный"
+msgstr "Случайно"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92
 msgid "Sequential"
-msgstr "Последовательный"
+msgstr "Последовательно"
 
 #: /var/azuracast/www/config/forms/playlist.php:108
 msgid "Import Existing Playlist"
@@ -1557,11 +1557,11 @@ msgstr "Отдаленный URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:172
 msgid "Remote URL Type"
-msgstr "Тип отдаленного URL"
+msgstr "Тип отдалённого URL-адреса"
 
 #: /var/azuracast/www/config/forms/playlist.php:175
 msgid "Direct Stream URL"
-msgstr "URL прямого потока"
+msgstr "URL-адрес прямого потока"
 
 #: /var/azuracast/www/config/forms/playlist.php:176
 msgid "Playlist (M3U/PLS) URL"
@@ -1569,7 +1569,7 @@ msgstr "URL плейлиста (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:185
 msgid "Remote Playback Buffer (Seconds)"
-msgstr "Буфер воспроизведения отдаленно (в секундах)"
+msgstr "Буфер отдалённого воспроизведения (в секундах)"
 
 #: /var/azuracast/www/config/forms/playlist.php:187
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."

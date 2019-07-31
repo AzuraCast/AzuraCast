@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 14:20\n"
+"PO-Revision-Date: 2019-07-31 16:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1603,7 +1603,7 @@ msgstr "Играет один раз через каждые <i>x</i> песни
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "Один раз через x минут"
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Play exactly once every <i>x</i> minutes."
@@ -1615,7 +1615,7 @@ msgstr "Один раз в час"
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Play once per hour at the specified minute."
-msgstr "Играть один раз в час в указанную минуту."
+msgstr "Играет один раз в час в указанную минуту."
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5

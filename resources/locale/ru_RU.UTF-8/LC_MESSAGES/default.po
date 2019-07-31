@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 18:30\n"
+"PO-Revision-Date: 2019-07-31 18:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1807,31 +1807,31 @@ msgstr "Пример: если отдалённый URL-адрес радио %s
 
 #: /var/azuracast/www/config/forms/remote.php:62
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr ""
+msgstr "Точка прослушивания отдалённой станции /SID"
 
 #: /var/azuracast/www/config/forms/remote.php:63
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
-msgstr ""
+msgstr "Укажите точку подключения (т.е. <code>%s</code>) или Shoutcast SID (т.е. <code>%s</code>) для указания конкретного потока для использования статистики или трансляции."
 
 #: /var/azuracast/www/config/forms/remote.php:75
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr ""
+msgstr "Вещание AutoDJ с отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:76
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr ""
+msgstr "Если включено, AutoDJ автоматически воспроизводит музыку в этой точке подключения."
 
 #: /var/azuracast/www/config/forms/remote.php:89
 msgid "Configure AutoDJ Broadcasting"
-msgstr ""
+msgstr "Настроить вещание AutoDJ"
 
 #: /var/azuracast/www/config/forms/remote.php:129
 msgid "Remote Station Source Port"
-msgstr ""
+msgstr "Порт источника отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:130
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr ""
+msgstr "Если порт, с которого вы транслируете, отличается от того, который вы указали в URL выше, укажите источник порта здесь."
 
 #: /var/azuracast/www/config/forms/remote.php:138
 msgid "Remote Station Source Mountpoint/SID"

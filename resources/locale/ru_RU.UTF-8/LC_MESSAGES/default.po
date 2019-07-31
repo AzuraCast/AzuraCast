@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 19:00\n"
+"PO-Revision-Date: 2019-07-31 19:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2295,31 +2295,31 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:368
 msgid "Customize DJ/Streamer Mount Point"
-msgstr ""
+msgstr "Настройка точки подключения DJ/Streamer"
 
 #: /var/azuracast/www/config/forms/station.php:370
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
-msgstr ""
+msgstr "Если программное обеспечение для вещания потока требует определенного пути точки подключения, укажите его здесь. В противном случае, используйте по умолчанию."
 
 #: /var/azuracast/www/config/forms/station.php:380
 msgid "Use Replaygain Metadata"
-msgstr ""
+msgstr "Использование метаданных Replaygain"
 
 #: /var/azuracast/www/config/forms/station.php:383
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr ""
+msgstr "Инструкция для Liquidsoap о использовании любых метаданных replaygain, связанных с песней, для управления уровнем громкости."
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"
-msgstr ""
+msgstr "Ручной режим AutoDJ"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr ""
+msgstr "Этот режим отключает управление AutoDJ AzuraCast, используя Liquidsoap, чтобы управлять воспроизведением песни. \"Следующая песня\" и некоторые другие функции не будут доступны."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
-msgstr ""
+msgstr "Кодировка набора символов"
 
 #: /var/azuracast/www/config/forms/station.php:410
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 17:40\n"
+"PO-Revision-Date: 2019-07-31 17:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1763,15 +1763,15 @@ msgstr "Тема сайта"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:10
 msgid "Code from Authenticator App"
-msgstr ""
+msgstr "Код из приложения Аутентификации"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
-msgstr ""
+msgstr "Введите текущий код, предоставленный вашим приложением-аутентификатором, чтобы убедиться, что он работает правильно."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:21
 msgid "Verify Authenticator"
-msgstr ""
+msgstr "Проверка подлинности"
 
 #: /var/azuracast/www/config/forms/register.php:7
 msgid "Account Information"
@@ -1787,11 +1787,11 @@ msgstr "Создать аккаунт"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Разрешить слушателям выбирать эту точку подключения на публичных страницах этой станции."
 
 #: /var/azuracast/www/config/forms/remote.php:25
 msgid "Remote Station Type"
-msgstr ""
+msgstr "Тип отдаленной станции"
 
 #: /var/azuracast/www/config/forms/remote.php:40
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."

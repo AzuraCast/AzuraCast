@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 23:00\n"
+"PO-Revision-Date: 2019-07-31 23:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2008,19 +2008,19 @@ msgstr "Собираемая статистика слушателей испо�
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>Полная:</b> Собирается совокупная статистика слушателя и статистика о слушателях на основе IP-адреса"
 
 #: /var/azuracast/www/config/forms/settings.php:121
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>Ограничено:</b> Собирается только совокупная статистика слушателя"
 
 #: /var/azuracast/www/config/forms/settings.php:122
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>Нет:</b> Не собирать никакой аналитики о слушателях"
 
 #: /var/azuracast/www/config/forms/settings.php:131
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "Телеметрия установки AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."

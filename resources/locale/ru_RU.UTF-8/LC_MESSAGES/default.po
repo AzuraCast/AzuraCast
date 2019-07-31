@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 21:30\n"
+"PO-Revision-Date: 2019-07-31 21:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3908,11 +3908,11 @@ msgstr "Ведущие/DJ"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:30
 msgid "Disable streamers?"
-msgstr ""
+msgstr "Отключить стримеров?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:46
 msgid "Enable streamers?"
-msgstr ""
+msgstr "Включить стримеров?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
 msgid "Streams"
@@ -3930,7 +3930,7 @@ msgstr "Загрузить %s"
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
 msgid "Listener Request"
-msgstr ""
+msgstr "Запрос слушателя"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
@@ -3939,19 +3939,19 @@ msgstr "Плейлист:"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Удалить элемент очереди?"
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:24
 msgid "Cued On"
-msgstr ""
+msgstr "В Очереди"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:8
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
-msgstr ""
+msgstr "Отдалённые ретрансляторы позволяют работать с вещательным программным обеспечением вне этого сервера. Любой ретранслятор, который вы включаете здесь, будет включен в статистику вашей станции. Вы также можете транслировать с этого сервера на отдалённые ретрансляторы."
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:37
 msgid "Delete remote relay \"%s\"?"
-msgstr ""
+msgstr "Удалить отдалённый ретранслятор \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:5
@@ -3970,7 +3970,7 @@ msgstr "Название / Путь к файлу"
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:81
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:27
 msgid "Live Listeners"
-msgstr ""
+msgstr "Живые слушатели"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:82
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60

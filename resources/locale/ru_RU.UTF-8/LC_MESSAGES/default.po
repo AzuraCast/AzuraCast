@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 21:50\n"
+"PO-Revision-Date: 2019-07-31 22:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -84,7 +84,7 @@ msgstr "Настраиваемые поля"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr "Бекап"
+msgstr "Резервные копии"
 
 #: /var/azuracast/www/src/Acl.php:196
 msgid "View Station Page"
@@ -664,15 +664,15 @@ msgstr "Слушателей по часам"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:175
 msgid "SoundExchange Report"
-msgstr "Отчет SoundExchange"
+msgstr "Отчёт SoundExchange"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "Streamers enabled!"
-msgstr "Муз-потоки включены!"
+msgstr "Стримеры включены!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "You can now set up streamer (DJ) accounts."
-msgstr "Теперь вы можете настроить учетные записи (DJ) муз-потоков."
+msgstr "Теперь вы можете настроить учетные записи (DJ) стримеров."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
@@ -4132,7 +4132,7 @@ msgstr "Отчет недоступен"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
-msgstr ""
+msgstr "Этот отчет недоступен для этой станции, поскольку системный администратор решил не собирать подробную информацию о слушателе на основе IP-адреса."
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Broadcast"
@@ -4242,7 +4242,7 @@ msgstr "Ничего не найдено!"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:66
 msgid "Errors were encountered when trying to save changes:"
-msgstr ""
+msgstr "При попытке сохранить изменения произошли ошибки:"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:69
 msgid "General"

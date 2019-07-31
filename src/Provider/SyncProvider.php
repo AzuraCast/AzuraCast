@@ -99,8 +99,7 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\App\Radio\AutoDJ::class],
                 $di[\Azura\Cache::class],
                 $di[\InfluxDB\Database::class],
-                $di[\Azura\EventDispatcher::class],
-                $di[\App\MessageQueue::class]
+                $di[\Azura\EventDispatcher::class]
             );
         };
 

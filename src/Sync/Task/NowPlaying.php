@@ -67,7 +67,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Cache $cache
      * @param Database $influx
      * @param EventDispatcher $event_dispatcher
-     * @param MessageQueue $message_queue
      *
      * @see \App\Provider\SyncProvider
      */
@@ -79,8 +78,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         AutoDJ $autodj,
         Cache $cache,
         Database $influx,
-        EventDispatcher $event_dispatcher,
-        MessageQueue $message_queue)
+        EventDispatcher $event_dispatcher)
     {
         parent::__construct($em, $logger);
 
@@ -89,7 +87,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->autodj = $autodj;
         $this->cache = $cache;
         $this->event_dispatcher = $event_dispatcher;
-        $this->message_queue = $message_queue;
         $this->influx = $influx;
 
         $this->history_repo = $em->getRepository(Entity\SongHistory::class);
@@ -382,14 +379,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
         $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
         $this->event_dispatcher->dispatch(SendWebhooks::NAME, $webhook_event);
-
-        // Trigger a delayed NChan notification.
-        $message = new Message\NotifyNChanMessage();
-        $message->station_id = $station->getId();
-        $message->station_shortcode = $station->getShortName();
-        $message->nowplaying = $np_event;
-
-        $this->message_queue->produce($message);
 
         $this->logger->popProcessor();
 

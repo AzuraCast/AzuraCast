@@ -2,6 +2,7 @@
 namespace App\Webhook\Connector;
 
 use App\Http\Router;
+use App\Service\NChan;
 use Azura\Cache;
 use App\Entity;
 use App\Event\SendWebhooks;
@@ -105,6 +106,15 @@ class Local
         }
 
         $static_path = $static_np_dir.'/'.$station->getShortName().'.json';
-        file_put_contents($static_path, json_encode($event->getNowPlaying(), \JSON_PRETTY_PRINT));
+        file_put_contents($static_path, json_encode($np, \JSON_PRETTY_PRINT));
+
+        // Send Nchan notification.
+        if (NChan::isSupported()) {
+            $this->logger->debug('Dispatching Nchan notification in '.Entity\SongHistory::PLAYBACK_DELAY_SECONDS.' seconds...');
+
+            $channel_url = 'http://localhost:9010/pub/'.urlencode($station->getShortName());
+            $shell_cmd = 'sleep '.Entity\SongHistory::PLAYBACK_DELAY_SECONDS.'; curl --request POST --data '.escapeshellarg(json_encode($np)).' '.$channel_url;
+            shell_exec(sprintf('(%s) > /dev/null 2>&1 &', $shell_cmd));
+        }
     }
 }

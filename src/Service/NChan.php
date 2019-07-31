@@ -22,22 +22,6 @@ class NChan
     }
 
     /**
-     * Handle event dispatch.
-     *
-     * @param Message\AbstractMessage $message
-     */
-    public function __invoke(Message\AbstractMessage $message)
-    {
-        if (!$message instanceof Message\NotifyNChanMessage || !self::isSupported()) {
-            return;
-        }
-
-        $this->http_client->post('http://localhost:9010/pub/'.urlencode($message->station_shortcode), [
-            'json' => $message->nowplaying,
-        ]);
-    }
-
-    /**
      * @return bool Whether NChan is expected to be running on this installation.
      */
     public static function isSupported(): bool

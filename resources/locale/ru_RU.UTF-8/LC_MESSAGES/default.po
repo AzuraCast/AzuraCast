@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 19:20\n"
+"PO-Revision-Date: 2019-07-31 19:35\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2323,35 +2323,35 @@ msgstr "Кодировка набора символов"
 
 #: /var/azuracast/www/config/forms/station.php:410
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
-msgstr ""
+msgstr "Для большинства случаев используйте кодировку UTF-8 по умолчанию. При приеме соединений из SHOUTcast 1 DJs или с другими устаревшими программами можно использовать старую кодировку ISO-8859-1."
 
 #: /var/azuracast/www/config/forms/station.php:428
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
-msgstr ""
+msgstr "Этот код будет вставлен в конфигурацию Liquidsoap вашей станции, внизу конфигурации плейлиста и перед выходным сигналом Icecast. Используйте только правильный код Liquidsoap для этого раздела!"
 
 #: /var/azuracast/www/config/forms/station.php:445
 msgid "Enable Broadcasting"
-msgstr ""
+msgstr "Включить трансляцию"
 
 #: /var/azuracast/www/config/forms/station.php:446
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
-msgstr ""
+msgstr "Если отключено, станция не будет транслировать или перетасовывать свой AutoDJ."
 
 #: /var/azuracast/www/config/forms/station.php:457
 msgid "Storage Quota"
-msgstr ""
+msgstr "Квота хранилища"
 
 #: /var/azuracast/www/config/forms/station.php:458
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr ""
+msgstr "Установите максимальное дисковое пространство, которое может использовать эта станция. Укажите размер с единицей, т.е. 8 ГБ. Единицы измеряются в 1024 байтах. Оставьте пустым по умолчанию, для всего доступного пространства на диске."
 
 #: /var/azuracast/www/config/forms/station.php:466
 msgid "Base Station Directory"
-msgstr ""
+msgstr "Базовая папка станции"
 
 #: /var/azuracast/www/config/forms/station.php:468
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
-msgstr ""
+msgstr "Родительская папка, где хранятся плейлисты и конфигурационные файлы. Оставьте пустым, чтобы использовать папку по умолчанию."
 
 #: /var/azuracast/www/config/forms/station.php:476
 msgid "Custom Media Directory"

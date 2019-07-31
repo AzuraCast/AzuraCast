@@ -67,6 +67,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Cache $cache
      * @param Database $influx
      * @param EventDispatcher $event_dispatcher
+     * @param MessageQueue $message_queue
      *
      * @see \App\Provider\SyncProvider
      */
@@ -78,7 +79,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         AutoDJ $autodj,
         Cache $cache,
         Database $influx,
-        EventDispatcher $event_dispatcher)
+        EventDispatcher $event_dispatcher,
+        MessageQueue $message_queue)
     {
         parent::__construct($em, $logger);
 
@@ -87,6 +89,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->autodj = $autodj;
         $this->cache = $cache;
         $this->event_dispatcher = $event_dispatcher;
+        $this->message_queue = $message_queue;
         $this->influx = $influx;
 
         $this->history_repo = $em->getRepository(Entity\SongHistory::class);

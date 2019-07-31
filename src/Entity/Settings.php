@@ -21,6 +21,8 @@ class Settings
     public const ALWAYS_USE_SSL        = 'always_use_ssl';
     public const API_ACCESS_CONTROL    = 'api_access_control';
 
+    public const NOWPLAYING_USE_WEBSOCKETS = 'nowplaying_use_websockets';
+
     public const LISTENER_ANALYTICS    = 'analytics';
     public const CENTRAL_UPDATES       = 'central_updates_channel';
     public const SEND_ERROR_REPORTS    = 'send_error_reports';

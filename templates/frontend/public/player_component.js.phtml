@@ -25,7 +25,7 @@ $props = [
     'show_album_art' => !$customization->hideAlbumArt(),
 ];
 
-if (\App\Service\NChan::isSupported()) {
+if ($customization->useWebSocketsForNowPlaying()) {
     $props['use_nchan'] = true;
     $props['now_playing_uri'] = '/api/live/nowplaying/'.urlencode($station->getShortName());
 } else {

@@ -69,7 +69,19 @@ return [
                             0 => __('Indefinitely'),
                         ],
                         'default' => \App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
-                        'form_group_class' => 'col-sm-12',
+                        'form_group_class' => 'col-sm-6',
+                    ]
+                ],
+
+                Entity\Settings::NOWPLAYING_USE_WEBSOCKETS => [
+                    'toggle',
+                    [
+                        'label' => __('Use WebSockets for Now Playing Updates'),
+                        'description' => __('Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 

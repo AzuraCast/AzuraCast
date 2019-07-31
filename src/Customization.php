@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Service\NChan;
 use Azura\Settings;
 use App\Entity;
 use App\Http\Request;
@@ -244,6 +245,18 @@ class Customization
         }
 
         return $title;
+    }
+
+    /**
+     * @return bool
+     */
+    public function useWebSocketsForNowPlaying(): bool
+    {
+        if (!NChan::isSupported()) {
+            return false;
+        }
+
+        return (bool)$this->settings_repo->getSetting(Entity\Settings::NOWPLAYING_USE_WEBSOCKETS, true);
     }
 
     /**

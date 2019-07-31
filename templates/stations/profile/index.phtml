@@ -18,7 +18,7 @@ $assets
     ->load('fancybox')
     ->addInlineJs($this->fetch('stations/profile/index.js', ['nowplaying' => $nowplaying]), 99);
 
-if (\App\Service\NChan::isSupported()) {
+if ($customization->useWebSocketsForNowPlaying()) {
     $assets->load('nchan');
 }
 ?>

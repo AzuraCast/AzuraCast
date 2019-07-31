@@ -57,6 +57,13 @@ $(function() {
 
                 return formatTime(time_played) + ' / ' + formatTime(time_total);
             }
+        },
+        methods: {
+            "setNowPlaying": function(np_new) {
+                np_new.now_playing.elapsed = this.np.now_playing.elapsed;
+                np_new.now_playing.elapsed = this.np.now_playing.elapsed;
+                this.np = np_new;
+            }
         }
     });
 
@@ -109,13 +116,13 @@ $(function() {
 });
 
 <?php
-if (\App\Service\NChan::isSupported()):
+if ($customization->useWebSocketsForNowPlaying()):
 ?>
 $(function() {
     var sub = new NchanSubscriber('/api/live/nowplaying/<?=urlencode($station->getShortName()) ?>');
 
     sub.on("message", function(message, message_metadata) {
-        nowPlaying.np = JSON.parse(message);
+        nowPlaying.setNowPlaying(JSON.parse(message));
     });
     sub.start();
 });
@@ -132,8 +139,7 @@ function loadNowPlaying() {
         dataType: "json",
         url: '<?=$router->fromHere('api:nowplaying:index') ?>',
         success: function(row) {
-            nowPlaying.np = row;
-
+            nowPlaying.setNowPlaying(row);
             nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
         }
     }).fail(function() {

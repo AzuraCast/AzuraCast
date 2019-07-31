@@ -20,7 +20,7 @@ $(function() {
 });
 
 <?php
-if (\App\Service\NChan::isSupported()):
+if ($customization->useWebSocketsForNowPlaying()):
 ?>
     $(function() {
         var sub = new NchanSubscriber('/api/live/nowplaying/<?=implode(',', $station_ids) ?>');

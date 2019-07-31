@@ -383,6 +383,8 @@ export default {
             }
         },
         "handleNewNowPlaying": function(np_new) {
+            np_new.now_playing.elapsed = this.np.now_playing.elapsed;
+            np_new.now_playing.elapsed = this.np.now_playing.elapsed;
             this.np = np_new;
 
             // Set a "default" current stream if none exists.

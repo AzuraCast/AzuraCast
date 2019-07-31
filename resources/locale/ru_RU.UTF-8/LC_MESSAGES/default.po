@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 22:40\n"
+"PO-Revision-Date: 2019-07-31 22:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2673,7 +2673,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:74
 msgid "No Limit"
-msgstr "Без ограничения"
+msgstr "Без ограничений"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:75
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
@@ -3608,7 +3608,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:65
 msgid "Set Playlists"
-msgstr "В плейлист"
+msgstr "Выбрать плейлист"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:82
 msgid "New Playlist"
@@ -4148,7 +4148,7 @@ msgstr "Пожалуйста, подождите..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:16
 msgid "Station Time"
-msgstr "Название станции"
+msgstr "Время станции"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."

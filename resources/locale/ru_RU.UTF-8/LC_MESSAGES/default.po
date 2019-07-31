@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 20:50\n"
+"PO-Revision-Date: 2019-07-31 21:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3170,11 +3170,11 @@ msgstr "Создан новый ключ"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:14
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
-msgstr ""
+msgstr "<b>Важно: скопируйте ключ ниже перед продолжением!</b> Вы не сможете его снова получить."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:16
 msgid "Your full API key is below:"
-msgstr ""
+msgstr "Ваш полный API ключ ниже:"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:21
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:43
@@ -3184,15 +3184,15 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:40
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:48
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Копировать в буфер обмена"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:25
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr ""
+msgstr "При вызове API вы можете передать это значение в заголовке \"X-API-Key\", чтобы аутентифицировать себя. Вы можете выполнять только те действия, которые разрешено выполнять вашей учетной записи."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:28
 msgid "Continue"
-msgstr ""
+msgstr "Продолжить"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:11
 #: /var/azuracast/www/templates/main.phtml:64
@@ -3203,7 +3203,7 @@ msgstr "Панель управления"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "Пользователь AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
@@ -3232,84 +3232,84 @@ msgstr "Сейчас играет"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
-msgstr ""
+msgstr "Ошибка: Нет доступных станций"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:4
 msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
-msgstr ""
+msgstr "Ваша учетная запись активна, но в настоящее время не связана с какими-либо станциями. Если вы считаете, что это ошибка, пожалуйста, свяжитесь с администратором этого сервера."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "Включить двухфакторную аутентификацию"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:16
 msgid "Step 1: Scan QR Code"
-msgstr ""
+msgstr "Шаг 1: Сканировать QR-код"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:18
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
-msgstr ""
+msgstr "С вашего смартфона, сканируйте код справа, используя приложение аутентификации по вашему выбору (FreeOTP, Authy и т.д.)."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:20
 msgid "Step 2: Verify Generated Code"
-msgstr ""
+msgstr "Шаг 2: Подтвердить сгенерированный код"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:22
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
-msgstr ""
+msgstr "Чтобы проверить правильность установки кода, введите 6-значный код, который приложение покажет вам."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "QR-код"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:58
 msgid "Customize"
-msgstr ""
+msgstr "Настроить"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:66
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Двухфакторная аутентификация"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:75
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "Двухфакторная проверка подлинности повышает безопасность вашей учетной записи, требуя второй разовый код доступа в дополнение к вашему паролю при входе в систему."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:81
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "Отключить двухфакторный"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:86
 msgid "Enable Two-Factor"
-msgstr ""
+msgstr "Включить двухфакторный"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
-msgstr ""
+msgstr "Микрофон"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:13
 msgid "Mixer"
-msgstr ""
+msgstr "Микшер"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"
-msgstr ""
+msgstr "Плейлист 1"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:15
 msgid "Playlist 2"
-msgstr ""
+msgstr "Плейлист 2"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:18
 msgid "Encoder"
-msgstr ""
+msgstr "Кодировщик"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:19
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:20
 msgid "Raw"
-msgstr ""
+msgstr "Исходное"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
@@ -3718,7 +3718,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Export %s"
-msgstr ""
+msgstr "Экспорт %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
 msgid "Song-based"
@@ -3726,7 +3726,7 @@ msgstr "Песня на основе"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:89
 msgid "Jingle Mode"
-msgstr ""
+msgstr "Режим Джингла"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:95
 msgid "Auto-Assigned"
@@ -3738,7 +3738,7 @@ msgstr "Вес"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Plays at %s"
-msgstr ""
+msgstr "Играет в %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:110
 msgid "Plays between %s and %s"
@@ -3754,11 +3754,11 @@ msgstr "Раз в %d минут"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:117
 msgid "Once per Hour (at :%02d)"
-msgstr ""
+msgstr "Один раз в час (в :%02d)"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:119
 msgid "Custom"
-msgstr ""
+msgstr "Собственные"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:3
 msgid "Reorder Playlist"

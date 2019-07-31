@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 22:00\n"
+"PO-Revision-Date: 2019-07-31 22:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -864,7 +864,7 @@ msgstr "Использовать <b>%s</b> на этом сервере"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:146
 msgid "Connect to a <b>remote radio server</b>"
-msgstr "Подключиться к <b>удаленному радиосерверу</b>"
+msgstr "Подключиться к <b>отдалённому радио-серверу</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:177
 msgid "<b>Do not use</b> an AutoDJ service"
@@ -1102,7 +1102,7 @@ msgstr "Имя файла резервной копии"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr "Необязательно. Абсолютный или относительный путь, где должен находится файл резервной копии."
+msgstr "По желанию. Абсолютный или относительный путь, где должен находится файл резервной копии."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"

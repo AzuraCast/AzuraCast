@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-30 23:50\n"
+"PO-Revision-Date: 2019-07-31 00:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1920,11 +1920,11 @@ msgstr "Это имя появится в виде подзаголовка ря
 
 #: /var/azuracast/www/config/forms/settings.php:37
 msgid "Prefer Browser URL (If Available)"
-msgstr ""
+msgstr "Предпочтительный URL браузера (если доступно)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Если эта настройка установлена на \"Да\", URL браузера будет использоваться вместо базового URL, когда он доступен. Установите \"Нет\" для всегда использовать базовый URL."
 
 #: /var/azuracast/www/config/forms/settings.php:49
 msgid "Use Web Proxy for Radio"
@@ -1936,11 +1936,11 @@ msgstr "По умолчанию радиостанции транслируют�
 
 #: /var/azuracast/www/config/forms/settings.php:61
 msgid "Days of Playback History to Keep"
-msgstr ""
+msgstr "Дни истории воспроизведения, чтобы сохранить"
 
 #: /var/azuracast/www/config/forms/settings.php:62
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
-msgstr ""
+msgstr "Установить больше времени для сохранения истории воспроизведения станций. Установите меньше, чтобы сохранить дисковое пространство."
 
 #: /var/azuracast/www/config/forms/settings.php:64
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
@@ -1960,11 +1960,11 @@ msgstr "Последние 60 дней"
 
 #: /var/azuracast/www/config/forms/settings.php:67
 msgid "Last Year"
-msgstr ""
+msgstr "Прошлый год"
 
 #: /var/azuracast/www/config/forms/settings.php:68
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Последние 2 года"
 
 #: /var/azuracast/www/config/forms/settings.php:69
 msgid "Indefinitely"
@@ -1972,27 +1972,27 @@ msgstr "Неопределенный"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Security Controls"
-msgstr ""
+msgstr "Контроль безопасности"
 
 #: /var/azuracast/www/config/forms/settings.php:86
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "Всегда использовать HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:87
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Установите \"Да\" для того, чтобы всегда использовать \"https://\" безопасные URL, и автоматически перенаправлять на безопасный URL, когда посещается небезопасный URL."
 
 #: /var/azuracast/www/config/forms/settings.php:97
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "Заголовок API \"Access-Control-Allow-Origin\""
 
 #: /var/azuracast/www/config/forms/settings.php:99
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Узнайте больше об этом заголовке</a>. Установите * для разрешения всех источников или укажите список источников, разделенных запятой (,)."
 
 #: /var/azuracast/www/config/forms/settings.php:108
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Контроль конфиденциальности"
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."

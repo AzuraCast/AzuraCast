@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 16:40\n"
+"PO-Revision-Date: 2019-07-31 17:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1652,7 +1652,7 @@ msgstr "Проигрывать только один трек в заплани�
 
 #: /var/azuracast/www/config/forms/playlist.php:231
 msgid "Merge playlist to play as a single track."
-msgstr ""
+msgstr "Объединить плейлист, чтобы играть как один трек."
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Include in Automated Assignment"

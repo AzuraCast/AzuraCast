@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 20:10\n"
+"PO-Revision-Date: 2019-07-31 20:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2588,12 +2588,12 @@ msgstr "Если ваш веб-хук требует базовой аутент
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 msgid "Bot Token"
-msgstr ""
+msgstr "Токен бота"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:29
 #: /var/azuracast/www/config/forms/webhook/telegram.php:94
 msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
-msgstr ""
+msgstr "Подробнее читайте в <a href=\"%s\" target=\"_blank\">документации Telegram</a>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:39
 msgid "Chat ID"
@@ -2601,40 +2601,40 @@ msgstr "Чат ID"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:40
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
-msgstr ""
+msgstr "Уникальный идентификатор для назначенного чата или имя пользователя назначенного канала (в формате @channelusername)."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:50
 msgid "Custom API Base URL"
-msgstr ""
+msgstr "Базовый URL Пользовательского API"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:52
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
-msgstr ""
+msgstr "Оставьте пустым, чтобы использовать URL Telegram API по умолчанию (рекомендуется). Укажите полный URL, например: <code>https://api.pwrtelegram.xyz/</code>."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:84
 #: /var/azuracast/www/config/forms/webhook/twitter.php:122
 msgid "Now playing on %s: %s by %s! Tune in now."
-msgstr ""
+msgstr "Сейчас играет на %s: %s от %s! Настройтесь сейчас."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:93
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Режим парсинга сообщений"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:27
 msgid "TuneIn Station ID"
-msgstr ""
+msgstr "ID станции TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:28
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr ""
+msgstr "ID станции будет числовой строкой, которая начинается с буквы S."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:38
 msgid "TuneIn Partner ID"
-msgstr ""
+msgstr "ID партнера TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:48
 msgid "TuneIn Partner Key"
-msgstr ""
+msgstr "Ключ партнера TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Twitter Account Details"
@@ -3028,27 +3028,27 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
-msgstr ""
+msgstr "Средняя нагрузка ЦП за 15 минут"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"
-msgstr ""
+msgstr "Используется %s из %s"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:68
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Задачи синхронизации"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:83
 msgid "Run Task"
-msgstr ""
+msgstr "Выполнить задачу"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast установлен"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
-msgstr ""
+msgstr "DNAS SHOUTcast 2 установлен и готов к использованию."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:16
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."

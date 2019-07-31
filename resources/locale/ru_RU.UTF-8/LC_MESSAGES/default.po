@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 21:40\n"
+"PO-Revision-Date: 2019-07-31 21:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -4019,7 +4019,7 @@ msgstr "Мобильное устройство"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:54
 msgid "Desktop Device"
-msgstr ""
+msgstr "Устройство рабочего стола"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:66
 msgid "Unknown"
@@ -4027,11 +4027,11 @@ msgstr "Неизвестно"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:73
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr ""
+msgstr "Этот продукт включает данные GeoLite2, созданный MaxMind, доступные от %s."
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
-msgstr ""
+msgstr "Час"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
@@ -4091,11 +4091,11 @@ msgstr "Плейлист(ы)"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:36
 msgid "Joins"
-msgstr ""
+msgstr "Подключено"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:37
 msgid "Losses"
-msgstr ""
+msgstr "Потеряно"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:38
 msgid "Total"
@@ -4103,7 +4103,7 @@ msgstr "Всего"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:40
 msgid "Play %"
-msgstr ""
+msgstr "Играет %"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:41
 msgid "Ratio"
@@ -4111,11 +4111,11 @@ msgstr "Коэффициент"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:18
 msgid "Date Requested"
-msgstr ""
+msgstr "Дата запроса"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:19
 msgid "Date Played"
-msgstr ""
+msgstr "Дата проигрывания"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:21
 msgid "Requester IP"
@@ -4123,7 +4123,7 @@ msgstr "IP заказавшего"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:35
 msgid "Not Played"
-msgstr ""
+msgstr "Не сыграно"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5

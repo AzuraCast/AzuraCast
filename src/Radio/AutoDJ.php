@@ -224,16 +224,20 @@ class AutoDJ implements EventSubscriberInterface
      */
     public function calculateNextSong(GetNextSong $event): void
     {
+        $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
+
         $station = $event->getStation();
         $now = Chronos::now(new \DateTimeZone($station->getTimezone()));
 
         $song_history_count = 15;
 
         // Pull all active, non-empty playlists and sort by type.
+        $has_any_valid_playlists = false;
         $playlists_by_type = [];
         foreach($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             if ($playlist->isPlayable()) {
+                $has_any_valid_playlists = true;
                 $type = $playlist->getType();
 
                 if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $type) {
@@ -242,6 +246,11 @@ class AutoDJ implements EventSubscriberInterface
 
                 $playlists_by_type[$type][$playlist->getId()] = $playlist;
             }
+        }
+
+        if (!$has_any_valid_playlists) {
+            $this->logger->error('No valid playlists detected. Skipping AutoDJ calculations.');
+            return;
         }
 
         // Pull all recent cued songs for easy referencing below.
@@ -282,7 +291,7 @@ class AutoDJ implements EventSubscriberInterface
                 continue;
             }
 
-            $this->logger->debug(sprintf('Playable playlists of type "%s" found.', $type), $eligible_playlists);
+            $this->logger->info(sprintf('Playable playlists of type "%s" found.', $type), $eligible_playlists);
 
             // Shuffle playlists by weight.
             $rand = random_int(1, (int)array_sum($eligible_playlists));
@@ -292,11 +301,14 @@ class AutoDJ implements EventSubscriberInterface
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
                     if ($event->setNextSong($this->_playSongFromPlaylist($playlist, $cued_song_history))) {
+                        $this->logger->info('Playable track found and registered.');
                         return;
                     }
                 }
             }
         }
+
+        $this->logger->error('No playable tracks were found.');
     }
 
     /**
@@ -422,9 +434,15 @@ class AutoDJ implements EventSubscriberInterface
                 break;
         }
 
-        return ($media_id)
-            ? $this->em->find(Entity\StationMedia::class, $media_id)
-            : null;
+        if (!$media_id) {
+            $this->logger->error(sprintf('Playlist "%s" has no playable tracks.', $playlist->getName()), [
+                'playlist_id' => $playlist->getId(),
+                'playlist_order' => $playlist->getOrder(),
+            ]);
+            return null;
+        }
+
+        return $this->em->find(Entity\StationMedia::class, $media_id);
     }
 
     /**
@@ -464,7 +482,7 @@ class AutoDJ implements EventSubscriberInterface
 
             if (!in_array($media['artist'], $artists, true)) {
                 $media_id_to_play = $media['id'];
-                $this->logger->debug('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
+                $this->logger->info('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
                 return $media_id_to_play;
             }
 
@@ -480,7 +498,7 @@ class AutoDJ implements EventSubscriberInterface
                 $media = current($without_same_title);
                 $media_id_to_play = $media['id'];
 
-                $this->logger->debug('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
+                $this->logger->info('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
                 return $media_id_to_play;
             }
 
@@ -502,7 +520,7 @@ class AutoDJ implements EventSubscriberInterface
 
             $media_id_to_play = key($media_ids_by_time_played);
 
-            $this->logger->debug('No way to avoid same title OR same artist; using least recently played song.', ['media_id' => $media_id_to_play]);
+            $this->logger->warning('No way to avoid same title OR same artist; using least recently played song.', ['media_id' => $media_id_to_play]);
             return $media_id_to_play;
         }
 

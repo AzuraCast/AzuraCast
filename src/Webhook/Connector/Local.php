@@ -110,7 +110,7 @@ class Local
 
         // Send Nchan notification.
         if (NChan::isSupported()) {
-            $this->logger->debug('Dispatching Nchan notification in '.Entity\SongHistory::PLAYBACK_DELAY_SECONDS.' seconds...');
+            $this->logger->debug('Dispatching Nchan notification...');
 
             $this->http_client->post('http://localhost:9010/pub/'.urlencode($station->getShortName()), [
                 'json' => $np,

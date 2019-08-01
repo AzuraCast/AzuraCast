@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-01 22:10\n"
+"PO-Revision-Date: 2019-08-01 22:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2123,32 +2123,32 @@ msgstr "Показывать станцию на публичных страни
 
 #: /var/azuracast/www/config/forms/station.php:94
 msgid "URL Stub"
-msgstr ""
+msgstr "Заглушка URL-адреса"
 
 #: /var/azuracast/www/config/forms/station.php:96
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
-msgstr ""
+msgstr "При желании укажите короткое имя, подходящее для URL, например <code>my_station_name</code>, которое будет использоваться в URL-адресах этой станции. Оставьте это поле пустым, чтобы автоматически создать на основе названия станции."
 
 #: /var/azuracast/www/config/forms/station.php:104
 msgid "Number of Recently Played Songs"
-msgstr ""
+msgstr "Количество Недавно Сыгранных Песен"
 
 #: /var/azuracast/www/config/forms/station.php:106
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr ""
+msgstr "Настройте количество песен, которые будут отображаться в разделе «История песен» для этой станции и во всех общедоступных API."
 
 #: /var/azuracast/www/config/forms/station.php:128
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:16
 msgid "Broadcasting Service"
-msgstr ""
+msgstr "Сервис Вещания"
 
 #: /var/azuracast/www/config/forms/station.php:129
 msgid "This software delivers your broadcast to the listening audience."
-msgstr ""
+msgstr "Это программное обеспечение доставляет вашу трансляцию для слушателей."
 
 #: /var/azuracast/www/config/forms/station.php:147
 msgid "Customize Broadcasting Port"
-msgstr ""
+msgstr "Настроить порт вещания"
 
 #: /var/azuracast/www/config/forms/station.php:149
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
@@ -2164,7 +2164,7 @@ msgstr "Максимальное количество слушателей. Ос
 
 #: /var/azuracast/www/config/forms/station.php:169
 msgid "Customize Source Password"
-msgstr ""
+msgstr "Настроить Source Пароль"
 
 #: /var/azuracast/www/config/forms/station.php:171
 #: /var/azuracast/www/config/forms/station.php:182

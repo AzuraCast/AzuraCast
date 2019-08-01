@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-01 21:50\n"
+"PO-Revision-Date: 2019-08-01 22:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2040,23 +2040,23 @@ msgstr "<b>Нет:</b> Не проверять наличие обновлени
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>Только релиз:</b> Критические объявления и только новые версии релизов."
 
 #: /var/azuracast/www/config/forms/settings.php:145
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>Все Обновления:</b> Включает все объявления и незначительные обновления."
 
 #: /var/azuracast/www/config/forms/settings.php:154
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Автоматически отправлять отчёты об ошибках в AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Если веб-приложение сталкивается с ошибкой, вы можете автоматически отправить анонимный отчет об ошибке команде AzuraCast для более быстрой диагностики и устранения."
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr ""
+msgstr "Отчеты об ошибках основаны на <a href=\"%s\" target=\"_blank\">%s</a>."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
@@ -2091,19 +2091,19 @@ msgstr "Администрирование"
 #: /var/azuracast/www/config/forms/station.php:46
 #: /var/azuracast/www/config/forms/webhook/discord.php:80
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: /var/azuracast/www/config/forms/station.php:54
 msgid "Genre"
-msgstr ""
+msgstr "Жанр"
 
 #: /var/azuracast/www/config/forms/station.php:62
 msgid "Web Site URL"
-msgstr ""
+msgstr "URL веб-сайта"
 
 #: /var/azuracast/www/config/forms/station.php:63
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
-msgstr ""
+msgstr "Примечание. Это должна быть общедоступная домашняя страница радиостанции, а не URL-адрес AzuraCast. Она будет включена в подробности вещания."
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Time Zone"

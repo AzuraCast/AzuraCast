@@ -703,8 +703,6 @@ class StationMedia
             $annotations[$annotation_name] = $prop;
         }
 
-        $annotations['genre'] = $this->id;
-
         return $annotations;
     }
 

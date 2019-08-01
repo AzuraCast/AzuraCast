@@ -219,6 +219,7 @@ export default {
                 },
                 "song_history": {},
             },
+            "np_elapsed": 0,
             "is_playing": false,
             "volume": 55,
             "current_stream": {
@@ -294,7 +295,7 @@ export default {
             return all_streams;
         },
         "time_percent": function() {
-            let time_played = this.np.now_playing.elapsed;
+            let time_played = this.np_elapsed;
             let time_total = this.np.now_playing.duration;
 
             if (!time_total) {
@@ -307,7 +308,7 @@ export default {
             return (time_played / time_total) * 100;
         },
         "time_display_played": function() {
-            let time_played = this.np.now_playing.elapsed;
+            let time_played = this.np_elapsed;
             let time_total = this.np.now_playing.duration;
 
             if (!time_total) {
@@ -366,8 +367,21 @@ export default {
         },
         "checkNowPlaying": function() {
             if (this.use_nchan) {
+                let is_first_message = true;
+
                 this.nchan_subscriber = new NchanSubscriber(this.now_playing_uri);
                 this.nchan_subscriber.on("message", (message, message_metadata) => {
+                    let np_new = JSON.parse(message);
+
+                    if (is_first_message) {
+                        this.handleNewNowPlaying(np_new);
+                        is_first_message = false;
+                    } else {
+                        setTimeout(() => {
+                            this.handleNewNowPlaying(np_new);
+                        }, 5000);
+                    }
+
                     this.handleNewNowPlaying(JSON.parse(message));
                 });
                 this.nchan_subscriber.start();
@@ -383,8 +397,6 @@ export default {
             }
         },
         "handleNewNowPlaying": function(np_new) {
-            np_new.now_playing.elapsed = this.np.now_playing.elapsed;
-            np_new.now_playing.elapsed = this.np.now_playing.elapsed;
             this.np = np_new;
 
             // Set a "default" current stream if none exists.
@@ -421,7 +433,7 @@ export default {
             } else if (np_elapsed >= this.np.now_playing.duration) {
                 np_elapsed = this.np.now_playing.duration;
             }
-            this.np.now_playing.elapsed = np_elapsed;
+            this.np_elapsed = np_elapsed;
         },
         "formatTime": function(time) {
             let sec_num = parseInt(time, 10);

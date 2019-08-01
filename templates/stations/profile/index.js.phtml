@@ -122,7 +122,11 @@ $(function() {
     var sub = new NchanSubscriber('/api/live/nowplaying/<?=urlencode($station->getShortName()) ?>');
 
     sub.on("message", function(message, message_metadata) {
-        nowPlaying.setNowPlaying(JSON.parse(message));
+        var np_new = JSON.parse(message);
+
+        setTimeout(function() {
+            nowPlaying.setNowPlaying(np_new);
+        }, 5000);
     });
     sub.start();
 });

@@ -1,0 +1,9 @@
+$(function() {
+    moment.relativeTimeThreshold('ss', 1);
+    moment.relativeTimeRounding(function(value) { return Math.round(value * 10) / 10; });
+
+    $('time[data-content]').each(function() {
+        let tz_display = $(this).data('content');
+        $(this).text(moment(tz_display).format('LT'));
+    });
+});

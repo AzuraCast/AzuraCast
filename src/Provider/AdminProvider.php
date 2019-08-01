@@ -88,6 +88,12 @@ class AdminProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Admin\RelaysController::class] = function($di) {
+            return new Admin\RelaysController(
+                $di[EntityManager::class]
+            );
+        };
+
         $di[Admin\SettingsController::class] = function($di) {
             /** @var \Azura\Config $config */
             $config = $di[\Azura\Config::class];

@@ -70,6 +70,11 @@ return function(\App\Event\BuildAdminMenu $e) {
                     'url' => $router->named('admin:custom_fields:index'),
                     'permission' => Acl::GLOBAL_CUSTOM_FIELDS,
                 ],
+                'relays' => [
+                    'label' => __('Connected AzuraRelays'),
+                    'url' => $router->named('admin:relays:index'),
+                    'permission' => Acl::GLOBAL_STATIONS,
+                ],
                 'shoutcast' => [
                     'label' => __('Install SHOUTcast'),
                     'url' => $router->named('admin:install:shoutcast'),

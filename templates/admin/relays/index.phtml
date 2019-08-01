@@ -1,0 +1,43 @@
+<?php
+$this->layout('main', [
+    'title' => __('Connected AzuraRelays'),
+    'manual' => true
+]);
+
+/** @var \Azura\Assets $assets */
+$assets
+    ->load('moment')
+    ->addInlineJs($this->fetch('admin/relays/index.js'));
+?>
+
+<div class="card">
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=__('Connected AzuraRelays') ?></h2>
+    </div>
+    <table class="table table-responsive-md table-striped mb-0">
+        <thead>
+            <tr>
+                <th style="width: 35%"><?=__('Relay') ?></th>
+                <th style="width: 15%"><?=__('Is Public') ?></th>
+                <th style="width: 25%"><?=__('First Connected') ?></th>
+                <th style="width: 25%"><?=__('Latest Update') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($relays as $row): ?>
+            <tr class="align-middle">
+                <td class="text-center">
+                    <big>
+                        <a href="<?=$this->e($row['base_url']) ?>" target="_blank"><?=$this->e($row['name']) ?></a>
+                    </big>
+                </td>
+                <td class="text-center">
+                    <?=($row['is_visible_on_public_pages'] ? __('Yes') : __('No')) ?>
+                </td>
+                <td><time data-content="<?=$row['created_at'] ?>"></time></td>
+                <td><time data-content="<?=$row['updated_at'] ?>"></time></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

@@ -110,6 +110,10 @@ return function(App $app)
 
         })->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
 
+        $this->get('/relays', Controller\Admin\RelaysController::class)
+            ->setName('admin:relays:index')
+            ->add([Middleware\Permissions::class, Acl::GLOBAL_STATIONS]);
+
         $this->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class.':indexAction')
             ->setName('admin:settings:index')
             ->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);

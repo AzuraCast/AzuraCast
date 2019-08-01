@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-31 23:10\n"
+"PO-Revision-Date: 2019-08-01 21:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1203,7 +1203,7 @@ msgstr "Это будет использоваться как метка при 
 #: /var/azuracast/www/config/forms/custom_field.php:22
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:23
 msgid "Programmatic Name"
-msgstr "Название программы"
+msgstr "Программируемое Название"
 
 #: /var/azuracast/www/config/forms/custom_field.php:23
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
@@ -2024,19 +2024,19 @@ msgstr "Телеметрия установки AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Выберите, будет ли ваша установка взаимодействовать с центральными серверами AzuraCast для проверки обновлений и объявлений. <br>AzuraCast уважает вашу конфиденциальность; смотрите нашу  <a href=\"%s\" target=\"_blank\">политику конфиденциальности</a> для получения более подробной информации."
 
 #: /var/azuracast/www/config/forms/settings.php:139
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Проверьте наличие обновлений и объявлений"
 
 #: /var/azuracast/www/config/forms/settings.php:140
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Отправьте минимальную информацию о вашей установке AzuraCast на центральный сервер AzuraCast, чтобы проверить наличие обновленных версий программного обеспечения и важных объявлений."
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>Нет:</b> Не проверять наличие обновлений или объявлений."
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."

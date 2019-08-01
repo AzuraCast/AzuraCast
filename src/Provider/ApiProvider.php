@@ -34,7 +34,8 @@ class ApiProvider implements ServiceProviderInterface
             return new Api\InternalController(
                 $di[App\Acl::class],
                 $di[App\Sync\Task\NowPlaying::class],
-                $di[App\Radio\AutoDJ::class]
+                $di[App\Radio\AutoDJ::class],
+                $di[\Monolog\Logger::class]
             );
         };
 

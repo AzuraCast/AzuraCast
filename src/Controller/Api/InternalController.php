@@ -8,6 +8,7 @@ use App\Sync\Task\NowPlaying;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 class InternalController
@@ -21,18 +22,27 @@ class InternalController
     /** @var AutoDJ */
     protected $autodj;
 
+    /** @var Logger */
+    protected $logger;
+
     /**
      * @param Acl $acl
      * @param NowPlaying $sync_nowplaying
      * @param AutoDJ $autodj
+     * @param Logger $logger
      *
      * @see \App\Provider\ApiProvider
      */
-    public function __construct(Acl $acl, NowPlaying $sync_nowplaying, AutoDJ $autodj)
-    {
+    public function __construct(
+        Acl $acl,
+        NowPlaying $sync_nowplaying,
+        AutoDJ $autodj,
+        Logger $logger
+    ) {
         $this->acl = $acl;
         $this->sync_nowplaying = $sync_nowplaying;
         $this->autodj = $autodj;
+        $this->logger = $logger;
     }
 
     public function authAction(Request $request, Response $response): ResponseInterface
@@ -41,6 +51,11 @@ class InternalController
 
         $station = $request->getStation();
         if (!$station->getEnableStreamers()) {
+            $this->logger->error('Attempted DJ authentication when streamers are disabled on this station.', [
+                'station_id' => $station->getId(),
+                'station_name' => $station->getName(),
+            ]);
+
             return $response->write('false');
         }
 
@@ -70,7 +85,14 @@ class InternalController
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus($request->getStation(), true);
+            $station = $request->getStation();
+
+            $this->logger->info('Received "DJ connected" ping from Liquidsoap.', [
+                'station_id' => $station->getId(),
+                'station_name' => $station->getName(),
+            ]);
+
+            $adapter->toggleLiveStatus($station, true);
         }
 
         return $response->write('received');
@@ -82,7 +104,14 @@ class InternalController
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus($request->getStation(), false);
+            $station = $request->getStation();
+
+            $this->logger->info('Received "DJ disconnected" ping from Liquidsoap.', [
+                'station_id' => $station->getId(),
+                'station_name' => $station->getName(),
+            ]);
+
+            $adapter->toggleLiveStatus($station, false);
         }
 
         return $response->write('received');
@@ -123,7 +152,12 @@ class InternalController
 
         $auth_key = $request->getParam('api_auth');
         if (!$station->validateAdapterApiKey($auth_key)) {
-            throw new \App\Exception\PermissionDenied();
+            $this->logger->error('Invalid API key supplied for internal API call.', [
+                'station_id' => $station->getId(),
+                'station_name' => $station->getName(),
+            ]);
+
+            throw new \App\Exception\PermissionDenied;
         }
     }
 }

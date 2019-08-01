@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-01 22:00\n"
+"PO-Revision-Date: 2019-08-01 22:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2111,15 +2111,15 @@ msgstr "Часовой пояс"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Запланированные плейлисты и другие синхронизированные элементы будут контролироваться этим часовым поясом."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
-msgstr ""
+msgstr "Включить Публичную Страницу"
 
 #: /var/azuracast/www/config/forms/station.php:83
 msgid "Show the station in public pages and general API results."
-msgstr ""
+msgstr "Показывать станцию на публичных страницах и общих результатах API."
 
 #: /var/azuracast/www/config/forms/station.php:94
 msgid "URL Stub"

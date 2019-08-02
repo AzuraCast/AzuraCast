@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 08:40\n"
+"PO-Revision-Date: 2019-08-02 09:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2235,7 +2235,7 @@ msgstr "Разрешить заказ песен"
 
 #: /var/azuracast/www/config/forms/station.php:272
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
-msgstr ""
+msgstr "Включение этого параметра позволяет слушателям заказать песню для воспроизведения на вашей станции. Запрошены могут быть только те песни, которые находятся в ваших плейлистах."
 
 #: /var/azuracast/www/config/forms/station.php:283
 msgid "Request Minimum Delay (Minutes)"
@@ -2259,7 +2259,7 @@ msgstr "Разрешить ведущих/DJ"
 
 #: /var/azuracast/www/config/forms/station.php:308
 msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
-msgstr ""
+msgstr "Если включено, стримеры (или диджеи) смогут напрямую подключаться к вашему потоку и транслировать живую музыку, которая прерывает поток АвтоДиджея."
 
 #: /var/azuracast/www/config/forms/station.php:319
 msgid "Deactivate Streamer on Disconnect (Seconds)"

@@ -5,46 +5,22 @@
  */
 ?>
 
-var nowPlaying, nowPlayingTimeout;
-
-function iterateTimer() {
-    var current_time = Math.floor(Date.now() / 1000);
-    var np_elapsed = current_time - nowPlaying.np.now_playing.played_at;
-    if (np_elapsed < 0) {
-        np_elapsed = 0;
-    } else if (np_elapsed >= nowPlaying.np.now_playing.duration) {
-        np_elapsed = nowPlaying.np.now_playing.duration;
-    }
-
-    nowPlaying.np.now_playing.elapsed = np_elapsed;
-}
-
-function formatTime(time) {
-    var sec_num = parseInt(time, 10);
-
-    var hours = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
-}
+var nowPlaying, backendStatus, frontendStatus;
 
 $(function() {
     nowPlaying = new Vue({
         el: '#profile-nowplaying',
-        data: <?=json_encode(['np' => $nowplaying]) ?>,
+        data: {
+            np: <?=json_encode($nowplaying) ?>,
+            np_elapsed: 0,
+            clock_interval: null
+        },
+        created: function() {
+            this.clock_interval = setInterval(this.iterateTimer, 1000);
+        },
         computed: {
             "time_display": function() {
-                var time_played = this.np.now_playing.elapsed;
+                var time_played = this.np_elapsed;
                 var time_total = this.np.now_playing.duration;
 
                 if (!time_total) {
@@ -55,26 +31,58 @@ $(function() {
                     time_played = time_total;
                 }
 
-                return formatTime(time_played) + ' / ' + formatTime(time_total);
+                return this.formatTime(time_played) + ' / ' + this.formatTime(time_total);
             }
         },
         methods: {
             "setNowPlaying": function(np_new) {
-                np_new.now_playing.elapsed = this.np.now_playing.elapsed;
-                np_new.now_playing.elapsed = this.np.now_playing.elapsed;
                 this.np = np_new;
+            },
+            "formatTime": function(time) {
+                var sec_num = parseInt(time, 10);
+
+                var hours = Math.floor(sec_num / 3600);
+                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+                if (hours < 10) {
+                    hours = "0" + hours;
+                }
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+                return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
+            },
+            "iterateTimer": function() {
+                var current_time = Math.floor(Date.now() / 1000);
+                var np_elapsed = current_time - this.np.now_playing.played_at;
+                if (np_elapsed < 0) {
+                    np_elapsed = 0;
+                } else if (np_elapsed >= this.np.now_playing.duration) {
+                    np_elapsed = this.np.now_playing.duration;
+                }
+
+                this.np_elapsed = np_elapsed;
             }
         }
     });
 
-    setInterval(iterateTimer, 1000);
+    backendStatus = new Vue({
+        el: '#profile-backend',
+        data: {
+            is_running: false
+        }
+    });
 
-    var service_status_lang = {
-        "running": <?=$this->escapeJs(__('Running')) ?>,
-        "not_running": <?=$this->escapeJs(__('Not Running')) ?>
-    };
-
-    var is_first_load = true;
+    frontendStatus = new Vue({
+        el: '#profile-frontend',
+        data: {
+            is_running: false
+        }
+    });
 
     function checkServiceStatus() {
         $.ajax({
@@ -82,30 +90,9 @@ $(function() {
             dataType: "json",
             url: '<?=$router->fromHere('api:stations:status') ?>',
             success: function(data) {
-                var backend_status = $('#backend_status');
-                backend_status.removeClass('badge-success badge-danger');
-
-                if (data.backend_running) {
-                    backend_status.addClass('badge-success').text(service_status_lang.running);
-                } else {
-                    backend_status.addClass('badge-danger').text(service_status_lang.not_running);
-                }
-
-                var frontend_status = $('#frontend_status');
-                frontend_status.removeClass('badge-success badge-danger');
-
-                if (data.frontend_running) {
-                    frontend_status.addClass('badge-success').text(service_status_lang.running);
-                } else {
-                    frontend_status.addClass('badge-danger').text(service_status_lang.not_running);
-                }
-
-                if (is_first_load) {
-                    setTimeout(checkServiceStatus, 5000);
-                    is_first_load = false;
-                } else {
-                    setTimeout(checkServiceStatus, 15000);
-                }
+                backendStatus.is_running = data.backend_running;
+                frontendStatus.is_running = data.frontend_running;
+                setTimeout(checkServiceStatus, 7500);
             }
         }).fail(function() {
             setTimeout(checkServiceStatus, 30000);
@@ -113,12 +100,8 @@ $(function() {
     }
 
     checkServiceStatus();
-});
 
-<?php
-if ($customization->useWebSocketsForNowPlaying()):
-?>
-$(function() {
+<?php if ($customization->useWebSocketsForNowPlaying()): ?>
     var sub = new NchanSubscriber('/api/live/nowplaying/<?=urlencode($station->getShortName()) ?>');
 
     sub.on("message", function(message, message_metadata) {
@@ -129,27 +112,21 @@ $(function() {
         }, 5000);
     });
     sub.start();
-});
-<?php
-else:
-?>
-$(function() {
-    setTimeout(loadNowPlaying, 15000);
-});
+<?php else: ?>
+    function loadNowPlaying() {
+        $.ajax({
+            cache: false,
+            dataType: "json",
+            url: '<?=$router->fromHere('api:nowplaying:index') ?>',
+            success: function(row) {
+                nowPlaying.setNowPlaying(row);
+                setTimeout(loadNowPlaying, 15000);
+            }
+        }).fail(function() {
+            setTimeout(loadNowPlaying, 30000);
+        });
+    }
 
-function loadNowPlaying() {
-    $.ajax({
-        cache: false,
-        dataType: "json",
-        url: '<?=$router->fromHere('api:nowplaying:index') ?>',
-        success: function(row) {
-            nowPlaying.setNowPlaying(row);
-            nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
-        }
-    }).fail(function() {
-        nowPlayingTimeout = setTimeout(loadNowPlaying, 30000);
-    });
-}
-<?php
-endif;
-?>
+    setTimeout(loadNowPlaying, 15000);
+<?php endif; ?>
+});

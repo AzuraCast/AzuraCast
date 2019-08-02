@@ -98,7 +98,6 @@ class ProfileController
                 ],
                 'playlist' => '',
                 'is_request' => false,
-                'elapsed' => 0,
                 'duration' => 0,
             ],
             'listeners' => [

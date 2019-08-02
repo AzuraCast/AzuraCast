@@ -7,6 +7,10 @@
                 </a>
             </div>
             <div class="now-playing-main">
+                <h6 class="now-playing-live" v-if="np.live.is_live">
+                    <span class="badge badge-primary">{{ $t('live') }}</span> {{ np.live.streamer_name }}
+                </h6>
+
                 <div v-if="np.now_playing.song.title !== ''">
                     <h4 class="now-playing-title">{{ np.now_playing.song.title }}</h4>
                     <h5 class="now-playing-artist">{{ np.now_playing.song.artist }}</h5>
@@ -99,7 +103,7 @@
             min-width: 0;
         }
 
-        h4, h5 {
+        h4, h5, h6 {
             margin: 0;
             line-height: 1.3;
         }
@@ -108,6 +112,10 @@
         }
         h5 {
             font-size: 13px;
+            font-weight: normal;
+        }
+        h6 {
+            font-size: 11px;
             font-weight: normal;
         }
 
@@ -194,13 +202,13 @@ import store from 'store';
 
 export default {
     props: {
-        use_nchan: Boolean,
-        now_playing_uri: String,
-        show_album_art: Boolean
-    },
-    data: function() {
-        return {
-            "np": {
+        now_playing_uri: {
+            type: String,
+            required: true
+        },
+        initial_now_playing: {
+            type: Object,
+            default: {
                 "station": {
                     "listen_url": '',
                     "mounts": [],
@@ -214,11 +222,27 @@ export default {
                     },
                     "is_request": false,
                     "played_at": 0,
-                    "elapsed": 0,
                     "duration": 0
                 },
-                "song_history": {},
-            },
+                "live": {
+                    "is_live": false,
+                    "streamer_name": "",
+                },
+                "song_history": [],
+            }
+        },
+        use_nchan: {
+            type: Boolean,
+            default: true
+        },
+        show_album_art: {
+            type: Boolean,
+            default: true
+        }
+    },
+    data: function() {
+        return {
+            "np": this.initial_now_playing,
             "np_elapsed": 0,
             "is_playing": false,
             "volume": 55,
@@ -232,7 +256,7 @@ export default {
             "clock_interval": null
         };
     },
-    created: function() {
+    mounted: function() {
         this.audio = document.createElement('audio');
         this.clock_interval = setInterval(this.iterateTimer, 1000);
 
@@ -275,7 +299,10 @@ export default {
             }
         }
 
-        this.checkNowPlaying();
+        // Convert initial NP data from prop to data.
+        this.setNowPlaying(this.np);
+
+        this.np_timeout = setTimeout(this.checkNowPlaying, 5000);
     },
     computed: {
         "streams": function() {
@@ -367,27 +394,17 @@ export default {
         },
         "checkNowPlaying": function() {
             if (this.use_nchan) {
-                let is_first_message = true;
-
                 this.nchan_subscriber = new NchanSubscriber(this.now_playing_uri);
                 this.nchan_subscriber.on("message", (message, message_metadata) => {
                     let np_new = JSON.parse(message);
-
-                    if (is_first_message) {
-                        this.handleNewNowPlaying(np_new);
-                        is_first_message = false;
-                    } else {
-                        setTimeout(() => {
-                            this.handleNewNowPlaying(np_new);
-                        }, 5000);
-                    }
-
-                    this.handleNewNowPlaying(JSON.parse(message));
+                    setTimeout(() => {
+                        this.setNowPlaying(np_new);
+                    }, 5000);
                 });
                 this.nchan_subscriber.start();
             } else {
                 axios.get(this.now_playing_uri).then((response) => {
-                    this.handleNewNowPlaying(response.data);
+                    this.setNowPlaying(response.data);
                 }).catch((error) => {
                     console.error(error);
                 }).then(() => {
@@ -396,7 +413,7 @@ export default {
                 });
             }
         },
-        "handleNewNowPlaying": function(np_new) {
+        "setNowPlaying": function(np_new) {
             this.np = np_new;
 
             // Set a "default" current stream if none exists.

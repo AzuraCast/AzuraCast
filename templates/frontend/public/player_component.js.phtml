@@ -2,6 +2,7 @@
 /**
  * @var \App\Customization $customization
  * @var \App\Entity\Station $station
+ * @var array $nowplaying
  * @var \App\Http\Router $router
  */
 
@@ -11,6 +12,7 @@ $locale_info = [
     'locale' => $locale_short,
     'messages' => [
         $locale_short => [
+            'live'              => __('Live'),
             'play_btn'          => __('Play'),
             'pause_btn'         => __('Pause'),
             'mute_btn'          => __('Mute'),
@@ -22,6 +24,7 @@ $locale_info = [
 ];
 
 $props = [
+    'initial_now_playing' => $nowplaying,
     'show_album_art' => !$customization->hideAlbumArt(),
 ];
 

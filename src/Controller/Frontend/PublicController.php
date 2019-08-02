@@ -36,8 +36,38 @@ class PublicController
             throw new \App\Exception\StationNotFound;
         }
 
+        $np = [
+            'station' => [
+                'listen_url' => '',
+                'mounts' => [],
+                'remotes' => [],
+            ],
+            'now_playing' => [
+                'song' => [
+                    'title' => __('Song Title'),
+                    'artist' => __('Song Artist'),
+                    'art' => '',
+                ],
+                'playlist' => '',
+                'is_request' => false,
+                'duration' => 0,
+            ],
+            'live' => [
+                'is_live' => false,
+                'streamer_name' => '',
+            ],
+            'song_history' => [],
+        ];
+
+        $station_np = $station->getNowplaying();
+        if ($station_np instanceof Entity\Api\NowPlaying) {
+            $station_np->resolveUrls($request->getRouter()->getBaseUrl());
+            $np = array_intersect_key($station_np->toArray(), $np) + $np;
+        }
+
         return $request->getView()->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
+            'nowplaying' => $np,
         ]);
     }
 

@@ -5,6 +5,7 @@ $assets
     ->load('radio_player')
     ->addInlineJs($this->fetch('frontend/public/player_component.js', [
         'station' => $station,
+        'nowplaying' => $nowplaying,
     ]), 95);
 ?>
 

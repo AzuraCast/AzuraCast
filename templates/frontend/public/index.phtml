@@ -20,7 +20,7 @@ $assets
             <h2 class="card-title"><?=$this->e($station->getName()) ?></h2>
 
             <div class="stations nowplaying">
-                <?=$this->fetch('frontend/public/player_component', ['station' => $station]) ?>
+                <?=$this->fetch('frontend/public/player_component', ['station' => $station, 'nowplaying' => $nowplaying]) ?>
             </div>
         </div>
 

@@ -10,11 +10,14 @@
  */
 ?>
 
-<section class="card mb-4" role="region">
+<section class="card mb-4" role="region" id="profile-frontend">
     <div class="card-header bg-primary-dark">
         <h3 class="card-title">
             <?=__('Broadcasting Service') ?>
-            <small class="badge badge-pill" id="frontend_status"><?=__('Loading...') ?></small>
+
+            <small class="badge badge-pill badge-success" v-if="is_running"><?=__('Running') ?></small>
+            <small class="badge badge-pill badge-danger" v-else><?=__('Not Running') ?></small>
+
             <br>
             <small>
             <?php if (\App\Radio\Adapters::FRONTEND_ICECAST === $frontend_type): ?>

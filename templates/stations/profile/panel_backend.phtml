@@ -10,11 +10,13 @@
  */
 ?>
 
-<section class="card" role="region">
+<section class="card" role="region" id="profile-backend">
     <div class="card-header bg-primary-dark">
         <h3 class="card-title">
             <?=__('AutoDJ Service') ?>
-            <small class="badge badge-pill" id="backend_status"><?=__('Loading...') ?></small>
+
+            <small class="badge badge-pill badge-success" v-if="is_running"><?=__('Running') ?></small>
+            <small class="badge badge-pill badge-danger" v-else><?=__('Not Running') ?></small>
             <br>
             <small>
             <?php if (\App\Radio\Adapters::BACKEND_LIQUIDSOAP === $backend_type): ?>

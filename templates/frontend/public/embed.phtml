@@ -12,5 +12,5 @@ $assets->load('vue');
 ?>
 
 <div class="stations nowplaying">
-    <?=$this->fetch('frontend/public/player_component', ['station' => $station]) ?>
+    <?=$this->fetch('frontend/public/player_component', ['station' => $station, 'nowplaying' => $nowplaying]) ?>
 </div>

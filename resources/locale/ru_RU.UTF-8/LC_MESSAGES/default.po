@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 14:00\n"
+"PO-Revision-Date: 2019-08-02 14:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2952,11 +2952,11 @@ msgstr "Восстановление резервных копий"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Чтобы восстановить резервную копию с Вашего компьютера, выполните:"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Обратите внимание, что восстановление резервной копии очистит вашу существующую базу данных. Никогда не восстанавливайте файлы резервных копий от ненадежных пользователей."
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:21
@@ -2981,7 +2981,7 @@ msgstr "Действие"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Last Modified"
-msgstr ""
+msgstr "Последнее Изменение"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 #: /var/azuracast/www/templates/stations/files/index.phtml:121
@@ -2990,11 +2990,11 @@ msgstr "Размер"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:110
 msgid "Download"
-msgstr ""
+msgstr "Скачать"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "Удалить резервную копию \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
@@ -3780,7 +3780,7 @@ msgstr "Изменить порядок плейлиста"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:16
 msgid "Reorder Playlist: %s"
-msgstr "Перезапустить плейлист: %s"
+msgstr "Перестроить Плейлист: %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Down"

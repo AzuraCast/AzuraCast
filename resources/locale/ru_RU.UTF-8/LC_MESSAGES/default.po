@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 10:20\n"
+"PO-Revision-Date: 2019-08-02 10:35\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2671,11 +2671,11 @@ msgstr "Ключ клиента (API ключ)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:40
 msgid "Consumer Secret (API Secret)"
-msgstr ""
+msgstr "Секрет клиента (API Секрет)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:50
 msgid "Access Token"
-msgstr ""
+msgstr "Токен Доступа"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:60
 msgid "Access Token Secret"

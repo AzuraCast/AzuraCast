@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 23:40\n"
+"PO-Revision-Date: 2019-08-02 23:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3477,15 +3477,15 @@ msgstr "Завершите процесс установки, предостав
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:42
 msgid "Customize AzuraCast Settings"
-msgstr ""
+msgstr "Настройка Параметров AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:34
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
-msgstr ""
+msgstr "Продолжите процесс настройки, создав свою первую радиостанцию ниже. Вы можете изменить любую из этих деталей позже."
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:41
 msgid "Create a New Radio Station"
-msgstr ""
+msgstr "Создать Новую Радиостанцию"
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
@@ -3497,7 +3497,7 @@ msgstr "Переключить боковую панель"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Переключить Меню"
 
 #: /var/azuracast/www/templates/main.phtml:72
 msgid "System Administration"
@@ -3505,11 +3505,11 @@ msgstr "Администратор системы"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Сменить Тему"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Помощь"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"

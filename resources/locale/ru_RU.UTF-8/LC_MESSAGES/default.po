@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 09:10\n"
+"PO-Revision-Date: 2019-08-02 09:21\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2263,27 +2263,27 @@ msgstr "Если включено, стримеры (или диджеи) смо
 
 #: /var/azuracast/www/config/forms/station.php:319
 msgid "Deactivate Streamer on Disconnect (Seconds)"
-msgstr ""
+msgstr "Отключить стримера при разъединении (в секундах)"
 
 #: /var/azuracast/www/config/forms/station.php:320
 msgid "Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely."
-msgstr ""
+msgstr "Количество секунд для деактивации стримера станции при ручном отключении. Установите 0, чтобы полностью отключить деактивацию."
 
 #: /var/azuracast/www/config/forms/station.php:331
 msgid "Customize DJ/Streamer Port"
-msgstr ""
+msgstr "Настроить порт Диджей/Стример"
 
 #: /var/azuracast/www/config/forms/station.php:333
 msgid "No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections."
-msgstr ""
+msgstr "Никакая другая программа, не может использовать этот порт. Оставьте пустым, чтобы автоматически назначать порт.<br><b>Примечание:</b> Порт после этого (n+1) будет автоматически использоваться для устаревших соединений."
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "Customize Internal Request Processing Port"
-msgstr ""
+msgstr "Настроить внутренний порт обработки запросов"
 
 #: /var/azuracast/www/config/forms/station.php:344
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
-msgstr ""
+msgstr "Этот порт не используется никаким внешним процессом. Изменяйте этот порт, только если назначенный порт используется. Оставьте пустым, чтобы автоматически назначить порт."
 
 #: /var/azuracast/www/config/forms/station.php:353
 msgid "DJ/Streamer Buffer Time (Seconds)"

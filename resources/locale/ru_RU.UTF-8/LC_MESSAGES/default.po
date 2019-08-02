@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 10:51\n"
+"PO-Revision-Date: 2019-08-02 11:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2804,7 +2804,7 @@ msgstr "Хронология воспроизведения песни"
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:2
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:12
 msgid "Song Listener Impact"
-msgstr ""
+msgstr "Влияние песни на слушателя"
 
 #: /var/azuracast/www/config/menus/station.php:121
 msgid "Duplicate Songs"
@@ -2832,7 +2832,7 @@ msgstr "Просмотрщик журналов"
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "Песни стоящие в очереди"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
@@ -2840,19 +2840,19 @@ msgstr "Перезапустить вещание"
 
 #: /var/azuracast/www/config/webhooks.php:18
 msgid "Generic Web Hook"
-msgstr ""
+msgstr "Общий веб-хук"
 
 #: /var/azuracast/www/config/webhooks.php:19
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "Автоматическая отправка сообщения на любой URL-адрес при изменении данных станции."
 
 #: /var/azuracast/www/config/webhooks.php:23
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn AIR"
 
 #: /var/azuracast/www/config/webhooks.php:24
 msgid "Send song metadata changes to TuneIn."
-msgstr ""
+msgstr "Отправить изменения метаданных песни в TuneIn."
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"

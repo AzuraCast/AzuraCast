@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 11:00\n"
+"PO-Revision-Date: 2019-08-02 11:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2856,39 +2856,39 @@ msgstr "Отправить изменения метаданных песни в
 
 #: /var/azuracast/www/config/webhooks.php:28
 msgid "Discord Webhook"
-msgstr ""
+msgstr "URL веб-хука Discord"
 
 #: /var/azuracast/www/config/webhooks.php:29
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Автоматически отправить настраиваемое сообщение на ваш сервер Discord."
 
 #: /var/azuracast/www/config/webhooks.php:33
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Сообщение чата Telegram"
 
 #: /var/azuracast/www/config/webhooks.php:34
 msgid "Use the Telegram Bot API to send a message to a channel."
-msgstr ""
+msgstr "Используйте Telegram Bot API для отправки сообщения на канал."
 
 #: /var/azuracast/www/config/webhooks.php:38
 msgid "Twitter Post"
-msgstr ""
+msgstr "Пост в Твиттере"
 
 #: /var/azuracast/www/config/webhooks.php:39
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Автоматически отправлять твит."
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Каждый раз, когда текущая играющая песня меняется"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Каждый раз, когда количество слушателей увеличивается"
 
 #: /var/azuracast/www/config/webhooks.php:47
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Каждый раз, когда количество слушателей уменьшается"
 
 #: /var/azuracast/www/config/webhooks.php:48
 msgid "Any time a live streamer/DJ connects to the stream"

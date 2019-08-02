@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 23:30\n"
+"PO-Revision-Date: 2019-08-02 23:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3335,7 +3335,7 @@ msgstr "Битрейт"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:23
 msgid "DJ Credentials"
-msgstr "Полномочия Диджея"
+msgstr "Учётные Данные Диджея"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:25
@@ -3369,15 +3369,15 @@ msgstr "Источник Микрофона"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:34
 msgid "Start Streaming"
-msgstr "Начать Трансляцию"
+msgstr "Начать Вещание"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:35
 msgid "Stop Streaming"
-msgstr "Остановить Трансляцию"
+msgstr "Остановить Вещание"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:36
 msgid "Cue"
-msgstr "Сигнал"
+msgstr "Говорить"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:37
 msgid "Update Metadata"
@@ -3423,7 +3423,7 @@ msgstr "Запрос композиции"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 msgid "Play"
-msgstr ""
+msgstr "Воспроизведение"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:10
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
@@ -3442,17 +3442,17 @@ msgstr "Громкость"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:13
 msgid "Full Volume"
-msgstr ""
+msgstr "Полная Громкость"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:14
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:34
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:63
 msgid "Album Art"
-msgstr ""
+msgstr "Обложка Альбома"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:17
 msgid "AzuraCast First-Time Setup"
-msgstr ""
+msgstr "Первоначальная Настройка AzuraCast"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "Welcome to AzuraCast!"
@@ -3460,11 +3460,11 @@ msgstr "Добро пожаловать в AzuraCast!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:27
 msgid "Let's get started by creating your Super Administrator account."
-msgstr ""
+msgstr "Давайте начнем с создания вашей учетной записи Супер Администратор."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:28
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
-msgstr ""
+msgstr "Эта учётная запись будет иметь полный доступ к системе, и вы автоматически войдете в систему для остальной настройки."
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:19
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:19
@@ -3473,7 +3473,7 @@ msgstr "Создать станцию"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:35
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
-msgstr ""
+msgstr "Завершите процесс установки, предоставив некоторую информацию о вашей среде вещания. Эти настройки можно изменить позже на панели администрирования."
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:42
 msgid "Customize AzuraCast Settings"

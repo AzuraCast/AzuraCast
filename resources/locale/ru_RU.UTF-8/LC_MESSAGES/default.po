@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 09:21\n"
+"PO-Revision-Date: 2019-08-02 09:31\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2287,11 +2287,11 @@ msgstr "Этот порт не используется никаким внеш�
 
 #: /var/azuracast/www/config/forms/station.php:353
 msgid "DJ/Streamer Buffer Time (Seconds)"
-msgstr ""
+msgstr "Время буфера Диджей/Стример (в секундах)"
 
 #: /var/azuracast/www/config/forms/station.php:355
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
-msgstr ""
+msgstr "Количество секунд сохраняемого сигнала в случае прерывания. Установите минимальное значение, которое ваши Диджеи могут использовать без прерывания потока."
 
 #: /var/azuracast/www/config/forms/station.php:368
 msgid "Customize DJ/Streamer Mount Point"
@@ -2638,7 +2638,7 @@ msgstr "Ключ партнера TuneIn"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Twitter Account Details"
-msgstr ""
+msgstr "Детали аккаунта Twitter"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:15
 msgid "Steps for configuring a Twitter application:<br>\n"

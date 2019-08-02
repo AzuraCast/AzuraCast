@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 13:40\n"
+"PO-Revision-Date: 2019-08-02 14:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3680,11 +3680,11 @@ msgstr "Доступные журналы"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:8
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
-msgstr ""
+msgstr "Точки подключения - это то, как слушатели подключаются и слушают вашу станцию. Каждая точка подключения может иметь свой аудиоформат или качество. Используя точки подключения, вы можете настроить высококачественный поток для слушателей с широкополосным интернетом и мобильный поток для пользователей телефонов."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 msgid "Delete mount point \"%s\"?"
-msgstr ""
+msgstr "Удалить точку подключения \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:43
 msgid "Default Mount"
@@ -3704,11 +3704,11 @@ msgstr "# Песни"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 msgid "Delete playlist \"%s\"?"
-msgstr ""
+msgstr "Удалить плейлист \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:70
 msgid "More"
-msgstr ""
+msgstr "Больше"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:73
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
@@ -3728,7 +3728,7 @@ msgstr "Включить"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:75
 msgid "Reorder"
-msgstr ""
+msgstr "Пересортировать"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Export %s"

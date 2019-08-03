@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-02 23:50\n"
+"PO-Revision-Date: 2019-08-03 00:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3521,11 +3521,11 @@ msgstr "Выйти"
 
 #: /var/azuracast/www/templates/main.phtml:152
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "Понравилось наше программное обеспечение? <a href=\"%s\" target=\"_blank\">Пожертвуйте, на поддержку AzuraCast!</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
-msgstr ""
+msgstr "Талисман разработан %s"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:3
 msgid "Need Help?"
@@ -3533,27 +3533,27 @@ msgstr "Нужна помощь?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:6
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
+msgstr "Вы можете найти ответы на многие распространенные вопросы в наших <a href=\"%s\" target=\"_blank\">документах поддержки</a>."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:8
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
+msgstr "Если вы столкнулись с неполадкой или ошибкой, вы можете отправить запрос на GitHub с помощью ссылки ниже."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:10
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
+msgstr "Ваш текущий тип установки <b>%s</b>. Обязательно включите это при создании нового запроса."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "New GitHub Issue"
-msgstr ""
+msgstr "Новый запрос на GitHub"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
-msgstr ""
+msgstr "Просмотр Журнала"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr ""
+msgstr "Автоматическая прокрутка до нижней части журнала"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6

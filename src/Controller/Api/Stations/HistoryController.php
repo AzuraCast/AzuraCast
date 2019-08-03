@@ -4,6 +4,7 @@ namespace App\Controller\Api\Stations;
 use App;
 use Azura\Doctrine\Paginator;
 use Azura\Utilities\Csv;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -72,14 +73,15 @@ class HistoryController
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
+        $station_tz = new \DateTimeZone($station->getTimezone());
 
         $start_param = $request->getParam('start');
         if (!empty($start_param)) {
-            $start = strtotime($start_param . ' 00:00:00');
-            $end = strtotime($request->getParam('end', $start_param) . ' 23:59:59');
+            $start = Chronos::parse($start_param . ' 00:00:00', $station_tz);
+            $end = Chronos::parse($request->getParam('end', $start_param) . ' 23:59:59', $station_tz);
         } else {
-            $start = strtotime('-2 weeks');
-            $end = time();
+            $start = Chronos::parse('-2 weeks', $station_tz);
+            $end = Chronos::now($station_tz);
         }
 
         $qb = $this->em->createQueryBuilder();
@@ -93,8 +95,8 @@ class HistoryController
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
             ->setParameter('station_id', $station_id)
-            ->setParameter('start', $start)
-            ->setParameter('end', $end);
+            ->setParameter('start', $start->getTimestamp())
+            ->setParameter('end', $end->getTimestamp());
 
         if ($request->getParam('format', 'json') === 'csv') {
             $export_all = [];
@@ -103,21 +105,18 @@ class HistoryController
                 'Time',
                 'Listeners',
                 'Delta',
-                'Likes',
-                'Dislikes',
                 'Track',
                 'Artist',
                 'Playlist'
             ];
 
             foreach ($qb->getQuery()->getArrayResult() as $song_row) {
+                $datetime = Chronos::createFromTimestamp($song_row['timestamp_start'], $station_tz);
                 $export_row = [
-                    date('Y-m-d', $song_row['timestamp_start']),
-                    date('g:ia', $song_row['timestamp_start']),
+                    $datetime->format('Y-m-d'),
+                    $datetime->format('g:ia'),
                     $song_row['listeners_start'],
                     $song_row['delta_total'],
-                    $song_row['score_likes'],
-                    $song_row['score_dislikes'],
                     $song_row['song']['title'] ?: $song_row['song']['text'],
                     $song_row['song']['artist'],
                     $song_row['playlist']['name'] ?? '',
@@ -127,7 +126,7 @@ class HistoryController
             }
 
             $csv_file = Csv::arrayToCsv($export_all);
-            $csv_filename = $station->getShortName() . '_timeline_' . date('Ymd', $start) . '_to_'. date('Ymd', $end).'.csv';
+            $csv_filename = $station->getShortName() . '_timeline_' . $start->format('Ymd') . '_to_' . $end->format('Ymd') . '.csv';
 
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }

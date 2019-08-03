@@ -19,10 +19,12 @@ $assets
             <div class="card-header bg-primary-dark">
                 <div class="d-flex align-items-center">
                     <h2 class="card-title flex-fill my-0">
-                        <?=__('Listeners') ?><br>
-                        <small><span id="listener-count">0</span> Unique</small>
+                        <?=__('Listeners') ?>
                     </h2>
                     <div class="flex-shrink">
+                        <a class="btn btn-bg" id="btn-export" href="<?=$router->fromHere('api:listeners:index', [], ['format' => 'csv']) ?>" target="_blank" title="<?=__('Download CSV') ?>">
+                            <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Download CSV') ?>
+                        </a>
                         <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#">
                             <i class="material-icons" aria-hidden="true">date_range</i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
                         </a>

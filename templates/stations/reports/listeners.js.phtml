@@ -1,4 +1,4 @@
-var live_time, is_live, load_timeout, app_datatable, map;
+var live_time, is_live, load_timeout, app_datatable, map, api_url;
 
 function cb(start, end) {
     is_live = live_time.isSame(start, 'day');
@@ -16,16 +16,19 @@ var updateListeners = function(start, end) {
     clearTimeout(load_timeout);
 
     var params = {};
+    var export_url = api_url+'?format=csv';
+
     if (!is_live) {
         params.start = start.format('YYYY-MM-DD');
         params.end = end.format('YYYY-MM-DD');
+        export_url += '&start='+params.start+'&end='+params.end;
     }
 
-    $.getJSON('<?=$router->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
+    $('#btn-export').attr('href', export_url);
+
+    $.getJSON(api_url, params, function (data) {
         app_datatable.listeners = data;
         setMapPoints(data);
-
-        $('#listener-count').text(data.length);
 
         if (is_live) {
             load_timeout = setTimeout(updateListeners, 15 * 1000);
@@ -48,26 +51,36 @@ function setMapPoints(points) {
     for(i=0;i<markers.length;i++) {
         map.removeLayer(markers[i]);
     }
-    markers = new Array();
+    markers = [];
 
-    $.each(points, function(i, l) {
-        if (l.location.status !== 'success')
-            return null;
+    if (points.length > 1000) {
+        if ($('#map').is(':visible')) {
+            notify(<?=$this->escapeJs(__('There are too many data points to map!')) ?>, 'warning');
+            $('#map').hide();
+        }
+    } else {
+        $('#map').show();
 
-        var marker = new L.marker([l.location.lat, l.location.lon])
-            .bindPopup('IP: '+l.ip+'<br>' +
-                'Country: '+l.location.country+'<br>' +
-                'Region: '+l.location.region+'<br>' +
-                'City: '+l.location.city+'<br>' +
-                'Time connected: '+l.connected_time+'<br>' +
-                'User Agent: '+l.user_agent)
-            .addTo(map);
+        $.each(points, function(i, l) {
+            if (l.location.status !== 'success')
+                return null;
 
-        markers.push(marker);
-    });
+            var marker = new L.marker([l.location.lat, l.location.lon])
+                .bindPopup('IP: '+l.ip+'<br>' +
+                    'Country: '+l.location.country+'<br>' +
+                    'Region: '+l.location.region+'<br>' +
+                    'City: '+l.location.city+'<br>' +
+                    'Time connected: '+l.connected_time+'<br>' +
+                    'User Agent: '+l.user_agent)
+                .addTo(map);
+
+            markers.push(marker);
+        });
+    }
 }
 
 $(function() {
+    api_url = '<?=$router->named('api:listeners:index', ['station' => $station->getId()]) ?>';
     live_time = moment().add(1, 'days');
 
     $('#reportrange').daterangepicker({

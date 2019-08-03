@@ -35,13 +35,18 @@ class ListenerRepository extends Repository
      * @param Entity\Station $station
      * @param array $clients
      */
-    public function update(Entity\Station $station, $clients)
+    public function update(Entity\Station $station, $clients): void
     {
         $clients = (array)$clients;
 
         $listener_ids = [0];
 
         foreach($clients as $client) {
+            // Ignore clients with the "Icecast" UA as those are relays and not listeners.
+            if (false !== stripos($client['user_agent'], 'Icecast')) {
+                continue;
+            }
+
             // Check for an existing record for this client.
             try {
                 $listener_hash = Entity\Listener::calculateListenerHash($client);

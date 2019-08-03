@@ -92,6 +92,17 @@ $(function() {
         el: '#app-datatable',
         data: {
             listeners: []
+        },
+        computed: {
+            total_listener_hours: function() {
+                var tlh_seconds = 0;
+                this.listeners.forEach(function(listener) {
+                    tlh_seconds += listener.connected_time;
+                });
+
+                var tlh_hours = tlh_seconds / 3600;
+                return Math.round((tlh_hours + 0.00001) * 100) / 100;
+            }
         }
     });
 

@@ -78,7 +78,17 @@ class ListenersController
                     $listeners_raw[$hash] = $listener;
                 }
 
-                $listeners_raw[$hash]['connected_time'] += ($listener['timestamp_end'] - $listener['timestamp_start']);
+                $listener_start = $listener['timestamp_start'];
+                if ($listener_start < $start) {
+                    $listener_start = $start;
+                }
+
+                $listener_end = $listener['timestamp_end'];
+                if ($listener_end > $end) {
+                    $listener_end = $end;
+                }
+
+                $listeners_raw[$hash]['connected_time'] += ($listener_end - $listener_start);
             }
         } else {
             $listeners_raw = $this->em->createQuery(/** @lang DQL */'SELECT 

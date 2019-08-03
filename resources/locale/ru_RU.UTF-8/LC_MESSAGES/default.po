@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-03 00:00\n"
+"PO-Revision-Date: 2019-08-03 00:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -3558,15 +3558,15 @@ msgstr "Автоматическая прокрутка до нижней час
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6
 msgid "Automated Playlist Assignment"
-msgstr ""
+msgstr "Автоматическое Назначение Плейлистам"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:9
 msgid "Based on the previous performance of your station's songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists."
-msgstr ""
+msgstr "Основываясь на предыдущем исполнении песен вашей станции, %s может автоматически распределять песни равномерно между вашими плейлистами, помещая песни с самыми высокими показателями в плейлисты с наибольшим весом."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:11
 msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
-msgstr ""
+msgstr "После настройки автоматического назначения нажмите кнопку ниже, чтобы запустить процесс автоматического назначения. Этот процесс не будет выполняться вообще, если вы не выбрали \"включить\" ниже."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:13
 msgid "Run Automated Assignment"
@@ -3574,23 +3574,23 @@ msgstr "Запустить автоматическое назначение"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:19
 msgid "Configure Automated Assignment"
-msgstr ""
+msgstr "Настройка Автоматического Назначения"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:28
 msgid "Delete {NUM} media file(s)?"
-msgstr ""
+msgstr "Удалить {NUM} медиа файл(ы)?"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:37
 msgid "Files removed:"
-msgstr ""
+msgstr "Файлы удалены:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:76
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Обновлены плейлисты для выбранных файлов:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:78
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Плейлисты очищены для выбранных файлов:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:147
 msgid "Album Artwork"

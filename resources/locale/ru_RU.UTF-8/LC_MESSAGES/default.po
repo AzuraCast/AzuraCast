@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-03 00:10\n"
+"PO-Revision-Date: 2019-08-03 00:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -672,7 +672,7 @@ msgstr "Стримеры включены!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
 msgid "You can now set up streamer (DJ) accounts."
-msgstr "Теперь вы можете настроить учетные записи (DJ) стримеров."
+msgstr "Теперь вы можете настроить учетные записи стримеров (Диджеев)."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
@@ -868,7 +868,7 @@ msgstr "Подключиться к <b>отдалённому радио-сер�
 
 #: /var/azuracast/www/src/Radio/Adapters.php:177
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr "<b>Не использовать</b> сервис AutoDJ"
+msgstr "<b>Не использовать</b> сервис АвтоДиджей"
 
 #: /var/azuracast/www/src/Sync/Runner.php:162
 #: /var/azuracast/www/src/Sync/Runner.php:165
@@ -1400,7 +1400,7 @@ msgstr "Включить AutoDJ"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:81
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr "Если включено, AutoDJ автоматически воспроизводит музыку в этой точке подключения."
+msgstr "Если включено, АвтоДиджей автоматически воспроизводит музыку в этой точке подключения."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:99
 #: /var/azuracast/www/config/forms/remote.php:96
@@ -1548,7 +1548,7 @@ msgstr "Скрыть метаданные от слушателей (\"Режи�
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
-msgstr "Включите эту настройку, чтобы не допустить отправки метаданных в AutoDJ для файлов в этом плейлисте. Это полезно, если в плейлисте содержатся джинглы или бамперы."
+msgstr "Включите эту настройку, чтобы не допустить отправки метаданных в АвтоДиджей для файлов в этом плейлисте. Это полезно, если в плейлисте содержатся джинглы или бамперы."
 
 #: /var/azuracast/www/config/forms/playlist.php:164
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
@@ -1628,15 +1628,15 @@ msgstr "Вручную определите, как этот плейлист и
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "AutoDJ Scheduling Options"
-msgstr "Параметры планирования AutoDJ"
+msgstr "Параметры Планирования АвтоДиджея"
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr "Управляйте тем, как этот плейлист обрабатывается программным обеспечением AutoDJ."
+msgstr "Управляйте тем, как этот плейлист обрабатывается программным обеспечением АвтоДиджея."
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr "<b>Внимание:</b> Эти функции являются внутренними для Liquidsoap и повлияют на то, как работает ваш AutoDJ."
+msgstr "<b>Внимание:</b> Эти функции являются внутренними для Liquidsoap и повлияют на то, как работает ваш АвтоДиджей."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
@@ -1815,15 +1815,15 @@ msgstr "Укажите точку подключения (т.е. <code>%s</code>
 
 #: /var/azuracast/www/config/forms/remote.php:75
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr "Вещание AutoDJ с отдалённой станции"
+msgstr "Вещание АвтоДиджея с отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:76
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr "Если включено, AutoDJ автоматически воспроизводит музыку в этой точке подключения."
+msgstr "Если включено, АвтоДиджей автоматически воспроизводит музыку в этой точке подключения."
 
 #: /var/azuracast/www/config/forms/remote.php:89
 msgid "Configure AutoDJ Broadcasting"
-msgstr "Настроить вещание AutoDJ"
+msgstr "Настроить Вещание АвтоДиджея"
 
 #: /var/azuracast/www/config/forms/remote.php:129
 msgid "Remote Station Source Port"
@@ -1847,7 +1847,7 @@ msgstr "Имя пользователя источника отдалённой 
 
 #: /var/azuracast/www/config/forms/remote.php:148
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr "Если вы транслируете с помощью AutoDJ, введите имя источника здесь. Оно может быть пустым."
+msgstr "Если вы транслируете с помощью АвтоДиджея, введите имя Source здесь. Оно может быть пустым."
 
 #: /var/azuracast/www/config/forms/remote.php:156
 msgid "Remote Station Source Password"
@@ -1855,7 +1855,7 @@ msgstr "Пароль источника отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:157
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr "Если вы транслируете с помощью AutoDJ, введите пароль источника здесь."
+msgstr "Если вы транслируете с помощью АвтоДиджея, введите пароль Source здесь."
 
 #: /var/azuracast/www/config/forms/report_soundexchange.php:11
 msgid "This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href=\"%s\" target=\"_blank\">SoundExchange web site</a>."
@@ -2187,7 +2187,7 @@ msgstr "Этот код будет включен в конфигурацию и
 #: /var/azuracast/www/config/forms/station.php:209
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:16
 msgid "AutoDJ Service"
-msgstr "Сервис AutoDJ"
+msgstr "Сервис АвтоДиджея"
 
 #: /var/azuracast/www/config/forms/station.php:210
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
@@ -2295,7 +2295,7 @@ msgstr "Количество секунд сохраняемого сигнал�
 
 #: /var/azuracast/www/config/forms/station.php:368
 msgid "Customize DJ/Streamer Mount Point"
-msgstr "Настройка точки подключения DJ/Streamer"
+msgstr "Настройка Точки Подключения Диджеев/Стримеров"
 
 #: /var/azuracast/www/config/forms/station.php:370
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
@@ -2311,11 +2311,11 @@ msgstr "Инструкция для Liquidsoap о использовании л�
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"
-msgstr "Ручной режим AutoDJ"
+msgstr "Ручной Режим АвтоДиджея"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr "Этот режим отключает управление AutoDJ AzuraCast, используя Liquidsoap, чтобы управлять воспроизведением песни. \"Следующая песня\" и некоторые другие функции не будут доступны."
+msgstr "Этот режим отключает управление АвтоДиджея AzuraCast, используя Liquidsoap, чтобы управлять воспроизведением песни. \"Следующая песня\" и некоторые другие функции не будут доступны."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
@@ -2335,7 +2335,7 @@ msgstr "Включить трансляцию"
 
 #: /var/azuracast/www/config/forms/station.php:446
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
-msgstr "Если отключено, станция не будет транслировать или перетасовывать свой AutoDJ."
+msgstr "Если отключено, станция не будет транслировать или перетасовывать свой АвтоДиджей."
 
 #: /var/azuracast/www/config/forms/station.php:457
 msgid "Storage Quota"
@@ -2443,7 +2443,7 @@ msgstr "Отображаемое имя стримера"
 
 #: /var/azuracast/www/config/forms/streamer.php:45
 msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
-msgstr "Это неофициальное отображаемое имя, которое будет отображаться в ответах API, если стример / DJ находится в прямом эфире"
+msgstr "Это неофициальное отображаемое имя, которое будет отображаться в ответах API, если стример/Диджей находится в прямом эфире"
 
 #: /var/azuracast/www/config/forms/streamer.php:54
 msgid "Internal notes or comments about the user, visible only on this control panel."

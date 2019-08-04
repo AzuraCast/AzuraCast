@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-04 17:20\n"
+"PO-Revision-Date: 2019-08-04 17:30\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -324,15 +324,15 @@ msgstr "Log de aplicación de AzuraCast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:77
 msgid "Nginx Access Log"
-msgstr ""
+msgstr "Log de Nginx"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:82
 msgid "Nginx Error Log"
-msgstr ""
+msgstr "Log de errores Nginx"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:87
 msgid "PHP Application Log"
-msgstr ""
+msgstr "Log de PHP"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:92
 msgid "Supervisord Log"

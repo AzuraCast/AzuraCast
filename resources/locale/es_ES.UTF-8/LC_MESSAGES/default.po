@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-04 16:30\n"
+"PO-Revision-Date: 2019-08-04 17:20\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -311,7 +311,7 @@ msgstr "Sincronizar Tarea de Salida"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:33
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr ""
+msgstr "La versión SHOUTcast \"%s\" está instalada actualmente."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:75
 #: /var/azuracast/www/config/menus/admin.php:74
@@ -320,7 +320,7 @@ msgstr "Instalar SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
 msgid "AzuraCast Application Log"
-msgstr ""
+msgstr "Log de aplicación de AzuraCast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:77
 msgid "Nginx Access Log"

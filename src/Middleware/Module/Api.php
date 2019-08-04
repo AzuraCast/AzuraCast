@@ -5,6 +5,7 @@ use App\Entity;
 use Azura\Session;
 use App\Http\Request;
 use App\Http\Response;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
@@ -22,19 +23,15 @@ class Api
 
     /**
      * @param Session $session
-     * @param Entity\Repository\ApiKeyRepository $api_repo
-     * @param Entity\Repository\SettingsRepository $settings_repo
-     *
-     * @see \App\Provider\MiddlewareProvider
+     * @param EntityManager $em
      */
     public function __construct(
         Session $session,
-        Entity\Repository\ApiKeyRepository $api_repo,
-        Entity\Repository\SettingsRepository $settings_repo
+        EntityManager $em
     ) {
         $this->session = $session;
-        $this->api_repo = $api_repo;
-        $this->settings_repo = $settings_repo;
+        $this->api_repo = $em->getRepository(Entity\ApiKey::class);
+        $this->settings_repo = $em->getRepository(Entity\Settings::class);
     }
 
     /**

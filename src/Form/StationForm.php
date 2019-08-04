@@ -5,6 +5,7 @@ use App\Acl;
 use App\Entity;
 use App\Http\Request;
 use App\Radio\Frontend\SHOUTcast;
+use Azura\Config;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
@@ -27,15 +28,17 @@ class StationForm extends EntityForm
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
      * @param Acl $acl
-     * @param array $form_config
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Acl $acl,
-        array $form_config)
-    {
+        Config $config
+    ) {
+        $form_config = $config->get('forms/station');
+
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->acl = $acl;

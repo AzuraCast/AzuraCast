@@ -3,6 +3,7 @@ namespace App\Form;
 
 use App\Entity;
 use App\Http\Request;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -13,14 +14,21 @@ class UserForm extends EntityForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
-     * @param array $form_config
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $form_config)
-    {
+        Config $config
+    ) {
+        /** @var \Azura\Doctrine\Repository $role_repo */
+        $role_repo = $em->getRepository(Entity\Role::class);
+
+        $form_config = $config->get('forms/user', [
+            'roles' => $role_repo->fetchSelect()
+        ]);
+
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\User::class;

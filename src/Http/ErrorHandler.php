@@ -8,13 +8,10 @@ use Azura\Session;
 use App\Entity;
 use Monolog\Logger;
 
-class ErrorHandler
+class ErrorHandler extends \Azura\Http\ErrorHandler
 {
     /** @var Acl */
     protected $acl;
-
-    /** @var Logger */
-    protected $logger;
 
     /** @var Session */
     protected $session;
@@ -28,6 +25,25 @@ class ErrorHandler
     /** @var Sentry */
     protected $sentry;
 
+    public function __construct(
+        \Slim\App $app,
+        Logger $logger,
+        Acl $acl,
+        Session $session,
+        Router $router,
+        View $view,
+        Sentry $sentry
+    ) {
+        parent::__construct($app, $logger);
+
+        $this->acl = $acl;
+        $this->session = $session;
+        $this->router = $router;
+        $this->view = $view;
+        $this->sentry = $sentry;
+    }
+
+
     /**
      * ErrorHandler constructor.
      * NOTE: Session and View need to be injected directly, as the request attributes don't get
@@ -39,7 +55,7 @@ class ErrorHandler
      * @param Router $router
      * @param View $view
      */
-    public function __construct(
+    public function __coasdftruct(
         Acl $acl,
         Logger $logger,
         Router $router,

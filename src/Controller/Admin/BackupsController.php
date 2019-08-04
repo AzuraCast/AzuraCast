@@ -8,6 +8,8 @@ use App\Form\SettingsForm;
 use App\Http\Request;
 use App\Http\Response;
 use App\Sync\Task\Backup;
+use Azura\Config;
+use Doctrine\ORM\EntityManager;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
@@ -33,18 +35,18 @@ class BackupsController
     protected $csrf_namespace = 'admin_backups';
 
     /**
-     * @param SettingsForm $settings_form
-     * @param Form $backup_run_form
+     * @param EntityManager $em
+     * @param Config $config
      * @param Backup $backup_task
-     *
-     * @see \App\Provider\AdminProvider
      */
     public function __construct(
-        SettingsForm $settings_form,
-        Form $backup_run_form,
+        EntityManager $em,
+        Config $config,
         Backup $backup_task
-    )
-    {
+    ) {
+        $settings_form = new SettingsForm($em, $config->get('forms/backup'));
+        $backup_run_form = new Form($config->get('forms/backup_run'));
+
         $this->settings_form = $settings_form;
         $this->settings_repo = $settings_form->getEntityRepository();
 

@@ -22,10 +22,14 @@ class Dispatcher implements EventSubscriberInterface
     /** @var Logger */
     protected $logger;
 
-    /** @var ServiceLocator */
+    /** @var Connector\ConnectorInterface[] */
     protected $connectors;
 
-    public function __construct(Logger $logger, ServiceLocator $connectors)
+    /**
+     * @param Logger $logger
+     * @param array $connectors
+     */
+    public function __construct(Logger $logger, array $connectors)
     {
         $this->logger = $logger;
         $this->connectors = $connectors;
@@ -53,7 +57,7 @@ class Dispatcher implements EventSubscriberInterface
     public function localDispatch(SendWebhooks $event): void
     {
         /** @var Connector\Local $connector_obj */
-        $connector_obj = $this->connectors->get(Connector\Local::NAME);
+        $connector_obj = $this->connectors[Connector\Local::NAME];
         $connector_obj->dispatch($event);
     }
 
@@ -89,13 +93,13 @@ class Dispatcher implements EventSubscriberInterface
 
         // Trigger all appropriate webhooks.
         foreach($connectors as $connector) {
-            if (!$this->connectors->has($connector->getType())) {
+            if (!isset($this->connectors[$connector->getType()])) {
                 $this->logger->error(sprintf('Webhook connector "%s" does not exist; skipping.', $connector->getType()));
                 continue;
             }
 
             /** @var Connector\ConnectorInterface $connector_obj */
-            $connector_obj = $this->connectors->get($connector->getType());
+            $connector_obj = $this->connectors[$connector->getType()];
 
             if ($connector_obj->shouldDispatch($event, $connector)) {
                 $this->logger->debug(sprintf('Dispatching connector "%s".', $connector->getType()));
@@ -118,7 +122,7 @@ class Dispatcher implements EventSubscriberInterface
     {
         $webhook_type = $webhook->getType();
 
-        if (!$this->connectors->has($webhook_type)) {
+        if (!isset($this->connectors[$webhook_type])) {
             throw new Exception(sprintf('Webhook connector "%s" does not exist; skipping.', $webhook_type));
         }
 
@@ -126,7 +130,7 @@ class Dispatcher implements EventSubscriberInterface
         $this->logger->pushHandler($handler);
 
         /** @var Connector\ConnectorInterface $connector_obj */
-        $connector_obj = $this->connectors->get($webhook_type);
+        $connector_obj = $this->connectors[$webhook_type];
 
         $np = $station->getNowplaying();
 
@@ -146,8 +150,8 @@ class Dispatcher implements EventSubscriberInterface
      */
     public function getConnector($type): Connector\ConnectorInterface
     {
-        if ($this->connectors->has($type)) {
-            return $this->connectors->get($type);
+        if (isset($this->connectors[$type])) {
+            return $this->connectors[$type];
         }
 
         throw new \InvalidArgumentException('Invalid web hook connector type specified.');

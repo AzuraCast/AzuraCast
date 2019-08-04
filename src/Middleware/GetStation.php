@@ -7,6 +7,7 @@ use App\Entity;
 use App\Entity\Repository\StationRepository;
 use App\Http\Request;
 use App\Http\Response;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Retrieve the station specified in the request parameters, and throw an error if none exists but one is required.
@@ -19,9 +20,9 @@ class GetStation
     /** @var Adapters */
     protected $adapters;
 
-    public function __construct(StationRepository $station_repo, Adapters $adapters)
+    public function __construct(EntityManager $em, Adapters $adapters)
     {
-        $this->station_repo = $station_repo;
+        $this->station_repo = $em->getRepository(Entity\Station::class);
         $this->adapters = $adapters;
     }
 

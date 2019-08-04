@@ -4,6 +4,7 @@ namespace App\Entity\Repository;
 use App\Entity;
 use App\Radio\Filesystem;
 use Azura\Doctrine\Repository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
 
@@ -15,9 +16,9 @@ class StationMediaRepository extends Repository
     /** @var SongRepository */
     protected $song_repo;
 
-    public function __construct($em, Mapping\ClassMetadata $class, Filesystem $filesystem)
+    public function __construct(EntityManager $em, Filesystem $filesystem)
     {
-        parent::__construct($em, $class);
+        parent::__construct($em, $em->getClassMetadata(Entity\StationMedia::class));
 
         $this->filesystem = $filesystem;
         $this->song_repo = $this->_em->getRepository(Entity\Song::class);
@@ -138,7 +139,7 @@ class StationMediaRepository extends Repository
     {
         // Load metadata from supported files.
         $id3 = new \getID3();
- 
+
         $id3->option_md5_data = true;
         $id3->option_md5_data_source = true;
         $id3->encoding = 'UTF-8';

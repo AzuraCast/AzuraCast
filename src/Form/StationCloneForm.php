@@ -5,18 +5,13 @@ use App\Acl;
 use App\Entity;
 use App\Http\Request;
 use App\Radio\Configuration;
-use App\Radio\Filesystem;
-use App\Radio\Frontend\SHOUTcast;
 use App\Sync\Task\Media;
-use Azura\Doctrine\Repository;
+use Azura\Config;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\VarDumper\VarDumper;
 
 class StationCloneForm extends StationForm
 {
@@ -27,14 +22,14 @@ class StationCloneForm extends StationForm
     protected $media_sync;
 
     /**
+     * StationCloneForm constructor.
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
      * @param Acl $acl
      * @param Configuration $configuration
-     * @param array $form_config
-     *
-     * @see \App\Provider\FormProvider
+     * @param Media $media_sync
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
@@ -43,8 +38,10 @@ class StationCloneForm extends StationForm
         Acl $acl,
         Configuration $configuration,
         Media $media_sync,
-        array $form_config
+        Config $config
     ) {
+        $form_config = $config->get('forms/station_clone');
+
         parent::__construct($em, $serializer, $validator, $acl, $form_config);
 
         $this->configuration = $configuration;

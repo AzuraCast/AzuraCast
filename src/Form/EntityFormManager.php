@@ -2,7 +2,6 @@
 namespace App\Form;
 
 use Doctrine\ORM\EntityManager;
-use Pimple\Psr11\ServiceLocator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,20 +16,20 @@ class EntityFormManager
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ServiceLocator */
+    /** @var EntityForm[] */
     protected $custom_forms;
 
     /**
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
-     * @param ServiceLocator $custom_forms
+     * @param array $custom_forms
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        ServiceLocator $custom_forms)
+        array $custom_forms)
     {
         $this->em = $em;
         $this->serializer = $serializer;
@@ -48,8 +47,8 @@ class EntityFormManager
      */
     public function getForm($entity_class, array $form_config = null, array $defaults = null): EntityForm
     {
-        if ($this->custom_forms->has($entity_class)) {
-            return $this->custom_forms->get($entity_class);
+        if (isset($this->custom_forms[$entity_class])) {
+            return $this->custom_forms[$entity_class];
         }
 
         $form = new EntityForm($this->em, $this->serializer, $this->validator, $form_config, $defaults);

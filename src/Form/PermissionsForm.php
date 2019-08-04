@@ -3,6 +3,7 @@ namespace App\Form;
 
 use App\Entity;
 use App\Http\Request;
+use Azura\Config;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
@@ -20,14 +21,21 @@ class PermissionsForm extends EntityForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
-     * @param array $form_config
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $form_config)
-    {
+        Config $config
+    ) {
+        /** @var Entity\Repository\StationRepository $stations_repo */
+        $stations_repo = $em->getRepository(Entity\Station::class);
+
+        $form_config = $config->get('forms/role', [
+            'all_stations' => $stations_repo->fetchArray(),
+        ]);
+
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\Role::class;

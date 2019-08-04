@@ -1,9 +1,11 @@
 <?php
 namespace App\Form;
 
+use App\Customization;
 use App\Entity;
 use App\Http\Request;
 use App\Radio\PlaylistParser;
+use Azura\Config;
 use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
@@ -16,14 +18,25 @@ class StationPlaylistForm extends EntityForm
     /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected $playlist_media_repo;
 
+    /**
+     * @param EntityManager $em
+     * @param Serializer $serializer
+     * @param ValidatorInterface $validator
+     * @param Config $config
+     * @param Customization $customization
+     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $options = [],
-        ?array $defaults = null
+        Config $config,
+        Customization $customization
     ) {
-        parent::__construct($em, $serializer, $validator, $options, $defaults);
+        $form_config = $config->get('forms/playlist', [
+            'customization' => $customization
+        ]);
+
+        parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\StationPlaylist::class;
         $this->playlist_media_repo = $em->getRepository(Entity\StationPlaylistMedia::class);

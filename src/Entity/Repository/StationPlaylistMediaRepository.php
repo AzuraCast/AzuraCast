@@ -5,8 +5,7 @@ namespace App\Entity\Repository;
 use App\Radio\AutoDJ;
 use Azura\Cache;
 use Azura\Doctrine\Repository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 use App\Entity;
 
@@ -16,11 +15,10 @@ class StationPlaylistMediaRepository extends Repository
     protected $cache;
 
     public function __construct(
-        EntityManagerInterface $em,
-        Mapping\ClassMetadata $class,
+        EntityManager $em,
         Cache $cache
     ) {
-        parent::__construct($em, $class);
+        parent::__construct($em, $em->getClassMetadata(Entity\StationPlaylistMedia::class));
 
         $this->cache = $cache;
     }
@@ -110,7 +108,7 @@ class StationPlaylistMediaRepository extends Repository
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SHUFFLE) {
             return;
         }
-        
+
         $this->_em->beginTransaction();
 
         try {
@@ -132,7 +130,7 @@ class StationPlaylistMediaRepository extends Repository
 
                 $new_weight++;
             }
-            
+
             $this->_em->commit();
         } catch (\Exception $exception) {
             $this->_em->rollback();

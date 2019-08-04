@@ -3,10 +3,17 @@ namespace App\Entity\Repository;
 
 use App\Entity;
 use Azura\Doctrine\Repository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 use Ramsey\Uuid\Uuid;
 
 class SettingsRepository extends Repository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, $em->getClassMetadata(Entity\Settings::class));
+    }
+
     /** @var array */
     protected static $settings;
 

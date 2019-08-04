@@ -8,6 +8,7 @@ use App\Entity;
 use App\Sync\Task\Media;
 use Azura\Cache;
 use Azura\Doctrine\Repository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -30,15 +31,14 @@ class StationRepository extends Repository
     protected $cache;
 
     public function __construct(
-        $em,
-        Mapping\ClassMetadata $class,
+        EntityManager $em,
         Media $media_sync,
         Adapters $adapters,
         Configuration $configuration,
         Cache $cache,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $class);
+        parent::__construct($em, $em->getClassMetadata(Entity\Station::class));
 
         $this->media_sync = $media_sync;
         $this->adapters = $adapters;

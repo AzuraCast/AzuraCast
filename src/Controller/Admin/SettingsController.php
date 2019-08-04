@@ -6,6 +6,8 @@ use App\Form\Form;
 use App\Form\SettingsForm;
 use App\Http\Request;
 use App\Http\Response;
+use Azura\Config;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
 class SettingsController
@@ -14,12 +16,13 @@ class SettingsController
     protected $form;
 
     /**
-     * @param SettingsForm $form
-     *
-     * @see \App\Provider\AdminProvider
+     * SettingsController constructor.
+     * @param Config $config
+     * @param EntityManager $em
      */
-    public function __construct(SettingsForm $form)
+    public function __construct(Config $config, EntityManager $em)
     {
+        $form = new SettingsForm($em, $config->get('forms/settings'));
         $this->form = $form;
     }
 

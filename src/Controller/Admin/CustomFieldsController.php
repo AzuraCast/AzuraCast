@@ -1,20 +1,23 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Entity;
 use App\Form\EntityForm;
+use App\Form\EntityFormManager;
 use App\Http\Request;
 use App\Http\Response;
+use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
 
 class CustomFieldsController extends AbstractAdminCrudController
 {
     /**
-     * @param EntityForm $form
-     *
-     * @see \App\Provider\AdminProvider
+     * @param Config $config
+     * @param EntityFormManager $formManager
      */
-    public function __construct(EntityForm $form)
+    public function __construct(Config $config, EntityFormManager $formManager)
     {
+        $form = $formManager->getForm(Entity\CustomField::class, $config->get('forms/custom_field'));
         parent::__construct($form);
 
         $this->csrf_namespace = 'admin_custom_fields';

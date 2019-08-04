@@ -5,6 +5,7 @@ use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use Azura\Session;
 use Azura\Session\NamespaceInterface;
+use Doctrine\ORM\EntityManager;
 
 class Auth
 {
@@ -23,11 +24,11 @@ class Auth
     /** @var User|bool|null */
     protected $_masqueraded_user;
 
-    public function __construct(Session $session, UserRepository $user_repo)
+    public function __construct(Session $session, EntityManager $em)
     {
-        $this->_user_repo = $user_repo;
+        $this->_user_repo = $em->getRepository(User::class);
 
-        $class_name = strtolower(str_replace(['\\', '_'], ['', ''], get_called_class()));
+        $class_name = strtolower(str_replace(['\\', '_'], ['', ''], static::class));
         $this->_session = $session->get('auth_' . $class_name . '_user');
     }
 

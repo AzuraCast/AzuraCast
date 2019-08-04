@@ -4,6 +4,9 @@ namespace App\Controller\Admin;
 use App\Form\SettingsForm;
 use App\Http\Request;
 use App\Http\Response;
+use Azura\Config;
+use Azura\Settings;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
 class BrandingController
@@ -12,13 +15,17 @@ class BrandingController
     protected $form;
 
     /**
-     * @param SettingsForm $form
-     *
-     * @see \App\Provider\AdminProvider
+     * @param EntityManager $em
+     * @param Config $config
+     * @param Settings $settings
      */
-    public function __construct(SettingsForm $form)
-    {
-        $this->form = $form;
+    public function __construct(
+        EntityManager $em,
+        Config $config,
+        Settings $settings
+    ) {
+        $form_config = $config->get('forms/branding', ['settings' => $settings]);
+        $this->form = new SettingsForm($em, $form_config);
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface

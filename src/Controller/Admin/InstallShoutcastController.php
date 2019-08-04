@@ -5,6 +5,7 @@ use App\Form\Form;
 use App\Http\Request;
 use App\Http\Response;
 use App\Radio\Frontend\SHOUTcast;
+use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\UploadedFile;
 use Symfony\Component\Process\Process;
@@ -15,12 +16,11 @@ class InstallShoutcastController
     protected $form_config;
 
     /**
-     * @param array $form_config
-     * @see \App\Provider\AdminProvider
+     * @param Config $config
      */
-    public function __construct(array $form_config)
+    public function __construct(Config $config)
     {
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/install_shoutcast');
     }
 
     public function __invoke(Request $request, Response $response): ResponseInterface

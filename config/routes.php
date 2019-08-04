@@ -2,7 +2,7 @@
 use App\Controller;
 use App\Middleware;
 use App\Acl;
-use Azura\App;
+use Slim\App;
 use Azura\Middleware as AzuraMiddleware;
 
 return function(App $app)

@@ -3,8 +3,7 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Exception\NotFound;
-use App\Radio\Remote\AbstractRemote;
-use Pimple\Psr11\ServiceLocator;
+use Psr\Container\ContainerInterface;
 
 /**
  * Manager class for radio adapters.
@@ -26,10 +25,10 @@ class Adapters
     public const DEFAULT_FRONTEND = self::FRONTEND_ICECAST;
     public const DEFAULT_BACKEND = self::BACKEND_LIQUIDSOAP;
 
-    /** @var ServiceLocator */
+    /** @var ContainerInterface */
     protected $adapters;
 
-    public function __construct(ServiceLocator $adapters)
+    public function __construct(ContainerInterface $adapters)
     {
         $this->adapters = $adapters;
     }
@@ -126,6 +125,7 @@ class Adapters
     }
 
     /**
+     * @param bool $check_installed
      * @return array
      */
     public static function listFrontendAdapters($check_installed = false): array
@@ -151,7 +151,7 @@ class Adapters
 
         if ($check_installed) {
             return array_filter($adapters, function($adapter_info) {
-                /** @var \App\Radio\AbstractAdapter $adapter_class */
+                /** @var AbstractAdapter $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();
             });
@@ -182,7 +182,7 @@ class Adapters
 
         if ($check_installed) {
             return array_filter($adapters, function ($adapter_info) {
-                /** @var \App\Radio\AbstractAdapter $adapter_class */
+                /** @var AbstractAdapter $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();
             });

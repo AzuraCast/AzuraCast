@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-07-24 00:30\n"
+"PO-Revision-Date: 2019-08-04 20:20\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1561,7 +1561,7 @@ msgstr "Tipo de URL Remoto"
 
 #: /var/azuracast/www/config/forms/playlist.php:175
 msgid "Direct Stream URL"
-msgstr "URL de Transmissão Direto"
+msgstr "URL de Transmissão Direta"
 
 #: /var/azuracast/www/config/forms/playlist.php:176
 msgid "Playlist (M3U/PLS) URL"

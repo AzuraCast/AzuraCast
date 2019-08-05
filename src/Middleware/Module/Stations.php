@@ -7,6 +7,7 @@ use App\Event;
 use Azura\EventDispatcher;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
 use Slim\Routing\RouteContext;
@@ -14,7 +15,7 @@ use Slim\Routing\RouteContext;
 /**
  * Module middleware for the /station pages.
  */
-class Stations
+class Stations implements MiddlewareInterface
 {
     /** @var Acl */
     protected $acl;
@@ -37,7 +38,7 @@ class Stations
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $view = RequestHelper::getView($request);
 

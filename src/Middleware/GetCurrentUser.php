@@ -6,12 +6,13 @@ use App\Customization;
 use App\Http\RequestHelper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
  */
-class GetCurrentUser
+class GetCurrentUser implements MiddlewareInterface
 {
     /** @var Auth */
     protected $auth;
@@ -30,7 +31,7 @@ class GetCurrentUser
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $user = ($this->auth->isLoggedIn()) ? $this->auth->getLoggedInUser() : null;
 

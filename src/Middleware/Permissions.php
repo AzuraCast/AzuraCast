@@ -18,26 +18,29 @@ class Permissions
     /** @var Acl */
     protected $acl;
 
-    public function __construct(Acl $acl)
-    {
+    /** @var string */
+    protected $action;
+
+    /** @var bool */
+    protected $use_station;
+
+    public function __construct(
+        Acl $acl,
+        string $action,
+        bool $use_station = false
+    ) {
         $this->acl = $acl;
+        $this->action = $action;
+        $this->use_station = $use_station;
     }
 
     /**
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
-     * @param string $action
-     * @param bool $use_station
-     *
      * @return ResponseInterface
      */
-    public function __invoke(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler,
-        string $action,
-        bool $use_station = false
-    ): ResponseInterface {
-        if ($use_station) {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
+        if ($this->use_station) {
             $station = RequestHelper::getStation($request);
             $station_id = $station->getId();
         } else {
@@ -51,7 +54,7 @@ class Permissions
                 throw new PermissionDenied;
             }
 
-            if (!$this->acl->userAllowed($user, $action, $station_id)) {
+            if (!$this->acl->userAllowed($user, $this->action, $station_id)) {
                 throw new PermissionDenied;
             }
         } catch (PermissionDenied $e) {

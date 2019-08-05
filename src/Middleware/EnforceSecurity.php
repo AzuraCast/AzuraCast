@@ -7,12 +7,13 @@ use App\Http\ResponseHelper;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Remove trailing slash from all URLs when routing.
  */
-class EnforceSecurity
+class EnforceSecurity implements MiddlewareInterface
 {
     /** @var EntityManager */
     protected $em;
@@ -36,7 +37,7 @@ class EnforceSecurity
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $always_use_ssl = (bool)$this->settings_repo->getSetting('always_use_ssl', 0);
         $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;

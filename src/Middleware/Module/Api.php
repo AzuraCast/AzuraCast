@@ -8,12 +8,13 @@ use Azura\Session;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
  */
-class Api
+class Api implements MiddlewareInterface
 {
     /** @var Entity\Repository\ApiKeyRepository */
     protected $api_repo;
@@ -42,7 +43,7 @@ class Api
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Prevent unnecessary session creation on API pages from flooding the session databases
         if (!$this->session->exists()) {

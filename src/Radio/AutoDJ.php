@@ -147,7 +147,7 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * If the next song for a station has already been calculated, return the calculated result; otherwise,
      * calculate the next playing song.
-     * 
+     *
      * @param Entity\Station $station
      * @param bool $is_autodj
      * @return Entity\SongHistory|null
@@ -420,6 +420,8 @@ class AutoDJ implements EventSubscriberInterface
                 $media_id = $this->_preventDuplicates($media_queue, $recent_song_history, false);
 
                 if (null === $media_id) {
+                    $this->logger->warn('Duplicate prevention yielded no playable song; resetting song queue.');
+
                     // Pull the entire shuffled playlist if a duplicate title can't be avoided.
                     $media_queue = $spm_repo->getPlayableMedia($playlist);
                     $media_id = $this->_preventDuplicates($media_queue, $recent_song_history, true);
@@ -448,10 +450,10 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * @param array $eligible_media
      * @param array $played_media
-     * @param bool $accept_imperfect_match Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $accept_duplicate Whether to return a media ID even if duplicates can't be prevented.
      * @return int|null
      */
-    protected function _preventDuplicates(array $eligible_media = [], array $played_media = [], $accept_imperfect_match = true): ?int
+    protected function _preventDuplicates(array $eligible_media = [], array $played_media = [], $accept_duplicate = true): ?int
     {
         if (empty($eligible_media)) {
             $this->logger->debug('Eligible song queue is empty!');
@@ -459,15 +461,15 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         $artists = [];
-        $song_ids = [];
         $latest_song_ids_played = [];
 
         foreach($played_media as $history) {
+            $artist = trim($history['song']['artist']);
+            if (!empty($artist)) {
+                $artists[$artist] = $artist;
+            }
+
             $song_id = $history['song']['id'];
-
-            $artists[] = $history['song']['artist'];
-            $song_ids[] = $song_id;
-
             if (!isset($latest_song_ids_played[$song_id])) {
                 $latest_song_ids_played[$song_id] = $history['timestamp_cued'];
             }
@@ -476,11 +478,13 @@ class AutoDJ implements EventSubscriberInterface
         $without_same_title = [];
 
         foreach($eligible_media as $media) {
-            if (in_array($media['song_id'], $song_ids, true)) {
+            $song_id = $media['song_id'];
+            if (isset($latest_song_ids_played[$song_id])) {
                 continue;
             }
 
-            if (!in_array($media['artist'], $artists, true)) {
+            $artist = trim($media['artist']);
+            if (empty($artist) || !isset($artists[$artist])) {
                 $media_id_to_play = $media['id'];
                 $this->logger->info('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
                 return $media_id_to_play;
@@ -489,18 +493,16 @@ class AutoDJ implements EventSubscriberInterface
             $without_same_title[] = $media;
         }
 
-        if ($accept_imperfect_match) {
+        // If we reach this point, there was no match for avoiding same artist AND title.
+        if (!empty($without_same_title)) {
+            $media = reset($without_same_title);
+            $media_id_to_play = $media['id'];
 
-            // If we reach this point, there was no match for avoiding same artist AND title.
-            if (!empty($without_same_title)) {
-                reset($without_same_title);
+            $this->logger->info('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
+            return $media_id_to_play;
+        }
 
-                $media = current($without_same_title);
-                $media_id_to_play = $media['id'];
-
-                $this->logger->info('Cannot avoid artist match; defaulting to title match.', ['media_id' => $media_id_to_play]);
-                return $media_id_to_play;
-            }
+        if ($accept_duplicate) {
 
             // If we reach this point, there's no way to avoid a duplicate title.
             $media_ids_by_time_played = [];
@@ -508,20 +510,17 @@ class AutoDJ implements EventSubscriberInterface
             // For each piece of eligible media, get its latest played timestamp.
             foreach($eligible_media as $media) {
                 $song_id = $media['song_id'];
-
-                if (isset($latest_song_ids_played[$song_id])) {
-                    $media_ids_by_time_played[$media['id']] = $latest_song_ids_played[$song_id];
-                }
+                $media_ids_by_time_played[$media['id']] = $latest_song_ids_played[$song_id] ?? 0;
             }
 
             // Pull the lowest value, which corresponds to the least recently played song.
             asort($media_ids_by_time_played);
-            reset($media_ids_by_time_played);
 
-            $media_id_to_play = key($media_ids_by_time_played);
-
-            $this->logger->warning('No way to avoid same title OR same artist; using least recently played song.', ['media_id' => $media_id_to_play]);
-            return $media_id_to_play;
+            // More efficient way of getting first key.
+            foreach($media_ids_by_time_played as $media_id_to_play => $unused) {
+                $this->logger->warning('No way to avoid same title OR same artist; using least recently played song.', ['media_id' => $media_id_to_play]);
+                return $media_id_to_play;
+            }
         }
 
         return null;

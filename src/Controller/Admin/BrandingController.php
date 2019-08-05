@@ -2,8 +2,8 @@
 namespace App\Controller\Admin;
 
 use App\Form\SettingsForm;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Azura\Config;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;

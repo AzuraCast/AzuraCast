@@ -4,8 +4,8 @@ namespace App\Controller\Admin;
 use App\Entity;
 use App\Form\EntityForm;
 use App\Form\EntityFormManager;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
 

@@ -3,8 +3,8 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;

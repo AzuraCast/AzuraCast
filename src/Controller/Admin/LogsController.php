@@ -4,8 +4,8 @@ namespace App\Controller\Admin;
 use App\Controller\Traits\LogViewerTrait;
 use App\Entity;
 use Azura\Exception;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 

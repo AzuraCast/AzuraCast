@@ -6,8 +6,8 @@ use App\Form\StationWebhookForm;
 use App\Provider\StationsProvider;
 use App\Webhook\Dispatcher;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 /**

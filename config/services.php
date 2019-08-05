@@ -370,6 +370,13 @@ return [
 
     'App\Controller\Admin\*Controller' => DI\autowire(),
 
+    'App\Controller\Api\*Controller' => DI\autowire(),
+    'App\Controller\Api\Admin\*Controller' => DI\autowire(),
+    'App\Controller\Api\Stations\*Controller' => DI\autowire(),
 
+    'App\Controller\Frontend\*Controller' => DI\autowire(),
 
+    'App\Controller\Stations\*Controller' => DI\autowire(),
+    'App\Controller\Stations\Files\*Controller' => DI\autowire(),
+    'App\Controller\Stations\Reports\*Controller' => DI\autowire(),
 ];

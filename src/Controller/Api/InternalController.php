@@ -6,8 +6,8 @@ use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Task\NowPlaying;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 

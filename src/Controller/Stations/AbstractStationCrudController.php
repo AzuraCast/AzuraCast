@@ -3,7 +3,7 @@ namespace App\Controller\Stations;
 
 use App\Entity\Station;
 use App\Form\EntityForm;
-use App\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Doctrine\ORM\EntityManager;
 
 abstract class AbstractStationCrudController

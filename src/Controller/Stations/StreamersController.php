@@ -1,24 +1,22 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Form\EntityForm;
-use App\Radio\Backend\AbstractBackend;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\ORM\EntityManager;
+use App\Form\EntityFormManager;
+use Azura\Config;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 class StreamersController extends AbstractStationCrudController
 {
     /**
-     * @param EntityForm $form
-     *
-     * @see \App\Provider\StationsProvider
+     * @param EntityFormManager $formManager
+     * @param Config $config
      */
-    public function __construct(EntityForm $form)
+    public function __construct(EntityFormManager $formManager, Config $config)
     {
+        $form = $formManager->getForm(Entity\StationStreamer::class, $config->get('forms/streamer'));
         parent::__construct($form);
 
         $this->csrf_namespace = 'stations_streamers';

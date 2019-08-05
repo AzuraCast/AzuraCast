@@ -3,10 +3,11 @@ namespace App\Controller\Stations;
 
 use App\Form\Form;
 use App\Sync\Task\RadioAutomation;
+use Azura\Config;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 class AutomationController
@@ -25,16 +26,20 @@ class AutomationController
 
     /**
      * @param EntityManager $em
-     * @param array $form_config
      * @param RadioAutomation $sync_task
-     * @see \App\Provider\StationsProvider
+     * @param Settings $app_settings
+     * @param Config $config
      */
-    public function __construct(EntityManager $em, RadioAutomation $sync_task, Settings $app_settings, array $form_config)
-    {
+    public function __construct(
+        EntityManager $em,
+        RadioAutomation $sync_task,
+        Settings $app_settings,
+        Config $config
+    ) {
         $this->em = $em;
         $this->sync_task = $sync_task;
         $this->app_settings = $app_settings;
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/automation');
     }
 
     public function indexAction(Request $request, Response $response): ResponseInterface

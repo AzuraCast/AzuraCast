@@ -2,7 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Form\EntityForm;
-use App\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Doctrine\ORM\EntityManager;
 
 abstract class AbstractAdminCrudController

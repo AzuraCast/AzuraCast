@@ -2,10 +2,11 @@
 namespace App\Controller\Stations\Reports;
 
 use App\Form\Form;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
@@ -26,14 +27,12 @@ class SoundExchangeController
     /**
      * @param EntityManager $em
      * @param Client $http_client
-     * @param array $form_config
-     *
-     * @see \App\Provider\StationsProvider
+     * @param Config $config
      */
-    public function __construct(EntityManager $em, Client $http_client, array $form_config)
+    public function __construct(EntityManager $em, Client $http_client, Config $config)
     {
         $this->em = $em;
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/report/soundexchange');
         $this->http_client = $http_client;
     }
 

@@ -3,9 +3,11 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Form\Form;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use App\Http\Router;
 use App\Radio\Filesystem;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -26,18 +28,22 @@ class EditController extends FilesControllerAbstract
     protected $form_config;
 
     /**
-     * EditController constructor.
      * @param EntityManager $em
      * @param Filesystem $filesystem
-     * @param array $form_config
-     *
-     * @see \App\Provider\StationsProvider
+     * @param Config $config
+     * @param Router $router
      */
-    public function __construct(EntityManager $em, Filesystem $filesystem, array $form_config)
-    {
+    public function __construct(
+        EntityManager $em,
+        Filesystem $filesystem,
+        Config $config,
+        Router $router
+    ) {
         $this->em = $em;
         $this->filesystem = $filesystem;
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/media', [
+            'router' => $router,
+        ]);
     }
 
     public function __invoke(Request $request, Response $response, $station_id, $media_id): ResponseInterface

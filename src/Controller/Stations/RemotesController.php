@@ -3,20 +3,21 @@ namespace App\Controller\Stations;
 
 use App\Entity\Station;
 use App\Entity\StationRemote;
-use App\Form\EntityForm;
-use App\Http\Request;
-use App\Http\Response;
+use App\Form\EntityFormManager;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
 
 class RemotesController extends AbstractStationCrudController
 {
     /**
-     * @param EntityForm $form
-     *
-     * @see \App\Provider\StationsProvider
+     * @param EntityFormManager $formManager
+     * @param Config $config
      */
-    public function __construct(EntityForm $form)
+    public function __construct(EntityFormManager $formManager, Config $config)
     {
+        $form = $formManager->getForm(StationRemote::class, $config->get('forms/remote'));
         parent::__construct($form);
 
         $this->csrf_namespace = 'stations_remotes';

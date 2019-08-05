@@ -3,8 +3,8 @@ namespace App\Controller\Frontend;
 
 use App\Radio\Backend\Liquidsoap;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Remote\AdapterProxy;
 use Psr\Http\Message\ResponseInterface;
 

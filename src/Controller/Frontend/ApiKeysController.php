@@ -3,10 +3,11 @@ namespace App\Controller\Frontend;
 
 use App\Exception\NotFound;
 use App\Form\Form;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 class ApiKeysController
@@ -25,13 +26,12 @@ class ApiKeysController
 
     /**
      * @param EntityManager $em
-     * @param array $form_config
-     * @see \App\Provider\FrontendProvider
+     * @param Config $config
      */
-    public function __construct(EntityManager $em, array $form_config)
+    public function __construct(EntityManager $em, Config $config)
     {
         $this->em = $em;
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/api_key');
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
     }

@@ -3,9 +3,10 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Form\Form;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Filesystem;
+use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
@@ -23,18 +24,18 @@ class FilesController extends FilesControllerAbstract
     protected $form_config;
 
     /**
-     * FilesController constructor.
      * @param EntityManager $em
      * @param Filesystem $filesystem
-     * @param array $form_config
-     *
-     * @see \App\Provider\StationsProvider
+     * @param Config $config
      */
-    public function __construct(EntityManager $em, Filesystem $filesystem, array $form_config)
-    {
+    public function __construct(
+        EntityManager $em,
+        Filesystem $filesystem,
+        Config $config
+    ) {
         $this->em = $em;
         $this->filesystem = $filesystem;
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/rename');
     }
 
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
@@ -48,7 +49,7 @@ class FilesController extends FilesControllerAbstract
             ->setParameter('station_id', $station_id)
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
-        
+
         $files_count = $this->em->createQuery(/** @lang DQL */'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
             WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station_id)

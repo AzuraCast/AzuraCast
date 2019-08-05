@@ -4,8 +4,8 @@ namespace App\Controller\Api\Stations;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
 

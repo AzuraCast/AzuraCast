@@ -3,7 +3,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Entity\StationRemote;
-use App\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Annotations as OA;
 
 /**

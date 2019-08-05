@@ -6,8 +6,8 @@ use App\Form\EntityForm;
 use App\Form\PermissionsForm;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController

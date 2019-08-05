@@ -6,8 +6,8 @@ use App\Utilities;
 use Cake\Chronos\Chronos;
 use App\Entity;
 use Psr\Http\Message\ResponseInterface;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 class PlaylistsController extends AbstractStationCrudController
 {

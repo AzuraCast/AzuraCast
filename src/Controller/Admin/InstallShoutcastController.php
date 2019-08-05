@@ -2,8 +2,8 @@
 namespace App\Controller\Admin;
 
 use App\Form\Form;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;

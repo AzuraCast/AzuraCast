@@ -8,10 +8,11 @@ use App\Form\StationForm;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\SHOUTcast;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 class SetupController
@@ -36,23 +37,20 @@ class SetupController
      * @param Auth $auth
      * @param Acl $acl
      * @param StationForm $station_form
-     * @param array $settings_form_config
-     *
-     * @see \App\Provider\FrontendProvider
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Auth $auth,
         Acl $acl,
         StationForm $station_form,
-        array $settings_form_config
-    )
-    {
+        Config $config
+    ) {
         $this->em = $em;
         $this->auth = $auth;
         $this->acl = $acl;
         $this->station_form = $station_form;
-        $this->settings_form_config = $settings_form_config;
+        $this->settings_form_config = $config->get('forms/settings');
     }
 
     /**

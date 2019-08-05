@@ -24,22 +24,22 @@
 
 namespace App\Service;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use App\Http\Request;
-use App\Http\Response;
 
 class Flow
 {
-    /** @var Request */
+    /** @var ServerRequestInterface */
     protected $request;
 
-    /** @var Response */
+    /** @var ResponseInterface */
     protected $response;
 
     /** @var string */
     protected $temp_dir;
 
-    public function __construct(Request $request, Response $response, $temp_dir = null)
+    public function __construct(ServerRequestInterface $request, ResponseInterface $response, $temp_dir = null)
     {
         $this->request = $request;
         $this->response = $response;
@@ -53,26 +53,28 @@ class Flow
     /**
      * Process the request and return a response if necessary, or the completed file details if successful.
      *
-     * @return Response|array|null
+     * @return ResponseInterface|array|null
      * @throws \Azura\Exception
      */
     public function process()
     {
-        $flowIdentifier = $this->request->getParam('flowIdentifier', '');
-        $flowChunkNumber = (int)$this->request->getParam('flowChunkNumber', '');
-        $flowFilename = $this->request->getParam('flowFilename', $flowIdentifier ?: 'upload-'.date('Ymd'));
+        $params = $this->request->getQueryParams();
+
+        $flowIdentifier = $params['flowIdentifier'] ?? '';
+        $flowChunkNumber = (int)($params['flowChunkNumber'] ?? '');
+        $flowFilename = $params['flowFilename'] ?? $flowIdentifier ?: 'upload-'.date('Ymd');
 
         // init the destination file (format <filename.ext>.part<#chunk>
         $chunkBaseDir = $this->temp_dir . '/' . $flowIdentifier;
         $chunkPath = $chunkBaseDir . '/' . $flowIdentifier . '.part' . $flowChunkNumber;
 
-        $currentChunkSize = (int)$this->request->getParam('flowCurrentChunkSize', 0);
+        $currentChunkSize = (int)($params['flowCurrentChunkSize'] ?? 0);
 
-        $targetSize = (int)$this->request->getParam('flowTotalSize', 0);
-        $targetChunks = (int)$this->request->getParam('flowTotalChunks', 0);
+        $targetSize = (int)($params['flowTotalSize'] ?? 0);
+        $targetChunks = (int)($params['flowTotalChunks'] ?? 0);
 
         // Check if request is GET and the requested chunk exists or not. This makes testChunks work
-        if ($this->request->isGet()) {
+        if ('GET' === $this->request->getMethod()) {
 
             // Force a reupload of the last chunk if all chunks are uploaded, to trigger processing below.
             if ($flowChunkNumber !== $targetChunks

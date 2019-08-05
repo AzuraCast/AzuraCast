@@ -4,8 +4,8 @@ namespace App\Controller\Admin;
 use App\Form;
 use App\Entity;
 use App\Form\EntityForm;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 class StationsController extends AbstractAdminCrudController

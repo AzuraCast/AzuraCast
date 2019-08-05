@@ -2,10 +2,12 @@
 namespace App\Controller\Frontend;
 
 use App\Form\Form;
+use Azura\Config;
+use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
@@ -27,18 +29,19 @@ class ProfileController
 
     /**
      * @param EntityManager $em
-     * @param array $profile_form
-     * @param array $two_factor_form
-     * @see \App\Provider\FrontendProvider
+     * @param Config $config
+     * @param Settings $settings
      */
     public function __construct(
         EntityManager $em,
-        array $profile_form,
-        array $two_factor_form)
-    {
+        Config $config,
+        Settings $settings
+    ) {
         $this->em = $em;
-        $this->profile_form = $profile_form;
-        $this->two_factor_form = $two_factor_form;
+        $this->profile_form = $config->get('forms/profile', [
+            'settings' => $settings,
+        ]);
+        $this->two_factor_form = $config->get('forms/profile_two_factor');
 
         $this->user_repo = $this->em->getRepository(Entity\User::class);
     }

@@ -2,7 +2,7 @@
 namespace App\Controller\Traits;
 
 use App\Exception\Validation;
-use App\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
 use Azura\Http\Request;
 use AzuraForms\Field\AbstractField;
 use AzuraForms\Form;

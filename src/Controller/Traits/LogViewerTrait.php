@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller\Traits;
 
-use App\Http\Request;
-use App\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use App\Entity;
 use App\Radio\Adapters;
 use Azura\Exception;

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Stations\Files;
 
-use App\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 
 /**

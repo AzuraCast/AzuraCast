@@ -1,5 +1,5 @@
 <?php
-use App\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Static assets referenced in AzuraCast.

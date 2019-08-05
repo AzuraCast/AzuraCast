@@ -2,10 +2,13 @@
 namespace App\Middleware;
 
 use App\Exception\PermissionDenied;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
 use App\Acl;
 use App\Entity;
+use App\Http\ResponseHelper;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
@@ -21,16 +24,21 @@ class Permissions
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @param callable $next
-     * @return Response
-     * @throws \App\Exception\PermissionDenied
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @param string $action
+     * @param bool $use_station
+     *
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next, $action, $use_station = false): Response
-    {
+    public function __invoke(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler,
+        string $action,
+        bool $use_station = false
+    ): ResponseInterface {
         if ($use_station) {
-            $station = $request->getStation();
+            $station = RequestHelper::getStation($request);
             $station_id = $station->getId();
         } else {
             $station_id = null;
@@ -38,7 +46,7 @@ class Permissions
 
         try {
             try {
-                $user = $request->getUser();
+                $user = RequestHelper::getUser($request);
             } catch (\Exception $e) {
                 throw new PermissionDenied;
             }
@@ -47,14 +55,16 @@ class Permissions
                 throw new PermissionDenied;
             }
         } catch (PermissionDenied $e) {
-            if ($request->isApiCall()) {
-                return $response->withStatus(403)
-                    ->withJson(new Entity\Api\Error(403, $e->getMessage(), $e->getFormattedMessage()));
+            if (RequestHelper::isApiCall($request)) {
+                return ResponseHelper::withJson(
+                    new \Slim\Psr7\Response(403),
+                    new Entity\Api\Error(403, $e->getMessage(), $e->getFormattedMessage())
+                );
             }
 
             throw $e;
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

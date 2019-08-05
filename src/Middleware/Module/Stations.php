@@ -2,11 +2,14 @@
 namespace App\Middleware\Module;
 
 use App\Acl;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
 use App\Event;
 use Azura\EventDispatcher;
-use Slim\Route;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Interfaces\RouteInterface;
+use Slim\Routing\RouteContext;
 
 /**
  * Module middleware for the /station pages.
@@ -22,8 +25,6 @@ class Stations
     /**
      * @param Acl $acl
      * @param EventDispatcher $dispatcher
-     *
-     * @see \App\Provider\MiddlewareProvider
      */
     public function __construct(Acl $acl, EventDispatcher $dispatcher)
     {
@@ -32,18 +33,17 @@ class Stations
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @param callable $next
-     * @return Response
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $view = $request->getView();
+        $view = RequestHelper::getView($request);
 
-        $station = $request->getStation();
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
+        $station = RequestHelper::getStation($request);
+        $backend = RequestHelper::getStationBackend($request);
+        $frontend = RequestHelper::getStationFrontend($request);
 
         date_default_timezone_set($station->getTimezone());
 
@@ -53,21 +53,27 @@ class Stations
             'backend'   => $backend,
         ]);
 
-        $event = new Event\BuildStationMenu($this->acl, $request->getUser(), $request->getRouter(), $station, $backend, $frontend);
+        $user = RequestHelper::getUser($request);
+        $router = RequestHelper::getRouter($request);
+
+        $event = new Event\BuildStationMenu($this->acl, $user, $router, $station, $backend, $frontend);
         $this->dispatcher->dispatch(Event\BuildStationMenu::NAME, $event);
 
         $active_tab = null;
-        $current_route = $request->getAttribute('route');
-        if ($current_route instanceof Route) {
+        $routeContext = RouteContext::fromRequest($request);
+        $current_route = $routeContext->getRoute();
+        if ($current_route instanceof RouteInterface) {
             $route_parts = explode(':', $current_route->getName());
             $active_tab = $route_parts[1];
         }
 
-        $view->sidebar = $view->render('stations/sidebar', [
-            'menu' => $event->getFilteredMenu(),
-            'active' => $active_tab,
+        $view->addData([
+            'sidebar' => $view->render('stations/sidebar', [
+                'menu' => $event->getFilteredMenu(),
+                'active' => $active_tab,
+            ]),
         ]);
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

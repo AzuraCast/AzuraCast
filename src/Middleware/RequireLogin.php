@@ -2,8 +2,13 @@
 namespace App\Middleware;
 
 use App\Http\Request;
+use App\Http\RequestHelper;
 use App\Http\Response;
 use App\Entity;
+use App\Http\ResponseHelper;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Require that the user be logged in to view this page.
@@ -11,25 +16,24 @@ use App\Entity;
 class RequireLogin
 {
     /**
-     * @param Request $request
-     * @param Response $response
-     * @param callable $next
-     * @return Response
-     * @throws \App\Exception\NotLoggedIn
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $response = $response->withNoCache();
-
         try
         {
-            $request->getUser();
+            RequestHelper::getUser($request);
         }
         catch(\Exception $e)
         {
             throw new \App\Exception\NotLoggedIn;
         }
 
-        return $next($request, $response);
+        $response = $handler->handle($request);
+        $response = ResponseHelper::withNoCache($response);
+
+        return $response;
     }
 }

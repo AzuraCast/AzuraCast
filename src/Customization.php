@@ -4,7 +4,7 @@ namespace App;
 use App\Service\NChan;
 use Azura\Settings;
 use App\Entity;
-use App\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Gettext\Translator;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;

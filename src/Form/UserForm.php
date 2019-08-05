@@ -2,9 +2,9 @@
 namespace App\Form;
 
 use App\Entity;
-use App\Http\Request;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -37,7 +37,7 @@ class UserForm extends EntityForm
     /**
      * @inheritdoc
      */
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
         $user = $request->getUser();

@@ -3,13 +3,13 @@ namespace App\Form;
 
 use App\Acl;
 use App\Entity;
-use App\Http\Request;
 use App\Radio\Configuration;
 use App\Sync\Task\Media;
 use Azura\Config;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -40,9 +40,10 @@ class StationCloneForm extends StationForm
         Media $media_sync,
         Config $config
     ) {
-        $form_config = $config->get('forms/station_clone');
+        parent::__construct($em, $serializer, $validator, $acl, $config);
 
-        parent::__construct($em, $serializer, $validator, $acl, $form_config);
+        $form_config = $config->get('forms/station_clone');
+        $this->configure($form_config);
 
         $this->configuration = $configuration;
         $this->media_sync = $media_sync;
@@ -51,7 +52,7 @@ class StationCloneForm extends StationForm
     /**
      * @inheritdoc
      */
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         if (!$record instanceof Entity\Station) {
             throw new \InvalidArgumentException('Record must be a station.');

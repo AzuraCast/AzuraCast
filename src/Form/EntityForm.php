@@ -2,10 +2,10 @@
 namespace App\Form;
 
 use App\Entity\Station;
-use App\Http\Request;
 use Azura\Doctrine\Repository;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -96,11 +96,11 @@ class EntityForm extends Form
     }
 
     /**
-     * @param Request $request
+     * @param ServerRequestInterface $request
      * @param object|null $record
      * @return object|bool The modified object if edited/created, or `false` if not processed.
      */
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         if (null === $this->entityClass) {
             throw new \Azura\Exception('Entity class name is not specified.');

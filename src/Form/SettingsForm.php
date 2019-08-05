@@ -2,11 +2,8 @@
 namespace App\Form;
 
 use App\Entity;
-use App\Http\Request;
-use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class SettingsForm extends Form
 {
@@ -47,16 +44,16 @@ class SettingsForm extends Form
     }
 
     /**
-     * @param Request $request
+     * @param ServerRequestInterface $request
      * @return bool
      */
-    public function process(Request $request): bool
+    public function process(ServerRequestInterface $request): bool
     {
         // Populate the form with existing values (if they exist).
         $this->populate($this->settings_repo->fetchArray(false));
 
         // Handle submission.
-        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
+        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
             $this->settings_repo->setSettings($data);
             return true;

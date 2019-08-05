@@ -3,10 +3,10 @@ namespace App\Form;
 
 use App\Entity;
 use App\Entity\Station;
-use App\Http\Request;
 use App\Radio\Adapters;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -38,7 +38,7 @@ class StationMountForm extends EntityForm
         $this->form_configs = $form_configs;
     }
 
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         $record = parent::process($request, $record);
 

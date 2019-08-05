@@ -10,15 +10,12 @@ $autoloader = require dirname(__DIR__).'/vendor/autoload.php';
 $translator = new \Gettext\Translator();
 $translator->register();
 
-$app = \App\App::create([
-    'autoloader' => $autoloader,
-    'settings' => [
-        \Azura\Settings::BASE_DIR => dirname(__DIR__),
-    ],
+$app = \App\App::create($autoloader, [
+    \Azura\Settings::BASE_DIR => dirname(__DIR__),
 ]);
 
 $di = $app->getContainer();
 
 /** @var \Azura\Console\Application $cli */
-$cli = $di[\Azura\Console\Application::class];
+$cli = $di->get(\Azura\Console\Application::class);
 $cli->run();

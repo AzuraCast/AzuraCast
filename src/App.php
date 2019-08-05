@@ -6,10 +6,11 @@ use Azura\Exception;
 
 class App extends \Azura\App
 {
-    public static function create(array $values): \Azura\App
+    /**
+     * @inheritDoc
+     */
+    public static function create($autoloader = null, $settings = [], $diDefinitions = []): \Slim\App
     {
-        $settings = $values['settings'] ?? [];
-
         if (!isset($settings[Settings::BASE_DIR])) {
             throw new Exception\Bootstrap('No base directory specified!');
         }
@@ -33,29 +34,23 @@ class App extends \Azura\App
         define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
 
         // Register the plugins engine.
-        if (isset($values['autoloader'])) {
+        if ($autoloader) {
             $plugins = new Plugins($settings[Settings::BASE_DIR] . '/plugins');
-            $plugins->registerAutoloaders($values['autoloader']);
+            $plugins->registerAutoloaders($autoloader);
 
-            $values[Plugins::class] = $plugins;
+            $diDefinitions[Plugins::class] = $plugins;
+            $diDefinitions = $plugins->registerServices($diDefinitions);
         } else {
             $plugins = null;
         }
 
-        $values['settings'] = $settings;
-
-        $app = \Azura\App::create($values);
+        $app = parent::create($autoloader, $settings, $diDefinitions);
         $di = $app->getContainer();
 
-        /** @var Settings $settings */
-        $settings = $di['settings'];
+        $settings = $di->get(Settings::class);
 
         define('APP_APPLICATION_ENV', $settings[Settings::APP_ENV]);
         define('APP_IN_PRODUCTION', $settings->isProduction());
-
-        if (null !== $plugins) {
-            $plugins->registerServices($di);
-        }
 
         return $app;
     }

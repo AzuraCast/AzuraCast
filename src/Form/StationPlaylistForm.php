@@ -3,12 +3,12 @@ namespace App\Form;
 
 use App\Customization;
 use App\Entity;
-use App\Http\Request;
 use App\Radio\PlaylistParser;
 use Azura\Config;
 use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\UploadedFile;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,7 +42,7 @@ class StationPlaylistForm extends EntityForm
         $this->playlist_media_repo = $em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         // Set the "Station Time Zone" field.
         $station = $request->getStation();

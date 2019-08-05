@@ -3,9 +3,10 @@ namespace App\Middleware;
 
 use App\Auth;
 use App\Customization;
-use App\Http\Request;
-use App\Http\Response;
-use App\Entity;
+use App\Http\RequestHelper;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
@@ -25,13 +26,11 @@ class GetCurrentUser
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @param callable $next
-     * @return Response
-     * @throws \Azura\Exception
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $user = ($this->auth->isLoggedIn()) ? $this->auth->getLoggedInUser() : null;
 
@@ -39,10 +38,8 @@ class GetCurrentUser
         $this->customization->setUser($user);
         $request = $this->customization->init($request);
 
-        $request = $request
-            ->withAttribute(Request::ATTRIBUTE_USER, $user)
-            ->withAttribute('is_logged_in', ($user instanceof Entity\User));
+        $request = RequestHelper::injectUser($request, $user);
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

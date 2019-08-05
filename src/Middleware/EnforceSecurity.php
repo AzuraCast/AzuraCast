@@ -51,7 +51,7 @@ class EnforceSecurity
 
             $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
         } elseif ($always_use_ssl && !$internal_api_url) {
-            return $response->withRedirect((string)$request->getUri()->withScheme('https'), 302);
+            return $response->withRedirect((string)$request->getUri()->withScheme('https'), 307);
         }
 
         // Set frame-deny header before next middleware, so it can be overwritten.

@@ -86,7 +86,7 @@ class Station
      * @Assert\Choice(choices={Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST})
      * @var string|null The frontend adapter (icecast,shoutcast,remote,etc)
      */
-    protected $frontend_type;
+    protected $frontend_type = Adapters::FRONTEND_ICECAST;
 
     /**
      * @ORM\Column(name="frontend_config", type="json_array", nullable=true)
@@ -103,7 +103,7 @@ class Station
      * @OA\Property(example="liquidsoap")
      * @var string|null The backend adapter (liquidsoap,etc)
      */
-    protected $backend_type;
+    protected $backend_type = Adapters::BACKEND_LIQUIDSOAP;
 
     /**
      * @ORM\Column(name="backend_config", type="json_array", nullable=true)

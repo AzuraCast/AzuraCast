@@ -56,6 +56,7 @@
                 <dl>
                     <dt class="mb-1"><?=__('Server') ?>:</dt>
                     <dd><code><?=$this->e($server_url) ?></code></dd>
+                    <dd><code>If using CDN, use IP add: <?=$this->e(gethostbyname($_SERVER['HTTP_HOST'])) ?> </code></dd>
 
                     <dt class="mb-1"><?=__('Port') ?>:</dt>
                     <dd><code><?=(int)$stream_port ?></code></dd>
@@ -68,6 +69,7 @@
                 <dl>
                     <dt class="mb-1"><?=__('Server') ?>:</dt>
                     <dd><code><?=$this->e($server_url) ?></code></dd>
+                    <dd><code>If using CDN, use IP add: <?=$this->e(gethostbyname($_SERVER['HTTP_HOST'])) ?> </code></dd>
 
                     <dt class="mb-1"><?=__('Port') ?>:</dt>
                     <dd><code><?=__('%d (%d for some clients)', (int)$stream_port, ((int)$stream_port + 1)) ?></code></dd>

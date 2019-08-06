@@ -10,6 +10,7 @@ use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Response;
 use Symfony\Component\VarDumper\VarDumper;
 use Throwable;
@@ -125,6 +126,17 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
                 ->write('Error: '.$this->exception->getMessage().' on '.$this->exception->getFile().' L'.$this->exception->getLine());
 
             return $response;
+        }
+
+        $this->view->addData([
+            'request' => $this->request,
+        ]);
+
+        if ($this->exception instanceof HttpNotFoundException) {
+            return $this->view->renderToResponse(
+                new Response(404),
+                'system/error_pagenotfound'
+            );
         }
 
         if ($this->exception instanceof \App\Exception\NotLoggedIn) {

@@ -3,15 +3,12 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Event\SendWebhooks;
-use App\Provider\WebhookProvider;
 use Azura\Exception;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
-use Pimple\Psr11\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class Dispatcher
  * @package App\Webhook
  * @see WebhookProvider
  */

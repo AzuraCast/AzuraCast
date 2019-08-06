@@ -3,7 +3,6 @@ namespace App\Controller\Admin;
 
 use App\Entity;
 use App\Form;
-use App\Form\EntityForm;
 use App\Http\RequestHelper;
 use App\Http\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
@@ -15,10 +14,10 @@ class StationsController extends AbstractAdminCrudController
     protected $clone_form;
 
     /**
-     * @param EntityForm $form
-     * @param EntityForm $clone_form
+     * @param Form\StationForm $form
+     * @param Form\StationCloneForm $clone_form
      */
-    public function __construct(EntityForm $form, EntityForm $clone_form)
+    public function __construct(Form\StationForm $form, Form\StationCloneForm $clone_form)
     {
         parent::__construct($form);
 

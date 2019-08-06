@@ -5,6 +5,7 @@ use App\Entity;
 use App\Event\SendWebhooks;
 use App\Service\NChan;
 use Azura\Cache;
+use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use InfluxDB\Database;
 use Monolog\Logger;
@@ -28,8 +29,16 @@ class Local
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    public function __construct(Logger $logger, Client $http_client, Database $influx, Cache $cache, Entity\Repository\SettingsRepository $settings_repo)
-    {
+    public function __construct(
+        Logger $logger,
+        Client $http_client,
+        Database $influx,
+        Cache $cache,
+        EntityManager $em
+    ) {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
         $this->logger = $logger;
         $this->http_client = $http_client;
         $this->influx = $influx;

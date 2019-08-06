@@ -3,7 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Auth;
 use App\Entity;
-use App\Form\EntityForm;
+use App\Form\UserForm;
 use App\Http\RequestHelper;
 use App\Http\ResponseHelper;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -16,11 +16,11 @@ class UsersController extends AbstractAdminCrudController
     protected $auth;
 
     /**
-     * @param EntityForm $form
+     * @param UserForm $form
      * @param Auth $auth
      */
     public function __construct(
-        EntityForm $form,
+        UserForm $form,
         Auth $auth
     ) {
         parent::__construct($form);

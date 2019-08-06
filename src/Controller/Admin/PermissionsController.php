@@ -2,7 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Acl;
-use App\Form\EntityForm;
+use App\Form\PermissionsForm;
 use App\Http\RequestHelper;
 use App\Http\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
@@ -11,9 +11,9 @@ use Psr\Http\Message\ServerRequestInterface;
 class PermissionsController extends AbstractAdminCrudController
 {
     /**
-     * @param EntityForm $form
+     * @param PermissionsForm $form
      */
-    public function __construct(EntityForm $form)
+    public function __construct(PermissionsForm $form)
     {
         parent::__construct($form);
         $this->csrf_namespace = 'admin_permissions';

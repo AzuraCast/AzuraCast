@@ -19,11 +19,11 @@ class WebhooksController extends AbstractStationCrudController
     protected $webhook_config;
 
     /**
-     * @param EntityForm $form
+     * @param StationWebhookForm $form
      * @param Dispatcher $dispatcher
      */
     public function __construct(
-        EntityForm $form,
+        StationWebhookForm $form,
         Dispatcher $dispatcher
     ) {
         parent::__construct($form);

@@ -3,6 +3,7 @@ namespace App\Controller\Stations;
 
 use App\Entity;
 use App\Form\EntityForm;
+use App\Form\StationPlaylistForm;
 use App\Http\RequestHelper;
 use App\Http\ResponseHelper;
 use Cake\Chronos\Chronos;
@@ -15,9 +16,9 @@ class PlaylistsController extends AbstractStationCrudController
     protected $playlist_media_repo;
 
     /**
-     * @param EntityForm $form
+     * @param StationPlaylistForm $form
      */
-    public function __construct(EntityForm $form)
+    public function __construct(StationPlaylistForm $form)
     {
         parent::__construct($form);
 

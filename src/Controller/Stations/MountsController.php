@@ -2,6 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Form\EntityForm;
+use App\Form\StationMountForm;
 use App\Http\RequestHelper;
 use App\Http\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
@@ -10,9 +11,9 @@ use Psr\Http\Message\ServerRequestInterface;
 class MountsController extends AbstractStationCrudController
 {
     /**
-     * @param EntityForm $form
+     * @param StationMountForm $form
      */
-    public function __construct(EntityForm $form)
+    public function __construct(StationMountForm $form)
     {
         parent::__construct($form);
 

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Api;
 
-use Azura\Http\Router;
 use Azura\Http\RouterInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;

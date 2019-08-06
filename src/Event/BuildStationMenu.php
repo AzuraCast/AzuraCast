@@ -4,7 +4,6 @@ namespace App\Event;
 use App\Acl;
 use App\Entity\Station;
 use App\Entity\User;
-use App\Http\Router;
 use App\Radio\Backend\AbstractBackend;
 use App\Radio\Frontend\AbstractFrontend;
 use Azura\Http\RouterInterface;

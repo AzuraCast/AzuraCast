@@ -41,7 +41,7 @@ class Admin implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $event = new Event\BuildAdminMenu($this->acl, RequestHelper::getUser($request), RequestHelper::getRouter($request));
-        $this->dispatcher->dispatch(Event\BuildAdminMenu::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $view = RequestHelper::getView($request);
 

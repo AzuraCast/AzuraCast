@@ -4,9 +4,6 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use OpenApi\Annotations as OA;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class WebhooksController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\StationWebhook::class;

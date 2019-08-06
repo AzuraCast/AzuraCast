@@ -2,11 +2,12 @@
 namespace App\Controller\Stations\Files;
 
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ListController extends FilesControllerAbstract
 {
@@ -20,8 +21,6 @@ class ListController extends FilesControllerAbstract
      * ListController constructor.
      * @param EntityManager $em
      * @param Filesystem $filesystem
-     *
-     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, Filesystem $filesystem)
     {
@@ -29,14 +28,15 @@ class ListController extends FilesControllerAbstract
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
-        $router = $request->getRouter();
+        $station = RequestHelper::getStation($request);
+        $router = RequestHelper::getRouter($request);
 
         $fs = $this->filesystem->getForStation($station);
+        $params = $request->getQueryParams();
 
-        if ('true' === $request->getParam('flush_cache', null)) {
+        if ('true' === $params['flush_cache']) {
             $fs->flushAllCaches();
         }
 
@@ -45,7 +45,7 @@ class ListController extends FilesControllerAbstract
         $file = $request->getAttribute('file');
         $file_path = $request->getAttribute('file_path');
 
-        $search_phrase = trim($request->getParam('searchPhrase') ?? '');
+        $search_phrase = trim($params['searchPhrase'] ?? '');
 
         $media_query = $this->em->createQueryBuilder()
             ->select('partial sm.{id, unique_id, path, length, length_text, artist, title, album}')
@@ -191,7 +191,7 @@ class ListController extends FilesControllerAbstract
             $return_result = [];
         }
 
-        return $response->withJson([
+        return ResponseHelper::withJson($response, [
             'current' => $page,
             'rowCount' => $row_count,
             'total' => $num_results,

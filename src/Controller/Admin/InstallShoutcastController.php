@@ -2,12 +2,13 @@
 namespace App\Controller\Admin;
 
 use App\Form\Form;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Http\UploadedFile;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Process\Process;
 
 class InstallShoutcastController
@@ -23,7 +24,7 @@ class InstallShoutcastController
         $this->form_config = $config->get('forms/install_shoutcast');
     }
 
-    public function __invoke(Request $request, Response $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $form_config = $this->form_config;
 
@@ -35,13 +36,13 @@ class InstallShoutcastController
 
         $form = new Form($form_config, []);
 
-        if ($request->isPost() && $form->isValid($_POST)) {
+        if ('POST' === $request->getMethod() && $form->isValid($_POST)) {
             try
             {
                 $sc_base_dir = dirname(APP_INCLUDE_ROOT) . '/servers/shoutcast2';
 
                 $files = $request->getUploadedFiles();
-                /** @var UploadedFile $import_file */
+                /** @var UploadedFileInterface $import_file */
                 $import_file = $files['binary'];
 
                 if ($import_file->getError() === \UPLOAD_ERR_OK) {
@@ -61,7 +62,7 @@ class InstallShoutcastController
                     $process->mustRun();
                 }
 
-                return $response->withRedirect($request->getUri()->getPath());
+                return ResponseHelper::withRedirect($response, $request->getUri()->getPath());
             } catch(\Exception $e) {
                 $form
                     ->getField('binary')
@@ -69,7 +70,7 @@ class InstallShoutcastController
             }
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Install SHOUTcast'),

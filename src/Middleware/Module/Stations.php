@@ -58,7 +58,7 @@ class Stations implements MiddlewareInterface
         $router = RequestHelper::getRouter($request);
 
         $event = new Event\BuildStationMenu($this->acl, $user, $router, $station, $backend, $frontend);
-        $this->dispatcher->dispatch(Event\BuildStationMenu::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $active_tab = null;
         $routeContext = RouteContext::fromRequest($request);

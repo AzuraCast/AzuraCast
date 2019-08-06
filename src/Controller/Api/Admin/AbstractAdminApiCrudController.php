@@ -3,15 +3,16 @@ namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 {
-    public function listAction(Request $request, Response $response): ResponseInterface
+    public function listAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $query = $this->em->createQuery('SELECT e FROM ' . $this->entityClass . ' e');
 
@@ -19,7 +20,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
         $paginator->setFromRequest($request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
+        $router = RequestHelper::getRouter($request);
 
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
             $return = $this->_viewRecord($row, $router);
@@ -35,31 +36,31 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return ResponseInterface
      * @throws \Azura\Exception
      */
-    public function createAction(Request $request, Response $response): ResponseInterface
+    public function createAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $row = $this->_createRecord($request->getParsedBody());
 
-        $return = $this->_viewRecord($row, $request->getRouter());
-        return $response->withJson($return);
+        $return = $this->_viewRecord($row, RequestHelper::getRouter($request));
+        return ResponseHelper::withJson($response, $return);
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param mixed $record_id
      * @return ResponseInterface
      */
-    public function getAction(Request $request, Response $response, $record_id): ResponseInterface
+    public function getAction(ServerRequestInterface $request, ResponseInterface $response, $record_id): ResponseInterface
     {
         $record = $this->_getRecord($record_id);
 
-        $return = $this->_viewRecord($record, $request->getRouter());
-        return $response->withJson($return);
+        $return = $this->_viewRecord($record, RequestHelper::getRouter($request));
+        return ResponseHelper::withJson($response, $return);
     }
 
     /**
@@ -72,45 +73,47 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param mixed $record_id
      * @return ResponseInterface
      */
-    public function editAction(Request $request, Response $response, $record_id): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $record_id): ResponseInterface
     {
         $record = $this->_getRecord($record_id);
 
         if (null === $record) {
-            return $response
-                ->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+            return ResponseHelper::withJson(
+                $response->withStatus(404),
+                new Entity\Api\Error(404, 'Record not found!')
+            );
         }
 
         $this->_editRecord($request->getParsedBody(), $record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Changes saved successfully.'));
+        return ResponseHelper::withJson($response, new Entity\Api\Status(true, 'Changes saved successfully.'));
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param mixed $record_id
      * @return ResponseInterface
      */
-    public function deleteAction(Request $request, Response $response, $record_id): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $record_id): ResponseInterface
     {
         $record = $this->_getRecord($record_id);
 
         if (null === $record) {
-            return $response
-                ->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+            return ResponseHelper::withJson(
+                $response->withStatus(404),
+                new Entity\Api\Error(404, 'Record not found!')
+            );
         }
 
         $this->_deleteRecord($record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
+        return ResponseHelper::withJson($response, new Entity\Api\Status(true, 'Record deleted successfully.'));
     }
 
     /**

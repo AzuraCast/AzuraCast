@@ -54,7 +54,7 @@ class EnforceSecurity implements MiddlewareInterface
 
             $add_hsts_header = true;
         } elseif ($always_use_ssl && !$internal_api_url) {
-            return ResponseHelper::withRedirect(new \Slim\Psr7\Response, (string)$request->getUri()->withScheme('https'));
+            return ResponseHelper::withRedirect(new \Slim\Psr7\Response, (string)$request->getUri()->withScheme('https'), 307);
         }
 
         $response = $handler->handle($request);

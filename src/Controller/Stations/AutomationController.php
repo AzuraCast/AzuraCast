@@ -2,13 +2,14 @@
 namespace App\Controller\Stations;
 
 use App\Form\Form;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Sync\Task\RadioAutomation;
 use Azura\Config;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AutomationController
 {
@@ -42,9 +43,9 @@ class AutomationController
         $this->form_config = $config->get('forms/automation');
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
         $automation_settings = (array)$station->getAutomationSettings();
 
@@ -59,29 +60,29 @@ class AutomationController
             $this->em->persist($station);
             $this->em->flush();
 
-            \App\Http\RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
+            RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
 
-            return $response->withRedirect($request->getUri());
+            return ResponseHelper::withRedirect($response, $request->getUri());
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/automation/index', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/automation/index', [
             'app_settings' => $this->app_settings,
             'form' => $form,
         ]);
     }
 
-    public function runAction(Request $request, Response $response, $station_id): ResponseInterface
+    public function runAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
         try {
             if ($this->sync_task->runStation($station, true)) {
-                \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Automated assignment complete!') . '</b>', 'green');
+                RequestHelper::getSession($request)->flash('<b>' . __('Automated assignment complete!') . '</b>', 'green');
             }
         } catch (\Exception $e) {
-            \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
+            RequestHelper::getSession($request)->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
         }
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:automation:index'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:automation:index'));
     }
 }

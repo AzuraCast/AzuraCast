@@ -79,7 +79,7 @@ class StationForm extends EntityForm
         }
 
         if (!SHOUTcast::isInstalled()) {
-            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', $request->getRouter()->named('admin:install:shoutcast'));
+            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', \App\Http\RequestHelper::getRouter($request)->named('admin:install:shoutcast'));
         }
 
         $create_mode = (null === $record);

@@ -110,7 +110,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         }
 
         return [
-            GenerateRawNowPlaying::NAME => [
+            GenerateRawNowPlaying::class => [
                 ['loadRawFromFrontend', 10],
                 ['addToRawFromRemotes', 0],
                 ['cleanUpRawOutput', -10],
@@ -289,7 +289,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         // Build the new "raw" NowPlaying data.
         try {
             $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null, $include_clients);
-            $this->event_dispatcher->dispatch(GenerateRawNowPlaying::NAME, $event);
+            $this->event_dispatcher->dispatch($event);
             $np_raw = $event->getRawResponse();
         } catch(\Exception $e) {
             ErrorHandler::logException($this->logger, $e);
@@ -381,7 +381,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $np_event->cache = 'event';
 
         $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
-        $this->event_dispatcher->dispatch(SendWebhooks::NAME, $webhook_event);
+        $this->event_dispatcher->dispatch($webhook_event);
 
         $this->logger->popProcessor();
 

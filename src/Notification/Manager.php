@@ -49,7 +49,7 @@ class Manager implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            GetNotifications::NAME => [
+            GetNotifications::class => [
                 ['checkComposeVersion', 1],
                 ['checkUpdates', 0],
             ],
@@ -62,7 +62,7 @@ class Manager implements EventSubscriberInterface
         if (!$this->acl->userAllowed($event->getCurrentUser(), Acl::GLOBAL_ALL)) {
             return;
         }
-        
+
         if (!$this->app_settings->isDocker()) {
             return;
         }

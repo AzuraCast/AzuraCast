@@ -53,7 +53,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            WriteLiquidsoapConfiguration::NAME => [
+            WriteLiquidsoapConfiguration::class => [
                 ['writeHeaderFunctions', 30],
                 ['writePlaylistConfiguration', 25],
                 ['writeHarborConfiguration', 20],
@@ -76,7 +76,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public function write(Entity\Station $station): bool
     {
         $event = new WriteLiquidsoapConfiguration($station);
-        $this->dispatcher->dispatch(WriteLiquidsoapConfiguration::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $ls_config_contents = $event->buildConfiguration();
 

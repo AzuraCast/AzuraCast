@@ -2,20 +2,17 @@
 namespace App\Controller\Admin;
 
 use App\Acl;
+use App\Http\RequestHelper;
 use App\Radio\Quota;
 use App\Sync\Runner;
 use Brick\Math\BigInteger;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class IndexController
 {
-    /** @var Acl */
-    protected $acl;
-
     /** @var Logger */
     protected $logger;
 
@@ -23,32 +20,38 @@ class IndexController
     protected $sync;
 
     /**
-     * @param Acl $acl
      * @param Logger $logger
      * @param Runner $sync
-     * @see \App\Provider\AdminProvider
      */
-    public function __construct(Acl $acl, Logger $logger, Runner $sync)
+    public function __construct(Logger $logger, Runner $sync)
     {
-        $this->acl = $acl;
         $this->logger = $logger;
         $this->sync = $sync;
     }
 
     /**
      * Main display.
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     *
+     * @return ResponseInterface
      */
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $view = \App\Http\RequestHelper::getView($request);
-        $user = \App\Http\RequestHelper::getUser($request);
+        $view = RequestHelper::getView($request);
+        $user = RequestHelper::getUser($request);
 
         // Remove the sidebar on the homepage.
-        $view->sidebar = null;
+        $view->addData(['sidebar' => null]);
 
         // Synchronization statuses
-        if ($this->acl->userAllowed($user, Acl::GLOBAL_ALL)) {
-            $view->sync_times = $this->sync->getSyncTimes();
+        $acl = RequestHelper::getAcl($request);
+
+        if ($acl->userAllowed($user, Acl::GLOBAL_ALL)) {
+            $view->addData([
+                'sync_times' => $this->sync->getSyncTimes()
+            ]);
         }
 
         $stations_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
@@ -65,9 +68,9 @@ class IndexController
         ]);
     }
 
-    public function syncAction(Request $request, Response $response, $type): ResponseInterface
+    public function syncAction(ServerRequestInterface $request, ResponseInterface $response, $type): ResponseInterface
     {
-        $view = \App\Http\RequestHelper::getView($request);
+        $view = RequestHelper::getView($request);
 
         $handler = new TestHandler(Logger::DEBUG, false);
         $this->logger->pushHandler($handler);

@@ -60,10 +60,10 @@ class AutoDJ implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AnnotateNextSong::NAME => [
+            AnnotateNextSong::class => [
                 ['defaultAnnotationHandler', 0],
             ],
-            GetNextSong::NAME => [
+            GetNextSong::class => [
                 ['checkDatabaseForNextSong', 10],
                 ['getNextSongFromRequests', 5],
                 ['calculateNextSong', 0],
@@ -84,7 +84,7 @@ class AutoDJ implements EventSubscriberInterface
         $sh = $this->getNextSong($station, $as_autodj);
 
         $event = new AnnotateNextSong($station, $sh);
-        $this->dispatcher->dispatch(AnnotateNextSong::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         return $event->buildAnnotations();
     }
@@ -166,7 +166,7 @@ class AutoDJ implements EventSubscriberInterface
         });
 
         $event = new GetNextSong($station);
-        $this->dispatcher->dispatch(GetNextSong::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $this->logger->popProcessor();
 

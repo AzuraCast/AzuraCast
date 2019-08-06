@@ -2,6 +2,8 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use Azura\Cache;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
@@ -9,8 +11,7 @@ use Doctrine\ORM\EntityManager;
 use MaxMind\Db\Reader;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ListenersController
 {
@@ -27,7 +28,6 @@ class ListenersController
      * @param EntityManager $em
      * @param Cache $cache
      * @param Reader $geoip
-     * @see \App\Provider\ApiProvider
      */
     public function __construct(EntityManager $em, Cache $cache, Reader $geoip)
     {
@@ -51,16 +51,18 @@ class ListenersController
      *   security={{"api_key": {}}},
      * )
      */
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
         $station_tz = new \DateTimeZone($station->getTimezone());
 
-        if ($request->getParam('start') !== null) {
-            $start = Chronos::parse($request->getParam('start').' 00:00:00', $station_tz);
+        $params = $request->getQueryParams();
+
+        if (!empty($params['start'])) {
+            $start = Chronos::parse($params['start'].' 00:00:00', $station_tz);
             $start_timestamp = $start->getTimestamp();
 
-            $end = Chronos::parse($request->getParam('end', $request->getParam('start')).' 23:59:59', $station_tz);
+            $end = Chronos::parse(($params['end'] ?? $params['start']).' 23:59:59', $station_tz);
             $end_timestamp = $end->getTimestamp();
 
             $range = $start->format('Ymd').'_to_'.$end->format('Ymd');
@@ -112,7 +114,9 @@ class ListenersController
         $detect = new \Mobile_Detect;
         $locale = $request->getAttribute('locale');
 
-        if ('csv' === $request->getParam('format', 'json')) {
+        $format = $params['format'] ?? 'json';
+
+        if ('csv' === $format) {
             $export_all = [
                 [
                     'IP',
@@ -154,7 +158,7 @@ class ListenersController
             $csv_file = Csv::arrayToCsv($export_all);
             $csv_filename = $station->getShortName() . '_listeners_' . $range . '.csv';
 
-            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
+            return ResponseHelper::renderStringAsFile($response, $csv_file, 'text/csv', $csv_filename);
         }
 
         $listeners = [];
@@ -170,7 +174,7 @@ class ListenersController
             $listeners[] = $api;
         }
 
-        return $response->withJson($listeners);
+        return ResponseHelper::withJson($response, $listeners);
     }
 
     protected function _getLocationInfo($ip, $locale): array

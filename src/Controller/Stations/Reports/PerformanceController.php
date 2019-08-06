@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Sync\Task\RadioAutomation;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class PerformanceController
 {
@@ -18,7 +19,6 @@ class PerformanceController
     /**
      * @param EntityManager $em
      * @param RadioAutomation $sync_automation
-     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, RadioAutomation $sync_automation)
     {
@@ -26,9 +26,9 @@ class PerformanceController
         $this->sync_automation = $sync_automation;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id, $format = 'html'): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id, $format = 'html'): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
         $automation_config = (array)$station->getAutomationSettings();
         $threshold_days = (int)($automation_config['threshold_days'] ?? RadioAutomation::DEFAULT_THRESHOLD_DAYS);
@@ -82,14 +82,14 @@ class PerformanceController
             $csv_file = \Azura\Utilities\Csv::arrayToCsv($export_csv);
             $csv_filename = $station->getShortName() . '_media_' . date('Ymd') . '.csv';
 
-            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
+            return ResponseHelper::renderStringAsFile($response, $csv_file, 'text/csv', $csv_filename);
         }
 
         if ($format === 'json') {
-            return $response->withJson($report_data);
+            return ResponseHelper::withJson($response, $report_data);
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/performance', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/performance', [
             'report_data' => $report_data,
         ]);
     }

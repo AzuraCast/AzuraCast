@@ -2,11 +2,12 @@
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class DuplicatesController
 {
@@ -19,8 +20,6 @@ class DuplicatesController
     /**
      * @param EntityManager $em
      * @param Filesystem $filesystem
-     *
-     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, Filesystem $filesystem)
     {
@@ -28,7 +27,7 @@ class DuplicatesController
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
         $media_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm, s, spm, sp 
@@ -78,14 +77,14 @@ class DuplicatesController
             }
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/duplicates', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/duplicates', [
             'dupes' => $dupes,
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
         $fs = $this->filesystem->getForStation($station);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
@@ -101,9 +100,9 @@ class DuplicatesController
             $this->em->remove($media);
             $this->em->flush();
 
-            \App\Http\RequestHelper::getSession($request)->flash('<b>Duplicate file deleted!</b>', 'green');
+            RequestHelper::getSession($request)->flash('<b>Duplicate file deleted!</b>', 'green');
         }
 
-        return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates', ['station' => $station_id]));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('stations:reports:duplicates', ['station' => $station_id]));
     }
 }

@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller\Stations\Files;
 
+use App\Http\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
 
 /**
  * Class FilesControllerAbstract
@@ -16,10 +16,11 @@ abstract class FilesControllerAbstract
     /** @var string */
     protected $csrf_namespace = 'stations_files';
 
-    protected function _err(Response $response, $code, $msg): ResponseInterface
+    protected function _err(ResponseInterface $response, $code, $msg): ResponseInterface
     {
-        return $response
-            ->withStatus($code)
-            ->withJson(['error' => ['code' => (int)$code, 'msg' => $msg]]);
+        return ResponseHelper::withJson(
+            $response->withStatus($code),
+            ['error' => ['code' => (int)$code, 'msg' => $msg]]
+        );
     }
 }

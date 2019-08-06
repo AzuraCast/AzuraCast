@@ -31,7 +31,6 @@ class Router extends \Azura\Http\Router
         parent::__construct($settings, $route_parser);
     }
 
-
     /**
      * @inheritDoc
      */

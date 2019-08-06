@@ -181,10 +181,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             return ResponseHelper::withJson(new Response(500), $api_response);
         }
 
-        if ($this->show_detailed) {
-            VarDumper::dump($this->exception);
-            exit;
-
+        if ($this->show_detailed && class_exists('\Whoops\Run')) {
             // Register error-handler.
             $handler = new \Whoops\Handler\PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');

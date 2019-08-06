@@ -3,16 +3,15 @@ namespace App\Controller\Admin;
 
 use App\Acl;
 use App\Form\EntityForm;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class PermissionsController extends AbstractAdminCrudController
 {
     /**
      * @param EntityForm $form
-     *
-     * @see \App\Provider\AdminProvider
      */
     public function __construct(EntityForm $form)
     {
@@ -20,7 +19,7 @@ class PermissionsController extends AbstractAdminCrudController
         $this->csrf_namespace = 'admin_permissions';
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $all_roles = $this->em->createQuery(/** @lang DQL */'SELECT 
             r, rp, s 
@@ -50,31 +49,31 @@ class PermissionsController extends AbstractAdminCrudController
             $roles[] = $role;
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'admin/permissions/index', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'admin/permissions/index', [
             'roles' => $roles,
-            'csrf' => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            \App\Http\RequestHelper::getSession($request)->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Permission')) . '</b>', 'green');
-            return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
+            RequestHelper::getSession($request)->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Permission')) . '</b>', 'green');
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:permissions:index'));
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Permission')),
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $id, $csrf_token): ResponseInterface
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Permission')) . '</b>', 'green');
-        return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
+        RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Permission')) . '</b>', 'green');
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:permissions:index'));
     }
 }

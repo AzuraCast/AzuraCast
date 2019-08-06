@@ -4,6 +4,7 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Entity;
 use App\Event;
+use App\Http\RequestHelper;
 use App\Http\Router;
 use App\Radio\Adapters;
 use Azura\Cache;
@@ -11,8 +12,7 @@ use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class DashboardController
 {
@@ -44,8 +44,6 @@ class DashboardController
      * @param Database $influx
      * @param Adapters $adapter_manager
      * @param EventDispatcher $dispatcher
-     *
-     * @see \App\Provider\FrontendProvider
      */
     public function __construct(
         EntityManager $em,
@@ -63,11 +61,11 @@ class DashboardController
         $this->dispatcher = $dispatcher;
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $view = \App\Http\RequestHelper::getView($request);
-        $user = \App\Http\RequestHelper::getUser($request);
-        $router = $request->getRouter();
+        $view = RequestHelper::getView($request);
+        $user = RequestHelper::getUser($request);
+        $router = RequestHelper::getRouter($request);
 
         $show_admin = $this->acl->userAllowed($user, Acl::GLOBAL_VIEW);
 
@@ -90,7 +88,7 @@ class DashboardController
 
         // Get administrator notifications.
         $notification_event = new Event\GetNotifications($user);
-        $this->dispatcher->dispatch(Event\GetNotifications::NAME, $notification_event);
+        $this->dispatcher->dispatch($notification_event);
 
         $notifications = $notification_event->getNotifications();
 

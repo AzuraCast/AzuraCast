@@ -3,12 +3,10 @@ namespace App\Event;
 
 use App\Entity\User;
 use App\Notification\Notification;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class GetNotifications extends Event
 {
-    public const NAME = 'get-notifications';
-
     /** @var User */
     protected $current_user;
 

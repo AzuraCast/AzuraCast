@@ -232,7 +232,7 @@ return [
         'inline' => [
             'js' => [
                 function(Request $request) {
-                    if (!$request->hasAttribute('locale')) {
+                    if ('' !== $request->getAttribute('locale', '')) {
                         return '';
                     }
 

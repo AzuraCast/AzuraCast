@@ -2,11 +2,11 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
+use App\Http\ResponseHelper;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,8 +32,6 @@ class SettingsController
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
-     *
-     * @see \App\Provider\ApiProvider
      */
     public function __construct(EntityManager $em, Serializer $serializer, ValidatorInterface $validator)
     {
@@ -63,13 +61,13 @@ class SettingsController
      *   security={{"api_key": {}}},
      * )
      *
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function listAction(Request $request, Response $response): ResponseInterface
+    public function listAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $response->withJson($this->api_settings);
+        return ResponseHelper::withJson($response, $this->api_settings);
     }
 
     /**
@@ -86,12 +84,12 @@ class SettingsController
      *   security={{"api_key": {}}},
      * )
      *
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return ResponseInterface
      * @throws \App\Exception\Validation
      */
-    public function updateAction(Request $request, Response $response): ResponseInterface
+    public function updateAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $api_settings_obj = $this->serializer->denormalize($request->getParsedBody(), Entity\Api\Admin\Settings::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $this->api_settings,
@@ -106,6 +104,6 @@ class SettingsController
 
         $this->settings_repo->setSettings($api_settings);
 
-        return $response->withJson(new Entity\Api\Status());
+        return ResponseHelper::withJson($response, new Entity\Api\Status());
     }
 }

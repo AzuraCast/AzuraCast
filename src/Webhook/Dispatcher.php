@@ -40,7 +40,7 @@ class Dispatcher implements EventSubscriberInterface
         }
 
         return [
-            SendWebhooks::NAME => [
+            SendWebhooks::class => [
                 ['localDispatch', 5],
                 ['dispatch', 0],
             ],

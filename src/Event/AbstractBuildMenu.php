@@ -4,7 +4,8 @@ namespace App\Event;
 use App\Acl;
 use App\Entity\User;
 use App\Http\Router;
-use Symfony\Component\EventDispatcher\Event;
+use Azura\Http\RouterInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractBuildMenu extends Event
 {
@@ -14,7 +15,7 @@ abstract class AbstractBuildMenu extends Event
     /** @var User */
     protected $user;
 
-    /** @var Router */
+    /** @var RouterInterface */
     protected $router;
 
     /** @var array */
@@ -23,9 +24,9 @@ abstract class AbstractBuildMenu extends Event
     /**
      * @param Acl $acl
      * @param User $user
-     * @param Router $router
+     * @param RouterInterface $router
      */
-    public function __construct(Acl $acl, User $user, Router $router)
+    public function __construct(Acl $acl, User $user, RouterInterface $router)
     {
         $this->acl = $acl;
         $this->user = $user;

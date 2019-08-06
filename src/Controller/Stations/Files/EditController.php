@@ -3,18 +3,18 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Form\Form;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Http\Router;
 use App\Radio\Filesystem;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Abstract out the Edit File functionality, as it has significant extra code.
- * @package Controller\Stations\Files
  */
 class EditController extends FilesControllerAbstract
 {
@@ -46,9 +46,9 @@ class EditController extends FilesControllerAbstract
         ]);
     }
 
-    public function __invoke(Request $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
         $fs = $this->filesystem->getForStation($station);
 
@@ -140,13 +140,13 @@ class EditController extends FilesControllerAbstract
             $this->em->persist($media);
             $this->em->flush();
 
-            \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
+            RequestHelper::getSession($request)->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
-            return $response->withRedirect($request->getRouter()->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' =>__('Edit %s', __('Media'))

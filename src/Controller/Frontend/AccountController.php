@@ -6,11 +6,12 @@ use App\Auth;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Entity\User;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use Azura\RateLimit;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AccountController
 {
@@ -31,7 +32,6 @@ class AccountController
      * @param Auth $auth
      * @param RateLimit $rate_limit
      * @param Acl $acl
-     * @see \App\Provider\FrontendProvider
      */
     public function __construct(
         EntityManager $em,
@@ -46,7 +46,7 @@ class AccountController
         $this->acl = $acl;
     }
 
-    public function loginAction(Request $request, Response $response): ResponseInterface
+    public function loginAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         // Check installation completion progress.
 
@@ -56,15 +56,15 @@ class AccountController
             $num_users = $this->em->createQuery(/** @lang DQL */'SELECT COUNT(u.id) FROM App\Entity\User u')->getSingleScalarResult();
 
             if ($num_users == 0) {
-                return $response->withRedirect($request->getRouter()->named('setup:index'));
+                return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('setup:index'));
             }
         }
 
         if ($this->auth->isLoggedIn()) {
-            return $response->withRedirect($request->getRouter()->named('dashboard'));
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('dashboard'));
         }
 
-        $session = \App\Http\RequestHelper::getSession($request);
+        $session = RequestHelper::getSession($request);
 
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
@@ -73,7 +73,7 @@ class AccountController
                 $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 
-                return $response->withRedirect($request->getUri()->getPath());
+                return ResponseHelper::withRedirect($response, $request->getUri()->getPath());
             }
 
             $user = $this->auth->authenticate($_POST['username'], $_POST['password']);
@@ -91,33 +91,35 @@ class AccountController
 
                 // Redirect for 2FA.
                 if (!$this->auth->isLoginComplete()) {
-                    return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
+                    return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('account:login:2fa'));
                 }
 
                 $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
                 $referrer = $session->get('login_referrer');
                 if (!empty($referrer->url)) {
-                    return $response->withRedirect($referrer->url);
+                    return ResponseHelper::withRedirect($response, $referrer->url);
                 }
 
-                return $response->withRedirect($request->getRouter()->named('dashboard'));
+                return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('dashboard'));
             }
 
             $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 'red');
 
-            return $response->withRedirect($request->getUri());
+            return ResponseHelper::withRedirect($response, $request->getUri());
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/account/login');
+        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/account/login');
     }
 
-    public function twoFactorAction(Request $request, Response $response): ResponseInterface
+    public function twoFactorAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        if ($request->isPost()) {
-            $session = \App\Http\RequestHelper::getSession($request);
-            $otp = $request->getParsedBodyParam('otp');
+        if ('POST' === $request->getMethod()) {
+            $session = RequestHelper::getSession($request);
+
+            $parsedBody = $request->getParsedBody();
+            $otp = $parsedBody['otp'];
 
             if ($this->auth->verifyTwoFactor($otp)) {
 
@@ -127,33 +129,33 @@ class AccountController
 
                 $referrer = $session->get('login_referrer');
                 if (!empty($referrer->url)) {
-                    return $response->withRedirect($referrer->url);
+                    return ResponseHelper::withRedirect($response, $referrer->url);
                 }
 
-                return $response->withRedirect($request->getRouter()->named('dashboard'));
+                return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('dashboard'));
             }
 
             $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 'red');
 
-            return $response->withRedirect($request->getUri());
+            return ResponseHelper::withRedirect($response, $request->getUri());
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/account/two_factor');
+        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/account/two_factor');
     }
 
-    public function logoutAction(Request $request, Response $response): ResponseInterface
+    public function logoutAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->auth->logout();
-        \App\Http\RequestHelper::getSession($request)->destroy();
+        RequestHelper::getSession($request)->destroy();
 
-        return $response->withRedirect($request->getRouter()->named('account:login'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('account:login'));
     }
 
-    public function endmasqueradeAction(Request $request, Response $response): ResponseInterface
+    public function endmasqueradeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->auth->endMasquerade();
 
-        return $response->withRedirect($request->getRouter()->named('admin:users:index'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:users:index'));
     }
 }

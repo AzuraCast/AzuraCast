@@ -114,7 +114,7 @@ class RadioRequests extends AbstractTask
 
         // Generate full Liquidsoap annotations
         $event = new AnnotateNextSong($station, $sh);
-        $this->dispatcher->dispatch(AnnotateNextSong::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $track = $event->buildAnnotations();
 

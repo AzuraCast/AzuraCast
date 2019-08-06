@@ -2,12 +2,13 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ServicesController
 {
@@ -32,15 +33,19 @@ class ServicesController
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={{"api_key": {}}}
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function statusAction(Request $request, Response $response): ResponseInterface
+    public function statusAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
-        $backend = \App\Http\RequestHelper::getStationBackend($request);
-        $frontend = \App\Http\RequestHelper::getStationFrontend($request);
+        $backend = RequestHelper::getStationBackend($request);
+        $frontend = RequestHelper::getStationFrontend($request);
 
-        return $response->withJson(new Entity\Api\StationServiceStatus(
+        return ResponseHelper::withJson($response, new Entity\Api\StationServiceStatus(
             $backend->isRunning($station),
             $frontend->isRunning($station)
         ));
@@ -55,13 +60,17 @@ class ServicesController
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={{"api_key": {}}}
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function restartAction(Request $request, Response $response): ResponseInterface
+    public function restartAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
         $this->configuration->writeConfiguration($station, false, true);
 
-        return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
+        return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
     }
 
     /**
@@ -83,26 +92,32 @@ class ServicesController
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={{"api_key": {}}}
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param string|int $station_id
+     * @param string $do
+     * @return ResponseInterface
      */
-    public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
+    public function frontendAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $do = 'restart'): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
-        $frontend = \App\Http\RequestHelper::getStationFrontend($request);
+        $station = RequestHelper::getStation($request);
+        $frontend = RequestHelper::getStationFrontend($request);
 
         switch ($do) {
-            case "stop":
+            case 'stop':
                 $frontend->stop($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Frontend'))));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s stopped.', __('Frontend'))));
             break;
 
-            case "start":
+            case 'start':
                 $frontend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Frontend'))));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s started.', __('Frontend'))));
             break;
 
-            case "restart":
+            case 'restart':
             default:
                 try
                 {
@@ -112,7 +127,7 @@ class ServicesController
                 $frontend->write($station);
                 $frontend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Frontend'))));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s restarted.', __('Frontend'))));
             break;
         }
     }
@@ -136,42 +151,48 @@ class ServicesController
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={{"api_key": {}}}
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param string|int $station_id
+     * @param string $do
+     * @return ResponseInterface
      */
-    public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
+    public function backendAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $do = 'restart'): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
-        $backend = \App\Http\RequestHelper::getStationBackend($request);
+        $station = RequestHelper::getStation($request);
+        $backend = RequestHelper::getStationBackend($request);
 
         switch ($do) {
-            case "skip":
+            case 'skip':
                 if (method_exists($backend, 'skip')) {
                     $backend->skip($station);
                 }
 
-                return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('Song skipped.')));
             break;
 
-            case "disconnect":
+            case 'disconnect':
                 if (method_exists($backend, 'disconnectStreamer')) {
                     $backend->disconnectStreamer($station);
                 }
 
-                return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('Streamer disconnected.')));
             break;
 
-            case "stop":
+            case 'stop':
                 $backend->stop($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Backend'))));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s stopped.', __('Backend'))));
                 break;
 
-            case "start":
+            case 'start':
                 $backend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Backend'))));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s started.', __('Backend'))));
                 break;
 
-            case "restart":
+            case 'restart':
             default:
                 try
                 {
@@ -181,7 +202,7 @@ class ServicesController
                 $backend->write($station);
                 $backend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Backend'))));
+                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s restarted.', __('Backend'))));
                 break;
         }
     }

@@ -2,14 +2,12 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class UsersController extends AbstractAdminApiCrudController
 {
     protected $entityClass = Entity\User::class;
@@ -97,27 +95,29 @@ class UsersController extends AbstractAdminApiCrudController
      *
      * @inheritdoc
      */
-    public function deleteAction(Request $request, Response $response, $record_id): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $record_id): ResponseInterface
     {
         /** @var Entity\User $record */
         $record = $this->_getRecord($record_id);
 
         if (null === $record) {
-            return $response
-                ->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+            return ResponseHelper::withJson(
+                $response->withStatus(404),
+                new Entity\Api\Error(404, 'Record not found!')
+            );
         }
 
-        $current_user = \App\Http\RequestHelper::getUser($request);
+        $current_user = RequestHelper::getUser($request);
 
         if ($record->getId() === $current_user->getId()) {
-            return $response
-                ->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, 'You cannot remove yourself.'));
+            return ResponseHelper::withJson(
+                $response->withStatus(403),
+                new Entity\Api\Error(403, 'You cannot remove yourself.')
+            );
         }
 
         $this->_deleteRecord($record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
+        return ResponseHelper::withJson($response, new Entity\Api\Status(true, 'Record deleted successfully.'));
     }
 }

@@ -2,11 +2,12 @@
 namespace App\Controller\Admin;
 
 use App\Form\SettingsForm;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class SettingsController
 {
@@ -24,14 +25,14 @@ class SettingsController
         $this->form = $form;
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         if (false !== $this->form->process($request)) {
-            \App\Http\RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
-            return $response->withRedirect($request->getUri()->getPath());
+            RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
+            return ResponseHelper::withRedirect($response, $request->getUri()->getPath());
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => __('System Settings'),

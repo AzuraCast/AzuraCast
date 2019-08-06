@@ -161,7 +161,7 @@ class Auth
     /**
      * Become a different user across the application.
      *
-     * @param array $user_info
+     * @param User|array $user_info
      */
     public function masqueradeAsUser($user_info): void
     {

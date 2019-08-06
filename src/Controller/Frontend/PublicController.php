@@ -2,35 +2,35 @@
 namespace App\Controller\Frontend;
 
 use App\Entity;
+use App\Http\RequestHelper;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Remote\AdapterProxy;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class PublicController
 {
-    public function indexAction(Request $request, Response $response, $station_id = null): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response, $station_id = null): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/index');
     }
 
-    public function embedAction(Request $request, Response $response, $station_id = null): ResponseInterface
+    public function embedAction(ServerRequestInterface $request, ResponseInterface $response, $station_id = null): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/embed');
     }
 
-    public function embedrequestsAction(Request $request, Response $response): ResponseInterface
+    public function embedrequestsAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/embedrequests');
     }
 
-    protected function _getPublicPage(Request $request, Response $response, $template_name, $template_vars = [])
+    protected function _getPublicPage(ServerRequestInterface $request, ResponseInterface $response, $template_name, $template_vars = [])
     {
         // Override system-wide iframe refusal
         $response = $response->withoutHeader('X-Frame-Options');
 
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
         if (!$station->getEnablePublicPage()) {
             throw new \App\Exception\StationNotFound;
@@ -61,24 +61,24 @@ class PublicController
 
         $station_np = $station->getNowplaying();
         if ($station_np instanceof Entity\Api\NowPlaying) {
-            $station_np->resolveUrls($request->getRouter()->getBaseUrl());
+            $station_np->resolveUrls(RequestHelper::getRouter($request)->getBaseUrl());
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, $template_name, $template_vars + [
+        return RequestHelper::getView($request)->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
             'nowplaying' => $np,
         ]);
     }
 
-    public function playlistAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
+    public function playlistAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $format = 'pls'): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
         $streams = [];
         $stream_urls = [];
 
-        $fa = \App\Http\RequestHelper::getStationFrontend($request);
+        $fa = RequestHelper::getStationFrontend($request);
         foreach ($station->getMounts() as $mount) {
             /** @var Entity\StationMount $mount */
             if (!$mount->isVisibleOnPublicPages()) {
@@ -94,7 +94,7 @@ class PublicController
             ];
         }
 
-        $remotes = \App\Http\RequestHelper::getStationRemotes($request);
+        $remotes = RequestHelper::getStationRemotes($request);
         foreach($remotes as $remote_proxy) {
             /** @var AdapterProxy $remote_proxy */
             $adapter = $remote_proxy->getAdapter();
@@ -115,10 +115,10 @@ class PublicController
             case 'm3u':
                 $m3u_file = implode("\n", $stream_urls);
 
+                $response->getBody()->write($m3u_file);
                 return $response
                     ->withHeader('Content-Type', 'audio/x-mpegurl')
-                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.m3u')
-                    ->write($m3u_file);
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.m3u');
                 break;
 
             // PLS Playlist Format
@@ -140,17 +140,17 @@ class PublicController
                 $output[] = 'NumberOfEntries=' . count($streams);
                 $output[] = 'Version=2';
 
+                $response->getBody()->write(implode("\n", $output));
                 return $response
                     ->withHeader('Content-Type', 'audio/x-scpls')
-                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.pls')
-                    ->write(implode("\n", $output));
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.pls');
                 break;
         }
     }
 
-    public function djAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
+    public function djAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $format = 'pls'): ResponseInterface
     {
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = RequestHelper::getStation($request);
 
         if (!$station->getEnablePublicPage()) {
             throw new \App\Exception\StationNotFound;
@@ -160,16 +160,16 @@ class PublicController
             throw new \App\Exception\StationUnsupported;
         }
 
-        $backend = \App\Http\RequestHelper::getStationBackend($request);
+        $backend = RequestHelper::getStationBackend($request);
 
         if (!($backend instanceof Liquidsoap)) {
             throw new \App\Exception\StationUnsupported;
         }
 
-        $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
+        $wss_url = (string)$backend->getWebStreamingUrl($station, RequestHelper::getRouter($request)->getBaseUrl());
         $wss_url = str_replace('wss://', '', $wss_url);
 
-        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/public/dj', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/public/dj', [
             'station' => $station,
             'base_uri' => $wss_url,
         ]);

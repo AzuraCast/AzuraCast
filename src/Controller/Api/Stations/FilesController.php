@@ -2,6 +2,8 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
@@ -9,8 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,8 +42,6 @@ class FilesController extends AbstractStationApiCrudController
      * @param ValidatorInterface $validator
      * @param Filesystem $filesystem
      * @param Adapters $adapters
-     *
-     * @see \App\Provider\ApiProvider
      */
     public function __construct(
         EntityManager $em,
@@ -88,8 +87,13 @@ class FilesController extends AbstractStationApiCrudController
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param int|string $station_id
+     * @return ResponseInterface
      */
-    public function createAction(Request $request, Response $response, $station_id): ResponseInterface
+    public function createAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
         $station = $this->_getStation($request);
 
@@ -116,10 +120,10 @@ class FilesController extends AbstractStationApiCrudController
         // Process temp path as regular media record.
         $record = $this->media_repo->uploadFile($station, $temp_path, $sanitized_path);
 
-        $router = $request->getRouter();
+        $router = RequestHelper::getRouter($request);
         $return = $this->_viewRecord($record, $router);
 
-        return $response->withJson($return);
+        return ResponseHelper::withJson($response, $return);
     }
 
     /**

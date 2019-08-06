@@ -68,8 +68,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Database $influx
      * @param EventDispatcher $event_dispatcher
      * @param MessageQueue $message_queue
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

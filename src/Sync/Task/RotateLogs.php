@@ -28,8 +28,6 @@ class RotateLogs extends AbstractTask
      * @param Logger $logger
      * @param Adapters $adapters
      * @param Supervisor $supervisor
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

@@ -19,8 +19,6 @@ class RadioAutomation extends AbstractTask
      * @param EntityManager $em
      * @param Logger $logger
      * @param Adapters $adapters
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(EntityManager $em, Logger $logger, Adapters $adapters)
     {

@@ -15,8 +15,6 @@ class Analytics extends AbstractTask
      * @param EntityManager $em
      * @param Logger $logger
      * @param Database $influx
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(EntityManager $em, Logger $logger, Database $influx)
     {

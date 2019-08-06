@@ -27,8 +27,6 @@ class Backup extends AbstractTask
      * @param Logger $logger
      * @param MessageQueue $message_queue
      * @param Application $console
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

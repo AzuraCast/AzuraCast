@@ -33,8 +33,6 @@ class Manager implements EventSubscriberInterface
      * @param EntityManager $em
      * @param Logger $logger
      * @param Settings $app_settings
-     *
-     * @see \App\Provider\NotificationProvider
      */
     public function __construct(Acl $acl, EntityManager $em, Logger $logger, Settings $app_settings)
     {

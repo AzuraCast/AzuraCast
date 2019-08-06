@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "c9d674e878a9e9256a5c57df2d8ae5848cd55e38"
+                "reference": "7fb98e859f35b73f33795cc565eec809c6ea0252"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/c9d674e878a9e9256a5c57df2d8ae5848cd55e38",
-                "reference": "c9d674e878a9e9256a5c57df2d8ae5848cd55e38",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/7fb98e859f35b73f33795cc565eec809c6ea0252",
+                "reference": "7fb98e859f35b73f33795cc565eec809c6ea0252",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-08-06T20:29:30+00:00"
+            "time": "2019-08-06T20:52:24+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -4621,12 +4621,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "e0342204c871f257e411a2eea51b954f4b97c5df"
+                "reference": "d3c69bc624728bcdd32e836025462cfeb5311534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/e0342204c871f257e411a2eea51b954f4b97c5df",
-                "reference": "e0342204c871f257e411a2eea51b954f4b97c5df",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/d3c69bc624728bcdd32e836025462cfeb5311534",
+                "reference": "d3c69bc624728bcdd32e836025462cfeb5311534",
                 "shasum": ""
             },
             "require": {
@@ -4702,7 +4702,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2019-08-06T03:59:15+00:00"
+            "time": "2019-08-06T20:31:05+00:00"
         },
         {
             "name": "spomky-labs/otphp",

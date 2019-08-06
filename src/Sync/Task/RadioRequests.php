@@ -21,8 +21,6 @@ class RadioRequests extends AbstractTask
      * @param Logger $logger
      * @param Adapters $adapters
      * @param EventDispatcher $dispatcher
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

@@ -32,8 +32,6 @@ class CheckForUpdates extends AbstractTask
      * @param Client $http_client
      * @param Settings $settings
      * @param Version $version
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

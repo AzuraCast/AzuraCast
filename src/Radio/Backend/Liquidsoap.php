@@ -33,8 +33,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * @param EventDispatcher $dispatcher
      * @param AutoDJ $autodj
      * @param Filesystem $filesystem
-     *
-     * @see \App\Provider\RadioProvider
      */
     public function __construct(
         EntityManager $em,

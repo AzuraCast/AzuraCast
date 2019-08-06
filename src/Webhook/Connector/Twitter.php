@@ -20,8 +20,6 @@ class Twitter extends AbstractConnector
      * @param Logger $logger
      * @param Client $http_client
      * @param EntityManager $em
-     *
-     * @see \App\Provider\WebhookProvider
      */
     public function __construct(Logger $logger, Client $http_client, EntityManager $em)
     {

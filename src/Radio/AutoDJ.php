@@ -37,8 +37,6 @@ class AutoDJ implements EventSubscriberInterface
      * @param Filesystem $filesystem
      * @param Logger $logger
      * @param Cache $cache
-     *
-     * @see \App\Provider\RadioProvider
      */
     public function __construct(
         EntityManager $em,

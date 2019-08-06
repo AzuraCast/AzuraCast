@@ -26,8 +26,6 @@ class Media extends AbstractTask
      * @param Logger $logger
      * @param Filesystem $filesystem
      * @param MessageQueue $message_queue
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

@@ -21,8 +21,6 @@ class Filesystem
 
     /**
      * @param \Redis $redis
-     *
-     * @see \App\Provider\RadioProvider
      */
     public function __construct(\Redis $redis)
     {

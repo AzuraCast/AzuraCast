@@ -16,8 +16,6 @@ abstract class AbstractTask
     /**
      * @param EntityManager $em
      * @param Logger $logger
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(EntityManager $em, Logger $logger)
     {

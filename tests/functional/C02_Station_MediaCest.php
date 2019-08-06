@@ -16,7 +16,7 @@ class C02_Station_MediaCest extends CestAbstract
         copy($test_song_orig, $test_song);
 
         /** @var \Azura\Session $session */
-        $session = $this->di[\Azura\Session::class];
+        $session = $this->di->get(\Azura\Session::class);
         $csrf = $session->getCsrf();
 
         $test_file = [

@@ -56,6 +56,10 @@ class Admin implements MiddlewareInterface
 
         $view->addData([
             'admin_panels' => $event->getFilteredMenu(),
+        ]);
+
+        // These two intentionally separated (the sidebar needs admin_panels).
+        $view->addData([
             'sidebar' => $view->render('admin/sidebar', [
                 'active_tab' => $active_tab,
             ]),

@@ -1,14 +1,14 @@
 <?php
 namespace App\Controller\Frontend;
 
+use App\Entity;
 use App\Exception\NotFound;
 use App\Form\Form;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ApiKeysController
 {
@@ -38,18 +38,18 @@ class ApiKeysController
 
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $user = $request->getUser();
+        $user = \App\Http\RequestHelper::getUser($request);
 
-        return $request->getView()->renderToResponse($response, 'frontend/api_keys/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/api_keys/index', [
             'records' => $user->getApiKeys(),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function editAction(Request $request, Response $response, $id = null): ResponseInterface
     {
-        $user = $request->getUser();
-        $view = $request->getView();
+        $user = \App\Http\RequestHelper::getUser($request);
+        $view = \App\Http\RequestHelper::getView($request);
 
         $form = new Form($this->form_config);
 
@@ -93,7 +93,7 @@ class ApiKeysController
                 ]);
             }
 
-            $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
+            \App\Http\RequestHelper::getSession($request)->flash(__('%s updated.', __('API Key')), 'green');
             return $response->withRedirect($request->getRouter()->named('api_keys:index'));
         }
 
@@ -106,7 +106,7 @@ class ApiKeysController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
@@ -120,7 +120,7 @@ class ApiKeysController
         $this->em->flush();
         $this->em->refresh($user);
 
-        $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
+        \App\Http\RequestHelper::getSession($request)->flash(__('%s deleted.', __('API Key')), 'green');
 
         return $response->withRedirect($request->getRouter()->named('api_keys:index'));
     }

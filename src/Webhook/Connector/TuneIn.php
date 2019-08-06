@@ -1,11 +1,9 @@
 <?php
 namespace App\Webhook\Connector;
 
-use App\Entity;
 use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
-use Monolog\Logger;
 
 class TuneIn extends AbstractConnector
 {

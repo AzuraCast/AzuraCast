@@ -1,8 +1,8 @@
 <?php
 namespace App\Sync;
 
-use App\Entity\Repository\SettingsRepository;
 use App\Entity;
+use App\Entity\Repository\SettingsRepository;
 use Monolog\Logger;
 use Pimple\ServiceIterator;
 

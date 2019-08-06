@@ -1,15 +1,15 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use Azura\Doctrine\Paginator;
-use App\Utilities;
 use App\ApiUtilities;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
+use App\Utilities;
+use Azura\Doctrine\Paginator;
+use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class RequestsController
 {
@@ -49,10 +49,10 @@ class RequestsController
      */
     public function listAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
+        $ba = \App\Http\RequestHelper::getStationBackend($request);
         if (!$ba::supportsRequests() || !$station->getEnableRequests()) {
             return $response->withJson('This station does not accept requests currently.', 403);
         }
@@ -143,10 +143,10 @@ class RequestsController
      */
     public function submitAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
+        $ba = \App\Http\RequestHelper::getStationBackend($request);
         if (!$ba::supportsRequests() || !$station->getEnableRequests()) {
             return $response->withJson('This station does not accept requests currently.', 403);
         }

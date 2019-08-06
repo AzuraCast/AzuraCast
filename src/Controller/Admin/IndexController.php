@@ -2,14 +2,14 @@
 namespace App\Controller\Admin;
 
 use App\Acl;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Quota;
 use App\Sync\Runner;
 use Brick\Math\BigInteger;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class IndexController
 {
@@ -40,8 +40,8 @@ class IndexController
      */
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $view = $request->getView();
-        $user = $request->getUser();
+        $view = \App\Http\RequestHelper::getView($request);
+        $user = \App\Http\RequestHelper::getUser($request);
 
         // Remove the sidebar on the homepage.
         $view->sidebar = null;
@@ -67,7 +67,7 @@ class IndexController
 
     public function syncAction(Request $request, Response $response, $type): ResponseInterface
     {
-        $view = $request->getView();
+        $view = \App\Http\RequestHelper::getView($request);
 
         $handler = new TestHandler(Logger::DEBUG, false);
         $this->logger->pushHandler($handler);

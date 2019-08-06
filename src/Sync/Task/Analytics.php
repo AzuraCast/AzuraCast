@@ -1,9 +1,9 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Entity;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
-use App\Entity;
 use Monolog\Logger;
 
 class Analytics extends AbstractTask

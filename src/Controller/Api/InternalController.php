@@ -2,14 +2,14 @@
 namespace App\Controller\Api;
 
 use App\Acl;
+use App\Entity;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Task\NowPlaying;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class InternalController
 {
@@ -49,7 +49,7 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         if (!$station->getEnableStreamers()) {
             $this->logger->error('Attempted DJ authentication when streamers are disabled on this station.', [
                 'station_id' => $station->getId(),
@@ -62,7 +62,7 @@ class InternalController
         $user = $request->getParam('dj_user');
         $pass = $request->getParam('dj_password');
 
-        $adapter = $request->getStationBackend();
+        $adapter = \App\Http\RequestHelper::getStationBackend($request);
         if ($adapter instanceof Liquidsoap) {
             return $response->write($adapter->authenticateStreamer($station, $user, $pass));
         }
@@ -76,16 +76,16 @@ class InternalController
 
         $as_autodj = $request->hasParam('api_auth');
 
-        return $response->write($this->autodj->annotateNextSong($request->getStation(), $as_autodj));
+        return $response->write($this->autodj->annotateNextSong(\App\Http\RequestHelper::getStation($request), $as_autodj));
     }
 
     public function djonAction(Request $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
-        $adapter = $request->getStationBackend();
+        $adapter = \App\Http\RequestHelper::getStationBackend($request);
         if ($adapter instanceof Liquidsoap) {
-            $station = $request->getStation();
+            $station = \App\Http\RequestHelper::getStation($request);
 
             $this->logger->info('Received "DJ connected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
@@ -102,9 +102,9 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        $adapter = $request->getStationBackend();
+        $adapter = \App\Http\RequestHelper::getStationBackend($request);
         if ($adapter instanceof Liquidsoap) {
-            $station = $request->getStation();
+            $station = \App\Http\RequestHelper::getStation($request);
 
             $this->logger->info('Received "DJ disconnected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
@@ -121,7 +121,7 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         $body = $request->getParsedBody();
 
@@ -141,7 +141,7 @@ class InternalController
      */
     protected function _checkStationAuth(Request $request): void
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         /** @var Entity\User $user */
         $user = $request->getAttribute(Request::ATTRIBUTE_USER);

@@ -2,12 +2,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity;
-use App\Form\EntityForm;
 use App\Form\EntityFormManager;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ApiController extends AbstractAdminCrudController
 {
@@ -31,20 +30,20 @@ class ApiController extends AbstractAdminCrudController
             a, u FROM App\Entity\ApiKey a JOIN a.user u')
             ->getArrayResult();
 
-        return $request->getView()->renderToResponse($response, 'admin/api/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'admin/api/index', [
             'records' => $records,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function editAction(Request $request, Response $response, $id): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
+            \App\Http\RequestHelper::getSession($request)->flash(__('%s updated.', __('API Key')), 'green');
             return $response->withRedirect($request->getRouter()->named('admin:api:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => __('Edit %s', __('API Key'))
@@ -55,7 +54,7 @@ class ApiController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
+        \App\Http\RequestHelper::getSession($request)->flash(__('%s deleted.', __('API Key')), 'green');
         return $response->withRedirect($request->getRouter()->named('admin:api:index'));
     }
 }

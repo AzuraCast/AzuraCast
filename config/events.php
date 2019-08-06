@@ -13,11 +13,9 @@ return function (\Azura\EventDispatcher $dispatcher)
             $dev_routes($app);
         }
 
-        // Get the current user entity object and assign it into the request if it exists.
-        $app->add(Middleware\GetCurrentUser::class);
-
-        // Check HTTPS setting and enforce Content Security Policy accordingly.
         $app->add(Middleware\EnforceSecurity::class);
+        $app->add(Middleware\InjectAcl::class);
+        $app->add(Middleware\GetCurrentUser::class);
 
     }, 2);
 

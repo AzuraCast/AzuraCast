@@ -3,17 +3,14 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Auth;
+use App\Entity;
 use App\Form\Form;
 use App\Form\StationForm;
-use App\Radio\Adapters;
-use App\Radio\Configuration;
-use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class SetupController
 {
@@ -75,7 +72,7 @@ class SetupController
      */
     public function completeAction(Request $request, Response $response): ResponseInterface
     {
-        $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
+        \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
@@ -129,7 +126,7 @@ class SetupController
             return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
 
-        return $request->getView()
+        return \App\Http\RequestHelper::getView($request)
             ->renderToResponse($response, 'frontend/setup/register');
     }
 
@@ -153,7 +150,7 @@ class SetupController
             return $response->withRedirect($request->getRouter()->named('setup:settings'));
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/setup/station', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/setup/station', [
             'form' => $this->station_form,
         ]);
     }
@@ -191,13 +188,13 @@ class SetupController
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            $request->getSession()->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
+            \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
                 'green');
 
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/setup/settings', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/setup/settings', [
             'form' => $form,
         ]);
     }

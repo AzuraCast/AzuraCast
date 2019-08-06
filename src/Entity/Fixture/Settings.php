@@ -1,9 +1,9 @@
 <?php
 namespace App\Entity\Fixture;
 
+use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity;
 
 class Settings extends AbstractFixture
 {

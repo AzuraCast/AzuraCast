@@ -2,10 +2,10 @@
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * @see \App\Provider\ApiProvider

@@ -5,7 +5,6 @@ use App\Entity\Api\NowPlaying;
 use App\Entity\Station;
 use App\Http\Router;
 use Symfony\Component\EventDispatcher\Event;
-use function DeepCopy\deep_copy;
 
 class SendWebhooks extends Event
 {

@@ -1,9 +1,9 @@
 <?php
 namespace App\Middleware;
 
-use Azura\Assets;
 use App\Entity;
 use App\Http\ResponseHelper;
+use Azura\Assets;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -54,7 +54,7 @@ class EnforceSecurity implements MiddlewareInterface
 
             $add_hsts_header = true;
         } elseif ($always_use_ssl && !$internal_api_url) {
-            return ResponseHelper::withRedirect(new \Slim\Psr7\Response, (string)$request->getUri()->withScheme('https'), 302);
+            return ResponseHelper::withRedirect(new \Slim\Psr7\Response, (string)$request->getUri()->withScheme('https'));
         }
 
         $response = $handler->handle($request);

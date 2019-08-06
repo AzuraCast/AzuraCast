@@ -2,7 +2,6 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Annotations as OA;
 
 /**

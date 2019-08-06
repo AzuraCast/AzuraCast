@@ -3,10 +3,8 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Event\SendWebhooks;
-use App\Http\Router;
-use App\Webhook\Connector\Local;
-use Azura\Exception;
 use App\Provider\WebhookProvider;
+use Azura\Exception;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Pimple\Psr11\ServiceLocator;

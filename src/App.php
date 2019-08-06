@@ -1,8 +1,8 @@
 <?php
 namespace App;
 
-use Azura\Settings;
 use Azura\Exception;
+use Azura\Settings;
 
 class App extends \Azura\App
 {

@@ -2,7 +2,6 @@
 namespace App\Entity\Api;
 
 use OpenApi\Annotations as OA;
-use App\Entity;
 
 /**
  * @OA\Schema(type="object", schema="Api_Listener")

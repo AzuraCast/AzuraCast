@@ -2,11 +2,11 @@
 namespace App\Controller\Admin;
 
 use App\Form\Form;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Http\UploadedFile;
 use Symfony\Component\Process\Process;
 
@@ -69,7 +69,7 @@ class InstallShoutcastController
             }
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Install SHOUTcast'),

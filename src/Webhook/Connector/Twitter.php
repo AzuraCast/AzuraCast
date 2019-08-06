@@ -1,7 +1,6 @@
 <?php
 namespace App\Webhook\Connector;
 
-use App\Entity;
 use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use Doctrine\ORM\EntityManager;

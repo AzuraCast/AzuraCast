@@ -1,10 +1,10 @@
 <?php
 namespace App\Console\Command;
 
+use App\Entity\Station;
 use App\Radio\Configuration;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
-use App\Entity\Station;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;

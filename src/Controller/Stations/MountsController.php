@@ -2,10 +2,9 @@
 namespace App\Controller\Stations;
 
 use App\Form\EntityForm;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class MountsController extends AbstractStationCrudController
 {
@@ -23,28 +22,28 @@ class MountsController extends AbstractStationCrudController
 
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $station = $request->getStation();
-        $frontend = $request->getStationFrontend();
+        $station = \App\Http\RequestHelper::getStation($request);
+        $frontend = \App\Http\RequestHelper::getStationFrontend($request);
 
         if (!$frontend::supportsMounts()) {
             throw new \App\Exception\StationUnsupported(__('This feature is not currently supported on this station.'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/mounts/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/mounts/index', [
             'frontend_type' => $station->getFrontendType(),
             'mounts' => $station->getMounts(),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
+            \App\Http\RequestHelper::getSession($request)->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/mounts/edit', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/mounts/edit', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Mount Point'))
@@ -55,7 +54,7 @@ class MountsController extends AbstractStationCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
+        \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
     }
 }

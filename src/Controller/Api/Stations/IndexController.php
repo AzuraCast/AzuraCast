@@ -1,13 +1,13 @@
 <?php
 namespace App\Controller\Api\Stations;
 
+use App\Entity;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class IndexController
 {
@@ -76,7 +76,7 @@ class IndexController
      */
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $api_response = $request->getStation()->api($request->getStationFrontend());
+        $api_response = \App\Http\RequestHelper::getStation($request)->api(\App\Http\RequestHelper::getStationFrontend($request));
         $api_response->resolveUrls($request->getRouter()->getBaseUrl());
 
         return $response->withJson($api_response);

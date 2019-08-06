@@ -2,14 +2,14 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Doctrine\ORM\EntityManager;
+use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use OpenApi\Annotations as OA;
 
 class SettingsController
 {

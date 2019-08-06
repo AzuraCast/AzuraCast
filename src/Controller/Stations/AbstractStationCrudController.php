@@ -3,8 +3,8 @@ namespace App\Controller\Stations;
 
 use App\Entity\Station;
 use App\Form\EntityForm;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 abstract class AbstractStationCrudController
 {
@@ -39,7 +39,7 @@ abstract class AbstractStationCrudController
      */
     protected function _doEdit(Request $request, $id = null)
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $this->form->setStation($station);
 
         $record = $this->_getRecord($station, $id);
@@ -58,9 +58,9 @@ abstract class AbstractStationCrudController
      */
     protected function _doDelete(Request $request, $id, $csrf_token): void
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->_getRecord(\App\Http\RequestHelper::getStation($request), $id);
 
         if ($record instanceof $this->entity_class) {
             $this->em->remove($record);

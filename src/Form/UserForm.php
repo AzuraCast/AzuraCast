@@ -40,7 +40,7 @@ class UserForm extends EntityForm
     public function process(ServerRequestInterface $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
-        $user = $request->getUser();
+        $user = \App\Http\RequestHelper::getUser($request);
 
         if ($record instanceof Entity\User && $record->getId() === $user->getId()) {
             unset($this->fields['roles']);

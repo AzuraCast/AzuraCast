@@ -1,9 +1,9 @@
 <?php
 namespace App\Entity\Api\Admin;
 
+use App\Entity;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity;
 
 /**
  * @OA\Schema(type="object", schema="Api_Admin_Settings")

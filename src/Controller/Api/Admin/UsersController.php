@@ -2,10 +2,10 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * @see \App\Provider\ApiProvider
@@ -108,7 +108,7 @@ class UsersController extends AbstractAdminApiCrudController
                 ->withJson(new Entity\Api\Error(404, 'Record not found!'));
         }
 
-        $current_user = $request->getUser();
+        $current_user = \App\Http\RequestHelper::getUser($request);
 
         if ($record->getId() === $current_user->getId()) {
             return $response

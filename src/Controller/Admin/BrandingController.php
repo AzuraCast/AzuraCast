@@ -2,12 +2,12 @@
 namespace App\Controller\Admin;
 
 use App\Form\SettingsForm;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Azura\Config;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class BrandingController
 {
@@ -31,11 +31,11 @@ class BrandingController
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
         if (false !== $this->form->process($request)) {
-            $request->getSession()->flash(__('Changes saved.'), 'green');
+            \App\Http\RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
             return $response->withRedirect($request->getUri()->getPath());
         }
 
-        return $request->getView()->renderToResponse($response, 'admin/branding/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'admin/branding/index', [
             'form' => $this->form,
         ]);
     }

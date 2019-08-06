@@ -1,11 +1,10 @@
 <?php
 namespace App\Webhook\Connector;
 
-use App\Http\Router;
-use App\Service\NChan;
-use Azura\Cache;
 use App\Entity;
 use App\Event\SendWebhooks;
+use App\Service\NChan;
+use Azura\Cache;
 use GuzzleHttp\Client;
 use InfluxDB\Database;
 use Monolog\Logger;

@@ -3,11 +3,11 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 abstract class AbstractStationApiCrudController extends AbstractApiCrudController
@@ -160,6 +160,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     protected function _getStation(Request $request): Entity\Station
     {
-        return $request->getStation();
+        return \App\Http\RequestHelper::getStation($request);
     }
 }

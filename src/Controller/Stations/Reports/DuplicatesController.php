@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
+use App\Entity;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class DuplicatesController
 {
@@ -78,14 +78,14 @@ class DuplicatesController
             }
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/reports/duplicates', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/duplicates', [
             'dupes' => $dupes,
         ]);
     }
 
     public function deleteAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $fs = $this->filesystem->getForStation($station);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
@@ -101,7 +101,7 @@ class DuplicatesController
             $this->em->remove($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>Duplicate file deleted!</b>', 'green');
+            \App\Http\RequestHelper::getSession($request)->flash('<b>Duplicate file deleted!</b>', 'green');
         }
 
         return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates', ['station' => $station_id]));

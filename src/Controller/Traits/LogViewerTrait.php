@@ -1,12 +1,11 @@
 <?php
 namespace App\Controller\Traits;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use App\Entity;
 use App\Radio\Adapters;
-use Azura\Exception;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 trait LogViewerTrait
 {

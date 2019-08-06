@@ -1,8 +1,8 @@
 <?php
 namespace App;
 
-use Composer\Autoload\ClassLoader;
 use Azura\Container;
+use Composer\Autoload\ClassLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 

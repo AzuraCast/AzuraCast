@@ -1,14 +1,16 @@
 <?php
 namespace App\Http;
 
-use Azura\Exception;
+use App\Acl;
 use App\Entity;
 use App\Radio;
+use Azura\Exception;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestHelper extends \Azura\Http\RequestHelper
 {
     public const ATTR_IS_API_CALL = 'is_api_call';
+    public const ATTR_ACL = 'acl';
     public const ATTR_STATION = 'station';
     public const ATTR_STATION_BACKEND = 'station_backend';
     public const ATTR_STATION_FRONTEND = 'station_frontend';
@@ -23,6 +25,26 @@ class RequestHelper extends \Azura\Http\RequestHelper
     public static function isApiCall(ServerRequestInterface $request): bool
     {
         return $request->getAttribute(self::ATTR_IS_API_CALL, false);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param Acl $acl
+     * @return ServerRequestInterface
+     */
+    public static function injectAcl(ServerRequestInterface $request, Acl $acl): ServerRequestInterface
+    {
+        return $request->withAttribute(self::ATTR_ACL, $acl);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return Acl
+     * @throws Exception
+     */
+    public static function getAcl(ServerRequestInterface $request): Acl
+    {
+        return self::getAttributeOfClass($request, self::ATTR_ACL, Acl::class);
     }
 
     /**

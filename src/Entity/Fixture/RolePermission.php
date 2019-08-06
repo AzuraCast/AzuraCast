@@ -2,10 +2,10 @@
 namespace App\Entity\Fixture;
 
 use App\Acl;
+use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity;
 
 class RolePermission extends AbstractFixture implements DependentFixtureInterface
 {

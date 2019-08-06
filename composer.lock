@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.108.3",
+            "version": "3.108.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5b2fda38f057bfab7ce74cc32d8c7d87b3e41437"
+                "reference": "8ac2bc5d36ed0e3fe9b0ecdd2f407b91273b86e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5b2fda38f057bfab7ce74cc32d8c7d87b3e41437",
-                "reference": "5b2fda38f057bfab7ce74cc32d8c7d87b3e41437",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8ac2bc5d36ed0e3fe9b0ecdd2f407b91273b86e8",
+                "reference": "8ac2bc5d36ed0e3fe9b0ecdd2f407b91273b86e8",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-02T18:51:44+00:00"
+            "time": "2019-08-05T18:08:07+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "c407c962663b1a52d1837a0de2faa7b9fe939bef"
+                "reference": "e6bc2e8ad7a423ce9d7601fed65c4289b5caf2a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/c407c962663b1a52d1837a0de2faa7b9fe939bef",
-                "reference": "c407c962663b1a52d1837a0de2faa7b9fe939bef",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/e6bc2e8ad7a423ce9d7601fed65c4289b5caf2a3",
+                "reference": "e6bc2e8ad7a423ce9d7601fed65c4289b5caf2a3",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 "php-di/php-di": "^6.0",
                 "ralouphie/getallheaders": "^2",
                 "slim/psr7": "^0.4.0",
-                "slim/slim": "^4.0",
+                "slim/slim": "4.x-dev",
                 "symfony/console": "^4.1",
                 "symfony/event-dispatcher": "^4.1",
                 "symfony/serializer": "^4.2",
@@ -154,7 +154,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-08-05T05:56:43+00:00"
+            "time": "2019-08-06T01:44:56+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -3830,21 +3830,21 @@
         },
         {
             "name": "php-http/message",
-            "version": "1.7.2",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "b159ffe570dffd335e22ef0b91a946eacb182fa1"
+                "reference": "ce8f43ac1e294b54aabf5808515c3554a19c1e1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/b159ffe570dffd335e22ef0b91a946eacb182fa1",
-                "reference": "b159ffe570dffd335e22ef0b91a946eacb182fa1",
+                "url": "https://api.github.com/repos/php-http/message/zipball/ce8f43ac1e294b54aabf5808515c3554a19c1e1c",
+                "reference": "ce8f43ac1e294b54aabf5808515c3554a19c1e1c",
                 "shasum": ""
             },
             "require": {
                 "clue/stream-filter": "^1.4",
-                "php": "^5.4 || ^7.0",
+                "php": "^7.1",
                 "php-http/message-factory": "^1.0.2",
                 "psr/http-message": "^1.0"
             },
@@ -3870,7 +3870,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.8-dev"
                 }
             },
             "autoload": {
@@ -3898,7 +3898,7 @@
                 "message",
                 "psr-7"
             ],
-            "time": "2018-11-01T09:32:41+00:00"
+            "time": "2019-08-05T06:55:08+00:00"
         },
         {
             "name": "php-http/message-factory",
@@ -4680,16 +4680,16 @@
         },
         {
             "name": "slim/slim",
-            "version": "4.0.0",
+            "version": "4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "2b0ed80b2ab4acfb5e7648797b8202e4d9aea06d"
+                "reference": "7ee5627d5cc574c68ff68edee236335bf07c9c97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/2b0ed80b2ab4acfb5e7648797b8202e4d9aea06d",
-                "reference": "2b0ed80b2ab4acfb5e7648797b8202e4d9aea06d",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/7ee5627d5cc574c68ff68edee236335bf07c9c97",
+                "reference": "7ee5627d5cc574c68ff68edee236335bf07c9c97",
                 "shasum": ""
             },
             "require": {
@@ -4765,7 +4765,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2019-08-01T16:11:29+00:00"
+            "time": "2019-08-05T05:56:54+00:00"
         },
         {
             "name": "spomky-labs/otphp",

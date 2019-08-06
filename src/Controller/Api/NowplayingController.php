@@ -1,16 +1,16 @@
 <?php
 namespace App\Controller\Api;
 
-use Azura\Cache;
+use App\Entity;
 use App\Event\Radio\LoadNowPlaying;
+use Azura\Cache;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NowplayingController implements EventSubscriberInterface
 {

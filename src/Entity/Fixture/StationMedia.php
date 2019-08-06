@@ -1,10 +1,10 @@
 <?php
 namespace App\Entity\Fixture;
 
+use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity;
 use Symfony\Component\Finder\Finder;
 
 class StationMedia extends AbstractFixture implements DependentFixtureInterface

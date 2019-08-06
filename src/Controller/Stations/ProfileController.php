@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Entity;
 use App\Form\StationForm;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ProfileController
 {
@@ -41,15 +41,15 @@ class ProfileController
 
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $station = $request->getStation();
-        $view = $request->getView();
+        $station = \App\Http\RequestHelper::getStation($request);
+        $view = \App\Http\RequestHelper::getView($request);
 
         if (!$station->isEnabled()) {
             return $view->renderToResponse($response, 'stations/profile/disabled');
         }
 
-        $frontend = $request->getStationFrontend();
-        $remotes = $request->getStationRemotes();
+        $frontend = \App\Http\RequestHelper::getStationFrontend($request);
+        $remotes = \App\Http\RequestHelper::getStationRemotes($request);
 
         $stream_urls = [
             'local' => [],
@@ -133,8 +133,8 @@ class ProfileController
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
             'nowplaying'    => $np,
-            'user'          => $request->getUser(),
-            'csrf'          => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'user'          => \App\Http\RequestHelper::getUser($request),
+            'csrf'          => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
 
         return $view->renderToResponse($response, 'stations/profile/index');
@@ -142,22 +142,22 @@ class ProfileController
 
     public function editAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         if (false !== $this->station_form->process($request, $station)) {
             return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/profile/edit', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/profile/edit', [
             'form' => $this->station_form,
         ]);
     }
 
     public function toggleAction(Request $request, Response $response, $station_id, $feature, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         switch($feature) {
             case 'requests':

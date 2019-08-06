@@ -4,7 +4,6 @@ namespace App\Radio;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
-use App\Radio\Backend\Liquidsoap;
 use Azura\Cache;
 use Azura\EventDispatcher;
 use Cake\Chronos\Chronos;
@@ -602,7 +601,7 @@ class AutoDJ implements EventSubscriberInterface
             $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
             // Log in history
-            $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+            $sh = new Entity\SongHistory($request->getTrack()->getSong(), \App\Http\RequestHelper::getStation($request));
             $sh->setRequest($request);
             $sh->setMedia($request->getTrack());
 

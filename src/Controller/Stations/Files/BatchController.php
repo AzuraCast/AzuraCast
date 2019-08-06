@@ -3,12 +3,12 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Flysystem\StationFilesystem;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class BatchController extends FilesControllerAbstract
 {
@@ -34,13 +34,13 @@ class BatchController extends FilesControllerAbstract
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
         try {
-            $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
+            \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $fs = $this->filesystem->getForStation($station);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
@@ -125,7 +125,7 @@ class BatchController extends FilesControllerAbstract
                 $this->em->flush($station);
 
                 // Write new PLS playlist configuration.
-                $backend = $request->getStationBackend();
+                $backend = \App\Http\RequestHelper::getStationBackend($request);
 
                 if ($backend instanceof Liquidsoap) {
                     foreach($affected_playlists as $playlist) {
@@ -205,7 +205,7 @@ class BatchController extends FilesControllerAbstract
                 $this->em->flush();
 
                 // Write new PLS playlist configuration.
-                $backend = $request->getStationBackend();
+                $backend = \App\Http\RequestHelper::getStationBackend($request);
 
                 if ($backend instanceof Liquidsoap) {
                     foreach($affected_playlists as $playlist) {

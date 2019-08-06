@@ -4,25 +4,21 @@ namespace App\Entity\Repository;
 use App\Entity;
 use App\Radio\Filesystem;
 use Azura\Doctrine\Repository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping;
+use DI\Annotation\Inject;
 
 class StationMediaRepository extends Repository
 {
-    /** @var Filesystem */
+    /**
+     * @Inject
+     * @var Filesystem
+     */
     protected $filesystem;
 
-    /** @var SongRepository */
+    /**
+     * @Inject
+     * @var SongRepository
+     */
     protected $song_repo;
-
-    public function __construct(EntityManager $em, Filesystem $filesystem)
-    {
-        parent::__construct($em, $em->getClassMetadata(Entity\StationMedia::class));
-
-        $this->filesystem = $filesystem;
-        $this->song_repo = $this->_em->getRepository(Entity\Song::class);
-    }
 
     /**
      * @param Entity\Station $station

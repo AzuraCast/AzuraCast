@@ -1,14 +1,13 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use App\Radio;
+use App\Entity;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ServicesController
 {
@@ -36,10 +35,10 @@ class ServicesController
      */
     public function statusAction(Request $request, Response $response): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
+        $backend = \App\Http\RequestHelper::getStationBackend($request);
+        $frontend = \App\Http\RequestHelper::getStationFrontend($request);
 
         return $response->withJson(new Entity\Api\StationServiceStatus(
             $backend->isRunning($station),
@@ -59,7 +58,7 @@ class ServicesController
      */
     public function restartAction(Request $request, Response $response): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $this->configuration->writeConfiguration($station, false, true);
 
         return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
@@ -87,8 +86,8 @@ class ServicesController
      */
     public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
     {
-        $station = $request->getStation();
-        $frontend = $request->getStationFrontend();
+        $station = \App\Http\RequestHelper::getStation($request);
+        $frontend = \App\Http\RequestHelper::getStationFrontend($request);
 
         switch ($do) {
             case "stop":
@@ -140,8 +139,8 @@ class ServicesController
      */
     public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
     {
-        $station = $request->getStation();
-        $backend = $request->getStationBackend();
+        $station = \App\Http\RequestHelper::getStation($request);
+        $backend = \App\Http\RequestHelper::getStationBackend($request);
 
         switch ($do) {
             case "skip":

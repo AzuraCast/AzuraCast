@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Frontend;
 
-use App\Radio\Backend\Liquidsoap;
 use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Radio\Backend\Liquidsoap;
 use App\Radio\Remote\AdapterProxy;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class PublicController
 {
@@ -30,7 +30,7 @@ class PublicController
         // Override system-wide iframe refusal
         $response = $response->withoutHeader('X-Frame-Options');
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         if (!$station->getEnablePublicPage()) {
             throw new \App\Exception\StationNotFound;
@@ -65,7 +65,7 @@ class PublicController
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 
-        return $request->getView()->renderToResponse($response, $template_name, $template_vars + [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
             'nowplaying' => $np,
         ]);
@@ -73,12 +73,12 @@ class PublicController
 
     public function playlistAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         $streams = [];
         $stream_urls = [];
 
-        $fa = $request->getStationFrontend();
+        $fa = \App\Http\RequestHelper::getStationFrontend($request);
         foreach ($station->getMounts() as $mount) {
             /** @var Entity\StationMount $mount */
             if (!$mount->isVisibleOnPublicPages()) {
@@ -94,7 +94,7 @@ class PublicController
             ];
         }
 
-        $remotes = $request->getStationRemotes();
+        $remotes = \App\Http\RequestHelper::getStationRemotes($request);
         foreach($remotes as $remote_proxy) {
             /** @var AdapterProxy $remote_proxy */
             $adapter = $remote_proxy->getAdapter();
@@ -150,7 +150,7 @@ class PublicController
 
     public function djAction(Request $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         if (!$station->getEnablePublicPage()) {
             throw new \App\Exception\StationNotFound;
@@ -160,7 +160,7 @@ class PublicController
             throw new \App\Exception\StationUnsupported;
         }
 
-        $backend = $request->getStationBackend();
+        $backend = \App\Http\RequestHelper::getStationBackend($request);
 
         if (!($backend instanceof Liquidsoap)) {
             throw new \App\Exception\StationUnsupported;
@@ -169,7 +169,7 @@ class PublicController
         $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
         $wss_url = str_replace('wss://', '', $wss_url);
 
-        return $request->getView()->renderToResponse($response, 'frontend/public/dj', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/public/dj', [
             'station' => $station,
             'base_uri' => $wss_url,
         ]);

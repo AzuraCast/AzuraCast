@@ -2,15 +2,15 @@
 namespace App\Controller\Api\Stations;
 
 use App;
+use App\Entity;
 use Azura\Doctrine\Paginator;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class HistoryController
 {
@@ -72,7 +72,7 @@ class HistoryController
      */
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $station_tz = new \DateTimeZone($station->getTimezone());
 
         $start_param = $request->getParam('start');

@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use App\Radio\Filesystem;
 use App\Customization;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
+use App\Radio\Filesystem;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ArtController
 {
@@ -48,7 +48,7 @@ class ArtController
      */
     public function __invoke(Request $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $filesystem = $this->filesystem->getForStation($station);
 
         $media_path = 'albumart://'.$media_id.'.jpg';

@@ -3,13 +3,13 @@ namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Adapters;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class RelaysController
 {
@@ -185,7 +185,7 @@ class RelaysController
             ->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
             ->execute();
 
-        $user = $request->getUser();
+        $user = \App\Http\RequestHelper::getUser($request);
 
         return array_filter($all_stations, function(Entity\Station $station) use ($user) {
             return $this->acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId());

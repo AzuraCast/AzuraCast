@@ -2,16 +2,16 @@
 namespace App\Controller\Api\Stations;
 
 use App;
+use App\Entity;
 use Azura\Doctrine\Paginator;
 use Azura\Http\Router;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use OpenApi\Annotations as OA;
 
 /**
  * @see \App\Provider\ApiProvider

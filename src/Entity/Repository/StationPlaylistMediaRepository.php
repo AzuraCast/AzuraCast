@@ -2,26 +2,20 @@
 
 namespace App\Entity\Repository;
 
+use App\Entity;
 use App\Radio\AutoDJ;
 use Azura\Cache;
 use Azura\Doctrine\Repository;
-use Doctrine\ORM\EntityManager;
+use DI\Annotation\Inject;
 use Doctrine\ORM\NoResultException;
-use App\Entity;
 
 class StationPlaylistMediaRepository extends Repository
 {
-    /** @var Cache */
+    /**
+     * @Inject
+     * @var Cache
+     */
     protected $cache;
-
-    public function __construct(
-        EntityManager $em,
-        Cache $cache
-    ) {
-        parent::__construct($em, $em->getClassMetadata(Entity\StationPlaylistMedia::class));
-
-        $this->cache = $cache;
-    }
 
     /**
      * Add the specified media to the specified playlist.

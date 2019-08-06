@@ -1,11 +1,10 @@
 <?php
 namespace App\Radio\Frontend;
 
-use Azura\EventDispatcher;
-use App\Http\Router;
 use App\Entity;
+use App\Http\Router;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;

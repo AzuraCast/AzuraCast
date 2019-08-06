@@ -1,14 +1,14 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
+use App\Entity;
 use App\Form\Form;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
@@ -38,7 +38,7 @@ class SoundExchangeController
 
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         $form = new Form($this->form_config);
         $form->populate([
@@ -168,7 +168,7 @@ class SoundExchangeController
             return $response->renderStringAsFile($export_txt, 'text/plain', $export_filename);
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('SoundExchange Report')

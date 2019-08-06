@@ -1,9 +1,8 @@
 <?php
 namespace App\Sync\Task;
 
-use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Cake\Chronos\Chronos;
 
 class HistoryCleanup extends AbstractTask
 {

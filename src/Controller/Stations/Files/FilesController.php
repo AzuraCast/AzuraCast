@@ -3,14 +3,12 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Form\Form;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use App\Radio\Filesystem;
 use Azura\Config;
-use Psr\Http\Message\ResponseInterface;
-use App\Utilities;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Finder\Finder;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class FilesController extends FilesControllerAbstract
 {
@@ -40,7 +38,7 @@ class FilesController extends FilesControllerAbstract
 
     public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         $playlists = $this->em->createQuery(/** @lang DQL */'SELECT sp.id, sp.name 
             FROM App\Entity\StationPlaylist sp 
@@ -64,20 +62,20 @@ class FilesController extends FilesControllerAbstract
             $custom_fields['media_custom_'.$row['id']] = $row['name'];
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/files/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/files/index', [
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
             'space_used' => $station->getStorageUsed(),
             'space_total' => $station->getStorageAvailable(),
             'space_percent' => $station->getStorageUsePercentage(),
             'files_count' => $files_count,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function renameAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $fs = $this->filesystem->getForStation($station);
 
         $path = $request->getAttribute('file');
@@ -124,14 +122,14 @@ class FilesController extends FilesControllerAbstract
                 $path = $new_path;
             }
 
-            $request->getSession()->flash('<b>' . __('File renamed!') . '</b>', 'green');
+            \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('File renamed!') . '</b>', 'green');
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
 
             return $response->withRedirect((string)$request->getRouter()->fromHere('stations:files:index').'#'.$file_dir);
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Rename File/Directory')
@@ -140,7 +138,7 @@ class FilesController extends FilesControllerAbstract
 
     public function listDirectoriesAction(Request $request, Response $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $fs = $this->filesystem->getForStation($station);
 
         $file_path = $request->getAttribute('file_path');
@@ -172,14 +170,14 @@ class FilesController extends FilesControllerAbstract
     public function mkdirAction(Request $request, Response $response): ResponseInterface
     {
         try {
-            $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
+            \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
             return $this->_err($response, 403, 'CSRF Failure: '.$e->getMessage());
         }
 
         $file_path = $request->getAttribute('file_path');
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $fs = $this->filesystem->getForStation($station);
 
         $new_dir = $file_path.'/'.$_POST['name'];
@@ -194,13 +192,13 @@ class FilesController extends FilesControllerAbstract
     public function uploadAction(Request $request, Response $response): ResponseInterface
     {
         try {
-            $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
+            \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         if ($station->isStorageFull()) {
             return $this->_err($response, 500, __('This station is out of available storage space.'));
@@ -269,7 +267,7 @@ class FilesController extends FilesControllerAbstract
     {
         set_time_limit(600);
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $file_path = $request->getAttribute('file_path');
 
         $fs = $this->filesystem->getForStation($station);

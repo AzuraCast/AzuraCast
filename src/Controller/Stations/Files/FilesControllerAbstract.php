@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller\Stations\Files;
 
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
 
 /**
  * Class FilesControllerAbstract

@@ -1,15 +1,15 @@
 <?php
 namespace App\Sync\Task;
 
-use App\MessageQueue;
+use App\Entity;
 use App\Message;
+use App\MessageQueue;
 use App\Radio\Filesystem;
 use App\Radio\Quota;
 use Bernard\Envelope;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use Monolog\Logger;
 use Symfony\Component\Finder\Finder;
 

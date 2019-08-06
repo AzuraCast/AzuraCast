@@ -14,20 +14,14 @@ return function(App $app)
 
         $group->get('/sync/{type}', Controller\Admin\IndexController::class.':syncAction')
             ->setName('admin:index:sync')
-            ->add([
-                Middleware\Permissions::class,
-                ['action' => Acl::GLOBAL_ALL]
-            ]);
+            ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
         $group->group('/install', function (RouteCollectorProxy $group) {
 
             $group->map(['GET', 'POST'], '/shoutcast', Controller\Admin\InstallShoutcastController::class)
                 ->setName('admin:install:shoutcast');
 
-        })->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_ALL]
-        ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
         $group->group('/api', function (RouteCollectorProxy $group) {
 
@@ -40,10 +34,7 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Admin\ApiController::class.':deleteAction')
                 ->setName('admin:api:delete');
 
-        })->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_API_KEYS]
-        ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_API_KEYS));
 
         $group->group('/backups', function(RouteCollectorProxy $group) {
 
@@ -62,17 +53,11 @@ return function(App $app)
             $group->get('/delete/{path}/{csrf}', Controller\Admin\BackupsController::class.':deleteAction')
                 ->setName('admin:backups:delete');
 
-        })->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_BACKUPS]
-        ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
 
         $group->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class.':indexAction')
             ->setName('admin:branding:index')
-            ->add([
-                Middleware\Permissions::class,
-                ['action' => Acl::GLOBAL_SETTINGS]
-            ]);
+            ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
         $group->group('/custom_fields', function(RouteCollectorProxy $group) {
 
@@ -88,10 +73,7 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Admin\CustomFieldsController::class.':deleteAction')
                 ->setName('admin:custom_fields:delete');
 
-        })->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_CUSTOM_FIELDS]
-        ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_CUSTOM_FIELDS));
 
         $group->group('/logs', function (RouteCollectorProxy $group) {
 
@@ -100,16 +82,9 @@ return function(App $app)
 
             $group->get('/view/{station}/{log}', Controller\Admin\LogsController::class.':viewAction')
                 ->setName('admin:logs:view')
-                ->add([
-                    Middleware\GetStation::class,
-                    ['station_required' => false]
-                ]);
+                ->add(Middleware\GetStation::class);
 
-        })
-            ->add([
-                Middleware\Permissions::class,
-                ['action' => Acl::GLOBAL_LOGS]
-            ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 
         $group->group('/permissions', function (RouteCollectorProxy $group) {
 
@@ -125,24 +100,15 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Admin\PermissionsController::class.':deleteAction')
                 ->setName('admin:permissions:delete');
 
-        })->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_PERMISSIONS]
-        ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_PERMISSIONS));
 
         $group->get('/relays', Controller\Admin\RelaysController::class)
             ->setName('admin:relays:index')
-            ->add([
-                Middleware\Permissions::class,
-                ['action' => Acl::GLOBAL_STATIONS]
-            ]);
+            ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 
         $group->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class.':indexAction')
             ->setName('admin:settings:index')
-            ->add([
-                Middleware\Permissions::class,
-                ['action' => Acl::GLOBAL_SETTINGS]
-            ]);
+            ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
         $group->group('/stations', function (RouteCollectorProxy $group) {
 
@@ -161,10 +127,7 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Admin\StationsController::class.':deleteAction')
                 ->setName('admin:stations:delete');
 
-        })->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_STATIONS]
-        ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 
         $group->group('/users', function (RouteCollectorProxy $group) {
 
@@ -183,20 +146,14 @@ return function(App $app)
             $group->get('/login-as/{id}/{csrf}', Controller\Admin\UsersController::class.':impersonateAction')
                 ->setName('admin:users:impersonate');
 
-        })->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_USERS],
-        ]);
+        })->add(new Middleware\Permissions(Acl::GLOBAL_USERS));
 
         // END /admin GROUP
 
     })
         ->add(Middleware\Module\Admin::class)
         ->add(AzuraMiddleware\EnableView::class)
-        ->add([
-            Middleware\Permissions::class,
-            ['action' => Acl::GLOBAL_VIEW],
-        ])
+        ->add(new Middleware\Permissions(Acl::GLOBAL_VIEW))
         ->add(Middleware\RequireLogin::class);
 
     $app->group('/api', function (RouteCollectorProxy $group) {
@@ -221,10 +178,8 @@ return function(App $app)
             ->setName('api:index:time');
 
         $group->group('/internal', function (RouteCollectorProxy $group) {
-            /** @var App $this */
 
             $group->group('/{station}', function(RouteCollectorProxy $group) {
-                /** @var App $this */
 
                 // Liquidsoap internal authentication functions
                 $group->map(['GET', 'POST'], '/auth', Controller\Api\InternalController::class.':authAction')
@@ -258,15 +213,12 @@ return function(App $app)
 
         $group->get('/stations', Controller\Api\Stations\IndexController::class.':listAction')
             ->setName('api:stations:list')
-            ->add([
-                AzuraMiddleware\RateLimit::class,
-                ['rl_group' => 'api']
-            ]);
+            ->add(new AzuraMiddleware\RateLimit('api'));
 
         $group->group('/admin', function(RouteCollectorProxy $group) {
 
             $group->get('/permissions', Controller\Api\Admin\PermissionsController::class)
-                ->add([Middleware\Permissions::class, Acl::GLOBAL_PERMISSIONS]);
+                ->add(new Middleware\Permissions(Acl::GLOBAL_PERMISSIONS));
 
             $group->map(['GET', 'POST'], '/relays', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) {
                 return \App\Http\ResponseHelper::withRedirect($response, \App\Http\RequestHelper::getRouter($request)->fromHere('api:internal:relays'));
@@ -277,7 +229,7 @@ return function(App $app)
                     ->setName('api:admin:settings');
 
                 $group->put('/settings', Controller\Api\Admin\SettingsController::class.':updateAction');
-            })->add([Middleware\Permissions::class, Acl::GLOBAL_SETTINGS]);
+            })->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
             $admin_api_endpoints = [
                 ['custom_field', 'custom_fields', Controller\Api\Admin\CustomFieldsController::class, Acl::GLOBAL_CUSTOM_FIELDS],
@@ -296,7 +248,7 @@ return function(App $app)
                         ->setName('api:admin:'.$singular);
                     $group->put('/'.$singular.'/{id}', $class.':editAction');
                     $group->delete('/'.$singular.'/{id}', $class.':deleteAction');
-                })->add([Middleware\Permissions::class, $permission]);
+                })->add(new Middleware\Permissions($permission));
             }
         });
 
@@ -304,13 +256,13 @@ return function(App $app)
 
             $group->get('', Controller\Api\Stations\IndexController::class.':indexAction')
                 ->setName('api:stations:index')
-                ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
+                ->add(new AzuraMiddleware\RateLimit('api', 5, 2));
 
             $group->get('/nowplaying', Controller\Api\NowplayingController::class.':indexAction');
 
             $group->get('/history', Controller\Api\Stations\HistoryController::class)
                 ->setName('api:stations:history')
-                ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
+                ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
             $group->group('/queue', function(RouteCollectorProxy $group) {
                 $group->get('', Controller\Api\Stations\QueueController::class.':listAction')
@@ -320,18 +272,18 @@ return function(App $app)
                     ->setName('api:stations:queue:record');
 
                 $group->delete('/{id}', Controller\Api\Stations\QueueController::class.':deleteAction');
-            })->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+            })->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
             $group->get('/requests', Controller\Api\Stations\RequestsController::class.':listAction')
                 ->setName('api:requests:list');
 
             $group->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\Stations\RequestsController::class.':submitAction')
                 ->setName('api:requests:submit')
-                ->add([AzuraMiddleware\RateLimit::class, 'api', 5, 2]);
+                ->add(new AzuraMiddleware\RateLimit('api', 5, 2));
 
             $group->get('/listeners', Controller\Api\Stations\ListenersController::class.':indexAction')
                 ->setName('api:listeners:index')
-                ->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
+                ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
             $group->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\ArtController::class)
                 ->setName('api:stations:media:art');
@@ -357,26 +309,27 @@ return function(App $app)
                         ->setName('api:stations:'.$singular);
                     $group->put('/'.$singular.'/{id}', $class.':editAction');
                     $group->delete('/'.$singular.'/{id}', $class.':deleteAction');
-                })->add([Middleware\Permissions::class, $permission, true]);
+                })->add(new Middleware\Permissions($permission, true));
             }
 
             $group->get('/status', Controller\Api\Stations\ServicesController::class.':statusAction')
                 ->setName('api:stations:status')
-                ->add([Middleware\Permissions::class, Acl::STATION_VIEW, true]);
+                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
 
             $group->post('/backend/{do}', Controller\Api\Stations\ServicesController::class.':backendAction')
                 ->setName('api:stations:backend')
-                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
             $group->post('/frontend/{do}', Controller\Api\Stations\ServicesController::class.':frontendAction')
                 ->setName('api:stations:frontend')
-                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
             $group->post('/restart', Controller\Api\Stations\ServicesController::class.':restartAction')
                 ->setName('api:stations:restart')
-                ->add([Middleware\Permissions::class, Acl::STATION_BROADCASTING, true]);
+                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
-        })->add(Middleware\GetStation::class);
+        })->add(Middleware\GetStation::class)
+            ->add(Middleware\RequireStation::class);
 
         // END /api GROUP
 
@@ -490,7 +443,7 @@ return function(App $app)
             $group->get('/run', Controller\Stations\AutomationController::class.':runAction')
                 ->setName('stations:automation:run');
 
-        })->add([Middleware\Permissions::class, Acl::STATION_AUTOMATION, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_AUTOMATION, true));
 
         $group->group('/files', function (RouteCollectorProxy $group) {
 
@@ -523,7 +476,7 @@ return function(App $app)
 
         })
             ->add(Middleware\Module\StationFiles::class)
-            ->add([Middleware\Permissions::class, Acl::STATION_MEDIA, true]);
+            ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
         $group->group('/logs', function (RouteCollectorProxy $group) {
 
@@ -533,8 +486,7 @@ return function(App $app)
             $group->get('/view/{log}', Controller\Stations\LogsController::class.':viewAction')
                 ->setName('stations:logs:view');
 
-        })
-            ->add([Middleware\Permissions::class, Acl::STATION_LOGS, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_LOGS, true));
 
         $group->group('/playlists', function (RouteCollectorProxy $group) {
 
@@ -562,7 +514,7 @@ return function(App $app)
             $group->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
                 ->setName('stations:playlists:export');
 
-        })->add([Middleware\Permissions::class, Acl::STATION_MEDIA, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
         $group->group('/mounts', function (RouteCollectorProxy $group) {
 
@@ -578,18 +530,18 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Stations\MountsController::class.':deleteAction')
                 ->setName('stations:mounts:delete');
 
-        })->add([Middleware\Permissions::class, Acl::STATION_MOUNTS, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
 
         $group->get('/profile', Controller\Stations\ProfileController::class)
             ->setName('stations:profile:index');
 
         $group->get('/profile/toggle/{feature}/{csrf}', Controller\Stations\ProfileController::class.':toggleAction')
             ->setName('stations:profile:toggle')
-            ->add([Middleware\Permissions::class, Acl::STATION_PROFILE, true]);
+            ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
         $group->map(['GET', 'POST'], '/profile/edit', Controller\Stations\ProfileController::class.':editAction')
             ->setName('stations:profile:edit')
-            ->add([Middleware\Permissions::class, Acl::STATION_PROFILE, true]);
+            ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
         $group->get('/queue', Controller\Stations\QueueController::class)
             ->setName('stations:queue:index');
@@ -608,7 +560,7 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Stations\RemotesController::class.':deleteAction')
                 ->setName('stations:remotes:delete');
 
-        })->add([Middleware\Permissions::class, Acl::STATION_REMOTES, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_REMOTES, true));
 
         $group->group('/reports', function (RouteCollectorProxy $group) {
 
@@ -639,7 +591,7 @@ return function(App $app)
             $group->get('/requests/delete/{request_id}/{csrf}', Controller\Stations\Reports\RequestsController::class.':deleteAction')
                 ->setName('stations:reports:requests:delete');
 
-        })->add([Middleware\Permissions::class, Acl::STATION_REPORTS, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
         $group->group('/streamers', function (RouteCollectorProxy $group) {
 
@@ -655,7 +607,7 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Stations\StreamersController::class.':deleteAction')
                 ->setName('stations:streamers:delete');
 
-        })->add([Middleware\Permissions::class, Acl::STATION_STREAMERS, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
         $group->group('/webhooks', function (RouteCollectorProxy $group) {
 
@@ -677,13 +629,14 @@ return function(App $app)
             $group->get('/delete/{id}/{csrf}', Controller\Stations\WebhooksController::class.':deleteAction')
                 ->setName('stations:webhooks:delete');
 
-        })->add([Middleware\Permissions::class, Acl::STATION_WEB_HOOKS, true]);
+        })->add(new Middleware\Permissions(Acl::STATION_WEB_HOOKS, true));
 
         // END /stations GROUP
 
     })
         ->add(Middleware\Module\Stations::class)
-        ->add([Middleware\Permissions::class, Acl::STATION_VIEW, true])
+        ->add(new Middleware\Permissions(Acl::STATION_VIEW, true))
+        ->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class)
         ->add(AzuraMiddleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);

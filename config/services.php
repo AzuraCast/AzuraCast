@@ -8,69 +8,40 @@ use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 
 return [
+
+    /*
+     * Slim Component Overrides
+     */
+
     // URL Router helper
-    App\Http\Router::class => function(\Slim\App $app, Settings $settings) {
+    App\Http\Router::class => function(
+        Settings $settings,
+        \Slim\App $app,
+        EntityManager $em
+    ) {
         $route_parser = $app->getRouteCollector()->getRouteParser();
-        return new App\Http\Router($settings, $route_parser);
+        return new App\Http\Router($settings, $route_parser, $em);
     },
-    'router' => DI\Get(App\Http\Router::class),
+    Azura\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
     // Error Handler
     App\Http\ErrorHandler::class => DI\autowire(),
-    'errorHandler' => DI\Get(App\Http\ErrorHandler::class),
+    Slim\Interfaces\ErrorHandlerInterface::class => DI\Get(App\Http\ErrorHandler::class),
 
-    // Doctrine Entity Repositories
-    App\Entity\Repository\SettingsRepository::class => DI\autowire(),
-    App\Entity\Repository\StationRepository::class => DI\autowire(),
-    App\Entity\Repository\StationMediaRepository::class => DI\autowire(),
-    App\Entity\Repository\StationPlaylistMediaRepository::class => DI\autowire(),
+    /*
+     * Doctrine Database
+     */
 
-    // Authorization class
-    App\Auth::class => DI\autowire(),
-
-    // Access control list manager
-    App\Acl::class => DI\autowire(),
-
-    // InfluxDB
-    InfluxDB\Database::class => function(Settings $settings) {
-        $opts = [
-            'host' => $settings->isDocker() ? 'influxdb' : 'localhost',
-            'port' => 8086,
-        ];
-
-        $influx = new InfluxDB\Client($opts['host'], $opts['port']);
-        return $influx->selectDB('stations');
-    },
-
-    // Supervisor manager
-    Supervisor\Supervisor::class => function(Settings $settings) {
-        $guzzle_client = new GuzzleHttp\Client();
-        $client = new fXmlRpc\Client(
-            'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
-            new fXmlRpc\Transport\HttpAdapterTransport(
-                new Http\Message\MessageFactory\GuzzleMessageFactory(),
-                new Http\Adapter\Guzzle6\Client($guzzle_client)
-            )
-        );
-
-        $connector = new Supervisor\Connector\XmlRpc($client);
-        $supervisor = new Supervisor\Supervisor($connector);
-
-        if (!$supervisor->isConnected()) {
-            throw new \Azura\Exception(sprintf('Could not connect to supervisord.'));
-        }
-
-        return $supervisor;
-    },
-
-    // Add AzuraCast-specific listeners to the EntityManager
     EntityManager::class => DI\decorate(function(EntityManager $em, ContainerInterface $di) {
         $event_manager = $em->getEventManager();
         $event_manager->addEventSubscriber(new App\Doctrine\Event\StationRequiresRestart);
         return $em;
     }),
 
-    // Add AzuraCast-specific handlers to the View
+    /*
+     * View
+     */
+
     Azura\View::class => DI\decorate(function(Azura\View $view, ContainerInterface $di) {
         $view->registerFunction('mailto', function ($address, $link_text = null) {
             $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
@@ -111,13 +82,10 @@ return [
         return $view;
     }),
 
-    // MaxMind (IP Geolocation database for listener metadata)
-    MaxMind\Db\Reader::class => function(Settings $settings) {
-        $mmdb_path = dirname($settings[Settings::BASE_DIR]).'/geoip/GeoLite2-City.mmdb';
-        return new MaxMind\Db\Reader($mmdb_path);
-    },
+    /*
+     * Event Dispatcher
+     */
 
-    // Make EventDispatcher plugin-ready
     Azura\EventDispatcher::class => DI\decorate(function(Azura\EventDispatcher $dispatcher, ContainerInterface $di) {
         if ($di->has(App\Plugins::class)) {
             /** @var App\Plugins $plugins */
@@ -130,7 +98,10 @@ return [
         return $dispatcher;
     }),
 
-    // Extend console application.
+    /*
+     * Console
+     */
+
     Azura\Console\Application::class => DI\decorate(function(Azura\Console\Application $console, ContainerInterface $di) {
         /** @var App\Version $version */
         $version = $di->get(App\Version::class);
@@ -143,6 +114,19 @@ return [
 
         return $console;
     }),
+
+    /*
+     * AzuraCast-specific dependencies
+     */
+
+    App\Acl::class => DI\autowire(),
+    App\Auth::class => DI\autowire(),
+    App\ApiUtilities::class => DI\autowire(),
+    App\Customization::class => DI\autowire(),
+    App\Version::class => DI\autowire(),
+    App\Service\Sentry::class => DI\autowire(),
+    App\Service\NChan::class => DI\autowire(),
+    App\Validator\Constraints\StationPortCheckerValidator::class => DI\autowire(),
 
     // Message queue manager class
     App\MessageQueue::class => function(
@@ -190,11 +174,43 @@ return [
         return $mq;
     },
 
-    /*
-     * AzuraCast-specific dependencies
-     */
+    // MaxMind (IP Geolocation database for listener metadata)
+    MaxMind\Db\Reader::class => function(Settings $settings) {
+        $mmdb_path = dirname($settings[Settings::BASE_DIR]).'/geoip/GeoLite2-City.mmdb';
+        return new MaxMind\Db\Reader($mmdb_path);
+    },
 
-    App\ApiUtilities::class => DI\autowire(),
+    // InfluxDB
+    InfluxDB\Database::class => function(Settings $settings) {
+        $opts = [
+            'host' => $settings->isDocker() ? 'influxdb' : 'localhost',
+            'port' => 8086,
+        ];
+
+        $influx = new InfluxDB\Client($opts['host'], $opts['port']);
+        return $influx->selectDB('stations');
+    },
+
+    // Supervisor manager
+    Supervisor\Supervisor::class => function(Settings $settings) {
+        $guzzle_client = new GuzzleHttp\Client();
+        $client = new fXmlRpc\Client(
+            'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
+            new fXmlRpc\Transport\HttpAdapterTransport(
+                new Http\Message\MessageFactory\GuzzleMessageFactory(),
+                new Http\Adapter\Guzzle6\Client($guzzle_client)
+            )
+        );
+
+        $connector = new Supervisor\Connector\XmlRpc($client);
+        $supervisor = new Supervisor\Supervisor($connector);
+
+        if (!$supervisor->isConnected()) {
+            throw new \Azura\Exception(sprintf('Could not connect to supervisord.'));
+        }
+
+        return $supervisor;
+    },
 
     Azura\Assets::class => function(Azura\Config $config, Settings $settings) {
         $libraries = $config->get('assets');
@@ -207,12 +223,6 @@ return [
 
         return new Azura\Assets($libraries, $versioned_files);
     },
-
-    App\Customization::class => DI\autowire(),
-    App\Version::class => DI\autowire(),
-    App\Service\Sentry::class => DI\autowire(),
-    App\Service\NChan::class => DI\autowire(),
-    App\Validator\Constraints\StationPortCheckerValidator::class => DI\autowire(),
 
     /*
      * Radio Components
@@ -248,9 +258,12 @@ return [
 
     App\Sync\Runner::class => function(
         ContainerInterface $di,
-        App\Entity\Repository\SettingsRepository $settingsRepo,
+        EntityManager $em,
         Monolog\Logger $logger
     ) {
+        /** @var App\Entity\Repository\SettingsRepository $settingsRepo */
+        $settingsRepo = $em->getRepository(App\Entity\Settings::class);
+
         return new App\Sync\Runner(
             $settingsRepo,
             $logger,
@@ -320,7 +333,10 @@ return [
     App\Middleware\EnforceSecurity::class => DI\autowire(),
     App\Middleware\GetCurrentUser::class => DI\autowire(),
     App\Middleware\GetStation::class => DI\autowire(),
-    App\Middleware\Permissions::class => DI\autowire(),
+    App\Middleware\Permissions::class => DI\create(),
+    App\Middleware\InjectAcl::class => DI\autowire(),
+    App\Middleware\RequireStation::class => DI\create(),
+    App\Middleware\RequireLogin::class => DI\create(),
 
     // Module-specific middleware
     App\Middleware\Module\Admin::class => DI\autowire(),

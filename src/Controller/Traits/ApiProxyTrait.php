@@ -2,11 +2,11 @@
 namespace App\Controller\Traits;
 
 use App\Exception\Validation;
-use Psr\Http\Message\ResponseInterface as Response;
 use Azura\Http\Request;
 use AzuraForms\Field\AbstractField;
 use AzuraForms\Form;
 use FastRoute\Dispatcher;
+use Psr\Http\Message\ResponseInterface as Response;
 use Symfony\Component\Validator\ConstraintViolation;
 
 trait ApiProxyTrait

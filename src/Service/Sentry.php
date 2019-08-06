@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Entity;
 use App\Version;
 use Azura\Settings;
+use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use Monolog\Logger;
@@ -33,11 +34,14 @@ class Sentry
     protected $hub;
 
     public function __construct(
-        Entity\Repository\SettingsRepository $settings_repo,
+        EntityManager $em,
         Settings $app_settings,
         Version $version,
         Client $http_client
     ) {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
         $this->settings_repo = $settings_repo;
         $this->app_settings = $app_settings;
         $this->version = $version;

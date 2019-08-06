@@ -2,13 +2,13 @@
 
 namespace App\Radio\Backend;
 
+use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\Radio\Filesystem;
-use Azura\EventDispatcher;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
+use App\Radio\Filesystem;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;

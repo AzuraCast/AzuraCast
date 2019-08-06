@@ -4,7 +4,6 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
-use App\Http\Router;
 use App\Utilities;
 use GuzzleHttp\Client;
 use Monolog\Logger;

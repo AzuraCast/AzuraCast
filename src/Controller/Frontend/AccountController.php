@@ -4,13 +4,13 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Auth;
 use App\Entity\Repository\SettingsRepository;
+use App\Entity\Settings;
 use App\Entity\User;
 use Azura\RateLimit;
 use Doctrine\ORM\EntityManager;
-use App\Entity\Settings;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class AccountController
 {
@@ -64,7 +64,7 @@ class AccountController
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
-        $session = $request->getSession();
+        $session = \App\Http\RequestHelper::getSession($request);
 
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
@@ -110,13 +110,13 @@ class AccountController
             return $response->withRedirect($request->getUri());
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/account/login');
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/account/login');
     }
 
     public function twoFactorAction(Request $request, Response $response): ResponseInterface
     {
         if ($request->isPost()) {
-            $session = $request->getSession();
+            $session = \App\Http\RequestHelper::getSession($request);
             $otp = $request->getParsedBodyParam('otp');
 
             if ($this->auth->verifyTwoFactor($otp)) {
@@ -139,13 +139,13 @@ class AccountController
             return $response->withRedirect($request->getUri());
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/account/two_factor');
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'frontend/account/two_factor');
     }
 
     public function logoutAction(Request $request, Response $response): ResponseInterface
     {
         $this->auth->logout();
-        $request->getSession()->destroy();
+        \App\Http\RequestHelper::getSession($request)->destroy();
 
         return $response->withRedirect($request->getRouter()->named('account:login'));
     }

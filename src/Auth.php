@@ -13,23 +13,27 @@ class Auth
     public const TOTP_WINDOW = 5;
 
     /** @var NamespaceInterface */
-    protected $_session;
+    protected $session;
 
     /** @var UserRepository */
-    protected $_user_repo;
+    protected $user_repo;
 
     /** @var User|bool|null */
-    protected $_user;
+    protected $user;
 
     /** @var User|bool|null */
-    protected $_masqueraded_user;
+    protected $masqueraded_user;
 
+    /**
+     * @param Session $session
+     * @param EntityManager $em
+     */
     public function __construct(Session $session, EntityManager $em)
     {
-        $this->_user_repo = $em->getRepository(User::class);
+        $this->user_repo = $em->getRepository(User::class);
 
         $class_name = strtolower(str_replace(['\\', '_'], ['', ''], static::class));
-        $this->_session = $session->get('auth_' . $class_name . '_user');
+        $this->session = $session->get('auth_' . $class_name . '_user');
     }
 
     /**
@@ -41,7 +45,7 @@ class Auth
      */
     public function authenticate($username, $password): ?User
     {
-        $user_auth = $this->_user_repo->authenticate($username, $password);
+        $user_auth = $this->user_repo->authenticate($username, $password);
 
         if ($user_auth instanceof User) {
             $this->setUser($user_auth);
@@ -56,12 +60,12 @@ class Auth
      */
     public function logout(): void
     {
-        $this->_session->login_complete = false;
+        $this->session->login_complete = false;
 
-        unset($this->_session->user_id);
-        unset($this->_session->masquerade_user_id);
+        unset($this->session->user_id);
+        unset($this->session->masquerade_user_id);
 
-        $this->_user = null;
+        $this->user = null;
 
         @session_unset();
     }
@@ -113,28 +117,28 @@ class Auth
      */
     public function getUser(): ?User
     {
-        if ($this->_user === null) {
-            $user_id = (int)$this->_session->user_id;
+        if ($this->user === null) {
+            $user_id = (int)$this->session->user_id;
 
             if (0 === $user_id) {
-                $this->_user = false;
+                $this->user = false;
                 return null;
             }
 
-            $user = $this->_user_repo->find($user_id);
+            $user = $this->user_repo->find($user_id);
             if ($user instanceof User) {
-                $this->_user = $user;
+                $this->user = $user;
             } else {
-                unset($this->_session->user_id);
-                $this->_user = false;
+                unset($this->session->user_id);
+                $this->user = false;
                 $this->logout();
 
                 throw new \Azura\Exception('Invalid user!');
             }
         }
 
-        return ($this->_user instanceof User)
-            ? $this->_user
+        return ($this->user instanceof User)
+            ? $this->user
             : null;
     }
 
@@ -145,9 +149,9 @@ class Auth
      */
     public function setUser(User $user): void
     {
-        $this->_session->login_complete = (null === $user->getTwoFactorSecret());
-        $this->_session->user_id = $user->getId();
-        $this->_user = $user;
+        $this->session->login_complete = (null === $user->getTwoFactorSecret());
+        $this->session->user_id = $user->getId();
+        $this->user = $user;
     }
 
     /**
@@ -162,15 +166,15 @@ class Auth
     public function masqueradeAsUser($user_info): void
     {
         if (!($user_info instanceof User)) {
-            $user_info = $this->_user_repo->findOneBy($user_info);
+            $user_info = $this->user_repo->findOneBy($user_info);
         }
 
         if (!($user_info instanceof User)) {
             throw new \Azura\Exception('Invalid user!');
         }
 
-        $this->_session->masquerade_user_id = $user_info->getId();
-        $this->_masqueraded_user = $user_info;
+        $this->session->masquerade_user_id = $user_info->getId();
+        $this->masqueraded_user = $user_info;
     }
 
     /**
@@ -178,8 +182,8 @@ class Auth
      */
     public function endMasquerade(): void
     {
-        unset($this->_session->masquerade_user_id);
-        $this->_masqueraded_user = null;
+        unset($this->session->masquerade_user_id);
+        $this->masqueraded_user = null;
     }
 
     /**
@@ -189,7 +193,7 @@ class Auth
      */
     public function getMasquerade(): ?User
     {
-        return $this->_masqueraded_user;
+        return $this->masqueraded_user;
     }
 
     /**
@@ -200,31 +204,31 @@ class Auth
     public function isMasqueraded(): bool
     {
         if (!$this->isLoggedIn()) {
-            $this->_masqueraded_user = false;
+            $this->masqueraded_user = false;
             return false;
         }
 
-        if ($this->_masqueraded_user === null) {
-            if (!$this->_session->masquerade_user_id) {
-                $this->_masqueraded_user = false;
+        if ($this->masqueraded_user === null) {
+            if (!$this->session->masquerade_user_id) {
+                $this->masqueraded_user = false;
             } else {
-                $mask_user_id = (int)$this->_session->masquerade_user_id;
+                $mask_user_id = (int)$this->session->masquerade_user_id;
                 if (0 !== $mask_user_id) {
-                    $user = $this->_user_repo->find($mask_user_id);
+                    $user = $this->user_repo->find($mask_user_id);
                 } else {
                     $user = null;
                 }
 
                 if ($user instanceof User) {
-                    $this->_masqueraded_user = $user;
+                    $this->masqueraded_user = $user;
                 } else {
-                    unset($this->_session->user_id, $this->_session->masquerade_user_id);
-                    $this->_masqueraded_user = false;
+                    unset($this->session->user_id, $this->session->masquerade_user_id);
+                    $this->masqueraded_user = false;
                 }
             }
         }
 
-        return ($this->_masqueraded_user instanceof User);
+        return ($this->masqueraded_user instanceof User);
     }
 
     /**
@@ -235,7 +239,7 @@ class Auth
      */
     public function isLoginComplete(): bool
     {
-        return $this->_session->login_complete ?? false;
+        return $this->session->login_complete ?? false;
     }
 
     /**
@@ -253,7 +257,7 @@ class Auth
         }
 
         if ($user->verifyTwoFactor($otp)) {
-            $this->_session->login_complete = true;
+            $this->session->login_complete = true;
             return true;
         }
 

@@ -1,14 +1,14 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Entity;
 use App\Form\EntityForm;
 use App\Form\StationWebhookForm;
 use App\Provider\StationsProvider;
 use App\Webhook\Dispatcher;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Class WebhooksController
@@ -45,18 +45,18 @@ class WebhooksController extends AbstractStationCrudController
 
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
-        return $request->getView()->renderToResponse($response, 'stations/webhooks/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'stations/webhooks/index', [
             'webhooks' => $station->getWebhooks(),
             'webhook_config' => $this->webhook_config,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function addAction(Request $request, Response $response, $station_id, $type = null): ResponseInterface
     {
-        $view = $request->getView();
+        $view = \App\Http\RequestHelper::getView($request);
         if ($type === null) {
             return $view->renderToResponse($response, 'stations/webhooks/add', [
                 'connectors' => array_filter($this->webhook_config['webhooks'], function($webhook) {
@@ -65,10 +65,10 @@ class WebhooksController extends AbstractStationCrudController
             ]);
         }
 
-        $record = new Entity\StationWebhook($request->getStation(), $type);
+        $record = new Entity\StationWebhook(\App\Http\RequestHelper::getStation($request), $type);
 
         if (false !== $this->form->process($request, $record)) {
-            $request->getSession()->flash('<b>' . __('%s added.', __('Web Hook')) . '</b>', 'green');
+            \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('%s added.', __('Web Hook')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
@@ -82,11 +82,11 @@ class WebhooksController extends AbstractStationCrudController
     public function editAction(Request $request, Response $response, $station_id, $id): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . __('%s updated.', __('Web Hook')) . '</b>', 'green');
+            \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('%s updated.', __('Web Hook')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => __('Edit %s', __('Web Hook'))
@@ -95,25 +95,25 @@ class WebhooksController extends AbstractStationCrudController
 
     public function toggleAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\StationWebhook $record */
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->_getRecord(\App\Http\RequestHelper::getStation($request), $id);
 
         $new_status = $record->toggleEnabled();
 
         $this->em->persist($record);
         $this->em->flush();
 
-        $request->getSession()->flash('<b>' . sprintf(($new_status) ? __('%s enabled.') : __('%s disabled.'), __('Web Hook')) . '</b>', 'green');
+        \App\Http\RequestHelper::getSession($request)->flash('<b>' . sprintf(($new_status) ? __('%s enabled.') : __('%s disabled.'), __('Web Hook')) . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }
 
     public function testAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
 
         /** @var Entity\StationWebhook $record */
         $record = $this->_getRecord($station, $id);
@@ -121,7 +121,7 @@ class WebhooksController extends AbstractStationCrudController
         $handler_response = $this->dispatcher->testDispatch($station, $record);
         $log_records = $handler_response->getRecords();
 
-        return $request->getView()->renderToResponse($response, 'system/log_view', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/log_view', [
             'title' => __('Web Hook Test Output'),
             'log_records' => $log_records,
         ]);
@@ -131,7 +131,7 @@ class WebhooksController extends AbstractStationCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Web Hook')) . '</b>', 'green');
+        \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Web Hook')) . '</b>', 'green');
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }

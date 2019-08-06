@@ -1,10 +1,9 @@
 <?php
 namespace App\Radio;
 
-use App\Http\ErrorHandler;
-use App\Radio\Frontend\AbstractFrontend;
-use Doctrine\ORM\EntityManager;
 use App\Entity\Station;
+use App\Http\ErrorHandler;
+use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
 use Supervisor\Supervisor;

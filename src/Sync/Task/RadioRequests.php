@@ -1,11 +1,11 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use Monolog\Logger;
 
 class RadioRequests extends AbstractTask

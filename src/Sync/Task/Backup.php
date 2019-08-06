@@ -1,12 +1,12 @@
 <?php
 namespace App\Sync\Task;
 
-use App\MessageQueue;
+use App\Entity;
 use App\Message;
+use App\MessageQueue;
 use Azura\Console\Application;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use Monolog\Logger;
 
 class Backup extends AbstractTask

@@ -1,13 +1,11 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Traits\LogViewerTrait;
 use App\Entity;
-use Azura\Exception;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class RelaysController
 {
@@ -29,7 +27,7 @@ class RelaysController
         $record_repo = $this->em->getRepository(Entity\Relay::class);
         $relays = $record_repo->fetchArray(false);
 
-        return $request->getView()->renderToResponse($response, 'admin/relays/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'admin/relays/index', [
             'relays' => $relays,
         ]);
     }

@@ -1,16 +1,16 @@
 <?php
 namespace App\Controller\Api\Stations;
 
+use App\Entity;
 use Azura\Cache;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use MaxMind\Db\Reader;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ListenersController
 {
@@ -53,7 +53,7 @@ class ListenersController
      */
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $station_tz = new \DateTimeZone($station->getTimezone());
 
         if ($request->getParam('start') !== null) {

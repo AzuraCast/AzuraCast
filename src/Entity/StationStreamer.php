@@ -1,10 +1,10 @@
 <?php
 namespace App\Entity;
 
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
 
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.

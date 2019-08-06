@@ -4,10 +4,10 @@ namespace App\Controller\Admin;
 use App\Controller\Traits\LogViewerTrait;
 use App\Entity;
 use Azura\Exception;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class LogsController
 {
@@ -39,7 +39,7 @@ class LogsController
             ];
         }
 
-        return $request->getView()->renderToResponse($response, 'admin/logs/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'admin/logs/index', [
             'global_logs' => $this->_getGlobalLogs(),
             'station_logs' => $station_logs,
         ]);
@@ -50,7 +50,7 @@ class LogsController
         if ('global' === $station_id) {
             $log_areas = $this->_getGlobalLogs();
         } else {
-            $station = $request->getStation();
+            $station = \App\Http\RequestHelper::getStation($request);
             $log_areas = $this->_getStationLogs($station);
         }
 

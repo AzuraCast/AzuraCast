@@ -1,9 +1,8 @@
 <?php
 namespace App\Radio\Frontend;
 
-use App\Utilities;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
+use App\Utilities;
 use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;
 

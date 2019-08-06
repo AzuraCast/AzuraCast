@@ -2,9 +2,9 @@
 namespace App\Middleware\Module;
 
 use App\Acl;
+use App\Event;
 use App\Http\RequestHelper;
 use Azura\EventDispatcher;
-use App\Event;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

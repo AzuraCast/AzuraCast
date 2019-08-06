@@ -45,7 +45,7 @@ class StationPlaylistForm extends EntityForm
     public function process(ServerRequestInterface $request, $record = null)
     {
         // Set the "Station Time Zone" field.
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $station_tz = $station->getTimezone();
 
         $now_station = Chronos::now(new \DateTimeZone($station_tz))->toIso8601String();
@@ -70,7 +70,7 @@ class StationPlaylistForm extends EntityForm
                 $matches = $this->_importPlaylist($record, $import_file);
 
                 if (is_int($matches)) {
-                    $request->getSession()->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
+                    \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
                 }
             }
 

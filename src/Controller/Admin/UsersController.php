@@ -2,12 +2,12 @@
 namespace App\Controller\Admin;
 
 use App\Auth;
+use App\Entity;
 use App\Form\EntityForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use App\Entity;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class UsersController extends AbstractAdminCrudController
 {
@@ -39,10 +39,10 @@ class UsersController extends AbstractAdminCrudController
             ORDER BY u.name ASC')
             ->execute();
 
-        return $request->getView()->renderToResponse($response, 'admin/users/index', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace)
+            'csrf' => \App\Http\RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace)
         ]);
     }
 
@@ -50,16 +50,16 @@ class UsersController extends AbstractAdminCrudController
     {
         try {
             if (false !== $this->_doEdit($request, $id)) {
-                $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')),
+                \App\Http\RequestHelper::getSession($request)->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')),
                     'green');
 
                 return $response->withRedirect($request->getRouter()->named('admin:users:index'));
             }
         } catch(UniqueConstraintViolationException $e) {
-            $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
+            \App\Http\RequestHelper::getSession($request)->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return \App\Http\RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('User'))
@@ -68,19 +68,19 @@ class UsersController extends AbstractAdminCrudController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
-        $current_user = $request->getUser();
+        $current_user = \App\Http\RequestHelper::getUser($request);
 
         if ($user === $current_user) {
-            $request->getSession()->flash('<b>'.__('You cannot delete your own account.').'</b>', 'red');
+            \App\Http\RequestHelper::getSession($request)->flash('<b>'.__('You cannot delete your own account.').'</b>', 'red');
         } elseif ($user instanceof Entity\User) {
             $this->em->remove($user);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
+            \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
         }
 
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
@@ -88,7 +88,7 @@ class UsersController extends AbstractAdminCrudController
 
     public function impersonateAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        \App\Http\RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
@@ -98,7 +98,7 @@ class UsersController extends AbstractAdminCrudController
 
         $this->auth->masqueradeAsUser($user);
 
-        $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+        \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }

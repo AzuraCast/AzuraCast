@@ -5,6 +5,8 @@ use App\Entity;
 use App\Radio\Filesystem;
 use Azura\Doctrine\Repository;
 use DI\Annotation\Inject;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 
 class StationMediaRepository extends Repository
 {
@@ -15,10 +17,16 @@ class StationMediaRepository extends Repository
     protected $filesystem;
 
     /**
-     * @Inject
      * @var SongRepository
      */
     protected $song_repo;
+
+    public function __construct(EntityManagerInterface $em, Mapping\ClassMetadata $class)
+    {
+        parent::__construct($em, $class);
+
+        $this->song_repo = $em->getRepository(Entity\Song::class);
+    }
 
     /**
      * @param Entity\Station $station

@@ -198,7 +198,11 @@ class Configuration
                 $this->supervisor->stopProcessGroup($station_group, true);
                 $this->supervisor->removeProcessGroup($station_group);
             } catch(FaultException $e) {
-                ErrorHandler::logException($this->logger, $e);
+                $this->logger->log(Logger::ERROR, $e->getMessage(), [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'code' => $e->getCode(),
+                ]);
             }
         }
     }

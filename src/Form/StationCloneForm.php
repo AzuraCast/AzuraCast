@@ -63,7 +63,7 @@ class StationCloneForm extends StationForm
             'description' => $record->getDescription(),
         ]);
 
-        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
+        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
 
             $copier = new DeepCopy\DeepCopy;

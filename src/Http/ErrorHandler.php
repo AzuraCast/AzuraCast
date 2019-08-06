@@ -9,6 +9,7 @@ use Azura\View;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Slim\Psr7\Response;
 use Symfony\Component\VarDumper\VarDumper;
 use Throwable;

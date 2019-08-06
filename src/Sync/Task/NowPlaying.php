@@ -292,7 +292,12 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $this->event_dispatcher->dispatch($event);
             $np_raw = $event->getRawResponse();
         } catch(\Exception $e) {
-            ErrorHandler::logException($this->logger, $e);
+            $this->logger->log(Logger::ERROR, $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+            ]);
+
             $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
         }
 

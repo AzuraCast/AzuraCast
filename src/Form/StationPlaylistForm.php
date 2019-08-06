@@ -9,6 +9,7 @@ use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\UploadedFile;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -64,7 +65,7 @@ class StationPlaylistForm extends EntityForm
         if ($record instanceof Entity\StationPlaylist) {
             $files = $request->getUploadedFiles();
 
-            /** @var UploadedFile $import_file */
+            /** @var UploadedFileInterface $import_file */
             $import_file = $files['import'];
             if (UPLOAD_ERR_OK === $import_file->getError()) {
                 $matches = $this->_importPlaylist($record, $import_file);
@@ -83,10 +84,10 @@ class StationPlaylistForm extends EntityForm
 
     /**
      * @param Entity\StationPlaylist $playlist
-     * @param UploadedFile $playlist_file
+     * @param UploadedFileInterface $playlist_file
      * @return bool|int
      */
-    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFile $playlist_file)
+    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFileInterface $playlist_file)
     {
         $station_id = $this->station->getId();
 

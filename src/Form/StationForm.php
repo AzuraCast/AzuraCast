@@ -87,7 +87,7 @@ class StationForm extends EntityForm
             $this->populate($this->_normalizeRecord($record));
         }
 
-        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
+        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
             $record = $this->_denormalizeToRecord($data, $record);
 

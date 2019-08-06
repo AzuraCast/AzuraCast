@@ -116,7 +116,7 @@ class EntityForm extends Form
         }
 
         // Handle submission.
-        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
+        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
 
             $record = $this->_denormalizeToRecord($data, $record);

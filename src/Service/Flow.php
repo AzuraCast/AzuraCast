@@ -78,6 +78,9 @@ class Flow
 
         $files = $request->getUploadedFiles();
 
+        print_r($files);
+        exit;
+
         if (!empty($files)) {
             foreach ($files as $file) {
                 /** @var UploadedFileInterface $file */

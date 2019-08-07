@@ -4,11 +4,11 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use App\Event\SendWebhooks;
 use App\Service\NChan;
-use Azura\Cache;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use InfluxDB\Database;
 use Monolog\Logger;
+use Psr\SimpleCache\CacheInterface;
 
 class Local
 {
@@ -23,7 +23,7 @@ class Local
     /** @var Database */
     protected $influx;
 
-    /** @var Cache */
+    /** @var CacheInterface */
     protected $cache;
 
     /** @var Entity\Repository\SettingsRepository */
@@ -33,7 +33,7 @@ class Local
         Logger $logger,
         Client $http_client,
         Database $influx,
-        Cache $cache,
+        CacheInterface $cache,
         EntityManager $em
     ) {
         /** @var Entity\Repository\SettingsRepository $settings_repo */
@@ -81,7 +81,7 @@ class Local
                     }
                 }
 
-                $this->cache->save($np_new, 'api_nowplaying_data', 120);
+                $this->cache->set('api_nowplaying_data', $np_new, 120);
                 $this->settings_repo->setSetting('nowplaying', $np_new);
             }
         }

@@ -4,11 +4,11 @@ namespace App\Radio;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
-use Azura\Cache;
 use Azura\EventDispatcher;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
@@ -28,7 +28,7 @@ class AutoDJ implements EventSubscriberInterface
     /** @var Logger */
     protected $logger;
 
-    /** @var Cache */
+    /** @var CacheInterface */
     protected $cache;
 
     /**
@@ -36,14 +36,14 @@ class AutoDJ implements EventSubscriberInterface
      * @param EventDispatcher $dispatcher
      * @param Filesystem $filesystem
      * @param Logger $logger
-     * @param Cache $cache
+     * @param CacheInterface $cache
      */
     public function __construct(
         EntityManager $em,
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
         Logger $logger,
-        Cache $cache)
+        CacheInterface $cache)
     {
         $this->em = $em;
         $this->dispatcher = $dispatcher;
@@ -396,7 +396,7 @@ class AutoDJ implements EventSubscriberInterface
                 $media_id = $media_arr['id'];
 
                 // Save the modified cache, sans the now-missing entry.
-                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+                $this->cache->set($cache_name, $media_queue, self::CACHE_TTL);
                 break;
 
             case Entity\StationPlaylist::ORDER_SHUFFLE:
@@ -429,7 +429,7 @@ class AutoDJ implements EventSubscriberInterface
                 }
 
                 // Save the modified cache, sans the now-missing entry.
-                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+                $this->cache->set($cache_name, $media_queue, self::CACHE_TTL);
                 break;
         }
 
@@ -560,7 +560,7 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         // Save the modified cache, sans the now-missing entry.
-        $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+        $this->cache->set($cache_name, $media_queue, self::CACHE_TTL);
 
         return ($media_id)
             ? [$media_id, 0]
@@ -618,6 +618,6 @@ class AutoDJ implements EventSubscriberInterface
 
     public static function getPlaylistCacheName(int $playlist_id): string
     {
-        return 'autodj/playlist_'.$playlist_id;
+        return 'autodj_playlist_'.$playlist_id;
     }
 }

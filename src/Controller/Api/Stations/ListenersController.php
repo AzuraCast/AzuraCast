@@ -4,7 +4,6 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\RequestHelper;
 use App\Http\ResponseHelper;
-use Azura\Cache;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
@@ -18,21 +17,16 @@ class ListenersController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Cache */
-    protected $cache;
-
     /** @var Reader */
     protected $geoip;
 
     /**
      * @param EntityManager $em
-     * @param Cache $cache
      * @param Reader $geoip
      */
-    public function __construct(EntityManager $em, Cache $cache, Reader $geoip)
+    public function __construct(EntityManager $em, Reader $geoip)
     {
         $this->em = $em;
-        $this->cache = $cache;
         $this->geoip = $geoip;
     }
 

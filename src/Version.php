@@ -1,8 +1,8 @@
 <?php
 namespace App;
 
-use Azura\Cache;
 use Azura\Settings;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -13,7 +13,7 @@ class Version
     /** @var string Version that is displayed if no Git repository information is present. */
     public const FALLBACK_VERSION = '0.9.6';
 
-    /** @var Cache */
+    /** @var CacheInterface */
     protected $cache;
 
     /** @var string */
@@ -22,7 +22,7 @@ class Version
     /** @var Settings */
     protected $app_settings;
 
-    public function __construct(Cache $cache, Settings $app_settings)
+    public function __construct(CacheInterface $cache, Settings $app_settings)
     {
         $this->cache = $cache;
         $this->app_settings = $app_settings;
@@ -79,9 +79,14 @@ class Version
         static $details;
 
         if (!$details) {
-            $details = $this->cache->getOrSet('app_version_details', function() {
-                return $this->_getRawDetails();
-            }, $this->app_settings->isProduction() ? 86400 : 600);
+            $details = $this->cache->get('app_version_details');
+
+            if (empty($details)) {
+                $details = $this->_getRawDetails();
+                $ttl = $this->app_settings->isProduction() ? 86400 : 600;
+
+                $this->cache->set('app_version_details', $details, $ttl);
+            }
         }
 
         return $details;

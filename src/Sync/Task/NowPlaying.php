@@ -5,18 +5,17 @@ use App\ApiUtilities;
 use App\Entity;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
-use App\Http\ErrorHandler;
 use App\Message;
 use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
-use Azura\Cache;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\Uri;
 use InfluxDB\Database;
 use Monolog\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use function DeepCopy\deep_copy;
 
@@ -25,7 +24,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     /** @var Database */
     protected $influx;
 
-    /** @var Cache */
+    /** @var CacheInterface */
     protected $cache;
 
     /** @var Adapters */
@@ -64,7 +63,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Adapters $adapters
      * @param ApiUtilities $api_utils
      * @param AutoDJ $autodj
-     * @param Cache $cache
+     * @param CacheInterface $cache
      * @param Database $influx
      * @param EventDispatcher $event_dispatcher
      * @param MessageQueue $message_queue
@@ -75,7 +74,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Adapters $adapters,
         ApiUtilities $api_utils,
         AutoDJ $autodj,
-        Cache $cache,
+        CacheInterface $cache,
         Database $influx,
         EventDispatcher $event_dispatcher,
         MessageQueue $message_queue)
@@ -152,7 +151,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $this->influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
         }
 
-        $this->cache->save($nowplaying, 'api_nowplaying_data', 120);
+        $this->cache->set('api_nowplaying_data', $nowplaying, 120);
         $this->settings_repo->setSetting('nowplaying', $nowplaying);
     }
 

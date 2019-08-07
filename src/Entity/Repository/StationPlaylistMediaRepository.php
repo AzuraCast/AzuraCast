@@ -4,16 +4,16 @@ namespace App\Entity\Repository;
 
 use App\Entity;
 use App\Radio\AutoDJ;
-use Azura\Cache;
 use Azura\Doctrine\Repository;
 use DI\Annotation\Inject;
 use Doctrine\ORM\NoResultException;
+use Psr\SimpleCache\CacheInterface;
 
 class StationPlaylistMediaRepository extends Repository
 {
     /**
      * @Inject
-     * @var Cache
+     * @var CacheInterface
      */
     protected $cache;
 
@@ -69,7 +69,7 @@ class StationPlaylistMediaRepository extends Repository
                     shuffle($media_queue);
                 }
 
-                $this->cache->set($media_queue, $cache_name, AutoDJ::CACHE_TTL);
+                $this->cache->set($cache_name, $media_queue, AutoDJ::CACHE_TTL);
             }
         }
 
@@ -216,6 +216,6 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function clearMediaQueue(int $playlist_id): void
     {
-        $this->cache->remove(AutoDJ::getPlaylistCacheName($playlist_id));
+        $this->cache->delete(AutoDJ::getPlaylistCacheName($playlist_id));
     }
 }

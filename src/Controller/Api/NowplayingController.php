@@ -5,12 +5,12 @@ use App\Entity;
 use App\Event\Radio\LoadNowPlaying;
 use App\Http\RequestHelper;
 use App\Http\ResponseHelper;
-use Azura\Cache;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NowplayingController implements EventSubscriberInterface
@@ -18,7 +18,7 @@ class NowplayingController implements EventSubscriberInterface
     /** @var EntityManager */
     protected $em;
 
-    /** @var Cache */
+    /** @var CacheInterface */
     protected $cache;
 
     /** @var EventDispatcher */
@@ -26,10 +26,10 @@ class NowplayingController implements EventSubscriberInterface
 
     /**
      * @param EntityManager $em
-     * @param Cache $cache
+     * @param CacheInterface $cache
      * @param EventDispatcher $dispatcher
      */
-    public function __construct(EntityManager $em, Cache $cache, EventDispatcher $dispatcher)
+    public function __construct(EntityManager $em, CacheInterface $cache, EventDispatcher $dispatcher)
     {
         $this->em = $em;
         $this->cache = $cache;

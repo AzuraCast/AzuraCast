@@ -6,9 +6,9 @@ use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Sync\Task\Media;
-use Azura\Cache;
 use Azura\Doctrine\Repository;
 use DI\Annotation\Inject;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
@@ -39,7 +39,7 @@ class StationRepository extends Repository
 
     /**
      * @Inject
-     * @var Cache
+     * @var CacheInterface
      */
     protected $cache;
 
@@ -113,7 +113,7 @@ class StationRepository extends Repository
 
         $this->configuration->writeConfiguration($record, $adapter_changed);
 
-        $this->cache->remove('stations');
+        $this->cache->delete('stations');
     }
 
     /**

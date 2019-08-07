@@ -7,12 +7,12 @@ use App\Event;
 use App\Http\RequestHelper;
 use App\Http\Router;
 use App\Radio\Adapters;
-use Azura\Cache;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\SimpleCache\CacheInterface;
 
 class DashboardController
 {
@@ -22,7 +22,7 @@ class DashboardController
     /** @var Acl */
     protected $acl;
 
-    /** @var Cache */
+    /** @var CacheInterface */
     protected $cache;
 
     /** @var Database */
@@ -40,7 +40,7 @@ class DashboardController
     /**
      * @param EntityManager $em
      * @param Acl $acl
-     * @param Cache $cache
+     * @param CacheInterface $cache
      * @param Database $influx
      * @param Adapters $adapter_manager
      * @param EventDispatcher $dispatcher
@@ -48,7 +48,7 @@ class DashboardController
     public function __construct(
         EntityManager $em,
         Acl $acl,
-        Cache $cache,
+        CacheInterface $cache,
         Database $influx,
         Adapters $adapter_manager,
         EventDispatcher $dispatcher
@@ -148,90 +148,13 @@ class DashboardController
                 $stats_cache_stations[$station->getId()] = $station->getId();
             }
 
-            $cache_name = 'homepage/metrics/' . implode(',', $stats_cache_stations).random_int(10000,99999);
+            $cache_name = 'homepage_metrics_' . implode(',', $stats_cache_stations);
 
-            $metrics = $this->cache->getOrSet($cache_name, function () use ($view_stations, $show_admin) {
-
-                // Statistics by day.
-                $station_averages = [];
-
-                // Query InfluxDB database.
-                $resultset = $this->influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
-                    'epoch' => 'ms',
-                ]);
-
-                $results_raw = $resultset->getSeries();
-                $results = [];
-                foreach ($results_raw as $serie) {
-                    $points = [];
-                    foreach ($serie['values'] as $point) {
-                        $points[] = array_combine($serie['columns'], $point);
-                    }
-
-                    $results[$serie['name']] = $points;
-                }
-
-                foreach ($results as $stat_series => $stat_rows) {
-                    $series_split = explode('.', $stat_series);
-                    $station_id = $series_split[1];
-
-                    foreach ($stat_rows as $stat_row) {
-                        $station_averages[$station_id][$stat_row['time']] = [
-                            $stat_row['time'],
-                            round($stat_row['value'], 2)
-                        ];
-                    }
-                }
-
-                $metric_stations = [];
-                if ($show_admin && count($view_stations) > 1) {
-                    $metric_stations['all'] = __('All Stations');
-                }
-                foreach($view_stations as $station_id => $station_info) {
-                    $metric_stations[$station_id] = $station_info['station']['name'];
-                }
-
-                $station_metrics = [];
-                $station_metrics_alt = [];
-
-                foreach ($metric_stations as $station_id => $station_name) {
-                    if (isset($station_averages[$station_id])) {
-                        $series_obj = new \stdClass;
-                        $series_obj->label = $station_name;
-                        $series_obj->type = 'line';
-                        $series_obj->fill = false;
-
-                        $station_metrics_alt[] = '<p>'.$series_obj->label.'</p>';
-                        $station_metrics_alt[] = '<dl>';
-
-                        ksort($station_averages[$station_id]);
-
-                        $series_data = [];
-                        foreach($station_averages[$station_id] as $serie) {
-                            $series_row = new \stdClass;
-                            $series_row->t = $serie[0];
-                            $series_row->y = $serie[1];
-                            $series_data[] = $series_row;
-
-                            $serie_date = gmdate('Y-m-d', $serie[0]/1000);
-                            $station_metrics_alt[] = '<dt><time data-original="'.$serie[0].'">'.$serie_date.'</time></dt>';
-                            $station_metrics_alt[] = '<dd>'.$serie[1].' '.__('Listeners').'</dd>';
-                        }
-
-                        $station_metrics_alt[] = '</dl>';
-
-                        $series_obj->data = $series_data;
-
-                        $station_metrics[] = $series_obj;
-                    }
-                }
-
-                return [
-                    'station' => json_encode($station_metrics),
-                    'station_alt' => implode('', $station_metrics_alt),
-                ];
-
-            }, 600);
+            $metrics = $this->cache->get($cache_name);
+            if (empty($metrics)) {
+                $metrics = $this->_getMetrics($view_stations, $show_admin);
+                $this->cache->set($cache_name, $metrics, 600);
+            }
         }
 
         return $view->renderToResponse($response, 'frontend/index/index', [
@@ -241,5 +164,87 @@ class DashboardController
             'metrics' => $metrics,
             'notifications' => $notifications,
         ]);
+    }
+
+    protected function _getMetrics(array $view_stations, bool $show_admin = false): array
+    {
+        // Statistics by day.
+        $station_averages = [];
+
+        // Query InfluxDB database.
+        $resultset = $this->influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
+            'epoch' => 'ms',
+        ]);
+
+        $results_raw = $resultset->getSeries();
+        $results = [];
+        foreach ($results_raw as $serie) {
+            $points = [];
+            foreach ($serie['values'] as $point) {
+                $points[] = array_combine($serie['columns'], $point);
+            }
+
+            $results[$serie['name']] = $points;
+        }
+
+        foreach ($results as $stat_series => $stat_rows) {
+            $series_split = explode('.', $stat_series);
+            $station_id = $series_split[1];
+
+            foreach ($stat_rows as $stat_row) {
+                $station_averages[$station_id][$stat_row['time']] = [
+                    $stat_row['time'],
+                    round($stat_row['value'], 2)
+                ];
+            }
+        }
+
+        $metric_stations = [];
+        if ($show_admin && count($view_stations) > 1) {
+            $metric_stations['all'] = __('All Stations');
+        }
+        foreach($view_stations as $station_id => $station_info) {
+            $metric_stations[$station_id] = $station_info['station']['name'];
+        }
+
+        $station_metrics = [];
+        $station_metrics_alt = [];
+
+        foreach ($metric_stations as $station_id => $station_name) {
+            if (isset($station_averages[$station_id])) {
+                $series_obj = new \stdClass;
+                $series_obj->label = $station_name;
+                $series_obj->type = 'line';
+                $series_obj->fill = false;
+
+                $station_metrics_alt[] = '<p>'.$series_obj->label.'</p>';
+                $station_metrics_alt[] = '<dl>';
+
+                ksort($station_averages[$station_id]);
+
+                $series_data = [];
+                foreach($station_averages[$station_id] as $serie) {
+                    $series_row = new \stdClass;
+                    $series_row->t = $serie[0];
+                    $series_row->y = $serie[1];
+                    $series_data[] = $series_row;
+
+                    $serie_date = gmdate('Y-m-d', $serie[0]/1000);
+                    $station_metrics_alt[] = '<dt><time data-original="'.$serie[0].'">'.$serie_date.'</time></dt>';
+                    $station_metrics_alt[] = '<dd>'.$serie[1].' '.__('Listeners').'</dd>';
+                }
+
+                $station_metrics_alt[] = '</dl>';
+
+                $series_obj->data = $series_data;
+
+                $station_metrics[] = $series_obj;
+            }
+        }
+
+        return [
+            'station' => json_encode($station_metrics),
+            'station_alt' => implode('', $station_metrics_alt),
+        ];
     }
 }

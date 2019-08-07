@@ -46,11 +46,12 @@
     "symfony/property-access": "^4.3",
     "ramsey/uuid": "^3.8",
     "wikimedia/composer-merge-plugin": "^1.4",
+    "zendframework/zend-config": "^3.3",
     "zircote/swagger-php": "^3.0"
   },
   "require-dev": {
     "codeception/codeception": "^2.2",
-    "filp/whoops": "dev-master",
+    "filp/whoops": "^2",
     "flow/jsonpath": "^0.3.4",
     "mockery/mockery": "^1.0",
     "phpstan/phpstan": "^0.11.1",

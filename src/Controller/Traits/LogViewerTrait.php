@@ -1,18 +1,17 @@
 <?php
 namespace App\Controller\Traits;
 
-use App\Http\Request;
-use App\Http\Response;
 use App\Entity;
+use App\Http\ResponseHelper;
 use App\Radio\Adapters;
-use Azura\Exception;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 trait LogViewerTrait
 {
     static $maximum_log_size = 1048576;
 
-    protected function _view(Request $request, Response $response, $log_path, $tail_file = true): ResponseInterface
+    protected function _view(ServerRequestInterface $request, ResponseInterface $response, $log_path, $tail_file = true): ResponseInterface
     {
         clearstatcache();
 
@@ -24,13 +23,14 @@ trait LogViewerTrait
             $log_contents_parts = explode("\n", file_get_contents($log_path));
             $log_contents_parts = str_replace(array(">", "<"), array("&gt;", "&lt;"), $log_contents_parts);
 
-            return $response->withJson([
+            return ResponseHelper::withJson($response, [
                 'contents' => implode("\n", $log_contents_parts),
                 'eof' => true,
             ]);
         }
 
-        $last_viewed_size = (int)$request->getParam('position', 0);
+        $params = $request->getQueryParams();
+        $last_viewed_size = (int)($params['position'] ?? 0);
 
         $log_size = filesize($log_path);
         if ($last_viewed_size > $log_size) {
@@ -66,7 +66,7 @@ trait LogViewerTrait
             fclose($fp);
         }
 
-        return $response->withJson([
+        return ResponseHelper::withJson($response, [
             'contents' => $log_contents,
             'position' => $log_size,
             'eof' => false,

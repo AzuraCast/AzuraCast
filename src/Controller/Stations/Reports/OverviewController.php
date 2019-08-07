@@ -1,13 +1,12 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
-use Azura\Cache;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
+use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class OverviewController
 {
@@ -20,7 +19,6 @@ class OverviewController
     /**
      * @param EntityManager $em
      * @param Database $influx
-     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, Database $influx)
     {
@@ -28,9 +26,9 @@ class OverviewController
         $this->influx = $influx;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
 
         // Get current analytics level.
 
@@ -41,7 +39,7 @@ class OverviewController
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
-            return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
+            return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/restricted');
         }
 
         /* Statistics */
@@ -251,7 +249,7 @@ class OverviewController
             return ($a > $b) ? 1 : -1;
         });
 
-        return $request->getView()->renderToResponse($response, 'stations/reports/overview', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/overview', [
             'charts' => [
                 'daily'         => json_encode($daily_data),
                 'daily_alt'     => implode('', $daily_alt),

@@ -28,7 +28,7 @@ if ($metrics) {
         ]));
 }
 
-$user = $request->getUser();
+$user = \App\Http\RequestHelper::getUser($request);
 ?>
 
 <section class="card mb-4" role="region">
@@ -101,7 +101,7 @@ $user = $request->getUser();
     <div class="card-header bg-primary-dark">
         <h3 class="card-title"><?=__('Station Overview') ?></h3>
     </div>
-    <?php if ($acl->userAllowed($request->getUser(), 'administer stations')): ?>
+    <?php if ($acl->userAllowed($user, 'administer stations')): ?>
         <div class="card-actions">
             <a class="btn btn-outline-primary" href="<?=$router->named('admin:stations:add') ?>">
                 <i class="material-icons" aria-hidden="true">add</i>

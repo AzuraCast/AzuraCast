@@ -3,8 +3,6 @@ namespace App\Entity\Repository;
 
 use App\Entity;
 use Azura\Doctrine\Repository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping;
 
 class RolePermissionRepository extends Repository
 {

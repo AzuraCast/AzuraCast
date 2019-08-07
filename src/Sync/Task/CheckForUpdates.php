@@ -1,14 +1,13 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Entity;
 use App\Version;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
-use Ramsey\Uuid\Uuid;
 
 class CheckForUpdates extends AbstractTask
 {
@@ -33,8 +32,6 @@ class CheckForUpdates extends AbstractTask
      * @param Client $http_client
      * @param Settings $settings
      * @param Version $version
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

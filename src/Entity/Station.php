@@ -2,26 +2,19 @@
 namespace App\Entity;
 
 use App\Customization;
+use App\Radio\Adapters;
+use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Quota;
-use Azura\Normalizer\Annotation\DeepNormalize;
+use App\Radio\Remote\AdapterProxy;
+use App\Validator\Constraints as AppAssert;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
-use App\Radio\Adapters;
-
-use App\Radio\Frontend\AbstractFrontend;
-use App\Radio\Remote\AdapterProxy;
-use App\Radio\Remote\AbstractRemote;
-use Doctrine\ORM\EntityManager;
-use GuzzleHttp\Psr7\Uri;
 use Interop\Container\ContainerInterface;
+use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="station")

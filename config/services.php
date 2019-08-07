@@ -1,155 +1,48 @@
 <?php
-return function (\Azura\Container $di)
-{
-    // Override Slim handlers.
-    $di['request'] = function (\Azura\Container $di) {
-        return \App\Http\Request::createFromEnvironment($di->get('environment'));
-    };
+/**
+ * PHP-DI Services
+ */
 
-    $di['response'] = function (\Azura\Container $di) {
-        $headers = new \Slim\Http\Headers(['Content-Type' => 'text/html; charset=UTF-8']);
-        $response = new \App\Http\Response(200, $headers, null);
+use Azura\Settings;
+use Doctrine\ORM\EntityManager;
+use Psr\Container\ContainerInterface;
 
-        return $response->withProtocolVersion($di->get('settings')['httpVersion']);
-    };
+return [
 
-    $di['router'] = function(\Azura\Container $container) {
-        $routerCacheFile = $container->get('settings')[\Azura\Settings::SLIM_ROUTER_CACHE_FILE];
-        $router = new \App\Http\Router();
-        $router->setCacheFile($routerCacheFile);
-        $router->setContainer($container);
-        return $router;
-    };
+    /*
+     * Slim Component Overrides
+     */
 
-    $di[\App\Http\ErrorHandler::class] = function($di) {
-        return new \App\Http\ErrorHandler(
-            $di[\App\Acl::class],
-            $di[\Monolog\Logger::class],
-            $di['router'],
-            $di[\Azura\Session::class],
-            $di[\Azura\View::class],
-            $di[\App\Service\Sentry::class]
-        );
-    };
-    
-    $di->addAlias('phpErrorHandler', \App\Http\ErrorHandler::class);
-    $di->addAlias('errorHandler', \App\Http\ErrorHandler::class);
+    // URL Router helper
+    App\Http\Router::class => function(
+        Settings $settings,
+        \Slim\App $app,
+        EntityManager $em
+    ) {
+        $route_parser = $app->getRouteCollector()->getRouteParser();
+        return new App\Http\Router($settings, $route_parser, $em);
+    },
+    Azura\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
-    $di['notFoundHandler'] = function ($di) {
-        return function (\App\Http\Request $request, \App\Http\Response $response) use ($di) {
-            /** @var \Azura\View $view */
-            $view = $di[\Azura\View::class];
+    // Error Handler
+    App\Http\ErrorHandler::class => DI\autowire(),
+    Slim\Interfaces\ErrorHandlerInterface::class => DI\Get(App\Http\ErrorHandler::class),
 
-            return $view->renderToResponse($response->withStatus(404), 'system/error_pagenotfound');
-        };
-    };
+    /*
+     * Doctrine Database
+     */
 
-    $di[\App\Entity\Repository\SettingsRepository::class] = function($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        return new \App\Entity\Repository\SettingsRepository(
-            $em,
-            $em->getClassMetadata(\App\Entity\Settings::class)
-        );
-    };
-
-    $di[\App\Entity\Repository\StationRepository::class] = function($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        return new \App\Entity\Repository\StationRepository(
-            $em,
-            $em->getClassMetadata(\App\Entity\Station::class),
-            $di[\App\Sync\Task\Media::class],
-            $di[\App\Radio\Adapters::class],
-            $di[\App\Radio\Configuration::class],
-            $di[\Azura\Cache::class],
-            $di[\Symfony\Component\Validator\Validator\ValidatorInterface::class]
-        );
-    };
-
-    $di[\App\Entity\Repository\StationMediaRepository::class] = function($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        return new \App\Entity\Repository\StationMediaRepository(
-            $em,
-            $em->getClassMetadata(\App\Entity\StationMedia::class),
-            $di[\App\Radio\Filesystem::class]
-        );
-    };
-
-    $di[\App\Entity\Repository\StationPlaylistMediaRepository::class] = function($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        return new \App\Entity\Repository\StationPlaylistMediaRepository(
-            $em,
-            $em->getClassMetadata(\App\Entity\StationPlaylistMedia::class),
-            $di[\Azura\Cache::class]
-        );
-    };
-
-    $di[\App\Auth::class] = function ($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        /** @var App\Entity\Repository\UserRepository $user_repo */
-        $user_repo = $em->getRepository(App\Entity\User::class);
-
-        return new \App\Auth($di[\Azura\Session::class], $user_repo);
-    };
-
-    $di[\App\Acl::class] = function ($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        /** @var App\Entity\Repository\RolePermissionRepository $permissions_repo */
-        $permissions_repo = $em->getRepository(App\Entity\RolePermission::class);
-
-        return new \App\Acl($permissions_repo);
-    };
-
-    $di[\InfluxDB\Database::class] = function ($di) {
-        $opts = [
-            'host' => (APP_INSIDE_DOCKER) ? 'influxdb' : 'localhost',
-            'port' => 8086,
-        ];
-
-        $influx = new \InfluxDB\Client($opts['host'], $opts['port']);
-
-        return $influx->selectDB('stations');
-    };
-
-    $di[\Supervisor\Supervisor::class] = function ($di) {
-        $guzzle_client = new \GuzzleHttp\Client();
-        $client = new \fXmlRpc\Client(
-            'http://' . (APP_INSIDE_DOCKER ? 'stations' : '127.0.0.1') . ':9001/RPC2',
-            new \fXmlRpc\Transport\HttpAdapterTransport(
-                new \Http\Message\MessageFactory\GuzzleMessageFactory(),
-                new \Http\Adapter\Guzzle6\Client($guzzle_client)
-            )
-        );
-
-        $connector = new \Supervisor\Connector\XmlRpc($client);
-        $supervisor = new \Supervisor\Supervisor($connector);
-
-        if (!$supervisor->isConnected()) {
-            throw new \Azura\Exception(sprintf('Could not connect to supervisord.'));
-        }
-
-        return $supervisor;
-    };
-
-    $di->extend(\Doctrine\ORM\EntityManager::class, function(\Doctrine\ORM\EntityManager $em, \Azura\Container $di) {
+    EntityManager::class => DI\decorate(function(EntityManager $em, ContainerInterface $di) {
         $event_manager = $em->getEventManager();
-        $event_manager->addEventSubscriber(new \App\Doctrine\Event\StationRequiresRestart);
-
+        $event_manager->addEventSubscriber(new App\Doctrine\Event\StationRequiresRestart);
         return $em;
-    });
-    
-    $di->extend(\Azura\View::class, function(\Azura\View $view, \Azura\Container $di) {
+    }),
+
+    /*
+     * View
+     */
+
+    Azura\View::class => DI\decorate(function(Azura\View $view, ContainerInterface $di) {
         $view->registerFunction('mailto', function ($address, $link_text = null) {
             $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
             $link_text = $link_text ?? $address;
@@ -158,15 +51,14 @@ return function (\Azura\Container $di)
         $view->registerFunction('pluralize', function ($word, $num = 0) {
             if ((int)$num === 1) {
                 return $word;
-            } else {
-                return \Doctrine\Common\Inflector\Inflector::pluralize($word);
             }
+            return Doctrine\Common\Inflector\Inflector::pluralize($word);
         });
         $view->registerFunction('truncate', function ($text, $length = 80) {
-            return \App\Utilities::truncateText($text, $length);
+            return App\Utilities::truncateText($text, $length);
         });
         $view->registerFunction('truncateUrl', function($url) {
-            return \App\Utilities::truncateUrl($url);
+            return App\Utilities::truncateUrl($url);
         });
         $view->registerFunction('link', function($url, $external = true, $truncate = true) {
             $url = htmlspecialchars($url, \ENT_QUOTES, 'UTF-8');
@@ -176,177 +68,331 @@ return function (\Azura\Container $di)
                 $a[] = 'target="_blank"';
             }
 
-            $a_body = ($truncate) ? \App\Utilities::truncateUrl($url) : $url;
+            $a_body = ($truncate) ? App\Utilities::truncateUrl($url) : $url;
             return '<a '.implode(' ', $a).'>'.$a_body.'</a>';
         });
 
         $view->addData([
-            'assets' => $di[\Azura\Assets::class],
-            'auth' => $di[\App\Auth::class],
-            'acl' => $di[\App\Acl::class],
-            'customization' => $di[\App\Customization::class],
-            'version' => $di[\App\Version::class],
+            'assets' => $di->get(Azura\Assets::class),
+            'auth' => $di->get(App\Auth::class),
+            'acl' => $di->get(App\Acl::class),
+            'customization' => $di->get(App\Customization::class),
+            'version' => $di->get(App\Version::class),
         ]);
-
         return $view;
-    });
+    }),
 
-    // MaxMind (IP Geolocation database for listener metadata)
-    $di[\MaxMind\Db\Reader::class] = function($di) {
-        $mmdb_path = dirname(APP_INCLUDE_ROOT).'/geoip/GeoLite2-City.mmdb';
-        return new \MaxMind\Db\Reader($mmdb_path);
-    };
+    /*
+     * Event Dispatcher
+     */
 
-    $di->extend(\Azura\EventDispatcher::class, function(\Azura\EventDispatcher $dispatcher, \Azura\Container $di) {
-        if (isset($di[\App\Plugins::class])) {
-            /** @var \App\Plugins $plugins */
-            $plugins = $di[\App\Plugins::class];
+    Azura\EventDispatcher::class => DI\decorate(function(Azura\EventDispatcher $dispatcher, ContainerInterface $di) {
+        if ($di->has(App\Plugins::class)) {
+            /** @var App\Plugins $plugins */
+            $plugins = $di->get(App\Plugins::class);
 
             // Register plugin-provided events.
             $plugins->registerEvents($dispatcher);
         }
 
         return $dispatcher;
-    });
+    }),
 
-    $di->extend(\Azura\Console\Application::class, function(\Azura\Console\Application $console, $di) {
-        /** @var \App\Version $version */
-        $version = $di[\App\Version::class];
+    /*
+     * Console
+     */
 
-        /** @var \Azura\Settings $settings */
-        $settings = $di['settings'];
+    Azura\Console\Application::class => DI\decorate(function(Azura\Console\Application $console, ContainerInterface $di) {
+        /** @var App\Version $version */
+        $version = $di->get(App\Version::class);
 
-        $console->setName($settings[\Azura\Settings::APP_NAME].' Command Line Tools ('.$settings[\Azura\Settings::APP_ENV].')');
+        /** @var Settings $settings */
+        $settings = $di->get(Settings::class);
+
+        $console->setName($settings[Settings::APP_NAME].' Command Line Tools ('.$settings[Settings::APP_ENV].')');
         $console->setVersion($version->getVersion());
 
         return $console;
-    });
+    }),
 
-    $di[\App\MessageQueue::class] = function($di) {
+    /*
+     * AzuraCast-specific dependencies
+     */
+
+    App\Acl::class => DI\autowire(),
+    App\Auth::class => DI\autowire(),
+    App\ApiUtilities::class => DI\autowire(),
+    App\Customization::class => DI\autowire(),
+    App\Version::class => DI\autowire(),
+    App\Service\Sentry::class => DI\autowire(),
+    App\Service\NChan::class => DI\autowire(),
+    App\Validator\Constraints\StationPortCheckerValidator::class => DI\autowire(),
+
+    // Message queue manager class
+    App\MessageQueue::class => function(
+        DI\FactoryInterface $factory,
+        ContainerInterface $di,
+        Monolog\Logger $logger
+    ) {
         // Build QueueFactory
-        /** @var \Redis $redis */
-        $redis = $di[\Redis::class];
-        $redis->select(4);
-        $driver = new \Bernard\Driver\PhpRedis\Driver($redis);
+        /** @var Redis $redis */
+        $redis = $factory->make(Redis::class);
 
-        $normalizer = new \Normalt\Normalizer\AggregateNormalizer([
-            new \Bernard\Normalizer\EnvelopeNormalizer,
-            new \Symfony\Component\Serializer\Normalizer\PropertyNormalizer
+        $redis->select(4);
+        $driver = new Bernard\Driver\PhpRedis\Driver($redis);
+
+        $normalizer = new Normalt\Normalizer\AggregateNormalizer([
+            new Bernard\Normalizer\EnvelopeNormalizer,
+            new Symfony\Component\Serializer\Normalizer\PropertyNormalizer
         ]);
 
-        $symfony_serializer = new \Symfony\Component\Serializer\Serializer([$normalizer]);
-        $serializer = new \Bernard\Serializer($normalizer);
+        $symfony_serializer = new Symfony\Component\Serializer\Serializer([$normalizer]);
+        $serializer = new Bernard\Serializer($normalizer);
 
-        $queue_factory = new \Bernard\QueueFactory\PersistentFactory($driver, $serializer);
+        $queue_factory = new Bernard\QueueFactory\PersistentFactory($driver, $serializer);
 
         // Event dispatcher
-        $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher;
+        $dispatcher = new Symfony\Component\EventDispatcher\EventDispatcher;
 
         // Build Producer
-        $producer = new \Bernard\Producer($queue_factory, $dispatcher);
+        $producer = new Bernard\Producer($queue_factory, $dispatcher);
 
         // Build Consumer
-        $receivers = require __DIR__.'/messagequeue.php';
-        $router = new \Bernard\Router\ReceiverMapRouter($receivers, new \Bernard\Router\ContainerReceiverResolver($di));
+        $receivers = require __DIR__ . '/messagequeue.php';
+        $router = new Bernard\Router\ReceiverMapRouter($receivers, new Bernard\Router\ContainerReceiverResolver($di));
 
         $consumer = new Bernard\Consumer($router, $dispatcher);
 
-        $mq = new \App\MessageQueue(
+        $mq = new App\MessageQueue(
             $queue_factory,
             $producer,
             $consumer,
-            $di[\Monolog\Logger::class]
+            $logger
         );
 
         $dispatcher->addSubscriber($mq);
         return $mq;
-    };
+    },
 
-    //
-    // AzuraCast-specific dependencies
-    //
+    // MaxMind (IP Geolocation database for listener metadata)
+    MaxMind\Db\Reader::class => function(Settings $settings) {
+        $mmdb_path = dirname($settings[Settings::BASE_DIR]).'/geoip/GeoLite2-City.mmdb';
+        return new MaxMind\Db\Reader($mmdb_path);
+    },
 
-    $di[\App\ApiUtilities::class] = function($di) {
-        return new \App\ApiUtilities(
-            $di[\Doctrine\ORM\EntityManager::class],
-            $di['router'],
-            $di[\App\Customization::class]
+    // InfluxDB
+    InfluxDB\Database::class => function(Settings $settings) {
+        $opts = [
+            'host' => $settings->isDocker() ? 'influxdb' : 'localhost',
+            'port' => 8086,
+        ];
+
+        $influx = new InfluxDB\Client($opts['host'], $opts['port']);
+        return $influx->selectDB('stations');
+    },
+
+    // Supervisor manager
+    Supervisor\Supervisor::class => function(Settings $settings) {
+        $guzzle_client = new GuzzleHttp\Client();
+        $client = new fXmlRpc\Client(
+            'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
+            new fXmlRpc\Transport\HttpAdapterTransport(
+                new Http\Message\MessageFactory\GuzzleMessageFactory(),
+                new Http\Adapter\Guzzle6\Client($guzzle_client)
+            )
         );
-    };
 
-    $di[\Azura\Assets::class] = function ($di) {
-        /** @var \Azura\Config $config */
-        $config = $di[\Azura\Config::class];
+        $connector = new Supervisor\Connector\XmlRpc($client);
+        $supervisor = new Supervisor\Supervisor($connector);
 
+        if (!$supervisor->isConnected()) {
+            throw new \Azura\Exception(sprintf('Could not connect to supervisord.'));
+        }
+
+        return $supervisor;
+    },
+
+    Azura\Assets::class => function(Azura\Config $config, Settings $settings) {
         $libraries = $config->get('assets');
 
         $versioned_files = [];
-        $assets_file = APP_INCLUDE_ROOT.'/web/static/assets.json';
+        $assets_file = $settings[Settings::BASE_DIR].'/web/static/assets.json';
         if (file_exists($assets_file)) {
             $versioned_files = json_decode(file_get_contents($assets_file), true);
         }
 
-        return new \Azura\Assets($libraries, $versioned_files);
-    };
+        return new Azura\Assets($libraries, $versioned_files);
+    },
 
-    $di[\App\Customization::class] = function ($di) {
-        return new \App\Customization(
-            $di['settings'],
-            $di[\App\Entity\Repository\SettingsRepository::class]
+    /*
+     * Radio Components
+     */
+
+    App\Radio\Adapters::class => DI\autowire(),
+    App\Radio\AutoDJ::class => DI\autowire(),
+    App\Radio\Configuration::class => DI\autowire(),
+
+    App\Radio\Filesystem::class => function(DI\FactoryInterface $factory) {
+        /** @var Redis $redis */
+        $redis = $factory->make(Redis::class);
+        $redis->select(5);
+
+        return new App\Radio\Filesystem($redis);
+    },
+
+    App\Radio\Backend\Liquidsoap::class => DI\autowire(),
+    App\Radio\Backend\None::class => DI\autowire(),
+
+    App\Radio\Frontend\Icecast::class => DI\autowire(),
+    App\Radio\Frontend\Remote::class => DI\autowire(),
+    App\Radio\Frontend\SHOUTcast::class => DI\autowire(),
+
+    App\Radio\Remote\AzuraRelay::class => DI\autowire(),
+    App\Radio\Remote\Icecast::class => DI\autowire(),
+    App\Radio\Remote\SHOUTcast1::class => DI\autowire(),
+    App\Radio\Remote\SHOUTcast2::class => DI\autowire(),
+
+    /*
+     * Synchronized (Cron) Tasks
+     */
+
+    App\Sync\Runner::class => function(
+        ContainerInterface $di,
+        EntityManager $em,
+        Monolog\Logger $logger
+    ) {
+        /** @var App\Entity\Repository\SettingsRepository $settingsRepo */
+        $settingsRepo = $em->getRepository(App\Entity\Settings::class);
+
+        return new App\Sync\Runner(
+            $settingsRepo,
+            $logger,
+            [
+                $di->get(App\Sync\Task\NowPlaying::class),
+                $di->get(App\Sync\Task\ReactivateStreamer::class),
+            ],
+            [ // Every minute tasks
+                $di->get(App\Sync\Task\RadioRequests::class),
+                $di->get(App\Sync\Task\Backup::class),
+                $di->get(App\Sync\Task\RelayCleanup::class),
+            ],
+            [ // Every 5 minutes tasks
+                $di->get(App\Sync\Task\Media::class),
+                $di->get(App\Sync\Task\CheckForUpdates::class),
+            ],
+            [ // Every hour tasks
+                $di->get(App\Sync\Task\Analytics::class),
+                $di->get(App\Sync\Task\RadioAutomation::class),
+                $di->get(App\Sync\Task\HistoryCleanup::class),
+                $di->get(App\Sync\Task\RotateLogs::class),
+            ]
         );
-    };
+    },
 
-    $di[\App\Version::class] = function($di) {
-        return new \App\Version(
-            $di[\Azura\Cache::class],
-            $di['settings']
-        );
-    };
+    App\Sync\Task\Analytics::class => DI\autowire(),
+    App\Sync\Task\Backup::class => DI\autowire(),
+    App\Sync\Task\CheckForUpdates::class => DI\autowire(),
+    App\Sync\Task\HistoryCleanup::class => DI\autowire(),
+    App\Sync\Task\Media::class => DI\autowire(),
+    App\Sync\Task\ReactivateStreamer::class => DI\autowire(),
+    App\Sync\Task\NowPlaying::class => DI\autowire(),
+    App\Sync\Task\RadioAutomation::class => DI\autowire(),
+    App\Sync\Task\RadioRequests::class => DI\autowire(),
+    App\Sync\Task\RelayCleanup::class => DI\autowire(),
+    App\Sync\Task\RotateLogs::class => DI\autowire(),
 
-    $di[\App\Service\Sentry::class] = function($di) {
-        return new \App\Service\Sentry(
-            $di[\App\Entity\Repository\SettingsRepository::class],
-            $di['settings'],
-            $di[\App\Version::class],
-            $di[\GuzzleHttp\Client::class]
-        );
-    };
+    /**
+     * Web Hooks
+     */
 
-    $di[\App\Service\NChan::class] = function($di) {
-        return new \App\Service\NChan(
-            $di[\GuzzleHttp\Client::class]
-        );
-    };
+    App\Webhook\Dispatcher::class => function(
+        ContainerInterface $di,
+        Azura\Config $config,
+        Monolog\Logger $logger
+    ){
+        $webhooks = $config->get('webhooks');
+        $services = [];
+        foreach($webhooks['webhooks'] as $webhook_key => $webhook_info) {
+            $services[$webhook_key] = $di->get($webhook_info['class']);
+        }
 
-    $di[\App\Validator\Constraints\StationPortCheckerValidator::class] = function($di) {
-        return new \App\Validator\Constraints\StationPortCheckerValidator(
-            $di[\App\Radio\Configuration::class]
-        );
-    };
+        return new App\Webhook\Dispatcher($logger, $services);
+    },
 
-    // Radio management
-    $di->register(new \App\Provider\RadioProvider);
+    App\Webhook\Connector\Discord::class => DI\autowire(),
+    App\Webhook\Connector\Generic::class => DI\autowire(),
+    App\Webhook\Connector\Local::class => DI\autowire(),
+    App\Webhook\Connector\TuneIn::class => DI\autowire(),
+    App\Webhook\Connector\Telegram::class => DI\autowire(),
+    App\Webhook\Connector\Twitter::class => DI\autowire(),
 
-    // Synchronization tasks
-    $di->register(new \App\Provider\SyncProvider);
+    /*
+     * Middleware
+     */
 
-    // Web Hooks
-    $di->register(new \App\Provider\WebhookProvider);
+    App\Middleware\EnforceSecurity::class => DI\autowire(),
+    App\Middleware\GetCurrentUser::class => DI\autowire(),
+    App\Middleware\GetStation::class => DI\autowire(),
+    App\Middleware\Permissions::class => DI\create(),
+    App\Middleware\InjectAcl::class => DI\autowire(),
+    App\Middleware\RequireStation::class => DI\create(),
+    App\Middleware\RequireLogin::class => DI\create(),
 
-    // Middleware
-    $di->register(new \App\Provider\MiddlewareProvider);
+    // Module-specific middleware
+    App\Middleware\Module\Admin::class => DI\autowire(),
+    App\Middleware\Module\Api::class => DI\autowire(),
+    App\Middleware\Module\Stations::class => DI\autowire(),
+    App\Middleware\Module\StationFiles::class => DI\autowire(),
 
-    // Notifications
-    $di->register(new \App\Provider\NotificationProvider);
+    /*
+     * Notifications
+     */
 
-    // Forms
-    $di->register(new \App\Provider\FormProvider);
+    App\Notification\Manager::class => DI\autowire(),
 
-    // Controller groups
-    $di->register(new \App\Provider\AdminProvider);
-    $di->register(new \App\Provider\ApiProvider);
-    $di->register(new \App\Provider\FrontendProvider);
-    $di->register(new \App\Provider\StationsProvider);
+    /*
+     * Forms
+     */
 
-    return $di;
-};
+    App\Form\EntityFormManager::class => function(
+        EntityManager $em,
+        Symfony\Component\Serializer\Serializer $serializer,
+        Symfony\Component\Validator\Validator\ValidatorInterface $validator,
+        ContainerInterface $di
+    ) {
+        $custom_forms = [
+            App\Entity\Station::class           => $di->get(App\Form\StationForm::class),
+            App\Entity\User::class              => $di->get(App\Form\UserForm::class),
+            App\Entity\RolePermission::class    => $di->get(App\Form\PermissionsForm::class),
+            App\Entity\StationPlaylist::class   => $di->get(App\Form\StationPlaylistForm::class),
+            App\Entity\StationMount::class      => $di->get(App\Form\StationMountForm::class),
+            App\Entity\StationWebhook::class    => $di->get(App\Form\StationWebhookForm::class),
+        ];
+
+        return new App\Form\EntityFormManager($em, $serializer, $validator, $custom_forms);
+    },
+
+    App\Form\PermissionsForm::class => DI\autowire(),
+    App\Form\StationForm::class => DI\autowire(),
+    App\Form\StationCloneForm::class => DI\autowire(),
+    App\Form\StationMountForm::class => DI\autowire(),
+    App\Form\StationPlaylistForm::class => DI\autowire(),
+    App\Form\StationWebhookForm::class => DI\autowire(),
+    App\Form\UserForm::class => DI\autowire(),
+
+    /*
+     * Controller Groups
+     */
+
+    'App\Controller\Admin\*Controller' => DI\autowire(),
+
+    'App\Controller\Api\*Controller' => DI\autowire(),
+    'App\Controller\Api\Admin\*Controller' => DI\autowire(),
+    'App\Controller\Api\Stations\*Controller' => DI\autowire(),
+
+    'App\Controller\Frontend\*Controller' => DI\autowire(),
+
+    'App\Controller\Stations\*Controller' => DI\autowire(),
+    'App\Controller\Stations\Files\*Controller' => DI\autowire(),
+    'App\Controller\Stations\Reports\*Controller' => DI\autowire(),
+];

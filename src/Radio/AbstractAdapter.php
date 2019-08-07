@@ -1,9 +1,9 @@
 <?php
 namespace App\Radio;
 
+use App\Entity;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
 use Supervisor\Process;

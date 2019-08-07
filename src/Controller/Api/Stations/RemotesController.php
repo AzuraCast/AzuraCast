@@ -3,12 +3,8 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Entity\StationRemote;
-use App\Http\Request;
 use OpenApi\Annotations as OA;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class RemotesController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\StationRemote::class;

@@ -1,11 +1,11 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
 use App\Version;
 use Azura\Settings;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class OpenApiController
 {
@@ -18,8 +18,6 @@ class OpenApiController
     /**
      * @param Settings $settings
      * @param Version $version
-     *
-     * @see \App\Provider\ApiProvider
      */
     public function __construct(Settings $settings, Version $version)
     {
@@ -27,9 +25,9 @@ class OpenApiController
         $this->version = $version;
     }
 
-    public function __invoke(Request $request, Response $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $router = $request->getRouter();
+        $router = RequestHelper::getRouter($request);
 
         $api_base_url = (string)$router->fromHere(null, [], [], true);
         $api_base_url = str_replace('/openapi.yml', '', $api_base_url);
@@ -52,8 +50,7 @@ class OpenApiController
 
         $yaml = $oa->toYaml();
 
-        return $response
-            ->withHeader('Content-Type', 'text/x-yaml')
-            ->write($yaml);
+        $response->getBody()->write($yaml);
+        return $response->withHeader('Content-Type', 'text/x-yaml');
     }
 }

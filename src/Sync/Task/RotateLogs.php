@@ -1,10 +1,9 @@
 <?php
 namespace App\Sync\Task;
 
-use App\Radio\Adapters;
-use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
+use App\Radio\Adapters;
+use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use studio24\Rotate;
 use Supervisor\Supervisor;
@@ -29,8 +28,6 @@ class RotateLogs extends AbstractTask
      * @param Logger $logger
      * @param Adapters $adapters
      * @param Supervisor $supervisor
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,

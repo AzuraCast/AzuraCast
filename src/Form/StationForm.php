@@ -3,10 +3,11 @@ namespace App\Form;
 
 use App\Acl;
 use App\Entity;
-use App\Http\Request;
 use App\Radio\Frontend\SHOUTcast;
+use Azura\Config;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,15 +28,17 @@ class StationForm extends EntityForm
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
      * @param Acl $acl
-     * @param array $form_config
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Acl $acl,
-        array $form_config)
-    {
+        Config $config
+    ) {
+        $form_config = $config->get('forms/station');
+
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->acl = $acl;
@@ -62,10 +65,10 @@ class StationForm extends EntityForm
     /**
      * @inheritdoc
      */
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
-        $user = $request->getUser();
+        $user = \App\Http\RequestHelper::getUser($request);
         $this->can_see_administration = $this->acl->userAllowed($user, Acl::GLOBAL_STATIONS);
 
         if (!$this->can_see_administration) {
@@ -76,7 +79,7 @@ class StationForm extends EntityForm
         }
 
         if (!SHOUTcast::isInstalled()) {
-            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', $request->getRouter()->named('admin:install:shoutcast'));
+            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', \App\Http\RequestHelper::getRouter($request)->named('admin:install:shoutcast'));
         }
 
         $create_mode = (null === $record);
@@ -84,7 +87,7 @@ class StationForm extends EntityForm
             $this->populate($this->_normalizeRecord($record));
         }
 
-        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
+        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
             $record = $this->_denormalizeToRecord($data, $record);
 

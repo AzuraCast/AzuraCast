@@ -3,22 +3,23 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 abstract class AbstractStationApiCrudController extends AbstractApiCrudController
 {
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function listAction(Request $request, Response $response, $station_id): ResponseInterface
+    public function listAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
         $station = $this->_getStation($request);
 
@@ -31,7 +32,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         $paginator->setFromRequest($request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
+        $router = RequestHelper::getRouter($request);
 
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
             $return = $this->_viewRecord($row, $router);
@@ -46,79 +47,81 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function createAction(Request $request, Response $response, $station_id): ResponseInterface
+    public function createAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
         $station = $this->_getStation($request);
         $row = $this->_createRecord($request->getParsedBody(), $station);
 
-        $router = $request->getRouter();
+        $router = RequestHelper::getRouter($request);
         $return = $this->_viewRecord($row, $router);
 
-        return $response->withJson($return);
+        return ResponseHelper::withJson($response, $return);
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int|string $record_id
      * @return ResponseInterface
      */
-    public function getAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
+    public function getAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $record_id): ResponseInterface
     {
         $station = $this->_getStation($request);
         $record = $this->_getRecord($station, $record_id);
 
-        $return = $this->_viewRecord($record, $request->getRouter());
-        return $response->withJson($return);
+        $return = $this->_viewRecord($record, RequestHelper::getRouter($request));
+        return ResponseHelper::withJson($response, $return);
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int|string $station_id
      * @param int|string $record_id
      * @return ResponseInterface
      */
-    public function editAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $record_id): ResponseInterface
     {
         $record = $this->_getRecord($this->_getStation($request), $record_id);
 
         if (null === $record) {
-            return $response
-                ->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+            return ResponseHelper::withJson(
+                $response->withStatus(404),
+                new Entity\Api\Error(404, 'Record not found!')
+            );
         }
 
         $this->_editRecord($request->getParsedBody(), $record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Changes saved successfully.'));
+        return ResponseHelper::withJson($response, new Entity\Api\Status(true, 'Changes saved successfully.'));
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int|string $station_id
      * @param int|string $record_id
      * @return ResponseInterface
      */
-    public function deleteAction(Request $request, Response $response, $station_id, $record_id): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $record_id): ResponseInterface
     {
         $record = $this->_getRecord($this->_getStation($request), $record_id);
 
         if (null === $record) {
-            return $response
-                ->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+            return ResponseHelper::withJson(
+                $response->withStatus(404),
+                new Entity\Api\Error(404, 'Record not found!')
+            );
         }
 
         $this->_deleteRecord($record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
+        return ResponseHelper::withJson($response, new Entity\Api\Status(true, 'Record deleted successfully.'));
     }
 
     /**
@@ -155,11 +158,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * A placeholder function to retrieve the current station that some controllers can
      * override to verify that the station can perform the specified task.
      *
-     * @param Request $request
+     * @param ServerRequestInterface $request
      * @return Entity\Station
      */
-    protected function _getStation(Request $request): Entity\Station
+    protected function _getStation(ServerRequestInterface $request): Entity\Station
     {
-        return $request->getStation();
+        return RequestHelper::getStation($request);
     }
 }

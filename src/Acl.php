@@ -2,6 +2,7 @@
 namespace App;
 
 use App\Entity;
+use Doctrine\ORM\EntityManager;
 
 class Acl
 {
@@ -35,9 +36,9 @@ class Acl
     /** @var array|null An array of actions enabled by each role. */
     protected $_actions = null;
 
-    public function __construct(Entity\Repository\RolePermissionRepository $permission_repo)
+    public function __construct(EntityManager $em)
     {
-        $this->permission_repo = $permission_repo;
+        $this->permission_repo = $em->getRepository(Entity\RolePermission::class);
         $this->reload();
     }
 

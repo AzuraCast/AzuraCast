@@ -1,51 +1,47 @@
 <?php
 namespace App\Entity\Repository;
 
+use App\Entity;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Entity;
 use App\Sync\Task\Media;
 use Azura\Cache;
 use Azura\Doctrine\Repository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping;
+use DI\Annotation\Inject;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
-    /** @var Media */
+    /**
+     * @Inject
+     * @var Media
+     */
     protected $media_sync;
 
-    /** @var Adapters */
+    /**
+     * @Inject
+     * @var Adapters
+     */
     protected $adapters;
 
-    /** @var Configuration */
+    /**
+     * @Inject
+     * @var Configuration
+     */
     protected $configuration;
 
-    /** @var ValidatorInterface */
+    /**
+     * @Inject
+     * @var ValidatorInterface
+     */
     protected $validator;
 
-    /** @var Cache */
+    /**
+     * @Inject
+     * @var Cache
+     */
     protected $cache;
-
-    public function __construct(
-        $em,
-        Mapping\ClassMetadata $class,
-        Media $media_sync,
-        Adapters $adapters,
-        Configuration $configuration,
-        Cache $cache,
-        ValidatorInterface $validator
-    ) {
-        parent::__construct($em, $class);
-
-        $this->media_sync = $media_sync;
-        $this->adapters = $adapters;
-        $this->configuration = $configuration;
-        $this->cache = $cache;
-        $this->validator = $validator;
-    }
 
     /**
      * @return mixed

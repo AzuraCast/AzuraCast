@@ -2,16 +2,14 @@
 
 namespace App\Entity;
 
+use App\Radio\Backend\Liquidsoap;
+use Azura\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use Azura\Normalizer\Annotation\DeepNormalize;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Validator\Constraints as Assert;
-
-use App\Radio\Backend\Liquidsoap;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Table(name="station_media", indexes={

@@ -3,8 +3,10 @@ namespace App\Form;
 
 use App\Entity;
 use App\Entity\Station;
-use App\Http\Request;
+use App\Radio\Adapters;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,27 +19,26 @@ class StationMountForm extends EntityForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
-     * @param array $options
-     * @param array|null $defaults
-     * @param array $form_configs
-     *
-     * @see \App\Provider\FormProvider
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $options = [],
-        ?array $defaults = null,
-        array $form_configs = []
+        Config $config
     ) {
-        parent::__construct($em, $serializer, $validator, $options, $defaults);
+        $form_configs = [
+            Adapters::FRONTEND_ICECAST => $config->get('forms/mount/icecast'),
+            Adapters::FRONTEND_SHOUTCAST => $config->get('forms/mount/shoutcast2'),
+        ];
+
+        parent::__construct($em, $serializer, $validator);
 
         $this->entityClass = Entity\StationMount::class;
         $this->form_configs = $form_configs;
     }
 
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         $record = parent::process($request, $record);
 

@@ -2,12 +2,10 @@
 namespace App\Event\Radio;
 
 use App\Entity\Station;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class WriteLiquidsoapConfiguration extends Event
 {
-    public const NAME = 'radio-liquidsoap-write-configuration';
-
     /** @var array */
     protected $config_lines;
 

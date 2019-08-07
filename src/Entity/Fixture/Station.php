@@ -1,10 +1,10 @@
 <?php
 namespace App\Entity\Fixture;
 
+use App\Entity;
 use App\Radio\Adapters;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity;
 
 class Station extends AbstractFixture
 {

@@ -5,7 +5,7 @@ use App\Console\Command;
 return function (\Azura\EventDispatcher $dispatcher)
 {
     // Build default routes and middleware
-    $dispatcher->addListener(Azura\Event\BuildRoutes::NAME, function(Azura\Event\BuildRoutes $event) {
+    $dispatcher->addListener(Azura\Event\BuildRoutes::class, function(Azura\Event\BuildRoutes $event) {
         $app = $event->getApp();
 
         if (file_exists(__DIR__.'/routes.dev.php')) {
@@ -13,27 +13,25 @@ return function (\Azura\EventDispatcher $dispatcher)
             $dev_routes($app);
         }
 
-        // Get the current user entity object and assign it into the request if it exists.
-        $app->add(Middleware\GetCurrentUser::class);
-
-        // Check HTTPS setting and enforce Content Security Policy accordingly.
         $app->add(Middleware\EnforceSecurity::class);
+        $app->add(Middleware\InjectAcl::class);
+        $app->add(Middleware\GetCurrentUser::class);
 
     }, 2);
 
     // Build default menus
-    $dispatcher->addListener(App\Event\BuildAdminMenu::NAME, function(\App\Event\BuildAdminMenu $e) {
+    $dispatcher->addListener(App\Event\BuildAdminMenu::class, function(\App\Event\BuildAdminMenu $e) {
         $callable = require(__DIR__.'/menus/admin.php');
         $callable($e);
     });
 
-    $dispatcher->addListener(App\Event\BuildStationMenu::NAME, function(\App\Event\BuildStationMenu $e) {
+    $dispatcher->addListener(App\Event\BuildStationMenu::class, function(\App\Event\BuildStationMenu $e) {
         $callable = require(__DIR__.'/menus/station.php');
         $callable($e);
     });
 
     // Build CLI commands
-    $dispatcher->addListener(Azura\Event\BuildConsoleCommands::NAME, function(Azura\Event\BuildConsoleCommands $event) {
+    $dispatcher->addListener(Azura\Event\BuildConsoleCommands::class, function(Azura\Event\BuildConsoleCommands $event) {
         $event->getConsole()->addCommands([
             // Liquidsoap Internal CLI Commands
             new Command\Internal\NextSong,

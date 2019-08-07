@@ -1,12 +1,11 @@
 <?php
 namespace App\Entity;
 
+use App\Radio\Adapters;
+use App\Radio\Remote\AbstractRemote;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-
-use App\Radio\Adapters;
-use App\Radio\Remote\AbstractRemote;
 
 /**
  * @ORM\Table(name="station_remotes")

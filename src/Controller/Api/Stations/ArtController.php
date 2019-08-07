@@ -1,12 +1,14 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use App\Radio\Filesystem;
 use App\Customization;
-use App\Http\Request;
-use App\Http\Response;
-use Psr\Http\Message\ResponseInterface;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use App\Radio\Filesystem;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Psr7\Stream;
 
 class ArtController
 {
@@ -19,8 +21,6 @@ class ArtController
     /**
      * @param Customization $customization
      * @param Filesystem $filesystem
-     *
-     * @see \App\Provider\ApiProvider
      */
     public function __construct(Customization $customization, Filesystem $filesystem)
     {
@@ -45,10 +45,17 @@ class ArtController
      *   @OA\Response(response=200, description="The requested album artwork"),
      *   @OA\Response(response=404, description="Image not found; generic filler image.")
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param string|int $station_id
+     * @param string $media_id
+     *
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
         $filesystem = $this->filesystem->getForStation($station);
 
         $media_path = 'albumart://'.$media_id.'.jpg';
@@ -58,14 +65,13 @@ class ArtController
             $art = $filesystem->readStream($media_path);
 
             if (is_resource($art)) {
-                return $response
+                return ResponseHelper::withCacheLifetime($response, ResponseHelper::CACHE_ONE_YEAR)
                     ->withHeader('Content-Type', 'image/jpeg')
                     ->withHeader('Content-Length', $file_meta['size'])
-                    ->withCacheLifetime(Response::CACHE_ONE_YEAR)
-                    ->withBody(new \Slim\Http\Stream($art));
+                    ->withBody(new Stream($art));
             }
         }
 
-        return $response->withRedirect($this->customization->getDefaultAlbumArtUrl(), 302);
+        return ResponseHelper::withRedirect($response, $this->customization->getDefaultAlbumArtUrl(), 302);
     }
 }

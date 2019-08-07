@@ -3,20 +3,15 @@ namespace App\Form;
 
 use App\Acl;
 use App\Entity;
-use App\Http\Request;
 use App\Radio\Configuration;
-use App\Radio\Filesystem;
-use App\Radio\Frontend\SHOUTcast;
 use App\Sync\Task\Media;
-use Azura\Doctrine\Repository;
+use Azura\Config;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\VarDumper\VarDumper;
 
 class StationCloneForm extends StationForm
 {
@@ -27,14 +22,14 @@ class StationCloneForm extends StationForm
     protected $media_sync;
 
     /**
+     * StationCloneForm constructor.
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
      * @param Acl $acl
      * @param Configuration $configuration
-     * @param array $form_config
-     *
-     * @see \App\Provider\FormProvider
+     * @param Media $media_sync
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
@@ -43,9 +38,12 @@ class StationCloneForm extends StationForm
         Acl $acl,
         Configuration $configuration,
         Media $media_sync,
-        array $form_config
+        Config $config
     ) {
-        parent::__construct($em, $serializer, $validator, $acl, $form_config);
+        parent::__construct($em, $serializer, $validator, $acl, $config);
+
+        $form_config = $config->get('forms/station_clone');
+        $this->configure($form_config);
 
         $this->configuration = $configuration;
         $this->media_sync = $media_sync;
@@ -54,7 +52,7 @@ class StationCloneForm extends StationForm
     /**
      * @inheritdoc
      */
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         if (!$record instanceof Entity\Station) {
             throw new \InvalidArgumentException('Record must be a station.');
@@ -65,7 +63,7 @@ class StationCloneForm extends StationForm
             'description' => $record->getDescription(),
         ]);
 
-        if ($request->isPost() && $this->isValid($request->getParsedBody())) {
+        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
 
             $copier = new DeepCopy\DeepCopy;

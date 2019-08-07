@@ -2,20 +2,17 @@
 namespace App\Controller\Api\Stations;
 
 use App;
-use Azura\Doctrine\Paginator;
-use Azura\Http\Router;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
+use Azura\Doctrine\Paginator;
+use Azura\Http\RouterInterface;
+use Doctrine\ORM\EntityManager;
+use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use OpenApi\Annotations as OA;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class QueueController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\SongHistory::class;
@@ -48,7 +45,7 @@ class QueueController extends AbstractStationApiCrudController
      *
      * @inheritdoc
      */
-    public function listAction(Request $request, Response $response, $station_id): ResponseInterface
+    public function listAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
         $query = $this->em->createQuery(/** @lang DQL */'SELECT sh, sp, s, sm
             FROM App\Entity\SongHistory sh 
@@ -66,7 +63,7 @@ class QueueController extends AbstractStationApiCrudController
         $paginator->setFromRequest($request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
+        $router = RequestHelper::getRouter($request);
 
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
             $return = $this->_viewRecord($row, $router);
@@ -121,7 +118,7 @@ class QueueController extends AbstractStationApiCrudController
     /**
      * @inheritdoc
      */
-    protected function _viewRecord($record, Router $router)
+    protected function _viewRecord($record, RouterInterface $router)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

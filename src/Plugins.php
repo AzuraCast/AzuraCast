@@ -1,8 +1,8 @@
 <?php
 namespace App;
 
-use Composer\Autoload\ClassLoader;
 use Azura\Container;
+use Composer\Autoload\ClassLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -57,17 +57,21 @@ class Plugins
     /**
      * Register or override any services contained in the global Dependency Injection container.
      *
-     * @param Container $di
+     * @param array $diDefinitions
+     * @return array
      */
-    public function registerServices(Container $di): void
+    public function registerServices(array $diDefinitions = []): array
     {
         foreach($this->plugins as $plugin) {
             $plugin_path = $plugin['path'];
 
             if (file_exists($plugin_path . '/services.php')) {
-                call_user_func(include($plugin_path . '/services.php'), $di);
+                $services = include $plugin_path . '/services.php';
+                $diDefinitions = array_merge($diDefinitions, $services);
             }
         }
+
+        return $diDefinitions;
     }
 
     /**

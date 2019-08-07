@@ -2,7 +2,6 @@
 
 namespace App\Console\Command;
 
-use App\Entity;
 use App\Version;
 use Azura\Console\Command\CommandAbstract;
 use Azura\Settings;

@@ -1,8 +1,8 @@
 <?php
 namespace App\Sync;
 
-use App\Entity\Repository\SettingsRepository;
 use App\Entity;
+use App\Entity\Repository\SettingsRepository;
 use Monolog\Logger;
 use Pimple\ServiceIterator;
 
@@ -17,20 +17,25 @@ class Runner
     /** @var SettingsRepository */
     protected $settings;
 
-    /** @var ServiceIterator */
+    /** @var Task\AbstractTask[] */
     protected $tasks_nowplaying;
 
-    /** @var ServiceIterator */
+    /** @var Task\AbstractTask[] */
     protected $tasks_short;
 
-    /** @var ServiceIterator */
+    /** @var Task\AbstractTask[] */
     protected $tasks_medium;
 
-    /** @var ServiceIterator */
+    /** @var Task\AbstractTask[] */
     protected $tasks_long;
 
-    public function __construct(SettingsRepository $settings, Logger $logger, ServiceIterator $tasks_nowplaying,
-                                ServiceIterator $tasks_short, ServiceIterator $tasks_medium, ServiceIterator $tasks_long)
+    public function __construct(
+        SettingsRepository $settings,
+        Logger $logger,
+        array $tasks_nowplaying,
+        array $tasks_short,
+        array $tasks_medium,
+        array $tasks_long)
     {
         $this->settings = $settings;
         $this->logger = $logger;

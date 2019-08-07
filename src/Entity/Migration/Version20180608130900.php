@@ -2,8 +2,8 @@
 
 namespace App\Entity\Migration;
 
-use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add a custom "listen" URL for each mount point.

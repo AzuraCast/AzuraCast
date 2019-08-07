@@ -24,69 +24,64 @@
 
 namespace App\Service;
 
+use App\Http\RequestHelper;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use App\Http\Request;
-use App\Http\Response;
 
 class Flow
 {
-    /** @var Request */
-    protected $request;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var string */
-    protected $temp_dir;
-
-    public function __construct(Request $request, Response $response, $temp_dir = null)
-    {
-        $this->request = $request;
-        $this->response = $response;
-
-        if (null === $temp_dir) {
-            $temp_dir = sys_get_temp_dir().'/uploads/';
-        }
-        $this->temp_dir = $temp_dir;
-    }
-
     /**
      * Process the request and return a response if necessary, or the completed file details if successful.
      *
-     * @return Response|array|null
-     * @throws \Azura\Exception
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param string|null $temp_dir
+     * @return array|ResponseInterface|null
      */
-    public function process()
-    {
-        $flowIdentifier = $this->request->getParam('flowIdentifier', '');
-        $flowChunkNumber = (int)$this->request->getParam('flowChunkNumber', '');
-        $flowFilename = $this->request->getParam('flowFilename', $flowIdentifier ?: 'upload-'.date('Ymd'));
+    public static function process(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        string $temp_dir = null
+    ) {
+        if (null === $temp_dir) {
+            $temp_dir = sys_get_temp_dir().'/uploads/';
+        }
+
+        $params = RequestHelper::getParams($request);
+
+        $flowIdentifier = $params['flowIdentifier'] ?? '';
+        $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
+        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier ?: 'upload-'.date('Ymd'));
 
         // init the destination file (format <filename.ext>.part<#chunk>
-        $chunkBaseDir = $this->temp_dir . '/' . $flowIdentifier;
+        $chunkBaseDir = $temp_dir . '/' . $flowIdentifier;
         $chunkPath = $chunkBaseDir . '/' . $flowIdentifier . '.part' . $flowChunkNumber;
 
-        $currentChunkSize = (int)$this->request->getParam('flowCurrentChunkSize', 0);
+        $currentChunkSize = (int)($params['flowCurrentChunkSize'] ?? 0);
 
-        $targetSize = (int)$this->request->getParam('flowTotalSize', 0);
-        $targetChunks = (int)$this->request->getParam('flowTotalChunks', 0);
+        $targetSize = (int)($params['flowTotalSize'] ?? 0);
+        $targetChunks = (int)($params['flowTotalChunks'] ?? 0);
 
         // Check if request is GET and the requested chunk exists or not. This makes testChunks work
-        if ($this->request->isGet()) {
+        if ('GET' === $request->getMethod()) {
 
             // Force a reupload of the last chunk if all chunks are uploaded, to trigger processing below.
             if ($flowChunkNumber !== $targetChunks
                 && file_exists($chunkPath)
                 && filesize($chunkPath) === $currentChunkSize) {
-                return $this->response->withStatus(200, 'OK');
+                return $response->withStatus(200, 'OK');
             }
 
-            return $this->response->withStatus(204, 'No Content');
+            return $response->withStatus(204, 'No Content');
         }
 
-        if (!empty($this->request->getUploadedFiles())) {
-            $files = $this->request->getUploadedFiles();
+        $files = $request->getUploadedFiles();
 
+        print_r($files);
+        exit;
+
+        if (!empty($files)) {
             foreach ($files as $file) {
                 /** @var UploadedFileInterface $file */
                 if ($file->getError() !== UPLOAD_ERR_OK) {
@@ -105,12 +100,12 @@ class Flow
                 $file->moveTo($chunkPath);
             }
 
-            if ($this->_allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
-                return $this->_createFileFromChunks($chunkBaseDir, $flowIdentifier, $flowFilename, $targetChunks);
+            if (self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
+                return self::createFileFromChunks($temp_dir, $chunkBaseDir, $flowIdentifier, $flowFilename, $targetChunks);
             }
 
             // Return an OK status to indicate that the chunk upload itself succeeded.
-            return $this->response->withStatus(200, 'OK');
+            return $response->withStatus(200, 'OK');
         }
 
         return null;
@@ -124,8 +119,11 @@ class Flow
      * @param int $targetChunkNumber
      * @return bool
      */
-    protected function _allPartsExist($chunkBaseDir, $targetSize, $targetChunkNumber): bool
-    {
+    protected static function allPartsExist(
+        string $chunkBaseDir,
+        int $targetSize,
+        int $targetChunkNumber
+    ): bool {
         $chunkSize = 0;
         $chunkNumber = 0;
 
@@ -140,16 +138,23 @@ class Flow
     /**
      * Reassemble the file on the local destination disk and return the relevant information.
      *
+     * @param string $tempDir
      * @param string $chunkBaseDir
      * @param string $chunkIdentifier
      * @param string $originalFileName
      * @param int $numChunks
+     *
      * @return array
      */
-    protected function _createFileFromChunks($chunkBaseDir, $chunkIdentifier, $originalFileName, $numChunks): array
-    {
+    protected static function createFileFromChunks(
+        string $tempDir,
+        string $chunkBaseDir,
+        string $chunkIdentifier,
+        string $originalFileName,
+        int $numChunks
+    ): array {
         $originalFileName = \Azura\File::sanitizeFileName(basename($originalFileName));
-        $finalPath = $this->temp_dir.'/'.$originalFileName;
+        $finalPath = $tempDir.'/'.$originalFileName;
 
         $fp = fopen($finalPath, 'w+');
 
@@ -162,9 +167,9 @@ class Flow
         // rename the temporary directory (to avoid access from other
         // concurrent chunk uploads) and then delete it.
         if (rename($chunkBaseDir, $chunkBaseDir . '_UNUSED')) {
-            $this->_rrmdir($chunkBaseDir . '_UNUSED');
+            self::rrmdir($chunkBaseDir . '_UNUSED');
         } else {
-            $this->_rrmdir($chunkBaseDir);
+            self::rrmdir($chunkBaseDir);
         }
 
         return [
@@ -179,13 +184,13 @@ class Flow
      * @param string $dir - directory path
      * @link http://php.net/manual/en/function.rmdir.php
      */
-    protected function _rrmdir($dir): void
+    protected static function rrmdir($dir): void
     {
         if (is_dir($dir)) {
             $objects = array_diff(scandir($dir, \SCANDIR_SORT_NONE), array('.', '..'));
             foreach ($objects as $object) {
                 if (is_dir($dir . '/' . $object)) {
-                    $this->_rrmdir($dir . '/' . $object);
+                    self::rrmdir($dir . '/' . $object);
                 } else {
                     unlink($dir . '/' . $object);
                 }

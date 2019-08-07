@@ -1,11 +1,11 @@
 <?php
 namespace App\Sync\Task;
 
-use Azura\Exception;
+use App\Entity;
 use App\Radio\Adapters;
+use Azura\Exception;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use Monolog\Logger;
 
 class RadioAutomation extends AbstractTask
@@ -19,8 +19,6 @@ class RadioAutomation extends AbstractTask
      * @param EntityManager $em
      * @param Logger $logger
      * @param Adapters $adapters
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(EntityManager $em, Logger $logger, Adapters $adapters)
     {

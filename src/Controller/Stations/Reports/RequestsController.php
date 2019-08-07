@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
-use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RequestsController
 {
@@ -17,14 +18,13 @@ class RequestsController
 
     /**
      * @param EntityManager $em
-     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
     }
 
-    public function __invoke(Request $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
         $requests = $this->em->createQuery(/** @lang DQL */'SELECT 
             sr, sm, s 
@@ -36,15 +36,15 @@ class RequestsController
             ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
-        return $request->getView()->renderToResponse($response, 'stations/reports/requests', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/requests', [
             'requests' => $requests,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $request_id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $request_id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $media = $this->em->getRepository(Entity\StationRequest::class)->findOneBy([
             'id' => $request_id,
@@ -56,9 +56,9 @@ class RequestsController
             $this->em->remove($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>Request deleted!</b>', 'green');
+            RequestHelper::getSession($request)->flash('<b>Request deleted!</b>', 'green');
         }
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:reports:requests'));
     }
 }

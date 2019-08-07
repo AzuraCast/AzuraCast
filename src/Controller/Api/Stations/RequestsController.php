@@ -1,15 +1,16 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use Azura\Doctrine\Paginator;
-use App\Utilities;
 use App\ApiUtilities;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
-use Psr\Http\Message\ResponseInterface;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use App\Utilities;
+use Azura\Doctrine\Paginator;
+use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RequestsController
 {
@@ -22,7 +23,6 @@ class RequestsController
     /**
      * @param EntityManager $em
      * @param ApiUtilities $api_utils
-     * @see \App\Provider\ApiProvider
      */
     public function __construct(EntityManager $em, ApiUtilities $api_utils)
     {
@@ -46,15 +46,20 @@ class RequestsController
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
+     *
+     * @inheritDoc
      */
-    public function listAction(Request $request, Response $response, $station_id): ResponseInterface
+    public function listAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
 
         // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
+        $ba = RequestHelper::getStationBackend($request);
         if (!$ba::supportsRequests() || !$station->getEnableRequests()) {
-            return $response->withJson('This station does not accept requests currently.', 403);
+            return ResponseHelper::withJson(
+                $response->withStatus(403),
+                new Entity\Api\Error(403, 'This station does not accept requests currently.')
+            );
         }
 
         $qb = $this->em->createQueryBuilder();
@@ -70,14 +75,16 @@ class RequestsController
             ->andWhere('sp.include_in_requests = 1')
             ->setParameter('station_id', $station_id);
 
-        if ($request->hasParam('sort')) {
+        $params = $request->getQueryParams();
+
+        if (!empty($params['sort'])) {
             $sort_fields = [
                 'song_title'    => 'sm.title',
                 'song_artist'   => 'sm.artist',
                 'song_album'    => 'sm.album',
             ];
 
-            foreach($request->getParam('sort') as $sort_key => $sort_direction)
+            foreach($params['sort'] as $sort_key => $sort_direction)
             {
                 if (isset($sort_fields[$sort_key])) {
                     $qb->addOrderBy($sort_fields[$sort_key], $sort_direction);
@@ -88,7 +95,7 @@ class RequestsController
                 ->addOrderBy('sm.title', 'ASC');
         }
 
-        $search_phrase = trim($request->getParam('searchPhrase'));
+        $search_phrase = trim($params['searchPhrase']);
         if (!empty($search_phrase)) {
             $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
                 ->setParameter('query', '%'.$search_phrase.'%');
@@ -98,7 +105,7 @@ class RequestsController
         $paginator->setFromRequest($request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
+        $router = RequestHelper::getRouter($request);
 
         $paginator->setPostprocessor(function($media_row) use ($station_id, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
@@ -140,27 +147,38 @@ class RequestsController
      *   @OA\Response(response=404, description="Station not found"),
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
+     *
+     * @inheritDoc
      */
-    public function submitAction(Request $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function submitAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
 
         // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
+        $ba = RequestHelper::getStationBackend($request);
         if (!$ba::supportsRequests() || !$station->getEnableRequests()) {
-            return $response->withJson('This station does not accept requests currently.', 403);
+            return ResponseHelper::withJson(
+                $response->withStatus(403),
+                new Entity\Api\Error(403, 'This station does not accept requests currently.')
+            );
         }
 
-        $is_authenticated = !empty($request->getAttribute(Request::ATTRIBUTE_USER));
+        $is_authenticated = !empty($request->getAttribute(RequestHelper::ATTR_USER));
 
         try {
             /** @var Entity\Repository\StationRequestRepository $request_repo */
             $request_repo = $this->em->getRepository(Entity\StationRequest::class);
             $request_repo->submit($station, $media_id, $is_authenticated);
 
-            return $response->withJson('Request submitted successfully.');
+            return ResponseHelper::withJson(
+                $response,
+                new Entity\Api\Status(true, 'Request submitted successfully.')
+            );
         } catch (\Azura\Exception $e) {
-            return $response->withJson($e->getMessage(), 400);
+            return ResponseHelper::withJson(
+                $response->withStatus(400),
+                new Entity\Api\Error(400, $e->getMessage())
+            );
         }
     }
 }

@@ -1,13 +1,15 @@
 <?php
 namespace App\Controller\Frontend;
 
+use App\Entity;
 use App\Exception\NotFound;
 use App\Form\Form;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ApiKeysController
 {
@@ -25,31 +27,30 @@ class ApiKeysController
 
     /**
      * @param EntityManager $em
-     * @param array $form_config
-     * @see \App\Provider\FrontendProvider
+     * @param Config $config
      */
-    public function __construct(EntityManager $em, array $form_config)
+    public function __construct(EntityManager $em, Config $config)
     {
         $this->em = $em;
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/api_key');
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $user = $request->getUser();
+        $user = RequestHelper::getUser($request);
 
-        return $request->getView()->renderToResponse($response, 'frontend/api_keys/index', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/api_keys/index', [
             'records' => $user->getApiKeys(),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $id = null): ResponseInterface
     {
-        $user = $request->getUser();
-        $view = $request->getView();
+        $user = RequestHelper::getUser($request);
+        $view = RequestHelper::getView($request);
 
         $form = new Form($this->form_config);
 
@@ -93,8 +94,8 @@ class ApiKeysController
                 ]);
             }
 
-            $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
-            return $response->withRedirect($request->getRouter()->named('api_keys:index'));
+            RequestHelper::getSession($request)->flash(__('%s updated.', __('API Key')), 'green');
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('api_keys:index'));
         }
 
         return $view->renderToResponse($response, 'system/form_page', [
@@ -104,9 +105,9 @@ class ApiKeysController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
@@ -120,8 +121,8 @@ class ApiKeysController
         $this->em->flush();
         $this->em->refresh($user);
 
-        $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
+        RequestHelper::getSession($request)->flash(__('%s deleted.', __('API Key')), 'green');
 
-        return $response->withRedirect($request->getRouter()->named('api_keys:index'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('api_keys:index'));
     }
 }

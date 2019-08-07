@@ -3,56 +3,58 @@ namespace App\Controller\Stations;
 
 use App\Entity\Station;
 use App\Entity\StationRemote;
-use App\Form\EntityForm;
-use App\Http\Request;
-use App\Http\Response;
+use App\Form\EntityFormManager;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RemotesController extends AbstractStationCrudController
 {
     /**
-     * @param EntityForm $form
-     *
-     * @see \App\Provider\StationsProvider
+     * @param EntityFormManager $formManager
+     * @param Config $config
      */
-    public function __construct(EntityForm $form)
+    public function __construct(EntityFormManager $formManager, Config $config)
     {
+        $form = $formManager->getForm(StationRemote::class, $config->get('forms/remote'));
         parent::__construct($form);
 
         $this->csrf_namespace = 'stations_remotes';
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
 
-        return $request->getView()->renderToResponse($response, 'stations/remotes/index', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/remotes/index', [
             'remotes' => $station->getRemotes(),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $station_id, $id = null): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Remote Relay')) . '</b>', 'green');
-            return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
+            RequestHelper::getSession($request)->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Remote Relay')) . '</b>', 'green');
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:remotes:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/remotes/edit', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/remotes/edit', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Remote Relay'))
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Remote Relay')) . '</b>', 'green');
+        RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Remote Relay')) . '</b>', 'green');
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:remotes:index'));
     }
 
     protected function _getRecord(Station $station, $id = null): ?object

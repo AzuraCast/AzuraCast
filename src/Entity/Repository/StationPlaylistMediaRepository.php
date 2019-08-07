@@ -2,28 +2,20 @@
 
 namespace App\Entity\Repository;
 
+use App\Entity;
 use App\Radio\AutoDJ;
 use Azura\Cache;
 use Azura\Doctrine\Repository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping;
+use DI\Annotation\Inject;
 use Doctrine\ORM\NoResultException;
-use App\Entity;
 
 class StationPlaylistMediaRepository extends Repository
 {
-    /** @var Cache */
+    /**
+     * @Inject
+     * @var Cache
+     */
     protected $cache;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        Mapping\ClassMetadata $class,
-        Cache $cache
-    ) {
-        parent::__construct($em, $class);
-
-        $this->cache = $cache;
-    }
 
     /**
      * Add the specified media to the specified playlist.
@@ -110,7 +102,7 @@ class StationPlaylistMediaRepository extends Repository
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SHUFFLE) {
             return;
         }
-        
+
         $this->_em->beginTransaction();
 
         try {
@@ -132,7 +124,7 @@ class StationPlaylistMediaRepository extends Repository
 
                 $new_weight++;
             }
-            
+
             $this->_em->commit();
         } catch (\Exception $exception) {
             $this->_em->rollback();

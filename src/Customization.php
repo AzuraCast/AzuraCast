@@ -1,12 +1,13 @@
 <?php
 namespace App;
 
+use App\Entity;
 use App\Service\NChan;
 use Azura\Settings;
-use App\Entity;
-use App\Http\Request;
+use Doctrine\ORM\EntityManager;
 use Gettext\Translator;
 use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UriInterface;
 
 class Customization
@@ -24,8 +25,11 @@ class Customization
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    public function __construct(Settings $app_settings, Entity\Repository\SettingsRepository $settings_repo)
+    public function __construct(Settings $app_settings, EntityManager $em)
     {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
         $this->app_settings = $app_settings;
         $this->settings_repo = $settings_repo;
     }

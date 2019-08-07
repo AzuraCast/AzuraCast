@@ -2,14 +2,11 @@
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
-use App\Http\Request;
-use App\Http\Response;
-use Psr\Http\Message\ResponseInterface;
+use App\Http\ResponseHelper;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class PermissionsController
 {
     /**
@@ -24,11 +21,11 @@ class PermissionsController
      *   security={{"api_key": {}}},
      * )
      *
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $permissions = [];
         foreach(Acl::listPermissions() as $group => $actions) {
@@ -40,6 +37,6 @@ class PermissionsController
             }
         }
 
-        return $response->withJson($permissions);
+        return ResponseHelper::withJson($response, $permissions);
     }
 }

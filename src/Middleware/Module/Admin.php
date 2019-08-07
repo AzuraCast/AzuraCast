@@ -2,16 +2,20 @@
 namespace App\Middleware\Module;
 
 use App\Acl;
-use App\Http\Request;
-use App\Http\Response;
-use Azura\EventDispatcher;
 use App\Event;
-use Slim\Route;
+use App\Http\RequestHelper;
+use Azura\EventDispatcher;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Interfaces\RouteInterface;
+use Slim\Routing\RouteContext;
 
 /**
  * Module middleware for the /admin pages.
  */
-class Admin
+class Admin implements MiddlewareInterface
 {
     /** @var Acl */
     protected $acl;
@@ -22,8 +26,6 @@ class Admin
     /**
      * @param Acl $acl
      * @param EventDispatcher $dispatcher
-     *
-     * @see \App\Provider\MiddlewareProvider
      */
     public function __construct(Acl $acl, EventDispatcher $dispatcher)
     {
@@ -32,30 +34,37 @@ class Admin
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @param callable $next
-     * @return Response
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $event = new Event\BuildAdminMenu($this->acl, $request->getUser(), $request->getRouter());
-        $this->dispatcher->dispatch(Event\BuildAdminMenu::NAME, $event);
+        $event = new Event\BuildAdminMenu($this->acl, RequestHelper::getUser($request), RequestHelper::getRouter($request));
+        $this->dispatcher->dispatch($event);
 
-        $view = $request->getView();
+        $view = RequestHelper::getView($request);
 
         $active_tab = null;
-        $current_route = $request->getAttribute('route');
-        if ($current_route instanceof Route) {
+        $routeContext = RouteContext::fromRequest($request);
+        $current_route = $routeContext->getRoute();
+
+        if ($current_route instanceof RouteInterface) {
             $route_parts = explode(':', $current_route->getName());
             $active_tab = $route_parts[1];
         }
 
-        $view->admin_panels = $event->getFilteredMenu();
-        $view->sidebar = $view->render('admin/sidebar', [
-            'active_tab' => $active_tab,
+        $view->addData([
+            'admin_panels' => $event->getFilteredMenu(),
         ]);
 
-        return $next($request, $response);
+        // These two intentionally separated (the sidebar needs admin_panels).
+        $view->addData([
+            'sidebar' => $view->render('admin/sidebar', [
+                'active_tab' => $active_tab,
+            ]),
+        ]);
+
+        return $handler->handle($request);
     }
 }

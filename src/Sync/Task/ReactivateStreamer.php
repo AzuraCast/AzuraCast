@@ -1,7 +1,6 @@
 <?php
 namespace App\Sync\Task;
 
-use Doctrine\ORM\EntityManager;
 use App\Entity;
 
 class ReactivateStreamer extends AbstractTask

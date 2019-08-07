@@ -3,16 +3,18 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Form\Form;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use App\Http\Router;
 use App\Radio\Filesystem;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Abstract out the Edit File functionality, as it has significant extra code.
- * @package Controller\Stations\Files
  */
 class EditController extends FilesControllerAbstract
 {
@@ -26,23 +28,27 @@ class EditController extends FilesControllerAbstract
     protected $form_config;
 
     /**
-     * EditController constructor.
      * @param EntityManager $em
      * @param Filesystem $filesystem
-     * @param array $form_config
-     *
-     * @see \App\Provider\StationsProvider
+     * @param Config $config
+     * @param Router $router
      */
-    public function __construct(EntityManager $em, Filesystem $filesystem, array $form_config)
-    {
+    public function __construct(
+        EntityManager $em,
+        Filesystem $filesystem,
+        Config $config,
+        Router $router
+    ) {
         $this->em = $em;
         $this->filesystem = $filesystem;
-        $this->form_config = $form_config;
+        $this->form_config = $config->get('forms/media', [
+            'router' => $router,
+        ]);
     }
 
-    public function __invoke(Request $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
 
         $fs = $this->filesystem->getForStation($station);
 
@@ -134,13 +140,13 @@ class EditController extends FilesControllerAbstract
             $this->em->persist($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
+            RequestHelper::getSession($request)->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
-            return $response->withRedirect($request->getRouter()->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' =>__('Edit %s', __('Media'))

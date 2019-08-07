@@ -1,6 +1,6 @@
 <?php
-use Slim\App;
-use Interop\Container\ContainerInterface;
+
+use Psr\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity;
 
@@ -22,18 +22,10 @@ abstract class CestAbstract
         $this->em = $tests_module->em;
     }
 
-    public function _before(FunctionalTester $I)
-    {
-        if (!function_exists('__')) {
-            $translator = new \Gettext\Translator();
-            $translator->register();
-        }
-    }
-
     public function _after(FunctionalTester $I)
     {
         /** @var \App\Auth $auth */
-        $auth = $this->di[\App\Auth::class];
+        $auth = $this->di->get(\App\Auth::class);
         $auth->logout();
 
         if ($this->test_station instanceof Entity\Station)
@@ -90,7 +82,7 @@ abstract class CestAbstract
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->di[\App\Acl::class]->reload();
+        $this->di->get(\App\Acl::class)->reload();
 
         /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
@@ -124,7 +116,7 @@ abstract class CestAbstract
             $this->em->createQuery('DELETE FROM '.$clean_table.' t')->execute();
 
         /** @var \App\Auth $auth */
-        $auth = $this->di[\App\Auth::class];
+        $auth = $this->di->get(\App\Auth::class);
         $auth->logout();
     }
 

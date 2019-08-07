@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
-use Azura\Http\Router;
+use Azura\Http\RouterInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -38,10 +38,10 @@ abstract class AbstractApiCrudController
 
     /**
      * @param object $record
-     * @param Router $router
+     * @param RouterInterface $router
      * @return mixed
      */
-    protected function _viewRecord($record, Router $router)
+    protected function _viewRecord($record, RouterInterface $router)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

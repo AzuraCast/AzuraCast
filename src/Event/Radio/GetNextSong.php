@@ -2,12 +2,10 @@
 namespace App\Event\Radio;
 
 use App\Entity;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class GetNextSong extends Event
 {
-    public const NAME = 'autodj-next-song';
-
     /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
     protected $next_song;
 

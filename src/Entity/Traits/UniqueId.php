@@ -3,7 +3,6 @@ namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @OA\Schema()

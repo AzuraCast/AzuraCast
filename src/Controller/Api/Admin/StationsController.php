@@ -8,9 +8,6 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class StationsController extends AbstractAdminApiCrudController
 {
     protected $entityClass = Entity\Station::class;

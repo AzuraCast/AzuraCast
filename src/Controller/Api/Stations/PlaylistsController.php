@@ -2,12 +2,8 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Http\Request;
 use OpenApi\Annotations as OA;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class PlaylistsController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\StationPlaylist::class;

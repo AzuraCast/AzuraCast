@@ -1,12 +1,13 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Form\StationForm;
-use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Form\StationForm;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ProfileController
 {
@@ -25,8 +26,6 @@ class ProfileController
     /**
      * @param EntityManager $em
      * @param StationForm $station_form
-     *
-     * @see \App\Provider\StationsProvider
      */
     public function __construct(
         EntityManager $em,
@@ -39,17 +38,17 @@ class ProfileController
         $this->station_form = $station_form;
     }
 
-    public function __invoke(Request $request, Response $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $station = $request->getStation();
-        $view = $request->getView();
+        $station = RequestHelper::getStation($request);
+        $view = RequestHelper::getView($request);
 
         if (!$station->isEnabled()) {
             return $view->renderToResponse($response, 'stations/profile/disabled');
         }
 
-        $frontend = $request->getStationFrontend();
-        $remotes = $request->getStationRemotes();
+        $frontend = RequestHelper::getStationFrontend($request);
+        $remotes = RequestHelper::getStationRemotes($request);
 
         $stream_urls = [
             'local' => [],
@@ -120,7 +119,7 @@ class ProfileController
 
         $station_np = $station->getNowplaying();
         if ($station_np instanceof Entity\Api\NowPlaying) {
-            $station_np->resolveUrls($request->getRouter()->getBaseUrl());
+            $station_np->resolveUrls(RequestHelper::getRouter($request)->getBaseUrl());
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 
@@ -133,31 +132,31 @@ class ProfileController
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
             'nowplaying'    => $np,
-            'user'          => $request->getUser(),
-            'csrf'          => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'user'          => RequestHelper::getUser($request),
+            'csrf'          => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
 
         return $view->renderToResponse($response, 'stations/profile/index');
     }
 
-    public function editAction(Request $request, Response $response, $station_id): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
 
         if (false !== $this->station_form->process($request, $station)) {
-            return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:profile:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/profile/edit', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/profile/edit', [
             'form' => $this->station_form,
         ]);
     }
 
-    public function toggleAction(Request $request, Response $response, $station_id, $feature, $csrf_token): ResponseInterface
+    public function toggleAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $feature, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        $station = $request->getStation();
+        $station = RequestHelper::getStation($request);
 
         switch($feature) {
             case 'requests':
@@ -178,6 +177,6 @@ class ProfileController
 
         $this->em->refresh($station);
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:profile:index'));
     }
 }

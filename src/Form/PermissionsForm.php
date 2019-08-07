@@ -2,9 +2,9 @@
 namespace App\Form;
 
 use App\Entity;
-use App\Http\Request;
-use Azura\Doctrine\Repository;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -20,14 +20,21 @@ class PermissionsForm extends EntityForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
-     * @param array $form_config
+     * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $form_config)
-    {
+        Config $config
+    ) {
+        /** @var Entity\Repository\StationRepository $stations_repo */
+        $stations_repo = $em->getRepository(Entity\Station::class);
+
+        $form_config = $config->get('forms/role', [
+            'all_stations' => $stations_repo->fetchArray(),
+        ]);
+
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\Role::class;
@@ -37,7 +44,7 @@ class PermissionsForm extends EntityForm
     /**
      * @inheritdoc
      */
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         if ($record instanceof Entity\Role && Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID === $record->getId()) {
             $this->set_permissions = false;

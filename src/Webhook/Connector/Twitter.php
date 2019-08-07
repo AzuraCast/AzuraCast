@@ -1,7 +1,6 @@
 <?php
 namespace App\Webhook\Connector;
 
-use App\Entity;
 use App\Entity\StationWebhook;
 use App\Event\SendWebhooks;
 use Doctrine\ORM\EntityManager;
@@ -21,8 +20,6 @@ class Twitter extends AbstractConnector
      * @param Logger $logger
      * @param Client $http_client
      * @param EntityManager $em
-     *
-     * @see \App\Provider\WebhookProvider
      */
     public function __construct(Logger $logger, Client $http_client, EntityManager $em)
     {

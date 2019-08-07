@@ -2,12 +2,13 @@
 namespace App\Controller\Admin;
 
 use App\Auth;
-use App\Form\EntityForm;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Form\UserForm;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UsersController extends AbstractAdminCrudController
 {
@@ -15,13 +16,11 @@ class UsersController extends AbstractAdminCrudController
     protected $auth;
 
     /**
-     * @param EntityForm $form
+     * @param UserForm $form
      * @param Auth $auth
-     *
-     * @see \App\Provider\AdminProvider
      */
     public function __construct(
-        EntityForm $form,
+        UserForm $form,
         Auth $auth
     ) {
         parent::__construct($form);
@@ -30,7 +29,7 @@ class UsersController extends AbstractAdminCrudController
         $this->csrf_namespace = 'admin_users';
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $users = $this->em->createQuery(/** @lang DQL */'SELECT 
             u, r 
@@ -39,56 +38,56 @@ class UsersController extends AbstractAdminCrudController
             ORDER BY u.name ASC')
             ->execute();
 
-        return $request->getView()->renderToResponse($response, 'admin/users/index', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace)
+            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace)
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $id = null): ResponseInterface
     {
         try {
             if (false !== $this->_doEdit($request, $id)) {
-                $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')),
+                RequestHelper::getSession($request)->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')),
                     'green');
 
-                return $response->withRedirect($request->getRouter()->named('admin:users:index'));
+                return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:users:index'));
             }
         } catch(UniqueConstraintViolationException $e) {
-            $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
+            RequestHelper::getSession($request)->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('User'))
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
-        $current_user = $request->getUser();
+        $current_user = RequestHelper::getUser($request);
 
         if ($user === $current_user) {
-            $request->getSession()->flash('<b>'.__('You cannot delete your own account.').'</b>', 'red');
+            RequestHelper::getSession($request)->flash('<b>'.__('You cannot delete your own account.').'</b>', 'red');
         } elseif ($user instanceof Entity\User) {
             $this->em->remove($user);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
+            RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
         }
 
-        return $response->withRedirect($request->getRouter()->named('admin:users:index'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:users:index'));
     }
 
-    public function impersonateAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function impersonateAction(ServerRequestInterface $request, ResponseInterface $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
@@ -98,8 +97,8 @@ class UsersController extends AbstractAdminCrudController
 
         $this->auth->masqueradeAsUser($user);
 
-        $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+        RequestHelper::getSession($request)->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
-        return $response->withRedirect($request->getRouter()->named('dashboard'));
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('dashboard'));
     }
 }

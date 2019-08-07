@@ -3,14 +3,10 @@ namespace App;
 
 use App\Http\Router;
 use Doctrine\ORM\EntityManager;
-use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use Psr\Http\Message\UriInterface;
 
 /**
- * Class ApiSupport
- * @package AzuraCast
- *
  * A dependency-injection-supported class for providing necessary data to API generator
  * functions that they can't provide from their own internal data sources.
  */
@@ -26,9 +22,9 @@ class ApiUtilities
     protected $customization;
 
     /**
-     * ApiUtilities constructor.
      * @param EntityManager $em
      * @param Router $router
+     * @param Customization $customization
      */
     public function __construct(EntityManager $em, Router $router, Customization $customization)
     {
@@ -59,11 +55,12 @@ class ApiUtilities
             $base_url = $this->router->getBaseUrl();
         }
 
-        $path = $this->router->relativePathFor('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], []);
-        return UriResolver::resolve($base_url, new Uri($path));
+        $path = $this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], []);
+        return UriResolver::resolve($base_url, $path);
     }
 
     /**
+     * @param UriInterface|null $base_url
      * @return UriInterface
      */
     public function getDefaultAlbumArtUrl(UriInterface $base_url = null): UriInterface

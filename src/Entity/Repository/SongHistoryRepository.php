@@ -1,9 +1,8 @@
 <?php
 namespace App\Entity\Repository;
 
-use Azura\Doctrine\Repository;
-use Doctrine\ORM\NoResultException;
 use App\Entity;
+use Azura\Doctrine\Repository;
 use Psr\Http\Message\UriInterface;
 
 class SongHistoryRepository extends Repository

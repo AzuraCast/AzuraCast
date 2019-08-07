@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Form;
 use App\Entity;
-use App\Form\EntityForm;
-use App\Http\Request;
-use App\Http\Response;
+use App\Form;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class StationsController extends AbstractAdminCrudController
 {
@@ -14,12 +14,10 @@ class StationsController extends AbstractAdminCrudController
     protected $clone_form;
 
     /**
-     * @param EntityForm $form
-     * @param EntityForm $clone_form
-     *
-     * @see \App\Provider\AdminProvider
+     * @param Form\StationForm $form
+     * @param Form\StationCloneForm $clone_form
      */
-    public function __construct(EntityForm $form, EntityForm $clone_form)
+    public function __construct(Form\StationForm $form, Form\StationCloneForm $clone_form)
     {
         parent::__construct($form);
 
@@ -27,32 +25,32 @@ class StationsController extends AbstractAdminCrudController
         $this->csrf_namespace = 'admin_stations';
     }
 
-    public function __invoke(Request $request, Response $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $stations = $this->record_repo->fetchArray(false, 'name');
 
-        return $request->getView()->renderToResponse($response, 'admin/stations/index', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'admin/stations/index', [
             'stations' => $stations,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
-            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+            RequestHelper::getSession($request)->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:stations:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'admin/stations/edit', [
             'form' => $this->form,
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Station')),
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $id, $csrf_token): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $record = $this->record_repo->find((int)$id);
         if ($record instanceof Entity\Station) {
@@ -61,11 +59,11 @@ class StationsController extends AbstractAdminCrudController
             $record_repo->destroy($record);
         }
 
-        $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');
-        return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+        RequestHelper::getSession($request)->flash(__('%s deleted.', __('Station')), 'green');
+        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:stations:index'));
     }
 
-    public function cloneAction(Request $request, Response $response, $id): ResponseInterface
+    public function cloneAction(ServerRequestInterface $request, ResponseInterface $response, $id): ResponseInterface
     {
         $record = $this->record_repo->find((int)$id);
         if (!($record instanceof Entity\Station)) {
@@ -73,11 +71,11 @@ class StationsController extends AbstractAdminCrudController
         }
 
         if (false !== $this->clone_form->process($request, $record)) {
-            $request->getSession()->flash(__('Changes saved.'), 'green');
-            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+            RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
+            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:stations:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->clone_form,
             'render_mode' => 'edit',
             'title' => __('Clone Station: %s', $record->getName())

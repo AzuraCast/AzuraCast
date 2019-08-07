@@ -3,12 +3,10 @@ namespace App\Event\Radio;
 
 use App\Entity\Station;
 use App\Radio;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class GenerateRawNowPlaying extends Event
 {
-    public const NAME = 'radio-nowplaying-generate-raw';
-
     /** @var Station */
     protected $station;
 

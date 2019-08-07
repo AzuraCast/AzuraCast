@@ -1,7 +1,6 @@
 <?php
 namespace App\Console\Command;
 
-use App\Entity;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;

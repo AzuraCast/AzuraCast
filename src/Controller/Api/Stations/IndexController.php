@@ -1,13 +1,14 @@
 <?php
 namespace App\Controller\Api\Stations;
 
+use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class IndexController
 {
@@ -40,7 +41,7 @@ class IndexController
      *   )
      * )
      */
-    public function listAction(Request $request, Response $response): ResponseInterface
+    public function listAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $stations_raw = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);
@@ -53,14 +54,14 @@ class IndexController
                 $this->adapters->getRemoteAdapters($row)
             );
 
-            $api_row->resolveUrls($request->getRouter()->getBaseUrl());
+            $api_row->resolveUrls(RequestHelper::getRouter($request)->getBaseUrl());
 
             if ($api_row->is_public) {
                 $stations[] = $api_row;
             }
         }
 
-        return $response->withJson($stations);
+        return ResponseHelper::withJson($response, $stations);
     }
 
     /**
@@ -74,11 +75,11 @@ class IndexController
      *   @OA\Response(response=404, description="Station not found")
      * )
      */
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $api_response = $request->getStation()->api($request->getStationFrontend());
-        $api_response->resolveUrls($request->getRouter()->getBaseUrl());
+        $api_response = RequestHelper::getStation($request)->api(RequestHelper::getStationFrontend($request));
+        $api_response->resolveUrls(RequestHelper::getRouter($request)->getBaseUrl());
 
-        return $response->withJson($api_response);
+        return ResponseHelper::withJson($response, $api_response);
     }
 }

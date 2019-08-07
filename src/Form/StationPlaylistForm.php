@@ -1,12 +1,15 @@
 <?php
 namespace App\Form;
 
+use App\Customization;
 use App\Entity;
-use App\Http\Request;
 use App\Radio\PlaylistParser;
+use Azura\Config;
 use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\UploadedFile;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,23 +19,34 @@ class StationPlaylistForm extends EntityForm
     /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected $playlist_media_repo;
 
+    /**
+     * @param EntityManager $em
+     * @param Serializer $serializer
+     * @param ValidatorInterface $validator
+     * @param Config $config
+     * @param Customization $customization
+     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $options = [],
-        ?array $defaults = null
+        Config $config,
+        Customization $customization
     ) {
-        parent::__construct($em, $serializer, $validator, $options, $defaults);
+        $form_config = $config->get('forms/playlist', [
+            'customization' => $customization
+        ]);
+
+        parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\StationPlaylist::class;
         $this->playlist_media_repo = $em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         // Set the "Station Time Zone" field.
-        $station = $request->getStation();
+        $station = \App\Http\RequestHelper::getStation($request);
         $station_tz = $station->getTimezone();
 
         $now_station = Chronos::now(new \DateTimeZone($station_tz))->toIso8601String();
@@ -51,13 +65,13 @@ class StationPlaylistForm extends EntityForm
         if ($record instanceof Entity\StationPlaylist) {
             $files = $request->getUploadedFiles();
 
-            /** @var UploadedFile $import_file */
+            /** @var UploadedFileInterface $import_file */
             $import_file = $files['import'];
             if (UPLOAD_ERR_OK === $import_file->getError()) {
                 $matches = $this->_importPlaylist($record, $import_file);
 
                 if (is_int($matches)) {
-                    $request->getSession()->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
+                    \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
                 }
             }
 
@@ -70,10 +84,10 @@ class StationPlaylistForm extends EntityForm
 
     /**
      * @param Entity\StationPlaylist $playlist
-     * @param UploadedFile $playlist_file
+     * @param UploadedFileInterface $playlist_file
      * @return bool|int
      */
-    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFile $playlist_file)
+    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFileInterface $playlist_file)
     {
         $station_id = $this->station->getId();
 

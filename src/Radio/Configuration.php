@@ -1,10 +1,9 @@
 <?php
 namespace App\Radio;
 
-use App\Http\ErrorHandler;
-use App\Radio\Frontend\AbstractFrontend;
-use Doctrine\ORM\EntityManager;
 use App\Entity\Station;
+use App\Http\ErrorHandler;
+use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
 use Supervisor\Supervisor;
@@ -199,7 +198,11 @@ class Configuration
                 $this->supervisor->stopProcessGroup($station_group, true);
                 $this->supervisor->removeProcessGroup($station_group);
             } catch(FaultException $e) {
-                ErrorHandler::logException($this->logger, $e);
+                $this->logger->log(Logger::ERROR, $e->getMessage(), [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'code' => $e->getCode(),
+                ]);
             }
         }
     }

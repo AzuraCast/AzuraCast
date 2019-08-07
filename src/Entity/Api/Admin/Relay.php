@@ -2,7 +2,6 @@
 namespace App\Entity\Api\Admin;
 
 use App\Entity;
-use Azura\Http\Router;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 

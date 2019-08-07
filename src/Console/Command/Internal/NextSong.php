@@ -1,10 +1,8 @@
 <?php
 namespace App\Console\Command\Internal;
 
-use App\Radio\Adapters;
-use App\Radio\AutoDJ;
-use App\Radio\Backend\Liquidsoap;
 use App\Entity;
+use App\Radio\AutoDJ;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputArgument;

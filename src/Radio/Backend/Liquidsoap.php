@@ -2,13 +2,13 @@
 
 namespace App\Radio\Backend;
 
+use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\Radio\Filesystem;
-use Azura\EventDispatcher;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
+use App\Radio\Filesystem;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
@@ -33,8 +33,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * @param EventDispatcher $dispatcher
      * @param AutoDJ $autodj
      * @param Filesystem $filesystem
-     *
-     * @see \App\Provider\RadioProvider
      */
     public function __construct(
         EntityManager $em,
@@ -53,7 +51,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            WriteLiquidsoapConfiguration::NAME => [
+            WriteLiquidsoapConfiguration::class => [
                 ['writeHeaderFunctions', 30],
                 ['writePlaylistConfiguration', 25],
                 ['writeHarborConfiguration', 20],
@@ -76,7 +74,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public function write(Entity\Station $station): bool
     {
         $event = new WriteLiquidsoapConfiguration($station);
-        $this->dispatcher->dispatch(WriteLiquidsoapConfiguration::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $ls_config_contents = $event->buildConfiguration();
 

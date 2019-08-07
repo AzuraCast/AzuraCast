@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity\Api;
 
-use App\Entity;
 use OpenApi\Annotations as OA;
 
 /**

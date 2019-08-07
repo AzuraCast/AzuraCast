@@ -2,8 +2,11 @@
 namespace App\Form;
 
 use App\Entity;
-use App\Http\Request;
+use App\Http\Router;
+use Azura\Config;
+use Azura\Settings;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -19,22 +22,34 @@ class StationWebhookForm extends EntityForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
-     * @param array $config
-     * @param array $forms
-     *
-     * @see \App\Provider\FormProvider
+     * @param Config $config
+     * @param Router $router
+     * @param Settings $settings
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $config = [],
-        array $forms = []
+        Config $config,
+        Router $router,
+        Settings $settings
     ) {
+        $webhook_config = $config->get('webhooks');
+
+        $webhook_forms = [];
+        $config_injections = [
+            'router' => $router,
+            'app_settings' => $settings,
+            'triggers' => $webhook_config['triggers'],
+        ];
+        foreach($webhook_config['webhooks'] as $webhook_key => $webhook_info) {
+            $webhook_forms[$webhook_key] = $config->get('forms/webhook/'.$webhook_key, $config_injections);
+        }
+
         parent::__construct($em, $serializer, $validator);
 
-        $this->config = $config;
-        $this->forms = $forms;
+        $this->config = $webhook_config;
+        $this->forms = $webhook_forms;
         $this->entityClass = Entity\StationWebhook::class;
     }
 
@@ -54,7 +69,7 @@ class StationWebhookForm extends EntityForm
         return $this->forms;
     }
 
-    public function process(Request $request, $record = null)
+    public function process(ServerRequestInterface $request, $record = null)
     {
         if (!$record instanceof Entity\StationWebhook) {
             throw new \InvalidArgumentException(sprintf('Record is not an instance of %s', Entity\StationWebhook::class));

@@ -1,5 +1,5 @@
 <?php
-use App\Http\Request;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Static assets referenced in AzuraCast.
@@ -232,7 +232,7 @@ return [
         'inline' => [
             'js' => [
                 function(Request $request) {
-                    if (!$request->hasAttribute('locale')) {
+                    if ('' !== $request->getAttribute('locale', '')) {
                         return '';
                     }
 

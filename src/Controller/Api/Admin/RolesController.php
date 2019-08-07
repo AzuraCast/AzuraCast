@@ -3,12 +3,9 @@ namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Entity;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-/**
- * @see \App\Provider\ApiProvider
- */
 class RolesController extends AbstractAdminApiCrudController
 {
     protected $entityClass = Entity\Role::class;

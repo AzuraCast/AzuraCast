@@ -2,13 +2,11 @@
 namespace App\Entity;
 
 use App\Auth;
+use Azura\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use Azura\Normalizer\Annotation\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use OTPHP\TOTP;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 

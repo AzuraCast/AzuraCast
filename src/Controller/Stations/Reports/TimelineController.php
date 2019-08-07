@@ -1,14 +1,14 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class TimelineController
 {
-    public function __invoke(Request $request, Response $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $request->getView()->renderToResponse($response, 'stations/reports/timeline');
+        return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/timeline');
     }
 }

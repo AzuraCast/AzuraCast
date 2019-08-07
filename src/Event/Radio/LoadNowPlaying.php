@@ -2,12 +2,10 @@
 namespace App\Event\Radio;
 
 use App\Entity\Api\NowPlaying;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class LoadNowPlaying extends Event
 {
-    public const NAME = 'radio-nowplaying-load';
-
     /** @var NowPlaying[] */
     protected $np = [];
 

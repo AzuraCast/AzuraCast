@@ -1,24 +1,24 @@
 <?php
 namespace App\Sync\Task;
 
-use App\Http\ErrorHandler;
-use App\MessageQueue;
-use Azura\Cache;
+use App\ApiUtilities;
+use App\Entity;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
+use App\Http\ErrorHandler;
 use App\Message;
-use Azura\EventDispatcher;
-use App\Radio\AutoDJ;
-use App\ApiUtilities;
+use App\MessageQueue;
 use App\Radio\Adapters;
-use function DeepCopy\deep_copy;
+use App\Radio\AutoDJ;
+use Azura\Cache;
+use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\Uri;
 use InfluxDB\Database;
-use App\Entity;
 use Monolog\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use function DeepCopy\deep_copy;
 
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
 {
@@ -68,8 +68,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Database $influx
      * @param EventDispatcher $event_dispatcher
      * @param MessageQueue $message_queue
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,
@@ -110,7 +108,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         }
 
         return [
-            GenerateRawNowPlaying::NAME => [
+            GenerateRawNowPlaying::class => [
                 ['loadRawFromFrontend', 10],
                 ['addToRawFromRemotes', 0],
                 ['cleanUpRawOutput', -10],
@@ -289,10 +287,15 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         // Build the new "raw" NowPlaying data.
         try {
             $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null, $include_clients);
-            $this->event_dispatcher->dispatch(GenerateRawNowPlaying::NAME, $event);
+            $this->event_dispatcher->dispatch($event);
             $np_raw = $event->getRawResponse();
         } catch(\Exception $e) {
-            ErrorHandler::logException($this->logger, $e);
+            $this->logger->log(Logger::ERROR, $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+            ]);
+
             $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
         }
 
@@ -381,7 +384,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $np_event->cache = 'event';
 
         $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
-        $this->event_dispatcher->dispatch(SendWebhooks::NAME, $webhook_event);
+        $this->event_dispatcher->dispatch($webhook_event);
 
         $this->logger->popProcessor();
 

@@ -4,14 +4,12 @@ namespace App\Event;
 use App\Acl;
 use App\Entity\Station;
 use App\Entity\User;
-use App\Http\Router;
 use App\Radio\Backend\AbstractBackend;
 use App\Radio\Frontend\AbstractFrontend;
+use Azura\Http\RouterInterface;
 
 class BuildStationMenu extends AbstractBuildMenu
 {
-    public const NAME = 'build-station-menu';
-
     /** @var Station */
     protected $station;
 
@@ -24,7 +22,7 @@ class BuildStationMenu extends AbstractBuildMenu
     /**
      * @param Acl $acl
      * @param User $user
-     * @param Router $router
+     * @param RouterInterface $router
      * @param Station $station
      * @param AbstractBackend $backend
      * @param AbstractFrontend $frontend
@@ -32,7 +30,7 @@ class BuildStationMenu extends AbstractBuildMenu
     public function __construct(
         Acl $acl,
         User $user,
-        Router $router,
+        RouterInterface $router,
         Station $station,
         AbstractBackend $backend,
         AbstractFrontend $frontend)

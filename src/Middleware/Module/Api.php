@@ -2,14 +2,19 @@
 namespace App\Middleware\Module;
 
 use App\Entity;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
 use Azura\Session;
-use App\Http\Request;
-use App\Http\Response;
+use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
  */
-class Api
+class Api implements MiddlewareInterface
 {
     /** @var Entity\Repository\ApiKeyRepository */
     protected $api_repo;
@@ -22,28 +27,23 @@ class Api
 
     /**
      * @param Session $session
-     * @param Entity\Repository\ApiKeyRepository $api_repo
-     * @param Entity\Repository\SettingsRepository $settings_repo
-     *
-     * @see \App\Provider\MiddlewareProvider
+     * @param EntityManager $em
      */
     public function __construct(
         Session $session,
-        Entity\Repository\ApiKeyRepository $api_repo,
-        Entity\Repository\SettingsRepository $settings_repo
+        EntityManager $em
     ) {
         $this->session = $session;
-        $this->api_repo = $api_repo;
-        $this->settings_repo = $settings_repo;
+        $this->api_repo = $em->getRepository(Entity\ApiKey::class);
+        $this->settings_repo = $em->getRepository(Entity\Settings::class);
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @param callable $next
-     * @return Response
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Prevent unnecessary session creation on API pages from flooding the session databases
         if (!$this->session->exists()) {
@@ -51,7 +51,7 @@ class Api
         }
 
         // Set "is API call" attribute on the request so error handling responds correctly.
-        $request = $request->withAttribute(Request::ATTRIBUTE_IS_API_CALL, true);
+        $request = $request->withAttribute(RequestHelper::ATTR_IS_API_CALL, true);
 
         // Attempt API key auth if a key exists.
         $api_key = $this->getApiKey($request);
@@ -59,8 +59,13 @@ class Api
 
         // Override the request's "user" variable if API authentication is supplied and valid.
         if ($api_user instanceof Entity\User) {
-            $request = $request->withAttribute(Request::ATTRIBUTE_USER, $api_user);
+            $request = RequestHelper::injectUser($request, $api_user);
         }
+
+        // Set default cache control for API pages.
+        $prefer_browser_url = (bool)$this->settings_repo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
+
+        $response = $handler->handle($request);
 
         // Check for a user-set CORS header override.
         $acao_header = trim($this->settings_repo->getSetting(Entity\Settings::API_ACCESS_CONTROL));
@@ -84,26 +89,27 @@ class Api
                     }
                 }
             }
-        } else if ($api_user instanceof Entity\User || $request->isGet() || $request->isOptions()) {
+        } else if ($api_user instanceof Entity\User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
             // Default behavior:
             // Only set global CORS for GET requests and API-authenticated requests;
             // Session-authenticated, non-GET requests should only be made in a same-host situation.
             $response = $response->withHeader('Access-Control-Allow-Origin', '*');
         }
 
-        // Set default cache control for API pages.
-        $prefer_browser_url = (bool)$this->settings_repo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
-
-        if ($prefer_browser_url || $request->getAttribute(Request::ATTRIBUTE_USER) instanceof Entity\User) {
-            $response = $response->withNoCache();
+        if ($prefer_browser_url || $request->getAttribute(RequestHelper::ATTR_USER) instanceof Entity\User) {
+            $response = ResponseHelper::withNoCache($response);
         } else {
-            $response = $response->withCacheLifetime(15);
+            $response = ResponseHelper::withCacheLifetime($response, 15);
         }
 
-        return $next($request, $response);
+        return $response;
     }
 
-    protected function getApiKey(Request $request): ?string
+    /**
+     * @param ServerRequestInterface $request
+     * @return string|null
+     */
+    protected function getApiKey(ServerRequestInterface $request): ?string
     {
         // Check authorization header
         $auth_headers = $request->getHeader('Authorization');

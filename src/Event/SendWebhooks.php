@@ -4,13 +4,10 @@ namespace App\Event;
 use App\Entity\Api\NowPlaying;
 use App\Entity\Station;
 use App\Http\Router;
-use Symfony\Component\EventDispatcher\Event;
-use function DeepCopy\deep_copy;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class SendWebhooks extends Event
 {
-    public const NAME = 'webhooks-send';
-
     /** @var Station */
     protected $station;
 

@@ -1,12 +1,13 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Entity;
-use App\Form\Form;
 use App\Form\SettingsForm;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
+use App\Http\ResponseHelper;
+use Azura\Config;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class SettingsController
 {
@@ -14,23 +15,24 @@ class SettingsController
     protected $form;
 
     /**
-     * @param SettingsForm $form
-     *
-     * @see \App\Provider\AdminProvider
+     * SettingsController constructor.
+     * @param Config $config
+     * @param EntityManager $em
      */
-    public function __construct(SettingsForm $form)
+    public function __construct(Config $config, EntityManager $em)
     {
+        $form = new SettingsForm($em, $config->get('forms/settings'));
         $this->form = $form;
     }
 
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         if (false !== $this->form->process($request)) {
-            $request->getSession()->flash(__('Changes saved.'), 'green');
-            return $response->withRedirect($request->getUri()->getPath());
+            RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
+            return ResponseHelper::withRedirect($response, $request->getUri()->getPath());
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => __('System Settings'),

@@ -2,18 +2,22 @@
 namespace App\Controller\Api;
 
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class IndexController
 {
     /**
      * Public index for API.
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function indexAction(Request $request, Response $response): ResponseInterface
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $response->withRedirect('/static/api/index.html');
+        return \App\Http\ResponseHelper::withRedirect($response, '/static/api/index.html');
     }
 
     /**
@@ -27,10 +31,14 @@ class IndexController
      *     @OA\JsonContent(ref="#/components/schemas/Api_SystemStatus")
      *   )
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function statusAction(Request $request, Response $response): ResponseInterface
+    public function statusAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $response->withJson(new Entity\Api\SystemStatus);
+        return ResponseHelper::withJson($response, new Entity\Api\SystemStatus);
     }
 
     /**
@@ -44,10 +52,14 @@ class IndexController
      *     @OA\JsonContent(ref="#/components/schemas/Api_Time")
      *   )
      * )
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function timeAction(Request $request, Response $response): ResponseInterface
+    public function timeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $tz_info = \Azura\Timezone::getInfo();
-        return $response->withJson(new Entity\Api\Time($tz_info));
+        return ResponseHelper::withJson($response, new Entity\Api\Time($tz_info));
     }
 }

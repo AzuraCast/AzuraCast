@@ -1,11 +1,11 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use Monolog\Logger;
 
 class RadioRequests extends AbstractTask
@@ -21,8 +21,6 @@ class RadioRequests extends AbstractTask
      * @param Logger $logger
      * @param Adapters $adapters
      * @param EventDispatcher $dispatcher
-     *
-     * @see \App\Provider\SyncProvider
      */
     public function __construct(
         EntityManager $em,
@@ -114,7 +112,7 @@ class RadioRequests extends AbstractTask
 
         // Generate full Liquidsoap annotations
         $event = new AnnotateNextSong($station, $sh);
-        $this->dispatcher->dispatch(AnnotateNextSong::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $track = $event->buildAnnotations();
 

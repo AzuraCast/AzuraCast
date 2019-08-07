@@ -1,17 +1,21 @@
 <?php
 namespace App\Middleware;
 
-use App\Exception\StationNotFound;
-use App\Radio\Adapters;
 use App\Entity;
 use App\Entity\Repository\StationRepository;
-use App\Http\Request;
-use App\Http\Response;
+use App\Http\RequestHelper;
+use App\Radio\Adapters;
+use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Routing\RouteContext;
 
 /**
  * Retrieve the station specified in the request parameters, and throw an error if none exists but one is required.
  */
-class GetStation
+class GetStation implements MiddlewareInterface
 {
     /** @var StationRepository */
     protected $station_repo;
@@ -19,31 +23,27 @@ class GetStation
     /** @var Adapters */
     protected $adapters;
 
-    public function __construct(StationRepository $station_repo, Adapters $adapters)
-    {
-        $this->station_repo = $station_repo;
+    public function __construct(
+        EntityManager $em,
+        Adapters $adapters
+    ) {
+        $this->station_repo = $em->getRepository(Entity\Station::class);
         $this->adapters = $adapters;
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @param callable $next
-     * @param bool $station_required
-     * @param string $station_param
-     * @return Response
-     * @throws \Exception
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next, $station_required = true, $station_param = 'station'): Response
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        try {
-            $route_args = $request->getAttribute('routeInfo')[2];
-            $id = $route_args[$station_param] ?? null;
+        $routeContext = RouteContext::fromRequest($request);
+        $route_args = $routeContext->getRoute()->getArguments();
 
-            if (empty($id) && $station_required) {
-                throw new StationNotFound;
-            }
+        $id = $route_args['station'] ?? null;
 
+        if (!empty($id)) {
             if (is_numeric($id)) {
                 $record = $this->station_repo->find($id);
             } else {
@@ -51,27 +51,20 @@ class GetStation
             }
 
             if ($record instanceof Entity\Station) {
-                $frontend = $this->adapters->getFrontendAdapter($record);
                 $backend = $this->adapters->getBackendAdapter($record);
+                $frontend = $this->adapters->getFrontendAdapter($record);
                 $remotes = $this->adapters->getRemoteAdapters($record);
 
-                $request = $request
-                    ->withAttribute(Request::ATTRIBUTE_STATION, $record)
-                    ->withAttribute(Request::ATTRIBUTE_STATION_FRONTEND, $frontend)
-                    ->withAttribute(Request::ATTRIBUTE_STATION_BACKEND, $backend)
-                    ->withAttribute(Request::ATTRIBUTE_STATION_REMOTES, $remotes);
-            } else if ($station_required) {
-                throw new StationNotFound;
+                $request = RequestHelper::injectStationComponents(
+                    $request,
+                    $record,
+                    $backend,
+                    $frontend,
+                    $remotes
+                );
             }
-        } catch (StationNotFound $e) {
-            if ($request->isApiCall()) {
-                return $response->withStatus(404)
-                    ->withJson(new Entity\Api\Error(404, $e->getMessage(), $e->getFormattedMessage()));
-            }
-
-            throw $e;
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

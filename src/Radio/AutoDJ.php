@@ -4,7 +4,6 @@ namespace App\Radio;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
-use App\Radio\Backend\Liquidsoap;
 use Azura\Cache;
 use Azura\EventDispatcher;
 use Cake\Chronos\Chronos;
@@ -38,8 +37,6 @@ class AutoDJ implements EventSubscriberInterface
      * @param Filesystem $filesystem
      * @param Logger $logger
      * @param Cache $cache
-     *
-     * @see \App\Provider\RadioProvider
      */
     public function __construct(
         EntityManager $em,
@@ -61,10 +58,10 @@ class AutoDJ implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AnnotateNextSong::NAME => [
+            AnnotateNextSong::class => [
                 ['defaultAnnotationHandler', 0],
             ],
-            GetNextSong::NAME => [
+            GetNextSong::class => [
                 ['checkDatabaseForNextSong', 10],
                 ['getNextSongFromRequests', 5],
                 ['calculateNextSong', 0],
@@ -85,7 +82,7 @@ class AutoDJ implements EventSubscriberInterface
         $sh = $this->getNextSong($station, $as_autodj);
 
         $event = new AnnotateNextSong($station, $sh);
-        $this->dispatcher->dispatch(AnnotateNextSong::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         return $event->buildAnnotations();
     }
@@ -167,7 +164,7 @@ class AutoDJ implements EventSubscriberInterface
         });
 
         $event = new GetNextSong($station);
-        $this->dispatcher->dispatch(GetNextSong::NAME, $event);
+        $this->dispatcher->dispatch($event);
 
         $this->logger->popProcessor();
 
@@ -602,7 +599,7 @@ class AutoDJ implements EventSubscriberInterface
             $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
             // Log in history
-            $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+            $sh = new Entity\SongHistory($request->getTrack()->getSong(), \App\Http\RequestHelper::getStation($request));
             $sh->setRequest($request);
             $sh->setMedia($request->getTrack());
 

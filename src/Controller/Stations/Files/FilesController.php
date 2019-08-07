@@ -209,9 +209,7 @@ class FilesController extends FilesControllerAbstract
         }
 
         try {
-            $flow = new \App\Service\Flow($request, $response, $station->getRadioTempDir());
-            $flow_response = $flow->process();
-
+            $flow_response = \App\Service\Flow::process($request, $response, $station->getRadioTempDir());
             if ($flow_response instanceof ResponseInterface) {
                 return $flow_response;
             }

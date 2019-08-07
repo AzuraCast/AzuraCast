@@ -72,9 +72,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
 
     protected function _returnJson(ServerRequestInterface $req): bool
     {
-        $isXhr = 'XMLHttpRequest' === $req->getHeaderLine('X-Requested-With');
-
-        if ($isXhr || $this->settings->isCli() || $this->settings->isTesting()) {
+        if (RequestHelper::isXhr($req) || $this->settings->isCli() || $this->settings->isTesting()) {
             return true;
         }
 

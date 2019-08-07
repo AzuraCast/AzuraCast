@@ -63,8 +63,7 @@ class InternalController
             return $response;
         }
 
-        $params = $request->getQueryParams();
-
+        $params = RequestHelper::getParams($request);
         $user = $params['dj_user'] ?? '';
         $pass = $params['dj_password'] ?? '';
 
@@ -82,7 +81,7 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        $params = $request->getQueryParams();
+        $params = RequestHelper::getParams($request);
         $as_autodj = isset($params['api_auth']);
 
         $response->getBody()->write($this->autodj->annotateNextSong(RequestHelper::getStation($request), $as_autodj));
@@ -135,7 +134,7 @@ class InternalController
 
         $station = RequestHelper::getStation($request);
 
-        $body = $request->getParsedBody();
+        $body = RequestHelper::getParams($request);
 
         $this->sync_nowplaying->queueStation($station, [
             'song_id'   => $body['song'] ?? null,
@@ -161,7 +160,7 @@ class InternalController
             return;
         }
 
-        $params = $request->getQueryParams();
+        $params = RequestHelper::getParams($request);
         $auth_key = $params['api_auth'];
         if (!$station->validateAdapterApiKey($auth_key)) {
             $this->logger->error('Invalid API key supplied for internal API call.', [

@@ -159,7 +159,7 @@ class StationRepository extends Repository
         $this->_em->persist($station);
         $this->_em->flush();
 
-        $this->cache->remove('stations');
+        $this->cache->delete('stations');
     }
 
     /**
@@ -207,6 +207,6 @@ class StationRepository extends Repository
         $this->_em->remove($station);
         $this->_em->flush($station);
 
-        $this->cache->remove('stations');
+        $this->cache->delete('stations');
     }
 }

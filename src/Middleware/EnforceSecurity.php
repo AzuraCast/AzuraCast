@@ -64,7 +64,12 @@ class EnforceSecurity implements MiddlewareInterface
         }
 
         // Set frame-deny header before next middleware, so it can be overwritten.
-        $response = $response->withHeader('X-Frame-Options', 'DENY');
+        $frameOptions = $response->getHeaderLine('X-Frame-Options');
+        if ('*' === $frameOptions) {
+            $response = $response->withoutHeader('X-Frame-Options');
+        } else {
+            $response = $response->withHeader('X-Frame-Options', 'DENY');
+        }
 
         if (!ResponseHelper::hasCacheLifetime($response)) {
             // CSP JavaScript policy

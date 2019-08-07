@@ -333,9 +333,7 @@ return [
     App\Middleware\EnforceSecurity::class => DI\autowire(),
     App\Middleware\GetCurrentUser::class => DI\autowire(),
     App\Middleware\GetStation::class => DI\autowire(),
-    App\Middleware\Permissions::class => DI\create(),
     App\Middleware\InjectAcl::class => DI\autowire(),
-    App\Middleware\RequireStation::class => DI\create(),
     App\Middleware\RequireLogin::class => DI\create(),
 
     // Module-specific middleware

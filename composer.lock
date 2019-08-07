@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.108.5",
+            "version": "3.108.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9cb7267b2ea6cd9ab46afb14400c52e58cd4be1f"
+                "reference": "8894571024e4c75d20bbf8c6f1500c1e62c227e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9cb7267b2ea6cd9ab46afb14400c52e58cd4be1f",
-                "reference": "9cb7267b2ea6cd9ab46afb14400c52e58cd4be1f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8894571024e4c75d20bbf8c6f1500c1e62c227e8",
+                "reference": "8894571024e4c75d20bbf8c6f1500c1e62c227e8",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-06T18:08:33+00:00"
+            "time": "2019-08-07T18:11:35+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "d273d10621002fcb272755a51b2b56f2a826458d"
+                "reference": "5be73f8fc799a18c12f387d465c2b030a6bfc92c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/d273d10621002fcb272755a51b2b56f2a826458d",
-                "reference": "d273d10621002fcb272755a51b2b56f2a826458d",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/5be73f8fc799a18c12f387d465c2b030a6bfc92c",
+                "reference": "5be73f8fc799a18c12f387d465c2b030a6bfc92c",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-08-07T17:08:46+00:00"
+            "time": "2019-08-07T19:09:42+00:00"
         },
         {
             "name": "azuracast/azuraforms",

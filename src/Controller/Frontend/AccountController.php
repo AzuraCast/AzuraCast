@@ -68,7 +68,7 @@ class AccountController
 
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
-                $this->rate_limit->checkRateLimit('login', 30, 5);
+                $this->rate_limit->checkRateLimit($request, 'login', 30, 5);
             } catch(\Azura\Exception\RateLimitExceeded $e) {
                 $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');

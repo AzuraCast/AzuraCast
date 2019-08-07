@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-05-31 09:37
+POT-Creation-Date: 2019-07-23T19:44:58+00:00
+PO-Revision-Date: 2019-08-07 15:39
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -66,7 +66,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backups' => 
       array (
-        0 => '',
+        0 => 'Datensicherung',
       ),
       'View Station Page' => 
       array (
@@ -150,15 +150,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Configure Backups' => 
       array (
-        0 => '',
+        0 => 'Datensicherung konfigurieren',
       ),
       'Run Manual Backup' => 
       array (
-        0 => '',
+        0 => 'Manuelle Datensicherung ausführen',
       ),
       'Backup' => 
       array (
-        0 => '',
+        0 => 'Datensicherung',
       ),
       '%s added.' => 
       array (
@@ -282,7 +282,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'All Stations' => 
       array (
-        0 => '',
+        0 => 'Alle Sender',
       ),
       'Listeners' => 
       array (
@@ -510,7 +510,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Select File' => 
       array (
-        0 => '',
+        0 => 'Datei auswählen',
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
@@ -579,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Neue AzuraCast-Updates verfügbar',
+      ),
+      '%s is not recognized as a service.' => 
+      array (
+        0 => '',
+      ),
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      array (
+        0 => '',
       ),
       '%s cannot start' => 
       array (
@@ -714,7 +722,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Scheduled Backup Time' => 
       array (
-        0 => '',
+        0 => 'Geplanter Zeitpunkt für Datensicherung',
       ),
       'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
@@ -722,15 +730,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Exclude Media from Backups' => 
       array (
-        0 => '',
+        0 => 'Medien aus Datensicherung ausschließen',
       ),
       'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'Das Ausschließen von Medien aus automatisierten Datensicherungen wird Platz sparen, aber du solltest sicherstellen, dass du deine Medien separat sicherst.',
       ),
       'Number of Backup Copies to Keep' => 
       array (
-        0 => '',
+        0 => 'Anzahl der zu behaltenden Datensicherungen',
       ),
       'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
@@ -738,7 +746,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backup Filename' => 
       array (
-        0 => '',
+        0 => 'Datensicherung Dateiname',
       ),
       'Optional absolute or relative path where the backup file should be located.' => 
       array (
@@ -746,7 +754,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Exclude Media from Backup' => 
       array (
-        0 => '',
+        0 => 'Medien aus Datensicherung ausschließen',
       ),
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere.' => 
       array (
@@ -1236,6 +1244,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Control how this playlist is handled by the AutoDJ software.' => 
       array (
         0 => 'Lege fest, wie diese Wiedergabeliste vom AutoDJ behandelt werden soll.',
+      ),
+      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
+      array (
+        0 => '',
       ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
@@ -1881,6 +1893,14 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Liquidsoap anweisen die Replaygain Metadaten eines Songs zu verwenden um die Lautstärke anzupassen.',
       ),
+      'Manual AutoDJ Mode' => 
+      array (
+        0 => '',
+      ),
+      'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
+      array (
+        0 => '',
+      ),
       'Character Set Encoding' => 
       array (
         0 => 'Zeichenkodierung',
@@ -2460,6 +2480,22 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Benutzerdefiniertes Feld "%s" löschen?',
       ),
+      'Server Status' => 
+      array (
+        0 => 'Server Status',
+      ),
+      'Current CPU Load' => 
+      array (
+        0 => '',
+      ),
+      '15-Minute CPU Load Average' => 
+      array (
+        0 => '',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '%s von %s verwendet',
+      ),
       'Synchronization Tasks' => 
       array (
         0 => 'Synchronisierungsaufgaben',
@@ -2542,7 +2578,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Sign in' => 
       array (
-        0 => '',
+        0 => 'Anmelden',
       ),
       'Please log in to continue.' => 
       array (
@@ -2607,7 +2643,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'AzuraCast User' => 
       array (
-        0 => '',
+        0 => 'AzuraCast Benutzer',
       ),
       'My Account' => 
       array (
@@ -2659,7 +2695,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'QR-Code' => 
       array (
-        0 => '',
+        0 => 'QR-Code',
       ),
       'Customize' => 
       array (
@@ -2941,6 +2977,22 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Automatische Zuweisung anpassen',
       ),
+      'Delete {NUM} media file(s)?' => 
+      array (
+        0 => '',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '',
+      ),
       'Album Artwork' => 
       array (
         0 => 'Album Artwork',
@@ -2957,13 +3009,9 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Startseite',
       ),
-      '%s of %s Used' => 
+      '%s of %s Used (%d Files)' => 
       array (
-        0 => '%s von %s verwendet',
-      ),
-      '%s Files' => 
-      array (
-        0 => '%s Dateien',
+        0 => '',
       ),
       'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
       array (
@@ -2984,6 +3032,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Save' => 
       array (
         0 => 'Speichern',
+      ),
+      'Clear Playlists' => 
+      array (
+        0 => '',
       ),
       'Move' => 
       array (
@@ -3200,6 +3252,14 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Unique' => 
       array (
         0 => 'Einzigartig',
+      ),
+      'Playing Next' => 
+      array (
+        0 => '',
+      ),
+      'Now Streaming' => 
+      array (
+        0 => '',
       ),
       'Skip Song' => 
       array (
@@ -3464,6 +3524,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Please wait...' => 
       array (
         0 => 'Bitte warten...',
+      ),
+      'Station Time' => 
+      array (
+        0 => '',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (

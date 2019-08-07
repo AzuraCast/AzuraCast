@@ -14,8 +14,8 @@ Language-Team: Czech
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-06-10 10:30
+POT-Creation-Date: 2019-07-23T19:44:58+00:00
+PO-Revision-Date: 2019-08-07 15:39
 Language: cs_CZ
 Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;
 X-Generator: crowdin.com
@@ -579,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Nové aktualizace AzuraCast jsou k dispozici',
+      ),
+      '%s is not recognized as a service.' => 
+      array (
+        0 => '',
+      ),
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      array (
+        0 => '',
       ),
       '%s cannot start' => 
       array (
@@ -1236,6 +1244,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ovládejte, jak bude tento playlist přehrávat software AutoDJ.',
       ),
+      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
+      array (
+        0 => '',
+      ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
         0 => 'Přerušit přehrávání ostatních skladeb v naplánovaném čase.',
@@ -1880,6 +1892,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Manual AutoDJ Mode' => 
+      array (
+        0 => '',
+      ),
+      'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
+      array (
+        0 => '',
+      ),
       'Character Set Encoding' => 
       array (
         0 => '',
@@ -2459,6 +2479,22 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Server Status' => 
+      array (
+        0 => '',
+      ),
+      'Current CPU Load' => 
+      array (
+        0 => '',
+      ),
+      '15-Minute CPU Load Average' => 
+      array (
+        0 => '',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '',
+      ),
       'Synchronization Tasks' => 
       array (
         0 => '',
@@ -2940,6 +2976,22 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Delete {NUM} media file(s)?' => 
+      array (
+        0 => '',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '',
+      ),
       'Album Artwork' => 
       array (
         0 => '',
@@ -2956,11 +3008,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      '%s of %s Used' => 
-      array (
-        0 => '',
-      ),
-      '%s Files' => 
+      '%s of %s Used (%d Files)' => 
       array (
         0 => '',
       ),
@@ -2981,6 +3029,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Save' => 
+      array (
+        0 => '',
+      ),
+      'Clear Playlists' => 
       array (
         0 => '',
       ),
@@ -3197,6 +3249,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Unique' => 
+      array (
+        0 => '',
+      ),
+      'Playing Next' => 
+      array (
+        0 => '',
+      ),
+      'Now Streaming' => 
       array (
         0 => '',
       ),
@@ -3461,6 +3521,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Please wait...' => 
+      array (
+        0 => '',
+      ),
+      'Station Time' => 
       array (
         0 => '',
       ),

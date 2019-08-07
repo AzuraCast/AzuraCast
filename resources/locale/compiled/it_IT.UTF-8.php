@@ -14,8 +14,8 @@ Language-Team: Italian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-05-31 09:37
+POT-Creation-Date: 2019-07-23T19:44:58+00:00
+PO-Revision-Date: 2019-08-07 15:39
 Language: it_IT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -579,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Nuovi aggiornamenti AzuraCast disponibili',
+      ),
+      '%s is not recognized as a service.' => 
+      array (
+        0 => '%s non è riconosciuto come un servizio.',
+      ),
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      array (
+        0 => 'Potrebbe non essere ancora registrato con Supervisor. Riavviare la trasmissione potrebbe aiutare.',
       ),
       '%s cannot start' => 
       array (
@@ -1236,6 +1244,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Controlla come questa playlist è gestita dal software di regia automatica.',
       ),
+      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
+      array (
+        0 => '<b>Attenzione:</b> Queste funzioni sono interne a liquidsoap e coinvolgeranno il funzionamento del tuo AutoDJ.',
+      ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
         0 => 'Interrompe altri brani da riprodurre al momento programmato.',
@@ -1880,6 +1892,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Istruire Liquidsoap per utilizzare qualsiasi metadata di replaygain associato a un brano per controllarne il livello del volume.',
       ),
+      'Manual AutoDJ Mode' => 
+      array (
+        0 => 'Modalità AutoDJ manuale',
+      ),
+      'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
+      array (
+        0 => 'Questa modalità disabilita la gestione AutoDJ di AzuraCast, utilizzando Liquidsoap stesso per gestire la riproduzione dei brani. "Brano successivo" e alcune altre funzionalità non saranno disponibili.',
+      ),
       'Character Set Encoding' => 
       array (
         0 => 'Codifica dei caratteri',
@@ -2480,6 +2500,22 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Elimina campo personalizzato "%s"?',
       ),
+      'Server Status' => 
+      array (
+        0 => 'Stato del server',
+      ),
+      'Current CPU Load' => 
+      array (
+        0 => 'Carico CPU attuale',
+      ),
+      '15-Minute CPU Load Average' => 
+      array (
+        0 => 'Media di carico CPU in 15 minuti',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '%s di %s Utilizzato',
+      ),
       'Synchronization Tasks' => 
       array (
         0 => 'Compiti di sincronizzazione',
@@ -2962,6 +2998,22 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Configura assegnazione automatica',
       ),
+      'Delete {NUM} media file(s)?' => 
+      array (
+        0 => 'Cancellare {NUM} file multimediali?',
+      ),
+      'Files removed:' => 
+      array (
+        0 => 'File rimossi:',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => 'Playlist aggiornate per i file selezionati:',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => 'Playlist svuotate per i file selezionati:',
+      ),
       'Album Artwork' => 
       array (
         0 => 'Copertina disco',
@@ -2978,13 +3030,9 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Pagina iniziale',
       ),
-      '%s of %s Used' => 
+      '%s of %s Used (%d Files)' => 
       array (
-        0 => '%s di %s Utilizzato',
-      ),
-      '%s Files' => 
-      array (
-        0 => '%s File',
+        0 => '%s di %s Usati (%d File)',
       ),
       'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
       array (
@@ -3005,6 +3053,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Save' => 
       array (
         0 => 'Salva',
+      ),
+      'Clear Playlists' => 
+      array (
+        0 => 'Svuota le playlist',
       ),
       'Move' => 
       array (
@@ -3221,6 +3273,14 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Unique' => 
       array (
         0 => 'Univoco',
+      ),
+      'Playing Next' => 
+      array (
+        0 => 'Prossimo in riproduzione',
+      ),
+      'Now Streaming' => 
+      array (
+        0 => 'Ora in trasmissione',
       ),
       'Skip Song' => 
       array (
@@ -3485,6 +3545,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Please wait...' => 
       array (
         0 => 'Attendere prego...',
+      ),
+      'Station Time' => 
+      array (
+        0 => 'Orario stazione',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (

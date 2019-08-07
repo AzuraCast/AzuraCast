@@ -14,8 +14,8 @@ Language-Team: Portuguese
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-05-31 09:38
+POT-Creation-Date: 2019-07-23T19:44:58+00:00
+PO-Revision-Date: 2019-08-07 15:39
 Language: pt_PT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -66,7 +66,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backups' => 
       array (
-        0 => '',
+        0 => 'Cópias de Segurança',
       ),
       'View Station Page' => 
       array (
@@ -150,15 +150,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Configure Backups' => 
       array (
-        0 => '',
+        0 => 'Configurar Cópias de Segurança',
       ),
       'Run Manual Backup' => 
       array (
-        0 => '',
+        0 => 'Executar Cópia de Segurança Manual',
       ),
       'Backup' => 
       array (
-        0 => '',
+        0 => 'Cópia de Segurança',
       ),
       '%s added.' => 
       array (
@@ -282,7 +282,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'All Stations' => 
       array (
-        0 => '',
+        0 => 'Todas as Estações',
       ),
       'Listeners' => 
       array (
@@ -402,43 +402,43 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Listeners by Day' => 
       array (
-        0 => '',
+        0 => 'Ouvintes por Dia',
       ),
       'Listeners by Day of Week' => 
       array (
-        0 => '',
+        0 => 'Ouvintes por Dia da Semana',
       ),
       'Monday' => 
       array (
-        0 => '',
+        0 => 'Segunda-Feira',
       ),
       'Tuesday' => 
       array (
-        0 => '',
+        0 => 'Terça-Feira',
       ),
       'Wednesday' => 
       array (
-        0 => '',
+        0 => 'Quarta-Feira',
       ),
       'Thursday' => 
       array (
-        0 => '',
+        0 => 'Quinta-Feira',
       ),
       'Friday' => 
       array (
-        0 => '',
+        0 => 'Sexta-Feira',
       ),
       'Saturday' => 
       array (
-        0 => '',
+        0 => 'Sábado',
       ),
       'Sunday' => 
       array (
-        0 => '',
+        0 => 'Domingo',
       ),
       'Listeners by Hour' => 
       array (
-        0 => '',
+        0 => 'Ouvintes por Hora',
       ),
       'SoundExchange Report' => 
       array (
@@ -502,15 +502,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
-        0 => '',
+        0 => 'Você enviou um pedido recentemente. Por favor espere antes de enviar outro.',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => '',
+        0 => 'Esta música já foi reproduzida recentemente. Por favor espere antes de solicitar novamente.',
       ),
       'Select File' => 
       array (
-        0 => '',
+        0 => 'Selecionar Ficheiro',
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
@@ -518,11 +518,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This station\'s time zone is currently %s.' => 
       array (
-        0 => '',
+        0 => 'O fuso horário da estação é %s.',
       ),
       'The current time in the station\'s time zone is %s.' => 
       array (
-        0 => '',
+        0 => 'O tempo atual no fuso horário da estação é %s.',
       ),
       'Existing playlist imported.' => 
       array (
@@ -579,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Novas atualizações do AzuraCast disponíveis',
+      ),
+      '%s is not recognized as a service.' => 
+      array (
+        0 => '%s não é reconhecido como um serviço.',
+      ),
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      array (
+        0 => 'Pode ainda não estar registado com o Supervisor. Reiniciar a transmissão poderá ajudar.',
       ),
       '%s cannot start' => 
       array (
@@ -650,235 +658,235 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The port %s is in use by another station.' => 
       array (
-        0 => '',
+        0 => 'A porta %s está em uso por outra estação.',
       ),
       'Password cannot contain the following characters: %s' => 
       array (
-        0 => '',
+        0 => 'A palavra-passe não pode conter os seguintes caracteres: %s',
       ),
       'Comments' => 
       array (
-        0 => '',
+        0 => 'Comentários',
       ),
       'Describe the use-case for this API key for future reference.' => 
       array (
-        0 => '',
+        0 => 'Descreva o uso para esta chave de API para referência futura.',
       ),
       'Save Changes' => 
       array (
-        0 => '',
+        0 => 'Guardar Alterações',
       ),
       'Enable Automated Assignment' => 
       array (
-        0 => '',
+        0 => 'Ativar Atribuição Automática',
       ),
       'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => '',
+        0 => 'Permitir que o sistema atribua periodicamente músicas a listas de reprodução com base no seu desempenho. Este processo será executado em segundo plano, e só será executado se esta opção for definida como "Ativada" e pelo menos uma lista de reprodução for definida para "Incluir em Atribuição Automática".',
       ),
       'Disabled' => 
       array (
-        0 => '',
+        0 => 'Desativado',
       ),
       'Enabled' => 
       array (
-        0 => '',
+        0 => 'Ativo',
       ),
       'Days Between Automated Assignments' => 
       array (
-        0 => '',
+        0 => 'Dias Entre Atribuições Automáticas',
       ),
       'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => '',
+        0 => 'Com base nesta configuração, o sistema irá automaticamente reatribuir músicas a cada (estes) dias usando dados dos (estes) dias anteriores.',
       ),
       '%d days' => 
       array (
-        0 => '',
+        0 => '%d dias',
       ),
       'Run Automatic Nightly Backups' => 
       array (
-        0 => '',
+        0 => 'Executar Cópias de Segurança Noturnas Automáticas',
       ),
       'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
-        0 => '',
+        0 => 'Ativar para que o AzuraCast execute automaticamente cópias de segurança noturnas automaticamente no tempo especificado.',
       ),
       'Yes' => 
       array (
-        0 => '',
+        0 => 'Sim',
       ),
       'No' => 
       array (
-        0 => '',
+        0 => 'Não',
       ),
       'Scheduled Backup Time' => 
       array (
-        0 => '',
+        0 => 'Tempo Agendado para Cópias de Segurança',
       ),
       'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => '',
+        0 => 'O tempo (em UTC) para executar a cópia de segurança automática, se ativo.',
       ),
       'Exclude Media from Backups' => 
       array (
-        0 => '',
+        0 => 'Excluir Ficheiros Multimédia das Cópias de Segurança',
       ),
       'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'Excluir os ficheiros multimédia das cópias de segurança automáticas vai poupar espaço, mas você deve fazer uma cópia de segurança destes ficheiros noutro lugar.',
       ),
       'Number of Backup Copies to Keep' => 
       array (
-        0 => '',
+        0 => 'Número de Cópias de Segurança para Manter',
       ),
       'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => '',
+        0 => 'As cópias de segurança mais antigas que o número especificado vão ser automaticamente apagadas. Defina como zero para não eliminar cópias de segurança.',
       ),
       'Backup Filename' => 
       array (
-        0 => '',
+        0 => 'Nome da Cópia de Segurança',
       ),
       'Optional absolute or relative path where the backup file should be located.' => 
       array (
-        0 => '',
+        0 => 'Diretório absoluto ou relativo onde a cópia de segurança vai ser guardada (opcional).',
       ),
       'Exclude Media from Backup' => 
       array (
-        0 => '',
+        0 => 'Excluir Ficheiros Multimédia da Cópia de Segurança',
       ),
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'Isto irá criar uma cópia de segurança significativamente menor, mas você deve fazer uma cópia de segurança destes ficheiros noutro lugar.',
       ),
       'Base Theme for Public Pages' => 
       array (
-        0 => '',
+        0 => 'Tema Base para Páginas Públicas',
       ),
       'Select a theme to use as a base for station public pages and the login page.' => 
       array (
-        0 => '',
+        0 => 'Selecione um tema para usar como base para páginas públicas de estações e a página de login.',
       ),
       'Light' => 
       array (
-        0 => '',
+        0 => 'Claro',
       ),
       'Default' => 
       array (
-        0 => '',
+        0 => 'Padrão',
       ),
       'Dark' => 
       array (
-        0 => '',
+        0 => 'Escuro',
       ),
       'Hide Album Art on Public Pages' => 
       array (
-        0 => '',
+        0 => 'Esconder Arte do Álbum nas Páginas Públicas',
       ),
       'If selected, album art will not display on public-facing radio pages.' => 
       array (
-        0 => '',
+        0 => 'Se selecionado, a arte do álbum não irá ser mostrada nas páginas públicas da rádio.',
       ),
       'Homepage Redirect URL' => 
       array (
-        0 => '',
+        0 => 'Endereço da Página Inicial para Redirecionamento',
       ),
       'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
       array (
-        0 => '',
+        0 => 'Se um visitante não estiver autenticado e visitar a página inicial do AzuraCast, você pode redirecionar automaticamente para o endereço especificado aqui. Deixe em branco para redirecionar para a página de login por padrão.',
       ),
       'Default Album Art URL' => 
       array (
-        0 => '',
+        0 => 'Endereço de Arte do Álbum Padrão',
       ),
       'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
-        0 => '',
+        0 => 'Se uma música não tiver arte do álbum, este endereço será mostrado. Deixe em branco para usar a arte padrão.',
       ),
       'Hide AzuraCast Branding on Public Pages' => 
       array (
-        0 => '',
+        0 => 'Esconder a Marca do AzuraCast nas Páginas Públicas',
       ),
       'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
       array (
-        0 => '',
+        0 => 'Se selecionado, isto irá remover a marca do AzuraCast nas páginas públicas.',
       ),
       'Custom CSS for Public Pages' => 
       array (
-        0 => '',
+        0 => 'CSS Personalizado para as Páginas Públicas',
       ),
       'This CSS will be applied to the station public pages and login page.' => 
       array (
-        0 => '',
+        0 => 'Este CSS será aplicado às páginas públicas da estação e a página de login.',
       ),
       'Custom JS for Public Pages' => 
       array (
-        0 => '',
+        0 => 'JavaScript Personalizado para as Páginas Públicas',
       ),
       'This javascript code will be applied to the station public pages and login page.' => 
       array (
-        0 => '',
+        0 => 'Este código JavaScript será aplicado às páginas públicas da estação e a página de login.',
       ),
       'Custom CSS for Internal Pages' => 
       array (
-        0 => '',
+        0 => 'CSS Personalizado para as Páginas Internas',
       ),
       'This CSS will be applied to the main management pages, like this one.' => 
       array (
-        0 => '',
+        0 => 'Este CSS será aplicado às páginas principais de gestão, como esta.',
       ),
       'Field Name' => 
       array (
-        0 => '',
+        0 => 'Nome do Campo',
       ),
       'This will be used as the label when editing individual songs, and will show in API results.' => 
       array (
-        0 => '',
+        0 => 'Isto será usado como rótulo ao editar músicas individuais, e será exibido nos resultados da API.',
       ),
       'Programmatic Name' => 
       array (
-        0 => '',
+        0 => 'Nome Programático',
       ),
       'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
       array (
-        0 => '',
+        0 => 'Especifique um nome amigável (opcional) para a API, como <code>nome_campo</code>. Deixe em branco para automaticamente criar um baseado no nome.',
       ),
       'Important Notes' => 
       array (
-        0 => '',
+        0 => 'Notas Importantes',
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => '',
+        0 => '<p>O SHOUTcast 2 DNAS não é software gratuito, e a sua licença restritiva não permite ao AzuraCast distribuir o executável do SHOUTcast. Para instalar SHOUTcast, você deve transferir o executável Linux x64 da página <a href="%s" target="_blank">SHOUTcast Radio Manager</a>. Envie o <code>sc_serv2_linux_x64-latest.tar.gz</code> para o campo abaixo para extraí-lo automaticamente no diretório apropriado.</p>',
       ),
       'Current Installed Version' => 
       array (
-        0 => '',
+        0 => 'Versão Atualmente Instalada',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => '',
+        0 => 'O SHOUTcast não está atualmente instalado nesta instalação do AzuraCast.',
       ),
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
-        0 => '',
+        0 => 'Selecione o Ficheiro SHOUTcast 64-bit .tar.gz',
       ),
       'Upload' => 
       array (
-        0 => '',
+        0 => 'Enviar',
       ),
       'E-mail Address' => 
       array (
-        0 => '',
+        0 => 'Endereço de Email',
       ),
       'Password' => 
       array (
-        0 => '',
+        0 => 'Palavra-Passe',
       ),
       'Log in' => 
       array (
-        0 => '',
+        0 => 'Entrar',
       ),
       'File Name' => 
       array (
@@ -946,211 +954,211 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'POI Personalizado: POI de Entrada (segundos)',
       ),
       'Seconds from the start of the song that the AutoDJ should start playing.' => 
       array (
-        0 => '',
+        0 => 'Segundos desde o início da música que o AutoDJ deve começar a tocar.',
       ),
       'Custom Cues: Cue-Out Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'POI Personalizado: POI de Saída (segundos)',
       ),
       'Seconds from the start of the song that the AutoDJ should stop playing.' => 
       array (
-        0 => '',
+        0 => 'Segundos desde o início da música que o AutoDJ deve parar de tocar.',
       ),
       'Mount Point URL' => 
       array (
-        0 => '',
+        0 => 'Endereço do Ponto de Montagem',
       ),
       'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
-        0 => '',
+        0 => 'Este nome deve começar sempre com uma barra (/), e deve ser um endereço válido, como /autodj.mp3',
       ),
       'Display Name' => 
       array (
-        0 => '',
+        0 => 'Nome de Exibição',
       ),
       'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
-        0 => '',
+        0 => 'Um nome de exibição atribuído a este ponto de montagem para mostrar em páginas de gestão ou páginas públicas. Deixe em branco para automaticamente criar um.',
       ),
       'Show on Public Pages' => 
       array (
-        0 => '',
+        0 => 'Mostrar em Páginas Públicas',
       ),
       'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
       array (
-        0 => '',
+        0 => 'Ative para permitir que os ouvintes selecionem este ponto de montagem nas página públicas da estação.',
       ),
       'Set as Default Mount Point' => 
       array (
-        0 => '',
+        0 => 'Definir como Ponto de Montagem Padrão',
       ),
       'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => '',
+        0 => 'Se este ponto de montagem é o padrão, ele será reproduzido no pré-visualização da emissão e na página pública do sistema.',
       ),
       'Relay Stream URL' => 
       array (
-        0 => '',
+        0 => 'Endereço do Relé de Transmissão',
       ),
       'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => '',
+        0 => 'Introduza o URL completo de outra transmissão para transmitir através de este ponto de montagem.',
       ),
       'Publish to "Yellow Pages" Directories' => 
       array (
-        0 => '',
+        0 => 'Publicar para diretórios "Páginas Amarelas"',
       ),
       'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
       array (
-        0 => '',
+        0 => 'Ative para publicar este ponto de montagem nos diretórios de "Páginas Amarelas" de rádios públicas.',
       ),
       'Enable AutoDJ' => 
       array (
-        0 => '',
+        0 => 'Ativar AutoDJ',
       ),
       'If enabled, the AutoDJ will automatically play music to this mount point.' => 
       array (
-        0 => '',
+        0 => 'Se ativado, o AutoDJ irá reproduzir automaticamente música para este ponto de montagem.',
       ),
       'AutoDJ Format' => 
       array (
-        0 => '',
+        0 => 'Formato do AutoDJ',
       ),
       'AutoDJ Bitrate (kbps)' => 
       array (
-        0 => '',
+        0 => 'Taxa de bits do AutoDJ (kbps)',
       ),
       'Custom Stream URL' => 
       array (
-        0 => '',
+        0 => 'URL de transmissão personalizado',
       ),
       'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
       array (
-        0 => '',
+        0 => 'Você pode definir uma URL personalizada para esta transmissão que o AzuraCast usará quando se referir a ele. Deixe vazio para usar o valor padrão.',
       ),
       'Fallback Mount' => 
       array (
-        0 => '',
+        0 => 'Ponto de montagem de reserva',
       ),
       'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => '',
+        0 => 'Se este ponto de montagem não estiver a reproduzir áudio, os ouvintes serão automaticamente redirecionados para este ponto de montagem. O padrão é /error.mp3, uma mensagem de erro.',
       ),
       'Custom Frontend Configuration' => 
       array (
-        0 => '',
+        0 => 'Configuração Personalizada do Frontend',
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => '',
+        0 => 'Você pode incluir qualquer configuração especial de ponto de montagem aqui, no formato JSON { key: \'value\' } ou um &lt;key&gt;valor &lt;/key&gt; XML',
       ),
       'Stream path cannot include reserved keywords: %s' => 
       array (
-        0 => '',
+        0 => 'O caminho da transmissão não pode incluir as palavras reservadas: %s',
       ),
       'YP Directory Authorization Hash' => 
       array (
-        0 => '',
+        0 => 'Chave de Autorização do Diretório YP',
       ),
       'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
       array (
-        0 => '',
+        0 => 'Se a sua transmissão está definida para anunciar para diretórios YP acima, você deve especificar uma chave de autorização. Pode gerir as suas chaves de autorização<a href="%s" target="_blank">no site do SHOUTcast</a>.',
       ),
       'Basic Information' => 
       array (
-        0 => '',
+        0 => 'Informação Básica',
       ),
       'Source' => 
       array (
-        0 => '',
+        0 => 'Fonte',
       ),
       'Scheduling' => 
       array (
-        0 => '',
+        0 => 'Agendamento',
       ),
       'Enable Playlist' => 
       array (
-        0 => '',
+        0 => 'Ativar Lista de Reprodução',
       ),
       'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
       array (
-        0 => '',
+        0 => 'Se definido como "Não", a lista de reprodução não vai ser incluída na programação da rádio, mas ainda pode ser gerida.',
       ),
       'Playlist Name' => 
       array (
-        0 => '',
+        0 => 'Nome da Lista de Reprodução',
       ),
       'Playlist Weight' => 
       array (
-        0 => '',
+        0 => 'Peso da Lista de Reprodução',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
-        0 => '',
+        0 => 'Listas de reprodução com maior peso são reproduzidas com mais frequência em relação às listas de reprodução com peso inferior.',
       ),
       'Low' => 
       array (
-        0 => '',
+        0 => 'Baixo',
       ),
       'High' => 
       array (
-        0 => '',
+        0 => 'Alto',
       ),
       'Song-Based Playlist' => 
       array (
-        0 => '',
+        0 => 'Lista de Reprodução baseada em Músicas',
       ),
       'A playlist containing media files hosted on this server.' => 
       array (
-        0 => '',
+        0 => 'Uma lista de reprodução contendo ficheiros multimédia hospedados neste servidor.',
       ),
       'Remote URL Playlist' => 
       array (
-        0 => '',
+        0 => 'Lista de Reprodução de URL Remoto',
       ),
       'A playlist that instructs the station to play from a remote URL.' => 
       array (
-        0 => '',
+        0 => 'Uma lista de reprodução que informa a rádio para reproduzir um URL remoto.',
       ),
       'Song Playback Order' => 
       array (
-        0 => '',
+        0 => 'Ordem de Reprodução de Música',
       ),
       'Shuffled' => 
       array (
-        0 => '',
+        0 => 'Shuffled',
       ),
       'Random' => 
       array (
-        0 => '',
+        0 => 'Aleatório',
       ),
       'Sequential' => 
       array (
-        0 => '',
+        0 => 'Sequencial',
       ),
       'Import Existing Playlist' => 
       array (
-        0 => '',
+        0 => 'Importar Lista de Reprodução Existente',
       ),
       'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
       array (
-        0 => '',
+        0 => 'Selecione um ficheiro de lista de reprodução existente para adicionar os seus conteúdos a esta lista de reprodução. Os formatos PLS e M3U são suportados.',
       ),
       'Allow Requests from This Playlist' => 
       array (
-        0 => '',
+        0 => 'Permitir Pedidos nesta Lista de Reprodução',
       ),
       'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
       array (
-        0 => '',
+        0 => 'Se os pedidos estiverem ativos para a estação, os utilizadores vão poder pedir ficheiros multimédia que estiverem disponíveis nesta lista de reprodução.',
       ),
       'Hide Metadata from Listeners ("Jingle Mode")' => 
       array (
-        0 => '',
+        0 => 'Ocultar Metadados dos Ouvintes ("Modo de Jingle")',
       ),
       'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
       array (
@@ -1158,19 +1166,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote URL' => 
       array (
-        0 => '',
+        0 => 'URL Remoto',
       ),
       'Remote URL Type' => 
       array (
-        0 => '',
+        0 => 'Tipo de URL Remoto',
       ),
       'Direct Stream URL' => 
       array (
-        0 => '',
+        0 => 'URL de Transmissão Direta',
       ),
       'Playlist (M3U/PLS) URL' => 
       array (
-        0 => '',
+        0 => 'URL de Lista de Reprodução (M3U/PLS)',
       ),
       'Remote Playback Buffer (Seconds)' => 
       array (
@@ -1190,7 +1198,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Scheduled' => 
       array (
-        0 => '',
+        0 => 'Agendado',
       ),
       'Play during a scheduled time range.' => 
       array (
@@ -1233,6 +1241,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => '',
+      ),
+      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
       array (
         0 => '',
       ),
@@ -1880,6 +1892,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Manual AutoDJ Mode' => 
+      array (
+        0 => '',
+      ),
+      'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
+      array (
+        0 => '',
+      ),
       'Character Set Encoding' => 
       array (
         0 => '',
@@ -2459,6 +2479,22 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Server Status' => 
+      array (
+        0 => '',
+      ),
+      'Current CPU Load' => 
+      array (
+        0 => '',
+      ),
+      '15-Minute CPU Load Average' => 
+      array (
+        0 => '',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '',
+      ),
       'Synchronization Tasks' => 
       array (
         0 => '',
@@ -2940,6 +2976,22 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Delete {NUM} media file(s)?' => 
+      array (
+        0 => '',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '',
+      ),
       'Album Artwork' => 
       array (
         0 => '',
@@ -2956,11 +3008,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      '%s of %s Used' => 
-      array (
-        0 => '',
-      ),
-      '%s Files' => 
+      '%s of %s Used (%d Files)' => 
       array (
         0 => '',
       ),
@@ -2981,6 +3029,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Save' => 
+      array (
+        0 => '',
+      ),
+      'Clear Playlists' => 
       array (
         0 => '',
       ),
@@ -3197,6 +3249,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Unique' => 
+      array (
+        0 => '',
+      ),
+      'Playing Next' => 
+      array (
+        0 => '',
+      ),
+      'Now Streaming' => 
       array (
         0 => '',
       ),
@@ -3461,6 +3521,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Please wait...' => 
+      array (
+        0 => '',
+      ),
+      'Station Time' => 
       array (
         0 => '',
       ),

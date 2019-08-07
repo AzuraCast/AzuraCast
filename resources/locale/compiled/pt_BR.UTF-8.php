@@ -14,8 +14,8 @@ Language-Team: Portuguese, Brazilian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-05-31 09:38
+POT-Creation-Date: 2019-07-23T19:44:58+00:00
+PO-Revision-Date: 2019-08-07 15:39
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -579,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Novas atualizações AzuraCast disponíveis',
+      ),
+      '%s is not recognized as a service.' => 
+      array (
+        0 => '',
+      ),
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      array (
+        0 => '',
       ),
       '%s cannot start' => 
       array (
@@ -1236,6 +1244,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
+      array (
+        0 => '',
+      ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
         0 => '',
@@ -1880,6 +1892,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Manual AutoDJ Mode' => 
+      array (
+        0 => '',
+      ),
+      'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
+      array (
+        0 => '',
+      ),
       'Character Set Encoding' => 
       array (
         0 => 'Codificação de Carateres',
@@ -2460,6 +2480,22 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Excluir campo personalizado "%s"?',
       ),
+      'Server Status' => 
+      array (
+        0 => '',
+      ),
+      'Current CPU Load' => 
+      array (
+        0 => '',
+      ),
+      '15-Minute CPU Load Average' => 
+      array (
+        0 => '',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '%s de %s Usado',
+      ),
       'Synchronization Tasks' => 
       array (
         0 => 'Sincronização de Tarefas',
@@ -2941,6 +2977,22 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Configurar atribuição automatizada',
       ),
+      'Delete {NUM} media file(s)?' => 
+      array (
+        0 => '',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '',
+      ),
       'Album Artwork' => 
       array (
         0 => 'Mostrar a capa do álbum',
@@ -2957,13 +3009,9 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Início',
       ),
-      '%s of %s Used' => 
+      '%s of %s Used (%d Files)' => 
       array (
-        0 => '%s de %s Usado',
-      ),
-      '%s Files' => 
-      array (
-        0 => '%s arquivos',
+        0 => '',
       ),
       'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
       array (
@@ -2984,6 +3032,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Save' => 
       array (
         0 => 'Salvar',
+      ),
+      'Clear Playlists' => 
+      array (
+        0 => '',
       ),
       'Move' => 
       array (
@@ -3200,6 +3252,14 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Unique' => 
       array (
         0 => 'Único',
+      ),
+      'Playing Next' => 
+      array (
+        0 => '',
+      ),
+      'Now Streaming' => 
+      array (
+        0 => '',
       ),
       'Skip Song' => 
       array (
@@ -3464,6 +3524,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Please wait...' => 
       array (
         0 => 'Aguarde, por favor...',
+      ),
+      'Station Time' => 
+      array (
+        0 => '',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (

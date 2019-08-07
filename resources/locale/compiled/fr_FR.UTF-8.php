@@ -14,8 +14,8 @@ Language-Team: French
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-05-31 09:37
+POT-Creation-Date: 2019-07-23T19:44:58+00:00
+PO-Revision-Date: 2019-08-07 15:39
 Language: fr_FR
 Plural-Forms: nplurals=2; plural=(n > 1);
 X-Generator: crowdin.com
@@ -282,7 +282,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'All Stations' => 
       array (
-        0 => '',
+        0 => 'Toutes les stations',
       ),
       'Listeners' => 
       array (
@@ -579,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Nouvelles mises à jour d\'AzuraCast disponibles',
+      ),
+      '%s is not recognized as a service.' => 
+      array (
+        0 => '%s n\'est pas reconnu comme un service.',
+      ),
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      array (
+        0 => 'Il se peut qu\'il ne soit pas encore enregistré auprès du superviseur. Le redémarrage de la diffusion peut aider.',
       ),
       '%s cannot start' => 
       array (
@@ -1236,6 +1244,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Contrôlez la façon dont cette playlist est gérée par le logiciel AutoDJ.',
       ),
+      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
+      array (
+        0 => '<b>Attention :</b> Ces fonctions sont internes à Liquidsoap et affecteront le fonctionnement de votre AutoDJ.',
+      ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
         0 => 'Interruption de la lecture d\'autres chansons pour jouer à l\'heure prévue.',
@@ -1880,6 +1892,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Demandez à Liquidsoap d\'utiliser toutes les métadonnées de relecture associées à un morceau pour contrôler son niveau de volume.',
       ),
+      'Manual AutoDJ Mode' => 
+      array (
+        0 => 'Mode manuel de l\'AutoDJ',
+      ),
+      'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
+      array (
+        0 => 'Ce mode désactive la gestion AutoDJ d\'AzuraCast, utilisant Liquidsoap pour gérer la lecture des morceaux. Diverses fonctionnalités comme "Chanson suivante" ne seront pas disponibles.',
+      ),
       'Character Set Encoding' => 
       array (
         0 => 'Encodage des jeux de caractères',
@@ -2481,6 +2501,22 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Supprimer le champ personnalisé "%s" ?',
       ),
+      'Server Status' => 
+      array (
+        0 => 'Statut du serveur',
+      ),
+      'Current CPU Load' => 
+      array (
+        0 => 'Charge actuelle du processeur',
+      ),
+      '15-Minute CPU Load Average' => 
+      array (
+        0 => 'Moyenne de la charge du processeur sur 15 minutes',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '%s de %s utilisé',
+      ),
       'Synchronization Tasks' => 
       array (
         0 => 'Tâches de synchronisation',
@@ -2630,7 +2666,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AzuraCast User' => 
       array (
-        0 => '',
+        0 => 'Utilisateur AzuraCast',
       ),
       'My Account' => 
       array (
@@ -2964,6 +3000,22 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Configurer l\'affectation automatique',
       ),
+      'Delete {NUM} media file(s)?' => 
+      array (
+        0 => 'Supprimer {NUM} fichier(s) ?',
+      ),
+      'Files removed:' => 
+      array (
+        0 => 'Fichiers supprimés :',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => 'Mise à jour des playlists pour les fichiers sélectionnés :',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => 'Playlists effacées pour les fichiers sélectionnés :',
+      ),
       'Album Artwork' => 
       array (
         0 => 'Illustration de l\'album',
@@ -2980,13 +3032,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Accueil',
       ),
-      '%s of %s Used' => 
+      '%s of %s Used (%d Files)' => 
       array (
-        0 => '%s de %s utilisé',
-      ),
-      '%s Files' => 
-      array (
-        0 => '%s fichiers',
+        0 => '%s de %s utilisé (%d fichiers)',
       ),
       'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
       array (
@@ -3007,6 +3055,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Save' => 
       array (
         0 => 'Sauvegarder',
+      ),
+      'Clear Playlists' => 
+      array (
+        0 => 'Effacer les playlists',
       ),
       'Move' => 
       array (
@@ -3223,6 +3275,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Unique' => 
       array (
         0 => 'Unique',
+      ),
+      'Playing Next' => 
+      array (
+        0 => 'Jouer le prochain morceau',
+      ),
+      'Now Streaming' => 
+      array (
+        0 => 'Actuellement en direct',
       ),
       'Skip Song' => 
       array (
@@ -3487,6 +3547,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Please wait...' => 
       array (
         0 => 'Veuillez patienter...',
+      ),
+      'Station Time' => 
+      array (
+        0 => 'Heure de la station',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (

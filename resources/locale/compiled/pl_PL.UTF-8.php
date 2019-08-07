@@ -14,8 +14,8 @@ Language-Team: Polish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-05-28T17:48:37+00:00
-PO-Revision-Date: 2019-05-31 09:38
+POT-Creation-Date: 2019-07-23T19:44:58+00:00
+PO-Revision-Date: 2019-08-07 15:39
 Language: pl_PL
 Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
 X-Generator: crowdin.com
@@ -66,7 +66,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backups' => 
       array (
-        0 => '',
+        0 => 'Kopie zapasowe',
       ),
       'View Station Page' => 
       array (
@@ -150,15 +150,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Configure Backups' => 
       array (
-        0 => '',
+        0 => 'Skonfiguruj kopie zapasowe',
       ),
       'Run Manual Backup' => 
       array (
-        0 => '',
+        0 => 'Uruchom ręczne tworzenie kopii zapasowej',
       ),
       'Backup' => 
       array (
-        0 => '',
+        0 => 'Kopia zapasowa',
       ),
       '%s added.' => 
       array (
@@ -282,7 +282,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'All Stations' => 
       array (
-        0 => '',
+        0 => 'Wszystkie stacje',
       ),
       'Listeners' => 
       array (
@@ -502,15 +502,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
-        0 => '',
+        0 => 'Zbyt szybko wysyłasz kolejne żądania! Poczekaj chwilę zanim wyślesz następne.',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => '',
+        0 => 'Ten utwór został już odtworzony zbyt niedawno. Poczekaj z wysłaniem kolejnej prośby o ten utwór.',
       ),
       'Select File' => 
       array (
-        0 => '',
+        0 => 'Wybierz plik',
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
@@ -518,11 +518,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This station\'s time zone is currently %s.' => 
       array (
-        0 => '',
+        0 => 'Strefa czasowa tej stacji to obecnie %s.',
       ),
       'The current time in the station\'s time zone is %s.' => 
       array (
-        0 => '',
+        0 => 'Obecny czas w strefie czasowej tej stacji to %s.',
       ),
       'Existing playlist imported.' => 
       array (
@@ -579,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Dostępne są nowe aktualizacje AzuraCast',
+      ),
+      '%s is not recognized as a service.' => 
+      array (
+        0 => '',
+      ),
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      array (
+        0 => '',
       ),
       '%s cannot start' => 
       array (
@@ -698,11 +706,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Run Automatic Nightly Backups' => 
       array (
-        0 => '',
+        0 => 'Uruchom automatyczne nocne tworzenie kopii zapasowych',
       ),
       'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
-        0 => '',
+        0 => 'Pozwala AzuraCast na automatyczne tworzenie nocnych kopii zapasowych w podanym czasie.',
       ),
       'Yes' => 
       array (
@@ -714,43 +722,43 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Scheduled Backup Time' => 
       array (
-        0 => '',
+        0 => 'Zaplanowany czas tworzenia kopii zapasowych',
       ),
       'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => '',
+        0 => 'Czas (w UTC) uruchomienia automatycznej kopii zapasowej, jeśli jest włączona.',
       ),
       'Exclude Media from Backups' => 
       array (
-        0 => '',
+        0 => 'Wyklucz multimedia z kopii zapasowych',
       ),
       'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'Wykluczenie multimediów z automatycznych kopii zapasowych oszczędzi miejsce na dysku, powinieneś jednak przechowywać kopie tych plików w innym miejscu.',
       ),
       'Number of Backup Copies to Keep' => 
       array (
-        0 => '',
+        0 => 'Liczba kopii zapasowych przechowywanych na dysku',
       ),
       'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => '',
+        0 => 'Kopie starsze niż podana liczba dni będą automatycznie usuwane. Ustaw zero, aby wyłączyć automatyczne usuwanie.',
       ),
       'Backup Filename' => 
       array (
-        0 => '',
+        0 => 'Nazwa pliku kopii zapasowej',
       ),
       'Optional absolute or relative path where the backup file should be located.' => 
       array (
-        0 => '',
+        0 => 'Opcjonalna bezwzględna lub względna ścieżka, w której będzie umieszczany plik kopii zapasowej.',
       ),
       'Exclude Media from Backup' => 
       array (
-        0 => '',
+        0 => 'Wyklucz multimedia z kopii zapasowych',
       ),
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => '',
+        0 => 'To spowoduje powstanie znacznie mniejszego pliku kopii zapasowej, powinieneś jednak upewnić się, że przechowujesz kopie twoich plików w innym miejscu.',
       ),
       'Base Theme for Public Pages' => 
       array (
@@ -1236,6 +1244,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Określ, w jaki sposób ta playlista będzie wykorzystywana przez oprogramowanie autopilota.',
       ),
+      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
+      array (
+        0 => '',
+      ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
         0 => 'Przerywaj inne utwory, by odtworzyć w ustalonym czasie.',
@@ -1266,7 +1278,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'To play once per day, set the start and end times to the same value.' => 
       array (
-        0 => '',
+        0 => 'Aby odtwarzać raz dziennie, ustaw takie same czasy start i stop.',
       ),
       'End Time' => 
       array (
@@ -1274,11 +1286,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If the end time is before the start time, the playlist will play overnight.' => 
       array (
-        0 => '',
+        0 => 'Jeśli czas końca jest ustawiony przed czasem początku, playlista będzie odtwarzana w ciągu nocy.',
       ),
       'Station Time Zone' => 
       array (
-        0 => '',
+        0 => 'Strefa czasowa stacji',
       ),
       'Scheduled Play Days of Week' => 
       array (
@@ -1686,7 +1698,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Scheduled playlists and other timed items will be controlled by this time zone.' => 
       array (
-        0 => '',
+        0 => 'Zaplanowane playlisty i inne elementy związane z czasem będą kontrolowane przez tę strefę czasową.',
       ),
       'Enable Public Page' => 
       array (
@@ -1880,6 +1892,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Wymuś, aby Liquidsoap używało metadanych ReplayGain powiązanych z utworem, aby kontrolować jego głośność.',
       ),
+      'Manual AutoDJ Mode' => 
+      array (
+        0 => '',
+      ),
+      'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
+      array (
+        0 => '',
+      ),
       'Character Set Encoding' => 
       array (
         0 => 'Kodowanie znaków',
@@ -1926,11 +1946,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'New Station Name' => 
       array (
-        0 => '',
+        0 => 'Nazwa nowej stacji',
       ),
       'New Station Description' => 
       array (
-        0 => '',
+        0 => 'Opis nowej stacji',
       ),
       'Customize Station Cloning' => 
       array (
@@ -2090,7 +2110,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
                 optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => '',
+        0 => 'Webhooki automatycznie wysyłają żądanie HTTP POST do podanego URL\'a, aby powiadomić go za każdym razem gdy jeden z podanych przez Ciebie wyzwalaczy pojawi się w Twojej stacji. Treść wiadomości POST jest dokładnie taka sama, jak <a href="%s" target="_blank">odpowiedź API Teraz Odtwarzane</a> dla Twojej stacji. W celu szybkiego przetworzenia wiadomości, webhooki mają krótki timeout, więc usługa odpowiadająca powinna być zoptymalizowana by być w stanie przetworzyć żądanie w czasie mniej niż 2 sekund.',
       ),
       'Web Hook URL' => 
       array (
@@ -2177,7 +2197,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => '',
+        0 => 'Wykonaj następujące kroki, aby skonfigurować aplikację na Twitterze:<br>
+<ol type="1">
+<li>Utwórz nową aplikację na <a href="%s" target="_blank">podstronie Aplikacje Twittera</a>.
+ Jako URL aplikacji podaj podstawowy URL tej instalacji.</li>
+<li>W nowo utworzonej aplikacji, przejdź do karty "Klucze i Tokeny Dostępu" (Keys and Access Tokens).</li>
+<li>W dolnej części strony, kliknij "Utwórz mój token dostępu" (Create my access token).</li>
+</ol>
+Po ukończeniu tej procedury, wklej informacje z podstrony "Klucze i Tokeny Dostępu" (Keys and Access Tokens) w poniższych polach',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -2205,11 +2232,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '%d seconds' => 
       array (
-        0 => '',
+        0 => '%d sekund',
       ),
       '%d minutes' => 
       array (
-        0 => '',
+        0 => '%d minut',
       ),
       'Message Body' => 
       array (
@@ -2389,35 +2416,35 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Automatic Backups' => 
       array (
-        0 => '',
+        0 => 'Automatyczne kopie zapasowe',
       ),
       'Last run: %s' => 
       array (
-        0 => '',
+        0 => 'Ostatnie uruchomienie: %s',
       ),
       'Never run' => 
       array (
-        0 => '',
+        0 => 'Nigdy nie uruchamiane',
       ),
       'Configure' => 
       array (
-        0 => '',
+        0 => 'Konfiguracja',
       ),
       'Most Recent Backup Log' => 
       array (
-        0 => '',
+        0 => 'Najświeższy dziennik kopii zapasowej',
       ),
       'Restoring Backups' => 
       array (
-        0 => '',
+        0 => 'Przywracanie kopii zapasowych',
       ),
       'To restore a backup from your host computer, run:' => 
       array (
-        0 => '',
+        0 => 'Aby przywrócić kopię zapasową z własnego komputera, uruchom:',
       ),
       'Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.' => 
       array (
-        0 => '',
+        0 => 'Miej na uwadze, że przywrócenie kopii zapasowej wyczyści Twoją obecną bazę danych. Nigdy nie przywracaj kopii zapasowych pochodzących od użytkowników, którym nie ufasz.',
       ),
       'Actions' => 
       array (
@@ -2425,7 +2452,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Last Modified' => 
       array (
-        0 => '',
+        0 => 'Ostatnio zmodyfikowane',
       ),
       'Size' => 
       array (
@@ -2433,11 +2460,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Download' => 
       array (
-        0 => '',
+        0 => 'Pobierz',
       ),
       'Delete backup "%s"?' => 
       array (
-        0 => '',
+        0 => 'Usunąć kopię zapasową "%s"?',
       ),
       'Delete' => 
       array (
@@ -2445,19 +2472,35 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backups Home' => 
       array (
-        0 => '',
+        0 => 'Strona główna kopii zapasowych',
       ),
       'Backup was run successfully.' => 
       array (
-        0 => '',
+        0 => 'Pomyślnie uruchomiono tworzenie kopii zapasowej.',
       ),
       'Backup encountered errors when running. Check the log below for details.' => 
       array (
-        0 => '',
+        0 => 'Podczas tworzenia kopii zapasowej wystąpiły błędy. Szczegółowe informacje znajdziesz w dzienniku.',
       ),
       'Delete custom field "%s"?' => 
       array (
         0 => 'Usunąć własne pole "%s"?',
+      ),
+      'Server Status' => 
+      array (
+        0 => '',
+      ),
+      'Current CPU Load' => 
+      array (
+        0 => '',
+      ),
+      '15-Minute CPU Load Average' => 
+      array (
+        0 => '',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '%s z %s używane',
       ),
       'Synchronization Tasks' => 
       array (
@@ -2533,15 +2576,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'name@example.com' => 
       array (
-        0 => '',
+        0 => 'ktoś@domena.pl',
       ),
       'Enter your password' => 
       array (
-        0 => '',
+        0 => 'Podaj swoje hasło',
       ),
       'Sign in' => 
       array (
-        0 => '',
+        0 => 'Zaloguj się',
       ),
       'Please log in to continue.' => 
       array (
@@ -2570,7 +2613,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'API keys can be used to access some system functionality without needing to log in. All of the keys 
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => '',
+        0 => 'Klucze API mogą być wykorzystywane do uzyskiwania dostępu do pewnych funkcji systemowych bez konieczności logowania się. Wszystkie wygenerowane przez Ciebie klucze posiadają Twoje uprawnienia w systemie. Aby uzyskać więcej informacji, zajrzyj do <a href="%s">dokumentacji API</a>.',
       ),
       'Key Identifier' => 
       array (
@@ -2606,7 +2649,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AzuraCast User' => 
       array (
-        0 => '',
+        0 => 'Użytkownik AzuraCast',
       ),
       'My Account' => 
       array (
@@ -2659,7 +2702,7 @@ Odtwarzane',
       ),
       'QR-Code' => 
       array (
-        0 => '',
+        0 => 'Kod QR',
       ),
       'Customize' => 
       array (
@@ -2795,7 +2838,7 @@ Odtwarzane',
       ),
       'Play' => 
       array (
-        0 => '',
+        0 => 'Odtwórz',
       ),
       'Pause' => 
       array (
@@ -2915,7 +2958,7 @@ Odtwarzane',
       ),
       'Log View' => 
       array (
-        0 => '',
+        0 => 'Podgląd dziennika',
       ),
       'Automatically scroll to the bottom of the log' => 
       array (
@@ -2941,6 +2984,22 @@ Odtwarzane',
       array (
         0 => 'Konfigurowanie automatycznego przypisania',
       ),
+      'Delete {NUM} media file(s)?' => 
+      array (
+        0 => '',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '',
+      ),
       'Album Artwork' => 
       array (
         0 => 'Okładka albumu',
@@ -2957,13 +3016,9 @@ Odtwarzane',
       array (
         0 => 'Strona główna',
       ),
-      '%s of %s Used' => 
+      '%s of %s Used (%d Files)' => 
       array (
-        0 => '%s z %s używane',
-      ),
-      '%s Files' => 
-      array (
-        0 => '%s pliki',
+        0 => '',
       ),
       'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
       array (
@@ -2984,6 +3039,10 @@ Odtwarzane',
       'Save' => 
       array (
         0 => 'Zapisz',
+      ),
+      'Clear Playlists' => 
+      array (
+        0 => '',
       ),
       'Move' => 
       array (
@@ -3091,7 +3150,7 @@ Odtwarzane',
       ),
       'Plays at %s' => 
       array (
-        0 => '',
+        0 => 'Gra o %s',
       ),
       'Plays between %s and %s' => 
       array (
@@ -3201,6 +3260,14 @@ Odtwarzane',
       array (
         0 => 'Unikalny',
       ),
+      'Playing Next' => 
+      array (
+        0 => '',
+      ),
+      'Now Streaming' => 
+      array (
+        0 => '',
+      ),
       'Skip Song' => 
       array (
         0 => 'Pomiń utwór',
@@ -3211,7 +3278,7 @@ Odtwarzane',
       ),
       'Public Pages' => 
       array (
-        0 => '',
+        0 => 'Strony publiczne',
       ),
       'Player Embed Code' => 
       array (
@@ -3219,27 +3286,27 @@ Odtwarzane',
       ),
       'Request Embed Code' => 
       array (
-        0 => '',
+        0 => 'Poproś o kod do osadzenia',
       ),
       'Disable public pages?' => 
       array (
-        0 => '',
+        0 => 'Wyłączyć publiczne strony?',
       ),
       'Enable public pages?' => 
       array (
-        0 => '',
+        0 => 'Włączyć publiczne strony?',
       ),
       'View' => 
       array (
-        0 => '',
+        0 => 'Wyświetl',
       ),
       'Disable song requests?' => 
       array (
-        0 => '',
+        0 => 'Wyłączyć prośby o piosenki?',
       ),
       'Enable song requests?' => 
       array (
-        0 => '',
+        0 => 'Włączyć prośby o piosenki?',
       ),
       'Streamers/DJs' => 
       array (
@@ -3247,11 +3314,11 @@ Odtwarzane',
       ),
       'Disable streamers?' => 
       array (
-        0 => '',
+        0 => 'Deaktywować streamerów?',
       ),
       'Enable streamers?' => 
       array (
-        0 => '',
+        0 => 'Aktywować streamerów?',
       ),
       'Streams' => 
       array (
@@ -3359,7 +3426,7 @@ Odtwarzane',
       ),
       'Hour' => 
       array (
-        0 => '',
+        0 => 'Godzina',
       ),
       'Best Performing Songs' => 
       array (
@@ -3465,6 +3532,10 @@ Odtwarzane',
       array (
         0 => 'Proszę, czekaj...',
       ),
+      'Station Time' => 
+      array (
+        0 => '',
+      ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (
         0 => 'Konta streamera są obecnie wyłączone dla tej stacji. Aby włączyć konta typu streamer, kliknij poniższy przycisk.',
@@ -3555,11 +3626,11 @@ Odtwarzane',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (
-        0 => '',
+        0 => 'Podczas zapisywania zmian wystąpiły następujące błędy:',
       ),
       'General' => 
       array (
-        0 => '',
+        0 => 'Ogólne',
       ),
     ),
   ),

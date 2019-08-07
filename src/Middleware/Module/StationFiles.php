@@ -25,7 +25,7 @@ class StationFiles implements MiddlewareInterface
             throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
 
-        $params = $request->getQueryParams();
+        $params = RequestHelper::getParams($request);
         $file = $params['file'] ?? '';
         $file_path = 'media://'.$file;
 

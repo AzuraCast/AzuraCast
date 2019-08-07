@@ -170,7 +170,8 @@ class FilesController extends FilesControllerAbstract
 
     public function mkdirAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $params = $request->getQueryParams();
+        $params = RequestHelper::getParams($request);
+
         try {
             RequestHelper::getSession($request)->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
@@ -182,7 +183,7 @@ class FilesController extends FilesControllerAbstract
         $station = RequestHelper::getStation($request);
         $fs = $this->filesystem->getForStation($station);
 
-        $new_dir = $file_path.'/'.$_POST['name'];
+        $new_dir = $file_path.'/'.$params['name'];
         $dir_created = $fs->createDir($new_dir);
         if (!$dir_created) {
             return $this->_err($response, 403, sprintf('Directory "%s" was not created', $new_dir));
@@ -193,7 +194,8 @@ class FilesController extends FilesControllerAbstract
 
     public function uploadAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $params = $request->getQueryParams();
+        $params = RequestHelper::getParams($request);
+
         try {
             RequestHelper::getSession($request)->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {

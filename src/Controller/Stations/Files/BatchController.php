@@ -32,7 +32,7 @@ class BatchController extends FilesControllerAbstract
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
     {
-        $params = $request->getQueryParams();
+        $params = RequestHelper::getParams($request);
 
         try {
             RequestHelper::getSession($request)->getCsrf()->verify($params['csrf'], $this->csrf_namespace);

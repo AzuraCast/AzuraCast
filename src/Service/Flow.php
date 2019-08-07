@@ -24,6 +24,7 @@
 
 namespace App\Service;
 
+use App\Http\RequestHelper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -58,7 +59,7 @@ class Flow
      */
     public function process()
     {
-        $params = $this->request->getQueryParams();
+        $params = RequestHelper::getParams($this->request);
 
         $flowIdentifier = $params['flowIdentifier'] ?? '';
         $flowChunkNumber = (int)($params['flowChunkNumber'] ?? '');

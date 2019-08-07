@@ -19,13 +19,12 @@ class C02_Station_MediaCest extends CestAbstract
         $session = $this->di->get(\Azura\Session::class);
         $csrf = $session->getCsrf();
 
-        $test_file = [
-            'tmp_name'  => $test_song,
-            'name'      => basename($test_song),
-            'type'      => 'audio/mpeg',
-            'size'      => filesize($test_song),
-            'error'     => \UPLOAD_ERR_OK
-        ];
+        $test_file = new \Slim\Psr7\UploadedFile(
+            $test_song,
+            basename($test_song),
+            'audio/mpeg',
+            filesize($test_song)
+        );
 
         $I->sendPOST('/station/'.$station_id.'/files/upload', [
             'file' => '',

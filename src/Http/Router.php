@@ -65,6 +65,13 @@ class Router extends \Azura\Http\Router
         }
 
         $base_url = $base_url->withScheme($use_https ? 'https' : 'http');
+
+        // Filter the base URL so it doesn't say http://site:80 or https://site:443
+        if (($base_url->getScheme() === 'http' && $base_url->getPort() === 80)
+            || ($base_url->getScheme() === 'https' && $base_url->getPort() === 443)) {
+            return $base_url->withPort(null);
+        }
+
         return $base_url;
     }
 }

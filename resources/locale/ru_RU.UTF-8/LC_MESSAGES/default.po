@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-23T19:44:58+00:00\n"
-"PO-Revision-Date: 2019-08-03 00:20\n"
+"PO-Revision-Date: 2019-08-07 15:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -794,7 +794,7 @@ msgstr "Вам следует обновить файл <code>docker-compose.yml
 
 #: /var/azuracast/www/src/Notification/Manager.php:101
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr "Следуйте <a href=\"%s\" target=\"_blank\">инструкции по обновлению</a> чтобы обновить вашу установку.."
+msgstr "Следуйте <a href=\"%s\" target=\"_blank\">инструкции по обновлению</a> чтобы обновить вашу установку."
 
 #: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
@@ -1216,7 +1216,7 @@ msgstr "Важные заметки"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr "<p>SHOUTcast 2 DNAS не является бесплатным программным обеспечением, и его ограничительная лицензия не позволяет AzuraCast распространять бинарный файл SHOUTcast. Чтобы установить SHOUTcast, вы должны загрузить бинарный файл Linux x64 с веб-сайта <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a>  Загрузите <code>sc_serv2_linux_x64-latest.tar.gz</code> в поле ниже, чтобы автоматически извлечь его в соответствующий каталог.</p>"
+msgstr "<p>SHOUTcast 2 DNAS не является бесплатным программным обеспечением, и его ограничительная лицензия не позволяет AzuraCast распространять бинарный файл SHOUTcast. Чтобы установить SHOUTcast, вы должны загрузить бинарный файл Linux x64 с веб-сайта <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> Загрузите <code>sc_serv2_linux_x64-latest.tar.gz</code> в поле ниже, чтобы автоматически извлечь его в соответствующий каталог.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
@@ -1291,7 +1291,7 @@ msgstr "Международный стандартный код записи, �
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr "Администраторы могут настраивать поля, которые появятся здесь на  <a href=\"%s\">странице администрирования</a>."
+msgstr "Администраторы могут настраивать поля, которые появятся здесь на <a href=\"%s\">странице администрирования</a>."
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
@@ -2024,7 +2024,7 @@ msgstr "Телеметрия установки AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr "Выберите, будет ли ваша установка взаимодействовать с центральными серверами AzuraCast для проверки обновлений и объявлений. <br>AzuraCast уважает вашу конфиденциальность; смотрите нашу  <a href=\"%s\" target=\"_blank\">политику конфиденциальности</a> для получения более подробной информации."
+msgstr "Выберите, будет ли ваша установка взаимодействовать с центральными серверами AzuraCast для проверки обновлений и объявлений. <br>AzuraCast уважает вашу конфиденциальность; смотрите нашу <a href=\"%s\" target=\"_blank\">политику конфиденциальности</a> для получения более подробной информации."
 
 #: /var/azuracast/www/config/forms/settings.php:139
 msgid "Check for Updates and Announcements"

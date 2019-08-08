@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-07T15:31:44+00:00\n"
-"PO-Revision-Date: 2019-08-08 11:22\n"
+"PO-Revision-Date: 2019-08-08 15:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2713,7 +2713,7 @@ msgstr "Учетные записи пользователей"
 #: /var/azuracast/www/templates/admin/relays/index.phtml:3
 #: /var/azuracast/www/templates/admin/relays/index.phtml:15
 msgid "Connected AzuraRelays"
-msgstr ""
+msgstr "Подключение AzuraRelays"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
@@ -3073,19 +3073,19 @@ msgstr "Основное"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:20
 msgid "Relay"
-msgstr ""
+msgstr "Ретранслятор"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
-msgstr ""
+msgstr "Публичный"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"
-msgstr ""
+msgstr "Первое Подключение"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"
-msgstr ""
+msgstr "Последнее Обновление"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3426,7 +3426,7 @@ msgstr "Запрос композиции"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:15
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Live"
-msgstr ""
+msgstr "Прямая трансляция"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:16
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
@@ -3989,7 +3989,7 @@ msgstr "Живые слушатели"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:58
 msgid "There are too many data points to map!"
-msgstr ""
+msgstr "Слишком много точек данных для карты!"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
@@ -4026,7 +4026,7 @@ msgstr "Скачать CSV"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:40
 msgid "Unique Listeners"
-msgstr ""
+msgstr "Уникальные Слушатели"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48

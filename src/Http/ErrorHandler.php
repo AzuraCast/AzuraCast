@@ -8,11 +8,8 @@ use Azura\Settings;
 use Azura\View;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Psr7\Response;
-use Symfony\Component\VarDumper\VarDumper;
 use Throwable;
 
 class ErrorHandler extends \Azura\Http\ErrorHandler
@@ -29,12 +26,6 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
     /** @var Sentry */
     protected $sentry;
 
-    /** @var Settings */
-    protected $settings;
-
-    /** @var int */
-    protected $logger_level = Logger::ERROR;
-
     public function __construct(
         \Slim\App $app,
         Logger $logger,
@@ -44,67 +35,12 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
         Sentry $sentry,
         Settings $settings
     ) {
-        parent::__construct($app, $logger);
+        parent::__construct($app, $logger, $settings);
 
         $this->session = $session;
         $this->router = $router;
         $this->view = $view;
         $this->sentry = $sentry;
-        $this->settings = $settings;
-    }
-
-    public function __invoke(
-        ServerRequestInterface $request,
-        Throwable $exception,
-        bool $displayErrorDetails,
-        bool $logErrors,
-        bool $logErrorDetails
-    ): ResponseInterface {
-        if ($exception instanceof \Azura\Exception) {
-            $this->logger_level = $exception->getLoggerLevel();
-        }
-
-        $this->show_detailed = (!APP_IN_PRODUCTION && $this->logger_level >= Logger::ERROR);
-        $this->return_json = $this->_returnJson($request);
-
-        return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
-    }
-
-    protected function _returnJson(ServerRequestInterface $req): bool
-    {
-        if (RequestHelper::isXhr($req) || $this->settings->isCli() || $this->settings->isTesting()) {
-            return true;
-        }
-
-        if ($req->hasHeader('Accept')) {
-            $accept = $req->getHeader('Accept');
-
-            if (in_array('application/json', $accept)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected function writeToErrorLog(): void
-    {
-        $context = [
-            'file' => $this->exception->getFile(),
-            'line' => $this->exception->getLine(),
-            'code' => $this->exception->getCode(),
-        ];
-
-        if ($this->exception instanceof \Azura\Exception) {
-            $context['context'] = $this->exception->getLoggingContext();
-            $context = array_merge($context, $this->exception->getExtraData());
-        }
-
-        if ($this->show_detailed) {
-            $context['trace'] = array_slice($this->exception->getTrace(), 0, 5);
-        }
-
-        $this->logger->addRecord($this->logger_level, $this->exception->getMessage(), $context);
     }
 
     protected function respond(): ResponseInterface

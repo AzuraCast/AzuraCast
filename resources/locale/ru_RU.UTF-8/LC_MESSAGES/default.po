@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-07T15:31:44+00:00\n"
-"PO-Revision-Date: 2019-08-08 15:30\n"
+"PO-Revision-Date: 2019-08-08 15:46\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -4031,11 +4031,11 @@ msgstr "Уникальные Слушатели"
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
 msgid "for selected period"
-msgstr ""
+msgstr "за выбранный период"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
-msgstr ""
+msgstr "Всего Часов Прослушивания"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:56
 msgid "IP"
@@ -4228,7 +4228,7 @@ msgstr "Клиенты ShoutCast v1"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:73
 msgid "%d (%d for some clients)"
-msgstr ""
+msgstr "%d (%d для некоторых клиентов)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:78
 msgid "(DJ username and password separated by a colon)"

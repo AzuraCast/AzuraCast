@@ -33,7 +33,7 @@ class ListController extends FilesControllerAbstract
         $router = $request->getRouter();
 
         $fs = $this->filesystem->getForStation($station);
-        $params = $request->getQueryParams();
+        $params = $request->getParams();
 
         if ('true' === $params['flush_cache']) {
             $fs->flushAllCaches();
@@ -171,8 +171,8 @@ class ListController extends FilesControllerAbstract
 
         $num_results = count($result);
 
-        $page = @$_REQUEST['current'] ?: 1;
-        $row_count = @$_REQUEST['rowCount'] ?: 15;
+        $page = $params['current'] ?? 1;
+        $row_count = $params['rowCount'] ?? 15;
 
         if ($row_count == -1) {
             $row_count = $num_results;

@@ -3,7 +3,7 @@ namespace App\Middleware;
 
 use App\Entity;
 use App\Entity\Repository\StationRepository;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
@@ -55,13 +55,11 @@ class GetStation implements MiddlewareInterface
                 $frontend = $this->adapters->getFrontendAdapter($record);
                 $remotes = $this->adapters->getRemoteAdapters($record);
 
-                $request = RequestHelper::injectStationComponents(
-                    $request,
-                    $record,
-                    $backend,
-                    $frontend,
-                    $remotes
-                );
+                $request = $request
+                    ->withAttribute(ServerRequest::ATTR_STATION, $record)
+                    ->withAttribute(ServerRequest::ATTR_STATION_BACKEND, $backend)
+                    ->withAttribute(ServerRequest::ATTR_STATION_FRONTEND, $frontend)
+                    ->withAttribute(ServerRequest::ATTR_STATION_REMOTES, $remotes);
             }
         }
 

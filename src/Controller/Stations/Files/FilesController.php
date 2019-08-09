@@ -3,13 +3,12 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Form\Form;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class FilesController extends FilesControllerAbstract
 {
@@ -37,9 +36,9 @@ class FilesController extends FilesControllerAbstract
         $this->form_config = $config->get('forms/rename');
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         $playlists = $this->em->createQuery(/** @lang DQL */'SELECT sp.id, sp.name 
             FROM App\Entity\StationPlaylist sp 
@@ -63,20 +62,20 @@ class FilesController extends FilesControllerAbstract
             $custom_fields['media_custom_'.$row['id']] = $row['name'];
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'stations/files/index', [
+        return $request->getView()->renderToResponse($response, 'stations/files/index', [
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
             'space_used' => $station->getStorageUsed(),
             'space_total' => $station->getStorageAvailable(),
             'space_percent' => $station->getStorageUsePercentage(),
             'files_count' => $files_count,
-            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function renameAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function renameAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
         $path = $request->getAttribute('file');
@@ -123,23 +122,23 @@ class FilesController extends FilesControllerAbstract
                 $path = $new_path;
             }
 
-            RequestHelper::getSession($request)->flash('<b>' . __('File renamed!') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('File renamed!') . '</b>', 'green');
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
 
-            return ResponseHelper::withRedirect($response, (string)RequestHelper::getRouter($request)->fromHere('stations:files:index').'#'.$file_dir);
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:files:index').'#'.$file_dir);
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Rename File/Directory')
         ]);
     }
 
-    public function listDirectoriesAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function listDirectoriesAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
         $file_path = $request->getAttribute('file_path');
@@ -163,24 +162,24 @@ class FilesController extends FilesControllerAbstract
             ];
         }, $fs->listContents($file_path)));
 
-        return ResponseHelper::withJson($response, [
+        return $response->withJson([
             'rows' => array_values($directories)
         ]);
     }
 
-    public function mkdirAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function mkdirAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
 
         try {
-            RequestHelper::getSession($request)->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+            $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
             return $this->_err($response, 403, 'CSRF Failure: '.$e->getMessage());
         }
 
         $file_path = $request->getAttribute('file_path');
 
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
         $new_dir = $file_path.'/'.$params['name'];
@@ -189,20 +188,20 @@ class FilesController extends FilesControllerAbstract
             return $this->_err($response, 403, sprintf('Directory "%s" was not created', $new_dir));
         }
 
-        return ResponseHelper::withJson($response, ['success' => true]);
+        return $response->withJson(['success' => true]);
     }
 
-    public function uploadAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function uploadAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
 
         try {
-            RequestHelper::getSession($request)->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+            $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
             return $this->_err($response, 403, 'CSRF Failure: '.$e->getMessage());
         }
 
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         if ($station->isStorageFull()) {
             return $this->_err($response, 500, __('This station is out of available storage space.'));
@@ -256,20 +255,20 @@ class FilesController extends FilesControllerAbstract
                 $station->addStorageUsed($flow_response['size']);
                 $this->em->flush();
 
-                return ResponseHelper::withJson($response, ['success' => true]);
+                return $response->withJson(['success' => true]);
             }
         } catch (\Exception | \Error $e) {
             return $this->_err($response, 500, $e->getMessage());
         }
 
-        return ResponseHelper::withJson($response, ['success' => false]);
+        return $response->withJson(['success' => false]);
     }
 
-    public function downloadAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function downloadAction(ServerRequest $request, Response $response): ResponseInterface
     {
         set_time_limit(600);
 
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $file_path = $request->getAttribute('file_path');
 
         $fs = $this->filesystem->getForStation($station);
@@ -285,12 +284,9 @@ class FilesController extends FilesControllerAbstract
             $file_mime = 'application/octet-stream';
         }
 
-        return ResponseHelper::withNoCache($response)
+        return $response->withFileDownload($fh, $filename)
             ->withHeader('Content-Type', $file_mime)
             ->withHeader('Content-Length', $file_meta['size'])
-            ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
-                strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""))
-            ->withHeader('X-Accel-Buffering', 'no')
-            ->withBody(new \Slim\Psr7\Stream($fh));
+            ->withHeader('X-Accel-Buffering', 'no');
     }
 }

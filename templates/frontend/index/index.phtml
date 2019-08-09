@@ -28,7 +28,7 @@ if ($metrics) {
         ]));
 }
 
-$user = \App\Http\RequestHelper::getUser($request);
+$user = $request->getUser();
 ?>
 
 <section class="card mb-4" role="region">

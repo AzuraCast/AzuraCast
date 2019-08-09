@@ -2,11 +2,10 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class UsersController extends AbstractAdminApiCrudController
 {
@@ -95,29 +94,25 @@ class UsersController extends AbstractAdminApiCrudController
      *
      * @inheritdoc
      */
-    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $record_id): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $record_id): ResponseInterface
     {
         /** @var Entity\User $record */
         $record = $this->_getRecord($record_id);
 
         if (null === $record) {
-            return ResponseHelper::withJson(
-                $response->withStatus(404),
-                new Entity\Api\Error(404, 'Record not found!')
-            );
+            return $response->withStatus(404)
+                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
         }
 
-        $current_user = RequestHelper::getUser($request);
+        $current_user = $request->getUser();
 
         if ($record->getId() === $current_user->getId()) {
-            return ResponseHelper::withJson(
-                $response->withStatus(403),
-                new Entity\Api\Error(403, 'You cannot remove yourself.')
-            );
+            return $response->withStatus(403)
+                ->withJson(new Entity\Api\Error(403, 'You cannot remove yourself.'));
         }
 
         $this->_deleteRecord($record);
 
-        return ResponseHelper::withJson($response, new Entity\Api\Status(true, 'Record deleted successfully.'));
+        return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
     }
 }

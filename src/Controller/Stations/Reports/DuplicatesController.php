@@ -2,12 +2,11 @@
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class DuplicatesController
 {
@@ -27,7 +26,7 @@ class DuplicatesController
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
         $media_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm, s, spm, sp 
@@ -77,14 +76,14 @@ class DuplicatesController
             }
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/duplicates', [
+        return $request->getView()->renderToResponse($response, 'stations/reports/duplicates', [
             'dupes' => $dupes,
         ]);
     }
 
-    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
@@ -100,9 +99,9 @@ class DuplicatesController
             $this->em->remove($media);
             $this->em->flush();
 
-            RequestHelper::getSession($request)->flash('<b>Duplicate file deleted!</b>', 'green');
+            $request->getSession()->flash('<b>Duplicate file deleted!</b>', 'green');
         }
 
-        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('stations:reports:duplicates', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates', ['station' => $station_id]));
     }
 }

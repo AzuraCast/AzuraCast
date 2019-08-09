@@ -1,13 +1,10 @@
 <?php
 namespace App\Middleware\Module;
 
-use App\Acl;
 use App\Event;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use Azura\EventDispatcher;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
 use Slim\Routing\RouteContext;
@@ -15,36 +12,31 @@ use Slim\Routing\RouteContext;
 /**
  * Module middleware for the /station pages.
  */
-class Stations implements MiddlewareInterface
+class Stations
 {
-    /** @var Acl */
-    protected $acl;
-
     /** @var EventDispatcher */
     protected $dispatcher;
 
     /**
-     * @param Acl $acl
      * @param EventDispatcher $dispatcher
      */
-    public function __construct(Acl $acl, EventDispatcher $dispatcher)
+    public function __construct(EventDispatcher $dispatcher)
     {
-        $this->acl = $acl;
         $this->dispatcher = $dispatcher;
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $view = RequestHelper::getView($request);
+        $view = $request->getView();
 
-        $station = RequestHelper::getStation($request);
-        $backend = RequestHelper::getStationBackend($request);
-        $frontend = RequestHelper::getStationFrontend($request);
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
 
         date_default_timezone_set($station->getTimezone());
 
@@ -54,10 +46,10 @@ class Stations implements MiddlewareInterface
             'backend'   => $backend,
         ]);
 
-        $user = RequestHelper::getUser($request);
-        $router = RequestHelper::getRouter($request);
+        $user = $request->getUser();
+        $router = $request->getRouter();
 
-        $event = new Event\BuildStationMenu($this->acl, $user, $router, $station, $backend, $frontend);
+        $event = new Event\BuildStationMenu($request->getAcl(), $user, $router, $station, $backend, $frontend);
         $this->dispatcher->dispatch($event);
 
         $active_tab = null;

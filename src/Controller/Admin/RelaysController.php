@@ -2,10 +2,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class RelaysController
 {
@@ -20,12 +20,12 @@ class RelaysController
         $this->em = $em;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $record_repo = $this->em->getRepository(Entity\Relay::class);
         $relays = $record_repo->fetchArray(false);
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'admin/relays/index', [
+        return $request->getView()->renderToResponse($response, 'admin/relays/index', [
             'relays' => $relays,
         ]);
     }

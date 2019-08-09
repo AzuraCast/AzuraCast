@@ -3,14 +3,13 @@ namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Entity;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class RelaysController
 {
@@ -50,15 +49,15 @@ class RelaysController
      *   )
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $stations = $this->getManageableStations($request);
 
-        $router = RequestHelper::getRouter($request);
+        $router = $request->getRouter();
 
         $return = [];
         foreach($stations as $station) {
@@ -93,10 +92,10 @@ class RelaysController
             $return[] = $row;
         }
 
-        return ResponseHelper::withJson($response, $return);
+        return $response->withJson($return);
     }
 
-    public function updateAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
         /** @var Repository $relay_repo */
         $relay_repo = $this->em->getRepository(Entity\Relay::class);
@@ -168,14 +167,14 @@ class RelaysController
 
         $this->em->flush();
 
-        return ResponseHelper::withJson($response, new Entity\Api\Status);
+        return $response->withJson(new Entity\Api\Status);
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @return Entity\Station[]
      */
-    protected function getManageableStations(ServerRequestInterface $request): array
+    protected function getManageableStations(ServerRequest $request): array
     {
         $all_stations = $this->em->createQuery(/** @lang DQL */'SELECT s, sm 
             FROM App\Entity\Station s 
@@ -185,7 +184,7 @@ class RelaysController
             ->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
             ->execute();
 
-        $user = RequestHelper::getUser($request);
+        $user = $request->getUser();
 
         return array_filter($all_stations, function(Entity\Station $station) use ($user) {
             return $this->acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId());

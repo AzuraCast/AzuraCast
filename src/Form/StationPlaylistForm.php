@@ -3,12 +3,12 @@ namespace App\Form;
 
 use App\Customization;
 use App\Entity;
+use App\Http\ServerRequest;
 use App\Radio\PlaylistParser;
 use Azura\Config;
 use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\UploadedFile;
 use Symfony\Component\Serializer\Serializer;
@@ -43,10 +43,10 @@ class StationPlaylistForm extends EntityForm
         $this->playlist_media_repo = $em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
-    public function process(ServerRequestInterface $request, $record = null)
+    public function process(ServerRequest $request, $record = null)
     {
         // Set the "Station Time Zone" field.
-        $station = \App\Http\RequestHelper::getStation($request);
+        $station = $request->getStation();
         $station_tz = $station->getTimezone();
 
         $now_station = Chronos::now(new \DateTimeZone($station_tz))->toIso8601String();
@@ -71,7 +71,7 @@ class StationPlaylistForm extends EntityForm
                 $matches = $this->_importPlaylist($record, $import_file);
 
                 if (is_int($matches)) {
-                    \App\Http\RequestHelper::getSession($request)->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
+                    $request->getSession()->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
                 }
             }
 

@@ -1,31 +1,29 @@
 <?php
 namespace App\Middleware\Module;
 
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Module middleware for the file management pages.
  */
-class StationFiles implements MiddlewareInterface
+class StationFiles
 {
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $backend = RequestHelper::getStationBackend($request);
+        $backend = $request->getStationBackend();
 
         if (!$backend::supportsMedia()) {
             throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
 
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
         $file = $params['file'] ?? '';
         $file_path = 'media://'.$file;
 

@@ -3,13 +3,13 @@ namespace App\Controller\Api;
 
 use App\Acl;
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Task\NowPlaying;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class InternalController
 {
@@ -44,15 +44,15 @@ class InternalController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function authAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function authAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         if (!$station->getEnableStreamers()) {
             $this->logger->error('Attempted DJ authentication when streamers are disabled on this station.', [
                 'station_id' => $station->getId(),
@@ -63,11 +63,11 @@ class InternalController
             return $response;
         }
 
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
         $user = $params['dj_user'] ?? '';
         $pass = $params['dj_password'] ?? '';
 
-        $adapter = RequestHelper::getStationBackend($request);
+        $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
             $response->getBody()->write($adapter->authenticateStreamer($station, $user, $pass));
             return $response;
@@ -77,24 +77,24 @@ class InternalController
         return $response;
     }
 
-    public function nextsongAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function nextsongAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
         $as_autodj = isset($params['api_auth']);
 
-        $response->getBody()->write($this->autodj->annotateNextSong(RequestHelper::getStation($request), $as_autodj));
+        $response->getBody()->write($this->autodj->annotateNextSong($request->getStation(), $as_autodj));
         return $response;
     }
 
-    public function djonAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function djonAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
-        $adapter = RequestHelper::getStationBackend($request);
+        $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            $station = RequestHelper::getStation($request);
+            $station = $request->getStation();
 
             $this->logger->info('Received "DJ connected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
@@ -108,13 +108,13 @@ class InternalController
         return $response;
     }
 
-    public function djoffAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function djoffAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
-        $adapter = RequestHelper::getStationBackend($request);
+        $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            $station = RequestHelper::getStation($request);
+            $station = $request->getStation();
 
             $this->logger->info('Received "DJ disconnected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
@@ -128,13 +128,13 @@ class InternalController
         return $response;
     }
 
-    public function feedbackAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function feedbackAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
 
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
-        $body = RequestHelper::getParams($request);
+        $body = $request->getParams();
 
         $this->sync_nowplaying->queueStation($station, [
             'song_id'   => $body['song'] ?? null,
@@ -147,20 +147,20 @@ class InternalController
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      */
-    protected function _checkStationAuth(ServerRequestInterface $request): void
+    protected function _checkStationAuth(ServerRequest $request): void
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         /** @var Entity\User $user */
-        $user = $request->getAttribute(RequestHelper::ATTR_USER);
+        $user = $request->getAttribute(ServerRequest::ATTR_USER);
 
         if ($this->acl->userAllowed($user, Acl::GLOBAL_VIEW, $station->getId())) {
             return;
         }
 
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
         $auth_key = $params['api_auth'];
         if (!$station->validateAdapterApiKey($auth_key)) {
             $this->logger->error('Invalid API key supplied for internal API call.', [

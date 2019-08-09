@@ -6,12 +6,11 @@ use App\Auth;
 use App\Entity;
 use App\Form\Form;
 use App\Form\StationForm;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class SetupController
 {
@@ -54,44 +53,44 @@ class SetupController
     /**
      * Setup Routing Controls
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $current_step = $this->_getSetupStep();
-        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('setup:'.$current_step));
+        return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
     }
 
     /**
      * Placeholder function for "setup complete" redirection.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function completeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function completeAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        RequestHelper::getSession($request)->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
+        $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
 
-        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('dashboard'));
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 
     /**
      * Setup Step 1:
      * Create Super Administrator Account
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function registerAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function registerAction(ServerRequest $request, Response $response): ResponseInterface
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'register' && APP_IN_PRODUCTION) {
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('setup:'.$current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
         // Create first account form.
@@ -124,10 +123,10 @@ class SetupController
             $this->auth->authenticate($data['username'], $data['password']);
             $this->acl->reload();
 
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('setup:index'));
+            return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
 
-        return RequestHelper::getView($request)
+        return $request->getView()
             ->renderToResponse($response, 'frontend/setup/register');
     }
 
@@ -135,23 +134,23 @@ class SetupController
      * Setup Step 2:
      * Create Station and Parse Metadata
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function stationAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function stationAction(ServerRequest $request, Response $response): ResponseInterface
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'station' && APP_IN_PRODUCTION) {
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('setup:'.$current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
         if (false !== $this->station_form->process($request)) {
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('setup:settings'));
+            return $response->withRedirect($request->getRouter()->named('setup:settings'));
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/setup/station', [
+        return $request->getView()->renderToResponse($response, 'frontend/setup/station', [
             'form' => $this->station_form,
         ]);
     }
@@ -160,16 +159,16 @@ class SetupController
      * Setup Step 3:
      * Set site settings.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function settingsAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function settingsAction(ServerRequest $request, Response $response): ResponseInterface
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'settings' && APP_IN_PRODUCTION) {
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('setup:'.$current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
         $form = new Form($this->settings_form_config);
@@ -189,13 +188,13 @@ class SetupController
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            RequestHelper::getSession($request)->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
+            $request->getSession()->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
                 'green');
 
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('dashboard'));
+            return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/setup/settings', [
+        return $request->getView()->renderToResponse($response, 'frontend/setup/settings', [
             'form' => $form,
         ]);
     }

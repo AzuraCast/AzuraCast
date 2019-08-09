@@ -2,9 +2,8 @@
 namespace App\Controller\Admin;
 
 use App\Form\EntityForm;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractAdminCrudController
 {
@@ -33,23 +32,23 @@ abstract class AbstractAdminCrudController
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param string|int|null $id
      * @return object|bool|null
      */
-    protected function _doEdit(ServerRequestInterface $request, $id = null)
+    protected function _doEdit(ServerRequest $request, $id = null)
     {
         $record = $this->_getRecord($id);
         return $this->form->process($request, $record);
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param string|int $id
      */
-    protected function _doDelete(ServerRequestInterface $request, $id, $csrf_token): void
+    protected function _doDelete(ServerRequest $request, $id, $csrf_token): void
     {
-        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $record = $this->_getRecord($id);
 

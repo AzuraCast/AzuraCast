@@ -2,7 +2,6 @@
 namespace App\Radio;
 
 use App\Entity\Station;
-use App\Http\ErrorHandler;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;

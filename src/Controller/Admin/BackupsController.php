@@ -5,15 +5,14 @@ use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Form\Form;
 use App\Form\SettingsForm;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Sync\Task\Backup;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class BackupsController
 {
@@ -57,33 +56,33 @@ class BackupsController
         $this->backup_fs = new Filesystem(new Local(Backup::BASE_DIR));
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        return RequestHelper::getView($request)->renderToResponse($response, 'admin/backups/index', [
+        return $request->getView()->renderToResponse($response, 'admin/backups/index', [
             'backups'       => $this->backup_fs->listContents('', false),
             'is_enabled'    => (bool)$this->settings_repo->getSetting(Settings::BACKUP_ENABLED, false),
             'last_run'      => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RUN, 0),
             'last_result'   => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RESULT, 0),
             'last_output'   => $this->settings_repo->getSetting(Settings::BACKUP_LAST_OUTPUT, ''),
-            'csrf'          => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
+            'csrf'          => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function configureAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function configureAction(ServerRequest $request, Response $response): ResponseInterface
     {
         if (false !== $this->settings_form->process($request)) {
-            RequestHelper::getSession($request)->flash(__('Changes saved.'), 'green');
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('admin:backups:index'));
+            $request->getSession()->flash(__('Changes saved.'), 'green');
+            return $response->withRedirect($request->getRouter()->fromHere('admin:backups:index'));
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->settings_form,
             'render_mode' => 'edit',
             'title' => __('Configure Backups'),
         ]);
     }
 
-    public function runAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function runAction(ServerRequest $request, Response $response): ResponseInterface
     {
         // Handle submission.
         if ('POST' === $request->getMethod() && $this->backup_run_form->isValid($request->getParsedBody())) {
@@ -93,7 +92,7 @@ class BackupsController
 
             $is_successful = (0 === $result_code);
 
-            return RequestHelper::getView($request)->renderToResponse($response, 'admin/backups/run', [
+            return $request->getView()->renderToResponse($response, 'admin/backups/run', [
                 'title'     => __('Run Manual Backup'),
                 'path'      => $data['path'],
                 'is_successful' => $is_successful,
@@ -101,14 +100,14 @@ class BackupsController
             ]);
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->backup_run_form,
             'render_mode' => 'edit',
             'title' => __('Run Manual Backup'),
         ]);
     }
 
-    public function downloadAction(ServerRequestInterface $request, ResponseInterface $response, $path): ResponseInterface
+    public function downloadAction(ServerRequest $request, Response $response, $path): ResponseInterface
     {
         $path = $this->getFilePath($path);
 
@@ -121,24 +120,22 @@ class BackupsController
             $file_mime = 'application/octet-stream';
         }
 
-        return ResponseHelper::withNoCache($response)
+        return $response->withFileDownload($fh, $path)
+            ->withNoCache()
             ->withHeader('Content-Type', $file_mime)
             ->withHeader('Content-Length', $file_meta['size'])
-            ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
-                strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($path) : "\"$path\""))
-            ->withHeader('X-Accel-Buffering', 'no')
-            ->withBody(new \Slim\Psr7\Stream($fh));
+            ->withHeader('X-Accel-Buffering', 'no');
     }
 
-    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $path, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $path, $csrf_token): ResponseInterface
     {
-        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $path = $this->getFilePath($path);
         $this->backup_fs->delete($path);
 
-        RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Backup')) . '</b>', 'green');
-        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('admin:backups:index'));
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Backup')) . '</b>', 'green');
+        return $response->withRedirect($request->getRouter()->named('admin:backups:index'));
     }
 
     protected function getFilePath($raw_path)

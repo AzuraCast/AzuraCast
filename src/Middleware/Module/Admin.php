@@ -1,13 +1,10 @@
 <?php
 namespace App\Middleware\Module;
 
-use App\Acl;
 use App\Event;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use Azura\EventDispatcher;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
 use Slim\Routing\RouteContext;
@@ -15,35 +12,30 @@ use Slim\Routing\RouteContext;
 /**
  * Module middleware for the /admin pages.
  */
-class Admin implements MiddlewareInterface
+class Admin
 {
-    /** @var Acl */
-    protected $acl;
-
     /** @var EventDispatcher */
     protected $dispatcher;
 
     /**
-     * @param Acl $acl
      * @param EventDispatcher $dispatcher
      */
-    public function __construct(Acl $acl, EventDispatcher $dispatcher)
+    public function __construct(EventDispatcher $dispatcher)
     {
-        $this->acl = $acl;
         $this->dispatcher = $dispatcher;
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $event = new Event\BuildAdminMenu($this->acl, RequestHelper::getUser($request), RequestHelper::getRouter($request));
+        $event = new Event\BuildAdminMenu($request->getAcl(), $request->getUser(), $request->getRouter());
         $this->dispatcher->dispatch($event);
 
-        $view = RequestHelper::getView($request);
+        $view = $request->getView();
 
         $active_tab = null;
         $routeContext = RouteContext::fromRequest($request);

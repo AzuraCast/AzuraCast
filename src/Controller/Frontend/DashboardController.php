@@ -4,14 +4,14 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Entity;
 use App\Event;
-use App\Http\RequestHelper;
+use App\Http\Response;
 use App\Http\Router;
+use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\SimpleCache\CacheInterface;
 
 class DashboardController
@@ -61,11 +61,11 @@ class DashboardController
         $this->dispatcher = $dispatcher;
     }
 
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $view = RequestHelper::getView($request);
-        $user = RequestHelper::getUser($request);
-        $router = RequestHelper::getRouter($request);
+        $view = $request->getView();
+        $user = $request->getUser();
+        $router = $request->getRouter();
 
         $show_admin = $this->acl->userAllowed($user, Acl::GLOBAL_VIEW);
 

@@ -3,13 +3,12 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Flysystem\StationFilesystem;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class BatchController extends FilesControllerAbstract
 {
@@ -30,20 +29,18 @@ class BatchController extends FilesControllerAbstract
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
 
         try {
-            RequestHelper::getSession($request)->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+            $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch(\Azura\Exception\CsrfValidation $e) {
-            return ResponseHelper::withJson(
-                $response->withStatus(403),
-                ['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]
-            );
+            return $response->withStatus(403)
+                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
 
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
@@ -128,7 +125,7 @@ class BatchController extends FilesControllerAbstract
                 $this->em->flush($station);
 
                 // Write new PLS playlist configuration.
-                $backend = RequestHelper::getStationBackend($request);
+                $backend = $request->getStationBackend();
 
                 if ($backend instanceof Liquidsoap) {
                     foreach($affected_playlists as $playlist) {
@@ -208,7 +205,7 @@ class BatchController extends FilesControllerAbstract
                 $this->em->flush();
 
                 // Write new PLS playlist configuration.
-                $backend = RequestHelper::getStationBackend($request);
+                $backend = $request->getStationBackend();
 
                 if ($backend instanceof Liquidsoap) {
                     foreach($affected_playlists as $playlist) {
@@ -259,7 +256,7 @@ class BatchController extends FilesControllerAbstract
         $this->em->clear(Entity\StationPlaylist::class);
         $this->em->clear(Entity\StationPlaylistMedia::class);
 
-        return ResponseHelper::withJson($response, [
+        return $response->withJson([
             'success' => true,
             'files_found' => $files_found,
             'files_affected' => $files_affected,

@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Http\RequestHelper;
+
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Version;
 use Azura\Settings;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class OpenApiController
 {
@@ -25,9 +26,9 @@ class OpenApiController
         $this->version = $version;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $router = RequestHelper::getRouter($request);
+        $router = $request->getRouter();
 
         $api_base_url = (string)$router->fromHere(null, [], [], true);
         $api_base_url = str_replace('/openapi.yml', '', $api_base_url);

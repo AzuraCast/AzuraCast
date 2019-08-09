@@ -2,12 +2,11 @@
 namespace App\Controller\Admin;
 
 use App\Form\Form;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Process\Process;
 
@@ -24,7 +23,7 @@ class InstallShoutcastController
         $this->form_config = $config->get('forms/install_shoutcast');
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $form_config = $this->form_config;
 
@@ -62,7 +61,7 @@ class InstallShoutcastController
                     $process->mustRun();
                 }
 
-                return ResponseHelper::withRedirect($response, $request->getUri()->getPath());
+                return $response->withRedirect($request->getUri()->getPath());
             } catch(\Exception $e) {
                 $form
                     ->getField('binary')
@@ -70,7 +69,7 @@ class InstallShoutcastController
             }
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Install SHOUTcast'),

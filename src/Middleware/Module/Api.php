@@ -2,19 +2,16 @@
 namespace App\Middleware\Module;
 
 use App\Entity;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
-use Azura\Session;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
  */
-class Api implements MiddlewareInterface
+class Api
 {
     /** @var Entity\Repository\ApiKeyRepository */
     protected $api_repo;
@@ -22,36 +19,31 @@ class Api implements MiddlewareInterface
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    /** @var Session */
-    protected $session;
-
     /**
-     * @param Session $session
      * @param EntityManager $em
      */
-    public function __construct(
-        Session $session,
-        EntityManager $em
-    ) {
-        $this->session = $session;
+    public function __construct(EntityManager $em)
+    {
         $this->api_repo = $em->getRepository(Entity\ApiKey::class);
         $this->settings_repo = $em->getRepository(Entity\Settings::class);
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Prevent unnecessary session creation on API pages from flooding the session databases
-        if (!$this->session->exists()) {
-            $this->session->disable();
+        $session = $request->getSession();
+
+        if (!$session->exists()) {
+            $session->disable();
         }
 
         // Set "is API call" attribute on the request so error handling responds correctly.
-        $request = $request->withAttribute(RequestHelper::ATTR_IS_API_CALL, true);
+        $request = $request->withAttribute(ServerRequest::ATTR_IS_API_CALL, true);
 
         // Attempt API key auth if a key exists.
         $api_key = $this->getApiKey($request);
@@ -59,7 +51,7 @@ class Api implements MiddlewareInterface
 
         // Override the request's "user" variable if API authentication is supplied and valid.
         if ($api_user instanceof Entity\User) {
-            $request = RequestHelper::injectUser($request, $api_user);
+            $request = $request->withAttribute(ServerRequest::ATTR_USER, $api_user);
         }
 
         // Set default cache control for API pages.
@@ -96,20 +88,22 @@ class Api implements MiddlewareInterface
             $response = $response->withHeader('Access-Control-Allow-Origin', '*');
         }
 
-        if ($prefer_browser_url || $request->getAttribute(RequestHelper::ATTR_USER) instanceof Entity\User) {
-            $response = ResponseHelper::withNoCache($response);
-        } else {
-            $response = ResponseHelper::withCacheLifetime($response, 15);
+        if ($response instanceof Response) {
+            if ($prefer_browser_url || $request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
+                $response = $response->withNoCache();
+            } else {
+                $response = $response->withCacheLifetime(15);
+            }
         }
 
         return $response;
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @return string|null
      */
-    protected function getApiKey(ServerRequestInterface $request): ?string
+    protected function getApiKey(ServerRequest $request): ?string
     {
         // Check authorization header
         $auth_headers = $request->getHeader('Authorization');

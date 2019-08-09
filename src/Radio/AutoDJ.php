@@ -599,7 +599,7 @@ class AutoDJ implements EventSubscriberInterface
             $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
             // Log in history
-            $sh = new Entity\SongHistory($request->getTrack()->getSong(), \App\Http\RequestHelper::getStation($request));
+            $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
             $sh->setRequest($request);
             $sh->setMedia($request->getTrack());
 

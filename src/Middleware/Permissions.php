@@ -1,19 +1,15 @@
 <?php
 namespace App\Middleware;
 
-use App\Entity;
 use App\Exception\PermissionDenied;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
  */
-class Permissions implements MiddlewareInterface
+class Permissions
 {
     /** @var string */
     protected $action;
@@ -30,39 +26,28 @@ class Permissions implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->use_station) {
-            $station = RequestHelper::getStation($request);
+            $station = $request->getStation();
             $station_id = $station->getId();
         } else {
             $station_id = null;
         }
 
         try {
-            try {
-                $user = RequestHelper::getUser($request);
-            } catch (\Exception $e) {
-                throw new PermissionDenied;
-            }
+            $user = $request->getUser();
+        } catch (\Exception $e) {
+            throw new PermissionDenied;
+        }
 
-            $acl = RequestHelper::getAcl($request);
-            if (!$acl->userAllowed($user, $this->action, $station_id)) {
-                throw new PermissionDenied;
-            }
-        } catch (PermissionDenied $e) {
-            if (RequestHelper::isApiCall($request)) {
-                return ResponseHelper::withJson(
-                    new \Slim\Psr7\Response(403),
-                    new Entity\Api\Error(403, $e->getMessage(), $e->getFormattedMessage())
-                );
-            }
-
-            throw $e;
+        $acl = $request->getAcl();
+        if (!$acl->userAllowed($user, $this->action, $station_id)) {
+            throw new PermissionDenied;
         }
 
         return $handler->handle($request);

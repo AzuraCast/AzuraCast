@@ -3,10 +3,10 @@ namespace App\Form;
 
 use App\Entity;
 use App\Http\Router;
+use App\Http\ServerRequest;
 use Azura\Config;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -69,7 +69,7 @@ class StationWebhookForm extends EntityForm
         return $this->forms;
     }
 
-    public function process(ServerRequestInterface $request, $record = null)
+    public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\StationWebhook) {
             throw new \InvalidArgumentException(sprintf('Record is not an instance of %s', Entity\StationWebhook::class));

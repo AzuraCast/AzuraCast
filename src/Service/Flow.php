@@ -24,9 +24,10 @@
 
 namespace App\Service;
 
-use App\Http\RequestHelper;
+
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 class Flow
@@ -34,21 +35,21 @@ class Flow
     /**
      * Process the request and return a response if necessary, or the completed file details if successful.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param string|null $temp_dir
      * @return array|ResponseInterface|null
      */
     public static function process(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
+        ServerRequest $request,
+        Response $response,
         string $temp_dir = null
     ) {
         if (null === $temp_dir) {
             $temp_dir = sys_get_temp_dir().'/uploads/';
         }
 
-        $params = RequestHelper::getParams($request);
+        $params = $request->getParams();
 
         $flowIdentifier = $params['flowIdentifier'] ?? '';
         $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);

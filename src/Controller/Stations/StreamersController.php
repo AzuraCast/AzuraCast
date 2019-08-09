@@ -3,11 +3,10 @@ namespace App\Controller\Stations;
 
 use App\Entity;
 use App\Form\EntityFormManager;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class StreamersController extends AbstractStationCrudController
 {
@@ -23,16 +22,16 @@ class StreamersController extends AbstractStationCrudController
         $this->csrf_namespace = 'stations_streamers';
     }
 
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
-        $backend = RequestHelper::getStationBackend($request);
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
 
         if (!$backend::supportsStreamers()) {
             throw new \App\Exception\StationUnsupported;
         }
 
-        $view = RequestHelper::getView($request);
+        $view = $request->getView();
 
         if (!$station->getEnableStreamers()) {
             $params = $request->getQueryParams();
@@ -41,10 +40,10 @@ class StreamersController extends AbstractStationCrudController
                 $this->em->persist($station);
                 $this->em->flush();
 
-                RequestHelper::getSession($request)->flash('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
+                $request->getSession()->flash('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
                     'green');
 
-                return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:streamers:index'));
+                return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
             }
 
             return $view->renderToResponse($response, 'stations/streamers/disabled');
@@ -60,29 +59,29 @@ class StreamersController extends AbstractStationCrudController
             'stream_port' => $backend->getStreamPort($station),
             'streamers' => $station->getStreamers(),
             'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
-            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
-    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            RequestHelper::getSession($request)->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:streamers:index'));
+            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
+            return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Streamer'))
         ]);
     }
 
-    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
-        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:streamers:index'));
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
+        return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
     }
 }

@@ -3,8 +3,8 @@ namespace App\Controller\Frontend;
 
 use App\Entity;
 use App\Form\Form;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\Config;
 use Azura\Settings;
 use BaconQrCode;
@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManager;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class ProfileController
 {
@@ -47,22 +46,22 @@ class ProfileController
         $this->user_repo = $this->em->getRepository(Entity\User::class);
     }
 
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $user = RequestHelper::getUser($request);
+        $user = $request->getUser();
         $user_profile = $this->user_repo->toArray($user);
 
         $customization_form = new Form($this->profile_form['groups']['customization'], $user_profile);
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/profile/index', [
-            'user' => RequestHelper::getUser($request),
+        return $request->getView()->renderToResponse($response, 'frontend/profile/index', [
+            'user' => $request->getUser(),
             'customization_form' => $customization_form,
         ]);
     }
 
-    public function editAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $user = RequestHelper::getUser($request);
+        $user = $request->getUser();
 
         $form = new Form($this->profile_form);
 
@@ -100,21 +99,21 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush();
 
-            RequestHelper::getSession($request)->flash(__('Profile saved!'), 'green');
+            $request->getSession()->flash(__('Profile saved!'), 'green');
 
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('profile:index'));
+            return $response->withRedirect($request->getRouter()->named('profile:index'));
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Edit Profile')
         ]);
     }
 
-    public function themeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function themeAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $user = RequestHelper::getUser($request);
+        $user = $request->getUser();
 
         $theme_field = $this->profile_form['groups']['customization']['elements']['theme'][1];
         $theme_options = array_keys($theme_field['choices']);
@@ -135,14 +134,14 @@ class ProfileController
         $this->em->flush($user);
 
         $referrer = $request->getHeaderLine('HTTP_REFERER');
-        return ResponseHelper::withRedirect($response,
-            $referrer ?? (string)RequestHelper::getRouter($request)->named('dashboard')
+        return $response->withRedirect(
+            $referrer ?? (string)$request->getRouter()->named('dashboard')
         );
     }
 
-    public function enableTwoFactorAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function enableTwoFactorAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $user = RequestHelper::getUser($request);
+        $user = $request->getUser();
         $form = new Form($this->two_factor_form);
 
         $form->getField('otp')->addValidator(function($otp, \AzuraForms\Field\AbstractField $element) {
@@ -175,9 +174,9 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush($user);
 
-            RequestHelper::getSession($request)->flash(__('Two-factor authentication enabled.'), 'green');
+            $request->getSession()->flash(__('Two-factor authentication enabled.'), 'green');
 
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('profile:index'));
+            return $response->withRedirect($request->getRouter()->named('profile:index'));
         }
 
         // Further customize TOTP code (with metadata that won't be stored in the DB)
@@ -194,23 +193,23 @@ class ProfileController
         $writer = new BaconQrCode\Writer($renderer);
         $qr_code = $writer->writeString($totp_uri);
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/profile/enable_two_factor', [
+        return $request->getView()->renderToResponse($response, 'frontend/profile/enable_two_factor', [
             'form' => $form,
             'qr_code' => $qr_code,
             'totp_uri' => $totp_uri,
         ]);
     }
 
-    public function disableTwoFactorAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function disableTwoFactorAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $user = RequestHelper::getUser($request);
+        $user = $request->getUser();
 
         $user->setTwoFactorSecret(null);
         $this->em->persist($user);
         $this->em->flush($user);
 
-        RequestHelper::getSession($request)->flash(__('Two-factor authentication disabled.'), 'green');
+        $request->getSession()->flash(__('Two-factor authentication disabled.'), 'green');
 
-        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('profile:index'));
+        return $response->withRedirect($request->getRouter()->named('profile:index'));
     }
 }

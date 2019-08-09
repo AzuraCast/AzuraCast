@@ -2,11 +2,11 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -61,13 +61,13 @@ class SettingsController
      *   security={{"api_key": {}}},
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function listAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        return ResponseHelper::withJson($response, $this->api_settings);
+        return $response->withJson($this->api_settings);
     }
 
     /**
@@ -84,12 +84,12 @@ class SettingsController
      *   security={{"api_key": {}}},
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      * @throws \App\Exception\Validation
      */
-    public function updateAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $api_settings_obj = $this->serializer->denormalize($request->getParsedBody(), Entity\Api\Admin\Settings::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $this->api_settings,
@@ -104,6 +104,6 @@ class SettingsController
 
         $this->settings_repo->setSettings($api_settings);
 
-        return ResponseHelper::withJson($response, new Entity\Api\Status());
+        return $response->withJson(new Entity\Api\Status());
     }
 }

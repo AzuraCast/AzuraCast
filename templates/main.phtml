@@ -13,7 +13,7 @@
  * @var array $app_settings
  */
 
-$user = \App\Http\RequestHelper::getUser($request);
+$user = $request->getUser();
 ?>
 <html>
 <head>

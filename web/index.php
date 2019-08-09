@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 
 $autoloader = require dirname(__DIR__).'/vendor/autoload.php';
 
-$app = \App\App::create($autoloader, [
+$app = \App\AppFactory::create($autoloader, [
     \Azura\Settings::BASE_DIR => dirname(__DIR__),
 ]);
 

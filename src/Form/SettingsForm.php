@@ -2,8 +2,8 @@
 namespace App\Form;
 
 use App\Entity;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\ServerRequestInterface;
 
 class SettingsForm extends Form
 {
@@ -44,10 +44,10 @@ class SettingsForm extends Form
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @return bool
      */
-    public function process(ServerRequestInterface $request): bool
+    public function process(ServerRequest $request): bool
     {
         // Populate the form with existing values (if they exist).
         $this->populate($this->settings_repo->fetchArray(false));

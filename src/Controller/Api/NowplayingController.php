@@ -3,13 +3,12 @@ namespace App\Controller\Api;
 
 use App\Entity;
 use App\Event\Radio\LoadNowPlaying;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -89,24 +88,22 @@ class NowplayingController implements EventSubscriberInterface
      *   @OA\Response(response=404, description="Station not found")
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param int|string $id
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $id = null): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
-        $router = RequestHelper::getRouter($request);
+        $router = $request->getRouter();
 
         // Pull NP data from the fastest/first available source using the EventDispatcher.
         $event = new LoadNowPlaying();
         $this->dispatcher->dispatch($event);
 
         if (!$event->hasNowPlaying()) {
-            return ResponseHelper::withJson(
-                $response->withStatus(408),
-                new Entity\Api\Error(408, 'Now Playing data has not loaded yet. Please try again later.')
-            );
+            return $response->withStatus(408)
+                ->withJson(new Entity\Api\Error(408, 'Now Playing data has not loaded yet. Please try again later.'));
         }
 
         $np = $event->getNowPlaying();
@@ -116,14 +113,12 @@ class NowplayingController implements EventSubscriberInterface
                 if ($np_row->station->id == (int)$id || $np_row->station->shortcode === $id) {
                     $np_row->resolveUrls($router->getBaseUrl());
                     $np_row->now_playing->recalculate();
-                    return ResponseHelper::withJson($response, $np_row);
+                    return $response->withJson($np_row);
                 }
             }
 
-            return ResponseHelper::withJson(
-                $response->withStatus(404),
-                new Entity\Api\Error(404, 'Station not found.')
-            );
+            return $response->withStatus(404)
+                ->withJson(new Entity\Api\Error(404, 'Station not found.'));
         }
 
         // If unauthenticated, hide non-public stations from full view.
@@ -138,7 +133,7 @@ class NowplayingController implements EventSubscriberInterface
             $np_row->now_playing->recalculate();
         }
 
-        return ResponseHelper::withJson($response, $np);
+        return $response->withJson($np);
     }
 
     public function loadFromCache(LoadNowPlaying $event)

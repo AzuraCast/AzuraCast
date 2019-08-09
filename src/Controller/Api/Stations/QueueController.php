@@ -3,13 +3,13 @@ namespace App\Controller\Api\Stations;
 
 use App;
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\Doctrine\Paginator;
 use Azura\Http\RouterInterface;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -45,7 +45,7 @@ class QueueController extends AbstractStationApiCrudController
      *
      * @inheritdoc
      */
-    public function listAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function listAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
         $query = $this->em->createQuery(/** @lang DQL */'SELECT sh, sp, s, sm
             FROM App\Entity\SongHistory sh 
@@ -63,7 +63,7 @@ class QueueController extends AbstractStationApiCrudController
         $paginator->setFromRequest($request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
-        $router = RequestHelper::getRouter($request);
+        $router = $request->getRouter();
 
         $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
             $return = $this->_viewRecord($row, $router);

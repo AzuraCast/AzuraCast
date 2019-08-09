@@ -2,11 +2,11 @@
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class OverviewController
 {
@@ -26,9 +26,9 @@ class OverviewController
         $this->influx = $influx;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         // Get current analytics level.
 
@@ -39,7 +39,7 @@ class OverviewController
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
-            return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/restricted');
+            return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
         }
 
         /* Statistics */
@@ -249,7 +249,7 @@ class OverviewController
             return ($a > $b) ? 1 : -1;
         });
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'stations/reports/overview', [
+        return $request->getView()->renderToResponse($response, 'stations/reports/overview', [
             'charts' => [
                 'daily'         => json_encode($daily_data),
                 'daily_alt'     => implode('', $daily_alt),

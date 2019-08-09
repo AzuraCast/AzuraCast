@@ -2,22 +2,22 @@
 namespace App\Controller\Api;
 
 use App\Entity;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class IndexController
 {
     /**
      * Public index for API.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        return \App\Http\ResponseHelper::withRedirect($response, '/static/api/index.html');
+        return $response->withRedirect('/static/api/index.html');
     }
 
     /**
@@ -32,13 +32,13 @@ class IndexController
      *   )
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function statusAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function statusAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        return ResponseHelper::withJson($response, new Entity\Api\SystemStatus);
+        return $response->withJson(new Entity\Api\SystemStatus);
     }
 
     /**
@@ -53,13 +53,13 @@ class IndexController
      *   )
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function timeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function timeAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $tz_info = \Azura\Timezone::getInfo();
-        return ResponseHelper::withJson($response, new Entity\Api\Time($tz_info));
+        return $response->withJson(new Entity\Api\Time($tz_info));
     }
 }

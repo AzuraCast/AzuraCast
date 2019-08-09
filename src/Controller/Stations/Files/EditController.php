@@ -3,14 +3,13 @@ namespace App\Controller\Stations\Files;
 
 use App\Entity;
 use App\Form\Form;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
 use App\Http\Router;
+use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 /**
@@ -46,9 +45,9 @@ class EditController extends FilesControllerAbstract
         ]);
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         $fs = $this->filesystem->getForStation($station);
 
@@ -140,13 +139,13 @@ class EditController extends FilesControllerAbstract
             $this->em->persist($media);
             $this->em->flush();
 
-            RequestHelper::getSession($request)->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
+            return $response->withRedirect($request->getRouter()->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' =>__('Edit %s', __('Media'))

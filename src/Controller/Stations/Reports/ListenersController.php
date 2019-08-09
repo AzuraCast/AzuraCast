@@ -2,10 +2,10 @@
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class ListenersController
 {
@@ -20,9 +20,9 @@ class ListenersController
         $this->em = $em;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $view = RequestHelper::getView($request);
+        $view = $request->getView();
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);

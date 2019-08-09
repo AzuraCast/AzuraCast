@@ -2,35 +2,35 @@
 namespace App\Controller\Frontend;
 
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Remote\AdapterProxy;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class PublicController
 {
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response, $station_id = null): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/index');
     }
 
-    public function embedAction(ServerRequestInterface $request, ResponseInterface $response, $station_id = null): ResponseInterface
+    public function embedAction(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/embed');
     }
 
-    public function embedrequestsAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function embedrequestsAction(ServerRequest $request, Response $response): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/embedrequests');
     }
 
-    protected function _getPublicPage(ServerRequestInterface $request, ResponseInterface $response, $template_name, $template_vars = [])
+    protected function _getPublicPage(ServerRequest $request, Response $response, $template_name, $template_vars = [])
     {
         // Override system-wide iframe refusal
         $response = $response->withHeader('X-Frame-Options', '*');
 
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
             throw new \App\Exception\StationNotFound;
@@ -61,24 +61,24 @@ class PublicController
 
         $station_np = $station->getNowplaying();
         if ($station_np instanceof Entity\Api\NowPlaying) {
-            $station_np->resolveUrls(RequestHelper::getRouter($request)->getBaseUrl());
+            $station_np->resolveUrls($request->getRouter()->getBaseUrl());
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, $template_name, $template_vars + [
+        return $request->getView()->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
             'nowplaying' => $np,
         ]);
     }
 
-    public function playlistAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $format = 'pls'): ResponseInterface
+    public function playlistAction(ServerRequest $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         $streams = [];
         $stream_urls = [];
 
-        $fa = RequestHelper::getStationFrontend($request);
+        $fa = $request->getStationFrontend();
         foreach ($station->getMounts() as $mount) {
             /** @var Entity\StationMount $mount */
             if (!$mount->isVisibleOnPublicPages()) {
@@ -94,7 +94,7 @@ class PublicController
             ];
         }
 
-        $remotes = RequestHelper::getStationRemotes($request);
+        $remotes = $request->getStationRemotes();
         foreach($remotes as $remote_proxy) {
             /** @var AdapterProxy $remote_proxy */
             $adapter = $remote_proxy->getAdapter();
@@ -148,9 +148,9 @@ class PublicController
         }
     }
 
-    public function djAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $format = 'pls'): ResponseInterface
+    public function djAction(ServerRequest $request, Response $response, $station_id, $format = 'pls'): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
             throw new \App\Exception\StationNotFound;
@@ -160,16 +160,16 @@ class PublicController
             throw new \App\Exception\StationUnsupported;
         }
 
-        $backend = RequestHelper::getStationBackend($request);
+        $backend = $request->getStationBackend();
 
         if (!($backend instanceof Liquidsoap)) {
             throw new \App\Exception\StationUnsupported;
         }
 
-        $wss_url = (string)$backend->getWebStreamingUrl($station, RequestHelper::getRouter($request)->getBaseUrl());
+        $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
         $wss_url = str_replace('wss://', '', $wss_url);
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'frontend/public/dj', [
+        return $request->getView()->renderToResponse($response, 'frontend/public/dj', [
             'station' => $station,
             'base_uri' => $wss_url,
         ]);

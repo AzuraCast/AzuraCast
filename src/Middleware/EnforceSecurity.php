@@ -2,9 +2,11 @@
 namespace App\Middleware;
 
 use App\Entity;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use Azura\App;
 use Azura\Assets;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -15,6 +17,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class EnforceSecurity implements MiddlewareInterface
 {
+    /** @var ResponseFactoryInterface */
+    protected $responseFactory;
+
     /** @var EntityManager */
     protected $em;
 
@@ -24,8 +29,13 @@ class EnforceSecurity implements MiddlewareInterface
     /** @var Assets */
     protected $assets;
 
-    public function __construct(EntityManager $em, Assets $assets)
-    {
+    public function __construct(
+        App $app,
+        EntityManager $em,
+        Assets $assets
+    ) {
+        $this->responseFactory = $app->getResponseFactory();
+
         $this->em = $em;
         $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
 
@@ -54,7 +64,8 @@ class EnforceSecurity implements MiddlewareInterface
 
             $add_hsts_header = true;
         } elseif ($always_use_ssl && !$internal_api_url) {
-            return ResponseHelper::withRedirect(new \Slim\Psr7\Response, (string)$request->getUri()->withScheme('https'), 307);
+            return $this->responseFactory->createResponse(307)
+                ->withHeader('Location', (string)$request->getUri()->withScheme('https'));
         }
 
         $response = $handler->handle($request);
@@ -71,7 +82,7 @@ class EnforceSecurity implements MiddlewareInterface
             $response = $response->withHeader('X-Frame-Options', 'DENY');
         }
 
-        if (!ResponseHelper::hasCacheLifetime($response)) {
+        if (($response instanceof Response) && !$response->hasCacheLifetime()) {
             // CSP JavaScript policy
             // Note: unsafe-eval included for Vue template compiling
             $csp_script_src = (array)$this->assets->getCspDomains();

@@ -3,9 +3,8 @@ namespace App\Controller\Stations;
 
 use App\Entity\Station;
 use App\Form\EntityForm;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractStationCrudController
 {
@@ -34,13 +33,13 @@ abstract class AbstractStationCrudController
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param string|int|null $id
      * @return object|bool|null
      */
-    protected function _doEdit(ServerRequestInterface $request, $id = null)
+    protected function _doEdit(ServerRequest $request, $id = null)
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $this->form->setStation($station);
 
         $record = $this->_getRecord($station, $id);
@@ -54,14 +53,14 @@ abstract class AbstractStationCrudController
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param string|int $id
      */
-    protected function _doDelete(ServerRequestInterface $request, $id, $csrf_token): void
+    protected function _doDelete(ServerRequest $request, $id, $csrf_token): void
     {
-        RequestHelper::getSession($request)->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        $record = $this->_getRecord(RequestHelper::getStation($request), $id);
+        $record = $this->_getRecord($request->getStation(), $id);
 
         if ($record instanceof $this->entity_class) {
             $this->em->remove($record);

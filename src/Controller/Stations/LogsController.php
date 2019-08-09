@@ -2,27 +2,27 @@
 namespace App\Controller\Stations;
 
 use App\Controller\Traits\LogViewerTrait;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\Exception;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class LogsController
 {
     use LogViewerTrait;
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'stations/logs/index', [
+        return $request->getView()->renderToResponse($response, 'stations/logs/index', [
             'logs' => $this->_getStationLogs($station),
         ]);
     }
 
-    public function viewAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $log_key): ResponseInterface
+    public function viewAction(ServerRequest $request, Response $response, $station_id, $log_key): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $log_areas = $this->_getStationLogs($station);
 
         if (!isset($log_areas[$log_key])) {

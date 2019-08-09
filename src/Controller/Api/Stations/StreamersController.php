@@ -2,9 +2,8 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
-use Psr\Http\Message\ServerRequestInterface;
 
 class StreamersController extends AbstractStationApiCrudController
 {
@@ -98,11 +97,11 @@ class StreamersController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function _getStation(ServerRequestInterface $request): Entity\Station
+    protected function _getStation(ServerRequest $request): Entity\Station
     {
         $station = parent::_getStation($request);
 
-        $backend = RequestHelper::getStationBackend($request);
+        $backend = $request->getStationBackend();
         if (!$backend::supportsStreamers()) {
             throw new \App\Exception\StationUnsupported;
         }

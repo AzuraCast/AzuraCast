@@ -3,11 +3,11 @@ namespace App\Form;
 
 use App\Acl;
 use App\Entity;
+use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -65,10 +65,10 @@ class StationForm extends EntityForm
     /**
      * @inheritdoc
      */
-    public function process(ServerRequestInterface $request, $record = null)
+    public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
-        $user = \App\Http\RequestHelper::getUser($request);
+        $user = $request->getUser();
         $this->can_see_administration = $this->acl->userAllowed($user, Acl::GLOBAL_STATIONS);
 
         if (!$this->can_see_administration) {
@@ -79,7 +79,7 @@ class StationForm extends EntityForm
         }
 
         if (!SHOUTcast::isInstalled()) {
-            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', \App\Http\RequestHelper::getRouter($request)->named('admin:install:shoutcast'));
+            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', $request->getRouter()->named('admin:install:shoutcast'));
         }
 
         $create_mode = (null === $record);

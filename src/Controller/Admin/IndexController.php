@@ -2,14 +2,14 @@
 namespace App\Controller\Admin;
 
 use App\Acl;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Quota;
 use App\Sync\Runner;
 use Brick\Math\BigInteger;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class IndexController
 {
@@ -32,21 +32,21 @@ class IndexController
     /**
      * Main display.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      *
      * @return ResponseInterface
      */
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $view = RequestHelper::getView($request);
-        $user = RequestHelper::getUser($request);
+        $view = $request->getView();
+        $user = $request->getUser();
 
         // Remove the sidebar on the homepage.
         $view->addData(['sidebar' => null]);
 
         // Synchronization statuses
-        $acl = RequestHelper::getAcl($request);
+        $acl = $request->getAcl();
 
         if ($acl->userAllowed($user, Acl::GLOBAL_ALL)) {
             $view->addData([
@@ -68,9 +68,9 @@ class IndexController
         ]);
     }
 
-    public function syncAction(ServerRequestInterface $request, ResponseInterface $response, $type): ResponseInterface
+    public function syncAction(ServerRequest $request, Response $response, $type): ResponseInterface
     {
-        $view = RequestHelper::getView($request);
+        $view = $request->getView();
 
         $handler = new TestHandler(Logger::DEBUG, false);
         $this->logger->pushHandler($handler);

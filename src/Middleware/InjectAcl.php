@@ -2,7 +2,7 @@
 namespace App\Middleware;
 
 use App\Acl;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -27,7 +27,7 @@ class InjectAcl implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = RequestHelper::injectAcl($request, $this->acl);
+        $request = $request->withAttribute(ServerRequest::ATTR_ACL, $this->acl);
 
         return $handler->handle($request);
     }

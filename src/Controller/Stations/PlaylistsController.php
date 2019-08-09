@@ -2,13 +2,11 @@
 namespace App\Controller\Stations;
 
 use App\Entity;
-use App\Form\EntityForm;
 use App\Form\StationPlaylistForm;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class PlaylistsController extends AbstractStationCrudController
 {
@@ -27,16 +25,16 @@ class PlaylistsController extends AbstractStationCrudController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
-        $backend = RequestHelper::getStationBackend($request);
+        $backend = $request->getStationBackend();
         if (!$backend::supportsMedia()) {
             throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
         }
@@ -85,27 +83,27 @@ class PlaylistsController extends AbstractStationCrudController
             $playlists[$playlist->getId()] = $playlist_row;
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'stations/playlists/index', [
+        return $request->getView()->renderToResponse($response, 'stations/playlists/index', [
             'playlists' => $playlists,
-            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'station_tz' => $station_tz,
             'station_now' => $now->toIso8601String(),
-            'schedule_url' => RequestHelper::getRouter($request)->named('stations:playlists:schedule', ['station' => $station_id]),
+            'schedule_url' => $request->getRouter()->named('stations:playlists:schedule', ['station' => $station_id]),
         ]);
     }
 
     /**
      * Controller used to respond to AJAX requests from the playlist "Schedule View".
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param int|string $station_id
      *
      * @return ResponseInterface
      */
-    public function scheduleAction(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function scheduleAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $tz = new \DateTimeZone($station->getTimezone());
 
         $params = $request->getQueryParams();
@@ -149,19 +147,19 @@ class PlaylistsController extends AbstractStationCrudController
                     'title' => $playlist->getName(),
                     'start' => $playlist_start->toIso8601String(),
                     'end' => $playlist_end->toIso8601String(),
-                    'url' => (string)RequestHelper::getRouter($request)->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
+                    'url' => (string)$request->getRouter()->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
                 ];
             }
 
             $i = $i->addDay();
         }
 
-        return ResponseHelper::withJson($response, $events);
+        return $response->withJson($events);
     }
 
-    public function reorderAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id): ResponseInterface
+    public function reorderAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord(RequestHelper::getStation($request), $id);
+        $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
@@ -176,12 +174,10 @@ class PlaylistsController extends AbstractStationCrudController
 
         if ('POST' === $request->getMethod()) {
             try {
-                RequestHelper::getSession($request)->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+                $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
             } catch(\Azura\Exception\CsrfValidation $e) {
-                return ResponseHelper::withJson(
-                    $response->withStatus(403),
-                    ['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]
-                );
+                return $response->withStatus(403)
+                    ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
             }
 
             $order_raw = $params['order'];
@@ -194,7 +190,7 @@ class PlaylistsController extends AbstractStationCrudController
 
             $this->playlist_media_repo->setMediaOrder($record, $mapping);
 
-            return ResponseHelper::withJson($response, $mapping);
+            return $response->withJson($mapping);
         }
 
         $media_items = $this->em->createQuery(/** @lang DQL */'SELECT spm, sm 
@@ -205,16 +201,16 @@ class PlaylistsController extends AbstractStationCrudController
             ->setParameter('playlist_id', $id)
             ->getArrayResult();
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'stations/playlists/reorder', [
+        return $request->getView()->renderToResponse($response, 'stations/playlists/reorder', [
             'playlist' => $record,
-            'csrf' => RequestHelper::getSession($request)->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'media_items' => $media_items,
         ]);
     }
 
-    public function exportAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id, $format = 'pls'): ResponseInterface
+    public function exportAction(ServerRequest $request, Response $response, $station_id, $id, $format = 'pls'): ResponseInterface
     {
-        $record = $this->_getRecord(RequestHelper::getStation($request), $id);
+        $record = $this->_getRecord($request->getStation(), $id);
 
         $formats = [
             'pls' => 'audio/x-scpls',
@@ -233,9 +229,9 @@ class PlaylistsController extends AbstractStationCrudController
             ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name);
     }
 
-    public function toggleAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id): ResponseInterface
+    public function toggleAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord(RequestHelper::getStation($request), $id);
+        $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
@@ -251,33 +247,33 @@ class PlaylistsController extends AbstractStationCrudController
             ? __('Playlist enabled.')
             : __('Playlist disabled.');
 
-        RequestHelper::getSession($request)->flash('<b>' . $flash_message . '</b><br>' . $record->getName(), 'green');
+        $request->getSession()->flash('<b>' . $flash_message . '</b><br>' . $record->getName(), 'green');
 
         $referrer = $request->getHeaderLine('HTTP_REFERER');
 
-        return ResponseHelper::withRedirect($response,
-            $referrer ?? RequestHelper::getRouter($request)->fromHere('stations:playlists:index')
+        return $response->withRedirect(
+            $referrer ?? $request->getRouter()->fromHere('stations:playlists:index')
         );
     }
 
-    public function editAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            RequestHelper::getSession($request)->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
-            return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:playlists:index'));
+            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
+            return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
         }
 
-        return RequestHelper::getView($request)->renderToResponse($response, 'stations/playlists/edit', [
+        return $request->getView()->renderToResponse($response, 'stations/playlists/edit', [
             'form' => $this->form,
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Playlist'))
         ]);
     }
 
-    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        RequestHelper::getSession($request)->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
-        return ResponseHelper::withRedirect($response, RequestHelper::getRouter($request)->fromHere('stations:playlists:index'));
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
+        return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
     }
 }

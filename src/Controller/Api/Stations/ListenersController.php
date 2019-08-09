@@ -2,15 +2,14 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use MaxMind\Db\Reader;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class ListenersController
 {
@@ -44,10 +43,15 @@ class ListenersController
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
      * )
+     *
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
      */
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $station_tz = new \DateTimeZone($station->getTimezone());
 
         $params = $request->getQueryParams();
@@ -152,7 +156,7 @@ class ListenersController
             $csv_file = Csv::arrayToCsv($export_all);
             $csv_filename = $station->getShortName() . '_listeners_' . $range . '.csv';
 
-            return ResponseHelper::renderStringAsFile($response, $csv_file, 'text/csv', $csv_filename);
+            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
 
         $listeners = [];
@@ -168,7 +172,7 @@ class ListenersController
             $listeners[] = $api;
         }
 
-        return ResponseHelper::withJson($response, $listeners);
+        return $response->withJson($listeners);
     }
 
     protected function _getLocationInfo($ip, $locale): array

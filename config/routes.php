@@ -1,5 +1,7 @@
 <?php
 use App\Controller;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Middleware;
 use App\Acl;
 use Slim\App;
@@ -158,7 +160,7 @@ return function(App $app)
 
     $app->group('/api', function (RouteCollectorProxy $group) {
 
-        $group->options('/{routes:.+}', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) {
+        $group->options('/{routes:.+}', function (ServerRequest $request, Response $response) {
             return $response
                 ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                 ->withHeader('Access-Control-Allow-Headers', 'x-requested-with, Content-Type, Accept, Origin, Authorization')
@@ -220,8 +222,8 @@ return function(App $app)
             $group->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                 ->add(new Middleware\Permissions(Acl::GLOBAL_PERMISSIONS));
 
-            $group->map(['GET', 'POST'], '/relays', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) {
-                return \App\Http\ResponseHelper::withRedirect($response, \App\Http\RequestHelper::getRouter($request)->fromHere('api:internal:relays'));
+            $group->map(['GET', 'POST'], '/relays', function (ServerRequest $request, Response $response) {
+                return $response->withRedirect((string)$request->getRouter()->fromHere('api:internal:relays'));
             });
 
             $group->group('', function(RouteCollectorProxy $group) {
@@ -328,8 +330,8 @@ return function(App $app)
                 ->setName('api:stations:restart')
                 ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
-        })->add(Middleware\GetStation::class)
-            ->add(Middleware\RequireStation::class);
+        })->add(Middleware\RequireStation::class)
+            ->add(Middleware\GetStation::class);
 
         // END /api GROUP
 
@@ -431,8 +433,8 @@ return function(App $app)
 
     $app->group('/station/{station}', function (RouteCollectorProxy $group) {
 
-        $group->get('', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) {
-            return \App\Http\ResponseHelper::withRedirect($response, \App\Http\RequestHelper::getRouter($request)->fromHere('stations:profile:index'));
+        $group->get('', function (ServerRequest $request, Response $response) {
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:profile:index'));
         })->setName('stations:index:index');
 
         $group->group('/automation', function (RouteCollectorProxy $group) {

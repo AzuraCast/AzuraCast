@@ -2,12 +2,11 @@
 namespace App\Controller\Stations\Files;
 
 use App\Entity;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class ListController extends FilesControllerAbstract
 {
@@ -28,10 +27,10 @@ class ListController extends FilesControllerAbstract
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
-        $router = RequestHelper::getRouter($request);
+        $station = $request->getStation();
+        $router = $request->getRouter();
 
         $fs = $this->filesystem->getForStation($station);
         $params = $request->getQueryParams();
@@ -191,7 +190,7 @@ class ListController extends FilesControllerAbstract
             $return_result = [];
         }
 
-        return ResponseHelper::withJson($response, [
+        return $response->withJson([
             'current' => $page,
             'rowCount' => $row_count,
             'total' => $num_results,

@@ -3,14 +3,14 @@ namespace App\Controller\Api\Stations;
 
 use App;
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Azura\Doctrine\Paginator;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class HistoryController
 {
@@ -65,14 +65,14 @@ class HistoryController
      *   security={{"api_key": {}}},
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $station_tz = new \DateTimeZone($station->getTimezone());
 
         $params = $request->getQueryParams();
@@ -130,7 +130,7 @@ class HistoryController
             $csv_file = Csv::arrayToCsv($export_all);
             $csv_filename = $station->getShortName() . '_timeline_' . $start->format('Ymd') . '_to_' . $end->format('Ymd') . '.csv';
 
-            return App\Http\ResponseHelper::renderStringAsFile($response, $csv_file, 'text/csv', $csv_filename);
+            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
 
         $search_phrase = trim($params['searchPhrase']);
@@ -145,7 +145,7 @@ class HistoryController
         $paginator->setFromRequest($request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
-        $router = RequestHelper::getRouter($request);
+        $router = $request->getRouter();
 
         $paginator->setPostprocessor(function($sh_row) use ($is_bootgrid, $router) {
 

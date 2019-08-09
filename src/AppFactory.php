@@ -1,15 +1,20 @@
 <?php
 namespace App;
 
+use App\Http\Response;
+use App\Http\ServerRequest;
+use Azura\App;
 use Azura\Exception;
+use Azura\Http\Factory\ResponseFactory;
+use Azura\Http\Factory\ServerRequestFactory;
 use Azura\Settings;
 
-class App extends \Azura\App
+class AppFactory extends \Azura\AppFactory
 {
     /**
      * @inheritDoc
      */
-    public static function create($autoloader = null, $settings = [], $diDefinitions = []): \Slim\App
+    public static function create($autoloader = null, $settings = [], $diDefinitions = []): App
     {
         if (!isset($settings[Settings::BASE_DIR])) {
             throw new Exception\Bootstrap('No base directory specified!');
@@ -43,6 +48,10 @@ class App extends \Azura\App
         } else {
             $plugins = null;
         }
+
+        // Set Response/Request decoratorclasses.
+        ServerRequestFactory::setServerRequestClass(ServerRequest::class);
+        ResponseFactory::setResponseClass(Response::class);
 
         $app = parent::create($autoloader, $settings, $diDefinitions);
         $di = $app->getContainer();

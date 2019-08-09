@@ -2,12 +2,11 @@
 namespace App\Controller\Api\Stations;
 
 use App\Customization;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Stream;
 
 class ArtController
@@ -46,16 +45,16 @@ class ArtController
      *   @OA\Response(response=404, description="Image not found; generic filler image.")
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param string|int $station_id
      * @param string $media_id
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station_id, $media_id): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $filesystem = $this->filesystem->getForStation($station);
 
         $media_path = 'albumart://'.$media_id.'.jpg';
@@ -65,13 +64,13 @@ class ArtController
             $art = $filesystem->readStream($media_path);
 
             if (is_resource($art)) {
-                return ResponseHelper::withCacheLifetime($response, ResponseHelper::CACHE_ONE_YEAR)
+                return $response->withFile($art)
+                    ->withCacheLifetime(Response::CACHE_ONE_YEAR)
                     ->withHeader('Content-Type', 'image/jpeg')
-                    ->withHeader('Content-Length', $file_meta['size'])
-                    ->withBody(new Stream($art));
+                    ->withHeader('Content-Length', $file_meta['size']);
             }
         }
 
-        return ResponseHelper::withRedirect($response, $this->customization->getDefaultAlbumArtUrl(), 302);
+        return $response->withRedirect($this->customization->getDefaultAlbumArtUrl(), 302);
     }
 }

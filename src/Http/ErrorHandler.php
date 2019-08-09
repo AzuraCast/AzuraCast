@@ -9,8 +9,6 @@ use Azura\View;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Exception\HttpNotFoundException;
-use Slim\Psr7\Response;
-use Throwable;
 
 class ErrorHandler extends \Azura\Http\ErrorHandler
 {
@@ -68,19 +66,19 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
 
         if ($this->exception instanceof HttpNotFoundException) {
             return $this->view->renderToResponse(
-                new Response(404),
+                $this->responseFactory->createResponse(404),
                 'system/error_pagenotfound'
             );
         }
 
         if ($this->exception instanceof \App\Exception\NotLoggedIn) {
+            /** @var Response $response */
+            $response = $this->responseFactory->createResponse(403);
+
             $error_message = __('You must be logged in to access this page.');
 
             if ($this->return_json) {
-                return ResponseHelper::withJson(
-                    new Response(403),
-                    new Entity\Api\Error(403, $error_message)
-                );
+                return $response->withJson(new Entity\Api\Error(403, $error_message));
             }
 
             // Redirect to login page for not-logged-in users.
@@ -90,33 +88,30 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             $referrer_login = $this->session->get('login_referrer');
             $referrer_login->url = $this->request->getUri()->getPath();
 
-            return ResponseHelper::withRedirect(
-                new Response,
-                $this->router->named('account:login')
-            );
+            return $response->withRedirect((string)$this->router->named('account:login'));
         }
 
         if ($this->exception instanceof \App\Exception\PermissionDenied) {
+            /** @var Response $response */
+            $response = $this->responseFactory->createResponse(403);
+
             $error_message = __('You do not have permission to access this portion of the site.');
 
             if ($this->return_json) {
-                return ResponseHelper::withJson(
-                    new Response(403),
-                    new Entity\Api\Error(403, $error_message)
-                );
+                return $response->withJson(new Entity\Api\Error(403, $error_message));
             }
 
             // Bounce back to homepage for permission-denied users.
             $this->session->flash(__('You do not have permission to access this portion of the site.'),
                 Session\Flash::ERROR);
 
-            return ResponseHelper::withRedirect(
-                new Response,
-                $this->router->named('home')
-            );
+            return $response->withRedirect((string)$this->router->named('home'));
         }
 
         $this->sentry->handleException($this->exception);
+
+        /** @var Response $response */
+        $response = $this->responseFactory->createResponse(500);
 
         if ($this->return_json) {
             $api_response = new Entity\Api\Error(
@@ -125,7 +120,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
                 ($this->exception instanceof \Azura\Exception) ? $this->exception->getFormattedMessage() : $this->exception->getMessage()
             );
 
-            return ResponseHelper::withJson(new Response(500), $api_response);
+            return $response->withJson($api_response);
         }
 
         if ($this->show_detailed && class_exists('\Whoops\Run')) {
@@ -143,13 +138,11 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             $run = new \Whoops\Run;
             $run->prependHandler($handler);
 
-            $res = new Response(500);
-            $res->getBody()->write($run->handleException($this->exception));
-            return $res;
+            return $response->write($run->handleException($this->exception));
         }
 
         return $this->view->renderToResponse(
-            new Response(500),
+            $response,
             'system/error_general',
             [
                 'exception' => $this->exception,

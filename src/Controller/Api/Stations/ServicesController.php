@@ -2,13 +2,12 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Http\RequestHelper;
-use App\Http\ResponseHelper;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class ServicesController
 {
@@ -34,18 +33,18 @@ class ServicesController
      *   security={{"api_key": {}}}
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function statusAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function statusAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
 
-        $backend = RequestHelper::getStationBackend($request);
-        $frontend = RequestHelper::getStationFrontend($request);
+        $backend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
 
-        return ResponseHelper::withJson($response, new Entity\Api\StationServiceStatus(
+        return $response->withJson(new Entity\Api\StationServiceStatus(
             $backend->isRunning($station),
             $frontend->isRunning($station)
         ));
@@ -61,16 +60,16 @@ class ServicesController
      *   security={{"api_key": {}}}
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @return ResponseInterface
      */
-    public function restartAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function restartAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
+        $station = $request->getStation();
         $this->configuration->writeConfiguration($station, false, true);
 
-        return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
+        return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
     }
 
     /**
@@ -93,28 +92,28 @@ class ServicesController
      *   security={{"api_key": {}}}
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param string|int $station_id
      * @param string $do
      * @return ResponseInterface
      */
-    public function frontendAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $do = 'restart'): ResponseInterface
+    public function frontendAction(ServerRequest $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
-        $frontend = RequestHelper::getStationFrontend($request);
+        $station = $request->getStation();
+        $frontend = $request->getStationFrontend();
 
         switch ($do) {
             case 'stop':
                 $frontend->stop($station);
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s stopped.', __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Frontend'))));
             break;
 
             case 'start':
                 $frontend->start($station);
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s started.', __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Frontend'))));
             break;
 
             case 'restart':
@@ -127,7 +126,7 @@ class ServicesController
                 $frontend->write($station);
                 $frontend->start($station);
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s restarted.', __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Frontend'))));
             break;
         }
     }
@@ -152,16 +151,16 @@ class ServicesController
      *   security={{"api_key": {}}}
      * )
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequest $request
+     * @param Response $response
      * @param string|int $station_id
      * @param string $do
      * @return ResponseInterface
      */
-    public function backendAction(ServerRequestInterface $request, ResponseInterface $response, $station_id, $do = 'restart'): ResponseInterface
+    public function backendAction(ServerRequest $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
     {
-        $station = RequestHelper::getStation($request);
-        $backend = RequestHelper::getStationBackend($request);
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
 
         switch ($do) {
             case 'skip':
@@ -169,7 +168,7 @@ class ServicesController
                     $backend->skip($station);
                 }
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('Song skipped.')));
+                return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
             break;
 
             case 'disconnect':
@@ -177,19 +176,19 @@ class ServicesController
                     $backend->disconnectStreamer($station);
                 }
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('Streamer disconnected.')));
+                return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
             break;
 
             case 'stop':
                 $backend->stop($station);
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s stopped.', __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Backend'))));
                 break;
 
             case 'start':
                 $backend->start($station);
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s started.', __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Backend'))));
                 break;
 
             case 'restart':
@@ -202,7 +201,7 @@ class ServicesController
                 $backend->write($station);
                 $backend->start($station);
 
-                return ResponseHelper::withJson($response, new Entity\Api\Status(true, __('%s restarted.', __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Backend'))));
                 break;
         }
     }

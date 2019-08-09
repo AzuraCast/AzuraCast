@@ -2,9 +2,8 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
-use Psr\Http\Message\ServerRequestInterface;
 
 class MountsController extends AbstractStationApiCrudController
 {
@@ -98,11 +97,11 @@ class MountsController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function _getStation(ServerRequestInterface $request): Entity\Station
+    protected function _getStation(ServerRequest $request): Entity\Station
     {
         $station = parent::_getStation($request);
 
-        $frontend = RequestHelper::getStationFrontend($request);
+        $frontend = $request->getStationFrontend();
         if (!$frontend::supportsMounts()) {
             throw new \App\Exception\StationUnsupported;
         }

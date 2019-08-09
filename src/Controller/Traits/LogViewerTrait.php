@@ -2,16 +2,14 @@
 namespace App\Controller\Traits;
 
 use App\Entity;
-use App\Http\ResponseHelper;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 trait LogViewerTrait
 {
     static $maximum_log_size = 1048576;
 
-    protected function _view(ServerRequestInterface $request, ResponseInterface $response, $log_path, $tail_file = true): ResponseInterface
+    protected function _view(\App\Http\ServerRequest $request, \App\Http\Response $response, $log_path, $tail_file = true): ResponseInterface
     {
         clearstatcache();
 
@@ -23,7 +21,7 @@ trait LogViewerTrait
             $log_contents_parts = explode("\n", file_get_contents($log_path));
             $log_contents_parts = str_replace(array(">", "<"), array("&gt;", "&lt;"), $log_contents_parts);
 
-            return ResponseHelper::withJson($response, [
+            return $response->withJson([
                 'contents' => implode("\n", $log_contents_parts),
                 'eof' => true,
             ]);
@@ -66,7 +64,7 @@ trait LogViewerTrait
             fclose($fp);
         }
 
-        return ResponseHelper::withJson($response, [
+        return $response->withJson([
             'contents' => $log_contents,
             'position' => $log_size,
             'eof' => false,

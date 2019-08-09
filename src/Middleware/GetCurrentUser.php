@@ -3,7 +3,7 @@ namespace App\Middleware;
 
 use App\Auth;
 use App\Customization;
-use App\Http\RequestHelper;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -39,7 +39,8 @@ class GetCurrentUser implements MiddlewareInterface
         $this->customization->setUser($user);
         $request = $this->customization->init($request);
 
-        $request = RequestHelper::injectUser($request, $user);
+        $request = $request->withAttribute(ServerRequest::ATTR_USER, $user)
+            ->withAttribute('is_logged_in', (null !== $user));
 
         return $handler->handle($request);
     }

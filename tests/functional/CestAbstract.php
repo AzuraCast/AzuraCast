@@ -6,20 +6,21 @@ use App\Entity;
 
 abstract class CestAbstract
 {
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $di;
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var \Azura\Settings */
+    protected $settings;
+
+    /** @var EntityManagerInterface */
     protected $em;
 
     protected function _inject(\Azura\Tests\Module $tests_module)
     {
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
+
+        $this->settings = $this->di->get(\Azura\Settings::class);
     }
 
     public function _after(FunctionalTester $I)

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-10 07:50\n"
+"PO-Revision-Date: 2019-08-10 19:50\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -848,7 +848,7 @@ msgstr "%s kan niet stoppen"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:210
 msgid "It is not running."
-msgstr ""
+msgstr "Het loopt niet."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "%s encountered an error"

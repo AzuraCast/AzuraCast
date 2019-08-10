@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-08-07T15:31:44+00:00\n"
-"PO-Revision-Date: 2019-08-07 15:51\n"
+"POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
+"PO-Revision-Date: 2019-08-10 07:50\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
@@ -140,9 +140,9 @@ msgid "Remote Relays"
 msgstr "Vzdálená připojení"
 
 #: /var/azuracast/www/src/Acl.php:205
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:64
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:143
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:152
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:142
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:151
 msgid "Media"
 msgstr "Média"
 
@@ -165,130 +165,130 @@ msgstr "Účet spojený s e-mailovou adresou \"%s\" byl nastaven jako správce"
 msgid "Account not found."
 msgstr "Účet nenalezen."
 
-#: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:75
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:150
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:70
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:95
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:62
-#: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:86
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:64
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:167
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:225
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:241
+#: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:147
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:94
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:61
+#: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:85
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
 msgid "%s not found."
 msgstr "%s nenalezen."
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:43
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:50
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:58
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:62
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:97
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:124
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:42
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:57
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:61
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:96
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:123
 #: /var/azuracast/www/templates/admin/api/index.phtml:17
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "API Key"
 msgstr "API klíč"
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:43
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:39
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:61
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:41
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:52
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:97
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:143
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:42
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:266
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:40
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:42
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:96
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:142
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:40
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
 msgid "%s updated."
 msgstr "%s aktualizováno."
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:50
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:46
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:68
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:47
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:64
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:152
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:49
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:272
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:47
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:85
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:63
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:151
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:83
 msgid "Edit %s"
 msgstr "Upravit %s"
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:58
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:140
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:54
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:76
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:62
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:82
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:124
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:57
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:280
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:55
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:85
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:127
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:57
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:53
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:61
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:81
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:123
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:55
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "%s deleted."
 msgstr "%s smazáno."
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:75
-#: /var/azuracast/www/src/Controller/Admin/BrandingController.php:35
-#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:31
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:74
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:63
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:74
+#: /var/azuracast/www/src/Controller/Admin/BrandingController.php:34
+#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:30
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:73
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:62
 msgid "Changes saved."
 msgstr "Změny byly uloženy."
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:82
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:81
 msgid "Configure Backups"
 msgstr "Nastavení záloh"
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:97
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:107
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:96
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:106
 #: /var/azuracast/www/templates/admin/backups/index.phtml:87
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
 msgstr "Spustit ruční zálohu"
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:140
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 msgid "Backup"
 msgstr "Záloha"
 
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:39
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:61
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:41
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:52
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:42
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:266
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:40
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:64
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:40
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 msgid "%s added."
 msgstr "%s přidáno."
 
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:39
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:46
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:54
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:53
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Custom Field"
 msgstr "Vlastní pole"
 
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:46
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:68
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:47
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:64
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:49
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:272
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:47
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:71
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:63
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
@@ -309,11 +309,11 @@ msgstr "Přidat %s"
 msgid "Sync Task Output"
 msgstr "Výstup úlohy synchronizace"
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:34
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:33
 msgid "SHOUTcast version \"%s\" is currently installed."
 msgstr "V současné době je nainstalováno SHOUTcast verze \"%s\"."
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:75
 #: /var/azuracast/www/config/menus/admin.php:79
 msgid "Install SHOUTcast"
 msgstr "Instalovat SHOUTcast"
@@ -338,116 +338,116 @@ msgstr "PHP aplikační protokol"
 msgid "Supervisord Log"
 msgstr "Supervisorský protokol"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:61
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:68
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:76
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Permission"
 msgstr "Oprávnění"
 
-#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:38
+#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:25
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:25
 msgid "System Settings"
 msgstr "Systémová nastavení"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:41
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:47
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:62
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:70
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:73
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:61
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
 #: /var/azuracast/www/templates/frontend/index/index.phtml:108
 msgid "Station"
 msgstr "Stanice"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:81
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:80
 msgid "Clone Station: %s"
 msgstr "Klonování stanice %s"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:52
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:64
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:82
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:95
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:63
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:81
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:94
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "User"
 msgstr "Uživatel"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:58
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:57
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
 msgstr "S touto e-mailovou adresou již existuje jiný uživatel, prosím, použijte jinou."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:77
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:76
 msgid "You cannot delete your own account."
 msgstr "Vlastní účet nelze odstranit."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:100
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:128
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:99
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:127
 msgid "Logged in successfully."
 msgstr "Přihlášení proběhlo úspěšně."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:73
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:130
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:205
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:129
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
 msgid "%s restarted."
 msgstr "%s restartováno."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:111
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:117
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:130
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:110
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:129
 msgid "Frontend"
 msgstr "Frontend"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:111
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:186
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:110
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "%s stopped."
 msgstr "%s zastaveno."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:117
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:192
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
 msgid "%s started."
 msgstr "%s spuštěno."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "Song skipped."
 msgstr "Skladba přeskočena."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:180
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:179
 msgid "Streamer disconnected."
 msgstr "Streamer odpojen."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:186
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:192
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:205
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
 msgid "Backend"
 msgstr "Backend"
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:72
 msgid "Too many login attempts"
 msgstr "Příliš mnoho pokusů o přihlášení"
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:73
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:72
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
 msgstr "Snažili jste se přihlásit příliš často, prosím, počkejte 30 sekund a zkuste to znovu."
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:138
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:106
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:137
 msgid "Login unsuccessful"
 msgstr "Přihlášení bylo neúspěšné"
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:107
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:138
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:106
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:137
 msgid "Your credentials could not be verified."
 msgstr "Vaše oprávnění nebylo možné ověřit."
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:188
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:204
 msgid "All Stations"
 msgstr "Všechny stanice"
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:218
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:234
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:74
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:114
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:162
@@ -463,32 +463,32 @@ msgstr "Všechny stanice"
 msgid "Listeners"
 msgstr "Posluchači"
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:103
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:102
 msgid "Profile saved!"
 msgstr "Profil uložen!"
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:111
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:110
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:32
 #: /var/azuracast/www/templates/stations/profile/edit.phtml:1
 #: /var/azuracast/www/templates/stations/profile/panel_header.phtml:25
 msgid "Edit Profile"
 msgstr "Upravit profil"
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:154
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:153
 msgid "The token you supplied is invalid. Please try again."
 msgstr "Tento token není platný, zkuste to prosím znovu."
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:178
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:177
 msgid "Two-factor authentication enabled."
 msgstr "Dvoufaktorové ověřování povoleno."
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:212
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:211
 msgid "Two-factor authentication disabled."
 msgstr "Dvoufaktorové ověřování zakázáno."
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:47
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:94
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:112
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:93
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:111
 #: /var/azuracast/www/config/forms/media.php:22
 #: /var/azuracast/www/config/forms/song.php:37
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:9
@@ -499,86 +499,86 @@ msgid "Song Title"
 msgstr "Název skladby"
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:48
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:95
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:113
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:94
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:112
 #: /var/azuracast/www/config/forms/media.php:30
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:10
 msgid "Song Artist"
 msgstr "Interpret skladby"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:76
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:75
 msgid "Setup has already been completed!"
 msgstr "Nastavení již bylo dokončeno!"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:103
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:102
 msgid "Super Administrator"
 msgstr "Superadministrátor"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:192
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:191
 msgid "Setup is now complete!"
 msgstr "Nastavení je nyní dokončeno!"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:192
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:191
 msgid "Continue setting up your station in the main AzuraCast app."
 msgstr "Pokračujte v nastavení stanice v hlavní aplikaci AzuraCast."
 
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:80
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:79
 msgid "Automated assignment complete!"
 msgstr "Automatizované přiřazení dokončeno!"
 
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:83
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:82
 msgid "Automated assignment error"
 msgstr "Chyba automatizovaného přiřazení"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:233
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:151
+#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:150
 msgid "Path \"%s\" is not a folder."
 msgstr "Cesta \"%s\" není složka."
 
-#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:242
+#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:239
 msgid "Could not move \"%s\" to \"%s\""
 msgstr "Nelze přesunout \"%s\" do \"%s\""
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:126
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:125
 msgid "File renamed!"
 msgstr "Soubor byl přejmenován!"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:136
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:135
 msgid "Rename File/Directory"
 msgstr "Přejmenování souboru/adresáře"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:208
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:207
 msgid "This station is out of available storage space."
 msgstr "Tato stanice je mimo dostupný úložný prostor."
 
-#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:123
+#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:122
 #: /var/azuracast/www/templates/stations/files/index.phtml:179
 msgid "Directory"
 msgstr "Adresář"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:127
+#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:126
 msgid "File Not Processed"
 msgstr "Soubor není zpracován"
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:29
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:41
-#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:25
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:27
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:39
+#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:23
 msgid "This feature is not currently supported on this station."
 msgstr "Tato funkce není v současné době na této stanici podporována."
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:42
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:49
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:57
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:40
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:55
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:25
 msgid "Mount Point"
 msgstr "Přípojný bod"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:167
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:241
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:266
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:272
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:280
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 #: /var/azuracast/www/templates/frontend/public/index.phtml:37
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
@@ -587,25 +587,25 @@ msgstr "Přípojný bod"
 msgid "Playlist"
 msgstr "Playlist"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:172
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
 msgstr "Tento playlist není sekvenční playlist."
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:225
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format"
 msgstr "Formát"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:251
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
 msgid "Playlist enabled."
 msgstr "Playlist povolen."
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:252
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:248
 msgid "Playlist disabled."
 msgstr "Playlist zakázán."
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:40
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:47
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:55
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
 msgid "Remote Relay"
@@ -664,31 +664,31 @@ msgstr "Neděle"
 msgid "Listeners by Hour"
 msgstr "Posluchači podle hodiny"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:175
+#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
 msgid "SoundExchange Report"
 msgstr "SoundExchange report"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
 msgid "Streamers enabled!"
 msgstr "Streameři povoleni!"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:44
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
 msgid "You can now set up streamer (DJ) accounts."
 msgstr "Nyní můžete nastavit účty streamerů (DJ)."
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:70
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:77
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:85
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
 msgstr "Streamer"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:64
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:71
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:85
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:101
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:127
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:83
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 #: /var/azuracast/www/config/forms/webhook/discord.php:18
 #: /var/azuracast/www/config/forms/webhook/generic.php:27
 #: /var/azuracast/www/config/forms/webhook/telegram.php:18
@@ -699,43 +699,43 @@ msgstr "Streamer"
 msgid "Web Hook"
 msgstr "Webhook"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:101
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "%s enabled."
 msgstr "%s povoleno."
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:101
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "%s disabled."
 msgstr "%s zakázáno."
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:118
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
 msgstr "Výstupní test webhooku"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:86
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
 msgstr "Liquidsoap protokol"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:91
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:89
 msgid "Liquidsoap Configuration"
 msgstr "Liquidsoap konfigurace"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:102
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:100
 msgid "Icecast Access Log"
 msgstr "Přístupový protokol Icecast"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:107
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:105
 msgid "Icecast Error Log"
 msgstr "Chybový protokol Icecast"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:112
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:110
 msgid "Icecast Configuration"
 msgstr "Icecast konfigurace"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:120
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:118
 msgid "SHOUTcast Log"
 msgstr "SHOUTcast protokol"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:125
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:123
 msgid "SHOUTcast Configuration"
 msgstr "SHOUTcast konfigurace"
 
@@ -776,13 +776,13 @@ msgstr "Stávající playlist importován."
 msgid "%d song(s) were imported into the playlist."
 msgstr "%d skladeb bylo importována do playlistu."
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:141
-#: /var/azuracast/www/src/Http/ErrorHandler.php:151
+#: /var/azuracast/www/src/Http/ErrorHandler.php:78
+#: /var/azuracast/www/src/Http/ErrorHandler.php:85
 msgid "You must be logged in to access this page."
 msgstr "Pro přístup na tuto stránku musíte být přihlášeni."
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:164
-#: /var/azuracast/www/src/Http/ErrorHandler.php:174
+#: /var/azuracast/www/src/Http/ErrorHandler.php:98
+#: /var/azuracast/www/src/Http/ErrorHandler.php:105
 msgid "You do not have permission to access this portion of the site."
 msgstr "Nemáte oprávnění pro přístup k této části webu."
 
@@ -1256,7 +1256,7 @@ msgstr "Emailová adresa"
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:25
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:47
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:75
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:81
 msgid "Password"
 msgstr "Heslo"
 
@@ -4185,32 +4185,37 @@ msgid "IceCast Clients"
 msgstr ""
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:57
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:69
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:72
 msgid "Server"
 msgstr ""
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:72
-msgid "Port"
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:75
+msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
 msgstr ""
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:78
+msgid "Port"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:66
 msgid "Mount Name"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:67
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:70
 msgid "ShoutCast v1 Clients"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:73
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:79
 msgid "%d (%d for some clients)"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:78
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:84
 msgid "(DJ username and password separated by a colon)"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:82
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:88
 msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
 msgstr ""
 

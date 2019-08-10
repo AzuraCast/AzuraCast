@@ -108,7 +108,9 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             return $response->withRedirect((string)$this->router->named('home'));
         }
 
-        $this->sentry->handleException($this->exception);
+        if ($this->logger_level >= Logger::ERROR) {
+            $this->sentry->handleException($this->exception);
+        }
 
         /** @var Response $response */
         $response = $this->responseFactory->createResponse(500);

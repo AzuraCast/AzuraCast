@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "02f97abdb4fb5ebfe7f77397183355c5ca500e7e"
+                "reference": "adc68269f3998a7a0202464703e130a9432073fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/02f97abdb4fb5ebfe7f77397183355c5ca500e7e",
-                "reference": "02f97abdb4fb5ebfe7f77397183355c5ca500e7e",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/adc68269f3998a7a0202464703e130a9432073fc",
+                "reference": "adc68269f3998a7a0202464703e130a9432073fc",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-08-09T22:46:33+00:00"
+            "time": "2019-08-10T17:03:32+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -3118,20 +3118,20 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.9.2",
+            "version": "1.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "8d0a041a565fc1e927e75f1d1bea5f34edf6e7d1"
+                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8d0a041a565fc1e927e75f1d1bea5f34edf6e7d1",
-                "reference": "8d0a041a565fc1e927e75f1d1bea5f34edf6e7d1",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/007c053ae6f31bba39dfa19a7726f56e9763bbea",
+                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.1"
             },
             "replace": {
                 "myclabs/deep-copy": "self.version"
@@ -3139,8 +3139,6 @@
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
                 "phpunit/phpunit": "^7.1"
             },
             "type": "library",
@@ -3164,7 +3162,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-08-09T12:38:39+00:00"
+            "time": "2019-08-09T12:45:53+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -3315,16 +3313,16 @@
         },
         {
             "name": "ocramius/proxy-manager",
-            "version": "2.2.2",
+            "version": "2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/ProxyManager.git",
-                "reference": "14b137b06b0f911944132df9d51e445a35920ab1"
+                "reference": "4d154742e31c35137d5374c998e8f86b54db2e2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/14b137b06b0f911944132df9d51e445a35920ab1",
-                "reference": "14b137b06b0f911944132df9d51e445a35920ab1",
+                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/4d154742e31c35137d5374c998e8f86b54db2e2f",
+                "reference": "4d154742e31c35137d5374c998e8f86b54db2e2f",
                 "shasum": ""
             },
             "require": {
@@ -3381,7 +3379,7 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2018-09-27T13:45:01+00:00"
+            "time": "2019-08-10T08:37:15+00:00"
         },
         {
             "name": "paragonie/certainty",
@@ -4923,12 +4921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "4ddb1bfe683b96e716715d4f28796f74ff9b75b5"
+                "reference": "a62257ea53041539ffeb3a785f2c0269b89a6eff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/4ddb1bfe683b96e716715d4f28796f74ff9b75b5",
-                "reference": "4ddb1bfe683b96e716715d4f28796f74ff9b75b5",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/a62257ea53041539ffeb3a785f2c0269b89a6eff",
+                "reference": "a62257ea53041539ffeb3a785f2c0269b89a6eff",
                 "shasum": ""
             },
             "require": {
@@ -5004,7 +5002,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2019-08-07T19:58:02+00:00"
+            "time": "2019-08-10T15:27:08+00:00"
         },
         {
             "name": "spomky-labs/otphp",

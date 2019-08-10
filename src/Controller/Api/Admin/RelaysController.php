@@ -151,6 +151,8 @@ class RelaysController
                 $remote->setType(Adapters::REMOTE_AZURARELAY);
                 $remote->setDisplayName($mount->getDisplayName().' ('.$relay->getName().')');
                 $remote->setIsVisibleOnPublicPages($relay->isIsVisibleOnPublicPages());
+                $remote->setAutodjBitrate($mount->getAutodjBitrate());
+                $remote->setAutodjFormat($mount->getAutodjFormat());
                 $remote->setUrl($relay->getBaseUrl());
                 $remote->setMount($mount->getName());
 

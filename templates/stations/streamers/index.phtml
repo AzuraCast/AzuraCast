@@ -56,6 +56,9 @@
                 <dl>
                     <dt class="mb-1"><?=__('Server') ?>:</dt>
                     <dd><code><?=$this->e($server_url) ?></code></dd>
+                <?php if ($ip): ?>
+                    <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.', $ip) ?></dd>
+                <?php endif; ?>
 
                     <dt class="mb-1"><?=__('Port') ?>:</dt>
                     <dd><code><?=(int)$stream_port ?></code></dd>
@@ -68,6 +71,9 @@
                 <dl>
                     <dt class="mb-1"><?=__('Server') ?>:</dt>
                     <dd><code><?=$this->e($server_url) ?></code></dd>
+                <?php if ($ip): ?>
+                    <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.', $ip) ?></dd>
+                <?php endif; ?>
 
                     <dt class="mb-1"><?=__('Port') ?>:</dt>
                     <dd><code><?=__('%d (%d for some clients)', (int)$stream_port, ((int)$stream_port + 1)) ?></code></dd>

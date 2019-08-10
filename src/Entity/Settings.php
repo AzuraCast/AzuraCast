@@ -60,6 +60,8 @@ class Settings
     public const UPDATE_RESULTS        = 'central_update_results';
     public const UPDATE_LAST_RUN       = 'central_update_last_run';
 
+    public const EXTERNAL_IP           = 'external_ip';
+
     public const BACKUP_LAST_RUN       = 'backup_last_run';
     public const BACKUP_LAST_RESULT    = 'backup_last_result';
     public const BACKUP_LAST_OUTPUT    = 'backup_last_output';

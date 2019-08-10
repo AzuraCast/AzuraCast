@@ -2,6 +2,7 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use App\Service\AzuraCastCentral;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
@@ -99,7 +100,9 @@ class Setup extends CommandAbstract
                 'AzuraCast is now updated to the latest version!',
             ]);
         } else {
-            $public_ip = Utilities::getPublicIp();
+            /** @var AzuraCastCentral $ac_central */
+            $ac_central = $this->get(AzuraCastCentral::class);
+            $public_ip = $ac_central->getIp();
 
             $io->success([
                 'AzuraCast installation complete!',

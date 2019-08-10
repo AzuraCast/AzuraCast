@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.109.0",
+            "version": "3.109.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f0c2725d146c4c7d5386e3e9765e68e316ab9acb"
+                "reference": "1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f0c2725d146c4c7d5386e3e9765e68e316ab9acb",
-                "reference": "f0c2725d146c4c7d5386e3e9765e68e316ab9acb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31",
+                "reference": "1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-08T18:37:53+00:00"
+            "time": "2019-08-09T18:17:08+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "4983efe81ede60ca4a2d7e40d313882eab386e6f"
+                "reference": "02f97abdb4fb5ebfe7f77397183355c5ca500e7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/4983efe81ede60ca4a2d7e40d313882eab386e6f",
-                "reference": "4983efe81ede60ca4a2d7e40d313882eab386e6f",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/02f97abdb4fb5ebfe7f77397183355c5ca500e7e",
+                "reference": "02f97abdb4fb5ebfe7f77397183355c5ca500e7e",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-08-09T14:50:09+00:00"
+            "time": "2019-08-09T22:46:33+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -3118,20 +3118,20 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.9.1",
+            "version": "1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72"
+                "reference": "8d0a041a565fc1e927e75f1d1bea5f34edf6e7d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72",
-                "reference": "e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8d0a041a565fc1e927e75f1d1bea5f34edf6e7d1",
+                "reference": "8d0a041a565fc1e927e75f1d1bea5f34edf6e7d1",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": "^7.2"
             },
             "replace": {
                 "myclabs/deep-copy": "self.version"
@@ -3139,6 +3139,8 @@
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
+                "phpstan/phpstan": "^0.9.2",
+                "phpstan/phpstan-phpunit": "^0.9.4",
                 "phpunit/phpunit": "^7.1"
             },
             "type": "library",
@@ -3162,7 +3164,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-04-07T13:18:21+00:00"
+            "time": "2019-08-09T12:38:39+00:00"
         },
         {
             "name": "nikic/fast-route",

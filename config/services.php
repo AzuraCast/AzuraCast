@@ -124,6 +124,7 @@ return [
     App\ApiUtilities::class => DI\autowire(),
     App\Customization::class => DI\autowire(),
     App\Version::class => DI\autowire(),
+    App\Service\AzuraCastCentral::class => DI\autowire(),
     App\Service\Sentry::class => DI\autowire(),
     App\Service\NChan::class => DI\autowire(),
     App\Validator\Constraints\StationPortCheckerValidator::class => DI\autowire(),

@@ -5,20 +5,29 @@ use App\Entity;
 use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\AzuraCastCentral;
 use Azura\Config;
 use Psr\Http\Message\ResponseInterface;
 
 class StreamersController extends AbstractStationCrudController
 {
+    /** @var AzuraCastCentral */
+    protected $ac_central;
+
     /**
      * @param EntityFormManager $formManager
      * @param Config $config
+     * @param AzuraCastCentral $ac_central
      */
-    public function __construct(EntityFormManager $formManager, Config $config)
-    {
+    public function __construct(
+        EntityFormManager $formManager,
+        Config $config,
+        AzuraCastCentral $ac_central
+    ) {
         $form = $formManager->getForm(Entity\StationStreamer::class, $config->get('forms/streamer'));
         parent::__construct($form);
 
+        $this->ac_central = $ac_central;
         $this->csrf_namespace = 'stations_streamers';
     }
 
@@ -57,6 +66,7 @@ class StreamersController extends AbstractStationCrudController
         return $view->renderToResponse($response, 'stations/streamers/index', [
             'server_url' => $settings_repo->getSetting(Entity\Settings::BASE_URL, ''),
             'stream_port' => $backend->getStreamPort($station),
+            'ip' => $this->ac_central->getIp(),
             'streamers' => $station->getStreamers(),
             'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),

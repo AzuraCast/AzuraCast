@@ -17,6 +17,7 @@ class Settings extends AbstractFixture
             Entity\Settings::USE_RADIO_PROXY => 1,
             Entity\Settings::SEND_ERROR_REPORTS => 0,
             Entity\Settings::CENTRAL_UPDATES => Entity\Settings::UPDATES_NONE,
+            Entity\Settings::EXTERNAL_IP => '127.0.0.1',
         ];
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */

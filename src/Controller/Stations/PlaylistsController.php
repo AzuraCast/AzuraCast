@@ -249,10 +249,10 @@ class PlaylistsController extends AbstractStationCrudController
 
         $request->getSession()->flash('<b>' . $flash_message . '</b><br>' . $record->getName(), 'green');
 
-        $referrer = $request->getHeaderLine('HTTP_REFERER');
+        $referrer = $request->getHeaderLine('Referer');
 
         return $response->withRedirect(
-            $referrer ?? $request->getRouter()->fromHere('stations:playlists:index')
+            $referrer ?: $request->getRouter()->fromHere('stations:playlists:index')
         );
     }
 

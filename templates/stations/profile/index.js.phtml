@@ -37,6 +37,18 @@ $(function() {
         methods: {
             "setNowPlaying": function(np_new) {
                 this.np = np_new;
+
+                // Update mount-specific listener counts.
+                np_new.station.mounts.forEach(function(mount) {
+                    $('#mount_'+mount.id+' .listeners-total').text(mount.listeners.total);
+                    $('#mount_'+mount.id+' .listeners-unique').text(mount.listeners.unique);
+                });
+
+                // Update remote-specific listener counts.
+                np_new.station.remotes.forEach(function(remote) {
+                    $('#remote_'+remote.id+ '.listeners-total').text(remote.listeners.total);
+                    $('#remote_'+remote.id+ '.listeners-unique').text(remote.listeners.unique);
+                });
             },
             "formatTime": function(time) {
                 var sec_num = parseInt(time, 10);

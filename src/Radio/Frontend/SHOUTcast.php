@@ -27,27 +27,12 @@ class SHOUTcast extends AbstractFrontend
             foreach($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
                 $sid++;
-                $np = $np_adapter->getNowPlaying($sid);
-
-                if ($include_clients) {
-                    $np['listeners']['clients'] = $np_adapter->getClients($sid, true);
-                    $np['listeners']['unique'] = count($np['listeners']['clients']);
-                } else {
-                    $np['listeners']['clients'] = [];
-                }
-
-                if ($mount->getIsDefault()) {
-                    $np_final['current_song'] = $np['current_song'];
-                    $np_final['meta'] = $np['meta'];
-                }
-
-                $np_final['listeners']['clients'] = array_merge($np_final['listeners']['clients'], $np['listeners']['clients']);
-
-                $np_final['listeners']['current'] += $np['listeners']['current'];
-                $np_final['listeners']['unique'] += $np['listeners']['unique'];
-                $np_final['listeners']['total'] += $np['listeners']['total'];
-
-                $this->logger->debug('Response for mount point', ['mount' => $mount->getName(), 'response' => $np]);
+                $np_final = $this->_processNowPlayingForMount(
+                    $mount,
+                    $np_final,
+                    $np_adapter->getNowPlaying($sid),
+                    $include_clients ? $np_adapter->getClients($sid, true) : null
+                );
             }
 
             $this->logger->debug('Aggregated NowPlaying response', ['response' => $np_final]);

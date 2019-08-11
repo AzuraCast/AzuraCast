@@ -29,8 +29,12 @@ abstract class AbstractAdapter
      * @param Logger $logger
      * @param EventDispatcher $dispatcher
      */
-    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, EventDispatcher $dispatcher)
-    {
+    public function __construct(
+        EntityManager $em,
+        Supervisor $supervisor,
+        Logger $logger,
+        EventDispatcher $dispatcher
+    ) {
         $this->em = $em;
         $this->supervisor = $supervisor;
         $this->logger = $logger;
@@ -236,6 +240,17 @@ abstract class AbstractAdapter
         $app_e->addLoggingContext('station_name', $station->getName());
 
         throw $app_e;
+    }
+
+    /**
+     *
+     *
+     * @param array $clients
+     * @return array
+     */
+    protected function _filterClients(array $clients): array
+    {
+
     }
 
     /**

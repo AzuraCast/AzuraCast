@@ -1229,10 +1229,16 @@ class Station
      * @param AbstractFrontend $fa
      * @param AdapterProxy[] $remote_adapters
      * @param UriInterface|null $base_url
+     * @param bool $is_nowplaying
+     *
      * @return Api\Station
      */
-    public function api(AbstractFrontend $fa, array $remote_adapters = [], UriInterface $base_url = null): Api\Station
-    {
+    public function api(
+        AbstractFrontend $fa,
+        array $remote_adapters = [],
+        UriInterface $base_url = null,
+        bool $is_nowplaying = false
+    ): Api\Station {
         $response = new Api\Station;
         $response->id = (int)$this->id;
         $response->name = (string)$this->name;

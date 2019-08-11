@@ -5,8 +5,16 @@ use App\Entity;
 
 class Icecast extends AbstractRemote
 {
-    public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
+    /**
+     * @inheritDoc
+     */
+    public function updateNowPlaying(Entity\StationRemote $remote, $np_aggregate, bool $include_clients = false): array
     {
-        return $this->_updateNowPlayingFromAdapter($remote, $np, \NowPlaying\Adapter\Icecast::class, $include_clients);
+        return $this->_updateNowPlayingFromAdapter(
+            $remote,
+            $np_aggregate,
+            \NowPlaying\Adapter\Icecast::class,
+            $include_clients
+        );
     }
 }

@@ -56,6 +56,7 @@ class ProfileController
 
         foreach ($station->getMounts() as $mount) {
             $stream_urls['local'][] = [
+                $mount->getId(),
                 $mount->getDisplayName(),
                 (string)$frontend->getUrlForMount($station, $mount),
             ];
@@ -65,6 +66,7 @@ class ProfileController
             $remote = $ra_proxy->getRemote();
 
             $stream_urls['remote'][] = [
+                $remote->getId(),
                 $remote->getDisplayName(),
                 (string)$ra_proxy->getAdapter()->getPublicUrl($remote)
             ];

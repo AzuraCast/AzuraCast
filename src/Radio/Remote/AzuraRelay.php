@@ -9,26 +9,7 @@ use Monolog\Logger;
 
 class AzuraRelay extends AbstractRemote
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /**
-     * @param Client $http_client
-     * @param Logger $logger
-     * @param EntityManager $em
-     */
-    public function __construct(Client $http_client, Logger $logger, EntityManager $em)
-    {
-        parent::__construct($http_client, $logger);
-
-        $this->em = $em;
-    }
-
-    /**
-     * @inheritDoc
-     */
-
-    public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
+    public function updateNowPlaying(Entity\StationRemote $remote, $np_aggregate, bool $include_clients = false): array
     {
         $station = $remote->getStation();
         $relay = $remote->getRelay();
@@ -42,13 +23,19 @@ class AzuraRelay extends AbstractRemote
         if (isset($relay_np[$station->getId()][$remote->getMount()])) {
             $np_new = $relay_np[$station->getId()][$remote->getMount()];
 
-            $this->logger->debug('AzuraRelay stored NP response', ['response' => $np_new]);
+            $clients = ($include_clients)
+                ? $np_new['listeners']['clients']
+                : null;
 
-            $this->_mergeNowPlaying($np_new, $np, $include_clients);
-            return true;
+            $this->_mergeNowPlaying(
+                $remote,
+                $np_aggregate,
+                $np_new,
+                $clients
+            );
         }
 
-        return false;
+        return $np_aggregate;
     }
 
     /**

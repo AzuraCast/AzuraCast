@@ -9,6 +9,14 @@ use OpenApi\Annotations as OA;
 class StationRemote
 {
     /**
+     * Mount/Remote ID number.
+     *
+     * @OA\Property(example=1)
+     * @var int
+     */
+    public $id;
+
+    /**
      * Mount point name/URL
      *
      * @OA\Property(example="/radio.mp3")
@@ -39,4 +47,12 @@ class StationRemote
      * @var string
      */
     public $format;
+
+    /**
+     * Listener details
+     *
+     * @OA\Property
+     * @var NowPlayingListeners
+     */
+    public $listeners;
 }

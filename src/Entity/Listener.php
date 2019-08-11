@@ -187,4 +187,22 @@ class Listener
     {
         return md5($client['ip'].$client['user_agent']);
     }
+
+    /**
+     * Filter clients to exclude any listeners that shouldn't be included (i.e. relays).
+     *
+     * @param array $clients
+     * @return array
+     */
+    public static function filterClients(array $clients): array
+    {
+        return array_filter($clients, function($client) {
+            // Ignore clients with the "Icecast" UA as those are relays and not listeners.
+            if (false !== stripos($client['user_agent'], 'Icecast')) {
+                return false;
+            }
+
+            return true;
+        });
+    }
 }

@@ -5,15 +5,22 @@ use App\Entity;
 
 class SHOUTcast1 extends AbstractRemote
 {
-    /** @inheritdoc */
+    /** @inheritDoc */
     public function getPublicUrl(Entity\StationRemote $remote): string
     {
         return $this->_getRemoteUrl($remote, '/;stream.nsv');
     }
 
-    /** @inheritdoc */
-    public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
+    /**
+     * @inheritDoc
+     */
+    public function updateNowPlaying(Entity\StationRemote $remote, $np_aggregate, bool $include_clients = false): array
     {
-        return $this->_updateNowPlayingFromAdapter($remote, $np, \NowPlaying\Adapter\SHOUTcast1::class, $include_clients);
+        return $this->_updateNowPlayingFromAdapter(
+            $remote,
+            $np_aggregate,
+            \NowPlaying\Adapter\SHOUTcast1::class,
+            $include_clients
+        );
     }
 }

@@ -2,84 +2,131 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
+use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 
 abstract class AbstractRemote
 {
+    /** @var EntityManager */
+    protected $em;
+
     /** @var Client */
     protected $http_client;
 
     /** @var Logger */
     protected $logger;
 
-    public function __construct(Client $http_client, Logger $logger)
-    {
+    public function __construct(
+        EntityManager $em,
+        Client $http_client,
+        Logger $logger
+    ) {
+        $this->em = $em;
         $this->http_client = $http_client;
         $this->logger = $logger;
     }
 
     /**
      * @param Entity\StationRemote $remote
-     * @param array $np
+     * @param array $np_aggregate
      * @param bool $include_clients
-     * @return bool
+     * @return array The aggregated now-playing result.
      */
-    public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
-    {
-        return true;
+    public function updateNowPlaying(
+        Entity\StationRemote $remote,
+        $np_aggregate,
+        bool $include_clients = false
+    ): array {
+        return $np_aggregate;
     }
 
     /**
      * @param Entity\StationRemote $remote
-     * @param array $np
+     * @param array $np_aggregate
      * @param string $adapter_class
      * @param bool $include_clients
-     * @return bool
+     * @return array The resulting aggregated now-playing response.
      */
-    protected function _updateNowPlayingFromAdapter(Entity\StationRemote $remote, &$np, $adapter_class, bool $include_clients = false): bool
+    protected function _updateNowPlayingFromAdapter(Entity\StationRemote $remote, $np_aggregate, $adapter_class, bool $include_clients = false): array
     {
         /** @var \NowPlaying\Adapter\AdapterAbstract $np_adapter */
         $np_adapter = new $adapter_class($remote->getUrl(), $this->http_client);
 
         try {
-            $np_new = $np_adapter->getNowPlaying($remote->getMount());
-            $this->logger->debug('NowPlaying adapter response', ['response' => $np_new]);
+            $np = $np_adapter->getNowPlaying($remote->getMount());
+            $this->logger->debug('NowPlaying adapter response', ['response' => $np]);
 
-            $this->_mergeNowPlaying($np_new, $np, $include_clients);
-            return true;
+            return $this->_mergeNowPlaying(
+                $remote,
+                $np_aggregate,
+                $np,
+                null
+            );
         } catch(\NowPlaying\Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-            return false;
         }
+
+        return $np_aggregate;
     }
 
     /**
-     * @param array|null $np_new
+     * @param Entity\StationRemote $remote
+     * @param array $np_aggregate
      * @param array $np
-     * @param bool $include_clients
+     * @param array|null $clients
+     *
+     * @return array The composed aggregate now-playing response.
      */
-    protected function _mergeNowPlaying($np_new, &$np, bool $include_clients = false): void
+    protected function _mergeNowPlaying(
+        Entity\StationRemote $remote,
+        array $np_aggregate,
+        array $np,
+        ?array $clients
+    ): array
     {
-        if ($np['meta']['status'] === 'offline' && $np_new['meta']['status'] === 'online') {
-            $np['current_song'] = $np_new['current_song'];
-            $np['meta'] = $np_new['meta'];
-        }
+        if (null !== $clients) {
+            $original_num_clients = count($clients);
 
-        $np['listeners']['current'] += $np_new['listeners']['current'];
-        $np['listeners']['total'] += $np_new['listeners']['total'];
+            $np['listeners']['clients'] = Entity\Listener::filterClients($clients);
 
-        if ($include_clients && !empty($np_new['listeners']['clients'])) {
-            if (!isset($np['listeners']['clients'])) {
-                $np['listeners']['clients'] = [];
+            $num_clients = count($np['listeners']['clients']);
+
+            // If clients were filtered out, remove them from the listener count as well.
+            if ($num_clients < $original_num_clients) {
+                $client_diff = $original_num_clients - $num_clients;
+                $np['listeners']['total'] -= $client_diff;
             }
 
-            $np['listeners']['unique'] += count($np_new['listeners']['clients']);
-            $np['listeners']['clients'] = array_merge($np['listeners']['clients'], $np_new['listeners']['clients']);
+            $np['listeners']['unique'] = $num_clients;
+            $np['listeners']['current'] = $num_clients;
+
+            if ($np['listeners']['unique'] > $np['listeners']['total']) {
+                $np['listeners']['total'] = $np['listeners']['unique'];
+            }
         } else {
-            $np['listeners']['unique'] += $np_new['listeners']['unique'];
+            $np['listeners']['clients'] = [];
         }
+
+        $this->logger->debug('Response for remote relay', ['remote' => $remote->getDisplayName(), 'response' => $np]);
+
+        $remote->setListenersTotal($np['listeners']['total']);
+        $remote->setListenersUnique($np['listeners']['unique']);
+        $this->em->persist($remote);
+        $this->em->flush($remote);
+
+        if ($np['meta']['status'] === 'offline' && $np_aggregate['meta']['status'] === 'online') {
+            $np['current_song'] = $np_aggregate['current_song'];
+            $np['meta'] = $np_aggregate['meta'];
+        }
+
+        $np_aggregate['listeners']['clients'] = array_merge($np_aggregate['listeners']['clients'], $np['listeners']['clients']);
+        $np_aggregate['listeners']['current'] += $np['listeners']['current'];
+        $np_aggregate['listeners']['unique'] += $np['listeners']['unique'];
+        $np_aggregate['listeners']['total'] += $np['listeners']['total'];
+
+        return $np_aggregate;
     }
 
     /**

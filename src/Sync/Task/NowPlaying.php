@@ -405,7 +405,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
         // Loop through all remotes and update NP data accordingly.
         foreach($event->getRemotes() as $ra_proxy) {
-            $ra_proxy->getAdapter()->updateNowPlaying($ra_proxy->getRemote(), $np_raw, $event->includeClients());
+            $np_raw = $ra_proxy->getAdapter()->updateNowPlaying($ra_proxy->getRemote(), $np_raw, $event->includeClients());
         }
 
         $event->setRawResponse($np_raw);

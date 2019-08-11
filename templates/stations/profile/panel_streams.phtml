@@ -18,17 +18,19 @@
     <table class="table table-sm table-striped mb-0">
         <colgroup>
             <col style="width: 2%;">
-            <col style="width: 98%;">
+            <col style="width: 78%;">
+            <col style="width: 20%;">
         </colgroup>
         <?php if (count($stream_urls['local']) > 0): ?>
             <thead>
             <tr>
                 <th colspan="2"><?=__('Local Streams') ?></th>
+                <th><?=__('Listeners') ?></th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach($stream_urls['local'] as [$stream_name, $stream_url]): ?>
-                <tr class="align-middle">
+            <?php foreach($stream_urls['local'] as [$stream_id, $stream_name, $stream_url]): ?>
+                <tr class="align-middle" id="mount_<?=$stream_id ?>">
                     <td class="pr-1">
                         <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
@@ -37,6 +39,12 @@
                     <td class="pl-1">
                         <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
                         <?=$this->link($stream_url) ?>
+                    </td>
+                    <td class="pl-1 text-right">
+                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span class="listeners-total">0</span><br>
+                        <small>
+                            <span class="listeners-unique">0</span> <?=__('Unique') ?>
+                        </small>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -46,11 +54,12 @@
             <thead>
             <tr>
                 <th colspan="2"><?=__('Remote Relays') ?></th>
+                <th><?=__('Listeners') ?></th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach($stream_urls['remote'] as [$stream_name, $stream_url]): ?>
-                <tr class="align-middle">
+            <?php foreach($stream_urls['remote'] as [$stream_id, $stream_name, $stream_url]): ?>
+                <tr class="align-middle" id="remote_<?=$stream_id ?>">
                     <td class="pr-1">
                         <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
@@ -59,6 +68,12 @@
                     <td class="pl-1">
                         <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
                         <?=$this->link($stream_url) ?>
+                    </td>
+                    <td class="pl-1 text-right">
+                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span class="listeners-total">0</span><br>
+                        <small>
+                            <span class="listeners-unique">0</span> <?=__('Unique') ?>
+                        </small>
                     </td>
                 </tr>
             <?php endforeach; ?>

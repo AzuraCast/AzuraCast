@@ -145,6 +145,62 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
         return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
     }
 
+    /**
+     * @param Entity\StationMount $mount
+     * @param array $np_aggregate The aggregated nowplaying data for all mounts.
+     * @param array $np The nowplaying data for this specific mount.
+     * @param array|null $clients
+     * @return array The processed aggregate nowplaying data for all mounts.
+     */
+    protected function _processNowPlayingForMount(
+        Entity\StationMount $mount,
+        array $np_aggregate,
+        array $np,
+        ?array $clients
+    ): array {
+        if (null !== $clients) {
+            $original_num_clients = count($clients);
+
+            $np['listeners']['clients'] = Entity\Listener::filterClients($clients);
+
+            $num_clients = count($np['listeners']['clients']);
+
+            // If clients were filtered out, remove them from the listener count as well.
+            if ($num_clients < $original_num_clients) {
+                $client_diff = $original_num_clients - $num_clients;
+                $np['listeners']['total'] -= $client_diff;
+            }
+
+            $np['listeners']['unique'] = $num_clients;
+            $np['listeners']['current'] = $num_clients;
+
+            if ($np['listeners']['unique'] > $np['listeners']['total']) {
+                $np['listeners']['total'] = $np['listeners']['unique'];
+            }
+        } else {
+            $np['listeners']['clients'] = [];
+        }
+
+        $this->logger->debug('Response for mount point', ['mount' => $mount->getName(), 'response' => $np]);
+
+        $mount->setListenersTotal($np['listeners']['total']);
+        $mount->setListenersUnique($np['listeners']['unique']);
+        $this->em->persist($mount);
+        $this->em->flush($mount);
+
+        if ($mount->getIsDefault()) {
+            $np_aggregate['current_song'] = $np['current_song'];
+            $np_aggregate['meta'] = $np['meta'];
+        }
+
+        $np_aggregate['listeners']['clients'] = array_merge($np_aggregate['listeners']['clients'], $np['listeners']['clients']);
+        $np_aggregate['listeners']['current'] += $np['listeners']['current'];
+        $np_aggregate['listeners']['unique'] += $np['listeners']['unique'];
+        $np_aggregate['listeners']['total'] += $np['listeners']['total'];
+
+        return $np_aggregate;
+    }
+
     protected function _processCustomConfig($custom_config_raw)
     {
         $custom_config = [];

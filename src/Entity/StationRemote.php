@@ -185,6 +185,24 @@ class StationRemote implements StationMountInterface
      */
     protected $is_public = false;
 
+    /**
+     * @ORM\Column(name="listeners_unique", type="integer")
+     *
+     * @OA\Property(example=10)
+     *
+     * @var int The most recent number of unique listeners.
+     */
+    protected $listeners_unique = 0;
+
+    /**
+     * @ORM\Column(name="listeners_total", type="integer")
+     *
+     * @OA\Property(example=12)
+     *
+     * @var int The most recent number of total (non-unique) listeners.
+     */
+    protected $listeners_total = 0;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
@@ -531,6 +549,38 @@ class StationRemote implements StationMountInterface
     }
 
     /**
+     * @return int
+     */
+    public function getListenersUnique(): int
+    {
+        return $this->listeners_unique;
+    }
+
+    /**
+     * @param int $listeners_unique
+     */
+    public function setListenersUnique(int $listeners_unique): void
+    {
+        $this->listeners_unique = $listeners_unique;
+    }
+
+    /**
+     * @return int
+     */
+    public function getListenersTotal(): int
+    {
+        return $this->listeners_total;
+    }
+
+    /**
+     * @param int $listeners_total
+     */
+    public function setListenersTotal(int $listeners_total): void
+    {
+        $this->listeners_total = $listeners_total;
+    }
+
+    /**
      * @return bool Whether this remote relay can be hand-edited.
      */
     public function isEditable(): bool
@@ -544,13 +594,22 @@ class StationRemote implements StationMountInterface
      * @param AbstractRemote $adapter
      * @return Api\StationRemote
      */
-    public function api(AbstractRemote $adapter): Api\StationRemote
+    public function api(
+        AbstractRemote $adapter
+    ): Api\StationRemote
     {
         $response = new Api\StationRemote;
+
+        $response->id = $this->id;
         $response->name = $this->getDisplayName();
         $response->url = $adapter->getPublicUrl($this);
 
-        if ($this->enable_autodj) {
+        $response->listeners = new Api\NowPlayingListeners([
+            'unique' => $this->listeners_unique,
+            'total' => $this->listeners_total,
+        ]);
+
+        if ($this->enable_autodj || (Adapters::REMOTE_AZURARELAY === $this->type)) {
             $response->bitrate = (int)$this->autodj_bitrate;
             $response->format = (string)$this->autodj_format;
         }

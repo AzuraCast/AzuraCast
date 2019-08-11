@@ -13,9 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class RelaysController
 {
-    /** @var Acl */
-    protected $acl;
-
     /** @var EntityManager */
     protected $em;
 
@@ -23,16 +20,13 @@ class RelaysController
     protected $adapters;
 
     /**
-     * @param Acl $acl
      * @param EntityManager $em
      * @param Adapters $adapters
      */
     public function __construct(
-        Acl $acl,
         EntityManager $em,
         Adapters $adapters
     ) {
-        $this->acl = $acl;
         $this->em = $em;
         $this->adapters = $adapters;
     }
@@ -186,10 +180,11 @@ class RelaysController
             ->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
             ->execute();
 
+        $acl = $request->getAcl();
         $user = $request->getUser();
 
-        return array_filter($all_stations, function(Entity\Station $station) use ($user) {
-            return $this->acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId());
+        return array_filter($all_stations, function(Entity\Station $station) use ($acl, $user) {
+            return $acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId());
         });
     }
 }

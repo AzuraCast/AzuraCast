@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
  *
  * @ORM\Table(name="relays")
  * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  *
  * @OA\Schema(type="object")
  */

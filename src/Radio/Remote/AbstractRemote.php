@@ -117,8 +117,8 @@ abstract class AbstractRemote
         $this->em->flush($remote);
 
         if ($np['meta']['status'] === 'offline' && $np_aggregate['meta']['status'] === 'online') {
-            $np['current_song'] = $np_aggregate['current_song'];
-            $np['meta'] = $np_aggregate['meta'];
+            $np_aggregate['current_song'] = $np['current_song'];
+            $np_aggregate['meta'] = $np['meta'];
         }
 
         $np_aggregate['listeners']['clients'] = array_merge($np_aggregate['listeners']['clients'], $np['listeners']['clients']);

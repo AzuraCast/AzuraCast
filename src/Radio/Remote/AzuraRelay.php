@@ -27,7 +27,7 @@ class AzuraRelay extends AbstractRemote
                 ? $np_new['listeners']['clients']
                 : null;
 
-            $this->_mergeNowPlaying(
+            $np_aggregate = $this->_mergeNowPlaying(
                 $remote,
                 $np_aggregate,
                 $np_new,

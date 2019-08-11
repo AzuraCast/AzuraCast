@@ -14,6 +14,9 @@
     with_items:
      - "{{ app_base }}"
 
+  - name: Clear temp directory
+    file: path="{{ tmp_base }}" state=absent
+
   - name: Create System Folders
     file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0774
     with_items:

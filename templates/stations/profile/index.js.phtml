@@ -46,8 +46,8 @@ $(function() {
 
                 // Update remote-specific listener counts.
                 np_new.station.remotes.forEach(function(remote) {
-                    $('#remote_'+remote.id+ '.listeners-total').text(remote.listeners.total);
-                    $('#remote_'+remote.id+ '.listeners-unique').text(remote.listeners.unique);
+                    $('#remote_'+remote.id+' .listeners-total').text(remote.listeners.total);
+                    $('#remote_'+remote.id+' .listeners-unique').text(remote.listeners.unique);
                 });
             },
             "formatTime": function(time) {

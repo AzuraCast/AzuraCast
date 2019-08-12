@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-10 07:50\n"
+"PO-Revision-Date: 2019-08-12 08:28\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1949,7 +1949,7 @@ msgstr "Использовать WebSockets для обновления прои
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
-msgstr "Включает или отключает использование новой и более быстрой системы на основе WebSocket для получения обновлений в режиме реального времени на общедоступных проигрывателях. Возможно, вам придется отключить это, если у вас возникли проблемы с ним."
+msgstr "Включает или отключает использование новой и более быстрой системы на основе WebSocket для получения обновлений в режиме реального времени на общедоступных проигрывателях. Если возникают проблемы при использовании этой функции, вы можете её отключить."
 
 #: /var/azuracast/www/config/forms/settings.php:92
 msgid "Security Controls"
@@ -3989,7 +3989,7 @@ msgstr "Живые слушатели"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:58
 msgid "There are too many data points to map!"
-msgstr "Слишком много точек данных для карты!"
+msgstr "Слишком много точек с данными для карты!"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
@@ -4216,7 +4216,7 @@ msgstr "Сервер"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr ""
+msgstr "Вы можете подключиться напрямую по вашему IP-адресу <code>%s</code>."
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:78

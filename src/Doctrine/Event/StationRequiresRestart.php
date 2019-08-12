@@ -31,17 +31,26 @@ class StationRequiresRestart implements EventSubscriber
         ];
 
         $collections_to_check = [
-            $uow->getScheduledEntityInsertions(),
-            $uow->getScheduledEntityUpdates(),
-            $uow->getScheduledEntityDeletions(),
+            'inserts' => $uow->getScheduledEntityInsertions(),
+            'updates' => $uow->getScheduledEntityUpdates(),
+            'deletes' => $uow->getScheduledEntityDeletions(),
         ];
 
         $stations_to_restart = [];
-        foreach($collections_to_check as $collection) {
+        foreach($collections_to_check as $change_type => $collection) {
             foreach ($collection as $entity) {
                 if (($entity instanceof Entity\StationMount)
                     || ($entity instanceof Entity\StationRemote && $entity->isEditable())
                     || ($entity instanceof Entity\StationPlaylist && $entity->getStation()->useManualAutoDJ())) {
+                    if ('updates' === $change_type) {
+                        $changes = $uow->getEntityChangeSet($entity);
+                        unset($changes['listeners_unique'], $changes['listeners_total']);
+
+                        if (empty($changes)) {
+                            continue;
+                        }
+                    }
+
                     /** @var Entity\Station $station */
                     $station = $entity->getStation();
                     $stations_to_restart[$station->getId()] = $station;

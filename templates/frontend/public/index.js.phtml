@@ -58,7 +58,8 @@ $(function() {
 					}).done(function(data) {
 						notify(data, 'success');
 					}).fail(function(jqXhr) {
-						notify('Error: ' + jqXhr.responseJSON, 'danger');
+                        var response = jqXhr.responseJSON;
+						notify('Error: ' + response.message, 'danger');
 					});
 
 					return false;

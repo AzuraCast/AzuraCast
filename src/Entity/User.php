@@ -131,9 +131,9 @@ class User
     }
 
     /**
-     * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
-    public function preSave(): void
+    public function preUpdate(): void
     {
         $this->updated_at = time();
     }

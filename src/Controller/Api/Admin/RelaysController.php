@@ -111,6 +111,7 @@ class RelaysController
         $relay->setName($body['name'] ?? 'Relay');
         $relay->setIsVisibleOnPublicPages($body['is_visible_on_public_pages'] ?? true);
         $relay->setNowplaying((array)$body['nowplaying']);
+        $relay->setUpdatedAt(time());
 
         $this->em->persist($relay);
 

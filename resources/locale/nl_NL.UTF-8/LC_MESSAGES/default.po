@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 11:10\n"
+"PO-Revision-Date: 2019-08-13 14:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3448,7 +3448,7 @@ msgstr "Laten we beginnen met het maken van een Super Administrator account."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:28
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
-msgstr ""
+msgstr "Dit account heeft volledige toegang tot het systeem. U wordt automatisch ingelogd voor de rest van de setup."
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:19
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:19

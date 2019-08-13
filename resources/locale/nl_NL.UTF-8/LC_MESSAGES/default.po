@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 14:20\n"
+"PO-Revision-Date: 2019-08-13 14:40\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3574,7 +3574,7 @@ msgstr "Afspeellijsten bijgewerkt voor geselecteerde bestanden:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:78
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Afspeellijsten geleegd voor geselecteerde bestanden:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:147
 msgid "Album Artwork"
@@ -3664,7 +3664,7 @@ msgstr "Beschikbare logs"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:8
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
-msgstr ""
+msgstr "Mount points zijn hoe luisteraars verbinding maken met uw station. Elk mount point kan een ander audio formaat of andere kwaliteit zijn. Door gebruik te maken van mount points is het mogelijk een stream met een hoge kwaliteit aan te bieden voor luisteraars met een snelle internetverbinding en een stream met een lage kwaliteit voor mobiele luisteraars."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 msgid "Delete mount point \"%s\"?"

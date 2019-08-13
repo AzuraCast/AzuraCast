@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 15:30\n"
+"PO-Revision-Date: 2019-08-13 15:41\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1578,7 +1578,7 @@ msgstr "Externe afspeelbuffer (seconden)"
 
 #: /var/azuracast/www/config/forms/playlist.php:187
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
-msgstr ""
+msgstr "De lengte van afspeeltijd dat Liquidsoap moet bufferen wanneer deze externe playlist wordt afgespeeld. Te korte buffers kunnen lijden tot onderbrekingen en instabiele verbindingen. "
 
 #: /var/azuracast/www/config/forms/playlist.php:208
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:103

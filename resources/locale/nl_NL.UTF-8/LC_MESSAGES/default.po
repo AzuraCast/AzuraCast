@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 15:00\n"
+"PO-Revision-Date: 2019-08-13 15:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1997,7 +1997,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:134
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>Geen:</b> Verzamel geen statistieken over luisteraars"
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "AzuraCast Installation Telemetry"

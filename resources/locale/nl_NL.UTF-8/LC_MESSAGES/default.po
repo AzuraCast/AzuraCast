@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 14:40\n"
+"PO-Revision-Date: 2019-08-13 15:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -307,7 +307,7 @@ msgstr "%s toevoegen"
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:101
 msgid "Sync Task Output"
-msgstr ""
+msgstr "Synchronisatie taak uitvoer"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:33
 msgid "SHOUTcast version \"%s\" is currently installed."
@@ -3849,7 +3849,7 @@ msgstr "Uniek"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
-msgstr ""
+msgstr "Speelt hierna"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"

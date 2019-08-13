@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 11:00\n"
+"PO-Revision-Date: 2019-08-13 11:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2292,7 +2292,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"
-msgstr ""
+msgstr "Handmatige AutoDJ Modus"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
@@ -3306,7 +3306,7 @@ msgstr "Raw"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
-msgstr ""
+msgstr "Sample snelheid"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:22
 msgid "Bit Rate"
@@ -3618,7 +3618,7 @@ msgstr "Opslaan"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:93
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Afspeellijsten legen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:97
 msgid "Move"
@@ -3712,7 +3712,7 @@ msgstr "Inschakelen"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:75
 msgid "Reorder"
-msgstr ""
+msgstr "Herschikken"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Export %s"
@@ -3886,7 +3886,7 @@ msgstr "Bekijk"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:30
 msgid "Disable song requests?"
-msgstr ""
+msgstr "Requests uitschakelen?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:46
 msgid "Enable song requests?"

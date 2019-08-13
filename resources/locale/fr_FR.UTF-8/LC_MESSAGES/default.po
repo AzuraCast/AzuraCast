@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-10 07:50\n"
+"PO-Revision-Date: 2019-08-13 13:00\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2713,7 +2713,7 @@ msgstr "Comptes utilisateurs"
 #: /var/azuracast/www/templates/admin/relays/index.phtml:3
 #: /var/azuracast/www/templates/admin/relays/index.phtml:15
 msgid "Connected AzuraRelays"
-msgstr ""
+msgstr "RelaisAzura connectés"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
@@ -3073,19 +3073,19 @@ msgstr "Globale"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:20
 msgid "Relay"
-msgstr ""
+msgstr "Relais"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
-msgstr ""
+msgstr "Est publique"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"
-msgstr ""
+msgstr "Premier connecté"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"
-msgstr ""
+msgstr "Dernière mise à jour"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3426,7 +3426,7 @@ msgstr "Demander un titre"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:15
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:16
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
@@ -4026,16 +4026,16 @@ msgstr "Télécharger le CSV"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:40
 msgid "Unique Listeners"
-msgstr ""
+msgstr "Auditeurs uniques"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
 msgid "for selected period"
-msgstr ""
+msgstr "pour la période sélectionnée"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
-msgstr ""
+msgstr "Heures d'écoute totales"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:56
 msgid "IP"

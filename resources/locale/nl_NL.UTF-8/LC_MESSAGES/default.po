@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 14:10\n"
+"PO-Revision-Date: 2019-08-13 14:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2084,7 +2084,7 @@ msgstr "Website URL"
 
 #: /var/azuracast/www/config/forms/station.php:63
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
-msgstr ""
+msgstr "Opmerking: Dit moet de publieke startpagina van het radiostation zijn, niet de AzuraCast pagina. Deze website zal worden opgenomen in de uitzendgegevens."
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Time Zone"
@@ -2092,7 +2092,7 @@ msgstr "Tijdzone"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Onder andere geplande afspeellijsten zijn afhankelijk van de ingestelde tijdzone."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
@@ -2296,7 +2296,7 @@ msgstr "Handmatige AutoDJ Modus"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr ""
+msgstr "Deze modus schakelt de beheermogelijkheden van AzuraCasts AutoDJ uit, in plaats daarvan wordt Liquidsoap zelf gebruik om het afspelen van nummers te beheren. Onder andere de functie voor het weergeven van het volgende nummer zal hierdoor niet beschikbaar zijn."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
@@ -2308,7 +2308,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:428
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
-msgstr ""
+msgstr "Deze code zal worden toegevoegde aan de Liquidsoap configuratie van jouw station, onder de playlist configuratie en voor de Icecast uitvoer. Gebruik alleen valide Liquidsoap code binnen deze sectie!"
 
 #: /var/azuracast/www/config/forms/station.php:445
 msgid "Enable Broadcasting"

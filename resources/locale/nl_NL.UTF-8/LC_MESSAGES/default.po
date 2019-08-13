@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 10:50\n"
+"PO-Revision-Date: 2019-08-13 11:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -840,7 +840,7 @@ msgstr "%s kan niet beginnen"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is already running."
-msgstr ""
+msgstr "Proces is al gestart."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s cannot stop"
@@ -1348,7 +1348,7 @@ msgstr "Aantal seconden vanaf de start van het nummer waarop de AutoDJ moet stop
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "Mount Point URL"
-msgstr ""
+msgstr "Mount point URL"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:16
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
@@ -1405,7 +1405,7 @@ msgstr "AutoDJ inschakelen"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:81
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "Indien ingeschakeld, zal de AutoDJ automatisch muziek afspelen op dit mount punt."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:99
 #: /var/azuracast/www/config/forms/remote.php:96
@@ -1516,7 +1516,7 @@ msgstr "Een afspeellijst die het station opdracht geeft om te spelen vanaf een e
 
 #: /var/azuracast/www/config/forms/playlist.php:93
 msgid "Song Playback Order"
-msgstr ""
+msgstr "Volgorde van afspelen"
 
 #: /var/azuracast/www/config/forms/playlist.php:96
 msgid "Shuffled"
@@ -1541,7 +1541,7 @@ msgstr "Selecteer een bestaand afspeellijst bestand om de inhoud ervan toe te vo
 
 #: /var/azuracast/www/config/forms/playlist.php:129
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "Sta requests toe voor deze playlist"
 
 #: /var/azuracast/www/config/forms/playlist.php:130
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
@@ -3003,7 +3003,7 @@ msgstr "Server status"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
-msgstr ""
+msgstr "Huidige CPU load"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
@@ -3055,15 +3055,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
-msgstr ""
+msgstr "Is openbaar"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"
-msgstr ""
+msgstr "Eerste verbinding"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"
-msgstr ""
+msgstr "Laatste update"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3402,7 +3402,7 @@ msgstr "Vraag een nummer aan"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:15
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:16
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
@@ -3566,11 +3566,11 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:37
 msgid "Files removed:"
-msgstr ""
+msgstr "Bestanden verwijderd:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:76
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Afspeellijsten bijgewerkt voor geselecteerde bestanden:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:78
 msgid "Playlists cleared for selected files:"
@@ -3837,7 +3837,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:16
 msgid "On the Air"
-msgstr ""
+msgstr "On-Air"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:18
 msgid "Listener"
@@ -3857,7 +3857,7 @@ msgstr "Nummer overslaan"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:103
 msgid "Disconnect Streamer"
-msgstr ""
+msgstr "Verbreek verbinding met streamer"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
@@ -3890,7 +3890,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:46
 msgid "Enable song requests?"
-msgstr ""
+msgstr "Requests inschakelen?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:40
@@ -3921,7 +3921,7 @@ msgstr "Download %s"
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
 msgid "Listener Request"
-msgstr ""
+msgstr "Luisteraar request"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
@@ -4002,12 +4002,12 @@ msgstr "Download CSV"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:40
 msgid "Unique Listeners"
-msgstr ""
+msgstr "Unieke luisteraars"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
 msgid "for selected period"
-msgstr ""
+msgstr "voor geselecteerde periode"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
@@ -4192,7 +4192,7 @@ msgstr "Server"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr ""
+msgstr "Je moet mogelijk direct verbinding maken met je IP-adres, dit is <code>%s</code>."
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:78

@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use App\Radio\Adapters;
 use App\Radio\Remote\AbstractRemote;
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="station_remotes")
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
@@ -187,7 +190,7 @@ class StationRemote implements StationMountInterface
 
     /**
      * @ORM\Column(name="listeners_unique", type="integer")
-     *
+     * @AuditLog\AuditIgnore
      * @OA\Property(example=10)
      *
      * @var int The most recent number of unique listeners.
@@ -196,7 +199,7 @@ class StationRemote implements StationMountInterface
 
     /**
      * @ORM\Column(name="listeners_total", type="integer")
-     *
+     * @AuditLog\AuditIgnore
      * @OA\Property(example=12)
      *
      * @var int The most recent number of total (non-unique) listeners.
@@ -241,6 +244,8 @@ class StationRemote implements StationMountInterface
     }
 
     /**
+     * @AuditLog\AuditIdentifier
+     *
      * @return string
      */
     public function getDisplayName(): string

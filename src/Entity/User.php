@@ -163,6 +163,14 @@ class User
     }
 
     /**
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->getName().' ('.$this->getEmail().')';
+    }
+
+    /**
      * @param string $password
      */
     public function setAuthPassword(string $password): void

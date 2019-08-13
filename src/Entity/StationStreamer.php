@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\Validator\Constraints as AppAssert;
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="station_streamers")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationStreamerRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
@@ -89,6 +92,8 @@ class StationStreamer
 	/**
      * @ORM\Column(name="reactivate_at", type="integer", nullable=true)
      *
+     * @AuditLog\AuditIgnore()
+     *
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int|null
      */
@@ -150,6 +155,8 @@ class StationStreamer
     }
 
     /**
+     * @AuditLog\AuditIdentifier()
+     *
      * @return string
      */
     public function getDisplayName(): string

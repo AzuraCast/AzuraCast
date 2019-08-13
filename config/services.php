@@ -34,9 +34,14 @@ return [
 
     EntityManager::class => DI\decorate(function(EntityManager $em, ContainerInterface $di) {
         $event_manager = $em->getEventManager();
-        $event_manager->addEventSubscriber(new App\Doctrine\Event\StationRequiresRestart);
+        $event_manager->addEventSubscriber($di->get(App\Doctrine\Event\StationRequiresRestart::class));
+        $event_manager->addEventSubscriber($di->get(App\Doctrine\Event\AuditLog::class));
+
         return $em;
     }),
+
+    App\Doctrine\Event\AuditLog::class => DI\autowire(),
+    App\Doctrine\Event\StationRequiresRestart::class => DI\autowire(),
 
     /*
      * View

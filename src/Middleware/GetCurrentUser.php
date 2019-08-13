@@ -3,6 +3,7 @@ namespace App\Middleware;
 
 use App\Auth;
 use App\Customization;
+use App\Entity\AuditLog;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,6 +39,9 @@ class GetCurrentUser implements MiddlewareInterface
         // Initialize customization (timezones, locales, etc) based on the current logged in user.
         $this->customization->setUser($user);
         $request = $this->customization->init($request);
+
+        // Set the Audit Log user.
+        AuditLog::setCurrentUser($user);
 
         $request = $request->withAttribute(ServerRequest::ATTR_USER, $user)
             ->withAttribute('is_logged_in', (null !== $user));

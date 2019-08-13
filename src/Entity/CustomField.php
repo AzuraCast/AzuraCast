@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,6 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="custom_field")
  * @ORM\Entity
+ *
+ * @AuditLog\Auditable()
  *
  * @OA\Schema(type="object")
  */
@@ -54,6 +57,8 @@ class CustomField
     }
 
     /**
+     * @AuditLog\AuditIdentifier()
+     *
      * @return string
      */
     public function getName(): string

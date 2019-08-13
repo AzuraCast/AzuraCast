@@ -1,11 +1,14 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="api_keys")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\ApiKeyRepository")
+ *
+ * @AuditLog\Auditable
  */
 class ApiKey implements \JsonSerializable
 {
@@ -109,6 +112,8 @@ class ApiKey implements \JsonSerializable
     }
 
     /**
+     * @AuditLog\AuditIdentifier
+     *
      * @return string
      */
     public function getComment(): ?string

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 15:20\n"
+"PO-Revision-Date: 2019-08-13 15:30\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1508,7 +1508,7 @@ msgstr "Een afspeellijst met mediabestanden die op deze server worden gehost."
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "Remote URL Playlist"
-msgstr ""
+msgstr "Afspeellijst vanaf externe URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "A playlist that instructs the station to play from a remote URL."
@@ -1520,7 +1520,7 @@ msgstr "Volgorde van afspelen"
 
 #: /var/azuracast/www/config/forms/playlist.php:96
 msgid "Shuffled"
-msgstr ""
+msgstr "Gemixt"
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
@@ -1574,7 +1574,7 @@ msgstr "Afspeellijst (M3U/PLS) URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:185
 msgid "Remote Playback Buffer (Seconds)"
-msgstr ""
+msgstr "Externe afspeelbuffer (seconden)"
 
 #: /var/azuracast/www/config/forms/playlist.php:187
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."

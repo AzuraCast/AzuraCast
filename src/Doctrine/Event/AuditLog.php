@@ -55,29 +55,21 @@ class AuditLog implements EventSubscriber
                     continue;
                 }
 
-                // Get the class name.
-                $classNameParts = explode('\\', get_class($entity));
-                $className = array_pop($classNameParts);
-
                 // Get the changes made to the entity.
-                $changes = [];
+                $changes = $uow->getEntityChangeSet($entity);
 
-                if (Entity\AuditLog::OPER_UPDATE === $changeType) {
-                    $changes = $uow->getEntityChangeSet($entity);
+                // Look for the @AuditIgnore annotation on properties.
+                foreach ($changes as $change_field => $field_changes) {
+                    $property = $reflectionClass->getProperty($change_field);
+                    $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
 
-                    // Look for the @AuditIgnore annotation on properties.
-                    foreach ($changes as $change_field => $field_changes) {
-                        $property = $reflectionClass->getProperty($change_field);
-                        $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
-
-                        if (null !== $annotation) {
-                            unset($changes[$change_field]);
-                        }
+                    if (null !== $annotation) {
+                        unset($changes[$change_field]);
                     }
+                }
 
-                    if (empty($changes)) {
-                        continue;
-                    }
+                if (Entity\AuditLog::OPER_UPDATE === $changeType && empty($changes)) {
+                    continue;
                 }
 
                 // Find the identifier method or property.
@@ -88,7 +80,7 @@ class AuditLog implements EventSubscriber
 
                 $auditLog = new Entity\AuditLog(
                     $changeType,
-                    $className,
+                    get_class($entity),
                     $identifier,
                     null,
                     null,

@@ -95,11 +95,25 @@ class AuditLog
         $this->user = self::$currentUser;
 
         $this->operation = $operation;
-        $this->class = $class;
+        $this->class = $this->_filterClassName($class);
         $this->identifier = $identifier;
-        $this->targetClass = $targetClass;
+        $this->targetClass = $this->_filterClassName($targetClass);
         $this->target = $target;
         $this->changes = $changes;
+    }
+
+    /**
+     * @param string|null $class The FQDN for a class
+     * @return string|null The non-namespaced class name
+     */
+    protected function _filterClassName(?string $class): ?string
+    {
+        if (empty($class)) {
+            return null;
+        }
+
+        $classNameParts = explode('\\', $class);
+        return array_pop($classNameParts);
     }
 
     /**

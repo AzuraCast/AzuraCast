@@ -56,12 +56,9 @@ class Backup extends AbstractTask
                 $message->exclude_media
             );
 
-            $this->settings_repo->setSettings([
-                Entity\Settings::BACKUP_LAST_RUN        => time(),
-                Entity\Settings::BACKUP_LAST_RESULT     => $result_code,
-                Entity\Settings::BACKUP_LAST_OUTPUT     => $result_output,
-            ]);
-
+            $this->settings_repo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
+            $this->settings_repo->setSetting(Entity\Settings::BACKUP_LAST_RESULT, $result_code);
+            $this->settings_repo->setSetting(Entity\Settings::BACKUP_LAST_OUTPUT, $result_output);
         }
     }
 

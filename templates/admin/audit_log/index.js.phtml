@@ -48,16 +48,20 @@ $(function() {
             "target": function(column, row) {
                 if (row.target) {
                     return '<small>'+row.target_class+'</small><br>'+row.target;
-                } else {
-                    return 'N/A';
                 }
+
+                return 'N/A';
             },
             "actions": function(column, row) {
-                let button = $("<a class=\"btn btn-primary btn-sm btn-changes\" href=\"#\"></a>")
-                    .text(<?=$this->escapeJs(__('Changes')) ?>)
-                    .attr('data-changes', JSON.stringify(row.changes));
+                if (row.changes.length > 0) {
+                    let button = $("<a class=\"btn btn-primary btn-sm btn-changes\" href=\"#\"></a>")
+                        .text(<?=$this->escapeJs(__('Changes')) ?>)
+                        .attr('data-changes', JSON.stringify(row.changes));
 
-                return $('<p>').append(button).html();
+                    return $('<p>').append(button).html();
+                }
+
+                return '';
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function() {

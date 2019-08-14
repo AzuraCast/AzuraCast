@@ -15,9 +15,51 @@ class SettingsRepository extends Repository
      */
     public function setSettings(array $settings): void
     {
-        foreach ($settings as $setting_key => $setting_value) {
-            $this->setSetting($setting_key, $setting_value);
+        $all_records_raw = $this->findAll();
+
+        $all_records = [];
+        foreach($all_records_raw as $record) {
+            /** @var Entity\Settings $record */
+            $all_records[$record->getSettingKey()] = $record;
         }
+
+        $changes = [];
+
+        foreach ($settings as $setting_key => $setting_value) {
+            if (isset($all_records[$setting_key])) {
+                $record = $all_records[$setting_key];
+                $prev = $record->getSettingValue();
+            } else {
+                $record = new Entity\Settings($setting_key);
+                $prev = null;
+            }
+
+            $record->setSettingValue($setting_value);
+            $this->_em->persist($record);
+
+            // Update cached value
+            self::$settings[$setting_key] = $setting_value;
+
+            // Include change in audit log.
+            if ($prev !== $setting_value) {
+                $changes[$setting_key] = [$prev, $setting_value];
+            }
+        }
+
+        if (!empty($changes)) {
+            $auditLog = new Entity\AuditLog(
+                Entity\AuditLog::OPER_UPDATE,
+                Entity\Settings::class,
+                'Settings',
+                null,
+                null,
+                $changes
+            );
+
+            $this->_em->persist($auditLog);
+        }
+
+        $this->_em->flush();
     }
 
     /**
@@ -28,12 +70,11 @@ class SettingsRepository extends Repository
     {
         $record = $this->findOneBy(['setting_key' => $key]);
 
-        if (!($record instanceof Entity\Settings)) {
+        if (!$record instanceof Entity\Settings) {
             $record = new Entity\Settings($key);
         }
 
         $record->setSettingValue($value);
-
         $this->_em->persist($record);
         $this->_em->flush($record);
 

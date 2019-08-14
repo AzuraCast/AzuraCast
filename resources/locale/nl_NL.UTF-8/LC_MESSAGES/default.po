@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-14 14:40\n"
+"PO-Revision-Date: 2019-08-14 14:51\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -709,7 +709,7 @@ msgstr "%s uitgeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Web Hook test uitvoer"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
@@ -828,7 +828,7 @@ msgstr "Nieuwe AzuraCast updates beschikbaar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s is niet herkend als een service."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
@@ -1447,7 +1447,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"
-msgstr ""
+msgstr "YP Directory Autorisatie Hash"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
@@ -1553,7 +1553,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
-msgstr ""
+msgstr "Schakel deze instelling in om te voorkomen dat metadata naar de AutoDJ wordt verzonden voor bestanden binnen deze afspeellijst. Dit is handig wanneer de afspeellijst jingles of reclames bevat."
 
 #: /var/azuracast/www/config/forms/playlist.php:164
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
@@ -1909,11 +1909,11 @@ msgstr "Een radiouitzending is standaard te beluisteren op zijn eigen poorten (b
 
 #: /var/azuracast/www/config/forms/settings.php:61
 msgid "Days of Playback History to Keep"
-msgstr "Aantal dagen om afspeel geschiedenis te bewaren"
+msgstr "Aantal dagen waarvan afspeel geschiedenis bewaart dient te blijven"
 
 #: /var/azuracast/www/config/forms/settings.php:62
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
-msgstr ""
+msgstr "Stel langer in om meer afspeel geschiedenis van stations te bewaren. Stel korter in om schijfruimte te besparen."
 
 #: /var/azuracast/www/config/forms/settings.php:64
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
@@ -1945,7 +1945,7 @@ msgstr "Onvoltooid"
 
 #: /var/azuracast/www/config/forms/settings.php:79
 msgid "Use WebSockets for Now Playing Updates"
-msgstr ""
+msgstr "Gebruik WebSockets voor Now Playing updates"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
@@ -2541,7 +2541,7 @@ msgstr "Webhook URL"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:38
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "De URL dat POST berichten zal ontvangen telkens wanneer er een Event wordt aangeroepen."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:49
 msgid "Optional: HTTP Basic Authentication Username"
@@ -2549,15 +2549,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:50
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Als je web hook HTTP basis authenticate vereist, geef dan hier de gebruikersnaam op."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:59
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "Optioneel: HTTP basis authenticatie wachtwoord"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:60
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Als je web hook HTTP basis authenticate vereist, geef dan hier het wachtwoord op."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 msgid "Bot Token"
@@ -2691,7 +2691,7 @@ msgstr "Gebruikers account"
 #: /var/azuracast/www/templates/admin/relays/index.phtml:3
 #: /var/azuracast/www/templates/admin/relays/index.phtml:15
 msgid "Connected AzuraRelays"
-msgstr ""
+msgstr "Verbonden AzuraRelays"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
@@ -3562,7 +3562,7 @@ msgstr "Configureer automatische toewijzing"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:28
 msgid "Delete {NUM} media file(s)?"
-msgstr ""
+msgstr "Verwijder {NUM} mediabestand(en)?"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:37
 msgid "Files removed:"
@@ -3760,11 +3760,11 @@ msgstr "Aangepast"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:3
 msgid "Reorder Playlist"
-msgstr ""
+msgstr "Afspeellijst herschikken"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:16
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Afspeellijst herschikken: %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Down"
@@ -4011,7 +4011,7 @@ msgstr "voor geselecteerde periode"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
-msgstr ""
+msgstr "Totaal aantal luisteruren"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:56
 msgid "IP"
@@ -4209,7 +4209,7 @@ msgstr "ShoutCast v1 gebruikers"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:79
 msgid "%d (%d for some clients)"
-msgstr ""
+msgstr "%d (%d voor sommige gebruikers)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:84
 msgid "(DJ username and password separated by a colon)"

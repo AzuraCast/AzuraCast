@@ -35,11 +35,11 @@ $(function() {
             },
             "operation": function(column, row) {
                 if (row.operation === <?=\App\Entity\AuditLog::OPER_INSERT ?>) {
-                    return '<span class="text-success" title="<?=$this->escapeJs(__('Insert')) ?>"><i class="material-icons lg" aria-hidden="true">add_circle</i></span>';
+                    return '<span class="text-success" title=<?=$this->escapeJs(__('Insert')) ?>><i class="material-icons lg inline" aria-hidden="true">add_circle</i></span>';
                 } else if (row.operation === <?=\App\Entity\AuditLog::OPER_DELETE ?>) {
-                    return '<span class="text-danger" title="<?=$this->escapeJs(__('Delete')) ?>"><i class="material-icons lg" aria-hidden="true">remove_circle</i></span>';
+                    return '<span class="text-danger" title=<?=$this->escapeJs(__('Delete')) ?>><i class="material-icons lg inline" aria-hidden="true">remove_circle</i></span>';
                 } else {
-                    return '<span class="text-primary" title="<?=$this->escapeJs(__('Update')) ?>"><i class="material-icons lg" aria-hidden="true">swap_horizontal_circle</i></span>';
+                    return '<span class="text-primary" title=<?=$this->escapeJs(__('Update')) ?>><i class="material-icons lg inline" aria-hidden="true">swap_horizontal_circle</i></span>';
                 }
             },
             "identifier": function(column, row) {

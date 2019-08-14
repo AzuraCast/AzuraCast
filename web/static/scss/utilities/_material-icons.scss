@@ -8,6 +8,10 @@
   &.sm {
     @include reset-material-icons($material-icon-size-sm);
   }
+
+  &.inline {
+    line-height: 1 !important;
+  }
 }
 
 .material-icons-inline {

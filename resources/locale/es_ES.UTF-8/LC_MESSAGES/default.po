@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-14 23:40\n"
+"PO-Revision-Date: 2019-08-14 23:50\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -601,7 +601,7 @@ msgstr "Lista activada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:248
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Lista desactivada."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
@@ -609,13 +609,13 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
 msgid "Remote Relay"
-msgstr ""
+msgstr "Relay Remoto"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:54
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Oyentes por día"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:88
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
@@ -662,7 +662,7 @@ msgstr "Domingo"
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Oyentes por hora"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
 msgid "SoundExchange Report"
@@ -681,7 +681,7 @@ msgstr "Ahora puede configurar las cuentas para los streamers (DJ)."
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr ""
+msgstr "Locutor"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
@@ -697,11 +697,11 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Web Hook"
-msgstr ""
+msgstr "Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "%s enabled."
-msgstr ""
+msgstr "%s activado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "%s disabled."

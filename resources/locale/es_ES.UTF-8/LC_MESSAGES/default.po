@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-10 07:50\n"
+"PO-Revision-Date: 2019-08-14 23:40\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -343,7 +343,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Permission"
-msgstr ""
+msgstr "Permiso"
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -377,11 +377,11 @@ msgstr "Usuario"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:57
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
-msgstr ""
+msgstr "Otro usuario ya existe con esta misma dirección de correo electrónico. Por favor, actualice la dirección de correo electrónico."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:76
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "No puedes eliminar tu propia cuenta."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:99
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
@@ -445,7 +445,7 @@ msgstr "No se pudieron comprobar sus credenciales."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:204
 msgid "All Stations"
-msgstr ""
+msgstr "Todas las Estaciones"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:234
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:74
@@ -533,11 +533,11 @@ msgstr "Error con la asignación automática"
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:150
 msgid "Path \"%s\" is not a folder."
-msgstr ""
+msgstr "La ruta \"%s\" no es una carpeta."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:239
 msgid "Could not move \"%s\" to \"%s\""
-msgstr ""
+msgstr "No se pudo mover \"%s\" a \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:125
 msgid "File renamed!"
@@ -549,7 +549,7 @@ msgstr "Renombrar Archivo/Directorio"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:207
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Esta estación está fuera de los limites del espacio de almacenamiento disponible."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:122
 #: /var/azuracast/www/templates/stations/files/index.phtml:179
@@ -589,15 +589,15 @@ msgstr "Lista de reproducción"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Esta lista no es de reproducción secuencial."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format"
-msgstr ""
+msgstr "Formato"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Lista activada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:248
 msgid "Playlist disabled."

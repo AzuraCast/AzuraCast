@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-13 15:41\n"
+"PO-Revision-Date: 2019-08-14 14:40\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -137,7 +137,7 @@ msgstr "Mount points"
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr ""
+msgstr "Externe relays"
 
 #: /var/azuracast/www/src/Acl.php:205
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
@@ -609,7 +609,7 @@ msgstr "Afspeellijst uitgeschakeld."
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
 msgid "Remote Relay"
-msgstr ""
+msgstr "Externe relay"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:54
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
@@ -832,7 +832,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Het is mogelijk nog niet geregistreerd bij Supervisor. Het opnieuw starten van de uitzending kan helpen."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot start"
@@ -1300,7 +1300,7 @@ msgstr "Beheerders kunnen de velden aanpassen die hier verschijnen op de <a href
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Beheer het spelen van nummers"
 
 #: /var/azuracast/www/config/forms/media.php:90
 msgid "Song Length (seconds)"
@@ -1641,7 +1641,7 @@ msgstr "Bepaal hoe deze afspeellijst wordt behandeld door de AutoDJ software."
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr ""
+msgstr "<b>Waarschuwing:</b> Deze functies zijn onderdeel van Liquidsoap en hebben invloed op de werking van uw AutoDJ."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
@@ -1893,7 +1893,7 @@ msgstr "Deze naam wordt weergegeven als subtitel naast het AzuraCast logo, ter h
 
 #: /var/azuracast/www/config/forms/settings.php:37
 msgid "Prefer Browser URL (If Available)"
-msgstr ""
+msgstr "Voorkeur browser URL (indien beschikbaar)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
@@ -1909,7 +1909,7 @@ msgstr "Een radiouitzending is standaard te beluisteren op zijn eigen poorten (b
 
 #: /var/azuracast/www/config/forms/settings.php:61
 msgid "Days of Playback History to Keep"
-msgstr ""
+msgstr "Aantal dagen om afspeel geschiedenis te bewaren"
 
 #: /var/azuracast/www/config/forms/settings.php:62
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."

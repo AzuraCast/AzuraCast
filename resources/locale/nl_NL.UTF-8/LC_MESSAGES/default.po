@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-14 14:51\n"
+"PO-Revision-Date: 2019-08-14 15:03\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -792,7 +792,7 @@ msgstr "Uw <code>docker-compose.yml</code> bestand is verouderd!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:73
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "U dient uw <code>docker-compose.yml</code> bestand te updaten om te voldoen aan de laatste wijzigingen. Bekijk de <a href=\"%s\" target=\"_blank\">laatste versie van dit bestand</a> en kopieer eventuele door ons gemaakte wijzigingen naar uw versie indien u verschillen aantreft.<br>Je kunt ook het <code>./docker.sh</code> script uitvoeren om dit proces automatisch uit te laten voeren."
 
 #: /var/azuracast/www/src/Notification/Manager.php:99
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
@@ -1108,7 +1108,7 @@ msgstr "Backup bestandsnaam"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Optioneel absoluut of relatief pad waar het back-upbestand zich dient te bevinden."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
@@ -1545,7 +1545,7 @@ msgstr "Sta requests toe voor deze playlist"
 
 #: /var/azuracast/www/config/forms/playlist.php:130
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Als requests zijn ingeschakeld voor uw station zullen luisteraars de mogelijkheid hebben om nummers binnen deze afspeellijst aan te vragen."
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"

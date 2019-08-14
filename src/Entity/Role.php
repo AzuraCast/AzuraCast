@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="role")
  * @ORM\Entity
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
@@ -67,6 +70,8 @@ class Role implements \JsonSerializable
     }
 
     /**
+     * @AuditLog\AuditIdentifier()
+     *
      * @return string
      */
     public function getName(): string

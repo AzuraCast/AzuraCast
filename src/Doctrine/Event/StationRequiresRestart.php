@@ -1,7 +1,9 @@
 <?php
 namespace App\Doctrine\Event;
 
+use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -12,6 +14,17 @@ use Doctrine\ORM\Events;
  */
 class StationRequiresRestart implements EventSubscriber
 {
+    /** @var Reader */
+    protected $reader;
+
+    /**
+     * @param Reader $reader
+     */
+    public function __construct(Reader $reader)
+    {
+        $this->reader = $reader;
+    }
+
     public function getSubscribedEvents()
     {
         return [
@@ -24,16 +37,10 @@ class StationRequiresRestart implements EventSubscriber
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
 
-        $restart_classes = [
-            Entity\StationMount::class,
-            Entity\StationRemote::class,
-            Entity\StationPlaylist::class,
-        ];
-
         $collections_to_check = [
-            'inserts' => $uow->getScheduledEntityInsertions(),
-            'updates' => $uow->getScheduledEntityUpdates(),
-            'deletes' => $uow->getScheduledEntityDeletions(),
+            Entity\AuditLog::OPER_INSERT => $uow->getScheduledEntityInsertions(),
+            Entity\AuditLog::OPER_UPDATE => $uow->getScheduledEntityUpdates(),
+            Entity\AuditLog::OPER_DELETE => $uow->getScheduledEntityDeletions(),
         ];
 
         $stations_to_restart = [];
@@ -42,9 +49,20 @@ class StationRequiresRestart implements EventSubscriber
                 if (($entity instanceof Entity\StationMount)
                     || ($entity instanceof Entity\StationRemote && $entity->isEditable())
                     || ($entity instanceof Entity\StationPlaylist && $entity->getStation()->useManualAutoDJ())) {
-                    if ('updates' === $change_type) {
+                    if (Entity\AuditLog::OPER_UPDATE === $change_type) {
                         $changes = $uow->getEntityChangeSet($entity);
-                        unset($changes['listeners_unique'], $changes['listeners_total']);
+
+                        // Look for the @AuditIgnore annotation on a property.
+                        $class_reflection = new \ReflectionObject($entity);
+                        foreach($changes as $change_field => $changeset)
+                        {
+                            $property = $class_reflection->getProperty($change_field);
+                            $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
+
+                            if (null !== $annotation) {
+                                unset($changes[$change_field]);
+                            }
+                        }
 
                         if (empty($changes)) {
                             continue;

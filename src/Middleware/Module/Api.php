@@ -52,6 +52,8 @@ class Api
         // Override the request's "user" variable if API authentication is supplied and valid.
         if ($api_user instanceof Entity\User) {
             $request = $request->withAttribute(ServerRequest::ATTR_USER, $api_user);
+
+            Entity\AuditLog::setCurrentUser($api_user);
         }
 
         // Set default cache control for API pages.

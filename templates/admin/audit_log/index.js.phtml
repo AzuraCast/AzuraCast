@@ -1,0 +1,103 @@
+let range_start = null,
+    range_end = null,
+    changes_panel,
+    grid;
+
+const api_url = "<?=$router->fromHere('api:admin:auditlog') ?>";
+
+$(function() {
+    changes_panel = new Vue({
+        el: '#tbl-changes',
+        data: {
+            changes: []
+        }
+    });
+
+    grid = $(".data-table").bootgrid({
+        ajax: true,
+        ajaxSettings: {
+            method: "GET",
+            cache: false
+        },
+        sorting: false,
+        caseSensitive: false,
+        rowCount: [10, 25, 50],
+        url: api_url,
+        post: function() {
+            return {
+                start: range_start,
+                end: range_end
+            };
+        },
+        formatters: {
+            "datetime": function(column, row) {
+                return formatTimestamp(row.timestamp);
+            },
+            "operation": function(column, row) {
+                if (row.operation === <?=\App\Entity\AuditLog::OPER_INSERT ?>) {
+                    return '<span class="text-success" title=<?=$this->escapeJs(__('Insert')) ?>><i class="material-icons lg inline" aria-hidden="true">add_circle</i></span>';
+                } else if (row.operation === <?=\App\Entity\AuditLog::OPER_DELETE ?>) {
+                    return '<span class="text-danger" title=<?=$this->escapeJs(__('Delete')) ?>><i class="material-icons lg inline" aria-hidden="true">remove_circle</i></span>';
+                } else {
+                    return '<span class="text-primary" title=<?=$this->escapeJs(__('Update')) ?>><i class="material-icons lg inline" aria-hidden="true">swap_horizontal_circle</i></span>';
+                }
+            },
+            "identifier": function(column, row) {
+                return '<small>'+row.class+'</small><br>'+row.identifier;
+            },
+            "target": function(column, row) {
+                if (row.target) {
+                    return '<small>'+row.target_class+'</small><br>'+row.target;
+                }
+
+                return 'N/A';
+            },
+            "actions": function(column, row) {
+                if (row.changes.length > 0) {
+                    let button = $("<a class=\"btn btn-primary btn-sm btn-changes\" href=\"#\"></a>")
+                        .text(<?=$this->escapeJs(__('Changes')) ?>)
+                        .attr('data-changes', JSON.stringify(row.changes));
+
+                    return $('<p>').append(button).html();
+                }
+
+                return '';
+            }
+        }
+    }).on("loaded.rs.jquery.bootgrid", function() {
+        /* Executes after data is loaded and rendered */
+        grid.find(".btn-changes").on("click", function (e) {
+            e.preventDefault();
+
+            changes_panel.changes = $(this).data('changes');
+            $('#mdl-changes').modal('show');
+            return false;
+        })
+    });
+
+    $('#reportrange').daterangepicker({
+        startDate: moment().subtract(13, 'days'),
+        endDate: moment(),
+        opens: "left",
+        ranges: {
+            "<?=__('Today') ?>": [moment(), moment()],
+            "<?=__('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            "<?=__('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
+            "<?=__('Last 14 Days') ?>": [moment().subtract(13, 'days'), moment()],
+            "<?=__('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
+            "<?=__('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
+            "<?=__('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, function(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+        range_start = start.format('YYYY-MM-DD');
+        range_end = end.format('YYYY-MM-DD');
+
+        $('.data-table').bootgrid("reload");
+    });
+
+    function formatTimestamp(unix_timestamp) {
+        return moment.unix(unix_timestamp).format('lll');
+    }
+});

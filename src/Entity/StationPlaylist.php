@@ -4,6 +4,7 @@ namespace App\Entity;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="station_playlists")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
@@ -247,6 +250,8 @@ class StationPlaylist
 
     /**
      * @ORM\Column(name="played_at", type="integer")
+     * @AuditLog\AuditIgnore
+     *
      * @var int The UNIX timestamp at which a track from this playlist was last played.
      */
     protected $played_at = 0;
@@ -282,6 +287,8 @@ class StationPlaylist
     }
 
     /**
+     * @AuditLog\AuditIdentifier
+     *
      * @return string
      */
     public function getName(): string

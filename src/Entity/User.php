@@ -5,6 +5,7 @@ use App\Auth;
 use Azura\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
  * @ORM\Entity(repositoryClass="App\Entity\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
@@ -44,6 +47,8 @@ class User
     /**
      * @ORM\Column(name="auth_password", type="string", length=255, nullable=true)
      *
+     * @AuditLog\AuditIgnore()
+     *
      * @OA\Property(example="")
      * @var string|null
      */
@@ -68,6 +73,8 @@ class User
     /**
      * @ORM\Column(name="theme", type="string", length=25, nullable=true)
      *
+     * @AuditLog\AuditIgnore()
+     *
      * @OA\Property(example="dark")
      * @var string|null
      */
@@ -75,6 +82,8 @@ class User
 
     /**
      * @ORM\Column(name="two_factor_secret", type="string", length=255, nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
      *
      * @OA\Property(example="A1B2C3D4")
      * @var string|null
@@ -91,6 +100,8 @@ class User
 
     /**
      * @ORM\Column(name="updated_at", type="integer")
+     *
+     * @AuditLog\AuditIgnore()
      *
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
@@ -160,6 +171,16 @@ class User
     public function setEmail($email): void
     {
         $this->email = $this->_truncateString($email, 100);
+    }
+
+    /**
+     * @AuditLog\AuditIdentifier()
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->getName().' ('.$this->getEmail().')';
     }
 
     /**

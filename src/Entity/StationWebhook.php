@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -8,6 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="station_webhooks", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci"})
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
@@ -120,6 +123,8 @@ class StationWebhook
     }
 
     /**
+     * @AuditLog\AuditIdentifier
+     *
      * @return null|string
      */
     public function getName(): ?string

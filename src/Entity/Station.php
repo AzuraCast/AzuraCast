@@ -10,8 +10,8 @@ use App\Validator\Constraints as AppAssert;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
-use Interop\Container\ContainerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="station")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object", schema="Station")
  * @AppAssert\StationPortChecker()
@@ -155,12 +157,18 @@ class Station
 
     /**
      * @ORM\Column(name="nowplaying", type="array", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
+     *
      * @var mixed|null
      */
     protected $nowplaying;
 
     /**
      * @ORM\Column(name="nowplaying_timestamp", type="integer", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
+     *
      * @var int
      */
     protected $nowplaying_timestamp;
@@ -175,6 +183,9 @@ class Station
 
     /**
      * @ORM\Column(name="automation_timestamp", type="integer", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
+     *
      * @var int|null The UNIX timestamp when station automation was most recently run.
      */
     protected $automation_timestamp = 0;
@@ -222,6 +233,8 @@ class Station
     /**
      * @ORM\Column(name="is_streamer_live", type="boolean", nullable=false)
      *
+     * @AuditLog\AuditIgnore()
+     *
      * @OA\Property(example=false)
      * @var bool Whether a streamer is currently active on the station.
      */
@@ -237,12 +250,18 @@ class Station
 
     /**
      * @ORM\Column(name="needs_restart", type="boolean")
+     *
+     * @AuditLog\AuditIgnore()
+     *
      * @var bool Whether to show the "Restart station to apply changes" sidebar for this station
      */
     protected $needs_restart = false;
 
     /**
      * @ORM\Column(name="has_started", type="boolean")
+     *
+     * @AuditLog\AuditIgnore()
+     *
      * @var bool
      */
     protected $has_started = false;
@@ -271,6 +290,8 @@ class Station
 
     /**
      * @ORM\Column(name="storage_used", type="bigint", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
      *
      * @OA\Property(example="1 GB")
      * @var string|null

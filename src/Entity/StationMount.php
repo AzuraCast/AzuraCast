@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
+use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="station_mounts")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
@@ -164,7 +167,7 @@ class StationMount implements StationMountInterface
 
     /**
      * @ORM\Column(name="listeners_unique", type="integer")
-     *
+     * @AuditLog\AuditIgnore
      * @OA\Property(example=10)
      *
      * @var int The most recent number of unique listeners.
@@ -173,7 +176,7 @@ class StationMount implements StationMountInterface
 
     /**
      * @ORM\Column(name="listeners_total", type="integer")
-     *
+     * @AuditLog\AuditIgnore
      * @OA\Property(example=12)
      *
      * @var int The most recent number of total (non-unique) listeners.
@@ -219,6 +222,8 @@ class StationMount implements StationMountInterface
     }
 
     /**
+     * @AuditLog\AuditIdentifier
+     *
      * @return string
      */
     public function getDisplayName(): string

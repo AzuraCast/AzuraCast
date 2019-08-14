@@ -25,6 +25,10 @@ return function(App $app)
 
         })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
+        $group->get('/auditlog', Controller\Admin\AuditLogController::class)
+            ->setName('admin:auditlog:index')
+            ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
+
         $group->group('/api', function (RouteCollectorProxy $group) {
 
             $group->get('', Controller\Admin\ApiController::class.':indexAction')
@@ -218,6 +222,10 @@ return function(App $app)
             ->add(new AzuraMiddleware\RateLimit('api'));
 
         $group->group('/admin', function(RouteCollectorProxy $group) {
+
+            $group->get('/auditlog', Controller\Api\Admin\AuditLogController::class)
+                ->setName('api:admin:auditlog')
+                ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 
             $group->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                 ->add(new Middleware\Permissions(Acl::GLOBAL_PERMISSIONS));

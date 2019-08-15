@@ -108,6 +108,8 @@ We would like to thank the following organizations for their support of AzuraCas
 - [CrowdIn](https://crowdin.com/) for giving us a simple and powerful tool to help translate our application for users around the world
 - [GitKraken](https://www.gitkraken.com/invite/qBz1r2Kk) for providing an easy-to-use and powerful Git project management tool that our whole team can use.
 - [Sentry](https://sentry.io/) for providing a great way to aggregate errors being reported from AzuraCast installations around the web.
+- [Netlify](https://www.netlify.com/) for supporting open-source software like ours and for serving as the host of our primary [azuracast.com](https://www.azuracast.com/) web site.
+
 - The creators and maintainers of the many free and open-source tools that AzuraCast is built on, who have done so much to help move FOSS forward
 
 ## Support AzuraCast Development

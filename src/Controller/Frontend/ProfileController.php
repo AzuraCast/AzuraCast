@@ -133,9 +133,9 @@ class ProfileController
         $this->em->persist($user);
         $this->em->flush($user);
 
-        $referrer = $request->getHeaderLine('HTTP_REFERER');
+        $referrer = $request->getHeaderLine('Referer');
         return $response->withRedirect(
-            $referrer ?? (string)$request->getRouter()->named('dashboard')
+            $referrer ?: (string)$request->getRouter()->named('dashboard')
         );
     }
 

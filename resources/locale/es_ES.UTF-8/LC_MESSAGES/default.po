@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-14 23:50\n"
+"PO-Revision-Date: 2019-08-15 00:10\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -336,14 +336,14 @@ msgstr "Log de PHP"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:90
 msgid "Supervisord Log"
-msgstr ""
+msgstr "Logs de Supervisor"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Permission"
-msgstr "Permiso"
+msgstr "Permisos"
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -705,11 +705,11 @@ msgstr "%s activado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "%s disabled."
-msgstr ""
+msgstr "%s desactivado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Salida de prueba de Web Hook"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
@@ -741,11 +741,11 @@ msgstr "Configuración de SHOUTcast"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "¡Has enviado una solicitud recientemente! Por favor, espera antes de enviar otra."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Esta canción ya se ha reproducido recientemente. Espera un momento antes de solicitarla de nuevo."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -753,7 +753,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:54
 msgid "Select File"
-msgstr ""
+msgstr "Seleccionar Archivo"
 
 #: /var/azuracast/www/src/Form/StationForm.php:82
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
@@ -762,7 +762,7 @@ msgstr "¿Quieres usar SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Instálalo 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:54
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "La zona horaria de esta estación actualmente es %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:56
 msgid "The current time in the station's time zone is %s."

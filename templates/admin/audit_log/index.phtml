@@ -26,28 +26,30 @@ $assets
         </div>
         <h2 class="card-title"></h2>
     </div>
-    <table class="table-responsive data-table table table-striped align-middle">
-        <colgroup>
-            <col width="20%">
-            <col width="25%">
-            <col width="5%">
-            <col width="20%">
-            <col width="20%">
-            <col width="10%">
-        </colgroup>
-        <thead>
-            <tr>
-                <th data-column-id="date_time" data-formatter="datetime"><?=__('Date/Time') ?></th>
-                <th data-column-id="user"><?=__('User') ?></th>
-                <th data-column-id="operation" data-formatter="operation" data-sortable="false">&nbsp;</th>
-                <th data-column-id="identifier" data-formatter="identifier"><?=__('Identifier') ?></th>
-                <th data-column-id="target" data-formatter="target"><?=__('Target') ?></th>
-                <th data-column-id="actions" data-formatter="actions" data-sortable="false"><?=__('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="data-table table table-striped align-middle">
+            <colgroup>
+                <col width="20%">
+                <col width="25%">
+                <col width="5%">
+                <col width="20%">
+                <col width="20%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th data-column-id="date_time" data-formatter="datetime"><?=__('Date/Time') ?></th>
+                    <th data-column-id="user"><?=__('User') ?></th>
+                    <th data-column-id="operation" data-formatter="operation" data-sortable="false">&nbsp;</th>
+                    <th data-column-id="identifier" data-formatter="identifier"><?=__('Identifier') ?></th>
+                    <th data-column-id="target" data-formatter="target"><?=__('Target') ?></th>
+                    <th data-column-id="actions" data-formatter="actions" data-sortable="false"><?=__('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="modal fade" id="mdl-changes" tabindex="-1" role="dialog">

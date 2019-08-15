@@ -7,10 +7,12 @@ use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\Proxy\Proxy;
 
 /**
  * A hook into Doctrine's event listener to write changes to "Auditable"
@@ -63,16 +65,34 @@ class AuditLog implements EventSubscriber
                 }
 
                 // Get the changes made to the entity.
-                $changes = $uow->getEntityChangeSet($entity);
+                $changesRaw = $uow->getEntityChangeSet($entity);
 
                 // Look for the @AuditIgnore annotation on properties.
-                foreach ($changes as $change_field => $field_changes) {
-                    $property = $reflectionClass->getProperty($change_field);
+                $changes = [];
+
+                foreach ($changesRaw as $changeField => [$fieldPrev, $fieldNow]) {
+                    // With new entity creation, fields left NULL are still included.
+                    if ($fieldPrev === $fieldNow) {
+                        continue;
+                    }
+
+                    // Ensure the property isn't ignored.
+                    $property = $reflectionClass->getProperty($changeField);
                     $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
 
                     if (null !== $annotation) {
-                        unset($changes[$change_field]);
+                        continue;
                     }
+
+                    // Check if either field value is an object.
+                    if ($this->isEntity($em, $fieldPrev)) {
+                        $fieldPrev = $this->getIdentifier(new \ReflectionObject($fieldPrev), $fieldPrev);
+                    }
+                    if ($this->isEntity($em, $fieldNow)) {
+                        $fieldNow = $this->getIdentifier(new \ReflectionObject($fieldNow), $fieldNow);
+                    }
+
+                    $changes[$changeField] = [$fieldPrev, $fieldNow];
                 }
 
                 if (Entity\AuditLog::OPER_UPDATE === $changeType && empty($changes)) {
@@ -197,6 +217,28 @@ class AuditLog implements EventSubscriber
             $uow->persist($auditLog);
             $uow->computeChangeSet($auditLogMetadata, $auditLog);
         }
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param object|string $class
+     * @return bool
+     */
+    protected function isEntity(EntityManager $em, $class): bool
+    {
+        if (is_object($class)) {
+            $class = ($class instanceof Proxy)
+                ? get_parent_class($class)
+                : get_class($class);
+        } else if (!is_string($class)) {
+            return false;
+        }
+
+        if (!class_exists($class)) {
+            return false;
+        }
+
+        return !$em->getMetadataFactory()->isTransient($class);
     }
 
     /**

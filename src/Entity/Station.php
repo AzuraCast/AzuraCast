@@ -111,6 +111,8 @@ class Station
     /**
      * @ORM\Column(name="adapter_api_key", type="string", length=150, nullable=true)
      *
+     * @AuditLog\AuditIgnore()
+     *
      * @var string|null An internal-use API key used for container-to-container communications from Liquidsoap to AzuraCast
      */
     protected $adapter_api_key;

@@ -25,12 +25,18 @@ class ApiKey implements \JsonSerializable
 
     /**
      * @ORM\Column(name="verifier", type="string", length=128, nullable=false)
+     *
+     * @AuditLog\AuditIgnore()
+     *
      * @var string
      */
     protected $verifier;
 
     /**
      * @ORM\Column(name="user_id", type="integer")
+     *
+     * @AuditLog\AuditIgnore()
+     *
      * @var int
      */
     protected $user_id;

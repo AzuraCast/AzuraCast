@@ -93,6 +93,8 @@ class User
     /**
      * @ORM\Column(name="created_at", type="integer")
      *
+     * @AuditLog\AuditIgnore()
+     *
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */

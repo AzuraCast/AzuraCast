@@ -56,7 +56,7 @@ $(function() {
 						dataType: "json",
 						url: $(this).data('url')
 					}).done(function(data) {
-						notify(data, 'success');
+						notify(data.message, 'success');
 					}).fail(function(jqXhr) {
                         var response = jqXhr.responseJSON;
 						notify('Error: ' + response.message, 'danger');

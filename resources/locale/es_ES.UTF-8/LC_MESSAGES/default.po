@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-15 00:10\n"
+"PO-Revision-Date: 2019-08-16 00:30\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -766,7 +766,7 @@ msgstr "La zona horaria de esta estación actualmente es %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:56
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "La hora actual en la zona horaria de la estación es %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:74
 msgid "Existing playlist imported."
@@ -779,12 +779,12 @@ msgstr "%d canción(es) han sido importadas a la lista de reproducción."
 #: /var/azuracast/www/src/Http/ErrorHandler.php:78
 #: /var/azuracast/www/src/Http/ErrorHandler.php:85
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Tienes que iniciar sesión para acceder a esta página."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:105
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "No tiene permiso para acceder a esta sección de la página."
 
 #: /var/azuracast/www/src/Notification/Manager.php:72
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
@@ -792,19 +792,19 @@ msgstr "¡Tu archivo <code>docker-compose.yml</code> está obsoleto!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:73
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "Debe actualizar su archivo <code> docker-compose.yml </code> para reflejar los cambios más recientes. Vea la <a href=\"%s\" target=\"_blank\"> última versión del archivo </a> y actualice su archivo en consecuencia. <br> También puede usar el script de utilidad <code>./docker.sh</code > para actualizar automáticamente su archivo."
 
 #: /var/azuracast/www/src/Notification/Manager.php:99
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Siga las <a href=\"%s\" target=\"_blank\">instrucciones de actualización </a> para actualizar su instalación."
 
 #: /var/azuracast/www/src/Notification/Manager.php:103
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">versión %s</a> está disponible."
 
 #: /var/azuracast/www/src/Notification/Manager.php:104
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr ""
+msgstr "Actualmente estás ejecutando la versión %s. La actualización es muy recomendable."
 
 #: /var/azuracast/www/src/Notification/Manager.php:109
 msgid "New AzuraCast Release Version Available"

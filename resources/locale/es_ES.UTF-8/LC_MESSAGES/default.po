@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-16 00:30\n"
+"PO-Revision-Date: 2019-08-16 00:40\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -808,31 +808,31 @@ msgstr "Actualmente estás ejecutando la versión %s. La actualización es muy r
 
 #: /var/azuracast/www/src/Notification/Manager.php:109
 msgid "New AzuraCast Release Version Available"
-msgstr ""
+msgstr "Nueva versión de Lanzamiento de AzuraCast disponible"
 
 #: /var/azuracast/www/src/Notification/Manager.php:119
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "Las siguientes mejoras se han realizado desde su última actualización:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:122
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "Su instalación está actualmente %d actualización(s) atrás de la última versión."
 
 #: /var/azuracast/www/src/Notification/Manager.php:123
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Debe actualizar para aprovechar las correcciones de errores y de seguridad."
 
 #: /var/azuracast/www/src/Notification/Manager.php:129
 msgid "New AzuraCast Updates Available"
-msgstr ""
+msgstr "Nuevas actualizaciones de AzuraCast disponibles"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s no es reconocido como un servicio."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Puede que no esté registrado con el Supervisor todavía. Reiniciar la radiodifusión (broadcasting) puede ayudar."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot start"
@@ -907,7 +907,7 @@ msgstr "Limpieza"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "El puerto %s está en uso por otra estación."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"

@@ -260,7 +260,7 @@ class Customization
             return false;
         }
 
-        return (bool)$this->settings_repo->getSetting(Entity\Settings::NOWPLAYING_USE_WEBSOCKETS, true);
+        return (bool)$this->settings_repo->getSetting(Entity\Settings::NOWPLAYING_USE_WEBSOCKETS, false);
     }
 
     /**

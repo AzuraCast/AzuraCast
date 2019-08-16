@@ -80,7 +80,7 @@ return [
                         'description' => __('Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
-                        'default' => true,
+                        'default' => false,
                         'form_group_class' => 'col-md-6',
                     ]
                 ],

@@ -284,8 +284,7 @@ class FilesController extends FilesControllerAbstract
             $file_mime = 'application/octet-stream';
         }
 
-        return $response->withFileDownload($fh, $filename)
-            ->withHeader('Content-Type', $file_mime)
+        return $response->withFileDownload($fh, $filename, $file_mime)
             ->withHeader('Content-Length', $file_meta['size'])
             ->withHeader('X-Accel-Buffering', 'no');
     }

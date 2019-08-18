@@ -65,6 +65,10 @@ services:
     image: azuracast/azuracast_redis:latest
     restart: always
     logging: *default-logging
+    sysctls:
+      net.core.somaxconn: 1024
+    volumes:
+      - redis_data:/data
 
   stations:
     container_name: azuracast_stations
@@ -239,4 +243,5 @@ volumes:
   station_data: {}
   tmp_data: {}
   www_data: {}
+  redis_data: {}
   backups: {}

@@ -136,15 +136,11 @@ return [
 
     // Message queue manager class
     App\MessageQueue::class => function(
-        DI\FactoryInterface $factory,
+        \Redis $redis,
         ContainerInterface $di,
         Monolog\Logger $logger
     ) {
         // Build QueueFactory
-        /** @var Redis $redis */
-        $redis = $factory->make(Redis::class);
-
-        $redis->select(4);
         $driver = new Bernard\Driver\PhpRedis\Driver($redis);
 
         $normalizer = new Normalt\Normalizer\AggregateNormalizer([
@@ -238,13 +234,7 @@ return [
     App\Radio\AutoDJ::class => DI\autowire(),
     App\Radio\Configuration::class => DI\autowire(),
 
-    App\Radio\Filesystem::class => function(DI\FactoryInterface $factory) {
-        /** @var Redis $redis */
-        $redis = $factory->make(Redis::class);
-        $redis->select(5);
-
-        return new App\Radio\Filesystem($redis);
-    },
+    App\Radio\Filesystem::class => DI\autowire(),
 
     App\Radio\Backend\Liquidsoap::class => DI\autowire(),
     App\Radio\Backend\None::class => DI\autowire(),

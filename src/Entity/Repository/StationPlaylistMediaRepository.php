@@ -3,20 +3,11 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
-use App\Radio\AutoDJ;
 use Azura\Doctrine\Repository;
-use DI\Annotation\Inject;
 use Doctrine\ORM\NoResultException;
-use Psr\SimpleCache\CacheInterface;
 
 class StationPlaylistMediaRepository extends Repository
 {
-    /**
-     * @Inject
-     * @var CacheInterface
-     */
-    protected $cache;
-
     /**
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
@@ -58,20 +49,8 @@ class StationPlaylistMediaRepository extends Repository
         }
 
         // Add the newly added song into the cached queue.
-        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_RANDOM) {
-            $cache_name = AutoDJ::getPlaylistCacheName($playlist->getId());
-            $media_queue = (array)$this->cache->get($cache_name);
-
-            if (!empty($media_queue)) {
-                $media_queue[] = $media->getId();
-
-                if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_SHUFFLE) {
-                    shuffle($media_queue);
-                }
-
-                $this->cache->set($cache_name, $media_queue, AutoDJ::CACHE_TTL);
-            }
-        }
+        $playlist->setQueue(null);
+        $this->_em->persist($playlist);
 
         return $weight;
     }
@@ -93,45 +72,6 @@ class StationPlaylistMediaRepository extends Repository
     }
 
     /**
-     * "Shuffle" the weights of all media in a shuffled playlist.
-     *
-     * @param Entity\StationPlaylist $playlist
-     */
-    public function reshuffleMedia(Entity\StationPlaylist $playlist): void
-    {
-        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SHUFFLE) {
-            return;
-        }
-
-        $this->_em->beginTransaction();
-
-        try {
-            $update_weight_query = $this->_em->createQuery(/** @lang DQL */'UPDATE App\Entity\StationPlaylistMedia spm 
-                SET spm.weight=:weight 
-                WHERE spm.playlist_id = :playlist_id 
-                AND spm.media_id = :media_id')
-                ->setParameter('playlist_id', $playlist->getId());
-
-            $media_ids = array_keys($this->getPlayableMedia($playlist));
-            shuffle($media_ids);
-
-            $new_weight = 1;
-            foreach($media_ids as $media_id) {
-                $update_weight_query
-                    ->setParameter('media_id', $media_id)
-                    ->setParameter('weight', $new_weight)
-                    ->execute();
-
-                $new_weight++;
-            }
-
-            $this->_em->commit();
-        } catch (\Exception $exception) {
-            $this->_em->rollback();
-        }
-    }
-
-    /**
      * Remove all playlist associations from the specified media object.
      *
      * @param Entity\StationMedia $media
@@ -150,9 +90,14 @@ class StationPlaylistMediaRepository extends Repository
             /** @var Entity\StationPlaylistMedia $row */
             $playlist = $row->getPlaylist();
 
+            // Clear the playback queue.
+            $playlist->setQueue(null);
+            $this->_em->persist($playlist);
+
             $affected_playlists[$playlist->getId()] = $playlist;
-            $this->clearMediaQueue($playlist->getId());
         }
+
+        $this->_em->flush();
 
         $this->_em->createQuery(/** @lang DQL */'DELETE 
             FROM App\Entity\StationPlaylistMedia e
@@ -182,14 +127,16 @@ class StationPlaylistMediaRepository extends Repository
             AND e.id = :id')
             ->setParameter('playlist_id', $playlist->getId());
 
-        // Clear the playback queue.
-        $this->clearMediaQueue($playlist->getId());
-
         foreach($mapping as $id => $weight) {
             $update_query->setParameter('id', $id)
                 ->setParameter('weight', $weight)
                 ->execute();
         }
+
+        // Clear the playback queue.
+        $playlist->setQueue(null);
+        $this->_em->persist($playlist);
+        $this->_em->flush($playlist);
     }
 
     public function getPlayableMedia(Entity\StationPlaylist $playlist): array
@@ -203,19 +150,15 @@ class StationPlaylistMediaRepository extends Repository
             ->setParameter('playlist_id', $playlist->getId())
             ->getArrayResult();
 
+        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
+            shuffle($all_media);
+        }
+
         $media_queue = [];
         foreach($all_media as $media_row) {
             $media_queue[$media_row['id']] = $media_row;
         }
 
         return $media_queue;
-    }
-
-    /**
-     * @param int $playlist_id
-     */
-    public function clearMediaQueue(int $playlist_id): void
-    {
-        $this->cache->delete(AutoDJ::getPlaylistCacheName($playlist_id));
     }
 }

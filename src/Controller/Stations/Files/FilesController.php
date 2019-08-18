@@ -246,8 +246,6 @@ class FilesController extends FilesControllerAbstract
                         if ($playlist instanceof Entity\StationPlaylist) {
                             $playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
                             $this->em->flush();
-
-                            $playlists_media_repo->reshuffleMedia($playlist);
                         }
                     }
                 }

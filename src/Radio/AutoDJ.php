@@ -13,9 +13,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
 {
-    /** @var int The time to live (in seconds) of cached playlist queues. */
-    public const CACHE_TTL = 43200;
-
     /** @var EntityManager */
     protected $em;
 
@@ -28,28 +25,22 @@ class AutoDJ implements EventSubscriberInterface
     /** @var Logger */
     protected $logger;
 
-    /** @var CacheInterface */
-    protected $cache;
-
     /**
      * @param EntityManager $em
      * @param EventDispatcher $dispatcher
      * @param Filesystem $filesystem
      * @param Logger $logger
-     * @param CacheInterface $cache
      */
     public function __construct(
         EntityManager $em,
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
-        Logger $logger,
-        CacheInterface $cache)
+        Logger $logger)
     {
         $this->em = $em;
         $this->dispatcher = $dispatcher;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
-        $this->cache = $cache;
     }
 
     /**
@@ -378,15 +369,11 @@ class AutoDJ implements EventSubscriberInterface
         switch($playlist->getOrder()) {
             case Entity\StationPlaylist::ORDER_RANDOM:
                 $media_queue = $spm_repo->getPlayableMedia($playlist);
-
-                shuffle($media_queue);
-
                 $media_id = $this->_preventDuplicates($media_queue, $recent_song_history);
                 break;
 
             case Entity\StationPlaylist::ORDER_SEQUENTIAL:
-                $cache_name = self::getPlaylistCacheName($playlist->getId());
-                $media_queue = (array)$this->cache->get($cache_name);
+                $media_queue = $playlist->getQueue();
 
                 if (empty($media_queue)) {
                     $media_queue = $spm_repo->getPlayableMedia($playlist);
@@ -395,14 +382,13 @@ class AutoDJ implements EventSubscriberInterface
                 $media_arr = array_shift($media_queue);
                 $media_id = $media_arr['id'];
 
-                // Save the modified cache, sans the now-missing entry.
-                $this->cache->set($cache_name, $media_queue, self::CACHE_TTL);
+                $playlist->setQueue($media_queue);
+                $this->em->persist($playlist);
                 break;
 
             case Entity\StationPlaylist::ORDER_SHUFFLE:
             default:
-                $cache_name = self::getPlaylistCacheName($playlist->getId());
-                $media_queue_cached = (array)$this->cache->get($cache_name);
+                $media_queue_cached = $playlist->getQueue();
 
                 if (empty($media_queue_cached)) {
                     $media_queue = $spm_repo->getPlayableMedia($playlist);
@@ -429,9 +415,12 @@ class AutoDJ implements EventSubscriberInterface
                 }
 
                 // Save the modified cache, sans the now-missing entry.
-                $this->cache->set($cache_name, $media_queue, self::CACHE_TTL);
+                $playlist->setQueue($media_queue);
+                $this->em->persist($playlist);
                 break;
         }
+
+        $this->em->flush($playlist);
 
         if (!$media_id) {
             $this->logger->error(sprintf('Playlist "%s" has no playable tracks.', $playlist->getName()), [
@@ -461,9 +450,12 @@ class AutoDJ implements EventSubscriberInterface
         $latest_song_ids_played = [];
 
         foreach($played_media as $history) {
-            $artist = trim($history['song']['artist']);
-            if (!empty($artist)) {
-                $artists[$artist] = $artist;
+            $artist_parts = explode(',', $history['song']['artist']);
+            foreach($artist_parts as $artist) {
+                $artist = trim($artist);
+                if (!empty($artist)) {
+                    $artists[$artist] = $artist;
+                }
             }
 
             $song_id = $history['song']['id'];
@@ -481,7 +473,24 @@ class AutoDJ implements EventSubscriberInterface
             }
 
             $artist = trim($media['artist']);
-            if (empty($artist) || !isset($artists[$artist])) {
+
+            $artist_match_found = false;
+            if (!empty($artist)) {
+                $artist_parts = explode(',', $artist);
+                foreach($artist_parts as $artist_row) {
+                    $artist_row = trim($artist_row);
+                    if (empty($artist_row)) {
+                        continue;
+                    }
+
+                    if (isset($artists[$artist_row])) {
+                        $artist_match_found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!$artist_match_found) {
                 $media_id_to_play = $media['id'];
                 $this->logger->info('Found track that avoids title and artist match!', ['media_id' => $media_id_to_play]);
                 return $media_id_to_play;
@@ -545,8 +554,7 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         // Handle a remote playlist containing songs or streams.
-        $cache_name = self::getPlaylistCacheName($playlist->getId());
-        $media_queue = (array)$this->cache->get($cache_name);
+        $media_queue = $playlist->getQueue();
 
         if (empty($media_queue)) {
             $playlist_raw = file_get_contents($playlist->getRemoteUrl());
@@ -560,7 +568,9 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         // Save the modified cache, sans the now-missing entry.
-        $this->cache->set($cache_name, $media_queue, self::CACHE_TTL);
+        $playlist->setQueue($media_queue);
+        $this->em->persist($playlist);
+        $this->em->flush($playlist);
 
         return ($media_id)
             ? [$media_id, 0]
@@ -614,10 +624,5 @@ class AutoDJ implements EventSubscriberInterface
 
             $event->setNextSong($sh);
         }
-    }
-
-    public static function getPlaylistCacheName(int $playlist_id): string
-    {
-        return 'autodj_playlist_'.$playlist_id;
     }
 }

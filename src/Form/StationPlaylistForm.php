@@ -10,7 +10,6 @@ use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\UploadedFileInterface;
-use Slim\Http\UploadedFile;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -75,8 +74,9 @@ class StationPlaylistForm extends EntityForm
                 }
             }
 
-            $this->playlist_media_repo->reshuffleMedia($record);
-            $this->playlist_media_repo->clearMediaQueue($record->getId());
+            $record->setQueue(null);
+            $this->em->persist($record);
+            $this->em->flush($record);
         }
 
         return $record;
@@ -154,7 +154,6 @@ class StationPlaylistForm extends EntityForm
             }
 
             $this->em->flush();
-            $this->playlist_media_repo->reshuffleMedia($playlist);
         }
 
         return count($matches);

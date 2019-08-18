@@ -50,11 +50,6 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
         }
 
         $em->flush();
-
-        /** @var Entity\Repository\StationPlaylistMediaRepository $spm_repo */
-        $spm_repo = $em->getRepository(Entity\StationPlaylistMedia::class);
-
-        $spm_repo->reshuffleMedia($playlist);
     }
 
     public function getDependencies()

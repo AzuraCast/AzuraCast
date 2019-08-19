@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 10:20\n"
+"PO-Revision-Date: 2019-08-19 10:30\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -589,7 +589,7 @@ msgstr "Afspeellijst"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Deze afspeellijst is geen opeenvolgende afspeellijst."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format"
@@ -1371,7 +1371,7 @@ msgstr "Toon op openbare pagina's"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:35
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Inschakelen om luisteraars toe te staan dit mount point te selecteren op de publieke pagina van dit station."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
@@ -1549,7 +1549,7 @@ msgstr "Als requests zijn ingeschakeld voor uw station zullen luisteraars de mog
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr ""
+msgstr "Metadata verbergen voor luisteraars (\"Jingle modus\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
@@ -1848,7 +1848,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/remote.php:147
 msgid "Remote Station Source Username"
-msgstr ""
+msgstr "Bron gebruikersnaam van extern station"
 
 #: /var/azuracast/www/config/forms/remote.php:148
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
@@ -1856,7 +1856,7 @@ msgstr "Als u met AutoDJ uitzendt, voer hier de brongebruikersnaam in. Dit kan l
 
 #: /var/azuracast/www/config/forms/remote.php:156
 msgid "Remote Station Source Password"
-msgstr ""
+msgstr "Bronwachtwoord van extern station"
 
 #: /var/azuracast/www/config/forms/remote.php:157
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
@@ -2545,7 +2545,7 @@ msgstr "De URL dat POST berichten zal ontvangen telkens wanneer er een Event wor
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:49
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "Optioneel: HTTP basis authenticatie gebruikersnaam"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:50
 msgid "If your web hook requires HTTP basic authentication, provide the username here."

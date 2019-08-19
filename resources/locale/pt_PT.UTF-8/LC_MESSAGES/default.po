@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 17:56\n"
+"PO-Revision-Date: 2019-08-19 18:30\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1633,87 +1633,87 @@ msgstr "Definir manualmente como esta lista de reprodução é usada na configur
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "AutoDJ Scheduling Options"
-msgstr ""
+msgstr "Opções de Agendamento do AutoDJ"
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr ""
+msgstr "Controlar como esta lista de reprodução é tratada pelo AutoDJ."
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr ""
+msgstr "<b>Aviso:</b> Estas funções são internas ao Liquidsoap e vão afetar como o AutoDJ funciona."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Interromper outras músicas para tocar no horário agendado."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Only loop through playlist once."
-msgstr ""
+msgstr "Apenas reproduzir toda a playlist uma vez."
 
 #: /var/azuracast/www/config/forms/playlist.php:230
 msgid "Only play one track at scheduled time."
-msgstr ""
+msgstr "Apenas reproduzir uma faixa no horário agendado."
 
 #: /var/azuracast/www/config/forms/playlist.php:231
 msgid "Merge playlist to play as a single track."
-msgstr ""
+msgstr "Mesclar lista de reprodução para tocar como uma faixa única."
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Include in Automated Assignment"
-msgstr ""
+msgstr "Incluir na Atribuição Automática"
 
 #: /var/azuracast/www/config/forms/playlist.php:249
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
-msgstr ""
+msgstr "Se a atribuição automática estiver ativada, use esta lista de reprodução como um dos alvos para músicas a serem redistribuídas. Isto irá sobrescrever o conteúdo existente desta lista de reprodução."
 
 #: /var/azuracast/www/config/forms/playlist.php:269
 msgid "Start Time"
-msgstr ""
+msgstr "Hora de Início"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Para tocar uma vez por dia, defina a hora de início e de fim para o mesmo valor."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
-msgstr ""
+msgstr "Hora Final"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Se a hora de fim for antes da hora de início, a lista de reprodução irá tocar de um dia para o outro."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Fuso Horário da Estação"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
-msgstr ""
+msgstr "Dias da Semana para Tocar"
 
 #: /var/azuracast/www/config/forms/playlist.php:297
 msgid "Leave blank to play on every day of the week."
-msgstr ""
+msgstr "Deixe em branco para tocar todos os dias da semana."
 
 #: /var/azuracast/www/config/forms/playlist.php:323
 msgid "Number of Songs Between Plays"
-msgstr ""
+msgstr "Número de Músicas entre Reproduções"
 
 #: /var/azuracast/www/config/forms/playlist.php:324
 msgid "This playlist will play every $x songs, where $x is specified below."
-msgstr ""
+msgstr "Esta lista de reprodução irá tocar a cada $x músicas, onde $x é especificado abaixo."
 
 #: /var/azuracast/www/config/forms/playlist.php:343
 msgid "Number of Minutes Between Plays"
-msgstr ""
+msgstr "Número de Minutos entre Reproduções"
 
 #: /var/azuracast/www/config/forms/playlist.php:344
 msgid "This playlist will play every $x minutes, where $x is specified below."
-msgstr ""
+msgstr "Esta lista de reprodução irá tocar a cada $x minutos, onde $x é especificado abaixo."
 
 #: /var/azuracast/www/config/forms/playlist.php:363
 msgid "Minute of Hour to Play"
-msgstr ""
+msgstr "Minuto da Hora para Tocar"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."

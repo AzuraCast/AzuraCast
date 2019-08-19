@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 10:30\n"
+"PO-Revision-Date: 2019-08-19 10:40\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2324,7 +2324,7 @@ msgstr "Hoeveelheid opslag"
 
 #: /var/azuracast/www/config/forms/station.php:458
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr ""
+msgstr "Stel een maximale hoeveelheid opslag op dat dit station mag gebruiken. Specificeer de hoeveelheid met een eenheid, bijv.: \"8 GB\". Laat dit veld leeg om de volledige vrije ruimte op de schijf te gebruiken."
 
 #: /var/azuracast/www/config/forms/station.php:466
 msgid "Base Station Directory"

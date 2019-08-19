@@ -142,8 +142,6 @@ class Auth
             if ($user instanceof User) {
                 $this->user = $user;
             } else {
-                $this->session_namespace->unset('user_id');
-
                 $this->user = false;
                 $this->logout();
 

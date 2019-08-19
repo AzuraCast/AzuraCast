@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-14 15:03\n"
+"PO-Revision-Date: 2019-08-19 10:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1529,7 +1529,7 @@ msgstr "Willekeurig"
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92
 msgid "Sequential"
-msgstr ""
+msgstr "Opeenvolgend"
 
 #: /var/azuracast/www/config/forms/playlist.php:108
 msgid "Import Existing Playlist"

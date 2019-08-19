@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-10 07:50\n"
+"PO-Revision-Date: 2019-08-19 17:40\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1553,7 +1553,7 @@ msgstr "Ocultar Metadados dos Ouvintes (\"Modo de Jingle\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
-msgstr ""
+msgstr "Ative esta opção para prevenir que os metadados dos ficheiros desta lista de reprodução sejam enviados para o AutoDJ. Isto é útil para jingles ou bumpers."
 
 #: /var/azuracast/www/config/forms/playlist.php:164
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87

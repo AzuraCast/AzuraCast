@@ -117,7 +117,7 @@ install() {
     fi
 
     docker-compose pull
-    docker-compose run --user="azuracast" --rm web azuracast_install
+    docker-compose run --user="azuracast" --rm web azuracast_install $*
     docker-compose up -d
     exit
 }
@@ -160,7 +160,7 @@ update() {
     docker volume rm azuracast_www_data
     docker volume rm azuracast_tmp_data
 
-    docker-compose run --user="azuracast" --rm web azuracast_update
+    docker-compose run --user="azuracast" --rm web azuracast_update $*
     docker-compose up -d
 
     docker rmi $(docker images | grep "none" | awk '/ / { print $3 }') 2> /dev/null

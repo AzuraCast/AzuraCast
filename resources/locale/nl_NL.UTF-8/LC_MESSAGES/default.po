@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 22:08\n"
+"PO-Revision-Date: 2019-08-19 22:16\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1451,7 +1451,7 @@ msgstr "YP Directory Autorisatie Hash"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr ""
+msgstr "Indien u uw stream wilt toevoegen aan de YP directories, dien je een autorisatie hash op te geven. Je kunt een autorisatie hash registreren via <a href=\"%s\" target=\"_blank\">de SHOUTcast website</a>."
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
@@ -1897,7 +1897,7 @@ msgstr "Voorkeur browser URL (indien beschikbaar)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Als deze instelling is ingesteld op \"Ja\" zal, in plaats van de basis URL, de browser URL worden gebruikt wanneer deze beschikbaar is. Stel in op \"Nee\" om altijd de basis URL te gebruiken."
 
 #: /var/azuracast/www/config/forms/settings.php:49
 msgid "Use Web Proxy for Radio"
@@ -1985,7 +1985,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:129
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Luisterstatistieken worden gebruikt om stationsrapporten te tonen over het binnen het systeem. Op IP-gebaseerde luisterstatistieken worden gebruikt om de locatie van de luisteraar op te halen."
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"

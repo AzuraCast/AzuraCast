@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 17:40\n"
+"PO-Revision-Date: 2019-08-19 17:56\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1574,20 +1574,20 @@ msgstr "URL de Lista de Reprodução (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:185
 msgid "Remote Playback Buffer (Seconds)"
-msgstr ""
+msgstr "Buffer da Reprodução Remota (Segundos)"
 
 #: /var/azuracast/www/config/forms/playlist.php:187
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
-msgstr ""
+msgstr "O tempo de reprodução que o Liquidsoap deve colocar em buffer ao reproduzir esta lista de reprodução. Tempos mais curtos podem levar a uma reprodução intermitente ou em ligações instáveis."
 
 #: /var/azuracast/www/config/forms/playlist.php:208
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:103
 msgid "General Rotation"
-msgstr ""
+msgstr "Rotação Geral"
 
 #: /var/azuracast/www/config/forms/playlist.php:208
 msgid "Plays all day, shuffles with other standard playlists based on weight."
-msgstr ""
+msgstr "Reproduz o dia todo, mistura-se com outras listas de reprodução com base no peso."
 
 #: /var/azuracast/www/config/forms/playlist.php:209
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:106
@@ -1596,40 +1596,40 @@ msgstr "Agendado"
 
 #: /var/azuracast/www/config/forms/playlist.php:209
 msgid "Play during a scheduled time range."
-msgstr ""
+msgstr "Reproduzir durante um intervalo de tempo agendado."
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Once per x Songs"
-msgstr ""
+msgstr "A Cada X Músicas"
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Play exactly once every <i>x</i> songs."
-msgstr ""
+msgstr "Reproduzir exatamente a cada <i>X</i> músicas."
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "A Cada X Minutos"
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Play exactly once every <i>x</i> minutes."
-msgstr ""
+msgstr "Reproduzir exatamente a cada <i>X</i> minutos."
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Once per Hour"
-msgstr ""
+msgstr "Uma Vez por Hora"
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Play once per hour at the specified minute."
-msgstr ""
+msgstr "Reproduzir uma vez por hora ao minuto especificado."
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5
 msgid "Advanced"
-msgstr ""
+msgstr "Avançado"
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr ""
+msgstr "Definir manualmente como esta lista de reprodução é usada na configuração do Liquidsoap. <a href=\"%s\" target=\"_blank\">Saiba mais sobre Listas de Reprodução Avançadas</a>"
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "AutoDJ Scheduling Options"

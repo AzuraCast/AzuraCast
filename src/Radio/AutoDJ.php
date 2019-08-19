@@ -464,6 +464,12 @@ class AutoDJ implements EventSubscriberInterface
             }
         }
 
+        $this->logger->debug('AutoDJ details', [
+            'artists' => $artists,
+            'latest_song_ids_played' => $latest_song_ids_played,
+            'eligible_media' => $eligible_media,
+        ]);
+
         $without_same_title = [];
 
         foreach($eligible_media as $media) {

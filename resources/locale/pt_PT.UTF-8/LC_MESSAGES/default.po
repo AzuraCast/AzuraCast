@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 19:00\n"
+"PO-Revision-Date: 2019-08-19 19:10\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2184,43 +2184,43 @@ msgstr "Escolha um método a usar quando transitando de uma música para outra. 
 
 #: /var/azuracast/www/config/forms/station.php:232
 msgid "Smart Mode"
-msgstr ""
+msgstr "Modo Inteligente"
 
 #: /var/azuracast/www/config/forms/station.php:233
 msgid "Normal Mode"
-msgstr ""
+msgstr "Modo Normal"
 
 #: /var/azuracast/www/config/forms/station.php:234
 msgid "Disable Crossfading"
-msgstr ""
+msgstr "Desativar Transição"
 
 #: /var/azuracast/www/config/forms/station.php:244
 msgid "Crossfade Duration (Seconds)"
-msgstr ""
+msgstr "Duração da Transição (Segundos)"
 
 #: /var/azuracast/www/config/forms/station.php:246
 msgid "Number of seconds to overlap songs."
-msgstr ""
+msgstr "Número de segundos para sobrepor músicas."
 
 #: /var/azuracast/www/config/forms/station.php:258
 msgid "Apply Compression and Normalization"
-msgstr ""
+msgstr "Aplicar Compressão e Normalização"
 
 #: /var/azuracast/www/config/forms/station.php:260
 msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
-msgstr ""
+msgstr "Comprimir e normalizar o som da estação, produzindo um som mais uniforme e completo."
 
 #: /var/azuracast/www/config/forms/station.php:271
 msgid "Allow Song Requests"
-msgstr ""
+msgstr "Permitir Pedidos de Músicas"
 
 #: /var/azuracast/www/config/forms/station.php:272
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
-msgstr ""
+msgstr "Permitir que os ouvintes peçam uma música para tocar na sua rádio. Apenas músicas que se encontram já na sua estação estão disponíveis para pedir."
 
 #: /var/azuracast/www/config/forms/station.php:283
 msgid "Request Minimum Delay (Minutes)"
-msgstr ""
+msgstr "Atraso Mínimo do Pedido (Minutos)"
 
 #: /var/azuracast/www/config/forms/station.php:284
 msgid "If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information."

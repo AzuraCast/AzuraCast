@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 22:16\n"
+"PO-Revision-Date: 2019-08-19 22:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2288,7 +2288,7 @@ msgstr "Gebruik Replaygain Metadata"
 
 #: /var/azuracast/www/config/forms/station.php:383
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr ""
+msgstr "Geef Liquidsoap de instructie om replaygain metadata te gebruiken, die gekoppeld zijn aan een nummer, om het volume niveau te controleren."
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"

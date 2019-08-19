@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 21:48\n"
+"PO-Revision-Date: 2019-08-19 22:08\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1840,11 +1840,11 @@ msgstr "Als de poort die u uitzendt anders is dan de poort die u hierboven hebt 
 
 #: /var/azuracast/www/config/forms/remote.php:138
 msgid "Remote Station Source Mountpoint/SID"
-msgstr ""
+msgstr "Exterene station bron mountpoint/SID"
 
 #: /var/azuracast/www/config/forms/remote.php:139
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Geef hier het mountpoint op als het mountpoint (bijv. <code>/radio.mp3</code>) of Shoutcast SID (bijv. <code>2</code>) waar uw naar toe wilt streamen anders is dan hierboven wordt weergeven."
 
 #: /var/azuracast/www/config/forms/remote.php:147
 msgid "Remote Station Source Username"
@@ -2021,7 +2021,7 @@ msgstr "<b>Geen:</b> Controleer niet op updates of aankondigingen."
 
 #: /var/azuracast/www/config/forms/settings.php:156
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>Alleen releases:</b> Alleen kritieke aankondigingen en nieuwe releases."
 
 #: /var/azuracast/www/config/forms/settings.php:157
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
@@ -2037,7 +2037,7 @@ msgstr "Als de webapplicatie een fout tegenkomt, kunt u ervoor kiezen om automat
 
 #: /var/azuracast/www/config/forms/settings.php:167
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr ""
+msgstr "Foutrapporten worden mogelijk gemaakt door <a href=\"%s\" target=\"_blank\">%s</a>."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
@@ -2260,7 +2260,7 @@ msgstr "Geen ander programma kan deze poort gebruiken. Laat leeg om automatisch 
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "Customize Internal Request Processing Port"
-msgstr ""
+msgstr "Interne request verwerkingspoort aanpassen"
 
 #: /var/azuracast/www/config/forms/station.php:344
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
@@ -2304,7 +2304,7 @@ msgstr "Karaktercodering"
 
 #: /var/azuracast/www/config/forms/station.php:410
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
-msgstr ""
+msgstr "In de meeste gevallen dient de standaard UTF-8 codering gebruikt te worden. De oudere ISO-8859-1 codering kan gebruikt worden wanneer connecties van SHOUTcast 1 DJs of andere oude software toegestaan dienen te worden."
 
 #: /var/azuracast/www/config/forms/station.php:428
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
@@ -3173,7 +3173,7 @@ msgstr "Mijn API sleutels"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "API sleutels kunnen gebruikt worden om toegang krijgen tot sommige systeem functionaliteiten zonder in te loggen. Alle sleutels die je toevoegt hebben dezelfde permissies als jouw account. Voor meer informatie, zie de <a href=\"%s\">API documentatie</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3802,7 +3802,7 @@ msgstr "Station uitzending uitgeschakeld"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "Uitzenden is momenteel uitgeschakeld voor dit station. U kunt nog steeds media, afspeellijsten en andere instellingen beheren. <a href=\"%s\">bewerk het profiel van uw station</a> om uitzenden in te schakelen."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:18

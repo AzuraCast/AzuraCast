@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 18:40\n"
+"PO-Revision-Date: 2019-08-19 18:50\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2017,111 +2017,111 @@ msgstr "Enviar detalhes mínimos acerca da sua instalação do AzuraCast para o 
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>Nenhum:</b> Não verificar atualizações ou anúncios."
 
 #: /var/azuracast/www/config/forms/settings.php:156
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>Novas Versões Apenas:</b> Anúncios críticos e novas versões apenas."
 
 #: /var/azuracast/www/config/forms/settings.php:157
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>Todas as Atualizações</b> Incluir todos os anúncios e pequenas atualizações."
 
 #: /var/azuracast/www/config/forms/settings.php:166
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Enviar Relatórios de Erros para o AzuraCast"
 
 #: /var/azuracast/www/config/forms/settings.php:167
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Se a aplicação web encontrar um erro, você pode escolher enviar automaticamente um relatório anónimo de erro para a equipa do AzuraCast para um diagnóstico e resolução mais rápidos."
 
 #: /var/azuracast/www/config/forms/settings.php:167
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr ""
+msgstr "Relatórios de erro são possíveis graças a <a href=\"%s\" target=\"_blank\">%s</a>."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
 msgid "Metadata"
-msgstr ""
+msgstr "Metadados"
 
 #: /var/azuracast/www/config/forms/song.php:14
 msgid "Full Text"
-msgstr ""
+msgstr "Texto Completo"
 
 #: /var/azuracast/www/config/forms/song.php:26
 msgid "Artist Name"
-msgstr ""
+msgstr "Nome do Artista"
 
 #: /var/azuracast/www/config/forms/station.php:22
 msgid "Station Profile"
-msgstr ""
+msgstr "Perfil da Estação"
 
 #: /var/azuracast/www/config/forms/station.php:24
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:26
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:26
 msgid "AutoDJ"
-msgstr ""
+msgstr "AutoDJ"
 
 #: /var/azuracast/www/config/forms/station.php:25
 #: /var/azuracast/www/templates/admin/index/index.phtml:18
 #: /var/azuracast/www/templates/admin/sidebar.phtml:3
 #: /var/azuracast/www/templates/frontend/index/index.phtml:59
 msgid "Administration"
-msgstr ""
+msgstr "Administração"
 
 #: /var/azuracast/www/config/forms/station.php:46
 #: /var/azuracast/www/config/forms/webhook/discord.php:80
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: /var/azuracast/www/config/forms/station.php:54
 msgid "Genre"
-msgstr ""
+msgstr "Género"
 
 #: /var/azuracast/www/config/forms/station.php:62
 msgid "Web Site URL"
-msgstr ""
+msgstr "URL do Website"
 
 #: /var/azuracast/www/config/forms/station.php:63
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
-msgstr ""
+msgstr "Nota: Esta deve ser a página pública da estação, e não a URL do AzuraCast. Este URL será incluído nos detalhes da transmissão."
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Time Zone"
-msgstr ""
+msgstr "Fuso Horário"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Listas de reprodução agendadas e outros items cronometrados serão controlados por este fuso horário."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
-msgstr ""
+msgstr "Ativar Página Pública"
 
 #: /var/azuracast/www/config/forms/station.php:83
 msgid "Show the station in public pages and general API results."
-msgstr ""
+msgstr "Mostrar a estação em páginas públicas e nos resultados da API geral."
 
 #: /var/azuracast/www/config/forms/station.php:94
 msgid "URL Stub"
-msgstr ""
+msgstr "Sufixo da URL"
 
 #: /var/azuracast/www/config/forms/station.php:96
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
-msgstr ""
+msgstr "Opcionalmente, especifique um nome amigável para a URL curta, como <code>nome_da_estação</code>, que irá ser usado nos URL's da estação. Deixe este campo em branco para criar um com base no nome da estação."
 
 #: /var/azuracast/www/config/forms/station.php:104
 msgid "Number of Recently Played Songs"
-msgstr ""
+msgstr "Número de Músicas Tocadas Recentemente"
 
 #: /var/azuracast/www/config/forms/station.php:106
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr ""
+msgstr "Personalize o número de músicas que aparecerão na secção \"Histórico de Músicas\" para esta estação e em todas as API's públicas."
 
 #: /var/azuracast/www/config/forms/station.php:128
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:16
 msgid "Broadcasting Service"
-msgstr ""
+msgstr "Serviço de Transmissão"
 
 #: /var/azuracast/www/config/forms/station.php:129
 msgid "This software delivers your broadcast to the listening audience."

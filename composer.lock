@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "35262781f1d8e86dfe49740c7181eb77191f9ad7"
+                "reference": "57ad81a1a3cbec2f70d7b20d79eaaab5381f6aef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/35262781f1d8e86dfe49740c7181eb77191f9ad7",
-                "reference": "35262781f1d8e86dfe49740c7181eb77191f9ad7",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/57ad81a1a3cbec2f70d7b20d79eaaab5381f6aef",
+                "reference": "57ad81a1a3cbec2f70d7b20d79eaaab5381f6aef",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-08-19T05:58:21+00:00"
+            "time": "2019-08-19T06:19:26+00:00"
         },
         {
             "name": "azuracast/azuraforms",

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 22:20\n"
+"PO-Revision-Date: 2019-08-19 22:36\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1362,7 +1362,7 @@ msgstr "Weergavenaam"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:26
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "De weergave naam die aan dit mountpoint is gekoppeld en wordt weergegeven op administratieve- en publieke pagina's. Laat leeg om automatisch te laten genereren."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13
@@ -1816,7 +1816,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/remote.php:63
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
-msgstr ""
+msgstr "Specificeer een mountpoint (bijv. <code>%s</code>) of een SHOUTcast SID (bijv. <code>%s</code>) welke tijdens een uitzending en binnen de statistieken gebruikt moet worden."
 
 #: /var/azuracast/www/config/forms/remote.php:75
 msgid "Broadcast AutoDJ to Remote Station"
@@ -1840,7 +1840,7 @@ msgstr "Als de poort die u uitzendt anders is dan de poort die u hierboven hebt 
 
 #: /var/azuracast/www/config/forms/remote.php:138
 msgid "Remote Station Source Mountpoint/SID"
-msgstr "Exterene station bron mountpoint/SID"
+msgstr "Externe station bron mountpoint/SID"
 
 #: /var/azuracast/www/config/forms/remote.php:139
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."

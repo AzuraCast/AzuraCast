@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 10:50\n"
+"PO-Revision-Date: 2019-08-19 11:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1989,11 +1989,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>Volledig:</b> Verzamel op luister- en IP-gebaseerde statistieken"
 
 #: /var/azuracast/www/config/forms/settings.php:133
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>Beperkt:</b> Verzamel alleen luisterstatistieken"
 
 #: /var/azuracast/www/config/forms/settings.php:134
 msgid "<b>None:</b> Do not collect any listener analytics"
@@ -2216,7 +2216,7 @@ msgstr "Accepteer verzoeknummers"
 
 #: /var/azuracast/www/config/forms/station.php:272
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
-msgstr ""
+msgstr "Schakel in om luisteraars requests aan te laten vragen, om afspeelt te worden op je station. Alleen nummers welke in je afspeellijsten staan zijn aan te vragen."
 
 #: /var/azuracast/www/config/forms/station.php:283
 msgid "Request Minimum Delay (Minutes)"
@@ -2240,11 +2240,11 @@ msgstr "Streamers / DJ's toestaan"
 
 #: /var/azuracast/www/config/forms/station.php:308
 msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
-msgstr ""
+msgstr "Indien ingeschakeld, zullen streamers (of DJs) rechtstreeks verbinding kunnen maken met uw stream en live muziek kunnen uitzenden die de AutoDJ stream onderbreekt."
 
 #: /var/azuracast/www/config/forms/station.php:319
 msgid "Deactivate Streamer on Disconnect (Seconds)"
-msgstr ""
+msgstr "Streamer uitschakelen bij verbreken van verbinding (aantal seconden)"
 
 #: /var/azuracast/www/config/forms/station.php:320
 msgid "Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely."
@@ -2300,7 +2300,7 @@ msgstr "Deze modus schakelt de beheermogelijkheden van AzuraCasts AutoDJ uit, in
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
-msgstr ""
+msgstr "Karaktercodering"
 
 #: /var/azuracast/www/config/forms/station.php:410
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
@@ -3065,7 +3065,7 @@ msgstr "Globaal"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:20
 msgid "Relay"
-msgstr ""
+msgstr "Relay"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
@@ -3847,7 +3847,7 @@ msgstr "Source wachtwoord"
 
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:59
 msgid "Relay Password"
-msgstr ""
+msgstr "Relay wachtwoord"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:16
 msgid "On the Air"

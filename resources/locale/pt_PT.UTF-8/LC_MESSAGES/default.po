@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 18:50\n"
+"PO-Revision-Date: 2019-08-19 19:00\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -804,7 +804,7 @@ msgstr "A versão <a href=\"%s\" target=\"_blank\">%s</a> do AzuraCast está dis
 
 #: /var/azuracast/www/src/Notification/Manager.php:104
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr "Está a utilizar a versão %s neste momento. Atualizar é altamente recomendado."
+msgstr "Está a usar a versão %s neste momento. Atualizar é altamente recomendado."
 
 #: /var/azuracast/www/src/Notification/Manager.php:109
 msgid "New AzuraCast Release Version Available"
@@ -1739,7 +1739,7 @@ msgstr "Restaurar Palavra-Passe"
 
 #: /var/azuracast/www/config/forms/profile.php:39
 msgid "Leave these fields blank to continue using your current password."
-msgstr "Deixe estes campos em branco para continuar a utilizar a palavra-passe atual."
+msgstr "Deixe estes campos em branco para continuar a usar a palavra-passe atual."
 
 #: /var/azuracast/www/config/forms/profile.php:45
 msgid "Current Password"
@@ -2125,62 +2125,62 @@ msgstr "Serviço de Transmissão"
 
 #: /var/azuracast/www/config/forms/station.php:129
 msgid "This software delivers your broadcast to the listening audience."
-msgstr ""
+msgstr "Este software transmite a sua emissão aos seus ouvintes."
 
 #: /var/azuracast/www/config/forms/station.php:147
 msgid "Customize Broadcasting Port"
-msgstr ""
+msgstr "Personalizar a Porta de Transmissão"
 
 #: /var/azuracast/www/config/forms/station.php:149
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
-msgstr ""
+msgstr "Mais nenhum programa pode usar esta porta. Deixe em branco para automaticamente atribuir uma porta."
 
 #: /var/azuracast/www/config/forms/station.php:158
 msgid "Maximum Listeners"
-msgstr ""
+msgstr "Ouvintes Máximos"
 
 #: /var/azuracast/www/config/forms/station.php:160
 msgid "Maximum number of total listeners across all streams. Leave blank to use the default (250)."
-msgstr ""
+msgstr "Número máximo de ouvintes totais em todas as transmissões. Deixe em branco para usar o padrão (250)."
 
 #: /var/azuracast/www/config/forms/station.php:169
 msgid "Customize Source Password"
-msgstr ""
+msgstr "Personalizar Palavra-Passe da Fonte"
 
 #: /var/azuracast/www/config/forms/station.php:171
 #: /var/azuracast/www/config/forms/station.php:182
 msgid "Leave blank to automatically generate a new password."
-msgstr ""
+msgstr "Deixe em branco para criar uma automaticamente."
 
 #: /var/azuracast/www/config/forms/station.php:180
 msgid "Customize Administrator Password"
-msgstr ""
+msgstr "Personalizar a Palavra-Passe de Administrador"
 
 #: /var/azuracast/www/config/forms/station.php:191
 #: /var/azuracast/www/config/forms/station.php:424
 msgid "Custom Configuration"
-msgstr ""
+msgstr "Configuração Personalizada"
 
 #: /var/azuracast/www/config/forms/station.php:195
 msgid "This code will be included in the frontend configuration. You can use either JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;."
-msgstr ""
+msgstr "Este código será incluído na configuração de frontend. Você pode usar JSON {\"nova_chave\": \"novo_valor\"} ou formato XML &lt;nova_chave&gt;novo_valor&lt;/nova_chave&gt;."
 
 #: /var/azuracast/www/config/forms/station.php:209
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:16
 msgid "AutoDJ Service"
-msgstr ""
+msgstr "Serviço AutoDJ"
 
 #: /var/azuracast/www/config/forms/station.php:210
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
-msgstr ""
+msgstr "Este software reproduz listas de reprodução de música quando nenhuma outra fonte está disponível."
 
 #: /var/azuracast/www/config/forms/station.php:228
 msgid "Crossfade Method"
-msgstr ""
+msgstr "Método de Transição"
 
 #: /var/azuracast/www/config/forms/station.php:230
 msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
-msgstr ""
+msgstr "Escolha um método a usar quando transitando de uma música para outra. O Modo Inteligente considera o volume das duas faixas para um efeito mais suave, mas requer mais recursos do processador."
 
 #: /var/azuracast/www/config/forms/station.php:232
 msgid "Smart Mode"

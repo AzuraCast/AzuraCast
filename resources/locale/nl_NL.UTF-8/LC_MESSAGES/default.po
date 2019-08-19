@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 11:00\n"
+"PO-Revision-Date: 2019-08-19 11:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2005,7 +2005,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Kies of u uw installatie wilt laten communiceren met de centrale AzuraCast servers om te controleren op updates en aankondigingen.<br>AzuraCast respecteert uw privacy; bekijk ons <a href=\"%s\" target=\"_blank\">privacybeleid</a> voor meer details."
 
 #: /var/azuracast/www/config/forms/settings.php:151
 msgid "Check for Updates and Announcements"
@@ -2533,7 +2533,15 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Web hooks sturen automatisch een HTTP POST-verzoek naar de URL die u heeft opgegeven om \n"
+"\n"
+"                een melding te sturen, wanneer een van de door uw gespecificeerde triggers zich op uw station voordoen. Het bericht van het POST-verzoek\n"
+"\n"
+"                is precies hetzelfde als de <a href=\"%s\" target=\"_blank\">Now playing API-reactie</a> voor uw station. \n"
+"\n"
+"                Om een snelle werking van het systeem te garanderen hebben web hooks een korte timeout, waardoor de reagerende service geoptimaliseerd\n"
+"\n"
+"                moet zijn om het verzoek in minder dan 2 seconden te verwerken."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"

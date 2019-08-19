@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "9041b9c0d157d216cd4157af1adfc90f71b08e9b"
+                "reference": "35262781f1d8e86dfe49740c7181eb77191f9ad7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/9041b9c0d157d216cd4157af1adfc90f71b08e9b",
-                "reference": "9041b9c0d157d216cd4157af1adfc90f71b08e9b",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/35262781f1d8e86dfe49740c7181eb77191f9ad7",
+                "reference": "35262781f1d8e86dfe49740c7181eb77191f9ad7",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-08-18T00:01:00+00:00"
+            "time": "2019-08-19T05:58:21+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -4921,12 +4921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "335b5fd1c6c56023ab9ebed48ad5811d4fce5a45"
+                "reference": "5077a313dd399d5f66b826f590f9dc1902ae84b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/335b5fd1c6c56023ab9ebed48ad5811d4fce5a45",
-                "reference": "335b5fd1c6c56023ab9ebed48ad5811d4fce5a45",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/5077a313dd399d5f66b826f590f9dc1902ae84b0",
+                "reference": "5077a313dd399d5f66b826f590f9dc1902ae84b0",
                 "shasum": ""
             },
             "require": {
@@ -5004,7 +5004,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2019-08-16T20:15:11+00:00"
+            "time": "2019-08-19T02:11:24+00:00"
         },
         {
             "name": "spomky-labs/otphp",
@@ -8161,16 +8161,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.11.14",
+            "version": "0.11.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "b343bbf83d0dd08db917408d8efd99b140ce04c6"
+                "reference": "1be5b3a706db16ac472a4c40ec03cf4c810b118d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b343bbf83d0dd08db917408d8efd99b140ce04c6",
-                "reference": "b343bbf83d0dd08db917408d8efd99b140ce04c6",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1be5b3a706db16ac472a4c40ec03cf4c810b118d",
+                "reference": "1be5b3a706db16ac472a4c40ec03cf4c810b118d",
                 "shasum": ""
             },
             "require": {
@@ -8232,7 +8232,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-08-17T12:49:22+00:00"
+            "time": "2019-08-18T20:51:53+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",

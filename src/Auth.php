@@ -5,6 +5,7 @@ use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use Azura\Session;
 use Azura\Session\NamespaceInterface;
+use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 
 class Auth
@@ -12,8 +13,14 @@ class Auth
     /** @var int The window of valid one-time passwords outside the current timestamp. */
     public const TOTP_WINDOW = 5;
 
-    /** @var NamespaceInterface */
+    /** @var Session */
     protected $session;
+
+    /** @var NamespaceInterface */
+    protected $session_namespace;
+
+    /** @var Settings */
+    protected $settings;
 
     /** @var UserRepository */
     protected $user_repo;
@@ -27,13 +34,19 @@ class Auth
     /**
      * @param Session $session
      * @param EntityManager $em
+     * @param Settings $settings
      */
-    public function __construct(Session $session, EntityManager $em)
-    {
+    public function __construct(
+        Session $session,
+        EntityManager $em,
+        Settings $settings
+    ) {
         $this->user_repo = $em->getRepository(User::class);
 
-        $class_name = strtolower(str_replace(['\\', '_'], ['', ''], static::class));
-        $this->session = $session->get('auth_' . $class_name . '_user');
+        $this->session = $session;
+        $this->session_namespace = $this->session->get('auth');
+
+        $this->settings = $settings;
     }
 
     /**
@@ -60,14 +73,14 @@ class Auth
      */
     public function logout(): void
     {
-        $this->session->login_complete = false;
-
-        unset($this->session->user_id);
-        unset($this->session->masquerade_user_id);
+        $this->session_namespace
+            ->set('login_complete', false)
+            ->unset('user_id')
+            ->unset('masquerade_user_id');
 
         $this->user = null;
 
-        @session_unset();
+        $this->session->destroy();
     }
 
     /**
@@ -117,8 +130,8 @@ class Auth
      */
     public function getUser(): ?User
     {
-        if ($this->user === null) {
-            $user_id = (int)$this->session->user_id;
+        if (null === $this->user) {
+            $user_id = (int)$this->session_namespace->get('user_id');
 
             if (0 === $user_id) {
                 $this->user = false;
@@ -129,7 +142,8 @@ class Auth
             if ($user instanceof User) {
                 $this->user = $user;
             } else {
-                unset($this->session->user_id);
+                $this->session_namespace->unset('user_id');
+
                 $this->user = false;
                 $this->logout();
 
@@ -149,8 +163,9 @@ class Auth
      */
     public function setUser(User $user): void
     {
-        $this->session->login_complete = (null === $user->getTwoFactorSecret());
-        $this->session->user_id = $user->getId();
+        $this->session_namespace->set('login_complete', null === $user->getTwoFactorSecret())
+            ->set('user_id', $user->getId());
+
         $this->user = $user;
     }
 
@@ -173,7 +188,8 @@ class Auth
             throw new \Azura\Exception('Invalid user!');
         }
 
-        $this->session->masquerade_user_id = $user_info->getId();
+        $this->session_namespace->set('masquerade_user_id', $user_info->getId());
+
         $this->masqueraded_user = $user_info;
     }
 
@@ -182,7 +198,8 @@ class Auth
      */
     public function endMasquerade(): void
     {
-        unset($this->session->masquerade_user_id);
+        $this->session_namespace->unset('masquerade_user_id');
+
         $this->masqueraded_user = null;
     }
 
@@ -208,11 +225,11 @@ class Auth
             return false;
         }
 
-        if ($this->masqueraded_user === null) {
-            if (!$this->session->masquerade_user_id) {
+        if (null === $this->masqueraded_user) {
+            if (!$this->session_namespace->isset('masquerade_user_id')) {
                 $this->masqueraded_user = false;
             } else {
-                $mask_user_id = (int)$this->session->masquerade_user_id;
+                $mask_user_id = (int)$this->session_namespace->get('masquerade_user_id');
                 if (0 !== $mask_user_id) {
                     $user = $this->user_repo->find($mask_user_id);
                 } else {
@@ -222,7 +239,9 @@ class Auth
                 if ($user instanceof User) {
                     $this->masqueraded_user = $user;
                 } else {
-                    unset($this->session->user_id, $this->session->masquerade_user_id);
+                    $this->session_namespace->unset('user_id')
+                        ->unset('masquerade_user_id');
+
                     $this->masqueraded_user = false;
                 }
             }
@@ -239,7 +258,7 @@ class Auth
      */
     public function isLoginComplete(): bool
     {
-        return $this->session->login_complete ?? false;
+        return $this->session_namespace->get('login_complete') ?? false;
     }
 
     /**
@@ -257,7 +276,7 @@ class Auth
         }
 
         if ($user->verifyTwoFactor($otp)) {
-            $this->session->login_complete = true;
+            $this->session_namespace->set('login_complete', true);
             return true;
         }
 

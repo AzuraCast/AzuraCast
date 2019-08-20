@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 06:50\n"
+"PO-Revision-Date: 2019-08-20 07:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -84,7 +84,7 @@ msgstr "Benutzerdefinierte Felder"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr "Datensicherung"
+msgstr "Backups"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Page"
@@ -245,7 +245,7 @@ msgstr "Änderungen gespeichert."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:81
 msgid "Configure Backups"
-msgstr "Datensicherung konfigurieren"
+msgstr "Backups konfigurieren"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:96
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:106
@@ -253,12 +253,12 @@ msgstr "Datensicherung konfigurieren"
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr "Manuelle Datensicherung ausführen"
+msgstr "Manuelles Backup ausführen"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 msgid "Backup"
-msgstr "Datensicherung"
+msgstr "Backup"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
@@ -445,7 +445,7 @@ msgstr "Ihre Anmeldeinformationen konnten nicht bestätigt werden."
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:204
 msgid "All Stations"
-msgstr "Alle Sender"
+msgstr "Alle Stationen"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:234
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:74
@@ -832,7 +832,7 @@ msgstr "%s wird nicht als Dienst erkannt."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Evtl. ist es noch nicht beim Supervisor registriert. Ein Neustart der Übertragung könnte helfen."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot start"
@@ -1080,7 +1080,7 @@ msgstr "Nein"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr "Geplanter Zeitpunkt für Datensicherung"
+msgstr "Geplanter Zeitpunkt für Backups"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
@@ -1088,15 +1088,15 @@ msgstr "Die Zeit (in UTC) um die automatische Sicherung auszuführen, falls akti
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr "Medien aus Datensicherung ausschließen"
+msgstr "Medien aus Backup ausschließen"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr "Das Ausschließen von Medien aus automatisierten Datensicherungen wird Platz sparen, aber du solltest sicherstellen, dass du deine Medien separat sicherst."
+msgstr "Durch das Ausschließen von Medien aus automatisierten Backups werden diese kleiner, aber Medien sollten separat gesichert werden."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr "Anzahl der zu behaltenden Datensicherungen"
+msgstr "Anzahl der zu behaltenden Backups"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
@@ -2623,7 +2623,21 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Schritte zur Konfiguration einer Twitter-Anwendung:<br>\n"
+"\n"
+"                <ol type=\"1\">\n"
+"\n"
+"                    <li>Eine neue App auf der <a href=\"%s\" target=\"_blank\">Twitter-App-Seite</a> erstellen. \n"
+"\n"
+"                    Verwende die Basis-URL dieser Installation als Anwendungs-URL.</li>\n"
+"\n"
+"                    <li>In der neu erstellten Anwendung auf \"Keys and tokens\" klicken.</li>\n"
+"\n"
+"                    <li>Am unteren Rand der Seite auf \"Create\" klicken.</li>\n"
+"\n"
+"                </ol>\n"
+"\n"
+"                <p>Die Informationen der Seite in die folgenden Felder eintragen:</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -2653,7 +2667,7 @@ msgstr "Keine Begrenzung"
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
 #: /var/azuracast/www/config/forms/webhook/twitter.php:77
 msgid "%d seconds"
-msgstr ""
+msgstr "%d Sekunden"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:78
 #: /var/azuracast/www/config/forms/webhook/twitter.php:79
@@ -2662,7 +2676,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/twitter.php:82
 #: /var/azuracast/www/config/forms/webhook/twitter.php:83
 msgid "%d minutes"
-msgstr ""
+msgstr "%d Minuten"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:119
 msgid "Message Body"

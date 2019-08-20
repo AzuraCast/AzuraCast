@@ -7,12 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
     
     - name: Run test suite
       run: |
         shopt -s expand_aliases
         cp azuracast.sample.env azuracast.env
+        chmod 777 $TRAVIS_BUILD_DIR/tests/_output/
         alias dc-testing='docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml'
         dc-testing build web
         dc-testing run --user="azuracast" --rm web azuracast_install
         dc-testing run --user="azuracast" --rm web composer test
+
+    - name: Echo test output directory
+      if: failure()
+      run: |
+        cat tests/_output/*.html

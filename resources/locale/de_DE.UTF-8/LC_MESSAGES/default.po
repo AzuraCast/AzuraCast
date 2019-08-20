@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 06:30\n"
+"PO-Revision-Date: 2019-08-20 06:40\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1674,7 +1674,7 @@ msgstr "Startzeit"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Um einmal pro Tag zu spielen, Start- und Endzeiten auf den gleichen Wert setzen."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
@@ -1682,11 +1682,11 @@ msgstr "Endzeit"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Wenn die Endzeit vor der Startzeit ist, wird die Playlist über Nacht spielen."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Stationszeit"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
@@ -1946,11 +1946,11 @@ msgstr "Gesamte Zeit"
 
 #: /var/azuracast/www/config/forms/settings.php:79
 msgid "Use WebSockets for Now Playing Updates"
-msgstr ""
+msgstr "WebSockets für \"Jetzt läuft\"-Updates verwenden"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
-msgstr ""
+msgstr "Aktiviert oder deaktiviert die Verwendung des neueren und schnelleren WebSocket-basierten Systems, um Live-Updates auf öffentlichen Playern zu erhalten. Feature deaktivieren, wenn Probleme damit auftreten."
 
 #: /var/azuracast/www/config/forms/settings.php:92
 msgid "Security Controls"
@@ -2093,7 +2093,7 @@ msgstr "Zeitzone"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Geplante Wiedergabelisten und andere Zeitsteuerungen sind von der Zeitzone abhängig."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
@@ -2293,11 +2293,11 @@ msgstr "Liquidsoap anweisen die Replaygain Metadaten eines Songs zu verwenden um
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"
-msgstr ""
+msgstr "Manueller AutoDJ-Modus"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr ""
+msgstr "Dieser Modus deaktiviert das AutoDJ-Management von AzuraCast, indem Liquidsoap selbst verwendet wird, um die Wiedergabe von Songs zu verwalten. Einige Funktionen werden nicht verfügbar sein."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
@@ -3108,7 +3108,7 @@ msgstr "Willkommen bei %s!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:34
 msgid "name@example.com"
-msgstr ""
+msgstr "name@example.com"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 msgid "Enter your password"
@@ -3152,7 +3152,7 @@ msgstr "Meine API-Schlüssel"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "API-Schlüssel können verwendet werden, um auf einige Systemfunktionen zuzugreifen, ohne sich einzuloggen. Alle erstellten Schlüssel haben die gleichen Berechtigungen wie der Ersteller. Weitere Informationen in der <a href=\"%s\">API-Dokumentation</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3403,7 +3403,7 @@ msgstr "Wünsche dir ein Lied"
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:15
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:16
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19

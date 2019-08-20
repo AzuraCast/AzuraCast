@@ -155,6 +155,9 @@ class Media extends AbstractTask
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
+        /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
+        $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+
         $existing_media_q = $this->em->createQuery(/** @lang DQL */'SELECT 
             sm 
             FROM App\Entity\StationMedia sm 
@@ -196,6 +199,8 @@ class Media extends AbstractTask
 
                 unset($music_files[$path_hash]);
             } else {
+                $playlists_media_repo->clearPlaylistsFromMedia($media_row);
+
                 // Delete the now-nonexistent media item.
                 $this->em->remove($media_row);
 

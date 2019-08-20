@@ -89,15 +89,16 @@ class StationPlaylistMediaRepository extends Repository
         foreach($playlists as $row) {
             /** @var Entity\StationPlaylistMedia $row */
             $playlist = $row->getPlaylist();
-
-            // Clear the playback queue.
-            $playlist->setQueue(null);
-            $this->_em->persist($playlist);
-
             $affected_playlists[$playlist->getId()] = $playlist;
         }
 
-        $this->_em->flush();
+        // Clear the playback queue.
+        if (!empty($affected_playlists)) {
+            $this->_em->createQuery(/** @lang DQL */'UPDATE App\Entity\StationPlaylist sp
+            SET sp.queue=null WHERE sp.id IN (:ids)')
+                ->setParameter('ids', array_keys($affected_playlists))
+                ->execute();
+        }
 
         $this->_em->createQuery(/** @lang DQL */'DELETE 
             FROM App\Entity\StationPlaylistMedia e

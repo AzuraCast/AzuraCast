@@ -1,0 +1,17 @@
+name: Test Suite
+
+on: [push, pull_request]
+
+jobs:
+  test_suite:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Run test suite
+      uses: docker://docker/compose:latest
+      run: |
+        cp azuracast.sample.env azuracast.env
+        docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml build web
+        docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web azuracast_install
+        docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web composer test

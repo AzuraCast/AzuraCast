@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 05:50\n"
+"PO-Revision-Date: 2019-08-20 06:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1108,7 +1108,7 @@ msgstr "Datensicherung Dateiname"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Optionaler absoluter oder relativer Pfad, in dem die Backup-Dateien angelegt werden sollen."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
@@ -3112,7 +3112,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 msgid "Enter your password"
-msgstr ""
+msgstr "Passwort eingeben"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:43
 #: /var/azuracast/www/templates/frontend/account/login.phtml:44
@@ -4008,7 +4008,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
 msgid "for selected period"
-msgstr ""
+msgstr "für ausgewählten Zeitraum"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
@@ -4048,7 +4048,7 @@ msgstr "Dieses Produkt enthält GeoLite2 Daten, die von MaxMind erstellt wurden,
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
-msgstr ""
+msgstr "Stunde"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
@@ -4159,7 +4159,7 @@ msgstr "Bitte warten..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:16
 msgid "Station Time"
-msgstr ""
+msgstr "Stationszeit"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
@@ -4193,7 +4193,7 @@ msgstr "Server"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr ""
+msgstr "Evtl. muss die Verbindung direkt via IP-Adresse hergestellt werden. Server-IP: <code>%s</code>."
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:78
@@ -4210,7 +4210,7 @@ msgstr "ShoutCast v1 Benutzer"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:79
 msgid "%d (%d for some clients)"
-msgstr ""
+msgstr "%d (%d für einige Clients)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:84
 msgid "(DJ username and password separated by a colon)"
@@ -4262,9 +4262,9 @@ msgstr "Keine Ergebnisse gefunden!"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:66
 msgid "Errors were encountered when trying to save changes:"
-msgstr ""
+msgstr "Fehler beim Speichern der Änderungen aufgetreten:"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:69
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 

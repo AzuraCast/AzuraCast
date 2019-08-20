@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 06:20\n"
+"PO-Revision-Date: 2019-08-20 06:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1100,7 +1100,7 @@ msgstr "Anzahl der zu behaltenden Datensicherungen"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "Backups, die älter als die angegebene Anzahl der Tage sind, werden automatisch gelöscht. Auf Null setzen, um die automatische Löschung zu deaktivieren."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
@@ -1116,7 +1116,7 @@ msgstr "Medien aus Datensicherung ausschließen"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Die Backups werden kleiner, aber Medien sollten anderweitig gesichert werden."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
@@ -1642,7 +1642,7 @@ msgstr "Lege fest, wie diese Wiedergabeliste vom AutoDJ behandelt werden soll."
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr ""
+msgstr "<b>Warnung:</b> Diese Funktionen sind Liquidsoap-intern und beeinflussen die Funktionsweise des AutoDJs."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
@@ -2692,7 +2692,7 @@ msgstr "Benutzerkonten"
 #: /var/azuracast/www/templates/admin/relays/index.phtml:3
 #: /var/azuracast/www/templates/admin/relays/index.phtml:15
 msgid "Connected AzuraRelays"
-msgstr ""
+msgstr "Verbundene AzuraRelays"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
@@ -2891,38 +2891,38 @@ msgstr "Entfernen"
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
-msgstr ""
+msgstr "Automatische Backups"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:78
 msgid "Last run: %s"
-msgstr ""
+msgstr "Letzte Ausführung: %s"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
-msgstr ""
+msgstr "Niemals ausgeführt"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:38
 #: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
-msgstr ""
+msgstr "Konfigurieren"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:43
 #: /var/azuracast/www/templates/admin/backups/index.phtml:130
 msgid "Most Recent Backup Log"
-msgstr ""
+msgstr "Letztes Backup-Log"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:64
 msgid "Restoring Backups"
-msgstr ""
+msgstr "Backups wiederherstellen"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Um ein Backup des Host-Computers wiederherzustellen, folgenden Befehl ausführen:"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Beachten Sie, dass die Wiederherstellung eines Backups Ihre bestehende Datenbank löschen wird. Backups von nicht vertrauenswürdigen Personen niemals einspielen!"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:21
@@ -2947,7 +2947,7 @@ msgstr "Aktionen"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Last Modified"
-msgstr ""
+msgstr "Letzte Änderung"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 #: /var/azuracast/www/templates/stations/files/index.phtml:121
@@ -2956,11 +2956,11 @@ msgstr "Größe"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:110
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "Backup \"%s\" löschen?"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
@@ -2984,15 +2984,15 @@ msgstr "Löschen"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
-msgstr ""
+msgstr "Backups"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:25
 msgid "Backup was run successfully."
-msgstr ""
+msgstr "Backup wurde erfolgreich ausgeführt."
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:27
 msgid "Backup encountered errors when running. Check the log below for details."
-msgstr ""
+msgstr "Bei der Backup-Erstellung ist ein Fehler ausgetreten. Bitte das Log überprüfen:"
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
@@ -3004,11 +3004,11 @@ msgstr "Server Status"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
-msgstr ""
+msgstr "Aktueller CPU-Load"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
-msgstr ""
+msgstr "15-Minuten CPU Load Average"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"
@@ -3052,19 +3052,19 @@ msgstr "Global"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:20
 msgid "Relay"
-msgstr ""
+msgstr "Relay"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
-msgstr ""
+msgstr "Öffentlich"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"
-msgstr ""
+msgstr "Erste Verbindung"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"
-msgstr ""
+msgstr "Letztes Update"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"

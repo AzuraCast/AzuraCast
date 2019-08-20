@@ -519,7 +519,11 @@ class SongHistory
     public function api(Api\SongHistory $response, \App\ApiUtilities $api, UriInterface $base_url = null)
     {
         $response->sh_id = (int)$this->id;
-        $response->played_at = (int)$this->timestamp_start + self::PLAYBACK_DELAY_SECONDS;
+
+        $response->played_at = (0 === (int)$this->timestamp_start)
+            ? 0
+            : (int)$this->timestamp_start + self::PLAYBACK_DELAY_SECONDS;
+
         $response->duration = (int)$this->duration;
         $response->is_request = $this->request !== null;
 

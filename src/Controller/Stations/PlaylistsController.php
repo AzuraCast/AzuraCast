@@ -170,7 +170,7 @@ class PlaylistsController extends AbstractStationCrudController
             throw new \Azura\Exception(__('This playlist is not a sequential playlist.'));
         }
 
-        $params = $request->getQueryParams();
+        $params = $request->getParams();
 
         if ('POST' === $request->getMethod()) {
             try {

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 06:10\n"
+"PO-Revision-Date: 2019-08-20 06:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -741,7 +741,7 @@ msgstr "SHOUTcast-Konfiguration"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "Zu viele Anfragen! Bitte warte, bevor du eine andere einreichst."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
@@ -3408,7 +3408,7 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:16
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 msgid "Play"
-msgstr ""
+msgstr "Abspielen"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:17
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
@@ -3534,7 +3534,7 @@ msgstr "Neues Problem auf GitHub"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
-msgstr ""
+msgstr "Log Viewer"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
@@ -3563,19 +3563,19 @@ msgstr "Automatische Zuweisung anpassen"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:28
 msgid "Delete {NUM} media file(s)?"
-msgstr ""
+msgstr "{NUM} Mediendatei(en) löschen?"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:37
 msgid "Files removed:"
-msgstr ""
+msgstr "Dateien entfernt:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:76
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Playlisten aktualisiert für ausgewählte Dateien:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:78
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Playlist-Zuordnung für ausgewählte Dateien zurückgesetzt:"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:147
 msgid "Album Artwork"
@@ -3595,7 +3595,7 @@ msgstr "Startseite"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:33
 msgid "%s of %s Used (%d Files)"
-msgstr ""
+msgstr "%s von %s belegt (%d Dateien)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:43
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
@@ -3619,7 +3619,7 @@ msgstr "Speichern"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:93
 msgid "Clear Playlists"
-msgstr "Aus Playlisten entfernen"
+msgstr "Playlist-Zuordnung bereinigen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:97
 msgid "Move"

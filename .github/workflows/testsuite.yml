@@ -14,7 +14,7 @@ jobs:
       run: |
         shopt -s expand_aliases
         cp azuracast.sample.env azuracast.env
-        chmod 777 $TRAVIS_BUILD_DIR/tests/_output/
+        chmod 777 tests/_output/
         alias dc-testing='docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml'
         dc-testing build web
         dc-testing run --user="azuracast" --rm web azuracast_install

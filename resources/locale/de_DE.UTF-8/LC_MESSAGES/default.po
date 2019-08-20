@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 06:40\n"
+"PO-Revision-Date: 2019-08-20 06:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2345,11 +2345,11 @@ msgstr "Das Verzeichnis, in dem die Mediendateien gespeichert sind. Lassen Sie d
 
 #: /var/azuracast/www/config/forms/station_clone.php:14
 msgid "New Station Name"
-msgstr ""
+msgstr "Neuer Stationsname"
 
 #: /var/azuracast/www/config/forms/station_clone.php:23
 msgid "New Station Description"
-msgstr ""
+msgstr "Neue Stationsbeschreibung"
 
 #: /var/azuracast/www/config/forms/station_clone.php:33
 msgid "Customize Station Cloning"
@@ -2534,7 +2534,7 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "WebHooks senden automatisch einen HTTP POST Request an die URL die du eingegeben hast, um sie zu jedes Mal zu benachrichtigen, wenn einer der Auslöser, die aktiviert sind, auf dem Sender ausgelöst wird. Der Inhalt der POST Nachricht entspricht der <a href=\"%s\" target=\"_blank\">Now Playing API Antwort</a> des Senders. Um schnell verarbeitet zu werden, haben WebHooks eine kurze Timeout-Zeit, der antwortende Dienst sollte also darauf optimiert sein, einen Request in unter 2 Sekunden zu verarbeiten."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"

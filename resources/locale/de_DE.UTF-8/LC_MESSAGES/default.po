@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-10 07:50\n"
+"PO-Revision-Date: 2019-08-20 05:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -745,7 +745,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Dieser Song wurde bereits zu kürzlich gespielt. Warte eine Weile, bevor du ihn erneut anforderst."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -762,11 +762,11 @@ msgstr "Sie möchten SHOUTcast 2 verwenden? <a href=\"%s\" target=\"_blank\">ins
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:54
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "Die Zeitzone dieser Station ist derzeit %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:56
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "Die aktuelle Zeit in der Zeitzone der Station ist %s."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:74
 msgid "Existing playlist imported."
@@ -828,7 +828,7 @@ msgstr "Neue AzuraCast-Updates verfügbar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s wird nicht als Dienst erkannt."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
@@ -1000,11 +1000,11 @@ msgstr "%d Tage"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Automatische nächtliche Backups ausführen"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Aktivieren, um AzuraCast automatisch Nachtbackups zu der angegebenen Zeit ausführen zu lassen."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1084,7 +1084,7 @@ msgstr "Geplanter Zeitpunkt für Datensicherung"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr ""
+msgstr "Die Zeit (in UTC) um die automatische Sicherung auszuführen, falls aktiviert."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"

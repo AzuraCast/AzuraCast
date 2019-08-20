@@ -12,13 +12,12 @@ jobs:
     
     - name: Run test suite
       run: |
-        shopt -s expand_aliases
         cp azuracast.sample.env azuracast.env
+        cp docker-compose.testing.yml docker-compose.override.yml
         chmod 777 tests/_output/
-        alias dc-testing='docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml'
-        dc-testing build web
-        dc-testing run --user="azuracast" --rm web azuracast_install
-        dc-testing run --user="azuracast" --rm web composer test
+        docker-compose build web
+        docker-compose run --user="azuracast" --rm web azuracast_install
+        docker-compose run --user="azuracast" --rm web composer test
 
     - name: Echo test output directory
       if: failure()

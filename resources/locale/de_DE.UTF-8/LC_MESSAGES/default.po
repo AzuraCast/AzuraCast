@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 07:10\n"
+"PO-Revision-Date: 2019-08-20 07:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1104,7 +1104,7 @@ msgstr "Backups, die älter als die angegebene Anzahl der Tage sind, werden auto
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr "Datensicherung Dateiname"
+msgstr "Dateiname des Backups"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
@@ -1112,7 +1112,7 @@ msgstr "Optionaler absoluter oder relativer Pfad, in dem die Backup-Dateien ange
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr "Medien aus Datensicherung ausschließen"
+msgstr "Medien aus Backup ausschließen"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."

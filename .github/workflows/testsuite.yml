@@ -16,6 +16,7 @@ jobs:
     
     - name: Run test suite
       run: |
+        shopt -s expand_aliases
         cp azuracast.sample.env azuracast.env
         alias dc-testing='docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml'
         dc-testing build web

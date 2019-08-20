@@ -14,5 +14,5 @@ jobs:
         cp azuracast.sample.env azuracast.env
         alias dc-testing='docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml'
         dc-testing build web
-        dc-testing --user="azuracast" --rm web azuracast_install
+        dc-testing run --user="azuracast" --rm web azuracast_install
         dc-testing run --user="azuracast" --rm web composer test

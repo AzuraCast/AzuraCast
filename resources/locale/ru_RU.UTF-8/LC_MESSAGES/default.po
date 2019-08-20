@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-12 08:28\n"
+"PO-Revision-Date: 2019-08-20 19:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1893,11 +1893,11 @@ msgstr "Это имя появится в виде подзаголовка ря
 
 #: /var/azuracast/www/config/forms/settings.php:37
 msgid "Prefer Browser URL (If Available)"
-msgstr "Предпочтительный URL браузера (если доступно)"
+msgstr "Предпочтительный URL-адрес в браузере (если доступно)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr "Если эта настройка установлена на \"Да\", URL браузера будет использоваться вместо базового URL, когда он доступен. Установите \"Нет\" для всегда использовать базовый URL."
+msgstr "При выборе этого параметра, браузером будет использоваться URL-адрес по умолчанию, вместо указанного выше базового URL-адреса. Если не выбран этот параметр, то постоянно используется базовый URL-адрес."
 
 #: /var/azuracast/www/config/forms/settings.php:49
 msgid "Use Web Proxy for Radio"

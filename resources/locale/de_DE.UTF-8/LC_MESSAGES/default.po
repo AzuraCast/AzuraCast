@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-20 06:00\n"
+"PO-Revision-Date: 2019-08-20 06:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3619,7 +3619,7 @@ msgstr "Speichern"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:93
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Aus Playlisten entfernen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:97
 msgid "Move"
@@ -3737,7 +3737,7 @@ msgstr "Gewichtung"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Plays at %s"
-msgstr ""
+msgstr "Spielt um %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:110
 msgid "Plays between %s and %s"
@@ -3850,7 +3850,7 @@ msgstr "Einzigartig"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
-msgstr ""
+msgstr "Als Nächstes"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"
@@ -3871,11 +3871,11 @@ msgstr "Player Einbettungscode"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:45
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Musikwünsche Einbettungscode"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"
-msgstr ""
+msgstr "Öffentliche Seiten deaktivieren?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
 msgid "Enable public pages?"
@@ -3900,11 +3900,11 @@ msgstr "Streamer/DJs"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:30
 msgid "Disable streamers?"
-msgstr ""
+msgstr "Live-Sendungen deaktivieren?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:46
 msgid "Enable streamers?"
-msgstr ""
+msgstr "Live-Sendungen aktivieren?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
 msgid "Streams"
@@ -3966,7 +3966,7 @@ msgstr "Live Zuhörer"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:58
 msgid "There are too many data points to map!"
-msgstr ""
+msgstr "Es gibt zu viele Datenpunkte, um sie abzubilden!"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
@@ -4003,7 +4003,7 @@ msgstr "CSV herunterladen"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:40
 msgid "Unique Listeners"
-msgstr ""
+msgstr "Eindeutige Hörer"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
@@ -4012,7 +4012,7 @@ msgstr "für ausgewählten Zeitraum"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
-msgstr ""
+msgstr "Gesamte Hörstunden"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:56
 msgid "IP"

@@ -48,8 +48,7 @@ class UsersController extends AbstractAdminCrudController
     {
         try {
             if (false !== $this->_doEdit($request, $id)) {
-                $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')),
-                    'green');
+                $request->getSession()->flash(($id ? __('User updated.') : __('User added.')), 'green');
 
                 return $response->withRedirect($request->getRouter()->named('admin:users:index'));
             }
@@ -60,7 +59,7 @@ class UsersController extends AbstractAdminCrudController
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('User'))
+            'title' => $id ? __('Edit User') : __('Add User')
         ]);
     }
 
@@ -78,7 +77,7 @@ class UsersController extends AbstractAdminCrudController
             $this->em->remove($user);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('User deleted.') . '</b>', 'green');
         }
 
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
@@ -91,7 +90,7 @@ class UsersController extends AbstractAdminCrudController
         $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('User')));
+            throw new \App\Exception\NotFound(__('User not found.'));
         }
 
         $this->auth->masqueradeAsUser($user);

@@ -13,7 +13,7 @@ class MigrateConfig extends CommandAbstract
     protected function configure()
     {
         $this->setName('azuracast:config:migrate')
-            ->setDescription('Migrate existing configuration to new INI format if any exists.');
+            ->setDescription(__('Migrate existing configuration to new INI format if any exists.'));
     }
 
     /**
@@ -28,7 +28,7 @@ class MigrateConfig extends CommandAbstract
             $settings = parse_ini_file($env_path);
 
             if (!empty($settings['db_password'])) {
-                $output->writeln('Configuration already set up.');
+                $output->writeln(__('Configuration already set up.'));
                 return null;
             }
         }
@@ -69,7 +69,7 @@ class MigrateConfig extends CommandAbstract
 
         file_put_contents($env_path, implode("\n", $ini_data));
 
-        $output->writeln('Configuration successfully written.');
+        $output->writeln(__('Configuration successfully written.'));
         return null;
     }
 }

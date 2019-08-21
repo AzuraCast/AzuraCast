@@ -16,7 +16,7 @@ class ProcessMessageQueue extends CommandAbstract
     protected function configure()
     {
         $this->setName('queue:process')
-            ->setDescription('Process the message queue.')
+            ->setDescription(__('Process the message queue.'))
             ->addArgument(
                 'runtime',
                 InputArgument::OPTIONAL,

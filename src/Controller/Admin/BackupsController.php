@@ -134,7 +134,7 @@ class BackupsController
         $path = $this->getFilePath($path);
         $this->backup_fs->delete($path);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Backup')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Backup deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->named('admin:backups:index'));
     }
 
@@ -144,7 +144,7 @@ class BackupsController
         $path = basename($path);
 
         if (!$this->backup_fs->has($path)) {
-            throw new \App\Exception\NotFound(__('%s not found.', 'Backup'));
+            throw new \App\Exception\NotFound(__('Backup not found.'));
         }
 
         return $path;

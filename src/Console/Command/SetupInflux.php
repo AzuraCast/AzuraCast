@@ -14,7 +14,7 @@ class SetupInflux extends CommandAbstract
     protected function configure()
     {
         $this->setName('azuracast:setup:influx')
-            ->setDescription('Initial setup of InfluxDB.');
+            ->setDescription(__('Initial setup of InfluxDB.'));
     }
 
     /**
@@ -30,7 +30,7 @@ class SetupInflux extends CommandAbstract
         // Create the database (if it doesn't exist)
         $influxdb->create();
 
-        $output->writeln('Database created.');
+        $output->writeln(__('Database created.'));
 
         // Establish retention policies
         $retention_policies = [
@@ -64,7 +64,7 @@ class SetupInflux extends CommandAbstract
             }
         }
 
-        $output->writeln('Retention policies updated.');
+        $output->writeln(__('Retention policies updated.'));
 
         // Drop existing continuous queries.
         $cqs = $influxdb->query('SHOW CONTINUOUS QUERIES');
@@ -83,7 +83,7 @@ class SetupInflux extends CommandAbstract
             $influxdb->query(sprintf('CREATE CONTINUOUS QUERY %s ON %s BEGIN SELECT %s INTO "%s".:MEASUREMENT FROM /.*/ GROUP BY time(%s) END', $cq_name, $db_name, $cq_fields, $dr, $dr));
         }
 
-        $output->writeln('Continuous queries created.');
+        $output->writeln(__('Continuous queries created.'));
 
         // Print debug information
         if (!APP_IN_PRODUCTION) {
@@ -102,7 +102,7 @@ class SetupInflux extends CommandAbstract
             $output->writeln(print_r($cqs, true));
         }
 
-        $output->writeln('InfluxDB databases created.');
+        $output->writeln(__('InfluxDB databases created.'));
         return 0;
     }
 }

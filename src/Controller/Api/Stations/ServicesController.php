@@ -69,7 +69,7 @@ class ServicesController
         $station = $request->getStation();
         $this->configuration->writeConfiguration($station, false, true);
 
-        return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
+        return $response->withJson(new Entity\Api\Status(true, __('Station restarted.')));
     }
 
     /**
@@ -107,13 +107,13 @@ class ServicesController
             case 'stop':
                 $frontend->stop($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('Frontend stopped.')));
             break;
 
             case 'start':
                 $frontend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('Frontend started.')));
             break;
 
             case 'restart':
@@ -126,7 +126,7 @@ class ServicesController
                 $frontend->write($station);
                 $frontend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('Frontend restarted.')));
             break;
         }
     }
@@ -182,13 +182,13 @@ class ServicesController
             case 'stop':
                 $backend->stop($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('Backend stopped.')));
                 break;
 
             case 'start':
                 $backend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('Backend started.')));
                 break;
 
             case 'restart':
@@ -201,7 +201,7 @@ class ServicesController
                 $backend->write($station);
                 $backend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('Backend restarted.')));
                 break;
         }
     }

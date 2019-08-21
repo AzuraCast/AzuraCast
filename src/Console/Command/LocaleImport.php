@@ -14,7 +14,7 @@ class LocaleImport extends CommandAbstract
     protected function configure()
     {
         $this->setName('locale:import')
-            ->setDescription('Convert translated locale files into PHP arrays.');
+            ->setDescription(__('Convert translated locale files into PHP arrays.'));
     }
 
     /**
@@ -38,11 +38,11 @@ class LocaleImport extends CommandAbstract
                 $locale_dest = $locale_base.'/compiled/'.$locale_key.'.php';
                 $translations->toPhpArrayFile($locale_dest);
 
-                $output->writeln('Imported locale: '.$locale_key.' ('.$locale_name.')');
+                $output->writeln(__('Imported locale: %s', $locale_key.' ('.$locale_name.')'));
             }
         }
 
-        $output->writeln('Locales imported.');
+        $output->writeln(__('Locales imported.'));
         return 0;
     }
 }

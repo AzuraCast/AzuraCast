@@ -37,14 +37,14 @@ class MountsController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('Changes saved.') . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/mounts/edit', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Mount Point'))
+            'title' => $id ? __('Edit Mount Point') : __('Add Mount Point')
         ]);
     }
 
@@ -52,7 +52,7 @@ class MountsController extends AbstractStationCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Mount Point deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
     }
 }

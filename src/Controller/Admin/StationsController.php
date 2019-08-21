@@ -37,13 +37,13 @@ class StationsController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
+            $request->getSession()->flash(($id ? __('Station updated.') : __('Station added.')), 'green');
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
             'form' => $this->form,
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Station')),
+            'title' => $id ? __('Edit Station') : 'Add Station',
         ]);
     }
 
@@ -58,7 +58,7 @@ class StationsController extends AbstractAdminCrudController
             $record_repo->destroy($record);
         }
 
-        $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');
+        $request->getSession()->flash(__('Station deleted.'), 'green');
         return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
     }
 
@@ -66,7 +66,7 @@ class StationsController extends AbstractAdminCrudController
     {
         $record = $this->record_repo->find((int)$id);
         if (!($record instanceof Entity\Station)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Station')));
+            throw new \App\Exception\NotFound(__('Station not found.'));
         }
 
         if (false !== $this->clone_form->process($request, $record)) {

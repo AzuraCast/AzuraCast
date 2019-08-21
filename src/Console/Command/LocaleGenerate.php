@@ -14,7 +14,7 @@ class LocaleGenerate extends CommandAbstract
     protected function configure()
     {
         $this->setName('locale:generate')
-            ->setDescription('Generate the translation locale file.');
+            ->setDescription(__('Generate the translation locale file.'));
     }
 
     /**
@@ -47,7 +47,7 @@ class LocaleGenerate extends CommandAbstract
 
         $translations->toPoFile($dest_file);
 
-        $output->writeln('Locales generated.');
+        $output->writeln(__('Locales generated.'));
         return 0;
     }
 }

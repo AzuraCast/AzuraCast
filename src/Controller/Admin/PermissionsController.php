@@ -57,14 +57,14 @@ class PermissionsController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Permission')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Permission')),
+            'title' => $id ? __('Edit Permission') : __('Add Permission'),
         ]);
     }
 
@@ -72,7 +72,7 @@ class PermissionsController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Permission')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Permission deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
     }
 }

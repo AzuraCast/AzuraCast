@@ -76,14 +76,14 @@ class StreamersController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Streamer'))
+            'title' => $id ? __('Edit Streamer') : __('Add Streamer')
         ]);
     }
 
@@ -91,7 +91,7 @@ class StreamersController extends AbstractStationCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Streamer deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
     }
 }

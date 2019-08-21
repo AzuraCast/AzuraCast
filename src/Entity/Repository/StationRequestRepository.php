@@ -19,12 +19,12 @@ class StationRequestRepository extends Repository
     {
         // Forbid web crawlers from using this feature.
         if (\App\Utilities::isCrawler()) {
-            throw new \Azura\Exception('Search engine crawlers are not permitted to use this feature.');
+            throw new \Azura\Exception(__('Search engine crawlers are not permitted to use this feature.'));
         }
 
         // Verify that the station supports requests.
         if (!$station->getEnableRequests()) {
-            throw new \Azura\Exception('This station does not accept requests currently.');
+            throw new \Azura\Exception(__('This station does not accept requests currently.'));
         }
 
         // Verify that Track ID exists with station.
@@ -32,11 +32,11 @@ class StationRequestRepository extends Repository
         $media_item = $media_repo->findOneBy(['unique_id' => $track_id, 'station_id' => $station->getId()]);
 
         if (!($media_item instanceof Entity\StationMedia)) {
-            throw new \Azura\Exception('The song ID you specified could not be found in the station.');
+            throw new \Azura\Exception(__('The song ID you specified could not be found in the station.'));
         }
 
         if (!$media_item->isRequestable()) {
-            throw new \Azura\Exception('The song ID you specified cannot be requested for this station.');
+            throw new \Azura\Exception(__('The song ID you specified cannot be requested for this station.'));
         }
 
         // Check if the song is already enqueued as a request.
@@ -103,7 +103,7 @@ class StationRequestRepository extends Repository
         }
 
         if ($pending_request > 0) {
-            throw new \Azura\Exception('Duplicate request: this song was already requested and will play soon.');
+            throw new \Azura\Exception(__('Duplicate request: this song was already requested and will play soon.'));
         }
 
         return true;

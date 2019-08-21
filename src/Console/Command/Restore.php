@@ -49,7 +49,7 @@ class Restore extends CommandAbstract
         }
 
         if (!file_exists($archive_path)) {
-            $io->getErrorStyle()->error(sprintf('Backup path %s not found!', $archive_path));
+            $io->getErrorStyle()->error(__('Backup path %s not found!', $archive_path));
             return 1;
         }
 

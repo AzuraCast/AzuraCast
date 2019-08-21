@@ -162,7 +162,7 @@ class PlaylistsController extends AbstractStationCrudController
         $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
+            throw new \App\Exception\NotFound(__('Playlist not found.'));
         }
 
         if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
@@ -218,7 +218,7 @@ class PlaylistsController extends AbstractStationCrudController
         ];
 
         if (!isset($formats[$format])) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Format')));
+            throw new \App\Exception\NotFound(__('Format not found.'));
         }
 
         $file_name = 'playlist_' . $record->getShortName().'.'.$format;
@@ -234,7 +234,7 @@ class PlaylistsController extends AbstractStationCrudController
         $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
+            throw new \App\Exception\NotFound(__('Playlist not found.'));
         }
 
         $new_value = !$record->getIsEnabled();
@@ -259,13 +259,13 @@ class PlaylistsController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . ($id ? __('Playlist updated.') : __('Playlist added.')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/edit', [
             'form' => $this->form,
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Playlist'))
+            'title' => $id ? __('Edit Playlist') : __('Add Playlist')
         ]);
     }
 
@@ -273,7 +273,7 @@ class PlaylistsController extends AbstractStationCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Playlist deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
     }
 }

@@ -60,7 +60,7 @@ class EditController extends FilesControllerAbstract
         ]);
 
         if (!($media instanceof Entity\StationMedia)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Media')));
+            throw new \App\Exception\NotFound(__('Media not found.'));
         }
 
         $form_config = $this->form_config;
@@ -139,7 +139,7 @@ class EditController extends FilesControllerAbstract
             $this->em->persist($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('Media updated.') . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
             return $response->withRedirect($request->getRouter()->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
@@ -148,7 +148,7 @@ class EditController extends FilesControllerAbstract
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' =>__('Edit %s', __('Media'))
+            'title' =>__('Edit Media')
         ]);
     }
 }

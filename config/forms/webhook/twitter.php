@@ -96,7 +96,7 @@ return [
                 'name' => [
                     'text',
                     [
-                        'label' => __('%s Name', __('Web Hook')),
+                        'label' => __('Web Hook Name'),
                         'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
                         'required' => true,
                         'form_group_class' => 'col-md-6',

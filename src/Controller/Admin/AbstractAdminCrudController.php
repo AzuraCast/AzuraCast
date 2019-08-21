@@ -71,7 +71,7 @@ abstract class AbstractAdminCrudController
         $record = $this->record_repo->find($id);
 
         if (!$record instanceof $this->entity_class) {
-            throw new \App\Exception\NotFound(__('%s not found.', $this->entity_class));
+            throw new \App\Exception\NotFound(__('Record not found.'));
         }
 
         return $record;

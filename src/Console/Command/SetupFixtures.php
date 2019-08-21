@@ -20,7 +20,7 @@ class SetupFixtures extends CommandAbstract
     protected function configure()
     {
         $this->setName('azuracast:setup:fixtures')
-            ->setDescription('Install fixtures for demo / local dev.');
+            ->setDescription(__('Install fixtures for demo / local development.'));
     }
 
     /**
@@ -79,7 +79,7 @@ class SetupFixtures extends CommandAbstract
 
         $influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS, '1d');
 
-        $output->writeln('Fixtures loaded.');
+        $output->writeln(__('Fixtures loaded.'));
 
         return 0;
     }

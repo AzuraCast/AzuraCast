@@ -35,14 +35,14 @@ class CustomFieldsController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Custom Field')), 'green');
+            $request->getSession()->flash(($id ? __('Custom Field updated.') : __('Custom Field added.')), 'green');
             return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Custom Field'))
+            'title' => $id ? __('Edit Custom Field') : __('Add Custom Field')
         ]);
     }
 
@@ -50,7 +50,7 @@ class CustomFieldsController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Custom Field')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Custom Field deleted.') . '</b>', 'green');
 
         return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
     }

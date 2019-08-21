@@ -22,19 +22,19 @@ class Backup extends CommandAbstract
     {
         $this->setName('azuracast:backup')
             ->setDescription(
-                'Back up the AzuraCast database and statistics (and optionally media).'
+                __('Back up the AzuraCast database and statistics (and optionally media).')
             )
             ->addArgument(
                 'path',
                 InputArgument::OPTIONAL,
-                'The absolute (or relative to /var/azuracast/backups) path to generate the backup.',
+                __('The absolute (or relative to /var/azuracast/backups) path to generate the backup.'),
                 ''
             )
             ->addOption(
                 'exclude-media',
                 null,
                 InputOption::VALUE_NONE,
-                'Exclude media from the backup.'
+                __('Exclude media from the backup.')
             );
     }
 
@@ -58,28 +58,28 @@ class Backup extends CommandAbstract
         $files_to_backup = [];
 
         $io = new SymfonyStyle($input, $output);
-        $io->title('AzuraCast Backup');
-        $io->writeln('Please wait while a backup is generated...');
+        $io->title(__('AzuraCast Backup'));
+        $io->writeln(__('Please wait while a backup is generated...'));
 
         // Create temp directories
-        $io->section('Creating temporary directories...');
+        $io->section(__('Creating temporary directories...'));
 
         $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
         if (!mkdir($tmp_dir_mariadb) && !is_dir($tmp_dir_mariadb)) {
-            $io->error(sprintf('Directory "%s" was not created', $tmp_dir_mariadb));
+            $io->error(__('Directory "%s" was not created', $tmp_dir_mariadb));
             return 1;
         }
 
         $tmp_dir_influxdb = '/tmp/azuracast_backup_influxdb';
         if (!mkdir($tmp_dir_influxdb) && !is_dir($tmp_dir_influxdb)) {
-            $io->error(sprintf('Directory "%s" was not created', $tmp_dir_influxdb));
+            $io->error(__('Directory "%s" was not created', $tmp_dir_influxdb));
             return 1;
         }
 
         $io->newLine();
 
         // Back up MariaDB
-        $io->section('Backing up MariaDB...');
+        $io->section(__('Backing up MariaDB...'));
 
         $path_db_dump = $tmp_dir_mariadb.'/db.sql';
 
@@ -104,7 +104,7 @@ class Backup extends CommandAbstract
         $io->newLine();
 
         // Back up InfluxDB
-        $io->section('Backing up InfluxDB...');
+        $io->section(__('Backing up InfluxDB...'));
 
         /** @var \InfluxDB\Database $influxdb */
         $influxdb = $this->get(\InfluxDB\Database::class);
@@ -144,7 +144,7 @@ class Backup extends CommandAbstract
         }
 
         // Compress backup files.
-        $io->section('Creating backup archive...');
+        $io->section(__('Creating backup archive...'));
 
         // Strip leading slashes from backup paths.
         $files_to_backup = array_map(function($val) {
@@ -182,7 +182,7 @@ class Backup extends CommandAbstract
         $io->newLine();
 
         // Cleanup
-        $io->section('Cleaning up temporary files...');
+        $io->section(__('Cleaning up temporary files...'));
 
         Utilities::rmdirRecursive($tmp_dir_mariadb);
         Utilities::rmdirRecursive($tmp_dir_influxdb);
@@ -193,7 +193,7 @@ class Backup extends CommandAbstract
         $time_diff = $end_time - $start_time;
 
         $io->success([
-            'Backup complete in '.round($time_diff, 3).' seconds.',
+            __('Backup complete in %.2f seconds.'), $time_diff,
         ]);
         return 0;
     }
@@ -227,7 +227,7 @@ class Backup extends CommandAbstract
         if (!empty($stderr)) {
             /** @var Logger $logger */
             $logger = $this->get(Logger::class);
-            $logger->error('Backup process error', [
+            $logger->error(__('Backup process error'), [
                 'cmd' => $cmd,
                 'output' => $stderr,
             ]);

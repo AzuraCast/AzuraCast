@@ -39,14 +39,14 @@ class ApiController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
+            $request->getSession()->flash(__('API Key updated.'), 'green');
             return $response->withRedirect($request->getRouter()->named('admin:api:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => __('Edit %s', __('API Key'))
+            'title' => __('Edit API Key')
         ]);
     }
 
@@ -54,7 +54,7 @@ class ApiController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
+        $request->getSession()->flash(__('API Key deleted.'), 'green');
         return $response->withRedirect($request->getRouter()->named('admin:api:index'));
     }
 }

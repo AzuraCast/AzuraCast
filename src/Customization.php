@@ -25,6 +25,9 @@ class Customization
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
+    /** @var string|null */
+    protected $locale;
+
     public function __construct(Settings $app_settings, EntityManager $em)
     {
         /** @var Entity\Repository\SettingsRepository $settings_repo */
@@ -32,36 +35,6 @@ class Customization
 
         $this->app_settings = $app_settings;
         $this->settings_repo = $settings_repo;
-    }
-
-    /**
-     * Initialize timezone and locale settings for the current user, and write them as attributes to the request.
-     *
-     * @param Request $request
-     * @return Request
-     */
-    public function init(Request $request): Request
-    {
-        if (!$this->app_settings->isCli() || $this->app_settings->isTesting()) {
-            $locale = $this->getLocale();
-        } else {
-            $locale = self::DEFAULT_LOCALE;
-        }
-
-        $translator = new Translator();
-
-        $locale_base = $this->app_settings[Settings::BASE_DIR].'/resources/locale/compiled';
-        $locale_path = $locale_base.'/'.$locale.'.php';
-
-        if (file_exists($locale_path)) {
-            $translator->loadTranslations($locale_path);
-        }
-
-        // Register translation superglobal functions
-        $translator->register();
-
-        self::setGlobalValues($locale);
-        return $request->withAttribute('locale', $locale);
     }
 
     /**
@@ -75,51 +48,94 @@ class Customization
     }
 
     /**
-     * Return the user-customized, browser-specified or system default locale.
+     * Initialize timezone and locale settings for the current user, and write them as attributes to the request.
      *
-     * @return string
+     * @param Request|null $request
+     * @return Request|null
      */
-    public function getLocale(): ?string
+    public function init(?Request $request = null): ?Request
     {
-        static $locale = null;
+        $this->locale = $this->initLocale($request);
 
-        if (null !== $locale) {
-            return $locale;
+        // Set up the PHP translator
+        $translator = new Translator();
+
+        $locale_base = $this->app_settings[Settings::BASE_DIR].'/resources/locale/compiled';
+        $locale_path = $locale_base.'/'.$this->locale.'.php';
+
+        if (file_exists($locale_path)) {
+            $translator->loadTranslations($locale_path);
         }
 
+        $translator->register();
+
+        // Register translation superglobal functions
+        putenv('LANG=' . $this->locale);
+        setlocale(\LC_ALL, $this->locale);
+
+        if ($request instanceof Request) {
+            $request = $request->withAttribute('locale', $this->locale);
+        }
+
+        return $request;
+    }
+
+    /**
+     * Return the user-customized, browser-specified or system default locale.
+     *
+     * @param Request|null $request
+     * @return string|null
+     */
+    protected function initLocale(?Request $request = null): ?string
+    {
         $supported_locales = $this->app_settings['locale']['supported'];
+        $try_locales = [];
 
         // Prefer user-based profile locale.
-        if ($this->user !== null && !empty($this->user->getLocale()) && $this->user->getLocale() !== 'default') {
-            if (isset($supported_locales[$this->user->getLocale()])) {
-                $locale = $this->user->getLocale();
-                return $locale;
-            }
+        if ($this->user !== null && !empty($this->user->getLocale()) && 'default' !== $this->user->getLocale()) {
+            $try_locales[] = $this->user->getLocale();
         }
 
         // Attempt to load from browser headers.
-        $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null);
+        if ($request instanceof Request) {
+            $server_params = $request->getServerParams();
+            $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
 
-        // Prefer exact match.
-        $exact_locale = substr($browser_locale, 0, 5).'.UTF-8';
-
-        if (isset($supported_locales[$exact_locale])) {
-            $locale = $exact_locale;
-            return $locale;
+            if (!empty($browser_locale)) {
+                $try_locales[] = substr($browser_locale, 0, 5).'.UTF-8';
+            }
         }
 
-        // Use approximate match if available.
-        foreach ($supported_locales as $lang_code => $lang_name) {
-            if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
-                $locale = $lang_code;
-                return $locale;
+        // Attempt to load from environment variable.
+        $env_locale = getenv('LANG');
+        if (!empty($env_locale)) {
+            $try_locales[] = substr($env_locale, 0, 5).'.UTF-8';
+        }
+
+        foreach($try_locales as $exact_locale) {
+            // Prefer exact match.
+            if (isset($supported_locales[$exact_locale])) {
+                return $exact_locale;
+            }
+
+            // Use approximate match if available.
+            foreach ($supported_locales as $lang_code => $lang_name) {
+                if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
+                    return $lang_code;
+                }
             }
         }
 
         // Default to system option.
-        $locale = self::DEFAULT_LOCALE;
+        return self::DEFAULT_LOCALE;
+    }
 
-        return $locale;
+    /**
+     * @return string|null
+     */
+    public function getLocale(): ?string
+    {
+        return $this->locale ?? self::DEFAULT_LOCALE;
     }
 
     /**
@@ -268,12 +284,7 @@ class Customization
      */
     public static function setGlobalValues($locale = null): void
     {
-        if (empty($locale)) {
-            $locale = self::DEFAULT_LOCALE;
-        }
 
-        putenv("LANG=" . $locale);
-        setlocale(\LC_ALL, $locale);
     }
 
 }

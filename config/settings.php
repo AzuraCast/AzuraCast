@@ -29,6 +29,7 @@ return [
             'pt_BR.UTF-8' => 'Português do Brasil', // Brazilian Portuguese
             'ru_RU.UTF-8' => 'Русский язык',        // Russian
             // 'sv_SE.UTF-8' => 'Svenska',          // Swedish
+            'tr_TR.UTF-8' => 'Türkçe',              // Turkish
         ],
     ],
 

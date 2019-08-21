@@ -64,9 +64,8 @@ class ArtController
             $art = $filesystem->readStream($media_path);
 
             if (is_resource($art)) {
-                return $response->withFile($art)
+                return $response->withFile($art, 'image/jpeg')
                     ->withCacheLifetime(Response::CACHE_ONE_YEAR)
-                    ->withHeader('Content-Type', 'image/jpeg')
                     ->withHeader('Content-Length', $file_meta['size']);
             }
         }

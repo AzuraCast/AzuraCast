@@ -17,6 +17,7 @@ services:
       - redis
     env_file: azuracast.env
     environment: &default-environment
+      LANG: ${LANG:-en_US.UTF-8}
       AZURACAST_DC_REVISION: 5
     volumes:
       - letsencrypt:/etc/letsencrypt

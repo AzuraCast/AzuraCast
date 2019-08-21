@@ -83,12 +83,12 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
         $this->_editRecord($request->getParsedBody(), $record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Changes saved successfully.'));
+        return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
 
     /**
@@ -103,12 +103,12 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
         $this->_deleteRecord($record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
+        return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
     }
 
     /**

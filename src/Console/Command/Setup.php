@@ -19,10 +19,10 @@ class Setup extends CommandAbstract
     protected function configure()
     {
         $this->setName('azuracast:setup')
-            ->setDescription('Run all general AzuraCast setup steps.')
-            ->addOption('update', null, InputOption::VALUE_NONE, 'Only update the existing installation.')
-            ->addOption('load-fixtures', null, InputOption::VALUE_NONE, 'Load predefined fixtures (for development purposes).')
-            ->addOption('release', null, InputOption::VALUE_NONE, 'Used for updating only to a tagged release.');
+            ->setDescription(__('Run all general AzuraCast setup steps.'))
+            ->addOption('update', null, InputOption::VALUE_NONE, __('Only update the existing installation.'))
+            ->addOption('load-fixtures', null, InputOption::VALUE_NONE, __('Load predefined fixtures (for development purposes).'))
+            ->addOption('release', null, InputOption::VALUE_NONE, __('Used for updating only to a tagged release.'));
     }
 
     /**
@@ -34,50 +34,50 @@ class Setup extends CommandAbstract
         $load_fixtures = (bool)$input->getOption('load-fixtures');
 
         $io = new SymfonyStyle($input, $output);
-        $io->title('AzuraCast Setup');
-        $io->writeln('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...');
+        $io->title(__('AzuraCast Setup'));
+        $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
         $io->listing([
-            'Environment: '.ucfirst(APP_APPLICATION_ENV),
-            'Installation Method: '.((APP_INSIDE_DOCKER) ? 'Docker' : 'Ansible'),
+            __('Environment: %s', ucfirst(APP_APPLICATION_ENV)),
+            __('Installation Method: %s', APP_INSIDE_DOCKER ? 'Docker' : 'Ansible'),
         ]);
 
         if ($update_only) {
-            $io->note('Running in update mode.');
+            $io->note(__('Running in update mode.'));
 
             if (!APP_INSIDE_DOCKER) {
-                $io->section('Migrating Legacy Configuration');
+                $io->section(__('Migrating Legacy Configuration'));
                 $this->runCommand($output, 'azuracast:config:migrate');
                 $io->newLine();
             }
         }
 
-        $io->section('Setting Up InfluxDB');
+        $io->section(__('Setting Up InfluxDB'));
 
         $this->runCommand($output, 'azuracast:setup:influx');
         $this->runCommand($output, 'cache:clear');
 
         $io->newLine();
-        $io->section('Running Database Migrations');
+        $io->section(__('Running Database Migrations'));
 
         $this->runCommand($output, 'migrations:migrate', [
             '--allow-no-migration' => true,
         ]);
 
         $io->newLine();
-        $io->section('Generating Database Proxy Classes');
+        $io->section(__('Generating Database Proxy Classes'));
 
         $this->runCommand($output, 'orm:generate-proxies');
 
         if ($load_fixtures || (!APP_IN_PRODUCTION && !$update_only)) {
             $io->newLine();
-            $io->section('Installing Data Fixtures');
+            $io->section(__('Installing Data Fixtures'));
 
             $this->runCommand($output, 'azuracast:setup:fixtures');
         }
 
         $io->newLine();
-        $io->section('Refreshing All Stations');
+        $io->section(__('Refreshing All Stations'));
 
         $this->runCommand($output, 'cache:clear');
         $this->runCommand($output, 'azuracast:radio:restart');
@@ -97,7 +97,7 @@ class Setup extends CommandAbstract
 
         if ($update_only) {
             $io->success([
-                'AzuraCast is now updated to the latest version!',
+                __('AzuraCast is now updated to the latest version!'),
             ]);
         } else {
             /** @var AzuraCastCentral $ac_central */
@@ -105,8 +105,8 @@ class Setup extends CommandAbstract
             $public_ip = $ac_central->getIp();
 
             $io->success([
-                'AzuraCast installation complete!',
-                'Visit http://'.$public_ip.' to complete setup.',
+                __('AzuraCast installation complete!'),
+                __('Visit %s to complete setup.', 'http://'.$public_ip),
             ]);
         }
 

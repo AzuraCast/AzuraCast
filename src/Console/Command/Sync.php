@@ -16,11 +16,11 @@ class Sync extends CommandAbstract
     protected function configure()
     {
         $this->setName('sync:run')
-            ->setDescription('Run one or more scheduled synchronization tasks.')
+            ->setDescription(__('Run one or more scheduled synchronization tasks.'))
             ->addArgument(
                 'task',
                 InputArgument::OPTIONAL,
-                'The task to run (nowplaying,short,medium,long).',
+                __('The task to run (%s).', 'nowplaying,short,medium,long'),
                 'nowplaying'
             );
     }

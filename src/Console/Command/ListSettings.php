@@ -17,7 +17,7 @@ class ListSettings extends CommandAbstract
     protected function configure()
     {
         $this->setName('azuracast:settings:list')
-            ->setDescription('List all settings in the AzuraCast settings database.');
+            ->setDescription(__('List all settings in the AzuraCast settings database.'));
     }
 
     /**
@@ -26,7 +26,7 @@ class ListSettings extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title('AzuraCast Settings');
+        $io->title(__('AzuraCast Settings'));
 
         /** @var EntityManager $em */
         $em = $this->get(EntityManager::class);
@@ -35,8 +35,8 @@ class ListSettings extends CommandAbstract
         $settings_repo = $em->getRepository(Entity\Settings::class);
 
         $headers = [
-            'Setting Key',
-            'Setting Value'
+            __('Setting Key'),
+            __('Setting Value')
         ];
         $rows = [];
 

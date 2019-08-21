@@ -36,14 +36,14 @@ class RemotesController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Remote Relay')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>', 'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/remotes/edit', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Remote Relay'))
+            'title' => $id ? __('Edit Remote Relay') : __('Add Remote Relay')
         ]);
     }
 
@@ -51,7 +51,7 @@ class RemotesController extends AbstractStationCrudController
     {
         $this->_doDelete($request, $id, $csrf_token);
 
-        $request->getSession()->flash('<b>' . __('%s deleted.', __('Remote Relay')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Remote Relay deleted.') . '</b>', 'green');
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
     }
@@ -61,7 +61,7 @@ class RemotesController extends AbstractStationCrudController
         $record = parent::_getRecord($station, $id);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
-            throw new \App\Exception\PermissionDenied('This record cannot be edited.');
+            throw new \App\Exception\PermissionDenied(__('This record cannot be edited.'));
         }
 
         return $record;

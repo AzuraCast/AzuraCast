@@ -101,18 +101,18 @@ class UsersController extends AbstractAdminApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Record not found!'));
+                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
         $current_user = $request->getUser();
 
         if ($record->getId() === $current_user->getId()) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, 'You cannot remove yourself.'));
+                ->withJson(new Entity\Api\Error(403, __('You cannot remove yourself.')));
         }
 
         $this->_deleteRecord($record);
 
-        return $response->withJson(new Entity\Api\Status(true, 'Record deleted successfully.'));
+        return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
     }
 }

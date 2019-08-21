@@ -56,7 +56,7 @@ class RequestsController
         $ba = $request->getStationBackend();
         if (!$ba::supportsRequests() || !$station->getEnableRequests()) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, 'This station does not accept requests currently.'));
+                ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
         }
 
         $qb = $this->em->createQueryBuilder();
@@ -155,7 +155,7 @@ class RequestsController
         $ba = $request->getStationBackend();
         if (!$ba::supportsRequests() || !$station->getEnableRequests()) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, 'This station does not accept requests currently.'));
+                ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
         }
 
         $is_authenticated = !empty($request->getAttribute(ServerRequest::ATTR_USER));
@@ -165,7 +165,7 @@ class RequestsController
             $request_repo = $this->em->getRepository(Entity\StationRequest::class);
             $request_repo->submit($station, $media_id, $is_authenticated);
 
-            return $response->withJson(new Entity\Api\Status(true, 'Request submitted successfully.'));
+            return $response->withJson(new Entity\Api\Status(true, __('Request submitted successfully.')));
         } catch (\Azura\Exception $e) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Error(400, $e->getMessage()));

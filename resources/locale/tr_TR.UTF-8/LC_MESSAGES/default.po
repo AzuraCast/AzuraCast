@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 18:30\n"
+"PO-Revision-Date: 2019-08-21 18:40\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -862,67 +862,67 @@ msgstr "Detaylar için günlükleri kontrol edin."
 #: /var/azuracast/www/src/Radio/Adapters.php:142
 #: /var/azuracast/www/src/Radio/Adapters.php:173
 msgid "Use <b>%s</b> on this server"
-msgstr ""
+msgstr "<b>%s</b> kullan"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:146
 msgid "Connect to a <b>remote radio server</b>"
-msgstr ""
+msgstr "<b>Yönlendirme</b> kullan"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:177
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr ""
+msgstr "AutoDJ <b>kullanmayın</b>"
 
 #: /var/azuracast/www/src/Sync/Runner.php:167
 #: /var/azuracast/www/src/Sync/Runner.php:170
 msgid "Now Playing Data"
-msgstr ""
+msgstr "Şimdi Çalan Şarkı Bilgisi"
 
 #: /var/azuracast/www/src/Sync/Runner.php:174
 msgid "1-Minute Sync"
-msgstr ""
+msgstr "1-Dakika Senkronizasyonu"
 
 #: /var/azuracast/www/src/Sync/Runner.php:177
 msgid "Song Requests Queue"
-msgstr ""
+msgstr "Şarkı İstek Kuyruğu"
 
 #: /var/azuracast/www/src/Sync/Runner.php:181
 msgid "5-Minute Sync"
-msgstr ""
+msgstr "5-Dakika Senkronizasyonu"
 
 #: /var/azuracast/www/src/Sync/Runner.php:184
 msgid "Check Media Folders"
-msgstr ""
+msgstr "Müzik Klasörlerini Kontrol Et"
 
 #: /var/azuracast/www/src/Sync/Runner.php:188
 msgid "1-Hour Sync"
-msgstr ""
+msgstr "1-Saat Senkronizasyonu"
 
 #: /var/azuracast/www/src/Sync/Runner.php:191
 msgid "Analytics/Statistics"
-msgstr ""
+msgstr "İstatistik"
 
 #: /var/azuracast/www/src/Sync/Runner.php:192
 msgid "Cleanup"
-msgstr ""
+msgstr "Temizleme"
 
 #: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
 msgid "The port %s is in use by another station."
-msgstr ""
+msgstr "%s portu başka bir radyo tarafından kullanılıyor."
 
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
-msgstr ""
+msgstr "Şifre şu karakterleri içeremez: %s"
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
 #: /var/azuracast/www/templates/admin/api/index.phtml:18
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:34
 msgid "Comments"
-msgstr ""
+msgstr "Açıklamalar"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "İleride başvurmak üzere bu API anahtarının kullanım durumunu açıklayın."
 
 #: /var/azuracast/www/config/forms/api_key.php:20
 #: /var/azuracast/www/config/forms/automation.php:40
@@ -948,15 +948,15 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/tunein.php:59
 #: /var/azuracast/www/config/forms/webhook/twitter.php:138
 msgid "Save Changes"
-msgstr ""
+msgstr "Kaydet"
 
 #: /var/azuracast/www/config/forms/automation.php:10
 msgid "Enable Automated Assignment"
-msgstr ""
+msgstr "Otomatik Atamayı Etkinleştir"
 
 #: /var/azuracast/www/config/forms/automation.php:11
 msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
-msgstr ""
+msgstr "Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek \\\"Etkin\\\" olarak ayarlanmışsa ve en az bir parça listesi \\\"Otomatik Atamaya Dahil Et\\\" olarak ayarlanmışsa çalışır."
 
 #: /var/azuracast/www/config/forms/automation.php:14
 #: /var/azuracast/www/config/forms/station.php:108
@@ -970,7 +970,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:48
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:41
 msgid "Disabled"
-msgstr ""
+msgstr "Kapalı"
 
 #: /var/azuracast/www/config/forms/automation.php:15
 #: /var/azuracast/www/templates/admin/backups/index.phtml:23
@@ -981,30 +981,30 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:18
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:46
 msgid "Enabled"
-msgstr ""
+msgstr "Açık"
 
 #: /var/azuracast/www/config/forms/automation.php:23
 msgid "Days Between Automated Assignments"
-msgstr ""
+msgstr "Otomatik Atama Günleri"
 
 #: /var/azuracast/www/config/forms/automation.php:24
 msgid "Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days."
-msgstr ""
+msgstr "Bu ayara göre sistem önceki (bu) günlerden gelen verileri kullanarak her (bu) günde bir şarkıları otomatik olarak yeniden atar."
 
 #: /var/azuracast/www/config/forms/automation.php:28
 #: /var/azuracast/www/config/forms/automation.php:29
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d gün"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Otomatik Gecelik Yedeklemeyi Çalıştır"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "AzuraCast her gece belirtilen saatte otomatik olarak yedekleme yapmasını etkinleştirin."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1040,7 +1040,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/streamer.php:14
 #: /var/azuracast/www/templates/admin/relays/index.phtml:35
 msgid "Yes"
-msgstr ""
+msgstr "Evet"
 
 #: /var/azuracast/www/config/forms/backup.php:18
 #: /var/azuracast/www/config/forms/backup.php:39
@@ -1076,168 +1076,168 @@ msgstr ""
 #: /var/azuracast/www/config/forms/streamer.php:15
 #: /var/azuracast/www/templates/admin/relays/index.phtml:35
 msgid "No"
-msgstr ""
+msgstr "Hayır"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Belirlenmiş Yedekleme Zamanı"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr ""
+msgstr "Etkinleştirilmiş ise otomatik yedekleme zamanı (UTC) cinsindendir."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr ""
+msgstr "Yedeklemelere Müzik Dosyalarını Dahil Etme"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Müzik dosyalarını yedeklemenin dışında bırakmak depolama alanı kazanacaktır. Müziklerinizi başka bir yerde yedeklediğinizden emin olmalısınız."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "Saklanacak Yedek Kopya Sayısı"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "Belirtilen gün sayısından daha eski kopyalar otomatik olarak silinir. Otomatik silmeyi devre dışı bırakmak için sıfıra ayarlayın."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr ""
+msgstr "Yedek Dosya Adı"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Yedek dosyanın bulunacağı isteğe bağlı kesin veya değişken dizindir."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Yedeklemeye Müzik Dosyalarını Dahil Etme"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Bu çok daha küçük bir yedekleme üretecektir.Medyanızı başka bir yerde yedeklediğinizden emin olmalısınız."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
-msgstr ""
+msgstr "Site Teması"
 
 #: /var/azuracast/www/config/forms/branding.php:16
 msgid "Select a theme to use as a base for station public pages and the login page."
-msgstr ""
+msgstr "Radyo genel sayfaları ve giriş sayfası için kullanılacak bir tema seçin."
 
 #: /var/azuracast/www/config/forms/branding.php:18
 #: /var/azuracast/www/config/forms/profile.php:94
 msgid "Light"
-msgstr ""
+msgstr "Açık Tema"
 
 #: /var/azuracast/www/config/forms/branding.php:18
 #: /var/azuracast/www/config/forms/playlist.php:55
 #: /var/azuracast/www/config/forms/profile.php:94
 msgid "Default"
-msgstr ""
+msgstr "Varsayılan"
 
 #: /var/azuracast/www/config/forms/branding.php:19
 #: /var/azuracast/www/config/forms/profile.php:95
 msgid "Dark"
-msgstr ""
+msgstr "Koyu Tema"
 
 #: /var/azuracast/www/config/forms/branding.php:29
 msgid "Hide Album Art on Public Pages"
-msgstr ""
+msgstr "Genel Sayfalarda Albüm Kapağını Gizle"
 
 #: /var/azuracast/www/config/forms/branding.php:30
 msgid "If selected, album art will not display on public-facing radio pages."
-msgstr ""
+msgstr "Genel sayfalarda albüm kapak resmini gizlemek için etkinleştirin."
 
 #: /var/azuracast/www/config/forms/branding.php:41
 msgid "Homepage Redirect URL"
-msgstr ""
+msgstr "Anasayfa Yönlendirme URLsi"
 
 #: /var/azuracast/www/config/forms/branding.php:42
 msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
-msgstr ""
+msgstr "Bir ziyaretçi oturum açmamışsa ve AzuraCast anasayfasını ziyaret ediyorsa onları otomatik olarak burada belirtilen URLye yönlendirebilirsiniz. Varsayılan olarak giriş ekranına yönlendirmek için boş bırakın."
 
 #: /var/azuracast/www/config/forms/branding.php:51
 msgid "Default Album Art URL"
-msgstr ""
+msgstr "Varsayılan Albüm Kapağı URLsi"
 
 #: /var/azuracast/www/config/forms/branding.php:52
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
-msgstr ""
+msgstr "Bir şarkının albüm kapağı yoksa burada URLsi yazılan resim görünecektir. Varsayılan albüm kapağı için boş bırakın."
 
 #: /var/azuracast/www/config/forms/branding.php:61
 msgid "Hide AzuraCast Branding on Public Pages"
-msgstr ""
+msgstr "AzuraCast Markasını Gizle"
 
 #: /var/azuracast/www/config/forms/branding.php:62
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
-msgstr ""
+msgstr "AzuraCast markasını genel sayfa ve giriş ekranından gizlemek için etkinleştirin."
 
 #: /var/azuracast/www/config/forms/branding.php:73
 msgid "Custom CSS for Public Pages"
-msgstr ""
+msgstr "Genel Sayfalar İçin Özelleştirilmiş CSS"
 
 #: /var/azuracast/www/config/forms/branding.php:74
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Bu CSS genel sayfa ve giriş sayfasına uygulanacaktır."
 
 #: /var/azuracast/www/config/forms/branding.php:85
 msgid "Custom JS for Public Pages"
-msgstr ""
+msgstr "Genel Sayfalar İçin Özelleştirilmiş JS"
 
 #: /var/azuracast/www/config/forms/branding.php:86
 msgid "This javascript code will be applied to the station public pages and login page."
-msgstr ""
+msgstr "Bu JS genel sayfa ve giriş sayfasına uygulanacaktır."
 
 #: /var/azuracast/www/config/forms/branding.php:97
 msgid "Custom CSS for Internal Pages"
-msgstr ""
+msgstr "Dahili Sayfalar İçin Özelleştirilmiş CSS"
 
 #: /var/azuracast/www/config/forms/branding.php:98
 msgid "This CSS will be applied to the main management pages, like this one."
-msgstr ""
+msgstr "Bu CSS yönetim sayfalarına uygulanacaktır."
 
 #: /var/azuracast/www/config/forms/custom_field.php:13
 msgid "Field Name"
-msgstr ""
+msgstr "Alan Adı"
 
 #: /var/azuracast/www/config/forms/custom_field.php:14
 msgid "This will be used as the label when editing individual songs, and will show in API results."
-msgstr ""
+msgstr "Tek tek şarkıları düzenlerken etiket olarak kullanılacak ve API sonuçlarında gösterilecektir."
 
 #: /var/azuracast/www/config/forms/custom_field.php:22
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:23
 msgid "Programmatic Name"
-msgstr ""
+msgstr "Program İsmi"
 
 #: /var/azuracast/www/config/forms/custom_field.php:23
 msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
-msgstr ""
+msgstr "İsteğe bağlı olarak <code>field_name</code> gibi bir API dostu isim belirtin. İsme göre otomatik olarak bir tane oluşturmak için bu alanı boş bırakın."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
 msgid "Important Notes"
-msgstr ""
+msgstr "Önemli Notlar"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr ""
+msgstr "<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">SHOUTcast Radio Manager</a> sitesinden \\\"linux x64\\\" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
-msgstr ""
+msgstr "Kurulmuş Mevcut Sürüm"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:23
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr ""
+msgstr "SHOUTcast henüz kurulmamıştır."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:31
 msgid "Select SHOUTcast 64-bit .tar.gz File"
-msgstr ""
+msgstr "SHOUTcast 64-bit .tar.gz Dosyasını Seçin"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:44
 msgid "Upload"
-msgstr ""
+msgstr "Yükle"
 
 #: /var/azuracast/www/config/forms/login.php:9
 #: /var/azuracast/www/config/forms/profile.php:25
@@ -1248,7 +1248,7 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/account/login.phtml:34
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:37
 msgid "E-mail Address"
-msgstr ""
+msgstr "E-Posta Adresi"
 
 #: /var/azuracast/www/config/forms/login.php:19
 #: /var/azuracast/www/config/forms/register.php:23
@@ -1258,45 +1258,45 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:47
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:81
 msgid "Password"
-msgstr ""
+msgstr "Şifre"
 
 #: /var/azuracast/www/config/forms/login.php:29
 msgid "Log in"
-msgstr ""
+msgstr "Giriş Yap"
 
 #: /var/azuracast/www/config/forms/media.php:13
 #: /var/azuracast/www/config/forms/rename.php:9
 msgid "File Name"
-msgstr ""
+msgstr "Dosya Adı"
 
 #: /var/azuracast/www/config/forms/media.php:14
 #: /var/azuracast/www/config/forms/rename.php:10
 msgid "The relative path of the file in the station's media directory."
-msgstr ""
+msgstr "Radyonun müzik dosyalarının geçici dizinidir."
 
 #: /var/azuracast/www/config/forms/media.php:38
 msgid "Song Album"
-msgstr ""
+msgstr "Albüm"
 
 #: /var/azuracast/www/config/forms/media.php:46
 msgid "Song Lyrics"
-msgstr ""
+msgstr "Şarkı Sözleri"
 
 #: /var/azuracast/www/config/forms/media.php:54
 msgid "Replace Album Cover Art"
-msgstr ""
+msgstr "Albüm Kapağını Değiştir"
 
 #: /var/azuracast/www/config/forms/media.php:65
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: /var/azuracast/www/config/forms/media.php:66
 msgid "International Standard Recording Code, used for licensing reports."
-msgstr ""
+msgstr "Uluslararası Standart Kayıt Kodu lisans raporları için kullanılır."
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr ""
+msgstr "Yöneticiler burada görünen alanları <a href=\\\"%s\\\">yönetici sayfası</a>ndan özelleştirebilir."
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"

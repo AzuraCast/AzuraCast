@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 16:06\n"
+"PO-Revision-Date: 2019-08-21 18:10\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -19,20 +19,20 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:184
 #: /var/azuracast/www/src/Acl.php:196
 msgid "All Permissions"
-msgstr ""
+msgstr "Tüm İzinler"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View Administration Page"
-msgstr ""
+msgstr "Yönetici Panelini Görme"
 
 #: /var/azuracast/www/src/Acl.php:186
 msgid "View System Logs"
-msgstr ""
+msgstr "Sistem Günlüklerini Görme"
 
 #: /var/azuracast/www/src/Acl.php:187
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
 
 #: /var/azuracast/www/src/Acl.php:187
 #: /var/azuracast/www/src/Acl.php:188
@@ -42,19 +42,19 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Administer %s"
-msgstr ""
+msgstr "%s Yönetimi"
 
 #: /var/azuracast/www/src/Acl.php:188
 #: /var/azuracast/www/config/menus/admin.php:27
 #: /var/azuracast/www/templates/admin/api/index.phtml:1
 #: /var/azuracast/www/templates/admin/api/index.phtml:5
 msgid "API Keys"
-msgstr ""
+msgstr "API Anahtarları"
 
 #: /var/azuracast/www/src/Acl.php:189
 #: /var/azuracast/www/config/menus/admin.php:44
 msgid "Users"
-msgstr ""
+msgstr "Kullanıcılar"
 
 #: /var/azuracast/www/src/Acl.php:190
 #: /var/azuracast/www/config/menus/admin.php:53
@@ -62,14 +62,14 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:5
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:23
 msgid "Permissions"
-msgstr ""
+msgstr "İzinler"
 
 #: /var/azuracast/www/src/Acl.php:191
 #: /var/azuracast/www/config/menus/admin.php:60
 #: /var/azuracast/www/config/menus/admin.php:64
 #: /var/azuracast/www/templates/admin/stations/index.phtml:1
 msgid "Stations"
-msgstr ""
+msgstr "Radyolar"
 
 #: /var/azuracast/www/src/Acl.php:192
 #: /var/azuracast/www/config/forms/media.php:74
@@ -77,32 +77,32 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:1
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:5
 msgid "Custom Fields"
-msgstr ""
+msgstr "Özelleştirme"
 
 #: /var/azuracast/www/src/Acl.php:193
 #: /var/azuracast/www/config/menus/admin.php:37
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Yedekleme"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Page"
-msgstr ""
+msgstr "Radyo Sayfasını Görme"
 
 #: /var/azuracast/www/src/Acl.php:198
 msgid "View Station Reports"
-msgstr ""
+msgstr "Radyo Raporlarını Görme"
 
 #: /var/azuracast/www/src/Acl.php:199
 msgid "View Station Logs"
-msgstr ""
+msgstr "Radyo Günlüklerini Görme"
 
 #: /var/azuracast/www/src/Acl.php:200
 #: /var/azuracast/www/config/menus/station.php:34
 #: /var/azuracast/www/templates/stations/profile/index.phtml:8
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: /var/azuracast/www/src/Acl.php:200
 #: /var/azuracast/www/src/Acl.php:201
@@ -113,23 +113,23 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:206
 #: /var/azuracast/www/src/Acl.php:207
 msgid "Manage Station %s"
-msgstr ""
+msgstr "Radyo %s Yönetimi"
 
 #: /var/azuracast/www/src/Acl.php:201
 #: /var/azuracast/www/config/forms/station.php:23
 msgid "Broadcasting"
-msgstr ""
+msgstr "Canlı Yayın"
 
 #: /var/azuracast/www/src/Acl.php:202
 msgid "Streamers"
-msgstr ""
+msgstr "DJ"
 
 #: /var/azuracast/www/src/Acl.php:203
 #: /var/azuracast/www/config/menus/station.php:74
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:1
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:5
 msgid "Mount Points"
-msgstr ""
+msgstr "Bağlantı Noktası"
 
 #: /var/azuracast/www/src/Acl.php:204
 #: /var/azuracast/www/config/menus/station.php:81
@@ -137,7 +137,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:1
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:5
 msgid "Remote Relays"
-msgstr ""
+msgstr "Yönlendirme"
 
 #: /var/azuracast/www/src/Acl.php:205
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63

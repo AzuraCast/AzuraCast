@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-19 22:36\n"
+"PO-Revision-Date: 2019-08-21 19:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1443,7 +1443,7 @@ msgstr "Je kan hier alle speciale mount point instelling instellen, in JSON-form
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:11
 msgid "Stream path cannot include reserved keywords: %s"
-msgstr ""
+msgstr "Stream pad kan geen gereserveerde trefwoorden bevatten: %s"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"
@@ -1800,7 +1800,7 @@ msgstr "Extern station type"
 
 #: /var/azuracast/www/config/forms/remote.php:40
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "De naam die aan dit mountpoint is gekoppeld en wordt weergegeven op administratieve- en publieke pagina's. Laat leeg om automatisch te laten genereren."
 
 #: /var/azuracast/www/config/forms/remote.php:48
 msgid "Remote Station Listening URL"
@@ -2511,7 +2511,7 @@ msgstr "Auteur naam"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:110
 msgid "Thumbnail Image URL"
-msgstr ""
+msgstr "Thumbnail afbeelding URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:120
 msgid "Footer Text"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-16 00:50\n"
+"PO-Revision-Date: 2019-08-21 00:30\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -343,7 +343,7 @@ msgstr "Logs de Supervisor"
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Permission"
-msgstr "Permisos"
+msgstr "Permiso"
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -922,7 +922,7 @@ msgstr "Comentarios"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Describa el caso de uso de esta clave API para futuras referencias."
 
 #: /var/azuracast/www/config/forms/api_key.php:20
 #: /var/azuracast/www/config/forms/automation.php:40
@@ -996,11 +996,11 @@ msgstr "Basado en esta configuración, el sistema automáticamente reasignará c
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d días"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Ejecutar copias de seguridad automáticas nocturnas"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."

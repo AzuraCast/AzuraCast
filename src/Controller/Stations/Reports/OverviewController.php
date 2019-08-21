@@ -4,6 +4,7 @@ namespace App\Controller\Stations\Reports;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
@@ -30,6 +31,8 @@ class OverviewController
     {
         $station = $request->getStation();
 
+        $station_tz = new \DateTimeZone($station->getTimezone());
+
         // Get current analytics level.
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
@@ -43,7 +46,7 @@ class OverviewController
         }
 
         /* Statistics */
-        $threshold = strtotime('-1 month');
+        $threshold = Chronos::parse('-1 month', $station_tz)->getTimestamp();
 
         // Statistics by day.
         $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d', [
@@ -69,11 +72,13 @@ class OverviewController
             $avg_row->y = round($stat['value'], 2);
             $daily_averages[] = $avg_row;
 
-            $row_date = gmdate('Y-m-d', $avg_row->t/1000);
+            $dt = Chronos::createFromTimestamp($avg_row->t/1000, $station_tz);
+
+            $row_date = $dt->format('Y-m-d');
             $daily_alt[] = '<dt><time data-original="'.$avg_row->t.'">'.$row_date.'</time></dt>';
             $daily_alt[] = '<dd>'.$avg_row->y.' '.__('Listeners').'</dd>';
 
-            $day_of_week = (int)gmdate('N', round($stat['time'] / 1000)) - 1;
+            $day_of_week = (int)$dt->format('N') - 1;
             $days_of_week[$day_of_week][] = $stat['value'];
         }
 
@@ -137,7 +142,9 @@ class OverviewController
             $hourly_ranges[] = [$stat['time'], $stat['min'], $stat['max']];
             $hourly_averages[] = [$stat['time'], round($stat['value'], 2)];
 
-            $hour = (int)gmdate('G', round($stat['time'] / 1000));
+            $dt = Chronos::createFromTimestamp($stat['time'] / 1000, $station_tz);
+
+            $hour = (int)$dt->format('G');
             $totals_by_hour[$hour][] = $stat['value'];
         }
 

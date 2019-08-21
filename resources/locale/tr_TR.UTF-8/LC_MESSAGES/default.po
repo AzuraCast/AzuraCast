@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 19:01\n"
+"PO-Revision-Date: 2019-08-21 19:10\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1848,288 +1848,288 @@ msgstr "Uzak radyo dinleme bağlantı noktası veya SID bilgileri yukarda belirt
 
 #: /var/azuracast/www/config/forms/remote.php:147
 msgid "Remote Station Source Username"
-msgstr ""
+msgstr "Uzak Radyo Kullanıcı Adı"
 
 #: /var/azuracast/www/config/forms/remote.php:148
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr ""
+msgstr "AutoDJ kullanarak yayın yapıyorsanız kullanıcı adını buraya girin veya boş bırakın."
 
 #: /var/azuracast/www/config/forms/remote.php:156
 msgid "Remote Station Source Password"
-msgstr ""
+msgstr "Uzak Radyo Şifresi"
 
 #: /var/azuracast/www/config/forms/remote.php:157
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr ""
+msgstr "AutoDJ kullanarak yayın yapıyorsanız şifreyi buraya girin."
 
 #: /var/azuracast/www/config/forms/role.php:13
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:22
 msgid "Role Name"
-msgstr ""
+msgstr "Yetki İsmi"
 
 #: /var/azuracast/www/config/forms/role.php:22
 msgid "System-Wide Permissions"
-msgstr ""
+msgstr "Sistem Geneli İzinler"
 
 #: /var/azuracast/www/config/forms/role.php:35
 msgid "Permissions for %s"
-msgstr ""
+msgstr "%s İçin İzinler"
 
 #: /var/azuracast/www/config/forms/settings.php:14
 msgid "Site Base URL"
-msgstr ""
+msgstr "Sunucu Kontrol Paneli URLsi"
 
 #: /var/azuracast/www/config/forms/settings.php:15
 msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."
-msgstr ""
+msgstr "Sunucu kontrol paneli URL tam adresi veya IP adresini yazın."
 
 #: /var/azuracast/www/config/forms/settings.php:28
 msgid "AzuraCast Instance Name"
-msgstr ""
+msgstr "AzuraCast Slogan İsmi"
 
 #: /var/azuracast/www/config/forms/settings.php:29
 msgid "This name will appear as a sub-header next to the AzuraCast logo, to help identify this server."
-msgstr ""
+msgstr "AzuraCast logosunun yanında yer alacak slogan adını yazın."
 
 #: /var/azuracast/www/config/forms/settings.php:37
 msgid "Prefer Browser URL (If Available)"
-msgstr ""
+msgstr "Tarayıcı URLsini Tercih Et (Varsa)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Bu ayar \\\"Evet\\\" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için \\\"Hayır\\\" olarak ayarlayın."
 
 #: /var/azuracast/www/config/forms/settings.php:49
 msgid "Use Web Proxy for Radio"
-msgstr ""
+msgstr "Radyolar İçin Proxy Kullan"
 
 #: /var/azuracast/www/config/forms/settings.php:50
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
-msgstr ""
+msgstr "Varsayılan olarak radyo istasyonları kendi bağlantı noktalarında (örnek: 8000) yayın yapar. CloudFlare gibi bir servis kullanıyorsanız veya radyo istasyonunuza SSL ile erişiyorsanız, tüm radyoları web bağlantı noktalarından (80 ve 443) yönlendiren bu özelliği etkinleştirmelisiniz."
 
 #: /var/azuracast/www/config/forms/settings.php:61
 msgid "Days of Playback History to Keep"
-msgstr ""
+msgstr "Çalma Geçmişini Saklama"
 
 #: /var/azuracast/www/config/forms/settings.php:62
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
-msgstr ""
+msgstr "Radyolar için uzun süre çalma geçmişini saklamak için en büyük değeri seçin veya disk alanından tasarruf etmek için küçük değeri seçin."
 
 #: /var/azuracast/www/config/forms/settings.php:64
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:22
 msgid "Last 14 Days"
-msgstr ""
+msgstr "Son 14 Gün"
 
 #: /var/azuracast/www/config/forms/settings.php:65
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:98
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:64
 msgid "Last 30 Days"
-msgstr ""
+msgstr "Son 30 Gün"
 
 #: /var/azuracast/www/config/forms/settings.php:66
 msgid "Last 60 Days"
-msgstr ""
+msgstr "Son 60 Gün"
 
 #: /var/azuracast/www/config/forms/settings.php:67
 msgid "Last Year"
-msgstr ""
+msgstr "Son Yıl"
 
 #: /var/azuracast/www/config/forms/settings.php:68
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Son 2 Yıl"
 
 #: /var/azuracast/www/config/forms/settings.php:69
 msgid "Indefinitely"
-msgstr ""
+msgstr "Süresiz"
 
 #: /var/azuracast/www/config/forms/settings.php:79
 msgid "Use WebSockets for Now Playing Updates"
-msgstr ""
+msgstr "Çalan Şarkı Bilgisi İçin WebSockets Kullanın"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
-msgstr ""
+msgstr "Genel oynatıcılarda canlı güncellemeler almak için daha yeni ve daha hızlı WebSocket tabanlı sistemin kullanımını etkinleştirir veya devredışı bırakır. Bir sorunla karşılaşırsanız bunu devredışı bırakmanız gerekebilir."
 
 #: /var/azuracast/www/config/forms/settings.php:92
 msgid "Security Controls"
-msgstr ""
+msgstr "Güvenlik Kontrolleri"
 
 #: /var/azuracast/www/config/forms/settings.php:98
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "Her Zaman HTTPS Kullan"
 
 #: /var/azuracast/www/config/forms/settings.php:99
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "\\\"Evet\\\" olarak ayarlandığında her zaman güvenli bağlantı \\\"https://\\\" kullanılır."
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "\\\"Access-Control-Allow-Origin\\\" API Başlığı"
 
 #: /var/azuracast/www/config/forms/settings.php:111
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Gizlilik Kontrolleri"
 
 #: /var/azuracast/www/config/forms/settings.php:121
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr ""
+msgstr "AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast\\'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin."
 
 #: /var/azuracast/www/config/forms/settings.php:128
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Dinleyici İstatistik Koleksiyonu"
 
 #: /var/azuracast/www/config/forms/settings.php:129
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Dinleyici istatistik koleksiyonu sistemdeki radyo raporlarını göstermek için kullanılır. IP tabanlı dinleyici istatistikleri canlı dinleyici izlemesini görüntülemek için kullanılır ve telif hakkı raporları için gerekli olabilir."
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>TAM:</b> Toplu dinleyici istatistiklerini ve IP tabanlı dinleyici istatistiklerini toplayın"
 
 #: /var/azuracast/www/config/forms/settings.php:133
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>SINIRLI:</b> Yalnızca toplu dinleyici istatistiklerini topla"
 
 #: /var/azuracast/www/config/forms/settings.php:134
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>KAPALI:</b> Herhangi bir dinleyici istatistiği toplamayın"
 
 #: /var/azuracast/www/config/forms/settings.php:143
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "AzuraCast Kurulumu Desteği"
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\\\"%s\\\" target=\\\"_blank\\\">gizlilik politikası</a>nı inceleyebilirsiniz."
 
 #: /var/azuracast/www/config/forms/settings.php:151
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Güncellemeleri ve Duyuruları Kontrol Et"
 
 #: /var/azuracast/www/config/forms/settings.php:152
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Güncellenen yazılım sürümlerini ve önemli duyuruları kontrol etmek için AzuraCast kurulumunuz hakkında en az ayrıntıyı AzuraCast merkezi sunucuya gönderin."
 
 #: /var/azuracast/www/config/forms/settings.php:155
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>KAPALI:</b> Güncellemeleri veya duyuruları kontrol etmeyin."
 
 #: /var/azuracast/www/config/forms/settings.php:156
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>YALNIZCA SÜRÜM:</b> Kritik duyuruları ve yalnızca yeni sürümleri kontrol edin."
 
 #: /var/azuracast/www/config/forms/settings.php:157
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>TÜM GÜNCELLEMELER:</b> Tüm duyuruları ve küçük güncellemeleri kontrol edin."
 
 #: /var/azuracast/www/config/forms/settings.php:166
 msgid "Automatically Send Error Reports to AzuraCast"
-msgstr ""
+msgstr "Hata Raporlarını AzuraCast Sunucularına Otomatik Gönder"
 
 #: /var/azuracast/www/config/forms/settings.php:167
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
-msgstr ""
+msgstr "Web uygulaması bir hatayla karşılaşırsa daha hızlı tanım ve çözüm için otomatik olarak sorunun anonim bir raporunu AzuraCast ekibine göndermeyi seçebilirsiniz."
 
 #: /var/azuracast/www/config/forms/settings.php:167
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr ""
+msgstr "Hata raporları <a href=\\\"%s\\\" target=\\\"_blank\\\">%s</a> tarafından desteklenmektedir."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
 msgid "Metadata"
-msgstr ""
+msgstr "Meta Verileri"
 
 #: /var/azuracast/www/config/forms/song.php:14
 msgid "Full Text"
-msgstr ""
+msgstr "Tam Metin"
 
 #: /var/azuracast/www/config/forms/song.php:26
 msgid "Artist Name"
-msgstr ""
+msgstr "Sanatçı İsmi"
 
 #: /var/azuracast/www/config/forms/station.php:22
 msgid "Station Profile"
-msgstr ""
+msgstr "Radyo Profili"
 
 #: /var/azuracast/www/config/forms/station.php:24
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:26
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:26
 msgid "AutoDJ"
-msgstr ""
+msgstr "AutoDJ"
 
 #: /var/azuracast/www/config/forms/station.php:25
 #: /var/azuracast/www/templates/admin/index/index.phtml:18
 #: /var/azuracast/www/templates/admin/sidebar.phtml:3
 #: /var/azuracast/www/templates/frontend/index/index.phtml:59
 msgid "Administration"
-msgstr ""
+msgstr "Yönetim"
 
 #: /var/azuracast/www/config/forms/station.php:46
 #: /var/azuracast/www/config/forms/webhook/discord.php:80
 msgid "Description"
-msgstr ""
+msgstr "Açıklama"
 
 #: /var/azuracast/www/config/forms/station.php:54
 msgid "Genre"
-msgstr ""
+msgstr "Tür"
 
 #: /var/azuracast/www/config/forms/station.php:62
 msgid "Web Site URL"
-msgstr ""
+msgstr "Web Site URLsi"
 
 #: /var/azuracast/www/config/forms/station.php:63
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
-msgstr ""
+msgstr "Not: AzuraCast URLsi değil radyonuzun web adresi olmalıdır. Yayın detaylarına eklenecektir."
 
 #: /var/azuracast/www/config/forms/station.php:71
 msgid "Time Zone"
-msgstr ""
+msgstr "Saat Dilimi"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Zamanlanmış çalma listeleri ve zamanlanmış diğer öğeler bu zaman dilimi tarafından kontrol edilir."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
-msgstr ""
+msgstr "Genel Sayfaları Etkinleştir"
 
 #: /var/azuracast/www/config/forms/station.php:83
 msgid "Show the station in public pages and general API results."
-msgstr ""
+msgstr "Radyonuzu genel sayfalarda ve genel API sonuçlarında gösterin."
 
 #: /var/azuracast/www/config/forms/station.php:94
 msgid "URL Stub"
-msgstr ""
+msgstr "Sabit URL"
 
 #: /var/azuracast/www/config/forms/station.php:96
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
-msgstr ""
+msgstr "İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL-dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın."
 
 #: /var/azuracast/www/config/forms/station.php:104
 msgid "Number of Recently Played Songs"
-msgstr ""
+msgstr "En Son Çalınan Şarkı Sayısı"
 
 #: /var/azuracast/www/config/forms/station.php:106
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr ""
+msgstr "Bu istasyon için \\\"Şarkı Geçmişi\\\" bölümünde ve tüm ortak APIlerde görünecek şarkı sayısını belirtin."
 
 #: /var/azuracast/www/config/forms/station.php:128
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:16
 msgid "Broadcasting Service"
-msgstr ""
+msgstr "Yayın Sunucusu"
 
 #: /var/azuracast/www/config/forms/station.php:129
 msgid "This software delivers your broadcast to the listening audience."
-msgstr ""
+msgstr "Bu yazılım yayınınızı dinleyen kitleye ulaştırır."
 
 #: /var/azuracast/www/config/forms/station.php:147
 msgid "Customize Broadcasting Port"
-msgstr ""
+msgstr "Yayın Portu"
 
 #: /var/azuracast/www/config/forms/station.php:149
 msgid "No other program can be using this port. Leave blank to automatically assign a port."

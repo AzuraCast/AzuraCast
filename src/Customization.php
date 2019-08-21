@@ -120,7 +120,7 @@ class Customization
 
             // Use approximate match if available.
             foreach ($supported_locales as $lang_code => $lang_name) {
-                if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
+                if (strpos($exact_locale, substr($lang_code, 0, 2)) === 0) {
                     return $lang_code;
                 }
             }

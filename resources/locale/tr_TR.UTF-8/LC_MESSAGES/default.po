@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 18:50\n"
+"PO-Revision-Date: 2019-08-21 19:01\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1541,187 +1541,187 @@ msgstr "Mevcut bir PLS veya M3U biçimindeki çalma listesini içeri aktarabilir
 
 #: /var/azuracast/www/config/forms/playlist.php:129
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "Çalma Listesinde İstekleri Etkinleştir"
 
 #: /var/azuracast/www/config/forms/playlist.php:130
 msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
-msgstr ""
+msgstr "Radyodaki çalan müzikleri kullanıcıların erişimine açmak için burayı etkinleştirebilirsiniz."
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr ""
+msgstr "Meta Verilerini Gizle (\\\"Jingle Mode\\\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
-msgstr ""
+msgstr "Bu çalma listesinde bulunan müziklerin meta verilerini dinleyicilerden gizlemek için etkinleştirebilirsiniz. Çalma listesinde Jingle veya Bumpers varsa işinize yarayacak bir özelliktir."
 
 #: /var/azuracast/www/config/forms/playlist.php:164
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
 msgid "Remote URL"
-msgstr ""
+msgstr "Uzak Çalma Listesi URLsi"
 
 #: /var/azuracast/www/config/forms/playlist.php:172
 msgid "Remote URL Type"
-msgstr ""
+msgstr "Uzak Çalma Listesi Türü"
 
 #: /var/azuracast/www/config/forms/playlist.php:175
 msgid "Direct Stream URL"
-msgstr ""
+msgstr "Doğrudan Yayın URLsi"
 
 #: /var/azuracast/www/config/forms/playlist.php:176
 msgid "Playlist (M3U/PLS) URL"
-msgstr ""
+msgstr "Çalma Listesi URLsi (M3U/PLS)"
 
 #: /var/azuracast/www/config/forms/playlist.php:185
 msgid "Remote Playback Buffer (Seconds)"
-msgstr ""
+msgstr "Uzaktan Oynatma Arabelliği (saniye)"
 
 #: /var/azuracast/www/config/forms/playlist.php:187
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
-msgstr ""
+msgstr "Uzak çalma listesi Liquidsoap tarafından oynatılırken arabellek için gereken süreyi belirtin. Bağlantı sorunları oluştuğunda daha kısa süreler takılmalara neden olabilir."
 
 #: /var/azuracast/www/config/forms/playlist.php:208
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:103
 msgid "General Rotation"
-msgstr ""
+msgstr "Genel Oynatma"
 
 #: /var/azuracast/www/config/forms/playlist.php:208
 msgid "Plays all day, shuffles with other standard playlists based on weight."
-msgstr ""
+msgstr "Gün boyu oynatılır ve önceliğe göre diğer standart çalma listeleriyle karıştırılır."
 
 #: /var/azuracast/www/config/forms/playlist.php:209
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:106
 msgid "Scheduled"
-msgstr ""
+msgstr "Zamanlanmış"
 
 #: /var/azuracast/www/config/forms/playlist.php:209
 msgid "Play during a scheduled time range."
-msgstr ""
+msgstr "Belirlenmiş bir zaman aralığında oynatılır."
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Once per x Songs"
-msgstr ""
+msgstr "x Şarkıda Bir Çal"
 
 #: /var/azuracast/www/config/forms/playlist.php:210
 msgid "Play exactly once every <i>x</i> songs."
-msgstr ""
+msgstr "Her <i>x</i> şarkıda bir çalınır."
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Once Per x Minutes"
-msgstr ""
+msgstr "x Dakikada Bir Çal"
 
 #: /var/azuracast/www/config/forms/playlist.php:211
 msgid "Play exactly once every <i>x</i> minutes."
-msgstr ""
+msgstr "Her <i>x</i> dakikada bir çalınır."
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Once per Hour"
-msgstr ""
+msgstr "Saatte Bir Çal"
 
 #: /var/azuracast/www/config/forms/playlist.php:212
 msgid "Play once per hour at the specified minute."
-msgstr ""
+msgstr "Belirtilen dakikada saatte bir çalınır."
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:5
 msgid "Advanced"
-msgstr ""
+msgstr "Gelişmiş"
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr ""
+msgstr "Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "AutoDJ Scheduling Options"
-msgstr ""
+msgstr "AutoDJ Zamanlama Ayarları"
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "Control how this playlist is handled by the AutoDJ software."
-msgstr ""
+msgstr "Bu çalma listesinin AutoDJ yazılımı tarafından nasıl işlendiğini ayarlayabilirsiniz."
 
 #: /var/azuracast/www/config/forms/playlist.php:226
 msgid "<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr ""
+msgstr "<b>Uyarı:</b> Bu ayarlar Liquidsoap ve AutoDJ yazılımlarına doğrudan etki eder. Yeniden başlatma gerekebilir."
 
 #: /var/azuracast/www/config/forms/playlist.php:228
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Planlanan zamanda çalmak için diğer şarkıları kesin."
 
 #: /var/azuracast/www/config/forms/playlist.php:229
 msgid "Only loop through playlist once."
-msgstr ""
+msgstr "Çalma listesinde yalnızca bir kez döngü yapın."
 
 #: /var/azuracast/www/config/forms/playlist.php:230
 msgid "Only play one track at scheduled time."
-msgstr ""
+msgstr "Planlanan zamanda sadece bir parça çalın."
 
 #: /var/azuracast/www/config/forms/playlist.php:231
 msgid "Merge playlist to play as a single track."
-msgstr ""
+msgstr "Tek bir parça olarak çalmak için çalma listesini birleştirin."
 
 #: /var/azuracast/www/config/forms/playlist.php:248
 msgid "Include in Automated Assignment"
-msgstr ""
+msgstr "Otomatik Atamaya Dahil Et"
 
 #: /var/azuracast/www/config/forms/playlist.php:249
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
-msgstr ""
+msgstr "Otomatik atama etkinse bu çalma listesini yeniden dağıtılacak şarkıların hedeflerinden biri olarak kullanın. Bu, bu oynatma listesinin mevcut içeriğinin üzerine yazacaktır."
 
 #: /var/azuracast/www/config/forms/playlist.php:269
 msgid "Start Time"
-msgstr ""
+msgstr "Başlama Zamanı"
 
 #: /var/azuracast/www/config/forms/playlist.php:270
 msgid "To play once per day, set the start and end times to the same value."
-msgstr ""
+msgstr "Günde bir kez oynamak için başlangıç ​​ve bitiş zamanlarını aynı değere ayarlayın."
 
 #: /var/azuracast/www/config/forms/playlist.php:278
 msgid "End Time"
-msgstr ""
+msgstr "Bitiş Zamanı"
 
 #: /var/azuracast/www/config/forms/playlist.php:279
 msgid "If the end time is before the start time, the playlist will play overnight."
-msgstr ""
+msgstr "Bitiş saati başlangıç ​​saatinden önce ise çalma listesi gecede oynatılır."
 
 #: /var/azuracast/www/config/forms/playlist.php:287
 msgid "Station Time Zone"
-msgstr ""
+msgstr "Radyo Saat Dilimi"
 
 #: /var/azuracast/www/config/forms/playlist.php:296
 msgid "Scheduled Play Days of Week"
-msgstr ""
+msgstr "Haftalık Zamanlama"
 
 #: /var/azuracast/www/config/forms/playlist.php:297
 msgid "Leave blank to play on every day of the week."
-msgstr ""
+msgstr "Haftanın hangi günlerinde oynatılmasını istiyorsanız seçin veya haftanın her günü oynatmak için boş bırakın."
 
 #: /var/azuracast/www/config/forms/playlist.php:323
 msgid "Number of Songs Between Plays"
-msgstr ""
+msgstr "Kaç Şarkıda Bir Çalınsın?"
 
 #: /var/azuracast/www/config/forms/playlist.php:324
 msgid "This playlist will play every $x songs, where $x is specified below."
-msgstr ""
+msgstr "Bu çalma listesi her $x şarkıda bir $x şarkı çalacaktır."
 
 #: /var/azuracast/www/config/forms/playlist.php:343
 msgid "Number of Minutes Between Plays"
-msgstr ""
+msgstr "Kaç Dakikada Bir Çalınsın?"
 
 #: /var/azuracast/www/config/forms/playlist.php:344
 msgid "This playlist will play every $x minutes, where $x is specified below."
-msgstr ""
+msgstr "Bu çalma listesi her $x dakikada bir $x şarkı çalacaktır."
 
 #: /var/azuracast/www/config/forms/playlist.php:363
 msgid "Minute of Hour to Play"
-msgstr ""
+msgstr "Saatin Hangi Dakikasında Çalınsın?"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."
-msgstr ""
+msgstr "Bu çalma listesinin saatin hangi dakikasında oynatılmasını istiyorsanız belirtin."
 
 #: /var/azuracast/www/config/forms/profile.php:3
 msgid "Use Browser Default"
-msgstr ""
+msgstr "Varsayılan"
 
 #: /var/azuracast/www/config/forms/profile.php:16
 #: /var/azuracast/www/config/forms/station.php:37
@@ -1730,57 +1730,57 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/files/index.phtml:113
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Name"
-msgstr ""
+msgstr "İsim"
 
 #: /var/azuracast/www/config/forms/profile.php:38
 #: /var/azuracast/www/config/forms/user.php:30
 msgid "Reset Password"
-msgstr ""
+msgstr "Şifreyi Değiştir"
 
 #: /var/azuracast/www/config/forms/profile.php:39
 msgid "Leave these fields blank to continue using your current password."
-msgstr ""
+msgstr "Geçerli şifrenizi kullanmaya devam etmek için bu alanları boş bırakın."
 
 #: /var/azuracast/www/config/forms/profile.php:45
 msgid "Current Password"
-msgstr ""
+msgstr "Şimdiki Şifre"
 
 #: /var/azuracast/www/config/forms/profile.php:54
 msgid "New Password"
-msgstr ""
+msgstr "Yeni Şifre"
 
 #: /var/azuracast/www/config/forms/profile.php:65
 msgid "Confirm New Password"
-msgstr ""
+msgstr "Yeni Şifreyi Doğrula"
 
 #: /var/azuracast/www/config/forms/profile.php:76
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:50
 msgid "Customization"
-msgstr ""
+msgstr "Özelleştirme"
 
 #: /var/azuracast/www/config/forms/profile.php:82
 msgid "Language"
-msgstr ""
+msgstr "Dil"
 
 #: /var/azuracast/www/config/forms/profile.php:92
 msgid "Site Theme"
-msgstr ""
+msgstr "Site Teması"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:10
 msgid "Code from Authenticator App"
-msgstr ""
+msgstr "Authenticator Uygulaması Kodu"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
-msgstr ""
+msgstr "Doğru çalıştığını doğrulamak için doğrulayıcı uygulamanız tarafından sağlanan geçerli kodu girin."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:21
 msgid "Verify Authenticator"
-msgstr ""
+msgstr "Authenticator Kodunu Doğrula"
 
 #: /var/azuracast/www/config/forms/register.php:7
 msgid "Account Information"
-msgstr ""
+msgstr "Hesap Bilgileri"
 
 #: /var/azuracast/www/config/forms/register.php:37
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:55
@@ -1788,63 +1788,63 @@ msgstr ""
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:13
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:13
 msgid "Create Account"
-msgstr ""
+msgstr "Hesap Oluştur"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Dinleyicilerin bu radyonun genel sayfalarında bu yönlendirmeyi seçmelerine izin vermek için etkinleştirin."
 
 #: /var/azuracast/www/config/forms/remote.php:25
 msgid "Remote Station Type"
-msgstr ""
+msgstr "Uzak Radyo Türü"
 
 #: /var/azuracast/www/config/forms/remote.php:40
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Yönetici veya genel sayfalarda görüntülerken bu yönlendirmeye atanan ismi belirleyin. Otomatik olarak oluşturmak için boş bırakın."
 
 #: /var/azuracast/www/config/forms/remote.php:48
 msgid "Remote Station Listening URL"
-msgstr ""
+msgstr "Uzak Radyo Dinleme URLsi"
 
 #: /var/azuracast/www/config/forms/remote.php:49
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
-msgstr ""
+msgstr "Örnek: Uzak radyo URLsi %s şeklindeyse <code>%s</code> biçiminde yazın."
 
 #: /var/azuracast/www/config/forms/remote.php:62
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr ""
+msgstr "Uzak Radyo Dinleme Bağlantı Noktası/SID"
 
 #: /var/azuracast/www/config/forms/remote.php:63
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
-msgstr ""
+msgstr "İstatistikler ve yayın için uzak radyo dinleme bağlantı noktası veya SID bilgilerini yazın. Örnek: IceCast: <code>%s</code> - ShoutCast: <code>%s</code>"
 
 #: /var/azuracast/www/config/forms/remote.php:75
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr ""
+msgstr "Uzak Radyoya AutoDJ Yayını"
 
 #: /var/azuracast/www/config/forms/remote.php:76
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr ""
+msgstr "Etkinleştirilse bu kurulumdaki AutoDJ otomatik olarak uzak radyo bağlama noktasına müzik çalacaktır."
 
 #: /var/azuracast/www/config/forms/remote.php:89
 msgid "Configure AutoDJ Broadcasting"
-msgstr ""
+msgstr "AutoDJ Yayınını Yapılandır"
 
 #: /var/azuracast/www/config/forms/remote.php:129
 msgid "Remote Station Source Port"
-msgstr ""
+msgstr "Uzak Radyo Portu"
 
 #: /var/azuracast/www/config/forms/remote.php:130
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr ""
+msgstr "Yayınladığınız bağlantı noktası yukarıdaki URLde belirtiğiniz bağlantıdan farklıysa kaynak bağlantı noktasını burada belirtin."
 
 #: /var/azuracast/www/config/forms/remote.php:138
 msgid "Remote Station Source Mountpoint/SID"
-msgstr ""
+msgstr "Uzak Radyo Bağlantı Noktası/SID"
 
 #: /var/azuracast/www/config/forms/remote.php:139
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Uzak radyo dinleme bağlantı noktası veya SID bilgileri yukarda belirttiğinizden farklıysa burada belirtin. Örnek: IceCast: <code>%s</code> - ShoutCast: <code>%s</code>"
 
 #: /var/azuracast/www/config/forms/remote.php:147
 msgid "Remote Station Source Username"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 16:30\n"
+"PO-Revision-Date: 2019-08-21 19:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2260,7 +2260,7 @@ msgstr "Никакая другая программа, не может испо
 
 #: /var/azuracast/www/config/forms/station.php:342
 msgid "Customize Internal Request Processing Port"
-msgstr "Настроить внутренний порт обработки запросов"
+msgstr "Настройка Внутреннего Порта Обработки Запросов"
 
 #: /var/azuracast/www/config/forms/station.php:344
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."

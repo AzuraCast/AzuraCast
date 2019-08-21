@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 11:10\n"
+"PO-Revision-Date: 2019-08-21 11:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2009,7 +2009,7 @@ msgstr "Выберите, будет ли ваша установка взаим
 
 #: /var/azuracast/www/config/forms/settings.php:151
 msgid "Check for Updates and Announcements"
-msgstr "Проверьте наличие обновлений и объявлений"
+msgstr "Проверка наличия обновлений и объявлений"
 
 #: /var/azuracast/www/config/forms/settings.php:152
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 20:50\n"
+"PO-Revision-Date: 2019-08-21 21:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2296,7 +2296,7 @@ msgstr "Ручной Режим АвтоДиджея"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr "Этот режим отключает управление АвтоДиджея AzuraCast, используя Liquidsoap, чтобы управлять воспроизведением песни. \"Следующая песня\" и некоторые другие функции не будут доступны."
+msgstr "Этот режим отключает АвтоДиджея AzuraCast, использующем в управлении Liquidsoap, который управляет воспроизведением песен. \"Следующая песня\" и некоторые другие функции не будут доступны."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"

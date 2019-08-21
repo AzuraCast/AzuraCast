@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 18:20\n"
+"PO-Revision-Date: 2019-08-21 18:30\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -541,30 +541,30 @@ msgstr "\\\"%s\\\" &#61;&#62; \\\"%s\\ taşınamadı."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:125
 msgid "File renamed!"
-msgstr ""
+msgstr "Dosya yeniden adlandırıldı!"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:135
 msgid "Rename File/Directory"
-msgstr ""
+msgstr "Dosya/Klasör Yeniden Adlandır"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:207
 msgid "This station is out of available storage space."
-msgstr ""
+msgstr "Radyo depolama alanı doldu."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:122
 #: /var/azuracast/www/templates/stations/files/index.phtml:179
 msgid "Directory"
-msgstr ""
+msgstr "Klasör"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:126
 msgid "File Not Processed"
-msgstr ""
+msgstr "Dosya İşlenemedi!"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:27
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:39
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:23
 msgid "This feature is not currently supported on this station."
-msgstr ""
+msgstr "Bu radyoda bu özellik şu an desteklenmiyor."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:40
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
@@ -572,7 +572,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:25
 msgid "Mount Point"
-msgstr ""
+msgstr "Bağlantı Noktası"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
@@ -585,23 +585,23 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:47
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:77
 msgid "Playlist"
-msgstr ""
+msgstr "Çalma Listesi"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
-msgstr ""
+msgstr "Bu çalma listesi \\\"SIRALI\\\" bir çalma listesi değildir."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format"
-msgstr ""
+msgstr "Biçim"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
 msgid "Playlist enabled."
-msgstr ""
+msgstr "Çalma Listesi Etkinleştirildi!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:248
 msgid "Playlist disabled."
-msgstr ""
+msgstr "Çalma Listesi Devredışı Bırakıldı!"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
@@ -609,79 +609,79 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
 msgid "Remote Relay"
-msgstr ""
+msgstr "Yönlendirme"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:54
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
-msgstr ""
+msgstr "Günlük Dinleyiciler"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:88
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:42
 msgid "Listeners by Day of Week"
-msgstr ""
+msgstr "Haftanın Günlerine Göre Dinleyiciler"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:96
 #: /var/azuracast/www/config/forms/playlist.php:299
 msgid "Monday"
-msgstr ""
+msgstr "Pazartesi"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:97
 #: /var/azuracast/www/config/forms/playlist.php:300
 msgid "Tuesday"
-msgstr ""
+msgstr "Salı"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:98
 #: /var/azuracast/www/config/forms/playlist.php:301
 msgid "Wednesday"
-msgstr ""
+msgstr "Çarşamba"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:99
 #: /var/azuracast/www/config/forms/playlist.php:302
 msgid "Thursday"
-msgstr ""
+msgstr "Perşembe"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:100
 #: /var/azuracast/www/config/forms/playlist.php:303
 msgid "Friday"
-msgstr ""
+msgstr "Cuma"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
 #: /var/azuracast/www/config/forms/playlist.php:304
 msgid "Saturday"
-msgstr ""
+msgstr "Cumartesi"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:102
 #: /var/azuracast/www/config/forms/playlist.php:305
 msgid "Sunday"
-msgstr ""
+msgstr "Pazar"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:146
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
-msgstr ""
+msgstr "Saatlik Dinleyiciler"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
 msgid "SoundExchange Report"
-msgstr ""
+msgstr "SoundExchange Raporu"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
 msgid "Streamers enabled!"
-msgstr ""
+msgstr "DJ Etkinleştirildi!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
 msgid "You can now set up streamer (DJ) accounts."
-msgstr ""
+msgstr "DJ hesaplarını şimdi ekleyebilirsiniz."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Streamer"
-msgstr ""
+msgstr "DJ"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
@@ -697,55 +697,55 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:1
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Web Hook"
-msgstr ""
+msgstr "Web Kancası"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "%s enabled."
-msgstr ""
+msgstr "%s etkinleştirildi!"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "%s disabled."
-msgstr ""
+msgstr "%s devredışı bırakıldı!"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
-msgstr ""
+msgstr "Web Kancası Test Sonucu"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
-msgstr ""
+msgstr "Liquidsoap Günlüğü"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:89
 msgid "Liquidsoap Configuration"
-msgstr ""
+msgstr "Liquidsoap Ayar Dosyası"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:100
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "Icecast Erişim Günlüğü"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:105
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "Icecast Hata Günlüğü"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:110
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "Icecast Ayar Dosyası"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:118
 msgid "SHOUTcast Log"
-msgstr ""
+msgstr "SHOUTcast Günlüğü"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:123
 msgid "SHOUTcast Configuration"
-msgstr ""
+msgstr "SHOUTcast Ayar Dosyası"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "Çok yakın zamanda bir istek gönderdiniz! Lütfen başka bir tane göndermeden önce bekleyin."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Bu şarkı zaten çok yeni çalındı. Tekrar talep etmeden önce biraz bekleyin."
 
 #: /var/azuracast/www/src/Form/Field/File.php:11
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -753,110 +753,110 @@ msgstr ""
 #: /var/azuracast/www/config/forms/playlist.php:121
 #: /var/azuracast/www/templates/stations/files/index.phtml:54
 msgid "Select File"
-msgstr ""
+msgstr "Dosya Seç"
 
 #: /var/azuracast/www/src/Form/StationForm.php:82
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr ""
+msgstr "SHOUTcast v2 kurmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın ve sonrasında sayfayı yenileyin."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:54
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
-msgstr ""
+msgstr "Bu radyonun saat dilimi %s olarak ayarlanmıştır."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:56
 msgid "The current time in the station's time zone is %s."
-msgstr ""
+msgstr "%s radyonun saat dilimine göre geçerli zamanıdır."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:74
 msgid "Existing playlist imported."
-msgstr ""
+msgstr "Çalma listesi içe aktarıldı."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:74
 msgid "%d song(s) were imported into the playlist."
-msgstr ""
+msgstr "%d şarkı(lar) çalma listesine aktarıldı."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:78
 #: /var/azuracast/www/src/Http/ErrorHandler.php:85
 msgid "You must be logged in to access this page."
-msgstr ""
+msgstr "Bu sayfayı görüntülemek için giriş yapmalısınız."
 
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:105
 msgid "You do not have permission to access this portion of the site."
-msgstr ""
+msgstr "Sitenin bu bölümüne erişmek için yetkiniz bulunmamaktadır."
 
 #: /var/azuracast/www/src/Notification/Manager.php:72
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
-msgstr ""
+msgstr "<code>docker-compose.yml</code> dosyanız güncel değildir!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:73
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr ""
+msgstr "En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz."
 
 #: /var/azuracast/www/src/Notification/Manager.php:99
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr ""
+msgstr "Güncelleme talimatları konusunda detaylı bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
 
 #: /var/azuracast/www/src/Notification/Manager.php:103
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr ""
+msgstr "AzuraCast <a href=\\\"%s\\\" target=\\\"_blank\\\">%s sürümü</a> şu an kullanılabilir."
 
 #: /var/azuracast/www/src/Notification/Manager.php:104
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr ""
+msgstr "Şu anda AzuraCast %s sürümüne sahipsiniz. Güncelleme şiddetle tavsiye edilir."
 
 #: /var/azuracast/www/src/Notification/Manager.php:109
 msgid "New AzuraCast Release Version Available"
-msgstr ""
+msgstr "AzuraCast Yeni Sürümü Yayınlandı!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:119
 msgid "The following improvements have been made since your last update:"
-msgstr ""
+msgstr "Son güncellemenizden bu yana aşağıdaki iyileştirmeler yapıldı:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:122
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr ""
+msgstr "AzuraCast şu anda en son sürümün %d güncellemesini içerir."
 
 #: /var/azuracast/www/src/Notification/Manager.php:123
 msgid "You should update to take advantage of bug and security fixes."
-msgstr ""
+msgstr "Hata ve güvenlik düzeltmelerinden yararlanmak için güncelleme yapmalısınız."
 
 #: /var/azuracast/www/src/Notification/Manager.php:129
 msgid "New AzuraCast Updates Available"
-msgstr ""
+msgstr "AzuraCast Yeni Güncellemesi Yayınlandı!"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s bir servis olarak tanınmıyor."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:192
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Henüz Supervisor\\'a kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot start"
-msgstr ""
+msgstr "%s başlatılamadı!"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is already running."
-msgstr ""
+msgstr "Zaten Çalışıyor."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s cannot stop"
-msgstr ""
+msgstr "%s durdurulamadı!"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:210
 msgid "It is not running."
-msgstr ""
+msgstr "Zaten Çalışmıyor."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "%s encountered an error"
-msgstr ""
+msgstr "%s bir hata ile karşılaştı."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:227
 msgid "Check the log for details."
-msgstr ""
+msgstr "Detaylar için günlükleri kontrol edin."
 
 #: /var/azuracast/www/src/Radio/Adapters.php:138
 #: /var/azuracast/www/src/Radio/Adapters.php:142

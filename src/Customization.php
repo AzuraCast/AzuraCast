@@ -88,6 +88,10 @@ class Customization
      */
     protected function initLocale(?Request $request = null): ?string
     {
+        if ($this->app_settings->isTesting()) {
+            return self::DEFAULT_LOCALE;
+        }
+
         $supported_locales = $this->app_settings['locale']['supported'];
         $try_locales = [];
 

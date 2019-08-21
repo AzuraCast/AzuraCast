@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-10T07:43:09+00:00\n"
-"PO-Revision-Date: 2019-08-21 18:40\n"
+"PO-Revision-Date: 2019-08-21 18:50\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1300,244 +1300,244 @@ msgstr "Yöneticiler burada görünen alanları <a href=\\\"%s\\\">yönetici say
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
-msgstr ""
+msgstr "Şarkı Çalma Kontrolü"
 
 #: /var/azuracast/www/config/forms/media.php:90
 msgid "Song Length (seconds)"
-msgstr ""
+msgstr "Şarkı Uzunluğu (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:99
 msgid "Custom Fading: Overlap Time (seconds)"
-msgstr ""
+msgstr "Custom Fading: Örtüşme Zamanı (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:100
 msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
-msgstr ""
+msgstr "Bu şarkıdan sonraki şarkıya geçiş sırasında örtüşme süresini belirtin. Sistem varsayılan değeri için boş bırakın."
 
 #: /var/azuracast/www/config/forms/media.php:108
 msgid "Custom Fading: Fade-In Time (seconds)"
-msgstr ""
+msgstr "Custom Fading: Solma Zamanı (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:109
 msgid "The time period that the song should fade in. Leave blank to use the system default."
-msgstr ""
+msgstr "Bu şarkıya geçiş sırasında önceki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın."
 
 #: /var/azuracast/www/config/forms/media.php:117
 msgid "Custom Fading: Fade-Out Time (seconds)"
-msgstr ""
+msgstr "Custom Fading: Solma Zamanı (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:118
 msgid "The time period that the song should fade out. Leave blank to use the system default."
-msgstr ""
+msgstr "Bu şarkıdan diğer şarkıya geçiş sırasında sonraki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın."
 
 #: /var/azuracast/www/config/forms/media.php:126
 msgid "Custom Cues: Cue-In Point (seconds)"
-msgstr ""
+msgstr "Custom Cues: Giriş Noktası (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:127
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
-msgstr ""
+msgstr "AutoDJ\\'in şarkıyı çalmaya başlaması için gereken zamanı belirtin."
 
 #: /var/azuracast/www/config/forms/media.php:135
 msgid "Custom Cues: Cue-Out Point (seconds)"
-msgstr ""
+msgstr "Custom Cues: Çıkış Noktası (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:136
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
-msgstr ""
+msgstr "AutoDJ\\'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "Mount Point URL"
-msgstr ""
+msgstr "Bağlantı Noktası URLsi"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:16
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
-msgstr ""
+msgstr "Bu isim her zaman bir (/) işareti ile başlamalıdır ve /autodj.mp3 gibi geçerli bir URLye sahip olmalıdır."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:25
 #: /var/azuracast/www/config/forms/remote.php:39
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:26
 msgid "Display Name"
-msgstr ""
+msgstr "Ekran Adı"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:26
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "Yönetici ve genel sayfalarda görüntülenecek bağlama noktasına atanacak ekran adını belirtin. Otomatik oluşturmak için boş bırakın."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Genel Sayfaları Göster"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:35
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Dinleyicilerin genel sayfalarını bağlantı noktası kullanarak görüntülemesini istiyorsanız etkinleştirebilirsiniz."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
-msgstr ""
+msgstr "Varsayılan Bağlantı Noktası"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:47
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
-msgstr ""
+msgstr "Bu bağlantı noktası varsayılan ise radyo önizlemesinde ve bu sistemdeki genel radyo sayfasında oynatılacaktır."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:58
 msgid "Relay Stream URL"
-msgstr ""
+msgstr "Yönlendirme URLsi"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:59
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
-msgstr ""
+msgstr "Yönlendirilmek üzere uzak sunucu URLsini belirtin."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:68
 #: /var/azuracast/www/config/forms/remote.php:165
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "\\\"Yellow Pages\\\" Dizininde Yayınla"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Rayoyu \\\"Yellow Pages\\\" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
-msgstr ""
+msgstr "AutoDJ kullan"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:81
 msgid "If enabled, the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "AutoDJ kullanmak için burayı etkinleştirmelisiniz."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:99
 #: /var/azuracast/www/config/forms/remote.php:96
 msgid "AutoDJ Format"
-msgstr ""
+msgstr "AutoDJ Biçimi"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:108
 #: /var/azuracast/www/config/forms/remote.php:110
 msgid "AutoDJ Bitrate (kbps)"
-msgstr ""
+msgstr "AutoDJ Bitrate (kbps)"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:135
 msgid "Custom Stream URL"
-msgstr ""
+msgstr "Özelleştirilmiş Yayın URLSi"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:137
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
-msgstr ""
+msgstr "Bu yayının AzuraCast de kullanılacağı özel bir URL belirleyebilirsiniz. Varsayılan değeri kullanmak için boş bırakın."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:9
 msgid "Fallback Mount"
-msgstr ""
+msgstr "Fallback Mount"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:10
 msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
-msgstr ""
+msgstr "Bu bağlantı noktası ses çalmadığında dinleyiciler otomatik olarak buraya yönlendirilecektir. Varsayılan hata sesi /error.mp3 tekrarlanarak çalınacaktır."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:27
 msgid "Custom Frontend Configuration"
-msgstr ""
+msgstr "Özelleştirilmiş Sunucu Ayarları"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:29
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
-msgstr ""
+msgstr "Özel bağlantı noktası ayarlarını JSON için { key: \\'value\\' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz."
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:11
 msgid "Stream path cannot include reserved keywords: %s"
-msgstr ""
+msgstr "Yayın adı şu kelimeleri içeremez: %s"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:21
 msgid "YP Directory Authorization Hash"
-msgstr ""
+msgstr "YP Dizini Yetkilendirme Kodu"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr ""
+msgstr "Radyoyu \\\"Yellow Pages\\\" dizininde görüntülenmesini istiyorsanız <a href=\\\"%s\\\" target=\\\"_blank\\\">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir."
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
-msgstr ""
+msgstr "Basit Ayarlar"
 
 #: /var/azuracast/www/config/forms/playlist.php:12
 #: /var/azuracast/www/config/forms/playlist.php:71
 #: /var/azuracast/www/templates/stations/queue/index.phtml:26
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:43
 msgid "Source"
-msgstr ""
+msgstr "Kaynak"
 
 #: /var/azuracast/www/config/forms/playlist.php:13
 #: /var/azuracast/www/config/forms/playlist.php:206
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Scheduling"
-msgstr ""
+msgstr "Zamanlama"
 
 #: /var/azuracast/www/config/forms/playlist.php:26
 msgid "Enable Playlist"
-msgstr ""
+msgstr "Çalma Listesini Etkinleştir"
 
 #: /var/azuracast/www/config/forms/playlist.php:28
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."
-msgstr ""
+msgstr "\\\"HAYIR\\\" olarak ayarlanırsa AutoDJ müzik çalamaz."
 
 #: /var/azuracast/www/config/forms/playlist.php:39
 msgid "Playlist Name"
-msgstr ""
+msgstr "Çalma Listesi İsmi"
 
 #: /var/azuracast/www/config/forms/playlist.php:48
 msgid "Playlist Weight"
-msgstr ""
+msgstr "Çalma Listesi Önceliği"
 
 #: /var/azuracast/www/config/forms/playlist.php:49
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
-msgstr ""
+msgstr "Yüksek önceliğe sahip çalma listeleri daha sık çalınır."
 
 #: /var/azuracast/www/config/forms/playlist.php:53
 msgid "Low"
-msgstr ""
+msgstr "Düşük"
 
 #: /var/azuracast/www/config/forms/playlist.php:57
 msgid "High"
-msgstr ""
+msgstr "Yüksek"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "Song-Based Playlist"
-msgstr ""
+msgstr "Çalma Listesinden Çal"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "Bu sunucuda barındırılan müzik dosyalarını içeren bir çalma listesidir."
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "Remote URL Playlist"
-msgstr ""
+msgstr "Uzak Çalma Listesi URLsi"
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr ""
+msgstr "Uzak sunucudaki müzik dosyalarını içeren bir çalma listesidir."
 
 #: /var/azuracast/www/config/forms/playlist.php:93
 msgid "Song Playback Order"
-msgstr ""
+msgstr "Şarkı Çalma Sırası"
 
 #: /var/azuracast/www/config/forms/playlist.php:96
 msgid "Shuffled"
-msgstr ""
+msgstr "Karıştır (önerilir)"
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
-msgstr ""
+msgstr "Rastgele"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92
 msgid "Sequential"
-msgstr ""
+msgstr "Sıralı"
 
 #: /var/azuracast/www/config/forms/playlist.php:108
 msgid "Import Existing Playlist"
-msgstr ""
+msgstr "Çalma Listesi İçe Aktarma"
 
 #: /var/azuracast/www/config/forms/playlist.php:109
 msgid "Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported."
-msgstr ""
+msgstr "Mevcut bir PLS veya M3U biçimindeki çalma listesini içeri aktarabilirsiniz."
 
 #: /var/azuracast/www/config/forms/playlist.php:129
 msgid "Allow Requests from This Playlist"

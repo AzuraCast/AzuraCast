@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 13:20\n"
+"PO-Revision-Date: 2019-08-22 13:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -200,7 +200,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:72
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Die Konfiguration wurde gespeichert."
 
 #: /var/azuracast/www/src/Console/Command/ProcessMessageQueue.php:19
 msgid "Process the message queue."
@@ -208,7 +208,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Restore.php:52
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Backup-Pfad %s nicht gefunden!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"

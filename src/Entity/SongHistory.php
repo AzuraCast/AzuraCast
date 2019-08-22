@@ -12,6 +12,8 @@ use Psr\Http\Message\UriInterface;
  */
 class SongHistory
 {
+    use Traits\TruncateInts;
+
     /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
     public const PLAYBACK_DELAY_SECONDS = 5;
 
@@ -446,7 +448,7 @@ class SongHistory
      */
     public function setDeltaTotal(int $delta_total): void
     {
-        $this->delta_total = $delta_total;
+        $this->delta_total = $this->_truncateSmallInt($delta_total);
     }
 
     /**
@@ -462,7 +464,7 @@ class SongHistory
      */
     public function setDeltaPositive(int $delta_positive): void
     {
-        $this->delta_positive = $delta_positive;
+        $this->delta_positive = $this->_truncateSmallInt($delta_positive);
     }
 
     /**
@@ -478,7 +480,7 @@ class SongHistory
      */
     public function setDeltaNegative(int $delta_negative): void
     {
-        $this->delta_negative = $delta_negative;
+        $this->delta_negative = $this->_truncateSmallInt($delta_negative);
     }
 
     /**

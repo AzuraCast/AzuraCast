@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 14:01\n"
+"PO-Revision-Date: 2019-08-22 14:17\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -232,7 +232,7 @@ msgstr "Vordefinierte Fixtures laden (zu Entwicklungszwecken)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
-msgstr ""
+msgstr "Wird nur für die Aktualisierung auf eine markierte Version verwendet."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:37
 msgid "AzuraCast Setup"
@@ -308,43 +308,43 @@ msgstr "Datenbank erstellt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:67
 msgid "Retention policies updated."
-msgstr ""
+msgstr "Retention Policies aktualisiert."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:86
 msgid "Continuous queries created."
-msgstr ""
+msgstr "Continuous Queries erstellt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:105
 msgid "InfluxDB databases created."
-msgstr ""
+msgstr "InfluxDB-Datenbanken erstellt."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:19
 msgid "Run one or more scheduled synchronization tasks."
-msgstr ""
+msgstr "Einen oder mehrere geplante Synchronisationsaufgaben ausführen."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:23
 msgid "The task to run (%s)."
-msgstr ""
+msgstr "Die auszuführende Aufgabe (%s)."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
 #: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:85
 msgid "Record not found."
-msgstr ""
+msgstr "Eintrag nicht gefunden."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:42
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:96
 msgid "API Key updated."
-msgstr ""
+msgstr "API-Schlüssel aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 msgid "Edit API Key"
-msgstr ""
+msgstr "API-Schlüssel bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:57
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:123
 msgid "API Key deleted."
-msgstr ""
+msgstr "API-Schlüssel gelöscht."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:74
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:34
@@ -369,32 +369,32 @@ msgstr "Manuelles Backup ausführen"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
 msgid "Backup deleted."
-msgstr ""
+msgstr "Backup gelöscht."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:147
 msgid "Backup not found."
-msgstr ""
+msgstr "Backup nicht gefunden."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field updated."
-msgstr ""
+msgstr "Benutzerdefiniertes Feld aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field added."
-msgstr ""
+msgstr "Benutzerdefiniertes Feld hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 msgid "Edit Custom Field"
-msgstr ""
+msgstr "Benutzerdefiniertes Feld bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Add Custom Field"
-msgstr ""
+msgstr "Benutzerdefiniertes Feld hinzufügen"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:53
 msgid "Custom Field deleted."
-msgstr ""
+msgstr "Benutzerdefiniertes Feld gelöscht."
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:101
 msgid "Sync Task Output"
@@ -431,24 +431,24 @@ msgstr "Supervisord Log"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission updated."
-msgstr ""
+msgstr "Berechtigung aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission added."
-msgstr ""
+msgstr "Berechtigung hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 msgid "Edit Permission"
-msgstr ""
+msgstr "Berechtigung bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
-msgstr ""
+msgstr "Berechtigung hinzufügen"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 msgid "Permission deleted."
-msgstr ""
+msgstr "Berechtigung gelöscht."
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -459,23 +459,23 @@ msgstr "System Einstellungen"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station updated."
-msgstr ""
+msgstr "Station aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station added."
-msgstr ""
+msgstr "Station hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
 msgid "Edit Station"
-msgstr ""
+msgstr "Station bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:61
 msgid "Station deleted."
-msgstr ""
+msgstr "Station gelöscht."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
 msgid "Station not found."
-msgstr ""
+msgstr "Station nicht gefunden."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:80
 msgid "Clone Station: %s"
@@ -483,11 +483,11 @@ msgstr "Sender duplizieren: %s"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User updated."
-msgstr ""
+msgstr "Benutzer aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User added."
-msgstr ""
+msgstr "Benutzer hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:56
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
@@ -495,12 +495,12 @@ msgstr "Ein anderer Benutzer mit dieser e-Mail-Adresse ist bereits vorhanden. Bi
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 msgid "Edit User"
-msgstr ""
+msgstr "Benutzer bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "Add User"
-msgstr ""
+msgstr "Benutzer hinzufügen"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:75
 msgid "You cannot delete your own account."
@@ -508,11 +508,11 @@ msgstr "Sie können Ihr eigenes Konto nicht löschen."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:80
 msgid "User deleted."
-msgstr ""
+msgstr "Benutzer gelöscht."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:93
 msgid "User not found."
-msgstr ""
+msgstr "Benutzer nicht gefunden."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
@@ -526,7 +526,7 @@ msgstr "Erfolgreich eingeloggt."
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:93
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:114
 msgid "Record not found!"
-msgstr ""
+msgstr "Eintrag nicht gefunden!"
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:91
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:98
@@ -2806,7 +2806,11 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "WebHooks senden automatisch einen HTTP POST Request an die URL, die du eingegeben hast, um \n"
+"                sie jedes Mal zu benachrichtigen, wenn einer der Auslöser, die du aktiviert hast, auf deinem Sender ausgelöst wird. Der Inhalt der POST Nachricht\n"
+"                entspricht der <a href=\"%s\" target=\"_blank\">Now-Playing-API-Antwort</a> deines Senders. \n"
+"                Um schnell verarbeitet zu werden, haben WebHooks eine kurze Timeout Zeit. Der antwortende Dienst sollte also darauf optimiert sein,\n"
+"                einen Request in unter 2 Sekunden zu verarbeiten."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"
@@ -2895,7 +2899,21 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Schritte zur Konfiguration einer Twitter-Anwendung:<br>\n"
+"\n"
+"                <ol type=\"1\">\n"
+"\n"
+"                    <li>Eine neue App auf der <a href=\"%s\" target=\"_blank\">Twitter-App-Seite</a> erstellen. \n"
+"\n"
+"                    Verwende die Basis-URL dieser Installation als Anwendungs-URL.</li>\n"
+"\n"
+"                    <li>In der neu erstellten Anwendung auf \"Keys and tokens\" klicken.</li>\n"
+"\n"
+"                    <li>Am unteren Rand der Seite auf \"Create\" klicken.</li>\n"
+"\n"
+"                </ol>\n"
+"\n"
+"                <p>Die Informationen der Seite in die folgenden Felder eintragen:</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -2964,7 +2982,7 @@ msgstr "System-Logs"
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:3
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:19
 msgid "Audit Log"
-msgstr ""
+msgstr "Audit-Log"
 
 #: /var/azuracast/www/config/menus/admin.php:42
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8

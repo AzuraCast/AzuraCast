@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-21 22:40\n"
+"PO-Revision-Date: 2019-08-22 11:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -31,31 +31,31 @@ msgstr "System-Logs anzeigen"
 
 #: /var/azuracast/www/src/Acl.php:187
 msgid "Administer Settings"
-msgstr ""
+msgstr "Einstellungen verwalten"
 
 #: /var/azuracast/www/src/Acl.php:188
 msgid "Administer API Keys"
-msgstr ""
+msgstr "API-Schlüssel verwalten"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Administer Users"
-msgstr ""
+msgstr "Benutzer verwalten"
 
 #: /var/azuracast/www/src/Acl.php:190
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Berechtigungen verwalten"
 
 #: /var/azuracast/www/src/Acl.php:191
 msgid "Administer Stations"
-msgstr ""
+msgstr "Stationen verwalten"
 
 #: /var/azuracast/www/src/Acl.php:192
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Benutzerdefinierte Fehler verwalten"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Administer Backups"
-msgstr ""
+msgstr "Backups verwalten"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Page"
@@ -71,7 +71,7 @@ msgstr "Station-Protokolle anzeigen"
 
 #: /var/azuracast/www/src/Acl.php:200
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Stations-Profil verwalten"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Manage Station Broadcasting"

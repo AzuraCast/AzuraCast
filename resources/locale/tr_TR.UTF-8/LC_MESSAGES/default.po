@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 04:30\n"
+"PO-Revision-Date: 2019-08-22 04:40\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -4452,237 +4452,237 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:59
 msgid "Location"
-msgstr ""
+msgstr "Konum"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:69
 msgid "Mobile Device"
-msgstr ""
+msgstr "Mobil Cihaz"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:73
 msgid "Desktop Device"
-msgstr ""
+msgstr "Masaüstü Cihazı"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:85
 msgid "Unknown"
-msgstr ""
+msgstr "Bilinmiyor"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:93
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr ""
+msgstr "Bu ürün MaxMind tarafından oluşturulan GeoLite2 verilerini içerir. Daha geniş bilgi için %s internet adresini ziyaret edebilirsiniz."
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
-msgstr ""
+msgstr "Saat"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
-msgstr ""
+msgstr "En İyi Performanslı Şarkılar"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:57
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:99
 msgid "in the last 48 hours"
-msgstr ""
+msgstr "son 48 saatte"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:68
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:110
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:41
 msgid "Change"
-msgstr ""
+msgstr "Değiştir"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:69
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:111
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:156
 msgid "Song"
-msgstr ""
+msgstr "Şarkı"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:98
 msgid "Worst Performing Songs"
-msgstr ""
+msgstr "En Kötü Performanslı Şarkılar"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:143
 msgid "Most Played Songs"
-msgstr ""
+msgstr "En Çok Çalınan Şarkılar"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:144
 msgid "in the last month"
-msgstr ""
+msgstr "geçen ayda"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:155
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:39
 msgid "Plays"
-msgstr ""
+msgstr "Oynatılma"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:32
 msgid "Filename"
-msgstr ""
+msgstr "Dosya Adı"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:34
 msgid "Length Text"
-msgstr ""
+msgstr "Uzunluk"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:35
 msgid "Playlist(s)"
-msgstr ""
+msgstr "Çalma Listesi"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:36
 msgid "Joins"
-msgstr ""
+msgstr "Katılanlar"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:37
 msgid "Losses"
-msgstr ""
+msgstr "Kayıplar"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:38
 msgid "Total"
-msgstr ""
+msgstr "Toplam"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:40
 msgid "Play %"
-msgstr ""
+msgstr "Oynama Yüzdesi"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:41
 msgid "Ratio"
-msgstr ""
+msgstr "Oran"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:18
 msgid "Date Requested"
-msgstr ""
+msgstr "Talep Edilen Tarih"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:19
 msgid "Date Played"
-msgstr ""
+msgstr "Oynatılan Tarih"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:21
 msgid "Requester IP"
-msgstr ""
+msgstr "Talep Eden IP"
 
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:35
 msgid "Not Played"
-msgstr ""
+msgstr "Oynatılmadı"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
 msgid "Report Not Available"
-msgstr ""
+msgstr "Rapor Kullanılamaz"
 
 #: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
-msgstr ""
+msgstr "Sistem yöneticisi IP tabanlı ayrıntılı dinleyici bilgilerini toplamayı devre dışı bıraktığı için bu rapor bulunmuyor."
 
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Broadcast"
-msgstr ""
+msgstr "Canlı Yayın"
 
 #: /var/azuracast/www/templates/stations/sidebar.js.phtml:19
 msgid "Please wait..."
-msgstr ""
+msgstr "Lütfen bekleyin..."
 
 #: /var/azuracast/www/templates/stations/sidebar.phtml:16
 msgid "Station Time"
-msgstr ""
+msgstr "Radyo Saati"
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
-msgstr ""
+msgstr "Bu radyo için DJ hesapları şu an devre dışıdır. Etkinleştirmek için aşağıdaki butona tıklayın."
 
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:5
 msgid "Enable Streaming"
-msgstr ""
+msgstr "Canlı Yayını Etkinleştir"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:27
 msgid "Notes"
-msgstr ""
+msgstr "Notlar"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\\" silmek istediğinizden emin misiniz?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
-msgstr ""
+msgstr "Canlı Yayın Bilgileri"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:55
 msgid "IceCast Clients"
-msgstr ""
+msgstr "IceCast Bilgileri"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:57
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:72
 msgid "Server"
-msgstr ""
+msgstr "Sunucu"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr ""
+msgstr "<code>%s</code> IP adresiniz üzerinden yayına bağlanabilirsiniz."
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:78
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:66
 msgid "Mount Name"
-msgstr ""
+msgstr "Bağlantı Noktası"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:70
 msgid "ShoutCast v1 Clients"
-msgstr ""
+msgstr "ShoutCast v1 Bilgileri"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:79
 msgid "%d (%d for some clients)"
-msgstr ""
+msgstr "%d (Bazı yayın yazılımları için %d portunu kullanmanız gerekebilir)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:84
 msgid "(DJ username and password separated by a colon)"
-msgstr ""
+msgstr "(DJ kullanıcı adı iki nokta üst üste şifre şeklinde yazmalısınız)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:88
 msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
-msgstr ""
+msgstr "Canlı yayın programlarına ait dökümanlara ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz."
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:7
 msgid "Select the type of web hook to create."
-msgstr ""
+msgstr "Oluşturulacak web kancası türünü seçin."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:8
 msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
-msgstr ""
+msgstr "Web kancaları harici web servislerine bağlanmanıza ve radyonuzdaki değişiklikleri onlara yansıtmasınıza izin verir."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Type"
-msgstr ""
+msgstr "Tür"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:26
 msgid "Triggers"
-msgstr ""
+msgstr "Tetikleyiciler"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Trigger the web hook manually and view the raw response."
-msgstr ""
+msgstr "Web kancasını manuel tetikleyin ve ham cevabı görüntüleyin."
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:36
 msgid "Test"
-msgstr ""
+msgstr "Deneme"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:37
 msgid "Delete web hook \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\\" web kancasını silmek istediğinizden emin misiniz?"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."
-msgstr ""
+msgstr "Aradığınız sayfa bulunamadı!"
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:3
 msgid "Select..."
-msgstr ""
+msgstr "Seç..."
 
 #: /var/azuracast/www/templates/system/form_edit.js.phtml:4
 msgid "No results found!"
-msgstr ""
+msgstr "Sonuç bulunamadı!"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:66
 msgid "Errors were encountered when trying to save changes:"
-msgstr ""
+msgstr "Değişiklikleri kaydetmeye çalışırken hatalarla karşılaşıldı:"
 
 #: /var/azuracast/www/templates/system/form_page.phtml:69
 msgid "General"

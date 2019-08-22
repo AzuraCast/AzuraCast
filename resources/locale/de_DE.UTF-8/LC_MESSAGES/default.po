@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 12:00\n"
+"PO-Revision-Date: 2019-08-22 13:10\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -111,44 +111,44 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
-msgstr ""
+msgstr "Medien aus Backup ausschließen."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:61
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "AzuraCast Backup"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:62
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Bitte warten, während ein Backup erstellt wird..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:65
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Erstelle temporäre Verzeichnisse..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:69
 #: /var/azuracast/www/src/Console/Command/Backup.php:75
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "Verzeichnis \"%s\" wurde nicht erstellt"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:82
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "Sichern von MariaDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:107
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "Sichern von InfluxDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:147
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Backup-Archiv wird erstellt..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:185
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Bereinige temporäre Dateien..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:196
 msgid "Backup complete in %.2f seconds."
-msgstr ""
+msgstr "Backup in %.2f Sekunden abgeschlossen."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:230
 msgid "Backup process error"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 13:50\n"
+"PO-Revision-Date: 2019-08-22 14:01\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -192,11 +192,11 @@ msgstr "Lokalisierungsdaten importiert."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
 msgid "Migrate existing configuration to new INI format if any exists."
-msgstr ""
+msgstr "Bestehende Konfiguration in neues INI-Format migrieren, falls vorhanden."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:31
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Konfiguration bereits eingerichtet."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:72
 msgid "Configuration successfully written."
@@ -204,7 +204,7 @@ msgstr "Die Konfiguration wurde gespeichert."
 
 #: /var/azuracast/www/src/Console/Command/ProcessMessageQueue.php:19
 msgid "Process the message queue."
-msgstr ""
+msgstr "Bearbeiten der Nachrichtenschlange."
 
 #: /var/azuracast/www/src/Console/Command/Restore.php:52
 msgid "Backup path %s not found!"
@@ -220,7 +220,7 @@ msgstr "Konto nicht gefunden."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:22
 msgid "Run all general AzuraCast setup steps."
-msgstr ""
+msgstr "Ausführen aller allgemeinen AzuraCast-Setup-Schritte."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:23
 msgid "Only update the existing installation."
@@ -228,7 +228,7 @@ msgstr "Nur die vorhandene Installation aktualisieren."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr ""
+msgstr "Vordefinierte Fixtures laden (zu Entwicklungszwecken)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
@@ -272,7 +272,7 @@ msgstr "Generiere Datenbank Proxy Klassen"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
-msgstr ""
+msgstr "Installiere Daten-Fixtures"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:80
 msgid "Refreshing All Stations"
@@ -284,27 +284,27 @@ msgstr "AzuraCast ist aktuell!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:108
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "AzuraCast-Installation abgeschlossen!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:109
 msgid "Visit %s to complete setup."
-msgstr ""
+msgstr "Einrichtung unter %s abschließen."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."
-msgstr ""
+msgstr "Installiere Fixtures für Demo / lokale Entwicklung."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:82
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Fixtures geladen."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."
-msgstr ""
+msgstr "Initiale Einrichtung von InfluxDB."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:33
 msgid "Database created."
-msgstr ""
+msgstr "Datenbank erstellt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:67
 msgid "Retention policies updated."

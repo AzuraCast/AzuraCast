@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:40\n"
+"PO-Revision-Date: 2019-08-22 22:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -268,7 +268,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:68
 msgid "Generating Database Proxy Classes"
-msgstr ""
+msgstr "Genereren van database proxy-klassen"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
@@ -495,12 +495,12 @@ msgstr "Er bestaat al een andere gebruiker met dit e-mailadres. Gelieve het e-ma
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 msgid "Edit User"
-msgstr ""
+msgstr "Wijzig gebruiker"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "Add User"
-msgstr ""
+msgstr "Gebruiker toevoegen"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:75
 msgid "You cannot delete your own account."
@@ -508,11 +508,11 @@ msgstr "U kunt uw eigen account niet verwijderen."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:80
 msgid "User deleted."
-msgstr ""
+msgstr "Gebruiker verwijderd."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:93
 msgid "User not found."
-msgstr ""
+msgstr "Gebruiker niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
@@ -526,32 +526,32 @@ msgstr "Succesvol ingelogd."
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:93
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:114
 msgid "Record not found!"
-msgstr ""
+msgstr "Record niet gevonden!"
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:91
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:98
 msgid "Changes saved successfully."
-msgstr ""
+msgstr "Wijzigingen succesvol opgeslagen."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:111
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:116
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:119
 msgid "Record deleted successfully."
-msgstr ""
+msgstr "Record succesvol verwijderd."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:111
 msgid "You cannot remove yourself."
-msgstr ""
+msgstr "Je kunt jezelf niet verwijderen."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:59
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:158
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:27
 msgid "This station does not accept requests currently."
-msgstr ""
+msgstr "Dit station accepteert momenteel geen requests."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:168
 msgid "Request submitted successfully."
-msgstr ""
+msgstr "Request succesvol ingediend."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
 msgid "Station restarted."

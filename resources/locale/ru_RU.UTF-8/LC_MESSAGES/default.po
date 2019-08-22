@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:30\n"
+"PO-Revision-Date: 2019-08-22 08:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1733,7 +1733,7 @@ msgstr "Источник"
 #: /var/azuracast/www/config/forms/playlist.php:206
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:56
 msgid "Scheduling"
-msgstr "Планирование"
+msgstr "Расписание"
 
 #: /var/azuracast/www/config/forms/playlist.php:26
 msgid "Enable Playlist"
@@ -2472,7 +2472,7 @@ msgstr "Продолжительность кроссфейда (секунды)
 
 #: /var/azuracast/www/config/forms/station.php:246
 msgid "Number of seconds to overlap songs."
-msgstr "Количество секунд для перекрытия песен."
+msgstr "Продолжительность нахлёста песен в секундах."
 
 #: /var/azuracast/www/config/forms/station.php:258
 msgid "Apply Compression and Normalization"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 13:41\n"
+"PO-Revision-Date: 2019-08-22 13:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -103,11 +103,11 @@ msgstr "Stations-WebHooks verwalten"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:25
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr ""
+msgstr "Sichere die AzuraCast-Datenbank und die Statistiken (+ optional die Medien)."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr ""
+msgstr "Der absolute oder relative (relativ zu /var/azuracast/backups) Speicherpfad für Backups."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
@@ -806,32 +806,32 @@ msgstr "Playlist hinzufügen"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Playlist deleted."
-msgstr ""
+msgstr "Playlist gelöscht."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay updated."
-msgstr ""
+msgstr "Remote-Relay aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay added."
-msgstr ""
+msgstr "Remote-Relay hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 msgid "Edit Remote Relay"
-msgstr ""
+msgstr "Remote-Relay bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
-msgstr ""
+msgstr "Remote-Relay hinzufügen"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
 msgid "Remote Relay deleted."
-msgstr ""
+msgstr "Remote-Relay gelöscht."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:64
 msgid "This record cannot be edited."
-msgstr ""
+msgstr "Dieser Eintrag kann nicht bearbeitet werden."
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:57
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
@@ -900,50 +900,50 @@ msgstr "Sie können nun Streamer (DJ) Konten einrichten."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer updated."
-msgstr ""
+msgstr "Streamer aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer added."
-msgstr ""
+msgstr "Streamer hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 msgid "Edit Streamer"
-msgstr ""
+msgstr "Streamer bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
-msgstr ""
+msgstr "Streamer hinzufügen"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 msgid "Streamer deleted."
-msgstr ""
+msgstr "Streamer gelöscht."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 msgid "Web Hook added."
-msgstr ""
+msgstr "WebHook hinzugefügt."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
-msgstr ""
+msgstr "WebHook hinzufügen"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
 msgid "Web Hook updated."
-msgstr ""
+msgstr "WebHook aktualisiert."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:83
 msgid "Edit Web Hook"
-msgstr ""
+msgstr "WebHook bearbeiten"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web hook enabled."
-msgstr ""
+msgstr "WebHook aktiviert."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web Hook disabled."
-msgstr ""
+msgstr "WebHook deaktiviert."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
@@ -951,7 +951,7 @@ msgstr "WebHook Test-Ausgabe"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook deleted."
-msgstr ""
+msgstr "WebHook gelöscht."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
@@ -983,15 +983,15 @@ msgstr "SHOUTcast-Konfiguration"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:22
 msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
+msgstr "Suchmaschinen-Crawler dürfen diese Funktion nicht verwenden."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
 msgid "The song ID you specified could not be found in the station."
-msgstr ""
+msgstr "Die angegebene Song-ID konnte nicht gefunden werden."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
 msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
+msgstr "Die angegebene Song-ID kann nicht für diese Station angefordert werden."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
@@ -999,7 +999,7 @@ msgstr "Zu viele Anfragen! Bitte warte, bevor du eine andere einreichst."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:106
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
+msgstr "Doppelte Anfrage: Dieser Song wurde bereits angefordert und wird in Kürze gespielt."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
@@ -2719,7 +2719,7 @@ msgstr "Rollen"
 #: /var/azuracast/www/config/forms/webhook/tunein.php:17
 #: /var/azuracast/www/config/forms/webhook/twitter.php:99
 msgid "Web Hook Name"
-msgstr ""
+msgstr "WebHook-Name"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:28

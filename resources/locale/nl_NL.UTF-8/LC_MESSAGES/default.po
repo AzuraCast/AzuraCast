@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:20\n"
+"PO-Revision-Date: 2019-08-22 06:30\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -31,31 +31,31 @@ msgstr "Bekijk systeemlogs"
 
 #: /var/azuracast/www/src/Acl.php:187
 msgid "Administer Settings"
-msgstr ""
+msgstr "Instellingen beheren"
 
 #: /var/azuracast/www/src/Acl.php:188
 msgid "Administer API Keys"
-msgstr ""
+msgstr "API-sleutels beheren"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Administer Users"
-msgstr ""
+msgstr "Gebruikers beheren"
 
 #: /var/azuracast/www/src/Acl.php:190
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Rollen beheren"
 
 #: /var/azuracast/www/src/Acl.php:191
 msgid "Administer Stations"
-msgstr ""
+msgstr "Stations beheren"
 
 #: /var/azuracast/www/src/Acl.php:192
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Aangepaste velden beheren"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Administer Backups"
-msgstr ""
+msgstr "Back-ups beheren"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Page"
@@ -71,35 +71,35 @@ msgstr "Bekijk station logs"
 
 #: /var/azuracast/www/src/Acl.php:200
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Beheer stationsprofiel"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Beheer uitzending van station"
 
 #: /var/azuracast/www/src/Acl.php:202
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Beheer streamers van station"
 
 #: /var/azuracast/www/src/Acl.php:203
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Beheer mount points van station"
 
 #: /var/azuracast/www/src/Acl.php:204
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Beheer externe relays van station"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Manage Station Media"
-msgstr ""
+msgstr "Beheer media van station"
 
 #: /var/azuracast/www/src/Acl.php:206
 msgid "Manage Station Automation"
-msgstr ""
+msgstr "Beheer automatie van station"
 
 #: /var/azuracast/www/src/Acl.php:207
 msgid "Manage Station Web Hooks"
-msgstr ""
+msgstr "Beheer webhooks van station"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:25
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
@@ -156,7 +156,7 @@ msgstr "Back-up proces fout"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:20
 msgid "List all settings in the AzuraCast settings database."
-msgstr ""
+msgstr "Lijst van alle instellingen in de AzuraCast instellingen database."
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:29
 msgid "AzuraCast Settings"
@@ -172,11 +172,11 @@ msgstr "Instellingswaarde"
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:17
 msgid "Generate the translation locale file."
-msgstr ""
+msgstr "Genereer het vertalingsbestand."
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:50
 msgid "Locales generated."
-msgstr ""
+msgstr "Talen gegenereerd."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:17
 msgid "Convert translated locale files into PHP arrays."
@@ -913,37 +913,37 @@ msgstr "Wijzig streamer"
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
-msgstr ""
+msgstr "Streamer toevoegen"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 msgid "Streamer deleted."
-msgstr ""
+msgstr "Streamer verwijderd."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 msgid "Web Hook added."
-msgstr ""
+msgstr "Webhook toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
-msgstr ""
+msgstr "Webhook toevoegen"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
 msgid "Web Hook updated."
-msgstr ""
+msgstr "Webhook bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:83
 msgid "Edit Web Hook"
-msgstr ""
+msgstr "Wijzig webhook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web hook enabled."
-msgstr ""
+msgstr "Webhook ingeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web Hook disabled."
-msgstr ""
+msgstr "Webhook uitgeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
@@ -951,7 +951,7 @@ msgstr "Web Hook test uitvoer"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook deleted."
-msgstr ""
+msgstr "Webhook verwijderd."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
@@ -983,7 +983,7 @@ msgstr "SHOUTcast configuratie"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:22
 msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
+msgstr "Zoekmachine crawlers zijn niet toegestaan om deze functie te gebruiken."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
 msgid "The song ID you specified could not be found in the station."
@@ -999,7 +999,7 @@ msgstr "U heeft een verzoek te kort ingediend! Wacht even voordat u een andere i
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:106
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
+msgstr "Dit nummer is al aangevraagd en zal binnenkort worden afgespeeld."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."

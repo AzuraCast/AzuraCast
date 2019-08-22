@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 04:50\n"
+"PO-Revision-Date: 2019-08-22 05:00\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3881,227 +3881,227 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:27
 msgid "Let's get started by creating your Super Administrator account."
-msgstr ""
+msgstr "Süper yönetici hesabınızı oluşturarak başlayalım."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:28
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
-msgstr ""
+msgstr "Bu hesap sisteme tam erişime sahip olacak ve kurulumun geri kalanında otomatik olarak oturum açmış olacaksınız."
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:19
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:19
 msgid "Create Station"
-msgstr ""
+msgstr "Radyo Oluştur"
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:35
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
-msgstr ""
+msgstr "Yayın ortamınız hakkında biraz bilgi vererek kurulum işlemini tamamlayın. Bu ayarları daha sonra yönetim panelinden değiştirilebilir."
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:42
 msgid "Customize AzuraCast Settings"
-msgstr ""
+msgstr "AzuraCast Ayarlarını Özelleştir"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:34
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
-msgstr ""
+msgstr "İlk radyo istasyonunuzu aşğıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz."
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:41
 msgid "Create a New Radio Station"
-msgstr ""
+msgstr "Yeni Bir Radyo Oluştur"
 
 #: /var/azuracast/www/templates/main.phtml:41
 msgid "Skip to main content"
-msgstr ""
+msgstr "Ana İçeriğe Atla"
 
 #: /var/azuracast/www/templates/main.phtml:45
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Kenar Çubuğunu Değiştir"
 
 #: /var/azuracast/www/templates/main.phtml:57
 msgid "Toggle Menu"
-msgstr ""
+msgstr "Menüyü Değiştir"
 
 #: /var/azuracast/www/templates/main.phtml:72
 msgid "System Administration"
-msgstr ""
+msgstr "Sistem Yönetimi"
 
 #: /var/azuracast/www/templates/main.phtml:85
 msgid "Switch Theme"
-msgstr ""
+msgstr "Temayı Değiştir"
 
 #: /var/azuracast/www/templates/main.phtml:97
 msgid "Help"
-msgstr ""
+msgstr "Yardım"
 
 #: /var/azuracast/www/templates/main.phtml:105
 msgid "End Session"
-msgstr ""
+msgstr "Oturumu Sonlandır"
 
 #: /var/azuracast/www/templates/main.phtml:112
 msgid "Sign Out"
-msgstr ""
+msgstr "Çıkış Yap"
 
 #: /var/azuracast/www/templates/main.phtml:152
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr ""
+msgstr "AzuraCast\\'i beğendiniz mi? <a href=\\\"%s\\\" target=\\\"_blank\\\">Destek olmak için bağış yapın!</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
-msgstr ""
+msgstr "Maskot %s tarafından dizayn edildi."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:3
 msgid "Need Help?"
-msgstr ""
+msgstr "Yardıma Mı İhtiyacınız Var?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:6
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr ""
+msgstr "SSS belgelerine ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">destek dökümanları</a> sayfasına göz atabilirsiniz."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:8
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr ""
+msgstr "Bir bug veya hata yaşıyorsanız aşağıdaki bağlantıyı kullanarak GitHub sorunu gönderebilirsiniz."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:10
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
-msgstr ""
+msgstr "<b>%s</b> mevcut kurulum türünüzdür ve yeni bir sorun oluştururken bunu eklediğinizden emin olun."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "Add New GitHub Issue"
-msgstr ""
+msgstr "Yeni GitHub Sorunu"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
-msgstr ""
+msgstr "Günlüğü Görüntüle"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr ""
+msgstr "Günlüğü en alta otomatik kaydır"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6
 msgid "Automated Playlist Assignment"
-msgstr ""
+msgstr "Otomatik Oynatma Listesi Ataması"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:9
 msgid "Based on the previous performance of your station's songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists."
-msgstr ""
+msgstr "%s şarkılarınızın performansına bağlı olarak en yüksek öncelikli çalma listelerinde en iyi şekilde yer alan çalma listeleriniz arasında otomatik olarak şarkıları eşit şekilde dağıtacaktır."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:11
 msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
-msgstr ""
+msgstr "Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda \\\"Etkinleştir\\\" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:13
 msgid "Run Automated Assignment"
-msgstr ""
+msgstr "Otomatik Atamayı Çalıştır"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:19
 msgid "Configure Automated Assignment"
-msgstr ""
+msgstr "Otomatik Atamayı Yapılandır"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:28
 msgid "Delete {NUM} media file(s)?"
-msgstr ""
+msgstr "{NUM} adet müzik dosyası silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:37
 msgid "Files removed:"
-msgstr ""
+msgstr "Silinen Dosyalar: "
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:76
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Seçilen dosyalar çalma listesinde güncellendi: "
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:78
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Seçilen dosyalar çalma listesiden silindi: "
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:147
 msgid "Album Artwork"
-msgstr ""
+msgstr "Albüm"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:159
 msgid "Rename"
-msgstr ""
+msgstr "Yeniden Adlandır"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:246
 msgid "Select"
-msgstr ""
+msgstr "Seç"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:430
 msgid "Home"
-msgstr ""
+msgstr "Anasayfa"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:33
 msgid "%s of %s Used (%d Files)"
-msgstr ""
+msgstr "Kullanılan Depolama Alanı: %s / %s (%d Dosya)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:43
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr ""
+msgstr "Ayrıca dosyaları SFTP kullanarak yüklemek için <a href=\\\"%s\\\" target=\\\"_blank\\\">buradaki</a> dökümanı inceleyebilirsiniz. Yeni yüklenen dosyalar birkaç dakika içinde otomatik olarak işlenecektir."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:52
 msgid "Drag files here to upload to this folder or "
-msgstr ""
+msgstr "Bu klasöre müzik yüklemek için dosyaları buraya sürekleyip bırakın veya "
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:65
 msgid "Set Playlists"
-msgstr ""
+msgstr "Çalma Listesine Ekle"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:82
 msgid "New Playlist"
-msgstr ""
+msgstr "Yeni Çalma Listesi"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:93
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Çalma Listesini Temizle"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:97
 msgid "Move"
-msgstr ""
+msgstr "Taşı"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:105
 msgid "New Folder"
-msgstr ""
+msgstr "Yeni Klasör"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:117
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:33
 msgid "Length"
-msgstr ""
+msgstr "Uzunluk"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:122
 msgid "Modified"
-msgstr ""
+msgstr "Değiştirme Zamanı"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:139
 msgid "New Directory"
-msgstr ""
+msgstr "Yeni Dizin"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:144
 msgid "Directory Name"
-msgstr ""
+msgstr "Dizin İsmi"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:150
 msgid "Create Directory"
-msgstr ""
+msgstr "Dizin Oluştur"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:162
 msgid "Move {{ selected_files }} File(s) to"
-msgstr ""
+msgstr "{{ selected_files }} şuraya taşı"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:168
 msgid "Back"
-msgstr ""
+msgstr "Geri"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
-msgstr ""
+msgstr "Mevcut Günlükler"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:8
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
-msgstr ""
+msgstr "Bağlantı noktaları dinleyicilerin radyonuza nasıl bağlayıp dinlediğini gösterir. Her bir bağlantı noktası farklı ses formatı veya kalitede olabilir. Bağlantı noktalarını kullanarak limitsiz internetli dinleyiciler için yüksek kaliteli bir yayın belirleyebilir veya telefon kullanıcıları için düşük kaliteli bir yayın ayarlayabilirsiniz."
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:25
 msgid "Mount Point"
@@ -4109,27 +4109,27 @@ msgstr "Bağlantı Noktası"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 msgid "Delete mount point \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\\" bağlantı noktası silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:43
 msgid "Default Mount"
-msgstr ""
+msgstr "Varsayılan Bağlantı Noktası"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:24
 msgid "All Playlists"
-msgstr ""
+msgstr "Tüm Çalma Listeleri"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:27
 msgid "Schedule View"
-msgstr ""
+msgstr "Zamanlama Görünümü"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:57
 msgid "# Songs"
-msgstr ""
+msgstr "# Şarkılar"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 msgid "Delete playlist \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\\" çalma listesi silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:70
 msgid "More"

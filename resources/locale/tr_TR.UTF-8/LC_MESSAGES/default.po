@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:00\n"
+"PO-Revision-Date: 2019-08-22 06:10\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3219,12 +3219,12 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:36
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:34
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:28
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:43
 msgid "Revoke"
-msgstr ""
+msgstr "Geri Al"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
 msgid "Insert"
@@ -3249,51 +3249,51 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:37
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:42
 msgid "Update"
-msgstr ""
+msgstr "Güncelle"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:58
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:59
 msgid "Changes"
-msgstr ""
+msgstr "Değişiklikler"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:83
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:60
 msgid "Today"
-msgstr ""
+msgstr "Bugün"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:84
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:96
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:61
 msgid "Yesterday"
-msgstr ""
+msgstr "Dün"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:85
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:97
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
 msgid "Last 7 Days"
-msgstr ""
+msgstr "Son 7 Gün"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:88
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:99
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:65
 msgid "This Month"
-msgstr ""
+msgstr "Bu Ay"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:89
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:100
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:66
 msgid "Last Month"
-msgstr ""
+msgstr "Geçen Ay"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:41
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:39
 msgid "Date/Time"
-msgstr ""
+msgstr "Tarih/Saat"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:42
 msgid "User"
@@ -3344,38 +3344,38 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
-msgstr ""
+msgstr "Otomatik Yedeklemeler"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:78
 msgid "Last run: %s"
-msgstr ""
+msgstr "Son Çalıştırma: %s"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
-msgstr ""
+msgstr "Asla Çalıştırma"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:38
 #: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
-msgstr ""
+msgstr "Yapılandırma"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:43
 #: /var/azuracast/www/templates/admin/backups/index.phtml:130
 msgid "Most Recent Backup Log"
-msgstr ""
+msgstr "En Yeni Yedekleme Günlüğü"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:64
 msgid "Restoring Backups"
-msgstr ""
+msgstr "Yedekleri Geri Yükleme"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Kendi bilgisayarınızdan bir yedek geri yüklemek için aşağıdakileri çalıştırın:"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Bir yedeğin geri yüklenmesinin mevcut veritabanınızı temizleyeceğini unutmayın. Hiçbir zaman güvenilmeyen kullanıcılardan yedekleme dosyalarını geri yüklemeyin."
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 msgid "Backup"
@@ -3383,96 +3383,96 @@ msgstr "Yedek"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Last Modified"
-msgstr ""
+msgstr "Değişiklik Tarihi"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
 #: /var/azuracast/www/templates/stations/files/index.phtml:121
 msgid "Size"
-msgstr ""
+msgstr "Boyut"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:110
 msgid "Download"
-msgstr ""
+msgstr "İndir"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\ yedeklemesi silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
-msgstr ""
+msgstr "Yedekleme Anasayfası"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:25
 msgid "Backup was run successfully."
-msgstr ""
+msgstr "Yedekleme başarıyla çalıştırıldı."
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:27
 msgid "Backup encountered errors when running. Check the log below for details."
-msgstr ""
+msgstr "Yedekleme çalışırken hatalarla karşılaştı. Ayrıntılar için aşağıdaki günlüğü kontrol edin."
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\ özel alan silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
-msgstr ""
+msgstr "Sunucu Durumu"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
-msgstr ""
+msgstr "Şimdiki CPU Yükü"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
-msgstr ""
+msgstr "15 Dakikalık CPU Yükü"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"
-msgstr ""
+msgstr "Kullanılan Alan: %s / %s"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:68
 msgid "Synchronization Tasks"
-msgstr ""
+msgstr "Senkronizasyon Görevleri"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:83
 msgid "Run Task"
-msgstr ""
+msgstr "Görevi Çalıştır"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast Kuruldu!"
 
 #: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
-msgstr ""
+msgstr "SHOUTcast 2 DNAS kuruludur ve kullanıma hazırdır."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:16
 msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
-msgstr ""
+msgstr "Docker kullandığınız için bazı sistem günlüklerine yalnızca sunudaki SSH oturumuyla erişilebilir. Terminalden Docker günlüklerine erişmek için <code>%s</code> komutunu çalıştırabilirsiniz."
 
 #: /var/azuracast/www/templates/admin/logs/index.phtml:31
 msgid "Logs by Station"
-msgstr ""
+msgstr "Radyo Günlükleri"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\ yetki silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "This role cannot be deleted."
-msgstr ""
+msgstr "Bu yetki silinemez!"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:45
 msgid "Global"
-msgstr ""
+msgstr "Global"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:20
 msgid "Relay"
-msgstr ""
+msgstr "Yönlendirme"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
-msgstr ""
+msgstr "Genel"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"

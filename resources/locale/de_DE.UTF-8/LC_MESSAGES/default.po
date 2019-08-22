@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 13:10\n"
+"PO-Revision-Date: 2019-08-22 13:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -152,15 +152,15 @@ msgstr "Backup in %.2f Sekunden abgeschlossen."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:230
 msgid "Backup process error"
-msgstr ""
+msgstr "Fehler beim Backup-Prozess"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:20
 msgid "List all settings in the AzuraCast settings database."
-msgstr ""
+msgstr "Alle Einstellungen in der AzuraCast-Einstellungsdatenbank auflisten."
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:29
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "AzuraCast-Einstellungen"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:38
 msgid "Setting Key"
@@ -172,23 +172,23 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:17
 msgid "Generate the translation locale file."
-msgstr ""
+msgstr "Generiere Lokalisierungs-/Übersetzungsdaten."
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:50
 msgid "Locales generated."
-msgstr ""
+msgstr "Lokalisierungsdaten generiert."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:17
 msgid "Convert translated locale files into PHP arrays."
-msgstr ""
+msgstr "Konvertiere übersetzte Lokalisierungsdaten in PHP-Arrays."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:41
 msgid "Imported locale: %s"
-msgstr ""
+msgstr "Importierte Sprache: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:45
 msgid "Locales imported."
-msgstr ""
+msgstr "Lokalisierungsdaten importiert."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
 msgid "Migrate existing configuration to new INI format if any exists."

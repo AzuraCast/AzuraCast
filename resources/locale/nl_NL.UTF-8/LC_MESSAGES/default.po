@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:10\n"
+"PO-Revision-Date: 2019-08-22 06:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -103,7 +103,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:25
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr ""
+msgstr "Back-up de AzuraCast database en statistieken (en optionele media)."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
@@ -252,7 +252,7 @@ msgstr "Installatiemethode: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:46
 msgid "Running in update mode."
-msgstr ""
+msgstr "Wordt uitgevoerd in update modus."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:49
 msgid "Migrating Legacy Configuration"
@@ -260,7 +260,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:55
 msgid "Setting Up InfluxDB"
-msgstr ""
+msgstr "InfluxDB instellen"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:61
 msgid "Running Database Migrations"
@@ -272,23 +272,23 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
-msgstr ""
+msgstr "Data Fixtures installeren"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:80
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "Alle stations verversen"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:100
 msgid "AzuraCast is now updated to the latest version!"
-msgstr ""
+msgstr "AzuraCast is bijgewerkt naar de laatste versie!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:108
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "De installatie van AzuraCast is voltooid!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:109
 msgid "Visit %s to complete setup."
-msgstr ""
+msgstr "Bezoek %s om de setup te voltooien."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."
@@ -300,11 +300,11 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."
-msgstr ""
+msgstr "Eerste setup van InfluxDB."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:33
 msgid "Database created."
-msgstr ""
+msgstr "Database aangemaakt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:67
 msgid "Retention policies updated."
@@ -316,35 +316,35 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:105
 msgid "InfluxDB databases created."
-msgstr ""
+msgstr "InfluxDB databases aangemaakt."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:19
 msgid "Run one or more scheduled synchronization tasks."
-msgstr ""
+msgstr "Voer een of meer geplande synchronisatie taken uit."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:23
 msgid "The task to run (%s)."
-msgstr ""
+msgstr "De taak die moet worden uitgevoerd (%s)."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
 #: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:85
 msgid "Record not found."
-msgstr ""
+msgstr "Record niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:42
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:96
 msgid "API Key updated."
-msgstr ""
+msgstr "API-sleutel bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 msgid "Edit API Key"
-msgstr ""
+msgstr "Wijzig API-sleutel"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:57
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:123
 msgid "API Key deleted."
-msgstr ""
+msgstr "API-sleutel verwijderd."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:74
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:34
@@ -369,7 +369,7 @@ msgstr "Handmatige back-up uitvoeren"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
 msgid "Backup deleted."
-msgstr ""
+msgstr "Back-up verwijderd."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:147
 msgid "Backup not found."
@@ -459,23 +459,23 @@ msgstr "Systeeminstellingen"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station updated."
-msgstr ""
+msgstr "Station bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station added."
-msgstr ""
+msgstr "Station toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
 msgid "Edit Station"
-msgstr ""
+msgstr "Wijzig station"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:61
 msgid "Station deleted."
-msgstr ""
+msgstr "Station verwijderd."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
 msgid "Station not found."
-msgstr ""
+msgstr "Station niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:80
 msgid "Clone Station: %s"
@@ -483,11 +483,11 @@ msgstr "Kloon station: %s"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User updated."
-msgstr ""
+msgstr "Gebruiker bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User added."
-msgstr ""
+msgstr "Gebruiker toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:56
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
@@ -614,7 +614,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
-msgstr ""
+msgstr "API-sleutel toevoegen"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:204
 msgid "All Stations"
@@ -716,15 +716,15 @@ msgstr "Kan \"%s\" niet verplaatsen naar \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
 msgid "Media not found."
-msgstr ""
+msgstr "Media niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:142
 msgid "Media updated."
-msgstr ""
+msgstr "Media bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:151
 msgid "Edit Media"
-msgstr ""
+msgstr "Wijzig media"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:125
 msgid "File renamed!"
@@ -755,21 +755,21 @@ msgstr "Deze functionaliteit is momenteel niet toegestaan op dit station."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 msgid "Edit Mount Point"
-msgstr ""
+msgstr "Wijzig mount point"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
-msgstr ""
+msgstr "Mount point toevoegen"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:55
 msgid "Mount Point deleted."
-msgstr ""
+msgstr "Mount point verwijderd."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
 msgid "Playlist not found."
-msgstr ""
+msgstr "Afspeellijst niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
@@ -777,7 +777,7 @@ msgstr "Deze afspeellijst is geen opeenvolgende afspeellijst."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format not found."
-msgstr ""
+msgstr "Formaat niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
 msgid "Playlist enabled."
@@ -789,49 +789,49 @@ msgstr "Afspeellijst uitgeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist updated."
-msgstr ""
+msgstr "Afspeellijst bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist added."
-msgstr ""
+msgstr "Afspeellijst toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 msgid "Edit Playlist"
-msgstr ""
+msgstr "Wijzig afspeellijst"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 msgid "Add Playlist"
-msgstr ""
+msgstr "Afspeellijst toevoegen"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Playlist deleted."
-msgstr ""
+msgstr "Afspeellijst verwijderd."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay updated."
-msgstr ""
+msgstr "Externe relay bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay added."
-msgstr ""
+msgstr "Externe relay toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 msgid "Edit Remote Relay"
-msgstr ""
+msgstr "Wijzig externe relay"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
-msgstr ""
+msgstr "Externe relay toevoegen"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
 msgid "Remote Relay deleted."
-msgstr ""
+msgstr "Externe relay bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:64
 msgid "This record cannot be edited."
-msgstr ""
+msgstr "Dit record kan niet worden bewerkt."
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:57
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
@@ -900,15 +900,15 @@ msgstr "Je kunt nu streamer (DJ) accounts toevoegen."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer updated."
-msgstr ""
+msgstr "Streamer bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer added."
-msgstr ""
+msgstr "Streamer toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 msgid "Edit Streamer"
-msgstr ""
+msgstr "Wijzig streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12

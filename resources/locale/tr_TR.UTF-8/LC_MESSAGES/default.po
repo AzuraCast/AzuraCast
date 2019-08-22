@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 05:10\n"
+"PO-Revision-Date: 2019-08-22 05:20\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3517,83 +3517,84 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\\" kullanıcı silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:47
 msgid "(You)"
-msgstr ""
+msgstr "(Sen)"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:15
 msgid "Welcome!"
-msgstr ""
+msgstr "Hoşgeldiniz!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:17
 msgid "Welcome to %s!"
-msgstr ""
+msgstr "Hoşgeldiniz!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:34
 msgid "name@example.com"
-msgstr ""
+msgstr "Mail Adresinizi Yazın"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 msgid "Enter your password"
-msgstr ""
+msgstr "Şifrenizi Girin"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:43
 #: /var/azuracast/www/templates/frontend/account/login.phtml:44
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:22
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:23
 msgid "Sign in"
-msgstr ""
+msgstr "Giriş Yap"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "Please log in to continue."
-msgstr ""
+msgstr "Devam etmek için lütfen giriş yapın."
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
-msgstr ""
+msgstr "<a href=\\\"%s\\\" target=\\\"_blank\\\">Şifreni mi unuttun?</a>"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
-msgstr ""
+msgstr "İki Faktörlü Doğrulama Kodu"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
 msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
-msgstr ""
+msgstr "Hesabınız iki faktörlü güvenlik doğrulamasını kullanıyor. Cihazınızın şu anda göstermekte olduğu kodu girin."
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:20
 msgid "Security Code"
-msgstr ""
+msgstr "Güvenlik Kodu"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:9
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:3
 #: /var/azuracast/www/templates/main.phtml:91
 msgid "My API Keys"
-msgstr ""
+msgstr "API Anahtarlarım"
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "API anahtarları bazı sistem işlevlerine giriş yapmak zorunda kalmadan erişmek için kullanılabilir. Oluşturduğunuz tüm anahtarlar\n"
+"            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href=\\\"%s\\\">API Belgeleri</a>ne bakın."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
-msgstr ""
+msgstr "Anahtar Tanımlayıcı"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
 msgid "New Key Generated"
-msgstr ""
+msgstr "Yeni Anahtar Üretildi"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:14
 msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
-msgstr ""
+msgstr "<b>Önemli: Devam etmeden önce aşağıdaki anahtarı kopyalayın!</b> Tekrar alamayacaksınız."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:16
 msgid "Your full API key is below:"
-msgstr ""
+msgstr "Tam API anahtarınız aşağıdadır:"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:21
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:43
@@ -3603,11 +3604,11 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:40
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:48
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Panoya Kopyala"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:25
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr ""
+msgstr "API çağrıları yaparken bu değeri \\\"X-API-Key\\\" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:28
 msgid "Continue"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-21 22:40\n"
+"PO-Revision-Date: 2019-08-22 06:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -111,48 +111,48 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
-msgstr ""
+msgstr "Media uitsluiten van de back-up."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:61
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "AzuraCast back-up"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:62
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Een ogenblik geduld, een back-up wordt gegenereerd..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:65
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Tijdelijke mappen maken..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:69
 #: /var/azuracast/www/src/Console/Command/Backup.php:75
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "Map \"%s\" is niet aangemaakt"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:82
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "MariaDB back-uppen..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:107
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "InfluxDB back-uppen..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:147
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Backup archief aanmaken..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:185
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Tijdelijke bestanden opruimen..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:196
 msgid "Backup complete in %.2f seconds."
-msgstr ""
+msgstr "Back-up voltooid in %.2f seconden."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:230
 msgid "Backup process error"
-msgstr ""
+msgstr "Back-up proces fout"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:20
 msgid "List all settings in the AzuraCast settings database."
@@ -160,15 +160,15 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:29
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "AzuraCast instellingen"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:38
 msgid "Setting Key"
-msgstr ""
+msgstr "Instellingssleutel"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:39
 msgid "Setting Value"
-msgstr ""
+msgstr "Instellingswaarde"
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:17
 msgid "Generate the translation locale file."
@@ -184,7 +184,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:41
 msgid "Imported locale: %s"
-msgstr ""
+msgstr "Taal geïmporteerd: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:45
 msgid "Locales imported."
@@ -196,19 +196,19 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:31
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Configuratie is al ingesteld."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:72
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Configuratie succesvol opgeslagen."
 
 #: /var/azuracast/www/src/Console/Command/ProcessMessageQueue.php:19
 msgid "Process the message queue."
-msgstr ""
+msgstr "Verwerk de berichtwachtrij."
 
 #: /var/azuracast/www/src/Console/Command/Restore.php:52
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Back-up pad %s niet gevonden!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -220,11 +220,11 @@ msgstr "Account niet gevonden."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:22
 msgid "Run all general AzuraCast setup steps."
-msgstr ""
+msgstr "Voer alle algemene AzuraCast setup stappen uit."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:23
 msgid "Only update the existing installation."
-msgstr ""
+msgstr "Werk alleen de bestaande installatie bij."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
@@ -236,7 +236,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:37
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "AzuraCast setup"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:38
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
@@ -244,11 +244,11 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:41
 msgid "Environment: %s"
-msgstr ""
+msgstr "Omgeving: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:42
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Installatiemethode: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:46
 msgid "Running in update mode."
@@ -373,28 +373,28 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:147
 msgid "Backup not found."
-msgstr ""
+msgstr "Back-up niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field updated."
-msgstr ""
+msgstr "Aangepast veld bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field added."
-msgstr ""
+msgstr "Aangepast veld toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 msgid "Edit Custom Field"
-msgstr ""
+msgstr "Wijzig aangepast veld"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Add Custom Field"
-msgstr ""
+msgstr "Voeg aangepast veld toe"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:53
 msgid "Custom Field deleted."
-msgstr ""
+msgstr "Aangepast veld verwijderd."
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:101
 msgid "Sync Task Output"
@@ -431,24 +431,24 @@ msgstr "Supervisord log"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission updated."
-msgstr ""
+msgstr "Rol bijgewerkt."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission added."
-msgstr ""
+msgstr "Rol toegevoegd."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 msgid "Edit Permission"
-msgstr ""
+msgstr "Wijzig rol"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
-msgstr ""
+msgstr "Rol toevoegen"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 msgid "Permission deleted."
-msgstr ""
+msgstr "Rol verwijderd."
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17

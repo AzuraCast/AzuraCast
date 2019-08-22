@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:20\n"
+"PO-Revision-Date: 2019-08-22 06:30\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2787,17 +2787,17 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:120
 msgid "Footer Text"
-msgstr ""
+msgstr "Alt Bilgi Metni"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:122
 #: /var/azuracast/www/templates/main.phtml:151
 #: /var/azuracast/www/templates/minimal.phtml:45
 msgid "Powered by %s"
-msgstr ""
+msgstr "%s tarafından güçlendirilmiştir."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:13
 msgid "Web Hook Details"
-msgstr ""
+msgstr "Web Kancası Detayları"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:15
 msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
@@ -2805,85 +2805,89 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Web kancaları belirlediğiniz tetikleyicilerden birinin radyonuzda gerçekleştiği zaman \n"
+"                bildirmek için belirttiğiniz URL’ye otomatik olarak bir HTTP POST isteği gönderir.\n"
+"                POST mesajının gövdesi radyonuz için <a href=\\\"%s\\\" target=\\\"_blank\\\">Çalan Şarkı API</a> cevabıyla aynıdır.\n"
+"                Hızlı bir şekilde işlemek için entegresyonların kısa bir zaman aşımı süresi vardır. bu nedenle\n"
+"                yanıtlayan hizmetin isteği 2 saniyeden daha kısa sürede ele alması için en iyi duruma getirilmesi gerekir.\""
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"
-msgstr ""
+msgstr "Web Kanca URLsi"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:38
 msgid "The URL that will receive the POST messages any time an event is triggered."
-msgstr ""
+msgstr "Bir URL olay tetiklendiğinde POST mesajlarını alacaktır."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:49
 msgid "Optional: HTTP Basic Authentication Username"
-msgstr ""
+msgstr "İsteğe Bağlı: HTTP Temel Kimlik Doğrulama Kullanıcı Adı"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:50
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
-msgstr ""
+msgstr "Web Kancası HTTP temel kimlik doğrulaması gerektiriyorsa kullanıcı adını belirtin."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:59
 msgid "Optional: HTTP Basic Authentication Password"
-msgstr ""
+msgstr "İsteğe Bağlı: HTTP Temel Kimlik Doğrulama Şifresi"
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:60
 msgid "If your web hook requires HTTP basic authentication, provide the password here."
-msgstr ""
+msgstr "Web Kancası HTTP temel kimlik doğrulaması gerektiriyorsa şifre belirtin."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:28
 msgid "Bot Token"
-msgstr ""
+msgstr "Bot Bilgisi"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:29
 #: /var/azuracast/www/config/forms/webhook/telegram.php:94
 msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
-msgstr ""
+msgstr "Daha fazla bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:39
 msgid "Chat ID"
-msgstr ""
+msgstr "Sohbet ID"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:40
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
-msgstr ""
+msgstr "Hedef sohbeti veya hedef kanalın kullanıcı adı için benzersiz tanımlayıcıyı beliryin. (@channelusername biçiminde)"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:50
 msgid "Custom API Base URL"
-msgstr ""
+msgstr "Özel API Temel URLsi"
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:52
 msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
-msgstr ""
+msgstr "Varsayılan Telegram API URLsini kullanmak için boş bırakın (önerilir). URLnin tamamını <code>https://api.pwrtelegram.xyz/</code> gibi belirtin."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:84
 #: /var/azuracast/www/config/forms/webhook/twitter.php:122
 msgid "Now playing on %s: %s by %s! Tune in now."
-msgstr ""
+msgstr "Çalan Şarkı: %s: %s tarafından %s! Şimdi Dinle."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:93
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Mesaj Ayrıştırma Modu"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:27
 msgid "TuneIn Station ID"
-msgstr ""
+msgstr "TuneIn Radyo ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:28
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr ""
+msgstr "\\\"S\\\" harfi ile başlayan TuneIn Radyo ID\\'sini buraya yazın."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:38
 msgid "TuneIn Partner ID"
-msgstr ""
+msgstr "TuneIn Ortak ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:48
 msgid "TuneIn Partner Key"
-msgstr ""
+msgstr "TuneIn Ortak Anahtarı"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:13
 msgid "Twitter Account Details"
-msgstr ""
+msgstr "Twitter Hesap Detayları"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:15
 msgid "Steps for configuring a Twitter application:<br>\n"
@@ -2894,19 +2898,26 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "\"Twitter hesabı yapılandırma adımları:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li><a href=\\\"%s\\\" target=\\\"_blank\\\">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.\n"
+"                    Bu kurulum uygulama URLsi olarak temel URLdir.</li>\n"
+"                    <li>Yeni oluşturulan uygulamada \\\"Anahtarlar ve Erişim Bilgileri\\\" sekmesini tıklayın.</li>\n"
+"                    <li>Sayfanın alt tarafında \\\"Erişim Kartımı Oluştur\\\" düğmesine tıklayın.</li>\n"
+"                </ol>\n"
+"                <p>Bu adımlar tamamlandıktan sonra \\\"Anahtarlar ve Erişim Bilgileri\\\" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
-msgstr ""
+msgstr "Alıcı Anahtarı (API Anahtarı)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:40
 msgid "Consumer Secret (API Secret)"
-msgstr ""
+msgstr "Alıcı Gizliliği (API Gizliliği)"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:50
 msgid "Access Token"
-msgstr ""
+msgstr "Erişim Kodu"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:60
 msgid "Access Token Secret"

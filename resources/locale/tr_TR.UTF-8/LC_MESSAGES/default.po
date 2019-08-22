@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:10\n"
+"PO-Revision-Date: 2019-08-22 06:20\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2910,21 +2910,21 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:60
 msgid "Access Token Secret"
-msgstr ""
+msgstr "Erişim Kodu Gizliliği"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:70
 msgid "Only Send One Tweet Every..."
-msgstr ""
+msgstr "Tweet Sadece Birk Kez Gönderilir..."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:74
 msgid "No Limit"
-msgstr ""
+msgstr "Limitsiz"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:75
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
 #: /var/azuracast/www/config/forms/webhook/twitter.php:77
 msgid "%d seconds"
-msgstr ""
+msgstr "%d saniye"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:78
 #: /var/azuracast/www/config/forms/webhook/twitter.php:79
@@ -2933,20 +2933,20 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/twitter.php:82
 #: /var/azuracast/www/config/forms/webhook/twitter.php:83
 msgid "%d minutes"
-msgstr ""
+msgstr "%d dakika"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:119
 msgid "Message Body"
-msgstr ""
+msgstr "Mesaj Metni"
 
 #: /var/azuracast/www/config/menus/admin.php:13
 msgid "System Maintenance"
-msgstr ""
+msgstr "Sunucu Bakımı"
 
 #: /var/azuracast/www/config/menus/admin.php:22
 #: /var/azuracast/www/templates/admin/branding/index.phtml:12
 msgid "Custom Branding"
-msgstr ""
+msgstr "Marka Yönetimi"
 
 #: /var/azuracast/www/config/menus/admin.php:27
 #: /var/azuracast/www/templates/admin/api/index.phtml:1
@@ -2957,13 +2957,13 @@ msgstr "API Anahtarları"
 #: /var/azuracast/www/config/menus/admin.php:32
 #: /var/azuracast/www/templates/admin/logs/index.phtml:12
 msgid "System Logs"
-msgstr ""
+msgstr "Sistem Günlükleri"
 
 #: /var/azuracast/www/config/menus/admin.php:37
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:3
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:19
 msgid "Audit Log"
-msgstr ""
+msgstr "Denetim Günlüğü"
 
 #: /var/azuracast/www/config/menus/admin.php:42
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
@@ -2979,7 +2979,7 @@ msgstr "Kullanıcılar"
 #: /var/azuracast/www/templates/admin/users/index.phtml:1
 #: /var/azuracast/www/templates/admin/users/index.phtml:5
 msgid "User Accounts"
-msgstr ""
+msgstr "Kullanıcı Hesapları"
 
 #: /var/azuracast/www/config/menus/admin.php:58
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:1
@@ -2998,23 +2998,23 @@ msgstr "Radyolar"
 #: /var/azuracast/www/templates/admin/relays/index.phtml:3
 #: /var/azuracast/www/templates/admin/relays/index.phtml:15
 msgid "Connected AzuraRelays"
-msgstr ""
+msgstr "AzuraRelays Bağlantısı"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
-msgstr ""
+msgstr "Radyoyu Başlat"
 
 #: /var/azuracast/www/config/menus/station.php:17
 msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
+msgstr "Yayına başlamak için hazır mısınız? Radyonuzu başlatmak için tıklayın."
 
 #: /var/azuracast/www/config/menus/station.php:25
 msgid "Restart to Apply Changes"
-msgstr ""
+msgstr "Değişiklikleri Uygulamak İçin Yeniden Başlat"
 
 #: /var/azuracast/www/config/menus/station.php:26
 msgid "Click to restart your station and apply configuration changes."
-msgstr ""
+msgstr "Radyonuzu yeniden başlatmak ve yapılandırma değişikliklerini uygulamak için tıklayın."
 
 #: /var/azuracast/www/config/menus/station.php:34
 #: /var/azuracast/www/templates/stations/profile/index.phtml:8
@@ -3024,14 +3024,14 @@ msgstr "Profil"
 #: /var/azuracast/www/config/menus/station.php:39
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:23
 msgid "Public Page"
-msgstr ""
+msgstr "Genel Sayfa"
 
 #: /var/azuracast/www/config/menus/station.php:46
 #: /var/azuracast/www/templates/stations/files/index.phtml:1
 #: /var/azuracast/www/templates/stations/files/index.phtml:25
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:33
 msgid "Music Files"
-msgstr ""
+msgstr "Müzik Dosyaları"
 
 #: /var/azuracast/www/config/menus/station.php:53
 #: /var/azuracast/www/templates/stations/files/index.phtml:123
@@ -3040,19 +3040,19 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:34
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:25
 msgid "Playlists"
-msgstr ""
+msgstr "Çalma Listeleri"
 
 #: /var/azuracast/www/config/menus/station.php:60
 #: /var/azuracast/www/templates/stations/streamers/disabled.phtml:1
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:1
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:7
 msgid "Streamer/DJ Accounts"
-msgstr ""
+msgstr "DJ Yönetimi"
 
 #: /var/azuracast/www/config/menus/station.php:67
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:30
 msgid "Web DJ"
-msgstr ""
+msgstr "Web DJ"
 
 #: /var/azuracast/www/config/menus/station.php:74
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:1
@@ -3075,12 +3075,12 @@ msgstr "Web Kancaları"
 
 #: /var/azuracast/www/config/menus/station.php:93
 msgid "Reports"
-msgstr ""
+msgstr "Raporlar"
 
 #: /var/azuracast/www/config/menus/station.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:7
 msgid "Statistics Overview"
-msgstr ""
+msgstr "İstatistik Önizlemesi"
 
 #: /var/azuracast/www/config/menus/station.php:107
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:17
@@ -3088,115 +3088,115 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:1
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:13
 msgid "Song Requests"
-msgstr ""
+msgstr "Şarkı İstekleri"
 
 #: /var/azuracast/www/config/menus/station.php:112
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:1
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:15
 msgid "Song Playback Timeline"
-msgstr ""
+msgstr "Şarkı Oynatma Zaman Çizelgesi"
 
 #: /var/azuracast/www/config/menus/station.php:116
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:2
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:12
 msgid "Song Listener Impact"
-msgstr ""
+msgstr "Şarkı Dinleyici Etkisi"
 
 #: /var/azuracast/www/config/menus/station.php:121
 msgid "Duplicate Songs"
-msgstr ""
+msgstr "Yinelenen Şarkılar"
 
 #: /var/azuracast/www/config/menus/station.php:126
 msgid "SoundExchange Royalties"
-msgstr ""
+msgstr "SoundExchange Raporu"
 
 #: /var/azuracast/www/config/menus/station.php:133
 msgid "Utilities"
-msgstr ""
+msgstr "Araçlar"
 
 #: /var/azuracast/www/config/menus/station.php:137
 msgid "Automated Assignment"
-msgstr ""
+msgstr "Otomatik Atama"
 
 #: /var/azuracast/www/config/menus/station.php:143
 #: /var/azuracast/www/templates/admin/logs/index.phtml:3
 #: /var/azuracast/www/templates/stations/logs/index.phtml:3
 msgid "Log Viewer"
-msgstr ""
+msgstr "Günlük Görüntüleyici"
 
 #: /var/azuracast/www/config/menus/station.php:148
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
 #: /var/azuracast/www/templates/stations/queue/index.phtml:13
 msgid "Upcoming Song Queue"
-msgstr ""
+msgstr "Sıradaki Şarkı Kuyruğu"
 
 #: /var/azuracast/www/config/menus/station.php:153
 msgid "Restart Broadcasting"
-msgstr ""
+msgstr "Yayını Yeniden Başlat"
 
 #: /var/azuracast/www/config/routes.dev.php:29
 msgid "Get Next Song Debug Mode"
-msgstr ""
+msgstr "Sıradaki Şarkı Hata Ayıklama Moduna Ayarla"
 
 #: /var/azuracast/www/config/webhooks.php:15
 msgid "Generic Web Hook"
-msgstr ""
+msgstr "Genel Web Kancası"
 
 #: /var/azuracast/www/config/webhooks.php:16
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "Radyo verileriniz değiştiğinde otomatik olarak herhangi bir URLye mesaj gönderin."
 
 #: /var/azuracast/www/config/webhooks.php:20
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn Web Kancası"
 
 #: /var/azuracast/www/config/webhooks.php:21
 msgid "Send song metadata changes to TuneIn."
-msgstr ""
+msgstr "Şarkı meta verileri değişikliklerini TuneIn\\'e gönderin."
 
 #: /var/azuracast/www/config/webhooks.php:25
 msgid "Discord Webhook"
-msgstr ""
+msgstr "Discord Web Kancası"
 
 #: /var/azuracast/www/config/webhooks.php:26
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Discord sunucunuza otomatik olarak özelleştirilmiş bir mesaj gönderin."
 
 #: /var/azuracast/www/config/webhooks.php:30
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Telegram Sohbet Mesajı"
 
 #: /var/azuracast/www/config/webhooks.php:31
 msgid "Use the Telegram Bot API to send a message to a channel."
-msgstr ""
+msgstr "Bir kanala mesaj göndermek için Telegram Bot APIsini kullanın."
 
 #: /var/azuracast/www/config/webhooks.php:35
 msgid "Twitter Post"
-msgstr ""
+msgstr "Twitter Gönderisi"
 
 #: /var/azuracast/www/config/webhooks.php:36
 msgid "Automatically send a tweet."
-msgstr ""
+msgstr "Otomatik olarak bir tweet gönderin."
 
 #: /var/azuracast/www/config/webhooks.php:42
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "Çalan Şarkı Her Değiştiğinde"
 
 #: /var/azuracast/www/config/webhooks.php:43
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "Dinleyici Sayısı Arttığında"
 
 #: /var/azuracast/www/config/webhooks.php:44
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "Dinleyici Sayısı Azaldığında"
 
 #: /var/azuracast/www/config/webhooks.php:45
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "DJ Yayına Bağlandığında"
 
 #: /var/azuracast/www/config/webhooks.php:46
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "DJ Yayından Ayrıldığında"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:17
 msgid "API Key"
@@ -3204,7 +3204,7 @@ msgstr "API Anahtarı"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:19
 msgid "Owner"
-msgstr ""
+msgstr "Sahip"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:27
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:31
@@ -3228,7 +3228,7 @@ msgstr "Geri Al"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
 msgid "Insert"
-msgstr ""
+msgstr "Ekle"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
@@ -3301,11 +3301,11 @@ msgstr "Kullanıcı"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:44
 msgid "Identifier"
-msgstr ""
+msgstr "Tanımlayıcı"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
 msgid "Target"
-msgstr ""
+msgstr "Hedef"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:46
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
@@ -3327,19 +3327,19 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:24
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:24
 msgid "Actions"
-msgstr ""
+msgstr "İşlemler"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:71
 msgid "Field"
-msgstr ""
+msgstr "Alan"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:72
 msgid "Previous"
-msgstr ""
+msgstr "Önceki"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:73
 msgid "Updated"
-msgstr ""
+msgstr "Güncellendi"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50

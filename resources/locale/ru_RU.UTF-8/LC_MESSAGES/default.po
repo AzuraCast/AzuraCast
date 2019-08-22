@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 13:50\n"
+"PO-Revision-Date: 2019-08-22 14:01\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -23,7 +23,7 @@ msgstr "Все права доступа"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View Administration Page"
-msgstr "Просмотр страницы администрирования"
+msgstr "Просмотр Страниц Администрирования"
 
 #: /var/azuracast/www/src/Acl.php:186
 msgid "View System Logs"
@@ -55,11 +55,11 @@ msgstr "Управление Настраиваемыми Полями"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Administer Backups"
-msgstr ""
+msgstr "Управление Резервными Копиями"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Page"
-msgstr "Просмотр страницы станции"
+msgstr "Просмотр Страниц Станции"
 
 #: /var/azuracast/www/src/Acl.php:198
 msgid "View Station Reports"
@@ -71,19 +71,19 @@ msgstr "Просмотр журналов станции"
 
 #: /var/azuracast/www/src/Acl.php:200
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Управление Профилем Станции"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Управление Вещанием Станции"
 
 #: /var/azuracast/www/src/Acl.php:202
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Управление Стримерами Станции"
 
 #: /var/azuracast/www/src/Acl.php:203
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Управление Точками Подключения Станции"
 
 #: /var/azuracast/www/src/Acl.php:204
 msgid "Manage Station Remote Relays"

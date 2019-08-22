@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 14:01\n"
+"PO-Revision-Date: 2019-08-22 15:56\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -87,7 +87,7 @@ msgstr "Управление Точками Подключения Станци�
 
 #: /var/azuracast/www/src/Acl.php:204
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Управление Ретрансляторами Станции"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Manage Station Media"

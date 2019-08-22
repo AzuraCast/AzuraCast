@@ -193,7 +193,7 @@ abstract class AbstractFrontend extends \App\Radio\AbstractAdapter
             $np_aggregate['meta'] = $np['meta'];
         }
 
-        $np_aggregate['listeners']['clients'] = array_merge($np_aggregate['listeners']['clients'], $np['listeners']['clients']);
+        $np_aggregate['listeners']['clients'] = array_merge((array)$np_aggregate['listeners']['clients'], (array)$np['listeners']['clients']);
         $np_aggregate['listeners']['current'] += $np['listeners']['current'];
         $np_aggregate['listeners']['unique'] += $np['listeners']['unique'];
         $np_aggregate['listeners']['total'] += $np['listeners']['total'];

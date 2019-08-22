@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:30\n"
+"PO-Revision-Date: 2019-08-22 06:40\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -760,16 +760,16 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
-msgstr ""
+msgstr "Bağlantı Noktası Ekle"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:55
 msgid "Mount Point deleted."
-msgstr ""
+msgstr "Bağlantı noktası silindi!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
 msgid "Playlist not found."
-msgstr ""
+msgstr "Çalma listesi bulunamadı!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
@@ -777,7 +777,7 @@ msgstr "Bu çalma listesi \\\"SIRALI\\\" bir çalma listesi değildir."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format not found."
-msgstr ""
+msgstr "Biçim bulunamadı!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
 msgid "Playlist enabled."
@@ -789,49 +789,49 @@ msgstr "Çalma Listesi Devredışı Bırakıldı!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist updated."
-msgstr ""
+msgstr "Çalma listesi güncellendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist added."
-msgstr ""
+msgstr "Çalma listesi eklendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 msgid "Edit Playlist"
-msgstr ""
+msgstr "Çalma Listesi Düzenle"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 msgid "Add Playlist"
-msgstr ""
+msgstr "Çalma Listesi Ekle"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Playlist deleted."
-msgstr ""
+msgstr "Çalma listesi silindi!"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay updated."
-msgstr ""
+msgstr "Yönlendirme güncellendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay added."
-msgstr ""
+msgstr "Yönlendirme eklendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 msgid "Edit Remote Relay"
-msgstr ""
+msgstr "Yönlendirme Düzenle"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
-msgstr ""
+msgstr "Yönlendirme Ekle"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
 msgid "Remote Relay deleted."
-msgstr ""
+msgstr "Yönlendirme silindi!"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:64
 msgid "This record cannot be edited."
-msgstr ""
+msgstr "Bu kayıt düzenlenemez!"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:57
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
@@ -900,50 +900,50 @@ msgstr "DJ hesaplarını şimdi ekleyebilirsiniz."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer updated."
-msgstr ""
+msgstr "DJ güncellendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer added."
-msgstr ""
+msgstr "DJ eklendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 msgid "Edit Streamer"
-msgstr ""
+msgstr "DJ Düzenle"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
-msgstr ""
+msgstr "DJ Ekle"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 msgid "Streamer deleted."
-msgstr ""
+msgstr "DJ silindi!"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 msgid "Web Hook added."
-msgstr ""
+msgstr "Web kancası eklendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
-msgstr ""
+msgstr "Web Kancası Ekle"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
 msgid "Web Hook updated."
-msgstr ""
+msgstr "Web kancası güncellendi!"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:83
 msgid "Edit Web Hook"
-msgstr ""
+msgstr "Web Kancasını Düzenle"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web hook enabled."
-msgstr ""
+msgstr "Web kancası etkinleştirildi!"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web Hook disabled."
-msgstr ""
+msgstr "Web kancası devredışı bırakıldı!"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
@@ -951,7 +951,7 @@ msgstr "Web Kancası Test Sonucu"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook deleted."
-msgstr ""
+msgstr "Web kancası silindi!"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
@@ -983,15 +983,15 @@ msgstr "SHOUTcast Ayar Dosyası"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:22
 msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
+msgstr "Arama motoru tarayıcılarının bu özelliği kullanmasına izin verilmemektedir."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
 msgid "The song ID you specified could not be found in the station."
-msgstr ""
+msgstr "Belirttiğiniz şarkı kimliği radyoda bulunamadı."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
 msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
+msgstr "Belirttiğiniz şarkı kimliği bu radyo için talep edilemez."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
@@ -999,7 +999,7 @@ msgstr "Çok yakın zamanda bir istek gönderdiniz! Lütfen başka bir tane gön
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:106
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
+msgstr "Yinelenen İstek: Bu şarkı zaten talep edildi ve yakında çalınacaktır."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
@@ -2718,7 +2718,7 @@ msgstr "Yetkiler"
 #: /var/azuracast/www/config/forms/webhook/tunein.php:17
 #: /var/azuracast/www/config/forms/webhook/twitter.php:99
 msgid "Web Hook Name"
-msgstr ""
+msgstr "Web Kancası İsmi"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:28
@@ -2771,19 +2771,19 @@ msgstr "%s Şimdi Çalıyor: "
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:30
 msgid "Title"
-msgstr ""
+msgstr "Çalan Şarkı İsmi"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:90
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:100
 msgid "Author Name"
-msgstr ""
+msgstr "Yazar İsmi"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:110
 msgid "Thumbnail Image URL"
-msgstr ""
+msgstr "Küçük Resim URLsi"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:120
 msgid "Footer Text"

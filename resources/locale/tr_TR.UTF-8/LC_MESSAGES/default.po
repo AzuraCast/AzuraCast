@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 07:20\n"
+"PO-Revision-Date: 2019-08-22 07:30\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -228,7 +228,7 @@ msgstr "Sadece mevcut kurulumu güncelle."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr "Önceden tanımlanmış fixture'\\leri yükleyin. (geliştirme amaçları için)"
+msgstr "Önceden tanımlanmış fixture\\'leri yükleyin. (geliştirme amaçları için)"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
@@ -272,31 +272,31 @@ msgstr "Veritabanı Proxy Sınıfları Oluşturuluyor"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
-msgstr "Veri Fixture\\leri Kuruluyor"
+msgstr "Veri Fixture\\'leri Kuruluyor"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:80
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "Tüm Radyolar Yenileniyor"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:100
 msgid "AzuraCast is now updated to the latest version!"
-msgstr ""
+msgstr "AzuraCast şimdi en son sürüme güncellendi!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:108
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "AzuraCast kurulumu tamamlandı!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:109
 msgid "Visit %s to complete setup."
-msgstr ""
+msgstr "Kurulumu tamamlamak için %s adresini ziyaret edin."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."
-msgstr ""
+msgstr "Demo / yerel geliştirme için fixture\\'leri kurun."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:82
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Fixture\\'ler yüklendi."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."

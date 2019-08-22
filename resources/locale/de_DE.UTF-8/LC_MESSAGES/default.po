@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 14:23\n"
+"PO-Revision-Date: 2019-08-22 14:36\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3596,7 +3596,8 @@ msgstr "Meine API-Schlüssel"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "API-Schlüssel können verwendet werden, um auf einige Systemfunktionen zuzugreifen, ohne sich einzuloggen. Alle erstellten Schlüssel \n"
+"            teilen deine Berechtigungen im System. Weitere Informationen findest du in der <a href=\"%s\">API-Dokumentation</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3985,7 +3986,7 @@ msgstr "Dein aktueller Installationstyp ist <b>%s</b>. Bitte gib dies bei der Me
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "Add New GitHub Issue"
-msgstr ""
+msgstr "GitHub-Ticket erstellen"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
@@ -4377,11 +4378,11 @@ msgstr "Lokale Streams"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:86
 msgid "Download PLS"
-msgstr ""
+msgstr "PLS herunterladen"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:90
 msgid "Download M3U"
-msgstr ""
+msgstr "M3U herunterladen"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45

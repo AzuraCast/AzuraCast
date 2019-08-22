@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 10:50\n"
+"PO-Revision-Date: 2019-08-22 13:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -31,27 +31,27 @@ msgstr "Просмотр системных журналов"
 
 #: /var/azuracast/www/src/Acl.php:187
 msgid "Administer Settings"
-msgstr ""
+msgstr "Управление Настройками"
 
 #: /var/azuracast/www/src/Acl.php:188
 msgid "Administer API Keys"
-msgstr ""
+msgstr "Управление API ключами"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Administer Users"
-msgstr ""
+msgstr "Управление Пользователями"
 
 #: /var/azuracast/www/src/Acl.php:190
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Управление Правами Доступа"
 
 #: /var/azuracast/www/src/Acl.php:191
 msgid "Administer Stations"
-msgstr ""
+msgstr "Управление Станциями"
 
 #: /var/azuracast/www/src/Acl.php:192
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Управление Настраиваемыми Полями"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Administer Backups"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 05:20\n"
+"PO-Revision-Date: 2019-08-22 06:00\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3476,20 +3476,20 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"
-msgstr ""
+msgstr "Birinci Bağlantı"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"
-msgstr ""
+msgstr "Son Güncelleme"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
-msgstr ""
+msgstr "Radyo Yönetimi"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/frontend/index/index.phtml:108
 msgid "Add Station"
-msgstr ""
+msgstr "Radyo Ekle"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
 msgid "Station"
@@ -3499,21 +3499,21 @@ msgstr "Radyo"
 #: /var/azuracast/www/templates/frontend/index/index.phtml:152
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:26
 msgid "Manage"
-msgstr ""
+msgstr "Yönetim"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:31
 msgid "Clone"
-msgstr ""
+msgstr "Kopyalama"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\\" radyo silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:33
 #: /var/azuracast/www/templates/frontend/account/login.phtml:3
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:3
 msgid "Log In"
-msgstr ""
+msgstr "Giriş Yap"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"

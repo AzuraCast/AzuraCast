@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 04:40\n"
+"PO-Revision-Date: 2019-08-22 04:50\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -4133,7 +4133,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:70
 msgid "More"
-msgstr ""
+msgstr "Daha Fazla"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:73
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
@@ -4141,7 +4141,7 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:32
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Disable"
-msgstr ""
+msgstr "Devredışı"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:73
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:72
@@ -4149,242 +4149,242 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:48
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Enable"
-msgstr ""
+msgstr "Etkin"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:75
 msgid "Reorder"
-msgstr ""
+msgstr "Yeniden Sırala"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:78
 msgid "Export %s"
-msgstr ""
+msgstr "%s Dışarı Aktar"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
 msgid "Song-based"
-msgstr ""
+msgstr "Çalma Listesi Modu"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:89
 msgid "Jingle Mode"
-msgstr ""
+msgstr "Jingle Modu"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:95
 msgid "Auto-Assigned"
-msgstr ""
+msgstr "Otomatik Atanmış"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:104
 msgid "Weight"
-msgstr ""
+msgstr "Öncelik"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:108
 msgid "Plays at %s"
-msgstr ""
+msgstr "%s Oynat"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:110
 msgid "Plays between %s and %s"
-msgstr ""
+msgstr "%s ile %s Arasında Oynat"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:113
 msgid "Once per %d Songs"
-msgstr ""
+msgstr "%d Şarkıda Bir"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:115
 msgid "Once per %d Minutes"
-msgstr ""
+msgstr "%d Dakikada Bir"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:117
 msgid "Once per Hour (at :%02d)"
-msgstr ""
+msgstr "Saatte Bir Kez (%02d)"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:119
 msgid "Custom"
-msgstr ""
+msgstr "Özel"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:3
 msgid "Reorder Playlist"
-msgstr ""
+msgstr "Çalma Listesi Yeniden Sıralama"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:16
 msgid "Reorder Playlist: %s"
-msgstr ""
+msgstr "Çalma Listesini Yeniden Sırala: %s"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
 msgid "Down"
-msgstr ""
+msgstr "Aşağı"
 
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:43
 msgid "Up"
-msgstr ""
+msgstr "Yukarı"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
-msgstr ""
+msgstr "Radyo Canlı Yayını Devredışı"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr ""
+msgstr "Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href=\\\"%s\\\">radyo profili</a>ni düzenleyin."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:18
 msgid "Running"
-msgstr ""
+msgstr "Çalışıyor"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:19
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:19
 msgid "Not Running"
-msgstr ""
+msgstr "Çalışmıyor"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:29
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
-msgstr ""
+msgstr "LiquidSoap şu anda <b>%d adet yüklenmiş şarkı</b>yı <b>%d adet çalma listesi</b>nden karışık olarak çalıyor."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:42
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:72
 msgid "Restart"
-msgstr ""
+msgstr "Yeniden Başlat"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:46
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:76
 msgid "Start"
-msgstr ""
+msgstr "Başlat"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:50
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:80
 msgid "Stop"
-msgstr ""
+msgstr "Durdur"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend_none.phtml:15
 msgid "AutoDJ Disabled"
-msgstr ""
+msgstr "AutoDJ Devredışı"
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend_none.phtml:18
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
-msgstr ""
+msgstr "AutoDJ bu radyoda için devredışı bırakıldı. Canlı yayın olmadığında hiçbir müzik otomatik olarak çalınmaz."
 
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:40
 msgid "Administration URL"
-msgstr ""
+msgstr "Yönetim URLsi"
 
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:44
 msgid "Administrator Password"
-msgstr ""
+msgstr "Yayın Yönetici Şifresi"
 
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:51
 msgid "Source Password"
-msgstr ""
+msgstr "Yayın Şifresi"
 
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:59
 msgid "Relay Password"
-msgstr ""
+msgstr "Yönlendirme Şifresi"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:16
 msgid "On the Air"
-msgstr ""
+msgstr "Yayında"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:18
 msgid "Listener"
-msgstr ""
+msgstr "Dinleyici"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:20
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:46
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:75
 msgid "Unique"
-msgstr ""
+msgstr "Ziyaretçi"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
-msgstr ""
+msgstr "Sıradaki Şarkı"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"
-msgstr ""
+msgstr "Şarkıyı Atla"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:103
 msgid "Disconnect Streamer"
-msgstr ""
+msgstr "DJ Bağlantısını Kes"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:64
 msgid "Public Pages"
-msgstr ""
+msgstr "Genel Sayfalar"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:37
 msgid "Player Embed Code"
-msgstr ""
+msgstr "Müzik Çalar Hazır Web Kodu"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:45
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Şarkı İstekleri Hazır Web Kodu"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:55
 msgid "Disable public pages?"
-msgstr ""
+msgstr "Genel sayfalar devredışı bırakılsın mı?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
 msgid "Enable public pages?"
-msgstr ""
+msgstr "Genel sayfalar aktifleştirilsin mi?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:26
 msgid "View"
-msgstr ""
+msgstr "Görüntüle"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:30
 msgid "Disable song requests?"
-msgstr ""
+msgstr "Şarkı istekleri devredışı bırakılsın mı?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:46
 msgid "Enable song requests?"
-msgstr ""
+msgstr "Şarkı istekleri aktifleştirilsin mi?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:40
 msgid "Streamers/DJs"
-msgstr ""
+msgstr "DJ Yönetimi"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:30
 msgid "Disable streamers?"
-msgstr ""
+msgstr "DJler devredışı bırakılsın mı?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:46
 msgid "Enable streamers?"
-msgstr ""
+msgstr "DJler aktifleştirilsin mi?"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
 msgid "Streams"
-msgstr ""
+msgstr "Yayınlar"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:27
 msgid "Local Streams"
-msgstr ""
+msgstr "Yerel Yayınlar"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:86
 msgid "Download PLS"
-msgstr ""
+msgstr "PLS İndir"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:90
 msgid "Download M3U"
-msgstr ""
+msgstr "M3U İndir"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
 msgid "Listener Request"
-msgstr ""
+msgstr "Dinleyici İsteği"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
 msgid "Playlist:"
-msgstr ""
+msgstr "Çalma Listesi: "
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
 msgid "Delete queue item?"
-msgstr ""
+msgstr "Sıradaki öğe silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/queue/index.phtml:24
 msgid "Cued On"
-msgstr ""
+msgstr "Bağla"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:8
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
-msgstr ""
+msgstr "Yönlendirme bu sunucunun dışındaki yayın yazılımı ile çalışmanızı sağlar. Buraya dahil ettiğiniz herhangi bir yönlendirme radyonuzun istatistiklerine dahil edilecektir. Ayrıca bu sunucudan uzak sunuculara da yayın yapabilirsiniz."
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
 msgid "Remote Relay"
@@ -4392,30 +4392,30 @@ msgstr "Yönlendirme"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:37
 msgid "Delete remote relay \"%s\"?"
-msgstr ""
+msgstr "\\\"%s\\\" yönlendirme silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:5
 msgid "Song Duplicates"
-msgstr ""
+msgstr "Şarkı Yinelemeleri"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:9
 msgid "No duplicates were found. Nice work!"
-msgstr ""
+msgstr "Güzel iş! Yineleme bulunamadı."
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:24
 msgid "Title / File Path"
-msgstr ""
+msgstr "Şarkı İsmi / Dosya Yolu"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:7
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:94
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:29
 msgid "Live Listeners"
-msgstr ""
+msgstr "Canlı Dinleyiciler"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:58
 msgid "There are too many data points to map!"
-msgstr ""
+msgstr "Haritada gösterilecek çok fazla veri noktası var!"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:25
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:26
@@ -4423,32 +4423,32 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:18
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:19
 msgid "Download CSV"
-msgstr ""
+msgstr "CSV İndir"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:40
 msgid "Unique Listeners"
-msgstr ""
+msgstr "Bağımsız Dinleyiciler"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
 msgid "for selected period"
-msgstr ""
+msgstr "seçilen dönem için"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
-msgstr ""
+msgstr "Toplam Dinleyici Saati"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:56
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:57
 msgid "Time (sec)"
-msgstr ""
+msgstr "Zaman (sn)"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:58
 msgid "User Agent"
-msgstr ""
+msgstr "Tarayıcı Bilgisi"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:59
 msgid "Location"

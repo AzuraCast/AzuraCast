@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 05:00\n"
+"PO-Revision-Date: 2019-08-22 05:10\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3611,100 +3611,100 @@ msgstr ""
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:28
 msgid "Continue"
-msgstr ""
+msgstr "Devam Et"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:11
 #: /var/azuracast/www/templates/main.phtml:64
 #: /var/azuracast/www/templates/system/error_general.phtml:17
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:13
 msgid "Dashboard"
-msgstr ""
+msgstr "Anasayfa"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:44
 msgid "AzuraCast User"
-msgstr ""
+msgstr "AzuraCast Kullanıcısı"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:54
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
 #: /var/azuracast/www/templates/main.phtml:79
 msgid "My Account"
-msgstr ""
+msgstr "Hesabım"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:90
 #: /var/azuracast/www/templates/frontend/index/index.phtml:93
 msgid "Listeners Per Station"
-msgstr ""
+msgstr "Radyo Başına Dinleyici"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:102
 msgid "Station Overview"
-msgstr ""
+msgstr "Radyo Önizlemesi"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:123
 msgid "Station Name"
-msgstr ""
+msgstr "Radyo İsmi"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:125
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:30
 msgid "Now Playing"
-msgstr ""
+msgstr "Çalan Şarkı"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
 msgid "Error: No Available Stations"
-msgstr ""
+msgstr "Hata: Kullanılabilir Radyo Yok"
 
 #: /var/azuracast/www/templates/frontend/index/noaccess.phtml:4
 msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
-msgstr ""
+msgstr "Hesabınız aktif ancak şu anda herhangi bir radyo ile ilişkili değil ve bunun bir hata olduğunu düşünüyorsanız lütfen bu sunucunun yöneticisine başvurun."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "İki Faktörlü Kimlik Doğrulamayı Etkinleştir"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:16
 msgid "Step 1: Scan QR Code"
-msgstr ""
+msgstr "Adım 1: QR Kodunu Tara"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:18
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
-msgstr ""
+msgstr "Akıllı telefonunuzdan seçtiğiniz bir doğrulayıcı uygulamayı (FreeOTP, Authy, vb.) kullanarak sağdaki kodu tarayın."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:20
 msgid "Step 2: Verify Generated Code"
-msgstr ""
+msgstr "Adım 2: Oluşturulan Kodu Doğrulayın"
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:22
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
-msgstr ""
+msgstr "Kodun doğru ayarlandığından emin olmak için uygulamanın size gösterdiği 6 basamaklı kodu girin."
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "QR Kodu"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:58
 msgid "Customize"
-msgstr ""
+msgstr "Özelleştir"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:66
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "İki Faktörlü Kimlik Doğrulama"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:75
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
-msgstr ""
+msgstr "İki faktörlü kimlik doğrulama oturum açtığınızda şifrenizin yanı sıra ikinci güvenlik olarak bir kerelik erişim kodu gerektirerek hesabınızın güvenliğini artırır."
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:81
 msgid "Disable Two-Factor"
-msgstr ""
+msgstr "İki Faktörlü Doğrulamayı Devredışı Bırak"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:86
 msgid "Enable Two-Factor"
-msgstr ""
+msgstr "İki Faktörlü Doğrulamayı Etkinleştir"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:10
 msgid "Microphone"
-msgstr ""
+msgstr "Mikrofon"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:11
 msgid "Settings"
@@ -3712,48 +3712,48 @@ msgstr "Ayarlar"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:13
 msgid "Mixer"
-msgstr ""
+msgstr "Mixer"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:14
 msgid "Playlist 1"
-msgstr ""
+msgstr "Çalma Listesi 1"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:15
 msgid "Playlist 2"
-msgstr ""
+msgstr "Çalma Listesi 2"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:18
 msgid "Encoder"
-msgstr ""
+msgstr "Encoder"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:19
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:20
 msgid "Raw"
-msgstr ""
+msgstr "HAM DATA"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:21
 msgid "Sample Rate"
-msgstr ""
+msgstr "Sample Rate"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:22
 msgid "Bit Rate"
-msgstr ""
+msgstr "Bitrate"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:23
 msgid "DJ Credentials"
-msgstr ""
+msgstr "DJ Bilgileri"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:25
 msgid "Username"
-msgstr ""
+msgstr "Kullanıcı Adı"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:26
 msgid "Use Asynchronous Worker"
-msgstr ""
+msgstr "Eşzamansız Çalışma Kullan"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:28
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
@@ -3762,68 +3762,68 @@ msgstr ""
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:27
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:31
 msgid "Artist"
-msgstr ""
+msgstr "Sanatçı"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:29
 msgid "Continuous Play"
-msgstr ""
+msgstr "Çalmaya Devam Et"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:30
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Çalma Listesini Tekrarla"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:31
 msgid "Microphone Source"
-msgstr ""
+msgstr "Mikrofon Kaynağı"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:34
 msgid "Start Streaming"
-msgstr ""
+msgstr "Yayını Başlat"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:35
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Yayını Durdur"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:36
 msgid "Cue"
-msgstr ""
+msgstr "Bağla"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:37
 msgid "Update Metadata"
-msgstr ""
+msgstr "Meta Verilerini Güncelle"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:40
 msgid "Add Files to Playlist"
-msgstr ""
+msgstr "Çalma Listesine Ekle"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:41
 msgid "Unknown Title"
-msgstr ""
+msgstr "Bilinmeyen Şarkı İsmi"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:42
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Bilinmeyen Sanatçı"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:44
 msgid "Request"
-msgstr ""
+msgstr "İstek"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
 #: /var/azuracast/www/templates/frontend/public/index.phtml:77
 #: /var/azuracast/www/templates/stations/files/index.phtml:116
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:28
 msgid "Album"
-msgstr ""
+msgstr "Albüm"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:29
 #: /var/azuracast/www/templates/frontend/public/index.phtml:47
 msgid "Song History"
-msgstr ""
+msgstr "Şarkı Geçmişi"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:33
 msgid "Request Song"
-msgstr ""
+msgstr "Şarkı İsteme"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:37
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
@@ -3834,50 +3834,50 @@ msgstr "Çalma Listesi"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:66
 msgid "Request a Song"
-msgstr ""
+msgstr "Bir Şarkı İsteyin"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:15
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Live"
-msgstr ""
+msgstr "Canlı"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:16
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:19
 msgid "Play"
-msgstr ""
+msgstr "Oynat"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:17
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:9
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:18
 msgid "Pause"
-msgstr ""
+msgstr "Duraklat"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:18
 msgid "Mute"
-msgstr ""
+msgstr "Sustur"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:19
 #: /var/azuracast/www/templates/partials/radio_controls.js.phtml:10
 msgid "Volume"
-msgstr ""
+msgstr "Ses"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:20
 msgid "Full Volume"
-msgstr ""
+msgstr "Full Ses"
 
 #: /var/azuracast/www/templates/frontend/public/player_component.js.phtml:21
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:34
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:63
 msgid "Album Art"
-msgstr ""
+msgstr "Albüm Sanatçısı"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:17
 msgid "AzuraCast First-Time Setup"
-msgstr ""
+msgstr "AzuraCast İlk Kurulumu"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "Welcome to AzuraCast!"
-msgstr ""
+msgstr "AzuraCast\\'e Hoşgeldiniz!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:27
 msgid "Let's get started by creating your Super Administrator account."
@@ -3942,7 +3942,7 @@ msgstr "Çıkış Yap"
 
 #: /var/azuracast/www/templates/main.phtml:152
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr "AzuraCast\\'i beğendiniz mi? <a href=\\\"%s\\\" target=\\\"_blank\\\">Destek olmak için bağış yapın!</a>"
+msgstr "Türkçeleştirme\\: ByBiLaL \\- AzuraCast\\'i beğendiniz mi? <a href=\\\"%s\\\" target=\\\"_blank\\\">Destek olmak için bağış yapın!</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"

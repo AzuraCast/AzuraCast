@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 06:30\n"
+"PO-Revision-Date: 2019-08-22 06:40\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -180,7 +180,7 @@ msgstr "Talen gegenereerd."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:17
 msgid "Convert translated locale files into PHP arrays."
-msgstr ""
+msgstr "Converteer vertalingsbestanden naar PHP arrays."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:41
 msgid "Imported locale: %s"
@@ -188,7 +188,7 @@ msgstr "Taal geïmporteerd: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:45
 msgid "Locales imported."
-msgstr ""
+msgstr "Talen geïmporteerd."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
 msgid "Migrate existing configuration to new INI format if any exists."
@@ -228,7 +228,7 @@ msgstr "Werk alleen de bestaande installatie bij."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr ""
+msgstr "Laad vooraf gedefinieerde fixtures (voor ontwikkelingsdoeleinden)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."

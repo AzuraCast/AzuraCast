@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 22:10\n"
+"PO-Revision-Date: 2019-08-22 22:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -192,7 +192,7 @@ msgstr "Talen geïmporteerd."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
 msgid "Migrate existing configuration to new INI format if any exists."
-msgstr ""
+msgstr "Bestaande configuratie migreren naar nieuw INI-formaat indien er een bestaat."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:31
 msgid "Configuration already set up."
@@ -264,7 +264,7 @@ msgstr "InfluxDB instellen"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:61
 msgid "Running Database Migrations"
-msgstr ""
+msgstr "Database migraties worden uitgevoerd"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:68
 msgid "Generating Database Proxy Classes"
@@ -555,19 +555,19 @@ msgstr "Request succesvol ingediend."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
 msgid "Station restarted."
-msgstr ""
+msgstr "Station is opnieuw gestart."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:110
 msgid "Frontend stopped."
-msgstr ""
+msgstr "Frontend gestopt."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend started."
-msgstr ""
+msgstr "Frontend gestart."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:129
 msgid "Frontend restarted."
-msgstr ""
+msgstr "Frontend is opnieuw gestart."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "Song skipped."
@@ -579,15 +579,15 @@ msgstr "Streamer ontkoppeld."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend stopped."
-msgstr ""
+msgstr "Backend gestopt."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
 msgid "Backend started."
-msgstr ""
+msgstr "Backend gestart."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
 msgid "Backend restarted."
-msgstr ""
+msgstr "Backend is opnieuw gestart."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:72
 msgid "Too many login attempts"
@@ -609,7 +609,7 @@ msgstr "Je logingegevens zijn incorrect."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:61
 msgid "API Key not found."
-msgstr ""
+msgstr "API sleutel niet gevonden."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
@@ -2718,7 +2718,7 @@ msgstr "Rollen"
 #: /var/azuracast/www/config/forms/webhook/tunein.php:17
 #: /var/azuracast/www/config/forms/webhook/twitter.php:99
 msgid "Web Hook Name"
-msgstr ""
+msgstr "Webhook naam"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:28
@@ -3228,7 +3228,7 @@ msgstr "Intrekken"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
 msgid "Insert"
-msgstr ""
+msgstr "Voeg in"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
@@ -3253,12 +3253,12 @@ msgstr "Verwijderen"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:42
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:58
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:59
 msgid "Changes"
-msgstr ""
+msgstr "Wijzigingen"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:83
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
@@ -3305,7 +3305,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
 msgid "Target"
-msgstr ""
+msgstr "Doel"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:46
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
@@ -3331,15 +3331,15 @@ msgstr "Acties"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:71
 msgid "Field"
-msgstr ""
+msgstr "Veld"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:72
 msgid "Previous"
-msgstr ""
+msgstr "Vorige"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:73
 msgid "Updated"
-msgstr ""
+msgstr "Bijgewerkt"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
@@ -3489,7 +3489,7 @@ msgstr "Stations Beheren"
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/frontend/index/index.phtml:108
 msgid "Add Station"
-msgstr ""
+msgstr "Station toevoegen"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
 msgid "Station"
@@ -3966,7 +3966,7 @@ msgstr "Uw huidige installatie type is <b>%s</b>. Zorg ervoor dat dit wordt verm
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "Add New GitHub Issue"
-msgstr ""
+msgstr "Voeg nieuw GitHub probleem toe"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
@@ -4358,11 +4358,11 @@ msgstr "Lokale streams"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:86
 msgid "Download PLS"
-msgstr ""
+msgstr "PLS downloaden"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:90
 msgid "Download M3U"
-msgstr ""
+msgstr "M3U downloaden"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45

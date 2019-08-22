@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 11:50\n"
+"PO-Revision-Date: 2019-08-22 12:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -75,31 +75,31 @@ msgstr "Stations-Profil verwalten"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Stations-Broadcasting verwalten"
 
 #: /var/azuracast/www/src/Acl.php:202
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Stations-Streamer verwalten"
 
 #: /var/azuracast/www/src/Acl.php:203
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Stations-Mount-Points verwalten"
 
 #: /var/azuracast/www/src/Acl.php:204
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Stations-Remote-Relays verwalten"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Manage Station Media"
-msgstr ""
+msgstr "Stations-Medien und Playlisten verwalten"
 
 #: /var/azuracast/www/src/Acl.php:206
 msgid "Manage Station Automation"
-msgstr ""
+msgstr "Stations-Automatisierung verwalten"
 
 #: /var/azuracast/www/src/Acl.php:207
 msgid "Manage Station Web Hooks"
-msgstr ""
+msgstr "Stations-WebHooks verwalten"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:25
 msgid "Back up the AzuraCast database and statistics (and optionally media)."

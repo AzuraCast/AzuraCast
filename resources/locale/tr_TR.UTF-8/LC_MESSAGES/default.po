@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 04:50\n"
+"PO-Revision-Date: 2019-08-23 05:00\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -228,7 +228,7 @@ msgstr "Sadece mevcut kurulumu güncelle."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr "Önceden tanımlanmış fixture\\'leri yükleyin. (geliştirme amaçları için)"
+msgstr "Önceden tanımlanmış fikstürleri yükleyin. (geliştirme amaçları için)"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
@@ -240,7 +240,7 @@ msgstr "AzuraCast Kurulumu"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:38
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr "AzuraCast\\'a hoşgeldiniz. AzuraCast\\’in bazı temel sistemleri kurulurken lütfen bekleyin..."
+msgstr "AzuraCast'a hoşgeldiniz. AzuraCast’in bazı temel sistemleri kurulurken lütfen bekleyin..."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:41
 msgid "Environment: %s"
@@ -272,7 +272,7 @@ msgstr "Veritabanı Proxy Sınıfları Oluşturuluyor"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
-msgstr "Veri Fixture\\'leri Kuruluyor"
+msgstr "Veri Fikstürleri Kuruluyor"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:80
 msgid "Refreshing All Stations"
@@ -292,11 +292,11 @@ msgstr "Kurulumu tamamlamak için %s adresini ziyaret edin."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."
-msgstr "Demo / yerel geliştirme için fixture\\'leri kurun."
+msgstr "Demo / yerel geliştirme için fikstürleri kurun."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:82
 msgid "Fixtures loaded."
-msgstr "Fixture\\'ler yüklendi."
+msgstr "Fikstürler yüklendi."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."
@@ -402,7 +402,7 @@ msgstr "Senkronizasyon Görev Çıktısı"
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:33
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr "SHOUTcast \\\"%s\\ versiyonu kuruludur."
+msgstr "SHOUTcast \"%s\" versiyonu kuruludur."
 
 #: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:75
 #: /var/azuracast/www/config/menus/admin.php:84
@@ -708,11 +708,11 @@ msgstr "Otomatik atama hatası!"
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:150
 msgid "Path \"%s\" is not a folder."
-msgstr "\\\"%s\\\" bir klasör değildir."
+msgstr "\"%s\" bir klasör değildir."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:239
 msgid "Could not move \"%s\" to \"%s\""
-msgstr "\\\"%s\\\" &#61;&#62; \\\"%s\\ taşınamadı."
+msgstr "\"%s\" &#61;&#62; \"%s\" taşınamadı."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
 msgid "Media not found."
@@ -773,7 +773,7 @@ msgstr "Çalma listesi bulunamadı!"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
-msgstr "Bu çalma listesi \\\"SIRALI\\\" bir çalma listesi değildir."
+msgstr "Bu çalma listesi \"SIRALI\" bir çalma listesi değildir."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format not found."
@@ -1015,7 +1015,7 @@ msgstr "Dosya Seç"
 
 #: /var/azuracast/www/src/Form/StationForm.php:82
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr "SHOUTcast v2 kurmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın ve sonrasında sayfayı yenileyin."
+msgstr "SHOUTcast v2 kurmak için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın ve sonrasında sayfayı yenileyin."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:53
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
@@ -1050,15 +1050,15 @@ msgstr "<code>docker-compose.yml</code> dosyanız güncel değildir!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:73
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr "En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz."
+msgstr "En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz."
 
 #: /var/azuracast/www/src/Notification/Manager.php:99
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr "Güncelleme talimatları konusunda detaylı bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
+msgstr "Güncelleme talimatları konusunda detaylı bilgi için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın."
 
 #: /var/azuracast/www/src/Notification/Manager.php:103
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr "AzuraCast <a href=\\\"%s\\\" target=\\\"_blank\\\">%s sürümü</a> şu an kullanılabilir."
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">%s sürümü</a> şu an kullanılabilir."
 
 #: /var/azuracast/www/src/Notification/Manager.php:104
 msgid "You are currently running version %s. Updating is highly recommended."
@@ -1090,7 +1090,7 @@ msgstr "%s bir servis olarak tanınmıyor."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:196
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr "Henüz Supervisor\\'a kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
+msgstr "Henüz Supervisor'a kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:204
 msgid "%s cannot start"
@@ -1214,7 +1214,7 @@ msgstr "Otomatik Atamayı Etkinleştir"
 
 #: /var/azuracast/www/config/forms/automation.php:11
 msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
-msgstr "Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek \\\"Etkin\\\" olarak ayarlanmışsa ve en az bir parça listesi \\\"Otomatik Atamaya Dahil Et\\\" olarak ayarlanmışsa çalışır."
+msgstr "Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek \"Etkin\" olarak ayarlanmışsa ve en az bir parça listesi \"Otomatik Atamaya Dahil Et\" olarak ayarlanmışsa çalışır."
 
 #: /var/azuracast/www/config/forms/automation.php:14
 #: /var/azuracast/www/config/forms/station.php:108
@@ -1479,7 +1479,7 @@ msgstr "Önemli Notlar"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr "<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">SHOUTcast Radio Manager</a> sitesinden \\\"linux x64\\\" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>"
+msgstr "<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> sitesinden \"linux x64\" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
@@ -1561,7 +1561,7 @@ msgstr "Özelleştirme"
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr "Yöneticiler burada görünen alanları <a href=\\\"%s\\\">yönetici sayfası</a>ndan özelleştirebilir."
+msgstr "Yöneticiler burada görünen alanları <a href=\"%s\">yönetici sayfası</a>ndan özelleştirebilir."
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
@@ -1601,7 +1601,7 @@ msgstr "Custom Cues: Giriş Noktası (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:127
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
-msgstr "AutoDJ\\'in şarkıyı çalmaya başlaması için gereken zamanı belirtin."
+msgstr "AutoDJ'in şarkıyı çalmaya başlaması için gereken zamanı belirtin."
 
 #: /var/azuracast/www/config/forms/media.php:135
 msgid "Custom Cues: Cue-Out Point (seconds)"
@@ -1609,7 +1609,7 @@ msgstr "Custom Cues: Çıkış Noktası (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:136
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
-msgstr "AutoDJ\\'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin."
+msgstr "AutoDJ'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "Mount Point URL"
@@ -1657,12 +1657,12 @@ msgstr "Yönlendirilmek üzere uzak sunucu URLsini belirtin."
 #: /var/azuracast/www/config/forms/mount/generic.php:68
 #: /var/azuracast/www/config/forms/remote.php:165
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr "\\\"Yellow Pages\\\" Dizininde Yayınla"
+msgstr "\"Yellow Pages\" Dizininde Yayınla"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr "Rayoyu \\\"Yellow Pages\\\" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz."
+msgstr "Radyoyu \"Yellow Pages\" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
@@ -1704,7 +1704,7 @@ msgstr "Özelleştirilmiş Sunucu Ayarları"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:29
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
-msgstr "Özel bağlantı noktası ayarlarını JSON için { key: \\'value\\' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz."
+msgstr "Özel bağlantı noktası ayarlarını JSON için { key: 'value' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz."
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:11
 msgid "Stream path cannot include reserved keywords: %s"
@@ -1716,7 +1716,7 @@ msgstr "YP Dizini Yetkilendirme Kodu"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr "Radyoyu \\\"Yellow Pages\\\" dizininde görüntülenmesini istiyorsanız <a href=\\\"%s\\\" target=\\\"_blank\\\">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir."
+msgstr "Radyoyu \"Yellow Pages\" dizininde görüntülenmesini istiyorsanız <a href=\"%s\" target=\"_blank\">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir."
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
@@ -1741,7 +1741,7 @@ msgstr "Çalma Listesini Etkinleştir"
 
 #: /var/azuracast/www/config/forms/playlist.php:28
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."
-msgstr "\\\"HAYIR\\\" olarak ayarlanırsa AutoDJ müzik çalamaz."
+msgstr "\"HAYIR\" olarak ayarlanırsa AutoDJ müzik çalamaz."
 
 #: /var/azuracast/www/config/forms/playlist.php:39
 msgid "Playlist Name"
@@ -1814,7 +1814,7 @@ msgstr "Radyodaki çalan müzikleri kullanıcıların erişimine açmak için bu
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr "Meta Verilerini Gizle (\\\"Jingle Mode\\\")"
+msgstr "Meta Verilerini Gizle (\"Jingle Mode\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."

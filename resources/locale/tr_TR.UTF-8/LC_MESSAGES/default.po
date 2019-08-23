@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 05:00\n"
+"PO-Revision-Date: 2019-08-23 05:10\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1894,7 +1894,7 @@ msgstr "Gelişmiş"
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr "Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
+msgstr "Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın."
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "AutoDJ Scheduling Options"
@@ -2162,7 +2162,7 @@ msgstr "Tarayıcı URLsini Tercih Et (Varsa)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr "Bu ayar \\\"Evet\\\" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için \\\"Hayır\\\" olarak ayarlayın."
+msgstr "Bu ayar \"Evet\" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için \"Hayır\" olarak ayarlayın."
 
 #: /var/azuracast/www/config/forms/settings.php:49
 msgid "Use Web Proxy for Radio"
@@ -2229,15 +2229,15 @@ msgstr "Her Zaman HTTPS Kullan"
 
 #: /var/azuracast/www/config/forms/settings.php:99
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr "\\\"Evet\\\" olarak ayarlandığında her zaman güvenli bağlantı \\\"https://\\\" kullanılır."
+msgstr "\"Evet\" olarak ayarlandığında her zaman güvenli bağlantı \"https://\" kullanılır."
 
 #: /var/azuracast/www/config/forms/settings.php:109
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr "\\\"Access-Control-Allow-Origin\\\" API Başlığı"
+msgstr "\"Access-Control-Allow-Origin\" API Başlığı"
 
 #: /var/azuracast/www/config/forms/settings.php:111
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr "Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
+msgstr "Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın."
 
 #: /var/azuracast/www/config/forms/settings.php:120
 msgid "Privacy Controls"
@@ -2245,7 +2245,7 @@ msgstr "Gizlilik Kontrolleri"
 
 #: /var/azuracast/www/config/forms/settings.php:121
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr "AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast\\'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin."
+msgstr "AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin."
 
 #: /var/azuracast/www/config/forms/settings.php:128
 msgid "Listener Analytics Collection"
@@ -2273,7 +2273,7 @@ msgstr "AzuraCast Kurulumu Desteği"
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr "Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\\\"%s\\\" target=\\\"_blank\\\">gizlilik politikası</a>nı inceleyebilirsiniz."
+msgstr "Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\"%s\" target=\"_blank\">gizlilik politikası</a>nı inceleyebilirsiniz."
 
 #: /var/azuracast/www/config/forms/settings.php:151
 msgid "Check for Updates and Announcements"
@@ -2305,7 +2305,7 @@ msgstr "Web uygulaması bir hatayla karşılaşırsa daha hızlı tanım ve çö
 
 #: /var/azuracast/www/config/forms/settings.php:167
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr "Hata raporları <a href=\\\"%s\\\" target=\\\"_blank\\\">%s</a> tarafından desteklenmektedir."
+msgstr "Hata raporları <a href=\"%s\" target=\"_blank\">%s</a> tarafından desteklenmektedir."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
@@ -2388,7 +2388,7 @@ msgstr "En Son Çalınan Şarkı Sayısı"
 
 #: /var/azuracast/www/config/forms/station.php:106
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr "Bu istasyon için \\\"Şarkı Geçmişi\\\" bölümünde ve tüm ortak APIlerde görünecek şarkı sayısını belirtin."
+msgstr "Bu istasyon için \"Şarkı Geçmişi\" bölümünde ve tüm ortak APIlerde görünecek şarkı sayısını belirtin."
 
 #: /var/azuracast/www/config/forms/station.php:128
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:16
@@ -2435,7 +2435,7 @@ msgstr "Özel Yapılandırma"
 
 #: /var/azuracast/www/config/forms/station.php:195
 msgid "This code will be included in the frontend configuration. You can use either JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;."
-msgstr "Bu kod sunucu yapılandırmasına dahil edilecektir. JSON için {\\\"new_key\\\": \\\"new_value\\\"} veya XML için &lt;new_key&gt;new_value&lt;/new_key&gt; biçimini kullanabilirsiniz."
+msgstr "Bu kod sunucu yapılandırmasına dahil edilecektir. JSON için {\"new_key\": \"new_value\"} veya XML için &lt;new_key&gt;new_value&lt;/new_key&gt; biçimini kullanabilirsiniz."
 
 #: /var/azuracast/www/config/forms/station.php:209
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:16
@@ -2480,7 +2480,7 @@ msgstr "Normalleştirme ve Sıkıştırma Uygula"
 
 #: /var/azuracast/www/config/forms/station.php:260
 msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
-msgstr "Daha düzenli ve \\\"tam\\\" bir ses üreten radyonuzun sesini sıkıştırın ve normalleştirin."
+msgstr "Daha düzenli ve \"tam\" bir ses üreten radyonuzun sesini sıkıştırın ve normalleştirin."
 
 #: /var/azuracast/www/config/forms/station.php:271
 msgid "Allow Song Requests"
@@ -2568,7 +2568,7 @@ msgstr "Manuel AutoDJ Modu"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr "Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. \\\"Sıradaki Şarkı\\\" ve diğer bazı özellikler kullanılamayacaktır."
+msgstr "Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. \"Sıradaki Şarkı\" ve diğer bazı özellikler kullanılamayacaktır."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
@@ -2596,7 +2596,7 @@ msgstr "Depolama Alanı"
 
 #: /var/azuracast/www/config/forms/station.php:458
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr "Bu radyonun kullanabileceği maksimum disk alanı ayarlayın. Boş bırakırsanız sunucu depolama alanı dolana kadar kullanılabilir. Depolama alanı büyüklüğünü 1024 bayt cinsinden hesaplayarak yazmalınısız. Örnek: \\\"2 GB\\\" veya \\\"2048 MB\\\""
+msgstr "Bu radyonun kullanabileceği maksimum disk alanı ayarlayın. Boş bırakırsanız sunucu depolama alanı dolana kadar kullanılabilir. Depolama alanı büyüklüğünü 1024 bayt cinsinden hesaplayarak yazmalınısız. Örnek: \"2 GB\" veya \"2048 MB\""
 
 #: /var/azuracast/www/config/forms/station.php:466
 msgid "Base Station Directory"
@@ -2660,7 +2660,7 @@ msgstr "İzinler kopyalansın mı?"
 
 #: /var/azuracast/www/config/forms/station_clone.php:81
 msgid "Selecting \"Yes\" will assign any users with permissions to the current station to have permissions to the new one."
-msgstr "\\\"Evet\\\" seçilirse mevcut radyo izinlerine sahip olan kullanıcıları yeni radyoya atanacaktır."
+msgstr "\"Evet\" seçilirse mevcut radyo izinlerine sahip olan kullanıcıları yeni radyoya atanacaktır."
 
 #: /var/azuracast/www/config/forms/station_clone.php:100
 msgid "Create New Station"
@@ -2752,7 +2752,7 @@ msgstr "Mesajı Özelleştir"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 #: /var/azuracast/www/config/forms/webhook/twitter.php:123
 msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
-msgstr "Değişkenler {{ var.name }} biçimindedir. <a href=\\\"%s\\\" target=\\\"_blank\\\"> Çalan Şarkı API</a>si tüm değerler kullanım için uygundur. Boş alanlar dikkate alınmaz."
+msgstr "Değişkenler {{ var.name }} biçimindedir. <a href=\"%s\" target=\"_blank\"> Çalan Şarkı API</a>si tüm değerler kullanım için uygundur. Boş alanlar dikkate alınmaz."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:60
 #: /var/azuracast/www/config/forms/webhook/telegram.php:82
@@ -2807,7 +2807,7 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                optimized to handle the request in under 2 seconds."
 msgstr "Web kancaları belirlediğiniz tetikleyicilerden birinin radyonuzda gerçekleştiği zaman \n"
 "                bildirmek için belirttiğiniz URL’ye otomatik olarak bir HTTP POST isteği gönderir.\n"
-"                POST mesajının gövdesi radyonuz için <a href=\\\"%s\\\" target=\\\"_blank\\\">Çalan Şarkı API</a> cevabıyla aynıdır.\n"
+"                POST mesajının gövdesi radyonuz için <a href=\"%s\" target=\"_blank\">Çalan Şarkı API</a> cevabıyla aynıdır.\n"
 "                Hızlı bir şekilde işlemek için entegresyonların kısa bir zaman aşımı süresi vardır. bu nedenle\n"
 "                yanıtlayan hizmetin isteği 2 saniyeden daha kısa sürede ele alması için en iyi duruma getirilmesi gerekir.\""
 
@@ -2842,7 +2842,7 @@ msgstr "Bot Bilgisi"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:29
 #: /var/azuracast/www/config/forms/webhook/telegram.php:94
 msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
-msgstr "Daha fazla bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz."
+msgstr "Daha fazla bilgi için <a href=\"%s\" target=\"_blank\">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:39
 msgid "Chat ID"
@@ -2875,7 +2875,7 @@ msgstr "TuneIn Radyo ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:28
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr "\\\"S\\\" harfi ile başlayan TuneIn Radyo ID\\'sini buraya yazın."
+msgstr "\"S\" harfi ile başlayan TuneIn Radyo ID\\'sini buraya yazın."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:38
 msgid "TuneIn Partner ID"
@@ -2900,12 +2900,12 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
 msgstr "\"Twitter hesabı yapılandırma adımları:<br>\n"
 "                <ol type=\"1\">\n"
-"                    <li><a href=\\\"%s\\\" target=\\\"_blank\\\">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.\n"
+"                    <li><a href=\"%s\" target=\"_blank\">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.\n"
 "                    Bu kurulum uygulama URLsi olarak temel URLdir.</li>\n"
-"                    <li>Yeni oluşturulan uygulamada \\\"Anahtarlar ve Erişim Bilgileri\\\" sekmesini tıklayın.</li>\n"
-"                    <li>Sayfanın alt tarafında \\\"Erişim Kartımı Oluştur\\\" düğmesine tıklayın.</li>\n"
+"                    <li>Yeni oluşturulan uygulamada \"Anahtarlar ve Erişim Bilgileri\" sekmesini tıklayın.</li>\n"
+"                    <li>Sayfanın alt tarafında \"Erişim Kartımı Oluştur\" düğmesine tıklayın.</li>\n"
 "                </ol>\n"
-"                <p>Bu adımlar tamamlandıktan sonra \\\"Anahtarlar ve Erişim Bilgileri\\\" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>"
+"                <p>Bu adımlar tamamlandıktan sonra \"Anahtarlar ve Erişim Bilgileri\" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -3163,7 +3163,7 @@ msgstr "TuneIn Web Kancası"
 
 #: /var/azuracast/www/config/webhooks.php:21
 msgid "Send song metadata changes to TuneIn."
-msgstr "Şarkı meta verileri değişikliklerini TuneIn\\'e gönderin."
+msgstr "Şarkı meta verileri değişikliklerini TuneIn'e gönderin."
 
 #: /var/azuracast/www/config/webhooks.php:25
 msgid "Discord Webhook"
@@ -3407,7 +3407,7 @@ msgstr "İndir"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Delete backup \"%s\"?"
-msgstr "\\\"%s\\ yedeklemesi silinsin mi?"
+msgstr "\"%s\" yedeklemesi silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
@@ -3423,7 +3423,7 @@ msgstr "Yedekleme çalışırken hatalarla karşılaştı. Ayrıntılar için a�
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr "\\\"%s\\ özel alan silinsin mi?"
+msgstr "\"%s\" özel alan silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
@@ -3467,7 +3467,7 @@ msgstr "Radyo Günlükleri"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr "\\\"%s\\ yetki silinsin mi?"
+msgstr "\"%s\" yetki silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "This role cannot be deleted."
@@ -3518,7 +3518,7 @@ msgstr "Kopyalama"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr "\\\"%s\\\" radyo silinsin mi?"
+msgstr "\"%s\" radyo silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:33
 #: /var/azuracast/www/templates/frontend/account/login.phtml:3
@@ -3528,7 +3528,7 @@ msgstr "Giriş Yap"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr "\\\"%s\\\" kullanıcı silinsin mi?"
+msgstr "\"%s\" kullanıcı silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:47
 msgid "(You)"
@@ -3563,7 +3563,7 @@ msgstr "Devam etmek için lütfen giriş yapın."
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
-msgstr "<a href=\\\"%s\\\" target=\\\"_blank\\\">Şifreni mi unuttun?</a>"
+msgstr "<a href=\"%s\" target=\"_blank\">Şifreni mi unuttun?</a>"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
@@ -3589,7 +3589,7 @@ msgstr "API Anahtarlarım"
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
 msgstr "API anahtarları bazı sistem işlevlerine giriş yapmak zorunda kalmadan erişmek için kullanılabilir. Oluşturduğunuz tüm anahtarlar\n"
-"            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href=\\\"%s\\\">API Belgeleri</a>ne bakın."
+"            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href=\"%s\">API Belgeleri</a>ne bakın."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3619,7 +3619,7 @@ msgstr "Panoya Kopyala"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:25
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr "API çağrıları yaparken bu değeri \\\"X-API-Key\\\" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz."
+msgstr "API çağrıları yaparken bu değeri \"X-API-Key\" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:28
 msgid "Continue"
@@ -3889,7 +3889,7 @@ msgstr "AzuraCast İlk Kurulumu"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "Welcome to AzuraCast!"
-msgstr "AzuraCast\\'e Hoşgeldiniz!"
+msgstr "AzuraCast'e Hoşgeldiniz!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:27
 msgid "Let's get started by creating your Super Administrator account."
@@ -3914,7 +3914,7 @@ msgstr "AzuraCast Ayarlarını Özelleştir"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:34
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
-msgstr "İlk radyo istasyonunuzu aşğıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz."
+msgstr "İlk radyo radyonuzu aşağıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz."
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:41
 msgid "Create a New Radio Station"
@@ -3954,7 +3954,7 @@ msgstr "Çıkış Yap"
 
 #: /var/azuracast/www/templates/main.phtml:152
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr "Türkçeleştirme\\: ByBiLaL \\- AzuraCast\\'i beğendiniz mi? <a href=\\\"%s\\\" target=\\\"_blank\\\">Destek olmak için bağış yapın!</a>"
+msgstr "Türkçeleştirme: ByBiLaL - AzuraCast'i beğendiniz mi? <a href=\"%s\" target=\"_blank\">Destek olmak için bağış yapın!</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 12:00\n"
+"PO-Revision-Date: 2019-08-23 12:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2105,7 +2105,7 @@ msgstr "Если порт, на который осуществляется тр
 
 #: /var/azuracast/www/config/forms/remote.php:138
 msgid "Remote Station Source Mountpoint/SID"
-msgstr "Исходная точка подключения отдалённой станции/SID"
+msgstr "Точка подключения отдалённой станции/SID"
 
 #: /var/azuracast/www/config/forms/remote.php:139
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
@@ -2117,7 +2117,7 @@ msgstr "Имя пользователя отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:148
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr "Если вы транслируете с помощью АвтоДиджея, введите имя Source здесь. Оно может быть пустым."
+msgstr "Если вы транслируете с помощью АвтоДиджея, введите имя источника здесь. Оно может быть пустым."
 
 #: /var/azuracast/www/config/forms/remote.php:156
 msgid "Remote Station Source Password"
@@ -2125,7 +2125,7 @@ msgstr "Пароль источника отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:157
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr "Если вы транслируете с помощью АвтоДиджея, введите пароль Source здесь."
+msgstr "Если вы транслируете с помощью АвтоДиджея, введите пароль источника здесь."
 
 #: /var/azuracast/www/config/forms/role.php:13
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:22

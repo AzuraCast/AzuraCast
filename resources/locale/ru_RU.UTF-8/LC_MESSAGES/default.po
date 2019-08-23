@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 11:10\n"
+"PO-Revision-Date: 2019-08-23 11:35\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2069,7 +2069,7 @@ msgstr "Отображаемое имя, назначенное этой точ�
 
 #: /var/azuracast/www/config/forms/remote.php:48
 msgid "Remote Station Listening URL"
-msgstr "URL-адрес прослушивания отдалённой станции"
+msgstr "URL-адрес подключения к отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:49
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
@@ -2077,7 +2077,7 @@ msgstr "Пример: если отдалённый URL-адрес радио %s
 
 #: /var/azuracast/www/config/forms/remote.php:62
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr "Точка прослушивания отдалённой станции /SID"
+msgstr "Точка подключения отдалённой станции /SID"
 
 #: /var/azuracast/www/config/forms/remote.php:63
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."

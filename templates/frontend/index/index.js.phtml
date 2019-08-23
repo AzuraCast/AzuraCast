@@ -19,39 +19,19 @@ $(function() {
     });
 });
 
-<?php
-if ($customization->useWebSocketsForNowPlaying()):
-?>
-    $(function() {
-        var sub = new NchanSubscriber('/api/live/nowplaying/<?=implode(',', $station_ids) ?>');
+$(function() {
+    setTimeout(loadNowPlaying, 15000);
+});
 
-        sub.on("message", function(message, message_metadata) {
-            var row = JSON.parse(message);
-
+function loadNowPlaying() {
+    $.getJSON('<?=$router->named('api:nowplaying:index') ?>', function(data) {
+        $.each(data, function(k, row) {
             var station_id = row.station.id;
             station_dashboard['stations'][station_id]['np'] = row;
         });
-        sub.start();
-    });
-<?php
-else:
-?>
-    $(function() {
+
         setTimeout(loadNowPlaying, 15000);
+    }).fail(function() {
+        setTimeout(loadNowPlaying, 30000);
     });
-
-    function loadNowPlaying() {
-        $.getJSON('<?=$router->named('api:nowplaying:index') ?>', function(data) {
-            $.each(data, function(k, row) {
-                var station_id = row.station.id;
-                station_dashboard['stations'][station_id]['np'] = row;
-            });
-
-            setTimeout(loadNowPlaying, 15000);
-        }).fail(function() {
-            setTimeout(loadNowPlaying, 30000);
-        });
-    }
-<?php
-endif;
-?>
+}

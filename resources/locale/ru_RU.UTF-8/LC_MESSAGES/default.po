@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 10:11\n"
+"PO-Revision-Date: 2019-08-23 11:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1978,11 +1978,11 @@ msgstr "Этот плейлист будет воспроизводить каж
 
 #: /var/azuracast/www/config/forms/playlist.php:363
 msgid "Minute of Hour to Play"
-msgstr "Минуты Часа для проигрывания"
+msgstr "Минута Часа для Воспроизведения"
 
 #: /var/azuracast/www/config/forms/playlist.php:364
 msgid "Specify the minute of every hour that this playlist should play."
-msgstr "В указанную минуту каждый час будет играть этот плейлист."
+msgstr "Укажите минуту в которую каждый час должен начать играть этот плейлист."
 
 #: /var/azuracast/www/config/forms/profile.php:3
 msgid "Use Browser Default"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 14:11\n"
+"PO-Revision-Date: 2019-08-23 14:27\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2253,15 +2253,15 @@ msgstr "Сбор Аналитики о Слушателях"
 
 #: /var/azuracast/www/config/forms/settings.php:129
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "Собираемая статистика о слушателях используется для отображения отчетов станции в системе. Статистика слушателей на основе IP-адреса используется для просмотра отслеживания онлайн слушателей и может потребоваться для роялти отчетов."
 
 #: /var/azuracast/www/config/forms/settings.php:132
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr "<b>Полная:</b> Собирается совокупная статистика слушателя и статистика о слушателях на основе IP-адреса"
+msgstr "<b>Полная:</b> Сбор статистических данных слушателя и статистика на основе IP-адреса "
 
 #: /var/azuracast/www/config/forms/settings.php:133
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr "<b>Ограничено:</b> Собирается только совокупная статистика слушателя"
+msgstr "<b>Ограничено:</b> Сбор только статистических данных слушателя"
 
 #: /var/azuracast/www/config/forms/settings.php:134
 msgid "<b>None:</b> Do not collect any listener analytics"

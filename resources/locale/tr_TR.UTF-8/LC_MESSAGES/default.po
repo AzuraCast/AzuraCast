@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-22 07:30\n"
+"PO-Revision-Date: 2019-08-23 04:50\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -107,7 +107,7 @@ msgstr "AzuraCast veritabanını ve istatistiklerini (ve isteğe bağlı olarak 
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr "Yedeklemenin oluşturulacağı kesin dizini (veya geçici \\\"/var/azuracast/backups\\\" dizini kullanın) belirtin."
+msgstr "Yedeklemenin oluşturulacağı kesin dizini (veya geçici \"/var/azuracast/backups\" dizini kullanın) belirtin."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
@@ -212,7 +212,7 @@ msgstr "Yedekleme dizini %s bulunamadı!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr "\\\"%s\\\" e-posta adresi yönetici olarak atandı."
+msgstr "%s e-posta adresi yönetici olarak atandı."
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
 msgid "Account not found."

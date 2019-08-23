@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 14:27\n"
+"PO-Revision-Date: 2019-08-23 21:40\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2444,11 +2444,11 @@ msgstr "Сервис АвтоДиджея"
 
 #: /var/azuracast/www/config/forms/station.php:210
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
-msgstr "Это программное обеспечение постоянно перетасовывает музыку из плейлистов и проигрывает, когда нет другого источника Радио."
+msgstr "Это программное обеспечение постоянно проигрывает и перетасовывает музыку из плейлистов, когда другой источник радио недоступен."
 
 #: /var/azuracast/www/config/forms/station.php:228
 msgid "Crossfade Method"
-msgstr "Метод кроссфейда"
+msgstr "Режим кроссфейда"
 
 #: /var/azuracast/www/config/forms/station.php:230
 msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."

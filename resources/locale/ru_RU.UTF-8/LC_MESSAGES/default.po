@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 11:50\n"
+"PO-Revision-Date: 2019-08-23 12:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2109,11 +2109,11 @@ msgstr "Исходная точка подключения отдалённой 
 
 #: /var/azuracast/www/config/forms/remote.php:139
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr "Если точка подключения (т.е. <code>/radio.mp3</code>) или Shoutcast SID (т.е. <code>2</code>) с которой вы вещаете, отличается от указанной выше точки, укажите точку подключения источника здесь."
+msgstr "Если точка подключения (т.е. <code>/radio.mp3</code>) или Shoutcast SID (т.е. <code>2</code>) на которую вы вещаете, отличается от указанной выше точки, укажите точку подключения Source здесь."
 
 #: /var/azuracast/www/config/forms/remote.php:147
 msgid "Remote Station Source Username"
-msgstr "Имя пользователя источника отдалённой станции"
+msgstr "Имя пользователя отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:148
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."

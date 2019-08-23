@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 05:30\n"
+"PO-Revision-Date: 2019-08-23 05:40\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1720,7 +1720,7 @@ msgstr "Radyoyu \"Yellow Pages\" dizininde görüntülenmesini istiyorsanız <a 
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
-msgstr "Basit Ayarlar"
+msgstr "Temel Bilgiler"
 
 #: /var/azuracast/www/config/forms/playlist.php:12
 #: /var/azuracast/www/config/forms/playlist.php:71
@@ -1986,7 +1986,7 @@ msgstr "Bu çalma listesinin saatin hangi dakikasında oynatılmasını istiyors
 
 #: /var/azuracast/www/config/forms/profile.php:3
 msgid "Use Browser Default"
-msgstr "Varsayılan"
+msgstr "Tarayıcı Dilini Kullan"
 
 #: /var/azuracast/www/config/forms/profile.php:16
 #: /var/azuracast/www/config/forms/station.php:37
@@ -2213,7 +2213,7 @@ msgstr "Süresiz"
 
 #: /var/azuracast/www/config/forms/settings.php:79
 msgid "Use WebSockets for Now Playing Updates"
-msgstr "Çalan Şarkı Bilgisi İçin WebSockets Kullanın"
+msgstr "Çalan Şarkı Bilgisi İçin WebSocket Kullanın"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
@@ -2273,7 +2273,7 @@ msgstr "AzuraCast Kurulumu Desteği"
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr "Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\"%s\" target=\"_blank\">gizlilik politikası</a>nı inceleyebilirsiniz."
+msgstr "Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\"%s\" target=\"_blank\">Gizlilik Politikası</a>nı inceleyebilirsiniz."
 
 #: /var/azuracast/www/config/forms/settings.php:151
 msgid "Check for Updates and Announcements"
@@ -2380,7 +2380,7 @@ msgstr "Sabit URL"
 
 #: /var/azuracast/www/config/forms/station.php:96
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
-msgstr "İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL-dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın."
+msgstr "İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın."
 
 #: /var/azuracast/www/config/forms/station.php:104
 msgid "Number of Recently Played Songs"
@@ -2388,7 +2388,7 @@ msgstr "En Son Çalınan Şarkı Sayısı"
 
 #: /var/azuracast/www/config/forms/station.php:106
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr "Bu istasyon için \"Şarkı Geçmişi\" bölümünde ve tüm ortak APIlerde görünecek şarkı sayısını belirtin."
+msgstr "Bu istasyon için \"Şarkı Geçmişi\" bölümünde ve tüm ortak API'lerde görünecek şarkı sayısını belirtin."
 
 #: /var/azuracast/www/config/forms/station.php:128
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:16

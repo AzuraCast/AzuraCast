@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 05:40\n"
+"PO-Revision-Date: 2019-08-23 05:50\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2652,7 +2652,7 @@ msgstr "Çalma listeleri kopyalansın mı?"
 
 #: /var/azuracast/www/config/forms/station_clone.php:67
 msgid "Copy Streamer/DJ Accounts?"
-msgstr "DJ hesapları kopyalansın mı?\""
+msgstr "DJ hesapları kopyalansın mı?"
 
 #: /var/azuracast/www/config/forms/station_clone.php:80
 msgid "Copy Permissions?"
@@ -2875,7 +2875,7 @@ msgstr "TuneIn Radyo ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:28
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr "\"S\" harfi ile başlayan TuneIn Radyo ID\\'sini buraya yazın."
+msgstr "\"S\" harfi ile başlayan TuneIn Radyo ID'sini buraya yazın."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:38
 msgid "TuneIn Partner ID"

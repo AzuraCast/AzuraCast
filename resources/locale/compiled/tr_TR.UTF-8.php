@@ -1,6 +1,6 @@
 <?php return array (
   'domain' => NULL,
-  'plural-forms' => 'nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);',
+  'plural-forms' => 'nplurals=2; plural=(n != 1);',
   'messages' => 
   array (
     '' => 
@@ -10,1319 +10,1319 @@
         0 => 'Project-Id-Version: azuracast
 Report-Msgid-Bugs-To: 
 Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)
-Language-Team: Polish
+Language-Team: Turkish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-08-21T22:24:59+00:00
 PO-Revision-Date: 2019-08-23 03:09
-Language: pl_PL
-Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
+Language: tr_TR
+Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
 X-Crowdin-Project: azuracast
-X-Crowdin-Language: pl
+X-Crowdin-Language: tr
 X-Crowdin-File: /master/resources/locale/default.pot
 ',
       ),
       'All Permissions' => 
       array (
-        0 => 'Wszystkie uprawnienia',
+        0 => 'Tüm İzinler',
       ),
       'View Administration Page' => 
       array (
-        0 => 'Pokaż panel administracyjny',
+        0 => 'Yönetici Panelini Görme',
       ),
       'View System Logs' => 
       array (
-        0 => 'Przejrzyj dziennik systemowy',
+        0 => 'Sistem Günlüklerini Görme',
       ),
       'Administer Settings' => 
       array (
-        0 => '',
+        0 => 'Ayar Yönetimi',
       ),
       'Administer API Keys' => 
       array (
-        0 => '',
+        0 => 'API Anahtarı Yönetimi',
       ),
       'Administer Users' => 
       array (
-        0 => '',
+        0 => 'Kullanıcı Yönetimi',
       ),
       'Administer Permissions' => 
       array (
-        0 => '',
+        0 => 'İzin Yönetimi',
       ),
       'Administer Stations' => 
       array (
-        0 => '',
+        0 => 'Radyo Yönetimi',
       ),
       'Administer Custom Fields' => 
       array (
-        0 => '',
+        0 => 'Özel Alan Yönetimi',
       ),
       'Administer Backups' => 
       array (
-        0 => '',
+        0 => 'Yedekleme Yönetimi',
       ),
       'View Station Page' => 
       array (
-        0 => 'Wyświetl stronę stacji',
+        0 => 'Radyo Sayfasını Görme',
       ),
       'View Station Reports' => 
       array (
-        0 => 'Wyświetl raport słuchalności stacji',
+        0 => 'Radyo Raporlarını Görme',
       ),
       'View Station Logs' => 
       array (
-        0 => 'Wyświetl logi stacji',
+        0 => 'Radyo Günlüklerini Görme',
       ),
       'Manage Station Profile' => 
       array (
-        0 => '',
+        0 => 'Radyo Profil Yönetimi',
       ),
       'Manage Station Broadcasting' => 
       array (
-        0 => '',
+        0 => 'Radyo Canlı Yayın Yönetimi',
       ),
       'Manage Station Streamers' => 
       array (
-        0 => '',
+        0 => 'Radyo DJ Yönetimi',
       ),
       'Manage Station Mount Points' => 
       array (
-        0 => '',
+        0 => 'Radyo Bağlantı Noktası Yönetimi',
       ),
       'Manage Station Remote Relays' => 
       array (
-        0 => '',
+        0 => 'Radyo Yönlendirme Yönetimi',
       ),
       'Manage Station Media' => 
       array (
-        0 => '',
+        0 => 'Radyo Müzik Yönetimi',
       ),
       'Manage Station Automation' => 
       array (
-        0 => '',
+        0 => 'Radyo Otomasyon Yönetimi',
       ),
       'Manage Station Web Hooks' => 
       array (
-        0 => '',
+        0 => 'Radyo Web Kancası Yönetimi',
       ),
       'Back up the AzuraCast database and statistics (and optionally media).' => 
       array (
-        0 => '',
+        0 => 'AzuraCast veritabanını ve istatistiklerini (ve isteğe bağlı olarak medyayı) yedekleyin.',
       ),
       'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
       array (
-        0 => '',
+        0 => 'Yedeklemenin oluşturulacağı kesin dizini (veya geçici \\"/var/azuracast/backups\\" dizini kullanın) belirtin.',
       ),
       'Exclude media from the backup.' => 
       array (
-        0 => '',
+        0 => 'Yedeklemeye Müzik Dosyalarını Dahil Etme',
       ),
       'AzuraCast Backup' => 
       array (
-        0 => '',
+        0 => 'AzuraCast Yedekleme',
       ),
       'Please wait while a backup is generated...' => 
       array (
-        0 => '',
+        0 => 'Lütfen bir yedekleme oluşturulurken bekleyin...',
       ),
       'Creating temporary directories...' => 
       array (
-        0 => '',
+        0 => 'Geçici dizinler oluşturuluyor...',
       ),
       'Directory "%s" was not created' => 
       array (
-        0 => '',
+        0 => '"%s" dizini oluşturulamadı!',
       ),
       'Backing up MariaDB...' => 
       array (
-        0 => '',
+        0 => 'MariaDB yedekleniyor...',
       ),
       'Backing up InfluxDB...' => 
       array (
-        0 => '',
+        0 => 'InfluxDB yedekleniyor...',
       ),
       'Creating backup archive...' => 
       array (
-        0 => '',
+        0 => 'Yedekleme arşivi oluşturuluyor...',
       ),
       'Cleaning up temporary files...' => 
       array (
-        0 => '',
+        0 => 'Geçici dizin dosyaları temizleniyor...',
       ),
       'Backup complete in %.2f seconds.' => 
       array (
-        0 => '',
+        0 => 'Yedekleme %.2f saniyede tamamlandı.',
       ),
       'Backup process error' => 
       array (
-        0 => '',
+        0 => 'Yedek işleme hatası',
       ),
       'List all settings in the AzuraCast settings database.' => 
       array (
-        0 => '',
+        0 => 'AzuraCast ayarları veritabanında tüm ayarları listeleyin.',
       ),
       'AzuraCast Settings' => 
       array (
-        0 => '',
+        0 => 'AzuraCast Ayarları',
       ),
       'Setting Key' => 
       array (
-        0 => '',
+        0 => 'Ayar Anahtarı',
       ),
       'Setting Value' => 
       array (
-        0 => '',
+        0 => 'Ayar Değeri',
       ),
       'Generate the translation locale file.' => 
       array (
-        0 => '',
+        0 => 'Dil çevirisi yerel dosyasını oluşturun.',
       ),
       'Locales generated.' => 
       array (
-        0 => '',
+        0 => 'Yerel dosya oluşturuldu!',
       ),
       'Convert translated locale files into PHP arrays.' => 
       array (
-        0 => '',
+        0 => 'Çevrilen yerel dosyaları PHP dizilerine dönüştürün.',
       ),
       'Imported locale: %s' => 
       array (
-        0 => '',
+        0 => 'İçe aktarılan dil: %s',
       ),
       'Locales imported.' => 
       array (
-        0 => '',
+        0 => 'Yerel dosya içe aktarıldı!',
       ),
       'Migrate existing configuration to new INI format if any exists.' => 
       array (
-        0 => '',
+        0 => 'Varsa mevcut ayarları yeni bir INI formatına taşıyın.',
       ),
       'Configuration already set up.' => 
       array (
-        0 => '',
+        0 => 'Yapılandırma zaten ayarlandı.',
       ),
       'Configuration successfully written.' => 
       array (
-        0 => '',
+        0 => 'Yapılandırma başarıyla yazıldı.',
       ),
       'Process the message queue.' => 
       array (
-        0 => '',
+        0 => 'Mesaj kuyruğunu işleyin.',
       ),
       'Backup path %s not found!' => 
       array (
-        0 => '',
+        0 => 'Yedekleme dizini %s bulunamadı!',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
-        0 => 'Konto połączone z adresem e-mail "%s" zostało ustawione jako administrator',
+        0 => '\\"%s\\" e-posta adresi yönetici olarak atandı.',
       ),
       'Account not found.' => 
       array (
-        0 => 'Nie znaleziono konta.',
+        0 => 'Hesap bulunamadı.',
       ),
       'Run all general AzuraCast setup steps.' => 
       array (
-        0 => '',
+        0 => 'Tüm genel AzuraCast kurulum adımlarını çalıştırın.',
       ),
       'Only update the existing installation.' => 
       array (
-        0 => '',
+        0 => 'Sadece mevcut kurulumu güncelle.',
       ),
       'Load predefined fixtures (for development purposes).' => 
       array (
-        0 => '',
+        0 => 'Önceden tanımlanmış fixture\\\'leri yükleyin. (geliştirme amaçları için)',
       ),
       'Used for updating only to a tagged release.' => 
       array (
-        0 => '',
+        0 => 'Yalnızca etiketli bir sürüme güncelleme yapmak için kullanılır.',
       ),
       'AzuraCast Setup' => 
       array (
-        0 => '',
+        0 => 'AzuraCast Kurulumu',
       ),
       'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
       array (
-        0 => '',
+        0 => 'AzuraCast\\\'a hoşgeldiniz. AzuraCast\\’in bazı temel sistemleri kurulurken lütfen bekleyin...',
       ),
       'Environment: %s' => 
       array (
-        0 => '',
+        0 => 'Ortam: %s',
       ),
       'Installation Method: %s' => 
       array (
-        0 => '',
+        0 => 'Kurulum Yöntemi: %s',
       ),
       'Running in update mode.' => 
       array (
-        0 => '',
+        0 => 'Güncelleme modunda çalışıyor.',
       ),
       'Migrating Legacy Configuration' => 
       array (
-        0 => '',
+        0 => 'Eski Yapılandırma Taşınıyor',
       ),
       'Setting Up InfluxDB' => 
       array (
-        0 => '',
+        0 => 'InfluxDB Ayarlanıyor',
       ),
       'Running Database Migrations' => 
       array (
-        0 => '',
+        0 => 'Veritabanı Geçişleri Çalışıyor',
       ),
       'Generating Database Proxy Classes' => 
       array (
-        0 => '',
+        0 => 'Veritabanı Proxy Sınıfları Oluşturuluyor',
       ),
       'Installing Data Fixtures' => 
       array (
-        0 => '',
+        0 => 'Veri Fixture\\\'leri Kuruluyor',
       ),
       'Refreshing All Stations' => 
       array (
-        0 => '',
+        0 => 'Tüm Radyolar Yenileniyor',
       ),
       'AzuraCast is now updated to the latest version!' => 
       array (
-        0 => '',
+        0 => 'AzuraCast şimdi en son sürüme güncellendi!',
       ),
       'AzuraCast installation complete!' => 
       array (
-        0 => '',
+        0 => 'AzuraCast kurulumu tamamlandı!',
       ),
       'Visit %s to complete setup.' => 
       array (
-        0 => '',
+        0 => 'Kurulumu tamamlamak için %s adresini ziyaret edin.',
       ),
       'Install fixtures for demo / local development.' => 
       array (
-        0 => '',
+        0 => 'Demo / yerel geliştirme için fixture\\\'leri kurun.',
       ),
       'Fixtures loaded.' => 
       array (
-        0 => '',
+        0 => 'Fixture\\\'ler yüklendi.',
       ),
       'Initial setup of InfluxDB.' => 
       array (
-        0 => '',
+        0 => 'InfluxDB ilk kurulumu',
       ),
       'Database created.' => 
       array (
-        0 => '',
+        0 => 'Veritabanı oluşturuldu.',
       ),
       'Retention policies updated.' => 
       array (
-        0 => '',
+        0 => 'Saklama politikaları güncellendi.',
       ),
       'Continuous queries created.' => 
       array (
-        0 => '',
+        0 => 'Sorgular oluşturuldu.',
       ),
       'InfluxDB databases created.' => 
       array (
-        0 => '',
+        0 => 'InfluxDB veritabanları oluşturuldu.',
       ),
       'Run one or more scheduled synchronization tasks.' => 
       array (
-        0 => '',
+        0 => 'Bir veya daha fazla zamanlanmış senkronizasyon görevi çalıştırın.',
       ),
       'The task to run (%s).' => 
       array (
-        0 => '',
+        0 => '(%s) görevini çalıştır.',
       ),
       'Record not found.' => 
       array (
-        0 => '',
+        0 => 'Kayıt bulunamadı!',
       ),
       'API Key updated.' => 
       array (
-        0 => '',
+        0 => 'API anahtarı güncellendi!',
       ),
       'Edit API Key' => 
       array (
-        0 => '',
+        0 => 'API Anahtarı Düzenle',
       ),
       'API Key deleted.' => 
       array (
-        0 => '',
+        0 => 'API Anahtarı silindi!',
       ),
       'Changes saved.' => 
       array (
-        0 => 'Zapisano zmiany.',
+        0 => 'Değişiklikler Kaydedildi.',
       ),
       'Configure Backups' => 
       array (
-        0 => 'Skonfiguruj kopie zapasowe',
+        0 => 'Yedeklemeyi Yapılandır',
       ),
       'Run Manual Backup' => 
       array (
-        0 => 'Uruchom ręczne tworzenie kopii zapasowej',
+        0 => 'Manuel Yedeklemeyi Çalıştır',
       ),
       'Backup deleted.' => 
       array (
-        0 => '',
+        0 => 'Yedekleme silindi!',
       ),
       'Backup not found.' => 
       array (
-        0 => '',
+        0 => 'Yedekleme bulunamadı!',
       ),
       'Custom Field updated.' => 
       array (
-        0 => '',
+        0 => 'Özel alan güncellendi!',
       ),
       'Custom Field added.' => 
       array (
-        0 => '',
+        0 => 'Özel alan eklendi!',
       ),
       'Edit Custom Field' => 
       array (
-        0 => '',
+        0 => 'Özel Alan Düzenle',
       ),
       'Add Custom Field' => 
       array (
-        0 => '',
+        0 => 'Özel Alan Ekle',
       ),
       'Custom Field deleted.' => 
       array (
-        0 => '',
+        0 => 'Özel alan silindi!',
       ),
       'Sync Task Output' => 
       array (
-        0 => 'Dane wyjściowe zadania synchronizacji',
+        0 => 'Senkronizasyon Görev Çıktısı',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
-        0 => 'Obecnie jest zainstalowany SHOUTcast w wersji "%s".',
+        0 => 'SHOUTcast \\"%s\\ versiyonu kuruludur.',
       ),
       'Install SHOUTcast' => 
       array (
-        0 => 'Zainstaluj SHOUTcast',
+        0 => 'SHOUTcast Kurulumu',
       ),
       'AzuraCast Application Log' => 
       array (
-        0 => 'Dziennik aplikacji AzuraCast',
+        0 => 'AzuraCast Günlüğü',
       ),
       'Nginx Access Log' => 
       array (
-        0 => 'Dziennik dostępu Nginx',
+        0 => 'Nginx Erişim Günlüğü',
       ),
       'Nginx Error Log' => 
       array (
-        0 => 'Dziennik błędów Nginx',
+        0 => 'Nginx Hata Günlüğü',
       ),
       'PHP Application Log' => 
       array (
-        0 => 'Dziennik aplikacji PHP',
+        0 => 'PHP Uygulama Günlüğü',
       ),
       'Supervisord Log' => 
       array (
-        0 => 'Supervisord dziennika',
+        0 => 'Supervisord Günlüğü',
       ),
       'Permission updated.' => 
       array (
-        0 => '',
+        0 => 'İzin güncellendi!',
       ),
       'Permission added.' => 
       array (
-        0 => '',
+        0 => 'İzin eklendi!',
       ),
       'Edit Permission' => 
       array (
-        0 => '',
+        0 => 'İzin Düzenle',
       ),
       'Add Permission' => 
       array (
-        0 => '',
+        0 => 'İzin Ekle',
       ),
       'Permission deleted.' => 
       array (
-        0 => '',
+        0 => 'İzin silindi!',
       ),
       'System Settings' => 
       array (
-        0 => 'Ustawienia systemu',
+        0 => 'Sistem Ayarları',
       ),
       'Station updated.' => 
       array (
-        0 => '',
+        0 => 'Radyo güncellendi!',
       ),
       'Station added.' => 
       array (
-        0 => '',
+        0 => 'Radyo eklendi!',
       ),
       'Edit Station' => 
       array (
-        0 => '',
+        0 => 'Radyo Düzenle',
       ),
       'Station deleted.' => 
       array (
-        0 => '',
+        0 => 'Radyo silindi!',
       ),
       'Station not found.' => 
       array (
-        0 => '',
+        0 => 'Radyo bulunamadı!',
       ),
       'Clone Station: %s' => 
       array (
-        0 => 'Klon stacji: %s',
+        0 => 'Radyo Kopyala: %s',
       ),
       'User updated.' => 
       array (
-        0 => '',
+        0 => 'Kullanıcı güncellendi!',
       ),
       'User added.' => 
       array (
-        0 => '',
+        0 => 'Kullanıcı eklendi!',
       ),
       'Another user already exists with this e-mail address. Please update the e-mail address.' => 
       array (
-        0 => 'Inny użytkownik już istnieje z tym adresem e-mail. Proszę zaktualizować adres e-mail.',
+        0 => 'Bu e-posta adresi başka bir kullanıcı için kullanılmaktadır. Lütfen farklı bir e-posta adresi ile tekrar deneyiniz.',
       ),
       'Edit User' => 
       array (
-        0 => '',
+        0 => 'Kullanıcı Düzenle',
       ),
       'Add User' => 
       array (
-        0 => '',
+        0 => 'Kullanıcı Ekle',
       ),
       'You cannot delete your own account.' => 
       array (
-        0 => 'Nie możesz usunąć swojego konta.',
+        0 => 'Kendi hesabını silemezsin!',
       ),
       'User deleted.' => 
       array (
-        0 => '',
+        0 => 'Kullanıcı silindi!',
       ),
       'User not found.' => 
       array (
-        0 => '',
+        0 => 'Kullanıcı bulunamadı!',
       ),
       'Logged in successfully.' => 
       array (
-        0 => 'Zalogowany pomyślnie.',
+        0 => 'Giriş Yapıldı!',
       ),
       'Record not found!' => 
       array (
-        0 => '',
+        0 => 'Kayıt bulunamadı!',
       ),
       'Changes saved successfully.' => 
       array (
-        0 => '',
+        0 => 'Değişiklikler başarıyla kaydedildi.',
       ),
       'Record deleted successfully.' => 
       array (
-        0 => '',
+        0 => 'Kayıt başarıyla silindi.',
       ),
       'You cannot remove yourself.' => 
       array (
-        0 => '',
+        0 => 'Kendini silemezsin!',
       ),
       'This station does not accept requests currently.' => 
       array (
-        0 => '',
+        0 => 'Bu radyo şu anda istekleri kabul etmiyor.',
       ),
       'Request submitted successfully.' => 
       array (
-        0 => '',
+        0 => 'İsteğiniz başarıyla gönderildi.',
       ),
       'Station restarted.' => 
       array (
-        0 => '',
+        0 => 'Sunucu yeniden başlatıldı!',
       ),
       'Frontend stopped.' => 
       array (
-        0 => '',
+        0 => 'Sunucu durduruldu!',
       ),
       'Frontend started.' => 
       array (
-        0 => '',
+        0 => 'Sunucu başlatıldı!',
       ),
       'Frontend restarted.' => 
       array (
-        0 => '',
+        0 => 'Sunucu yeniden başlatıldı!',
       ),
       'Song skipped.' => 
       array (
-        0 => 'Pominięty utwór.',
+        0 => 'Şarkı atlandı!',
       ),
       'Streamer disconnected.' => 
       array (
-        0 => 'Streamer odłączony.',
+        0 => 'DJ bağlantısı kesildi!',
       ),
       'Backend stopped.' => 
       array (
-        0 => '',
+        0 => 'AutoDJ durduruldu!',
       ),
       'Backend started.' => 
       array (
-        0 => '',
+        0 => 'AutoDJ başlatıldı!',
       ),
       'Backend restarted.' => 
       array (
-        0 => '',
+        0 => 'AutoDJ yeniden başlatıldı!',
       ),
       'Too many login attempts' => 
       array (
-        0 => 'Zbyt wiele prób logowania',
+        0 => 'Çok fazla giriş denemesi yapıldı',
       ),
       'You have attempted to log in too many times. Please wait 30 seconds and try again.' => 
       array (
-        0 => 'Próbowano zalogować zbyt wiele razy. Odczekaj 30 sekund i spróbuj ponownie.',
+        0 => 'Çok fazla giriş yapmayı denediniz. Lütfen 30 saniye bekleyin ve tekrar deneyin.',
       ),
       'Login unsuccessful' => 
       array (
-        0 => 'Logowanie nieudane',
+        0 => 'Giriş Başarısız!',
       ),
       'Your credentials could not be verified.' => 
       array (
-        0 => 'Nie można zweryfikować poświadczeń.',
+        0 => 'Kimlik bilgileriniz doğrulamanadı!',
       ),
       'API Key not found.' => 
       array (
-        0 => '',
+        0 => 'API anahtarı bulunamadı!',
       ),
       'Add API Key' => 
       array (
-        0 => '',
+        0 => 'API Anahtarı Ekle',
       ),
       'All Stations' => 
       array (
-        0 => 'Wszystkie stacje',
+        0 => 'Tüm Radyolar',
       ),
       'Listeners' => 
       array (
-        0 => 'Słuchacze',
+        0 => 'Dinleyiciler',
       ),
       'Profile saved!' => 
       array (
-        0 => 'Zapisano profil!',
+        0 => 'Profil Kaydedildi!',
       ),
       'Edit Profile' => 
       array (
-        0 => 'Edytuj profil',
+        0 => 'Profili Düzenle',
       ),
       'The token you supplied is invalid. Please try again.' => 
       array (
-        0 => 'Podany token jest nieprawidłowy. Spróbuj jeszcze raz.',
+        0 => 'Geçersiz bilgi girildi. Lütfen tekrar deneyiniz.',
       ),
       'Two-factor authentication enabled.' => 
       array (
-        0 => 'Włączono uwierzytelnianie dwuskładnikowe.',
+        0 => 'İki faktörlü kimlik doğrulama etkinleştirildi.',
       ),
       'Two-factor authentication disabled.' => 
       array (
-        0 => 'Wyłączono uwierzytelnianie dwuskładnikowe.',
+        0 => 'İki faktörlü kimlik doğrulama devredışı bırakıldı.',
       ),
       'Song Title' => 
       array (
-        0 => 'Tytuł utworu',
+        0 => 'Şarkı',
       ),
       'Song Artist' => 
       array (
-        0 => 'Artysta',
+        0 => 'Sanatçı',
       ),
       'Setup has already been completed!' => 
       array (
-        0 => 'Instalacja została już ukończona!',
+        0 => 'Kurulum zaten tamamlanmış!',
       ),
       'Super Administrator' => 
       array (
-        0 => 'Super administrator',
+        0 => 'Süper Yönetici',
       ),
       'Setup is now complete!' => 
       array (
-        0 => 'Konfiguracja została zakończona!',
+        0 => 'Kurulum tamamlandı!',
       ),
       'Continue setting up your station in the main AzuraCast app.' => 
       array (
-        0 => 'Kontynuuj konfigurację stacji w głównej aplikacji AzuraCast.',
+        0 => 'AzuraCast uygulamasında radyonuzu ayarlamaya devam edin.',
       ),
       'Automated assignment complete!' => 
       array (
-        0 => 'Automatyczne przypisanie kompletny!',
+        0 => 'Otomatik atama tamamlandı!',
       ),
       'Automated assignment error' => 
       array (
-        0 => 'Błąd automatycznego przypisania',
+        0 => 'Otomatik atama hatası!',
       ),
       'Path "%s" is not a folder.' => 
       array (
-        0 => 'Ścieżka "%s" nie jest katalogiem.',
+        0 => '\\"%s\\" bir klasör değildir.',
       ),
       'Could not move "%s" to "%s"' => 
       array (
-        0 => 'Nie można przenieść "%s" do "%s"',
+        0 => '\\"%s\\" &#61;&#62; \\"%s\\ taşınamadı.',
       ),
       'Media not found.' => 
       array (
-        0 => '',
+        0 => 'Müzik dosyası bulunamadı!',
       ),
       'Media updated.' => 
       array (
-        0 => '',
+        0 => 'Müzik dosyası güncellendi!',
       ),
       'Edit Media' => 
       array (
-        0 => '',
+        0 => 'Müzik Dosyası Düzenle',
       ),
       'File renamed!' => 
       array (
-        0 => 'Nazwa pliku została zmieniona!',
+        0 => 'Dosya yeniden adlandırıldı!',
       ),
       'Rename File/Directory' => 
       array (
-        0 => 'Zmień nazwę pliku/katalogu',
+        0 => 'Dosya/Klasör Yeniden Adlandır',
       ),
       'This station is out of available storage space.' => 
       array (
-        0 => 'Przestrzeń dyskowa dla tej stacji jest zapełniona.',
+        0 => 'Radyo depolama alanı doldu.',
       ),
       'Directory' => 
       array (
-        0 => 'Katalog',
+        0 => 'Klasör',
       ),
       'File Not Processed' => 
       array (
-        0 => 'Plik nie przetworzony',
+        0 => 'Dosya İşlenemedi!',
       ),
       'This feature is not currently supported on this station.' => 
       array (
-        0 => 'Ta funkcja nie jest obecnie obsługiwana na tej stacji.',
+        0 => 'Bu radyoda bu özellik şu an desteklenmiyor.',
       ),
       'Edit Mount Point' => 
       array (
-        0 => '',
+        0 => 'Bağlantı Noktası Düzenle',
       ),
       'Add Mount Point' => 
       array (
-        0 => '',
+        0 => 'Bağlantı Noktası Ekle',
       ),
       'Mount Point deleted.' => 
       array (
-        0 => '',
+        0 => 'Bağlantı noktası silindi!',
       ),
       'Playlist not found.' => 
       array (
-        0 => '',
+        0 => 'Çalma listesi bulunamadı!',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
-        0 => 'Ta lista odtwarzania nie jest listą odtwarzania sekwencyjnego.',
+        0 => 'Bu çalma listesi \\"SIRALI\\" bir çalma listesi değildir.',
       ),
       'Format not found.' => 
       array (
-        0 => '',
+        0 => 'Biçim bulunamadı!',
       ),
       'Playlist enabled.' => 
       array (
-        0 => 'Playlista włączona.',
+        0 => 'Çalma Listesi Etkinleştirildi!',
       ),
       'Playlist disabled.' => 
       array (
-        0 => 'Playlista wyłączona.',
+        0 => 'Çalma Listesi Devredışı Bırakıldı!',
       ),
       'Playlist updated.' => 
       array (
-        0 => '',
+        0 => 'Çalma listesi güncellendi!',
       ),
       'Playlist added.' => 
       array (
-        0 => '',
+        0 => 'Çalma listesi eklendi!',
       ),
       'Edit Playlist' => 
       array (
-        0 => '',
+        0 => 'Çalma Listesi Düzenle',
       ),
       'Add Playlist' => 
       array (
-        0 => '',
+        0 => 'Çalma Listesi Ekle',
       ),
       'Playlist deleted.' => 
       array (
-        0 => '',
+        0 => 'Çalma listesi silindi!',
       ),
       'Remote Relay updated.' => 
       array (
-        0 => '',
+        0 => 'Yönlendirme güncellendi!',
       ),
       'Remote Relay added.' => 
       array (
-        0 => '',
+        0 => 'Yönlendirme eklendi!',
       ),
       'Edit Remote Relay' => 
       array (
-        0 => '',
+        0 => 'Yönlendirme Düzenle',
       ),
       'Add Remote Relay' => 
       array (
-        0 => '',
+        0 => 'Yönlendirme Ekle',
       ),
       'Remote Relay deleted.' => 
       array (
-        0 => '',
+        0 => 'Yönlendirme silindi!',
       ),
       'This record cannot be edited.' => 
       array (
-        0 => '',
+        0 => 'Bu kayıt düzenlenemez!',
       ),
       'Listeners by Day' => 
       array (
-        0 => 'Słuchacze według dnia',
+        0 => 'Günlük Dinleyiciler',
       ),
       'Listeners by Day of Week' => 
       array (
-        0 => 'Słuchaczy przez dzień tygodnia',
+        0 => 'Haftanın Günlerine Göre Dinleyiciler',
       ),
       'Monday' => 
       array (
-        0 => 'Poniedziałek',
+        0 => 'Pazartesi',
       ),
       'Tuesday' => 
       array (
-        0 => 'Wtorek',
+        0 => 'Salı',
       ),
       'Wednesday' => 
       array (
-        0 => 'Środa',
+        0 => 'Çarşamba',
       ),
       'Thursday' => 
       array (
-        0 => 'Czwartek',
+        0 => 'Perşembe',
       ),
       'Friday' => 
       array (
-        0 => 'Piątek',
+        0 => 'Cuma',
       ),
       'Saturday' => 
       array (
-        0 => 'Sobota',
+        0 => 'Cumartesi',
       ),
       'Sunday' => 
       array (
-        0 => 'Niedziela',
+        0 => 'Pazar',
       ),
       'Listeners by Hour' => 
       array (
-        0 => 'Słuchacze według godziny',
+        0 => 'Saatlik Dinleyiciler',
       ),
       'SoundExchange Report' => 
       array (
-        0 => 'Raport SoundExchange',
+        0 => 'SoundExchange Raporu',
       ),
       'Streamers enabled!' => 
       array (
-        0 => 'Streamery aktywowani!',
+        0 => 'DJ Etkinleştirildi!',
       ),
       'You can now set up streamer (DJ) accounts.' => 
       array (
-        0 => 'Można teraz skonfigurować konta Streamera (DJ).',
+        0 => 'DJ hesaplarını şimdi ekleyebilirsiniz.',
       ),
       'Streamer updated.' => 
       array (
-        0 => '',
+        0 => 'DJ güncellendi!',
       ),
       'Streamer added.' => 
       array (
-        0 => '',
+        0 => 'DJ eklendi!',
       ),
       'Edit Streamer' => 
       array (
-        0 => '',
+        0 => 'DJ Düzenle',
       ),
       'Add Streamer' => 
       array (
-        0 => '',
+        0 => 'DJ Ekle',
       ),
       'Streamer deleted.' => 
       array (
-        0 => '',
+        0 => 'DJ silindi!',
       ),
       'Web Hook added.' => 
       array (
-        0 => '',
+        0 => 'Web kancası eklendi!',
       ),
       'Add Web Hook' => 
       array (
-        0 => '',
+        0 => 'Web Kancası Ekle',
       ),
       'Web Hook updated.' => 
       array (
-        0 => '',
+        0 => 'Web kancası güncellendi!',
       ),
       'Edit Web Hook' => 
       array (
-        0 => '',
+        0 => 'Web Kancasını Düzenle',
       ),
       'Web hook enabled.' => 
       array (
-        0 => '',
+        0 => 'Web kancası etkinleştirildi!',
       ),
       'Web Hook disabled.' => 
       array (
-        0 => '',
+        0 => 'Web kancası devredışı bırakıldı!',
       ),
       'Web Hook Test Output' => 
       array (
-        0 => 'Wyjście testowe Web Hook\'a',
+        0 => 'Web Kancası Test Sonucu',
       ),
       'Web Hook deleted.' => 
       array (
-        0 => '',
+        0 => 'Web kancası silindi!',
       ),
       'Liquidsoap Log' => 
       array (
-        0 => 'Dziennik Liquidsoap',
+        0 => 'Liquidsoap Günlüğü',
       ),
       'Liquidsoap Configuration' => 
       array (
-        0 => 'Konfiguracja Liquidsoap',
+        0 => 'Liquidsoap Ayar Dosyası',
       ),
       'Icecast Access Log' => 
       array (
-        0 => 'Dziennik dostępu Icecast',
+        0 => 'Icecast Erişim Günlüğü',
       ),
       'Icecast Error Log' => 
       array (
-        0 => 'Dziennik błędów Icecast',
+        0 => 'Icecast Hata Günlüğü',
       ),
       'Icecast Configuration' => 
       array (
-        0 => 'Konfiguracja Icecast',
+        0 => 'Icecast Ayar Dosyası',
       ),
       'SHOUTcast Log' => 
       array (
-        0 => 'Dziennik SHOUTcast\'a',
+        0 => 'SHOUTcast Günlüğü',
       ),
       'SHOUTcast Configuration' => 
       array (
-        0 => 'Konfiguracja SHOUTcast\'a',
+        0 => 'SHOUTcast Ayar Dosyası',
       ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
-        0 => '',
+        0 => 'Arama motoru tarayıcılarının bu özelliği kullanmasına izin verilmemektedir.',
       ),
       'The song ID you specified could not be found in the station.' => 
       array (
-        0 => '',
+        0 => 'Belirttiğiniz şarkı kimliği radyoda bulunamadı.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
-        0 => '',
+        0 => 'Belirttiğiniz şarkı kimliği bu radyo için talep edilemez.',
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
-        0 => 'Zbyt szybko wysyłasz kolejne żądania! Poczekaj chwilę zanim wyślesz następne.',
+        0 => 'Çok yakın zamanda bir istek gönderdiniz! Lütfen başka bir tane göndermeden önce bekleyin.',
       ),
       'Duplicate request: this song was already requested and will play soon.' => 
       array (
-        0 => '',
+        0 => 'Yinelenen İstek: Bu şarkı zaten talep edildi ve yakında çalınacaktır.',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Ten utwór został już odtworzony zbyt niedawno. Poczekaj z wysłaniem kolejnej prośby o ten utwór.',
+        0 => 'Bu şarkı zaten çok yeni çalındı. Tekrar talep etmeden önce biraz bekleyin.',
       ),
       'Select File' => 
       array (
-        0 => 'Wybierz plik',
+        0 => 'Dosya Seç',
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
-        0 => 'Chcesz użyć SHOUTcast 2? <a href="%s" target="_blank">zainstaluj tutaj</a>, następnie odśwież stronę.',
+        0 => 'SHOUTcast v2 kurmak için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın ve sonrasında sayfayı yenileyin.',
       ),
       'This station\'s time zone is currently %s.' => 
       array (
-        0 => 'Strefa czasowa tej stacji to obecnie %s.',
+        0 => 'Bu radyonun saat dilimi %s olarak ayarlanmıştır.',
       ),
       'The current time in the station\'s time zone is %s.' => 
       array (
-        0 => 'Obecny czas w strefie czasowej tej stacji to %s.',
+        0 => '%s radyonun saat dilimine göre geçerli zamanıdır.',
       ),
       'Existing playlist imported.' => 
       array (
-        0 => 'Importuj istniejące listy odtwarzania.',
+        0 => 'Çalma listesi içe aktarıldı.',
       ),
       '%d song(s) were imported into the playlist.' => 
       array (
-        0 => '%d utwory zostały zaimportowane do listy odtwarzania.',
+        0 => '%d şarkı(lar) çalma listesine aktarıldı.',
       ),
       'You must be logged in to access this page.' => 
       array (
-        0 => 'Musisz być zalogowany aby korzystać z tej strony.',
+        0 => 'Bu sayfayı görüntülemek için giriş yapmalısınız.',
       ),
       'You do not have permission to access this portion of the site.' => 
       array (
-        0 => 'Nie masz uprawnień do dostępu do tej części witryny.',
+        0 => 'Sitenin bu bölümüne erişmek için yetkiniz bulunmamaktadır.',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (
-        0 => 'Plik<code>docker-compose.yml </code>jest nieaktualny!',
+        0 => '<code>docker-compose.yml</code> dosyanız güncel değildir!',
       ),
       'You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href="%s" target="_blank">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file.' => 
       array (
-        0 => 'Należy zaktualizować plik<code> docker-compose.yml </code>, aby odzwierciedlić najnowsze zmiany. Zobacz <a href="%s" target="_blank">Najnowsza wersja pliku</a> i odpowiednio zaktualizować plik.<br> <code>./docker.sh</code> narzędzie skryptu można użyć również automatycznie zaktualizować plik.',
+        0 => 'En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz.',
       ),
       'Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.' => 
       array (
-        0 => 'Zapoznaj się z <a href="%s" target="_blank">instrukcją aktualizacji</a>, aby zaktualizować swoją instalację.',
+        0 => 'Güncelleme talimatları konusunda detaylı bilgi için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.',
       ),
       'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
       array (
-        0 => 'Dostępna jest <a href="%s" target="_blank">wersja %s</a> oprogramowania AzuraCast.',
+        0 => 'AzuraCast <a href=\\"%s\\" target=\\"_blank\\">%s sürümü</a> şu an kullanılabilir.',
       ),
       'You are currently running version %s. Updating is highly recommended.' => 
       array (
-        0 => 'Obecnie wykorzystujesz wersję %s. Aktualizacja jest wysoce zalecana.',
+        0 => 'Şu anda AzuraCast %s sürümüne sahipsiniz. Güncelleme şiddetle tavsiye edilir.',
       ),
       'New AzuraCast Release Version Available' => 
       array (
-        0 => 'Dostępna jest nowa wersja oprogramowania AzuraCast',
+        0 => 'AzuraCast Yeni Sürümü Yayınlandı!',
       ),
       'The following improvements have been made since your last update:' => 
       array (
-        0 => 'Od ostatniej aktualizacji poczyniono następujące ulepszenia:',
+        0 => 'Son güncellemenizden bu yana aşağıdaki iyileştirmeler yapıldı:',
       ),
       'Your installation is currently %d update(s) behind the latest version.' => 
       array (
-        0 => 'Twoja instalacja jest obecnie %d aktualizacji za najnowszą wersją.',
+        0 => 'AzuraCast şu anda en son sürümün %d güncellemesini içerir.',
       ),
       'You should update to take advantage of bug and security fixes.' => 
       array (
-        0 => 'Powinieneś dokonać aktualizacji, aby uzyskać poprawki błędów i bezpieczeństwa.',
+        0 => 'Hata ve güvenlik düzeltmelerinden yararlanmak için güncelleme yapmalısınız.',
       ),
       'New AzuraCast Updates Available' => 
       array (
-        0 => 'Dostępne są nowe aktualizacje AzuraCast',
+        0 => 'AzuraCast Yeni Güncellemesi Yayınlandı!',
       ),
       '%s is not recognized as a service.' => 
       array (
-        0 => '',
+        0 => '%s bir servis olarak tanınmıyor.',
       ),
       'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
       array (
-        0 => '',
+        0 => 'Henüz Supervisor\\\'a kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir.',
       ),
       '%s cannot start' => 
       array (
-        0 => '%s nie może się uruchomić',
+        0 => '%s başlatılamadı!',
       ),
       'It is already running.' => 
       array (
-        0 => 'Wskazany element już został uruchomiony.',
+        0 => 'Zaten Çalışıyor.',
       ),
       '%s cannot stop' => 
       array (
-        0 => '%s nie może się zatrzymać',
+        0 => '%s durdurulamadı!',
       ),
       'It is not running.' => 
       array (
-        0 => 'Wskazany element nie działa.',
+        0 => 'Zaten Çalışmıyor.',
       ),
       '%s encountered an error' => 
       array (
-        0 => '%s napotkał błąd',
+        0 => '%s bir hata ile karşılaştı.',
       ),
       'Check the log for details.' => 
       array (
-        0 => 'Sprawdź dziennik, aby uzyskać szczegółowe informacje.',
+        0 => 'Detaylar için günlükleri kontrol edin.',
       ),
       'Use <b>%s</b> on this server' => 
       array (
-        0 => 'Użyj <b>%s</b> na tym serwerze',
+        0 => '<b>%s</b> kullan',
       ),
       'Connect to a <b>remote radio server</b>' => 
       array (
-        0 => 'Połącz ze <b>zdalnym serwerem radiowym</b>',
+        0 => '<b>Yönlendirme</b> kullan',
       ),
       '<b>Do not use</b> an AutoDJ service' => 
       array (
-        0 => '<b>Nie używaj</b> AutoDJ\'a',
+        0 => 'AutoDJ <b>kullanmayın</b>',
       ),
       'Now Playing Data' => 
       array (
-        0 => 'Teraz odtwarzane',
+        0 => 'Şimdi Çalan Şarkı Bilgisi',
       ),
       '1-Minute Sync' => 
       array (
-        0 => 'Synchronizacja co minutę',
+        0 => '1-Dakika Senkronizasyonu',
       ),
       'Song Requests Queue' => 
       array (
-        0 => 'Kolejka żądanych utworów',
+        0 => 'Şarkı İstek Kuyruğu',
       ),
       '5-Minute Sync' => 
       array (
-        0 => 'Synchronizacja co 5 minut',
+        0 => '5-Dakika Senkronizasyonu',
       ),
       'Check Media Folders' => 
       array (
-        0 => 'Sprawdź foldery multimediów',
+        0 => 'Müzik Klasörlerini Kontrol Et',
       ),
       '1-Hour Sync' => 
       array (
-        0 => 'Synchronizacja co godzinę',
+        0 => '1-Saat Senkronizasyonu',
       ),
       'Analytics/Statistics' => 
       array (
-        0 => 'Analiza/Statystyki',
+        0 => 'İstatistik',
       ),
       'Cleanup' => 
       array (
-        0 => 'Wyczyść',
+        0 => 'Temizleme',
       ),
       'The port %s is in use by another station.' => 
       array (
-        0 => 'Port %s jest już wykorzystywany przez inną stację.',
+        0 => '%s portu başka bir radyo tarafından kullanılıyor.',
       ),
       'Password cannot contain the following characters: %s' => 
       array (
-        0 => 'Hasło nie może zawierać następujących znaków: %s',
+        0 => 'Şifre şu karakterleri içeremez: %s',
       ),
       'Comments' => 
       array (
-        0 => 'Komentarze',
+        0 => 'Açıklamalar',
       ),
       'Describe the use-case for this API key for future reference.' => 
       array (
-        0 => 'Opisz przypadek użycia tego klucza API w przyszłości.',
+        0 => 'İleride başvurmak üzere bu API anahtarının kullanım durumunu açıklayın.',
       ),
       'Save Changes' => 
       array (
-        0 => 'Zapisz zmiany',
+        0 => 'Kaydet',
       ),
       'Enable Automated Assignment' => 
       array (
-        0 => 'Włącz automatyczne przydzielanie',
+        0 => 'Otomatik Atamayı Etkinleştir',
       ),
       'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => 'Okresowo pozwala systemowi na automatyczne przypisanie utworów do odtwarzania w oparciu o wydajność. Proces ten będzie działał w tle i będzie działać tylko wtedy, gdy opcja ta jest ustawiona na "Włączone" i co najmniej jedna lista jest ustawiony na "Dołącz do automatycznego przypisywania".',
+        0 => 'Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek \\"Etkin\\" olarak ayarlanmışsa ve en az bir parça listesi \\"Otomatik Atamaya Dahil Et\\" olarak ayarlanmışsa çalışır.',
       ),
       'Disabled' => 
       array (
-        0 => 'Nieaktywne',
+        0 => 'Kapalı',
       ),
       'Enabled' => 
       array (
-        0 => 'Aktywny',
+        0 => 'Açık',
       ),
       'Days Between Automated Assignments' => 
       array (
-        0 => 'Dni pomiędzy automatycznymi przypisywaniami',
+        0 => 'Otomatik Atama Günleri',
       ),
       'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => 'Na podstawie tego parametru, system automatycznie przypisze tytuły każda (X) dni, wykorzystując dane z ostatnich dni (X).',
+        0 => 'Bu ayara göre sistem önceki (bu) günlerden gelen verileri kullanarak her (bu) günde bir şarkıları otomatik olarak yeniden atar.',
       ),
       '%d days' => 
       array (
-        0 => '%d dni',
+        0 => '%d gün',
       ),
       'Run Automatic Nightly Backups' => 
       array (
-        0 => 'Uruchom automatyczne nocne tworzenie kopii zapasowych',
+        0 => 'Otomatik Gecelik Yedeklemeyi Çalıştır',
       ),
       'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
-        0 => 'Pozwala AzuraCast na automatyczne tworzenie nocnych kopii zapasowych w podanym czasie.',
+        0 => 'AzuraCast her gece belirtilen saatte otomatik olarak yedekleme yapmasını etkinleştirin.',
       ),
       'Yes' => 
       array (
-        0 => 'Tak',
+        0 => 'Evet',
       ),
       'No' => 
       array (
-        0 => 'Nie',
+        0 => 'Hayır',
       ),
       'Scheduled Backup Time' => 
       array (
-        0 => 'Zaplanowany czas tworzenia kopii zapasowych',
+        0 => 'Belirlenmiş Yedekleme Zamanı',
       ),
       'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => 'Czas (w UTC) uruchomienia automatycznej kopii zapasowej, jeśli jest włączona.',
+        0 => 'Etkinleştirilmiş ise otomatik yedekleme zamanı (UTC) cinsindendir.',
       ),
       'Exclude Media from Backups' => 
       array (
-        0 => 'Wyklucz multimedia z kopii zapasowych',
+        0 => 'Yedeklemelere Müzik Dosyalarını Dahil Etme',
       ),
       'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => 'Wykluczenie multimediów z automatycznych kopii zapasowych oszczędzi miejsce na dysku, powinieneś jednak przechowywać kopie tych plików w innym miejscu.',
+        0 => 'Müzik dosyalarını yedeklemenin dışında bırakmak depolama alanı kazanacaktır. Müziklerinizi başka bir yerde yedeklediğinizden emin olmalısınız.',
       ),
       'Number of Backup Copies to Keep' => 
       array (
-        0 => 'Liczba kopii zapasowych przechowywanych na dysku',
+        0 => 'Saklanacak Yedek Kopya Sayısı',
       ),
       'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => 'Kopie starsze niż podana liczba dni będą automatycznie usuwane. Ustaw zero, aby wyłączyć automatyczne usuwanie.',
+        0 => 'Belirtilen gün sayısından daha eski kopyalar otomatik olarak silinir. Otomatik silmeyi devre dışı bırakmak için sıfıra ayarlayın.',
       ),
       'Backup Filename' => 
       array (
-        0 => 'Nazwa pliku kopii zapasowej',
+        0 => 'Yedek Dosya Adı',
       ),
       'Optional absolute or relative path where the backup file should be located.' => 
       array (
-        0 => 'Opcjonalna bezwzględna lub względna ścieżka, w której będzie umieszczany plik kopii zapasowej.',
+        0 => 'Yedek dosyanın bulunacağı isteğe bağlı kesin veya değişken dizindir.',
       ),
       'Exclude Media from Backup' => 
       array (
-        0 => 'Wyklucz multimedia z kopii zapasowych',
+        0 => 'Yedeklemeye Müzik Dosyalarını Dahil Etme',
       ),
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere.' => 
       array (
-        0 => 'To spowoduje powstanie znacznie mniejszego pliku kopii zapasowej, powinieneś jednak upewnić się, że przechowujesz kopie twoich plików w innym miejscu.',
+        0 => 'Bu çok daha küçük bir yedekleme üretecektir.Medyanızı başka bir yerde yedeklediğinizden emin olmalısınız.',
       ),
       'Base Theme for Public Pages' => 
       array (
-        0 => 'Podstawowa skórka dla stron publicznych',
+        0 => 'Site Teması',
       ),
       'Select a theme to use as a base for station public pages and the login page.' => 
       array (
-        0 => 'Wybierz skórkę do zastosowania dla publicznych stron stacji radiowych oraz na stronie logowania.',
+        0 => 'Radyo genel sayfaları ve giriş sayfası için kullanılacak bir tema seçin.',
       ),
       'Light' => 
       array (
-        0 => 'Jasny',
+        0 => 'Açık Tema',
       ),
       'Default' => 
       array (
-        0 => 'Domyślny',
+        0 => 'Varsayılan',
       ),
       'Dark' => 
       array (
-        0 => 'Ciemny',
+        0 => 'Koyu Tema',
       ),
       'Hide Album Art on Public Pages' => 
       array (
-        0 => 'Ukryj okładki na stronach publicznych',
+        0 => 'Genel Sayfalarda Albüm Kapağını Gizle',
       ),
       'If selected, album art will not display on public-facing radio pages.' => 
       array (
-        0 => 'Jeśli zaznaczone, okładki nie będą wyświetlane na publicznych stronach radiostacji.',
+        0 => 'Genel sayfalarda albüm kapak resmini gizlemek için etkinleştirin.',
       ),
       'Homepage Redirect URL' => 
       array (
-        0 => 'URL przekierowania strony głównej',
+        0 => 'Anasayfa Yönlendirme URLsi',
       ),
       'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
       array (
-        0 => 'Jeśli odwiedzający nie jest zapisany i odwiedza stronę główną AzuraCast, możesz automatycznie przekierować go na podany tutaj URL. Pozostaw puste, aby domyślnie przekierować go do strony logowania.',
+        0 => 'Bir ziyaretçi oturum açmamışsa ve AzuraCast anasayfasını ziyaret ediyorsa onları otomatik olarak burada belirtilen URLye yönlendirebilirsiniz. Varsayılan olarak giriş ekranına yönlendirmek için boş bırakın.',
       ),
       'Default Album Art URL' => 
       array (
-        0 => 'UFL domyślnej okładki',
+        0 => 'Varsayılan Albüm Kapağı URLsi',
       ),
       'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
-        0 => 'Jeśli utwór nie posiada okładki, zamiast tego będzie wyświetlany niniejszy URL. Pozostaw puste, aby ustawić domyślną okładkę standardową.',
+        0 => 'Bir şarkının albüm kapağı yoksa burada URLsi yazılan resim görünecektir. Varsayılan albüm kapağı için boş bırakın.',
       ),
       'Hide AzuraCast Branding on Public Pages' => 
       array (
-        0 => 'Ukryj branding AzuraCast na publicznych stronach',
+        0 => 'AzuraCast Markasını Gizle',
       ),
       'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
       array (
-        0 => 'Jeśli zaznaczone, branding AzuraCast zostanie usunięty ze stron publicznych.',
+        0 => 'AzuraCast markasını genel sayfa ve giriş ekranından gizlemek için etkinleştirin.',
       ),
       'Custom CSS for Public Pages' => 
       array (
-        0 => 'Własny CSS dla stron publicznych',
+        0 => 'Genel Sayfalar İçin Özelleştirilmiş CSS',
       ),
       'This CSS will be applied to the station public pages and login page.' => 
       array (
-        0 => 'Ten CSS zostanie zastosowany na publicznych stronach stacji oraz na stronie logowania.',
+        0 => 'Bu CSS genel sayfa ve giriş sayfasına uygulanacaktır.',
       ),
       'Custom JS for Public Pages' => 
       array (
-        0 => 'Własny JS dla stron publicznych',
+        0 => 'Genel Sayfalar İçin Özelleştirilmiş JS',
       ),
       'This javascript code will be applied to the station public pages and login page.' => 
       array (
-        0 => 'Niniejszy kod JavaScript zostanie zastosowany na publicznych stronach stacji oraz stronie logowania.',
+        0 => 'Bu JS genel sayfa ve giriş sayfasına uygulanacaktır.',
       ),
       'Custom CSS for Internal Pages' => 
       array (
-        0 => 'Własny CSS dla stron wewnętrznych',
+        0 => 'Dahili Sayfalar İçin Özelleştirilmiş CSS',
       ),
       'This CSS will be applied to the main management pages, like this one.' => 
       array (
-        0 => 'Niniejszy CSS zostanie zastosowany na głównych stronach panelu zarządzania, w tym na tej.',
+        0 => 'Bu CSS yönetim sayfalarına uygulanacaktır.',
       ),
       'Field Name' => 
       array (
-        0 => 'Nazwa pola',
+        0 => 'Alan Adı',
       ),
       'This will be used as the label when editing individual songs, and will show in API results.' => 
       array (
-        0 => 'Zostanie użyte jako nazwa pola podczas edytowania pojedynczych piosenek, i zostanie wyświetlone w wynikach API.',
+        0 => 'Tek tek şarkıları düzenlerken etiket olarak kullanılacak ve API sonuçlarında gösterilecektir.',
       ),
       'Programmatic Name' => 
       array (
-        0 => 'Nazwa programowa',
+        0 => 'Program İsmi',
       ),
       'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
       array (
-        0 => 'Opcjonalnie zdefiniuj nazwę przyjazną dla API, jak na przykład <code>field_name</code>. Pozostaw puste, aby automatycznie wygenerować nazwę w oparciu o podaną wcześniej.',
+        0 => 'İsteğe bağlı olarak <code>field_name</code> gibi bir API dostu isim belirtin. İsme göre otomatik olarak bir tane oluşturmak için bu alanı boş bırakın.',
       ),
       'Important Notes' => 
       array (
-        0 => 'Ważne uwagi',
+        0 => 'Önemli Notlar',
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS nie jest oprogramowaniem wolnym, a jego restrykcyjna licencja nie zezwala twórcom AzuraCast na rozpowszechnianie plików binarnych SHOUTcast. Aby zainstalować SHOUTcast, musisz pobrać binarkę x64 dla Linuxa ze strony <a href="%s" target="_blank">SHOUTcast Radio Manager</a>. Następnie wyślij plik <code>sc_serv2_linux_x64-latest.tar.gz</code> poprzez poniższe pole, aby automatycznie wypakować go do odpowiedniego katalogu.</p>',
+        0 => '<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href=\\"%s\\" target=\\"_blank\\">SHOUTcast Radio Manager</a> sitesinden \\"linux x64\\" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>',
       ),
       'Current Installed Version' => 
       array (
-        0 => 'Obecnie zainstalowana wersja',
+        0 => 'Kurulmuş Mevcut Sürüm',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => 'SHOUTcast nie jest obecnie zainstalowany w tej instalacji.',
+        0 => 'SHOUTcast henüz kurulmamıştır.',
       ),
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
-        0 => 'Wybierz plik SHOUTcast 64-bit .tar.gz',
+        0 => 'SHOUTcast 64-bit .tar.gz Dosyasını Seçin',
       ),
       'Upload' => 
       array (
-        0 => 'Prześlij',
+        0 => 'Yükle',
       ),
       'E-mail Address' => 
       array (
-        0 => 'Adres email',
+        0 => 'E-Posta Adresi',
       ),
       'Password' => 
       array (
-        0 => 'Hasło',
+        0 => 'Şifre',
       ),
       'Log in' => 
       array (
-        0 => 'Zaloguj',
+        0 => 'Giriş Yap',
       ),
       'File Name' => 
       array (
-        0 => 'Nazwa pliku',
+        0 => 'Dosya Adı',
       ),
       'The relative path of the file in the station\'s media directory.' => 
       array (
-        0 => 'Ścieżka względna pliku w katalogu mediów stacji.',
+        0 => 'Radyonun müzik dosyalarının geçici dizinidir.',
       ),
       'Song Album' => 
       array (
-        0 => 'Album piosenki',
+        0 => 'Albüm',
       ),
       'Song Lyrics' => 
       array (
-        0 => 'Teksty piosenek',
+        0 => 'Şarkı Sözleri',
       ),
       'Replace Album Cover Art' => 
       array (
-        0 => 'Zastąp okładkę albumu',
+        0 => 'Albüm Kapağını Değiştir',
       ),
       'ISRC' => 
       array (
@@ -1330,743 +1330,743 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'International Standard Recording Code, used for licensing reports.' => 
       array (
-        0 => 'Międzynarodowy kod ISRC, używany dla licencjonowanych raportów.',
+        0 => 'Uluslararası Standart Kayıt Kodu lisans raporları için kullanılır.',
       ),
       'Custom Fields' => 
       array (
-        0 => 'Niestandardowe pola',
+        0 => 'Özelleştirme',
       ),
       'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
       array (
-        0 => 'Administratorzy mogą dostosowywać pola, które są tutaj w <a href="%s">Panelu administratora</a>.',
+        0 => 'Yöneticiler burada görünen alanları <a href=\\"%s\\">yönetici sayfası</a>ndan özelleştirebilir.',
       ),
       'Control Song Playback' => 
       array (
-        0 => 'Kontrola odtwarzania utworu',
+        0 => 'Şarkı Çalma Kontrolü',
       ),
       'Song Length (seconds)' => 
       array (
-        0 => 'Długość utworu (w sekundach)',
+        0 => 'Şarkı Uzunluğu (saniye)',
       ),
       'Custom Fading: Overlap Time (seconds)' => 
       array (
-        0 => 'Niestandardowe przejście: Nakładanie czasu (w sekundach)',
+        0 => 'Custom Fading: Örtüşme Zamanı (saniye)',
       ),
       'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
       array (
-        0 => 'Czas tej piosenki powinien nachodzić na siebie w trakcie przejścia pomiędzy utworami. Pozostaw puste, aby użyć domyślnego ustawienia systemu.',
+        0 => 'Bu şarkıdan sonraki şarkıya geçiş sırasında örtüşme süresini belirtin. Sistem varsayılan değeri için boş bırakın.',
       ),
       'Custom Fading: Fade-In Time (seconds)' => 
       array (
-        0 => 'Niestandardowe przejście: Nakładanie czasu (w sekundach)',
+        0 => 'Custom Fading: Solma Zamanı (saniye)',
       ),
       'The time period that the song should fade in. Leave blank to use the system default.' => 
       array (
-        0 => 'Okres czas, podczas którego ma nakładać utwór. Pozostaw puste, aby użyć domyślnego ustawienia systemu.',
+        0 => 'Bu şarkıya geçiş sırasında önceki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın.',
       ),
       'Custom Fading: Fade-Out Time (seconds)' => 
       array (
-        0 => 'Niestandardowe przejście: Nakładanie czasu (w sekundach)',
+        0 => 'Custom Fading: Solma Zamanı (saniye)',
       ),
       'The time period that the song should fade out. Leave blank to use the system default.' => 
       array (
-        0 => 'Okres czas, podczas którego utwór ma zanikać. Pozostaw puste, aby użyć domyślnego ustawienia systemu.',
+        0 => 'Bu şarkıdan diğer şarkıya geçiş sırasında sonraki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın.',
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
-        0 => 'Własne przycinanie: przycinanie w punktach (sekundy)',
+        0 => 'Custom Cues: Giriş Noktası (saniye)',
       ),
       'Seconds from the start of the song that the AutoDJ should start playing.' => 
       array (
-        0 => 'Sekund od początku utworu, po których AutoDJ powinien rozpocząć odtwarzanie.',
+        0 => 'AutoDJ\\\'in şarkıyı çalmaya başlaması için gereken zamanı belirtin.',
       ),
       'Custom Cues: Cue-Out Point (seconds)' => 
       array (
-        0 => 'Własne przycinanie: przycinanie końcówki (sekundy)',
+        0 => 'Custom Cues: Çıkış Noktası (saniye)',
       ),
       'Seconds from the start of the song that the AutoDJ should stop playing.' => 
       array (
-        0 => 'Sekund od początku utworu, po których AutoDJ powinien zakończyć odtwarzanie.',
+        0 => 'AutoDJ\\\'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin.',
       ),
       'Mount Point URL' => 
       array (
-        0 => 'URL punktu montowania',
+        0 => 'Bağlantı Noktası URLsi',
       ),
       'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
-        0 => 'Tą nazwę zawsze należy zaczynać ukośnikiem (/) i musi być prawidłowym adresem URL, np. /autodj.mp3',
+        0 => 'Bu isim her zaman bir (/) işareti ile başlamalıdır ve /autodj.mp3 gibi geçerli bir URLye sahip olmalıdır.',
       ),
       'Display Name' => 
       array (
-        0 => 'Nazwa wyśwetlana',
+        0 => 'Ekran Adı',
       ),
       'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
-        0 => 'Nazwa wyświetlana jest przypisana do tego punktu montowania podczas wyświetlania jej na podstronach panelu administracyjnego lub na stronach publicznych. Pozostaw puste, aby wygenerować ją automatycznie.',
+        0 => 'Yönetici ve genel sayfalarda görüntülenecek bağlama noktasına atanacak ekran adını belirtin. Otomatik oluşturmak için boş bırakın.',
       ),
       'Show on Public Pages' => 
       array (
-        0 => 'Pokaż na publicznych stronach',
+        0 => 'Genel Sayfaları Göster',
       ),
       'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
       array (
-        0 => 'Włącz, aby zezwolić słuchaczom na wybieranie tego punktu montowania na publicznych stronach tej stacji.',
+        0 => 'Dinleyicilerin genel sayfalarını bağlantı noktası kullanarak görüntülemesini istiyorsanız etkinleştirebilirsiniz.',
       ),
       'Set as Default Mount Point' => 
       array (
-        0 => 'Ustaw jako domyślny punkt montowania',
+        0 => 'Varsayılan Bağlantı Noktası',
       ),
       'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => 'Jeśli ten punkt jest domyślny, utwory będą grane w podglądzie radia oraz na publicznej stronie radia tego systemu.',
+        0 => 'Bu bağlantı noktası varsayılan ise radyo önizlemesinde ve bu sistemdeki genel radyo sayfasında oynatılacaktır.',
       ),
       'Relay Stream URL' => 
       array (
-        0 => 'Adres URL przekazania strumienia',
+        0 => 'Yönlendirme URLsi',
       ),
       'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => 'Wprowadź pełny adres URL innego strumienia do przekazywania jego nadawanych przez ten punkt instancji.',
+        0 => 'Yönlendirilmek üzere uzak sunucu URLsini belirtin.',
       ),
       'Publish to "Yellow Pages" Directories' => 
       array (
-        0 => 'Opublikuj w katalogach "Yellow Pages"',
+        0 => '\\"Yellow Pages\\" Dizininde Yayınla',
       ),
       'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
       array (
-        0 => 'Włącz rozgłaszanie tego punktu montowania w publicznych katalogach stacji radiowych "Yellow Pages".',
+        0 => 'Rayoyu \\"Yellow Pages\\" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz.',
       ),
       'Enable AutoDJ' => 
       array (
-        0 => 'Włącz AutoDJ\'a',
+        0 => 'AutoDJ kullan',
       ),
       'If enabled, the AutoDJ will automatically play music to this mount point.' => 
       array (
-        0 => 'Jeśli włączone, autopilot będzie automatycznie odtwarzał muzykę na ten punkt montowania.',
+        0 => 'AutoDJ kullanmak için burayı etkinleştirmelisiniz.',
       ),
       'AutoDJ Format' => 
       array (
-        0 => 'Format AutoDJ\'a',
+        0 => 'AutoDJ Biçimi',
       ),
       'AutoDJ Bitrate (kbps)' => 
       array (
-        0 => 'Bitrate AutoDJ (kbps)',
+        0 => 'AutoDJ Bitrate (kbps)',
       ),
       'Custom Stream URL' => 
       array (
-        0 => 'Niestandardowy Adres URL strumienia',
+        0 => 'Özelleştirilmiş Yayın URLSi',
       ),
       'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
       array (
-        0 => 'Można ustawić niestandardowy adres URL dla tego strumienia, który AzuraCast będzie używany przy odwoływaniu się do niego. Pozostaw puste, aby użyć wartości domyślnej.',
+        0 => 'Bu yayının AzuraCast de kullanılacağı özel bir URL belirleyebilirsiniz. Varsayılan değeri kullanmak için boş bırakın.',
       ),
       'Fallback Mount' => 
       array (
-        0 => 'Rezerwowy Punkt Montowania',
+        0 => 'Fallback Mount',
       ),
       'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => 'Jeśli ten punkt instalacji nie odtwarzania dźwięku, słuchacz będzie automatycznie przekierowany na ten punkt instalacji. Wartością domyślną jest /error.mp3, wraz z powtarzanym komunikacie o błędzie.',
+        0 => 'Bu bağlantı noktası ses çalmadığında dinleyiciler otomatik olarak buraya yönlendirilecektir. Varsayılan hata sesi /error.mp3 tekrarlanarak çalınacaktır.',
       ),
       'Custom Frontend Configuration' => 
       array (
-        0 => 'Niestandardowa konfiguracja Frontend',
+        0 => 'Özelleştirilmiş Sunucu Ayarları',
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => 'Możesz tu podać specjalne ustawienia punktu montowania w formacie JSON (klucz: "wartość"} lub wartość "klucza XML" & lt; / key & gt;',
+        0 => 'Özel bağlantı noktası ayarlarını JSON için { key: \\\'value\\\' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz.',
       ),
       'Stream path cannot include reserved keywords: %s' => 
       array (
-        0 => 'Stream ścieżka nie może zawierać zastrzeżonych słów kluczowych: %s',
+        0 => 'Yayın adı şu kelimeleri içeremez: %s',
       ),
       'YP Directory Authorization Hash' => 
       array (
-        0 => 'Hash autoryzacji katalogu YP',
+        0 => 'YP Dizini Yetkilendirme Kodu',
       ),
       'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
       array (
-        0 => 'Jeśli Twój strumień jest ustawiony do reklamowania YP katalogów powyżej, należy określić skrótu autoryzacji. Zarządzanie authhashes <a href="%s" target="_blank">na SHOUTcast witryny sieci web</a>.',
+        0 => 'Radyoyu \\"Yellow Pages\\" dizininde görüntülenmesini istiyorsanız <a href=\\"%s\\" target=\\"_blank\\">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir.',
       ),
       'Basic Information' => 
       array (
-        0 => 'Podstawowe informacje',
+        0 => 'Basit Ayarlar',
       ),
       'Source' => 
       array (
-        0 => 'Źródło',
+        0 => 'Kaynak',
       ),
       'Scheduling' => 
       array (
-        0 => 'Planowanie',
+        0 => 'Zamanlama',
       ),
       'Enable Playlist' => 
       array (
-        0 => 'Włącz listę odtwarzania',
+        0 => 'Çalma Listesini Etkinleştir',
       ),
       'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
       array (
-        0 => 'Jeśli ustawiona na "Nie", lista odtwarzania nie będzie uwzględniona w odtwarzaniu radia, ale nadal może być zarządzane.',
+        0 => '\\"HAYIR\\" olarak ayarlanırsa AutoDJ müzik çalamaz.',
       ),
       'Playlist Name' => 
       array (
-        0 => 'Nazwa playlisty',
+        0 => 'Çalma Listesi İsmi',
       ),
       'Playlist Weight' => 
       array (
-        0 => 'Waga Listy Odtwarzania',
+        0 => 'Çalma Listesi Önceliği',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
-        0 => 'Wyższe listy odtwarzania są odtwarzane częściej niż inne listy niższych gramatur.',
+        0 => 'Yüksek önceliğe sahip çalma listeleri daha sık çalınır.',
       ),
       'Low' => 
       array (
-        0 => 'Niski',
+        0 => 'Düşük',
       ),
       'High' => 
       array (
-        0 => 'Wysoki',
+        0 => 'Yüksek',
       ),
       'Song-Based Playlist' => 
       array (
-        0 => 'Utwory bazowane listą odtwarzania',
+        0 => 'Çalma Listesinden Çal',
       ),
       'A playlist containing media files hosted on this server.' => 
       array (
-        0 => 'Playlista zawierająca pliki multimedialne hostowane na tym serwerze.',
+        0 => 'Bu sunucuda barındırılan müzik dosyalarını içeren bir çalma listesidir.',
       ),
       'Remote URL Playlist' => 
       array (
-        0 => 'Zdalny URL Playlisty',
+        0 => 'Uzak Çalma Listesi URLsi',
       ),
       'A playlist that instructs the station to play from a remote URL.' => 
       array (
-        0 => 'Playlista, która nakazuje stacji odtwarzać z zewnętrznego URL\'a.',
+        0 => 'Uzak sunucudaki müzik dosyalarını içeren bir çalma listesidir.',
       ),
       'Song Playback Order' => 
       array (
-        0 => 'Kolejność odtwarzania utworów',
+        0 => 'Şarkı Çalma Sırası',
       ),
       'Shuffled' => 
       array (
-        0 => 'Losowo w trybie shuffle',
+        0 => 'Karıştır (önerilir)',
       ),
       'Random' => 
       array (
-        0 => 'Losowy',
+        0 => 'Rastgele',
       ),
       'Sequential' => 
       array (
-        0 => 'Sekwencyjny',
+        0 => 'Sıralı',
       ),
       'Import Existing Playlist' => 
       array (
-        0 => 'Importowanie istniejącej listy odtwarzania',
+        0 => 'Çalma Listesi İçe Aktarma',
       ),
       'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
       array (
-        0 => 'Wybierz istniejący plik listy odtwarzania, aby dodać jego zawartość do tej listy odtwarzania. M3U i PLS są obsługiwane.',
+        0 => 'Mevcut bir PLS veya M3U biçimindeki çalma listesini içeri aktarabilirsiniz.',
       ),
       'Allow Requests from This Playlist' => 
       array (
-        0 => 'Zezwalaj na żądania z tej listy odtwarzania',
+        0 => 'Çalma Listesinde İstekleri Etkinleştir',
       ),
       'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
       array (
-        0 => 'Jeśli w Twojej stacji włączone są prośby od słuchaczy, będą oni mogli wysyłać prośby o odtworzenie mediów tej playlisty.',
+        0 => 'Radyodaki çalan müzikleri kullanıcıların erişimine açmak için burayı etkinleştirebilirsiniz.',
       ),
       'Hide Metadata from Listeners ("Jingle Mode")' => 
       array (
-        0 => 'Ukryj metadane przed słuchaczami ("Tryb Dżinglowy", z ang. Jingle Mode)',
+        0 => 'Meta Verilerini Gizle (\\"Jingle Mode\\")',
       ),
       'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
       array (
-        0 => 'Aktywuj to ustawienie, aby zapobiec wysyłaniu metadanych plików z tej playlisty do autopilota Przydatne, gdy playlista zawiera dżingle lub przerywniki.',
+        0 => 'Bu çalma listesinde bulunan müziklerin meta verilerini dinleyicilerden gizlemek için etkinleştirebilirsiniz. Çalma listesinde Jingle veya Bumpers varsa işinize yarayacak bir özelliktir.',
       ),
       'Remote URL' => 
       array (
-        0 => 'Zdalny adres URL',
+        0 => 'Uzak Çalma Listesi URLsi',
       ),
       'Remote URL Type' => 
       array (
-        0 => 'Typ zdalnego URLa',
+        0 => 'Uzak Çalma Listesi Türü',
       ),
       'Direct Stream URL' => 
       array (
-        0 => 'Bezpośredni URL strumienia',
+        0 => 'Doğrudan Yayın URLsi',
       ),
       'Playlist (M3U/PLS) URL' => 
       array (
-        0 => 'URL playlisty (M3U/PLS)',
+        0 => 'Çalma Listesi URLsi (M3U/PLS)',
       ),
       'Remote Playback Buffer (Seconds)' => 
       array (
-        0 => 'Bufor zdalnego odtwarzania (w sekundach)',
+        0 => 'Uzaktan Oynatma Arabelliği (saniye)',
       ),
       'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
       array (
-        0 => 'Długość czasu odtwarzania, jaką Liquidsoap powinien zbuforować przed odtworzeniem tej zdalnej playlisty. Krótsze czasy mogą spowodować przerywanie odtwarzania lub niestabilne połączenia.',
+        0 => 'Uzak çalma listesi Liquidsoap tarafından oynatılırken arabellek için gereken süreyi belirtin. Bağlantı sorunları oluştuğunda daha kısa süreler takılmalara neden olabilir.',
       ),
       'General Rotation' => 
       array (
-        0 => 'Ogólna rotacja',
+        0 => 'Genel Oynatma',
       ),
       'Plays all day, shuffles with other standard playlists based on weight.' => 
       array (
-        0 => 'Odtwarza cały dzień, shuffle z innymi standardowymi playlistami w oparciu o wagę.',
+        0 => 'Gün boyu oynatılır ve önceliğe göre diğer standart çalma listeleriyle karıştırılır.',
       ),
       'Scheduled' => 
       array (
-        0 => 'Zaplanowane',
+        0 => 'Zamanlanmış',
       ),
       'Play during a scheduled time range.' => 
       array (
-        0 => 'Odtwarzaj w ustalonym zakresie czasu.',
+        0 => 'Belirlenmiş bir zaman aralığında oynatılır.',
       ),
       'Once per x Songs' => 
       array (
-        0 => 'Raz na %d utworów',
+        0 => 'x Şarkıda Bir Çal',
       ),
       'Play exactly once every <i>x</i> songs.' => 
       array (
-        0 => 'Odtwarzaj raz co <i>x</i> utworów.',
+        0 => 'Her <i>x</i> şarkıda bir çalınır.',
       ),
       'Once Per x Minutes' => 
       array (
-        0 => 'Raz na %d minut',
+        0 => 'x Dakikada Bir Çal',
       ),
       'Play exactly once every <i>x</i> minutes.' => 
       array (
-        0 => 'Odtwarzaj dokładnie raz co <i>x</i> minut.',
+        0 => 'Her <i>x</i> dakikada bir çalınır.',
       ),
       'Once per Hour' => 
       array (
-        0 => 'Raz na godzinę',
+        0 => 'Saatte Bir Çal',
       ),
       'Play once per hour at the specified minute.' => 
       array (
-        0 => 'Odtwarzaj co godzinę w podanej minucie.',
+        0 => 'Belirtilen dakikada saatte bir çalınır.',
       ),
       'Advanced' => 
       array (
-        0 => 'Zaawansowane',
+        0 => 'Gelişmiş',
       ),
       'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
       array (
-        0 => 'Określ ręcznie, jak ta playlista jest wykorzystywana w konfiguracji Liquidsoap. <a href="%s" target="_blank">Dowiedz się więcej o Zaawansowanych Playlistach</a>',
+        0 => 'Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.',
       ),
       'AutoDJ Scheduling Options' => 
       array (
-        0 => 'Opcje planowania autopilota',
+        0 => 'AutoDJ Zamanlama Ayarları',
       ),
       'Control how this playlist is handled by the AutoDJ software.' => 
       array (
-        0 => 'Określ, w jaki sposób ta playlista będzie wykorzystywana przez oprogramowanie autopilota.',
+        0 => 'Bu çalma listesinin AutoDJ yazılımı tarafından nasıl işlendiğini ayarlayabilirsiniz.',
       ),
       '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
       array (
-        0 => '',
+        0 => '<b>Uyarı:</b> Bu ayarlar Liquidsoap ve AutoDJ yazılımlarına doğrudan etki eder. Yeniden başlatma gerekebilir.',
       ),
       'Interrupt other songs to play at scheduled time.' => 
       array (
-        0 => 'Przerywaj inne utwory, by odtworzyć w ustalonym czasie.',
+        0 => 'Planlanan zamanda çalmak için diğer şarkıları kesin.',
       ),
       'Only loop through playlist once.' => 
       array (
-        0 => 'Odtwórz playlistę w pętli tylko raz.',
+        0 => 'Çalma listesinde yalnızca bir kez döngü yapın.',
       ),
       'Only play one track at scheduled time.' => 
       array (
-        0 => 'Odtwarzaj tylko jeden utwór w ustalonym czasie.',
+        0 => 'Planlanan zamanda sadece bir parça çalın.',
       ),
       'Merge playlist to play as a single track.' => 
       array (
-        0 => 'Połącz playlistę, aby odtworzyć ją jako pojedynczy utwór.',
+        0 => 'Tek bir parça olarak çalmak için çalma listesini birleştirin.',
       ),
       'Include in Automated Assignment' => 
       array (
-        0 => 'Uwzględnij w automatycznym przypisaniu',
+        0 => 'Otomatik Atamaya Dahil Et',
       ),
       'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
       array (
-        0 => 'Jeśli auto przydział jest włączony, należy użyć tej listy odtwarzania jako jeden z celów w zakresie piosenek do ponownego przydzielenia. Spowoduje to zastąpienie istniejącej zawartości tej listy odtwarzania.',
+        0 => 'Otomatik atama etkinse bu çalma listesini yeniden dağıtılacak şarkıların hedeflerinden biri olarak kullanın. Bu, bu oynatma listesinin mevcut içeriğinin üzerine yazacaktır.',
       ),
       'Start Time' => 
       array (
-        0 => 'Czas rozpoczęcia',
+        0 => 'Başlama Zamanı',
       ),
       'To play once per day, set the start and end times to the same value.' => 
       array (
-        0 => 'Aby odtwarzać raz dziennie, ustaw takie same czasy start i stop.',
+        0 => 'Günde bir kez oynamak için başlangıç ​​ve bitiş zamanlarını aynı değere ayarlayın.',
       ),
       'End Time' => 
       array (
-        0 => 'Czas zakończenia',
+        0 => 'Bitiş Zamanı',
       ),
       'If the end time is before the start time, the playlist will play overnight.' => 
       array (
-        0 => 'Jeśli czas końca jest ustawiony przed czasem początku, playlista będzie odtwarzana w ciągu nocy.',
+        0 => 'Bitiş saati başlangıç ​​saatinden önce ise çalma listesi gecede oynatılır.',
       ),
       'Station Time Zone' => 
       array (
-        0 => 'Strefa czasowa stacji',
+        0 => 'Radyo Saat Dilimi',
       ),
       'Scheduled Play Days of Week' => 
       array (
-        0 => 'Zaplanuj odtwarzanie w dni tygodnia',
+        0 => 'Haftalık Zamanlama',
       ),
       'Leave blank to play on every day of the week.' => 
       array (
-        0 => 'Pozostaw puste, aby odtwarzać w każdy dzień tygodnia.',
+        0 => 'Haftanın hangi günlerinde oynatılmasını istiyorsanız seçin veya haftanın her günü oynatmak için boş bırakın.',
       ),
       'Number of Songs Between Plays' => 
       array (
-        0 => 'Ilość utworów między odtwarzaniem',
+        0 => 'Kaç Şarkıda Bir Çalınsın?',
       ),
       'This playlist will play every $x songs, where $x is specified below.' => 
       array (
-        0 => 'Ta lista odtwarzania zagra utwory każdego $x, gdzie $x jest określona poniżej.',
+        0 => 'Bu çalma listesi her $x şarkıda bir $x şarkı çalacaktır.',
       ),
       'Number of Minutes Between Plays' => 
       array (
-        0 => 'Liczba minut między odtwarzaniem',
+        0 => 'Kaç Dakikada Bir Çalınsın?',
       ),
       'This playlist will play every $x minutes, where $x is specified below.' => 
       array (
-        0 => 'Ta lista odtwarzania będzie grać co minut $x, gdzie $x jest określona poniżej.',
+        0 => 'Bu çalma listesi her $x dakikada bir $x şarkı çalacaktır.',
       ),
       'Minute of Hour to Play' => 
       array (
-        0 => 'Odtwarzanie w podanej minucie godziny',
+        0 => 'Saatin Hangi Dakikasında Çalınsın?',
       ),
       'Specify the minute of every hour that this playlist should play.' => 
       array (
-        0 => 'Określ minutę każdej godziny, kiedy ta playlista powinna być odtwarzana.',
+        0 => 'Bu çalma listesinin saatin hangi dakikasında oynatılmasını istiyorsanız belirtin.',
       ),
       'Use Browser Default' => 
       array (
-        0 => 'Użyj przeglądarki domyślnej',
+        0 => 'Varsayılan',
       ),
       'Name' => 
       array (
-        0 => 'Nazwa',
+        0 => 'İsim',
       ),
       'Reset Password' => 
       array (
-        0 => 'Resetuj hasło',
+        0 => 'Şifreyi Değiştir',
       ),
       'Leave these fields blank to continue using your current password.' => 
       array (
-        0 => 'Pozostaw te pola puste, aby nadal używać obecnego hasła.',
+        0 => 'Geçerli şifrenizi kullanmaya devam etmek için bu alanları boş bırakın.',
       ),
       'Current Password' => 
       array (
-        0 => 'Obecne hasło',
+        0 => 'Şimdiki Şifre',
       ),
       'New Password' => 
       array (
-        0 => 'Nowe Hasło',
+        0 => 'Yeni Şifre',
       ),
       'Confirm New Password' => 
       array (
-        0 => 'Potwierdź Nowe Hasło',
+        0 => 'Yeni Şifreyi Doğrula',
       ),
       'Customization' => 
       array (
-        0 => 'Dostosowywanie',
+        0 => 'Özelleştirme',
       ),
       'Language' => 
       array (
-        0 => 'Język',
+        0 => 'Dil',
       ),
       'Site Theme' => 
       array (
-        0 => 'Motyw witryny',
+        0 => 'Site Teması',
       ),
       'Code from Authenticator App' => 
       array (
-        0 => 'Kod z aplikacji uwierzytelniającej',
+        0 => 'Authenticator Uygulaması Kodu',
       ),
       'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
       array (
-        0 => 'Podaj kod obecnie wyświetlany przez aplikację uwierzytelniającą, aby zweryfikować, czy działa ona poprawnie.',
+        0 => 'Doğru çalıştığını doğrulamak için doğrulayıcı uygulamanız tarafından sağlanan geçerli kodu girin.',
       ),
       'Verify Authenticator' => 
       array (
-        0 => 'Zweryfikuj aplikację uwierzytelniającą',
+        0 => 'Authenticator Kodunu Doğrula',
       ),
       'Account Information' => 
       array (
-        0 => 'Informacje o koncie',
+        0 => 'Hesap Bilgileri',
       ),
       'Create Account' => 
       array (
-        0 => 'Utwórz konto',
+        0 => 'Hesap Oluştur',
       ),
       'Enable to allow listeners to select this relay on this station\'s public pages.' => 
       array (
-        0 => 'Włącz, aby pozwolić słuchaczom wybrać ten relay na stronach publicznych tej stacji.',
+        0 => 'Dinleyicilerin bu radyonun genel sayfalarında bu yönlendirmeyi seçmelerine izin vermek için etkinleştirin.',
       ),
       'Remote Station Type' => 
       array (
-        0 => 'Typ zdalnej stacji',
+        0 => 'Uzak Radyo Türü',
       ),
       'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
-        0 => 'Nazwa wyświetlana przypisana do tego relaya przy wyświetlaniu w panelu administracyjnym lub na stronach publicznych. Pozostaw puste, aby wygenerować automatycznie.',
+        0 => 'Yönetici veya genel sayfalarda görüntülerken bu yönlendirmeye atanan ismi belirleyin. Otomatik olarak oluşturmak için boş bırakın.',
       ),
       'Remote Station Listening URL' => 
       array (
-        0 => 'URL do słuchania stacji zdalnej',
+        0 => 'Uzak Radyo Dinleme URLsi',
       ),
       'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
       array (
-        0 => 'Przykład: Jeśli adres URL zdalnego radiowego to %s, wprowadź <code>%s</code>.',
+        0 => 'Örnek: Uzak radyo URLsi %s şeklindeyse <code>%s</code> biçiminde yazın.',
       ),
       'Remote Station Listening Mountpoint/SID' => 
       array (
-        0 => 'Punkt montowania/SID odsłuchu zdalnej stacji',
+        0 => 'Uzak Radyo Dinleme Bağlantı Noktası/SID',
       ),
       'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
       array (
-        0 => 'Podaj punkt montowania (np. <code>%s</code>) lub Shoutcast SID (np. <code>%s</code>), aby określić strumień do wykorzystania w statystykach lub nadawaniu.',
+        0 => 'İstatistikler ve yayın için uzak radyo dinleme bağlantı noktası veya SID bilgilerini yazın. Örnek: IceCast: <code>%s</code> - ShoutCast: <code>%s</code>',
       ),
       'Broadcast AutoDJ to Remote Station' => 
       array (
-        0 => 'Nadawaj autopilota na zewnętrzną stację',
+        0 => 'Uzak Radyoya AutoDJ Yayını',
       ),
       'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
       array (
-        0 => 'Jeśli włączone, autopilot w tej instalacji będzie automatycznie odtwarzał muzykę na ten punkt montowania.',
+        0 => 'Etkinleştirilse bu kurulumdaki AutoDJ otomatik olarak uzak radyo bağlama noktasına müzik çalacaktır.',
       ),
       'Configure AutoDJ Broadcasting' => 
       array (
-        0 => 'Skonfiguruj nadawanie AutoDJ\'a',
+        0 => 'AutoDJ Yayınını Yapılandır',
       ),
       'Remote Station Source Port' => 
       array (
-        0 => 'Port źródłowy zdalnej stacji',
+        0 => 'Uzak Radyo Portu',
       ),
       'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
       array (
-        0 => 'Jeśli port, na którym nadajesz, różni się od tego podanego w powyższym URL, podaj tutaj port źródłowy.',
+        0 => 'Yayınladığınız bağlantı noktası yukarıdaki URLde belirtiğiniz bağlantıdan farklıysa kaynak bağlantı noktasını burada belirtin.',
       ),
       'Remote Station Source Mountpoint/SID' => 
       array (
-        0 => 'Punkt montowania lub SID źródła zdalnej stacji',
+        0 => 'Uzak Radyo Bağlantı Noktası/SID',
       ),
       'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
       array (
-        0 => 'Jeśli punkt montowania (np. <code>/radio.mp3</code>) lub Shoutcast SID (np. <code>2</code>), na który nadajesz, różni się od tego podanego powyżej, podaj tutaj punkt montowania źródła.',
+        0 => 'Uzak radyo dinleme bağlantı noktası veya SID bilgileri yukarda belirttiğinizden farklıysa burada belirtin. Örnek: IceCast: <code>%s</code> - ShoutCast: <code>%s</code>',
       ),
       'Remote Station Source Username' => 
       array (
-        0 => 'Nazwa użytkownika zdalnej stacji',
+        0 => 'Uzak Radyo Kullanıcı Adı',
       ),
       'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
       array (
-        0 => 'Jeśli nadajesz z wykorzystaniem autopilota, podaj tutaj nazwę użytkownika źródła. Możesz zostawić puste.',
+        0 => 'AutoDJ kullanarak yayın yapıyorsanız kullanıcı adını buraya girin veya boş bırakın.',
       ),
       'Remote Station Source Password' => 
       array (
-        0 => 'Hasło źródła stacji zdalnej',
+        0 => 'Uzak Radyo Şifresi',
       ),
       'If you are broadcasting using AutoDJ, enter the source password here.' => 
       array (
-        0 => 'Jeśli nadajesz z wykorzystaniem autopilota, podaj tutaj hasło źródła.',
+        0 => 'AutoDJ kullanarak yayın yapıyorsanız şifreyi buraya girin.',
       ),
       'Role Name' => 
       array (
-        0 => 'Nazwa roli',
+        0 => 'Yetki İsmi',
       ),
       'System-Wide Permissions' => 
       array (
-        0 => 'Uprawnienia systemowe',
+        0 => 'Sistem Geneli İzinler',
       ),
       'Permissions for %s' => 
       array (
-        0 => 'Uprawnienia dla %s',
+        0 => '%s İçin İzinler',
       ),
       'Site Base URL' => 
       array (
-        0 => 'Podstawowy adres URL witryny',
+        0 => 'Sunucu Kontrol Paneli URLsi',
       ),
       'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
       array (
-        0 => 'Podstawowy adres URL, gdzie znajduje się ta usługa. Użyj zewnętrznego adresu IP lub nazwy pełni kwalifikowaną domeny (jeśli istnieje) wskazująca na ten serwer.',
+        0 => 'Sunucu kontrol paneli URL tam adresi veya IP adresini yazın.',
       ),
       'AzuraCast Instance Name' => 
       array (
-        0 => 'Nazwa instancji AzuraCast',
+        0 => 'AzuraCast Slogan İsmi',
       ),
       'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
       array (
-        0 => 'Ta nazwa będzie wyświetlana jako nagłówkek podrzędny obok loga AzuraCast, aby pomóc zidentyfikować ten serwer.',
+        0 => 'AzuraCast logosunun yanında yer alacak slogan adını yazın.',
       ),
       'Prefer Browser URL (If Available)' => 
       array (
-        0 => 'Preferuj URL przeglądarki (jeśli dostępne)',
+        0 => 'Tarayıcı URLsini Tercih Et (Varsa)',
       ),
       'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
       array (
-        0 => 'Jeśli ustawione na "Tak", tam gdzie to możliwe, będzie wykorzystywany URL przeglądarki zamiast podstawowego URL. Ustaw na "Nie", aby zawsze używać podstawowego URL.',
+        0 => 'Bu ayar \\"Evet\\" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için \\"Hayır\\" olarak ayarlayın.',
       ),
       'Use Web Proxy for Radio' => 
       array (
-        0 => 'Użyj serwera Proxy sieci Web dla radia',
+        0 => 'Radyolar İçin Proxy Kullan',
       ),
       'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
       array (
-        0 => 'Domyślnie stacje radiowe nadają na swoje własne porty (czyli 8000). Jeśli używasz usługi CloudFlare lub używasz dostępu do stacji radiowej przez SSL, należy włączyć tę funkcję, która przekierowuje wszystkie radia za pośrednictwem portów sieci web (80 i 443).',
+        0 => 'Varsayılan olarak radyo istasyonları kendi bağlantı noktalarında (örnek: 8000) yayın yapar. CloudFlare gibi bir servis kullanıyorsanız veya radyo istasyonunuza SSL ile erişiyorsanız, tüm radyoları web bağlantı noktalarından (80 ve 443) yönlendiren bu özelliği etkinleştirmelisiniz.',
       ),
       'Days of Playback History to Keep' => 
       array (
-        0 => 'Ilość dni w historii odtwarzania',
+        0 => 'Çalma Geçmişini Saklama',
       ),
       'Set longer to preserve more playback history for stations. Set shorter to save disk space.' => 
       array (
-        0 => 'Ustaw dłuższe, aby zachować dłuższą historię odtwarzania dla stacji. Ustaw krótsze, by zaoszczędzić miejsce na dysku.',
+        0 => 'Radyolar için uzun süre çalma geçmişini saklamak için en büyük değeri seçin veya disk alanından tasarruf etmek için küçük değeri seçin.',
       ),
       'Last 14 Days' => 
       array (
-        0 => 'Ostatnie 14 dni',
+        0 => 'Son 14 Gün',
       ),
       'Last 30 Days' => 
       array (
-        0 => 'Ostatnie 30 dni',
+        0 => 'Son 30 Gün',
       ),
       'Last 60 Days' => 
       array (
-        0 => 'Ostatnie 60 dni',
+        0 => 'Son 60 Gün',
       ),
       'Last Year' => 
       array (
-        0 => 'Ostatni rok',
+        0 => 'Son Yıl',
       ),
       'Last 2 Years' => 
       array (
-        0 => 'Ostatnie 2 lata',
+        0 => 'Son 2 Yıl',
       ),
       'Indefinitely' => 
       array (
-        0 => 'Czas nieokreślony',
+        0 => 'Süresiz',
       ),
       'Use WebSockets for Now Playing Updates' => 
       array (
-        0 => '',
+        0 => 'Çalan Şarkı Bilgisi İçin WebSockets Kullanın',
       ),
       'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
       array (
-        0 => '',
+        0 => 'Genel oynatıcılarda canlı güncellemeler almak için daha yeni ve daha hızlı WebSocket tabanlı sistemin kullanımını etkinleştirir veya devredışı bırakır. Bir sorunla karşılaşırsanız bunu devredışı bırakmanız gerekebilir.',
       ),
       'Security Controls' => 
       array (
-        0 => 'Opcje zabezpieczeń',
+        0 => 'Güvenlik Kontrolleri',
       ),
       'Always Use HTTPS' => 
       array (
-        0 => 'Zawsze wykorzystuj HTTPS',
+        0 => 'Her Zaman HTTPS Kullan',
       ),
       'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
       array (
-        0 => 'Ustaw "Tak", aby zawsze używać szyfrowanego adresu URL "https://" i automatycznie przekierować do szyfrowanego adresu URL podczas w przypadku odwiedzenia nieszyfrowanego URL.',
+        0 => '\\"Evet\\" olarak ayarlandığında her zaman güvenli bağlantı \\"https://\\" kullanılır.',
       ),
       'API "Access-Control-Allow-Origin" header' => 
       array (
-        0 => 'Nagłówek API "Access-Control-Allow-Origin"',
+        0 => '\\"Access-Control-Allow-Origin\\" API Başlığı',
       ),
       '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
       array (
-        0 => '<a href="%s" target="_blank">Dowiedz się więcej o tym nagłówku</a>. Ustaw *, aby zezwolić wszystkim źródłom, lub podaj listę źródeł oddzielonych przecinkiem (,).',
+        0 => 'Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.',
       ),
       'Privacy Controls' => 
       array (
-        0 => 'Kontrolki prywatności',
+        0 => 'Gizlilik Kontrolleri',
       ),
       'AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here.' => 
       array (
-        0 => 'AzuraCast nie wysyła danych o Twojej stacji lub słuchaczach na jakikolwiek zewnętrzny serwer. Tutaj możesz ustawić, ile danych o Twoich słuchaczach ma zapisywać oprogramowanie AzuraCast.',
+        0 => 'AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast\\\'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin.',
       ),
       'Listener Analytics Collection' => 
       array (
-        0 => 'Zbiór analiz danych o słuchaczach',
+        0 => 'Dinleyici İstatistik Koleksiyonu',
       ),
       'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
       array (
-        0 => 'Zbiorcze statystyki słuchalności są wykorzystywane do wyświetlania raportów o stacjach na przestrzeni całego systemu. Statystyki słuchalności w oparciu o IP są wykorzystywane do śledzenia aktualnie słuchających i mogą być wymagane w raportach dotyczących tantiem.',
+        0 => 'Dinleyici istatistik koleksiyonu sistemdeki radyo raporlarını göstermek için kullanılır. IP tabanlı dinleyici istatistikleri canlı dinleyici izlemesini görüntülemek için kullanılır ve telif hakkı raporları için gerekli olabilir.',
       ),
       '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
       array (
-        0 => '<b>Pełne:</b> Zbieraj zbiorcze statystyki słuchalności oraz statystyki słuchaczy w oparciu o IP',
+        0 => '<b>TAM:</b> Toplu dinleyici istatistiklerini ve IP tabanlı dinleyici istatistiklerini toplayın',
       ),
       '<b>Limited:</b> Only collect aggregate listener statistics' => 
       array (
-        0 => '<b>Ograniczone:</b> Zbieraj tylko zbiorcze statystyki słuchalności',
+        0 => '<b>SINIRLI:</b> Yalnızca toplu dinleyici istatistiklerini topla',
       ),
       '<b>None:</b> Do not collect any listener analytics' => 
       array (
-        0 => '<b>Brak:</b> Nie zbieraj żadnych statystyk słuchalności',
+        0 => '<b>KAPALI:</b> Herhangi bir dinleyici istatistiği toplamayın',
       ),
       'AzuraCast Installation Telemetry' => 
       array (
-        0 => 'Telemetria instalacji AzuraCast',
+        0 => 'AzuraCast Kurulumu Desteği',
       ),
       'Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.' => 
       array (
-        0 => 'Zdecyduj, czy Twoja instalacja ma się łączyć z centralnymi serwerami AzuraCast, celem sprawdzenia dostępnych aktualizacji i ogłoszeń.<br>AzuraCast szanuje Twoją prywatność - po więcej szczegółów, zajrzyj do <a href="%s" target="_blank">polityki prywatności</a>.',
+        0 => 'Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\\"%s\\" target=\\"_blank\\">gizlilik politikası</a>nı inceleyebilirsiniz.',
       ),
       'Check for Updates and Announcements' => 
       array (
-        0 => 'Sprawdzaj aktualizacje i ogłoszenia',
+        0 => 'Güncellemeleri ve Duyuruları Kontrol Et',
       ),
       'Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements.' => 
       array (
-        0 => 'Wysyłaj podstawowe informacje o swojej instalacji AzuraCast do centralnego serwera AzuraCast, aby sprawdzać zaktualizowane wersje oprogramowania oraz ważne ogłoszenia.',
+        0 => 'Güncellenen yazılım sürümlerini ve önemli duyuruları kontrol etmek için AzuraCast kurulumunuz hakkında en az ayrıntıyı AzuraCast merkezi sunucuya gönderin.',
       ),
       '<b>None:</b> Do not check for updates or announcements.' => 
       array (
-        0 => '<b>Brak:</b> Nie sprawdzaj aktualizacji ani ogłoszeń.',
+        0 => '<b>KAPALI:</b> Güncellemeleri veya duyuruları kontrol etmeyin.',
       ),
       '<b>Release Only:</b> Critical announcements and new release versions only.' => 
       array (
-        0 => '<b>Tylko aktualizacje:</b> Sprawdzaj tylko krytyczne ogłoszenia oraz nowe wersje oprogramowania.',
+        0 => '<b>YALNIZCA SÜRÜM:</b> Kritik duyuruları ve yalnızca yeni sürümleri kontrol edin.',
       ),
       '<b>All Updates:</b> Include all announcements and minor updates.' => 
       array (
-        0 => '<b>Wszystkie aktualizacje:</b> Sprawdzaj wszystkie ogłoszenia oraz mniejsze aktualizacje.',
+        0 => '<b>TÜM GÜNCELLEMELER:</b> Tüm duyuruları ve küçük güncellemeleri kontrol edin.',
       ),
       'Automatically Send Error Reports to AzuraCast' => 
       array (
-        0 => 'Automatycznie wysyłaj zgłoszenia o błędach do AzuraCast',
+        0 => 'Hata Raporlarını AzuraCast Sunucularına Otomatik Gönder',
       ),
       'If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution.' => 
       array (
-        0 => 'Jeśli aplikacja webowa napotka na błąd, możesz wybrać, czy chcesz automatycznie wysłać anonimowe zgłoszenie błędu do ekipy AzuraCast w celu szybszej diagnozy i naprawy.',
+        0 => 'Web uygulaması bir hatayla karşılaşırsa daha hızlı tanım ve çözüm için otomatik olarak sorunun anonim bir raporunu AzuraCast ekibine göndermeyi seçebilirsiniz.',
       ),
       'Error reports are powered by <a href="%s" target="_blank">%s</a>.' => 
       array (
-        0 => 'Zgłoszenia błędów obsługiwane są przez <a href="%s" target="_blank">%s</a>.',
+        0 => 'Hata raporları <a href=\\"%s\\" target=\\"_blank\\">%s</a> tarafından desteklenmektedir.',
       ),
       'Metadata' => 
       array (
-        0 => 'Metadane',
+        0 => 'Meta Verileri',
       ),
       'Full Text' => 
       array (
-        0 => 'Pełny tekst',
+        0 => 'Tam Metin',
       ),
       'Artist Name' => 
       array (
-        0 => 'Nazwa wykonawcy',
+        0 => 'Sanatçı İsmi',
       ),
       'Station Profile' => 
       array (
-        0 => 'Profil stacji',
+        0 => 'Radyo Profili',
       ),
       'Broadcasting' => 
       array (
-        0 => 'Nadawanie',
+        0 => 'Canlı Yayın',
       ),
       'AutoDJ' => 
       array (
@@ -2074,411 +2074,411 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Administration' => 
       array (
-        0 => 'Administracja',
+        0 => 'Yönetim',
       ),
       'Description' => 
       array (
-        0 => 'Opis',
+        0 => 'Açıklama',
       ),
       'Genre' => 
       array (
-        0 => 'Gatunek',
+        0 => 'Tür',
       ),
       'Web Site URL' => 
       array (
-        0 => 'Adres URL strony www',
+        0 => 'Web Site URLsi',
       ),
       'Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.' => 
       array (
-        0 => 'Uwaga: Powinna to być dostępna publicznie strona główna radiostacji, nie adres URL AzuraCast. Będzie ona zawarta w szczegółach nadawania.',
+        0 => 'Not: AzuraCast URLsi değil radyonuzun web adresi olmalıdır. Yayın detaylarına eklenecektir.',
       ),
       'Time Zone' => 
       array (
-        0 => 'Strefa czasowa',
+        0 => 'Saat Dilimi',
       ),
       'Scheduled playlists and other timed items will be controlled by this time zone.' => 
       array (
-        0 => 'Zaplanowane playlisty i inne elementy związane z czasem będą kontrolowane przez tę strefę czasową.',
+        0 => 'Zamanlanmış çalma listeleri ve zamanlanmış diğer öğeler bu zaman dilimi tarafından kontrol edilir.',
       ),
       'Enable Public Page' => 
       array (
-        0 => 'Włącz stronę publiczną',
+        0 => 'Genel Sayfaları Etkinleştir',
       ),
       'Show the station in public pages and general API results.' => 
       array (
-        0 => 'Umieść stację na stronach publicznych i ogólnych wynikach API.',
+        0 => 'Radyonuzu genel sayfalarda ve genel API sonuçlarında gösterin.',
       ),
       'URL Stub' => 
       array (
-        0 => 'Krótki URL',
+        0 => 'Sabit URL',
       ),
       'Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.' => 
       array (
-        0 => 'Opcjonalnie można określić krótką nazwę przyjaznego adresu URL, taką jak <code>my_station_name</code>, która będzie używana w adresach URL tej stacji. Pozostaw to pole puste, aby automatycznie utworzyć URL\'a w oparciu o nazwę stacji.',
+        0 => 'İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL-dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın.',
       ),
       'Number of Recently Played Songs' => 
       array (
-        0 => 'Liczba ostatnio odtwarzanych utworów',
+        0 => 'En Son Çalınan Şarkı Sayısı',
       ),
       'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
-        0 => 'Dostosuj liczbę utworów, które będą wyświetlane w sekcji "Historia Utworów" (Song History) dla tej stacji i wszystkich publicznych interfejsów API.',
+        0 => 'Bu istasyon için \\"Şarkı Geçmişi\\" bölümünde ve tüm ortak APIlerde görünecek şarkı sayısını belirtin.',
       ),
       'Broadcasting Service' => 
       array (
-        0 => 'Usługa nadawania',
+        0 => 'Yayın Sunucusu',
       ),
       'This software delivers your broadcast to the listening audience.' => 
       array (
-        0 => 'To oprogramowanie wysyła sygnał Twojej stacji do słuchaczy.',
+        0 => 'Bu yazılım yayınınızı dinleyen kitleye ulaştırır.',
       ),
       'Customize Broadcasting Port' => 
       array (
-        0 => 'Dostosuj port nadawania',
+        0 => 'Yayın Portu',
       ),
       'No other program can be using this port. Leave blank to automatically assign a port.' => 
       array (
-        0 => 'Żaden inny program nie może korzystać z tego portu. Pozostaw puste, aby automatycznie przypisać port.',
+        0 => 'Bu port başka hiçbir programda kullanamaz. Portu otomatik olarak atamak için boş bırakın.',
       ),
       'Maximum Listeners' => 
       array (
-        0 => 'Maksymalna ilość słuchaczy',
+        0 => 'Maksimum Dinleyici',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
-        0 => 'Maksymalna liczba całkowita słuchaczy w strumieniach wszystkie. Pozostaw puste, aby użyć domyślnego (250).',
+        0 => 'Radyonun maksimum toplam dinleyici sayısı belirtin. Varsayılanı (250) kullanmak için boş bırakın.',
       ),
       'Customize Source Password' => 
       array (
-        0 => 'Dostosuj hasło źródla',
+        0 => 'Yayın Şifresi',
       ),
       'Leave blank to automatically generate a new password.' => 
       array (
-        0 => 'Pozostaw puste, aby automatycznie wygenerować nowe hasło.',
+        0 => 'Otomatik olarak bu şifreyi oluşturmak için boş bırakın.',
       ),
       'Customize Administrator Password' => 
       array (
-        0 => 'Dostosuj hasło administratora',
+        0 => 'Yayın Yönetici Şifresi',
       ),
       'Custom Configuration' => 
       array (
-        0 => 'Konfiguracja niestandardowa',
+        0 => 'Özel Yapılandırma',
       ),
       'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
       array (
-        0 => 'Ten kod będzie uwzględniany w konfiguracji frontend. Można użyć albo JSON {"new_key": "nowa_większa_wartość"} format lub nowa_większa_wartość XML &lt; new_key &gt; &lt; / new_key &gt;.',
+        0 => 'Bu kod sunucu yapılandırmasına dahil edilecektir. JSON için {\\"new_key\\": \\"new_value\\"} veya XML için &lt;new_key&gt;new_value&lt;/new_key&gt; biçimini kullanabilirsiniz.',
       ),
       'AutoDJ Service' => 
       array (
-        0 => 'Usługa autopilota',
+        0 => 'AutoDJ Servisi',
       ),
       'This software shuffles from playlists of music constantly and plays when no other radio source is available.' => 
       array (
-        0 => 'To oprogramowanie nieprzerwanie losuje utwory z playlisty i odtwarza je, gdy nie jest dostępne żadne inne źródło sygnału radia.',
+        0 => 'Bu yazılım çalma listesindeki müzikleri otomatik olarak çalar.',
       ),
       'Crossfade Method' => 
       array (
-        0 => 'Metoda przejścia',
+        0 => 'Crossfade Seçenekleri',
       ),
       'Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.' => 
       array (
-        0 => 'Wybierz metodę, jaką chcesz wykorzystywać do tworzenia przejść pomiędzy utworami. Tryb Inteligentny (Smart Mode), dla płynniejszego efektu, sprawdza głośność obydwu utworów, wymaga jednak większego użycia mocy obliczeniowej procesora.',
+        0 => 'Bir şarkıdan diğerine geçiş yaparken kullanılacak bir yöntemi belirleyin.  Akıllı Mod daha yumuşak bir efekt ile geçişi yaparken iki parçanın sesini dikkate alır ancak daha fazla CPU kaynağı gerektirir.',
       ),
       'Smart Mode' => 
       array (
-        0 => 'Tryb inteligentny',
+        0 => 'Akıllı Mod',
       ),
       'Normal Mode' => 
       array (
-        0 => 'Tryb normalny',
+        0 => 'Normal Mod',
       ),
       'Disable Crossfading' => 
       array (
-        0 => 'Wyłącz przejścia',
+        0 => 'Kapat',
       ),
       'Crossfade Duration (Seconds)' => 
       array (
-        0 => 'Czas trwania crossfade (w sekundach)',
+        0 => 'Crossfade Süresi (saniye)',
       ),
       'Number of seconds to overlap songs.' => 
       array (
-        0 => 'Długość nakładania się utworów w sekundach.',
+        0 => 'Şarkıların üst üste geleceği zamanı belirleyin.',
       ),
       'Apply Compression and Normalization' => 
       array (
-        0 => 'Zastosuj kompresję i normalizację',
+        0 => 'Normalleştirme ve Sıkıştırma Uygula',
       ),
       'Compress and normalize your station\'s audio, producing a more uniform and "full" sound.' => 
       array (
-        0 => 'Kompresuj i normalizuj głośność swojej stacji, dając bardziej jednolity i "pełny" dźwięk.',
+        0 => 'Daha düzenli ve \\"tam\\" bir ses üreten radyonuzun sesini sıkıştırın ve normalleştirin.',
       ),
       'Allow Song Requests' => 
       array (
-        0 => 'Zezwalaj na żądania piosenki',
+        0 => 'Şarkı İsteklerine İzin Ver',
       ),
       'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.' => 
       array (
-        0 => 'Pozwól słuchaczom wysyłać prośby o piosenki. Można prosić tylko o utwory znajdujące się już w Twoich playlistach.',
+        0 => 'Dinleyicilerin yalnızca çalma listelerinde bulunan şarkıları indirmeleri için bu seçeceği etkinleştirebilirsiniz.',
       ),
       'Request Minimum Delay (Minutes)' => 
       array (
-        0 => 'Zgłoszenie minimalnie opóźnione (w minutach)',
+        0 => 'Minumum Gecikme İsteği (dakika)',
       ),
       'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
       array (
-        0 => 'Jeśli są włączone zgłoszenia, określa minimalne opóźnienia (w minutach) między żądanie przedłożenia i odtwarzane. Jeśli jest ustawiona na zero, nie ma opóźnienia. <br><b>Ważne:</b> niektóre strumienia licencjonowania zasady wymagają minimalnego opóźnienia dla żądania (w USA, to obecnie 60 minut). Sprawdź swoje lokalne przepisy dla więcej informacji.',
+        0 => 'İstekler etkinleştirilirse gönderilen ve oynanan bir istek arasındaki minimum gecikmeyi dakika cinsinden belirtin. Sıfıra ayarlanırsa gecikme olmaz.<br><b>Önemli: Bazı yayın lisans kuralları talepler için minimum bir gecikme gerektirir. (Örnek: ABD için şu anda 60 dakikadır.) Daha fazla bilgi için yerel düzenlemelerinizi kontrol edin.</b>',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
-        0 => 'Żądanie ostatniego progu (minuty)',
+        0 => 'En Son Oynatma Aralığı İsteği (dakika)',
       ),
       'If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.' => 
       array (
-        0 => 'Jeśli żądania są włączone, określa minimalny czas (w minutach) między utworem odtwarzanym w radiu a dostępnością do żądania ponownego. Ustaw wartość 0 dla żadnego progu.',
+        0 => 'İstekler etkinleştirirliese radyoda çalan bir şarkı ile tekrar talep edilmek üzere hazır olunması arasındaki minimum süreyi dakika cinsinden belirtin. Aralığı kapatmak için sıfır (0) olarak ayarlayın.',
       ),
       'Allow Streamers / DJs' => 
       array (
-        0 => 'Zezwalaj Streamerom/DJ\'om',
+        0 => 'DJlere İzin Ver',
       ),
       'If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.' => 
       array (
-        0 => 'Jeśli włączone, prezenterzy będą mogli łączyć się bezpośrednio z Twoim strumieniem i nadawać utwory, przerywając tym samym strumień autopilota.',
+        0 => 'Etkinleştirildiğinde DJler doğrudan yayına bağlanabilir ve AutoDJ yayını kesilerek canlı müzik yayınlanır.',
       ),
       'Deactivate Streamer on Disconnect (Seconds)' => 
       array (
-        0 => 'Deaktywuj prezentera przy rozłączeniu (w sekundach)',
+        0 => 'DJ Bağlantısı Kesmede Devredışı Bırakma Süresi (saniye)',
       ),
       'Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely.' => 
       array (
-        0 => 'Liczba sekund do deaktywowania prezentera w razie ręcznego rozłączenia. Ustaw na 0, aby całkowicie wyłączyć deaktywację.',
+        0 => 'Manuel olarak DJ bağlantısı kesmede devredışı bırakma süresini belirleyin. Kapatmak için sıfır (0) olarak ayarlayın.',
       ),
       'Customize DJ/Streamer Port' => 
       array (
-        0 => 'Dostosuj port prezentera',
+        0 => 'DJ Portu',
       ),
       'No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.' => 
       array (
-        0 => 'Żaden inny program nie może używać tego portu. Pozostaw puste, aby przypisać port automatycznie.<br><b>Uwaga:</b> Port następujący po tym porcie (n+1) będzie automatycznie wykorzystywany dla połączeń starego typu.',
+        0 => 'Bu port başka hiçbir programda kullanamaz. Portu otomatik olarak atamak için boş bırakın. <br><b>Not: </b> Eski bağlantılar için (n+1) portlar otomatik olarak ayarlanır.',
       ),
       'Customize Internal Request Processing Port' => 
       array (
-        0 => 'Dostosuj port wewnętrznego przetwarzania żądania',
+        0 => 'İstek Portu',
       ),
       'This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.' => 
       array (
-        0 => 'Ten port nie jest wykorzystywany przez żaden proces zewnętrzny. Zmień port tylko wtedy, gdy ten przypisany jest już używany. Pozostaw puste, aby przypisać port automatycznie.',
+        0 => 'Bu port başka hiçbir programda kullanamaz. Portu otomatik olarak atamak için boş bırakın. Bu portu yalnızca atanmış port kullanılıyorsa değiştirin.',
       ),
       'DJ/Streamer Buffer Time (Seconds)' => 
       array (
-        0 => 'Czas buforowania prezentera (w sekundach)',
+        0 => 'DJ Arabellek Zamanı (saniye)',
       ),
       'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.' => 
       array (
-        0 => 'Długość sygnału w sekundach, jaka będzie przechowywana w razie usterki. Ustaw najniższa wartość, jaką mogą wykorzystywać Twoi prezenterzy w razie przerwania się strumienia.',
+        0 => 'Kesinti sırasında saklanacak sinyalin saniyesini belirleyin. DJlerin yayın kesintileri olmadan kullanabileceği en düşük değere ayarlayın.',
       ),
       'Customize DJ/Streamer Mount Point' => 
       array (
-        0 => 'Dostosuj punkt montowania prezentera',
+        0 => 'DJ Bağlantı Noktası',
       ),
       'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
       array (
-        0 => 'Jeśli Twoje oprogramowanie nadawcze wymaga podania określonej ścieżki punktu montowania, podaj ją tutaj. W przeciwnym razie, użyj domyślnej.',
+        0 => 'Canlı yayın yazılımınız belirli bir bağlantı noktası yolu gerektiriyorsa burada belirtin. Aksi takdirde varsayılanı kullanın.',
       ),
       'Use Replaygain Metadata' => 
       array (
-        0 => 'Użyj metadanych ReplayGain',
+        0 => 'Replaygain Meta Verilerini Kullan',
       ),
       'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
       array (
-        0 => 'Wymuś, aby Liquidsoap używało metadanych ReplayGain powiązanych z utworem, aby kontrolować jego głośność.',
+        0 => 'Liquidsoap cihazına ses seviyesini kontrol etmek için bir şarkıyla ilişkili herhangi bir replaygain meta verisini kullanması talimatını verin.',
       ),
       'Manual AutoDJ Mode' => 
       array (
-        0 => '',
+        0 => 'Manuel AutoDJ Modu',
       ),
       'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
       array (
-        0 => '',
+        0 => 'Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. \\"Sıradaki Şarkı\\" ve diğer bazı özellikler kullanılamayacaktır.',
       ),
       'Character Set Encoding' => 
       array (
-        0 => 'Kodowanie znaków',
+        0 => 'Kodlama Karakter Seti',
       ),
       'For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.' => 
       array (
-        0 => 'W większości przypadków, używaj domyślnego kodowania UTF-8. Starsze kodowanie ISO-8859-1 może być wykorzystywane w razie przyjmowania połączeń od prezenterów korzystających z SHOUTcast 1 lub używających innego starego oprogramowania.',
+        0 => 'Çoğu durumda varsayılan UTF-8 kodlamasını kullanın. Eski yazılım kullanılıyorsa ISO-8859-1 kodlaması kullanılabilir.',
       ),
       'This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!' => 
       array (
-        0 => 'Niniejszy kod zostanie wstawiony do konfiguracji Liquidsoap w Twojej radiostacji, poniżej konfiguracji playlisty i tuż przed wyjściem Icecast. W tej sekcji używaj tylko prawidłowego kodu Liquidsoap!',
+        0 => 'Bu kod radyonuzun Liquidsoap ayar dosyasına, çalma listesi ayar dosyasına ve Icecast çıkışından hemen önce eklenecektir. Bu bölüm için sadece geçerli bir Liquidsoap kodu kullanın!',
       ),
       'Enable Broadcasting' => 
       array (
-        0 => 'Włącz nadawanie',
+        0 => 'Yayını Etkinleştir',
       ),
       'If disabled, the station will not broadcast or shuffle its AutoDJ.' => 
       array (
-        0 => 'Jeśli wyłączone, stacja nie będzie nadawała ani mieszała autopilota.',
+        0 => 'Devre dışı bırakılırsa radyonuz çalmaz ve AutoDJ veya DJler yayın yapamazlar.',
       ),
       'Storage Quota' => 
       array (
-        0 => 'Limit przestrzeni dyskowej',
+        0 => 'Depolama Alanı',
       ),
       'Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
       array (
-        0 => 'Ustaw maksymalną przestrzeń dyskową, jakiej może używać ta stacja. Rozmiar podaj wraz z jednostką, np. "8 GB". Jednostki są mierzone w 1024 bajtach. Pozostaw puste, aby domyślnie wykorzystywać całą dostępną przestrzeń dyskową.',
+        0 => 'Bu radyonun kullanabileceği maksimum disk alanı ayarlayın. Boş bırakırsanız sunucu depolama alanı dolana kadar kullanılabilir. Depolama alanı büyüklüğünü 1024 bayt cinsinden hesaplayarak yazmalınısız. Örnek: \\"2 GB\\" veya \\"2048 MB\\"',
       ),
       'Base Station Directory' => 
       array (
-        0 => 'Podstawowy katalog stacji',
+        0 => 'Radyo Temel Dizini',
       ),
       'The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.' => 
       array (
-        0 => 'Katalog nadrzędny, w którym są przechowywane pliki listy odtwarzania i konfiguracji stacji. Pozostaw puste, aby użyć domyślnego katalogu.',
+        0 => 'Radyo çalma listesi ve ayar dosyalarının saklanacağı dizini belirtin. Varsayılan dizini kullanmak için boş bırakın.',
       ),
       'Custom Media Directory' => 
       array (
-        0 => 'Własny katalog mediów',
+        0 => 'Müzik Dosyaları Dizini',
       ),
       'The directory where media files are stored. Leave blank to use default directory.' => 
       array (
-        0 => 'Katalog, w którym przechowywane są pliki multimedialne. Pozostaw puste, aby użyć domyślnego katalogu.',
+        0 => 'Radyo müzik dosyalarının saklanacağı dizini belirtin. Varsayılan dizini kullanmak için boş bırakın.',
       ),
       'New Station Name' => 
       array (
-        0 => 'Nazwa nowej stacji',
+        0 => 'Yeni Radyo İsmi',
       ),
       'New Station Description' => 
       array (
-        0 => 'Opis nowej stacji',
+        0 => 'Yeni Radyo Açıklaması',
       ),
       'Customize Station Cloning' => 
       array (
-        0 => 'Dostosowywanie klonowanie stacji',
+        0 => 'Radyo Kopyalamayı Özelleştir',
       ),
       'Copy Media?' => 
       array (
-        0 => 'Skopiować Media?',
+        0 => 'Müzik dosyaları kopyalansın mı?',
       ),
       'Choose how media should be duplicated from the old station.' => 
       array (
-        0 => 'Wybierz, jak media powinny być duplikowane ze starej stacji.',
+        0 => 'Eski radyodan müzik dosyalarının nasıl kopyalanacağını seçin.',
       ),
       'Do not share or copy media between the stations' => 
       array (
-        0 => 'Nie udostępniaj lub nie kopiuj mediów między stacjami',
+        0 => 'Radyolar arasında medya paylaşmayın veya kopyalamayın',
       ),
       'Share the same folder on disk between the stations' => 
       array (
-        0 => 'Udostępnianie tego samego folderu na dysku między stacjami',
+        0 => 'Diskte aynı klasörde bulunan radyolar için paylaşın',
       ),
       'Copy the existing station\'s media to the new station' => 
       array (
-        0 => 'Skopiuj istniejące media stacji do nowej stacji',
+        0 => 'Mevcut radyonun müzik dosyalarını yeni radyoya kopyalayın',
       ),
       'Copy Playlists?' => 
       array (
-        0 => 'Kopiowanie listy odtwarzania?',
+        0 => 'Çalma listeleri kopyalansın mı?',
       ),
       'Copy Streamer/DJ Accounts?' => 
       array (
-        0 => 'Kopiowanie konta Streamer/DJ?',
+        0 => 'DJ hesapları kopyalansın mı?"',
       ),
       'Copy Permissions?' => 
       array (
-        0 => 'Kopiowanie uprawnień?',
+        0 => 'İzinler kopyalansın mı?',
       ),
       'Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.' => 
       array (
-        0 => 'Wybór "Tak" przydzieli każdemu użytkownikowi uprawnienia do bieżącej stacji, aby uzyskać uprawnienia do nowego.',
+        0 => '\\"Evet\\" seçilirse mevcut radyo izinlerine sahip olan kullanıcıları yeni radyoya atanacaktır.',
       ),
       'Create New Station' => 
       array (
-        0 => 'Tworzenie nowej stacji',
+        0 => 'Yeni Radyoyu Oluştur',
       ),
       'Account is Active' => 
       array (
-        0 => 'Konto jest aktywne',
+        0 => 'Hesabı Etkinleştir',
       ),
       'Enable to allow this account to log in and stream.' => 
       array (
-        0 => 'Włącz, aby pozwolić temu kontu na logowanie się i streamowanie.',
+        0 => 'Bu hesabın oturum açmasına ve yayın yapmasına izin vermek için etkinleştirin.',
       ),
       'Streamer Username' => 
       array (
-        0 => 'Nazwa użytkownika Streamera',
+        0 => 'DJ Kullanıcı Adı',
       ),
       'The streamer will use this username to connect to the radio server.' => 
       array (
-        0 => 'Streamer użyje tej nazwy użytkownika do łączenia się z serwerem radia.',
+        0 => 'Radyo sunucusuna bağlanmak için bir kullanıcı adı belirtin.',
       ),
       'Streamer Password' => 
       array (
-        0 => 'Hasło streamera',
+        0 => 'DJ Şifresi',
       ),
       'The streamer will use this password to connect to the radio server.' => 
       array (
-        0 => 'Nadający użyje tego hasła, by połączyć się z serwerem radiowym.',
+        0 => 'Radyo sunucusuna bağlanmak için bir şifre belirtin.',
       ),
       'Streamer Display Name' => 
       array (
-        0 => 'Nazwa wyświetlana prezentera',
+        0 => 'DJ İsmi',
       ),
       'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
       array (
-        0 => 'Nieformalna nazwa wyświetlana, która będzie się ukazywała w odpowiedziach API jeśli prezenter będzie nadawał na żywo.',
+        0 => 'Bu DJ canlı yayında olduğunda API yanıtlarında gösterilecek olan resmi olmayan ekran adıdır.',
       ),
       'Internal notes or comments about the user, visible only on this control panel.' => 
       array (
-        0 => 'Wewnętrzne uwagi lub komentarze na temat użytkownika, widoczny tylko na panelu sterowania.',
+        0 => 'Kullanıcıyla ilgili dahili notlar veya yorumlar yalnızca bu kontrol panelinde görünür.',
       ),
       'Leave blank to use the current password.' => 
       array (
-        0 => 'Pozostaw puste, aby użyć bieżącego hasła.',
+        0 => 'Mevcut şifreyi kullanmak için boş bırakın.',
       ),
       'Roles' => 
       array (
-        0 => 'Role',
+        0 => 'Yetkiler',
       ),
       'Web Hook Name' => 
       array (
-        0 => '',
+        0 => 'Web Kancası İsmi',
       ),
       'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
-        0 => 'Wybierz dla tego webhook\'a nazwę, która pomoże Ci odróżnić go od innych. Będzie ona wyświetlana tylko na stronie panelu administracji.',
+        0 => 'Bu entegrasyonu diğerlerinden ayırmanıza yardımcı olacak bir isim seçin. Bu sadece yönetim sayfasında gösterilecektir.',
       ),
       'Discord Web Hook URL' => 
       array (
-        0 => 'URL webhook\'a Discorda',
+        0 => 'Discord Web Kanca URLsi',
       ),
       'This URL is provided within the Discord application.' => 
       array (
-        0 => 'Ten URL jest podany w aplikacji Discord.',
+        0 => 'Bu URL Discord uygulamasından sağlanır.',
       ),
       'Web Hook Triggers' => 
       array (
-        0 => 'Wyzwalacze webhook\'a',
+        0 => 'Web Kanca Tetikleyicileri',
       ),
       'Customize Message' => 
       array (
-        0 => 'Dostosuj treść wiadomości',
+        0 => 'Mesajı Özelleştir',
       ),
       'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
       array (
-        0 => 'Zmienne są podane w formie <code>{{ var.name }}</code>. Dostępne są wszystkie wartości podane w <a href="%s" target="_blank">odpowiedzi Teraz Grane API (Now Playing API)</a>. Puste pola zostaną zignorowane.',
+        0 => 'Değişkenler {{ var.name }} biçimindedir. <a href=\\"%s\\" target=\\"_blank\\"> Çalan Şarkı API</a>si tüm değerler kullanım için uygundur. Boş alanlar dikkate alınmaz.',
       ),
       'Main Message Content' => 
       array (
-        0 => 'Zawartość wiadomości',
+        0 => 'Ana Mesaj İçeriği',
       ),
       'Now playing on %s:' => 
       array (
-        0 => 'Teraz gra na %s:',
+        0 => '%s Şimdi Çalıyor: ',
       ),
       'Title' => 
       array (
-        0 => 'Tytuł',
+        0 => 'Çalan Şarkı İsmi',
       ),
       'URL' => 
       array (
@@ -2486,23 +2486,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Author Name' => 
       array (
-        0 => 'Imię i nazwisko autora',
+        0 => 'Yazar İsmi',
       ),
       'Thumbnail Image URL' => 
       array (
-        0 => 'Adres URL miniatury obrazu',
+        0 => 'Küçük Resim URLsi',
       ),
       'Footer Text' => 
       array (
-        0 => 'Tekst stopki',
+        0 => 'Alt Bilgi Metni',
       ),
       'Powered by %s' => 
       array (
-        0 => 'Powered by %s',
+        0 => '%s tarafından güçlendirilmiştir.',
       ),
       'Web Hook Details' => 
       array (
-        0 => 'Szczegóły webhook\'a',
+        0 => 'Web Kancası Detayları',
       ),
       'Web hooks automatically send a HTTP POST request to the URL you specify to 
                 notify it any time one of the triggers you specify occurs on your station. The body of the POST message
@@ -2510,83 +2510,87 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
                 optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => '',
+        0 => 'Web kancaları belirlediğiniz tetikleyicilerden birinin radyonuzda gerçekleştiği zaman 
+                bildirmek için belirttiğiniz URL’ye otomatik olarak bir HTTP POST isteği gönderir.
+                POST mesajının gövdesi radyonuz için <a href=\\"%s\\" target=\\"_blank\\">Çalan Şarkı API</a> cevabıyla aynıdır.
+                Hızlı bir şekilde işlemek için entegresyonların kısa bir zaman aşımı süresi vardır. bu nedenle
+                yanıtlayan hizmetin isteği 2 saniyeden daha kısa sürede ele alması için en iyi duruma getirilmesi gerekir."',
       ),
       'Web Hook URL' => 
       array (
-        0 => 'URL webhook\'a',
+        0 => 'Web Kanca URLsi',
       ),
       'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
-        0 => 'URL, który będzie odbierał wiadomość POST za każdym razem, gdy zdarzenie będzie wywoływane.',
+        0 => 'Bir URL olay tetiklendiğinde POST mesajlarını alacaktır.',
       ),
       'Optional: HTTP Basic Authentication Username' => 
       array (
-        0 => 'Opcjonalne: Nazwa użytkownika podstawowego uwierzytelnienia HTTP',
+        0 => 'İsteğe Bağlı: HTTP Temel Kimlik Doğrulama Kullanıcı Adı',
       ),
       'If your web hook requires HTTP basic authentication, provide the username here.' => 
       array (
-        0 => 'Jeśli Twój webhook wymaga podstawowego uwierzytelnienia HTTP, podaj tutaj nazwę użytkownika.',
+        0 => 'Web Kancası HTTP temel kimlik doğrulaması gerektiriyorsa kullanıcı adını belirtin.',
       ),
       'Optional: HTTP Basic Authentication Password' => 
       array (
-        0 => 'Opcjonalnie: Hasło uwierzytelniania podstawowego HTTP',
+        0 => 'İsteğe Bağlı: HTTP Temel Kimlik Doğrulama Şifresi',
       ),
       'If your web hook requires HTTP basic authentication, provide the password here.' => 
       array (
-        0 => 'Jeśli Twój webhook wymaga podstawowego uwierzytelnienia, podaj tutaj hasło.',
+        0 => 'Web Kancası HTTP temel kimlik doğrulaması gerektiriyorsa şifre belirtin.',
       ),
       'Bot Token' => 
       array (
-        0 => 'Token bota',
+        0 => 'Bot Bilgisi',
       ),
       'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
       array (
-        0 => 'Po więcej szczegółów, zajrzyj do <a href="%s" target="_blank">dokumentacji Telegrama</a>.',
+        0 => 'Daha fazla bilgi için <a href=\\"%s\\" target=\\"_blank\\">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz.',
       ),
       'Chat ID' => 
       array (
-        0 => 'Chat ID',
+        0 => 'Sohbet ID',
       ),
       'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
       array (
-        0 => 'Unikalny identyfikator docelowego czata lub nazwa użytkownika na docelowym kanale (w formacie @nazwa_użytkownika_lub_kanału).',
+        0 => 'Hedef sohbeti veya hedef kanalın kullanıcı adı için benzersiz tanımlayıcıyı beliryin. (@channelusername biçiminde)',
       ),
       'Custom API Base URL' => 
       array (
-        0 => 'Podstawowy URL własnego API',
+        0 => 'Özel API Temel URLsi',
       ),
       'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
       array (
-        0 => 'Pozostaw puste, aby użyć domyślnego URL\'a API Telegrama (zalecane). Podaj pełen URL, na przykład <code>https://api.pwrtelegram.xyz/</code>.',
+        0 => 'Varsayılan Telegram API URLsini kullanmak için boş bırakın (önerilir). URLnin tamamını <code>https://api.pwrtelegram.xyz/</code> gibi belirtin.',
       ),
       'Now playing on %s: %s by %s! Tune in now.' => 
       array (
-        0 => 'Teraz grane na %s: %s autorstwa %s! Włącz teraz.',
+        0 => 'Çalan Şarkı: %s: %s tarafından %s! Şimdi Dinle.',
       ),
       'Message parsing mode' => 
       array (
-        0 => 'Tryb parsowania wiadomości',
+        0 => 'Mesaj Ayrıştırma Modu',
       ),
       'TuneIn Station ID' => 
       array (
-        0 => 'ID stacji w TuneIn',
+        0 => 'TuneIn Radyo ID',
       ),
       'The station ID will be a numeric string that starts with the letter S.' => 
       array (
-        0 => 'Identyfikator stacji będzie ciągiem liczbowym, zaczynającym się na literę S.',
+        0 => '\\"S\\" harfi ile başlayan TuneIn Radyo ID\\\'sini buraya yazın.',
       ),
       'TuneIn Partner ID' => 
       array (
-        0 => 'ID Partnera w TuneIn',
+        0 => 'TuneIn Ortak ID',
       ),
       'TuneIn Partner Key' => 
       array (
-        0 => 'Klucz Partnera w TuneIn',
+        0 => 'TuneIn Ortak Anahtarı',
       ),
       'Twitter Account Details' => 
       array (
-        0 => 'Dane konta na Twitterze',
+        0 => 'Twitter Hesap Detayları',
       ),
       'Steps for configuring a Twitter application:<br>
                 <ol type="1">
@@ -2597,103 +2601,110 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => '',
+        0 => '"Twitter hesabı yapılandırma adımları:<br>
+                <ol type="1">
+                    <li><a href=\\"%s\\" target=\\"_blank\\">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.
+                    Bu kurulum uygulama URLsi olarak temel URLdir.</li>
+                    <li>Yeni oluşturulan uygulamada \\"Anahtarlar ve Erişim Bilgileri\\" sekmesini tıklayın.</li>
+                    <li>Sayfanın alt tarafında \\"Erişim Kartımı Oluştur\\" düğmesine tıklayın.</li>
+                </ol>
+                <p>Bu adımlar tamamlandıktan sonra \\"Anahtarlar ve Erişim Bilgileri\\" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>',
       ),
       'Consumer Key (API Key)' => 
       array (
-        0 => 'Klucz konsumenta (consumer key) (klucz API)',
+        0 => 'Alıcı Anahtarı (API Anahtarı)',
       ),
       'Consumer Secret (API Secret)' => 
       array (
-        0 => 'Klucz tajny (consumer secret) (klucz tajny API)',
+        0 => 'Alıcı Gizliliği (API Gizliliği)',
       ),
       'Access Token' => 
       array (
-        0 => 'Token dostępu',
+        0 => 'Erişim Kodu',
       ),
       'Access Token Secret' => 
       array (
-        0 => 'Tajny token dostępu',
+        0 => 'Erişim Kodu Gizliliği',
       ),
       'Only Send One Tweet Every...' => 
       array (
-        0 => 'Wysyłaj tylko jednego tweeta co...',
+        0 => 'Tweet Sadece Birk Kez Gönderilir...',
       ),
       'No Limit' => 
       array (
-        0 => 'Bez limitu',
+        0 => 'Limitsiz',
       ),
       '%d seconds' => 
       array (
-        0 => '%d sekund',
+        0 => '%d saniye',
       ),
       '%d minutes' => 
       array (
-        0 => '%d minut',
+        0 => '%d dakika',
       ),
       'Message Body' => 
       array (
-        0 => 'Treść wiadomości',
+        0 => 'Mesaj Metni',
       ),
       'System Maintenance' => 
       array (
-        0 => 'Konserwacja systemu',
+        0 => 'Sunucu Bakımı',
       ),
       'Custom Branding' => 
       array (
-        0 => 'Własny branding',
+        0 => 'Marka Yönetimi',
       ),
       'API Keys' => 
       array (
-        0 => 'Klucze API',
+        0 => 'API Anahtarları',
       ),
       'System Logs' => 
       array (
-        0 => 'Dziennik systemowy',
+        0 => 'Sistem Günlükleri',
       ),
       'Audit Log' => 
       array (
-        0 => '',
+        0 => 'Denetim Günlüğü',
       ),
       'Backups' => 
       array (
-        0 => 'Kopie zapasowe',
+        0 => 'Yedekleme',
       ),
       'Users' => 
       array (
-        0 => 'Użytkownicy',
+        0 => 'Kullanıcılar',
       ),
       'User Accounts' => 
       array (
-        0 => 'Konto użytkownika',
+        0 => 'Kullanıcı Hesapları',
       ),
       'Permissions' => 
       array (
-        0 => 'Uprawnienia',
+        0 => 'İzinler',
       ),
       'Stations' => 
       array (
-        0 => 'Stacje',
+        0 => 'Radyolar',
       ),
       'Connected AzuraRelays' => 
       array (
-        0 => '',
+        0 => 'AzuraRelays Bağlantısı',
       ),
       'Start Station' => 
       array (
-        0 => 'Uruchom stację',
+        0 => 'Radyoyu Başlat',
       ),
       'Ready to start broadcasting? Click to start your station.' => 
       array (
-        0 => 'Gotów by rozpocząć nadawanie? Kliknij, aby uruchomić stację.',
+        0 => 'Yayına başlamak için hazır mısınız? Radyonuzu başlatmak için tıklayın.',
       ),
       'Restart to Apply Changes' => 
       array (
-        0 => 'Zrestartuj, by zastosować zmiany',
+        0 => 'Değişiklikleri Uygulamak İçin Yeniden Başlat',
       ),
       'Click to restart your station and apply configuration changes.' => 
       array (
-        0 => 'Kliknij, aby zrestartować stację i zastosować zmiany w konfiguracji.',
+        0 => 'Radyonuzu yeniden başlatmak ve yapılandırma değişikliklerini uygulamak için tıklayın.',
       ),
       'Profile' => 
       array (
@@ -2701,19 +2712,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Public Page' => 
       array (
-        0 => 'Strona Publiczna',
+        0 => 'Genel Sayfa',
       ),
       'Music Files' => 
       array (
-        0 => 'Pliki muzyczne',
+        0 => 'Müzik Dosyaları',
       ),
       'Playlists' => 
       array (
-        0 => 'Listy odtwarzania',
+        0 => 'Çalma Listeleri',
       ),
       'Streamer/DJ Accounts' => 
       array (
-        0 => 'Konta streamer/DJ',
+        0 => 'DJ Yönetimi',
       ),
       'Web DJ' => 
       array (
@@ -2721,541 +2732,541 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Mount Points' => 
       array (
-        0 => 'Punkty montowania',
+        0 => 'Bağlantı Noktası',
       ),
       'Remote Relays' => 
       array (
-        0 => 'Zdalne relaye',
+        0 => 'Yönlendirme',
       ),
       'Web Hooks' => 
       array (
-        0 => 'Narzędzia dla stron www',
+        0 => 'Web Kancaları',
       ),
       'Reports' => 
       array (
-        0 => 'Zgłoszenia',
+        0 => 'Raporlar',
       ),
       'Statistics Overview' => 
       array (
-        0 => 'Przegląd statystyk',
+        0 => 'İstatistik Önizlemesi',
       ),
       'Song Requests' => 
       array (
-        0 => 'Żądanie piosenki',
+        0 => 'Şarkı İstekleri',
       ),
       'Song Playback Timeline' => 
       array (
-        0 => 'Historia utworów',
+        0 => 'Şarkı Oynatma Zaman Çizelgesi',
       ),
       'Song Listener Impact' => 
       array (
-        0 => 'Wpływ słuchacza na utwór',
+        0 => 'Şarkı Dinleyici Etkisi',
       ),
       'Duplicate Songs' => 
       array (
-        0 => 'Zduplikowane utwory',
+        0 => 'Yinelenen Şarkılar',
       ),
       'SoundExchange Royalties' => 
       array (
-        0 => 'Tantiemy SoundExchange',
+        0 => 'SoundExchange Raporu',
       ),
       'Utilities' => 
       array (
-        0 => 'Narzędzia',
+        0 => 'Araçlar',
       ),
       'Automated Assignment' => 
       array (
-        0 => 'Automatyczne przypisanie',
+        0 => 'Otomatik Atama',
       ),
       'Log Viewer' => 
       array (
-        0 => 'Podgląd dziennika',
+        0 => 'Günlük Görüntüleyici',
       ),
       'Upcoming Song Queue' => 
       array (
-        0 => 'Następna piosenka w kolejce',
+        0 => 'Sıradaki Şarkı Kuyruğu',
       ),
       'Restart Broadcasting' => 
       array (
-        0 => 'Ponowne uruchomienie nadawania',
+        0 => 'Yayını Yeniden Başlat',
       ),
       'Get Next Song Debug Mode' => 
       array (
-        0 => '',
+        0 => 'Sıradaki Şarkı Hata Ayıklama Moduna Ayarla',
       ),
       'Generic Web Hook' => 
       array (
-        0 => 'Ogólny webhook',
+        0 => 'Genel Web Kancası',
       ),
       'Automatically send a message to any URL when your station data changes.' => 
       array (
-        0 => 'Automatycznie wysyłaj wiadomość pod każdy URL, gdy dane Twojej stacji ulegną zmianie.',
+        0 => 'Radyo verileriniz değiştiğinde otomatik olarak herhangi bir URLye mesaj gönderin.',
       ),
       'TuneIn AIR' => 
       array (
-        0 => 'TuneIn AIR',
+        0 => 'TuneIn Web Kancası',
       ),
       'Send song metadata changes to TuneIn.' => 
       array (
-        0 => 'Wysyłaj aktualizacje metadanych utworu do TuneIn.',
+        0 => 'Şarkı meta verileri değişikliklerini TuneIn\\\'e gönderin.',
       ),
       'Discord Webhook' => 
       array (
-        0 => 'Webhook Discord\'a',
+        0 => 'Discord Web Kancası',
       ),
       'Automatically send a customized message to your Discord server.' => 
       array (
-        0 => 'Automatycznie wysyłaj spersonalizowaną wiadomość na swój serwer Discord.',
+        0 => 'Discord sunucunuza otomatik olarak özelleştirilmiş bir mesaj gönderin.',
       ),
       'Telegram Chat Message' => 
       array (
-        0 => 'Wiadomość czatu w Telegram',
+        0 => 'Telegram Sohbet Mesajı',
       ),
       'Use the Telegram Bot API to send a message to a channel.' => 
       array (
-        0 => 'Wyślij wiadomość do kanału za pomocą interfejsu Telegram Bot API.',
+        0 => 'Bir kanala mesaj göndermek için Telegram Bot APIsini kullanın.',
       ),
       'Twitter Post' => 
       array (
-        0 => 'Post na Twitterze',
+        0 => 'Twitter Gönderisi',
       ),
       'Automatically send a tweet.' => 
       array (
-        0 => 'Automatycznie wyślij tweeta.',
+        0 => 'Otomatik olarak bir tweet gönderin.',
       ),
       'Any time the currently playing song changes' => 
       array (
-        0 => 'Za każdym razem, gdy zmienia się aktualnie odtwarzany utwór',
+        0 => 'Çalan Şarkı Her Değiştiğinde',
       ),
       'Any time the listener count increases' => 
       array (
-        0 => 'Za każdym razem, gdy zwiększa się licznik słuchaczy',
+        0 => 'Dinleyici Sayısı Arttığında',
       ),
       'Any time the listener count decreases' => 
       array (
-        0 => 'Za każdym razem, gdy zmniejsza się licznik słuchaczy',
+        0 => 'Dinleyici Sayısı Azaldığında',
       ),
       'Any time a live streamer/DJ connects to the stream' => 
       array (
-        0 => 'Za każdym razem, gdy nadający/DJ łączy się ze streamem',
+        0 => 'DJ Yayına Bağlandığında',
       ),
       'Any time a live streamer/DJ disconnects from the stream' => 
       array (
-        0 => 'Za każdym razem, gdy nadający/DJ rozłącza się ze streamem',
+        0 => 'DJ Yayından Ayrıldığında',
       ),
       'API Key' => 
       array (
-        0 => 'Klucz API',
+        0 => 'API Anahtarı',
       ),
       'Owner' => 
       array (
-        0 => 'Właściciel',
+        0 => 'Sahip',
       ),
       'Edit' => 
       array (
-        0 => 'Edytuj',
+        0 => 'Düzenle',
       ),
       'Revoke' => 
       array (
-        0 => 'Wycofaj',
+        0 => 'Geri Al',
       ),
       'Insert' => 
       array (
-        0 => '',
+        0 => 'Ekle',
       ),
       'Delete' => 
       array (
-        0 => 'Usuń',
+        0 => 'Sil',
       ),
       'Update' => 
       array (
-        0 => '',
+        0 => 'Güncelle',
       ),
       'Changes' => 
       array (
-        0 => '',
+        0 => 'Değişiklikler',
       ),
       'Today' => 
       array (
-        0 => 'Dziś',
+        0 => 'Bugün',
       ),
       'Yesterday' => 
       array (
-        0 => 'Wczoraj',
+        0 => 'Dün',
       ),
       'Last 7 Days' => 
       array (
-        0 => 'W Ciągu Ostatnich 7 Dni',
+        0 => 'Son 7 Gün',
       ),
       'This Month' => 
       array (
-        0 => 'W tym miesiącu',
+        0 => 'Bu Ay',
       ),
       'Last Month' => 
       array (
-        0 => 'Ostatni miesiąc',
+        0 => 'Geçen Ay',
       ),
       'Date/Time' => 
       array (
-        0 => 'Data/Czas',
+        0 => 'Tarih/Saat',
       ),
       'User' => 
       array (
-        0 => 'Użytkownik',
+        0 => 'Kullanıcı',
       ),
       'Identifier' => 
       array (
-        0 => '',
+        0 => 'Tanımlayıcı',
       ),
       'Target' => 
       array (
-        0 => '',
+        0 => 'Hedef',
       ),
       'Actions' => 
       array (
-        0 => 'Opcje',
+        0 => 'İşlemler',
       ),
       'Field' => 
       array (
-        0 => '',
+        0 => 'Alan',
       ),
       'Previous' => 
       array (
-        0 => '',
+        0 => 'Önceki',
       ),
       'Updated' => 
       array (
-        0 => '',
+        0 => 'Güncellendi',
       ),
       'Automatic Backups' => 
       array (
-        0 => 'Automatyczne kopie zapasowe',
+        0 => 'Otomatik Yedeklemeler',
       ),
       'Last run: %s' => 
       array (
-        0 => 'Ostatnie uruchomienie: %s',
+        0 => 'Son Çalıştırma: %s',
       ),
       'Never run' => 
       array (
-        0 => 'Nigdy nie uruchamiane',
+        0 => 'Asla Çalıştırma',
       ),
       'Configure' => 
       array (
-        0 => 'Konfiguracja',
+        0 => 'Yapılandırma',
       ),
       'Most Recent Backup Log' => 
       array (
-        0 => 'Najświeższy dziennik kopii zapasowej',
+        0 => 'En Yeni Yedekleme Günlüğü',
       ),
       'Restoring Backups' => 
       array (
-        0 => 'Przywracanie kopii zapasowych',
+        0 => 'Yedekleri Geri Yükleme',
       ),
       'To restore a backup from your host computer, run:' => 
       array (
-        0 => 'Aby przywrócić kopię zapasową z własnego komputera, uruchom:',
+        0 => 'Kendi bilgisayarınızdan bir yedek geri yüklemek için aşağıdakileri çalıştırın:',
       ),
       'Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.' => 
       array (
-        0 => 'Miej na uwadze, że przywrócenie kopii zapasowej wyczyści Twoją obecną bazę danych. Nigdy nie przywracaj kopii zapasowych pochodzących od użytkowników, którym nie ufasz.',
+        0 => 'Bir yedeğin geri yüklenmesinin mevcut veritabanınızı temizleyeceğini unutmayın. Hiçbir zaman güvenilmeyen kullanıcılardan yedekleme dosyalarını geri yüklemeyin.',
       ),
       'Backup' => 
       array (
-        0 => 'Kopia zapasowa',
+        0 => 'Yedek',
       ),
       'Last Modified' => 
       array (
-        0 => 'Ostatnio zmodyfikowane',
+        0 => 'Değişiklik Tarihi',
       ),
       'Size' => 
       array (
-        0 => 'Rozmiar',
+        0 => 'Boyut',
       ),
       'Download' => 
       array (
-        0 => 'Pobierz',
+        0 => 'İndir',
       ),
       'Delete backup "%s"?' => 
       array (
-        0 => 'Usunąć kopię zapasową "%s"?',
+        0 => '\\"%s\\ yedeklemesi silinsin mi?',
       ),
       'Backups Home' => 
       array (
-        0 => 'Strona główna kopii zapasowych',
+        0 => 'Yedekleme Anasayfası',
       ),
       'Backup was run successfully.' => 
       array (
-        0 => 'Pomyślnie uruchomiono tworzenie kopii zapasowej.',
+        0 => 'Yedekleme başarıyla çalıştırıldı.',
       ),
       'Backup encountered errors when running. Check the log below for details.' => 
       array (
-        0 => 'Podczas tworzenia kopii zapasowej wystąpiły błędy. Szczegółowe informacje znajdziesz w dzienniku.',
+        0 => 'Yedekleme çalışırken hatalarla karşılaştı. Ayrıntılar için aşağıdaki günlüğü kontrol edin.',
       ),
       'Delete custom field "%s"?' => 
       array (
-        0 => 'Usunąć własne pole "%s"?',
+        0 => '\\"%s\\ özel alan silinsin mi?',
       ),
       'Server Status' => 
       array (
-        0 => '',
+        0 => 'Sunucu Durumu',
       ),
       'Current CPU Load' => 
       array (
-        0 => '',
+        0 => 'Şimdiki CPU Yükü',
       ),
       '15-Minute CPU Load Average' => 
       array (
-        0 => '',
+        0 => '15 Dakikalık CPU Yükü',
       ),
       '%s of %s Used' => 
       array (
-        0 => '%s z %s używane',
+        0 => 'Kullanılan Alan: %s / %s',
       ),
       'Synchronization Tasks' => 
       array (
-        0 => 'Zadania synchronizacji',
+        0 => 'Senkronizasyon Görevleri',
       ),
       'Run Task' => 
       array (
-        0 => 'Uruchom zadanie',
+        0 => 'Görevi Çalıştır',
       ),
       'SHOUTcast Installed' => 
       array (
-        0 => 'SHOUTcast zainstalowany',
+        0 => 'SHOUTcast Kuruldu!',
       ),
       'The SHOUTcast 2 DNAS is installed and ready for use.' => 
       array (
-        0 => 'SHOUTcast 2 DNAS jest zainstalowany i gotowy do użycia.',
+        0 => 'SHOUTcast 2 DNAS kuruludur ve kullanıma hazırdır.',
       ),
       'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
       array (
-        0 => 'Ponieważ używasz Dockera, niektóre dzienniki są dostępne tylko poprzez sesję powłoki na komputerze-hoście. Możesz uruchomić <code>%s</code> aby uzyskać dostęp do dzienników kontenera z poziomu terminala.',
+        0 => 'Docker kullandığınız için bazı sistem günlüklerine yalnızca sunudaki SSH oturumuyla erişilebilir. Terminalden Docker günlüklerine erişmek için <code>%s</code> komutunu çalıştırabilirsiniz.',
       ),
       'Logs by Station' => 
       array (
-        0 => 'Dzienniki według stacji',
+        0 => 'Radyo Günlükleri',
       ),
       'Delete role "%s"?' => 
       array (
-        0 => 'Usunąć rolę "%s"?',
+        0 => '\\"%s\\ yetki silinsin mi?',
       ),
       'This role cannot be deleted.' => 
       array (
-        0 => 'Tej roli nie można usunąć.',
+        0 => 'Bu yetki silinemez!',
       ),
       'Global' => 
       array (
-        0 => 'Globalne',
+        0 => 'Global',
       ),
       'Relay' => 
       array (
-        0 => '',
+        0 => 'Yönlendirme',
       ),
       'Is Public' => 
       array (
-        0 => '',
+        0 => 'Genel',
       ),
       'First Connected' => 
       array (
-        0 => '',
+        0 => 'Birinci Bağlantı',
       ),
       'Latest Update' => 
       array (
-        0 => '',
+        0 => 'Son Güncelleme',
       ),
       'Manage Stations' => 
       array (
-        0 => 'Zarządzanie stacjami',
+        0 => 'Radyo Yönetimi',
       ),
       'Add Station' => 
       array (
-        0 => '',
+        0 => 'Radyo Ekle',
       ),
       'Station' => 
       array (
-        0 => 'Stacja',
+        0 => 'Radyo',
       ),
       'Manage' => 
       array (
-        0 => 'Zarządzanie',
+        0 => 'Yönetim',
       ),
       'Clone' => 
       array (
-        0 => 'Klonuj',
+        0 => 'Kopyalama',
       ),
       'Delete station "%s"?' => 
       array (
-        0 => 'Usunąć stację "%s"?',
+        0 => '\\"%s\\" radyo silinsin mi?',
       ),
       'Log In' => 
       array (
-        0 => 'Zaloguj',
+        0 => 'Giriş Yap',
       ),
       'Delete user "%s"?' => 
       array (
-        0 => 'Usunąć użytkownika "%s"?',
+        0 => '\\"%s\\" kullanıcı silinsin mi?',
       ),
       '(You)' => 
       array (
-        0 => '(Ty)',
+        0 => '(Sen)',
       ),
       'Welcome!' => 
       array (
-        0 => 'Witaj!',
+        0 => 'Hoşgeldiniz!',
       ),
       'Welcome to %s!' => 
       array (
-        0 => 'Witaj w %s!',
+        0 => 'Hoşgeldiniz!',
       ),
       'name@example.com' => 
       array (
-        0 => 'ktoś@domena.pl',
+        0 => 'Mail Adresinizi Yazın',
       ),
       'Enter your password' => 
       array (
-        0 => 'Podaj swoje hasło',
+        0 => 'Şifrenizi Girin',
       ),
       'Sign in' => 
       array (
-        0 => 'Zaloguj się',
+        0 => 'Giriş Yap',
       ),
       'Please log in to continue.' => 
       array (
-        0 => 'Proszę, zaloguj się, aby kontynuować.',
+        0 => 'Devam etmek için lütfen giriş yapın.',
       ),
       '<a href="%s" target="_blank">Forgot your password?</a>' => 
       array (
-        0 => '<a href="%s" target="_blank">Zapomniałeś hasła?</a>',
+        0 => '<a href=\\"%s\\" target=\\"_blank\\">Şifreni mi unuttun?</a>',
       ),
       'Enter Two-Factor Code' => 
       array (
-        0 => 'Wprowadź kod jednorazowy weryfikacji dwuetapowej',
+        0 => 'İki Faktörlü Doğrulama Kodu',
       ),
       'Your account uses a two-factor security code. Enter the code your device is currently showing below.' => 
       array (
-        0 => 'Twoje konto wykorzystuje jednorazowe kody weryfikacji dwuetapowej. Podaj poniżej kod aktualnie wyświetlony na Twoim urządzeniu.',
+        0 => 'Hesabınız iki faktörlü güvenlik doğrulamasını kullanıyor. Cihazınızın şu anda göstermekte olduğu kodu girin.',
       ),
       'Security Code' => 
       array (
-        0 => 'Kod bezpieczeństwa',
+        0 => 'Güvenlik Kodu',
       ),
       'My API Keys' => 
       array (
-        0 => 'Moje klucze API',
+        0 => 'API Anahtarlarım',
       ),
       'API keys can be used to access some system functionality without needing to log in. All of the keys 
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => '',
+        0 => 'API anahtarları bazı sistem işlevlerine giriş yapmak zorunda kalmadan erişmek için kullanılabilir. Oluşturduğunuz tüm anahtarlar
+            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href=\\"%s\\">API Belgeleri</a>ne bakın.',
       ),
       'Key Identifier' => 
       array (
-        0 => 'Identyfikator klucza',
+        0 => 'Anahtar Tanımlayıcı',
       ),
       'New Key Generated' => 
       array (
-        0 => 'Wygenerowano nowy klucz',
+        0 => 'Yeni Anahtar Üretildi',
       ),
       '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
       array (
-        0 => '<b>Ważne: Przed kontynuowaniem, skopiuj klucz!</b> Ponowne uzyskanie go nie będzie możliwe.',
+        0 => '<b>Önemli: Devam etmeden önce aşağıdaki anahtarı kopyalayın!</b> Tekrar alamayacaksınız.',
       ),
       'Your full API key is below:' => 
       array (
-        0 => 'Oto Twój pełny klucz API:',
+        0 => 'Tam API anahtarınız aşağıdadır:',
       ),
       'Copy to Clipboard' => 
       array (
-        0 => 'Skopiuj do schowka',
+        0 => 'Panoya Kopyala',
       ),
       'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
       array (
-        0 => 'Tworząc wywołania API, możesz przekazać tę wartość w nagłówku "X-API-Key", aby się uwierzytelnić. Możesz wykonywać tylko operacje dozwolone na Twoim koncie użytkownika.',
+        0 => 'API çağrıları yaparken bu değeri \\"X-API-Key\\" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz.',
       ),
       'Continue' => 
       array (
-        0 => 'Konynuuj',
+        0 => 'Devam Et',
       ),
       'Dashboard' => 
       array (
-        0 => 'Panel',
+        0 => 'Anasayfa',
       ),
       'AzuraCast User' => 
       array (
-        0 => 'Użytkownik AzuraCast',
+        0 => 'AzuraCast Kullanıcısı',
       ),
       'My Account' => 
       array (
-        0 => 'Moje konto',
+        0 => 'Hesabım',
       ),
       'Listeners Per Station' => 
       array (
-        0 => 'Słuchaczy na stacji',
+        0 => 'Radyo Başına Dinleyici',
       ),
       'Station Overview' => 
       array (
-        0 => 'Przegląd stacji',
+        0 => 'Radyo Önizlemesi',
       ),
       'Station Name' => 
       array (
-        0 => 'Nazwa stacji',
+        0 => 'Radyo İsmi',
       ),
       'Now Playing' => 
       array (
-        0 => 'Teraz
-Odtwarzane',
+        0 => 'Çalan Şarkı',
       ),
       'Error: No Available Stations' => 
       array (
-        0 => 'Błąd: Brak dostępnych stacji',
+        0 => 'Hata: Kullanılabilir Radyo Yok',
       ),
       'Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server\'s administrator.' => 
       array (
-        0 => 'Twoje konto jest aktywne, nie jest jednak obecnie skojarzone z żadną stacją. Jeśli uważasz, że to błąd, skontaktuj się z administratorem tego serwera.',
+        0 => 'Hesabınız aktif ancak şu anda herhangi bir radyo ile ilişkili değil ve bunun bir hata olduğunu düşünüyorsanız lütfen bu sunucunun yöneticisine başvurun.',
       ),
       'Enable Two-Factor Authentication' => 
       array (
-        0 => 'Włącz weryfikację dwuetapową',
+        0 => 'İki Faktörlü Kimlik Doğrulamayı Etkinleştir',
       ),
       'Step 1: Scan QR Code' => 
       array (
-        0 => 'Krok 1: Zeskanuj kod QR',
+        0 => 'Adım 1: QR Kodunu Tara',
       ),
       'From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).' => 
       array (
-        0 => 'Używając smartfona, zeskanuj kod po prawej stronie, używając wybranej przez siebie aplikacji uwierzytelniającej (FreeOTP, Authy, itp).',
+        0 => 'Akıllı telefonunuzdan seçtiğiniz bir doğrulayıcı uygulamayı (FreeOTP, Authy, vb.) kullanarak sağdaki kodu tarayın.',
       ),
       'Step 2: Verify Generated Code' => 
       array (
-        0 => 'Krok 2: Zweryfikuj wygenerowany kod',
+        0 => 'Adım 2: Oluşturulan Kodu Doğrulayın',
       ),
       'To verify that the code was set up correctly, enter the 6-digit code the app shows you.' => 
       array (
-        0 => 'Aby sprawdzić, czy kod został ustawiony poprawnie, wpisz tutaj sześciocyfrowy kod wyświetlany przez aplikację.',
+        0 => 'Kodun doğru ayarlandığından emin olmak için uygulamanın size gösterdiği 6 basamaklı kodu girin.',
       ),
       'QR-Code' => 
       array (
-        0 => 'Kod QR',
+        0 => 'QR Kodu',
       ),
       'Customize' => 
       array (
-        0 => 'Dostosuj',
+        0 => 'Özelleştir',
       ),
       'Two-Factor Authentication' => 
       array (
-        0 => 'Uwierzytelnianie dwuskładnikowe',
+        0 => 'İki Faktörlü Kimlik Doğrulama',
       ),
       'Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.' => 
       array (
-        0 => 'Uwierzytelnianie dwuskładnikowe poprawia bezpieczeństwo Twojego konta, ponieważ wymaga podania kodu jednorazowego dostępu oprócz hasła podczas logowania.',
+        0 => 'İki faktörlü kimlik doğrulama oturum açtığınızda şifrenizin yanı sıra ikinci güvenlik olarak bir kerelik erişim kodu gerektirerek hesabınızın güvenliğini artırır.',
       ),
       'Disable Two-Factor' => 
       array (
-        0 => 'Wyłącz uwierzytelnianie dwuskładnikowe',
+        0 => 'İki Faktörlü Doğrulamayı Devredışı Bırak',
       ),
       'Enable Two-Factor' => 
       array (
-        0 => 'Włącz uwierzytelnianie dwuskładnikowe',
+        0 => 'İki Faktörlü Doğrulamayı Etkinleştir',
       ),
       'Microphone' => 
       array (
@@ -3263,23 +3274,23 @@ Odtwarzane',
       ),
       'Settings' => 
       array (
-        0 => 'Ustawienia',
+        0 => 'Ayarlar',
       ),
       'Mixer' => 
       array (
-        0 => 'Mikser',
+        0 => 'Mixer',
       ),
       'Playlist 1' => 
       array (
-        0 => 'Lista odtwarzania 1',
+        0 => 'Çalma Listesi 1',
       ),
       'Playlist 2' => 
       array (
-        0 => 'Lista odtwarzania 2',
+        0 => 'Çalma Listesi 2',
       ),
       'Encoder' => 
       array (
-        0 => 'Enkoder',
+        0 => 'Encoder',
       ),
       'MP3' => 
       array (
@@ -3287,11 +3298,11 @@ Odtwarzane',
       ),
       'Raw' => 
       array (
-        0 => 'Surowy',
+        0 => 'HAM DATA',
       ),
       'Sample Rate' => 
       array (
-        0 => 'Częstotliwość próbkowania',
+        0 => 'Sample Rate',
       ),
       'Bit Rate' => 
       array (
@@ -3299,647 +3310,647 @@ Odtwarzane',
       ),
       'DJ Credentials' => 
       array (
-        0 => 'Dane logowania prezentera',
+        0 => 'DJ Bilgileri',
       ),
       'Username' => 
       array (
-        0 => 'Nazwa użytkownika',
+        0 => 'Kullanıcı Adı',
       ),
       'Use Asynchronous Worker' => 
       array (
-        0 => 'Użyj pracownika asynchronicznego',
+        0 => 'Eşzamansız Çalışma Kullan',
       ),
       'Artist' => 
       array (
-        0 => 'Wykonawca',
+        0 => 'Sanatçı',
       ),
       'Continuous Play' => 
       array (
-        0 => 'Odtwarzanie bez przerw',
+        0 => 'Çalmaya Devam Et',
       ),
       'Repeat Playlist' => 
       array (
-        0 => 'Powtórz playlistę',
+        0 => 'Çalma Listesini Tekrarla',
       ),
       'Microphone Source' => 
       array (
-        0 => 'Źródło mikrofonu',
+        0 => 'Mikrofon Kaynağı',
       ),
       'Start Streaming' => 
       array (
-        0 => 'Rozpocznij stream',
+        0 => 'Yayını Başlat',
       ),
       'Stop Streaming' => 
       array (
-        0 => 'Zatrzymaj stream',
+        0 => 'Yayını Durdur',
       ),
       'Cue' => 
       array (
-        0 => 'Kolejka',
+        0 => 'Bağla',
       ),
       'Update Metadata' => 
       array (
-        0 => 'Aktualizuj metadane',
+        0 => 'Meta Verilerini Güncelle',
       ),
       'Add Files to Playlist' => 
       array (
-        0 => 'Dodaj pliki do listy odtwarzania',
+        0 => 'Çalma Listesine Ekle',
       ),
       'Unknown Title' => 
       array (
-        0 => 'Nieznany tytuł',
+        0 => 'Bilinmeyen Şarkı İsmi',
       ),
       'Unknown Artist' => 
       array (
-        0 => 'Nieznany wykonawca',
+        0 => 'Bilinmeyen Sanatçı',
       ),
       'Request' => 
       array (
-        0 => 'Zgłoszenie',
+        0 => 'İstek',
       ),
       'Album' => 
       array (
-        0 => 'Album',
+        0 => 'Albüm',
       ),
       'Song History' => 
       array (
-        0 => 'Historia utworu',
+        0 => 'Şarkı Geçmişi',
       ),
       'Request Song' => 
       array (
-        0 => 'Żądanie utworu',
+        0 => 'Şarkı İsteme',
       ),
       'Playlist' => 
       array (
-        0 => 'Lista odtwarzania',
+        0 => 'Çalma Listesi',
       ),
       'Request a Song' => 
       array (
-        0 => 'Żądanie utworu',
+        0 => 'Bir Şarkı İsteyin',
       ),
       'Live' => 
       array (
-        0 => '',
+        0 => 'Canlı',
       ),
       'Play' => 
       array (
-        0 => 'Odtwórz',
+        0 => 'Oynat',
       ),
       'Pause' => 
       array (
-        0 => 'Wstrzymaj',
+        0 => 'Duraklat',
       ),
       'Mute' => 
       array (
-        0 => 'Wycisz',
+        0 => 'Sustur',
       ),
       'Volume' => 
       array (
-        0 => 'Głośność',
+        0 => 'Ses',
       ),
       'Full Volume' => 
       array (
-        0 => 'Pełna głośność',
+        0 => 'Full Ses',
       ),
       'Album Art' => 
       array (
-        0 => 'Okładka albumu',
+        0 => 'Albüm Sanatçısı',
       ),
       'AzuraCast First-Time Setup' => 
       array (
-        0 => 'Ustawienia podczas pierwszego uruchomienia AzuraCast',
+        0 => 'AzuraCast İlk Kurulumu',
       ),
       'Welcome to AzuraCast!' => 
       array (
-        0 => 'Witaj w AzuraCast!',
+        0 => 'AzuraCast\\\'e Hoşgeldiniz!',
       ),
       'Let\'s get started by creating your Super Administrator account.' => 
       array (
-        0 => 'Zacznijmy od utworzenia Twojego konta super administratora.',
+        0 => 'Süper yönetici hesabınızı oluşturarak başlayalım.',
       ),
       'This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.' => 
       array (
-        0 => 'To konto będzie posiadało pełny dostęp do systemu, i zostaniesz na nie zalogowany automatycznie aby dokończyć instalację.',
+        0 => 'Bu hesap sisteme tam erişime sahip olacak ve kurulumun geri kalanında otomatik olarak oturum açmış olacaksınız.',
       ),
       'Create Station' => 
       array (
-        0 => 'Utwórz stację',
+        0 => 'Radyo Oluştur',
       ),
       'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
       array (
-        0 => 'Ukończ proces instalacji przez dostarczanie informacji o środowisku emisji. Te ustawienia można później zmienić z poziomu panelu administracyjnego.',
+        0 => 'Yayın ortamınız hakkında biraz bilgi vererek kurulum işlemini tamamlayın. Bu ayarları daha sonra yönetim panelinden değiştirilebilir.',
       ),
       'Customize AzuraCast Settings' => 
       array (
-        0 => 'Dostosuj ustawienia AzuraCast',
+        0 => 'AzuraCast Ayarlarını Özelleştir',
       ),
       'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
-        0 => 'Kontynuuj proces instalacji, tworząc swoją pierwszą stację radiową. Każdą z tych informacji można edytować później.',
+        0 => 'İlk radyo istasyonunuzu aşğıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz.',
       ),
       'Create a New Radio Station' => 
       array (
-        0 => 'Utwórz nową radiostację',
+        0 => 'Yeni Bir Radyo Oluştur',
       ),
       'Skip to main content' => 
       array (
-        0 => 'Skocz do treści głównej',
+        0 => 'Ana İçeriğe Atla',
       ),
       'Toggle Sidebar' => 
       array (
-        0 => 'Przełącz panel boczny',
+        0 => 'Kenar Çubuğunu Değiştir',
       ),
       'Toggle Menu' => 
       array (
-        0 => 'Przełącz menu',
+        0 => 'Menüyü Değiştir',
       ),
       'System Administration' => 
       array (
-        0 => 'Administracja systemem',
+        0 => 'Sistem Yönetimi',
       ),
       'Switch Theme' => 
       array (
-        0 => 'Przełącz motyw',
+        0 => 'Temayı Değiştir',
       ),
       'Help' => 
       array (
-        0 => 'Pomoc',
+        0 => 'Yardım',
       ),
       'End Session' => 
       array (
-        0 => 'Zakończ sesję',
+        0 => 'Oturumu Sonlandır',
       ),
       'Sign Out' => 
       array (
-        0 => 'Wyloguj się',
+        0 => 'Çıkış Yap',
       ),
       'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
       array (
-        0 => 'Podoba Ci się nasze oprogramowanie? <a href="%s" target="_blank">Wesprzyj finansowo AzuraCast!</a>',
+        0 => 'Türkçeleştirme\\: ByBiLaL \\- AzuraCast\\\'i beğendiniz mi? <a href=\\"%s\\" target=\\"_blank\\">Destek olmak için bağış yapın!</a>',
       ),
       'Mascot designed by %s' => 
       array (
-        0 => 'Maskotka zaprojektowana przez %s',
+        0 => 'Maskot %s tarafından dizayn edildi.',
       ),
       'Need Help?' => 
       array (
-        0 => 'Potrzebujesz pomocy?',
+        0 => 'Yardıma Mı İhtiyacınız Var?',
       ),
       'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
       array (
-        0 => 'Odpowiedzi na często zadawane pytania możesz znaleźć w naszej <a href="%s" target="_blank">dokumentacji</a>.',
+        0 => 'SSS belgelerine ulaşmak için <a href=\\"%s\\" target=\\"_blank\\">destek dökümanları</a> sayfasına göz atabilirsiniz.',
       ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
-        0 => 'Jeśli napotkałeś usterkę lub błąd, możesz wysłać zgłoszenie na GitHubie, korzystając z poniższego linku.',
+        0 => 'Bir bug veya hata yaşıyorsanız aşağıdaki bağlantıyı kullanarak GitHub sorunu gönderebilirsiniz.',
       ),
       'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
       array (
-        0 => 'Twój obecny typ instalacji to <b>%s</b>. Pamiętaj, aby zamieścić tę informację, tworząc nowe zgłoszenie.',
+        0 => '<b>%s</b> mevcut kurulum türünüzdür ve yeni bir sorun oluştururken bunu eklediğinizden emin olun.',
       ),
       'Add New GitHub Issue' => 
       array (
-        0 => '',
+        0 => 'Yeni GitHub Sorunu',
       ),
       'Log View' => 
       array (
-        0 => 'Podgląd dziennika',
+        0 => 'Günlüğü Görüntüle',
       ),
       'Automatically scroll to the bottom of the log' => 
       array (
-        0 => 'Automatycznie przewiń do końca dziennika',
+        0 => 'Günlüğü en alta otomatik kaydır',
       ),
       'Automated Playlist Assignment' => 
       array (
-        0 => 'Przypisanie automatycznych list odtwarzania',
+        0 => 'Otomatik Oynatma Listesi Ataması',
       ),
       'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
       array (
-        0 => 'Na podstawie dotychczasowych wyników piosenek w stacji %s może automatycznie rozprowadzać równomiernie utwory z listy odtwarzania, umieszczania poszczególnych zasobów w najczęstszych playlistach.',
+        0 => '%s şarkılarınızın performansına bağlı olarak en yüksek öncelikli çalma listelerinde en iyi şekilde yer alan çalma listeleriniz arasında otomatik olarak şarkıları eşit şekilde dağıtacaktır.',
       ),
       'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
       array (
-        0 => 'Po skonfigurowaniu automatycznego przypisania, kliknij poniższy przycisk, aby uruchomić proces automatycznego przypisania. Ten proces nie będzie działać w ogóle, chyba że wybrano "Włącz" poniżej.',
+        0 => 'Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda \\"Etkinleştir\\" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır.',
       ),
       'Run Automated Assignment' => 
       array (
-        0 => 'Uruchom zautomatyzowane przypisanie',
+        0 => 'Otomatik Atamayı Çalıştır',
       ),
       'Configure Automated Assignment' => 
       array (
-        0 => 'Konfigurowanie automatycznego przypisania',
+        0 => 'Otomatik Atamayı Yapılandır',
       ),
       'Delete {NUM} media file(s)?' => 
       array (
-        0 => '',
+        0 => '{NUM} adet müzik dosyası silinsin mi?',
       ),
       'Files removed:' => 
       array (
-        0 => '',
+        0 => 'Silinen Dosyalar: ',
       ),
       'Playlists updated for selected files:' => 
       array (
-        0 => '',
+        0 => 'Seçilen dosyalar çalma listesinde güncellendi: ',
       ),
       'Playlists cleared for selected files:' => 
       array (
-        0 => '',
+        0 => 'Seçilen dosyalar çalma listesiden silindi: ',
       ),
       'Album Artwork' => 
       array (
-        0 => 'Okładka albumu',
+        0 => 'Albüm',
       ),
       'Rename' => 
       array (
-        0 => 'Zmień nazwę',
+        0 => 'Yeniden Adlandır',
       ),
       'Select' => 
       array (
-        0 => 'Wybierz',
+        0 => 'Seç',
       ),
       'Home' => 
       array (
-        0 => 'Strona główna',
+        0 => 'Anasayfa',
       ),
       '%s of %s Used (%d Files)' => 
       array (
-        0 => '',
+        0 => 'Kullanılan Depolama Alanı: %s / %s (%d Dosya)',
       ),
       'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
       array (
-        0 => 'Możesz również wysyłać pliki zbiorowo poprzez SFTP, <a href="%s" target="_blank">zgodnie z tą instrukcją</a>. Nowo wgrywane pliki zostaną automatycznie przetworzone w ciągu kilku minut.',
+        0 => 'Ayrıca dosyaları SFTP kullanarak yüklemek için <a href=\\"%s\\" target=\\"_blank\\">buradaki</a> dökümanı inceleyebilirsiniz. Yeni yüklenen dosyalar birkaç dakika içinde otomatik olarak işlenecektir.',
       ),
       'Drag files here to upload to this folder or ' => 
       array (
-        0 => 'Przeciągnij pliki tutaj wgrać do tego folderu lub ',
+        0 => 'Bu klasöre müzik yüklemek için dosyaları buraya sürekleyip bırakın veya ',
       ),
       'Set Playlists' => 
       array (
-        0 => 'Ustaw listy odtwarzania',
+        0 => 'Çalma Listesine Ekle',
       ),
       'New Playlist' => 
       array (
-        0 => 'Nowa lista odtwarzania',
+        0 => 'Yeni Çalma Listesi',
       ),
       'Save' => 
       array (
-        0 => 'Zapisz',
+        0 => 'Kaydet',
       ),
       'Clear Playlists' => 
       array (
-        0 => '',
+        0 => 'Çalma Listesini Temizle',
       ),
       'Move' => 
       array (
-        0 => 'Przenieś',
+        0 => 'Taşı',
       ),
       'New Folder' => 
       array (
-        0 => 'Nowy folder',
+        0 => 'Yeni Klasör',
       ),
       'Length' => 
       array (
-        0 => 'Długość',
+        0 => 'Uzunluk',
       ),
       'Modified' => 
       array (
-        0 => 'Zmodyfikowano',
+        0 => 'Değiştirme Zamanı',
       ),
       'New Directory' => 
       array (
-        0 => 'Nowy katalog',
+        0 => 'Yeni Dizin',
       ),
       'Directory Name' => 
       array (
-        0 => 'Nazwa katalogu',
+        0 => 'Dizin İsmi',
       ),
       'Create Directory' => 
       array (
-        0 => 'Utwórz katalog',
+        0 => 'Dizin Oluştur',
       ),
       'Move {{ selected_files }} File(s) to' => 
       array (
-        0 => 'Przenieś {{ selected_files }} plik(i) do',
+        0 => '{{ selected_files }} şuraya taşı',
       ),
       'Back' => 
       array (
-        0 => 'Wstecz',
+        0 => 'Geri',
       ),
       'Available Logs' => 
       array (
-        0 => 'Dostępne dzienniki',
+        0 => 'Mevcut Günlükler',
       ),
       'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
       array (
-        0 => 'Punkty montowania umożliwiają słuchaczom połączenie się i słuchanie stacji. Każdy punkt może mieć inny format i jakość dźwięku. Wykorzystując punkty montowania, możesz ustawić wysokiej jakości strumień dla użytkowników szerokopasmowego Internetu oraz strumienie mobilne da słuchających w smartfonach.',
+        0 => 'Bağlantı noktaları dinleyicilerin radyonuza nasıl bağlayıp dinlediğini gösterir. Her bir bağlantı noktası farklı ses formatı veya kalitede olabilir. Bağlantı noktalarını kullanarak limitsiz internetli dinleyiciler için yüksek kaliteli bir yayın belirleyebilir veya telefon kullanıcıları için düşük kaliteli bir yayın ayarlayabilirsiniz.',
       ),
       'Mount Point' => 
       array (
-        0 => 'Punkt montowania',
+        0 => 'Bağlantı Noktası',
       ),
       'Delete mount point "%s"?' => 
       array (
-        0 => 'Usunąć punkt montowania "%s"?',
+        0 => '\\"%s\\" bağlantı noktası silinsin mi?',
       ),
       'Default Mount' => 
       array (
-        0 => 'Domyślna instancja',
+        0 => 'Varsayılan Bağlantı Noktası',
       ),
       'All Playlists' => 
       array (
-        0 => 'Wszystkie playlisty',
+        0 => 'Tüm Çalma Listeleri',
       ),
       'Schedule View' => 
       array (
-        0 => 'Widok Harmonogramu',
+        0 => 'Zamanlama Görünümü',
       ),
       '# Songs' => 
       array (
-        0 => '# Utwory',
+        0 => '# Şarkılar',
       ),
       'Delete playlist "%s"?' => 
       array (
-        0 => 'Usunąć playlistę "%s"?',
+        0 => '\\"%s\\" çalma listesi silinsin mi?',
       ),
       'More' => 
       array (
-        0 => 'Więcej',
+        0 => 'Daha Fazla',
       ),
       'Disable' => 
       array (
-        0 => 'Dezaktywuj',
+        0 => 'Devredışı',
       ),
       'Enable' => 
       array (
-        0 => 'Aktywuj',
+        0 => 'Etkin',
       ),
       'Reorder' => 
       array (
-        0 => 'Zmień kolejność',
+        0 => 'Yeniden Sırala',
       ),
       'Export %s' => 
       array (
-        0 => 'Eksportuj %s',
+        0 => '%s Dışarı Aktar',
       ),
       'Song-based' => 
       array (
-        0 => 'Na podstawie utworu',
+        0 => 'Çalma Listesi Modu',
       ),
       'Jingle Mode' => 
       array (
-        0 => 'Tryb Dżinglowy (Jingle Mode)',
+        0 => 'Jingle Modu',
       ),
       'Auto-Assigned' => 
       array (
-        0 => 'Automatyczne przypisywanie',
+        0 => 'Otomatik Atanmış',
       ),
       'Weight' => 
       array (
-        0 => 'Waga',
+        0 => 'Öncelik',
       ),
       'Plays at %s' => 
       array (
-        0 => 'Gra o %s',
+        0 => '%s Oynat',
       ),
       'Plays between %s and %s' => 
       array (
-        0 => 'Gra między %s i %s',
+        0 => '%s ile %s Arasında Oynat',
       ),
       'Once per %d Songs' => 
       array (
-        0 => 'Raz na %d utworów',
+        0 => '%d Şarkıda Bir',
       ),
       'Once per %d Minutes' => 
       array (
-        0 => 'Raz na %d minut',
+        0 => '%d Dakikada Bir',
       ),
       'Once per Hour (at :%02d)' => 
       array (
-        0 => 'Raz na godzinę (w: %02d)',
+        0 => 'Saatte Bir Kez (%02d)',
       ),
       'Custom' => 
       array (
-        0 => 'Niestandardowe',
+        0 => 'Özel',
       ),
       'Reorder Playlist' => 
       array (
-        0 => 'Zmień kolejność playlisty',
+        0 => 'Çalma Listesi Yeniden Sıralama',
       ),
       'Reorder Playlist: %s' => 
       array (
-        0 => 'Zmień kolejność playlisty: %s',
+        0 => 'Çalma Listesini Yeniden Sırala: %s',
       ),
       'Down' => 
       array (
-        0 => 'W dół',
+        0 => 'Aşağı',
       ),
       'Up' => 
       array (
-        0 => 'W górę',
+        0 => 'Yukarı',
       ),
       'Station Broadcasting Disabled' => 
       array (
-        0 => 'Nadawanie stacji wyłączone',
+        0 => 'Radyo Canlı Yayını Devredışı',
       ),
       'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
       array (
-        0 => 'Dla Twojej stacji, nadawanie jest obecnie wyłączone. Nadal możesz zarządzać multimediami, playlistami i innymi ustawieniami stacji. Aby włączyć nadawanie ponownie, <a href="%s">wyedytuj profil swojej stacji</a>.',
+        0 => 'Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href=\\"%s\\">radyo profili</a>ni düzenleyin.',
       ),
       'Running' => 
       array (
-        0 => 'Uruchomiony',
+        0 => 'Çalışıyor',
       ),
       'Not Running' => 
       array (
-        0 => 'Nie Uruchomione',
+        0 => 'Çalışmıyor',
       ),
       'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
       array (
-        0 => 'Lista LiquidSoap jest obecnie losowana z <b>%d zapisanych utworów</b> w <b>listy odtwarzania %d</b>.',
+        0 => 'LiquidSoap şu anda <b>%d adet yüklenmiş şarkı</b>yı <b>%d adet çalma listesi</b>nden karışık olarak çalıyor.',
       ),
       'Restart' => 
       array (
-        0 => 'Zrestartuj',
+        0 => 'Yeniden Başlat',
       ),
       'Start' => 
       array (
-        0 => 'Uruchom',
+        0 => 'Başlat',
       ),
       'Stop' => 
       array (
-        0 => 'Zatrzymaj',
+        0 => 'Durdur',
       ),
       'AutoDJ Disabled' => 
       array (
-        0 => 'AutoDJ wyłączony',
+        0 => 'AutoDJ Devredışı',
       ),
       'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
       array (
-        0 => 'AutoDJ została wyłączona dla tej stacji. Żadna muzyka nie będzie odtwarzana automatycznie, gdy źródło nie jest aktywne.',
+        0 => 'AutoDJ bu radyoda için devredışı bırakıldı. Canlı yayın olmadığında hiçbir müzik otomatik olarak çalınmaz.',
       ),
       'Administration URL' => 
       array (
-        0 => 'URL Administacji',
+        0 => 'Yönetim URLsi',
       ),
       'Administrator Password' => 
       array (
-        0 => 'Hasło administratora',
+        0 => 'Yayın Yönetici Şifresi',
       ),
       'Source Password' => 
       array (
-        0 => 'Hasło źródła',
+        0 => 'Yayın Şifresi',
       ),
       'Relay Password' => 
       array (
-        0 => 'Hasło relay\'a',
+        0 => 'Yönlendirme Şifresi',
       ),
       'On the Air' => 
       array (
-        0 => 'W eterze',
+        0 => 'Yayında',
       ),
       'Listener' => 
       array (
-        0 => 'Słuchacz',
+        0 => 'Dinleyici',
       ),
       'Unique' => 
       array (
-        0 => 'Unikalny',
+        0 => 'Ziyaretçi',
       ),
       'Playing Next' => 
       array (
-        0 => '',
+        0 => 'Sıradaki Şarkı',
       ),
       'Skip Song' => 
       array (
-        0 => 'Pomiń utwór',
+        0 => 'Şarkıyı Atla',
       ),
       'Disconnect Streamer' => 
       array (
-        0 => 'Rozłącz nadającego prezentera',
+        0 => 'DJ Bağlantısını Kes',
       ),
       'Public Pages' => 
       array (
-        0 => 'Strony publiczne',
+        0 => 'Genel Sayfalar',
       ),
       'Player Embed Code' => 
       array (
-        0 => 'Kod osadzenia odtwarzacza',
+        0 => 'Müzik Çalar Hazır Web Kodu',
       ),
       'Request Embed Code' => 
       array (
-        0 => 'Poproś o kod do osadzenia',
+        0 => 'Şarkı İstekleri Hazır Web Kodu',
       ),
       'Disable public pages?' => 
       array (
-        0 => 'Wyłączyć publiczne strony?',
+        0 => 'Genel sayfalar devredışı bırakılsın mı?',
       ),
       'Enable public pages?' => 
       array (
-        0 => 'Włączyć publiczne strony?',
+        0 => 'Genel sayfalar aktifleştirilsin mi?',
       ),
       'View' => 
       array (
-        0 => 'Wyświetl',
+        0 => 'Görüntüle',
       ),
       'Disable song requests?' => 
       array (
-        0 => 'Wyłączyć prośby o piosenki?',
+        0 => 'Şarkı istekleri devredışı bırakılsın mı?',
       ),
       'Enable song requests?' => 
       array (
-        0 => 'Włączyć prośby o piosenki?',
+        0 => 'Şarkı istekleri aktifleştirilsin mi?',
       ),
       'Streamers/DJs' => 
       array (
-        0 => 'Streamerzy/DJe',
+        0 => 'DJ Yönetimi',
       ),
       'Disable streamers?' => 
       array (
-        0 => 'Deaktywować streamerów?',
+        0 => 'DJler devredışı bırakılsın mı?',
       ),
       'Enable streamers?' => 
       array (
-        0 => 'Aktywować streamerów?',
+        0 => 'DJler aktifleştirilsin mi?',
       ),
       'Streams' => 
       array (
-        0 => 'Strumienie',
+        0 => 'Yayınlar',
       ),
       'Local Streams' => 
       array (
-        0 => 'Strumienie lokalne',
+        0 => 'Yerel Yayınlar',
       ),
       'Download PLS' => 
       array (
-        0 => '',
+        0 => 'PLS İndir',
       ),
       'Download M3U' => 
       array (
-        0 => '',
+        0 => 'M3U İndir',
       ),
       'Listener Request' => 
       array (
-        0 => 'Żądania słuchaczy',
+        0 => 'Dinleyici İsteği',
       ),
       'Playlist:' => 
       array (
-        0 => 'Lista odtwarzania:',
+        0 => 'Çalma Listesi: ',
       ),
       'Delete queue item?' => 
       array (
-        0 => 'Usunąć element z kolejki?',
+        0 => 'Sıradaki öğe silinsin mi?',
       ),
       'Cued On' => 
       array (
-        0 => 'Zakolejkowane',
+        0 => 'Bağla',
       ),
       'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
-        0 => 'Zdalne relaye pozwalają na pracę z oprogramowaniem nadawczym poza niniejszym serwerem. Każdy podany tutaj relay będzie ujęty w statystykach Twojej stacji. Możesz również nadawać z tego serwera na zewnętrzne relaye.',
+        0 => 'Yönlendirme bu sunucunun dışındaki yayın yazılımı ile çalışmanızı sağlar. Buraya dahil ettiğiniz herhangi bir yönlendirme radyonuzun istatistiklerine dahil edilecektir. Ayrıca bu sunucudan uzak sunuculara da yayın yapabilirsiniz.',
       ),
       'Remote Relay' => 
       array (
-        0 => 'Zdalny przekaźnik',
+        0 => 'Yönlendirme',
       ),
       'Delete remote relay "%s"?' => 
       array (
-        0 => 'Usunąć zdalny relay "%s"?',
+        0 => '\\"%s\\" yönlendirme silinsin mi?',
       ),
       'Song Duplicates' => 
       array (
-        0 => 'Duplikaty piosenek',
+        0 => 'Şarkı Yinelemeleri',
       ),
       'No duplicates were found. Nice work!' => 
       array (
-        0 => 'Duplikaty nie zostały znalezione. Dobra robota!',
+        0 => 'Güzel iş! Yineleme bulunamadı.',
       ),
       'Title / File Path' => 
       array (
-        0 => 'Tytuł / ścieżka pliku',
+        0 => 'Şarkı İsmi / Dosya Yolu',
       ),
       'Live Listeners' => 
       array (
-        0 => 'Na żywo słuchaczy',
+        0 => 'Canlı Dinleyiciler',
       ),
       'There are too many data points to map!' => 
       array (
-        0 => '',
+        0 => 'Haritada gösterilecek çok fazla veri noktası var!',
       ),
       'Download CSV' => 
       array (
-        0 => 'Pobierz CSV',
+        0 => 'CSV İndir',
       ),
       'Unique Listeners' => 
       array (
-        0 => '',
+        0 => 'Bağımsız Dinleyiciler',
       ),
       'for selected period' => 
       array (
-        0 => '',
+        0 => 'seçilen dönem için',
       ),
       'Total Listener Hours' => 
       array (
-        0 => '',
+        0 => 'Toplam Dinleyici Saati',
       ),
       'IP' => 
       array (
@@ -3947,167 +3958,167 @@ Odtwarzane',
       ),
       'Time (sec)' => 
       array (
-        0 => 'Czas (s)',
+        0 => 'Zaman (sn)',
       ),
       'User Agent' => 
       array (
-        0 => 'Agent użytkownika',
+        0 => 'Tarayıcı Bilgisi',
       ),
       'Location' => 
       array (
-        0 => 'Lokalizacja',
+        0 => 'Konum',
       ),
       'Mobile Device' => 
       array (
-        0 => 'Urządzenie mobilne',
+        0 => 'Mobil Cihaz',
       ),
       'Desktop Device' => 
       array (
-        0 => 'Komputer',
+        0 => 'Masaüstü Cihazı',
       ),
       'Unknown' => 
       array (
-        0 => 'Nieznany',
+        0 => 'Bilinmiyor',
       ),
       'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
       array (
-        0 => 'Ten produkt zawiera dane z GeoLite2 utworzone przez MaxMind, dostępne od %s.',
+        0 => 'Bu ürün MaxMind tarafından oluşturulan GeoLite2 verilerini içerir. Daha geniş bilgi için %s internet adresini ziyaret edebilirsiniz.',
       ),
       'Hour' => 
       array (
-        0 => 'Godzina',
+        0 => 'Saat',
       ),
       'Best Performing Songs' => 
       array (
-        0 => 'Ulubione utwory',
+        0 => 'En İyi Performanslı Şarkılar',
       ),
       'in the last 48 hours' => 
       array (
-        0 => 'w ciągu ostatnich 48 godzin',
+        0 => 'son 48 saatte',
       ),
       'Change' => 
       array (
-        0 => 'Zmień',
+        0 => 'Değiştir',
       ),
       'Song' => 
       array (
-        0 => 'Utwór',
+        0 => 'Şarkı',
       ),
       'Worst Performing Songs' => 
       array (
-        0 => 'Najgorsze utwory',
+        0 => 'En Kötü Performanslı Şarkılar',
       ),
       'Most Played Songs' => 
       array (
-        0 => 'Najczęściej grane utwory',
+        0 => 'En Çok Çalınan Şarkılar',
       ),
       'in the last month' => 
       array (
-        0 => 'w ostatnim miesiącu',
+        0 => 'geçen ayda',
       ),
       'Plays' => 
       array (
-        0 => 'Odtwarzaj',
+        0 => 'Oynatılma',
       ),
       'Filename' => 
       array (
-        0 => 'Nazwa pliku',
+        0 => 'Dosya Adı',
       ),
       'Length Text' => 
       array (
-        0 => 'Długość tekstu',
+        0 => 'Uzunluk',
       ),
       'Playlist(s)' => 
       array (
-        0 => 'Listy odtwarzania',
+        0 => 'Çalma Listesi',
       ),
       'Joins' => 
       array (
-        0 => 'Dołącz',
+        0 => 'Katılanlar',
       ),
       'Losses' => 
       array (
-        0 => 'Straty',
+        0 => 'Kayıplar',
       ),
       'Total' => 
       array (
-        0 => 'Łącznie',
+        0 => 'Toplam',
       ),
       'Play %' => 
       array (
-        0 => 'Graj %',
+        0 => 'Oynama Yüzdesi',
       ),
       'Ratio' => 
       array (
-        0 => 'Stosunek',
+        0 => 'Oran',
       ),
       'Date Requested' => 
       array (
-        0 => 'Data zgłoszenia',
+        0 => 'Talep Edilen Tarih',
       ),
       'Date Played' => 
       array (
-        0 => 'Data grania',
+        0 => 'Oynatılan Tarih',
       ),
       'Requester IP' => 
       array (
-        0 => 'IP zgłaszającego',
+        0 => 'Talep Eden IP',
       ),
       'Not Played' => 
       array (
-        0 => 'Nie grano',
+        0 => 'Oynatılmadı',
       ),
       'Report Not Available' => 
       array (
-        0 => 'Raport niedostępny',
+        0 => 'Rapor Kullanılamaz',
       ),
       'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
       array (
-        0 => 'Raport dla tej stacji nie jest dostępny, ponieważ administrator systemu postanowił nie zbierać szczegółowych informacji o słuchaczach w oparciu o IP.',
+        0 => 'Sistem yöneticisi IP tabanlı ayrıntılı dinleyici bilgilerini toplamayı devre dışı bıraktığı için bu rapor bulunmuyor.',
       ),
       'Live Broadcast' => 
       array (
-        0 => 'Transmisja na żywo',
+        0 => 'Canlı Yayın',
       ),
       'Please wait...' => 
       array (
-        0 => 'Proszę, czekaj...',
+        0 => 'Lütfen bekleyin...',
       ),
       'Station Time' => 
       array (
-        0 => '',
+        0 => 'Radyo Saati',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (
-        0 => 'Konta streamera są obecnie wyłączone dla tej stacji. Aby włączyć konta typu streamer, kliknij poniższy przycisk.',
+        0 => 'Bu radyo için DJ hesapları şu an devre dışıdır. Etkinleştirmek için aşağıdaki butona tıklayın.',
       ),
       'Enable Streaming' => 
       array (
-        0 => 'Włącz Streaming',
+        0 => 'Canlı Yayını Etkinleştir',
       ),
       'Notes' => 
       array (
-        0 => 'Notatki',
+        0 => 'Notlar',
       ),
       'Delete streamer "%s"?' => 
       array (
-        0 => 'Usunąć streamera "%s"?',
+        0 => '\\"%s\\" silmek istediğinizden emin misiniz?',
       ),
       'Connection Information' => 
       array (
-        0 => 'Informacje o połączeniu',
+        0 => 'Canlı Yayın Bilgileri',
       ),
       'IceCast Clients' => 
       array (
-        0 => 'Klienci IceCast',
+        0 => 'IceCast Bilgileri',
       ),
       'Server' => 
       array (
-        0 => 'Serwer',
+        0 => 'Sunucu',
       ),
       'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
       array (
-        0 => '',
+        0 => '<code>%s</code> IP adresiniz üzerinden yayına bağlanabilirsiniz.',
       ),
       'Port' => 
       array (
@@ -4115,71 +4126,71 @@ Odtwarzane',
       ),
       'Mount Name' => 
       array (
-        0 => 'Nazwa montowania',
+        0 => 'Bağlantı Noktası',
       ),
       'ShoutCast v1 Clients' => 
       array (
-        0 => 'Klienty ShoutCast v1',
+        0 => 'ShoutCast v1 Bilgileri',
       ),
       '%d (%d for some clients)' => 
       array (
-        0 => '',
+        0 => '%d (Bazı yayın yazılımları için %d portunu kullanmanız gerekebilir)',
       ),
       '(DJ username and password separated by a colon)' => 
       array (
-        0 => '(DJ użytkownik i hasło oddzielone dwukropkiem)',
+        0 => '(DJ kullanıcı adı iki nokta üst üste şifre şeklinde yazmalısınız)',
       ),
       'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
       array (
-        0 => 'Instrukcje instalacji dla nadawania oprogramowania są dostępne <a href="%s" target="_blank"> na stronie AzuraCast Wiki</a>.',
+        0 => 'Canlı yayın programlarına ait dökümanlara ulaşmak için <a href=\\"%s\\" target=\\"_blank\\">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz.',
       ),
       'Select the type of web hook to create.' => 
       array (
-        0 => 'Wybierz typ webhook\'a, jaki chcesz utworzyć.',
+        0 => 'Oluşturulacak web kancası türünü seçin.',
       ),
       'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
       array (
-        0 => 'Webhooki pozwalają łączyć się z zewnętrznymi serwisami internetowymi i wysyłać do nich zmiany dotyczące Twojej stacji.',
+        0 => 'Web kancaları harici web servislerine bağlanmanıza ve radyonuzdaki değişiklikleri onlara yansıtmasınıza izin verir.',
       ),
       'Type' => 
       array (
-        0 => 'Typ',
+        0 => 'Tür',
       ),
       'Triggers' => 
       array (
-        0 => 'Wyzwalacze',
+        0 => 'Tetikleyiciler',
       ),
       'Trigger the web hook manually and view the raw response.' => 
       array (
-        0 => 'Wyzwól webhooka ręcznie i obejrzyj surową odpowiedź.',
+        0 => 'Web kancasını manuel tetikleyin ve ham cevabı görüntüleyin.',
       ),
       'Test' => 
       array (
-        0 => 'Test',
+        0 => 'Deneme',
       ),
       'Delete web hook "%s"?' => 
       array (
-        0 => 'Usunąć webhook\'a "%s"?',
+        0 => '\\"%s\\" web kancasını silmek istediğinizden emin misiniz?',
       ),
       'The page you requested was not found.' => 
       array (
-        0 => 'Żądana strona nie została odnaleziona.',
+        0 => 'Aradığınız sayfa bulunamadı!',
       ),
       'Select...' => 
       array (
-        0 => 'Wybierz...',
+        0 => 'Seç...',
       ),
       'No results found!' => 
       array (
-        0 => 'Brak wyników!',
+        0 => 'Sonuç bulunamadı!',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (
-        0 => 'Podczas zapisywania zmian wystąpiły następujące błędy:',
+        0 => 'Değişiklikleri kaydetmeye çalışırken hatalarla karşılaşıldı:',
       ),
       'General' => 
       array (
-        0 => 'Ogólne',
+        0 => 'Genel',
       ),
     ),
   ),

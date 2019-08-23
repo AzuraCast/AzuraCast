@@ -14,8 +14,8 @@ Language-Team: Portuguese, Brazilian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-07-23T19:44:58+00:00
-PO-Revision-Date: 2019-08-07 15:39
+POT-Creation-Date: 2019-08-21T22:24:59+00:00
+PO-Revision-Date: 2019-08-23 03:09
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -36,35 +36,31 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Visualizar Logs do Sistema',
       ),
-      'Settings' => 
+      'Administer Settings' => 
       array (
-        0 => 'Configurações',
+        0 => '',
       ),
-      'Administer %s' => 
+      'Administer API Keys' => 
       array (
-        0 => 'Administrar %s',
+        0 => '',
       ),
-      'API Keys' => 
+      'Administer Users' => 
       array (
-        0 => 'Chaves API',
+        0 => '',
       ),
-      'Users' => 
+      'Administer Permissions' => 
       array (
-        0 => 'Usuários',
+        0 => '',
       ),
-      'Permissions' => 
+      'Administer Stations' => 
       array (
-        0 => 'Permissões',
+        0 => '',
       ),
-      'Stations' => 
+      'Administer Custom Fields' => 
       array (
-        0 => 'Estações',
+        0 => '',
       ),
-      'Custom Fields' => 
-      array (
-        0 => 'Campos Personalizados',
-      ),
-      'Backups' => 
+      'Administer Backups' => 
       array (
         0 => '',
       ),
@@ -80,41 +76,145 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Visualizar logs da estação',
       ),
-      'Profile' => 
+      'Manage Station Profile' => 
       array (
-        0 => 'Perfil',
+        0 => '',
       ),
-      'Manage Station %s' => 
+      'Manage Station Broadcasting' => 
       array (
-        0 => 'Gerenciar estações',
+        0 => '',
       ),
-      'Broadcasting' => 
+      'Manage Station Streamers' => 
       array (
-        0 => 'Transmissão',
+        0 => '',
       ),
-      'Streamers' => 
+      'Manage Station Mount Points' => 
       array (
-        0 => 'Transmissores',
+        0 => '',
       ),
-      'Mount Points' => 
+      'Manage Station Remote Relays' => 
       array (
-        0 => 'Pontos de montagem',
+        0 => '',
       ),
-      'Remote Relays' => 
+      'Manage Station Media' => 
       array (
-        0 => 'Relés remoto',
+        0 => '',
       ),
-      'Media' => 
+      'Manage Station Automation' => 
       array (
-        0 => 'Mídias',
+        0 => '',
       ),
-      'Automation' => 
+      'Manage Station Web Hooks' => 
       array (
-        0 => 'Automação',
+        0 => '',
       ),
-      'Web Hooks' => 
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
       array (
-        0 => 'Web Hooks',
+        0 => '',
+      ),
+      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
+      array (
+        0 => '',
+      ),
+      'Exclude media from the backup.' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast Backup' => 
+      array (
+        0 => '',
+      ),
+      'Please wait while a backup is generated...' => 
+      array (
+        0 => '',
+      ),
+      'Creating temporary directories...' => 
+      array (
+        0 => '',
+      ),
+      'Directory "%s" was not created' => 
+      array (
+        0 => '',
+      ),
+      'Backing up MariaDB...' => 
+      array (
+        0 => '',
+      ),
+      'Backing up InfluxDB...' => 
+      array (
+        0 => '',
+      ),
+      'Creating backup archive...' => 
+      array (
+        0 => '',
+      ),
+      'Cleaning up temporary files...' => 
+      array (
+        0 => '',
+      ),
+      'Backup complete in %.2f seconds.' => 
+      array (
+        0 => '',
+      ),
+      'Backup process error' => 
+      array (
+        0 => '',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast Settings' => 
+      array (
+        0 => '',
+      ),
+      'Setting Key' => 
+      array (
+        0 => '',
+      ),
+      'Setting Value' => 
+      array (
+        0 => '',
+      ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => '',
+      ),
+      'Locales generated.' => 
+      array (
+        0 => '',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => '',
+      ),
+      'Imported locale: %s' => 
+      array (
+        0 => '',
+      ),
+      'Locales imported.' => 
+      array (
+        0 => '',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => '',
+      ),
+      'Configuration already set up.' => 
+      array (
+        0 => '',
+      ),
+      'Configuration successfully written.' => 
+      array (
+        0 => '',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => '',
+      ),
+      'Backup path %s not found!' => 
+      array (
+        0 => '',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
@@ -124,25 +224,129 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Conta não encontrada.',
       ),
-      '%s not found.' => 
+      'Run all general AzuraCast setup steps.' => 
       array (
-        0 => '\'%s\' não encontrado.',
+        0 => '',
       ),
-      'API Key' => 
+      'Only update the existing installation.' => 
       array (
-        0 => 'Chave API',
+        0 => '',
       ),
-      '%s updated.' => 
+      'Load predefined fixtures (for development purposes).' => 
       array (
-        0 => '%s foi atualizado.',
+        0 => '',
       ),
-      'Edit %s' => 
+      'Used for updating only to a tagged release.' => 
       array (
-        0 => 'Editar %s',
+        0 => '',
       ),
-      '%s deleted.' => 
+      'AzuraCast Setup' => 
       array (
-        0 => '%s excluído.',
+        0 => '',
+      ),
+      'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
+      array (
+        0 => '',
+      ),
+      'Environment: %s' => 
+      array (
+        0 => '',
+      ),
+      'Installation Method: %s' => 
+      array (
+        0 => '',
+      ),
+      'Running in update mode.' => 
+      array (
+        0 => '',
+      ),
+      'Migrating Legacy Configuration' => 
+      array (
+        0 => '',
+      ),
+      'Setting Up InfluxDB' => 
+      array (
+        0 => '',
+      ),
+      'Running Database Migrations' => 
+      array (
+        0 => '',
+      ),
+      'Generating Database Proxy Classes' => 
+      array (
+        0 => '',
+      ),
+      'Installing Data Fixtures' => 
+      array (
+        0 => '',
+      ),
+      'Refreshing All Stations' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast is now updated to the latest version!' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast installation complete!' => 
+      array (
+        0 => '',
+      ),
+      'Visit %s to complete setup.' => 
+      array (
+        0 => '',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => '',
+      ),
+      'Fixtures loaded.' => 
+      array (
+        0 => '',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => '',
+      ),
+      'Database created.' => 
+      array (
+        0 => '',
+      ),
+      'Retention policies updated.' => 
+      array (
+        0 => '',
+      ),
+      'Continuous queries created.' => 
+      array (
+        0 => '',
+      ),
+      'InfluxDB databases created.' => 
+      array (
+        0 => '',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => '',
+      ),
+      'The task to run (%s).' => 
+      array (
+        0 => '',
+      ),
+      'Record not found.' => 
+      array (
+        0 => '',
+      ),
+      'API Key updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit API Key' => 
+      array (
+        0 => '',
+      ),
+      'API Key deleted.' => 
+      array (
+        0 => '',
       ),
       'Changes saved.' => 
       array (
@@ -156,21 +360,33 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Backup' => 
+      'Backup deleted.' => 
       array (
         0 => '',
       ),
-      '%s added.' => 
+      'Backup not found.' => 
       array (
-        0 => '%s foi adicionado.',
+        0 => '',
       ),
-      'Custom Field' => 
+      'Custom Field updated.' => 
       array (
-        0 => 'Campos customizados',
+        0 => '',
       ),
-      'Add %s' => 
+      'Custom Field added.' => 
       array (
-        0 => 'Adicionar \'%s\'',
+        0 => '',
+      ),
+      'Edit Custom Field' => 
+      array (
+        0 => '',
+      ),
+      'Add Custom Field' => 
+      array (
+        0 => '',
+      ),
+      'Custom Field deleted.' => 
+      array (
+        0 => '',
       ),
       'Sync Task Output' => 
       array (
@@ -204,53 +420,129 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Registro do Supervisor',
       ),
-      'Permission' => 
+      'Permission updated.' => 
       array (
-        0 => 'Permissão',
+        0 => '',
+      ),
+      'Permission added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Permission' => 
+      array (
+        0 => '',
+      ),
+      'Add Permission' => 
+      array (
+        0 => '',
+      ),
+      'Permission deleted.' => 
+      array (
+        0 => '',
       ),
       'System Settings' => 
       array (
         0 => 'Configurações do sistema',
       ),
-      'Station' => 
+      'Station updated.' => 
       array (
-        0 => 'Estação',
+        0 => '',
+      ),
+      'Station added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Station' => 
+      array (
+        0 => '',
+      ),
+      'Station deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Station not found.' => 
+      array (
+        0 => '',
       ),
       'Clone Station: %s' => 
       array (
         0 => 'Clonar estação: %s',
       ),
-      'User' => 
+      'User updated.' => 
       array (
-        0 => 'Usuário',
+        0 => '',
+      ),
+      'User added.' => 
+      array (
+        0 => '',
       ),
       'Another user already exists with this e-mail address. Please update the e-mail address.' => 
       array (
         0 => 'Outro usuário já utiliza este endereço de e-mail. Por favor, atualize o endereço de email.',
       ),
+      'Edit User' => 
+      array (
+        0 => '',
+      ),
+      'Add User' => 
+      array (
+        0 => '',
+      ),
       'You cannot delete your own account.' => 
       array (
         0 => 'Você não pode excluir a própria conta.',
+      ),
+      'User deleted.' => 
+      array (
+        0 => '',
+      ),
+      'User not found.' => 
+      array (
+        0 => '',
       ),
       'Logged in successfully.' => 
       array (
         0 => 'Identificado com sucesso.',
       ),
-      '%s restarted.' => 
+      'Record not found!' => 
       array (
-        0 => '%s reiniciado.',
+        0 => '',
       ),
-      'Frontend' => 
+      'Changes saved successfully.' => 
       array (
-        0 => 'Frontend',
+        0 => '',
       ),
-      '%s stopped.' => 
+      'Record deleted successfully.' => 
       array (
-        0 => '%s parado.',
+        0 => '',
       ),
-      '%s started.' => 
+      'You cannot remove yourself.' => 
       array (
-        0 => '%s iniciado.',
+        0 => '',
+      ),
+      'This station does not accept requests currently.' => 
+      array (
+        0 => '',
+      ),
+      'Request submitted successfully.' => 
+      array (
+        0 => '',
+      ),
+      'Station restarted.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend stopped.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend started.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend restarted.' => 
+      array (
+        0 => '',
       ),
       'Song skipped.' => 
       array (
@@ -260,9 +552,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Streamer desconectado.',
       ),
-      'Backend' => 
+      'Backend stopped.' => 
       array (
-        0 => 'Backend',
+        0 => '',
+      ),
+      'Backend started.' => 
+      array (
+        0 => '',
+      ),
+      'Backend restarted.' => 
+      array (
+        0 => '',
       ),
       'Too many login attempts' => 
       array (
@@ -279,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Your credentials could not be verified.' => 
       array (
         0 => 'Suas credenciais não puderam ser verificadas.',
+      ),
+      'API Key not found.' => 
+      array (
+        0 => '',
+      ),
+      'Add API Key' => 
+      array (
+        0 => '',
       ),
       'All Stations' => 
       array (
@@ -307,6 +615,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Two-factor authentication disabled.' => 
       array (
         0 => 'Autenticação de dois fatores desativada.',
+      ),
+      'Song Title' => 
+      array (
+        0 => 'Título da música',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Artista',
       ),
       'Setup has already been completed!' => 
       array (
@@ -340,6 +656,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Não foi possível mover "%s" para "%s"',
       ),
+      'Media not found.' => 
+      array (
+        0 => '',
+      ),
+      'Media updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Media' => 
+      array (
+        0 => '',
+      ),
       'File renamed!' => 
       array (
         0 => 'Arquivo renomeado!',
@@ -364,21 +692,29 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Este recurso não é suportada atualmente nessa estação.',
       ),
-      'Mount Point' => 
+      'Edit Mount Point' => 
       array (
-        0 => 'Ponto de montagem',
+        0 => '',
       ),
-      'Playlist' => 
+      'Add Mount Point' => 
       array (
-        0 => 'Lista de reprodução',
+        0 => '',
+      ),
+      'Mount Point deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => '',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
         0 => 'Esta lista de reprodução não é uma lista de reprodução sequencial.',
       ),
-      'Format' => 
+      'Format not found.' => 
       array (
-        0 => 'Formato',
+        0 => '',
       ),
       'Playlist enabled.' => 
       array (
@@ -388,17 +724,49 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Playlist desativada.',
       ),
-      'Song Title' => 
+      'Playlist updated.' => 
       array (
-        0 => 'Título da música',
+        0 => '',
       ),
-      'Song Artist' => 
+      'Playlist added.' => 
       array (
-        0 => 'Artista',
+        0 => '',
       ),
-      'Remote Relay' => 
+      'Edit Playlist' => 
       array (
-        0 => 'Relé remoto',
+        0 => '',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Playlist deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay updated.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay deleted.' => 
+      array (
+        0 => '',
+      ),
+      'This record cannot be edited.' => 
+      array (
+        0 => '',
       ),
       'Listeners by Day' => 
       array (
@@ -452,25 +820,57 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Você pode agora configurar as contas para os streamers (DJ).',
       ),
-      'Streamer' => 
+      'Streamer updated.' => 
       array (
-        0 => 'Transmissor',
+        0 => '',
       ),
-      'Web Hook' => 
+      'Streamer added.' => 
       array (
-        0 => 'Web Hook',
+        0 => '',
       ),
-      '%s enabled.' => 
+      'Edit Streamer' => 
       array (
-        0 => '%S ativado.',
+        0 => '',
       ),
-      '%s disabled.' => 
+      'Add Streamer' => 
       array (
-        0 => '%s desativado.',
+        0 => '',
+      ),
+      'Streamer deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook added.' => 
+      array (
+        0 => '',
+      ),
+      'Add Web Hook' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Web Hook' => 
+      array (
+        0 => '',
+      ),
+      'Web hook enabled.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook disabled.' => 
+      array (
+        0 => '',
       ),
       'Web Hook Test Output' => 
       array (
         0 => 'Teste de saída do Web Hook',
+      ),
+      'Web Hook deleted.' => 
+      array (
+        0 => '',
       ),
       'Liquidsoap Log' => 
       array (
@@ -500,7 +900,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Configuração do SHOUTcast',
       ),
+      'Search engine crawlers are not permitted to use this feature.' => 
+      array (
+        0 => '',
+      ),
+      'The song ID you specified could not be found in the station.' => 
+      array (
+        0 => '',
+      ),
+      'The song ID you specified cannot be requested for this station.' => 
+      array (
+        0 => '',
+      ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate request: this song was already requested and will play soon.' => 
       array (
         0 => '',
       ),
@@ -915,6 +1331,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'International Standard Recording Code, used for licensing reports.' => 
       array (
         0 => 'International Standard Recording Code, usado para relatórios de licenciamento.',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Campos Personalizados',
       ),
       'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
       array (
@@ -1456,38 +1876,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href="%s" target="_blank">SoundExchange web site</a>.' => 
-      array (
-        0 => 'Este relatório destina-se a licenciamento nos Estados Unidos apenas, para webcasters pagar royalties através de SoundExchange. Saiba mais sobre os requisitos para a emissão de relatórios e classificação no <a href="%s" target="_blank">SoundExchange web site</a>.',
-      ),
-      'AzuraCast assumes that your station fits SoundExchange Transmission Category A, "Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming." If your station does not fall within this category, update the transmission category field accordingly.' => 
-      array (
-        0 => 'AzuraCast assume que sua estação se encaixa na Categoria de Transmissão do SoundExchange A, "Transmissões de não assinatura diferente de transmissões de transmissão e transmissões de programação não-música." Se sua estação não estiver dentro desta categoria, atualize o campo de categoria de transmissão em conformidade.',
-      ),
-      'The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate.' => 
-      array (
-        0 => 'Os dados coletados pelo AzuraCast atendem ao padrão SoundExchange de ATP (Total de desempenho real), rastreando ouvintes únicos em todas as reproduções de músicas. Todas as outras informações são derivadas dos metadados das músicas enviadas, e podem não ser totalmente precisas.',
-      ),
-      'Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date.' => 
-      array (
-        0 => 'Requisitos de relatórios para o SoundExchange podem mudar a qualquer momento. AzuraCast é software não-comercial integrado pela comunidade e não pode garantir que seu formato de relatório será sempre atualizado.',
-      ),
-      'You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href="%s" target="_blank">SoundExchange\'s ISRC search tool</a>.' => 
-      array (
-        0 => 'Você deve sempre verificar o relatório gerado pelo AzuraCast antes de enviá-lo. Em particular, o ISRC (International Standard Recording Code) ou * both * o álbum e o label são obrigatórios para cada linha, e podem não ser fornecidos nos metadados da música. O AzuraCast usará APIs externas para tentar encontrar o ISRC, mas você também pode usar a <a href="%s" target="_blank"> ferramenta de pesquisa ISRC do SoundExchange</a>.',
-      ),
-      'Report Start Date' => 
-      array (
-        0 => 'Data de início do relatório',
-      ),
-      'Report End Date' => 
-      array (
-        0 => 'Data final do relatório',
-      ),
-      'Generate Report' => 
-      array (
-        0 => 'Gerar relatório',
-      ),
       'Role Name' => 
       array (
         0 => 'Nome da função',
@@ -1561,6 +1949,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Indefinitely' => 
+      array (
+        0 => '',
+      ),
+      'Use WebSockets for Now Playing Updates' => 
+      array (
+        0 => '',
+      ),
+      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
       array (
         0 => '',
       ),
@@ -1667,6 +2063,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Station Profile' => 
       array (
         0 => 'Perfil da estação',
+      ),
+      'Broadcasting' => 
+      array (
+        0 => 'Transmissão',
       ),
       'AutoDJ' => 
       array (
@@ -2041,9 +2441,9 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Funções',
       ),
-      '%s Name' => 
+      'Web Hook Name' => 
       array (
-        0 => '%s Nome',
+        0 => '',
       ),
       'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
@@ -2244,13 +2644,41 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Marca personalizada',
       ),
+      'API Keys' => 
+      array (
+        0 => 'Chaves API',
+      ),
       'System Logs' => 
       array (
         0 => 'Registros do Sistema',
       ),
+      'Audit Log' => 
+      array (
+        0 => '',
+      ),
+      'Backups' => 
+      array (
+        0 => '',
+      ),
+      'Users' => 
+      array (
+        0 => 'Usuários',
+      ),
       'User Accounts' => 
       array (
         0 => 'Contas de usuário',
+      ),
+      'Permissions' => 
+      array (
+        0 => 'Permissões',
+      ),
+      'Stations' => 
+      array (
+        0 => 'Estações',
+      ),
+      'Connected AzuraRelays' => 
+      array (
+        0 => '',
       ),
       'Start Station' => 
       array (
@@ -2267,6 +2695,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Click to restart your station and apply configuration changes.' => 
       array (
         0 => 'Clique para reiniciar sua estação e aplicar alterações de configuração.',
+      ),
+      'Profile' => 
+      array (
+        0 => 'Perfil',
       ),
       'Public Page' => 
       array (
@@ -2287,6 +2719,18 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Web DJ' => 
       array (
         0 => 'Web Dj',
+      ),
+      'Mount Points' => 
+      array (
+        0 => 'Pontos de montagem',
+      ),
+      'Remote Relays' => 
+      array (
+        0 => 'Relés remoto',
+      ),
+      'Web Hooks' => 
+      array (
+        0 => 'Web Hooks',
       ),
       'Reports' => 
       array (
@@ -2335,6 +2779,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Restart Broadcasting' => 
       array (
         0 => 'Reiniciar transmissão',
+      ),
+      'Get Next Song Debug Mode' => 
+      array (
+        0 => '',
       ),
       'Generic Web Hook' => 
       array (
@@ -2396,6 +2844,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Sempre que um soft transmissor/DJ desconectar',
       ),
+      'API Key' => 
+      array (
+        0 => 'Chave API',
+      ),
       'Owner' => 
       array (
         0 => 'Proprietário',
@@ -2407,6 +2859,74 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Revoke' => 
       array (
         0 => 'Revogar',
+      ),
+      'Insert' => 
+      array (
+        0 => '',
+      ),
+      'Delete' => 
+      array (
+        0 => 'Excluir',
+      ),
+      'Update' => 
+      array (
+        0 => '',
+      ),
+      'Changes' => 
+      array (
+        0 => '',
+      ),
+      'Today' => 
+      array (
+        0 => 'Hoje',
+      ),
+      'Yesterday' => 
+      array (
+        0 => 'Ontem',
+      ),
+      'Last 7 Days' => 
+      array (
+        0 => 'Últimos 7 Dias',
+      ),
+      'This Month' => 
+      array (
+        0 => 'Este Mês',
+      ),
+      'Last Month' => 
+      array (
+        0 => 'Mês passado',
+      ),
+      'Date/Time' => 
+      array (
+        0 => 'Data/Hora',
+      ),
+      'User' => 
+      array (
+        0 => 'Usuário',
+      ),
+      'Identifier' => 
+      array (
+        0 => '',
+      ),
+      'Target' => 
+      array (
+        0 => '',
+      ),
+      'Actions' => 
+      array (
+        0 => 'Ações',
+      ),
+      'Field' => 
+      array (
+        0 => '',
+      ),
+      'Previous' => 
+      array (
+        0 => '',
+      ),
+      'Updated' => 
+      array (
+        0 => '',
       ),
       'Automatic Backups' => 
       array (
@@ -2440,9 +2960,9 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => '',
       ),
-      'Actions' => 
+      'Backup' => 
       array (
-        0 => 'Ações',
+        0 => '',
       ),
       'Last Modified' => 
       array (
@@ -2459,10 +2979,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Delete backup "%s"?' => 
       array (
         0 => '',
-      ),
-      'Delete' => 
-      array (
-        0 => 'Excluir',
       ),
       'Backups Home' => 
       array (
@@ -2532,9 +3048,33 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Global',
       ),
+      'Relay' => 
+      array (
+        0 => '',
+      ),
+      'Is Public' => 
+      array (
+        0 => '',
+      ),
+      'First Connected' => 
+      array (
+        0 => '',
+      ),
+      'Latest Update' => 
+      array (
+        0 => '',
+      ),
       'Manage Stations' => 
       array (
         0 => 'Gerenciar estações',
+      ),
+      'Add Station' => 
+      array (
+        0 => '',
+      ),
+      'Station' => 
+      array (
+        0 => 'Estação',
       ),
       'Manage' => 
       array (
@@ -2721,6 +3261,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Microfone',
       ),
+      'Settings' => 
+      array (
+        0 => 'Configurações',
+      ),
       'Mixer' => 
       array (
         0 => 'Controle de Volume',
@@ -2825,9 +3369,17 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Pedir música',
       ),
+      'Playlist' => 
+      array (
+        0 => 'Lista de reprodução',
+      ),
       'Request a Song' => 
       array (
         0 => 'Pedir uma música',
+      ),
+      'Live' => 
+      array (
+        0 => '',
       ),
       'Play' => 
       array (
@@ -2945,9 +3497,9 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Seu tipo de instalação atual é <b>%s</b>. Não se esqueça de incluir este ao criar uma nova edição.',
       ),
-      'New GitHub Issue' => 
+      'Add New GitHub Issue' => 
       array (
-        0 => 'Nova edição do GitHub',
+        0 => '',
       ),
       'Log View' => 
       array (
@@ -3081,6 +3633,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Pontos de montagem são como ouvintes ligar e ouvir a sua estação. Cada ponto de montagem pode ser um formato de áudio diferente ou de qualidade. Usando pontos de montagem, você pode configurar um fluxo de alta qualidade para os ouvintes de banda larga e um fluxo de móvel para os usuários de telefone.',
       ),
+      'Mount Point' => 
+      array (
+        0 => 'Ponto de montagem',
+      ),
       'Delete mount point "%s"?' => 
       array (
         0 => 'Excluir ponto de montagem "%s"?',
@@ -3197,10 +3753,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Parado',
       ),
-      'Loading...' => 
-      array (
-        0 => 'Carregando...',
-      ),
       'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
       array (
         0 => 'LiquidSoap atualmente está embaralhando <b>%d músicas enviadas</b> em <b>%d listas de reprodução</b>.',
@@ -3254,10 +3806,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
         0 => 'Único',
       ),
       'Playing Next' => 
-      array (
-        0 => '',
-      ),
-      'Now Streaming' => 
       array (
         0 => '',
       ),
@@ -3321,9 +3869,13 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Transmissões locais',
       ),
-      'Download %s' => 
+      'Download PLS' => 
       array (
-        0 => 'Download %s',
+        0 => '',
+      ),
+      'Download M3U' => 
+      array (
+        0 => '',
       ),
       'Listener Request' => 
       array (
@@ -3345,6 +3897,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Os relés remotos permitem trabalhar com o software de transmissão fora deste servidor. Qualquer relé incluído aqui será incluído nas estatísticas da sua estação. Você também pode transmitir deste servidor para relés remotos.',
       ),
+      'Remote Relay' => 
+      array (
+        0 => 'Relé remoto',
+      ),
       'Delete remote relay "%s"?' => 
       array (
         0 => 'Excluir retransmissão remota "%s"?',
@@ -3365,25 +3921,25 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Ouvintes ao vivo',
       ),
-      'Today' => 
+      'There are too many data points to map!' => 
       array (
-        0 => 'Hoje',
+        0 => '',
       ),
-      'Yesterday' => 
+      'Download CSV' => 
       array (
-        0 => 'Ontem',
+        0 => 'Download CSV',
       ),
-      'Last 7 Days' => 
+      'Unique Listeners' => 
       array (
-        0 => 'Últimos 7 Dias',
+        0 => '',
       ),
-      'This Month' => 
+      'for selected period' => 
       array (
-        0 => 'Este Mês',
+        0 => '',
       ),
-      'Last Month' => 
+      'Total Listener Hours' => 
       array (
-        0 => 'Mês passado',
+        0 => '',
       ),
       'IP' => 
       array (
@@ -3453,10 +4009,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Reproduções',
       ),
-      'Download CSV' => 
-      array (
-        0 => 'Download CSV',
-      ),
       'Filename' => 
       array (
         0 => 'Nome do arquivo',
@@ -3517,10 +4069,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Transmissão ao vivo',
       ),
-      'Date/Time' => 
-      array (
-        0 => 'Data/Hora',
-      ),
       'Please wait...' => 
       array (
         0 => 'Aguarde, por favor...',
@@ -3557,6 +4105,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Servidor',
       ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => '',
+      ),
       'Port' => 
       array (
         0 => 'Porta',
@@ -3568,6 +4120,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'ShoutCast v1 Clients' => 
       array (
         0 => 'Clientes ShoutCast v1',
+      ),
+      '%d (%d for some clients)' => 
+      array (
+        0 => '',
       ),
       '(DJ username and password separated by a colon)' => 
       array (

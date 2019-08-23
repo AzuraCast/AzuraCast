@@ -14,8 +14,8 @@ Language-Team: French
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-07-23T19:44:58+00:00
-PO-Revision-Date: 2019-08-07 15:39
+POT-Creation-Date: 2019-08-21T22:24:59+00:00
+PO-Revision-Date: 2019-08-23 03:09
 Language: fr_FR
 Plural-Forms: nplurals=2; plural=(n > 1);
 X-Generator: crowdin.com
@@ -36,37 +36,33 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Voir les journaux système',
       ),
-      'Settings' => 
+      'Administer Settings' => 
       array (
-        0 => 'Paramètres',
+        0 => '',
       ),
-      'Administer %s' => 
+      'Administer API Keys' => 
       array (
-        0 => 'Administrer %s',
+        0 => '',
       ),
-      'API Keys' => 
+      'Administer Users' => 
       array (
-        0 => 'Clés API',
+        0 => '',
       ),
-      'Users' => 
+      'Administer Permissions' => 
       array (
-        0 => 'Utilisateurs',
+        0 => '',
       ),
-      'Permissions' => 
+      'Administer Stations' => 
       array (
-        0 => 'Permissions',
+        0 => '',
       ),
-      'Stations' => 
+      'Administer Custom Fields' => 
       array (
-        0 => 'Stations',
+        0 => '',
       ),
-      'Custom Fields' => 
+      'Administer Backups' => 
       array (
-        0 => 'Champs personnalisés',
-      ),
-      'Backups' => 
-      array (
-        0 => 'Sauvegardes',
+        0 => '',
       ),
       'View Station Page' => 
       array (
@@ -80,41 +76,145 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Voir les journaux de la station',
       ),
-      'Profile' => 
+      'Manage Station Profile' => 
       array (
-        0 => 'Profil',
+        0 => '',
       ),
-      'Manage Station %s' => 
+      'Manage Station Broadcasting' => 
       array (
-        0 => 'Gérer la station %s',
+        0 => '',
       ),
-      'Broadcasting' => 
+      'Manage Station Streamers' => 
       array (
-        0 => 'Diffusion',
+        0 => '',
       ),
-      'Streamers' => 
+      'Manage Station Mount Points' => 
       array (
-        0 => 'Streamers',
+        0 => '',
       ),
-      'Mount Points' => 
+      'Manage Station Remote Relays' => 
       array (
-        0 => 'Points de montage',
+        0 => '',
       ),
-      'Remote Relays' => 
+      'Manage Station Media' => 
       array (
-        0 => 'Relais distant',
+        0 => '',
       ),
-      'Media' => 
+      'Manage Station Automation' => 
       array (
-        0 => 'Médias',
+        0 => '',
       ),
-      'Automation' => 
+      'Manage Station Web Hooks' => 
       array (
-        0 => 'Automatisation',
+        0 => '',
       ),
-      'Web Hooks' => 
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
       array (
-        0 => 'Webhooks',
+        0 => '',
+      ),
+      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
+      array (
+        0 => '',
+      ),
+      'Exclude media from the backup.' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast Backup' => 
+      array (
+        0 => '',
+      ),
+      'Please wait while a backup is generated...' => 
+      array (
+        0 => '',
+      ),
+      'Creating temporary directories...' => 
+      array (
+        0 => '',
+      ),
+      'Directory "%s" was not created' => 
+      array (
+        0 => '',
+      ),
+      'Backing up MariaDB...' => 
+      array (
+        0 => '',
+      ),
+      'Backing up InfluxDB...' => 
+      array (
+        0 => '',
+      ),
+      'Creating backup archive...' => 
+      array (
+        0 => '',
+      ),
+      'Cleaning up temporary files...' => 
+      array (
+        0 => '',
+      ),
+      'Backup complete in %.2f seconds.' => 
+      array (
+        0 => '',
+      ),
+      'Backup process error' => 
+      array (
+        0 => '',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast Settings' => 
+      array (
+        0 => '',
+      ),
+      'Setting Key' => 
+      array (
+        0 => '',
+      ),
+      'Setting Value' => 
+      array (
+        0 => '',
+      ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => '',
+      ),
+      'Locales generated.' => 
+      array (
+        0 => '',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => '',
+      ),
+      'Imported locale: %s' => 
+      array (
+        0 => '',
+      ),
+      'Locales imported.' => 
+      array (
+        0 => '',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => '',
+      ),
+      'Configuration already set up.' => 
+      array (
+        0 => '',
+      ),
+      'Configuration successfully written.' => 
+      array (
+        0 => '',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => '',
+      ),
+      'Backup path %s not found!' => 
+      array (
+        0 => '',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
@@ -124,25 +224,129 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Compte non trouvé.',
       ),
-      '%s not found.' => 
+      'Run all general AzuraCast setup steps.' => 
       array (
-        0 => '%s est introuvable.',
+        0 => '',
       ),
-      'API Key' => 
+      'Only update the existing installation.' => 
       array (
-        0 => 'Clé API',
+        0 => '',
       ),
-      '%s updated.' => 
+      'Load predefined fixtures (for development purposes).' => 
       array (
-        0 => '%s mis à jour.',
+        0 => '',
       ),
-      'Edit %s' => 
+      'Used for updating only to a tagged release.' => 
       array (
-        0 => 'Modifiez le fichier %s',
+        0 => '',
       ),
-      '%s deleted.' => 
+      'AzuraCast Setup' => 
       array (
-        0 => '%s supprimé.',
+        0 => '',
+      ),
+      'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
+      array (
+        0 => '',
+      ),
+      'Environment: %s' => 
+      array (
+        0 => '',
+      ),
+      'Installation Method: %s' => 
+      array (
+        0 => '',
+      ),
+      'Running in update mode.' => 
+      array (
+        0 => '',
+      ),
+      'Migrating Legacy Configuration' => 
+      array (
+        0 => '',
+      ),
+      'Setting Up InfluxDB' => 
+      array (
+        0 => '',
+      ),
+      'Running Database Migrations' => 
+      array (
+        0 => '',
+      ),
+      'Generating Database Proxy Classes' => 
+      array (
+        0 => '',
+      ),
+      'Installing Data Fixtures' => 
+      array (
+        0 => '',
+      ),
+      'Refreshing All Stations' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast is now updated to the latest version!' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast installation complete!' => 
+      array (
+        0 => '',
+      ),
+      'Visit %s to complete setup.' => 
+      array (
+        0 => '',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => '',
+      ),
+      'Fixtures loaded.' => 
+      array (
+        0 => '',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => '',
+      ),
+      'Database created.' => 
+      array (
+        0 => '',
+      ),
+      'Retention policies updated.' => 
+      array (
+        0 => '',
+      ),
+      'Continuous queries created.' => 
+      array (
+        0 => '',
+      ),
+      'InfluxDB databases created.' => 
+      array (
+        0 => '',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => '',
+      ),
+      'The task to run (%s).' => 
+      array (
+        0 => '',
+      ),
+      'Record not found.' => 
+      array (
+        0 => '',
+      ),
+      'API Key updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit API Key' => 
+      array (
+        0 => '',
+      ),
+      'API Key deleted.' => 
+      array (
+        0 => '',
       ),
       'Changes saved.' => 
       array (
@@ -156,21 +360,33 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Exécuter la sauvegarde manuelle',
       ),
-      'Backup' => 
+      'Backup deleted.' => 
       array (
-        0 => 'Sauvegarde',
+        0 => '',
       ),
-      '%s added.' => 
+      'Backup not found.' => 
       array (
-        0 => '%s ajouté.',
+        0 => '',
       ),
-      'Custom Field' => 
+      'Custom Field updated.' => 
       array (
-        0 => 'Champs personnalisés',
+        0 => '',
       ),
-      'Add %s' => 
+      'Custom Field added.' => 
       array (
-        0 => 'Ajouter %s',
+        0 => '',
+      ),
+      'Edit Custom Field' => 
+      array (
+        0 => '',
+      ),
+      'Add Custom Field' => 
+      array (
+        0 => '',
+      ),
+      'Custom Field deleted.' => 
+      array (
+        0 => '',
       ),
       'Sync Task Output' => 
       array (
@@ -204,53 +420,129 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Log de Supervisord',
       ),
-      'Permission' => 
+      'Permission updated.' => 
       array (
-        0 => 'Permissions',
+        0 => '',
+      ),
+      'Permission added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Permission' => 
+      array (
+        0 => '',
+      ),
+      'Add Permission' => 
+      array (
+        0 => '',
+      ),
+      'Permission deleted.' => 
+      array (
+        0 => '',
       ),
       'System Settings' => 
       array (
         0 => 'Configuration système',
       ),
-      'Station' => 
+      'Station updated.' => 
       array (
-        0 => 'Station',
+        0 => '',
+      ),
+      'Station added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Station' => 
+      array (
+        0 => '',
+      ),
+      'Station deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Station not found.' => 
+      array (
+        0 => '',
       ),
       'Clone Station: %s' => 
       array (
         0 => 'Clone de la station : %s',
       ),
-      'User' => 
+      'User updated.' => 
       array (
-        0 => 'Utilisateur',
+        0 => '',
+      ),
+      'User added.' => 
+      array (
+        0 => '',
       ),
       'Another user already exists with this e-mail address. Please update the e-mail address.' => 
       array (
         0 => 'Il existe déjà un autre utilisateur avec cette adresse E-mail. Veuillez modifier votre adresse E-mail.',
       ),
+      'Edit User' => 
+      array (
+        0 => '',
+      ),
+      'Add User' => 
+      array (
+        0 => '',
+      ),
       'You cannot delete your own account.' => 
       array (
         0 => 'Vous ne pouvez pas supprimer votre propre compte.',
+      ),
+      'User deleted.' => 
+      array (
+        0 => '',
+      ),
+      'User not found.' => 
+      array (
+        0 => '',
       ),
       'Logged in successfully.' => 
       array (
         0 => 'Connecté avec succès.',
       ),
-      '%s restarted.' => 
+      'Record not found!' => 
       array (
-        0 => '%s est redémarré.',
+        0 => '',
       ),
-      'Frontend' => 
+      'Changes saved successfully.' => 
       array (
-        0 => 'Frontend',
+        0 => '',
       ),
-      '%s stopped.' => 
+      'Record deleted successfully.' => 
       array (
-        0 => '%s est arrêtée.',
+        0 => '',
       ),
-      '%s started.' => 
+      'You cannot remove yourself.' => 
       array (
-        0 => '%s est démarré.',
+        0 => '',
+      ),
+      'This station does not accept requests currently.' => 
+      array (
+        0 => '',
+      ),
+      'Request submitted successfully.' => 
+      array (
+        0 => '',
+      ),
+      'Station restarted.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend stopped.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend started.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend restarted.' => 
+      array (
+        0 => '',
       ),
       'Song skipped.' => 
       array (
@@ -260,9 +552,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Streamer déconnecté.',
       ),
-      'Backend' => 
+      'Backend stopped.' => 
       array (
-        0 => 'Backend',
+        0 => '',
+      ),
+      'Backend started.' => 
+      array (
+        0 => '',
+      ),
+      'Backend restarted.' => 
+      array (
+        0 => '',
       ),
       'Too many login attempts' => 
       array (
@@ -279,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Your credentials could not be verified.' => 
       array (
         0 => 'Vos informations d\'identification n\'ont pas pu être vérifiées.',
+      ),
+      'API Key not found.' => 
+      array (
+        0 => '',
+      ),
+      'Add API Key' => 
+      array (
+        0 => '',
       ),
       'All Stations' => 
       array (
@@ -307,6 +615,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Two-factor authentication disabled.' => 
       array (
         0 => 'Authentification à deux facteurs désactivée.',
+      ),
+      'Song Title' => 
+      array (
+        0 => 'Titre de la musique',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Artiste de la musique',
       ),
       'Setup has already been completed!' => 
       array (
@@ -340,6 +656,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Impossible de déplacer "%s" vers "%s"',
       ),
+      'Media not found.' => 
+      array (
+        0 => '',
+      ),
+      'Media updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Media' => 
+      array (
+        0 => '',
+      ),
       'File renamed!' => 
       array (
         0 => 'Fichier renommé !',
@@ -364,21 +692,29 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Cette fonctionnalité n\'est pas compatible avec cette station.',
       ),
-      'Mount Point' => 
+      'Edit Mount Point' => 
       array (
-        0 => 'Point de montage',
+        0 => '',
       ),
-      'Playlist' => 
+      'Add Mount Point' => 
       array (
-        0 => 'Playlist',
+        0 => '',
+      ),
+      'Mount Point deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => '',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
         0 => 'Cette playlist n’est pas une playlist séquentielle.',
       ),
-      'Format' => 
+      'Format not found.' => 
       array (
-        0 => 'Format',
+        0 => '',
       ),
       'Playlist enabled.' => 
       array (
@@ -388,17 +724,49 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Playlist désactivée.',
       ),
-      'Song Title' => 
+      'Playlist updated.' => 
       array (
-        0 => 'Titre de la musique',
+        0 => '',
       ),
-      'Song Artist' => 
+      'Playlist added.' => 
       array (
-        0 => 'Artiste de la musique',
+        0 => '',
       ),
-      'Remote Relay' => 
+      'Edit Playlist' => 
       array (
-        0 => 'Relais distant',
+        0 => '',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Playlist deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay updated.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay deleted.' => 
+      array (
+        0 => '',
+      ),
+      'This record cannot be edited.' => 
+      array (
+        0 => '',
       ),
       'Listeners by Day' => 
       array (
@@ -452,25 +820,57 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vous pouvez maintenant configurer des comptes pour les streamers (DJs).',
       ),
-      'Streamer' => 
+      'Streamer updated.' => 
       array (
-        0 => 'Streamer',
+        0 => '',
       ),
-      'Web Hook' => 
+      'Streamer added.' => 
       array (
-        0 => 'Web Hook',
+        0 => '',
       ),
-      '%s enabled.' => 
+      'Edit Streamer' => 
       array (
-        0 => '%s est activé.',
+        0 => '',
       ),
-      '%s disabled.' => 
+      'Add Streamer' => 
       array (
-        0 => '%s est désactivé.',
+        0 => '',
+      ),
+      'Streamer deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook added.' => 
+      array (
+        0 => '',
+      ),
+      'Add Web Hook' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Web Hook' => 
+      array (
+        0 => '',
+      ),
+      'Web hook enabled.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook disabled.' => 
+      array (
+        0 => '',
       ),
       'Web Hook Test Output' => 
       array (
         0 => 'Tester la Web Hook',
+      ),
+      'Web Hook deleted.' => 
+      array (
+        0 => '',
       ),
       'Liquidsoap Log' => 
       array (
@@ -500,9 +900,25 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Configuration de SHOUTcast',
       ),
+      'Search engine crawlers are not permitted to use this feature.' => 
+      array (
+        0 => '',
+      ),
+      'The song ID you specified could not be found in the station.' => 
+      array (
+        0 => '',
+      ),
+      'The song ID you specified cannot be requested for this station.' => 
+      array (
+        0 => '',
+      ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
         0 => 'Vous avez fait une demande trop récemment ! Veuillez patienter avant d\'en soumettre un autre.',
+      ),
+      'Duplicate request: this song was already requested and will play soon.' => 
+      array (
+        0 => '',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
@@ -915,6 +1331,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'International Standard Recording Code, used for licensing reports.' => 
       array (
         0 => 'L\'International Standard Recording Code, utilisé pour les licences de diffusion.',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Champs personnalisés',
       ),
       'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
       array (
@@ -1456,38 +1876,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Si vous diffusez avec l\'AutoDJ, entrez le mot de passe source ici.',
       ),
-      'This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href="%s" target="_blank">SoundExchange web site</a>.' => 
-      array (
-        0 => 'Ce rapport est destiné à l\'octroi de licences aux États-Unis uniquement, pour les webdiffuseurs qui paient des redevances via SoundExchange. Pour en savoir plus sur les exigences en matière de déclaration et de classification, consultez<a href="%s" target="_blank">le site Web SoundExchange</a>.',
-      ),
-      'AzuraCast assumes that your station fits SoundExchange Transmission Category A, "Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming." If your station does not fall within this category, update the transmission category field accordingly.' => 
-      array (
-        0 => 'AzuraCast suppose que votre station correspond à la catégorie de transmission SoundExchange A, "Émissions admissibles sans abonnement autres que les émissions diffusées en simultané et les émissions de programmation non musicale". Si votre station n\'entre pas dans cette catégorie, mettez à jour le champ Catégorie de transmission en conséquence.',
-      ),
-      'The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate.' => 
-      array (
-        0 => 'Les données recueillies par AzuraCast sont conformes à la norme SoundExchange pour les performances totales réelles (ATP) en suivant les auditeurs uniques pour toutes les chansons jouées. Toutes les autres informations proviennent des métadonnées des chansons téléchargées elles-mêmes et peuvent ne pas être totalement exactes.',
-      ),
-      'Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date.' => 
-      array (
-        0 => 'Les exigences en matière de rapports pour SoundExchange peuvent changer à tout moment. AzuraCast est un logiciel communautaire non commercial et ne peut garantir que son format de rapport sera toujours à jour.',
-      ),
-      'You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href="%s" target="_blank">SoundExchange\'s ISRC search tool</a>.' => 
-      array (
-        0 => 'Vous devez toujours vérifier le rapport généré par AzuraCast avant de l\'envoyer. En particulier, l\'ISRC (International Standard Recording Code) ou l\'album et l\'étiquette sont requis pour chaque ligne, et ne peuvent être fournis dans les métadonnées des chansons. AzuraCast utilisera des API externes pour essayer de trouver l\'ISRC, mais vous pouvez également utiliser<a href="%s" target="_blank">l\'outil de recherche ISRC de SoundExchange</a>.',
-      ),
-      'Report Start Date' => 
-      array (
-        0 => 'Date de début du rapport',
-      ),
-      'Report End Date' => 
-      array (
-        0 => 'Date de fin du rapport',
-      ),
-      'Generate Report' => 
-      array (
-        0 => 'Générer le rapport',
-      ),
       'Role Name' => 
       array (
         0 => 'Nom du rôle',
@@ -1563,6 +1951,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Indefinitely' => 
       array (
         0 => 'Indéfiniment',
+      ),
+      'Use WebSockets for Now Playing Updates' => 
+      array (
+        0 => '',
+      ),
+      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
+      array (
+        0 => '',
       ),
       'Security Controls' => 
       array (
@@ -1667,6 +2063,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Station Profile' => 
       array (
         0 => 'Profil de la station',
+      ),
+      'Broadcasting' => 
+      array (
+        0 => 'Diffusion',
       ),
       'AutoDJ' => 
       array (
@@ -2040,9 +2440,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Rôles',
       ),
-      '%s Name' => 
+      'Web Hook Name' => 
       array (
-        0 => '%s Nom',
+        0 => '',
       ),
       'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
@@ -2110,15 +2510,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
                 optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => 'Les Web Hooks envoient automatiquement une requête HTTP POST à l\'URL que vous spécifiez à
-
-               pour l\'avertir chaque fois qu\'un des déclencheurs que vous spécifiez se produit sur votre station. Le corps du message POST
-
-               est exactement le même que le <a href="%s" target="_blank">Réponse de l\'API de diffusion</a> de votre station.
-
-               Afin de traiter rapidement, les Web Hooks ont un court délai d\'attente, donc le service de réponse doit être
-
-               optimisé pour traiter la demande en moins de 2 secondes.',
+        0 => '',
       ),
       'Web Hook URL' => 
       array (
@@ -2205,21 +2597,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => 'Étapes pour configurer une demande Twitter :<br>
-
-                   <ol type="1">
-
-                        <li>Créer une nouvelle demande sur <a href="%s" target="_blank">site d\'applications Twitter</a>.
-
-                        Utilisez l\'URL de base de cette installation comme URL d\'application.</li>
-
-                        <li>Dans l\'application nouvellement créée, cliquez sur l\'onglet "Clés et jetons d\'accès".</li>
-
-                        <li>En bas de la page, cliquez sur "Créer mon code d\'accès".</li>
-
-                    </ol>
-
-                    <p>Une fois ces étapes terminées, entrez les informations de la page " Clés et jetons d\'accès " dans les champs ci-dessous.</p>',
+        0 => '',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -2265,13 +2643,41 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Personnalisation de l\'image de marque',
       ),
+      'API Keys' => 
+      array (
+        0 => 'Clés API',
+      ),
       'System Logs' => 
       array (
         0 => 'Journaux(Logs) du système',
       ),
+      'Audit Log' => 
+      array (
+        0 => '',
+      ),
+      'Backups' => 
+      array (
+        0 => 'Sauvegardes',
+      ),
+      'Users' => 
+      array (
+        0 => 'Utilisateurs',
+      ),
       'User Accounts' => 
       array (
         0 => 'Comptes utilisateurs',
+      ),
+      'Permissions' => 
+      array (
+        0 => 'Permissions',
+      ),
+      'Stations' => 
+      array (
+        0 => 'Stations',
+      ),
+      'Connected AzuraRelays' => 
+      array (
+        0 => 'RelaisAzura connectés',
       ),
       'Start Station' => 
       array (
@@ -2288,6 +2694,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Click to restart your station and apply configuration changes.' => 
       array (
         0 => 'Cliquez pour redémarrer votre station et appliquer les modifications de configuration.',
+      ),
+      'Profile' => 
+      array (
+        0 => 'Profil',
       ),
       'Public Page' => 
       array (
@@ -2308,6 +2718,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Web DJ' => 
       array (
         0 => 'Web DJ',
+      ),
+      'Mount Points' => 
+      array (
+        0 => 'Points de montage',
+      ),
+      'Remote Relays' => 
+      array (
+        0 => 'Relais distant',
+      ),
+      'Web Hooks' => 
+      array (
+        0 => 'Webhooks',
       ),
       'Reports' => 
       array (
@@ -2356,6 +2778,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Restart Broadcasting' => 
       array (
         0 => 'Redémarrer la diffusion',
+      ),
+      'Get Next Song Debug Mode' => 
+      array (
+        0 => '',
       ),
       'Generic Web Hook' => 
       array (
@@ -2417,6 +2843,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Chaque fois qu\'un streamer en direct/DJ se déconnecte du flux',
       ),
+      'API Key' => 
+      array (
+        0 => 'Clé API',
+      ),
       'Owner' => 
       array (
         0 => 'Propriétaire',
@@ -2428,6 +2858,74 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Revoke' => 
       array (
         0 => 'Révoquer',
+      ),
+      'Insert' => 
+      array (
+        0 => '',
+      ),
+      'Delete' => 
+      array (
+        0 => 'Supprimer',
+      ),
+      'Update' => 
+      array (
+        0 => '',
+      ),
+      'Changes' => 
+      array (
+        0 => '',
+      ),
+      'Today' => 
+      array (
+        0 => 'Aujourd’hui',
+      ),
+      'Yesterday' => 
+      array (
+        0 => 'Hier',
+      ),
+      'Last 7 Days' => 
+      array (
+        0 => '7 derniers jours',
+      ),
+      'This Month' => 
+      array (
+        0 => 'Ce mois-ci',
+      ),
+      'Last Month' => 
+      array (
+        0 => 'Le mois dernier',
+      ),
+      'Date/Time' => 
+      array (
+        0 => 'Date/Heure',
+      ),
+      'User' => 
+      array (
+        0 => 'Utilisateur',
+      ),
+      'Identifier' => 
+      array (
+        0 => '',
+      ),
+      'Target' => 
+      array (
+        0 => '',
+      ),
+      'Actions' => 
+      array (
+        0 => 'Actions',
+      ),
+      'Field' => 
+      array (
+        0 => '',
+      ),
+      'Previous' => 
+      array (
+        0 => '',
+      ),
+      'Updated' => 
+      array (
+        0 => '',
       ),
       'Automatic Backups' => 
       array (
@@ -2461,9 +2959,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Notez que la restauration d\'une sauvegarde effacera votre base de données existante. Ne restaurez jamais les fichiers de sauvegarde d\'utilisateurs non fiables.',
       ),
-      'Actions' => 
+      'Backup' => 
       array (
-        0 => 'Actions',
+        0 => 'Sauvegarde',
       ),
       'Last Modified' => 
       array (
@@ -2480,10 +2978,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Delete backup "%s"?' => 
       array (
         0 => 'Supprimer la sauvegarde "%s"?',
-      ),
-      'Delete' => 
-      array (
-        0 => 'Supprimer',
       ),
       'Backups Home' => 
       array (
@@ -2553,9 +3047,33 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Globale',
       ),
+      'Relay' => 
+      array (
+        0 => 'Relais',
+      ),
+      'Is Public' => 
+      array (
+        0 => 'Est publique',
+      ),
+      'First Connected' => 
+      array (
+        0 => 'Premier connecté',
+      ),
+      'Latest Update' => 
+      array (
+        0 => 'Dernière mise à jour',
+      ),
       'Manage Stations' => 
       array (
         0 => 'Gestion des stations',
+      ),
+      'Add Station' => 
+      array (
+        0 => '',
+      ),
+      'Station' => 
+      array (
+        0 => 'Station',
       ),
       'Manage' => 
       array (
@@ -2628,9 +3146,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'API keys can be used to access some system functionality without needing to log in. All of the keys 
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => 'Les clés API peuvent être utilisées pour accéder à certaines fonctionnalités du système sans avoir besoin de se connecter. Toutes les clés
-
-                que vous créez partagent vos permissions dans le système. Pour plus d\'informations, voir la documentation <a href="%s">Documentation de l\'API</a>.',
+        0 => '',
       ),
       'Key Identifier' => 
       array (
@@ -2744,6 +3260,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Microphone',
       ),
+      'Settings' => 
+      array (
+        0 => 'Paramètres',
+      ),
       'Mixer' => 
       array (
         0 => 'Mélangeur',
@@ -2848,9 +3368,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Demander un titre',
       ),
+      'Playlist' => 
+      array (
+        0 => 'Playlist',
+      ),
       'Request a Song' => 
       array (
         0 => 'Demander un titre',
+      ),
+      'Live' => 
+      array (
+        0 => 'Live',
       ),
       'Play' => 
       array (
@@ -2968,9 +3496,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Votre installation actuelle est la <b>%s</b>. Assurez-vous de l\'inclure lors de la création d\'un nouveau problème.',
       ),
-      'New GitHub Issue' => 
+      'Add New GitHub Issue' => 
       array (
-        0 => 'Nouveau sujet GitHub',
+        0 => '',
       ),
       'Log View' => 
       array (
@@ -3104,6 +3632,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Les points de montage sont la façon dont les auditeurs se connectent et écoutent votre station. Chaque point de montage peut avoir un format ou une qualité audio différente. En utilisant des points de montage, vous pouvez configurer un flux de haute qualité pour les auditeurs à large bande et un flux mobile pour les utilisateurs de téléphone.',
       ),
+      'Mount Point' => 
+      array (
+        0 => 'Point de montage',
+      ),
       'Delete mount point "%s"?' => 
       array (
         0 => 'Supprimer le point de montage "%s"?',
@@ -3220,10 +3752,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Arrêté',
       ),
-      'Loading...' => 
-      array (
-        0 => 'Chargement...',
-      ),
       'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
       array (
         0 => 'LiquidSoap joue actuellement <b>%d titres</b> dans <b>%d playlists</b>.',
@@ -3279,10 +3807,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Playing Next' => 
       array (
         0 => 'Jouer le prochain morceau',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Actuellement en direct',
       ),
       'Skip Song' => 
       array (
@@ -3344,9 +3868,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Flux locaux',
       ),
-      'Download %s' => 
+      'Download PLS' => 
       array (
-        0 => 'Télécharger %s',
+        0 => '',
+      ),
+      'Download M3U' => 
+      array (
+        0 => '',
       ),
       'Listener Request' => 
       array (
@@ -3368,6 +3896,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Les relais distants vous permettent de travailler avec des logiciels de diffusion en dehors de ce serveur. Tout relais que vous incluez ici sera inclus dans les statistiques de votre station. Vous pouvez également diffuser depuis ce serveur vers des relais distants.',
       ),
+      'Remote Relay' => 
+      array (
+        0 => 'Relais distant',
+      ),
       'Delete remote relay "%s"?' => 
       array (
         0 => 'Supprimer le relais à distance "%s" ?',
@@ -3388,25 +3920,25 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Auditeurs en direct',
       ),
-      'Today' => 
+      'There are too many data points to map!' => 
       array (
-        0 => 'Aujourd’hui',
+        0 => '',
       ),
-      'Yesterday' => 
+      'Download CSV' => 
       array (
-        0 => 'Hier',
+        0 => 'Télécharger le CSV',
       ),
-      'Last 7 Days' => 
+      'Unique Listeners' => 
       array (
-        0 => '7 derniers jours',
+        0 => 'Auditeurs uniques',
       ),
-      'This Month' => 
+      'for selected period' => 
       array (
-        0 => 'Ce mois-ci',
+        0 => 'pour la période sélectionnée',
       ),
-      'Last Month' => 
+      'Total Listener Hours' => 
       array (
-        0 => 'Le mois dernier',
+        0 => 'Heures d\'écoute totales',
       ),
       'IP' => 
       array (
@@ -3476,10 +4008,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Lectures',
       ),
-      'Download CSV' => 
-      array (
-        0 => 'Télécharger le CSV',
-      ),
       'Filename' => 
       array (
         0 => 'Nom de fichier',
@@ -3540,10 +4068,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Diffusion en direct',
       ),
-      'Date/Time' => 
-      array (
-        0 => 'Date/Heure',
-      ),
       'Please wait...' => 
       array (
         0 => 'Veuillez patienter...',
@@ -3580,6 +4104,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Serveur',
       ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => '',
+      ),
       'Port' => 
       array (
         0 => 'Port',
@@ -3591,6 +4119,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'ShoutCast v1 Clients' => 
       array (
         0 => 'Clients ShoutCast v1',
+      ),
+      '%d (%d for some clients)' => 
+      array (
+        0 => '',
       ),
       '(DJ username and password separated by a colon)' => 
       array (

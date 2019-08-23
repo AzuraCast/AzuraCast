@@ -14,8 +14,8 @@ Language-Team: Italian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-07-23T19:44:58+00:00
-PO-Revision-Date: 2019-08-07 15:39
+POT-Creation-Date: 2019-08-21T22:24:59+00:00
+PO-Revision-Date: 2019-08-23 03:09
 Language: it_IT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -36,37 +36,33 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vedi i log di sistema',
       ),
-      'Settings' => 
+      'Administer Settings' => 
       array (
-        0 => 'Impostazioni',
+        0 => '',
       ),
-      'Administer %s' => 
+      'Administer API Keys' => 
       array (
-        0 => 'Amministra %s',
+        0 => '',
       ),
-      'API Keys' => 
+      'Administer Users' => 
       array (
-        0 => 'API Key',
+        0 => '',
       ),
-      'Users' => 
+      'Administer Permissions' => 
       array (
-        0 => 'Utenti',
+        0 => '',
       ),
-      'Permissions' => 
+      'Administer Stations' => 
       array (
-        0 => 'Permessi',
+        0 => '',
       ),
-      'Stations' => 
+      'Administer Custom Fields' => 
       array (
-        0 => 'Stazioni',
+        0 => '',
       ),
-      'Custom Fields' => 
+      'Administer Backups' => 
       array (
-        0 => 'Campi personalizzati',
-      ),
-      'Backups' => 
-      array (
-        0 => 'Backup',
+        0 => '',
       ),
       'View Station Page' => 
       array (
@@ -80,41 +76,145 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vedi i log della stazione',
       ),
-      'Profile' => 
+      'Manage Station Profile' => 
       array (
-        0 => 'Profilo',
+        0 => '',
       ),
-      'Manage Station %s' => 
+      'Manage Station Broadcasting' => 
       array (
-        0 => 'Gestisci stazione %s',
+        0 => '',
       ),
-      'Broadcasting' => 
+      'Manage Station Streamers' => 
       array (
-        0 => 'In trasmissione',
+        0 => '',
       ),
-      'Streamers' => 
+      'Manage Station Mount Points' => 
       array (
-        0 => 'Curatori',
+        0 => '',
       ),
-      'Mount Points' => 
+      'Manage Station Remote Relays' => 
       array (
-        0 => 'Mount Point',
+        0 => '',
       ),
-      'Remote Relays' => 
+      'Manage Station Media' => 
       array (
-        0 => 'Collegamenti remoti',
+        0 => '',
       ),
-      'Media' => 
+      'Manage Station Automation' => 
       array (
-        0 => 'Media',
+        0 => '',
       ),
-      'Automation' => 
+      'Manage Station Web Hooks' => 
       array (
-        0 => 'Automazione',
+        0 => '',
       ),
-      'Web Hooks' => 
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
       array (
-        0 => 'Interazioni web',
+        0 => '',
+      ),
+      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
+      array (
+        0 => '',
+      ),
+      'Exclude media from the backup.' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast Backup' => 
+      array (
+        0 => '',
+      ),
+      'Please wait while a backup is generated...' => 
+      array (
+        0 => '',
+      ),
+      'Creating temporary directories...' => 
+      array (
+        0 => '',
+      ),
+      'Directory "%s" was not created' => 
+      array (
+        0 => '',
+      ),
+      'Backing up MariaDB...' => 
+      array (
+        0 => '',
+      ),
+      'Backing up InfluxDB...' => 
+      array (
+        0 => '',
+      ),
+      'Creating backup archive...' => 
+      array (
+        0 => '',
+      ),
+      'Cleaning up temporary files...' => 
+      array (
+        0 => '',
+      ),
+      'Backup complete in %.2f seconds.' => 
+      array (
+        0 => '',
+      ),
+      'Backup process error' => 
+      array (
+        0 => '',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast Settings' => 
+      array (
+        0 => '',
+      ),
+      'Setting Key' => 
+      array (
+        0 => '',
+      ),
+      'Setting Value' => 
+      array (
+        0 => '',
+      ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => '',
+      ),
+      'Locales generated.' => 
+      array (
+        0 => '',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => '',
+      ),
+      'Imported locale: %s' => 
+      array (
+        0 => '',
+      ),
+      'Locales imported.' => 
+      array (
+        0 => '',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => '',
+      ),
+      'Configuration already set up.' => 
+      array (
+        0 => '',
+      ),
+      'Configuration successfully written.' => 
+      array (
+        0 => '',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => '',
+      ),
+      'Backup path %s not found!' => 
+      array (
+        0 => '',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
@@ -124,25 +224,129 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Account non trovato.',
       ),
-      '%s not found.' => 
+      'Run all general AzuraCast setup steps.' => 
       array (
-        0 => '%s non trovato.',
+        0 => '',
       ),
-      'API Key' => 
+      'Only update the existing installation.' => 
       array (
-        0 => 'API Key',
+        0 => '',
       ),
-      '%s updated.' => 
+      'Load predefined fixtures (for development purposes).' => 
       array (
-        0 => '%s aggiornato.',
+        0 => '',
       ),
-      'Edit %s' => 
+      'Used for updating only to a tagged release.' => 
       array (
-        0 => 'Modifica %s',
+        0 => '',
       ),
-      '%s deleted.' => 
+      'AzuraCast Setup' => 
       array (
-        0 => '%s eliminato.',
+        0 => '',
+      ),
+      'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
+      array (
+        0 => '',
+      ),
+      'Environment: %s' => 
+      array (
+        0 => '',
+      ),
+      'Installation Method: %s' => 
+      array (
+        0 => '',
+      ),
+      'Running in update mode.' => 
+      array (
+        0 => '',
+      ),
+      'Migrating Legacy Configuration' => 
+      array (
+        0 => '',
+      ),
+      'Setting Up InfluxDB' => 
+      array (
+        0 => '',
+      ),
+      'Running Database Migrations' => 
+      array (
+        0 => '',
+      ),
+      'Generating Database Proxy Classes' => 
+      array (
+        0 => '',
+      ),
+      'Installing Data Fixtures' => 
+      array (
+        0 => '',
+      ),
+      'Refreshing All Stations' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast is now updated to the latest version!' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast installation complete!' => 
+      array (
+        0 => '',
+      ),
+      'Visit %s to complete setup.' => 
+      array (
+        0 => '',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => '',
+      ),
+      'Fixtures loaded.' => 
+      array (
+        0 => '',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => '',
+      ),
+      'Database created.' => 
+      array (
+        0 => '',
+      ),
+      'Retention policies updated.' => 
+      array (
+        0 => '',
+      ),
+      'Continuous queries created.' => 
+      array (
+        0 => '',
+      ),
+      'InfluxDB databases created.' => 
+      array (
+        0 => '',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => '',
+      ),
+      'The task to run (%s).' => 
+      array (
+        0 => '',
+      ),
+      'Record not found.' => 
+      array (
+        0 => '',
+      ),
+      'API Key updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit API Key' => 
+      array (
+        0 => '',
+      ),
+      'API Key deleted.' => 
+      array (
+        0 => '',
       ),
       'Changes saved.' => 
       array (
@@ -156,21 +360,33 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Esegui backup manuale',
       ),
-      'Backup' => 
+      'Backup deleted.' => 
       array (
-        0 => 'Backup',
+        0 => '',
       ),
-      '%s added.' => 
+      'Backup not found.' => 
       array (
-        0 => '%s aggiunto.',
+        0 => '',
       ),
-      'Custom Field' => 
+      'Custom Field updated.' => 
       array (
-        0 => 'Campo personalizzato',
+        0 => '',
       ),
-      'Add %s' => 
+      'Custom Field added.' => 
       array (
-        0 => 'Aggiungi %s',
+        0 => '',
+      ),
+      'Edit Custom Field' => 
+      array (
+        0 => '',
+      ),
+      'Add Custom Field' => 
+      array (
+        0 => '',
+      ),
+      'Custom Field deleted.' => 
+      array (
+        0 => '',
       ),
       'Sync Task Output' => 
       array (
@@ -204,53 +420,129 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Log Supervisord',
       ),
-      'Permission' => 
+      'Permission updated.' => 
       array (
-        0 => 'Permesso',
+        0 => '',
+      ),
+      'Permission added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Permission' => 
+      array (
+        0 => '',
+      ),
+      'Add Permission' => 
+      array (
+        0 => '',
+      ),
+      'Permission deleted.' => 
+      array (
+        0 => '',
       ),
       'System Settings' => 
       array (
         0 => 'Impostazioni sistema',
       ),
-      'Station' => 
+      'Station updated.' => 
       array (
-        0 => 'Stazione',
+        0 => '',
+      ),
+      'Station added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Station' => 
+      array (
+        0 => '',
+      ),
+      'Station deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Station not found.' => 
+      array (
+        0 => '',
       ),
       'Clone Station: %s' => 
       array (
         0 => 'Clona stazione: %s',
       ),
-      'User' => 
+      'User updated.' => 
       array (
-        0 => 'Utente',
+        0 => '',
+      ),
+      'User added.' => 
+      array (
+        0 => '',
       ),
       'Another user already exists with this e-mail address. Please update the e-mail address.' => 
       array (
         0 => 'Un altro utente esiste già con questo indirizzo e-mail. Si prega di aggiornare l\'indirizzo e-mail.',
       ),
+      'Edit User' => 
+      array (
+        0 => '',
+      ),
+      'Add User' => 
+      array (
+        0 => '',
+      ),
       'You cannot delete your own account.' => 
       array (
         0 => 'Non puoi cancellare il tuo account.',
+      ),
+      'User deleted.' => 
+      array (
+        0 => '',
+      ),
+      'User not found.' => 
+      array (
+        0 => '',
       ),
       'Logged in successfully.' => 
       array (
         0 => 'Accesso riuscito.',
       ),
-      '%s restarted.' => 
+      'Record not found!' => 
       array (
-        0 => '%s riavviato.',
+        0 => '',
       ),
-      'Frontend' => 
+      'Changes saved successfully.' => 
       array (
-        0 => 'Interfaccia utente',
+        0 => '',
       ),
-      '%s stopped.' => 
+      'Record deleted successfully.' => 
       array (
-        0 => '%s spento.',
+        0 => '',
       ),
-      '%s started.' => 
+      'You cannot remove yourself.' => 
       array (
-        0 => '%s avviato.',
+        0 => '',
+      ),
+      'This station does not accept requests currently.' => 
+      array (
+        0 => '',
+      ),
+      'Request submitted successfully.' => 
+      array (
+        0 => '',
+      ),
+      'Station restarted.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend stopped.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend started.' => 
+      array (
+        0 => '',
+      ),
+      'Frontend restarted.' => 
+      array (
+        0 => '',
       ),
       'Song skipped.' => 
       array (
@@ -260,9 +552,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Curatore disconnesso.',
       ),
-      'Backend' => 
+      'Backend stopped.' => 
       array (
-        0 => 'Interfaccia di amministrazione',
+        0 => '',
+      ),
+      'Backend started.' => 
+      array (
+        0 => '',
+      ),
+      'Backend restarted.' => 
+      array (
+        0 => '',
       ),
       'Too many login attempts' => 
       array (
@@ -279,6 +579,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Your credentials could not be verified.' => 
       array (
         0 => 'Impossibile verificare le tue credenziali.',
+      ),
+      'API Key not found.' => 
+      array (
+        0 => '',
+      ),
+      'Add API Key' => 
+      array (
+        0 => '',
       ),
       'All Stations' => 
       array (
@@ -307,6 +615,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Two-factor authentication disabled.' => 
       array (
         0 => 'Autenticazione a due fattori disabilitata.',
+      ),
+      'Song Title' => 
+      array (
+        0 => 'Titolo canzone',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Artista canzone',
       ),
       'Setup has already been completed!' => 
       array (
@@ -340,6 +656,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Impossibile spostare "%s" su "%s"',
       ),
+      'Media not found.' => 
+      array (
+        0 => '',
+      ),
+      'Media updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Media' => 
+      array (
+        0 => '',
+      ),
       'File renamed!' => 
       array (
         0 => 'File rinominato!',
@@ -364,21 +692,29 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Attualmente questa funzione non è supportata in questa stazione radio.',
       ),
-      'Mount Point' => 
+      'Edit Mount Point' => 
       array (
-        0 => 'Mount Point',
+        0 => '',
       ),
-      'Playlist' => 
+      'Add Mount Point' => 
       array (
-        0 => 'Playlist',
+        0 => '',
+      ),
+      'Mount Point deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => '',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
         0 => 'Questa playlist non è una playlist sequenziale.',
       ),
-      'Format' => 
+      'Format not found.' => 
       array (
-        0 => 'Formato',
+        0 => '',
       ),
       'Playlist enabled.' => 
       array (
@@ -388,17 +724,49 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Playlist disabilitata.',
       ),
-      'Song Title' => 
+      'Playlist updated.' => 
       array (
-        0 => 'Titolo canzone',
+        0 => '',
       ),
-      'Song Artist' => 
+      'Playlist added.' => 
       array (
-        0 => 'Artista canzone',
+        0 => '',
       ),
-      'Remote Relay' => 
+      'Edit Playlist' => 
       array (
-        0 => 'Collegamento remoto',
+        0 => '',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Playlist deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay updated.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay added.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Remote Relay deleted.' => 
+      array (
+        0 => '',
+      ),
+      'This record cannot be edited.' => 
+      array (
+        0 => '',
       ),
       'Listeners by Day' => 
       array (
@@ -452,25 +820,57 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ora puoi impostare gli account degli streamer (DJ).',
       ),
-      'Streamer' => 
+      'Streamer updated.' => 
       array (
-        0 => 'Curatore',
+        0 => '',
       ),
-      'Web Hook' => 
+      'Streamer added.' => 
       array (
-        0 => 'Interazione web',
+        0 => '',
       ),
-      '%s enabled.' => 
+      'Edit Streamer' => 
       array (
-        0 => '%s abilitato.',
+        0 => '',
       ),
-      '%s disabled.' => 
+      'Add Streamer' => 
       array (
-        0 => '%s disabilitato.',
+        0 => '',
+      ),
+      'Streamer deleted.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook added.' => 
+      array (
+        0 => '',
+      ),
+      'Add Web Hook' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook updated.' => 
+      array (
+        0 => '',
+      ),
+      'Edit Web Hook' => 
+      array (
+        0 => '',
+      ),
+      'Web hook enabled.' => 
+      array (
+        0 => '',
+      ),
+      'Web Hook disabled.' => 
+      array (
+        0 => '',
       ),
       'Web Hook Test Output' => 
       array (
         0 => 'Output test interazione web',
+      ),
+      'Web Hook deleted.' => 
+      array (
+        0 => '',
       ),
       'Liquidsoap Log' => 
       array (
@@ -500,9 +900,25 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Configurazione SHOUTCast',
       ),
+      'Search engine crawlers are not permitted to use this feature.' => 
+      array (
+        0 => '',
+      ),
+      'The song ID you specified could not be found in the station.' => 
+      array (
+        0 => '',
+      ),
+      'The song ID you specified cannot be requested for this station.' => 
+      array (
+        0 => '',
+      ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
         0 => 'Hai mandato una richiesta troppo presto! Aspetta prima di poterne inviare un\'altra.',
+      ),
+      'Duplicate request: this song was already requested and will play soon.' => 
+      array (
+        0 => '',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
@@ -915,6 +1331,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'International Standard Recording Code, used for licensing reports.' => 
       array (
         0 => 'Isrc codice standard internazionale per le registrazioni, usato per il report delle licenze.',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Campi personalizzati',
       ),
       'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
       array (
@@ -1456,38 +1876,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Se stai trasmettendo usando la regia automatica, inserire qui la password sorgente.',
       ),
-      'This report is intended for licensing in the United States only, for webcasters paying royalties via SoundExchange. Learn more about the requirements for reporting and classification on the <a href="%s" target="_blank">SoundExchange web site</a>.' => 
-      array (
-        0 => 'Questo report è destinato esclusivamente alle licenze negli Stati Uniti, per i webcaster che pagano royalty tramite SoundExchange. Ulteriori informazioni sui requisiti per la creazione di report e la classificazione nel <a href="%s" target="_blank"> sito Web SoundExchange </a>.',
-      ),
-      'AzuraCast assumes that your station fits SoundExchange Transmission Category A, "Eligible nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music programming." If your station does not fall within this category, update the transmission category field accordingly.' => 
-      array (
-        0 => 'AzuraCast presuppone che la tua stazione si adatti alla Categoria di trasmissione A di SoundExchange, "Trasmissioni non soggette a sottoscrizione diverse dalle trasmissioni in simulcast e trasmissioni di programmi non musicali." Se la tua stazione non rientra in questa categoria, aggiorna il campo della categoria di trasmissione di conseguenza.',
-      ),
-      'The data collected by AzuraCast meets the SoundExchange standard for Actual Total Performances (ATP) by tracking unique listeners across all song plays. All other information is derived from the metadata of the uploaded songs themselves, and may not be completely accurate.' => 
-      array (
-        0 => 'I dati raccolti da AzuraCast soddisfano lo standard SoundExchange per le effettive performance totali (ATP) monitorando ascoltatori unici per tutte le riproduzioni di brani. Tutte le altre informazioni derivano dai metadati delle canzoni caricate e potrebbero non essere completamente accurate.',
-      ),
-      'Reporting requirements for SoundExchange may change at any time. AzuraCast is non-commercial community-built software and cannot guarantee that its reporting format will always be up-to-date.' => 
-      array (
-        0 => 'I requisiti di reporting per SoundExchange possono cambiare in qualsiasi momento. AzuraCast è un software non commerciale della comunità e non può garantire che il suo formato di segnalazione sia sempre aggiornato.',
-      ),
-      'You should always verify the report generated by AzuraCast before sending it. In particular, either the ISRC (International Standard Recording Code) or *both* the album and label are required for every row, and may not be provided in the song metadata. AzuraCast will use external APIs to try to find the ISRC, but you can also use <a href="%s" target="_blank">SoundExchange\'s ISRC search tool</a>.' => 
-      array (
-        0 => 'È necessario verificare sempre il report generato da AzuraCast prima di inviarlo. In particolare, sia l\'ISRC (International Standard Recording Code) sia * sia * l\'album e l\'etichetta sono richiesti per ogni riga e potrebbero non essere forniti nei metadati della canzone. AzuraCast utilizzerà API esterne per cercare di trovare l\'ISRC, ma puoi anche utilizzare lo <a href="%s" target="_blank"> strumento di ricerca ISRC di SoundExchange </a>.',
-      ),
-      'Report Start Date' => 
-      array (
-        0 => 'Data inizio report',
-      ),
-      'Report End Date' => 
-      array (
-        0 => 'Data fine report',
-      ),
-      'Generate Report' => 
-      array (
-        0 => 'Genera Report',
-      ),
       'Role Name' => 
       array (
         0 => 'Nome ruolo',
@@ -1563,6 +1951,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Indefinitely' => 
       array (
         0 => 'Indefinito',
+      ),
+      'Use WebSockets for Now Playing Updates' => 
+      array (
+        0 => '',
+      ),
+      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
+      array (
+        0 => '',
       ),
       'Security Controls' => 
       array (
@@ -1667,6 +2063,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Station Profile' => 
       array (
         0 => 'Profilo stazione',
+      ),
+      'Broadcasting' => 
+      array (
+        0 => 'In trasmissione',
       ),
       'AutoDJ' => 
       array (
@@ -2040,9 +2440,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ruoli',
       ),
-      '%s Name' => 
+      'Web Hook Name' => 
       array (
-        0 => 'Nome %s',
+        0 => '',
       ),
       'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
@@ -2111,13 +2511,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
                 optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => 'Le interazioni web inviano automaticamente una richiesta HTTP POST all\'URL specificata per 
-                inviare una notifica ogni qual volta gli eventi che hai specificato si verificano nella stazione. Il contenuto del messaggio POST 
-                è esattamente lo stesso della <a href="%s" target="_blank">risposta dell\'API Ora in riproduzione</a> per la tua stazione. 
-
-                Per poter essere velocemente elaborate, le interazioni web hanno una breve scadenza, così che il servizio di risposta 
-
-                sia ottimizzato per gestire la richiesta in meno di 2 secondi.',
+        0 => '',
       ),
       'Web Hook URL' => 
       array (
@@ -2204,21 +2598,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => 'Passi per configurare un\'applicazione twitter:<br>
-
-                <ol type="1">
-
-                    <li>Crea una nuova app nel <a href="%s" target="_blank">sito delle applicazioni twitter</a>. 
-
-                    Usa l\'URL di base di questa installazione, come URL di base.</li>
-
-                    <li>Nella nuova applicazione, clicca il pannello "Token e chiavi di accesso".</li>
-
-                    <li>In fondo alla pagina, clicca su "Crea il mio token di accesso".</li>
-
-                </ol>
-
-                <p>Una volta completati questi passaggi, inserisci le informazioni ricavate dai "Token e chiavi di accesso" nei campi sottostanti.</p>',
+        0 => '',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -2264,13 +2644,41 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Marchio personalizzato',
       ),
+      'API Keys' => 
+      array (
+        0 => 'API Key',
+      ),
       'System Logs' => 
       array (
         0 => 'Log di sistema',
       ),
+      'Audit Log' => 
+      array (
+        0 => '',
+      ),
+      'Backups' => 
+      array (
+        0 => 'Backup',
+      ),
+      'Users' => 
+      array (
+        0 => 'Utenti',
+      ),
       'User Accounts' => 
       array (
         0 => 'Account utenti',
+      ),
+      'Permissions' => 
+      array (
+        0 => 'Permessi',
+      ),
+      'Stations' => 
+      array (
+        0 => 'Stazioni',
+      ),
+      'Connected AzuraRelays' => 
+      array (
+        0 => '',
       ),
       'Start Station' => 
       array (
@@ -2287,6 +2695,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Click to restart your station and apply configuration changes.' => 
       array (
         0 => 'Fare clic per riavviare la radio e applicare le modifiche alla configurazione.',
+      ),
+      'Profile' => 
+      array (
+        0 => 'Profilo',
       ),
       'Public Page' => 
       array (
@@ -2307,6 +2719,18 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Web DJ' => 
       array (
         0 => 'Web DJ',
+      ),
+      'Mount Points' => 
+      array (
+        0 => 'Mount Point',
+      ),
+      'Remote Relays' => 
+      array (
+        0 => 'Collegamenti remoti',
+      ),
+      'Web Hooks' => 
+      array (
+        0 => 'Interazioni web',
       ),
       'Reports' => 
       array (
@@ -2355,6 +2779,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Restart Broadcasting' => 
       array (
         0 => 'Riavvia trasmissione',
+      ),
+      'Get Next Song Debug Mode' => 
+      array (
+        0 => '',
       ),
       'Generic Web Hook' => 
       array (
@@ -2416,6 +2844,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Ogni volta che un curatore/DJ si disconnette dalla radio',
       ),
+      'API Key' => 
+      array (
+        0 => 'API Key',
+      ),
       'Owner' => 
       array (
         0 => 'Proprietario',
@@ -2427,6 +2859,74 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Revoke' => 
       array (
         0 => 'Revoca',
+      ),
+      'Insert' => 
+      array (
+        0 => '',
+      ),
+      'Delete' => 
+      array (
+        0 => 'Elimina',
+      ),
+      'Update' => 
+      array (
+        0 => '',
+      ),
+      'Changes' => 
+      array (
+        0 => '',
+      ),
+      'Today' => 
+      array (
+        0 => 'Oggi',
+      ),
+      'Yesterday' => 
+      array (
+        0 => 'Ieri',
+      ),
+      'Last 7 Days' => 
+      array (
+        0 => 'Ultimi 7 giorni',
+      ),
+      'This Month' => 
+      array (
+        0 => 'Questo mese',
+      ),
+      'Last Month' => 
+      array (
+        0 => 'Il mese scorso',
+      ),
+      'Date/Time' => 
+      array (
+        0 => 'Data/Ora',
+      ),
+      'User' => 
+      array (
+        0 => 'Utente',
+      ),
+      'Identifier' => 
+      array (
+        0 => '',
+      ),
+      'Target' => 
+      array (
+        0 => '',
+      ),
+      'Actions' => 
+      array (
+        0 => 'Azioni',
+      ),
+      'Field' => 
+      array (
+        0 => '',
+      ),
+      'Previous' => 
+      array (
+        0 => '',
+      ),
+      'Updated' => 
+      array (
+        0 => '',
       ),
       'Automatic Backups' => 
       array (
@@ -2460,9 +2960,9 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Nota che ripristinare un backup eliminerà il tuo database esistente. Non recuperare mai backup da utenti non fidati.',
       ),
-      'Actions' => 
+      'Backup' => 
       array (
-        0 => 'Azioni',
+        0 => 'Backup',
       ),
       'Last Modified' => 
       array (
@@ -2479,10 +2979,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Delete backup "%s"?' => 
       array (
         0 => 'Elimina backup "%s"?',
-      ),
-      'Delete' => 
-      array (
-        0 => 'Elimina',
       ),
       'Backups Home' => 
       array (
@@ -2552,9 +3048,33 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Globale',
       ),
+      'Relay' => 
+      array (
+        0 => '',
+      ),
+      'Is Public' => 
+      array (
+        0 => '',
+      ),
+      'First Connected' => 
+      array (
+        0 => '',
+      ),
+      'Latest Update' => 
+      array (
+        0 => '',
+      ),
       'Manage Stations' => 
       array (
         0 => 'Gestisci stazioni',
+      ),
+      'Add Station' => 
+      array (
+        0 => '',
+      ),
+      'Station' => 
+      array (
+        0 => 'Stazione',
       ),
       'Manage' => 
       array (
@@ -2627,8 +3147,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'API keys can be used to access some system functionality without needing to log in. All of the keys 
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => 'Le chiavi API possono essere utilizzate per usufruire di alcune funzionalità del sistema senza la necessità di accedere. Tutte le chiavi 
-            che crei, condividono nel sistema i tuoi permessi. Per maggiori informazioni, consulta la <a href="%s">documentazione delle API.</a>.',
+        0 => '',
       ),
       'Key Identifier' => 
       array (
@@ -2742,6 +3261,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Microfono',
       ),
+      'Settings' => 
+      array (
+        0 => 'Impostazioni',
+      ),
       'Mixer' => 
       array (
         0 => 'Mixer',
@@ -2846,9 +3369,17 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Richiedi brano',
       ),
+      'Playlist' => 
+      array (
+        0 => 'Playlist',
+      ),
       'Request a Song' => 
       array (
         0 => 'Richiedi un brano',
+      ),
+      'Live' => 
+      array (
+        0 => '',
       ),
       'Play' => 
       array (
@@ -2966,9 +3497,9 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'La tua attuale installazione è di tipo <b>%s </b>. Assicurati di includere questo dato quando crei una nuova segnalazione.',
       ),
-      'New GitHub Issue' => 
+      'Add New GitHub Issue' => 
       array (
-        0 => 'Nuova segnalazione GitHub',
+        0 => '',
       ),
       'Log View' => 
       array (
@@ -3102,6 +3633,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'I mountpoint sono il modo in cui gli ascoltatori si connettono e ascoltano la tua stazione. Ogni mountpoint può essere un diverso formato audio o qualità. Utilizzando i mountpoint, puoi configurare uno stream di alta qualità per gli ascoltatori connessi a banda larga e uno streaming mobile per gli utenti di telefonia.',
       ),
+      'Mount Point' => 
+      array (
+        0 => 'Mount Point',
+      ),
       'Delete mount point "%s"?' => 
       array (
         0 => 'Elimina mount point "%s"?',
@@ -3218,10 +3753,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Non in esecuzione',
       ),
-      'Loading...' => 
-      array (
-        0 => 'In caricamento...',
-      ),
       'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
       array (
         0 => 'LiquidSoap attualmente riproduce in ordine casuale da <b>%d brani caricati</b> in <b>%d playlist</b>.',
@@ -3277,10 +3808,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Playing Next' => 
       array (
         0 => 'Prossimo in riproduzione',
-      ),
-      'Now Streaming' => 
-      array (
-        0 => 'Ora in trasmissione',
       ),
       'Skip Song' => 
       array (
@@ -3342,9 +3869,13 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Flussi locali',
       ),
-      'Download %s' => 
+      'Download PLS' => 
       array (
-        0 => 'Scarica %s',
+        0 => '',
+      ),
+      'Download M3U' => 
+      array (
+        0 => '',
       ),
       'Listener Request' => 
       array (
@@ -3366,6 +3897,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'I collegamenti remoti consentono di lavorare con il software di trasmissione al di fuori di questo server. Qualsiasi flusso che imposti qui sarà incluso nelle statistiche della tua stazione. È inoltre possibile trasmettere da questo server ai collegamenti remoti.',
       ),
+      'Remote Relay' => 
+      array (
+        0 => 'Collegamento remoto',
+      ),
       'Delete remote relay "%s"?' => 
       array (
         0 => 'Elimina collegamento remoto "%s"?',
@@ -3386,25 +3921,25 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Ascoltatori della diretta',
       ),
-      'Today' => 
+      'There are too many data points to map!' => 
       array (
-        0 => 'Oggi',
+        0 => '',
       ),
-      'Yesterday' => 
+      'Download CSV' => 
       array (
-        0 => 'Ieri',
+        0 => 'Scarica CSV',
       ),
-      'Last 7 Days' => 
+      'Unique Listeners' => 
       array (
-        0 => 'Ultimi 7 giorni',
+        0 => '',
       ),
-      'This Month' => 
+      'for selected period' => 
       array (
-        0 => 'Questo mese',
+        0 => '',
       ),
-      'Last Month' => 
+      'Total Listener Hours' => 
       array (
-        0 => 'Il mese scorso',
+        0 => '',
       ),
       'IP' => 
       array (
@@ -3474,10 +4009,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Riproduzioni',
       ),
-      'Download CSV' => 
-      array (
-        0 => 'Scarica CSV',
-      ),
       'Filename' => 
       array (
         0 => 'Nome file',
@@ -3538,10 +4069,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Trasmetti in diretta',
       ),
-      'Date/Time' => 
-      array (
-        0 => 'Data/Ora',
-      ),
       'Please wait...' => 
       array (
         0 => 'Attendere prego...',
@@ -3578,6 +4105,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Server',
       ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => '',
+      ),
       'Port' => 
       array (
         0 => 'Porta',
@@ -3589,6 +4120,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'ShoutCast v1 Clients' => 
       array (
         0 => 'Client ShoutCast v1',
+      ),
+      '%d (%d for some clients)' => 
+      array (
+        0 => '',
       ),
       '(DJ username and password separated by a colon)' => 
       array (

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 11:35\n"
+"PO-Revision-Date: 2019-08-23 11:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2085,11 +2085,11 @@ msgstr "Укажите точку подключения (т.е. <code>%s</code>
 
 #: /var/azuracast/www/config/forms/remote.php:75
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr "Вещание АвтоДиджея с отдалённой станции"
+msgstr "Вещание АвтоДиджея на отдалённую станцию"
 
 #: /var/azuracast/www/config/forms/remote.php:76
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr "Если включено, АвтоДиджей автоматически воспроизводит музыку в этой точке подключения."
+msgstr "Если этот параметр включен, АвтоДиджей в этой установке будет автоматически воспроизводит музыку в этой точке подключения."
 
 #: /var/azuracast/www/config/forms/remote.php:89
 msgid "Configure AutoDJ Broadcasting"
@@ -2101,7 +2101,7 @@ msgstr "Порт источника отдалённой станции"
 
 #: /var/azuracast/www/config/forms/remote.php:130
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr "Если порт, с которого вы транслируете, отличается от того, который вы указали в URL выше, укажите источник порта здесь."
+msgstr "Если порт, на который осуществляется трансляция, отличается от указанного в URL-адресе выше, укажите здесь исходный порт."
 
 #: /var/azuracast/www/config/forms/remote.php:138
 msgid "Remote Station Source Mountpoint/SID"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 05:20\n"
+"PO-Revision-Date: 2019-08-23 05:30\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1090,7 +1090,7 @@ msgstr "%s bir servis olarak tanınmıyor."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:196
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr "Henüz Supervisor'a kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
+msgstr "Supervisor'a henüz kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:204
 msgid "%s cannot start"

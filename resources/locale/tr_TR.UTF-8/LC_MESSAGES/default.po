@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 05:10\n"
+"PO-Revision-Date: 2019-08-23 05:20\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3966,7 +3966,7 @@ msgstr "Yardıma Mı İhtiyacınız Var?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:6
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr "SSS belgelerine ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">destek dökümanları</a> sayfasına göz atabilirsiniz."
+msgstr "SSS belgelerine ulaşmak için <a href=\"%s\" target=\"_blank\">destek dökümanları</a> sayfasına göz atabilirsiniz."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:8
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
@@ -3999,7 +3999,7 @@ msgstr "%s şarkılarınızın performansına bağlı olarak en yüksek öncelik
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:11
 msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
-msgstr "Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda \\\"Etkinleştir\\\" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır."
+msgstr "Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda \"Etkinleştir\" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:13
 msgid "Run Automated Assignment"
@@ -4047,7 +4047,7 @@ msgstr "Kullanılan Depolama Alanı: %s / %s (%d Dosya)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:43
 msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr "Ayrıca dosyaları SFTP kullanarak yüklemek için <a href=\\\"%s\\\" target=\\\"_blank\\\">buradaki</a> dökümanı inceleyebilirsiniz. Yeni yüklenen dosyalar birkaç dakika içinde otomatik olarak işlenecektir."
+msgstr "Ayrıca dosyaları SFTP kullanarak yüklemek için <a href=\"%s\" target=\"_blank\">buradaki</a> dökümanı inceleyebilirsiniz. Yeni yüklenen dosyalar birkaç dakika içinde otomatik olarak işlenecektir."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:52
 msgid "Drag files here to upload to this folder or "
@@ -4121,7 +4121,7 @@ msgstr "Bağlantı Noktası"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 msgid "Delete mount point \"%s\"?"
-msgstr "\\\"%s\\\" bağlantı noktası silinsin mi?"
+msgstr "\"%s\" bağlantı noktası silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:43
 msgid "Default Mount"
@@ -4141,7 +4141,7 @@ msgstr "# Şarkılar"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 msgid "Delete playlist \"%s\"?"
-msgstr "\\\"%s\\\" çalma listesi silinsin mi?"
+msgstr "\"%s\" çalma listesi silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:70
 msgid "More"
@@ -4233,7 +4233,7 @@ msgstr "Radyo Canlı Yayını Devredışı"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr "Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href=\\\"%s\\\">radyo profili</a>ni düzenleyin."
+msgstr "Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href=\"%s\">radyo profili</a>ni düzenleyin."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:18
@@ -4404,7 +4404,7 @@ msgstr "Yönlendirme"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:37
 msgid "Delete remote relay \"%s\"?"
-msgstr "\\\"%s\\\" yönlendirme silinsin mi?"
+msgstr "\"%s\" yönlendirme silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:5
@@ -4607,7 +4607,7 @@ msgstr "Notlar"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr "\\\"%s\\\" silmek istediğinizden emin misiniz?"
+msgstr "\"%s\" silmek istediğinizden emin misiniz?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
@@ -4650,7 +4650,7 @@ msgstr "(DJ kullanıcı adı iki nokta üst üste şifre şeklinde yazmalısın�
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:88
 msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
-msgstr "Canlı yayın programlarına ait dökümanlara ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz."
+msgstr "Canlı yayın programlarına ait dökümanlara ulaşmak için <a href=\"%s\" target=\"_blank\">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz."
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:7
 msgid "Select the type of web hook to create."
@@ -4678,7 +4678,7 @@ msgstr "Deneme"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:37
 msgid "Delete web hook \"%s\"?"
-msgstr "\\\"%s\\\" web kancasını silmek istediğinizden emin misiniz?"
+msgstr "\"%s\" web kancasını silmek istediğinizden emin misiniz?"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."

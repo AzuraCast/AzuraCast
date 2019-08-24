@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-24 00:40\n"
+"PO-Revision-Date: 2019-08-24 00:50\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -164,51 +164,51 @@ msgstr "Definições do AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:38
 msgid "Setting Key"
-msgstr ""
+msgstr "Chave de Definição"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:39
 msgid "Setting Value"
-msgstr ""
+msgstr "Valor da Definição"
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:17
 msgid "Generate the translation locale file."
-msgstr ""
+msgstr "Criar o ficheiro de tradução."
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:50
 msgid "Locales generated."
-msgstr ""
+msgstr "Tradução criada."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:17
 msgid "Convert translated locale files into PHP arrays."
-msgstr ""
+msgstr "Converter ficheiro de tradução num array PHP."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:41
 msgid "Imported locale: %s"
-msgstr ""
+msgstr "Tradução %s importada."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:45
 msgid "Locales imported."
-msgstr ""
+msgstr "Traduções importadas."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
 msgid "Migrate existing configuration to new INI format if any exists."
-msgstr ""
+msgstr "Migrar configuração atual para um formato INI se alguma existir."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:31
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Configuração já está definida."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:72
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Configuração escrita com sucesso."
 
 #: /var/azuracast/www/src/Console/Command/ProcessMessageQueue.php:19
 msgid "Process the message queue."
-msgstr ""
+msgstr "Processar a fila de mensagens."
 
 #: /var/azuracast/www/src/Console/Command/Restore.php:52
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Diretório de cópia de segurança %s não encontrado!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -220,47 +220,47 @@ msgstr "Conta não encontrada."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:22
 msgid "Run all general AzuraCast setup steps."
-msgstr ""
+msgstr "Executar todos os passos gerais de instalação do AzuraCast."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:23
 msgid "Only update the existing installation."
-msgstr ""
+msgstr "Apenas atualizar a instalação existente."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr ""
+msgstr "Carregar instalações predefinidas (para fins de desenvolvimento)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
-msgstr ""
+msgstr "Usado para atualizar apenas para uma versão marcada."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:37
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "Instalação do AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:38
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "Bem-vindo ao AzuraCast. Por favor aguarde enquanto algumas dependências chave do AzuraCast são instaladas..."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:41
 msgid "Environment: %s"
-msgstr ""
+msgstr "Ambiente: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:42
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Método de Instalação: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:46
 msgid "Running in update mode."
-msgstr ""
+msgstr "A executar em modo de atualização."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:49
 msgid "Migrating Legacy Configuration"
-msgstr ""
+msgstr "Migrando Configuração Antiga"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:55
 msgid "Setting Up InfluxDB"
-msgstr ""
+msgstr "A Instalar o InfluxDB"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:61
 msgid "Running Database Migrations"

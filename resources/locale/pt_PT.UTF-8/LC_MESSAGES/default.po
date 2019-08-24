@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-24 00:50\n"
+"PO-Revision-Date: 2019-08-24 01:00\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -228,7 +228,7 @@ msgstr "Apenas atualizar a instalação existente."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr "Carregar instalações predefinidas (para fins de desenvolvimento)."
+msgstr "Carregar dados de exemplo predefinidos (para fins de desenvolvimento)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
@@ -264,15 +264,15 @@ msgstr "A Instalar o InfluxDB"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:61
 msgid "Running Database Migrations"
-msgstr ""
+msgstr "A executar as Migrações da Base de Dados"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:68
 msgid "Generating Database Proxy Classes"
-msgstr ""
+msgstr "A Criar Classes de Proxy da Base de Dados"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
-msgstr ""
+msgstr "A Instalar Conjunto de Dados de Teste"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:80
 msgid "Refreshing All Stations"

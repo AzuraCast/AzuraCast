@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-21 22:40\n"
+"PO-Revision-Date: 2019-08-24 00:40\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -31,31 +31,31 @@ msgstr "Ver os logs do sistema"
 
 #: /var/azuracast/www/src/Acl.php:187
 msgid "Administer Settings"
-msgstr ""
+msgstr "Administrar Definições"
 
 #: /var/azuracast/www/src/Acl.php:188
 msgid "Administer API Keys"
-msgstr ""
+msgstr "Administrar Chaves de API"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Administer Users"
-msgstr ""
+msgstr "Administrar Utilizadores"
 
 #: /var/azuracast/www/src/Acl.php:190
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Administrar Permissões"
 
 #: /var/azuracast/www/src/Acl.php:191
 msgid "Administer Stations"
-msgstr ""
+msgstr "Administrar Estações"
 
 #: /var/azuracast/www/src/Acl.php:192
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Administrar Campos Personalizados"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Administer Backups"
-msgstr ""
+msgstr "Administrar Cópias de Segurança"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Page"
@@ -71,96 +71,96 @@ msgstr "Ver logs da estação"
 
 #: /var/azuracast/www/src/Acl.php:200
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Gerir Perfil da Estação"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Gerir Transmissão da Estação"
 
 #: /var/azuracast/www/src/Acl.php:202
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Gerir DJ's da Estação"
 
 #: /var/azuracast/www/src/Acl.php:203
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Gerir Pontos de Montagem da Estação"
 
 #: /var/azuracast/www/src/Acl.php:204
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Gerir Relés Remotos da Estação"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Manage Station Media"
-msgstr ""
+msgstr "Gerir Ficheiros Multimédia da Estação"
 
 #: /var/azuracast/www/src/Acl.php:206
 msgid "Manage Station Automation"
-msgstr ""
+msgstr "Gerir Automação da Estação"
 
 #: /var/azuracast/www/src/Acl.php:207
 msgid "Manage Station Web Hooks"
-msgstr ""
+msgstr "Gerir Web Hooks da Estação"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:25
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr ""
+msgstr "Fazer cópia de segurança da base de dados do AzuraCast e estatísticas (e ficheiros multimédia opcionalmente)."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr ""
+msgstr "O diretório absoluto (ou relativo a /var/azuracast/backups) para criar a cópia de segurança."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
-msgstr ""
+msgstr "Excluir multimédia da cópia de segurança."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:61
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "Cópia de Segurança do AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:62
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Por favor aguarde enquanto a cópia de segurança é criada..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:65
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Criando diretórios temporários..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:69
 #: /var/azuracast/www/src/Console/Command/Backup.php:75
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "O diretório \"%s\" não foi criado"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:82
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "Fazendo cópia de segurança do MariaDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:107
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "Fazendo cópia de segurança do InfluxDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:147
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Criando ficheiro da cópia de segurança..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:185
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Limpando os ficheiros temporários..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:196
 msgid "Backup complete in %.2f seconds."
-msgstr ""
+msgstr "Cópia de segurança concluída em %.2f segundos."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:230
 msgid "Backup process error"
-msgstr ""
+msgstr "Erro no processo de cópia de segurança"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:20
 msgid "List all settings in the AzuraCast settings database."
-msgstr ""
+msgstr "Listar todas as definições na base de dados de definições do AzuraCast."
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:29
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "Definições do AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:38
 msgid "Setting Key"
@@ -2025,7 +2025,7 @@ msgstr "Personalização"
 
 #: /var/azuracast/www/config/forms/profile.php:82
 msgid "Language"
-msgstr "Linguagem"
+msgstr "Idioma"
 
 #: /var/azuracast/www/config/forms/profile.php:92
 msgid "Site Theme"

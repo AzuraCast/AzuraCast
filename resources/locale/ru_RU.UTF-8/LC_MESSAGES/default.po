@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-24 22:10\n"
+"PO-Revision-Date: 2019-08-24 23:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -4241,11 +4241,11 @@ msgstr "Вверх"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
-msgstr "Трансляция станции отключена"
+msgstr "Вещание станции отключено"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr "Ваша станция в настоящее время не включена для трансляции. Вы можете управлять медиа, плейлистами и другими настройками станции. Чтобы включить трансляцию, <a href=\"%s\">отредактируйте профиль станции</a>."
+msgstr "Ваша станция в настоящее время не включена для вещания. Вы можете управлять медиафайлами, плейлистами и другими настройками станции. Чтобы включить вещание, <a href=\"%s\">отредактируйте профиль станции</a>."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:18

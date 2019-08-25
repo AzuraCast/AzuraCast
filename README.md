@@ -3,7 +3,8 @@
 # AzuraCast: A Self-Hosted Web Radio Manager
 
 [![Build Status](https://travis-ci.com/AzuraCast/AzuraCast.svg?branch=master)](https://travis-ci.com/AzuraCast/AzuraCast)
-[![Apache 2.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
+[![Apache 2.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)][![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAzuraCast%2FAzuraCast.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FAzuraCast%2FAzuraCast?ref=badge_shield)
+()
 [![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_radio.svg)](https://hub.docker.com/r/azuracast/azuracast_radio/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
 
@@ -77,6 +78,9 @@ Once installed and running, AzuraCast exposes an API that allows you to monitor 
 ## License
 
 AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/LICENSE.txt). This project is free and open-source software, and pull requests are always welcome.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAzuraCast%2FAzuraCast.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FAzuraCast%2FAzuraCast?ref=badge_large)
 
 ## Need Help?
 

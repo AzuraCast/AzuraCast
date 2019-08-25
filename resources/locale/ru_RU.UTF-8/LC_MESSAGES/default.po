@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-24 23:40\n"
+"PO-Revision-Date: 2019-08-25 17:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -4637,7 +4637,7 @@ msgstr "Сервер"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr "Вы можете подключиться напрямую по вашему IP-адресу <code>%s</code>."
+msgstr "Возможно, вам потребуется подключиться напрямую через ваш IP-адрес <code>%s</code>."
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:78

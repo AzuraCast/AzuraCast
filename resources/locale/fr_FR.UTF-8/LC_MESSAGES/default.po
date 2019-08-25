@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-25 18:40\n"
+"PO-Revision-Date: 2019-08-25 18:50\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -107,60 +107,60 @@ msgstr "Sauvegardez la base de données et les statistiques d'AzuraCast (Et éve
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr ""
+msgstr "Le chemin absolu (Ou relatif à /var/azuracast/backups) pour générer la sauvegarde."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
-msgstr ""
+msgstr "Exclure les médias de la sauvegarde."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:61
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "Sauvegarde d'AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:62
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Veuillez patienter pendant qu'une sauvegarde est générée..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:65
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Création de répertoires temporaires..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:69
 #: /var/azuracast/www/src/Console/Command/Backup.php:75
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "Dossier \"%s\" n'a pas été créé"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:82
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "Sauvegarde de MariaDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:107
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "Sauvegarde d'InfluxDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:147
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Création d'une archive de sauvegarde..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:185
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Nettoyage des fichiers temporaires..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:196
 msgid "Backup complete in %.2f seconds."
-msgstr ""
+msgstr "Sauvegarde complétée en %.2f secondes."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:230
 msgid "Backup process error"
-msgstr ""
+msgstr "Erreur durant le processus de sauvegarde"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:20
 msgid "List all settings in the AzuraCast settings database."
-msgstr ""
+msgstr "Lister tous les paramètres dans la base de données des paramètres AzuraCast."
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:29
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "Paramètres d'AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:38
 msgid "Setting Key"

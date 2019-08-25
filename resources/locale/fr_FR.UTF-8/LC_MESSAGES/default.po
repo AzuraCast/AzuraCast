@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-21 22:40\n"
+"PO-Revision-Date: 2019-08-25 18:40\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -31,31 +31,31 @@ msgstr "Voir les journaux système"
 
 #: /var/azuracast/www/src/Acl.php:187
 msgid "Administer Settings"
-msgstr ""
+msgstr "Paramètres d'administration"
 
 #: /var/azuracast/www/src/Acl.php:188
 msgid "Administer API Keys"
-msgstr ""
+msgstr "Administrer les clés API"
 
 #: /var/azuracast/www/src/Acl.php:189
 msgid "Administer Users"
-msgstr ""
+msgstr "Administrer les utilisateurs"
 
 #: /var/azuracast/www/src/Acl.php:190
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Administrer les autorisations"
 
 #: /var/azuracast/www/src/Acl.php:191
 msgid "Administer Stations"
-msgstr ""
+msgstr "Administrer les stations"
 
 #: /var/azuracast/www/src/Acl.php:192
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Administrer les champs personnalisés"
 
 #: /var/azuracast/www/src/Acl.php:193
 msgid "Administer Backups"
-msgstr ""
+msgstr "Administrer les sauvegardes"
 
 #: /var/azuracast/www/src/Acl.php:197
 msgid "View Station Page"
@@ -71,39 +71,39 @@ msgstr "Voir les journaux de la station"
 
 #: /var/azuracast/www/src/Acl.php:200
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Gérer les profils des stations"
 
 #: /var/azuracast/www/src/Acl.php:201
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Gérer la diffusion de la station"
 
 #: /var/azuracast/www/src/Acl.php:202
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Gérer les Streamers de station"
 
 #: /var/azuracast/www/src/Acl.php:203
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Gérer les points de montage des stations"
 
 #: /var/azuracast/www/src/Acl.php:204
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Gérer les relais à distance de la station"
 
 #: /var/azuracast/www/src/Acl.php:205
 msgid "Manage Station Media"
-msgstr ""
+msgstr "Gérer les fichiers musicaux de la station"
 
 #: /var/azuracast/www/src/Acl.php:206
 msgid "Manage Station Automation"
-msgstr ""
+msgstr "Gérer l'automatisation de la station"
 
 #: /var/azuracast/www/src/Acl.php:207
 msgid "Manage Station Web Hooks"
-msgstr ""
+msgstr "Gérer les Web Hooks de la station"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:25
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr ""
+msgstr "Sauvegardez la base de données et les statistiques d'AzuraCast (Et éventuellement les fichiers musicaux)."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."

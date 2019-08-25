@@ -1,6 +1,21 @@
 version: '2.2'
 
 services:
+  nginx_proxy:
+    image: azuracast/azuracast_nginx_proxy:latest
+    build:
+      context: ../docker-azuracast-nginx-proxy
+    ports:
+      - '${AZURACAST_HTTP_PORT:-80}:80'
+      - '${AZURACAST_HTTPS_PORT:-443}:443'
+    volumes:
+      - letsencrypt:/etc/nginx/certs
+      - nginx_proxy_vhosts:/etc/nginx/vhost.d
+      - letsencrypt_html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - web
+
   web:
     image: azuracast/azuracast_web_v2:latest
     build:

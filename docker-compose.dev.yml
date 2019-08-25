@@ -15,16 +15,12 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
+    restart: always
 
   web:
     image: azuracast/azuracast_web_v2:latest
     build:
       context: ../docker-azuracast-web-v2
-    # Want to customize the HTTP/S ports? Follow the instructions here:
-    # https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#use-non-standard-ports
-    ports:
-      - '${AZURACAST_HTTP_PORT:-80}:80'
-      - '${AZURACAST_HTTPS_PORT:-443}:443'
     depends_on:
       - mariadb
       - influxdb
@@ -33,7 +29,10 @@ services:
     env_file: azuracast.env
     environment: &default-environment
       LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 5
+      AZURACAST_DC_REVISION: 6
+      AZURACAST_FTP_PORT: ${AZURACAST_FTP_PORT:-21}
+    ports:
+      - '${AZURACAST_FTP_PORT:-21}:21'
     volumes:
       - letsencrypt:/etc/letsencrypt
       - .:/var/azuracast/www

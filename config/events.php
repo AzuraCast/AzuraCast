@@ -39,6 +39,7 @@ return function (\Azura\EventDispatcher $dispatcher)
             new Command\Internal\DjOn,
             new Command\Internal\DjOff,
             new Command\Internal\Feedback,
+            new Command\Internal\FtpAuth,
 
             // Locales
             new Command\LocaleGenerate,

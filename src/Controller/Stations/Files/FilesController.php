@@ -6,7 +6,9 @@ use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
+use App\Service\Ftp;
 use Azura\Config;
+use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -21,19 +23,25 @@ class FilesController extends FilesControllerAbstract
     /** @var array */
     protected $form_config;
 
+    /** @var Ftp */
+    protected $ftp;
+
     /**
      * @param EntityManager $em
      * @param Filesystem $filesystem
      * @param Config $config
+     * @param Ftp $ftp
      */
     public function __construct(
         EntityManager $em,
         Filesystem $filesystem,
-        Config $config
+        Config $config,
+        Ftp $ftp
     ) {
         $this->em = $em;
         $this->filesystem = $filesystem;
         $this->form_config = $config->get('forms/rename');
+        $this->ftp = $ftp;
     }
 
     public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
@@ -63,6 +71,7 @@ class FilesController extends FilesControllerAbstract
         }
 
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
+            'ftp_info' => $this->ftp->getInfo(),
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
             'space_used' => $station->getStorageUsed(),

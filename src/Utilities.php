@@ -174,20 +174,36 @@ class Utilities
     /**
      * Recursively remove a directory and its contents.
      *
-     * @param string $dir
+     * @param string $source
+     * @return bool
      */
-    public static function rmdirRecursive($dir): void
+    public static function rmdirRecursive(string $source): bool
     {
-        if (is_dir($dir)) {
-            $files = array_diff(scandir($dir, \SCANDIR_SORT_NONE), ['.', '..']);
-            foreach ($files as $file) {
-                self::rmdirRecursive($dir . '/' . $file);
-            }
-
-            @rmdir($dir);
-        } else {
-            @unlink($dir);
+        if (empty($source) || !file_exists($source)) {
+            return true;
         }
+
+        if (is_file($source) || is_link($source)) {
+            return @unlink($source);
+        }
+
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach($files as $fileinfo) {
+            /** @var \SplFileInfo $fileinfo */
+            if ('link' !== $fileinfo->getType() && $fileinfo->isDir()) {
+                if (!rmdir($fileinfo->getRealPath())) {
+                    return false;
+                }
+            } else if (!unlink($fileinfo->getRealPath())) {
+                return false;
+            }
+        }
+
+        return rmdir($source);
     }
 
     /**

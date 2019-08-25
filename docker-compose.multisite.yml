@@ -27,6 +27,7 @@ services:
       DEFAULT_HOST: azuracast.local
     depends_on:
       - web
+    restart: always
 
   nginx_proxy_letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion:latest
@@ -34,6 +35,7 @@ services:
       - nginx_proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
 
 volumes:
   letsencrypt_html: {}

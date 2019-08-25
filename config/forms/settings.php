@@ -90,6 +90,8 @@ return [
 
         'security' => [
             'legend' => __('Security Controls'),
+            'use_grid' => true,
+
             'elements' => [
 
                 Entity\Settings::ALWAYS_USE_SSL => [
@@ -100,6 +102,19 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
+                        'form_group_class' => 'col-md-6',
+                    ]
+                ],
+
+                Entity\Settings::ENABLE_FTP_SERVER => [
+                    'toggle',
+                    [
+                        'label' => __('Enable Built-in FTP Server'),
+                        'description' => __('If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                        'form_group_class' => 'col-md-6',
                     ]
                 ],
 
@@ -110,6 +125,7 @@ return [
                         'class' => 'advanced',
                         'description' => __('<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).', 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin'),
                         'default' => '',
+                        'form_group_class' => 'col-md-12',
                     ]
                 ],
 

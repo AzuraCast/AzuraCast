@@ -4,12 +4,12 @@ services:
   web:
     environment:
       # Update this to your default AzuraCast domain (the same as the one listed above).
-      - VIRTUAL_HOST: azuracast.local
+      VIRTUAL_HOST: azuracast.local
       # To enable automated LetsEncrypt certificates and renewal, uncomment the lines below
       #   and set the domain name to the same as the one above. You can also optionally provide
       #   an e-mail address for expiration notifications.
-      # - LETSENCRYPT_HOST: azuracast.local
-      # - LETSENCRYPT_EMAIL: your-email-address@example.com
+      # LETSENCRYPT_HOST: azuracast.local
+      # LETSENCRYPT_EMAIL: your-email-address@example.com
 
   nginx_proxy:
     image: azuracast/azuracast_nginx_proxy:latest
@@ -23,7 +23,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
       # Update this to your default AzuraCast domain.
-      - DEFAULT_HOST: azuracast.local
+      DEFAULT_HOST: azuracast.local
     depends_on:
       - web
 

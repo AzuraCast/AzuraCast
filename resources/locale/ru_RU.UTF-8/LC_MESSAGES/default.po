@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-25 22:40\n"
+"POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
+"PO-Revision-Date: 2019-08-25 22:57\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -184,31 +184,31 @@ msgstr "Преобразование переведенных файлов ло�
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:41
 msgid "Imported locale: %s"
-msgstr "Импортирован язык: %s"
+msgstr "Импорт локализации: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:45
 msgid "Locales imported."
-msgstr ""
+msgstr "Локализация импортирована."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
 msgid "Migrate existing configuration to new INI format if any exists."
-msgstr ""
+msgstr "Перенос существующей конфигурации в новый формат INI, если таковой существует."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:31
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Конфигурация уже настроена."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:72
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Конфигурация успешно записана."
 
 #: /var/azuracast/www/src/Console/Command/ProcessMessageQueue.php:19
 msgid "Process the message queue."
-msgstr ""
+msgstr "Обработать очередь сообщений."
 
 #: /var/azuracast/www/src/Console/Command/Restore.php:52
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Путь резервной копии %s не найден!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -625,7 +625,7 @@ msgstr "Все станции"
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:119
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:169
 #: /var/azuracast/www/config/menus/station.php:102
-#: /var/azuracast/www/templates/frontend/index/index.phtml:124
+#: /var/azuracast/www/templates/frontend/index/index.phtml:120
 #: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:32
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:28
@@ -706,7 +706,7 @@ msgid "Automated assignment error"
 msgstr "Ошибка автоматического назначения"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:150
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:159
 msgid "Path \"%s\" is not a folder."
 msgstr "Путь \"%s\" не является директорией."
 
@@ -726,20 +726,20 @@ msgstr ""
 msgid "Edit Media"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:125
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:134
 msgid "File renamed!"
 msgstr "Файл переименован!"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:135
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:144
 msgid "Rename File/Directory"
 msgstr "Переименовать файл или директорию"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:207
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:216
 msgid "This station is out of available storage space."
 msgstr "На этой станции нет свободного места для хранения."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:122
-#: /var/azuracast/www/templates/stations/files/index.phtml:179
+#: /var/azuracast/www/templates/stations/files/index.phtml:184
 msgid "Directory"
 msgstr "Папка"
 
@@ -1009,7 +1009,7 @@ msgstr "Эта песня была сыграна совсем недавно. �
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
 #: /var/azuracast/www/config/forms/media.php:57
 #: /var/azuracast/www/config/forms/playlist.php:121
-#: /var/azuracast/www/templates/stations/files/index.phtml:54
+#: /var/azuracast/www/templates/stations/files/index.phtml:59
 msgid "Select File"
 msgstr "Выбрать файл"
 
@@ -1195,7 +1195,7 @@ msgstr "Опишите вариант использования этого кл
 #: /var/azuracast/www/config/forms/remote.php:184
 #: /var/azuracast/www/config/forms/rename.php:18
 #: /var/azuracast/www/config/forms/role.php:46
-#: /var/azuracast/www/config/forms/settings.php:184
+#: /var/azuracast/www/config/forms/settings.php:200
 #: /var/azuracast/www/config/forms/song.php:53
 #: /var/azuracast/www/config/forms/station.php:492
 #: /var/azuracast/www/config/forms/streamer.php:63
@@ -1283,8 +1283,9 @@ msgstr "Включите, чтобы AzuraCast автоматически зап
 #: /var/azuracast/www/config/forms/settings.php:39
 #: /var/azuracast/www/config/forms/settings.php:51
 #: /var/azuracast/www/config/forms/settings.php:81
-#: /var/azuracast/www/config/forms/settings.php:100
-#: /var/azuracast/www/config/forms/settings.php:168
+#: /var/azuracast/www/config/forms/settings.php:102
+#: /var/azuracast/www/config/forms/settings.php:114
+#: /var/azuracast/www/config/forms/settings.php:184
 #: /var/azuracast/www/config/forms/station.php:84
 #: /var/azuracast/www/config/forms/station.php:261
 #: /var/azuracast/www/config/forms/station.php:273
@@ -1319,8 +1320,9 @@ msgstr "Да"
 #: /var/azuracast/www/config/forms/settings.php:40
 #: /var/azuracast/www/config/forms/settings.php:52
 #: /var/azuracast/www/config/forms/settings.php:82
-#: /var/azuracast/www/config/forms/settings.php:101
-#: /var/azuracast/www/config/forms/settings.php:169
+#: /var/azuracast/www/config/forms/settings.php:103
+#: /var/azuracast/www/config/forms/settings.php:115
+#: /var/azuracast/www/config/forms/settings.php:185
 #: /var/azuracast/www/config/forms/station.php:85
 #: /var/azuracast/www/config/forms/station.php:262
 #: /var/azuracast/www/config/forms/station.php:274
@@ -1514,6 +1516,7 @@ msgstr "E-mail адрес"
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:25
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:47
+#: /var/azuracast/www/templates/stations/files/index.phtml:255
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:81
 msgid "Password"
 msgstr "Пароль"
@@ -1992,7 +1995,7 @@ msgstr "Использовать по умолчанию"
 #: /var/azuracast/www/config/forms/station.php:37
 #: /var/azuracast/www/config/forms/user.php:10
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
-#: /var/azuracast/www/templates/stations/files/index.phtml:113
+#: /var/azuracast/www/templates/stations/files/index.phtml:118
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Name"
 msgstr "Имя"
@@ -2223,87 +2226,95 @@ msgstr "Включает или отключает использование н
 msgid "Security Controls"
 msgstr "Контроль безопасности"
 
-#: /var/azuracast/www/config/forms/settings.php:98
+#: /var/azuracast/www/config/forms/settings.php:100
 msgid "Always Use HTTPS"
 msgstr "Всегда использовать HTTPS"
 
-#: /var/azuracast/www/config/forms/settings.php:99
+#: /var/azuracast/www/config/forms/settings.php:101
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
 msgstr "Выберите параметр для того, чтобы всегда использовать безопасные URL-адресы \"https://\" и автоматически перенаправлять на безопасный URL-адрес, когда посещается небезопасный URL-адрес."
 
-#: /var/azuracast/www/config/forms/settings.php:109
+#: /var/azuracast/www/config/forms/settings.php:112
+msgid "Enable Built-in FTP Server"
+msgstr ""
+
+#: /var/azuracast/www/config/forms/settings.php:113
+msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
+msgstr ""
+
+#: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"
 msgstr "Заголовок API \"Access-Control-Allow-Origin\""
 
-#: /var/azuracast/www/config/forms/settings.php:111
+#: /var/azuracast/www/config/forms/settings.php:126
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
 msgstr "<a href=\"%s\" target=\"_blank\">Узнайте больше об этом заголовке</a>. Установите * для разрешения всех источников или укажите список источников, разделенных запятой (,)."
 
-#: /var/azuracast/www/config/forms/settings.php:120
+#: /var/azuracast/www/config/forms/settings.php:136
 msgid "Privacy Controls"
 msgstr "Контроль конфиденциальности"
 
-#: /var/azuracast/www/config/forms/settings.php:121
+#: /var/azuracast/www/config/forms/settings.php:137
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
 msgstr "AzuraCast не отправляет данные вашей станции или слушателя на какой-либо внешний сервер. Вы можете контролировать, сколько данных AzuraCast регистрирует о ваших слушателях здесь."
 
-#: /var/azuracast/www/config/forms/settings.php:128
+#: /var/azuracast/www/config/forms/settings.php:144
 msgid "Listener Analytics Collection"
 msgstr "Сбор Аналитики о Слушателях"
 
-#: /var/azuracast/www/config/forms/settings.php:129
+#: /var/azuracast/www/config/forms/settings.php:145
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr "Собираемая статистика о слушателях используется для отображения отчетов станции в системе. Статистика слушателей на основе IP-адреса используется для просмотра отслеживания онлайн слушателей и может потребоваться для роялти отчетов."
 
-#: /var/azuracast/www/config/forms/settings.php:132
+#: /var/azuracast/www/config/forms/settings.php:148
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
 msgstr "<b>Полная:</b> Сбор статистических данных слушателя и статистика на основе IP-адреса "
 
-#: /var/azuracast/www/config/forms/settings.php:133
+#: /var/azuracast/www/config/forms/settings.php:149
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
 msgstr "<b>Ограничено:</b> Сбор только статистических данных слушателя"
 
-#: /var/azuracast/www/config/forms/settings.php:134
+#: /var/azuracast/www/config/forms/settings.php:150
 msgid "<b>None:</b> Do not collect any listener analytics"
 msgstr "<b>Нет:</b> Не собирать никакой аналитики о слушателях"
 
-#: /var/azuracast/www/config/forms/settings.php:143
+#: /var/azuracast/www/config/forms/settings.php:159
 msgid "AzuraCast Installation Telemetry"
 msgstr "Телеметрия установки AzuraCast"
 
-#: /var/azuracast/www/config/forms/settings.php:144
+#: /var/azuracast/www/config/forms/settings.php:160
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
 msgstr "Выберите, будет ли ваша установка взаимодействовать с центральными серверами AzuraCast для проверки обновлений и объявлений. <br>AzuraCast уважает вашу конфиденциальность; смотрите нашу <a href=\"%s\" target=\"_blank\">политику конфиденциальности</a> для получения более подробной информации."
 
-#: /var/azuracast/www/config/forms/settings.php:151
+#: /var/azuracast/www/config/forms/settings.php:167
 msgid "Check for Updates and Announcements"
 msgstr "Проверка наличия обновлений и объявлений"
 
-#: /var/azuracast/www/config/forms/settings.php:152
+#: /var/azuracast/www/config/forms/settings.php:168
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
 msgstr "Отправьте минимальную информацию о вашей установке AzuraCast на центральный сервер AzuraCast, чтобы проверить наличие обновленных версий программного обеспечения и важных объявлений."
 
-#: /var/azuracast/www/config/forms/settings.php:155
+#: /var/azuracast/www/config/forms/settings.php:171
 msgid "<b>None:</b> Do not check for updates or announcements."
 msgstr "<b>Нет:</b> Не проверять наличие обновлений или объявлений."
 
-#: /var/azuracast/www/config/forms/settings.php:156
+#: /var/azuracast/www/config/forms/settings.php:172
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
 msgstr "<b>Только релиз:</b> Критические объявления и только новые версии релизов."
 
-#: /var/azuracast/www/config/forms/settings.php:157
+#: /var/azuracast/www/config/forms/settings.php:173
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
 msgstr "<b>Все Обновления:</b> Включает все объявления и незначительные обновления."
 
-#: /var/azuracast/www/config/forms/settings.php:166
+#: /var/azuracast/www/config/forms/settings.php:182
 msgid "Automatically Send Error Reports to AzuraCast"
 msgstr "Автоматически отправлять отчёты об ошибках в AzuraCast"
 
-#: /var/azuracast/www/config/forms/settings.php:167
+#: /var/azuracast/www/config/forms/settings.php:183
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
 msgstr "Если веб-приложение сталкивается с ошибкой, вы можете автоматически отправить анонимный отчет об ошибке команде AzuraCast для более быстрой диагностики и устранения."
 
-#: /var/azuracast/www/config/forms/settings.php:167
+#: /var/azuracast/www/config/forms/settings.php:183
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
 msgstr "Отчеты об ошибках основаны на <a href=\"%s\" target=\"_blank\">%s</a>."
 
@@ -2337,7 +2348,7 @@ msgstr "AutoDJ"
 #: /var/azuracast/www/config/forms/station.php:25
 #: /var/azuracast/www/templates/admin/index/index.phtml:18
 #: /var/azuracast/www/templates/admin/sidebar.phtml:3
-#: /var/azuracast/www/templates/frontend/index/index.phtml:59
+#: /var/azuracast/www/templates/frontend/index/index.phtml:55
 msgid "Administration"
 msgstr "Администрирование"
 
@@ -2767,7 +2778,7 @@ msgstr "Сейчас играет на %s:"
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:27
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
 #: /var/azuracast/www/templates/frontend/public/index.phtml:75
-#: /var/azuracast/www/templates/stations/files/index.phtml:114
+#: /var/azuracast/www/templates/stations/files/index.phtml:119
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:30
 msgid "Title"
@@ -3056,7 +3067,7 @@ msgid "Music Files"
 msgstr "Музыкальные файлы"
 
 #: /var/azuracast/www/config/menus/station.php:53
-#: /var/azuracast/www/templates/stations/files/index.phtml:123
+#: /var/azuracast/www/templates/stations/files/index.phtml:128
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:4
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:34
@@ -3261,7 +3272,7 @@ msgstr "Вставить"
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 #: /var/azuracast/www/templates/admin/users/index.phtml:39
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:27
-#: /var/azuracast/www/templates/stations/files/index.phtml:101
+#: /var/azuracast/www/templates/stations/files/index.phtml:106
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
@@ -3337,8 +3348,8 @@ msgstr "Цель"
 #: /var/azuracast/www/templates/admin/users/index.phtml:21
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
 #: /var/azuracast/www/templates/frontend/public/index.phtml:78
-#: /var/azuracast/www/templates/stations/files/index.phtml:124
-#: /var/azuracast/www/templates/stations/files/index.phtml:180
+#: /var/azuracast/www/templates/stations/files/index.phtml:129
+#: /var/azuracast/www/templates/stations/files/index.phtml:185
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:24
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:54
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:29
@@ -3408,7 +3419,7 @@ msgid "Last Modified"
 msgstr "Последнее Изменение"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
-#: /var/azuracast/www/templates/stations/files/index.phtml:121
+#: /var/azuracast/www/templates/stations/files/index.phtml:126
 msgid "Size"
 msgstr "Размер"
 
@@ -3509,7 +3520,7 @@ msgid "Manage Stations"
 msgstr "Управление станциями"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
-#: /var/azuracast/www/templates/frontend/index/index.phtml:108
+#: /var/azuracast/www/templates/frontend/index/index.phtml:104
 msgid "Add Station"
 msgstr "Добавить станцию"
 
@@ -3518,7 +3529,7 @@ msgid "Station"
 msgstr "Станция"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:29
-#: /var/azuracast/www/templates/frontend/index/index.phtml:152
+#: /var/azuracast/www/templates/frontend/index/index.phtml:148
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:26
 msgid "Manage"
 msgstr "Управлять"
@@ -3644,31 +3655,31 @@ msgstr "Продолжить"
 msgid "Dashboard"
 msgstr "Панель управления"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:44
+#: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
 msgstr "Пользователь AzuraCast"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:54
+#: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
 #: /var/azuracast/www/templates/main.phtml:79
 msgid "My Account"
 msgstr "Мой аккаунт"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:90
-#: /var/azuracast/www/templates/frontend/index/index.phtml:93
+#: /var/azuracast/www/templates/frontend/index/index.phtml:86
+#: /var/azuracast/www/templates/frontend/index/index.phtml:89
 msgid "Listeners Per Station"
 msgstr "Слушателей на станции"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:102
+#: /var/azuracast/www/templates/frontend/index/index.phtml:98
 msgid "Station Overview"
 msgstr "Обзор станции"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:123
+#: /var/azuracast/www/templates/frontend/index/index.phtml:119
 msgid "Station Name"
 msgstr "Название станции"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:125
+#: /var/azuracast/www/templates/frontend/index/index.phtml:121
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:30
 msgid "Now Playing"
 msgstr "Сейчас играет"
@@ -3771,6 +3782,7 @@ msgid "DJ Credentials"
 msgstr "Учётные Данные Диджея"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
+#: /var/azuracast/www/templates/stations/files/index.phtml:247
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:25
 msgid "Username"
 msgstr "Имя пользователя"
@@ -3782,7 +3794,7 @@ msgstr "Использовать Асинхронную Работу"
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:28
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
 #: /var/azuracast/www/templates/frontend/public/index.phtml:76
-#: /var/azuracast/www/templates/stations/files/index.phtml:115
+#: /var/azuracast/www/templates/stations/files/index.phtml:120
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:27
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:31
 msgid "Artist"
@@ -3835,7 +3847,7 @@ msgstr "Запрос"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
 #: /var/azuracast/www/templates/frontend/public/index.phtml:77
-#: /var/azuracast/www/templates/stations/files/index.phtml:116
+#: /var/azuracast/www/templates/stations/files/index.phtml:121
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:28
 msgid "Album"
 msgstr "Альбом"
@@ -4057,67 +4069,113 @@ msgstr "Главная"
 msgid "%s of %s Used (%d Files)"
 msgstr "Использовано %s из %s (%d Файлов)"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:43
-msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr "Вы также можете загружать файлы в массовом режиме через SFTP <a href=\"%s\" target=\"_blank\">следуя этим инструкциям</a>. Новые загруженные файлы будут автоматически обработаны в течение нескольких минут."
+#: /var/azuracast/www/templates/stations/files/index.phtml:44
+msgid "You can also upload files in bulk via FTP."
+msgstr ""
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:52
+#: /var/azuracast/www/templates/stations/files/index.phtml:46
+msgid "View connection instructions"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:57
 msgid "Drag files here to upload to this folder or "
 msgstr "Перетащите файлы сюда, чтобы загрузить в эту папку или "
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:65
+#: /var/azuracast/www/templates/stations/files/index.phtml:70
 msgid "Set Playlists"
 msgstr "Выбрать плейлист"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:82
+#: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "New Playlist"
 msgstr "Новый Плейлист"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:87
+#: /var/azuracast/www/templates/stations/files/index.phtml:92
 msgid "Save"
 msgstr "Сохранить"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:93
+#: /var/azuracast/www/templates/stations/files/index.phtml:98
 msgid "Clear Playlists"
 msgstr "Очистить Плейлисты"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:97
+#: /var/azuracast/www/templates/stations/files/index.phtml:102
 msgid "Move"
 msgstr "Переместить"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:105
+#: /var/azuracast/www/templates/stations/files/index.phtml:110
 msgid "New Folder"
 msgstr "Новая папка"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:117
+#: /var/azuracast/www/templates/stations/files/index.phtml:122
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:33
 msgid "Length"
 msgstr "Продолжительность"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:122
+#: /var/azuracast/www/templates/stations/files/index.phtml:127
 msgid "Modified"
 msgstr "Изменён"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:139
+#: /var/azuracast/www/templates/stations/files/index.phtml:144
 msgid "New Directory"
 msgstr "Новая директория"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:144
+#: /var/azuracast/www/templates/stations/files/index.phtml:149
 msgid "Directory Name"
 msgstr "Название директории"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:150
+#: /var/azuracast/www/templates/stations/files/index.phtml:155
 msgid "Create Directory"
 msgstr "Создать директорию"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:162
+#: /var/azuracast/www/templates/stations/files/index.phtml:167
 msgid "Move {{ selected_files }} File(s) to"
 msgstr "Переместить {{ selected_files }} в"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:168
+#: /var/azuracast/www/templates/stations/files/index.phtml:173
 msgid "Back"
 msgstr "Назад"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:207
+msgid "FTP Connection Information"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:221
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:57
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:72
+msgid "Server"
+msgstr "Сервер"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:225
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:60
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:75
+msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
+msgstr "Возможно, вам потребуется подключиться напрямую через ваш IP-адрес <code>%s</code>."
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:230
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:63
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:78
+msgid "Port"
+msgstr "Порт"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:238
+msgid "Protocol"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:241
+msgid "FTP with Explicit TLS (FTPS)"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:242
+msgid "Unencrypted FTP is also allowed, but not recommended."
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:250
+msgid "Your AzuraCast E-mail Address"
+msgstr ""
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:258
+msgid "Your AzuraCast Password"
+msgstr ""
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
@@ -4628,21 +4686,6 @@ msgstr "Сведения о подключении"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:55
 msgid "IceCast Clients"
 msgstr "Клиенты IceCast"
-
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:57
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:72
-msgid "Server"
-msgstr "Сервер"
-
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:60
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:75
-msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr "Возможно, вам потребуется подключиться напрямую через ваш IP-адрес <code>%s</code>."
-
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:63
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:78
-msgid "Port"
-msgstr "Порт"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:66
 msgid "Mount Name"

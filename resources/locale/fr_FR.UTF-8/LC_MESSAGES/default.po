@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-25 20:10\n"
+"PO-Revision-Date: 2019-08-25 20:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -431,24 +431,24 @@ msgstr "Log de Supervisord"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission updated."
-msgstr ""
+msgstr "Permission mise à jour."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission added."
-msgstr ""
+msgstr "Permission ajoutée."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 msgid "Edit Permission"
-msgstr ""
+msgstr "Modifier l'autorisation"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
-msgstr ""
+msgstr "Ajouter une permission"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 msgid "Permission deleted."
-msgstr ""
+msgstr "Permission supprimée."
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -459,23 +459,23 @@ msgstr "Configuration système"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station updated."
-msgstr ""
+msgstr "Station mise à jour."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station added."
-msgstr ""
+msgstr "Station ajoutée."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
 msgid "Edit Station"
-msgstr ""
+msgstr "Modifier la station"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:61
 msgid "Station deleted."
-msgstr ""
+msgstr "Station supprimée."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
 msgid "Station not found."
-msgstr ""
+msgstr "Station introuvable."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:80
 msgid "Clone Station: %s"
@@ -483,11 +483,11 @@ msgstr "Clone de la station : %s"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User updated."
-msgstr ""
+msgstr "Utilisateur mis à jour."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User added."
-msgstr ""
+msgstr "Utilisateur ajouté."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:56
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
@@ -495,12 +495,12 @@ msgstr "Il existe déjà un autre utilisateur avec cette adresse E-mail. Veuille
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 msgid "Edit User"
-msgstr ""
+msgstr "Modifier l'utilisateur"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "Add User"
-msgstr ""
+msgstr "Ajouter un utilisateur"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:75
 msgid "You cannot delete your own account."
@@ -508,11 +508,11 @@ msgstr "Vous ne pouvez pas supprimer votre propre compte."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:80
 msgid "User deleted."
-msgstr ""
+msgstr "Utilisateur supprimé."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:93
 msgid "User not found."
-msgstr ""
+msgstr "Utilisateur non trouvé."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
@@ -526,48 +526,48 @@ msgstr "Connecté avec succès."
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:93
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:114
 msgid "Record not found!"
-msgstr ""
+msgstr "Enregistrement non trouvé !"
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:91
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:98
 msgid "Changes saved successfully."
-msgstr ""
+msgstr "Modifications enregistrées avec succès."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:111
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:116
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:119
 msgid "Record deleted successfully."
-msgstr ""
+msgstr "L'enregistrement a été supprimé avec succès."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:111
 msgid "You cannot remove yourself."
-msgstr ""
+msgstr "Vous ne pouvez vous supprimer vous-même."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:59
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:158
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:27
 msgid "This station does not accept requests currently."
-msgstr ""
+msgstr "Cette station n'accepte pas de demandes pour le moment."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:168
 msgid "Request submitted successfully."
-msgstr ""
+msgstr "Demande envoyée avec succès."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
 msgid "Station restarted."
-msgstr ""
+msgstr "Redémarrage de la station."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:110
 msgid "Frontend stopped."
-msgstr ""
+msgstr "Frontend s'est arrêté."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend started."
-msgstr ""
+msgstr "Frontend a démarré."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:129
 msgid "Frontend restarted."
-msgstr ""
+msgstr "Frontend redémarre."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "Song skipped."
@@ -579,15 +579,15 @@ msgstr "Streamer déconnecté."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend stopped."
-msgstr ""
+msgstr "Backend s'arrête."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
 msgid "Backend started."
-msgstr ""
+msgstr "Backend démarre."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
 msgid "Backend restarted."
-msgstr ""
+msgstr "Backend redémarre."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:72
 msgid "Too many login attempts"
@@ -609,7 +609,7 @@ msgstr "Vos informations d'identification n'ont pas pu être vérifiées."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:61
 msgid "API Key not found."
-msgstr ""
+msgstr "Clé API introuvable."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
@@ -2902,7 +2902,14 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Étapes de configuration d'une application Twitter :<br>\n"
+"             <ol type=\"1\">\n"
+"                     <li>Créez une nouvelle application sur la page<a href=\"%s\" target=\"_blank\">Site d'applications Twitter</a>.\n"
+"             Utilisez l'URL de base de cette installation comme URL d'application.</li>\n"
+"                    <li>Dans l'application nouvellement créée, cliquez sur l'onglet \"Clés et jetons d'accès\".</li>\n"
+"             <li>En bas de la page, cliquez sur \"Créer mon code d'accès\".</li>\n"
+"            </ol>\n"
+"<p>Une fois ces étapes terminées, entrez les informations de la page \"Clés et jetons d'accès\" dans les champs ci-dessous.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -2971,7 +2978,7 @@ msgstr "Journaux(Logs) du système"
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:3
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:19
 msgid "Audit Log"
-msgstr ""
+msgstr "Journal d'audit"
 
 #: /var/azuracast/www/config/menus/admin.php:42
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
@@ -3144,7 +3151,7 @@ msgstr "Redémarrer la diffusion"
 
 #: /var/azuracast/www/config/routes.dev.php:29
 msgid "Get Next Song Debug Mode"
-msgstr ""
+msgstr "Mode débogage pour le titre suivant"
 
 #: /var/azuracast/www/config/webhooks.php:15
 msgid "Generic Web Hook"
@@ -3236,7 +3243,7 @@ msgstr "Révoquer"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
 msgid "Insert"
-msgstr ""
+msgstr "Insérer"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
@@ -3261,12 +3268,12 @@ msgstr "Supprimer"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:42
 msgid "Update"
-msgstr ""
+msgstr "Mise à jour"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:58
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:59
 msgid "Changes"
-msgstr ""
+msgstr "Changements"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:83
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
@@ -3309,11 +3316,11 @@ msgstr "Utilisateur"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:44
 msgid "Identifier"
-msgstr ""
+msgstr "Identifiant"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
 msgid "Target"
-msgstr ""
+msgstr "Cible"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:46
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
@@ -3339,15 +3346,15 @@ msgstr "Actions"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:71
 msgid "Field"
-msgstr ""
+msgstr "Champ"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:72
 msgid "Previous"
-msgstr ""
+msgstr "Précédent"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:73
 msgid "Updated"
-msgstr ""
+msgstr "Mise à jour"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
@@ -3497,7 +3504,7 @@ msgstr "Gestion des stations"
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/frontend/index/index.phtml:108
 msgid "Add Station"
-msgstr ""
+msgstr "Ajouter une station"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
 msgid "Station"
@@ -3585,7 +3592,8 @@ msgstr "Mes clés API"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Les clés API peuvent être utilisées pour accéder à certaines fonctionnalités du système sans avoir besoin de se connecter. Toutes les clés\n"
+"         que vous créez partagent vos permissions dans le système. Pour plus d'informations, voir la section<a href=\"%s\">Documentation de l'API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3974,7 +3982,7 @@ msgstr "Votre installation actuelle est la <b>%s</b>. Assurez-vous de l'inclure 
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "Add New GitHub Issue"
-msgstr ""
+msgstr "Ajouter un nouveau problème sur GitHub"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
@@ -4366,11 +4374,11 @@ msgstr "Flux locaux"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:86
 msgid "Download PLS"
-msgstr ""
+msgstr "Télécharger le PLS"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:90
 msgid "Download M3U"
-msgstr ""
+msgstr "Télécharger M3U"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
@@ -4423,7 +4431,7 @@ msgstr "Auditeurs en direct"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:58
 msgid "There are too many data points to map!"
-msgstr ""
+msgstr "Il y a trop de points de données à cartographier !"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:25
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:26
@@ -4621,7 +4629,7 @@ msgstr "Serveur"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr ""
+msgstr "Vous devez peut-être vous connecter directement via votre adresse IP, qui est <code>%s</code>."
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:78
@@ -4638,7 +4646,7 @@ msgstr "Clients ShoutCast v1"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:79
 msgid "%d (%d for some clients)"
-msgstr ""
+msgstr "%d (%dpour certains clients)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:84
 msgid "(DJ username and password separated by a colon)"

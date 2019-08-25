@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-25 17:50\n"
+"PO-Revision-Date: 2019-08-25 22:25\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -103,48 +103,48 @@ msgstr "Управление Веб-хуками Станции"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:25
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr ""
+msgstr "Резервное копирование базы данных и статистики AzuraCast (и при необходимости медиафайлов)."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr ""
+msgstr "Абсолютный (или относительный путь /var/azuracast/backups) для создания резервной копии."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
-msgstr ""
+msgstr "Исключить медиафайлы из резервной копии."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:61
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "Резервная копия AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:62
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Пожалуйста, подождите, пока будет создана резервная копия..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:65
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Создание временных каталогов..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:69
 #: /var/azuracast/www/src/Console/Command/Backup.php:75
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "Каталог \"%s\" не был создан"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:82
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "Резервное копирование MariaDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:107
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "Резервное копирование InfluxDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:147
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Создание архива резервной копии..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:185
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Очистка временных файлов..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:196
 msgid "Backup complete in %.2f seconds."

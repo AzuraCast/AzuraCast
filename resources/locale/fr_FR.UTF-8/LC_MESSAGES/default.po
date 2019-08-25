@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-25 20:00\n"
+"PO-Revision-Date: 2019-08-25 20:10\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -292,59 +292,59 @@ msgstr "Visitez %s pour compléter l'installation."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."
-msgstr ""
+msgstr "Installez des fixations pour la démo / développement local."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:82
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Fixations chargées."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."
-msgstr ""
+msgstr "Première installation de InfluxDB."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:33
 msgid "Database created."
-msgstr ""
+msgstr "Base de données créée."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:67
 msgid "Retention policies updated."
-msgstr ""
+msgstr "Mise à jour des politiques de confidentialité."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:86
 msgid "Continuous queries created."
-msgstr ""
+msgstr "Requêtes continues créées."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:105
 msgid "InfluxDB databases created."
-msgstr ""
+msgstr "Bases de données InfluxDB créées."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:19
 msgid "Run one or more scheduled synchronization tasks."
-msgstr ""
+msgstr "Exécutez une ou plusieurs tâches de synchronisation planifiées."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:23
 msgid "The task to run (%s)."
-msgstr ""
+msgstr "La tâche à exécuter (%s)."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
 #: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:85
 msgid "Record not found."
-msgstr ""
+msgstr "Enregistrement non trouvé."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:42
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:96
 msgid "API Key updated."
-msgstr ""
+msgstr "Clé API mise à jour."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 msgid "Edit API Key"
-msgstr ""
+msgstr "Éditer la clé API"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:57
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:123
 msgid "API Key deleted."
-msgstr ""
+msgstr "Clé API supprimée."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:74
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:34
@@ -369,32 +369,32 @@ msgstr "Exécuter la sauvegarde manuelle"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
 msgid "Backup deleted."
-msgstr ""
+msgstr "Sauvegarde supprimée."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:147
 msgid "Backup not found."
-msgstr ""
+msgstr "Sauvegarde non trouvée."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field updated."
-msgstr ""
+msgstr "Champ personnalisé mis à jour."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field added."
-msgstr ""
+msgstr "Champ personnalisé ajouté."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 msgid "Edit Custom Field"
-msgstr ""
+msgstr "Modifier un champ personnalisé"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Add Custom Field"
-msgstr ""
+msgstr "Ajouter un champ personnalisé"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:53
 msgid "Custom Field deleted."
-msgstr ""
+msgstr "Champ personnalisé supprimé."
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:101
 msgid "Sync Task Output"
@@ -900,50 +900,50 @@ msgstr "Vous pouvez maintenant configurer des comptes pour les streamers (DJs)."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer updated."
-msgstr ""
+msgstr "Streamer mis à jour."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer added."
-msgstr ""
+msgstr "Streamer ajouté."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 msgid "Edit Streamer"
-msgstr ""
+msgstr "Modifier le Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
-msgstr ""
+msgstr "Ajouter Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 msgid "Streamer deleted."
-msgstr ""
+msgstr "Streamer supprimé."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 msgid "Web Hook added."
-msgstr ""
+msgstr "Web Hook ajouté."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
-msgstr ""
+msgstr "Ajouter un Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
 msgid "Web Hook updated."
-msgstr ""
+msgstr "Web Hook mis à jour."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:83
 msgid "Edit Web Hook"
-msgstr ""
+msgstr "Modifier Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web hook enabled."
-msgstr ""
+msgstr "Web Hook activé."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web Hook disabled."
-msgstr ""
+msgstr "Web Hook désactivé."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
@@ -951,7 +951,7 @@ msgstr "Tester la Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook deleted."
-msgstr ""
+msgstr "Web Hook supprimé."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
@@ -983,15 +983,15 @@ msgstr "Configuration de SHOUTcast"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:22
 msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
+msgstr "Les robots des moteurs de recherche ne sont pas autorisés à utiliser cette fonctionnalité."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
 msgid "The song ID you specified could not be found in the station."
-msgstr ""
+msgstr "L'ID du morceau que vous avez spécifié n'a pas été trouvé dans la station."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
 msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
+msgstr "L'ID du morceau que vous avez spécifié ne peut pas être demandé pour cette station."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
@@ -999,7 +999,7 @@ msgstr "Vous avez fait une demande trop récemment ! Veuillez patienter avant d'
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:106
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
+msgstr "Requête en double : cette chanson a déjà été demandée et sera jouée bientôt."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
@@ -2213,11 +2213,11 @@ msgstr "Indéfiniment"
 
 #: /var/azuracast/www/config/forms/settings.php:79
 msgid "Use WebSockets for Now Playing Updates"
-msgstr ""
+msgstr "Utiliser WebSockets pour les mises à jour de la musique en cours de diffusion"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
-msgstr ""
+msgstr "Activer ou désactiver l'utilisation du système WebSocket, plus récent et plus rapide, pour recevoir des mises à jour en direct sur les lecteurs publics. Vous devrez peut-être désactiver cette fonction si vous rencontrez des problèmes avec cette fonctionnalité."
 
 #: /var/azuracast/www/config/forms/settings.php:92
 msgid "Security Controls"
@@ -2718,7 +2718,7 @@ msgstr "Rôles"
 #: /var/azuracast/www/config/forms/webhook/tunein.php:17
 #: /var/azuracast/www/config/forms/webhook/twitter.php:99
 msgid "Web Hook Name"
-msgstr ""
+msgstr "Nom du Web Hook"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:28
@@ -2805,7 +2805,15 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Les Web Hooks envoient automatiquement une requête HTTP POST à l'URL que vous spécifiez aux \n"
+"\n"
+"déclencheurs que vous spécifiez se produisent sur votre station. Le corps du message POST\n"
+"\n"
+"le <a href=\"%s\" target=\"_blank\">Réponse de l'API de la diffusion en cours</a> pour votre station.\n"
+"\n"
+"rapidement, les Web Hooks ont un court délai d'attente, donc le service de réponse devrait être\n"
+"\n"
+"exécuté en moins de 2 secondes."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"

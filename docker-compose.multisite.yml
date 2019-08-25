@@ -3,7 +3,8 @@ version: '2.2'
 services:
   web:
     environment:
-      # Update this to your default AzuraCast domain (the same as the one listed above).
+      # Update this to your default AzuraCast domain.
+      # DON'T FORGET TO UPDATE THE nginx_proxy SERVICE BELOW!
       VIRTUAL_HOST: azuracast.local
       # To enable automated LetsEncrypt certificates and renewal, uncomment the lines below
       #   and set the domain name to the same as the one above. You can also optionally provide

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:11\n"
+"PO-Revision-Date: 2019-08-26 08:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -495,12 +495,12 @@ msgstr "Другой пользователь уже существует с э�
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 msgid "Edit User"
-msgstr ""
+msgstr "Редактирование Пользователя"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "Add User"
-msgstr ""
+msgstr "Добавить Пользователя"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:75
 msgid "You cannot delete your own account."
@@ -508,11 +508,11 @@ msgstr "Вы не можете удалить свой собственный а
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:80
 msgid "User deleted."
-msgstr ""
+msgstr "Пользователь удалён."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:93
 msgid "User not found."
-msgstr ""
+msgstr "Пользователь не найден."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
@@ -526,7 +526,7 @@ msgstr "Успешный вход в систему."
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:93
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:114
 msgid "Record not found!"
-msgstr ""
+msgstr "Запись не найдена!"
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:91
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:98
@@ -537,37 +537,37 @@ msgstr "Изменения успешно сохранены."
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:116
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:119
 msgid "Record deleted successfully."
-msgstr ""
+msgstr "Запись успешно удалена."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:111
 msgid "You cannot remove yourself."
-msgstr ""
+msgstr "Вы не можете удалить себя."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:59
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:158
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:27
 msgid "This station does not accept requests currently."
-msgstr ""
+msgstr "Эта станция не принимает запросы в настоящее время."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:168
 msgid "Request submitted successfully."
-msgstr ""
+msgstr "Запрос успешно отправлен."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
 msgid "Station restarted."
-msgstr ""
+msgstr "Станция перезапущена."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:110
 msgid "Frontend stopped."
-msgstr ""
+msgstr "Интерфейс остановлен."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend started."
-msgstr ""
+msgstr "Интерфейс запущен."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:129
 msgid "Frontend restarted."
-msgstr ""
+msgstr "Интерфейс перезапущен."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "Song skipped."

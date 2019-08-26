@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 04:50\n"
+"PO-Revision-Date: 2019-08-26 05:00\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3555,7 +3555,7 @@ msgstr "Hoşgeldiniz!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:34
 msgid "name@example.com"
-msgstr "Mail Adresinizi Yazın"
+msgstr "E-Posta Adresinizi Yazın"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 msgid "Enter your password"
@@ -4151,7 +4151,7 @@ msgstr "Protokol"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:241
 msgid "FTP with Explicit TLS (FTPS)"
-msgstr ""
+msgstr "FTP için Aktif TLS Kullan (FTPS)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:242
 msgid "Unencrypted FTP is also allowed, but not recommended."

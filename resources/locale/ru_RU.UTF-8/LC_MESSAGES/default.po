@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 07:31\n"
+"PO-Revision-Date: 2019-08-26 07:50\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -228,7 +228,7 @@ msgstr "Обновление только существующей устано�
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr "Загрузить предопределенные приспособления (для целей разработки)."
+msgstr "Загрузка встроенного модификатора (для целей разработки)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
@@ -272,7 +272,7 @@ msgstr "Создание Прокси-Классов Базы Данных"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
-msgstr "Установка данных устройства"
+msgstr "Установка модификатора данных"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:80
 msgid "Refreshing All Stations"
@@ -292,11 +292,11 @@ msgstr "Посетите %s для завершения установки."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."
-msgstr ""
+msgstr "Установка модификатора для демонстрации / локальной разработки."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:82
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Модификатор загружен."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:42\n"
+"PO-Revision-Date: 2019-08-26 08:50\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3166,7 +3166,7 @@ msgstr "Streaming neustart"
 
 #: /var/azuracast/www/config/routes.dev.php:29
 msgid "Get Next Song Debug Mode"
-msgstr ""
+msgstr "Debug-Modus für \"Nächster Song\""
 
 #: /var/azuracast/www/config/webhooks.php:15
 msgid "Generic Web Hook"

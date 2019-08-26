@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-25 22:57\n"
+"PO-Revision-Date: 2019-08-26 06:10\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -220,27 +220,27 @@ msgstr "Аккаунт не найден."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:22
 msgid "Run all general AzuraCast setup steps."
-msgstr ""
+msgstr "Выполните все действия по установке AzuraCast."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:23
 msgid "Only update the existing installation."
-msgstr ""
+msgstr "Обновление только существующей установки."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr ""
+msgstr "Загрузить предопределенные приспособления (для целей разработки)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
-msgstr ""
+msgstr "Используется для обновления только до отмеченной версии."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:37
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "Настройка AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:38
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "Добро пожаловать в AzuraCast. Пожалуйста, подождите, пока настраиваются некоторые ключевые зависимости AzuraCast..."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:41
 msgid "Environment: %s"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-25 22:57\n"
+"PO-Revision-Date: 2019-08-26 08:00\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2237,11 +2237,11 @@ msgstr "Auf \"Ja\" setzen, um immer \"https://\" sichere URLs zu verwenden und a
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "Enable Built-in FTP Server"
-msgstr ""
+msgstr "Integrierten FTP-Server aktivieren"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
-msgstr ""
+msgstr "Wenn aktiviert, können sich Benutzer via FTP über ihre AzuraCast-Zugangsdaten verbinden, um Medien direkt auf alle von ihnen verwalteten Sender hochzuladen."
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"
@@ -4067,11 +4067,11 @@ msgstr "%s von %s belegt (%d Dateien)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:44
 msgid "You can also upload files in bulk via FTP."
-msgstr ""
+msgstr "Dateien auch per Bulk-Upload über FTP hochladen."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:46
 msgid "View connection instructions"
-msgstr ""
+msgstr "Verbindungsanleitungen anzeigen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:57
 msgid "Drag files here to upload to this folder or "
@@ -4133,7 +4133,7 @@ msgstr "Zurück"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:207
 msgid "FTP Connection Information"
-msgstr ""
+msgstr "FTP-Verbindungsinformationen"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:221
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:57
@@ -4155,23 +4155,23 @@ msgstr "Port"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:238
 msgid "Protocol"
-msgstr ""
+msgstr "Protokoll"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:241
 msgid "FTP with Explicit TLS (FTPS)"
-msgstr ""
+msgstr "FTP mit Explizitem TLS (FTPS)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:242
 msgid "Unencrypted FTP is also allowed, but not recommended."
-msgstr ""
+msgstr "Unverschlüsseltes FTP ist ebenfalls erlaubt, wird aber nicht empfohlen."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:250
 msgid "Your AzuraCast E-mail Address"
-msgstr ""
+msgstr "AzuraCast E-Mail-Adresse"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:258
 msgid "Your AzuraCast Password"
-msgstr ""
+msgstr "AzuraCast-Passwort"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"

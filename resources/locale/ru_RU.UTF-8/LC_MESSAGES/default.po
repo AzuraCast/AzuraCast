@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:50\n"
+"PO-Revision-Date: 2019-08-26 09:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -810,28 +810,28 @@ msgstr "Плейлист удалён."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay updated."
-msgstr ""
+msgstr "Отдалённый Ретранслятор обновлён."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay added."
-msgstr ""
+msgstr "Отдалённый Ретранслятор добавлен."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 msgid "Edit Remote Relay"
-msgstr ""
+msgstr "Редактирование Отдалённого Ретранслятора"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
-msgstr ""
+msgstr "Добавить Отдалённый Ретранслятор"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
 msgid "Remote Relay deleted."
-msgstr ""
+msgstr "Отдалённый Ретранслятор удалён."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:64
 msgid "This record cannot be edited."
-msgstr ""
+msgstr "Эта запись не может быть отредактирована."
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:57
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
@@ -4159,11 +4159,11 @@ msgstr "Порт"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:238
 msgid "Protocol"
-msgstr ""
+msgstr "Протокол"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:241
 msgid "FTP with Explicit TLS (FTPS)"
-msgstr ""
+msgstr "FTP с явным TLS (FTPS)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:242
 msgid "Unencrypted FTP is also allowed, but not recommended."

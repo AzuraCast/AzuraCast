@@ -77,9 +77,11 @@ class Ftp
             return $error;
         }
 
+        // Some FTP clients URL Encode the username, particularly the '@' of the e-mail address.
+        $username = urldecode($username);
+
         $this->logger->info('FTP Authentication attempt.', [
             'username' => $username,
-            'password' => $password,
         ]);
 
         $user = $this->user_repo->authenticate($username, $password);

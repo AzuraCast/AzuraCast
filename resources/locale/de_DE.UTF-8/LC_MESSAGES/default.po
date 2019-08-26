@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:00\n"
+"PO-Revision-Date: 2019-08-26 08:42\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -164,11 +164,11 @@ msgstr "AzuraCast-Einstellungen"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:38
 msgid "Setting Key"
-msgstr ""
+msgstr "Einstellungsschlüssel"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:39
 msgid "Setting Value"
-msgstr ""
+msgstr "Einstellungswert"
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:17
 msgid "Generate the translation locale file."

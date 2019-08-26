@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:00\n"
+"PO-Revision-Date: 2019-08-26 08:11\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -369,32 +369,32 @@ msgstr "Запуск Резервного Копирования Вручную"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
 msgid "Backup deleted."
-msgstr ""
+msgstr "Резервная копия удалена."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:147
 msgid "Backup not found."
-msgstr ""
+msgstr "Резервная копия не найдена."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field updated."
-msgstr ""
+msgstr "Настраиваемое поле обновлено."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field added."
-msgstr ""
+msgstr "Настраиваемое поле добавлено."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 msgid "Edit Custom Field"
-msgstr ""
+msgstr "Редактирование настраиваемого поля"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Add Custom Field"
-msgstr ""
+msgstr "Добавить Настраиваемое Поле"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:53
 msgid "Custom Field deleted."
-msgstr ""
+msgstr "Настраиваемое поле удалено."
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:101
 msgid "Sync Task Output"
@@ -431,24 +431,24 @@ msgstr "Supervisord - Журнал"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission updated."
-msgstr ""
+msgstr "Права доступа обновлены."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:60
 msgid "Permission added."
-msgstr ""
+msgstr "Добавлены Права Доступа."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 msgid "Edit Permission"
-msgstr ""
+msgstr "Редактирование Прав Доступа"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
-msgstr ""
+msgstr "Добавить Права Доступа"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
 msgid "Permission deleted."
-msgstr ""
+msgstr "Права Доступа Удалены."
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:37
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -459,23 +459,23 @@ msgstr "Настройки системы"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station updated."
-msgstr ""
+msgstr "Станция обновлена."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
 msgid "Station added."
-msgstr ""
+msgstr "Станция добавлена."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
 msgid "Edit Station"
-msgstr ""
+msgstr "Редактировать Станцию"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:61
 msgid "Station deleted."
-msgstr ""
+msgstr "Станция удалена."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
 msgid "Station not found."
-msgstr ""
+msgstr "Станция не найдена."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:80
 msgid "Clone Station: %s"
@@ -483,11 +483,11 @@ msgstr "Клонировать станцию: %s"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User updated."
-msgstr ""
+msgstr "Пользователь обновлен."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
 msgid "User added."
-msgstr ""
+msgstr "Пользователь добавлен."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:56
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."

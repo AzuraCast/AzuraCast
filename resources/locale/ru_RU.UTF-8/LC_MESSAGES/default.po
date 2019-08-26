@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 06:20\n"
+"PO-Revision-Date: 2019-08-26 07:31\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -252,43 +252,43 @@ msgstr "Способ установки: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:46
 msgid "Running in update mode."
-msgstr ""
+msgstr "Запуск в режиме обновления."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:49
 msgid "Migrating Legacy Configuration"
-msgstr ""
+msgstr "Миграция устаревшей конфигурации"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:55
 msgid "Setting Up InfluxDB"
-msgstr ""
+msgstr "Настройка InfluxDB"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:61
 msgid "Running Database Migrations"
-msgstr ""
+msgstr "Запуск миграции базы данных"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:68
 msgid "Generating Database Proxy Classes"
-msgstr ""
+msgstr "Создание Прокси-Классов Базы Данных"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:74
 msgid "Installing Data Fixtures"
-msgstr ""
+msgstr "Установка данных устройства"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:80
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "Обновление всех станций"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:100
 msgid "AzuraCast is now updated to the latest version!"
-msgstr ""
+msgstr "AzuraCast теперь обновлен до последней версии!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:108
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "Установка AzuraCast завершена!"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:109
 msgid "Visit %s to complete setup."
-msgstr ""
+msgstr "Посетите %s для завершения установки."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."

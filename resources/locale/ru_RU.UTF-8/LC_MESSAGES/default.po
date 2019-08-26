@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 09:10\n"
+"PO-Revision-Date: 2019-08-26 09:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -2240,7 +2240,7 @@ msgstr "Включить встроенный FTP сервер"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
-msgstr ""
+msgstr "Если включено, пользователи могут подключаться через FTP, используя свои учетные данные AzuraCast, для загрузки медиафайлов напрямую на любые станции, которыми они управляют."
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"
@@ -4071,11 +4071,11 @@ msgstr "Использовано %s из %s (%d Файлов)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:44
 msgid "You can also upload files in bulk via FTP."
-msgstr ""
+msgstr "Вы также можете загружать файлы оптом через FTP."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:46
 msgid "View connection instructions"
-msgstr ""
+msgstr "Просмотр инструкций по подключению"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:57
 msgid "Drag files here to upload to this folder or "
@@ -4137,7 +4137,7 @@ msgstr "Назад"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:207
 msgid "FTP Connection Information"
-msgstr ""
+msgstr "Информация о подключении по FTP"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:221
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:57
@@ -4167,15 +4167,15 @@ msgstr "FTP с явным TLS (FTPS)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:242
 msgid "Unencrypted FTP is also allowed, but not recommended."
-msgstr ""
+msgstr "Незашифрованный FTP также разрешен, но не рекомендуется."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:250
 msgid "Your AzuraCast E-mail Address"
-msgstr ""
+msgstr "Ваш адрес электронной почты AzuraCast"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:258
 msgid "Your AzuraCast Password"
-msgstr ""
+msgstr "Ваш пароль AzuraCast"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"

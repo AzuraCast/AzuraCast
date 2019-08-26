@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 06:10\n"
+"PO-Revision-Date: 2019-08-26 06:20\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -244,11 +244,11 @@ msgstr "Добро пожаловать в AzuraCast. Пожалуйста, по
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:41
 msgid "Environment: %s"
-msgstr ""
+msgstr "Окружающая среда: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:42
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Способ установки: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:46
 msgid "Running in update mode."

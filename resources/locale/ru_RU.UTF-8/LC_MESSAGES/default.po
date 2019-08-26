@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 07:50\n"
+"PO-Revision-Date: 2019-08-26 08:00\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -176,7 +176,7 @@ msgstr "Создание файла локализации перевода."
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:50
 msgid "Locales generated."
-msgstr "Создание локали."
+msgstr "Файл локализации создан."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:17
 msgid "Convert translated locale files into PHP arrays."
@@ -300,51 +300,51 @@ msgstr "Модификатор загружен."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."
-msgstr ""
+msgstr "Начальная настройка InfluxDB."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:33
 msgid "Database created."
-msgstr ""
+msgstr "База данных создана."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:67
 msgid "Retention policies updated."
-msgstr ""
+msgstr "Политика хранения обновлена."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:86
 msgid "Continuous queries created."
-msgstr ""
+msgstr "Созданы непрерывные запросы."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:105
 msgid "InfluxDB databases created."
-msgstr ""
+msgstr "Созданы базы данных InfluxDB."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:19
 msgid "Run one or more scheduled synchronization tasks."
-msgstr ""
+msgstr "Выполните одну или несколько запланированных задач синхронизации."
 
 #: /var/azuracast/www/src/Console/Command/Sync.php:23
 msgid "The task to run (%s)."
-msgstr ""
+msgstr "Задача для выполнения (%s)."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
 #: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:85
 msgid "Record not found."
-msgstr ""
+msgstr "Запись не найдена."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:42
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:96
 msgid "API Key updated."
-msgstr ""
+msgstr "API ключ обновлён."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 msgid "Edit API Key"
-msgstr ""
+msgstr "Редактировать API ключ"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:57
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:123
 msgid "API Key deleted."
-msgstr ""
+msgstr "API ключ удалён."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:74
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:34

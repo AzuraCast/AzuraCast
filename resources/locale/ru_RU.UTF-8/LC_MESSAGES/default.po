@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:20\n"
+"PO-Revision-Date: 2019-08-26 08:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -579,15 +579,15 @@ msgstr "Стример отключен."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend stopped."
-msgstr ""
+msgstr "Бэкэнд остановлен."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
 msgid "Backend started."
-msgstr ""
+msgstr "Бэкэнд запущен."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
 msgid "Backend restarted."
-msgstr ""
+msgstr "Бэкэнд перезапущен."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:72
 msgid "Too many login attempts"
@@ -609,12 +609,12 @@ msgstr "Ваши учетные данные не могут быть прове
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:61
 msgid "API Key not found."
-msgstr ""
+msgstr "API ключ не найден."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
-msgstr ""
+msgstr "Добавить API ключ"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:204
 msgid "All Stations"
@@ -769,7 +769,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
 msgid "Playlist not found."
-msgstr ""
+msgstr "Плейлист не найден."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
@@ -777,7 +777,7 @@ msgstr "Этот плейлист не является последовател
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format not found."
-msgstr ""
+msgstr "Формат не найден."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
 msgid "Playlist enabled."
@@ -789,11 +789,11 @@ msgstr "Плейлист отключен."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist updated."
-msgstr ""
+msgstr "Плейлист обновлён."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist added."
-msgstr ""
+msgstr "Плейлист добавлен."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 msgid "Edit Playlist"
@@ -802,11 +802,11 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 msgid "Add Playlist"
-msgstr ""
+msgstr "Добавить Плейлист"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Playlist deleted."
-msgstr ""
+msgstr "Плейлист удалён."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay updated."

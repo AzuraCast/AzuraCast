@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-25 22:58\n"
+"PO-Revision-Date: 2019-08-26 04:50\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2236,11 +2236,11 @@ msgstr "\"Evet\" olarak ayarlandığında her zaman güvenli bağlantı \"https:
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "Enable Built-in FTP Server"
-msgstr ""
+msgstr "FTP Sunucusunu Etkinleştir"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
-msgstr ""
+msgstr "Kullanıcıların müzik dosyalarını yönettikleri herhangi bir radyoya AzuraCast kimlik bilgilerini kullanarak FTP yoluyla yüklemesine izin vermek için etkinleştirmelisiniz."
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"
@@ -3847,7 +3847,7 @@ msgstr "Şarkı Geçmişi"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:33
 msgid "Request Song"
-msgstr "Şarkı İsteme"
+msgstr "Şarkı İste"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:37
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
@@ -4059,11 +4059,11 @@ msgstr "Kullanılan Depolama Alanı: %s / %s (%d Dosya)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:44
 msgid "You can also upload files in bulk via FTP."
-msgstr ""
+msgstr "Ayrıca dosyaları FTP üzerinden toplu olarak da yükleyebilirsiniz."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:46
 msgid "View connection instructions"
-msgstr ""
+msgstr "Bağlantı Talimatlarını Görüntüle"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:57
 msgid "Drag files here to upload to this folder or "
@@ -4125,7 +4125,7 @@ msgstr "Geri"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:207
 msgid "FTP Connection Information"
-msgstr ""
+msgstr "FTP Bağlantı Bilgisi"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:221
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:57
@@ -4147,7 +4147,7 @@ msgstr "Port"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:238
 msgid "Protocol"
-msgstr ""
+msgstr "Protokol"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:241
 msgid "FTP with Explicit TLS (FTPS)"
@@ -4155,15 +4155,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:242
 msgid "Unencrypted FTP is also allowed, but not recommended."
-msgstr ""
+msgstr "Şifrelenmemiş FTP bağlantısına izin ver. Ancak bu <b>\"ÖNERİLMEZ\"</b>!"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:250
 msgid "Your AzuraCast E-mail Address"
-msgstr ""
+msgstr "AzuraCast E-Posta Adresiniz"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:258
 msgid "Your AzuraCast Password"
-msgstr ""
+msgstr "AzuraCast Şifreniz"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:30\n"
+"PO-Revision-Date: 2019-08-26 08:42\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -716,15 +716,15 @@ msgstr "Не удалось переместить \"%s\" в \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
 msgid "Media not found."
-msgstr ""
+msgstr "Медиафайл не найден."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:142
 msgid "Media updated."
-msgstr ""
+msgstr "Медиафайл обновлён."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:151
 msgid "Edit Media"
-msgstr ""
+msgstr "Редактирование Медиафайла"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:134
 msgid "File renamed!"
@@ -755,7 +755,7 @@ msgstr "В данный момент, на этой станции, функци
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 msgid "Edit Mount Point"
-msgstr ""
+msgstr "Редактирование Точки Подключения"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
@@ -797,7 +797,7 @@ msgstr "Плейлист добавлен."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 msgid "Edit Playlist"
-msgstr ""
+msgstr "Редактирование Плейлиста"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42

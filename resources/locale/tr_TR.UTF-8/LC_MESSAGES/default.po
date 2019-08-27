@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 05:00\n"
+"PO-Revision-Date: 2019-08-27 04:20\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -4137,7 +4137,7 @@ msgstr "Sunucu"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr "<code>%s</code> IP adresiniz üzerinden yayına bağlanabilirsiniz."
+msgstr "<code>%s</code> IP adresiniz üzerinden bağlantı kurabilirsiniz."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:230
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63

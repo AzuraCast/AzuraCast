@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-27 13:20\n"
+"PO-Revision-Date: 2019-08-27 13:26\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -228,27 +228,27 @@ msgstr "Aggiorna solo l'installazione esistente."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."
-msgstr ""
+msgstr "Carica dispositivi predefiniti (per scopi di sviluppo)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
-msgstr ""
+msgstr "Usato solo per aggiornare una versione taggata."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:37
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "Configurazione AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:38
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "Benvenuto in AzuraCast. Attendi mentre vengono impostate alcune dipendenze chiave di AzuraCast..."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:41
 msgid "Environment: %s"
-msgstr ""
+msgstr "Ambiente: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:42
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Metodo di installazione: %s"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:46
 msgid "Running in update mode."
@@ -547,27 +547,27 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:158
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:27
 msgid "This station does not accept requests currently."
-msgstr ""
+msgstr "Attualmente questa stazione non accetta richieste."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:168
 msgid "Request submitted successfully."
-msgstr ""
+msgstr "Richiesta inviata con successo."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
 msgid "Station restarted."
-msgstr ""
+msgstr "Stazione riavviata."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:110
 msgid "Frontend stopped."
-msgstr ""
+msgstr "Frontend interrotto."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend started."
-msgstr ""
+msgstr "Frontend avviato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:129
 msgid "Frontend restarted."
-msgstr ""
+msgstr "Frontend riavviato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "Song skipped."
@@ -579,15 +579,15 @@ msgstr "Curatore disconnesso."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
 msgid "Backend stopped."
-msgstr ""
+msgstr "Backend interrotto."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
 msgid "Backend started."
-msgstr ""
+msgstr "Backend avviato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
 msgid "Backend restarted."
-msgstr ""
+msgstr "Backend riavviato."
 
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:72
 msgid "Too many login attempts"
@@ -609,12 +609,12 @@ msgstr "Impossibile verificare le tue credenziali."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:61
 msgid "API Key not found."
-msgstr ""
+msgstr "API Key non trovata."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
-msgstr ""
+msgstr "Aggiungi API Key"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:204
 msgid "All Stations"
@@ -716,15 +716,15 @@ msgstr "Impossibile spostare \"%s\" su \"%s\""
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
 msgid "Media not found."
-msgstr ""
+msgstr "Media non trovato."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:142
 msgid "Media updated."
-msgstr ""
+msgstr "Media aggiornato."
 
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:151
 msgid "Edit Media"
-msgstr ""
+msgstr "Modifica media"
 
 #: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:134
 msgid "File renamed!"
@@ -755,16 +755,16 @@ msgstr "Attualmente questa funzione non è supportata in questa stazione radio."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 msgid "Edit Mount Point"
-msgstr ""
+msgstr "Modifica Mount Point"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
-msgstr ""
+msgstr "Aggiungi Mount Point"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:55
 msgid "Mount Point deleted."
-msgstr ""
+msgstr "Mount Point eliminato."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237

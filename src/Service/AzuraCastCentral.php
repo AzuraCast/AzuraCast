@@ -78,11 +78,14 @@ class AzuraCastCentral
     /**
      * Ping the AzuraCast Central server to retrieve this installation's likely public-facing IP.
      *
+     * @param bool $cached
      * @return string|null
      */
-    public function getIp(): ?string
+    public function getIp(bool $cached = true): ?string
     {
-        $ip = $this->settings_repo->getSetting(Entity\Settings::EXTERNAL_IP);
+        $ip = ($cached)
+            ? $this->settings_repo->getSetting(Entity\Settings::EXTERNAL_IP)
+            : null;
 
         if (empty($ip)) {
             $response = $this->http_client->request(
@@ -95,7 +98,7 @@ class AzuraCastCentral
 
             $ip = $body['ip'] ?? null;
 
-            if (!empty($ip)) {
+            if (!empty($ip) && $cached) {
                 $this->settings_repo->setSetting(Entity\Settings::EXTERNAL_IP, $ip);
             }
         }

@@ -102,13 +102,16 @@ class Setup extends CommandAbstract
         } else {
             /** @var AzuraCastCentral $ac_central */
             $ac_central = $this->get(AzuraCastCentral::class);
-            $public_ip = $ac_central->getIp();
+            $public_ip = $ac_central->getIp(false);
 
             $io->success([
                 __('AzuraCast installation complete!'),
                 __('Visit %s to complete setup.', 'http://'.$public_ip),
             ]);
         }
+
+        $settings_repo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
+        $settings_repo->deleteSetting(Entity\Settings::EXTERNAL_IP);
 
         return 0;
     }

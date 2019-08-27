@@ -49,14 +49,15 @@ class FtpUpload extends CommandAbstract
 
         // Working backwards from the media's path, find the associated station(s) to process.
         $stations = [];
+        $all_stations = $stations_repo->findAll();
 
         $parts = explode('/', dirname($path));
         for($i = count($parts); $i >= 1; $i--) {
             $search_path = implode('/', array_slice($parts, 0, $i));
 
-            $stations = $stations_repo->findBy([
-                'radio_media_dir' => $search_path,
-            ]);
+            $stations = array_filter($all_stations, function(Entity\Station $station) use ($search_path) {
+                return $search_path === $station->getRadioMediaDir();
+            });
 
             if (!empty($stations)) {
                 break;

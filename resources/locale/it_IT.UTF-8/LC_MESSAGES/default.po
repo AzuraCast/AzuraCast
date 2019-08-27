@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-27 13:26\n"
+"PO-Revision-Date: 2019-08-27 13:37\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -769,7 +769,7 @@ msgstr "Mount Point eliminato."
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
 msgid "Playlist not found."
-msgstr ""
+msgstr "Playlist non trovata."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
@@ -777,7 +777,7 @@ msgstr "Questa playlist non è una playlist sequenziale."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
 msgid "Format not found."
-msgstr ""
+msgstr "Formato non trovato."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
 msgid "Playlist enabled."
@@ -789,49 +789,49 @@ msgstr "Playlist disabilitata."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist updated."
-msgstr ""
+msgstr "Playlist aggiornata."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
 msgid "Playlist added."
-msgstr ""
+msgstr "Playlist aggiunta."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 msgid "Edit Playlist"
-msgstr ""
+msgstr "Modifica Playlist"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 msgid "Add Playlist"
-msgstr ""
+msgstr "Aggiungi Playlist"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Playlist deleted."
-msgstr ""
+msgstr "Playlist eliminata."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay updated."
-msgstr ""
+msgstr "Flusso remoto aggiornato."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
 msgid "Remote Relay added."
-msgstr ""
+msgstr "Flusso remoto aggiunto."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 msgid "Edit Remote Relay"
-msgstr ""
+msgstr "Modifica flusso remoto"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
-msgstr ""
+msgstr "Aggiungi flusso remoto"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
 msgid "Remote Relay deleted."
-msgstr ""
+msgstr "Flusso remoto eliminato."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:64
 msgid "This record cannot be edited."
-msgstr ""
+msgstr "Questo record non può essere modificato."
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:57
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
@@ -900,50 +900,50 @@ msgstr "Ora puoi impostare gli account degli streamer (DJ)."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer updated."
-msgstr ""
+msgstr "Streamer aggiornato."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
 msgid "Streamer added."
-msgstr ""
+msgstr "Streamer aggiunto."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 msgid "Edit Streamer"
-msgstr ""
+msgstr "Modifica Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
-msgstr ""
+msgstr "Aggiungi Streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
 msgid "Streamer deleted."
-msgstr ""
+msgstr "Streamer eliminato."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
 msgid "Web Hook added."
-msgstr ""
+msgstr "Interazione web aggiunta."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
-msgstr ""
+msgstr "Aggiungi interazione web"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
 msgid "Web Hook updated."
-msgstr ""
+msgstr "Interazione web aggiornata."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:83
 msgid "Edit Web Hook"
-msgstr ""
+msgstr "Modifica interazione web"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web hook enabled."
-msgstr ""
+msgstr "Interazione web abilitata."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
 msgid "Web Hook disabled."
-msgstr ""
+msgstr "Interazione web disabilitata."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
@@ -951,7 +951,7 @@ msgstr "Output test interazione web"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook deleted."
-msgstr ""
+msgstr "Interazione web eliminata."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
@@ -983,15 +983,15 @@ msgstr "Configurazione SHOUTCast"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:22
 msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
+msgstr "I crawler dei motori di ricerca non sono autorizzati a usare questa funzione."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
 msgid "The song ID you specified could not be found in the station."
-msgstr ""
+msgstr "L'ID del brano che hai specificato non può essere trovato nella stazione."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
 msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
+msgstr "L'ID del brano specificato non può essere richiesto in questa stazione."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
@@ -999,7 +999,7 @@ msgstr "Hai mandato una richiesta troppo presto! Aspetta prima di poterne inviar
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:106
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
+msgstr "Richiesta duplicata: questo brano è già stato richiesto e verrà presto riprodotto."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
 msgid "This song was already played too recently. Wait a while before requesting it again."
@@ -2216,11 +2216,11 @@ msgstr "Indefinito"
 
 #: /var/azuracast/www/config/forms/settings.php:79
 msgid "Use WebSockets for Now Playing Updates"
-msgstr ""
+msgstr "Usa WebSocket per gli aggiornamenti dei brani in riproduzione"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
-msgstr ""
+msgstr "Abilita o disabilita l'uso del sistema basato su WebSocket, più moderno e veloce, per ricevere aggiornamenti in tempo reale sui player di pubblico dominio. Potrebbe essere necessario disabilitarlo in caso di problemi."
 
 #: /var/azuracast/www/config/forms/settings.php:92
 msgid "Security Controls"
@@ -2236,11 +2236,11 @@ msgstr "Impostare su \"Sì\" per utilizzare sempre URL \"https://\" protetti e p
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "Enable Built-in FTP Server"
-msgstr ""
+msgstr "Abilita server FTP integrato"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
-msgstr ""
+msgstr "Se abilitato, gli utenti possono connettersi tramite FTP utilizzando le proprie credenziali AzuraCast per caricare file multimediali direttamente su tutte le stazioni che gestiscono."
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"

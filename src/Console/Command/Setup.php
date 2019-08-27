@@ -108,10 +108,10 @@ class Setup extends CommandAbstract
                 __('AzuraCast installation complete!'),
                 __('Visit %s to complete setup.', 'http://'.$public_ip),
             ]);
-        }
 
-        $settings_repo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
-        $settings_repo->deleteSetting(Entity\Settings::EXTERNAL_IP);
+            $settings_repo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
+            $settings_repo->deleteSetting(Entity\Settings::EXTERNAL_IP);
+        }
 
         return 0;
     }

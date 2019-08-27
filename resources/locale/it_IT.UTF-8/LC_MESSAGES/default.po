@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-27 13:09\n"
+"PO-Revision-Date: 2019-08-27 13:20\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -111,104 +111,104 @@ msgstr "Il percorso (assoluto o relativo verso /var/azuracast/backups) per gener
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
-msgstr ""
+msgstr "Escludi i media dal backup."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:61
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "Backup AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:62
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Aspetta mentre viene generato un backup..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:65
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Creazione directory temporanee in corso..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:69
 #: /var/azuracast/www/src/Console/Command/Backup.php:75
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "La directory \"%s\" non è stata creata"
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:82
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "Backup di MariaDB in corso..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:107
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "Backup in corso per InfluxDB..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:147
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Creazione archivio backup in corso..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:185
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Pulizia file temporanei in corso..."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:196
 msgid "Backup complete in %.2f seconds."
-msgstr ""
+msgstr "Backup completato in %.2f secondi."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:230
 msgid "Backup process error"
-msgstr ""
+msgstr "Errore nell'elaborazione del backup"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:20
 msgid "List all settings in the AzuraCast settings database."
-msgstr ""
+msgstr "Elenca tutte le impostazioni nel database delle impostazioni di AzuraCast."
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:29
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "Impostazioni AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:38
 msgid "Setting Key"
-msgstr ""
+msgstr "Chiave dell'impostazione"
 
 #: /var/azuracast/www/src/Console/Command/ListSettings.php:39
 msgid "Setting Value"
-msgstr ""
+msgstr "Valore dell'impostazione"
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:17
 msgid "Generate the translation locale file."
-msgstr ""
+msgstr "Genera il file di traduzione."
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:50
 msgid "Locales generated."
-msgstr ""
+msgstr "Traduzioni generate."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:17
 msgid "Convert translated locale files into PHP arrays."
-msgstr ""
+msgstr "Converti i file di traduzione in array PHP."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:41
 msgid "Imported locale: %s"
-msgstr ""
+msgstr "Traduzione importata: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImport.php:45
 msgid "Locales imported."
-msgstr ""
+msgstr "Traduzioni importate."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
 msgid "Migrate existing configuration to new INI format if any exists."
-msgstr ""
+msgstr "Migrando la configurazione esistente nel nuovo formato INI, se presente."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:31
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Configurazione già portata a termine."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfig.php:72
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Configurazione scritta con successo."
 
 #: /var/azuracast/www/src/Console/Command/ProcessMessageQueue.php:19
 msgid "Process the message queue."
-msgstr ""
+msgstr "Elabora la coda dei messaggi."
 
 #: /var/azuracast/www/src/Console/Command/Restore.php:52
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Il percorso %s per i backup non è stato trovato!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -220,11 +220,11 @@ msgstr "Account non trovato."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:22
 msgid "Run all general AzuraCast setup steps."
-msgstr ""
+msgstr "Esegui tutti i passaggi generali per la configurazione di AzuraCast."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:23
 msgid "Only update the existing installation."
-msgstr ""
+msgstr "Aggiorna solo l'installazione esistente."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:24
 msgid "Load predefined fixtures (for development purposes)."

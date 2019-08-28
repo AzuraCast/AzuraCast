@@ -240,6 +240,7 @@ restore() {
 
     if ask "Restoring will remove any existing AzuraCast installation data, replacing it with your backup. Continue?" Y; then
         docker-compose down -v
+        docker-compose pull
         docker-compose up -d web
         docker cp ${BACKUP_PATH} azuracast_web_1:tmp/cli_backup.${BACKUP_EXT}
         MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web_1 azuracast_restore /tmp/cli_backup.${BACKUP_EXT} $*

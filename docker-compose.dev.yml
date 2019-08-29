@@ -10,7 +10,6 @@ services:
       - '${AZURACAST_HTTPS_PORT:-443}:443'
     volumes:
       - letsencrypt:/etc/nginx/certs
-      - nginx_proxy_vhosts:/etc/nginx/vhost.d
       - letsencrypt_html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
@@ -140,6 +139,7 @@ services:
 
 volumes:
   letsencrypt: {}
+  letsencrypt_html: {}
   db_data: {}
   influx_data: {}
   station_data: {}

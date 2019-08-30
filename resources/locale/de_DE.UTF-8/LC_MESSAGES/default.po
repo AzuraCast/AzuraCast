@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-26 08:50\n"
+"PO-Revision-Date: 2019-08-30 22:15\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2241,7 +2241,7 @@ msgstr "Integrierten FTP-Server aktivieren"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
-msgstr "Wenn aktiviert, können sich Benutzer via FTP über ihre AzuraCast-Zugangsdaten verbinden, um Medien direkt auf alle von ihnen verwalteten Sender hochzuladen."
+msgstr "Wenn aktiviert, können sich Benutzer mit ihren AzuraCast-Zugangsdaten via FTP verbinden, um Medien direkt auf alle von ihnen verwalteten Sender hochzuladen."
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"
@@ -4067,7 +4067,7 @@ msgstr "%s von %s belegt (%d Dateien)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:44
 msgid "You can also upload files in bulk via FTP."
-msgstr "Dateien auch per Bulk-Upload über FTP hochladen."
+msgstr "Du kannst Dateien auch per Massen-Upload über FTP hochladen."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:46
 msgid "View connection instructions"

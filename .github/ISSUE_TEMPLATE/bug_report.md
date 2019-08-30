@@ -4,6 +4,16 @@ about: Create a report to help us improve
 ---
 
 <!--
+REMEMBER, YOU ARE TALKING TO HUMAN BEINGS!
+
+AzuraCast is not a big corporate entity. We are a small independent project run by a tiny team of
+core developers and maintainers. We accept donations, but these donations are not very substantial.
+We aim to help as many people as we can, but we can't always respond as quickly as you might like.
+
+Please be kind and patient in your interactions with us. Thank you in advance.
+-->
+
+<!--
 PLEASE CHECK YOUR LOGS BEFORE SUBMITTING!!
 With 90% of bugs/errors, we will immediately ask you to check your logs.
 Log instructions are available here:

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-31 12:00\n"
+"PO-Revision-Date: 2019-08-31 12:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -292,11 +292,11 @@ msgstr "Bezoek %s om de setup te voltooien."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
 msgid "Install fixtures for demo / local development."
-msgstr ""
+msgstr "Installeer fixtures voor demo / lokale ontwikkeling."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixtures.php:82
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Fixtures geladen."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
 msgid "Initial setup of InfluxDB."
@@ -3893,7 +3893,7 @@ msgstr "Welkom bij AzuraCast!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:27
 msgid "Let's get started by creating your Super Administrator account."
-msgstr "Laten we beginnen met het maken van een Super Administrator account."
+msgstr "Laten we beginnen met het maken van een account voor de systeembeheerder."
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:28
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
@@ -3910,7 +3910,7 @@ msgstr "Voltooi de installatie door het verstrekken van informatie over je uitze
 
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:42
 msgid "Customize AzuraCast Settings"
-msgstr "AzuraCast Instellingen aanpassen"
+msgstr "AzuraCast instellingen aanpassen"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:34
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
@@ -3970,7 +3970,7 @@ msgstr "U kunt antwoorden vinden op veelgestelde vragen in onze <a href=\"%s\" t
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:8
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
-msgstr "Als je een bug of fout ondervindt, kun je een GitHub issue indienen met behulp van de onderstaande link."
+msgstr "Als je een bug of fout ontdekt, kun je een GitHub issue indienen met behulp van de onderstaande link."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:10
 msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
@@ -3986,7 +3986,7 @@ msgstr "Log weergave"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:18
 msgid "Automatically scroll to the bottom of the log"
-msgstr "Automatisch scrollen naar de onderkant van het logboek"
+msgstr "Scroll automatisch naar de onderkant van het logboek"
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:2
 #: /var/azuracast/www/templates/stations/automation/index.phtml:6
@@ -4031,7 +4031,7 @@ msgstr "Albumhoes"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:159
 msgid "Rename"
-msgstr "Naam aanpassen"
+msgstr "Hernoemen"
 
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:246
 msgid "Select"
@@ -4097,7 +4097,7 @@ msgstr "Nieuwe map"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:149
 msgid "Directory Name"
-msgstr "Naam van de map"
+msgstr "Mapnaam"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:155
 msgid "Create Directory"
@@ -4139,7 +4139,7 @@ msgstr "Protocol"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:241
 msgid "FTP with Explicit TLS (FTPS)"
-msgstr ""
+msgstr "FTP met Explicit TLS (FTPS)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:242
 msgid "Unencrypted FTP is also allowed, but not recommended."
@@ -4171,7 +4171,7 @@ msgstr "Verwijder mount point \"%s\"?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:43
 msgid "Default Mount"
-msgstr "Standaard Mount"
+msgstr "Standaard mount point"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:24
 msgid "All Playlists"
@@ -4183,7 +4183,7 @@ msgstr "Planningsweergave"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:57
 msgid "# Songs"
-msgstr "# Nummers"
+msgstr "# nummers"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 msgid "Delete playlist \"%s\"?"
@@ -4199,7 +4199,7 @@ msgstr "Meer"
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:32
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Disable"
-msgstr "Uitschakelen"
+msgstr "Schakel uit"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:73
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:72
@@ -4207,7 +4207,7 @@ msgstr "Uitschakelen"
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:48
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:35
 msgid "Enable"
-msgstr "Inschakelen"
+msgstr "Schakel in"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:75
 msgid "Reorder"
@@ -4219,7 +4219,7 @@ msgstr "Exporteer %s"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:87
 msgid "Song-based"
-msgstr "Nummer-gebaseerd"
+msgstr "Op-nummer-gebaseerd"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:89
 msgid "Jingle Mode"
@@ -4346,7 +4346,7 @@ msgstr "Luisteraar"
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:46
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:75
 msgid "Unique"
-msgstr "Uniek"
+msgstr "uniek"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
@@ -4526,7 +4526,7 @@ msgstr "Onbekend"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:93
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr "Dit product bevat GeoLite2 gegevens gemaakt door MaxMind, beschikbaar van %s."
+msgstr "Deze functionaliteit bevat gegevens uit de GeoLite2 database van MaxMind, welke beschikbaar is via %s."
 
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
 msgid "Hour"
@@ -4559,7 +4559,7 @@ msgstr "Slecht presterende nummers"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:143
 msgid "Most Played Songs"
-msgstr "Meest afgespeelde nummers"
+msgstr "Meest gedraaide nummers"
 
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:144
 msgid "in the last month"
@@ -4568,7 +4568,7 @@ msgstr "in de laatste maand"
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:155
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:39
 msgid "Plays"
-msgstr "Speelt"
+msgstr "Aantal keer gespeeld"
 
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:32
 msgid "Filename"

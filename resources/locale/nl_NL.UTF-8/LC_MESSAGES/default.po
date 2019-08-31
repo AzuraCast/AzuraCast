@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-25 22:57\n"
+"PO-Revision-Date: 2019-08-31 11:40\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -411,7 +411,7 @@ msgstr "Installeer SHOUTcast"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:68
 msgid "AzuraCast Application Log"
-msgstr "AzuraCast Applicatie Log"
+msgstr "AzuraCast applicatielog"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:75
 msgid "Nginx Access Log"
@@ -423,7 +423,7 @@ msgstr "Nginx foutlog"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:85
 msgid "PHP Application Log"
-msgstr "PHP Applicatie Log"
+msgstr "PHP applicatielog"
 
 #: /var/azuracast/www/src/Controller/Admin/LogsController.php:90
 msgid "Supervisord Log"
@@ -518,7 +518,7 @@ msgstr "Gebruiker niet gevonden."
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:127
 msgid "Logged in successfully."
-msgstr "Succesvol ingelogd."
+msgstr "U bent succesvol ingelogd."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:86
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:106
@@ -636,7 +636,7 @@ msgstr "Alle stations"
 #: /var/azuracast/www/templates/stations/reports/overview.js.phtml:74
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:40
 msgid "Listeners"
-msgstr "Luisteraars"
+msgstr "Aantal luisteraars"
 
 #: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:102
 msgid "Profile saved!"
@@ -2236,7 +2236,7 @@ msgstr "Stel in op \"Ja\" om altijd \"https://\" (veilige) URL's te gebruiken en
 
 #: /var/azuracast/www/config/forms/settings.php:112
 msgid "Enable Built-in FTP Server"
-msgstr ""
+msgstr "Ingebouwde FTP-server inschakelen"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
@@ -3042,7 +3042,7 @@ msgstr "Publieke pagina"
 #: /var/azuracast/www/templates/stations/files/index.phtml:25
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:33
 msgid "Music Files"
-msgstr "Muziek bestanden"
+msgstr "Mediabestanden"
 
 #: /var/azuracast/www/config/menus/station.php:53
 #: /var/azuracast/www/templates/stations/files/index.phtml:128
@@ -4047,11 +4047,11 @@ msgstr "%s van %s gebruikt (%d bestanden)"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:44
 msgid "You can also upload files in bulk via FTP."
-msgstr ""
+msgstr "U kunt ook bestanden in bulk uploaden via FTP."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:46
 msgid "View connection instructions"
-msgstr ""
+msgstr "Bekijk verbindingsinstructies"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:57
 msgid "Drag files here to upload to this folder or "
@@ -4113,7 +4113,7 @@ msgstr "Terug"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:207
 msgid "FTP Connection Information"
-msgstr ""
+msgstr "FTP verbindingsgegevens"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:221
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:57
@@ -4135,7 +4135,7 @@ msgstr "Poort"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:238
 msgid "Protocol"
-msgstr ""
+msgstr "Protocol"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:241
 msgid "FTP with Explicit TLS (FTPS)"
@@ -4143,15 +4143,15 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:242
 msgid "Unencrypted FTP is also allowed, but not recommended."
-msgstr ""
+msgstr "Niet-versleutelde FTP is ook toegestaan, maar niet aanbevolen."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:250
 msgid "Your AzuraCast E-mail Address"
-msgstr ""
+msgstr "Uw AzuraCast e-mailadres"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:258
 msgid "Your AzuraCast Password"
-msgstr ""
+msgstr "Uw AzuraCast wachtwoord"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"

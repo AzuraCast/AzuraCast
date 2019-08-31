@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-31 12:10\n"
+"PO-Revision-Date: 2019-08-31 12:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -107,7 +107,7 @@ msgstr "Back-up de AzuraCast database en statistieken (en optionele media)."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr ""
+msgstr "Het absolute (of relatieve naar /var/azuracast/backups) pad waar back-ups opgeslagen dienen te worden."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
@@ -240,7 +240,7 @@ msgstr "AzuraCast setup"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:38
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "Welkom bij AzuraCast. Een ogenblik geduld terwijl enkele code afhankelijkheden worden ingesteld..."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:41
 msgid "Environment: %s"
@@ -308,7 +308,7 @@ msgstr "Database aangemaakt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:67
 msgid "Retention policies updated."
-msgstr ""
+msgstr "Retentiebeleid bijgewerkt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:86
 msgid "Continuous queries created."
@@ -1660,7 +1660,7 @@ msgstr "Voer de volledige URL in van een andere stream om deze opnieuw uit te ze
 #: /var/azuracast/www/config/forms/mount/generic.php:68
 #: /var/azuracast/www/config/forms/remote.php:165
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "Publiceren naar \"Yellow Pages\" gids"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
@@ -2260,7 +2260,7 @@ msgstr "AzuraCast stuurt geen gegevens van uw stations of luisteraars naar exter
 
 #: /var/azuracast/www/config/forms/settings.php:144
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Luisteraars statistieken"
 
 #: /var/azuracast/www/config/forms/settings.php:145
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
@@ -3312,7 +3312,7 @@ msgstr "Gebruiker"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:44
 msgid "Identifier"
-msgstr ""
+msgstr "Identificatiecode"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
 msgid "Target"
@@ -4473,7 +4473,7 @@ msgstr "Live luisteraars"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:58
 msgid "There are too many data points to map!"
-msgstr ""
+msgstr "Er zijn teveel datapunten om in kaart te brengen!"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:25
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:26

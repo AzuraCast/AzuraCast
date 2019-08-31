@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-31 11:40\n"
+"PO-Revision-Date: 2019-08-31 11:50\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -687,7 +687,7 @@ msgstr "De installatie is al voltooid!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:102
 msgid "Super Administrator"
-msgstr "Super administrator"
+msgstr "Systeembeheerder"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:191
 msgid "Setup is now complete!"
@@ -695,7 +695,7 @@ msgstr "De installatie is voltooid!"
 
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:191
 msgid "Continue setting up your station in the main AzuraCast app."
-msgstr "Ga verder met het instellen van je station in de AzuraCast app."
+msgstr "Ga verder met het instellen van je station in de AzuraCast applicatie."
 
 #: /var/azuracast/www/src/Controller/Stations/AutomationController.php:79
 msgid "Automated assignment complete!"
@@ -751,7 +751,7 @@ msgstr "Bestand niet verwerkt"
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:39
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:23
 msgid "This feature is not currently supported on this station."
-msgstr "Deze functionaliteit is momenteel niet toegestaan op dit station."
+msgstr "Deze functionaliteit is momenteel niet ondersteund op dit station."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
 msgid "Edit Mount Point"
@@ -837,13 +837,13 @@ msgstr "Dit record kan niet worden bewerkt."
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
-msgstr "Luisteraars per dag"
+msgstr "Aantal luisteraars per dag"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:93
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:42
 msgid "Listeners by Day of Week"
-msgstr "Luisteraars per dag van de week"
+msgstr "Aantal luisteraars per dag van de week"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
 #: /var/azuracast/www/config/forms/playlist.php:299
@@ -884,11 +884,11 @@ msgstr "Zondag"
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
-msgstr "Luisteraars per uur"
+msgstr "Aantal luisteraars per uur"
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
 msgid "SoundExchange Report"
-msgstr "Rapporteer SoundExchange"
+msgstr "SoundExchange verslag"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
 msgid "Streamers enabled!"
@@ -947,7 +947,7 @@ msgstr "Webhook uitgeschakeld."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
 msgid "Web Hook Test Output"
-msgstr "Web Hook test uitvoer"
+msgstr "Webhook test uitvoer"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook deleted."
@@ -955,7 +955,7 @@ msgstr "Webhook verwijderd."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
 msgid "Liquidsoap Log"
-msgstr "Liquidsoap Log"
+msgstr "Liquidsoap log"
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:89
 msgid "Liquidsoap Configuration"
@@ -995,7 +995,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr "U heeft een verzoek te kort ingediend! Wacht even voordat u een andere indient."
+msgstr "U heeft kortgeleden al een request ingediend! Wacht even voordat u een volgende indient."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:106
 msgid "Duplicate request: this song was already requested and will play soon."
@@ -1015,7 +1015,7 @@ msgstr "Selecteer bestand"
 
 #: /var/azuracast/www/src/Form/StationForm.php:82
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr "Wilt u SHOUTcast 2 gebruiken? <a href=\"%s\" target=\"_blank\">Installeer het hier</a>, en laad deze pagina opnieuw."
+msgstr "Wilt u SHOUTcast 2 gebruiken? <a href=\"%s\" target=\"_blank\">Installeer het hier</a>, ververs daarna deze pagina."
 
 #: /var/azuracast/www/src/Form/StationPlaylistForm.php:53
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
@@ -1042,7 +1042,7 @@ msgstr "U moet ingelogd zijn om toegang te krijgen tot deze pagina."
 #: /var/azuracast/www/src/Http/ErrorHandler.php:98
 #: /var/azuracast/www/src/Http/ErrorHandler.php:105
 msgid "You do not have permission to access this portion of the site."
-msgstr "U heeft geen toestemming om toegang te krijgen tot dit deel van de site."
+msgstr "U heeft geen toestemming om dit deel van de website te bezoeken."
 
 #: /var/azuracast/www/src/Notification/Manager.php:72
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
@@ -1062,7 +1062,7 @@ msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">versie %s</a> is nu beschikba
 
 #: /var/azuracast/www/src/Notification/Manager.php:104
 msgid "You are currently running version %s. Updating is highly recommended."
-msgstr "U draait momenteel versie %s. Bijwerken is zeer aanbevolen."
+msgstr "U draait momenteel versie %s. We raden u aan een update uit te voeren."
 
 #: /var/azuracast/www/src/Notification/Manager.php:109
 msgid "New AzuraCast Release Version Available"
@@ -1070,19 +1070,19 @@ msgstr "Nieuwe versie van AzuraCast beschikbaar"
 
 #: /var/azuracast/www/src/Notification/Manager.php:119
 msgid "The following improvements have been made since your last update:"
-msgstr "De volgende verbeteringen zijn aangebracht sinds de laatste update:"
+msgstr "De volgende verbeteringen zijn toegepast sinds de laatste update:"
 
 #: /var/azuracast/www/src/Notification/Manager.php:122
 msgid "Your installation is currently %d update(s) behind the latest version."
-msgstr "Uw installatie is momenteel %d update(s) achter de laatste versie."
+msgstr "Uw installatie loopt momenteel %d updates achter op de laatste versie."
 
 #: /var/azuracast/www/src/Notification/Manager.php:123
 msgid "You should update to take advantage of bug and security fixes."
-msgstr "U moet bijwerken om gebruik te maken van bug en beveiligingsfixes."
+msgstr "U dient bij te werken om gebruik te maken van de laatste bug- en beveiligingsupdates."
 
 #: /var/azuracast/www/src/Notification/Manager.php:129
 msgid "New AzuraCast Updates Available"
-msgstr "Nieuwe AzuraCast updates beschikbaar"
+msgstr "Er zijn nieuwe AzuraCast updates beschikbaar"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:195
 msgid "%s is not recognized as a service."
@@ -1094,7 +1094,7 @@ msgstr "Het is mogelijk nog niet geregistreerd bij Supervisor. Het opnieuw start
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:204
 msgid "%s cannot start"
-msgstr "%s kan niet beginnen"
+msgstr "%s kan niet worden gestart"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:205
 msgid "It is already running."
@@ -1128,7 +1128,7 @@ msgstr "Verbind met een <b>externe radioserver</b>"
 
 #: /var/azuracast/www/src/Radio/Adapters.php:177
 msgid "<b>Do not use</b> an AutoDJ service"
-msgstr "<b>Gebruik geen</b> een AutoDJ-service"
+msgstr "Gebruik <b>geen</b> AutoDJ-service"
 
 #: /var/azuracast/www/src/Sync/Runner.php:167
 #: /var/azuracast/www/src/Sync/Runner.php:170
@@ -1141,7 +1141,7 @@ msgstr "1 minuut synchronisatie"
 
 #: /var/azuracast/www/src/Sync/Runner.php:177
 msgid "Song Requests Queue"
-msgstr "Verzoeknummers in wachtrij"
+msgstr "Requests in wachtrij"
 
 #: /var/azuracast/www/src/Sync/Runner.php:181
 msgid "5-Minute Sync"
@@ -1176,7 +1176,7 @@ msgstr "Wachtwoord kan de volgende tekens niet bevatten: %s"
 #: /var/azuracast/www/templates/admin/api/index.phtml:18
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:34
 msgid "Comments"
-msgstr "Reacties"
+msgstr "Opmerkingen"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
@@ -1239,7 +1239,7 @@ msgstr "Uitgeschakeld"
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:18
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:46
 msgid "Enabled"
-msgstr "Geactiveerd"
+msgstr "Ingeschakeld"
 
 #: /var/azuracast/www/config/forms/automation.php:23
 msgid "Days Between Automated Assignments"
@@ -1344,7 +1344,7 @@ msgstr "Geplande back-up tijd"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr "De tijd (in UTC) om de geautomatiseerde back-up te draaien, indien ingeschakeld."
+msgstr "De tijd (in UTC) om de geautomatiseerde back-up uit te voeren, indien ingeschakeld."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
@@ -1420,7 +1420,7 @@ msgstr "Als een bezoeker niet is aangemeld en de homepage van AzuraCast bezoekt,
 
 #: /var/azuracast/www/config/forms/branding.php:51
 msgid "Default Album Art URL"
-msgstr "Standaard albumhoes URL"
+msgstr "URL van standaard albumhoes"
 
 #: /var/azuracast/www/config/forms/branding.php:52
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
@@ -1440,7 +1440,7 @@ msgstr "Aangepaste CSS voor openbare pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:74
 msgid "This CSS will be applied to the station public pages and login page."
-msgstr "Deze CSS zal worden toegepast op openbare pagina's van het station en op inlogpagina."
+msgstr "Deze CSS zal worden toegepast op de inlogpagina en openbare pagina's van het station."
 
 #: /var/azuracast/www/config/forms/branding.php:85
 msgid "Custom JS for Public Pages"
@@ -1489,7 +1489,7 @@ msgstr "Huidige geïnstalleerde versie"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:23
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr "SHOUTcast is momenteel niet geïnstalleerd op deze installatie."
+msgstr "SHOUTcast is momenteel niet geïnstalleerd."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:31
 msgid "Select SHOUTcast 64-bit .tar.gz File"
@@ -1564,7 +1564,7 @@ msgstr "Aangepaste velden"
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr "Beheerders kunnen de velden aanpassen die hier verschijnen op de <a href=\"%s\">beheerpagina</a>."
+msgstr "Beheerders kunnen de velden aanpassen die hier verschijnen via de <a href=\"%s\">beheerpagina</a>."
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
@@ -1588,7 +1588,7 @@ msgstr "Aangepaste overgang: fade-in tijd (seconden)"
 
 #: /var/azuracast/www/config/forms/media.php:109
 msgid "The time period that the song should fade in. Leave blank to use the system default."
-msgstr "De periode waarin het liedje moet infaden. Leeg laten om de systeemstandaard te gebruiken."
+msgstr "De periode waarin het nummer moet infaden. Leeg laten om de systeemstandaard te gebruiken."
 
 #: /var/azuracast/www/config/forms/media.php:117
 msgid "Custom Fading: Fade-Out Time (seconds)"
@@ -1596,7 +1596,7 @@ msgstr "Aangepaste overgang: fade-out tijd (seconden)"
 
 #: /var/azuracast/www/config/forms/media.php:118
 msgid "The time period that the song should fade out. Leave blank to use the system default."
-msgstr "De periode waarin het liedje moet uitfaden. Leeg laten om de systeemstandaard te gebruiken."
+msgstr "De periode waarin het nummer moet uitfaden. Leeg laten om de systeemstandaard te gebruiken."
 
 #: /var/azuracast/www/config/forms/media.php:126
 msgid "Custom Cues: Cue-In Point (seconds)"
@@ -1643,15 +1643,15 @@ msgstr "Inschakelen om luisteraars toe te staan dit mount point te selecteren op
 
 #: /var/azuracast/www/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
-msgstr "Instellen als standaard Mount Punt"
+msgstr "Instellen als standaard mount point"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:47
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
-msgstr "Als deze mount standaard is, zal deze gebruikt worden in de radiospeler op de publieke radio pagina van dit systeem."
+msgstr "Als dit mount point standaard is, zal deze gebruikt worden binnen de radiospeler op de publieke radio pagina van dit systeem."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:58
 msgid "Relay Stream URL"
-msgstr "Doorstuur Stream URL"
+msgstr "Relay stream URL"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:59
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
@@ -1678,16 +1678,16 @@ msgstr "Indien ingeschakeld, zal de AutoDJ automatisch muziek afspelen op dit mo
 #: /var/azuracast/www/config/forms/mount/generic.php:99
 #: /var/azuracast/www/config/forms/remote.php:96
 msgid "AutoDJ Format"
-msgstr "AutoDJ Formaat"
+msgstr "AutoDJ formaat"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:108
 #: /var/azuracast/www/config/forms/remote.php:110
 msgid "AutoDJ Bitrate (kbps)"
-msgstr "AutoDJ Bitrate (kbps)"
+msgstr "AutoDJ bitrate (kbps)"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:135
 msgid "Custom Stream URL"
-msgstr "Aangepaste Stream URL"
+msgstr "Aangepaste stream URL"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:137
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
@@ -1695,11 +1695,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:9
 msgid "Fallback Mount"
-msgstr "Terugval Mount"
+msgstr "Back-up mount point"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:10
 msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
-msgstr "Wanneer dit mount punt geen audio speelt, zullen luisteraars doorverwezen worden naar dit mount punt. De standaard is /error.mp3, welke herhaaldelijk een foutmelding laat horen."
+msgstr "Wanneer dit mount point geen audio speelt, zullen luisteraars doorverwezen worden naar dit mount punt. De standaard is /error.mp3, welke herhaaldelijk een foutmelding laat horen."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:27
 msgid "Custom Frontend Configuration"
@@ -1744,7 +1744,7 @@ msgstr "Activeer afspeellijst"
 
 #: /var/azuracast/www/config/forms/playlist.php:28
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."
-msgstr "Wanneer gekozen voor \"Nee\", zal de afspeellijst niet worden afgespeeld op de radio. De afspeellijst kan nog steeds worden beheert."
+msgstr "Wanneer niet aangevinkt, zal de afspeellijst niet worden afgespeeld op de radio. De afspeellijst kan nog steeds worden beheert."
 
 #: /var/azuracast/www/config/forms/playlist.php:39
 msgid "Playlist Name"
@@ -1768,7 +1768,7 @@ msgstr "Hoog"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "Song-Based Playlist"
-msgstr "Afspeellijst op Nummer gebaseerd"
+msgstr "Op nummer gebaseerde afspeellijst"
 
 #: /var/azuracast/www/config/forms/playlist.php:73
 msgid "A playlist containing media files hosted on this server."
@@ -2040,7 +2040,7 @@ msgstr "Code van Authenticator App"
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:11
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
-msgstr "Voer de huidige code in die door uw authenticator app is opgegeven om te controleren of het correct werkt."
+msgstr "Voer de huidige code in die door uw authenticator app is opgegeven om te controleren of alles correct werkt."
 
 #: /var/azuracast/www/config/forms/profile_two_factor.php:21
 msgid "Verify Authenticator"

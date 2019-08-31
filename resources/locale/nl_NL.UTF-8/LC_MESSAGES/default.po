@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-31 12:20\n"
+"PO-Revision-Date: 2019-08-31 12:30\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -987,11 +987,11 @@ msgstr "Zoekmachine crawlers zijn niet toegestaan om deze functie te gebruiken."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
 msgid "The song ID you specified could not be found in the station."
-msgstr ""
+msgstr "Het opgeven nummer ID voor dit station kan niet worden gevonden."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
 msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
+msgstr "Het opgeven nummer ID voor dit station kan niet worden aangevraagd."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
 msgid "You have submitted a request too recently! Please wait before submitting another one."
@@ -2240,7 +2240,7 @@ msgstr "Ingebouwde FTP-server inschakelen"
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
-msgstr ""
+msgstr "Indien ingeschakeld, kunnen gebruikers via FTP inloggen met zijn of haar AzuraCast inloggegevens. Via FTP kunnen direct mediabestanden geüpload worden naar stations die de gebruiker beheert."
 
 #: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"

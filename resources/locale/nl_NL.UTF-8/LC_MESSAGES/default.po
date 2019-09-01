@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-09-01 10:00\n"
+"PO-Revision-Date: 2019-09-01 10:16\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -232,7 +232,7 @@ msgstr "Laad vooraf gedefinieerde fixtures (voor ontwikkelingsdoeleinden)."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:25
 msgid "Used for updating only to a tagged release."
-msgstr ""
+msgstr "Wordt alleen gebruikt voor het bijwerken naar een aangegeven versie."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:37
 msgid "AzuraCast Setup"
@@ -1691,7 +1691,7 @@ msgstr "Aangepaste stream URL"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:137
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
-msgstr ""
+msgstr "U kunt een aangepaste URL instellen voor de stream die door AzuraCast wordt gebruikt. Laat leeg om de standaardwaarde te gebruiken."
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:9
 msgid "Fallback Mount"
@@ -2072,7 +2072,7 @@ msgstr "De naam die aan dit mountpoint is gekoppeld en wordt weergegeven op admi
 
 #: /var/azuracast/www/config/forms/remote.php:48
 msgid "Remote Station Listening URL"
-msgstr ""
+msgstr "Luister URL van extern station"
 
 #: /var/azuracast/www/config/forms/remote.php:49
 msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
@@ -2080,7 +2080,7 @@ msgstr "Voorbeeld: als de externe radio URL %s is, voer dan <code>%s</code> in."
 
 #: /var/azuracast/www/config/forms/remote.php:62
 msgid "Remote Station Listening Mountpoint/SID"
-msgstr ""
+msgstr "Mountpoint/SID van extern station"
 
 #: /var/azuracast/www/config/forms/remote.php:63
 msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
@@ -2455,7 +2455,7 @@ msgstr "AutoDJ-service"
 
 #: /var/azuracast/www/config/forms/station.php:210
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
-msgstr ""
+msgstr "Deze software kiest willekeurige muziek uit afspeellijsten en speelt wanneer er geen audiobron beschikbaar is."
 
 #: /var/azuracast/www/config/forms/station.php:228
 msgid "Crossfade Method"
@@ -2611,7 +2611,7 @@ msgstr "Stel een maximale hoeveelheid opslag op dat dit station mag gebruiken. S
 
 #: /var/azuracast/www/config/forms/station.php:466
 msgid "Base Station Directory"
-msgstr ""
+msgstr "Station basis directory"
 
 #: /var/azuracast/www/config/forms/station.php:468
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
@@ -2763,7 +2763,7 @@ msgstr "Bericht aanpassen"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 #: /var/azuracast/www/config/forms/webhook/twitter.php:123
 msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
-msgstr ""
+msgstr "Variabelen zijn in de vorm van <code>{{ var.name }}</code>. Alle waarden uit de <a href=\"%s\" target=\"_blank\">Nu speelt API</a> zijn te gebruiken. Lege velden worden genegeerd."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:60
 #: /var/azuracast/www/config/forms/webhook/telegram.php:82
@@ -2874,7 +2874,7 @@ msgstr "Nu aan het spelen op %s: %s door %s! Schakel nu in."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:93
 msgid "Message parsing mode"
-msgstr ""
+msgstr "Berichtverwerking modus"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:27
 msgid "TuneIn Station ID"
@@ -2974,7 +2974,7 @@ msgstr "Systeemlogs"
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:3
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:19
 msgid "Audit Log"
-msgstr ""
+msgstr "Controle logboek"
 
 #: /var/azuracast/www/config/menus/admin.php:42
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
@@ -3147,7 +3147,7 @@ msgstr "Uitzending herstarten"
 
 #: /var/azuracast/www/config/routes.dev.php:29
 msgid "Get Next Song Debug Mode"
-msgstr ""
+msgstr "Debug-modus voor \"Volgende nummer\""
 
 #: /var/azuracast/www/config/webhooks.php:15
 msgid "Generic Web Hook"

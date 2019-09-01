@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-08-31 12:30\n"
+"PO-Revision-Date: 2019-09-01 10:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2248,7 +2248,7 @@ msgstr "API \"Access-Control-Allow-Origin\" header"
 
 #: /var/azuracast/www/config/forms/settings.php:126
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Lees meer over deze header</a>. Stil in op '*', om alle bronnen toe te staan, of specificeer een lijst van bronnen (gescheiden door een komma ',')."
 
 #: /var/azuracast/www/config/forms/settings.php:136
 msgid "Privacy Controls"
@@ -3588,7 +3588,7 @@ msgstr "Mijn API sleutels"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "API sleutels kunnen gebruikt worden om toegang te krijgen tot sommige functionaliteiten binnen het systeem zonder in te loggen. Alle sleutels die je toevoegt hebben dezelfde permissies als je account. Voor meer informatie, zie de <a href=\"%s\">API documentatie</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"

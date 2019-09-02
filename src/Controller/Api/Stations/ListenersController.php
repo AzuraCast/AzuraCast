@@ -70,7 +70,7 @@ class ListenersController
                 FROM App\Entity\Listener l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_start < :time_end
-                AND l.timestamp_end > :time_start')
+                AND (l.timestamp_end = 0 OR l.timestamp_end > :time_start)')
                 ->setParameter('station_id', $station->getId())
                 ->setParameter('time_start', $start_timestamp)
                 ->setParameter('time_end', $end_timestamp)
@@ -85,13 +85,13 @@ class ListenersController
                     $listeners_raw[$hash] = $listener;
                 }
 
-                $listener_start = $listener['timestamp_start'];
+                $listener_start = (int)$listener['timestamp_start'];
                 if ($listener_start < $start_timestamp) {
                     $listener_start = $start_timestamp;
                 }
 
-                $listener_end = $listener['timestamp_end'];
-                if ($listener_end > $end_timestamp) {
+                $listener_end = (int)$listener['timestamp_end'];
+                if (0 === $listener_end || $listener_end > $end_timestamp) {
                     $listener_end = $end_timestamp;
                 }
 

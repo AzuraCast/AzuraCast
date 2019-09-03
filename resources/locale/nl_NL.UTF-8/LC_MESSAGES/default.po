@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-09-03 08:00\n"
+"PO-Revision-Date: 2019-09-03 08:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -107,7 +107,7 @@ msgstr "Back-up de AzuraCast database en statistieken (en optionele media)."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:30
 msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr "Het absolute (of relatieve naar /var/azuracast/backups) pad waar back-ups opgeslagen dienen te worden."
+msgstr "Het absolute pad (of relatieve pad naar /var/azuracast/backups) waar back-ups opgeslagen dienen te worden."
 
 #: /var/azuracast/www/src/Console/Command/Backup.php:37
 msgid "Exclude media from the backup."
@@ -312,7 +312,7 @@ msgstr "Retentiebeleid bijgewerkt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:86
 msgid "Continuous queries created."
-msgstr ""
+msgstr "Zoekopdrachten gemaakt."
 
 #: /var/azuracast/www/src/Console/Command/SetupInflux.php:105
 msgid "InfluxDB databases created."
@@ -1665,7 +1665,7 @@ msgstr "Publiceren naar \"Yellow Pages\" gids"
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Schakel in om dit muntpoint binnen de publieke \"Yellow Pages\" weer te geven."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
@@ -2531,7 +2531,7 @@ msgstr "Streamer uitschakelen bij verbreken van verbinding (aantal seconden)"
 
 #: /var/azuracast/www/config/forms/station.php:320
 msgid "Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely."
-msgstr ""
+msgstr "Aantal seconden om een streamer uit te schakelen nadat handmatig de verbinding is verbroken. Stel in op 0 om deze functie niet te gebruiken."
 
 #: /var/azuracast/www/config/forms/station.php:331
 msgid "Customize DJ/Streamer Port"
@@ -2555,7 +2555,7 @@ msgstr "DJ/Streamer buffer tijd (seconden)"
 
 #: /var/azuracast/www/config/forms/station.php:355
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
-msgstr ""
+msgstr "Het aantal seconden van het signaal dat opgeslagen moet worden in geval van een onderbreking."
 
 #: /var/azuracast/www/config/forms/station.php:368
 msgid "Customize DJ/Streamer Mount Point"
@@ -2816,7 +2816,15 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
 "                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
 "                optimized to handle the request in under 2 seconds."
-msgstr ""
+msgstr "Web hooks sturen automatisch een HTTP POST-verzoek naar de URL die u heeft opgegeven om \n"
+"\n"
+"                een melding te sturen, wanneer een van de door uw gespecificeerde triggers zich op uw station voordoen. Het bericht van het POST-verzoek\n"
+"\n"
+"                is precies hetzelfde als de <a href=\"%s\" target=\"_blank\">Nu speelt API-reactie</a> van uw station. \n"
+"\n"
+"                Om een snelle werking van het systeem te garanderen hebben web hooks een korte timeout, waardoor de reagerende service geoptimaliseerd\n"
+"\n"
+"                moet zijn om het verzoek in minder dan 2 seconden te verwerken."
 
 #: /var/azuracast/www/config/forms/webhook/generic.php:37
 msgid "Web Hook URL"
@@ -2905,7 +2913,21 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Stappen om een Twitter applicatie te configureren:<br>\n"
+"\n"
+"                  <ol type=\"1\">\n"
+"\n"
+"                    <li>Maak een nieuwe app aan op de <a href=\"%s\" target=\"_blank\">Twitter applicaties site</a>.\n"
+"\n"
+"                    Gebruik de basis URL van deze installatie als de applicatie URL</li>\n"
+"\n"
+"                    <li>Klik op \"Keys and Access Tokens\" in de zojuist aangemaakte de applicatie.</li>\n"
+"\n"
+"                    <li>Klik op \"Create my access token\" onderaan de pagina.</li>\n"
+"\n"
+"                </ol>\n"
+"\n"
+"                <p>Vul, nadat bovenstaande stappen zijn afgerond, de informatie uit \"Keys and Access Tokens\" in binnen onderstaande velden.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -3133,7 +3155,7 @@ msgstr "Automatische toewijzing"
 #: /var/azuracast/www/templates/admin/logs/index.phtml:3
 #: /var/azuracast/www/templates/stations/logs/index.phtml:3
 msgid "Log Viewer"
-msgstr ""
+msgstr "Log weergave"
 
 #: /var/azuracast/www/config/menus/station.php:148
 #: /var/azuracast/www/templates/stations/queue/index.phtml:2
@@ -4442,7 +4464,7 @@ msgstr "Gekozen op"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:8
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
-msgstr ""
+msgstr "Externe relays laten u werken met uitzendsoftware buiten deze server. Elk relay die u hier toevoegt zal worden opgenomen in de statistieken van uw station. U kunt ook vanuit deze server naar externe relays uitzenden."
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:25
 msgid "Remote Relay"

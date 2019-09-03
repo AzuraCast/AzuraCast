@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-09-03 08:20\n"
+"PO-Revision-Date: 2019-09-03 08:31\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -2141,7 +2141,7 @@ msgstr "Systeem Machtigingen"
 
 #: /var/azuracast/www/config/forms/role.php:35
 msgid "Permissions for %s"
-msgstr "Rechten voor %s"
+msgstr "Rollen voor %s"
 
 #: /var/azuracast/www/config/forms/settings.php:14
 msgid "Site Base URL"
@@ -3261,7 +3261,7 @@ msgstr "Intrekken"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
 msgid "Insert"
-msgstr "Voeg in"
+msgstr "Invoegen"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111

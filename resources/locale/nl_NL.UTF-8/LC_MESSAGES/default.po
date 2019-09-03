@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-09-01 10:16\n"
+"PO-Revision-Date: 2019-09-03 08:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -256,7 +256,7 @@ msgstr "Wordt uitgevoerd in update modus."
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:49
 msgid "Migrating Legacy Configuration"
-msgstr ""
+msgstr "Oude configuratie migreren"
 
 #: /var/azuracast/www/src/Console/Command/Setup.php:55
 msgid "Setting Up InfluxDB"
@@ -2060,7 +2060,7 @@ msgstr "Account Aanmaken"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Inschakelen om luisteraars toe te staan dit mount point te selecteren op de publieke pagina van het station."
 
 #: /var/azuracast/www/config/forms/remote.php:25
 msgid "Remote Station Type"
@@ -2280,7 +2280,7 @@ msgstr "<b>Geen:</b> Verzamel geen statistieken over luisteraars"
 
 #: /var/azuracast/www/config/forms/settings.php:159
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "Ondersteuning van AzuraCast-installatie"
 
 #: /var/azuracast/www/config/forms/settings.php:160
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
@@ -2387,7 +2387,7 @@ msgstr "Toon het station in openbare pagina's en algemene API-resultaten."
 
 #: /var/azuracast/www/config/forms/station.php:94
 msgid "URL Stub"
-msgstr ""
+msgstr "URL-vriendelijke naam"
 
 #: /var/azuracast/www/config/forms/station.php:96
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
@@ -3435,7 +3435,7 @@ msgstr "Huidige CPU load"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
-msgstr ""
+msgstr "Gemiddelde CPU-belasting in een periode van 15 minuten"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"

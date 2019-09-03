@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-08-25T22:49:39+00:00\n"
-"PO-Revision-Date: 2019-09-03 08:10\n"
+"PO-Revision-Date: 2019-09-03 08:20\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -19,11 +19,11 @@ msgstr ""
 #: /var/azuracast/www/src/Acl.php:184
 #: /var/azuracast/www/src/Acl.php:196
 msgid "All Permissions"
-msgstr "Alle machtigingen"
+msgstr "Alle rollen"
 
 #: /var/azuracast/www/src/Acl.php:185
 msgid "View Administration Page"
-msgstr "Bekijk beheerpagina"
+msgstr "Bekijk beheerders pagina"
 
 #: /var/azuracast/www/src/Acl.php:186
 msgid "View System Logs"
@@ -1448,7 +1448,7 @@ msgstr "Aangepaste JS voor openbare pagina's"
 
 #: /var/azuracast/www/config/forms/branding.php:86
 msgid "This javascript code will be applied to the station public pages and login page."
-msgstr "Deze javascript code zal worden toegepast op de openbare pagina's van het station en op de inlogpagina."
+msgstr "Deze javascript code zal worden toegepast op de openbare pagina's van het station en de inlogpagina."
 
 #: /var/azuracast/www/config/forms/branding.php:97
 msgid "Custom CSS for Internal Pages"
@@ -1481,7 +1481,7 @@ msgstr "Belangrijke notities"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr "<p>SHOUTcast 2 DNAS is geen gratis software en de restrictieve licentie staat AzuraCast niet toe de SHOUTcast binary te verspreiden. Om SHOUTcast te installeren, moet u de Linux x64 binary downloaden van de <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload de <code>sc_serv2_linux_x64-latest.tar.gz</code> naar het veld hieronder om het automatisch in de juiste map uit te laten pakken.</p>"
+msgstr "<p>SHOUTcast 2 DNAS is geen vrije software en de restrictieve licentie staat AzuraCast niet toe de SHOUTcast binary te verspreiden. Om SHOUTcast te installeren, moet u de Linux x64 binary downloaden van de <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload de <code>sc_serv2_linux_x64-latest.tar.gz</code> naar het veld hieronder om het automatisch in de juiste map uit te laten pakken.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
@@ -1665,7 +1665,7 @@ msgstr "Publiceren naar \"Yellow Pages\" gids"
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr "Schakel in om dit muntpoint binnen de publieke \"Yellow Pages\" weer te geven."
+msgstr "Schakel in om dit mountpoint binnen de publieke \"Yellow Pages\" weer te geven."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
@@ -1703,7 +1703,7 @@ msgstr "Wanneer dit mount point geen audio speelt, zullen luisteraars doorverwez
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:27
 msgid "Custom Frontend Configuration"
-msgstr "Aangepaste Frontend configuratie"
+msgstr "Aangepaste front-end configuratie"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:29
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
@@ -1780,7 +1780,7 @@ msgstr "Afspeellijst vanaf externe URL"
 
 #: /var/azuracast/www/config/forms/playlist.php:74
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr "Een afspeellijst die het station opdracht geeft om te spelen vanaf een externe URL."
+msgstr "Een afspeellijst, opgehaald vanaf een externe URL, waarin staat welke nummers in welke volgorde afgespeeld moeten worden."
 
 #: /var/azuracast/www/config/forms/playlist.php:93
 msgid "Song Playback Order"

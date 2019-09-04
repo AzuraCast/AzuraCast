@@ -2,8 +2,6 @@
 return [
     'method' => 'post',
     'elements' => [
-        'secret' => ['hidden', []],
-
         'otp' => [
             'text',
             [

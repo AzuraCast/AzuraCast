@@ -153,23 +153,21 @@ class ProfileController
                 : __('The token you supplied is invalid. Please try again.');
         });
 
-        if ('POST' === $request->getMethod()) {
-            $parsedBody = $request->getParsedBody();
-            $secret = $parsedBody['secret'];
+        $twoFactorSession = $request->getSession()->getNamespace('twofactor');
+
+        if ($request->isPost()) {
+            $secret = $twoFactorSession->get('secret');
         } else {
             // Generate new TOTP secret.
             $secret = substr(trim(Base32::encodeUpper(random_bytes(128)), '='), 0, 64);
-
-            $form->populate([
-                'secret' => $secret,
-            ]);
+            $twoFactorSession->set('secret', $secret);
         }
 
         // Customize TOTP code
         $totp = TOTP::create($secret);
         $totp->setLabel($user->getEmail());
 
-        if ('POST' === $request->getMethod() && $form->isValid($request->getParsedBody())) {
+        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             $user->setTwoFactorSecret($totp->getProvisioningUri());
             $this->em->persist($user);
             $this->em->flush($user);

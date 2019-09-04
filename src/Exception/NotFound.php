@@ -1,9 +1,17 @@
 <?php
 namespace App\Exception;
 
-use Monolog\Logger;
+use Psr\Log\LogLevel;
+use Throwable;
 
 class NotFound extends \Azura\Exception
 {
-    protected $logger_level = Logger::DEBUG;
+    public function __construct(
+        string $message = 'Record not found.',
+        int $code = 0,
+        Throwable $previous = null,
+        string $loggerLevel = LogLevel::DEBUG
+    ) {
+        parent::__construct($message, $code, $previous, $loggerLevel);
+    }
 }

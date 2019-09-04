@@ -8,6 +8,7 @@ use Azura\Settings;
 use Azura\View;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LogLevel;
 use Slim\Exception\HttpNotFoundException;
 
 class ErrorHandler extends \Azura\Http\ErrorHandler
@@ -77,7 +78,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
 
             $error_message = __('You must be logged in to access this page.');
 
-            if ($this->return_json) {
+            if ($this->returnJson) {
                 return $response->withJson(new Entity\Api\Error(403, $error_message));
             }
 
@@ -97,7 +98,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
 
             $error_message = __('You do not have permission to access this portion of the site.');
 
-            if ($this->return_json) {
+            if ($this->returnJson) {
                 return $response->withJson(new Entity\Api\Error(403, $error_message));
             }
 
@@ -108,14 +109,14 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             return $response->withRedirect((string)$this->router->named('home'));
         }
 
-        if ($this->logger_level >= Logger::ERROR) {
+        if (!in_array($this->loggerLevel, [LogLevel::INFO, LogLevel::DEBUG, LogLevel::NOTICE], true)) {
             $this->sentry->handleException($this->exception);
         }
 
         /** @var Response $response */
         $response = $this->responseFactory->createResponse(500);
 
-        if ($this->return_json) {
+        if ($this->returnJson) {
             $api_response = new Entity\Api\Error(
                 $this->exception->getCode(),
                 $this->exception->getMessage(),
@@ -125,7 +126,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             return $response->withJson($api_response);
         }
 
-        if ($this->show_detailed && class_exists('\Whoops\Run')) {
+        if ($this->showDetailed && class_exists('\Whoops\Run')) {
             // Register error-handler.
             $handler = new \Whoops\Handler\PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');

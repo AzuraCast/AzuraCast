@@ -1,18 +1,17 @@
 <?php
 namespace App\Exception;
 
-use Monolog\Logger;
+use Psr\Log\LogLevel;
+use Throwable;
 
 class StationUnsupported extends \Azura\Exception
 {
-    protected $logger_level = Logger::INFO;
-
-    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null)
-    {
-        if (empty($message)) {
-            $message = 'This feature is not currently supported on this station.';
-        }
-
-        parent::__construct($message, $code, $previous);
+    public function __construct(
+        string $message = 'This feature is not currently supported on this station.',
+        int $code = 0,
+        Throwable $previous = null,
+        string $loggerLevel = LogLevel::INFO
+    ) {
+        parent::__construct($message, $code, $previous, $loggerLevel);
     }
 }

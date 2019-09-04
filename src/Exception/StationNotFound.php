@@ -1,18 +1,17 @@
 <?php
 namespace App\Exception;
 
-use Monolog\Logger;
+use Psr\Log\LogLevel;
+use Throwable;
 
 class StationNotFound extends \Azura\Exception
 {
-    protected $logger_level = Logger::INFO;
-
-    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null)
-    {
-        if (empty($message)) {
-            $message = 'Station not found.';
-        }
-
-        parent::__construct($message, $code, $previous);
+    public function __construct(
+        string $message = 'Station not found.',
+        int $code = 0,
+        Throwable $previous = null,
+        string $loggerLevel = LogLevel::INFO
+    ) {
+        parent::__construct($message, $code, $previous, $loggerLevel);
     }
 }

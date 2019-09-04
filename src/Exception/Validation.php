@@ -2,37 +2,37 @@
 namespace App\Exception;
 
 use Monolog\Logger;
+use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Throwable;
 
 class Validation extends \Azura\Exception
 {
-    protected $logger_level = Logger::INFO;
+    public function __construct(
+        string $message = 'Validation error.',
+        int $code = 0,
+        Throwable $previous = null,
+        string $loggerLevel = LogLevel::INFO
+    ) {
+        parent::__construct($message, $code, $previous, $loggerLevel);
+    }
 
     /** @var ConstraintViolationListInterface */
-    protected $detailed_errors;
-
-    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null)
-    {
-        if (empty($message)) {
-            $message = 'Submission could not be validated.';
-        }
-
-        parent::__construct($message, $code, $previous);
-    }
+    protected $detailedErrors;
 
     /**
      * @return ConstraintViolationListInterface
      */
     public function getDetailedErrors(): ConstraintViolationListInterface
     {
-        return $this->detailed_errors;
+        return $this->detailedErrors;
     }
 
     /**
-     * @param ConstraintViolationListInterface $detailed_errors
+     * @param ConstraintViolationListInterface $detailedErrors
      */
-    public function setDetailedErrors(ConstraintViolationListInterface $detailed_errors): void
+    public function setDetailedErrors(ConstraintViolationListInterface $detailedErrors): void
     {
-        $this->detailed_errors = $detailed_errors;
+        $this->detailedErrors = $detailedErrors;
     }
 }

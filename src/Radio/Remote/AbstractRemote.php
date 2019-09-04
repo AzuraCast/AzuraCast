@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
+use NowPlaying\Adapter\AdapterAbstract;
+use NowPlaying\Exception;
 
 abstract class AbstractRemote
 {
@@ -43,15 +45,50 @@ abstract class AbstractRemote
     }
 
     /**
+     * Return the likely "public" listen URL for the remote.
+     *
+     * @param Entity\StationRemote $remote
+     * @return string
+     */
+    public function getPublicUrl(Entity\StationRemote $remote): string
+    {
+        $custom_listen_url = $remote->getCustomListenUrl();
+
+        return (!empty($custom_listen_url))
+            ? $custom_listen_url
+            : $this->_getRemoteUrl($remote, $remote->getMount());
+    }
+
+    /**
+     * Format and return a URL for the remote path.
+     *
+     * @param Entity\StationRemote $remote
+     * @param null $custom_path
+     * @return string
+     */
+    protected function _getRemoteUrl(Entity\StationRemote $remote, $custom_path = null): string
+    {
+        $uri = new Uri($remote->getUrl());
+
+        return ($custom_path !== null)
+            ? (string)$uri->withPath($custom_path)
+            : (string)$uri;
+    }
+
+    /**
      * @param Entity\StationRemote $remote
      * @param array $np_aggregate
      * @param string $adapter_class
      * @param bool $include_clients
      * @return array The resulting aggregated now-playing response.
      */
-    protected function _updateNowPlayingFromAdapter(Entity\StationRemote $remote, $np_aggregate, $adapter_class, bool $include_clients = false): array
-    {
-        /** @var \NowPlaying\Adapter\AdapterAbstract $np_adapter */
+    protected function _updateNowPlayingFromAdapter(
+        Entity\StationRemote $remote,
+        $np_aggregate,
+        $adapter_class,
+        bool $include_clients = false
+    ): array {
+        /** @var AdapterAbstract $np_adapter */
         $np_adapter = new $adapter_class($remote->getUrl(), $this->http_client);
 
         try {
@@ -64,7 +101,7 @@ abstract class AbstractRemote
                 $np,
                 null
             );
-        } catch(\NowPlaying\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
@@ -84,8 +121,7 @@ abstract class AbstractRemote
         array $np_aggregate,
         array $np,
         ?array $clients
-    ): array
-    {
+    ): array {
         if (null !== $clients) {
             $original_num_clients = count($clients);
 
@@ -121,42 +157,12 @@ abstract class AbstractRemote
             $np_aggregate['meta'] = $np['meta'];
         }
 
-        $np_aggregate['listeners']['clients'] = array_merge((array)$np_aggregate['listeners']['clients'], (array)$np['listeners']['clients']);
+        $np_aggregate['listeners']['clients'] = array_merge((array)$np_aggregate['listeners']['clients'],
+            (array)$np['listeners']['clients']);
         $np_aggregate['listeners']['current'] += $np['listeners']['current'];
         $np_aggregate['listeners']['unique'] += $np['listeners']['unique'];
         $np_aggregate['listeners']['total'] += $np['listeners']['total'];
 
         return $np_aggregate;
-    }
-
-    /**
-     * Return the likely "public" listen URL for the remote.
-     *
-     * @param Entity\StationRemote $remote
-     * @return string
-     */
-    public function getPublicUrl(Entity\StationRemote $remote): string
-    {
-        $custom_listen_url = $remote->getCustomListenUrl();
-
-        return (!empty($custom_listen_url))
-            ? $custom_listen_url
-            : $this->_getRemoteUrl($remote, $remote->getMount());
-    }
-
-    /**
-     * Format and return a URL for the remote path.
-     *
-     * @param Entity\StationRemote $remote
-     * @param null $custom_path
-     * @return string
-     */
-    protected function _getRemoteUrl(Entity\StationRemote $remote, $custom_path = null): string
-    {
-        $uri = new Uri($remote->getUrl());
-
-        return ($custom_path !== null)
-            ? (string)$uri->withPath($custom_path)
-            : (string)$uri;
     }
 }

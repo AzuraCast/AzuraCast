@@ -7,6 +7,16 @@ use Psr\Http\Message\UriInterface;
 
 class Remote extends AbstractFrontend
 {
+    public static function supportsMounts(): bool
+    {
+        return false;
+    }
+
+    public static function supportsListenerDetail(): bool
+    {
+        return false;
+    }
+
     public function read(Entity\Station $station): bool
     {
         return true;
@@ -35,15 +45,5 @@ class Remote extends AbstractFrontend
     public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
     {
         return new Uri('');
-    }
-
-    public static function supportsMounts(): bool
-    {
-        return false;
-    }
-
-    public static function supportsListenerDetail(): bool
-    {
-        return false;
     }
 }

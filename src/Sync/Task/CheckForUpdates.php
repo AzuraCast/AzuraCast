@@ -3,10 +3,8 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Service\AzuraCastCentral;
-use App\Version;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 
@@ -48,13 +46,14 @@ class CheckForUpdates extends AbstractTask
         if (!$force) {
             $update_last_run = (int)$this->settings_repo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);
 
-            if ($update_last_run > (time()-self::UPDATE_THRESHOLD)) {
+            if ($update_last_run > (time() - self::UPDATE_THRESHOLD)) {
                 $this->logger->debug('Not checking for updates; checked too recently.');
                 return;
             }
         }
 
-        $check_for_updates = (int)$this->settings_repo->getSetting(Entity\Settings::CENTRAL_UPDATES, Entity\Settings::UPDATES_RELEASE_ONLY);
+        $check_for_updates = (int)$this->settings_repo->getSetting(Entity\Settings::CENTRAL_UPDATES,
+            Entity\Settings::UPDATES_RELEASE_ONLY);
 
         if (Entity\Settings::UPDATES_NONE === $check_for_updates || $this->app_settings->isTesting()) {
             $this->logger->info('Update checks are currently disabled for this AzuraCast instance.');
@@ -70,7 +69,7 @@ class CheckForUpdates extends AbstractTask
             } else {
                 $this->logger->error('Error parsing update data response from AzuraCast central.');
             }
-        } catch(TransferException $e) {
+        } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage()));
             return;
         }

@@ -7,8 +7,10 @@ use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use Gettext\Translator;
 use GuzzleHttp\Psr7\Uri;
+use Locale;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UriInterface;
+use const LC_ALL;
 
 class Customization
 {
@@ -38,6 +40,14 @@ class Customization
     }
 
     /**
+     * @param null $locale
+     */
+    public static function setGlobalValues($locale = null): void
+    {
+
+    }
+
+    /**
      * Set the currently active/logged in user.
      *
      * @param Entity\User $user
@@ -60,8 +70,8 @@ class Customization
         // Set up the PHP translator
         $translator = new Translator();
 
-        $locale_base = $this->app_settings[Settings::BASE_DIR].'/resources/locale/compiled';
-        $locale_path = $locale_base.'/'.$this->locale.'.php';
+        $locale_base = $this->app_settings[Settings::BASE_DIR] . '/resources/locale/compiled';
+        $locale_path = $locale_base . '/' . $this->locale . '.php';
 
         if (file_exists($locale_path)) {
             $translator->loadTranslations($locale_path);
@@ -71,7 +81,7 @@ class Customization
 
         // Register translation superglobal functions
         putenv('LANG=' . $this->locale);
-        setlocale(\LC_ALL, $this->locale);
+        setlocale(LC_ALL, $this->locale);
 
         if ($request instanceof Request) {
             $request = $request->withAttribute('locale', $this->locale);
@@ -103,20 +113,20 @@ class Customization
         // Attempt to load from browser headers.
         if ($request instanceof Request) {
             $server_params = $request->getServerParams();
-            $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
+            $browser_locale = Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
 
             if (!empty($browser_locale)) {
-                $try_locales[] = substr($browser_locale, 0, 5).'.UTF-8';
+                $try_locales[] = substr($browser_locale, 0, 5) . '.UTF-8';
             }
         }
 
         // Attempt to load from environment variable.
         $env_locale = getenv('LANG');
         if (!empty($env_locale)) {
-            $try_locales[] = substr($env_locale, 0, 5).'.UTF-8';
+            $try_locales[] = substr($env_locale, 0, 5) . '.UTF-8';
         }
 
-        foreach($try_locales as $exact_locale) {
+        foreach ($try_locales as $exact_locale) {
             // Prefer exact match.
             if (isset($supported_locales[$exact_locale])) {
                 return $exact_locale;
@@ -213,16 +223,6 @@ class Customization
     }
 
     /**
-     * Return whether to show or hide the AzuraCast name from public-facing pages.
-     *
-     * @return bool
-     */
-    public function hideProductName(): bool
-    {
-        return (bool)$this->settings_repo->getSetting(Entity\Settings::HIDE_PRODUCT_NAME, false);
-    }
-
-    /**
      * Return whether to show or hide album art on public pages.
      *
      * @return bool
@@ -258,17 +258,27 @@ class Customization
     {
         if (!$this->hideProductName()) {
             if ($title) {
-                $title .= ' - '.$this->app_settings[Settings::APP_NAME];
+                $title .= ' - ' . $this->app_settings[Settings::APP_NAME];
             } else {
                 $title = $this->app_settings[Settings::APP_NAME];
             }
         }
 
         if (!$this->app_settings->isProduction()) {
-            $title = '('.ucfirst($this->app_settings[Settings::APP_ENV]).') '.$title;
+            $title = '(' . ucfirst($this->app_settings[Settings::APP_ENV]) . ') ' . $title;
         }
 
         return $title;
+    }
+
+    /**
+     * Return whether to show or hide the AzuraCast name from public-facing pages.
+     *
+     * @return bool
+     */
+    public function hideProductName(): bool
+    {
+        return (bool)$this->settings_repo->getSetting(Entity\Settings::HIDE_PRODUCT_NAME, false);
     }
 
     /**
@@ -281,14 +291,6 @@ class Customization
         }
 
         return (bool)$this->settings_repo->getSetting(Entity\Settings::NOWPLAYING_USE_WEBSOCKETS, false);
-    }
-
-    /**
-     * @param null $locale
-     */
-    public static function setGlobalValues($locale = null): void
-    {
-
     }
 
 }

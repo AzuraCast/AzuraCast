@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity\Repository;
 
+use App\ApiUtilities;
 use App\Entity;
 use Azura\Doctrine\Repository;
 use Psr\Http\Message\UriInterface;
@@ -9,22 +10,22 @@ class SongHistoryRepository extends Repository
 {
     /**
      * @param Entity\Station $station
-     * @param \App\ApiUtilities $api_utils
+     * @param ApiUtilities $api_utils
      * @param UriInterface|null $base_url
      * @return Entity\Api\SongHistory[]
      */
     public function getHistoryForStation(
         Entity\Station $station,
-        \App\ApiUtilities $api_utils,
-        UriInterface $base_url = null): array
-    {
+        ApiUtilities $api_utils,
+        UriInterface $base_url = null
+    ): array {
         $num_entries = $station->getApiHistoryItems();
 
         if ($num_entries === 0) {
             return [];
         }
 
-        $history = $this->_em->createQuery(/** @lang DQL */'SELECT sh, s 
+        $history = $this->_em->createQuery(/** @lang DQL */ 'SELECT sh, s 
             FROM App\Entity\SongHistory sh JOIN sh.song s LEFT JOIN sh.media sm  
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_end != 0
@@ -53,10 +54,10 @@ class SongHistoryRepository extends Repository
     public function register(
         Entity\Song $song,
         Entity\Station $station,
-        array $np): Entity\SongHistory
-    {
+        array $np
+    ): Entity\SongHistory {
         // Pull the most recent history item for this station.
-        $last_sh = $this->_em->createQuery(/** @lang DQL */'SELECT sh 
+        $last_sh = $this->_em->createQuery(/** @lang DQL */ 'SELECT sh 
             FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id
             ORDER BY sh.timestamp_start DESC')
@@ -110,7 +111,8 @@ class SongHistoryRepository extends Repository
 
             /** @var ListenerRepository $listener_repo */
             $listener_repo = $this->_em->getRepository(Entity\Listener::class);
-            $last_sh->setUniqueListeners($listener_repo->getUniqueListeners($station, $last_sh->getTimestampStart(), time()));
+            $last_sh->setUniqueListeners($listener_repo->getUniqueListeners($station, $last_sh->getTimestampStart(),
+                time()));
 
             $this->_em->persist($last_sh);
         }
@@ -140,7 +142,7 @@ class SongHistoryRepository extends Repository
      */
     public function getCuedSong(Entity\Song $song, Entity\Station $station): ?Entity\SongHistory
     {
-        return $this->_em->createQuery(/** @lang DQL */'SELECT sh 
+        return $this->_em->createQuery(/** @lang DQL */ 'SELECT sh 
             FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id
             AND sh.song_id = :song_id

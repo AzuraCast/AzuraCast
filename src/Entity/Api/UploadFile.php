@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity\Api;
 
+use Azura\File;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,12 +30,12 @@ class UploadFile
 
     public function getSanitizedFilename(): string
     {
-        return \Azura\File::sanitizeFileName(basename($this->path));
+        return File::sanitizeFileName(basename($this->path));
     }
 
     public function getSanitizedPath(): string
     {
-        return \Azura\File::sanitizePathPrefix($this->path);
+        return File::sanitizePathPrefix($this->path);
     }
 
     public function getFileContents(): string

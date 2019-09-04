@@ -2,6 +2,8 @@
 namespace App;
 
 use Azura\Settings;
+use DateTime;
+use DateTimeZone;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Process\Process;
 
@@ -40,36 +42,6 @@ class Version
     }
 
     /**
-     * @return string A textual representation of the current installed version.
-     */
-    public function getVersionText(): string
-    {
-        $details = $this->getDetails();
-
-        return (isset($details['tag']))
-            ? 'v'.$details['tag'].', #'.$details['commit_short'].' ('.$details['commit_date'].')'
-            : 'v'.self::FALLBACK_VERSION.' Release Build';
-    }
-
-    /**
-     * @return string|null The long-form Git hash that represents the current commit of this installation.
-     */
-    public function getCommitHash(): ?string
-    {
-        $details = $this->getDetails();
-        return $details['commit'] ?? null;
-    }
-
-    /**
-     * @return string|null The shortened Git hash corresponding to the current commit.
-     */
-    public function getCommitShort(): ?string
-    {
-        $details = $this->getDetails();
-        return $details['commit_short'] ?? null;
-    }
-
-    /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
      * @return array
@@ -99,7 +71,7 @@ class Version
      */
     protected function _getRawDetails(): array
     {
-        if (!is_dir($this->repo_dir.'/.git')) {
+        if (!is_dir($this->repo_dir . '/.git')) {
             return [];
         }
 
@@ -115,8 +87,8 @@ class Version
         $latest_commit_date = $this->_runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']);
 
         if (!empty($latest_commit_date)) {
-            $commit_date = new \DateTime($latest_commit_date);
-            $commit_date->setTimezone(new \DateTimeZone('UTC'));
+            $commit_date = new DateTime($latest_commit_date);
+            $commit_date->setTimezone(new DateTimeZone('UTC'));
 
             $details['commit_timestamp'] = $commit_date->getTimestamp();
             $details['commit_date'] = $commit_date->format('Y-m-d G:i');
@@ -133,22 +105,6 @@ class Version
         }
 
         return $details;
-    }
-
-    /**
-     * Check if the installation has been modified by the user from the release build.
-     *
-     * @return bool
-     */
-    public function isInstallationModified(): bool
-    {
-        // We can't detect if release builds are changed, so always return true.
-        if (!is_dir($this->repo_dir.'/.git')) {
-            return true;
-        }
-
-        $changed_files = $this->_runProcess(['git', 'status', '-s']);
-        return !empty($changed_files);
     }
 
     /**
@@ -169,5 +125,51 @@ class Version
         }
 
         return trim($process->getOutput());
+    }
+
+    /**
+     * @return string A textual representation of the current installed version.
+     */
+    public function getVersionText(): string
+    {
+        $details = $this->getDetails();
+
+        return (isset($details['tag']))
+            ? 'v' . $details['tag'] . ', #' . $details['commit_short'] . ' (' . $details['commit_date'] . ')'
+            : 'v' . self::FALLBACK_VERSION . ' Release Build';
+    }
+
+    /**
+     * @return string|null The long-form Git hash that represents the current commit of this installation.
+     */
+    public function getCommitHash(): ?string
+    {
+        $details = $this->getDetails();
+        return $details['commit'] ?? null;
+    }
+
+    /**
+     * @return string|null The shortened Git hash corresponding to the current commit.
+     */
+    public function getCommitShort(): ?string
+    {
+        $details = $this->getDetails();
+        return $details['commit_short'] ?? null;
+    }
+
+    /**
+     * Check if the installation has been modified by the user from the release build.
+     *
+     * @return bool
+     */
+    public function isInstallationModified(): bool
+    {
+        // We can't detect if release builds are changed, so always return true.
+        if (!is_dir($this->repo_dir . '/.git')) {
+            return true;
+        }
+
+        $changed_files = $this->_runProcess(['git', 'status', '-s']);
+        return !empty($changed_files);
     }
 }

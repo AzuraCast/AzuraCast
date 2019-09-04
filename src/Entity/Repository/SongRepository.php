@@ -13,11 +13,11 @@ class SongRepository extends Repository
      */
     public function getIds()
     {
-        $ids_raw = $this->_em->createQuery(/** @lang DQL */'SELECT s.id FROM App\Entity\Song s')
+        $ids_raw = $this->_em->createQuery(/** @lang DQL */ 'SELECT s.id FROM App\Entity\Song s')
             ->getArrayResult();
 
         $ids = [];
-        foreach($ids_raw as $id_raw) {
+        foreach ($ids_raw as $id_raw) {
             $ids[] = $id_raw['id'];
         }
         return $ids;

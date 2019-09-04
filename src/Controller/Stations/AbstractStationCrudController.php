@@ -2,8 +2,10 @@
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
+use App\Exception\NotFound;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
+use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 
 abstract class AbstractStationCrudController
@@ -17,7 +19,7 @@ abstract class AbstractStationCrudController
     /** @var string */
     protected $entity_class;
 
-    /** @var \Azura\Doctrine\Repository */
+    /** @var Repository */
     protected $record_repo;
 
     /** @var string */
@@ -53,22 +55,6 @@ abstract class AbstractStationCrudController
     }
 
     /**
-     * @param ServerRequest $request
-     * @param string|int $id
-     */
-    protected function _doDelete(ServerRequest $request, $id, $csrf_token): void
-    {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
-
-        $record = $this->_getRecord($request->getStation(), $id);
-
-        if ($record instanceof $this->entity_class) {
-            $this->em->remove($record);
-            $this->em->flush();
-        }
-    }
-
-    /**
      * @param Station $station
      * @param string|int|null $id
      * @return object|null
@@ -82,9 +68,25 @@ abstract class AbstractStationCrudController
         $record = $this->record_repo->findOneBy(['id' => $id, 'station_id' => $station->getId()]);
 
         if (!$record instanceof $this->entity_class) {
-            throw new \App\Exception\NotFound(__('Record not found.'));
+            throw new NotFound(__('Record not found.'));
         }
 
         return $record;
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param string|int $id
+     */
+    protected function _doDelete(ServerRequest $request, $id, $csrf_token): void
+    {
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+
+        $record = $this->_getRecord($request->getStation(), $id);
+
+        if ($record instanceof $this->entity_class) {
+            $this->em->remove($record);
+            $this->em->flush();
+        }
     }
 }

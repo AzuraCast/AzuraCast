@@ -5,9 +5,13 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
+use stdClass;
+use function array_reverse;
+use function array_slice;
 
 class OverviewController
 {
@@ -31,7 +35,7 @@ class OverviewController
     {
         $station = $request->getStation();
 
-        $station_tz = new \DateTimeZone($station->getTimezone());
+        $station_tz = new DateTimeZone($station->getTimezone());
 
         // Get current analytics level.
 
@@ -49,17 +53,18 @@ class OverviewController
         $threshold = Chronos::parse('-1 month', $station_tz)->getTimestamp();
 
         // Statistics by day.
-        $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d', [
-            'epoch' => 'ms',
-        ]);
+        $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d',
+            [
+                'epoch' => 'ms',
+            ]);
 
-        $daily_chart = new \stdClass;
+        $daily_chart = new stdClass;
         $daily_chart->label = __('Listeners by Day');
         $daily_chart->type = 'line';
         $daily_chart->fill = false;
 
         $daily_alt = [
-            '<p>'.$daily_chart->label.'</p>',
+            '<p>' . $daily_chart->label . '</p>',
             '<dl>',
         ];
         $daily_averages = [];
@@ -67,16 +72,16 @@ class OverviewController
         $days_of_week = [];
 
         foreach ($resultset->getPoints() as $stat) {
-            $avg_row = new \stdClass;
+            $avg_row = new stdClass;
             $avg_row->t = $stat['time'];
             $avg_row->y = round($stat['value'], 2);
             $daily_averages[] = $avg_row;
 
-            $dt = Chronos::createFromTimestamp($avg_row->t/1000, $station_tz);
+            $dt = Chronos::createFromTimestamp($avg_row->t / 1000, $station_tz);
 
             $row_date = $dt->format('Y-m-d');
-            $daily_alt[] = '<dt><time data-original="'.$avg_row->t.'">'.$row_date.'</time></dt>';
-            $daily_alt[] = '<dd>'.$avg_row->y.' '.__('Listeners').'</dd>';
+            $daily_alt[] = '<dt><time data-original="' . $avg_row->t . '">' . $row_date . '</time></dt>';
+            $daily_alt[] = '<dd>' . $avg_row->y . ' ' . __('Listeners') . '</dd>';
 
             $day_of_week = (int)$dt->format('N') - 1;
             $days_of_week[$day_of_week][] = $stat['value'];
@@ -89,11 +94,11 @@ class OverviewController
             'datasets' => [$daily_chart],
         ];
 
-        $day_of_week_chart = new \stdClass;
+        $day_of_week_chart = new stdClass;
         $day_of_week_chart->label = __('Listeners by Day of Week');
 
         $day_of_week_alt = [
-            '<p>'.$day_of_week_chart->label.'</p>',
+            '<p>' . $day_of_week_chart->label . '</p>',
             '<dl>',
         ];
 
@@ -109,14 +114,14 @@ class OverviewController
 
         $day_of_week_stats = [];
 
-        foreach($days_of_week_names as $day_index => $day_name) {
+        foreach ($days_of_week_names as $day_index => $day_name) {
             $day_totals = $days_of_week[$day_index] ?? [0];
 
             $stat_value = round(array_sum($day_totals) / count($day_totals), 2);
             $day_of_week_stats[] = $stat_value;
 
-            $day_of_week_alt[] = '<dt>'.$day_name.'</dt>';
-            $day_of_week_alt[] = '<dd>'.$stat_value.' '.__('Listeners').'</dd>';
+            $day_of_week_alt[] = '<dt>' . $day_name . '</dt>';
+            $day_of_week_alt[] = '<dd>' . $stat_value . ' ' . __('Listeners') . '</dd>';
         }
 
         $day_of_week_alt[] = '</dl>';
@@ -149,24 +154,24 @@ class OverviewController
         }
 
         $hourly_labels = [];
-        $hourly_chart = new \stdClass;
+        $hourly_chart = new stdClass;
         $hourly_chart->label = __('Listeners by Hour');
 
         $hourly_rows = [];
         $hourly_alt = [
-            '<p>'.$hourly_chart->label.'</p>',
+            '<p>' . $hourly_chart->label . '</p>',
             '<dl>',
         ];
 
         for ($i = 0; $i < 24; $i++) {
-            $hourly_labels[] = $i.':00';
+            $hourly_labels[] = $i . ':00';
             $totals = $totals_by_hour[$i] ?: [0];
 
             $stat_value = round(array_sum($totals) / count($totals), 2);
             $hourly_rows[] = $stat_value;
 
-            $hourly_alt[] = '<dt>'.$i.':00</dt>';
-            $hourly_alt[] = '<dd>'.$stat_value.' '.__('Listeners').'</dd>';
+            $hourly_alt[] = '<dt>' . $i . ':00</dt>';
+            $hourly_alt[] = '<dd>' . $stat_value . ' ' . __('Listeners') . '</dd>';
         }
 
         $hourly_alt[] = '</dl>';
@@ -180,7 +185,7 @@ class OverviewController
         /* Play Count Statistics */
 
         $song_totals_raw = [];
-        $song_totals_raw['played'] = $this->em->createQuery(/** @lang DQL */'SELECT 
+        $song_totals_raw['played'] = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sh.song_id, COUNT(sh.id) AS records
             FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
@@ -197,7 +202,7 @@ class OverviewController
         /** @var Entity\Repository\SongRepository $song_repo */
         $song_repo = $this->em->getRepository(Entity\Song::class);
 
-        $get_song_q = $this->em->createQuery(/** @lang DQL */'SELECT s 
+        $get_song_q = $this->em->createQuery(/** @lang DQL */ 'SELECT s 
             FROM App\Entity\Song s
             WHERE s.id = :song_id');
 
@@ -218,7 +223,7 @@ class OverviewController
         $threshold = strtotime('-2 weeks');
 
         // Get all songs played in timeline.
-        $songs_played_raw = $this->em->createQuery(/** @lang DQL */'SELECT sh, s
+        $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
             FROM App\Entity\SongHistory sh
             LEFT JOIN sh.song s
             WHERE sh.station_id = :station_id 
@@ -258,16 +263,16 @@ class OverviewController
 
         return $request->getView()->renderToResponse($response, 'stations/reports/overview', [
             'charts' => [
-                'daily'         => json_encode($daily_data),
-                'daily_alt'     => implode('', $daily_alt),
-                'hourly'        => json_encode($hourly_data),
-                'hourly_alt'    => implode('', $hourly_alt),
-                'day_of_week'   => json_encode($day_of_week_data),
+                'daily' => json_encode($daily_data),
+                'daily_alt' => implode('', $daily_alt),
+                'hourly' => json_encode($hourly_data),
+                'hourly_alt' => implode('', $hourly_alt),
+                'day_of_week' => json_encode($day_of_week_data),
                 'day_of_week_alt' => implode('', $day_of_week_alt),
             ],
             'song_totals' => $song_totals,
-            'best_performing_songs' => \array_reverse(\array_slice($songs, -5)),
-            'worst_performing_songs' => \array_slice($songs, 0, 5),
+            'best_performing_songs' => array_reverse(array_slice($songs, -5)),
+            'worst_performing_songs' => array_slice($songs, 0, 5),
         ]);
     }
 }

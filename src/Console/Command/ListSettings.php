@@ -36,12 +36,12 @@ class ListSettings extends CommandAbstract
 
         $headers = [
             __('Setting Key'),
-            __('Setting Value')
+            __('Setting Value'),
         ];
         $rows = [];
 
         $all_settings = $settings_repo->fetchAll();
-        foreach($all_settings as $setting_key => $setting_value) {
+        foreach ($all_settings as $setting_key => $setting_value) {
             $value = print_r($setting_value, true);
             $value = Utilities::truncateText($value, 600);
 

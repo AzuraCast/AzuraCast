@@ -36,9 +36,8 @@ class NChan
         if (0 === stripos(PHP_OS, 'linux')) {
             $files = glob('/etc/*-release');
 
-            foreach($files as $file)
-            {
-                $lines = array_filter(array_map(function($line) {
+            foreach ($files as $file) {
+                $lines = array_filter(array_map(function ($line) {
                     // split value from key
                     $parts = explode('=', $line);
 
@@ -48,11 +47,11 @@ class NChan
                     }
 
                     // remove quotes, if the value is quoted
-                    $parts[1] = str_replace(array('"', "'"), '', $parts[1]);
+                    $parts[1] = str_replace(['"', "'"], '', $parts[1]);
                     return $parts;
                 }, file($file)));
 
-                foreach($lines as $line) {
+                foreach ($lines as $line) {
                     $vars[$line[0]] = trim($line[1]);
                 }
             }

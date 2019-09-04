@@ -7,7 +7,6 @@ use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Psr7\Stream;
 
 class ArtController
 {
@@ -57,7 +56,7 @@ class ArtController
         $station = $request->getStation();
         $filesystem = $this->filesystem->getForStation($station);
 
-        $media_path = 'albumart://'.$media_id.'.jpg';
+        $media_path = 'albumart://' . $media_id . '.jpg';
 
         if ($filesystem->has($media_path)) {
             $file_meta = $filesystem->getMetadata($media_path);

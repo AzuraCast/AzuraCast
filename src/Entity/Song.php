@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use App\ApiUtilities;
+use Azura\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -104,17 +106,46 @@ class Song
 
         if (null === $this->id) {
             $this->id = $new_song_hash;
-        } else if ($this->id !== $new_song_hash) {
-            throw new \Azura\Exception('New song data supplied would not produce the same song ID.');
+        } else {
+            if ($this->id !== $new_song_hash) {
+                throw new Exception('New song data supplied would not produce the same song ID.');
+            }
         }
     }
 
     /**
+     * @param array|object|string $song_info
      * @return string
      */
-    public function getId(): string
+    public static function getSongHash($song_info): string
     {
-        return $this->id;
+        // Handle various input types.
+        if ($song_info instanceof self) {
+            $song_info = [
+                'text' => $song_info->getText(),
+                'artist' => $song_info->getArtist(),
+                'title' => $song_info->getTitle(),
+            ];
+        } elseif (!is_array($song_info)) {
+            $song_info = [
+                'text' => $song_info,
+            ];
+        }
+
+        // Generate hash.
+        if (!empty($song_info['text'])) {
+            $song_text = $song_info['text'];
+        } elseif (!empty($song_info['artist'])) {
+            $song_text = $song_info['artist'] . ' - ' . $song_info['title'];
+        } else {
+            $song_text = $song_info['title'];
+        }
+
+        // Strip non-alphanumeric characters
+        $song_text = mb_substr($song_text, 0, 150, 'UTF-8');
+        $hash_base = mb_strtolower(str_replace([' ', '-'], ['', ''], $song_text), 'UTF-8');
+
+        return md5($hash_base);
     }
 
     /**
@@ -139,6 +170,14 @@ class Song
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     /**
@@ -185,11 +224,11 @@ class Song
     /**
      * Retrieve the API version of the object/array.
      *
-     * @param \App\ApiUtilities $api_utils
+     * @param ApiUtilities $api_utils
      * @param UriInterface|null $base_url
      * @return Api\Song
      */
-    public function api(\App\ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song
+    public function api(ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->id;
@@ -201,40 +240,5 @@ class Song
         $response->custom_fields = $api_utils->getCustomFields();
 
         return $response;
-    }
-
-    /**
-     * @param array|object|string $song_info
-     * @return string
-     */
-    public static function getSongHash($song_info): string
-    {
-        // Handle various input types.
-        if ($song_info instanceof self) {
-            $song_info = [
-                'text' => $song_info->getText(),
-                'artist' => $song_info->getArtist(),
-                'title' => $song_info->getTitle(),
-            ];
-        } elseif (!is_array($song_info)) {
-            $song_info = [
-                'text' => $song_info,
-            ];
-        }
-
-        // Generate hash.
-        if (!empty($song_info['text'])) {
-            $song_text = $song_info['text'];
-        } elseif (!empty($song_info['artist'])) {
-            $song_text = $song_info['artist'] . ' - ' . $song_info['title'];
-        } else {
-            $song_text = $song_info['title'];
-        }
-
-        // Strip non-alphanumeric characters
-        $song_text = mb_substr($song_text, 0, 150, 'UTF-8');
-        $hash_base = mb_strtolower(str_replace([' ', '-'], ['', ''], $song_text), 'UTF-8');
-
-        return md5($hash_base);
     }
 }

@@ -10,6 +10,7 @@ use Azura\Config;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
+use InvalidArgumentException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -55,11 +56,11 @@ class StationCloneForm extends StationForm
     public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\Station) {
-            throw new \InvalidArgumentException('Record must be a station.');
+            throw new InvalidArgumentException('Record must be a station.');
         }
 
         $this->populate([
-            'name' => $record->getName().' - Copy',
+            'name' => $record->getName() . ' - Copy',
             'description' => $record->getDescription(),
         ]);
 
@@ -67,10 +68,14 @@ class StationCloneForm extends StationForm
             $data = $this->getValues();
 
             $copier = new DeepCopy\DeepCopy;
-            $copier->addFilter(new DeepCopy\Filter\Doctrine\DoctrineProxyFilter, new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher);
-            $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song'));
-            $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role'));
-            $copier->addFilter(new DeepCopy\Filter\KeepFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field'));
+            $copier->addFilter(new DeepCopy\Filter\Doctrine\DoctrineProxyFilter,
+                new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher);
+            $copier->addFilter(new DeepCopy\Filter\KeepFilter,
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song'));
+            $copier->addFilter(new DeepCopy\Filter\KeepFilter,
+                new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role'));
+            $copier->addFilter(new DeepCopy\Filter\KeepFilter,
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field'));
             $copier->addFilter(
                 new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
                 new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'history')
@@ -88,7 +93,7 @@ class StationCloneForm extends StationForm
                 'playlist_id',
                 'field_id',
             ];
-            foreach($global_unsets as $prop) {
+            foreach ($global_unsets as $prop) {
                 $copier->addFilter(new DeepCopy\Filter\SetNullFilter, new DeepCopy\Matcher\PropertyNameMatcher($prop));
             }
 
@@ -104,8 +109,9 @@ class StationCloneForm extends StationForm
                 'storage_used',
             ];
 
-            foreach($unset_values as $prop) {
-                $copier->addFilter(new DeepCopy\Filter\SetNullFilter, new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop));
+            foreach ($unset_values as $prop) {
+                $copier->addFilter(new DeepCopy\Filter\SetNullFilter,
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop));
             }
 
             if (!$data['clone_playlists']) {
@@ -163,26 +169,26 @@ class StationCloneForm extends StationForm
 
             // Set new radio base directory
             $station_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
-            $new_record->setRadioBaseDir($station_base_dir.'/'.$new_record->getShortName());
+            $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
 
             // Persist all newly created records (and relations).
             $this->em->persist($new_record);
-            foreach($new_record->getMedia() as $subrecord) {
+            foreach ($new_record->getMedia() as $subrecord) {
                 $this->em->persist($subrecord);
             }
-            foreach($new_record->getMounts() as $subrecord) {
+            foreach ($new_record->getMounts() as $subrecord) {
                 $this->em->persist($subrecord);
             }
-            foreach($new_record->getPermissions() as $subrecord) {
+            foreach ($new_record->getPermissions() as $subrecord) {
                 $this->em->persist($subrecord);
             }
-            foreach($new_record->getPlaylists() as $subrecord) {
+            foreach ($new_record->getPlaylists() as $subrecord) {
                 $this->em->persist($subrecord);
             }
-            foreach($new_record->getRemotes() as $subrecord) {
+            foreach ($new_record->getRemotes() as $subrecord) {
                 $this->em->persist($subrecord);
             }
-            foreach($new_record->getStreamers() as $subrecord) {
+            foreach ($new_record->getStreamers() as $subrecord) {
                 $this->em->persist($subrecord);
             }
             $this->em->flush();
@@ -228,7 +234,7 @@ class StationCloneForm extends StationForm
                 continue;
             }
 
-            if (is_dir($src .'/' . $file) && ($file !== '.') && ($file !== '..') ) {
+            if (is_dir($src . '/' . $file) && ($file !== '.') && ($file !== '..')) {
                 mkdir($dest . '/' . $file);
                 $this->_copy($src . '/' . $file, $dest . '/' . $file);
             } else {

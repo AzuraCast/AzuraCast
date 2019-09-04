@@ -3,6 +3,7 @@ namespace App\Middleware;
 
 use App\Exception\PermissionDenied;
 use App\Http\ServerRequest;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -41,7 +42,7 @@ class Permissions
 
         try {
             $user = $request->getUser();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new PermissionDenied;
         }
 

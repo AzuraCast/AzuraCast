@@ -33,7 +33,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function($row) use ($is_bootgrid, $router) {
+        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router) {
             $return = $this->_viewRecord($row, $router);
             if ($is_bootgrid) {
                 return Utilities::flattenArray($return, '_');
@@ -43,6 +43,18 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         });
 
         return $paginator->write($response);
+    }
+
+    /**
+     * A placeholder function to retrieve the current station that some controllers can
+     * override to verify that the station can perform the specified task.
+     *
+     * @param ServerRequest $request
+     * @return Entity\Station
+     */
+    protected function _getStation(ServerRequest $request): Entity\Station
+    {
+        return $request->getStation();
     }
 
     /**
@@ -63,6 +75,22 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     }
 
     /**
+     * @param array $data
+     * @param Entity\Station $station
+     * @return object
+     */
+    protected function _createRecord($data, Entity\Station $station): object
+    {
+        return $this->_editRecord($data, null, [
+            AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
+                $this->entityClass => [
+                    'station' => $station,
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * @param ServerRequest $request
      * @param Response $response
      * @param int|string $record_id
@@ -75,6 +103,20 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         $return = $this->_viewRecord($record, $request->getRouter());
         return $response->withJson($return);
+    }
+
+    /**
+     * @param Entity\Station $station
+     * @param int|string $record_id
+     * @return object|null
+     */
+    protected function _getRecord(Entity\Station $station, $record_id)
+    {
+        $repo = $this->em->getRepository($this->entityClass);
+        return $repo->findOneBy([
+            'station' => $station,
+            'id' => $record_id,
+        ]);
     }
 
     /**
@@ -117,47 +159,5 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         $this->_deleteRecord($record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
-    }
-
-    /**
-     * @param array $data
-     * @param Entity\Station $station
-     * @return object
-     */
-    protected function _createRecord($data, Entity\Station $station): object
-    {
-        return $this->_editRecord($data, null, [
-            AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
-                $this->entityClass => [
-                    'station' => $station,
-                ]
-            ],
-        ]);
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @param int|string $record_id
-     * @return object|null
-     */
-    protected function _getRecord(Entity\Station $station, $record_id)
-    {
-        $repo = $this->em->getRepository($this->entityClass);
-        return $repo->findOneBy([
-            'station' => $station,
-            'id' => $record_id,
-        ]);
-    }
-
-    /**
-     * A placeholder function to retrieve the current station that some controllers can
-     * override to verify that the station can perform the specified task.
-     *
-     * @param ServerRequest $request
-     * @return Entity\Station
-     */
-    protected function _getStation(ServerRequest $request): Entity\Station
-    {
-        return $request->getStation();
     }
 }

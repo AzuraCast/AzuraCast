@@ -3,6 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Auth;
 use App\Entity;
+use App\Exception\NotFound;
 use App\Form\UserForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -30,7 +31,7 @@ class UsersController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $users = $this->em->createQuery(/** @lang DQL */'SELECT 
+        $users = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             u, r 
             FROM App\Entity\User u 
             LEFT JOIN u.roles r
@@ -40,7 +41,7 @@ class UsersController extends AbstractAdminCrudController
         return $request->getView()->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace)
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -52,14 +53,15 @@ class UsersController extends AbstractAdminCrudController
 
                 return $response->withRedirect($request->getRouter()->named('admin:users:index'));
             }
-        } catch(UniqueConstraintViolationException $e) {
-            $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
+        } catch (UniqueConstraintViolationException $e) {
+            $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'),
+                'red');
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => $id ? __('Edit User') : __('Add User')
+            'title' => $id ? __('Edit User') : __('Add User'),
         ]);
     }
 
@@ -72,7 +74,7 @@ class UsersController extends AbstractAdminCrudController
         $current_user = $request->getUser();
 
         if ($user === $current_user) {
-            $request->getSession()->flash('<b>'.__('You cannot delete your own account.').'</b>', 'red');
+            $request->getSession()->flash('<b>' . __('You cannot delete your own account.') . '</b>', 'red');
         } elseif ($user instanceof Entity\User) {
             $this->em->remove($user);
             $this->em->flush();
@@ -90,7 +92,7 @@ class UsersController extends AbstractAdminCrudController
         $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {
-            throw new \App\Exception\NotFound(__('User not found.'));
+            throw new NotFound(__('User not found.'));
         }
 
         $this->auth->masqueradeAsUser($user);

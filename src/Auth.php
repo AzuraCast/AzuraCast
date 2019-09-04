@@ -3,6 +3,8 @@ namespace App;
 
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
+use App\Exception\NotLoggedIn;
+use Azura\Exception;
 use Azura\Session;
 use Azura\Session\NamespaceInterface;
 use Azura\Settings;
@@ -69,45 +71,11 @@ class Auth
     }
 
     /**
-     * End the user's currently logged in session.
-     */
-    public function logout(): void
-    {
-        $this->session_namespace
-            ->set('login_complete', false)
-            ->unset('user_id')
-            ->unset('masquerade_user_id');
-
-        $this->user = null;
-
-        $this->session->destroy();
-    }
-
-    /**
-     * Check if a user account is currently authenticated.
-     *
-     * @return bool
-     */
-    public function isLoggedIn(): bool
-    {
-        if (APP_IS_COMMAND_LINE && !APP_TESTING_MODE) {
-            return false;
-        }
-
-        if (!$this->isLoginComplete()) {
-            return false;
-        }
-
-        $user = $this->getUser();
-        return ($user instanceof User);
-    }
-
-    /**
      * Get the currently logged in user.
      *
      * @param bool $real_user_only
      * @return User|null
-     * @throws \Azura\Exception
+     * @throws Exception
      */
     public function getLoggedInUser($real_user_only = false): ?User
     {
@@ -120,95 +88,6 @@ class Auth
         }
 
         return $this->getUser();
-    }
-
-    /**
-     * Get the authenticated user entity.
-     *
-     * @return User|null
-     * @throws \Azura\Exception
-     */
-    public function getUser(): ?User
-    {
-        if (null === $this->user) {
-            $user_id = (int)$this->session_namespace->get('user_id');
-
-            if (0 === $user_id) {
-                $this->user = false;
-                return null;
-            }
-
-            $user = $this->user_repo->find($user_id);
-            if ($user instanceof User) {
-                $this->user = $user;
-            } else {
-                $this->user = false;
-                $this->logout();
-
-                throw new \Azura\Exception('Invalid user!');
-            }
-        }
-
-        return ($this->user instanceof User)
-            ? $this->user
-            : null;
-    }
-
-    /**
-     * Set the currently authenticated user.
-     *
-     * @param User $user
-     */
-    public function setUser(User $user): void
-    {
-        $this->session_namespace->set('login_complete', null === $user->getTwoFactorSecret())
-            ->set('user_id', $user->getId());
-
-        $this->user = $user;
-    }
-
-    /**
-     * Masquerading
-     */
-
-    /**
-     * Become a different user across the application.
-     *
-     * @param User|array $user_info
-     */
-    public function masqueradeAsUser($user_info): void
-    {
-        if (!($user_info instanceof User)) {
-            $user_info = $this->user_repo->findOneBy($user_info);
-        }
-
-        if (!($user_info instanceof User)) {
-            throw new \Azura\Exception('Invalid user!');
-        }
-
-        $this->session_namespace->set('masquerade_user_id', $user_info->getId());
-
-        $this->masqueraded_user = $user_info;
-    }
-
-    /**
-     * Return to the regular authenticated account.
-     */
-    public function endMasquerade(): void
-    {
-        $this->session_namespace->unset('masquerade_user_id');
-
-        $this->masqueraded_user = null;
-    }
-
-    /**
-     * Return the currently masqueraded user, if one is set.
-     *
-     * @return User|null
-     */
-    public function getMasquerade(): ?User
-    {
-        return $this->masqueraded_user;
     }
 
     /**
@@ -249,6 +128,25 @@ class Auth
     }
 
     /**
+     * Check if a user account is currently authenticated.
+     *
+     * @return bool
+     */
+    public function isLoggedIn(): bool
+    {
+        if (APP_IS_COMMAND_LINE && !APP_TESTING_MODE) {
+            return false;
+        }
+
+        if (!$this->isLoginComplete()) {
+            return false;
+        }
+
+        $user = $this->getUser();
+        return ($user instanceof User);
+    }
+
+    /**
      * Indicate whether login is "complete", i.e. whether any necessary
      * second-factor authentication steps have been completed.
      *
@@ -257,6 +155,110 @@ class Auth
     public function isLoginComplete(): bool
     {
         return $this->session_namespace->get('login_complete') ?? false;
+    }
+
+    /**
+     * Get the authenticated user entity.
+     *
+     * @return User|null
+     * @throws Exception
+     */
+    public function getUser(): ?User
+    {
+        if (null === $this->user) {
+            $user_id = (int)$this->session_namespace->get('user_id');
+
+            if (0 === $user_id) {
+                $this->user = false;
+                return null;
+            }
+
+            $user = $this->user_repo->find($user_id);
+            if ($user instanceof User) {
+                $this->user = $user;
+            } else {
+                $this->user = false;
+                $this->logout();
+
+                throw new Exception('Invalid user!');
+            }
+        }
+
+        return ($this->user instanceof User)
+            ? $this->user
+            : null;
+    }
+
+    /**
+     * Masquerading
+     */
+
+    /**
+     * Set the currently authenticated user.
+     *
+     * @param User $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->session_namespace->set('login_complete', null === $user->getTwoFactorSecret())
+            ->set('user_id', $user->getId());
+
+        $this->user = $user;
+    }
+
+    /**
+     * End the user's currently logged in session.
+     */
+    public function logout(): void
+    {
+        $this->session_namespace
+            ->set('login_complete', false)
+            ->unset('user_id')
+            ->unset('masquerade_user_id');
+
+        $this->user = null;
+
+        $this->session->destroy();
+    }
+
+    /**
+     * Return the currently masqueraded user, if one is set.
+     *
+     * @return User|null
+     */
+    public function getMasquerade(): ?User
+    {
+        return $this->masqueraded_user;
+    }
+
+    /**
+     * Become a different user across the application.
+     *
+     * @param User|array $user_info
+     */
+    public function masqueradeAsUser($user_info): void
+    {
+        if (!($user_info instanceof User)) {
+            $user_info = $this->user_repo->findOneBy($user_info);
+        }
+
+        if (!($user_info instanceof User)) {
+            throw new Exception('Invalid user!');
+        }
+
+        $this->session_namespace->set('masquerade_user_id', $user_info->getId());
+
+        $this->masqueraded_user = $user_info;
+    }
+
+    /**
+     * Return to the regular authenticated account.
+     */
+    public function endMasquerade(): void
+    {
+        $this->session_namespace->unset('masquerade_user_id');
+
+        $this->masqueraded_user = null;
     }
 
     /**
@@ -270,7 +272,7 @@ class Auth
         $user = $this->getUser();
 
         if (!($user instanceof User)) {
-            throw new \App\Exception\NotLoggedIn;
+            throw new NotLoggedIn;
         }
 
         if ($user->verifyTwoFactor($otp)) {

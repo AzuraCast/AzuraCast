@@ -96,12 +96,12 @@ class RolesController extends AbstractAdminApiCrudController
     {
         return parent::_denormalizeToRecord($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [
-                'permissions' => function(array $value, $record) {
+                'permissions' => function (array $value, $record) {
                     if ($record instanceof Entity\Role) {
                         $perms = $record->getPermissions();
 
                         if ($perms->count() > 0) {
-                            foreach($perms as $existing_perm) {
+                            foreach ($perms as $existing_perm) {
                                 $this->em->remove($existing_perm);
                             }
                             $perms->clear();
@@ -118,11 +118,11 @@ class RolesController extends AbstractAdminApiCrudController
                         }
 
                         if (!empty($value['station'])) {
-                            foreach($value['station'] as $station_id => $station_perms) {
+                            foreach ($value['station'] as $station_id => $station_perms) {
                                 $station = $this->em->find(Entity\Station::class, $station_id);
 
                                 if ($station instanceof Entity\Station) {
-                                    foreach($station_perms as $perm_name) {
+                                    foreach ($station_perms as $perm_name) {
                                         if (Acl::isValidPermission($perm_name, false)) {
                                             $perm_record = new Entity\RolePermission($record, $station, $perm_name);
                                             $this->em->persist($perm_record);

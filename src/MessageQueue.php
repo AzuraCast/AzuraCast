@@ -39,12 +39,31 @@ class MessageQueue implements EventSubscriberInterface
         QueueFactory $queues,
         Producer $producer,
         Consumer $consumer,
-        Logger $logger)
-    {
+        Logger $logger
+    ) {
         $this->queues = $queues;
         $this->producer = $producer;
         $this->consumer = $consumer;
         $this->logger = $logger;
+    }
+
+    /**
+     * @return array The event names to listen to
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            BernardEvents::PRODUCE => [
+                ['logProduce', -5],
+            ],
+            BernardEvents::INVOKE => [
+                ['logInvoke', -5],
+                ['handleDelay', 0],
+            ],
+            BernardEvents::REJECT => [
+                ['logReject', -5],
+            ],
+        ];
     }
 
     /**
@@ -89,25 +108,6 @@ class MessageQueue implements EventSubscriberInterface
     public function consume(array $options = []): void
     {
         $this->consumer->consume($this->queues->create(self::GLOBAL_QUEUE_NAME), $options);
-    }
-
-    /**
-     * @return array The event names to listen to
-     */
-    public static function getSubscribedEvents()
-    {
-        return [
-            BernardEvents::PRODUCE => [
-                ['logProduce', -5],
-            ],
-            BernardEvents::INVOKE => [
-                ['logInvoke', -5],
-                ['handleDelay', 0],
-            ],
-            BernardEvents::REJECT => [
-                ['logReject', -5],
-            ],
-        ];
     }
 
     /**

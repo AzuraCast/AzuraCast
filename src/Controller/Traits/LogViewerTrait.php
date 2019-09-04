@@ -2,6 +2,9 @@
 namespace App\Controller\Traits;
 
 use App\Entity;
+use App\Exception\NotFound;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
@@ -9,17 +12,21 @@ trait LogViewerTrait
 {
     static $maximum_log_size = 1048576;
 
-    protected function _view(\App\Http\ServerRequest $request, \App\Http\Response $response, $log_path, $tail_file = true): ResponseInterface
-    {
+    protected function _view(
+        ServerRequest $request,
+        Response $response,
+        $log_path,
+        $tail_file = true
+    ): ResponseInterface {
         clearstatcache();
 
         if (!file_exists($log_path)) {
-            throw new \App\Exception\NotFound('Log file not found!');
+            throw new NotFound('Log file not found!');
         }
 
         if (!$tail_file) {
             $log_contents_parts = explode("\n", file_get_contents($log_path));
-            $log_contents_parts = str_replace(array(">", "<"), array("&gt;", "&lt;"), $log_contents_parts);
+            $log_contents_parts = str_replace([">", "<"], ["&gt;", "&lt;"], $log_contents_parts);
 
             return $response->withJson([
                 'contents' => implode("\n", $log_contents_parts),
@@ -54,11 +61,11 @@ trait LogViewerTrait
             if ($cut_first_line) {
                 array_shift($log_contents_parts);
             }
-            if(end($log_contents_parts) == "") {
+            if (end($log_contents_parts) == "") {
                 array_pop($log_contents_parts);
             }
 
-            $log_contents_parts = str_replace(array(">", "<"), array("&gt;", "&lt;"), $log_contents_parts);
+            $log_contents_parts = str_replace([">", "<"], ["&gt;", "&lt;"], $log_contents_parts);
             $log_contents = implode("\n", $log_contents_parts);
 
             fclose($fp);
@@ -77,38 +84,36 @@ trait LogViewerTrait
 
         $station_config_dir = $station->getRadioConfigDir();
 
-        switch($station->getBackendType())
-        {
+        switch ($station->getBackendType()) {
             case Adapters::BACKEND_LIQUIDSOAP:
                 $log_paths['liquidsoap_log'] = [
                     'name' => __('Liquidsoap Log'),
-                    'path' => $station_config_dir.'/liquidsoap.log',
+                    'path' => $station_config_dir . '/liquidsoap.log',
                     'tail' => true,
                 ];
                 $log_paths['liquidsoap_liq'] = [
                     'name' => __('Liquidsoap Configuration'),
-                    'path' => $station_config_dir.'/liquidsoap.liq',
+                    'path' => $station_config_dir . '/liquidsoap.liq',
                     'tail' => false,
                 ];
                 break;
         }
 
-        switch($station->getFrontendType())
-        {
+        switch ($station->getFrontendType()) {
             case Adapters::FRONTEND_ICECAST:
                 $log_paths['icecast_access_log'] = [
                     'name' => __('Icecast Access Log'),
-                    'path' => $station_config_dir.'/icecast_access.log',
+                    'path' => $station_config_dir . '/icecast_access.log',
                     'tail' => true,
                 ];
                 $log_paths['icecast_error_log'] = [
                     'name' => __('Icecast Error Log'),
-                    'path' => $station_config_dir.'/icecast.log',
+                    'path' => $station_config_dir . '/icecast.log',
                     'tail' => true,
                 ];
                 $log_paths['icecast_xml'] = [
                     'name' => __('Icecast Configuration'),
-                    'path' => $station_config_dir.'/icecast.xml',
+                    'path' => $station_config_dir . '/icecast.xml',
                     'tail' => false,
                 ];
                 break;
@@ -116,12 +121,12 @@ trait LogViewerTrait
             case Adapters::FRONTEND_SHOUTCAST:
                 $log_paths['shoutcast_log'] = [
                     'name' => __('SHOUTcast Log'),
-                    'path' => $station_config_dir.'/shoutcast.log',
+                    'path' => $station_config_dir . '/shoutcast.log',
                     'tail' => true,
                 ];
                 $log_paths['shoutcast_conf'] = [
                     'name' => __('SHOUTcast Configuration'),
-                    'path' => $station_config_dir.'/sc_serv.conf',
+                    'path' => $station_config_dir . '/sc_serv.conf',
                     'tail' => false,
                 ];
                 break;

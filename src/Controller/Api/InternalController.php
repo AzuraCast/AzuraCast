@@ -3,6 +3,7 @@ namespace App\Controller\Api;
 
 use App\Acl;
 use App\Entity;
+use App\Exception\PermissionDenied;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
@@ -77,6 +78,32 @@ class InternalController
         return $response;
     }
 
+    /**
+     * @param ServerRequest $request
+     */
+    protected function _checkStationAuth(ServerRequest $request): void
+    {
+        $station = $request->getStation();
+
+        /** @var Entity\User $user */
+        $user = $request->getAttribute(ServerRequest::ATTR_USER);
+
+        if ($this->acl->userAllowed($user, Acl::GLOBAL_VIEW, $station->getId())) {
+            return;
+        }
+
+        $params = $request->getParams();
+        $auth_key = $params['api_auth'];
+        if (!$station->validateAdapterApiKey($auth_key)) {
+            $this->logger->error('Invalid API key supplied for internal API call.', [
+                'station_id' => $station->getId(),
+                'station_name' => $station->getName(),
+            ]);
+
+            throw new PermissionDenied;
+        }
+    }
+
     public function nextsongAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
@@ -137,38 +164,12 @@ class InternalController
         $body = $request->getParams();
 
         $this->sync_nowplaying->queueStation($station, [
-            'song_id'   => $body['song'] ?? null,
-            'media_id'  => $body['media'] ?? null,
-            'playlist_id'  => $body['playlist'] ?? null,
+            'song_id' => $body['song'] ?? null,
+            'media_id' => $body['media'] ?? null,
+            'playlist_id' => $body['playlist'] ?? null,
         ]);
 
         $response->getBody()->write('OK');
         return $response;
-    }
-
-    /**
-     * @param ServerRequest $request
-     */
-    protected function _checkStationAuth(ServerRequest $request): void
-    {
-        $station = $request->getStation();
-
-        /** @var Entity\User $user */
-        $user = $request->getAttribute(ServerRequest::ATTR_USER);
-
-        if ($this->acl->userAllowed($user, Acl::GLOBAL_VIEW, $station->getId())) {
-            return;
-        }
-
-        $params = $request->getParams();
-        $auth_key = $params['api_auth'];
-        if (!$station->validateAdapterApiKey($auth_key)) {
-            $this->logger->error('Invalid API key supplied for internal API call.', [
-                'station_id' => $station->getId(),
-                'station_name' => $station->getName(),
-            ]);
-
-            throw new \App\Exception\PermissionDenied;
-        }
     }
 }

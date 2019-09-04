@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -16,7 +15,8 @@ final class Version20170414205418 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE station ADD request_threshold INT DEFAULT NULL');
     }
@@ -36,7 +36,8 @@ final class Version20170414205418 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE station DROP request_threshold');
     }

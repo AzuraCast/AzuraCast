@@ -2,6 +2,7 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
+use App\Exception\Validation;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
@@ -87,17 +88,18 @@ class SettingsController
      * @param ServerRequest $request
      * @param Response $response
      * @return ResponseInterface
-     * @throws \App\Exception\Validation
+     * @throws Validation
      */
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $api_settings_obj = $this->serializer->denormalize($request->getParsedBody(), Entity\Api\Admin\Settings::class, null, [
-            AbstractNormalizer::OBJECT_TO_POPULATE => $this->api_settings,
-        ]);
+        $api_settings_obj = $this->serializer->denormalize($request->getParsedBody(), Entity\Api\Admin\Settings::class,
+            null, [
+                AbstractNormalizer::OBJECT_TO_POPULATE => $this->api_settings,
+            ]);
 
         $errors = $this->validator->validate($api_settings_obj);
         if (count($errors) > 0) {
-            throw new \App\Exception\Validation((string)$errors);
+            throw new Validation((string)$errors);
         }
 
         $api_settings = $this->serializer->normalize($api_settings_obj);

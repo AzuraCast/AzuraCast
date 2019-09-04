@@ -2,6 +2,7 @@
 /**
  * Gravatar - Globally Recognized Avatars Connector
  */
+
 namespace App\Service;
 
 class Gravatar

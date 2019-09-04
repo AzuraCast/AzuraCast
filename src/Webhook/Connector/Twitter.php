@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Monolog\Logger;
 
 class Twitter extends AbstractConnector
@@ -36,7 +37,7 @@ class Twitter extends AbstractConnector
             || empty($config['consumer_secret'])
             || empty($config['token'])
             || empty($config['token_secret'])) {
-            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -48,7 +49,8 @@ class Twitter extends AbstractConnector
             $last_tweet = (int)$webhook->getMetadataKey('last_message_sent', 0);
 
             if ($last_tweet > (time() - $rate_limit_seconds)) {
-                $this->logger->info(sprintf('A tweet was sent less than %d seconds ago. Skipping...', $rate_limit_seconds));
+                $this->logger->info(sprintf('A tweet was sent less than %d seconds ago. Skipping...',
+                    $rate_limit_seconds));
                 return;
             }
         }
@@ -58,11 +60,11 @@ class Twitter extends AbstractConnector
         /** @var HandlerStack $stack */
         $stack = clone $this->http_client->getConfig('handler');
 
-        $middleware = new \GuzzleHttp\Subscriber\Oauth\Oauth1([
-            'consumer_key'    => trim($config['consumer_key']),
+        $middleware = new Oauth1([
+            'consumer_key' => trim($config['consumer_key']),
             'consumer_secret' => trim($config['consumer_secret']),
-            'token'           => trim($config['token']),
-            'token_secret'    => trim($config['token_secret']),
+            'token' => trim($config['token']),
+            'token_secret' => trim($config['token_secret']),
         ]);
         $stack->push($middleware);
 
@@ -88,7 +90,7 @@ class Twitter extends AbstractConnector
                 sprintf('Twitter returned code %d', $response->getStatusCode()),
                 ['response_body' => $response->getBody()->getContents()]
             );
-        } catch(TransferException $e) {
+        } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from Twitter (%d): %s', $e->getCode(), $e->getMessage()));
         }
 

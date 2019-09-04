@@ -2,7 +2,10 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use App\Utilities;
 use Azura\Doctrine\Repository;
+use Azura\Exception;
+use Doctrine\ORM\NoResultException;
 
 class StationRequestRepository extends Repository
 {
@@ -13,18 +16,18 @@ class StationRequestRepository extends Repository
      * @param int $track_id
      * @param bool $is_authenticated
      * @return mixed
-     * @throws \Azura\Exception
+     * @throws Exception
      */
     public function submit(Entity\Station $station, $track_id, $is_authenticated = false)
     {
         // Forbid web crawlers from using this feature.
-        if (\App\Utilities::isCrawler()) {
-            throw new \Azura\Exception(__('Search engine crawlers are not permitted to use this feature.'));
+        if (Utilities::isCrawler()) {
+            throw new Exception(__('Search engine crawlers are not permitted to use this feature.'));
         }
 
         // Verify that the station supports requests.
         if (!$station->getEnableRequests()) {
-            throw new \Azura\Exception(__('This station does not accept requests currently.'));
+            throw new Exception(__('This station does not accept requests currently.'));
         }
 
         // Verify that Track ID exists with station.
@@ -32,11 +35,11 @@ class StationRequestRepository extends Repository
         $media_item = $media_repo->findOneBy(['unique_id' => $track_id, 'station_id' => $station->getId()]);
 
         if (!($media_item instanceof Entity\StationMedia)) {
-            throw new \Azura\Exception(__('The song ID you specified could not be found in the station.'));
+            throw new Exception(__('The song ID you specified could not be found in the station.'));
         }
 
         if (!$media_item->isRequestable()) {
-            throw new \Azura\Exception(__('The song ID you specified cannot be requested for this station.'));
+            throw new Exception(__('The song ID you specified cannot be requested for this station.'));
         }
 
         // Check if the song is already enqueued as a request.
@@ -53,7 +56,7 @@ class StationRequestRepository extends Repository
             $threshold_mins = $station->getRequestThreshold() ?? 5;
             $threshold_seconds = $threshold_mins * 60;
 
-            $recent_requests = $this->_em->createQuery(/** @lang DQL */'SELECT sr 
+            $recent_requests = $this->_em->createQuery(/** @lang DQL */ 'SELECT sr 
                 FROM App\Entity\StationRequest sr 
                 WHERE sr.ip = :user_ip 
                 AND sr.timestamp >= :threshold')
@@ -62,7 +65,7 @@ class StationRequestRepository extends Repository
                 ->getArrayResult();
 
             if (count($recent_requests) > 0) {
-                throw new \Azura\Exception(__('You have submitted a request too recently! Please wait before submitting another one.'));
+                throw new Exception(__('You have submitted a request too recently! Please wait before submitting another one.'));
             }
         }
 
@@ -80,14 +83,14 @@ class StationRequestRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      * @return bool
-     * @throws \Azura\Exception
+     * @throws Exception
      */
     public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station)
     {
         $pending_request_threshold = time() - (60 * 10);
 
         try {
-            $pending_request = $this->_em->createQuery(/** @lang DQL */'SELECT sr.timestamp 
+            $pending_request = $this->_em->createQuery(/** @lang DQL */ 'SELECT sr.timestamp 
                 FROM App\Entity\StationRequest sr
                 WHERE sr.track_id = :track_id 
                 AND sr.station_id = :station_id 
@@ -103,7 +106,7 @@ class StationRequestRepository extends Repository
         }
 
         if ($pending_request > 0) {
-            throw new \Azura\Exception(__('Duplicate request: this song was already requested and will play soon.'));
+            throw new Exception(__('Duplicate request: this song was already requested and will play soon.'));
         }
 
         return true;
@@ -115,7 +118,7 @@ class StationRequestRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      * @return bool
-     * @throws \Azura\Exception
+     * @throws Exception
      */
     public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
     {
@@ -128,7 +131,7 @@ class StationRequestRepository extends Repository
         $last_play_threshold = time() - ($last_play_threshold_mins * 60);
 
         try {
-            $last_play_time = $this->_em->createQuery(/** @lang DQL */'SELECT sh.timestamp_start 
+            $last_play_time = $this->_em->createQuery(/** @lang DQL */ 'SELECT sh.timestamp_start 
                 FROM App\Entity\SongHistory sh 
                 WHERE sh.media_id = :media_id 
                 AND sh.station_id = :station_id
@@ -139,12 +142,12 @@ class StationRequestRepository extends Repository
                 ->setParameter('threshold', $last_play_threshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
-        } catch(\Doctrine\ORM\NoResultException $e) {
+        } catch (NoResultException $e) {
             return true;
         }
 
         if ($last_play_time > 0) {
-            throw new \Azura\Exception(__('This song was already played too recently. Wait a while before requesting it again.'));
+            throw new Exception(__('This song was already played too recently. Wait a while before requesting it again.'));
         }
 
         return true;

@@ -1,6 +1,8 @@
 <?php
 namespace App\Exception\Supervisor;
 
-class BadName extends \App\Exception\Supervisor
+use App\Exception\Supervisor;
+
+class BadName extends Supervisor
 {
 }

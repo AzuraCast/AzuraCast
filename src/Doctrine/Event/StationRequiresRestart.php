@@ -7,6 +7,7 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
+use ReflectionObject;
 
 /**
  * A hook into Doctrine's event listener to mark a station as
@@ -44,7 +45,7 @@ class StationRequiresRestart implements EventSubscriber
         ];
 
         $stations_to_restart = [];
-        foreach($collections_to_check as $change_type => $collection) {
+        foreach ($collections_to_check as $change_type => $collection) {
             foreach ($collection as $entity) {
                 if (($entity instanceof Entity\StationMount)
                     || ($entity instanceof Entity\StationRemote && $entity->isEditable())
@@ -53,9 +54,8 @@ class StationRequiresRestart implements EventSubscriber
                         $changes = $uow->getEntityChangeSet($entity);
 
                         // Look for the @AuditIgnore annotation on a property.
-                        $class_reflection = new \ReflectionObject($entity);
-                        foreach($changes as $change_field => $changeset)
-                        {
+                        $class_reflection = new ReflectionObject($entity);
+                        foreach ($changes as $change_field => $changeset) {
                             $property = $class_reflection->getProperty($change_field);
                             $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
 
@@ -77,7 +77,7 @@ class StationRequiresRestart implements EventSubscriber
         }
 
         if (count($stations_to_restart) > 0) {
-            foreach($stations_to_restart as $station) {
+            foreach ($stations_to_restart as $station) {
                 $station->setNeedsRestart(true);
                 $em->persist($station);
 

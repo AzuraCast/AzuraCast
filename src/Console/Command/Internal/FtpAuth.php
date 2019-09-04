@@ -29,7 +29,7 @@ class FtpAuth extends CommandAbstract
         $ftp = $this->get(Ftp::class);
 
         $ftp_output = $ftp->auth($username, $password);
-        foreach($ftp_output as $output_ln) {
+        foreach ($ftp_output as $output_ln) {
             $output->writeln($output_ln);
         }
         return null;

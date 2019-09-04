@@ -16,7 +16,8 @@ class InjectAcl implements MiddlewareInterface
     /** @var Acl */
     protected $acl;
 
-    public function __construct(Acl $acl) {
+    public function __construct(Acl $acl)
+    {
         $this->acl = $acl;
     }
 

@@ -2,14 +2,21 @@
 namespace App\Http;
 
 use App\Entity;
+use App\Exception\NotLoggedIn;
+use App\Exception\PermissionDenied;
 use App\Service\Sentry;
+use Azura\Exception;
 use Azura\Session;
 use Azura\Settings;
 use Azura\View;
+use Gettext\Translator;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LogLevel;
+use Slim\App;
 use Slim\Exception\HttpNotFoundException;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
 class ErrorHandler extends \Azura\Http\ErrorHandler
 {
@@ -26,7 +33,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
     protected $sentry;
 
     public function __construct(
-        \Slim\App $app,
+        App $app,
         Logger $logger,
         Session $session,
         Router $router,
@@ -45,7 +52,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
     protected function respond(): ResponseInterface
     {
         if (!function_exists('__')) {
-            $translator = new \Gettext\Translator();
+            $translator = new Translator();
             $translator->register();
         }
 
@@ -56,7 +63,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             $response = $this->responseFactory->createResponse($this->statusCode);
 
             $response->getBody()
-                ->write('Error: '.$this->exception->getMessage().' on '.$this->exception->getFile().' L'.$this->exception->getLine());
+                ->write('Error: ' . $this->exception->getMessage() . ' on ' . $this->exception->getFile() . ' L' . $this->exception->getLine());
 
             return $response;
         }
@@ -72,7 +79,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             );
         }
 
-        if ($this->exception instanceof \App\Exception\NotLoggedIn) {
+        if ($this->exception instanceof NotLoggedIn) {
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
@@ -92,7 +99,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             return $response->withRedirect((string)$this->router->named('account:login'));
         }
 
-        if ($this->exception instanceof \App\Exception\PermissionDenied) {
+        if ($this->exception instanceof PermissionDenied) {
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
@@ -120,7 +127,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             $api_response = new Entity\Api\Error(
                 $this->exception->getCode(),
                 $this->exception->getMessage(),
-                ($this->exception instanceof \Azura\Exception) ? $this->exception->getFormattedMessage() : $this->exception->getMessage()
+                ($this->exception instanceof Exception) ? $this->exception->getFormattedMessage() : $this->exception->getMessage()
             );
 
             return $response->withJson($api_response);
@@ -128,17 +135,17 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
 
         if ($this->showDetailed && class_exists('\Whoops\Run')) {
             // Register error-handler.
-            $handler = new \Whoops\Handler\PrettyPageHandler;
+            $handler = new PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');
 
-            if ($this->exception instanceof \Azura\Exception) {
+            if ($this->exception instanceof Exception) {
                 $extra_tables = $this->exception->getExtraData();
-                foreach($extra_tables as $legend => $data) {
+                foreach ($extra_tables as $legend => $data) {
                     $handler->addDataTable($legend, $data);
                 }
             }
 
-            $run = new \Whoops\Run;
+            $run = new Run;
             $run->prependHandler($handler);
 
             return $response->write($run->handleException($this->exception));

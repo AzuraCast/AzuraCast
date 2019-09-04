@@ -1,8 +1,10 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Exception\NotFound;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
+use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 
 abstract class AbstractAdminCrudController
@@ -16,7 +18,7 @@ abstract class AbstractAdminCrudController
     /** @var string */
     protected $entity_class;
 
-    /** @var \Azura\Doctrine\Repository */
+    /** @var Repository */
     protected $record_repo;
 
     /** @var string */
@@ -43,6 +45,25 @@ abstract class AbstractAdminCrudController
     }
 
     /**
+     * @param string|int|null $id
+     * @return object|null
+     */
+    protected function _getRecord($id = null): ?object
+    {
+        if (null === $id) {
+            return null;
+        }
+
+        $record = $this->record_repo->find($id);
+
+        if (!$record instanceof $this->entity_class) {
+            throw new NotFound(__('Record not found.'));
+        }
+
+        return $record;
+    }
+
+    /**
      * @param ServerRequest $request
      * @param string|int $id
      */
@@ -56,24 +77,5 @@ abstract class AbstractAdminCrudController
             $this->em->remove($record);
             $this->em->flush();
         }
-    }
-
-    /**
-     * @param string|int|null $id
-     * @return object|null
-     */
-    protected function _getRecord($id = null): ?object
-    {
-        if (null === $id) {
-            return null;
-        }
-
-        $record = $this->record_repo->find($id);
-
-        if (!$record instanceof $this->entity_class) {
-            throw new \App\Exception\NotFound(__('Record not found.'));
-        }
-
-        return $record;
     }
 }

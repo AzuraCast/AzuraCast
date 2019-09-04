@@ -2,7 +2,9 @@
 namespace App;
 
 use Azura\Container;
+use Azura\EventDispatcher;
 use Composer\Autoload\ClassLoader;
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -24,10 +26,10 @@ class Plugins
             ->depth('== 0')
             ->in($dir);
 
-        foreach($plugins as $plugin_dir) {
+        foreach ($plugins as $plugin_dir) {
             /** @var SplFileInfo $plugin_dir */
             $plugin_prefix = $plugin_dir->getRelativePathname();
-            $plugin_namespace = 'Plugin\\'.\Doctrine\Common\Inflector\Inflector::classify($plugin_prefix).'\\';
+            $plugin_namespace = 'Plugin\\' . Inflector::classify($plugin_prefix) . '\\';
 
             $this->plugins[$plugin_prefix] = [
                 'namespace' => $plugin_namespace,
@@ -43,14 +45,14 @@ class Plugins
      */
     public function registerAutoloaders(ClassLoader $autoload): void
     {
-        foreach($this->plugins as $plugin) {
+        foreach ($this->plugins as $plugin) {
             $plugin_path = $plugin['path'];
 
-            if (file_exists($plugin_path.'/vendor/autoload.php')) {
-                require($plugin_path.'/vendor/autoload.php');
+            if (file_exists($plugin_path . '/vendor/autoload.php')) {
+                require($plugin_path . '/vendor/autoload.php');
             }
 
-            $autoload->addPsr4($plugin['namespace'], $plugin_path.'/src');
+            $autoload->addPsr4($plugin['namespace'], $plugin_path . '/src');
         }
     }
 
@@ -62,7 +64,7 @@ class Plugins
      */
     public function registerServices(array $diDefinitions = []): array
     {
-        foreach($this->plugins as $plugin) {
+        foreach ($this->plugins as $plugin) {
             $plugin_path = $plugin['path'];
 
             if (file_exists($plugin_path . '/services.php')) {
@@ -77,11 +79,11 @@ class Plugins
     /**
      * Register custom events that the plugin overrides with the Event Dispatcher.
      *
-     * @param \Azura\EventDispatcher $dispatcher
+     * @param EventDispatcher $dispatcher
      */
-    public function registerEvents(\Azura\EventDispatcher $dispatcher): void
+    public function registerEvents(EventDispatcher $dispatcher): void
     {
-        foreach($this->plugins as $plugin) {
+        foreach ($this->plugins as $plugin) {
             $plugin_path = $plugin['path'];
 
             if (file_exists($plugin_path . '/events.php')) {

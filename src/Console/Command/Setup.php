@@ -3,7 +3,6 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Service\AzuraCastCentral;
-use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +20,8 @@ class Setup extends CommandAbstract
         $this->setName('azuracast:setup')
             ->setDescription(__('Run all general AzuraCast setup steps.'))
             ->addOption('update', null, InputOption::VALUE_NONE, __('Only update the existing installation.'))
-            ->addOption('load-fixtures', null, InputOption::VALUE_NONE, __('Load predefined fixtures (for development purposes).'))
+            ->addOption('load-fixtures', null, InputOption::VALUE_NONE,
+                __('Load predefined fixtures (for development purposes).'))
             ->addOption('release', null, InputOption::VALUE_NONE, __('Used for updating only to a tagged release.'));
     }
 
@@ -106,7 +106,7 @@ class Setup extends CommandAbstract
 
             $io->success([
                 __('AzuraCast installation complete!'),
-                __('Visit %s to complete setup.', 'http://'.$public_ip),
+                __('Visit %s to complete setup.', 'http://' . $public_ip),
             ]);
 
             $settings_repo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);

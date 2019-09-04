@@ -2,6 +2,7 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputArgument;
@@ -39,10 +40,10 @@ class ResetPassword extends CommandAbstract
         $user_email = $input->getArgument('email');
 
         $user = $em->getRepository(Entity\User::class)
-            ->findOneBy(['email' => $user_email ]);
+            ->findOneBy(['email' => $user_email]);
 
         if ($user instanceof Entity\User) {
-            $temp_pw = \App\Utilities::generatePassword(15);
+            $temp_pw = Utilities::generatePassword(15);
 
             $user->setAuthPassword($temp_pw);
             $user->setTwoFactorSecret(null);
@@ -53,7 +54,7 @@ class ResetPassword extends CommandAbstract
             $io->text([
                 'The account password has been reset. The new temporary password is:',
                 '',
-                '    '.$temp_pw,
+                '    ' . $temp_pw,
                 '',
                 'Log in using this temporary password and set a new password using the web interface.',
                 '',

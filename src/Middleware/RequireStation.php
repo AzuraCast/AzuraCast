@@ -3,6 +3,7 @@ namespace App\Middleware;
 
 use App\Exception\StationNotFound;
 use App\Http\ServerRequest;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -18,12 +19,9 @@ class RequireStation
      */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        try
-        {
+        try {
             $request->getStation();
-        }
-        catch(\Exception $e)
-        {
+        } catch (Exception $e) {
             throw new StationNotFound;
         }
 

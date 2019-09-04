@@ -2,16 +2,23 @@
 namespace App\Service;
 
 use App\Entity;
+use App\Exception\Supervisor;
 use App\Version;
+use Azura\Exception;
 use Azura\Settings;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManager;
+use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use League\Flysystem\FileNotFoundException;
 use Monolog\Logger;
 use Sentry\ClientBuilder;
 use Sentry\Options;
+use Sentry\Severity;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
+use Throwable;
 
 class Sentry
 {
@@ -61,7 +68,7 @@ class Sentry
             if (!$send_error_reports) {
                 return;
             }
-        } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
+        } catch (TableNotFoundException $e) {
             return;
         }
 
@@ -73,24 +80,24 @@ class Sentry
 
         $server_uuid = $this->settings_repo->getUniqueIdentifier();
         $options = [
-            'dsn'           => $this->app_settings['sentry_io']['dsn'],
-            'environment'   => $this->app_settings[Settings::APP_ENV],
-            'server_name'   => $server_uuid,
-            'prefixes'      => [
-                $this->app_settings[Settings::BASE_DIR]
+            'dsn' => $this->app_settings['sentry_io']['dsn'],
+            'environment' => $this->app_settings[Settings::APP_ENV],
+            'server_name' => $server_uuid,
+            'prefixes' => [
+                $this->app_settings[Settings::BASE_DIR],
             ],
-            'project_root'  => $this->app_settings[Settings::BASE_DIR].'/src',
-            'error_types'   => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
+            'project_root' => $this->app_settings[Settings::BASE_DIR] . '/src',
+            'error_types' => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
             'excluded_exceptions' => [
-                \League\Flysystem\FileNotFoundException::class,
-                \fXmlRpc\Exception\FaultException::class,
-                \App\Exception\Supervisor::class,
+                FileNotFoundException::class,
+                FaultException::class,
+                Supervisor::class,
             ],
         ];
 
         $commit_hash = $this->version->getCommitHash();
         if ($commit_hash) {
-            $options['release'] = 'AzuraCast/AzuraCast@'.$commit_hash;
+            $options['release'] = 'AzuraCast/AzuraCast@' . $commit_hash;
         }
 
         $options = new Options($options);
@@ -133,9 +140,9 @@ class Sentry
     }
 
     /**
-     * @param \Throwable $e
+     * @param Throwable $e
      */
-    public function handleException(\Throwable $e): void
+    public function handleException(Throwable $e): void
     {
         if (!$this->is_enabled) {
             return;
@@ -146,7 +153,7 @@ class Sentry
             return;
         }
 
-        $e_level = ($e instanceof \Azura\Exception)
+        $e_level = ($e instanceof Exception)
             ? $e->getLoggerLevel()
             : Logger::ERROR;
 
@@ -155,15 +162,15 @@ class Sentry
         }
 
         $sentry_levels = [
-            Logger::WARNING     => \Sentry\Severity::warning(),
-            Logger::ERROR       => \Sentry\Severity::error(),
-            Logger::CRITICAL    => \Sentry\Severity::error(),
-            Logger::ALERT       => \Sentry\Severity::fatal(),
-            Logger::EMERGENCY   => \Sentry\Severity::fatal(),
+            Logger::WARNING => Severity::warning(),
+            Logger::ERROR => Severity::error(),
+            Logger::CRITICAL => Severity::error(),
+            Logger::ALERT => Severity::fatal(),
+            Logger::EMERGENCY => Severity::fatal(),
         ];
         $sentry_level = $sentry_levels[$e_level];
 
-        $this->hub->withScope(function(\Sentry\State\Scope $scope) use ($e, $sentry_level) {
+        $this->hub->withScope(function (Scope $scope) use ($e, $sentry_level) {
             $scope->setLevel($sentry_level);
             $this->hub->captureException($e);
         });

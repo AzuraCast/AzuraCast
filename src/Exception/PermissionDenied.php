@@ -1,10 +1,11 @@
 <?php
 namespace App\Exception;
 
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class PermissionDenied extends \Azura\Exception
+class PermissionDenied extends Exception
 {
     public function __construct(
         string $message = 'Permission denied.',

@@ -28,7 +28,7 @@ class CustomFieldsController extends AbstractAdminCrudController
 
         return $request->getView()->renderToResponse($response, 'admin/custom_fields/index', [
             'records' => $records,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace)
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -42,7 +42,7 @@ class CustomFieldsController extends AbstractAdminCrudController
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => $id ? __('Edit Custom Field') : __('Add Custom Field')
+            'title' => $id ? __('Edit Custom Field') : __('Add Custom Field'),
         ]);
     }
 

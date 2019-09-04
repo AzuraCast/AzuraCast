@@ -1,13 +1,16 @@
 <?php
 namespace App\Exception;
 
-use Monolog\Logger;
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;
 
-class Validation extends \Azura\Exception
+class Validation extends Exception
 {
+    /** @var ConstraintViolationListInterface */
+    protected $detailedErrors;
+
     public function __construct(
         string $message = 'Validation error.',
         int $code = 0,
@@ -16,9 +19,6 @@ class Validation extends \Azura\Exception
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }
-
-    /** @var ConstraintViolationListInterface */
-    protected $detailedErrors;
 
     /**
      * @return ConstraintViolationListInterface

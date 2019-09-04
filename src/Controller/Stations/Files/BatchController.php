@@ -7,7 +7,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
+use Azura\Exception\CsrfValidation;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class BatchController extends FilesControllerAbstract
@@ -35,9 +37,9 @@ class BatchController extends FilesControllerAbstract
 
         try {
             $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
-        } catch(\Azura\Exception\CsrfValidation $e) {
+        } catch (CsrfValidation $e) {
             return $response->withStatus(403)
-                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
+                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: ' . $e->getMessage()]]);
         }
 
         $station = $request->getStation();
@@ -90,7 +92,7 @@ class BatchController extends FilesControllerAbstract
 
                         $media_playlists = $playlists_media_repo->clearPlaylistsFromMedia($media);
 
-                        foreach($media_playlists as $playlist_id => $playlist) {
+                        foreach ($media_playlists as $playlist_id => $playlist) {
                             if (!isset($affected_playlists[$playlist_id])) {
                                 $affected_playlists[$playlist_id] = $playlist;
                             }
@@ -99,8 +101,8 @@ class BatchController extends FilesControllerAbstract
                         if ($media instanceof Entity\StationMedia) {
                             $this->em->remove($media);
                         }
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
+                    } catch (Exception $e) {
+                        $errors[] = $file . ': ' . $e->getMessage();
                     }
 
                     $files_affected++;
@@ -128,7 +130,7 @@ class BatchController extends FilesControllerAbstract
                 $backend = $request->getStationBackend();
 
                 if ($backend instanceof Liquidsoap) {
-                    foreach($affected_playlists as $playlist) {
+                    foreach ($affected_playlists as $playlist) {
                         /** @var Entity\StationPlaylist $playlist */
                         $backend->writePlaylistFile($playlist);
                     }
@@ -145,7 +147,7 @@ class BatchController extends FilesControllerAbstract
                 $playlists = [];
                 $playlist_weights = [];
 
-                foreach($post_data['playlists'] as $playlist_id) {
+                foreach ($post_data['playlists'] as $playlist_id) {
                     if ('new' === $playlist_id) {
                         $playlist = new Entity\StationPlaylist($station);
                         $playlist->setName($post_data['new_playlist_name']);
@@ -164,7 +166,7 @@ class BatchController extends FilesControllerAbstract
                     } else {
                         $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
                             'station_id' => $station->getId(),
-                            'id' => (int)$playlist_id
+                            'id' => (int)$playlist_id,
                         ]);
 
                         if ($playlist instanceof Entity\StationPlaylist) {
@@ -183,20 +185,20 @@ class BatchController extends FilesControllerAbstract
                         $media = $media_repo->getOrCreate($station, $file['path']);
 
                         $media_playlists = $playlists_media_repo->clearPlaylistsFromMedia($media);
-                        foreach($media_playlists as $playlist_id => $playlist) {
+                        foreach ($media_playlists as $playlist_id => $playlist) {
                             if (!isset($affected_playlists[$playlist_id])) {
                                 $affected_playlists[$playlist_id] = $playlist;
                             }
                         }
 
-                        foreach($playlists as $playlist) {
+                        foreach ($playlists as $playlist) {
                             $playlist_weights[$playlist->getId()]++;
                             $weight = $playlist_weights[$playlist->getId()];
 
                             $playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
                         }
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
+                    } catch (Exception $e) {
+                        $errors[] = $file . ': ' . $e->getMessage();
                     }
 
                     $files_affected++;
@@ -208,7 +210,7 @@ class BatchController extends FilesControllerAbstract
                 $backend = $request->getStationBackend();
 
                 if ($backend instanceof Liquidsoap) {
-                    foreach($affected_playlists as $playlist) {
+                    foreach ($affected_playlists as $playlist) {
                         /** @var Entity\StationPlaylist $playlist */
                         $backend->writePlaylistFile($playlist);
                     }
@@ -220,7 +222,7 @@ class BatchController extends FilesControllerAbstract
                 $files_found = count($music_files);
 
                 $directory_path = ((array)$request->getParsedBody())['directory'];
-                $directory_path_full = 'media://'.$directory_path;
+                $directory_path_full = 'media://' . $directory_path;
 
                 foreach ($music_files as $file) {
                     try {
@@ -236,13 +238,14 @@ class BatchController extends FilesControllerAbstract
                         $media->setPath($directory_path . DIRECTORY_SEPARATOR . $file['basename']);
 
                         if (!$fs->rename($old_full_path, $media->getPath())) {
-                            throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path, $media->getPath()));
+                            throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path,
+                                $media->getPath()));
                         }
 
                         $this->em->persist($media);
                         $this->em->flush($media);
-                    } catch (\Exception $e) {
-                        $errors[] = $file.': '.$e->getMessage();
+                    } catch (Exception $e) {
+                        $errors[] = $file . ': ' . $e->getMessage();
                     }
 
                     $files_affected++;
@@ -281,7 +284,7 @@ class BatchController extends FilesControllerAbstract
             return [$path_meta];
         }
 
-        return array_filter($fs->listContents($path, $recursive), function($file) {
+        return array_filter($fs->listContents($path, $recursive), function ($file) {
             return ('file' === $file['type']);
         });
     }

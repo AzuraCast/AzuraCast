@@ -60,7 +60,7 @@ class NowplayingController implements EventSubscriberInterface
                 ['loadFromCache', 5],
                 ['loadFromSettings', 0],
                 ['loadFromStations', -5],
-            ]
+            ],
         ];
     }
 
@@ -123,7 +123,7 @@ class NowplayingController implements EventSubscriberInterface
 
         // If unauthenticated, hide non-public stations from full view.
         if ($request->getAttribute('user') === null) {
-            $np = array_filter($np, function($np_row) {
+            $np = array_filter($np, function ($np_row) {
                 return $np_row->station->is_public;
             });
         }
@@ -151,11 +151,11 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromStations(LoadNowPlaying $event)
     {
-        $nowplaying_db = $this->em->createQuery(/** @lang DQL */'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
+        $nowplaying_db = $this->em->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
             ->getArrayResult();
 
         $np = [];
-        foreach($nowplaying_db as $np_row) {
+        foreach ($nowplaying_db as $np_row) {
             $np[] = $np_row['nowplaying'];
         }
 

@@ -40,7 +40,7 @@ class Router extends \Azura\Http\Router
 
         $settings_base_url = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, '');
         if (!empty($settings_base_url)) {
-            $base_url = new Uri('http://'.$settings_base_url);
+            $base_url = new Uri('http://' . $settings_base_url);
         }
 
         $use_https = (bool)$this->settingsRepo->getSetting(Entity\Settings::ALWAYS_USE_SSL, 0);

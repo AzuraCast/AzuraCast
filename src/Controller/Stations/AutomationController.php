@@ -8,6 +8,7 @@ use App\Sync\Task\RadioAutomation;
 use Azura\Config;
 use Azura\Settings;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class AutomationController
@@ -78,8 +79,9 @@ class AutomationController
             if ($this->sync_task->runStation($station, true)) {
                 $request->getSession()->flash('<b>' . __('Automated assignment complete!') . '</b>', 'green');
             }
-        } catch (\Exception $e) {
-            $request->getSession()->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
+        } catch (Exception $e) {
+            $request->getSession()->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(),
+                'red');
         }
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:automation:index'));

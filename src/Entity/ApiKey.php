@@ -3,6 +3,8 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use JsonSerializable;
 
 /**
  * @ORM\Table(name="api_keys")
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @AuditLog\Auditable
  */
-class ApiKey implements \JsonSerializable
+class ApiKey implements JsonSerializable
 {
     public const SEPARATOR = ':';
 
@@ -73,10 +75,19 @@ class ApiKey implements \JsonSerializable
     }
 
     /**
+     * @param string $original
+     * @return string The hashed verifier.
+     */
+    protected function hashVerifier(string $original): string
+    {
+        return hash('sha512', $original);
+    }
+
+    /**
      * Generate a unique identifier and return both the identifier and verifier.
      *
      * @return array [identifier, verifier]
-     * @throws \Exception
+     * @throws Exception
      */
     public function generate(): array
     {
@@ -141,14 +152,5 @@ class ApiKey implements \JsonSerializable
             'id' => $this->id,
             'comment' => $this->comment,
         ];
-    }
-
-    /**
-     * @param string $original
-     * @return string The hashed verifier.
-     */
-    protected function hashVerifier(string $original): string
-    {
-        return hash('sha512', $original);
     }
 }

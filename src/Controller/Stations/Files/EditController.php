@@ -2,12 +2,15 @@
 namespace App\Controller\Stations\Files;
 
 use App\Entity;
+use App\Exception\NotFound;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use Azura\Config;
+use Azura\Doctrine\Repository;
+use Azura\Exception;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -56,24 +59,25 @@ class EditController extends FilesControllerAbstract
 
         $media = $media_repo->findOneBy([
             'station_id' => $station_id,
-            'id' => $media_id
+            'id' => $media_id,
         ]);
 
         if (!($media instanceof Entity\StationMedia)) {
-            throw new \App\Exception\NotFound(__('Media not found.'));
+            throw new NotFound(__('Media not found.'));
         }
 
         $form_config = $this->form_config;
 
         // Add custom fields to form configuration.
 
-        /** @var \Azura\Doctrine\Repository $custom_fields_repo */
+        /** @var Repository $custom_fields_repo */
         $custom_fields_repo = $this->em->getRepository(Entity\CustomField::class);
         $custom_fields = $custom_fields_repo->fetchArray();
 
-        foreach($custom_fields as $custom_field) {
+        foreach ($custom_fields as $custom_field) {
             $form_config['groups']['custom_fields']['elements'][$custom_field['id']] = [
-                'text', [
+                'text',
+                [
                     'label' => $custom_field['name'],
                     'belongsTo' => 'custom_fields',
                 ],
@@ -96,7 +100,7 @@ class EditController extends FilesControllerAbstract
 
             // Detect rename.
             if ($data['path'] !== $media->getPath()) {
-                $path_full = 'media://'.$data['path'];
+                $path_full = 'media://' . $data['path'];
                 $fs->rename($media->getPathUri(), $path_full);
             }
 
@@ -115,8 +119,10 @@ class EditController extends FilesControllerAbstract
                 /** @var UploadedFileInterface $file */
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $media_repo->writeAlbumArt($media, $file->getStream()->getContents());
-                } else if ($file->getError() !== UPLOAD_ERR_NO_FILE) {
-                    throw new \Azura\Exception('Error ' . $file->getError() . ' in uploaded file!');
+                } else {
+                    if ($file->getError() !== UPLOAD_ERR_NO_FILE) {
+                        throw new Exception('Error ' . $file->getError() . ' in uploaded file!');
+                    }
                 }
             }
 
@@ -142,13 +148,14 @@ class EditController extends FilesControllerAbstract
             $request->getSession()->flash('<b>' . __('Media updated.') . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
-            return $response->withRedirect($request->getRouter()->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
+            return $response->withRedirect($request->getRouter()->named('stations:files:index',
+                    ['station' => $station_id]) . '#' . $file_dir, 302);
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' =>__('Edit Media')
+            'title' => __('Edit Media'),
         ]);
     }
 }

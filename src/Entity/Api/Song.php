@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity\Api;
 
 use Azura\Http\Router;

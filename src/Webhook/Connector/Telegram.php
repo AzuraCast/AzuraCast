@@ -22,7 +22,7 @@ class Telegram extends AbstractConnector
         $chat_id = trim($config['chat_id'] ?? '');
 
         if (empty($bot_token) || empty($chat_id)) {
-            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -32,7 +32,7 @@ class Telegram extends AbstractConnector
 
         try {
             $api_url = (!empty($config['api'])) ? rtrim($config['api'], '/') : 'https://api.telegram.org';
-            $webhook_url = $api_url.'/bot'.$bot_token.'/sendMessage';
+            $webhook_url = $api_url . '/bot' . $bot_token . '/sendMessage';
 
             $request_params = [
                 'chat_id' => $chat_id,
@@ -52,11 +52,12 @@ class Telegram extends AbstractConnector
                 [
                     'request_url' => $webhook_url,
                     'request_params' => $request_params,
-                    'response_body' => $response->getBody()->getContents()
+                    'response_body' => $response->getBody()->getContents(),
                 ]
             );
-        } catch(TransferException $e) {
-            $this->logger->error(sprintf('Error from webhook %s (%d): %s', self::NAME, $e->getCode(), $e->getMessage()));
+        } catch (TransferException $e) {
+            $this->logger->error(sprintf('Error from webhook %s (%d): %s', self::NAME, $e->getCode(),
+                $e->getMessage()));
         }
     }
 }

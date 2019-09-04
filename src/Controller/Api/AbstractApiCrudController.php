@@ -1,8 +1,12 @@
 <?php
 namespace App\Controller\Api;
 
+use App\Exception\Validation;
 use Azura\Http\RouterInterface;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -44,7 +48,7 @@ abstract class AbstractApiCrudController
     protected function _viewRecord($record, RouterInterface $router)
     {
         if (!($record instanceof $this->entityClass)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $return = $this->_normalizeRecord($record);
@@ -66,10 +70,20 @@ abstract class AbstractApiCrudController
     {
         return $this->serializer->normalize($record, null, array_merge($context, [
             ObjectNormalizer::ENABLE_MAX_DEPTH => true,
-            ObjectNormalizer::MAX_DEPTH_HANDLER => function ($innerObject, $outerObject, string $attributeName, string $format = null, array $context = array()) {
+            ObjectNormalizer::MAX_DEPTH_HANDLER => function (
+                $innerObject,
+                $outerObject,
+                string $attributeName,
+                string $format = null,
+                array $context = []
+            ) {
                 return $this->_displayShortenedObject($innerObject);
             },
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, string $format = null, array $context = array()) {
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
+                $object,
+                string $format = null,
+                array $context = []
+            ) {
                 return $this->_displayShortenedObject($object);
             },
         ]));
@@ -97,14 +111,14 @@ abstract class AbstractApiCrudController
     protected function _editRecord($data, $record = null, array $context = []): object
     {
         if (null === $data) {
-            throw new \InvalidArgumentException('Could not parse input data.');
+            throw new InvalidArgumentException('Could not parse input data.');
         }
 
         $record = $this->_denormalizeToRecord($data, $record, $context);
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            $e = new \App\Exception\Validation((string)$errors);
+            $e = new Validation((string)$errors);
             $e->setDetailedErrors($errors);
             throw $e;
         }
@@ -134,13 +148,13 @@ abstract class AbstractApiCrudController
 
     /**
      * @param object $record
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     protected function _deleteRecord($record): void
     {
         if (!($record instanceof $this->entityClass)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $this->em->remove($record);

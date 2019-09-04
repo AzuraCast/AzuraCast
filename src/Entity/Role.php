@@ -1,10 +1,11 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @OA\Schema(type="object")
  */
-class Role implements \JsonSerializable
+class Role implements JsonSerializable
 {
     public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
 
@@ -106,15 +107,15 @@ class Role implements \JsonSerializable
     public function jsonSerialize()
     {
         $return = [
-            'id'      => $this->id,
-            'name'    => $this->name,
+            'id' => $this->id,
+            'name' => $this->name,
             'permissions' => [
                 'global' => [],
                 'station' => [],
             ],
         ];
 
-        foreach($this->permissions as $permission) {
+        foreach ($this->permissions as $permission) {
             /** @var RolePermission $permission */
 
             if ($permission->hasStation()) {

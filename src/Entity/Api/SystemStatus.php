@@ -8,12 +8,6 @@ use OpenApi\Annotations as OA;
  */
 class SystemStatus
 {
-    public function __construct()
-    {
-        $this->online = true;
-        $this->timestamp = time();
-    }
-
     /**
      * Whether the service is online or not (should always be true)
      *
@@ -21,7 +15,6 @@ class SystemStatus
      * @var boolean
      */
     public $online;
-
     /**
      * The current UNIX timestamp
      *
@@ -29,4 +22,10 @@ class SystemStatus
      * @var int
      */
     public $timestamp;
+
+    public function __construct()
+    {
+        $this->online = true;
+        $this->timestamp = time();
+    }
 }

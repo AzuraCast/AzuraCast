@@ -8,6 +8,7 @@ use App\Http\ServerRequest;
 use Azura\Doctrine\Paginator;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -73,11 +74,11 @@ class HistoryController
     public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
         $station = $request->getStation();
-        $station_tz = new \DateTimeZone($station->getTimezone());
+        $station_tz = new DateTimeZone($station->getTimezone());
 
         $params = $request->getQueryParams();
         if (!empty($params['start'])) {
-            $start = Chronos::parse($params['start']. ' 00:00:00', $station_tz);
+            $start = Chronos::parse($params['start'] . ' 00:00:00', $station_tz);
             $end = Chronos::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
         } else {
             $start = Chronos::parse('-2 weeks', $station_tz);
@@ -109,7 +110,7 @@ class HistoryController
                 'Delta',
                 'Track',
                 'Artist',
-                'Playlist'
+                'Playlist',
             ];
 
             foreach ($qb->getQuery()->getArrayResult() as $song_row) {
@@ -136,7 +137,7 @@ class HistoryController
         $search_phrase = trim($params['searchPhrase']);
         if (!empty($search_phrase)) {
             $qb->andWhere('(s.title LIKE :query OR s.artist LIKE :query)')
-                ->setParameter('query', '%'.$search_phrase.'%');
+                ->setParameter('query', '%' . $search_phrase . '%');
         }
 
         $qb->orderBy('sh.timestamp_start', 'DESC');
@@ -147,7 +148,7 @@ class HistoryController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function($sh_row) use ($is_bootgrid, $router) {
+        $paginator->setPostprocessor(function ($sh_row) use ($is_bootgrid, $router) {
 
             /** @var Entity\SongHistory $sh_row */
             $row = $sh_row->api(new Entity\Api\DetailedSongHistory, $this->api_utils);

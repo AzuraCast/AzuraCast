@@ -2,6 +2,7 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception\Supervisor\NotRunning;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
@@ -98,8 +99,12 @@ class ServicesController
      * @param string $do
      * @return ResponseInterface
      */
-    public function frontendAction(ServerRequest $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
-    {
+    public function frontendAction(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $do = 'restart'
+    ): ResponseInterface {
         $station = $request->getStation();
         $frontend = $request->getStationFrontend();
 
@@ -108,26 +113,26 @@ class ServicesController
                 $frontend->stop($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend stopped.')));
-            break;
+                break;
 
             case 'start':
                 $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend started.')));
-            break;
+                break;
 
             case 'restart':
             default:
-                try
-                {
+                try {
                     $frontend->stop($station);
-                } catch(\App\Exception\Supervisor\NotRunning $e) {}
+                } catch (NotRunning $e) {
+                }
 
                 $frontend->write($station);
                 $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend restarted.')));
-            break;
+                break;
         }
     }
 
@@ -157,8 +162,12 @@ class ServicesController
      * @param string $do
      * @return ResponseInterface
      */
-    public function backendAction(ServerRequest $request, Response $response, $station_id, $do = 'restart'): ResponseInterface
-    {
+    public function backendAction(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $do = 'restart'
+    ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
 
@@ -169,7 +178,7 @@ class ServicesController
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
-            break;
+                break;
 
             case 'disconnect':
                 if (method_exists($backend, 'disconnectStreamer')) {
@@ -177,7 +186,7 @@ class ServicesController
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
-            break;
+                break;
 
             case 'stop':
                 $backend->stop($station);
@@ -193,10 +202,10 @@ class ServicesController
 
             case 'restart':
             default:
-                try
-                {
+                try {
                     $backend->stop($station);
-                } catch(\App\Exception\Supervisor\NotRunning $e) {}
+                } catch (NotRunning $e) {
+                }
 
                 $backend->write($station);
                 $backend->start($station);

@@ -5,6 +5,7 @@ use App\Entity;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
+use InfluxDB\Database;
 use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
+use const PATHINFO_EXTENSION;
 
 class Backup extends CommandAbstract
 {
@@ -47,10 +49,10 @@ class Backup extends CommandAbstract
 
         $destination_path = $input->getArgument('path');
         if (empty($destination_path)) {
-            $destination_path = 'manual_backup_'.gmdate('Ymd_Hi').'.zip';
+            $destination_path = 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
         }
         if ('/' !== $destination_path[0]) {
-            $destination_path = \App\Sync\Task\Backup::BASE_DIR.'/'.$destination_path;
+            $destination_path = \App\Sync\Task\Backup::BASE_DIR . '/' . $destination_path;
         }
 
         $include_media = !(bool)$input->getOption('exclude-media');
@@ -81,7 +83,7 @@ class Backup extends CommandAbstract
         // Back up MariaDB
         $io->section(__('Backing up MariaDB...'));
 
-        $path_db_dump = $tmp_dir_mariadb.'/db.sql';
+        $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
         /** @var EntityManager $em */
         $em = $this->get(EntityManager::class);
@@ -92,11 +94,11 @@ class Backup extends CommandAbstract
             'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
             $tmp_dir_mariadb,
             [
-                'DB_HOST'     => $conn->getHost(),
+                'DB_HOST' => $conn->getHost(),
                 'DB_DATABASE' => $conn->getDatabase(),
                 'DB_USERNAME' => $conn->getUsername(),
                 'DB_PASSWORD' => $conn->getPassword(),
-                'DB_DEST'     => $path_db_dump,
+                'DB_DEST' => $path_db_dump,
             ]
         );
 
@@ -106,17 +108,18 @@ class Backup extends CommandAbstract
         // Back up InfluxDB
         $io->section(__('Backing up InfluxDB...'));
 
-        /** @var \InfluxDB\Database $influxdb */
-        $influxdb = $this->get(\InfluxDB\Database::class);
+        /** @var Database $influxdb */
+        $influxdb = $this->get(Database::class);
         $influxdb_client = $influxdb->getClient();
 
         $this->passThruProcess($io, [
             'influxd',
             'backup',
-            '-database', 'stations',
+            '-database',
+            'stations',
             '-portable',
             '-host',
-            $influxdb_client->getHost().':8088',
+            $influxdb_client->getHost() . ':8088',
             $tmp_dir_influxdb,
         ], $tmp_dir_influxdb);
 
@@ -125,10 +128,10 @@ class Backup extends CommandAbstract
 
         // Include station media if specified.
         if ($include_media) {
-            $stations = $em->createQuery(/** @lang DQL */'SELECT s FROM App\Entity\Station s')
+            $stations = $em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s')
                 ->execute();
 
-            foreach($stations as $station) {
+            foreach ($stations as $station) {
                 /** @var Entity\Station $station */
 
                 $media_dir = $station->getRadioMediaDir();
@@ -147,23 +150,23 @@ class Backup extends CommandAbstract
         $io->section(__('Creating backup archive...'));
 
         // Strip leading slashes from backup paths.
-        $files_to_backup = array_map(function($val) {
+        $files_to_backup = array_map(function ($val) {
             if (0 === strpos($val, '/')) {
                 return substr($val, 1);
             }
             return $val;
         }, $files_to_backup);
 
-        $file_ext = strtolower(pathinfo($destination_path, \PATHINFO_EXTENSION));
+        $file_ext = strtolower(pathinfo($destination_path, PATHINFO_EXTENSION));
 
-        switch($file_ext) {
+        switch ($file_ext) {
             case 'gz':
             case 'tgz':
                 $this->passThruProcess($io, array_merge([
                     'tar',
                     'zcvf',
-                    $destination_path
-                ], $files_to_backup),'/');
+                    $destination_path,
+                ], $files_to_backup), '/');
                 break;
 
             case 'zip':
@@ -173,9 +176,10 @@ class Backup extends CommandAbstract
                 $this->passThruProcess($io, array_merge([
                     'zip',
                     '-r',
-                    '-n', implode(':', $dont_compress),
-                    $destination_path
-                ], $files_to_backup),'/');
+                    '-n',
+                    implode(':', $dont_compress),
+                    $destination_path,
+                ], $files_to_backup), '/');
                 break;
         }
 
@@ -193,7 +197,8 @@ class Backup extends CommandAbstract
         $time_diff = $end_time - $start_time;
 
         $io->success([
-            __('Backup complete in %.2f seconds.'), $time_diff,
+            __('Backup complete in %.2f seconds.'),
+            $time_diff,
         ]);
         return 0;
     }
@@ -214,7 +219,7 @@ class Backup extends CommandAbstract
         $stdout = [];
         $stderr = [];
 
-        $process->mustRun(function($type, $data) use ($process, $io, &$stdout, &$stderr) {
+        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr) {
             if ($process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
                 $stderr[] = $data;

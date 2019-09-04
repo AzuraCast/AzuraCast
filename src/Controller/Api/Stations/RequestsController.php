@@ -7,6 +7,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
+use Azura\Exception;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -76,13 +77,12 @@ class RequestsController
 
         if (!empty($params['sort'])) {
             $sort_fields = [
-                'song_title'    => 'sm.title',
-                'song_artist'   => 'sm.artist',
-                'song_album'    => 'sm.album',
+                'song_title' => 'sm.title',
+                'song_artist' => 'sm.artist',
+                'song_album' => 'sm.album',
             ];
 
-            foreach($params['sort'] as $sort_key => $sort_direction)
-            {
+            foreach ($params['sort'] as $sort_key => $sort_direction) {
                 if (isset($sort_fields[$sort_key])) {
                     $qb->addOrderBy($sort_fields[$sort_key], $sort_direction);
                 }
@@ -95,7 +95,7 @@ class RequestsController
         $search_phrase = trim($params['searchPhrase']);
         if (!empty($search_phrase)) {
             $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
-                ->setParameter('query', '%'.$search_phrase.'%');
+                ->setParameter('query', '%' . $search_phrase . '%');
         }
 
         $paginator = new Paginator($qb);
@@ -104,7 +104,7 @@ class RequestsController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function($media_row) use ($station_id, $is_bootgrid, $router) {
+        $paginator->setPostprocessor(function ($media_row) use ($station_id, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest;
             $row->song = $media_row->api($this->api_utils);
@@ -166,7 +166,7 @@ class RequestsController
             $request_repo->submit($station, $media_id, $is_authenticated);
 
             return $response->withJson(new Entity\Api\Status(true, __('Request submitted successfully.')));
-        } catch (\Azura\Exception $e) {
+        } catch (Exception $e) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Error(400, $e->getMessage()));
         }

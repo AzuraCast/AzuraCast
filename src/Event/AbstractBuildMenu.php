@@ -77,7 +77,7 @@ abstract class AbstractBuildMenu extends Event
     {
         $menu = $this->menu;
 
-        foreach($menu as &$item) {
+        foreach ($menu as &$item) {
             if (isset($item['items'])) {
                 $item['items'] = array_filter($item['items'], [$this, 'filterMenuItem']);
             }

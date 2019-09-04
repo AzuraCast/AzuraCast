@@ -5,10 +5,12 @@
 
 namespace App\Xml;
 
+use Zend\Config\Reader\Xml;
+
 /**
  * XML config reader.
  */
-class Reader extends \Zend\Config\Reader\Xml
+class Reader extends Xml
 {
     /**
      * Get all attributes on the current node.

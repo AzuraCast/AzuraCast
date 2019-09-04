@@ -1,10 +1,11 @@
 <?php
 namespace App\Exception;
 
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class StationNotFound extends \Azura\Exception
+class StationNotFound extends Exception
 {
     public function __construct(
         string $message = 'Station not found.',

@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
+use stdClass;
 
 class DashboardController
 {
@@ -76,7 +77,7 @@ class DashboardController
         $stations = $station_repo->findAll();
 
         // Don't show stations the user can't manage.
-        $stations = array_filter($stations, function($station) use ($user) {
+        $stations = array_filter($stations, function ($station) use ($user) {
             /** @var Entity\Station $station */
             return $station->isEnabled() &&
                 $this->acl->userAllowed($user, Acl::STATION_VIEW, $station->getId());
@@ -96,7 +97,7 @@ class DashboardController
         $station_ids = [];
 
         // Generate initial data for station dashboard view.
-        foreach($stations as $row) {
+        foreach ($stations as $row) {
             $frontend_adapter = $this->adapter_manager->getFrontendAdapter($row);
 
             $np = [
@@ -108,7 +109,7 @@ class DashboardController
                 ],
                 'listeners' => [
                     'current' => 0,
-                ]
+                ],
             ];
 
             $station_np = $row->getNowplaying();
@@ -194,7 +195,7 @@ class DashboardController
             foreach ($stat_rows as $stat_row) {
                 $station_averages[$station_id][$stat_row['time']] = [
                     $stat_row['time'],
-                    round($stat_row['value'], 2)
+                    round($stat_row['value'], 2),
                 ];
             }
         }
@@ -203,7 +204,7 @@ class DashboardController
         if ($show_admin && count($view_stations) > 1) {
             $metric_stations['all'] = __('All Stations');
         }
-        foreach($view_stations as $station_id => $station_info) {
+        foreach ($view_stations as $station_id => $station_info) {
             $metric_stations[$station_id] = $station_info['station']['name'];
         }
 
@@ -212,26 +213,26 @@ class DashboardController
 
         foreach ($metric_stations as $station_id => $station_name) {
             if (isset($station_averages[$station_id])) {
-                $series_obj = new \stdClass;
+                $series_obj = new stdClass;
                 $series_obj->label = $station_name;
                 $series_obj->type = 'line';
                 $series_obj->fill = false;
 
-                $station_metrics_alt[] = '<p>'.$series_obj->label.'</p>';
+                $station_metrics_alt[] = '<p>' . $series_obj->label . '</p>';
                 $station_metrics_alt[] = '<dl>';
 
                 ksort($station_averages[$station_id]);
 
                 $series_data = [];
-                foreach($station_averages[$station_id] as $serie) {
-                    $series_row = new \stdClass;
+                foreach ($station_averages[$station_id] as $serie) {
+                    $series_row = new stdClass;
                     $series_row->t = $serie[0];
                     $series_row->y = $serie[1];
                     $series_data[] = $series_row;
 
-                    $serie_date = gmdate('Y-m-d', $serie[0]/1000);
-                    $station_metrics_alt[] = '<dt><time data-original="'.$serie[0].'">'.$serie_date.'</time></dt>';
-                    $station_metrics_alt[] = '<dd>'.$serie[1].' '.__('Listeners').'</dd>';
+                    $serie_date = gmdate('Y-m-d', $serie[0] / 1000);
+                    $station_metrics_alt[] = '<dt><time data-original="' . $serie[0] . '">' . $serie_date . '</time></dt>';
+                    $station_metrics_alt[] = '<dd>' . $serie[1] . ' ' . __('Listeners') . '</dd>';
                 }
 
                 $station_metrics_alt[] = '</dl>';

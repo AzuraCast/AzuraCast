@@ -33,8 +33,8 @@ class BuildStationMenu extends AbstractBuildMenu
         RouterInterface $router,
         Station $station,
         AbstractBackend $backend,
-        AbstractFrontend $frontend)
-    {
+        AbstractFrontend $frontend
+    ) {
         parent::__construct($acl, $user, $router);
 
         $this->station = $station;

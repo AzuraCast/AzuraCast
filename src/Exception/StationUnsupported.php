@@ -1,10 +1,11 @@
 <?php
 namespace App\Exception;
 
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class StationUnsupported extends \Azura\Exception
+class StationUnsupported extends Exception
 {
     public function __construct(
         string $message = 'This feature is not currently supported on this station.',

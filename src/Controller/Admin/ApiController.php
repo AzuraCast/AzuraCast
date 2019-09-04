@@ -18,7 +18,7 @@ class ApiController extends AbstractAdminCrudController
         Config $config,
         EntityFormManager $formManager
     ) {
-        $form = $formManager->getForm(Entity\ApiKey::class , $config->get('forms/api_key'));
+        $form = $formManager->getForm(Entity\ApiKey::class, $config->get('forms/api_key'));
 
         parent::__construct($form);
         $this->csrf_namespace = 'admin_api';
@@ -26,7 +26,7 @@ class ApiController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $records = $this->em->createQuery(/** @lang DQL */'SELECT 
+        $records = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             a, u FROM App\Entity\ApiKey a JOIN a.user u')
             ->getArrayResult();
 
@@ -46,7 +46,7 @@ class ApiController extends AbstractAdminCrudController
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => __('Edit API Key')
+            'title' => __('Edit API Key'),
         ]);
     }
 

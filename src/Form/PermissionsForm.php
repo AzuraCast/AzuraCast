@@ -49,7 +49,7 @@ class PermissionsForm extends EntityForm
         if ($record instanceof Entity\Role && Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID === $record->getId()) {
             $this->set_permissions = false;
 
-            foreach($this->fields as $field_id => $field) {
+            foreach ($this->fields as $field_id => $field) {
                 $attrs = $field->getAttributes();
                 if (isset($attrs['class']) && strpos($attrs['class'], 'permission-select') !== false) {
                     unset($this->fields[$field_id]);

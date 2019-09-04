@@ -1,10 +1,11 @@
 <?php
 namespace App\Exception;
 
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class OutOfSpace extends \Azura\Exception
+class OutOfSpace extends Exception
 {
     public function __construct(
         string $message = 'Out of available space.',

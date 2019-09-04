@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 class Form extends \AzuraForms\Form

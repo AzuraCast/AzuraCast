@@ -50,7 +50,7 @@ class IndexController
 
         if ($acl->userAllowed($user, Acl::GLOBAL_ALL)) {
             $view->addData([
-                'sync_times' => $this->sync->getSyncTimes()
+                'sync_times' => $this->sync->getSyncTimes(),
             ]);
         }
 
@@ -97,8 +97,8 @@ class IndexController
         $this->logger->popHandler();
 
         return $view->renderToResponse($response, 'system/log_view', [
-            'sidebar'   => null,
-            'title'     => __('Sync Task Output'),
+            'sidebar' => null,
+            'title' => __('Sync Task Output'),
             'log_records' => $handler->getRecords(),
         ]);
     }

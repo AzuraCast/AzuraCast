@@ -19,7 +19,7 @@ class TuneIn extends AbstractConnector
         $config = $webhook->getConfig();
 
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
-            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -43,7 +43,7 @@ class TuneIn extends AbstractConnector
                 sprintf('TuneIn returned code %d', $response->getStatusCode()),
                 ['response_body' => $response->getBody()->getContents()]
             );
-        } catch(TransferException $e) {
+        } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from TuneIn (%d): %s', $e->getCode(), $e->getMessage()));
         }
 

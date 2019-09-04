@@ -20,7 +20,7 @@ class PermissionsController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $all_roles = $this->em->createQuery(/** @lang DQL */'SELECT 
+        $all_roles = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             r, rp, s 
             FROM App\Entity\Role r 
             LEFT JOIN r.users u 
@@ -57,7 +57,8 @@ class PermissionsController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
+                'green');
             return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
         }
 

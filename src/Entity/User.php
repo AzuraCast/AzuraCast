@@ -1,15 +1,19 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use App\Auth;
+use App\Service\Gravatar;
 use Azura\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use OTPHP\Factory;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use const PASSWORD_ARGON2I;
+use const PASSWORD_BCRYPT;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
@@ -160,6 +164,32 @@ class User
     }
 
     /**
+     * @AuditLog\AuditIdentifier()
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->getName() . ' (' . $this->getEmail() . ')';
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param null|string $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $this->_truncateString($name, 100);
+    }
+
+    /**
      * @return null|string
      */
     public function getEmail(): ?string
@@ -173,27 +203,6 @@ class User
     public function setEmail($email): void
     {
         $this->email = $this->_truncateString($email, 100);
-    }
-
-    /**
-     * @AuditLog\AuditIdentifier()
-     *
-     * @return string
-     */
-    public function getIdentifier(): string
-    {
-        return $this->getName().' ('.$this->getEmail().')';
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setAuthPassword(string $password): void
-    {
-        if (trim($password)) {
-            [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
-            $this->auth_password = password_hash($password, $algo, $algo_opts);
-        }
     }
 
     /**
@@ -214,11 +223,6 @@ class User
         return false;
     }
 
-    public function generateRandomPassword(): void
-    {
-        $this->setAuthPassword(bin2hex(random_bytes(20)));
-    }
-
     /**
      * Get the most secure available password hashing algorithm.
      *
@@ -227,26 +231,26 @@ class User
     protected function _getPasswordAlgorithm(): array
     {
         if (defined('PASSWORD_ARGON2I')) {
-            return [\PASSWORD_ARGON2I, []];
+            return [PASSWORD_ARGON2I, []];
         }
 
-        return [\PASSWORD_BCRYPT, []];
+        return [PASSWORD_BCRYPT, []];
     }
 
     /**
-     * @return null|string
+     * @param string $password
      */
-    public function getName(): ?string
+    public function setAuthPassword(string $password): void
     {
-        return $this->name;
+        if (trim($password)) {
+            [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
+            $this->auth_password = password_hash($password, $algo, $algo_opts);
+        }
     }
 
-    /**
-     * @param null|string $name
-     */
-    public function setName($name): void
+    public function generateRandomPassword(): void
     {
-        $this->name = $this->_truncateString($name, 100);
+        $this->setAuthPassword(bin2hex(random_bytes(20)));
     }
 
     /**
@@ -307,7 +311,7 @@ class User
             return true;
         }
 
-        $totp = \OTPHP\Factory::loadFromProvisioningUri($this->two_factor_secret);
+        $totp = Factory::loadFromProvisioningUri($this->two_factor_secret);
         return $totp->verify($otp, null, Auth::TOTP_WINDOW);
     }
 
@@ -349,6 +353,6 @@ class User
      */
     public function getAvatar($size = 50): string
     {
-        return \App\Service\Gravatar::get($this->email, $size, 'https://www.azuracast.com/img/avatar.png');
+        return Gravatar::get($this->email, $size, 'https://www.azuracast.com/img/avatar.png');
     }
 }

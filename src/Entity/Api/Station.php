@@ -87,7 +87,7 @@ class Station implements ResolvableUrlInterface
     {
         $this->listen_url = (string)Router::resolveUri($base, $this->listen_url, true);
 
-        foreach($this->mounts as $mount) {
+        foreach ($this->mounts as $mount) {
             if ($mount instanceof ResolvableUrlInterface) {
                 $mount->resolveUrls($base);
             }

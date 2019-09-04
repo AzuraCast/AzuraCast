@@ -1,6 +1,8 @@
 <?php
 namespace App\Flysystem;
 
+use Azura\Exception;
+use InvalidArgumentException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\AbstractCache;
@@ -22,7 +24,7 @@ class StationFilesystem extends MountManager
 
         if (null === $to) {
             $random_prefix = substr(md5(random_bytes(8)), 0, 5);
-            $to = 'temp://'.$random_prefix.'_'.$path_from;
+            $to = 'temp://' . $random_prefix . '_' . $path_from;
         }
 
         if ($this->has($to)) {
@@ -46,7 +48,7 @@ class StationFilesystem extends MountManager
     {
         $buffer = $this->readStream($from);
         if ($buffer === false) {
-            throw new \Azura\Exception('Source file could not be read.');
+            throw new Exception('Source file could not be read.');
         }
 
         $written = $this->putStream($to, $buffer, $config);
@@ -104,7 +106,8 @@ class StationFilesystem extends MountManager
         $fs = $this->getFilesystem($prefix);
 
         if (!($fs instanceof Filesystem)) {
-            throw new \InvalidArgumentException(sprintf('Filesystem for "%s" is not an instance of Filesystem.', $prefix));
+            throw new InvalidArgumentException(sprintf('Filesystem for "%s" is not an instance of Filesystem.',
+                $prefix));
         }
 
         $adapter = $fs->getAdapter();
@@ -114,11 +117,12 @@ class StationFilesystem extends MountManager
         }
 
         if (!($adapter instanceof Local)) {
-            throw new \InvalidArgumentException(sprintf('Adapter for "%s" is not a Local or cached Local adapter.', $prefix));
+            throw new InvalidArgumentException(sprintf('Adapter for "%s" is not a Local or cached Local adapter.',
+                $prefix));
         }
 
         $prefix = $adapter->getPathPrefix();
-        return $prefix.$path;
+        return $prefix . $path;
     }
 
     /**
@@ -128,7 +132,7 @@ class StationFilesystem extends MountManager
      */
     public function flushAllCaches($in_memory_only = false): void
     {
-        foreach($this->filesystems as $prefix => $filesystem) {
+        foreach ($this->filesystems as $prefix => $filesystem) {
             if ($filesystem instanceof Filesystem) {
                 $adapter = $filesystem->getAdapter();
                 if ($adapter instanceof CachedAdapter) {

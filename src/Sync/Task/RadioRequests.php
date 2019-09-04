@@ -59,7 +59,7 @@ class RadioRequests extends AbstractTask
             $threshold = time() - ($threshold_minutes * 60);
 
             // Look up all requests that have at least waited as long as the threshold.
-            $requests = $this->em->createQuery(/** @lang DQL */'SELECT sr, sm 
+            $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
                 FROM App\Entity\StationRequest sr 
                 JOIN sr.track sm
                 WHERE sr.played_at = 0 
@@ -70,7 +70,7 @@ class RadioRequests extends AbstractTask
                 ->setParameter('threshold', $threshold)
                 ->execute();
 
-            foreach($requests as $request) {
+            foreach ($requests as $request) {
                 /** @var Entity\StationRequest $request */
                 $request_repo->checkRecentPlay($request->getTrack(), $station);
                 $this->_submitRequest($station, $request);

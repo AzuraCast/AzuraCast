@@ -4,8 +4,10 @@ namespace App\Form;
 use App\Entity\Station;
 use App\Http\ServerRequest;
 use Azura\Doctrine\Repository;
+use Azura\Exception;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
+use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -50,8 +52,8 @@ class EntityForm extends Form
         Serializer $serializer,
         ValidatorInterface $validator,
         array $options = [],
-        ?array $defaults = null)
-    {
+        ?array $defaults = null
+    ) {
         parent::__construct($options, $defaults);
 
         $this->em = $em;
@@ -89,7 +91,7 @@ class EntityForm extends Form
     public function getEntityRepository(): Repository
     {
         if (null === $this->entityClass) {
-            throw new \Azura\Exception('Entity class name is not specified.');
+            throw new Exception('Entity class name is not specified.');
         }
 
         return $this->em->getRepository($this->entityClass);
@@ -103,11 +105,11 @@ class EntityForm extends Form
     public function process(ServerRequest $request, $record = null)
     {
         if (null === $this->entityClass) {
-            throw new \Azura\Exception('Entity class name is not specified.');
+            throw new Exception('Entity class name is not specified.');
         }
 
         if (null !== $record && !($record instanceof $this->entityClass)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         // Populate the form with existing values (if they exist).
@@ -123,7 +125,7 @@ class EntityForm extends Form
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {
-                foreach($errors as $error) {
+                foreach ($errors as $error) {
                     /** @var ConstraintViolation $error */
                     $field_name = $error->getPropertyPath();
 
@@ -162,10 +164,20 @@ class EntityForm extends Form
         $context = array_merge($this->defaultContext, $context, [
             DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,
             ObjectNormalizer::ENABLE_MAX_DEPTH => true,
-            ObjectNormalizer::MAX_DEPTH_HANDLER => function ($innerObject, $outerObject, string $attributeName, string $format = null, array $context = array()) {
+            ObjectNormalizer::MAX_DEPTH_HANDLER => function (
+                $innerObject,
+                $outerObject,
+                string $attributeName,
+                string $format = null,
+                array $context = []
+            ) {
                 return $this->_displayShortenedObject($innerObject);
             },
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, string $format = null, array $context = array()) {
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
+                $object,
+                string $format = null,
+                array $context = []
+            ) {
                 return $this->_displayShortenedObject($object);
             },
         ]);

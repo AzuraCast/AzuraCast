@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Entity\Repository;
 
 use App\Entity;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\NoResultException;
+use Exception;
 
 class StationPlaylistMediaRepository extends Repository
 {
@@ -17,10 +17,13 @@ class StationPlaylistMediaRepository extends Repository
      * @param int $weight
      * @return int The weight assigned to the newly added record.
      */
-    public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, int $weight = 0): int
-    {
+    public function addMediaToPlaylist(
+        Entity\StationMedia $media,
+        Entity\StationPlaylist $playlist,
+        int $weight = 0
+    ): int {
         if ($playlist->getSource() !== Entity\StationPlaylist::SOURCE_SONGS) {
-            throw new \Exception('This playlist is not meant to contain songs!');
+            throw new Exception('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.
@@ -58,7 +61,7 @@ class StationPlaylistMediaRepository extends Repository
     public function getHighestSongWeight(Entity\StationPlaylist $playlist): int
     {
         try {
-            $highest_weight = $this->_em->createQuery(/** @lang DQL */'SELECT 
+            $highest_weight = $this->_em->createQuery(/** @lang DQL */ 'SELECT 
                 MAX(e.weight) 
                 FROM App\Entity\StationPlaylistMedia e 
                 WHERE e.playlist_id = :playlist_id')
@@ -80,13 +83,13 @@ class StationPlaylistMediaRepository extends Repository
     public function clearPlaylistsFromMedia(Entity\StationMedia $media): array
     {
         $affected_playlists = [];
-        $playlists = $this->_em->createQuery(/** @lang DQL */'SELECT e, p 
+        $playlists = $this->_em->createQuery(/** @lang DQL */ 'SELECT e, p 
             FROM App\Entity\StationPlaylistMedia e JOIN e.playlist p 
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->execute();
 
-        foreach($playlists as $row) {
+        foreach ($playlists as $row) {
             /** @var Entity\StationPlaylistMedia $row */
             $playlist = $row->getPlaylist();
             $affected_playlists[$playlist->getId()] = $playlist;
@@ -94,13 +97,13 @@ class StationPlaylistMediaRepository extends Repository
 
         // Clear the playback queue.
         if (!empty($affected_playlists)) {
-            $this->_em->createQuery(/** @lang DQL */'UPDATE App\Entity\StationPlaylist sp
+            $this->_em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\StationPlaylist sp
             SET sp.queue=null WHERE sp.id IN (:ids)')
                 ->setParameter('ids', array_keys($affected_playlists))
                 ->execute();
         }
 
-        $this->_em->createQuery(/** @lang DQL */'DELETE 
+        $this->_em->createQuery(/** @lang DQL */ 'DELETE 
             FROM App\Entity\StationPlaylistMedia e
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
@@ -121,14 +124,14 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping): void
     {
-        $update_query = $this->_em->createQuery(/** @lang DQL */'UPDATE 
+        $update_query = $this->_em->createQuery(/** @lang DQL */ 'UPDATE 
             App\Entity\StationPlaylistMedia e 
             SET e.weight = :weight
             WHERE e.playlist_id = :playlist_id 
             AND e.id = :id')
             ->setParameter('playlist_id', $playlist->getId());
 
-        foreach($mapping as $id => $weight) {
+        foreach ($mapping as $id => $weight) {
             $update_query->setParameter('id', $id)
                 ->setParameter('weight', $weight)
                 ->execute();
@@ -156,7 +159,7 @@ class StationPlaylistMediaRepository extends Repository
         }
 
         $media_queue = [];
-        foreach($all_media as $media_row) {
+        foreach ($all_media as $media_row) {
             $media_queue[$media_row['id']] = $media_row;
         }
 

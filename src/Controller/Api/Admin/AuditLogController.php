@@ -6,8 +6,10 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Doctrine\Paginator;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use const JSON_PRETTY_PRINT;
 
 class AuditLogController
 {
@@ -24,7 +26,7 @@ class AuditLogController
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $tz = new \DateTimeZone('UTC');
+        $tz = new DateTimeZone('UTC');
 
         $params = $request->getParams();
         if (!empty($params['start'])) {
@@ -64,24 +66,24 @@ class AuditLogController
             $changesRaw = $row->getChanges();
             $changes = [];
 
-            foreach($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
+            foreach ($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
                 $changes[] = [
                     'field' => $fieldName,
-                    'from' => json_encode($fieldPrevious, \JSON_PRETTY_PRINT),
-                    'to' => json_encode($fieldNew, \JSON_PRETTY_PRINT),
+                    'from' => json_encode($fieldPrevious, JSON_PRETTY_PRINT),
+                    'to' => json_encode($fieldNew, JSON_PRETTY_PRINT),
                 ];
             }
 
             return [
-                'id'        => $row->getId(),
+                'id' => $row->getId(),
                 'timestamp' => $row->getTimestamp(),
                 'operation' => $row->getOperation(),
                 'operation_text' => $operations[$row->getOperation()],
-                'class'     => $row->getClass(),
+                'class' => $row->getClass(),
                 'identifier' => $row->getIdentifier(),
                 'target_class' => $row->getTargetClass(),
-                'target'    => $row->getTarget(),
-                'user'      => $row->getUser(),
+                'target' => $row->getTarget(),
+                'user' => $row->getUser(),
                 'changes' => $changes,
             ];
         });

@@ -51,7 +51,7 @@ class AzuraCastCentral
         $app_uuid = $this->settings_repo->getUniqueIdentifier();
 
         $request_body = [
-            'id'        => $app_uuid,
+            'id' => $app_uuid,
             'is_docker' => (bool)$this->app_settings->isDocker(),
             'environment' => $this->app_settings[Settings::APP_ENV],
         ];
@@ -65,7 +65,7 @@ class AzuraCastCentral
 
         $response = $this->http_client->request(
             'POST',
-            self::BASE_URL.'/api/update',
+            self::BASE_URL . '/api/update',
             ['json' => $request_body]
         );
 
@@ -90,7 +90,7 @@ class AzuraCastCentral
         if (empty($ip)) {
             $response = $this->http_client->request(
                 'GET',
-                self::BASE_URL.'/ip'
+                self::BASE_URL . '/ip'
             );
 
             $body_raw = $response->getBody()->getContents();

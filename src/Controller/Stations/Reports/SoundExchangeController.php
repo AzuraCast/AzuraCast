@@ -49,32 +49,34 @@ class SoundExchangeController
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            $start_date = strtotime($data['start_date'].' 00:00:00');
-            $end_date = strtotime($data['end_date'].' 23:59:59');
+            $start_date = strtotime($data['start_date'] . ' 00:00:00');
+            $end_date = strtotime($data['end_date'] . ' 23:59:59');
 
-            $export = [[
-                'NAME_OF_SERVICE',
-                'TRANSMISSION_CATEGORY',
-                'FEATURED_ARTIST',
-                'SOUND_RECORDING_TITLE',
-                'ISRC',
-                'ALBUM_TITLE',
-                'MARKETING_LABEL',
-                'ACTUAL_TOTAL_PERFORMANCES',
-            ]];
+            $export = [
+                [
+                    'NAME_OF_SERVICE',
+                    'TRANSMISSION_CATEGORY',
+                    'FEATURED_ARTIST',
+                    'SOUND_RECORDING_TITLE',
+                    'ISRC',
+                    'ALBUM_TITLE',
+                    'MARKETING_LABEL',
+                    'ACTUAL_TOTAL_PERFORMANCES',
+                ],
+            ];
 
-            $all_media = $this->em->createQuery(/** @lang DQL */'SELECT sm
+            $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
                 FROM App\Entity\StationMedia sm
                 WHERE sm.station_id = :station_id')
                 ->setParameter('station_id', $station_id)
                 ->getArrayResult();
 
             $media_by_id = [];
-            foreach($all_media as $media_row) {
+            foreach ($all_media as $media_row) {
                 $media_by_id[$media_row['song_id']] = $media_row;
             }
 
-            $history_rows = $this->em->createQuery(/** @lang DQL */'SELECT
+            $history_rows = $this->em->createQuery(/** @lang DQL */ 'SELECT
                 sh.song_id AS song_id, COUNT(sh.id) AS plays, SUM(sh.unique_listeners) AS unique_listeners
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station_id = :station_id
@@ -87,7 +89,7 @@ class SoundExchangeController
                 ->getArrayResult();
 
             $history_rows_by_id = [];
-            foreach($history_rows as $history_row) {
+            foreach ($history_rows as $history_row) {
                 $history_rows_by_id[$history_row['song_id']] = $history_row;
             }
 
@@ -100,13 +102,13 @@ class SoundExchangeController
 
             if (!empty($not_found_songs)) {
 
-                $songs_raw = $this->em->createQuery(/** @lang DQL */'SELECT s
+                $songs_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT s
                     FROM App\Entity\Song s
                     WHERE s.id IN (:song_ids)')
                     ->setParameter('song_ids', array_keys($not_found_songs))
                     ->getArrayResult();
 
-                foreach($songs_raw as $song_row) {
+                foreach ($songs_raw as $song_row) {
                     $media_by_id[$song_row['id']] = $song_row;
                 }
             }
@@ -114,14 +116,14 @@ class SoundExchangeController
             // Assemble report items
             $station_name = $station->getName();
 
-            $set_isrc_query = $this->em->createQuery(/** @lang DQL */'UPDATE 
+            $set_isrc_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE 
                 App\Entity\StationMedia sm
                 SET sm.isrc = :isrc
                 WHERE sm.song_id = :song_id
                 AND sm.station_id = :station_id')
                 ->setParameter('station_id', $station_id);
 
-            foreach($history_rows_by_id as $song_id => $history_row) {
+            foreach ($history_rows_by_id as $song_id => $history_row) {
 
                 $song_row = $media_by_id[$song_id];
 
@@ -150,10 +152,10 @@ class SoundExchangeController
 
             // Assemble export into SoundExchange format
             $export_txt_raw = [];
-            foreach($export as $export_row) {
-                foreach($export_row as $i => $export_col) {
+            foreach ($export as $export_row) {
+                foreach ($export_row as $i => $export_col) {
                     if (!is_numeric($export_col)) {
-                        $export_row[$i] = '^'.str_replace(['^', '|'], ['', ''], strtoupper($export_col)).'^';
+                        $export_row[$i] = '^' . str_replace(['^', '|'], ['', ''], strtoupper($export_col)) . '^';
                     }
                 }
                 $export_txt_raw[] = implode('|', $export_row);
@@ -163,7 +165,7 @@ class SoundExchangeController
             // Example: WABC01012009-31012009_A.txt
             $export_filename = strtoupper($station->getShortName())
                 . date('dmY', $start_date) . '-'
-                . date('dmY', $end_date).'_A.txt';
+                . date('dmY', $end_date) . '_A.txt';
 
             return $response->renderStringAsFile($export_txt, 'text/plain', $export_filename);
         }
@@ -171,7 +173,7 @@ class SoundExchangeController
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => __('SoundExchange Report')
+            'title' => __('SoundExchange Report'),
         ]);
     }
 
@@ -182,10 +184,10 @@ class SoundExchangeController
 
         $query_parts = [];
         if (!empty($song_row['artist'])) {
-            $query_parts[] = 'artist:"'.$song_row['artist'].'"';
+            $query_parts[] = 'artist:"' . $song_row['artist'] . '"';
         }
         if (!empty($song_row['album'])) {
-            $query_parts[] = 'album:"'.$song_row['album'].'"';
+            $query_parts[] = 'album:"' . $song_row['album'] . '"';
         }
         $query_parts[] = $song_row['title'];
 

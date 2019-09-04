@@ -15,6 +15,57 @@ class Listener
     use Traits\TruncateStrings;
 
     /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(name="station_id", type="integer")
+     * @var int
+     */
+    protected $station_id;
+    /**
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var Station
+     */
+    protected $station;
+    /**
+     * @ORM\Column(name="listener_uid", type="integer")
+     * @var int
+     */
+    protected $listener_uid;
+    /**
+     * @ORM\Column(name="listener_ip", type="string", length=45)
+     * @var string
+     */
+    protected $listener_ip;
+    /**
+     * @ORM\Column(name="listener_user_agent", type="string", length=255)
+     * @var string
+     */
+    protected $listener_user_agent;
+    /**
+     * @ORM\Column(name="listener_hash", type="string", length=32)
+     * @var string
+     */
+    protected $listener_hash;
+    /**
+     * @ORM\Column(name="timestamp_start", type="integer")
+     * @var int
+     */
+    protected $timestamp_start;
+    /**
+     * @ORM\Column(name="timestamp_end", type="integer")
+     * @var int
+     */
+    protected $timestamp_end;
+
+    /**
      * Listener constructor.
      * @param Station $station
      * @param array $client
@@ -33,63 +84,31 @@ class Listener
     }
 
     /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
+     * @param array $client
+     * @return string
      */
-    protected $id;
+    public static function calculateListenerHash($client): string
+    {
+        return md5($client['ip'] . $client['user_agent']);
+    }
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
+     * Filter clients to exclude any listeners that shouldn't be included (i.e. relays).
+     *
+     * @param array $clients
+     * @return array
      */
-    protected $station_id;
+    public static function filterClients(array $clients): array
+    {
+        return array_filter($clients, function ($client) {
+            // Ignore clients with the "Icecast" UA as those are relays and not listeners.
+            if (false !== stripos($client['user_agent'], 'Icecast')) {
+                return false;
+            }
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
-
-    /**
-     * @ORM\Column(name="listener_uid", type="integer")
-     * @var int
-     */
-    protected $listener_uid;
-
-    /**
-     * @ORM\Column(name="listener_ip", type="string", length=45)
-     * @var string
-     */
-    protected $listener_ip;
-
-    /**
-     * @ORM\Column(name="listener_user_agent", type="string", length=255)
-     * @var string
-     */
-    protected $listener_user_agent;
-
-    /**
-     * @ORM\Column(name="listener_hash", type="string", length=32)
-     * @var string
-     */
-    protected $listener_hash;
-
-    /**
-     * @ORM\Column(name="timestamp_start", type="integer")
-     * @var int
-     */
-    protected $timestamp_start;
-
-    /**
-     * @ORM\Column(name="timestamp_end", type="integer")
-     * @var int
-     */
-    protected $timestamp_end;
+            return true;
+        });
+    }
 
     /**
      * @return int
@@ -177,32 +196,5 @@ class Listener
     public function getConnectedSeconds(): int
     {
         return $this->timestamp_end - $this->timestamp_start;
-    }
-
-    /**
-     * @param array $client
-     * @return string
-     */
-    public static function calculateListenerHash($client): string
-    {
-        return md5($client['ip'].$client['user_agent']);
-    }
-
-    /**
-     * Filter clients to exclude any listeners that shouldn't be included (i.e. relays).
-     *
-     * @param array $clients
-     * @return array
-     */
-    public static function filterClients(array $clients): array
-    {
-        return array_filter($clients, function($client) {
-            // Ignore clients with the "Icecast" UA as those are relays and not listeners.
-            if (false !== stripos($client['user_agent'], 'Icecast')) {
-                return false;
-            }
-
-            return true;
-        });
     }
 }

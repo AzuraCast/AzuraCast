@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20181016144143 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('SELECT 1');
@@ -18,17 +18,19 @@ final class Version20181016144143 extends AbstractMigration
 
     public function postUp(Schema $schema)
     {
-        $shuffled_playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp WHERE sp.playback_order = :order', [
-            'order' => 'shuffle'
-        ]);
-
-        foreach($shuffled_playlists as $playlist) {
-            $all_media = $this->connection->fetchAll('SELECT spm.* FROM station_playlist_media AS spm WHERE spm.playlist_id = :playlist_id ORDER BY RAND()', [
-                'playlist_id' => $playlist['id'],
+        $shuffled_playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp WHERE sp.playback_order = :order',
+            [
+                'order' => 'shuffle',
             ]);
 
+        foreach ($shuffled_playlists as $playlist) {
+            $all_media = $this->connection->fetchAll('SELECT spm.* FROM station_playlist_media AS spm WHERE spm.playlist_id = :playlist_id ORDER BY RAND()',
+                [
+                    'playlist_id' => $playlist['id'],
+                ]);
+
             $weight = 1;
-            foreach($all_media as $row) {
+            foreach ($all_media as $row) {
                 $this->connection->update('station_playlist_media', [
                     'weight' => $weight,
                 ], [
@@ -40,7 +42,7 @@ final class Version20181016144143 extends AbstractMigration
         }
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('SELECT 1');

@@ -17,7 +17,7 @@ class AnnotateNextSong extends Event
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     protected $annotations = [];
 
-    /** @var string The path of the song to  */
+    /** @var string The path of the song to */
     protected $song_path;
 
     /** @var Entity\Station */
@@ -84,11 +84,11 @@ class AnnotateNextSong extends Event
 
         if (!empty($this->annotations)) {
             $annotations_str = [];
-            foreach($this->annotations as $annotation_key => $annotation_val) {
-                $annotations_str[] = $annotation_key.'="'.$annotation_val.'"';
+            foreach ($this->annotations as $annotation_key => $annotation_val) {
+                $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
             }
 
-            return 'annotate:'.implode(',', $annotations_str).':'.$this->song_path;
+            return 'annotate:' . implode(',', $annotations_str) . ':' . $this->song_path;
         }
 
         return $this->song_path;

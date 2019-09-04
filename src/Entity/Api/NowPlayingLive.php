@@ -8,12 +8,6 @@ use OpenApi\Annotations as OA;
  */
 class NowPlayingLive
 {
-    public function __construct($is_live = false, $streamer_name = '')
-    {
-        $this->is_live = (bool)$is_live;
-        $this->streamer_name = (string)$streamer_name;
-    }
-
     /**
      * Whether the stream is known to currently have a live DJ.
      *
@@ -21,7 +15,6 @@ class NowPlayingLive
      * @var bool
      */
     public $is_live;
-
     /**
      * The current active streamer/DJ, if one is available.
      *
@@ -29,4 +22,10 @@ class NowPlayingLive
      * @var string
      */
     public $streamer_name;
+
+    public function __construct($is_live = false, $streamer_name = '')
+    {
+        $this->is_live = (bool)$is_live;
+        $this->streamer_name = (string)$streamer_name;
+    }
 }

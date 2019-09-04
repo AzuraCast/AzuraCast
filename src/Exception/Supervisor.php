@@ -1,5 +1,8 @@
 <?php
 namespace App\Exception;
 
-class Supervisor extends \Azura\Exception
-{}
+use Azura\Exception;
+
+class Supervisor extends Exception
+{
+}

@@ -5,6 +5,11 @@
 
 namespace App;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
+use function is_array;
+
 class Utilities
 {
     /**
@@ -29,6 +34,20 @@ class Utilities
         }
 
         return str_shuffle($password);
+    }
+
+    /**
+     * Truncate URL in text-presentable format (i.e. "http://www.example.com" becomes "example.com")
+     *
+     * @param string $url
+     * @param int $length
+     * @return string
+     */
+    public static function truncateUrl($url, $length = 40): string
+    {
+        $url = str_replace(['http://', 'https://', 'www.'], '', $url);
+
+        return self::truncateText(rtrim($url, '/'), $length);
     }
 
     /**
@@ -103,20 +122,6 @@ class Utilities
     }
 
     /**
-     * Truncate URL in text-presentable format (i.e. "http://www.example.com" becomes "example.com")
-     *
-     * @param string $url
-     * @param int $length
-     * @return string
-     */
-    public static function truncateUrl($url, $length = 40): string
-    {
-        $url = str_replace(['http://', 'https://', 'www.'], '', $url);
-
-        return self::truncateText(rtrim($url, '/'), $length);
-    }
-
-    /**
      * Sort a supplied array (the first argument) by one or more indices, specified in this format:
      * arrayOrderBy($data, [ 'index_name', SORT_ASC, 'index2_name', SORT_DESC ])
      *
@@ -187,19 +192,21 @@ class Utilities
             return @unlink($source);
         }
 
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
         );
 
-        foreach($files as $fileinfo) {
-            /** @var \SplFileInfo $fileinfo */
+        foreach ($files as $fileinfo) {
+            /** @var SplFileInfo $fileinfo */
             if ('link' !== $fileinfo->getType() && $fileinfo->isDir()) {
                 if (!rmdir($fileinfo->getRealPath())) {
                     return false;
                 }
-            } else if (!unlink($fileinfo->getRealPath())) {
-                return false;
+            } else {
+                if (!unlink($fileinfo->getRealPath())) {
+                    return false;
+                }
             }
         }
 
@@ -262,9 +269,9 @@ class Utilities
 
         $return = [];
 
-        foreach($array as $key => $value) {
-            $return_key = $prefix ? $prefix.$separator.$key : $key;
-            if (\is_array($value)) {
+        foreach ($array as $key => $value) {
+            $return_key = $prefix ? $prefix . $separator . $key : $key;
+            if (is_array($value)) {
                 $return = array_merge($return, self::flattenArray($value, $separator, $return_key));
             } else {
                 $return[$return_key] = $value;

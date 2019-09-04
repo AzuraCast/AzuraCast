@@ -2,8 +2,10 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
+use App\Exception\Validation;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -106,15 +108,15 @@ class StationsController extends AbstractAdminApiCrudController
     protected function _normalizeRecord($record, array $context = [])
     {
         return parent::_normalizeRecord($record, $context + [
-            DoctrineEntityNormalizer::IGNORED_ATTRIBUTES => [
-                'adapter_api_key',
-                'nowplaying',
-                'nowplaying_timestamp',
-                'automation_timestamp',
-                'needs_restart',
-                'has_started',
-            ],
-        ]);
+                DoctrineEntityNormalizer::IGNORED_ATTRIBUTES => [
+                    'adapter_api_key',
+                    'nowplaying',
+                    'nowplaying_timestamp',
+                    'automation_timestamp',
+                    'needs_restart',
+                    'has_started',
+                ],
+            ]);
     }
 
     /** @inheritDoc */
@@ -123,14 +125,14 @@ class StationsController extends AbstractAdminApiCrudController
         $create_mode = (null === $record);
 
         if (null === $data) {
-            throw new \InvalidArgumentException('Could not parse input data.');
+            throw new InvalidArgumentException('Could not parse input data.');
         }
 
         $record = $this->_denormalizeToRecord($data, $record, $context);
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            $e = new \App\Exception\Validation((string)$errors);
+            $e = new Validation((string)$errors);
             $e->setDetailedErrors($errors);
             throw $e;
         }

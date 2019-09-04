@@ -1,10 +1,11 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,7 +34,7 @@ class StationPlaylist
     public const TYPE_ADVANCED = 'custom';
 
     public const SOURCE_SONGS = 'songs';
-    public const SOURCE_REMOTE_URL ='remote_url';
+    public const SOURCE_REMOTE_URL = 'remote_url';
 
     public const REMOTE_TYPE_STREAM = 'stream';
     public const REMOTE_TYPE_PLAYLIST = 'playlist';
@@ -287,14 +288,6 @@ class StationPlaylist
     }
 
     /**
-     * @return Station
-     */
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    /**
      * @AuditLog\AuditIdentifier
      *
      * @return string
@@ -305,19 +298,19 @@ class StationPlaylist
     }
 
     /**
-     * @return string
-     */
-    public function getShortName(): string
-    {
-        return Station::getStationShortName($this->name);
-    }
-
-    /**
      * @param string $name
      */
     public function setName(string $name): void
     {
         $this->name = $this->_truncateString($name, 200);
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortName(): string
+    {
+        return Station::getStationShortName($this->name);
     }
 
     /**
@@ -459,90 +452,6 @@ class StationPlaylist
     }
 
     /**
-     * @return int
-     */
-    public function getPlayPerSongs(): int
-    {
-        return $this->play_per_songs;
-    }
-
-    /**
-     * @param int $play_per_songs
-     */
-    public function setPlayPerSongs(int $play_per_songs): void
-    {
-        $this->play_per_songs = $play_per_songs;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPlayPerMinutes(): int
-    {
-        return $this->play_per_minutes;
-    }
-
-    /**
-     * @param int $play_per_minutes
-     */
-    public function setPlayPerMinutes(int $play_per_minutes): void
-    {
-        $this->play_per_minutes = $play_per_minutes;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPlayPerHourMinute(): int
-    {
-        return $this->play_per_hour_minute;
-    }
-
-    /**
-     * @param int $play_per_hour_minute
-     */
-    public function setPlayPerHourMinute(int $play_per_hour_minute): void
-    {
-        if ($play_per_hour_minute > 59 || $play_per_hour_minute < 0) {
-            $play_per_hour_minute = 0;
-        }
-
-        $this->play_per_hour_minute = $play_per_hour_minute;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScheduleStartTime(): int
-    {
-        return (int)$this->schedule_start_time;
-    }
-
-    /**
-     * @param int $schedule_start_time
-     */
-    public function setScheduleStartTime(int $schedule_start_time): void
-    {
-        $this->schedule_start_time = $schedule_start_time;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScheduleEndTime(): int
-    {
-        return (int)$this->schedule_end_time;
-    }
-
-    /**
-     * @param int $schedule_end_time
-     */
-    public function setScheduleEndTime(int $schedule_end_time): void
-    {
-        $this->schedule_end_time = $schedule_end_time;
-    }
-
-    /**
      * @return int Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
      */
     public function getScheduleDuration(): int
@@ -565,19 +474,20 @@ class StationPlaylist
     }
 
     /**
-     * @return array|null
+     * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
+     *
+     * @param string|int $time_code
+     * @param Chronos|null $now
+     * @return Chronos
      */
-    public function getScheduleDays(): ?array
+    public static function getDateTime($time_code, Chronos $now = null): Chronos
     {
-        return (!empty($this->schedule_days)) ? explode(',', $this->schedule_days) : null;
-    }
+        if ($now === null) {
+            $now = Chronos::now(new DateTimeZone('UTC'));
+        }
 
-    /**
-     * @param array $schedule_days
-     */
-    public function setScheduleDays($schedule_days): void
-    {
-        $this->schedule_days = implode(',', (array)$schedule_days);
+        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
+        return $now->setTime(substr($time_code, 0, 2), substr($time_code, 2));
     }
 
     /**
@@ -609,6 +519,14 @@ class StationPlaylist
     }
 
     /**
+     * @param bool $include_in_requests
+     */
+    public function setIncludeInRequests(bool $include_in_requests): void
+    {
+        $this->include_in_requests = $include_in_requests;
+    }
+
+    /**
      * Indicates whether this playlist can be used as a valid source of requestable media.
      *
      * @return bool
@@ -616,14 +534,6 @@ class StationPlaylist
     public function isRequestable(): bool
     {
         return ($this->is_enabled && $this->include_in_requests);
-    }
-
-    /**
-     * @param bool $include_in_requests
-     */
-    public function setIncludeInRequests(bool $include_in_requests): void
-    {
-        $this->include_in_requests = $include_in_requests;
     }
 
     /**
@@ -640,46 +550,6 @@ class StationPlaylist
     public function setIncludeInAutomation(bool $include_in_automation): void
     {
         $this->include_in_automation = $include_in_automation;
-    }
-
-    /**
-     * @return array
-     */
-    public function getBackendOptions(): array
-    {
-        return explode(',', $this->backend_options);
-    }
-
-    public function backendInterruptOtherSongs(): bool
-    {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_INTERRUPT_OTHER_SONGS, $backend_options, true);
-    }
-
-    public function backendLoopPlaylistOnce(): bool
-    {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_LOOP_PLAYLIST_ONCE, $backend_options, true);
-    }
-
-    public function backendPlaySingleTrack(): bool
-    {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backend_options, true);
-    }
-
-    public function backendMerge(): bool
-    {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_MERGE, $backend_options, true);
-    }
-
-    /**
-     * @param array $backend_options
-     */
-    public function setBackendOptions($backend_options): void
-    {
-        $this->backend_options = implode(',', (array)$backend_options);
     }
 
     /**
@@ -741,6 +611,40 @@ class StationPlaylist
             && !$this->backendLoopPlaylistOnce());
     }
 
+    public function backendInterruptOtherSongs(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_INTERRUPT_OTHER_SONGS, $backend_options, true);
+    }
+
+    /**
+     * @return array
+     */
+    public function getBackendOptions(): array
+    {
+        return explode(',', $this->backend_options);
+    }
+
+    /**
+     * @param array $backend_options
+     */
+    public function setBackendOptions($backend_options): void
+    {
+        $this->backend_options = implode(',', (array)$backend_options);
+    }
+
+    public function backendMerge(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_MERGE, $backend_options, true);
+    }
+
+    public function backendLoopPlaylistOnce(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_LOOP_PLAYLIST_ONCE, $backend_options, true);
+    }
+
     /**
      * Parent function for determining whether a playlist of any type can be played by the AutoDJ.
      *
@@ -751,10 +655,10 @@ class StationPlaylist
     public function shouldPlayNow(Chronos $now = null, array $recentSongHistory = []): bool
     {
         if (null === $now) {
-            $now = Chronos::now(new \DateTimeZone($this->getStation()->getTimezone()));
+            $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
         }
 
-        switch($this->type) {
+        switch ($this->type) {
             case self::TYPE_ONCE_PER_HOUR:
                 return $this->shouldPlayNowPerHour($now);
                 break;
@@ -788,68 +692,11 @@ class StationPlaylist
     }
 
     /**
-     * Returns whether the playlist is scheduled to play according to schedule rules.
-     *
-     * @param Chronos $now
-     * @return bool
+     * @return Station
      */
-    protected function shouldPlayNowScheduled(Chronos $now): bool
+    public function getStation(): Station
     {
-        $day_to_check = (int)$now->format('N');
-        $current_timecode = (int)$now->format('Hi');
-
-        $schedule_start_time = $this->getScheduleStartTime();
-        $schedule_end_time = $this->getScheduleEndTime();
-
-        // Special handling for playlists ending at midnight (hour code "000").
-        if (0 === $schedule_end_time) {
-            $schedule_end_time = 2400;
-        }
-
-        // Handle overnight playlists that stretch into the next day.
-        if ($schedule_end_time < $schedule_start_time) {
-            if ($current_timecode <= $schedule_end_time) {
-                // Check the previous day, since it's before the end time.
-                $day_to_check = (1 === $day_to_check) ? 7 : $day_to_check - 1;
-            } else if ($current_timecode < $schedule_start_time) {
-                // The playlist shouldn't be playing before the start time on the current date.
-                return false;
-            }
-        // Non-overnight playlist check
-        } else if ($current_timecode < $schedule_start_time || $current_timecode > $schedule_end_time) {
-            return false;
-        }
-
-        // Check that the current day is one of the scheduled play days.
-        if (!$this->isScheduledToPlayToday($day_to_check)) {
-            return false;
-        }
-
-        return ($this->backendPlaySingleTrack())
-            ? !$this->wasPlayedInLastXMinutes($now, 720)
-            : true;
-    }
-
-    /**
-     * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
-     *
-     * @param int $day_to_check
-     * @return bool
-     */
-    protected function isScheduledToPlayToday(int $day_to_check): bool
-    {
-        $play_once_days = $this->getScheduleDays();
-        return empty($play_once_days)
-            || in_array($day_to_check, $play_once_days);
-    }
-
-    /**
-     * @param Chronos $now
-     * @return bool
-     */
-    protected function shouldPlayNowPerMinute(Chronos $now): bool
-    {
-        return !$this->wasPlayedInLastXMinutes($now, $this->getPlayPerMinutes());
+        return $this->station;
     }
 
     /**
@@ -877,6 +724,135 @@ class StationPlaylist
     }
 
     /**
+     * @return int
+     */
+    public function getPlayPerHourMinute(): int
+    {
+        return $this->play_per_hour_minute;
+    }
+
+    /**
+     * @param int $play_per_hour_minute
+     */
+    public function setPlayPerHourMinute(int $play_per_hour_minute): void
+    {
+        if ($play_per_hour_minute > 59 || $play_per_hour_minute < 0) {
+            $play_per_hour_minute = 0;
+        }
+
+        $this->play_per_hour_minute = $play_per_hour_minute;
+    }
+
+    protected function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
+    {
+        if (0 === $this->played_at) {
+            return false;
+        }
+
+        $threshold = $now->addMinutes(0 - $minutes)->getTimestamp();
+        return ($this->played_at > $threshold);
+    }
+
+    /**
+     * @param array $songHistoryEntries
+     * @param int $length
+     * @return bool
+     */
+    protected function wasPlayedRecently(array $songHistoryEntries = [], $length = 15): bool
+    {
+        if (empty($songHistoryEntries)) {
+            return true;
+        }
+
+        // Check if already played
+        $relevant_song_history = array_slice($songHistoryEntries, 0, $length);
+
+        $was_played = false;
+        foreach ($relevant_song_history as $sh_row) {
+            if ((int)$sh_row['playlist_id'] === $this->id) {
+                $was_played = true;
+                break;
+            }
+        }
+
+        reset($songHistoryEntries);
+        return $was_played;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlayPerSongs(): int
+    {
+        return $this->play_per_songs;
+    }
+
+    /**
+     * @param int $play_per_songs
+     */
+    public function setPlayPerSongs(int $play_per_songs): void
+    {
+        $this->play_per_songs = $play_per_songs;
+    }
+
+    /**
+     * @param Chronos $now
+     * @return bool
+     */
+    protected function shouldPlayNowPerMinute(Chronos $now): bool
+    {
+        return !$this->wasPlayedInLastXMinutes($now, $this->getPlayPerMinutes());
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlayPerMinutes(): int
+    {
+        return $this->play_per_minutes;
+    }
+
+    /**
+     * @param int $play_per_minutes
+     */
+    public function setPlayPerMinutes(int $play_per_minutes): void
+    {
+        $this->play_per_minutes = $play_per_minutes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScheduleStartTime(): int
+    {
+        return (int)$this->schedule_start_time;
+    }
+
+    /**
+     * @param int $schedule_start_time
+     */
+    public function setScheduleStartTime(int $schedule_start_time): void
+    {
+        $this->schedule_start_time = $schedule_start_time;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScheduleEndTime(): int
+    {
+        return (int)$this->schedule_end_time;
+    }
+
+    /**
+     * @param int $schedule_end_time
+     */
+    public function setScheduleEndTime(int $schedule_end_time): void
+    {
+        $this->schedule_end_time = $schedule_end_time;
+    }
+
+    /**
      * Returns whether the playlist is scheduled to play once.
      *
      * @param Chronos $now
@@ -900,39 +876,85 @@ class StationPlaylist
     }
 
     /**
-     * @param array $songHistoryEntries
-     * @param int $length
+     * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
+     *
+     * @param int $day_to_check
      * @return bool
      */
-    protected function wasPlayedRecently(array $songHistoryEntries = [], $length = 15): bool
+    protected function isScheduledToPlayToday(int $day_to_check): bool
     {
-        if (empty($songHistoryEntries)) {
-            return true;
+        $play_once_days = $this->getScheduleDays();
+        return empty($play_once_days)
+            || in_array($day_to_check, $play_once_days);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getScheduleDays(): ?array
+    {
+        return (!empty($this->schedule_days)) ? explode(',', $this->schedule_days) : null;
+    }
+
+    /**
+     * @param array $schedule_days
+     */
+    public function setScheduleDays($schedule_days): void
+    {
+        $this->schedule_days = implode(',', (array)$schedule_days);
+    }
+
+    /**
+     * Returns whether the playlist is scheduled to play according to schedule rules.
+     *
+     * @param Chronos $now
+     * @return bool
+     */
+    protected function shouldPlayNowScheduled(Chronos $now): bool
+    {
+        $day_to_check = (int)$now->format('N');
+        $current_timecode = (int)$now->format('Hi');
+
+        $schedule_start_time = $this->getScheduleStartTime();
+        $schedule_end_time = $this->getScheduleEndTime();
+
+        // Special handling for playlists ending at midnight (hour code "000").
+        if (0 === $schedule_end_time) {
+            $schedule_end_time = 2400;
         }
 
-        // Check if already played
-        $relevant_song_history = array_slice($songHistoryEntries, 0, $length);
-
-        $was_played = false;
-        foreach($relevant_song_history as $sh_row) {
-            if ((int)$sh_row['playlist_id'] === $this->id) {
-                $was_played = true;
-                break;
+        // Handle overnight playlists that stretch into the next day.
+        if ($schedule_end_time < $schedule_start_time) {
+            if ($current_timecode <= $schedule_end_time) {
+                // Check the previous day, since it's before the end time.
+                $day_to_check = (1 === $day_to_check) ? 7 : $day_to_check - 1;
+            } else {
+                if ($current_timecode < $schedule_start_time) {
+                    // The playlist shouldn't be playing before the start time on the current date.
+                    return false;
+                }
+            }
+            // Non-overnight playlist check
+        } else {
+            if ($current_timecode < $schedule_start_time || $current_timecode > $schedule_end_time) {
+                return false;
             }
         }
 
-        reset($songHistoryEntries);
-        return $was_played;
-    }
-
-    protected function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
-    {
-        if (0 === $this->played_at) {
+        // Check that the current day is one of the scheduled play days.
+        if (!$this->isScheduledToPlayToday($day_to_check)) {
             return false;
         }
 
-        $threshold = $now->addMinutes(0-$minutes)->getTimestamp();
-        return ($this->played_at > $threshold);
+        return ($this->backendPlaySingleTrack())
+            ? !$this->wasPlayedInLastXMinutes($now, 720)
+            : true;
+    }
+
+    public function backendPlaySingleTrack(): bool
+    {
+        $backend_options = $this->getBackendOptions();
+        return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backend_options, true);
     }
 
     /**
@@ -945,10 +967,9 @@ class StationPlaylist
      */
     public function export($file_format = 'pls', $absolute_paths = false, $with_annotations = false): string
     {
-        $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir().'/' : '';
+        $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir() . '/' : '';
 
-        switch($file_format)
-        {
+        switch ($file_format) {
             case 'm3u':
                 $playlist_file = [];
                 foreach ($this->media_items as $media_item) {
@@ -967,39 +988,22 @@ class StationPlaylist
                 ];
 
                 $i = 0;
-                foreach($this->media_items as $media_item) {
+                foreach ($this->media_items as $media_item) {
                     $i++;
 
                     $media_file = $media_item->getMedia();
                     $media_file_path = $media_path . $media_file->getPath();
-                    $playlist_file[] = 'File'.$i.'='.$media_file_path;
-                    $playlist_file[] = 'Title'.$i.'='.$media_file->getArtist().' - '.$media_file->getTitle();
-                    $playlist_file[] = 'Length'.$i.'='.$media_file->getLength();
+                    $playlist_file[] = 'File' . $i . '=' . $media_file_path;
+                    $playlist_file[] = 'Title' . $i . '=' . $media_file->getArtist() . ' - ' . $media_file->getTitle();
+                    $playlist_file[] = 'Length' . $i . '=' . $media_file->getLength();
                     $playlist_file[] = '';
                 }
 
-                $playlist_file[] = 'NumberOfEntries='.$i;
+                $playlist_file[] = 'NumberOfEntries=' . $i;
                 $playlist_file[] = 'Version=2';
 
                 return implode("\n", $playlist_file);
                 break;
         }
-    }
-
-    /**
-     * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
-     *
-     * @param string|int $time_code
-     * @param Chronos|null $now
-     * @return Chronos
-     */
-    public static function getDateTime($time_code, Chronos $now = null): Chronos
-    {
-        if ($now === null) {
-            $now = Chronos::now(new \DateTimeZone('UTC'));
-        }
-
-        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
-        return $now->setTime(substr($time_code, 0, 2), substr($time_code, 2));
     }
 }

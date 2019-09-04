@@ -2,19 +2,10 @@
 namespace App\Radio\Backend;
 
 use App\Entity;
+use App\Radio\AbstractAdapter;
 
-abstract class AbstractBackend extends \App\Radio\AbstractAdapter
+abstract class AbstractBackend extends AbstractAdapter
 {
-    public function getStreamPort(Entity\Station $station)
-    {
-        return null;
-    }
-
-    public function getProgramName(Entity\Station $station): string
-    {
-        return 'station_' . $station->getId() . ':station_' . $station->getId() . '_backend';
-    }
-
     public static function supportsMedia(): bool
     {
         return true;
@@ -33,5 +24,15 @@ abstract class AbstractBackend extends \App\Radio\AbstractAdapter
     public static function supportsWebStreaming(): bool
     {
         return true;
+    }
+
+    public function getStreamPort(Entity\Station $station)
+    {
+        return null;
+    }
+
+    public function getProgramName(Entity\Station $station): string
+    {
+        return 'station_' . $station->getId() . ':station_' . $station->getId() . '_backend';
     }
 }

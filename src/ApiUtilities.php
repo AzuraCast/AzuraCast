@@ -55,7 +55,8 @@ class ApiUtilities
             $base_url = $this->router->getBaseUrl();
         }
 
-        $path = $this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], []);
+        $path = $this->router->named('api:stations:media:art',
+            ['station' => $station_id, 'media_id' => $media_unique_id], []);
         return UriResolver::resolve($base_url, $path);
     }
 
@@ -84,34 +85,34 @@ class ApiUtilities
 
         if (!isset($fields)) {
             $fields = [];
-            $fields_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
-                cf.id, cf.name, cf.short_name 
-                FROM App\Entity\CustomField cf 
+            $fields_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT
+                cf.id, cf.name, cf.short_name
+                FROM App\Entity\CustomField cf
                 ORDER BY cf.name ASC')
                 ->getArrayResult();
 
-            foreach($fields_raw as $row) {
+            foreach ($fields_raw as $row) {
                 $fields[$row['id']] = $row['short_name'] ?? Entity\Station::getStationShortName($row['name']);
             }
         }
 
         $media_fields = [];
         if ($media_id !== null) {
-            $media_fields_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
-                smcf.field_id, smcf.value 
-                FROM App\Entity\StationMediaCustomField smcf 
+            $media_fields_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT
+                smcf.field_id, smcf.value
+                FROM App\Entity\StationMediaCustomField smcf
                 WHERE smcf.media_id = :media_id')
                 ->setParameter('media_id', $media_id)
                 ->getArrayResult();
 
-            foreach($media_fields_raw as $row) {
+            foreach ($media_fields_raw as $row) {
                 $media_fields[$row['field_id']] = $row['value'];
             }
         }
 
         $custom_fields = [];
-        foreach($fields as $field_id => $field_key) {
-            $custom_fields[$field_key] = $media_fields[$field_id] ?? NULL;
+        foreach ($fields as $field_id => $field_key) {
+            $custom_fields[$field_key] = $media_fields[$field_id] ?? null;
         }
         return $custom_fields;
     }

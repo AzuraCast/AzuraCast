@@ -8,19 +8,6 @@ use OpenApi\Annotations as OA;
  */
 class Error
 {
-    public function __construct(
-        $code = 500,
-        $message = 'General Error',
-        $formatted_message = null,
-        $extra_data = [])
-    {
-        $this->code = (int)$code;
-        $this->message = (string)$message;
-        $this->formatted_message = (string)($formatted_message ?? $message);
-        $this->extra_data = (array)$extra_data;
-        $this->success = false;
-    }
-
     /**
      * The numeric code of the error.
      *
@@ -28,7 +15,6 @@ class Error
      * @var int
      */
     public $code;
-
     /**
      * The text description of the error.
      *
@@ -36,7 +22,6 @@ class Error
      * @var string
      */
     public $message;
-
     /**
      * The HTML-formatted text description of the error.
      *
@@ -44,7 +29,6 @@ class Error
      * @var string
      */
     public $formatted_message;
-
     /**
      * Stack traces and other supplemental data.
      *
@@ -52,7 +36,6 @@ class Error
      * @var array
      */
     public $extra_data;
-
     /**
      * Used for API calls that expect an \Entity\Api\Status type response.
      *
@@ -60,4 +43,17 @@ class Error
      * @var bool
      */
     public $success;
+
+    public function __construct(
+        $code = 500,
+        $message = 'General Error',
+        $formatted_message = null,
+        $extra_data = []
+    ) {
+        $this->code = (int)$code;
+        $this->message = (string)$message;
+        $this->formatted_message = (string)($formatted_message ?? $message);
+        $this->extra_data = (array)$extra_data;
+        $this->success = false;
+    }
 }

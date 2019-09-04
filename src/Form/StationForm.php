@@ -72,14 +72,15 @@ class StationForm extends EntityForm
         $this->can_see_administration = $this->acl->userAllowed($user, Acl::GLOBAL_STATIONS);
 
         if (!$this->can_see_administration) {
-            foreach($this->options['groups']['admin']['elements'] as $element_key => $element_info) {
+            foreach ($this->options['groups']['admin']['elements'] as $element_key => $element_info) {
                 unset($this->fields[$element_key]);
             }
             unset($this->options['groups']['admin']);
         }
 
         if (!SHOUTcast::isInstalled()) {
-            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', $request->getRouter()->named('admin:install:shoutcast'));
+            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
+                $request->getRouter()->named('admin:install:shoutcast'));
         }
 
         $create_mode = (null === $record);
@@ -93,7 +94,7 @@ class StationForm extends EntityForm
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {
-                foreach($errors as $error) {
+                foreach ($errors as $error) {
                     /** @var ConstraintViolation $error */
                     $field_name = $error->getPropertyPath();
 

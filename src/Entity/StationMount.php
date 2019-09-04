@@ -1,9 +1,9 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
@@ -194,57 +194,6 @@ class StationMount implements StationMountInterface
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Station
-     */
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $new_name
-     */
-    public function setName(string $new_name): void
-    {
-        // Ensure all mount point names start with a leading slash.
-        $this->name = $this->_truncateString('/' . ltrim($new_name, '/'), 100);
-    }
-
-    /**
-     * @AuditLog\AuditIdentifier
-     *
-     * @return string
-     */
-    public function getDisplayName(): string
-    {
-        if (!empty($this->display_name)) {
-            return $this->display_name;
-        }
-
-        if ($this->enable_autodj) {
-            return $this->autodj_bitrate.'kbps '.strtoupper($this->autodj_format);
-        }
-
-        return $this->name;
-    }
-
-    /**
-     * @param string|null $display_name
-     */
-    public function setDisplayName(?string $display_name): void
-    {
-        $this->display_name = $this->_truncateString($display_name);
     }
 
     /**
@@ -459,10 +408,6 @@ class StationMount implements StationMountInterface
         $this->listeners_total = $listeners_total;
     }
 
-    /*
-     * StationMountInterface compliance methods
-     */
-
     /** @inheritdoc */
     public function getAutodjHost(): ?string
     {
@@ -474,6 +419,14 @@ class StationMount implements StationMountInterface
     {
         $fe_settings = (array)$this->getStation()->getFrontendConfig();
         return $fe_settings['port'];
+    }
+
+    /**
+     * @return Station
+     */
+    public function getStation(): Station
+    {
+        return $this->station;
     }
 
     /** @inheritdoc */
@@ -489,10 +442,31 @@ class StationMount implements StationMountInterface
         return $fe_settings['source_pw'];
     }
 
+    /*
+     * StationMountInterface compliance methods
+     */
+
     /** @inheritdoc */
     public function getAutodjMount(): ?string
     {
         return $this->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $new_name
+     */
+    public function setName(string $new_name): void
+    {
+        // Ensure all mount point names start with a leading slash.
+        $this->name = $this->_truncateString('/' . ltrim($new_name, '/'), 100);
     }
 
     /** @inheritdoc */
@@ -532,5 +506,31 @@ class StationMount implements StationMountInterface
         }
 
         return $response;
+    }
+
+    /**
+     * @AuditLog\AuditIdentifier
+     *
+     * @return string
+     */
+    public function getDisplayName(): string
+    {
+        if (!empty($this->display_name)) {
+            return $this->display_name;
+        }
+
+        if ($this->enable_autodj) {
+            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format);
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $display_name
+     */
+    public function setDisplayName(?string $display_name): void
+    {
+        $this->display_name = $this->_truncateString($display_name);
     }
 }

@@ -6,8 +6,11 @@ use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Sync\Task\Media;
+use App\Utilities;
 use Azura\Doctrine\Repository;
+use Closure;
 use DI\Annotation\Inject;
+use Exception;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -48,18 +51,18 @@ class StationRepository extends Repository
      */
     public function fetchAll()
     {
-        return $this->_em->createQuery(/** @lang DQL */'SELECT s FROM App\Entity\Station s ORDER BY s.name ASC')
+        return $this->_em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s ORDER BY s.name ASC')
             ->execute();
     }
 
     /**
      * @param bool $add_blank
-     * @param \Closure|NULL $display
+     * @param Closure|NULL $display
      * @param string $pk
      * @param string $order_by
      * @return array
      */
-    public function fetchSelect($add_blank = false, \Closure $display = null, $pk = 'id', $order_by = 'name')
+    public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name')
     {
         $select = [];
 
@@ -117,6 +120,35 @@ class StationRepository extends Repository
     }
 
     /**
+     * Reset mount points to their adapter defaults (in the event of an adapter change).
+     *
+     * @param Entity\Station $station
+     * @param AbstractFrontend $frontend_adapter
+     */
+    public function resetMounts(Entity\Station $station, AbstractFrontend $frontend_adapter): void
+    {
+        foreach ($station->getMounts() as $mount) {
+            $this->_em->remove($mount);
+        }
+
+        // Create default mountpoints if station supports them.
+        if ($frontend_adapter::supportsMounts()) {
+            // Create default mount points.
+            $mount_points = $frontend_adapter::getDefaultMounts();
+
+            foreach ($mount_points as $mount_point) {
+                $mount_record = new Entity\StationMount($station);
+                $this->fromArray($mount_record, $mount_point);
+
+                $this->_em->persist($mount_record);
+            }
+        }
+
+        $this->_em->flush();
+        $this->_em->refresh($station);
+    }
+
+    /**
      * Handle tasks necessary to a station's creation.
      *
      * @param Entity\Station $station
@@ -163,37 +195,8 @@ class StationRepository extends Repository
     }
 
     /**
-     * Reset mount points to their adapter defaults (in the event of an adapter change).
-     *
      * @param Entity\Station $station
-     * @param AbstractFrontend $frontend_adapter
-     */
-    public function resetMounts(Entity\Station $station, AbstractFrontend $frontend_adapter): void
-    {
-        foreach($station->getMounts() as $mount) {
-            $this->_em->remove($mount);
-        }
-
-        // Create default mountpoints if station supports them.
-        if ($frontend_adapter::supportsMounts()) {
-            // Create default mount points.
-            $mount_points = $frontend_adapter::getDefaultMounts();
-
-            foreach ($mount_points as $mount_point) {
-                $mount_record = new Entity\StationMount($station);
-                $this->fromArray($mount_record, $mount_point);
-
-                $this->_em->persist($mount_record);
-            }
-        }
-
-        $this->_em->flush();
-        $this->_em->refresh($station);
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @throws \Exception
+     * @throws Exception
      */
     public function destroy(Entity\Station $station): void
     {
@@ -201,7 +204,7 @@ class StationRepository extends Repository
 
         // Remove media folders.
         $radio_dir = $station->getRadioBaseDir();
-        \App\Utilities::rmdirRecursive($radio_dir);
+        Utilities::rmdirRecursive($radio_dir);
 
         // Save changes and continue to the last setup step.
         $this->_em->remove($station);

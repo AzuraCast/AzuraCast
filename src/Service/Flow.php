@@ -27,8 +27,11 @@ namespace App\Service;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Azura\Exception;
+use Azura\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use const SCANDIR_SORT_NONE;
 
 class Flow
 {
@@ -46,14 +49,14 @@ class Flow
         string $temp_dir = null
     ) {
         if (null === $temp_dir) {
-            $temp_dir = sys_get_temp_dir().'/uploads/';
+            $temp_dir = sys_get_temp_dir() . '/uploads/';
         }
 
         $params = $request->getParams();
 
         $flowIdentifier = $params['flowIdentifier'] ?? '';
         $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
-        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier ?: 'upload-'.date('Ymd'));
+        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier ?: 'upload-' . date('Ymd'));
 
         // init the destination file (format <filename.ext>.part<#chunk>
         $chunkBaseDir = $temp_dir . '/' . $flowIdentifier;
@@ -83,7 +86,7 @@ class Flow
             foreach ($files as $file) {
                 /** @var UploadedFileInterface $file */
                 if ($file->getError() !== UPLOAD_ERR_OK) {
-                    throw new \Azura\Exception('Error ' . $file->getError() . ' in file ' . $flowFilename);
+                    throw new Exception('Error ' . $file->getError() . ' in file ' . $flowFilename);
                 }
 
                 // the file is stored in a temporary directory
@@ -92,14 +95,15 @@ class Flow
                 }
 
                 if ($file->getSize() !== $currentChunkSize) {
-                    throw new \Azura\Exception('File size of '.$file->getSize().' does not match expected size of '.$currentChunkSize);
+                    throw new Exception('File size of ' . $file->getSize() . ' does not match expected size of ' . $currentChunkSize);
                 }
 
                 $file->moveTo($chunkPath);
             }
 
             if (self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
-                return self::createFileFromChunks($temp_dir, $chunkBaseDir, $flowIdentifier, $flowFilename, $targetChunks);
+                return self::createFileFromChunks($temp_dir, $chunkBaseDir, $flowIdentifier, $flowFilename,
+                    $targetChunks);
             }
 
             // Return an OK status to indicate that the chunk upload itself succeeded.
@@ -125,8 +129,8 @@ class Flow
         $chunkSize = 0;
         $chunkNumber = 0;
 
-        foreach (array_diff(scandir($chunkBaseDir, \SCANDIR_SORT_NONE), array('.', '..')) as $file) {
-            $chunkSize += filesize($chunkBaseDir.'/'.$file);
+        foreach (array_diff(scandir($chunkBaseDir, SCANDIR_SORT_NONE), ['.', '..']) as $file) {
+            $chunkSize += filesize($chunkBaseDir . '/' . $file);
             $chunkNumber++;
         }
 
@@ -151,13 +155,13 @@ class Flow
         string $originalFileName,
         int $numChunks
     ): array {
-        $originalFileName = \Azura\File::sanitizeFileName(basename($originalFileName));
-        $finalPath = $tempDir.'/'.$originalFileName;
+        $originalFileName = File::sanitizeFileName(basename($originalFileName));
+        $finalPath = $tempDir . '/' . $originalFileName;
 
         $fp = fopen($finalPath, 'w+');
 
         for ($i = 1; $i <= $numChunks; $i++) {
-            fwrite($fp, file_get_contents($chunkBaseDir.'/'.$chunkIdentifier.'.part'.$i));
+            fwrite($fp, file_get_contents($chunkBaseDir . '/' . $chunkIdentifier . '.part' . $i));
         }
 
         fclose($fp);
@@ -171,9 +175,9 @@ class Flow
         }
 
         return [
-            'path'      => $finalPath,
-            'filename'  => $originalFileName,
-            'size'      => filesize($finalPath),
+            'path' => $finalPath,
+            'filename' => $originalFileName,
+            'size' => filesize($finalPath),
         ];
     }
 
@@ -185,7 +189,7 @@ class Flow
     protected static function rrmdir($dir): void
     {
         if (is_dir($dir)) {
-            $objects = array_diff(scandir($dir, \SCANDIR_SORT_NONE), array('.', '..'));
+            $objects = array_diff(scandir($dir, SCANDIR_SORT_NONE), ['.', '..']);
             foreach ($objects as $object) {
                 if (is_dir($dir . '/' . $object)) {
                     self::rrmdir($dir . '/' . $object);

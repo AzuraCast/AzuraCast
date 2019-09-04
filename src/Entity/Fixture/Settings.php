@@ -10,7 +10,7 @@ class Settings extends AbstractFixture
     public function load(ObjectManager $em)
     {
         $settings = [
-            Entity\Settings::BASE_URL   => getenv('INIT_BASE_URL') ?? 'docker.local',
+            Entity\Settings::BASE_URL => getenv('INIT_BASE_URL') ?? 'docker.local',
             Entity\Settings::INSTANCE_NAME => getenv('INIT_INSTANCE_NAME') ?? 'local test',
             Entity\Settings::PREFER_BROWSER_URL => 1,
             Entity\Settings::SETUP_COMPLETE => time(),
@@ -23,7 +23,7 @@ class Settings extends AbstractFixture
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $em->getRepository(Entity\Settings::class);
 
-        foreach($settings as $setting_key => $setting_value) {
+        foreach ($settings as $setting_key => $setting_value) {
             $settings_repo->setSetting($setting_key, $setting_value);
         }
     }

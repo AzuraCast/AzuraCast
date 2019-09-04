@@ -5,6 +5,7 @@ namespace App\Controller\Stations\Reports;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Sync\Task\RadioAutomation;
+use Azura\Utilities\Csv;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -26,8 +27,12 @@ class PerformanceController
         $this->sync_automation = $sync_automation;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id, $format = 'html'): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $format = 'html'
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $automation_config = (array)$station->getAutomationSettings();
@@ -58,7 +63,7 @@ class PerformanceController
                     'Play Count',
                     'Play Percentage',
                     'Weighted Ratio',
-                ]
+                ],
             ];
 
             foreach ($report_data as $row) {
@@ -79,7 +84,7 @@ class PerformanceController
                 ];
             }
 
-            $csv_file = \Azura\Utilities\Csv::arrayToCsv($export_csv);
+            $csv_file = Csv::arrayToCsv($export_csv);
             $csv_filename = $station->getShortName() . '_media_' . date('Ymd') . '.csv';
 
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);

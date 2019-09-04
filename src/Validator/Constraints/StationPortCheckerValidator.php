@@ -41,7 +41,7 @@ class StationPortCheckerValidator extends ConstraintValidator
 
         $used_ports = $this->configuration->getUsedPorts($station);
 
-        foreach($ports_to_check as $port_path => $value) {
+        foreach ($ports_to_check as $port_path => $value) {
             if (null === $value || '' === $value) {
                 continue;
             }
@@ -53,9 +53,9 @@ class StationPortCheckerValidator extends ConstraintValidator
                     ->addViolation();
             }
 
-            if ($port_path === 'backend_config_dj_port' && isset($used_ports[$port+1])) {
+            if ($port_path === 'backend_config_dj_port' && isset($used_ports[$port + 1])) {
                 $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ port }}', sprintf('%s (%s + 1)', $port+1, $port))
+                    ->setParameter('{{ port }}', sprintf('%s (%s + 1)', $port + 1, $port))
                     ->addViolation();
             }
         }

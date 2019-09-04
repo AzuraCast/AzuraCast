@@ -29,8 +29,8 @@ class EntityFormManager
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        array $custom_forms)
-    {
+        array $custom_forms
+    ) {
         $this->em = $em;
         $this->serializer = $serializer;
         $this->validator = $validator;

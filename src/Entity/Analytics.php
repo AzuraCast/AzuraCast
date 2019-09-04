@@ -81,8 +81,14 @@ class Analytics
      * @param int $number_max
      * @param int $number_avg
      */
-    public function __construct(Station $station = null, $type = 'day', $timestamp = null, $number_min = 0, $number_max = 0, $number_avg = 0)
-    {
+    public function __construct(
+        Station $station = null,
+        $type = 'day',
+        $timestamp = null,
+        $number_min = 0,
+        $number_max = 0,
+        $number_avg = 0
+    ) {
         $this->station = $station;
         $this->type = $type;
         $this->timestamp = $timestamp ?? time();
@@ -114,6 +120,7 @@ class Analytics
     {
         return $this->timestamp;
     }
+
     /**
      * @return int
      */
@@ -121,6 +128,7 @@ class Analytics
     {
         return $this->number_min;
     }
+
     /**
      * @return int
      */

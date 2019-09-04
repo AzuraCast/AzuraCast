@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;

@@ -2,6 +2,7 @@
 namespace App\Middleware\Module;
 
 use App\Http\ServerRequest;
+use Azura\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -20,12 +21,12 @@ class StationFiles
         $backend = $request->getStationBackend();
 
         if (!$backend::supportsMedia()) {
-            throw new \Azura\Exception(__('This feature is not currently supported on this station.'));
+            throw new Exception(__('This feature is not currently supported on this station.'));
         }
 
         $params = $request->getParams();
         $file = $params['file'] ?? '';
-        $file_path = 'media://'.$file;
+        $file_path = 'media://' . $file;
 
         $request = $request->withAttribute('file', $file)
             ->withAttribute('file_path', $file_path);

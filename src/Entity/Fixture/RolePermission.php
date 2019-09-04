@@ -24,11 +24,11 @@ class RolePermission extends AbstractFixture implements DependentFixtureInterfac
             ],
         ];
 
-        foreach($permissions as $role_reference => $perm_names) {
+        foreach ($permissions as $role_reference => $perm_names) {
             /** @var Entity\Role $role */
             $role = $this->getReference($role_reference);
 
-            foreach($perm_names as $perm_name) {
+            foreach ($perm_names as $perm_name) {
                 $rp = new Entity\RolePermission($role, $perm_name[1], $perm_name[0]);
                 $em->persist($rp);
             }
@@ -40,7 +40,7 @@ class RolePermission extends AbstractFixture implements DependentFixtureInterfac
     public function getDependencies()
     {
         return [
-            Role::class
+            Role::class,
         ];
     }
 }

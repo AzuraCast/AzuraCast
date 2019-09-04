@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Api;
 
-
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
 use Azura\Settings;
 use Psr\Http\Message\ResponseInterface;
+use function OpenApi\scan;
 
 class OpenApiController
 {
@@ -37,7 +37,7 @@ class OpenApiController
         define('AZURACAST_API_NAME', 'This AzuraCast Installation');
         define('AZURACAST_VERSION', $this->version->getVersion());
 
-        $oa = \OpenApi\scan([
+        $oa = scan([
             $this->settings[Settings::BASE_DIR] . '/util/openapi.php',
             $this->settings[Settings::BASE_DIR] . '/src/Entity',
             $this->settings[Settings::BASE_DIR] . '/src/Controller/Api',
@@ -45,7 +45,7 @@ class OpenApiController
             'exclude' => [
                 'bootstrap',
                 'locale',
-                'templates'
+                'templates',
             ],
         ]);
 

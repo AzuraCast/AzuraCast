@@ -88,9 +88,9 @@ class EnforceSecurity implements MiddlewareInterface
             $csp_script_src = (array)$this->assets->getCspDomains();
             $csp_script_src[] = "'self'";
             $csp_script_src[] = "'unsafe-eval'";
-            $csp_script_src[] = "'nonce-".$this->assets->getCspNonce()."'";
+            $csp_script_src[] = "'nonce-" . $this->assets->getCspNonce() . "'";
 
-            $csp[] = "script-src ".implode(' ', $csp_script_src);
+            $csp[] = "script-src " . implode(' ', $csp_script_src);
 
             $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
         }

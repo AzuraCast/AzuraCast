@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Exception\StationUnsupported;
 use App\Form\StationMountForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -24,7 +25,7 @@ class MountsController extends AbstractStationCrudController
         $frontend = $request->getStationFrontend();
 
         if (!$frontend::supportsMounts()) {
-            throw new \App\Exception\StationUnsupported(__('This feature is not currently supported on this station.'));
+            throw new StationUnsupported(__('This feature is not currently supported on this station.'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/mounts/index', [
@@ -44,12 +45,17 @@ class MountsController extends AbstractStationCrudController
         return $request->getView()->renderToResponse($response, 'stations/mounts/edit', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => $id ? __('Edit Mount Point') : __('Add Mount Point')
+            'title' => $id ? __('Edit Mount Point') : __('Add Mount Point'),
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $id,
+        $csrf_token
+    ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('Mount Point deleted.') . '</b>', 'green');

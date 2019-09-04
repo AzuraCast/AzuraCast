@@ -16,7 +16,7 @@ class Generic extends AbstractConnector
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -31,7 +31,7 @@ class Generic extends AbstractConnector
             if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {
                 $request_options['auth'] = [
                     $config['basic_auth_username'],
-                    $config['basic_auth_password']
+                    $config['basic_auth_password'],
                 ];
             }
 
@@ -41,7 +41,7 @@ class Generic extends AbstractConnector
                 sprintf('Generic webhook returned code %d', $response->getStatusCode()),
                 ['response_body' => $response->getBody()->getContents()]
             );
-        } catch(TransferException $e) {
+        } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from generic webhook (%d): %s', $e->getCode(), $e->getMessage()));
         }
     }

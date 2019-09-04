@@ -73,8 +73,8 @@ class Api
                     $origins = array_map('trim', explode(',', $acao_header));
 
                     $base_url = $this->settings_repo->getSetting(Entity\Settings::BASE_URL);
-                    $origins[] = 'http://'.$base_url;
-                    $origins[] = 'https://'.$base_url;
+                    $origins[] = 'http://' . $base_url;
+                    $origins[] = 'https://' . $base_url;
 
                     if (in_array($origin, $origins, true)) {
                         $response
@@ -83,11 +83,13 @@ class Api
                     }
                 }
             }
-        } else if ($api_user instanceof Entity\User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
-            // Default behavior:
-            // Only set global CORS for GET requests and API-authenticated requests;
-            // Session-authenticated, non-GET requests should only be made in a same-host situation.
-            $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+        } else {
+            if ($api_user instanceof Entity\User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
+                // Default behavior:
+                // Only set global CORS for GET requests and API-authenticated requests;
+                // Session-authenticated, non-GET requests should only be made in a same-host situation.
+                $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+            }
         }
 
         if ($response instanceof Response) {

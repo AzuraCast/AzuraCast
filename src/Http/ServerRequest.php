@@ -35,9 +35,9 @@ class ServerRequest extends \Azura\Http\ServerRequest
 
     /**
      * Get the current user associated with the request, if it's set.
-     * Set by @see \App\Middleware\GetCurrentUser
+     * Set by @return Entity\User
+     * @see \App\Middleware\GetCurrentUser
      *
-     * @return Entity\User
      */
     public function getUser(): Entity\User
     {
@@ -46,10 +46,10 @@ class ServerRequest extends \Azura\Http\ServerRequest
 
     /**
      * Get the current station associated with the request, if it's set.
-     * Set by @see \App\Middleware\GetStation
-     *
-     * @return Entity\Station
+     * Set by @return Entity\Station
      * @throws Exception
+     * @see \App\Middleware\GetStation
+     *
      */
     public function getStation(): Entity\Station
     {
@@ -58,10 +58,10 @@ class ServerRequest extends \Azura\Http\ServerRequest
 
     /**
      * Get the current station frontend associated with the request, if it's set.
-     * Set by @see \App\Middleware\GetStation
-     *
-     * @return Radio\Frontend\AbstractFrontend
+     * Set by @return Radio\Frontend\AbstractFrontend
      * @throws Exception
+     * @see \App\Middleware\GetStation
+     *
      */
     public function getStationFrontend(): Radio\Frontend\AbstractFrontend
     {
@@ -70,10 +70,10 @@ class ServerRequest extends \Azura\Http\ServerRequest
 
     /**
      * Get the current station backend associated with the request, if it's set.
-     * Set by @see \App\Middleware\GetStation
-     *
-     * @return Radio\Backend\AbstractBackend
+     * Set by @return Radio\Backend\AbstractBackend
      * @throws Exception
+     * @see \App\Middleware\GetStation
+     *
      */
     public function getStationBackend(): Radio\Backend\AbstractBackend
     {

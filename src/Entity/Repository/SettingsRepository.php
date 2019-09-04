@@ -18,7 +18,7 @@ class SettingsRepository extends Repository
         $all_records_raw = $this->findAll();
 
         $all_records = [];
-        foreach($all_records_raw as $record) {
+        foreach ($all_records_raw as $record) {
             /** @var Entity\Settings $record */
             $all_records[$record->getSettingKey()] = $record;
         }
@@ -64,50 +64,17 @@ class SettingsRepository extends Repository
 
     /**
      * @param string $key
-     * @param mixed $value
-     */
-    public function setSetting($key, $value): void
-    {
-        $record = $this->findOneBy(['setting_key' => $key]);
-
-        if (!$record instanceof Entity\Settings) {
-            $record = new Entity\Settings($key);
-        }
-
-        $record->setSettingValue($value);
-        $this->_em->persist($record);
-        $this->_em->flush($record);
-
-        // Update cached value
-        self::$settings[$key] = $value;
-    }
-
-    /**
-     * @param string $key
      */
     public function deleteSetting($key): void
     {
-       $record = $this->findOneBy(['setting_key' => $key]);
+        $record = $this->findOneBy(['setting_key' => $key]);
 
-       if ($record instanceof Entity\Settings)
-       {
-           $this->_em->remove($record);
-           $this->_em->flush($record);
-       }
+        if ($record instanceof Entity\Settings) {
+            $this->_em->remove($record);
+            $this->_em->flush($record);
+        }
 
-       unset(self::$settings[$key]);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed|null $default_value
-     * @param bool $cached
-     * @return mixed|null
-     */
-    public function getSetting($key, $default_value = null, $cached = true)
-    {
-        $settings = $this->fetchArray($cached);
-        return $settings[$key] ?? $default_value;
+        unset(self::$settings[$key]);
     }
 
     /**
@@ -127,6 +94,15 @@ class SettingsRepository extends Repository
     }
 
     /**
+     * Force a clearing of the cache.
+     */
+    public function clearCache(): void
+    {
+        // Regenerate cache and flush static value.
+        $this->fetchArray(false);
+    }
+
+    /**
      * @param bool $cached
      * @param null $order_by
      * @param string $order_dir
@@ -135,7 +111,7 @@ class SettingsRepository extends Repository
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
         if (!self::$settings || !$cached) {
-            $settings_raw = $this->_em->createQuery(/** @lang DQL */'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC')
+            $settings_raw = $this->_em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC')
                 ->getArrayResult();
 
             self::$settings = [];
@@ -145,15 +121,6 @@ class SettingsRepository extends Repository
         }
 
         return self::$settings;
-    }
-
-    /**
-     * Force a clearing of the cache.
-     */
-    public function clearCache(): void
-    {
-        // Regenerate cache and flush static value.
-        $this->fetchArray(false);
     }
 
     /**
@@ -171,5 +138,37 @@ class SettingsRepository extends Repository
         $this->setSetting(Entity\Settings::UNIQUE_IDENTIFIER, $app_uuid);
 
         return $app_uuid;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed|null $default_value
+     * @param bool $cached
+     * @return mixed|null
+     */
+    public function getSetting($key, $default_value = null, $cached = true)
+    {
+        $settings = $this->fetchArray($cached);
+        return $settings[$key] ?? $default_value;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setSetting($key, $value): void
+    {
+        $record = $this->findOneBy(['setting_key' => $key]);
+
+        if (!$record instanceof Entity\Settings) {
+            $record = new Entity\Settings($key);
+        }
+
+        $record->setSettingValue($value);
+        $this->_em->persist($record);
+        $this->_em->flush($record);
+
+        // Update cached value
+        self::$settings[$key] = $value;
     }
 }

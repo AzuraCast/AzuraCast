@@ -5,6 +5,7 @@ use App\Entity;
 use App\Radio\Adapters;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use RuntimeException;
 
 class Station extends AbstractFixture
 {
@@ -29,7 +30,7 @@ class Station extends AbstractFixture
         ];
         foreach ($radio_dirs as $radio_dir) {
             if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
             }
         }
 

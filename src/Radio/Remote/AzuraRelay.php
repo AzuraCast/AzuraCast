@@ -2,10 +2,8 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
-use Doctrine\ORM\EntityManager;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
-use Monolog\Logger;
+use InvalidArgumentException;
 
 class AzuraRelay extends AbstractRemote
 {
@@ -15,7 +13,7 @@ class AzuraRelay extends AbstractRemote
         $relay = $remote->getRelay();
 
         if (!$relay instanceof Entity\Relay) {
-            throw new \InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
+            throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
         $relay_np = $relay->getNowplaying();
@@ -47,7 +45,7 @@ class AzuraRelay extends AbstractRemote
         $relay = $remote->getRelay();
 
         if (!$relay instanceof Entity\Relay) {
-            throw new \InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
+            throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
         $base_url = new Uri($relay->getBaseUrl());
@@ -60,12 +58,12 @@ class AzuraRelay extends AbstractRemote
 
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
-        if ( $use_radio_proxy
+        if ($use_radio_proxy
             || (!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER)
             || 'https' === $base_url->getScheme()) {
             // Web proxy support.
             return (string)$base_url
-                ->withPath($base_url->getPath().'/radio/' . $radio_port . $remote->getMount());
+                ->withPath($base_url->getPath() . '/radio/' . $radio_port . $remote->getMount());
         } else {
             // Remove port number and other decorations.
             return (string)$base_url

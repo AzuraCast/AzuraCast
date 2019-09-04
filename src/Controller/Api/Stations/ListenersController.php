@@ -6,8 +6,11 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use MaxMind\Db\Reader;
+use Mobile_Detect;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -52,20 +55,20 @@ class ListenersController
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $station_tz = new \DateTimeZone($station->getTimezone());
+        $station_tz = new DateTimeZone($station->getTimezone());
 
         $params = $request->getQueryParams();
 
         if (!empty($params['start'])) {
-            $start = Chronos::parse($params['start'].' 00:00:00', $station_tz);
+            $start = Chronos::parse($params['start'] . ' 00:00:00', $station_tz);
             $start_timestamp = $start->getTimestamp();
 
-            $end = Chronos::parse(($params['end'] ?? $params['start']).' 23:59:59', $station_tz);
+            $end = Chronos::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
             $end_timestamp = $end->getTimestamp();
 
-            $range = $start->format('Ymd').'_to_'.$end->format('Ymd');
+            $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');
 
-            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */'SELECT 
+            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT 
                 l 
                 FROM App\Entity\Listener l
                 WHERE l.station_id = :station_id
@@ -77,7 +80,7 @@ class ListenersController
                 ->getArrayResult();
 
             $listeners_raw = [];
-            foreach($listeners_unsorted as $listener) {
+            foreach ($listeners_unsorted as $listener) {
 
                 $hash = $listener['listener_hash'];
                 if (!isset($listeners_raw[$hash])) {
@@ -100,7 +103,7 @@ class ListenersController
         } else {
             $range = 'live';
 
-            $listeners_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
+            $listeners_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
                 l 
                 FROM App\Entity\Listener l
                 WHERE l.station_id = :station_id
@@ -109,7 +112,7 @@ class ListenersController
                 ->getArrayResult();
         }
 
-        $detect = new \Mobile_Detect;
+        $detect = new Mobile_Detect;
         $locale = $request->getAttribute('locale');
 
         $format = $params['format'] ?? 'json';
@@ -139,7 +142,7 @@ class ListenersController
                 ];
 
                 if ('success' === $location['status']) {
-                    $export_row[] = $location['region'].', '.$location['country'];
+                    $export_row[] = $location['region'] . ', ' . $location['country'];
                     $export_row[] = $location['country'];
                     $export_row[] = $location['region'];
                     $export_row[] = $location['city'];
@@ -160,7 +163,7 @@ class ListenersController
         }
 
         $listeners = [];
-        foreach($listeners_raw as $listener) {
+        foreach ($listeners_raw as $listener) {
             $api = new Entity\Api\Listener;
             $api->ip = (string)$listener['listener_ip'];
             $api->user_agent = (string)$listener['listener_user_agent'];
@@ -179,7 +182,7 @@ class ListenersController
     {
         try {
             $ip_info = $this->geoip->get($ip);
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             return [
                 'status' => 'error',
                 'message' => $e->getMessage(),

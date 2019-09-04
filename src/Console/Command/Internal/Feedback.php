@@ -5,6 +5,7 @@ use App\Entity;
 use App\Sync\Task\NowPlaying;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -63,15 +64,15 @@ class Feedback extends CommandAbstract
             $sync_nowplaying = $this->get(NowPlaying::class);
 
             $sync_nowplaying->queueStation($station, [
-                'song_id'   => $input->getOption('song'),
-                'media_id'  => $input->getOption('media'),
+                'song_id' => $input->getOption('song'),
+                'media_id' => $input->getOption('media'),
                 'playlist_id' => $input->getOption('playlist'),
             ]);
 
             $output->write('OK');
             return null;
-        } catch (\Exception $e) {
-            $output->write('Error: '.$e->getMessage());
+        } catch (Exception $e) {
+            $output->write('Error: ' . $e->getMessage());
             return 1;
         }
     }

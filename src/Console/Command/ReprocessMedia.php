@@ -4,6 +4,7 @@ namespace App\Console\Command;
 use App\Entity;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -37,13 +38,13 @@ class ReprocessMedia extends CommandAbstract
             /** @var Entity\Station $station */
             $output->writeLn('Processing media for station: ' . $station->getName());
 
-            foreach($station->getMedia() as $media) {
+            foreach ($station->getMedia() as $media) {
                 /** @var Entity\StationMedia $media */
                 try {
                     $media_repo->processMedia($media, true);
-                    $output->writeLn('Processed: '.$media->getPath());
-                } catch (\Exception $e) {
-                    $output->writeLn('Could not read source file for: '.$media->getPath().' - '.$e->getMessage());
+                    $output->writeLn('Processed: ' . $media->getPath());
+                } catch (Exception $e) {
+                    $output->writeLn('Could not read source file for: ' . $media->getPath() . ' - ' . $e->getMessage());
                     continue;
                 }
             }

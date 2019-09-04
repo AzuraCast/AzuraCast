@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use App\Customization;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
@@ -10,10 +11,10 @@ use App\Validator\Constraints as AppAssert;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -419,32 +420,12 @@ class Station
     }
 
     /**
-     * @return null|string
+     * @param string $name
+     * @return string
      */
-    public function getShortName(): ?string
+    public static function getStationShortName($name): string
     {
-        return (!empty($this->short_name))
-            ? $this->short_name
-            : self::getStationShortName($this->name);
-    }
-
-    /**
-     * @param null|string $short_name
-     */
-    public function setShortName(?string $short_name): void
-    {
-        $short_name = trim($short_name);
-        if (!empty($short_name)) {
-            $this->short_name = $this->_truncateString($short_name, 100);
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled(): bool
-    {
-        return $this->is_enabled;
+        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
     }
 
     /**
@@ -486,7 +467,7 @@ class Station
     public function setFrontendConfig(array $frontend_config, $force_overwrite = false): void
     {
         $config = ($force_overwrite) ? [] : (array)$this->frontend_config;
-        foreach($frontend_config as $cfg_key => $cfg_val) {
+        foreach ($frontend_config as $cfg_key => $cfg_val) {
             $config[$cfg_key] = $cfg_val;
         }
 
@@ -506,7 +487,7 @@ class Station
     {
         $frontend_config = (array)$this->frontend_config;
 
-        foreach($default_config as $config_key => $config_value) {
+        foreach ($default_config as $config_key => $config_value) {
             if (empty($frontend_config[$config_key])) {
                 $frontend_config[$config_key] = $config_value;
             }
@@ -529,32 +510,6 @@ class Station
     public function setBackendType(string $backend_type = null): void
     {
         $this->backend_type = $backend_type;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getBackendConfig(): ?array
-    {
-        return $this->backend_config;
-    }
-
-    /**
-     * @param array $backend_config
-     * @param bool $force_overwrite
-     */
-    public function setBackendConfig(array $backend_config, $force_overwrite = false): void
-    {
-        $config = ($force_overwrite) ? [] : (array)$this->backend_config;
-        foreach($backend_config as $cfg_key => $cfg_val) {
-            $config[$cfg_key] = $cfg_val;
-        }
-
-        if ($this->backend_config != $config) {
-            $this->setNeedsRestart(true);
-        }
-
-        $this->backend_config = $config;
     }
 
     /**
@@ -582,6 +537,32 @@ class Station
     {
         $settings = (array)$this->getBackendConfig();
         return (bool)($settings['use_manual_autodj'] ?? false);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getBackendConfig(): ?array
+    {
+        return $this->backend_config;
+    }
+
+    /**
+     * @param array $backend_config
+     * @param bool $force_overwrite
+     */
+    public function setBackendConfig(array $backend_config, $force_overwrite = false): void
+    {
+        $config = ($force_overwrite) ? [] : (array)$this->backend_config;
+        foreach ($backend_config as $cfg_key => $cfg_val) {
+            $config[$cfg_key] = $cfg_val;
+        }
+
+        if ($this->backend_config != $config) {
+            $this->setNeedsRestart(true);
+        }
+
+        $this->backend_config = $config;
     }
 
     /**
@@ -678,19 +659,9 @@ class Station
     /**
      * @return string
      */
-    public function getRadioMediaDir(): string
-    {
-        return (!empty($this->radio_media_dir))
-            ? $this->radio_media_dir
-            : $this->radio_base_dir.'/media';
-    }
-
-    /**
-     * @return string
-     */
     public function getRadioAlbumArtDir(): string
     {
-        return $this->radio_base_dir.'/album_art';
+        return $this->radio_base_dir . '/album_art';
     }
 
     /**
@@ -698,7 +669,7 @@ class Station
      */
     public function getRadioTempDir(): string
     {
-        return $this->radio_base_dir.'/temp';
+        return $this->radio_base_dir . '/temp';
     }
 
     /**
@@ -715,17 +686,11 @@ class Station
     /**
      * @return string
      */
-    public function getRadioPlaylistsDir(): string
+    public function getRadioMediaDir(): string
     {
-        return $this->radio_base_dir.'/playlists';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRadioConfigDir(): string
-    {
-        return $this->radio_base_dir.'/config';
+        return (!empty($this->radio_media_dir))
+            ? $this->radio_media_dir
+            : $this->radio_base_dir . '/media';
     }
 
     /**
@@ -738,12 +703,28 @@ class Station
         if ($new_dir && $new_dir !== $this->radio_media_dir) {
             if (!empty($new_dir) && !file_exists($new_dir)) {
                 if (!mkdir($new_dir, 0777, true) && !is_dir($new_dir)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $new_dir));
+                    throw new RuntimeException(sprintf('Directory "%s" was not created', $new_dir));
                 }
             }
 
             $this->radio_media_dir = $new_dir;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getRadioPlaylistsDir(): string
+    {
+        return $this->radio_base_dir . '/playlists';
+    }
+
+    /**
+     * @return string
+     */
+    public function getRadioConfigDir(): string
+    {
+        return $this->radio_base_dir . '/config';
     }
 
     /**
@@ -770,19 +751,19 @@ class Station
     }
 
     /**
-     * @param int $nowplaying_timestamp
-     */
-    public function setNowPlayingTimestamp(int $nowplaying_timestamp): void
-    {
-        $this->nowplaying_timestamp = $nowplaying_timestamp;
-    }
-
-    /**
      * @return int
      */
     public function getNowplayingTimestamp(): int
     {
         return (int)$this->nowplaying_timestamp;
+    }
+
+    /**
+     * @param int $nowplaying_timestamp
+     */
+    public function setNowPlayingTimestamp(int $nowplaying_timestamp): void
+    {
+        $this->nowplaying_timestamp = $nowplaying_timestamp;
     }
 
     /**
@@ -936,6 +917,14 @@ class Station
     /**
      * @return bool
      */
+    public function isEnabled(): bool
+    {
+        return $this->is_enabled;
+    }
+
+    /**
+     * @return bool
+     */
     public function getNeedsRestart(): bool
     {
         return $this->needs_restart;
@@ -994,6 +983,15 @@ class Station
     }
 
     /**
+     * @param BigInteger|string|null $storage_quota
+     */
+    public function setStorageQuota($storage_quota): void
+    {
+        $storage_quota = (string)Quota::convertFromReadableSize($storage_quota);
+        $this->storage_quota = !empty($storage_quota) ? $storage_quota : null;
+    }
+
+    /**
      * @return BigInteger|null
      */
     public function getStorageQuotaBytes(): ?BigInteger
@@ -1003,15 +1001,6 @@ class Station
         return (null !== $size)
             ? BigInteger::of($size)
             : null;
-    }
-
-    /**
-     * @param BigInteger|string|null $storage_quota
-     */
-    public function setStorageQuota($storage_quota): void
-    {
-        $storage_quota = (string)Quota::convertFromReadableSize($storage_quota);
-        $this->storage_quota = !empty($storage_quota) ? $storage_quota : null;
     }
 
     /**
@@ -1027,6 +1016,15 @@ class Station
     }
 
     /**
+     * @param BigInteger|string|null $storage_used
+     */
+    public function setStorageUsed($storage_used): void
+    {
+        $storage_used = (string)Quota::convertFromReadableSize($storage_used);
+        $this->storage_used = !empty($storage_used) ? $storage_used : null;
+    }
+
+    /**
      * @return BigInteger
      */
     public function getStorageUsedBytes(): BigInteger
@@ -1038,15 +1036,6 @@ class Station
         }
 
         return BigInteger::of($size);
-    }
-
-    /**
-     * @param BigInteger|string|null $storage_used
-     */
-    public function setStorageUsed($storage_used): void
-    {
-        $storage_used = (string)Quota::convertFromReadableSize($storage_used);
-        $this->storage_used = !empty($storage_used) ? $storage_used : null;
     }
 
     /**
@@ -1238,15 +1227,6 @@ class Station
     }
 
     /**
-     * @param string $name
-     * @return string
-     */
-    public static function getStationShortName($name): string
-    {
-        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
-    }
-
-    /**
      * Retrieve the API version of the object/array.
      *
      * @param AbstractFrontend $fa
@@ -1284,7 +1264,7 @@ class Station
         $response->mounts = $mounts;
 
         $remotes = [];
-        foreach($remote_adapters as $ra_proxy) {
+        foreach ($remote_adapters as $ra_proxy) {
             $remote = $ra_proxy->getRemote();
             if ($remote->isVisibleOnPublicPages()) {
                 $remotes[] = $remote->api($ra_proxy->getAdapter());
@@ -1293,5 +1273,26 @@ class Station
         $response->remotes = $remotes;
 
         return $response;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getShortName(): ?string
+    {
+        return (!empty($this->short_name))
+            ? $this->short_name
+            : self::getStationShortName($this->name);
+    }
+
+    /**
+     * @param null|string $short_name
+     */
+    public function setShortName(?string $short_name): void
+    {
+        $short_name = trim($short_name);
+        if (!empty($short_name)) {
+            $this->short_name = $this->_truncateString($short_name, 100);
+        }
     }
 }

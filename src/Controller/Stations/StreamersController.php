@@ -2,6 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Entity;
+use App\Exception\StationUnsupported;
 use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -37,7 +38,7 @@ class StreamersController extends AbstractStationCrudController
         $backend = $request->getStationBackend();
 
         if (!$backend::supportsStreamers()) {
-            throw new \App\Exception\StationUnsupported;
+            throw new StationUnsupported;
         }
 
         $view = $request->getView();
@@ -76,19 +77,25 @@ class StreamersController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>',
+                'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => $id ? __('Edit Streamer') : __('Add Streamer')
+            'title' => $id ? __('Edit Streamer') : __('Add Streamer'),
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $id,
+        $csrf_token
+    ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('Streamer deleted.') . '</b>', 'green');

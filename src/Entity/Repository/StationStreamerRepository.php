@@ -24,7 +24,7 @@ class StationStreamerRepository extends Repository
         $streamer = $this->findOneBy([
             'station_id' => $station->getId(),
             'streamer_username' => $username,
-            'is_active' => 1
+            'is_active' => 1,
         ]);
 
         if (!($streamer instanceof Entity\StationStreamer)) {

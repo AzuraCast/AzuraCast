@@ -35,8 +35,8 @@ class Runner
         array $tasks_nowplaying,
         array $tasks_short,
         array $tasks_medium,
-        array $tasks_long)
-    {
+        array $tasks_long
+    ) {
         $this->settings = $settings;
         $this->logger = $logger;
 
@@ -44,23 +44,6 @@ class Runner
         $this->tasks_short = $tasks_short;
         $this->tasks_medium = $tasks_medium;
         $this->tasks_long = $tasks_long;
-    }
-
-    protected function _initSync($script_timeout = 60)
-    {
-        // Immediately halt if setup is not complete.
-        if ($this->settings->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
-            die('Setup not complete; halting synchronized task.');
-        }
-
-        set_time_limit($script_timeout);
-        ini_set('memory_limit', '256M');
-
-        if (APP_IS_COMMAND_LINE) {
-            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
-            ini_set('display_errors', 1);
-            ini_set('log_errors', 1);
-        }
     }
 
     /**
@@ -85,14 +68,47 @@ class Runner
 
         $this->settings->setSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, time());
 
-        foreach($this->tasks_nowplaying as $task) {
-            $this->_runTimer(get_class($task), function() use ($task, $force) {
+        foreach ($this->tasks_nowplaying as $task) {
+            $this->_runTimer(get_class($task), function () use ($task, $force) {
                 /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
         }
 
         $this->settings->setSetting(Entity\Settings::NOWPLAYING_LAST_RUN, time());
+    }
+
+    protected function _initSync($script_timeout = 60)
+    {
+        // Immediately halt if setup is not complete.
+        if ($this->settings->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
+            die('Setup not complete; halting synchronized task.');
+        }
+
+        set_time_limit($script_timeout);
+        ini_set('memory_limit', '256M');
+
+        if (APP_IS_COMMAND_LINE) {
+            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+            ini_set('display_errors', 1);
+            ini_set('log_errors', 1);
+        }
+    }
+
+    protected function _runTimer($timer_description, callable $timed_function)
+    {
+        // Filter namespace name
+        $timer_description_parts = explode("\\", $timer_description);
+        $timer_description = array_pop($timer_description_parts);
+
+        $start_time = microtime(true);
+
+        $timed_function();
+
+        $end_time = microtime(true);
+        $time_diff = $end_time - $start_time;
+
+        $this->logger->debug('Timer "' . $timer_description . '" completed in ' . round($time_diff, 3) . ' second(s).');
     }
 
     /**
@@ -106,8 +122,8 @@ class Runner
         $this->logger->info('Running 1-minute sync task');
         $this->_initSync(60);
 
-        foreach($this->tasks_short as $task) {
-            $this->_runTimer(get_class($task), function() use ($task, $force) {
+        foreach ($this->tasks_short as $task) {
+            $this->_runTimer(get_class($task), function () use ($task, $force) {
                 /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
@@ -127,8 +143,8 @@ class Runner
         $this->logger->info('Running 5-minute sync task');
         $this->_initSync(300);
 
-        foreach($this->tasks_medium as $task) {
-            $this->_runTimer(get_class($task), function() use ($task, $force) {
+        foreach ($this->tasks_medium as $task) {
+            $this->_runTimer(get_class($task), function () use ($task, $force) {
                 /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
@@ -148,8 +164,8 @@ class Runner
         $this->logger->info('Running 1-hour sync task');
         $this->_initSync(1800);
 
-        foreach($this->tasks_long as $task) {
-            $this->_runTimer(get_class($task), function() use ($task, $force) {
+        foreach ($this->tasks_long as $task) {
+            $this->_runTimer(get_class($task), function () use ($task, $force) {
                 /** @var Task\AbstractTask $task */
                 $task->run($force);
             });
@@ -199,21 +215,5 @@ class Runner
         }
 
         return $syncs;
-    }
-
-    protected function _runTimer($timer_description, callable $timed_function)
-    {
-        // Filter namespace name
-        $timer_description_parts = explode("\\", $timer_description);
-        $timer_description = array_pop($timer_description_parts);
-
-        $start_time = microtime(true);
-
-        $timed_function();
-
-        $end_time = microtime(true);
-        $time_diff = $end_time - $start_time;
-
-        $this->logger->debug('Timer "' . $timer_description . '" completed in ' . round($time_diff, 3) . ' second(s).');
     }
 }

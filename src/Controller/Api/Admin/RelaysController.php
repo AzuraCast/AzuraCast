@@ -54,7 +54,7 @@ class RelaysController
         $router = $request->getRouter();
 
         $return = [];
-        foreach($stations as $station) {
+        foreach ($stations as $station) {
             $fa = $this->adapters->getFrontendAdapter($station);
 
             $row = new Entity\Api\Admin\Relay;
@@ -89,6 +89,28 @@ class RelaysController
         return $response->withJson($return);
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return Entity\Station[]
+     */
+    protected function getManageableStations(ServerRequest $request): array
+    {
+        $all_stations = $this->em->createQuery(/** @lang DQL */ 'SELECT s, sm 
+            FROM App\Entity\Station s 
+            JOIN s.mounts sm
+            WHERE s.is_enabled = 1
+            AND s.frontend_type != :remote_frontend')
+            ->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
+            ->execute();
+
+        $acl = $request->getAcl();
+        $user = $request->getUser();
+
+        return array_filter($all_stations, function (Entity\Station $station) use ($acl, $user) {
+            return $acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId());
+        });
+    }
+
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
         /** @var Repository $relay_repo */
@@ -100,7 +122,7 @@ class RelaysController
             $base_url = $body['base_url'];
         } else {
             $serverParams = $request->getServerParams();
-            $base_url = 'http://'.$serverParams('REMOTE_ADDR');
+            $base_url = 'http://' . $serverParams('REMOTE_ADDR');
         }
 
         $relay = $relay_repo->findOneBy(['base_url' => $base_url]);
@@ -118,7 +140,7 @@ class RelaysController
         // List existing remotes to avoid duplication.
         $existing_remotes = [];
 
-        foreach($relay->getRemotes() as $remote) {
+        foreach ($relay->getRemotes() as $remote) {
             /** @var Entity\StationRemote $remote */
             $existing_remotes[$remote->getStation()->getId()][$remote->getMount()] = $remote;
         }
@@ -126,10 +148,10 @@ class RelaysController
         // Iterate through all remotes that *should* exist.
         $stations = $this->getManageableStations($request);
 
-        foreach($stations as $station) {
+        foreach ($stations as $station) {
             $station_id = $station->getId();
 
-            foreach($station->getMounts() as $mount) {
+            foreach ($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
                 $mount_path = $mount->getName();
 
@@ -144,7 +166,7 @@ class RelaysController
 
                 $remote->setRelay($relay);
                 $remote->setType(Adapters::REMOTE_AZURARELAY);
-                $remote->setDisplayName($mount->getDisplayName().' ('.$relay->getName().')');
+                $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->getName() . ')');
                 $remote->setIsVisibleOnPublicPages($relay->isIsVisibleOnPublicPages());
                 $remote->setAutodjBitrate($mount->getAutodjBitrate());
                 $remote->setAutodjFormat($mount->getAutodjFormat());
@@ -156,8 +178,8 @@ class RelaysController
         }
 
         // Remove all remotes that weren't processed earlier.
-        foreach($existing_remotes as $existing_remote_station) {
-            foreach($existing_remote_station as $existing_remote) {
+        foreach ($existing_remotes as $existing_remote_station) {
+            foreach ($existing_remote_station as $existing_remote) {
                 $this->em->remove($existing_remote);
             }
         }
@@ -165,27 +187,5 @@ class RelaysController
         $this->em->flush();
 
         return $response->withJson(new Entity\Api\Status);
-    }
-
-    /**
-     * @param ServerRequest $request
-     * @return Entity\Station[]
-     */
-    protected function getManageableStations(ServerRequest $request): array
-    {
-        $all_stations = $this->em->createQuery(/** @lang DQL */'SELECT s, sm 
-            FROM App\Entity\Station s 
-            JOIN s.mounts sm
-            WHERE s.is_enabled = 1
-            AND s.frontend_type != :remote_frontend')
-            ->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
-            ->execute();
-
-        $acl = $request->getAcl();
-        $user = $request->getUser();
-
-        return array_filter($all_stations, function(Entity\Station $station) use ($acl, $user) {
-            return $acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId());
-        });
     }
 }

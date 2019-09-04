@@ -21,7 +21,7 @@ class MigrateConfig extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $env_path = APP_INCLUDE_ROOT.'/env.ini';
+        $env_path = APP_INCLUDE_ROOT . '/env.ini';
         $settings = [];
 
         if (file_exists($env_path)) {
@@ -38,14 +38,14 @@ class MigrateConfig extends CommandAbstract
         }
 
         if (empty($settings['db_password'])) {
-            $legacy_path = APP_INCLUDE_ROOT.'/app/env.ini';
+            $legacy_path = APP_INCLUDE_ROOT . '/app/env.ini';
             if (file_exists($legacy_path)) {
                 $old_settings = parse_ini_file($legacy_path);
                 $settings = array_merge($settings, $old_settings);
             }
 
-            if (file_exists(APP_INCLUDE_ROOT.'/app/config/db.conf.php')) {
-                $db_conf = include(APP_INCLUDE_ROOT.'/app/config/db.conf.php');
+            if (file_exists(APP_INCLUDE_ROOT . '/app/config/db.conf.php')) {
+                $db_conf = include(APP_INCLUDE_ROOT . '/app/config/db.conf.php');
                 $settings['db_password'] = $db_conf['password'];
 
                 if ($db_conf['user'] === 'root') {
@@ -63,7 +63,7 @@ class MigrateConfig extends CommandAbstract
             '[configuration]',
         ];
 
-        foreach($settings as $setting_key => $setting_val) {
+        foreach ($settings as $setting_key => $setting_val) {
             $ini_data[] = $setting_key . '="' . $setting_val . '"';
         }
 

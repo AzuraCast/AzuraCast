@@ -44,7 +44,7 @@ class DuplicatesController
 
         // Find exact duplicates and sort other songs into a searchable array.
         foreach ($media_raw as $media_row) {
-            foreach($media_row['playlists'] as $playlist_item) {
+            foreach ($media_row['playlists'] as $playlist_item) {
                 $media_row['playlists'][] = $playlist_item['playlist'];
             }
 
@@ -90,7 +90,7 @@ class DuplicatesController
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
         $media = $media_repo->findOneBy([
             'id' => $media_id,
-            'station_id' => $station_id
+            'station_id' => $station_id,
         ]);
 
         if ($media instanceof Entity\StationMedia) {
@@ -102,6 +102,7 @@ class DuplicatesController
             $request->getSession()->flash('<b>Duplicate file deleted!</b>', 'green');
         }
 
-        return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates',
+            ['station' => $station_id]));
     }
 }

@@ -1,10 +1,11 @@
 <?php
 namespace App\Exception;
 
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NotLoggedIn extends \Azura\Exception
+class NotLoggedIn extends Exception
 {
     public function __construct(
         string $message = 'Not logged in.',

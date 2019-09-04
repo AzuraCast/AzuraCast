@@ -51,7 +51,8 @@ class RotateLogs extends AbstractTask
         if (!empty($stations)) {
             foreach ($stations as $station) {
                 /** @var Entity\Station $station */
-                $this->logger->info('Processing logs for station.', ['id' => $station->getId(), 'name' => $station->getName()]);
+                $this->logger->info('Processing logs for station.',
+                    ['id' => $station->getId(), 'name' => $station->getName()]);
 
                 $this->rotateStationLogs($station);
             }
@@ -99,8 +100,7 @@ class RotateLogs extends AbstractTask
             ->name('icecast_*.log.*')
             ->date('before 1 month ago');
 
-        foreach($finder as $file)
-        {
+        foreach ($finder as $file) {
             $file_path = $file->getRealPath();
             @unlink($file_path);
         }

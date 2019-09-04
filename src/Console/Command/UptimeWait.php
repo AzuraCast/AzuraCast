@@ -4,6 +4,8 @@ namespace App\Console\Command;
 use App;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
+use Exception;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -49,14 +51,14 @@ class UptimeWait extends CommandAbstract
 
                 $conn = $em->getConnection();
 
-                while($attempts <= $total_attempts) {
+                while ($attempts <= $total_attempts) {
                     $attempts++;
 
                     try {
                         $conn->connect();
                         $output->writeln('Successfully connected');
                         return 0;
-                    } catch(\Exception $e) {
+                    } catch (Exception $e) {
                         $output->writeln($e->getMessage());
                         sleep($sleep_time);
                         continue;
@@ -67,6 +69,6 @@ class UptimeWait extends CommandAbstract
                 break;
         }
 
-        throw new \InvalidArgumentException('Invalid service specified.');
+        throw new InvalidArgumentException('Invalid service specified.');
     }
 }

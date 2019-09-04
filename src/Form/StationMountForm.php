@@ -43,7 +43,7 @@ class StationMountForm extends EntityForm
         $record = parent::process($request, $record);
 
         if ($record instanceof Entity\StationMount && $record->getIsDefault()) {
-            foreach($this->station->getMounts() as $mount) {
+            foreach ($this->station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
                 if ($mount->getId() !== $record->getId()) {
                     $mount->setIsDefault(false);

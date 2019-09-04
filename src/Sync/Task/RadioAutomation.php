@@ -205,7 +205,7 @@ class RadioAutomation extends AbstractTask
         $threshold = Chronos::now()->subDays((int)$threshold_days)->getTimestamp();
 
         // Pull all SongHistory data points.
-        $data_points_raw = $this->em->createQuery(/** @lang DQL */'SELECT 
+        $data_points_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
             FROM App\Entity\SongHistory sh 
             WHERE sh.station_id = :station_id 

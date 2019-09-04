@@ -33,7 +33,8 @@ class AppFactory extends \Azura\AppFactory
 
         $settings[Settings::IS_DOCKER] = APP_INSIDE_DOCKER;
 
-        define('APP_TESTING_MODE', (isset($settings[Settings::APP_ENV]) && Settings::ENV_TESTING === $settings[Settings::APP_ENV]));
+        define('APP_TESTING_MODE',
+            (isset($settings[Settings::APP_ENV]) && Settings::ENV_TESTING === $settings[Settings::APP_ENV]));
 
         // Constants used in annotations
         define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));

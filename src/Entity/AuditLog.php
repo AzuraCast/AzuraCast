@@ -117,6 +117,18 @@ class AuditLog
     }
 
     /**
+     * Set the current user for this request (used when creating new entries).
+     *
+     * @param User|null $user
+     */
+    public static function setCurrentUser(?User $user = null): void
+    {
+        self::$currentUser = ($user instanceof User)
+            ? $user->getIdentifier()
+            : null;
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -186,17 +198,5 @@ class AuditLog
     public function getUser(): ?string
     {
         return $this->user;
-    }
-
-    /**
-     * Set the current user for this request (used when creating new entries).
-     *
-     * @param User|null $user
-     */
-    public static function setCurrentUser(?User $user = null): void
-    {
-        self::$currentUser = ($user instanceof User)
-            ? $user->getIdentifier()
-            : null;
     }
 }

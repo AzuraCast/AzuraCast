@@ -3,6 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
+use App\Exception\NotFound;
 use App\Form\Form;
 use App\Form\SettingsForm;
 use App\Http\Response;
@@ -10,6 +11,7 @@ use App\Http\ServerRequest;
 use App\Sync\Task\Backup;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
@@ -59,12 +61,12 @@ class BackupsController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         return $request->getView()->renderToResponse($response, 'admin/backups/index', [
-            'backups'       => $this->backup_fs->listContents('', false),
-            'is_enabled'    => (bool)$this->settings_repo->getSetting(Settings::BACKUP_ENABLED, false),
-            'last_run'      => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RUN, 0),
-            'last_result'   => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RESULT, 0),
-            'last_output'   => $this->settings_repo->getSetting(Settings::BACKUP_LAST_OUTPUT, ''),
-            'csrf'          => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'backups' => $this->backup_fs->listContents('', false),
+            'is_enabled' => (bool)$this->settings_repo->getSetting(Settings::BACKUP_ENABLED, false),
+            'last_run' => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RUN, 0),
+            'last_result' => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RESULT, 0),
+            'last_output' => $this->settings_repo->getSetting(Settings::BACKUP_LAST_OUTPUT, ''),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -93,10 +95,10 @@ class BackupsController
             $is_successful = (0 === $result_code);
 
             return $request->getView()->renderToResponse($response, 'admin/backups/run', [
-                'title'     => __('Run Manual Backup'),
-                'path'      => $data['path'],
+                'title' => __('Run Manual Backup'),
+                'path' => $data['path'],
                 'is_successful' => $is_successful,
-                'output'    => $result_output,
+                'output' => $result_output,
             ]);
         }
 
@@ -116,7 +118,7 @@ class BackupsController
 
         try {
             $file_mime = $this->backup_fs->getMimetype($path);
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             $file_mime = 'application/octet-stream';
         }
 
@@ -125,6 +127,18 @@ class BackupsController
             ->withHeader('Content-Type', $file_mime)
             ->withHeader('Content-Length', $file_meta['size'])
             ->withHeader('X-Accel-Buffering', 'no');
+    }
+
+    protected function getFilePath($raw_path)
+    {
+        $path = base64_decode($raw_path);
+        $path = basename($path);
+
+        if (!$this->backup_fs->has($path)) {
+            throw new NotFound(__('Backup not found.'));
+        }
+
+        return $path;
     }
 
     public function deleteAction(ServerRequest $request, Response $response, $path, $csrf_token): ResponseInterface
@@ -136,18 +150,6 @@ class BackupsController
 
         $request->getSession()->flash('<b>' . __('Backup deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->named('admin:backups:index'));
-    }
-
-    protected function getFilePath($raw_path)
-    {
-        $path = base64_decode($raw_path);
-        $path = basename($path);
-
-        if (!$this->backup_fs->has($path)) {
-            throw new \App\Exception\NotFound(__('Backup not found.'));
-        }
-
-        return $path;
     }
 
 }

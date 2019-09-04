@@ -2,6 +2,7 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception\Validation;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -9,6 +10,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -105,13 +107,13 @@ class FilesController extends AbstractStationApiCrudController
         // Validate the UploadFile API record.
         $errors = $this->validator->validate($api_record);
         if (count($errors) > 0) {
-            $e = new \App\Exception\Validation((string)$errors);
+            $e = new Validation((string)$errors);
             $e->setDetailedErrors($errors);
             throw $e;
         }
 
         // Write file to temp path.
-        $temp_path = $station->getRadioTempDir().'/'.$api_record->getSanitizedFilename();
+        $temp_path = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
         file_put_contents($temp_path, $api_record->getFileContents());
 
         $sanitized_path = 'media://' . $api_record->getSanitizedPath();
@@ -209,10 +211,10 @@ class FilesController extends AbstractStationApiCrudController
 
         $record = parent::_denormalizeToRecord($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [
-                'path' => function($new_value, $record) {
+                'path' => function ($new_value, $record) {
                     // Detect and handle a rename.
                     if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                        $path_full = 'media://'.$new_value;
+                        $path_full = 'media://' . $new_value;
 
                         $fs = $this->filesystem->getForStation($record->getStation());
                         $fs->rename($record->getPathUri(), $path_full);
@@ -220,7 +222,7 @@ class FilesController extends AbstractStationApiCrudController
 
                     return $new_value;
                 },
-            ]
+            ],
         ]));
 
         if ($record instanceof Entity\StationMedia) {
@@ -236,14 +238,14 @@ class FilesController extends AbstractStationApiCrudController
 
                 // Remove existing playlists.
                 $media_playlists = $this->playlist_media_repo->clearPlaylistsFromMedia($record);
-                foreach($media_playlists as $playlist_id => $playlist) {
+                foreach ($media_playlists as $playlist_id => $playlist) {
                     if (!isset($affected_playlists[$playlist_id])) {
                         $affected_playlists[$playlist_id] = $playlist;
                     }
                 }
 
                 // Set new playlists.
-                foreach($playlists as $new_playlist) {
+                foreach ($playlists as $new_playlist) {
                     if (is_array($new_playlist)) {
                         $playlist_id = $new_playlist['id'];
                         $playlist_weight = $new_playlist['weight'] ?? 0;
@@ -254,7 +256,7 @@ class FilesController extends AbstractStationApiCrudController
 
                     $playlist = $this->playlist_repo->findOneBy([
                         'station_id' => $station->getId(),
-                        'id' => (int)$playlist_id
+                        'id' => (int)$playlist_id,
                     ]);
 
                     if ($playlist instanceof Entity\StationPlaylist) {
@@ -266,7 +268,7 @@ class FilesController extends AbstractStationApiCrudController
                 // Handle playlist changes.
                 $backend = $this->adapters->getBackendAdapter($station);
                 if ($backend instanceof Liquidsoap) {
-                    foreach($affected_playlists as $playlist) {
+                    foreach ($affected_playlists as $playlist) {
                         /** @var Entity\StationPlaylist $playlist */
                         $backend->writePlaylistFile($playlist);
                     }
@@ -283,7 +285,7 @@ class FilesController extends AbstractStationApiCrudController
     protected function _deleteRecord($record): void
     {
         if (!($record instanceof Entity\StationMedia)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $station = $record->getStation();
@@ -292,7 +294,7 @@ class FilesController extends AbstractStationApiCrudController
         $affected_playlists = [];
 
         $media_playlists = $this->playlist_media_repo->clearPlaylistsFromMedia($record);
-        foreach($media_playlists as $playlist_id => $playlist) {
+        foreach ($media_playlists as $playlist_id => $playlist) {
             if (!isset($affected_playlists[$playlist_id])) {
                 $affected_playlists[$playlist_id] = $playlist;
             }
@@ -305,7 +307,7 @@ class FilesController extends AbstractStationApiCrudController
         // Write new PLS playlist configuration.
         $backend = $this->adapters->getBackendAdapter($station);
         if ($backend instanceof Liquidsoap) {
-            foreach($affected_playlists as $playlist) {
+            foreach ($affected_playlists as $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 $backend->writePlaylistFile($playlist);
             }

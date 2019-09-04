@@ -2,12 +2,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Table(name="station_playlist_media")
  * @ORM\Entity(repositoryClass="App\Entity\Repository\StationPlaylistMediaRepository")
  */
-class StationPlaylistMedia implements \JsonSerializable
+class StationPlaylistMedia implements JsonSerializable
 {
     /**
      * @ORM\Column(name="id", type="integer")

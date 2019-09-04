@@ -10,10 +10,11 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20190429025906 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE station_playlists ADD backend_options VARCHAR(255) DEFAULT NULL');
     }
@@ -22,7 +23,7 @@ final class Version20190429025906 extends AbstractMigration
     {
         $playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp');
 
-        foreach($playlists as $playlist) {
+        foreach ($playlists as $playlist) {
             $backend_options = [];
 
             if ((bool)$playlist['interrupt_other_songs']) {
@@ -43,10 +44,11 @@ final class Version20190429025906 extends AbstractMigration
         }
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE station_playlists DROP backend_options');
     }

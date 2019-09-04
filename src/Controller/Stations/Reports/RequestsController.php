@@ -25,7 +25,7 @@ class RequestsController
 
     public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
     {
-        $requests = $this->em->createQuery(/** @lang DQL */'SELECT 
+        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sr, sm, s 
             FROM App\Entity\StationRequest sr
             JOIN sr.track sm
@@ -41,14 +41,19 @@ class RequestsController
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $station_id, $request_id, $csrf_token): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $request_id,
+        $csrf_token
+    ): ResponseInterface {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $media = $this->em->getRepository(Entity\StationRequest::class)->findOneBy([
             'id' => $request_id,
             'station_id' => $station_id,
-            'played_at' => 0
+            'played_at' => 0,
         ]);
 
         if ($media instanceof Entity\StationRequest) {

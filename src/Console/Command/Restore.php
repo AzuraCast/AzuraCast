@@ -4,6 +4,7 @@ namespace App\Console\Command;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
+use InfluxDB\Database;
 use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,6 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
+use const PATHINFO_EXTENSION;
 
 class Restore extends CommandAbstract
 {
@@ -45,7 +47,7 @@ class Restore extends CommandAbstract
 
         $archive_path = $input->getArgument('path');
         if ('/' !== $archive_path[0]) {
-            $archive_path = \App\Sync\Task\Backup::BASE_DIR.'/'.$archive_path;
+            $archive_path = \App\Sync\Task\Backup::BASE_DIR . '/' . $archive_path;
         }
 
         if (!file_exists($archive_path)) {
@@ -56,24 +58,24 @@ class Restore extends CommandAbstract
         // Extract tar.gz archive
         $io->section('Extracting backup file...');
 
-        $file_ext = strtolower(pathinfo($archive_path, \PATHINFO_EXTENSION));
+        $file_ext = strtolower(pathinfo($archive_path, PATHINFO_EXTENSION));
 
-        switch($file_ext) {
+        switch ($file_ext) {
             case 'gz':
             case 'tgz':
                 $process = $this->passThruProcess($io, [
                     'tar',
                     'zxvf',
-                    $archive_path
-                ],'/');
+                    $archive_path,
+                ], '/');
                 break;
 
             case 'zip':
             default:
                 $process = $this->passThruProcess($io, [
                     'unzip',
-                    $archive_path
-                ],'/');
+                    $archive_path,
+                ], '/');
                 break;
         }
 
@@ -83,7 +85,7 @@ class Restore extends CommandAbstract
         $io->section('Importing database...');
 
         $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
-        $path_db_dump = $tmp_dir_mariadb.'/db.sql';
+        $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
         if (!file_exists($path_db_dump)) {
             $io->getErrorStyle()->error('Database backup file not found!');
@@ -99,11 +101,11 @@ class Restore extends CommandAbstract
             'mysql --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD $DB_DATABASE < $DB_DUMP',
             $tmp_dir_mariadb,
             [
-                'DB_HOST'     => $conn->getHost(),
+                'DB_HOST' => $conn->getHost(),
                 'DB_DATABASE' => $conn->getDatabase(),
                 'DB_USERNAME' => $conn->getUsername(),
                 'DB_PASSWORD' => $conn->getPassword(),
-                'DB_DUMP'     => $path_db_dump,
+                'DB_DUMP' => $path_db_dump,
             ]
         );
 
@@ -118,8 +120,8 @@ class Restore extends CommandAbstract
             return 1;
         }
 
-        /** @var \InfluxDB\Database $influxdb */
-        $influxdb = $this->get(\InfluxDB\Database::class);
+        /** @var Database $influxdb */
+        $influxdb = $this->get(Database::class);
         $influxdb_client = $influxdb->getClient();
 
         $process = $this->passThruProcess($io, [
@@ -127,7 +129,7 @@ class Restore extends CommandAbstract
             'restore',
             '-portable',
             '-host',
-            $influxdb_client->getHost().':8088',
+            $influxdb_client->getHost() . ':8088',
             $tmp_dir_influxdb,
         ], $tmp_dir_influxdb);
 
@@ -143,7 +145,7 @@ class Restore extends CommandAbstract
         $time_diff = $end_time - $start_time;
 
         $io->success([
-            'Restore complete in '.round($time_diff, 3).' seconds.',
+            'Restore complete in ' . round($time_diff, 3) . ' seconds.',
         ]);
         return 0;
     }
@@ -164,7 +166,7 @@ class Restore extends CommandAbstract
         $stdout = [];
         $stderr = [];
 
-        $process->mustRun(function($type, $data) use ($process, $io, &$stdout, &$stderr) {
+        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr) {
             if ($process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
                 $stderr[] = $data;

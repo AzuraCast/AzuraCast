@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity\Api;
 
+use DateTime;
 use OpenApi\Annotations as OA;
 
 /**
@@ -8,12 +9,70 @@ use OpenApi\Annotations as OA;
  */
 class Time
 {
+    /**
+     * The current UNIX timestamp
+     *
+     * @OA\Property(example=1497652397)
+     * @var int
+     */
+    public $timestamp;
+    /**
+     * @OA\Property(example="2017-06-16 10:33:17")
+     * @var string
+     */
+    public $gmt_datetime;
+    /**
+     * @OA\Property(example="June 16, 2017")
+     * @var string
+     */
+    public $gmt_date;
+    /**
+     * @OA\Property(example="10:33pm")
+     * @var string
+     */
+    public $gmt_time;
+    /**
+     * @OA\Property(example="GMT")
+     * @var string
+     */
+    public $gmt_timezone;
+    /**
+     * @OA\Property(example="GMT")
+     * @var string
+     */
+    public $gmt_timezone_abbr;
+    /**
+     * @OA\Property(example="2017-06-16 10:33:17")
+     * @var string
+     */
+    public $local_datetime;
+    /**
+     * @OA\Property(example="June 16, 2017")
+     * @var string
+     */
+    public $local_date;
+    /**
+     * @OA\Property(example="10:33pm")
+     * @var string
+     */
+    public $local_time;
+    /**
+     * @OA\Property(example="UTC")
+     * @var string
+     */
+    public $local_timezone;
+    /**
+     * @OA\Property(example="UTC")
+     * @var string
+     */
+    public $local_timezone_abbr;
+
     public function __construct($tz_info)
     {
-        /** @var \DateTime $now_utc */
+        /** @var DateTime $now_utc */
         $now_utc = $tz_info['now_utc'];
 
-        /** @var \DateTime $now */
+        /** @var DateTime $now */
         $now = $tz_info['now'];
 
         $this->timestamp = time();
@@ -30,72 +89,4 @@ class Time
         $this->local_timezone = $tz_info['code'];
         $this->local_timezone_abbr = $tz_info['abbr'];
     }
-
-    /**
-     * The current UNIX timestamp
-     *
-     * @OA\Property(example=1497652397)
-     * @var int
-     */
-    public $timestamp;
-
-    /**
-     * @OA\Property(example="2017-06-16 10:33:17")
-     * @var string
-     */
-    public $gmt_datetime;
-
-    /**
-     * @OA\Property(example="June 16, 2017")
-     * @var string
-     */
-    public $gmt_date;
-
-    /**
-     * @OA\Property(example="10:33pm")
-     * @var string
-     */
-    public $gmt_time;
-
-    /**
-     * @OA\Property(example="GMT")
-     * @var string
-     */
-    public $gmt_timezone;
-
-    /**
-     * @OA\Property(example="GMT")
-     * @var string
-     */
-    public $gmt_timezone_abbr;
-
-    /**
-     * @OA\Property(example="2017-06-16 10:33:17")
-     * @var string
-     */
-    public $local_datetime;
-
-    /**
-     * @OA\Property(example="June 16, 2017")
-     * @var string
-     */
-    public $local_date;
-
-    /**
-     * @OA\Property(example="10:33pm")
-     * @var string
-     */
-    public $local_time;
-
-    /**
-     * @OA\Property(example="UTC")
-     * @var string
-     */
-    public $local_timezone;
-
-    /**
-     * @OA\Property(example="UTC")
-     * @var string
-     */
-    public $local_timezone_abbr;
 }

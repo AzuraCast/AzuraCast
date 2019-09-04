@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form\Field;
 
 class File extends \AzuraForms\Field\File
@@ -19,7 +18,8 @@ class File extends \AzuraForms\Field\File
         $button_text = $this->options['button_text'];
 
         if ($this->options['button_icon'] !== null) {
-            $button_text .= sprintf(' <i class="material-icons" aria-hidden="true">%1$s</i>', $this->options['button_icon']);
+            $button_text .= sprintf(' <i class="material-icons" aria-hidden="true">%1$s</i>',
+                $this->options['button_icon']);
         }
 
         $output = '<button name="%1$s_button" id="%2$s_%1$s_button" class="file-upload btn btn-primary btn-block text-center %3$s" type="button">';

@@ -8,17 +8,18 @@ namespace App\Xml;
 use Traversable;
 use XMLWriter;
 use Zend\Config\Exception;
+use Zend\Config\Writer\Xml;
 use Zend\Stdlib\ArrayUtils;
 
-class Writer extends \Zend\Config\Writer\Xml
+class Writer extends Xml
 {
     /**
      * toString(): defined by Writer interface.
      *
-     * @see    WriterInterface::toString()
-     * @param  mixed $config
+     * @param mixed $config
      * @param string $base_element
      * @return string
+     * @see    WriterInterface::toString()
      */
     public function toString($config, $base_element = 'zend-config')
     {
@@ -34,7 +35,7 @@ class Writer extends \Zend\Config\Writer\Xml
     /**
      * processConfig(): defined by AbstractWriter.
      *
-     * @param  array $config
+     * @param array $config
      * @param string $base_element
      * @return string
      */
@@ -72,9 +73,9 @@ class Writer extends \Zend\Config\Writer\Xml
     /**
      * Add a branch to an XML object recursively.
      *
-     * @param  string $branchName
-     * @param  array $config
-     * @param  XMLWriter $writer
+     * @param string $branchName
+     * @param array $config
+     * @param XMLWriter $writer
      * @return void
      * @throws Exception\RuntimeException
      */
@@ -121,13 +122,16 @@ class Writer extends \Zend\Config\Writer\Xml
         }
     }
 
-    protected function _attributesFirst($a, $b) {
+    protected function _attributesFirst($a, $b)
+    {
         if (substr($a, 0, 1) == '@') {
             return -1;
-        } else if (substr($b, 0, 1) == '@') {
-            return 1;
         } else {
-            return 0;
+            if (substr($b, 0, 1) == '@') {
+                return 1;
+            } else {
+                return 0;
+            }
         }
     }
 }

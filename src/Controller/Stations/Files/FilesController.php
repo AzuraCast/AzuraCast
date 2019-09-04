@@ -6,10 +6,13 @@ use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
+use App\Service\Flow;
 use App\Service\Ftp;
 use Azura\Config;
-use Azura\Settings;
+use Azura\Exception\CsrfValidation;
 use Doctrine\ORM\EntityManager;
+use Error;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class FilesController extends FilesControllerAbstract
@@ -48,7 +51,7 @@ class FilesController extends FilesControllerAbstract
     {
         $station = $request->getStation();
 
-        $playlists = $this->em->createQuery(/** @lang DQL */'SELECT sp.id, sp.name 
+        $playlists = $this->em->createQuery(/** @lang DQL */ 'SELECT sp.id, sp.name 
             FROM App\Entity\StationPlaylist sp 
             WHERE sp.station_id = :station_id AND sp.source = :source 
             ORDER BY sp.name ASC')
@@ -56,18 +59,18 @@ class FilesController extends FilesControllerAbstract
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
 
-        $files_count = $this->em->createQuery(/** @lang DQL */'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
+        $files_count = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
             WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station_id)
             ->getSingleScalarResult();
 
         // Get list of custom fields.
-        $custom_fields_raw = $this->em->createQuery(/** @lang DQL */'SELECT cf.id, cf.name FROM App\Entity\CustomField cf ORDER BY cf.name ASC')
+        $custom_fields_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT cf.id, cf.name FROM App\Entity\CustomField cf ORDER BY cf.name ASC')
             ->getArrayResult();
 
         $custom_fields = [];
-        foreach($custom_fields_raw as $row) {
-            $custom_fields['media_custom_'.$row['id']] = $row['name'];
+        foreach ($custom_fields_raw as $row) {
+            $custom_fields['media_custom_' . $row['id']] = $row['name'];
         }
 
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
@@ -96,7 +99,7 @@ class FilesController extends FilesControllerAbstract
 
         $form = new Form($this->form_config);
         $form->populate([
-            'new_file'  => $path,
+            'new_file' => $path,
         ]);
 
         if (!empty($_POST) && $form->isValid()) {
@@ -105,7 +108,7 @@ class FilesController extends FilesControllerAbstract
             // Detect rename.
             if ($data['new_file'] !== $path) {
                 $new_path = $data['new_file'];
-                $new_path_full = 'media://'.$new_path;
+                $new_path_full = 'media://' . $new_path;
 
                 // MountManager::rename's second argument is NOT the full URI >:(
                 $fs->rename($path_full, $new_path);
@@ -113,15 +116,15 @@ class FilesController extends FilesControllerAbstract
 
                 if ('dir' === $path_meta['type']) {
                     // Update the paths of all media contained within the directory.
-                    $media_in_dir = $this->em->createQuery(/** @lang DQL */'SELECT sm FROM App\Entity\StationMedia sm
+                    $media_in_dir = $this->em->createQuery(/** @lang DQL */ 'SELECT sm FROM App\Entity\StationMedia sm
                         WHERE sm.station_id = :station_id AND sm.path LIKE :path')
                         ->setParameter('station_id', $station->getId())
                         ->setParameter('path', $path . '%')
                         ->execute();
 
-                    foreach($media_in_dir as $media_row) {
+                    foreach ($media_in_dir as $media_row) {
                         /** @var Entity\StationMedia $media_row */
-                        $media_row->setPath(substr_replace($media_row->getPath(), $new_path,0, strlen($path)));
+                        $media_row->setPath(substr_replace($media_row->getPath(), $new_path, 0, strlen($path)));
                         $this->em->persist($media_row);
                     }
 
@@ -135,13 +138,13 @@ class FilesController extends FilesControllerAbstract
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
 
-            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:files:index').'#'.$file_dir);
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:files:index') . '#' . $file_dir);
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => __('Rename File/Directory')
+            'title' => __('Rename File/Directory'),
         ]);
     }
 
@@ -160,7 +163,7 @@ class FilesController extends FilesControllerAbstract
             }
         }
 
-        $directories = array_filter(array_map(function($file) {
+        $directories = array_filter(array_map(function ($file) {
             if ('dir' !== $file['type']) {
                 return null;
             }
@@ -172,7 +175,7 @@ class FilesController extends FilesControllerAbstract
         }, $fs->listContents($file_path)));
 
         return $response->withJson([
-            'rows' => array_values($directories)
+            'rows' => array_values($directories),
         ]);
     }
 
@@ -182,8 +185,8 @@ class FilesController extends FilesControllerAbstract
 
         try {
             $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
-        } catch(\Azura\Exception\CsrfValidation $e) {
-            return $this->_err($response, 403, 'CSRF Failure: '.$e->getMessage());
+        } catch (CsrfValidation $e) {
+            return $this->_err($response, 403, 'CSRF Failure: ' . $e->getMessage());
         }
 
         $file_path = $request->getAttribute('file_path');
@@ -191,7 +194,7 @@ class FilesController extends FilesControllerAbstract
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
-        $new_dir = $file_path.'/'.$params['name'];
+        $new_dir = $file_path . '/' . $params['name'];
         $dir_created = $fs->createDir($new_dir);
         if (!$dir_created) {
             return $this->_err($response, 403, sprintf('Directory "%s" was not created', $new_dir));
@@ -206,8 +209,8 @@ class FilesController extends FilesControllerAbstract
 
         try {
             $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
-        } catch(\Azura\Exception\CsrfValidation $e) {
-            return $this->_err($response, 403, 'CSRF Failure: '.$e->getMessage());
+        } catch (CsrfValidation $e) {
+            return $this->_err($response, 403, 'CSRF Failure: ' . $e->getMessage());
         }
 
         $station = $request->getStation();
@@ -217,7 +220,7 @@ class FilesController extends FilesControllerAbstract
         }
 
         try {
-            $flow_response = \App\Service\Flow::process($request, $response, $station->getRadioTempDir());
+            $flow_response = Flow::process($request, $response, $station->getRadioTempDir());
             if ($flow_response instanceof ResponseInterface) {
                 return $flow_response;
             }
@@ -235,8 +238,8 @@ class FilesController extends FilesControllerAbstract
                 $sanitized_name = $flow_response['filename'];
 
                 $final_path = empty($file)
-                    ? $file_path.$sanitized_name
-                    : $file_path.'/'.$sanitized_name;
+                    ? $file_path . $sanitized_name
+                    : $file_path . '/' . $sanitized_name;
 
                 $station_media = $media_repo->uploadFile($station, $flow_response['path'], $final_path);
 
@@ -264,7 +267,7 @@ class FilesController extends FilesControllerAbstract
 
                 return $response->withJson(['success' => true]);
             }
-        } catch (\Exception | \Error $e) {
+        } catch (Exception | Error $e) {
             return $this->_err($response, 500, $e->getMessage());
         }
 
@@ -287,7 +290,7 @@ class FilesController extends FilesControllerAbstract
 
         try {
             $file_mime = $fs->getMimetype($file_path);
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             $file_mime = 'application/octet-stream';
         }
 

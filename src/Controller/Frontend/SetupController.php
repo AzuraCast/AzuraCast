@@ -4,6 +4,7 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Auth;
 use App\Entity;
+use App\Exception\NotLoggedIn;
 use App\Form\Form;
 use App\Form\StationForm;
 use App\Http\Response;
@@ -60,7 +61,43 @@ class SetupController
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $current_step = $this->_getSetupStep();
-        return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
+        return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+    }
+
+    /**
+     * Determine which step of setup is currently active.
+     *
+     * @return string
+     * @throws NotLoggedIn
+     */
+    protected function _getSetupStep(): string
+    {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        if (0 !== (int)$settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
+            return 'complete';
+        }
+
+        // Step 1: Register
+        $num_users = (int)$this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')->getSingleScalarResult();
+        if (0 === $num_users) {
+            return 'register';
+        }
+
+        // If past "register" step, require login.
+        if (!$this->auth->isLoggedIn()) {
+            throw new NotLoggedIn;
+        }
+
+        // Step 2: Set up Station
+        $num_stations = (int)$this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(s.id) FROM App\Entity\Station s')->getSingleScalarResult();
+        if (0 === $num_stations) {
+            return 'station';
+        }
+
+        // Step 3: System Settings
+        return 'settings';
     }
 
     /**
@@ -90,7 +127,7 @@ class SetupController
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'register' && APP_IN_PRODUCTION) {
-            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
         // Create first account form.
@@ -143,7 +180,7 @@ class SetupController
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'station' && APP_IN_PRODUCTION) {
-            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
         if (false !== $this->station_form->process($request)) {
@@ -168,7 +205,7 @@ class SetupController
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'settings' && APP_IN_PRODUCTION) {
-            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
         $form = new Form($this->settings_form_config);
@@ -197,41 +234,5 @@ class SetupController
         return $request->getView()->renderToResponse($response, 'frontend/setup/settings', [
             'form' => $form,
         ]);
-    }
-
-    /**
-     * Determine which step of setup is currently active.
-     *
-     * @return string
-     * @throws \App\Exception\NotLoggedIn
-     */
-    protected function _getSetupStep(): string
-    {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        if (0 !== (int)$settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
-            return 'complete';
-        }
-
-        // Step 1: Register
-        $num_users = (int)$this->em->createQuery(/** @lang DQL */'SELECT COUNT(u.id) FROM App\Entity\User u')->getSingleScalarResult();
-        if (0 === $num_users) {
-            return 'register';
-        }
-
-        // If past "register" step, require login.
-        if (!$this->auth->isLoggedIn()) {
-            throw new \App\Exception\NotLoggedIn;
-        }
-
-        // Step 2: Set up Station
-        $num_stations = (int)$this->em->createQuery(/** @lang DQL */'SELECT COUNT(s.id) FROM App\Entity\Station s')->getSingleScalarResult();
-        if (0 === $num_stations) {
-            return 'station';
-        }
-
-        // Step 3: System Settings
-        return 'settings';
     }
 }

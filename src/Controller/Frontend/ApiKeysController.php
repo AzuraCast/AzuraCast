@@ -100,7 +100,7 @@ class ApiKeysController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => $id ? __('Edit API Key') : __('Add API Key')
+            'title' => $id ? __('Edit API Key') : __('Add API Key'),
         ]);
     }
 

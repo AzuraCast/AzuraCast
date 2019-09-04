@@ -40,7 +40,7 @@ class SetAdministrator extends CommandAbstract
         $user_email = $input->getArgument('email');
 
         $user = $em->getRepository(Entity\User::class)
-            ->findOneBy(['email' => $user_email ]);
+            ->findOneBy(['email' => $user_email]);
 
         if ($user instanceof Entity\User) {
             $admin_role = $em->getRepository(Entity\Role::class)
@@ -52,7 +52,7 @@ class SetAdministrator extends CommandAbstract
             $perms_repo->setActionsForRole($admin_role, [
                 'actions_global' => [
                     Acl::GLOBAL_ALL,
-                ]
+                ],
             ]);
 
             $user_roles = $user->getRoles();
@@ -64,7 +64,8 @@ class SetAdministrator extends CommandAbstract
             $em->persist($user);
             $em->flush();
 
-            $io->text(__('The account associated with e-mail address "%s" has been set as an administrator', $user->getEmail()));
+            $io->text(__('The account associated with e-mail address "%s" has been set as an administrator',
+                $user->getEmail()));
             $io->newLine();
             return 0;
         }

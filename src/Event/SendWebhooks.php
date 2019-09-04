@@ -27,8 +27,8 @@ class SendWebhooks extends Event
         Station $station,
         NowPlaying $np,
         $np_old = null,
-        $is_standalone = true)
-    {
+        $is_standalone = true
+    ) {
         $this->station = $station;
 
         $this->np = $np;

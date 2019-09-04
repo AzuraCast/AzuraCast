@@ -7,6 +7,7 @@ use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use const PHP_INT_MAX;
 
 class ProcessMessageQueue extends CommandAbstract
 {
@@ -35,7 +36,7 @@ class ProcessMessageQueue extends CommandAbstract
 
         $runtime = (int)$input->getArgument('runtime');
         if ($runtime < 1) {
-            $runtime = \PHP_INT_MAX;
+            $runtime = PHP_INT_MAX;
             $logger->info('Running message queue processor with indefinite length.');
         } else {
             $logger->info(sprintf('Running message queue processor for %d seconds.', $runtime));

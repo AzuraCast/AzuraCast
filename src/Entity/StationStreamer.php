@@ -1,8 +1,8 @@
 <?php
 namespace App\Entity;
 
-use App\Validator\Constraints as AppAssert;
 use App\Annotations\AuditLog;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -89,7 +89,7 @@ class StationStreamer
      */
     protected $is_active;
 
-	/**
+    /**
      * @ORM\Column(name="reactivate_at", type="integer", nullable=true)
      *
      * @AuditLog\AuditIgnore()
@@ -163,7 +163,7 @@ class StationStreamer
     {
         return (!empty($this->display_name))
             ? $this->display_name
-            :$this->streamer_username;
+            : $this->streamer_username;
     }
 
     /**
@@ -211,7 +211,7 @@ class StationStreamer
         }
     }
 
-	/**
+    /**
      * @return int|null
      */
     public function getReactivateAt(): ?int
@@ -235,6 +235,6 @@ class StationStreamer
     public function deactivateFor(int $seconds)
     {
         $this->is_active = false;
-        $this->reactivate_at = time()+$seconds;
+        $this->reactivate_at = time() + $seconds;
     }
 }

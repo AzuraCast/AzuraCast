@@ -9,6 +9,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
+use InfluxDB\Point;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,7 +30,7 @@ class SetupFixtures extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $loader = new Loader();
-        $loader->loadFromDirectory(APP_INCLUDE_ROOT.'/src/Entity/Fixture');
+        $loader->loadFromDirectory(APP_INCLUDE_ROOT . '/src/Entity/Fixture');
 
         /** @var EntityManager $em */
         $em = $this->get(EntityManager::class);
@@ -48,18 +49,18 @@ class SetupFixtures extends CommandAbstract
         $midnight_utc = Chronos::now('UTC')->setTime(0, 0);
         $influx_points = [];
 
-        for($i = 1; $i <= 14; $i++) {
+        for ($i = 1; $i <= 14; $i++) {
             $day = $midnight_utc->subDays($i)->getTimestamp();
 
             $day_listeners = 0;
 
-            foreach($stations as $station) {
+            foreach ($stations as $station) {
                 /** @var Station $station */
 
                 $station_listeners = random_int(1, 20);
                 $day_listeners += $station_listeners;
 
-                $influx_points[] = new \InfluxDB\Point(
+                $influx_points[] = new Point(
                     'station.' . $station->getId() . '.listeners',
                     $station_listeners,
                     [],
@@ -68,7 +69,7 @@ class SetupFixtures extends CommandAbstract
                 );
             }
 
-            $influx_points[] = new \InfluxDB\Point(
+            $influx_points[] = new Point(
                 'station.all.listeners',
                 $day_listeners,
                 [],
@@ -77,7 +78,7 @@ class SetupFixtures extends CommandAbstract
             );
         }
 
-        $influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS, '1d');
+        $influx->writePoints($influx_points, Database::PRECISION_SECONDS, '1d');
 
         $output->writeln(__('Fixtures loaded.'));
 

@@ -7,8 +7,11 @@ use App\Service\NChan;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use InfluxDB\Database;
+use InfluxDB\Point;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
+use RuntimeException;
+use const JSON_PRETTY_PRINT;
 
 class Local
 {
@@ -55,7 +58,7 @@ class Local
             $this->logger->debug('Writing entry to InfluxDB...');
 
             // Post statistics to InfluxDB.
-            $influx_point = new \InfluxDB\Point(
+            $influx_point = new Point(
                 'station.' . $station->getId() . '.listeners',
                 (int)$np->listeners->current,
                 [],
@@ -72,7 +75,7 @@ class Local
 
             if ($np_full) {
                 $np_new = [];
-                foreach($np_full as $np_old) {
+                foreach ($np_full as $np_old) {
                     /** @var Entity\Api\NowPlaying $np_old */
                     if ($np_old->station->id === $station->getId()) {
                         $np_new[] = $np;
@@ -90,7 +93,7 @@ class Local
         $this->logger->debug('Writing local nowplaying text file...');
 
         $config_dir = $station->getRadioConfigDir();
-        $np_file = $config_dir.'/nowplaying.txt';
+        $np_file = $config_dir . '/nowplaying.txt';
 
         $np_text = implode(' - ', array_filter([
             $np->now_playing->song->artist ?? null,
@@ -102,25 +105,25 @@ class Local
         }
 
         // Atomic rename to ensure the file is always there.
-        file_put_contents($np_file.'.new', $np_text);
-        rename($np_file.'.new', $np_file);
+        file_put_contents($np_file . '.new', $np_text);
+        rename($np_file . '.new', $np_file);
 
         // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
         $this->logger->debug('Writing static nowplaying text file...');
 
-        $static_np_dir = APP_INCLUDE_TEMP.'/nowplaying';
+        $static_np_dir = APP_INCLUDE_TEMP . '/nowplaying';
         if (!is_dir($static_np_dir) && !mkdir($static_np_dir) && !is_dir($static_np_dir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $static_np_dir));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $static_np_dir));
         }
 
-        $static_path = $static_np_dir.'/'.$station->getShortName().'.json';
-        file_put_contents($static_path, json_encode($np, \JSON_PRETTY_PRINT));
+        $static_path = $static_np_dir . '/' . $station->getShortName() . '.json';
+        file_put_contents($static_path, json_encode($np, JSON_PRETTY_PRINT));
 
         // Send Nchan notification.
         if (NChan::isSupported()) {
             $this->logger->debug('Dispatching Nchan notification...');
 
-            $this->http_client->post('http://localhost:9010/pub/'.urlencode($station->getShortName()), [
+            $this->http_client->post('http://localhost:9010/pub/' . urlencode($station->getShortName()), [
                 'json' => $np,
             ]);
         }

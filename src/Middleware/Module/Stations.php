@@ -41,9 +41,9 @@ class Stations
         date_default_timezone_set($station->getTimezone());
 
         $view->addData([
-            'station'   => $station,
-            'frontend'  => $frontend,
-            'backend'   => $backend,
+            'station' => $station,
+            'frontend' => $frontend,
+            'backend' => $backend,
         ]);
 
         $user = $request->getUser();

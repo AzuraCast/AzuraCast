@@ -19,8 +19,8 @@ class SettingsForm extends Form
      */
     public function __construct(
         EntityManager $em,
-        array $form_config)
-    {
+        array $form_config
+    ) {
         parent::__construct($form_config);
 
         $this->em = $em;

@@ -5,8 +5,11 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
+use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use const SORT_ASC;
+use const SORT_DESC;
 
 class ListController extends FilesControllerAbstract
 {
@@ -67,7 +70,7 @@ class ListController extends FilesControllerAbstract
                     ->setParameter('playlist_name', $playlist_name);
             } else {
                 $media_query->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                    ->setParameter('query', '%'.$search_phrase.'%');
+                    ->setParameter('query', '%' . $search_phrase . '%');
             }
         }
 
@@ -83,34 +86,37 @@ class ListController extends FilesControllerAbstract
             }
 
             $custom_fields = [];
-            foreach($media_row['custom_fields'] as $custom_field) {
-                $custom_fields['custom_'.$custom_field['field_id']] = $custom_field['value'];
+            foreach ($media_row['custom_fields'] as $custom_field) {
+                $custom_fields['custom_' . $custom_field['field_id']] = $custom_field['value'];
             }
 
             $media_in_dir[$media_row['path']] = [
-                'is_playable' => ($media_row['length'] !== 0),
-                'length' => $media_row['length'],
-                'length_text' => $media_row['length_text'],
-                'artist' => $media_row['artist'],
-                'title' => $media_row['title'],
-                'album' => $media_row['album'],
-                'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                'art' => (string)$router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
-                'edit_url' => (string)$router->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
-                'play_url' => (string)$router->named('stations:files:download', ['station' => $station_id], ['file' => $media_row['path']], true),
-                'playlists' => $playlists,
-            ] + $custom_fields;
+                    'is_playable' => ($media_row['length'] !== 0),
+                    'length' => $media_row['length'],
+                    'length_text' => $media_row['length_text'],
+                    'artist' => $media_row['artist'],
+                    'title' => $media_row['title'],
+                    'album' => $media_row['album'],
+                    'name' => $media_row['artist'] . ' - ' . $media_row['title'],
+                    'art' => (string)$router->named('api:stations:media:art',
+                        ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
+                    'edit_url' => (string)$router->named('stations:files:edit',
+                        ['station' => $station_id, 'id' => $media_row['id']]),
+                    'play_url' => (string)$router->named('stations:files:download', ['station' => $station_id],
+                        ['file' => $media_row['path']], true),
+                    'playlists' => $playlists,
+                ] + $custom_fields;
         }
 
         $files = [];
         if (!empty($search_phrase)) {
-            foreach($media_in_dir as $short_path => $media_row) {
-                $files[] = 'media://'.$short_path;
+            foreach ($media_in_dir as $short_path => $media_row) {
+                $files[] = 'media://' . $short_path;
             }
         } else {
             $files_raw = $fs->listContents($file_path);
-            foreach($files_raw as $file) {
-                $files[] = $file['filesystem'].'://'.$file['path'];
+            foreach ($files_raw as $file) {
+                $files[] = $file['filesystem'] . '://' . $file['path'];
             }
         }
 
@@ -139,7 +145,8 @@ class ListController extends FilesControllerAbstract
                 'path' => $short,
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
-                'rename_url' => (string)$router->named('stations:files:rename', ['station' => $station_id], ['file' => $short]),
+                'rename_url' => (string)$router->named('stations:files:rename', ['station' => $station_id],
+                    ['file' => $short]),
             ];
 
             foreach ($media as $media_key => $media_val) {
@@ -153,21 +160,21 @@ class ListController extends FilesControllerAbstract
         // current=1&rowCount=10&sort[sender]=asc&searchPhrase=&id=b0df282a-0d67-40e5-8558-c9e93b7befed
 
         // Apply sorting and limiting.
-        $sort_by = ['is_dir', \SORT_DESC];
+        $sort_by = ['is_dir', SORT_DESC];
 
         if (!empty($_REQUEST['sort'])) {
             foreach ($_REQUEST['sort'] as $sort_key => $sort_direction) {
-                $sort_dir = (strtolower($sort_direction) === 'desc') ? \SORT_DESC : \SORT_ASC;
+                $sort_dir = (strtolower($sort_direction) === 'desc') ? SORT_DESC : SORT_ASC;
 
                 $sort_by[] = $sort_key;
                 $sort_by[] = $sort_dir;
             }
         } else {
             $sort_by[] = 'name';
-            $sort_by[] = \SORT_ASC;
+            $sort_by[] = SORT_ASC;
         }
 
-        $result = \App\Utilities::arrayOrderBy($result, $sort_by);
+        $result = Utilities::arrayOrderBy($result, $sort_by);
 
         $num_results = count($result);
 

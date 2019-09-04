@@ -70,7 +70,7 @@ class Discord extends AbstractConnector
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            $this->logger->error('Webhook '.self::NAME.' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -135,7 +135,7 @@ class Discord extends AbstractConnector
                 sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
                 ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
             );
-        } catch(TransferException $e) {
+        } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from Discord (%d): %s', $e->getCode(), $e->getMessage()));
         }
     }

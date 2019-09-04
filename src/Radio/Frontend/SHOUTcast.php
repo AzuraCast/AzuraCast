@@ -3,11 +3,49 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Utilities;
+use NowPlaying\Adapter\AdapterAbstract;
+use NowPlaying\Adapter\SHOUTcast2;
+use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
 class SHOUTcast extends AbstractFrontend
 {
+    /**
+     * @return string|null
+     */
+    public static function getVersion(): ?string
+    {
+        $binary_path = self::getBinary();
+        if (!$binary_path) {
+            return null;
+        }
+
+        $process = new Process([$binary_path, '--version']);
+        $process->setWorkingDirectory(dirname($binary_path));
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return null;
+        }
+
+        return trim($process->getOutput());
+    }
+
+    public static function getBinary()
+    {
+        $new_path = dirname(APP_INCLUDE_ROOT) . '/servers/shoutcast2/sc_serv';
+
+        // Docker versions before 3 included the SC binary across the board.
+        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION < 3) {
+            return $new_path;
+        }
+
+        return file_exists($new_path)
+            ? $new_path
+            : false;
+    }
+
     public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
         $fe_config = (array)$station->getFrontendConfig();
@@ -15,16 +53,16 @@ class SHOUTcast extends AbstractFrontend
 
         $base_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port;
 
-        $np_adapter = new \NowPlaying\Adapter\SHOUTcast2($base_url, $this->http_client);
+        $np_adapter = new SHOUTcast2($base_url, $this->http_client);
         $np_adapter->setAdminPassword($fe_config['admin_pw']);
 
-        $np_final = \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
+        $np_final = AdapterAbstract::NOWPLAYING_EMPTY;
         $np_final['listeners']['clients'] = [];
 
         try {
             $sid = 0;
 
-            foreach($station->getMounts() as $mount) {
+            foreach ($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
                 $sid++;
                 $np_final = $this->_processNowPlayingForMount(
@@ -36,12 +74,16 @@ class SHOUTcast extends AbstractFrontend
             }
 
             $this->logger->debug('Aggregated NowPlaying response', ['response' => $np_final]);
-        } catch(\NowPlaying\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
         return $np_final;
     }
+
+    /*
+     * Process Management
+     */
 
     /**
      * @inheritdoc
@@ -51,6 +93,26 @@ class SHOUTcast extends AbstractFrontend
         $config = $this->_getConfig($station);
         $station->setFrontendConfigDefaults($this->_loadFromConfig($config));
         return true;
+    }
+
+    protected function _getConfig(Entity\Station $station)
+    {
+        $config_dir = $station->getRadioConfigDir();
+        return @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
+    }
+
+    /*
+     * Configuration
+     */
+
+    protected function _loadFromConfig($config): array
+    {
+        return [
+            'port' => $config['portbase'],
+            'source_pw' => $config['password'],
+            'admin_pw' => $config['adminpassword'],
+            'max_listeners' => $config['maxuser'],
+        ];
     }
 
     public function write(Entity\Station $station): bool
@@ -86,11 +148,11 @@ class SHOUTcast extends AbstractFrontend
         foreach ($station->getMounts() as $mount_row) {
             /** @var Entity\StationMount $mount_row */
             $i++;
-            $config['streamid_'.$i] = $i;
-            $config['streampath_'.$i] = $mount_row->getName();
+            $config['streamid_' . $i] = $i;
+            $config['streampath_' . $i] = $mount_row->getName();
 
             if ($mount_row->getRelayUrl()) {
-                $config['streamrelayurl_'.$i] = $mount_row->getRelayUrl();
+                $config['streamrelayurl_' . $i] = $mount_row->getRelayUrl();
             }
 
             if ($mount_row->getAuthhash()) {
@@ -116,49 +178,6 @@ class SHOUTcast extends AbstractFrontend
         return true;
     }
 
-    /*
-     * Process Management
-     */
-
-    public function getCommand(Entity\Station $station): ?string
-    {
-        if ($binary = self::getBinary()) {
-            $config_path = $station->getRadioConfigDir();
-            $sc_config = $config_path . '/sc_serv.conf';
-
-            return $binary . ' ' . $sc_config;
-        }
-
-        return '/bin/false';
-    }
-
-    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
-    {
-        $public_url = $this->getPublicUrl($station, $base_url);
-        return $public_url
-            ->withPath($public_url->getPath().'/admin.cgi');
-    }
-
-    /*
-     * Configuration
-     */
-
-    protected function _getConfig(Entity\Station $station)
-    {
-        $config_dir = $station->getRadioConfigDir();
-        return @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
-    }
-
-    protected function _loadFromConfig($config): array
-    {
-        return [
-            'port' => $config['portbase'],
-            'source_pw' => $config['password'],
-            'admin_pw' => $config['adminpassword'],
-            'max_listeners' => $config['maxuser'],
-        ];
-    }
-
     protected function _getDefaults(Entity\Station $station): array
     {
         $config_path = $station->getRadioConfigDir();
@@ -178,11 +197,30 @@ class SHOUTcast extends AbstractFrontend
         return $defaults;
     }
 
+    public function getCommand(Entity\Station $station): ?string
+    {
+        if ($binary = self::getBinary()) {
+            $config_path = $station->getRadioConfigDir();
+            $sc_config = $config_path . '/sc_serv.conf';
+
+            return $binary . ' ' . $sc_config;
+        }
+
+        return '/bin/false';
+    }
+
+    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
+    {
+        $public_url = $this->getPublicUrl($station, $base_url);
+        return $public_url
+            ->withPath($public_url->getPath() . '/admin.cgi');
+    }
+
     protected function _getDefaultMountSid(Entity\Station $station): int
     {
         $default_sid = null;
         $sid = 0;
-        foreach($station->getMounts() as $mount) {
+        foreach ($station->getMounts() as $mount) {
             /** @var Entity\StationMount $mount */
             $sid++;
 
@@ -193,40 +231,5 @@ class SHOUTcast extends AbstractFrontend
         }
 
         return $default_sid ?? 1;
-    }
-
-    public static function getBinary()
-    {
-        $new_path = dirname(APP_INCLUDE_ROOT) . '/servers/shoutcast2/sc_serv';
-
-        // Docker versions before 3 included the SC binary across the board.
-        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION < 3) {
-            return $new_path;
-        }
-
-        return file_exists($new_path)
-            ? $new_path
-            : false;
-    }
-
-    /**
-     * @return string|null
-     */
-    public static function getVersion(): ?string
-    {
-        $binary_path = self::getBinary();
-        if (!$binary_path) {
-            return null;
-        }
-
-        $process = new Process([$binary_path, '--version']);
-        $process->setWorkingDirectory(dirname($binary_path));
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            return null;
-        }
-
-        return trim($process->getOutput());
     }
 }

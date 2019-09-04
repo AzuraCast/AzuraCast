@@ -1,10 +1,11 @@
 <?php
 namespace App\Exception;
 
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class MediaProcessing extends \Azura\Exception
+class MediaProcessing extends Exception
 {
     public function __construct(
         string $message = 'The media provided could not be processed.',

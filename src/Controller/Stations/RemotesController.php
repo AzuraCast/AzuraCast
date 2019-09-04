@@ -3,6 +3,7 @@ namespace App\Controller\Stations;
 
 use App\Entity\Station;
 use App\Entity\StationRemote;
+use App\Exception\PermissionDenied;
 use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -36,19 +37,25 @@ class RemotesController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
+                'green');
             return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/remotes/edit', [
             'form' => $this->form,
             'render_mode' => 'edit',
-            'title' => $id ? __('Edit Remote Relay') : __('Add Remote Relay')
+            'title' => $id ? __('Edit Remote Relay') : __('Add Remote Relay'),
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $station_id, $id, $csrf_token): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $id,
+        $csrf_token
+    ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf_token);
 
         $request->getSession()->flash('<b>' . __('Remote Relay deleted.') . '</b>', 'green');
@@ -61,7 +68,7 @@ class RemotesController extends AbstractStationCrudController
         $record = parent::_getRecord($station, $id);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
-            throw new \App\Exception\PermissionDenied(__('This record cannot be edited.'));
+            throw new PermissionDenied(__('This record cannot be edited.'));
         }
 
         return $record;

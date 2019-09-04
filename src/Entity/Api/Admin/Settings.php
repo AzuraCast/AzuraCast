@@ -43,6 +43,112 @@ class Settings
      * @var int
      */
     public $prefer_browser_url = 0;
+    /**
+     * Use Web Proxy for Radio
+     *
+     * @OA\Property()
+     * @Assert\Choice({0,1})
+     * @var int
+     */
+    public $use_radio_proxy = 0;
+    /**
+     * Days of Playback History to Keep
+     *
+     * @OA\Property()
+     * @Assert\Choice({0,14,30,60,365,730})
+     * @var int
+     */
+    public $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
+    /**
+     * Always Use HTTPS
+     *
+     * @OA\Property()
+     * @Assert\Choice({0,1})
+     * @var int
+     */
+    public $always_use_ssl = 0;
+    /**
+     * API "Access-Control-Allow-Origin" header
+     *
+     * @OA\Property()
+     * @var string
+     */
+    public $api_access_control;
+    /**
+     * Listener Analytics Collection
+     *
+     * @OA\Property()
+     * @Assert\Choice({Entity\Analytics::LEVEL_NONE, Entity\Analytics::LEVEL_NO_IP, Entity\Analytics::LEVEL_ALL})
+     * @var string
+     */
+    public $analytics = Entity\Analytics::LEVEL_ALL;
+    /**
+     * Check for Updates and Announcements
+     *
+     * @OA\Property()
+     * @Assert\Choice({Entity\Settings::UPDATES_NONE, Entity\Settings::UPDATES_RELEASE_ONLY, Entity\Settings::UPDATES_ALL})
+     * @var int
+     */
+    public $central_updates_channel = Entity\Settings::UPDATES_RELEASE_ONLY;
+    /**
+     * Base Theme for Public Pages
+     *
+     * @OA\Property()
+     * @Assert\Choice({"light", "dark"})
+     * @var string
+     */
+    public $public_theme = 'light';
+    /**
+     * Hide Album Art on Public Pages
+     *
+     * @OA\Property()
+     * @Assert\Choice({0,1})
+     * @var int
+     */
+    public $hide_album_art = 0;
+    /**
+     * Homepage Redirect URL
+     *
+     * @OA\Property()
+     * @var string|null
+     */
+    public $homepage_redirect_url;
+    /**
+     * Default Album Art URL
+     *
+     * @OA\Property()
+     * @var string|null
+     */
+    public $default_album_art_url;
+    /**
+     * Hide AzuraCast Branding on Public Pages
+     *
+     * @OA\Property()
+     * @Assert\Choice({0,1})
+     * @var int
+     */
+    public $hide_product_name = 0;
+    /**
+     * Custom CSS for Public Pages
+     *
+     * @OA\Property()
+     * @var string|null
+     */
+    public $custom_css_public;
+    /**
+     * Custom JS for Public Pages
+     *
+     * @OA\Property()
+     * @var string|null
+     */
+    public $custom_js_public;
+    /**
+     * Custom CSS for Internal Pages
+     *
+     * @OA\Property()
+     * @var string|null
+     */
+    public $custom_css_internal;
 
     /**
      * @param int $prefer_browser_url
@@ -53,30 +159,12 @@ class Settings
     }
 
     /**
-     * Use Web Proxy for Radio
-     *
-     * @OA\Property()
-     * @Assert\Choice({0,1})
-     * @var int
-     */
-    public $use_radio_proxy = 0;
-
-    /**
      * @param int $use_radio_proxy
      */
     public function setUseRadioProxy(int $use_radio_proxy): void
     {
         $this->use_radio_proxy = $use_radio_proxy;
     }
-
-    /**
-     * Days of Playback History to Keep
-     *
-     * @OA\Property()
-     * @Assert\Choice({0,14,30,60,365,730})
-     * @var int
-     */
-    public $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
 
     /**
      * @param int $history_keep_days
@@ -87,47 +175,12 @@ class Settings
     }
 
     /**
-     * Always Use HTTPS
-     *
-     * @OA\Property()
-     * @Assert\Choice({0,1})
-     * @var int
-     */
-    public $always_use_ssl = 0;
-
-    /**
      * @param int $always_use_ssl
      */
     public function setAlwaysUseSsl(int $always_use_ssl): void
     {
         $this->always_use_ssl = $always_use_ssl;
     }
-
-    /**
-     * API "Access-Control-Allow-Origin" header
-     *
-     * @OA\Property()
-     * @var string
-     */
-    public $api_access_control;
-
-    /**
-     * Listener Analytics Collection
-     *
-     * @OA\Property()
-     * @Assert\Choice({Entity\Analytics::LEVEL_NONE, Entity\Analytics::LEVEL_NO_IP, Entity\Analytics::LEVEL_ALL})
-     * @var string
-     */
-    public $analytics = Entity\Analytics::LEVEL_ALL;
-
-    /**
-     * Check for Updates and Announcements
-     *
-     * @OA\Property()
-     * @Assert\Choice({Entity\Settings::UPDATES_NONE, Entity\Settings::UPDATES_RELEASE_ONLY, Entity\Settings::UPDATES_ALL})
-     * @var int
-     */
-    public $central_updates_channel = Entity\Settings::UPDATES_RELEASE_ONLY;
 
     /**
      * @param int $central_updates_channel
@@ -138,24 +191,6 @@ class Settings
     }
 
     /**
-     * Base Theme for Public Pages
-     *
-     * @OA\Property()
-     * @Assert\Choice({"light", "dark"})
-     * @var string
-     */
-    public $public_theme = 'light';
-
-    /**
-     * Hide Album Art on Public Pages
-     *
-     * @OA\Property()
-     * @Assert\Choice({0,1})
-     * @var int
-     */
-    public $hide_album_art = 0;
-
-    /**
      * @param int $hide_album_art
      */
     public function setHideAlbumArt(int $hide_album_art): void
@@ -164,59 +199,10 @@ class Settings
     }
 
     /**
-     * Homepage Redirect URL
-     *
-     * @OA\Property()
-     * @var string|null
-     */
-    public $homepage_redirect_url;
-
-    /**
-     * Default Album Art URL
-     *
-     * @OA\Property()
-     * @var string|null
-     */
-    public $default_album_art_url;
-
-    /**
-     * Hide AzuraCast Branding on Public Pages
-     *
-     * @OA\Property()
-     * @Assert\Choice({0,1})
-     * @var int
-     */
-    public $hide_product_name = 0;
-
-    /**
      * @param int $hide_product_name
      */
     public function setHideProductName(int $hide_product_name): void
     {
         $this->hide_product_name = $hide_product_name;
     }
-
-    /**
-     * Custom CSS for Public Pages
-     *
-     * @OA\Property()
-     * @var string|null
-     */
-    public $custom_css_public;
-
-    /**
-     * Custom JS for Public Pages
-     *
-     * @OA\Property()
-     * @var string|null
-     */
-    public $custom_js_public;
-
-    /**
-     * Custom CSS for Internal Pages
-     *
-     * @OA\Property()
-     * @var string|null
-     */
-    public $custom_css_internal;
 }

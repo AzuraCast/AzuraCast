@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -16,7 +15,8 @@ final class Version20170512023527 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE song_history ADD playlist_id INT DEFAULT NULL, ADD timestamp_cued INT DEFAULT NULL');
         $this->addSql('ALTER TABLE song_history ADD CONSTRAINT FK_2AD161646BBD148 FOREIGN KEY (playlist_id) REFERENCES station_playlists (id) ON DELETE CASCADE');
@@ -29,7 +29,8 @@ final class Version20170512023527 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD161646BBD148');
         $this->addSql('DROP INDEX IDX_2AD161646BBD148 ON song_history');

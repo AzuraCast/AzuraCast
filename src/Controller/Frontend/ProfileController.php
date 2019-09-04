@@ -1,12 +1,14 @@
 <?php
 namespace App\Controller\Frontend;
 
+use App\Auth;
 use App\Entity;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Config;
 use Azura\Settings;
+use AzuraForms\Field\AbstractField;
 use BaconQrCode;
 use Doctrine\ORM\EntityManager;
 use OTPHP\TOTP;
@@ -65,7 +67,7 @@ class ProfileController
 
         $form = new Form($this->profile_form);
 
-        $form->getField('password')->addValidator(function($val, \AzuraForms\Field\AbstractField $field) use ($user) {
+        $form->getField('password')->addValidator(function ($val, AbstractField $field) use ($user) {
             $form = $field->getForm();
 
             $new_password = $form->getField('new_password')->getValue();
@@ -91,8 +93,7 @@ class ProfileController
 
             $this->user_repo->fromArray($user, $data);
 
-            if (!empty($data['new_password']))
-            {
+            if (!empty($data['new_password'])) {
                 $user->setAuthPassword($data['new_password']);
             }
 
@@ -107,7 +108,7 @@ class ProfileController
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => __('Edit Profile')
+            'title' => __('Edit Profile'),
         ]);
     }
 
@@ -123,7 +124,7 @@ class ProfileController
             $current_theme = $theme_field['default'];
         }
 
-        foreach($theme_options as $theme) {
+        foreach ($theme_options as $theme) {
             if ($theme !== $current_theme) {
                 $user->setTheme($theme);
                 break;
@@ -144,11 +145,11 @@ class ProfileController
         $user = $request->getUser();
         $form = new Form($this->two_factor_form);
 
-        $form->getField('otp')->addValidator(function($otp, \AzuraForms\Field\AbstractField $element) {
+        $form->getField('otp')->addValidator(function ($otp, AbstractField $element) {
             $secret = $element->getForm()->getField('secret')->getValue();
 
             $totp = TOTP::create($secret);
-            return ($totp->verify($otp, null, \App\Auth::TOTP_WINDOW))
+            return ($totp->verify($otp, null, Auth::TOTP_WINDOW))
                 ? true
                 : __('The token you supplied is invalid. Please try again.');
         });

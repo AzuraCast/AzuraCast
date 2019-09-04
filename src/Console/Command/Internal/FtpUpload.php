@@ -52,10 +52,10 @@ class FtpUpload extends CommandAbstract
         $all_stations = $stations_repo->findAll();
 
         $parts = explode('/', dirname($path));
-        for($i = count($parts); $i >= 1; $i--) {
+        for ($i = count($parts); $i >= 1; $i--) {
             $search_path = implode('/', array_slice($parts, 0, $i));
 
-            $stations = array_filter($all_stations, function(Entity\Station $station) use ($search_path) {
+            $stations = array_filter($all_stations, function (Entity\Station $station) use ($search_path) {
                 return $search_path === $station->getRadioMediaDir();
             });
 
@@ -70,12 +70,12 @@ class FtpUpload extends CommandAbstract
         /** @var MessageQueue $message_queue */
         $message_queue = $this->get(MessageQueue::class);
 
-        foreach($stations as $station) {
+        foreach ($stations as $station) {
             /** @var Entity\Station $station */
             $fs = $filesystem->getForStation($station);
             $fs->flushAllCaches();
 
-            $relative_path = str_replace($station->getRadioMediaDir().'/', '', $path);
+            $relative_path = str_replace($station->getRadioMediaDir() . '/', '', $path);
 
             $message = new Message\AddNewMediaMessage;
             $message->station_id = $station->getId();

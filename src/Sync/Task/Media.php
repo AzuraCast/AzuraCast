@@ -238,7 +238,6 @@ class Media extends AbstractTask
             }
         }
 
-        $this->_flushAndClearRecords();
         $fs->flushAllCaches(true);
 
         $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);

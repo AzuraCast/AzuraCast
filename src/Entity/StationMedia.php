@@ -201,7 +201,7 @@ class StationMedia
     protected $cue_out;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
      *
      * @DeepNormalize(true)
      * @Serializer\MaxDepth(1)
@@ -213,7 +213,7 @@ class StationMedia
     protected $playlists;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
      *
      * @var Collection
      */
@@ -721,6 +721,14 @@ class StationMedia
     public function getPlaylists(): Collection
     {
         return $this->playlists;
+    }
+
+    /**
+     * @return string A string identifying this entity.
+     */
+    public function __toString(): string
+    {
+        return $this->unique_id.': '.$this->artist.' - '.$this->title;
     }
 
     /**

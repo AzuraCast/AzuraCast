@@ -52,7 +52,7 @@ class BatchController extends FilesControllerAbstract
         $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
 
         // Convert from pipe-separated files parameter into actual paths.
-        $files_raw = explode('|', $_POST['files']);
+        $files_raw = $_POST['files'];
         $files = [];
 
         foreach ($files_raw as $file) {

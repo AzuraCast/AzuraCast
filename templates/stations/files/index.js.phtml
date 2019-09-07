@@ -43,7 +43,7 @@ $(function() {
                 var $files = getSelectedFiles();
                 $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
                     'do': action,
-                    'files': $files.join('|'),
+                    'files': $files,
                     'csrf': CSRF,
                     'file': getUrlHash()
                 }, function() {
@@ -64,7 +64,7 @@ $(function() {
                     'do': 'playlist',
                     'playlists': this.checkedPlaylists,
                     'new_playlist_name': this.newPlaylist,
-                    'files': $files.join('|'),
+                    'files': $files,
                     'csrf': CSRF,
                     'file': getUrlHash()
                 }, function(data) {
@@ -255,7 +255,7 @@ $(function() {
             var $files = getSelectedFiles();
             $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
                 'do': 'move',
-                'files': $files.join('|'),
+                'files': $files,
                 'csrf': CSRF,
                 'directory': decodeURIComponent(window.atob($(this).data('path')))
             },function(data){

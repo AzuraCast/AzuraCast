@@ -50,7 +50,7 @@ class OverviewController
         }
 
         /* Statistics */
-        $threshold = Chronos::parse('-1 month', $station_tz)->getTimestamp();
+        $statisticsThreshold = Chronos::parse('-1 month', $station_tz)->getTimestamp();
 
         // Statistics by day.
         $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d',
@@ -192,7 +192,7 @@ class OverviewController
             GROUP BY sh.song_id
             ORDER BY records DESC')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('timestamp', $threshold)
+            ->setParameter('timestamp', $statisticsThreshold)
             ->setMaxResults(40)
             ->getArrayResult();
 
@@ -220,7 +220,7 @@ class OverviewController
         }
 
         /* Song "Deltas" (Changes in Listener Count) */
-        $threshold = strtotime('-2 weeks');
+        $songPerformanceThreshold = Chronos::parse('-2 days', $station_tz)->getTimestamp();
 
         // Get all songs played in timeline.
         $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
@@ -231,7 +231,7 @@ class OverviewController
             AND sh.listeners_start IS NOT NULL
             ORDER BY sh.timestamp_start ASC')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('timestamp', $threshold)
+            ->setParameter('timestamp', $songPerformanceThreshold)
             ->getArrayResult();
 
         $songs_played_raw = array_values($songs_played_raw);

@@ -100,8 +100,7 @@ class EditController extends FilesControllerAbstract
 
             // Detect rename.
             if ($data['path'] !== $media->getPath()) {
-                $path_full = 'media://' . $data['path'];
-                $fs->rename($media->getPathUri(), $path_full);
+                $fs->rename($media->getPathUri(), $data['path']);
             }
 
             if (!empty($custom_fields)) {

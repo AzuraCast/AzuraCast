@@ -26,7 +26,7 @@
             <tr class="align-middle">
                 <td class="center">
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:index:index', ['station' => $record['id']]) ?>" target="_blank"><?=__('Manage') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:index:index', ['station_id' => $record['id']]) ?>" target="_blank"><?=__('Manage') ?></a>
                         <a class="btn btn-sm btn-dark" href="<?=$router->named('admin:stations:edit', ['id' => $record['id']]) ?>"><?=__('Edit') ?></a>
                         <a class="btn btn-sm btn-dark" href="<?=$router->named('admin:stations:clone', ['id' => $record['id']]) ?>"><?=__('Clone') ?></a>
                         <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete station "%s"?', $record['name'])) ?>" href="<?=$router->named('admin:stations:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>

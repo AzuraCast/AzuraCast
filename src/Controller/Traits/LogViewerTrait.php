@@ -2,7 +2,7 @@
 namespace App\Controller\Traits;
 
 use App\Entity;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -21,7 +21,7 @@ trait LogViewerTrait
         clearstatcache();
 
         if (!file_exists($log_path)) {
-            throw new NotFound('Log file not found!');
+            throw new NotFoundException('Log file not found!');
         }
 
         if (!$tail_file) {

@@ -5,10 +5,10 @@ use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NotLoggedIn extends Exception
+class NotFoundException extends Exception
 {
     public function __construct(
-        string $message = 'Not logged in.',
+        string $message = 'Record not found.',
         int $code = 0,
         Throwable $previous = null,
         string $loggerLevel = LogLevel::DEBUG

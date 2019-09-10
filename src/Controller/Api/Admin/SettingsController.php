@@ -2,7 +2,7 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Exception\Validation;
+use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManager;
@@ -88,7 +88,7 @@ class SettingsController
      * @param ServerRequest $request
      * @param Response $response
      * @return ResponseInterface
-     * @throws Validation
+     * @throws ValidationException
      */
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -99,7 +99,7 @@ class SettingsController
 
         $errors = $this->validator->validate($api_settings_obj);
         if (count($errors) > 0) {
-            throw new Validation((string)$errors);
+            throw new ValidationException((string)$errors);
         }
 
         $api_settings = $this->serializer->normalize($api_settings_obj);

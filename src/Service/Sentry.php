@@ -2,7 +2,7 @@
 namespace App\Service;
 
 use App\Entity;
-use App\Exception\Supervisor;
+use App\Exception\SupervisorException;
 use App\Version;
 use Azura\Exception;
 use Azura\Settings;
@@ -91,7 +91,7 @@ class Sentry
             'excluded_exceptions' => [
                 FileNotFoundException::class,
                 FaultException::class,
-                Supervisor::class,
+                SupervisorException::class,
             ],
         ];
 

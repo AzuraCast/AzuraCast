@@ -2,9 +2,9 @@
 namespace App\Radio;
 
 use App\Entity;
-use App\Exception\Supervisor\AlreadyRunning;
-use App\Exception\Supervisor\BadName;
-use App\Exception\Supervisor\NotRunning;
+use App\Exception\Supervisor\AlreadyRunningException;
+use App\Exception\Supervisor\BadNameException;
+use App\Exception\Supervisor\NotRunningException;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
@@ -128,9 +128,9 @@ abstract class AbstractAdapter
      * Restart the executable service.
      *
      * @param Entity\Station $station
-     * @throws \App\Exception\Supervisor
-     * @throws AlreadyRunning
-     * @throws NotRunning
+     * @throws \App\Exception\SupervisorException
+     * @throws AlreadyRunningException
+     * @throws NotRunningException
      */
     public function restart(Entity\Station $station): void
     {
@@ -142,8 +142,8 @@ abstract class AbstractAdapter
      * Stop the executable service.
      *
      * @param Entity\Station $station
-     * @throws \App\Exception\Supervisor
-     * @throws NotRunning
+     * @throws \App\Exception\SupervisorException
+     * @throws NotRunningException
      */
     public function stop(Entity\Station $station): void
     {
@@ -167,9 +167,9 @@ abstract class AbstractAdapter
      * @param string $program_name
      * @param Entity\Station $station
      *
-     * @throws \App\Exception\Supervisor
-     * @throws AlreadyRunning
-     * @throws NotRunning
+     * @throws \App\Exception\SupervisorException
+     * @throws AlreadyRunningException
+     * @throws NotRunningException
      */
     protected function _handleSupervisorException(FaultException $e, $program_name, Entity\Station $station): void
     {
@@ -180,7 +180,7 @@ abstract class AbstractAdapter
             $e_headline = __('%s is not recognized as a service.', $class_name);
             $e_body = __('It may not be registered with Supervisor yet. Restarting broadcasting may help.');
 
-            $app_e = new BadName(
+            $app_e = new BadNameException(
                 $e_headline . '; ' . $e_body,
                 $e->getCode(),
                 $e
@@ -190,7 +190,7 @@ abstract class AbstractAdapter
                 $e_headline = __('%s cannot start', $class_name);
                 $e_body = __('It is already running.');
 
-                $app_e = new AlreadyRunning(
+                $app_e = new AlreadyRunningException(
                     $e_headline . '; ' . $e_body,
                     $e->getCode(),
                     $e
@@ -200,7 +200,7 @@ abstract class AbstractAdapter
                     $e_headline = __('%s cannot stop', $class_name);
                     $e_body = __('It is not running.');
 
-                    $app_e = new NotRunning(
+                    $app_e = new NotRunningException(
                         $e_headline . '; ' . $e_body,
                         $e->getCode(),
                         $e
@@ -217,7 +217,7 @@ abstract class AbstractAdapter
                         ? implode('<br>', $process_log)
                         : __('Check the log for details.');
 
-                    $app_e = new \App\Exception\Supervisor($e_headline, $e->getCode(), $e);
+                    $app_e = new \App\Exception\SupervisorException($e_headline, $e->getCode(), $e);
                     $app_e->addExtraData('supervisor_log', $process_log);
                     $app_e->addExtraData('supervisor_process_info', $this->supervisor->getProcessInfo($program_name));
                 }
@@ -235,8 +235,8 @@ abstract class AbstractAdapter
      * Start the executable service.
      *
      * @param Entity\Station $station
-     * @throws \App\Exception\Supervisor
-     * @throws AlreadyRunning
+     * @throws \App\Exception\SupervisorException
+     * @throws AlreadyRunningException
      */
     public function start(Entity\Station $station): void
     {

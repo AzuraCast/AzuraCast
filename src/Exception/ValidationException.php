@@ -6,7 +6,7 @@ use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;
 
-class Validation extends Exception
+class ValidationException extends Exception
 {
     /** @var ConstraintViolationListInterface */
     protected $detailedErrors;

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
 use Azura\Doctrine\Repository;
@@ -57,7 +57,7 @@ abstract class AbstractAdminCrudController
         $record = $this->record_repo->find($id);
 
         if (!$record instanceof $this->entity_class) {
-            throw new NotFound(__('Record not found.'));
+            throw new NotFoundException(__('Record not found.'));
         }
 
         return $record;

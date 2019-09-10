@@ -2,7 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -67,7 +67,7 @@ class StationsController extends AbstractAdminCrudController
     {
         $record = $this->record_repo->find((int)$id);
         if (!($record instanceof Entity\Station)) {
-            throw new NotFound(__('Station not found.'));
+            throw new NotFoundException(__('Station not found.'));
         }
 
         if (false !== $this->clone_form->process($request, $record)) {

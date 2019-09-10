@@ -1,14 +1,14 @@
 <?php
-namespace App\Exception;
+namespace App\Exception\Supervisor;
 
-use Azura\Exception;
+use App\Exception\SupervisorException;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class OutOfSpace extends Exception
+class NotRunningException extends SupervisorException
 {
     public function __construct(
-        string $message = 'Out of available space.',
+        string $message = 'Process was not running yet.',
         int $code = 0,
         Throwable $previous = null,
         string $loggerLevel = LogLevel::INFO

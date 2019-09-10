@@ -2,7 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Entity;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form\StationPlaylistForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -165,7 +165,7 @@ class PlaylistsController extends AbstractStationCrudController
         $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
-            throw new NotFound(__('Playlist not found.'));
+            throw new NotFoundException(__('Playlist not found.'));
         }
 
         if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
@@ -225,7 +225,7 @@ class PlaylistsController extends AbstractStationCrudController
         ];
 
         if (!isset($formats[$format])) {
-            throw new NotFound(__('Format not found.'));
+            throw new NotFoundException(__('Format not found.'));
         }
 
         $file_name = 'playlist_' . $record->getShortName() . '.' . $format;
@@ -241,7 +241,7 @@ class PlaylistsController extends AbstractStationCrudController
         $record = $this->_getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
-            throw new NotFound(__('Playlist not found.'));
+            throw new NotFoundException(__('Playlist not found.'));
         }
 
         $new_value = !$record->getIsEnabled();

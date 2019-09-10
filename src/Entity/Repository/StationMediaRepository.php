@@ -2,7 +2,7 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
-use App\Exception\MediaProcessing;
+use App\Exception\MediaProcessingException;
 use App\Radio\Filesystem;
 use Azura\Doctrine\Repository;
 use DI\Annotation\Inject;
@@ -257,7 +257,7 @@ class StationMediaRepository extends Repository
 
         $fs = $this->filesystem->getForStation($media->getStation());
         if (!$fs->has($media_uri)) {
-            throw new MediaProcessing(sprintf('Media path "%s" not found.', $media_uri));
+            throw new MediaProcessingException(sprintf('Media path "%s" not found.', $media_uri));
         }
 
         $media_mtime = $fs->getTimestamp($media_uri);

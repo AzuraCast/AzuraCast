@@ -2,7 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Entity;
-use App\Exception\StationUnsupported;
+use App\Exception\StationUnsupportedException;
 use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -38,7 +38,7 @@ class StreamersController extends AbstractStationCrudController
         $backend = $request->getStationBackend();
 
         if (!$backend::supportsStreamers()) {
-            throw new StationUnsupported;
+            throw new StationUnsupportedException;
         }
 
         $view = $request->getView();

@@ -2,7 +2,7 @@
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
 use Azura\Doctrine\Repository;
@@ -68,7 +68,7 @@ abstract class AbstractStationCrudController
         $record = $this->record_repo->findOneBy(['id' => $id, 'station_id' => $station->getId()]);
 
         if (!$record instanceof $this->entity_class) {
-            throw new NotFound(__('Record not found.'));
+            throw new NotFoundException(__('Record not found.'));
         }
 
         return $record;

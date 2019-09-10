@@ -2,7 +2,7 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Exception\Supervisor\NotRunning;
+use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
@@ -123,7 +123,7 @@ class ServicesController
             default:
                 try {
                     $frontend->stop($station);
-                } catch (NotRunning $e) {
+                } catch (NotRunningException $e) {
                 }
 
                 $frontend->write($station);
@@ -200,7 +200,7 @@ class ServicesController
             default:
                 try {
                     $backend->stop($station);
-                } catch (NotRunning $e) {
+                } catch (NotRunningException $e) {
                 }
 
                 $backend->write($station);

@@ -2,7 +2,7 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Exception\Validation;
+use App\Exception\ValidationException;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
@@ -132,7 +132,7 @@ class StationsController extends AbstractAdminApiCrudController
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            $e = new Validation((string)$errors);
+            $e = new ValidationException((string)$errors);
             $e->setDetailedErrors($errors);
             throw $e;
         }

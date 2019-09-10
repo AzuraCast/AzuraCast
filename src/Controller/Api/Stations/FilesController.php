@@ -2,7 +2,7 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Exception\Validation;
+use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -106,7 +106,7 @@ class FilesController extends AbstractStationApiCrudController
         // Validate the UploadFile API record.
         $errors = $this->validator->validate($api_record);
         if (count($errors) > 0) {
-            $e = new Validation((string)$errors);
+            $e = new ValidationException((string)$errors);
             $e->setDetailedErrors($errors);
             throw $e;
         }

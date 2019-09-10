@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Exception\Validation;
+use App\Exception\ValidationException;
 use Azura\Http\RouterInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
@@ -118,7 +118,7 @@ abstract class AbstractApiCrudController
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            $e = new Validation((string)$errors);
+            $e = new ValidationException((string)$errors);
             $e->setDetailedErrors($errors);
             throw $e;
         }

@@ -2,7 +2,7 @@
 namespace App\Middleware;
 
 
-use App\Exception\NotLoggedIn;
+use App\Exception\NotLoggedInException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Exception;
@@ -24,7 +24,7 @@ class RequireLogin
         try {
             $request->getUser();
         } catch (Exception $e) {
-            throw new NotLoggedIn;
+            throw new NotLoggedInException;
         }
 
         $response = $handler->handle($request);

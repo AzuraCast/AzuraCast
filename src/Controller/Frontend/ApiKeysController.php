@@ -2,7 +2,7 @@
 namespace App\Controller\Frontend;
 
 use App\Entity;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -58,7 +58,7 @@ class ApiKeysController
             $record = $this->record_repo->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
 
             if (!($record instanceof Entity\ApiKey)) {
-                throw new NotFound(__('API Key not found.'));
+                throw new NotFoundException(__('API Key not found.'));
             }
 
             $form->populate($this->record_repo->toArray($record, true, true));

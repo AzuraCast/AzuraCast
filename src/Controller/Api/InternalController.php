@@ -3,7 +3,7 @@ namespace App\Controller\Api;
 
 use App\Acl;
 use App\Entity;
-use App\Exception\PermissionDenied;
+use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
@@ -100,7 +100,7 @@ class InternalController
                 'station_name' => $station->getName(),
             ]);
 
-            throw new PermissionDenied;
+            throw new PermissionDeniedException;
         }
     }
 

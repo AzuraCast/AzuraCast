@@ -113,17 +113,17 @@ class Acl
      * @param Entity\User|null $user
      * @param string|array $action
      * @param null $station_id
-     * @throws Exception\NotLoggedIn
-     * @throws Exception\PermissionDenied
+     * @throws Exception\NotLoggedInException
+     * @throws Exception\PermissionDeniedException
      */
     public function checkPermission(?Entity\User $user = null, $action, $station_id = null): void
     {
         if (!($user instanceof Entity\User)) {
-            throw new Exception\NotLoggedIn;
+            throw new Exception\NotLoggedInException;
         }
 
         if (!$this->userAllowed($user, $action, $station_id)) {
-            throw new Exception\PermissionDenied;
+            throw new Exception\PermissionDeniedException;
         }
     }
 

@@ -3,6 +3,6 @@ namespace App\Exception;
 
 use Azura\Exception;
 
-class Supervisor extends Exception
+class SupervisorException extends Exception
 {
 }

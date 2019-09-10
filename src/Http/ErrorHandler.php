@@ -2,8 +2,8 @@
 namespace App\Http;
 
 use App\Entity;
-use App\Exception\NotLoggedIn;
-use App\Exception\PermissionDenied;
+use App\Exception\NotLoggedInException;
+use App\Exception\PermissionDeniedException;
 use App\Service\Sentry;
 use Azura\Exception;
 use Azura\Session;
@@ -79,7 +79,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             );
         }
 
-        if ($this->exception instanceof NotLoggedIn) {
+        if ($this->exception instanceof NotLoggedInException) {
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
@@ -99,7 +99,7 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             return $response->withRedirect((string)$this->router->named('account:login'));
         }
 
-        if ($this->exception instanceof PermissionDenied) {
+        if ($this->exception instanceof PermissionDeniedException) {
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 

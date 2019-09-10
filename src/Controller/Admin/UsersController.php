@@ -3,7 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Auth;
 use App\Entity;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form\UserForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -92,7 +92,7 @@ class UsersController extends AbstractAdminCrudController
         $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {
-            throw new NotFound(__('User not found.'));
+            throw new NotFoundException(__('User not found.'));
         }
 
         $this->auth->masqueradeAsUser($user);

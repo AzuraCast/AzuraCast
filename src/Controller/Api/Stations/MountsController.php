@@ -2,7 +2,7 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Exception\StationUnsupported;
+use App\Exception\StationUnsupportedException;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 
@@ -104,7 +104,7 @@ class MountsController extends AbstractStationApiCrudController
 
         $frontend = $request->getStationFrontend();
         if (!$frontend::supportsMounts()) {
-            throw new StationUnsupported;
+            throw new StationUnsupportedException;
         }
 
         return $station;

@@ -1,7 +1,7 @@
 <?php
 namespace App\Middleware;
 
-use App\Exception\StationNotFound;
+use App\Exception\StationNotFoundException;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -22,7 +22,7 @@ class RequireStation
         try {
             $request->getStation();
         } catch (Exception $e) {
-            throw new StationNotFound;
+            throw new StationNotFoundException;
         }
 
         return $handler->handle($request);

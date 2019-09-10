@@ -3,7 +3,7 @@ namespace App;
 
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
-use App\Exception\NotLoggedIn;
+use App\Exception\NotLoggedInException;
 use Azura\Exception;
 use Azura\Session;
 use Azura\Session\NamespaceInterface;
@@ -272,7 +272,7 @@ class Auth
         $user = $this->getUser();
 
         if (!($user instanceof User)) {
-            throw new NotLoggedIn;
+            throw new NotLoggedInException;
         }
 
         if ($user->verifyTwoFactor($otp)) {

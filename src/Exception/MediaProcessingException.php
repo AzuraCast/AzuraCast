@@ -1,17 +1,17 @@
 <?php
-namespace App\Exception\Supervisor;
+namespace App\Exception;
 
-use App\Exception\Supervisor;
+use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NotRunning extends Supervisor
+class MediaProcessingException extends Exception
 {
     public function __construct(
-        string $message = 'Process was not running yet.',
+        string $message = 'The media provided could not be processed.',
         int $code = 0,
         Throwable $previous = null,
-        string $loggerLevel = LogLevel::INFO
+        string $loggerLevel = LogLevel::ERROR
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }

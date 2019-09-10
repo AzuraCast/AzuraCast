@@ -2,7 +2,7 @@
 namespace App\Controller\Stations\Files;
 
 use App\Entity;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\Router;
@@ -63,7 +63,7 @@ class EditController extends FilesControllerAbstract
         ]);
 
         if (!($media instanceof Entity\StationMedia)) {
-            throw new NotFound(__('Media not found.'));
+            throw new NotFoundException(__('Media not found.'));
         }
 
         $form_config = $this->form_config;

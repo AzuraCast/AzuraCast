@@ -1,7 +1,7 @@
 <?php
 namespace App\Middleware;
 
-use App\Exception\PermissionDenied;
+use App\Exception\PermissionDeniedException;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -43,12 +43,12 @@ class Permissions
         try {
             $user = $request->getUser();
         } catch (Exception $e) {
-            throw new PermissionDenied;
+            throw new PermissionDeniedException;
         }
 
         $acl = $request->getAcl();
         if (!$acl->userAllowed($user, $this->action, $station_id)) {
-            throw new PermissionDenied;
+            throw new PermissionDeniedException;
         }
 
         return $handler->handle($request);

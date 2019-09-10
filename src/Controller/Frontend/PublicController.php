@@ -2,8 +2,8 @@
 namespace App\Controller\Frontend;
 
 use App\Entity;
-use App\Exception\StationNotFound;
-use App\Exception\StationUnsupported;
+use App\Exception\StationNotFoundException;
+use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
@@ -25,7 +25,7 @@ class PublicController
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFound;
+            throw new StationNotFoundException;
         }
 
         $np = [
@@ -163,17 +163,17 @@ class PublicController
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFound;
+            throw new StationNotFoundException;
         }
 
         if (!$station->getEnableStreamers()) {
-            throw new StationUnsupported;
+            throw new StationUnsupportedException;
         }
 
         $backend = $request->getStationBackend();
 
         if (!($backend instanceof Liquidsoap)) {
-            throw new StationUnsupported;
+            throw new StationUnsupportedException;
         }
 
         $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());

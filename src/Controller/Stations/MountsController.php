@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Exception\StationUnsupported;
+use App\Exception\StationUnsupportedException;
 use App\Form\StationMountForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -25,7 +25,7 @@ class MountsController extends AbstractStationCrudController
         $frontend = $request->getStationFrontend();
 
         if (!$frontend::supportsMounts()) {
-            throw new StationUnsupported(__('This feature is not currently supported on this station.'));
+            throw new StationUnsupportedException(__('This feature is not currently supported on this station.'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/mounts/index', [

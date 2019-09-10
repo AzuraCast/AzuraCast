@@ -4,7 +4,7 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Auth;
 use App\Entity;
-use App\Exception\NotLoggedIn;
+use App\Exception\NotLoggedInException;
 use App\Form\Form;
 use App\Form\StationForm;
 use App\Http\Response;
@@ -68,7 +68,7 @@ class SetupController
      * Determine which step of setup is currently active.
      *
      * @return string
-     * @throws NotLoggedIn
+     * @throws NotLoggedInException
      */
     protected function _getSetupStep(): string
     {
@@ -87,7 +87,7 @@ class SetupController
 
         // If past "register" step, require login.
         if (!$this->auth->isLoggedIn()) {
-            throw new NotLoggedIn;
+            throw new NotLoggedInException;
         }
 
         // Step 2: Set up Station

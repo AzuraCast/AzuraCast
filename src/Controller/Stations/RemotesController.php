@@ -3,7 +3,7 @@ namespace App\Controller\Stations;
 
 use App\Entity\Station;
 use App\Entity\StationRemote;
-use App\Exception\PermissionDenied;
+use App\Exception\PermissionDeniedException;
 use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -67,7 +67,7 @@ class RemotesController extends AbstractStationCrudController
         $record = parent::_getRecord($station, $id);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
-            throw new PermissionDenied(__('This record cannot be edited.'));
+            throw new PermissionDeniedException(__('This record cannot be edited.'));
         }
 
         return $record;

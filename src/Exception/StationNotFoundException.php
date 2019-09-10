@@ -5,7 +5,7 @@ use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class StationNotFound extends Exception
+class StationNotFoundException extends Exception
 {
     public function __construct(
         string $message = 'Station not found.',

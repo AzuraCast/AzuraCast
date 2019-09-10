@@ -1,11 +1,11 @@
 <?php
 namespace App\Exception\Supervisor;
 
-use App\Exception\Supervisor;
+use App\Exception\SupervisorException;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class AlreadyRunning extends Supervisor
+class AlreadyRunningException extends SupervisorException
 {
     public function __construct(
         string $message = 'Process was already running.',

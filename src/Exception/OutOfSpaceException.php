@@ -5,13 +5,13 @@ use Azura\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NotFound extends Exception
+class OutOfSpaceException extends Exception
 {
     public function __construct(
-        string $message = 'Record not found.',
+        string $message = 'Out of available space.',
         int $code = 0,
         Throwable $previous = null,
-        string $loggerLevel = LogLevel::DEBUG
+        string $loggerLevel = LogLevel::INFO
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }

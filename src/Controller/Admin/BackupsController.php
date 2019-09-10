@@ -3,7 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
-use App\Exception\NotFound;
+use App\Exception\NotFoundException;
 use App\Form\Form;
 use App\Form\SettingsForm;
 use App\Http\Response;
@@ -135,7 +135,7 @@ class BackupsController
         $path = basename($path);
 
         if (!$this->backup_fs->has($path)) {
-            throw new NotFound(__('Backup not found.'));
+            throw new NotFoundException(__('Backup not found.'));
         }
 
         return $path;

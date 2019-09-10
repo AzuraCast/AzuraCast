@@ -9,34 +9,20 @@ use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class UptimeWait extends CommandAbstract
+class UptimeWaitCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:internal:uptime-wait')
-            ->setDescription('Wait until a service is online and accepting connections before continuing.')
-            ->addArgument(
-                'service',
-                InputArgument::OPTIONAL,
-                'The service to check (database, influxdb).',
-                'database'
-            );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    public function __invoke(
+        SymfonyStyle $io,
+        EntityManager $em,
+        ?string $service = 'database'
+    ) {
         $attempts = 0;
         $total_attempts = 5;
         $sleep_time = 5;
 
-        $service_name = strtolower($input->getArgument('service'));
+        $service_name = strtolower($service);
         switch ($service_name) {
             case "influxdb":
             case "influx":
@@ -46,9 +32,6 @@ class UptimeWait extends CommandAbstract
             case "mariadb":
             case "mysql":
             default:
-                /** @var EntityManager $em */
-                $em = $this->get(EntityManager::class);
-
                 $conn = $em->getConnection();
 
                 while ($attempts <= $total_attempts) {
@@ -56,10 +39,10 @@ class UptimeWait extends CommandAbstract
 
                     try {
                         $conn->connect();
-                        $output->writeln('Successfully connected');
+                        $io->writeln('Successfully connected');
                         return 0;
                     } catch (Exception $e) {
-                        $output->writeln($e->getMessage());
+                        $io->writeln($e->getMessage());
                         sleep($sleep_time);
                         continue;
                     }

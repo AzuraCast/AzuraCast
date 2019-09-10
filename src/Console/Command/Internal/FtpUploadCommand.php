@@ -8,41 +8,23 @@ use App\Radio\Filesystem;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class FtpUpload extends CommandAbstract
+class FtpUploadCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:internal:ftp-upload')
-            ->setDescription('Process a file uploaded in PureFTPD')
-            ->addArgument(
-                'path',
-                InputArgument::REQUIRED,
-                'The path of the newly uploaded file.'
-            );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        // PureFTPD sends the "real" path (with symlinks resolved) to us.
-        $path = $input->getArgument('path');
-
-        /** @var Logger $logger */
-        $logger = $this->get(Logger::class);
-
+    public function __invoke(
+        SymfonyStyle $io,
+        EntityManager $em,
+        LoggerInterface $logger,
+        Filesystem $filesystem,
+        MessageQueue $messageQueue,
+        string $path
+    ) {
         $logger->info('FTP file uploaded', ['path' => $path]);
-
-        /** @var EntityManager $em */
-        $em = $this->get(EntityManager::class);
 
         /** @var Entity\Repository\StationRepository $station_repo */
         $stations_repo = $em->getRepository(Entity\Station::class);
@@ -64,12 +46,6 @@ class FtpUpload extends CommandAbstract
             }
         }
 
-        /** @var Filesystem $filesystem */
-        $filesystem = $this->get(Filesystem::class);
-
-        /** @var MessageQueue $message_queue */
-        $message_queue = $this->get(MessageQueue::class);
-
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
             $fs = $filesystem->getForStation($station);
@@ -80,7 +56,7 @@ class FtpUpload extends CommandAbstract
             $message = new Message\AddNewMediaMessage;
             $message->station_id = $station->getId();
             $message->path = $relative_path;
-            $message_queue->produce($message);
+            $messageQueue->produce($message);
         }
 
         return null;

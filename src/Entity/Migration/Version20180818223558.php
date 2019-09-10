@@ -19,7 +19,7 @@ final class Version20180818223558 extends AbstractMigration
         $this->addSql('ALTER TABLE station ADD api_history_items SMALLINT NOT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         $this->connection->update('station', [
             'api_history_items' => 5,

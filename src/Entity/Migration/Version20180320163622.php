@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20180320163622 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
@@ -20,7 +20,7 @@ final class Version20180320163622 extends AbstractMigration
         $this->addSql('ALTER TABLE station ADD CONSTRAINT FK_9F39F8B19B209974 FOREIGN KEY (current_streamer_id) REFERENCES station_streamers (id) ON DELETE SET NULL');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',

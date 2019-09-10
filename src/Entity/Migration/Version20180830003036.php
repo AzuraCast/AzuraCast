@@ -16,7 +16,7 @@ final class Version20180830003036 extends AbstractMigration
         $this->addSql('SELECT 1');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         $this->connection->update('station_playlists', [
             'playback_order' => 'shuffle',
@@ -31,7 +31,7 @@ final class Version20180830003036 extends AbstractMigration
         $this->addSql('SELECT 1');
     }
 
-    public function postDown(Schema $schema)
+    public function postdown(Schema $schema): void
     {
         $this->connection->update('station_playlists', [
             'playback_order' => 'random',

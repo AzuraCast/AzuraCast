@@ -30,47 +30,6 @@ return function (\Azura\EventDispatcher $dispatcher)
         $callable($e);
     });
 
-    // Build CLI commands
-    $dispatcher->addListener(Azura\Event\BuildConsoleCommands::class, function(Azura\Event\BuildConsoleCommands $event) {
-        $event->getConsole()->addCommands([
-            // Liquidsoap Internal CLI Commands
-            new Command\Internal\NextSong,
-            new Command\Internal\DjAuth,
-            new Command\Internal\DjOn,
-            new Command\Internal\DjOff,
-            new Command\Internal\Feedback,
-            new Command\Internal\FtpAuth,
-            new Command\Internal\FtpUpload,
-
-            // Locales
-            new Command\LocaleGenerate,
-            new Command\LocaleImport,
-
-            // Setup
-            new Command\MigrateConfig,
-            new Command\SetupInflux,
-            new Command\SetupFixtures,
-            new Command\Setup,
-
-            // Maintenance
-            new Command\RestartRadio,
-            new Command\Sync,
-            new Command\ProcessMessageQueue,
-            new Command\ReprocessMedia,
-
-            new Command\GenerateApiDocs,
-            new Command\UptimeWait,
-
-            // User-side tools
-            new Command\ResetPassword,
-            new Command\SetAdministrator,
-            new Command\ListSettings,
-            new Command\SetSetting,
-            new Command\Backup,
-            new Command\Restore,
-        ]);
-    }, 0);
-
     // Other event subscribers from across the application.
     $dispatcher->addServiceSubscriber([
         \App\Radio\AutoDJ::class,

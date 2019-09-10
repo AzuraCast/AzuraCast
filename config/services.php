@@ -104,23 +104,6 @@ return [
     }),
 
     /*
-     * Console
-     */
-
-    Azura\Console\Application::class => DI\decorate(function(Azura\Console\Application $console, ContainerInterface $di) {
-        /** @var App\Version $version */
-        $version = $di->get(App\Version::class);
-
-        /** @var Settings $settings */
-        $settings = $di->get(Settings::class);
-
-        $console->setName($settings[Settings::APP_NAME].' Command Line Tools ('.$settings[Settings::APP_ENV].')');
-        $console->setVersion($version->getVersion());
-
-        return $console;
-    }),
-
-    /*
      * AzuraCast-specific dependencies
      */
 

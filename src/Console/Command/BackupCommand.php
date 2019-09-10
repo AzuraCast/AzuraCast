@@ -15,51 +15,27 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 use const PATHINFO_EXTENSION;
 
-class Backup extends CommandAbstract
+class BackupCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:backup')
-            ->setDescription(
-                __('Back up the AzuraCast database and statistics (and optionally media).')
-            )
-            ->addArgument(
-                'path',
-                InputArgument::OPTIONAL,
-                __('The absolute (or relative to /var/azuracast/backups) path to generate the backup.'),
-                ''
-            )
-            ->addOption(
-                'exclude-media',
-                null,
-                InputOption::VALUE_NONE,
-                __('Exclude media from the backup.')
-            );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    public function __invoke(
+        SymfonyStyle $io,
+        EntityManager $em,
+        Database $influxdb,
+        ?string $path = '',
+        bool $excludeMedia = false
+    ) {
         $start_time = microtime(true);
 
-        $destination_path = $input->getArgument('path');
-        if (empty($destination_path)) {
-            $destination_path = 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
+        if (empty($path)) {
+            $path = 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
         }
-        if ('/' !== $destination_path[0]) {
-            $destination_path = \App\Sync\Task\Backup::BASE_DIR . '/' . $destination_path;
+        if ('/' !== $path[0]) {
+            $path = \App\Sync\Task\Backup::BASE_DIR . '/' . $path;
         }
 
-        $include_media = !(bool)$input->getOption('exclude-media');
-
+        $includeMedia = !$excludeMedia;
         $files_to_backup = [];
 
-        $io = new SymfonyStyle($input, $output);
         $io->title(__('AzuraCast Backup'));
         $io->writeln(__('Please wait while a backup is generated...'));
 
@@ -85,8 +61,6 @@ class Backup extends CommandAbstract
 
         $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
-        /** @var EntityManager $em */
-        $em = $this->get(EntityManager::class);
         $conn = $em->getConnection();
 
         $process = $this->passThruProcess(
@@ -108,8 +82,6 @@ class Backup extends CommandAbstract
         // Back up InfluxDB
         $io->section(__('Backing up InfluxDB...'));
 
-        /** @var Database $influxdb */
-        $influxdb = $this->get(Database::class);
         $influxdb_client = $influxdb->getClient();
 
         $this->passThruProcess($io, [
@@ -127,7 +99,7 @@ class Backup extends CommandAbstract
         $io->newLine();
 
         // Include station media if specified.
-        if ($include_media) {
+        if ($includeMedia) {
             $stations = $em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s')
                 ->execute();
 
@@ -157,7 +129,7 @@ class Backup extends CommandAbstract
             return $val;
         }, $files_to_backup);
 
-        $file_ext = strtolower(pathinfo($destination_path, PATHINFO_EXTENSION));
+        $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         switch ($file_ext) {
             case 'gz':
@@ -165,7 +137,7 @@ class Backup extends CommandAbstract
                 $this->passThruProcess($io, array_merge([
                     'tar',
                     'zcvf',
-                    $destination_path,
+                    $path,
                 ], $files_to_backup), '/');
                 break;
 
@@ -178,7 +150,7 @@ class Backup extends CommandAbstract
                     '-r',
                     '-n',
                     implode(':', $dont_compress),
-                    $destination_path,
+                    $path,
                 ], $files_to_backup), '/');
                 break;
         }
@@ -197,8 +169,7 @@ class Backup extends CommandAbstract
         $time_diff = $end_time - $start_time;
 
         $io->success([
-            __('Backup complete in %.2f seconds.'),
-            $time_diff,
+            __('Backup complete in %.2f seconds.', $time_diff),
         ]);
         return 0;
     }
@@ -228,15 +199,6 @@ class Backup extends CommandAbstract
                 $stdout[] = $data;
             }
         }, $env);
-
-        if (!empty($stderr)) {
-            /** @var Logger $logger */
-            $logger = $this->get(Logger::class);
-            $logger->error(__('Backup process error'), [
-                'cmd' => $cmd,
-                'output' => $stderr,
-            ]);
-        }
 
         return $process;
     }

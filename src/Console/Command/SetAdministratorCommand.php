@@ -10,37 +10,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SetAdministrator extends CommandAbstract
+class SetAdministratorCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:account:set-administrator')
-            ->setDescription('Set the account specified as a global administrator.')
-            ->addArgument(
-                'email',
-                InputArgument::REQUIRED,
-                'The user\'s e-mail address.'
-            );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $io = new SymfonyStyle($input, $output);
+    public function __invoke(
+        SymfonyStyle $io,
+        EntityManager $em,
+        string $email
+    ) {
         $io->title('Set Administrator');
 
-        /** @var EntityManager $em */
-        $em = $this->get(EntityManager::class);
-
-        $user_email = $input->getArgument('email');
-
         $user = $em->getRepository(Entity\User::class)
-            ->findOneBy(['email' => $user_email]);
+            ->findOneBy(['email' => $email]);
 
         if ($user instanceof Entity\User) {
             $admin_role = $em->getRepository(Entity\Role::class)

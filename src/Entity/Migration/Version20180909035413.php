@@ -20,7 +20,7 @@ final class Version20180909035413 extends AbstractMigration
         $this->addSql('ALTER TABLE station_remotes ADD CONSTRAINT FK_779D0E8A21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         $stations = $this->connection->fetchAll("SELECT id, frontend_config FROM station WHERE frontend_type = 'remote'");
 

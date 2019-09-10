@@ -21,7 +21,7 @@ class BackupCommand extends CommandAbstract
         SymfonyStyle $io,
         EntityManager $em,
         Database $influxdb,
-        string $path = '',
+        ?string $path = '',
         bool $excludeMedia = false
     ) {
         $start_time = microtime(true);
@@ -169,8 +169,7 @@ class BackupCommand extends CommandAbstract
         $time_diff = $end_time - $start_time;
 
         $io->success([
-            __('Backup complete in %.2f seconds.'),
-            $time_diff,
+            __('Backup complete in %.2f seconds.', $time_diff),
         ]);
         return 0;
     }

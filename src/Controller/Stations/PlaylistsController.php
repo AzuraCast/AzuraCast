@@ -7,7 +7,6 @@ use App\Form\StationPlaylistForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Exception;
-use Azura\Exception\CsrfValidation;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
 use Psr\Http\Message\ResponseInterface;
@@ -178,7 +177,7 @@ class PlaylistsController extends AbstractStationCrudController
         if ('POST' === $request->getMethod()) {
             try {
                 $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
-            } catch (CsrfValidation $e) {
+            } catch (Exception\CsrfValidationException $e) {
                 return $response->withStatus(403)
                     ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: ' . $e->getMessage()]]);
             }

@@ -60,7 +60,7 @@ class AppFactory extends \Azura\AppFactory
     protected static function buildSettings($settings): Settings
     {
         if (!isset($settings[Settings::BASE_DIR])) {
-            throw new Exception\Bootstrap('No base directory specified!');
+            throw new Exception\BootstrapException('No base directory specified!');
         }
 
         $settings[Settings::TEMP_DIR] = dirname($settings[Settings::BASE_DIR]) . '/www_tmp';

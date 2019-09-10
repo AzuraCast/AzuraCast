@@ -8,7 +8,7 @@ use App\Entity\Settings;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Exception\RateLimitExceeded;
+use Azura\Exception\RateLimitExceededException;
 use Azura\RateLimit;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
@@ -68,7 +68,7 @@ class AccountController
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
                 $this->rate_limit->checkRateLimit($request, 'login', 30, 5);
-            } catch (RateLimitExceeded $e) {
+            } catch (RateLimitExceededException $e) {
                 $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 

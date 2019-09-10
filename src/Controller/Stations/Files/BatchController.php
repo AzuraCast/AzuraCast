@@ -7,7 +7,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
-use Azura\Exception\CsrfValidation;
+use Azura\Exception\CsrfValidationException;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -36,7 +36,7 @@ class BatchController extends FilesControllerAbstract
 
         try {
             $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
-        } catch (CsrfValidation $e) {
+        } catch (CsrfValidationException $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: ' . $e->getMessage()]]);
         }

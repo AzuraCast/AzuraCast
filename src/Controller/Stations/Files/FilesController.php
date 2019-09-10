@@ -9,7 +9,7 @@ use App\Radio\Filesystem;
 use App\Service\Flow;
 use App\Service\Ftp;
 use Azura\Config;
-use Azura\Exception\CsrfValidation;
+use Azura\Exception\CsrfValidationException;
 use Doctrine\ORM\EntityManager;
 use Error;
 use Exception;
@@ -185,7 +185,7 @@ class FilesController extends FilesControllerAbstract
 
         try {
             $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
-        } catch (CsrfValidation $e) {
+        } catch (CsrfValidationException $e) {
             return $this->_err($response, 403, 'CSRF Failure: ' . $e->getMessage());
         }
 
@@ -209,7 +209,7 @@ class FilesController extends FilesControllerAbstract
 
         try {
             $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
-        } catch (CsrfValidation $e) {
+        } catch (CsrfValidationException $e) {
             return $this->_err($response, 403, 'CSRF Failure: ' . $e->getMessage());
         }
 

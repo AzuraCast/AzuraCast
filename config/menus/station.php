@@ -38,7 +38,7 @@ return function(\App\Event\BuildStationMenu $e) {
         'public' => [
             'label' => __('Public Page'),
             'icon' => 'public',
-            'url' => $router->named('public:index', ['station' => $station->getShortName()]),
+            'url' => $router->named('public:index', ['station_id' => $station->getShortName()]),
             'external' => true,
             'visible' => $station->getEnablePublicPage(),
         ],
@@ -66,7 +66,7 @@ return function(\App\Event\BuildStationMenu $e) {
         'web_dj' => [
             'label' => __('Web DJ'),
             'icon' => 'surround_sound',
-            'url' => $router->named('public:dj', ['station' => $station->getShortName()]),
+            'url' => $router->named('public:dj', ['station_id' => $station->getShortName()]),
             'visible' => $station->getEnablePublicPage() && $station->getEnableStreamers(),
             'external' => true,
         ],

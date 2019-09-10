@@ -7,7 +7,7 @@ $(function() {
         },
         rowSelect: false,
         caseSensitive: false,
-        url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
+        url: "<?=$router->named('api:requests:list', ['station_id' => $station->getId()]) ?>",
         formatters: {
             "commands": function(column, row) {
                 return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'" tabindex="0"><?=__('Request') ?></a>';

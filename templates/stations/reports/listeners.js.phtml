@@ -80,7 +80,7 @@ function setMapPoints(points) {
 }
 
 $(function() {
-    api_url = '<?=$router->named('api:listeners:index', ['station' => $station->getId()]) ?>';
+    api_url = '<?=$router->named('api:listeners:index', ['station_id' => $station->getId()]) ?>';
     live_time = moment().add(1, 'days');
 
     $('#reportrange').daterangepicker({

@@ -22,21 +22,21 @@
             <tr>
                 <td style="width: 30%;"><?=__('Public Page') ?></td>
                 <td style="width: 70%;">
-                    <?=$this->link($router->named('public:index', ['station' => $station->getShortName()], [], true)) ?>
+                    <?=$this->link($router->named('public:index', ['station_id' => $station->getShortName()], [], true)) ?>
                 </td>
             </tr>
         <?php if ($backend::supportsStreamers() && $station->getEnableStreamers()): ?>
             <tr>
                 <td><?=__('Web DJ') ?></td>
                 <td>
-                    <?=$this->link($router->named('public:dj', ['station' => $station->getShortName()], [], true)) ?>
+                    <?=$this->link($router->named('public:dj', ['station_id' => $station->getShortName()], [], true)) ?>
                 </td>
             </tr>
         <?php endif; ?>
             <tr>
                 <td><?=__('Player Embed Code') ?></td>
                 <td class="form-field">
-                    <textarea id="player_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
+                    <textarea id="player_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embed', ['station_id' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
                     <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#player_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
                 </td>
             </tr>
@@ -44,7 +44,7 @@
             <tr>
                 <td><?=__('Request Embed Code') ?></td>
                 <td class="form-field">
-                    <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
+                    <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station_id' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
                     <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url"><i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard') ?></button>
                 </td>
             </tr>

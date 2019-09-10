@@ -33,7 +33,7 @@ if ($customization->useWebSocketsForNowPlaying()) {
     $props['now_playing_uri'] = '/api/live/nowplaying/'.urlencode($station->getShortName());
 } else {
     $props['use_nchan'] = false;
-    $props['now_playing_uri'] = (string)$router->named('api:nowplaying:index', ['station' => $station->getId()]);
+    $props['now_playing_uri'] = (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]);
 }
 ?>
 

@@ -33,7 +33,7 @@ $assets
                     <i class="material-icons" aria-hidden="true">help_outline</i> <?=__('Request Song') ?>
                 </a>
             <?php endif; ?>
-            <a class="btn btn-sm btn-outline-secondary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">
+            <a class="btn btn-sm btn-outline-secondary" href="<?=$router->named('public:playlist', ['station_id' => $station->getShortName(), 'format' => 'pls']) ?>">
                 <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Playlist') ?>
             </a>
         </div>

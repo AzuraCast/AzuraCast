@@ -31,7 +31,7 @@ class OverviewController
         $this->influx = $influx;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 

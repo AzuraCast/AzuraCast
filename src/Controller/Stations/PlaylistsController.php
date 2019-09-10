@@ -31,10 +31,9 @@ class PlaylistsController extends AbstractStationCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function indexAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -92,7 +91,7 @@ class PlaylistsController extends AbstractStationCrudController
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'station_tz' => $station_tz,
             'station_now' => $now->toIso8601String(),
-            'schedule_url' => $request->getRouter()->named('stations:playlists:schedule', ['station' => $station_id]),
+            'schedule_url' => $request->getRouter()->named('stations:playlists:schedule', ['station' => $station->getId()]),
         ]);
     }
 
@@ -101,11 +100,10 @@ class PlaylistsController extends AbstractStationCrudController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
      *
      * @return ResponseInterface
      */
-    public function scheduleAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $tz = new DateTimeZone($station->getTimezone());
@@ -152,7 +150,7 @@ class PlaylistsController extends AbstractStationCrudController
                     'start' => $playlist_start->toIso8601String(),
                     'end' => $playlist_end->toIso8601String(),
                     'url' => (string)$request->getRouter()->named('stations:playlists:edit',
-                        ['station' => $station_id, 'id' => $playlist->getId()]),
+                        ['station' => $station->getId(), 'id' => $playlist->getId()]),
                 ];
             }
 
@@ -162,7 +160,7 @@ class PlaylistsController extends AbstractStationCrudController
         return $response->withJson($events);
     }
 
-    public function reorderAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
+    public function reorderAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         $record = $this->_getRecord($request->getStation(), $id);
 
@@ -216,7 +214,6 @@ class PlaylistsController extends AbstractStationCrudController
     public function exportAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
         $format = 'pls'
     ): ResponseInterface {
@@ -239,7 +236,7 @@ class PlaylistsController extends AbstractStationCrudController
             ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name);
     }
 
-    public function toggleAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
+    public function toggleAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         $record = $this->_getRecord($request->getStation(), $id);
 
@@ -266,7 +263,7 @@ class PlaylistsController extends AbstractStationCrudController
         );
     }
 
-    public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . ($id ? __('Playlist updated.') : __('Playlist added.')) . '</b>',
@@ -283,11 +280,10 @@ class PlaylistsController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash('<b>' . __('Playlist deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));

@@ -26,8 +26,10 @@ class DuplicatesController
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $station = $request->getStation();
+
         $media_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm, s, spm, sp 
             FROM App\Entity\StationMedia sm 
@@ -36,7 +38,7 @@ class DuplicatesController
             LEFT JOIN spm.playlist sp 
             WHERE sm.station_id = :station_id 
             ORDER BY sm.mtime ASC')
-            ->setParameter('station_id', $station_id)
+            ->setParameter('station_id', $station->getId())
             ->getArrayResult();
 
         $dupes = [];
@@ -81,7 +83,7 @@ class DuplicatesController
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $media_id): ResponseInterface
     {
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
@@ -90,7 +92,7 @@ class DuplicatesController
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
         $media = $media_repo->findOneBy([
             'id' => $media_id,
-            'station_id' => $station_id,
+            'station_id' => $station->getId(),
         ]);
 
         if ($media instanceof Entity\StationMedia) {
@@ -103,6 +105,6 @@ class DuplicatesController
         }
 
         return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates',
-            ['station' => $station_id]));
+            ['station' => $station->getId()]));
     }
 }

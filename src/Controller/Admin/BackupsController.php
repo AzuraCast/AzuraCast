@@ -141,9 +141,9 @@ class BackupsController
         return $path;
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $path, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $path = $this->getFilePath($path);
         $this->backup_fs->delete($path);

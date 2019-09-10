@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class PublicController
 {
-    public function indexAction(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/index');
     }
@@ -63,7 +63,7 @@ class PublicController
             ]);
     }
 
-    public function embedAction(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
+    public function embedAction(ServerRequest $request, Response $response): ResponseInterface
     {
         return $this->_getPublicPage($request, $response, 'frontend/public/embed');
     }

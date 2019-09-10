@@ -23,8 +23,10 @@ class RequestsController
         $this->em = $em;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $station = $request->getStation();
+
         $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sr, sm, s 
             FROM App\Entity\StationRequest sr
@@ -32,7 +34,7 @@ class RequestsController
             JOIN sm.song s
             WHERE sr.station_id = :station_id
             ORDER BY sr.timestamp DESC')
-            ->setParameter('station_id', $station_id)
+            ->setParameter('station_id', $station->getId())
             ->getArrayResult();
 
         return $request->getView()->renderToResponse($response, 'stations/reports/requests', [
@@ -44,15 +46,16 @@ class RequestsController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $request_id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+
+        $station = $request->getStation();
 
         $media = $this->em->getRepository(Entity\StationRequest::class)->findOneBy([
             'id' => $request_id,
-            'station_id' => $station_id,
+            'station_id' => $station->getId(),
             'played_at' => 0,
         ]);
 

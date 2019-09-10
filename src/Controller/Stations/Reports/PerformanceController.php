@@ -30,7 +30,6 @@ class PerformanceController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $format = 'html'
     ): ResponseInterface {
         $station = $request->getStation();

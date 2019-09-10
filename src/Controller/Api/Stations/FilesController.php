@@ -91,10 +91,9 @@ class FilesController extends AbstractStationApiCrudController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function createAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->_getStation($request);
 

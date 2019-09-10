@@ -15,10 +15,9 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function listAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->_getStation($request);
 
@@ -60,10 +59,9 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function createAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->_getStation($request);
         $row = $this->_createRecord($request->getParsedBody(), $station);

@@ -68,10 +68,9 @@ class HistoryController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $station_tz = new DateTimeZone($station->getTimezone());
@@ -95,7 +94,7 @@ class HistoryController
             ->where('sh.station_id = :station_id')
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
-            ->setParameter('station_id', $station_id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 

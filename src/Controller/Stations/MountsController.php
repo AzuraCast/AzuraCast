@@ -35,7 +35,7 @@ class MountsController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . __('Changes saved.') . '</b>', 'green');

@@ -20,16 +20,16 @@ class LogsController
         ]);
     }
 
-    public function viewAction(ServerRequest $request, Response $response, $station_id, $log_key): ResponseInterface
+    public function viewAction(ServerRequest $request, Response $response, $log): ResponseInterface
     {
         $station = $request->getStation();
         $log_areas = $this->_getStationLogs($station);
 
-        if (!isset($log_areas[$log_key])) {
+        if (!isset($log_areas[$log])) {
             throw new Exception('Invalid log file specified.');
         }
 
-        $log = $log_areas[$log_key];
+        $log = $log_areas[$log];
         return $this->_view($request, $response, $log['path'], $log['tail'] ?? true);
     }
 }

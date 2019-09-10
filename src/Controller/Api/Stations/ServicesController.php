@@ -95,14 +95,12 @@ class ServicesController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param string|int $station_id
      * @param string $do
      * @return ResponseInterface
      */
     public function frontendAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();
@@ -158,14 +156,12 @@ class ServicesController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param string|int $station_id
      * @param string $do
      * @return ResponseInterface
      */
     public function backendAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();

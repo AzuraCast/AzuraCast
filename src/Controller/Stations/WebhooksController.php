@@ -45,7 +45,7 @@ class WebhooksController extends AbstractStationCrudController
         ]);
     }
 
-    public function addAction(ServerRequest $request, Response $response, $station_id, $type = null): ResponseInterface
+    public function addAction(ServerRequest $request, Response $response, $type = null): ResponseInterface
     {
         $view = $request->getView();
         if ($type === null) {
@@ -70,7 +70,7 @@ class WebhooksController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . __('Web Hook updated.') . '</b>', 'green');
@@ -87,11 +87,10 @@ class WebhooksController extends AbstractStationCrudController
     public function toggleAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         /** @var Entity\StationWebhook $record */
         $record = $this->_getRecord($request->getStation(), $id);
@@ -109,11 +108,10 @@ class WebhooksController extends AbstractStationCrudController
     public function testAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $station = $request->getStation();
 
@@ -132,11 +130,10 @@ class WebhooksController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash('<b>' . __('Web Hook deleted.') . '</b>', 'green');
 

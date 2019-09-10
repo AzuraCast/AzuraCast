@@ -47,7 +47,7 @@ class FilesController extends FilesControllerAbstract
         $this->ftp = $ftp;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -55,13 +55,13 @@ class FilesController extends FilesControllerAbstract
             FROM App\Entity\StationPlaylist sp 
             WHERE sp.station_id = :station_id AND sp.source = :source 
             ORDER BY sp.name ASC')
-            ->setParameter('station_id', $station_id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
 
         $files_count = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
             WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $station_id)
+            ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
         // Get list of custom fields.
@@ -85,7 +85,7 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function renameAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function renameAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
@@ -148,7 +148,7 @@ class FilesController extends FilesControllerAbstract
         ]);
     }
 
-    public function listDirectoriesAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function listDirectoriesAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);

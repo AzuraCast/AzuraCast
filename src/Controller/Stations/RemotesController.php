@@ -34,7 +34,7 @@ class RemotesController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
@@ -52,7 +52,6 @@ class RemotesController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
         $csrf_token
     ): ResponseInterface {

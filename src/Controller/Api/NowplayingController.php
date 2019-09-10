@@ -90,10 +90,10 @@ class NowplayingController implements EventSubscriberInterface
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $id
+     * @param int|string|null $station
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $station = null): ResponseInterface
     {
         $router = $request->getRouter();
 
@@ -108,9 +108,9 @@ class NowplayingController implements EventSubscriberInterface
 
         $np = $event->getNowPlaying();
 
-        if (!empty($id)) {
+        if (!empty($station)) {
             foreach ($np as $np_row) {
-                if ($np_row->station->id == (int)$id || $np_row->station->shortcode === $id) {
+                if ($np_row->station->id == (int)$station || $np_row->station->shortcode === $station) {
                     $np_row->resolveUrls($router->getBaseUrl());
                     $np_row->now_playing->recalculate();
                     return $response->withJson($np_row);

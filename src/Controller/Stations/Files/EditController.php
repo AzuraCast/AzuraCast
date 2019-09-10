@@ -48,7 +48,7 @@ class EditController extends FilesControllerAbstract
         ]);
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $media_id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -58,7 +58,7 @@ class EditController extends FilesControllerAbstract
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
         $media = $media_repo->findOneBy([
-            'station_id' => $station_id,
+            'station_id' => $station->getId(),
             'id' => $media_id,
         ]);
 

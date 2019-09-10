@@ -30,7 +30,7 @@ class ListController extends FilesControllerAbstract
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $router = $request->getRouter();
@@ -59,7 +59,7 @@ class ListController extends FilesControllerAbstract
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.station_id = :station_id')
             ->andWhere('sm.path LIKE :path')
-            ->setParameter('station_id', $station_id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('path', $file . '%');
 
         // Apply searching
@@ -99,10 +99,10 @@ class ListController extends FilesControllerAbstract
                     'album' => $media_row['album'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                     'art' => (string)$router->named('api:stations:media:art',
-                        ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
+                        ['station' => $station->getId(), 'media_id' => $media_row['unique_id']]),
                     'edit_url' => (string)$router->named('stations:files:edit',
-                        ['station' => $station_id, 'id' => $media_row['id']]),
-                    'play_url' => (string)$router->named('stations:files:download', ['station' => $station_id],
+                        ['station' => $station->getId(), 'id' => $media_row['id']]),
+                    'play_url' => (string)$router->named('stations:files:download', ['station' => $station->getId()],
                         ['file' => $media_row['path']], true),
                     'playlists' => $playlists,
                 ] + $custom_fields;
@@ -145,7 +145,7 @@ class ListController extends FilesControllerAbstract
                 'path' => $short,
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
-                'rename_url' => (string)$router->named('stations:files:rename', ['station' => $station_id],
+                'rename_url' => (string)$router->named('stations:files:rename', ['station' => $station->getId()],
                     ['file' => $short]),
             ];
 

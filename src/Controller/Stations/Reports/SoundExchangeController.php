@@ -36,7 +36,7 @@ class SoundExchangeController
         $this->http_client = $http_client;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -68,7 +68,7 @@ class SoundExchangeController
             $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
                 FROM App\Entity\StationMedia sm
                 WHERE sm.station_id = :station_id')
-                ->setParameter('station_id', $station_id)
+                ->setParameter('station_id', $station->getId())
                 ->getArrayResult();
 
             $media_by_id = [];
@@ -83,7 +83,7 @@ class SoundExchangeController
                 AND sh.timestamp_start <= :time_end
                 AND sh.timestamp_end >= :time_start
                 GROUP BY sh.song_id')
-                ->setParameter('station_id', $station_id)
+                ->setParameter('station_id', $station->getId())
                 ->setParameter('time_start', $start_date)
                 ->setParameter('time_end', $end_date)
                 ->getArrayResult();
@@ -121,7 +121,7 @@ class SoundExchangeController
                 SET sm.isrc = :isrc
                 WHERE sm.song_id = :song_id
                 AND sm.station_id = :station_id')
-                ->setParameter('station_id', $station_id);
+                ->setParameter('station_id', $station->getId());
 
             foreach ($history_rows_by_id as $song_id => $history_row) {
 

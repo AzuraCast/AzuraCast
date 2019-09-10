@@ -32,7 +32,7 @@ class StreamersController extends AbstractStationCrudController
         $this->csrf_namespace = 'stations_streamers';
     }
 
-    public function indexAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
@@ -74,7 +74,7 @@ class StreamersController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $station_id, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>',
@@ -92,11 +92,10 @@ class StreamersController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash('<b>' . __('Streamer deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));

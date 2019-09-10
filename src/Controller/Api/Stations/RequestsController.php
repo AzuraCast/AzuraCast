@@ -49,7 +49,7 @@ class RequestsController
      *
      * @inheritDoc
      */
-    public function listAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -71,7 +71,7 @@ class RequestsController
             ->andWhere('sp.id IS NOT NULL')
             ->andWhere('sp.is_enabled = 1')
             ->andWhere('sp.include_in_requests = 1')
-            ->setParameter('station_id', $station_id);
+            ->setParameter('station_id', $station->getId());
 
         $params = $request->getQueryParams();
 
@@ -104,13 +104,13 @@ class RequestsController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($media_row) use ($station_id, $is_bootgrid, $router) {
+        $paginator->setPostprocessor(function ($media_row) use ($station, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest;
             $row->song = $media_row->api($this->api_utils);
             $row->request_id = $media_row->getUniqueId();
             $row->request_url = (string)$router->named('api:requests:submit', [
-                'station' => $station_id,
+                'station' => $station->getId(),
                 'media_id' => $media_row->getUniqueId(),
             ]);
 
@@ -147,7 +147,7 @@ class RequestsController
      *
      * @inheritDoc
      */
-    public function submitAction(ServerRequest $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface
     {
         $station = $request->getStation();
 

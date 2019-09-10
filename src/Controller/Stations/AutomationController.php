@@ -71,7 +71,7 @@ class AutomationController
         ]);
     }
 
-    public function runAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function runAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 

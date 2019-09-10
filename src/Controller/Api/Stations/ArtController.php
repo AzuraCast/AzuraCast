@@ -46,12 +46,11 @@ class ArtController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param string|int $station_id
      * @param string $media_id
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequest $request, Response $response, $station_id, $media_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, $media_id): ResponseInterface
     {
         $station = $request->getStation();
         $filesystem = $this->filesystem->getForStation($station);

@@ -21,7 +21,6 @@ class BatchController extends FilesControllerAbstract
     protected $filesystem;
 
     /**
-     * BatchController constructor.
      * @param EntityManager $em
      * @param Filesystem $filesystem
      */
@@ -31,7 +30,7 @@ class BatchController extends FilesControllerAbstract
         $this->filesystem = $filesystem;
     }
 
-    public function __invoke(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $params = $request->getParams();
 

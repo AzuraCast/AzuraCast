@@ -139,7 +139,7 @@ class ProfileController
         return $view->renderToResponse($response, 'stations/profile/index');
     }
 
-    public function editAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -155,11 +155,10 @@ class ProfileController
     public function toggleAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $feature,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $station = $request->getStation();
 

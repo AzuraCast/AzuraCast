@@ -65,11 +65,12 @@ abstract class AbstractAdminCrudController
 
     /**
      * @param ServerRequest $request
-     * @param string|int $id
+     * @param $id
+     * @param $csrf
      */
-    protected function _doDelete(ServerRequest $request, $id, $csrf_token): void
+    protected function _doDelete(ServerRequest $request, $id, $csrf): void
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $record = $this->_getRecord($id);
 

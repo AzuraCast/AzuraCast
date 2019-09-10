@@ -50,8 +50,10 @@ class QueueController extends AbstractStationApiCrudController
      *
      * @inheritdoc
      */
-    public function listAction(ServerRequest $request, Response $response, $station_id): ResponseInterface
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
+        $station = $request->getStation();
+
         $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, sp, s, sm
             FROM App\Entity\SongHistory sh 
             LEFT JOIN sh.song s 
@@ -62,7 +64,7 @@ class QueueController extends AbstractStationApiCrudController
             AND sh.timestamp_start = 0
             AND sh.timestamp_end = 0
             ORDER BY sh.timestamp_cued DESC')
-            ->setParameter('station_id', $station_id);
+            ->setParameter('station_id', $station->getId());
 
         $paginator = new Paginator($query);
         $paginator->setFromRequest($request);

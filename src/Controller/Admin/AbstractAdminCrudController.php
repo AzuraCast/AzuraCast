@@ -65,8 +65,8 @@ abstract class AbstractAdminCrudController
 
     /**
      * @param ServerRequest $request
-     * @param $id
-     * @param $csrf
+     * @param string|int $id
+     * @param string $csrf
      */
     protected function _doDelete(ServerRequest $request, $id, $csrf): void
     {

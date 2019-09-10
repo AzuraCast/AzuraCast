@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "d11357fb1c0550872532a800020ba3d80363624d"
+                "reference": "a0b0a08935b9c4c52f056fba3f653da3b704bb78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/d11357fb1c0550872532a800020ba3d80363624d",
-                "reference": "d11357fb1c0550872532a800020ba3d80363624d",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/a0b0a08935b9c4c52f056fba3f653da3b704bb78",
+                "reference": "a0b0a08935b9c4c52f056fba3f653da3b704bb78",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 "php": ">=7.2",
                 "php-di/php-di": "^6.0",
                 "php-di/slim-bridge": "^3.0",
-                "slim/http": "dev-master",
+                "slim/http": "^0.8",
                 "slim/slim": "^4.2",
                 "symfony/console": "^4.3",
                 "symfony/event-dispatcher": "^4.3",
@@ -153,7 +153,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-09-10T01:45:34+00:00"
+            "time": "2019-09-10T03:36:38+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -4888,7 +4888,7 @@
         },
         {
             "name": "slim/http",
-            "version": "dev-master",
+            "version": "0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim-Http.git",

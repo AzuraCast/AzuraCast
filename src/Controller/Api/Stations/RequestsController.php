@@ -110,7 +110,7 @@ class RequestsController
             $row->song = $media_row->api($this->api_utils);
             $row->request_id = $media_row->getUniqueId();
             $row->request_url = (string)$router->named('api:requests:submit', [
-                'station' => $station->getId(),
+                'station_id' => $station->getId(),
                 'media_id' => $media_row->getUniqueId(),
             ]);
 

@@ -105,6 +105,6 @@ class DuplicatesController
         }
 
         return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates',
-            ['station' => $station->getId()]));
+            ['station_id' => $station->getId()]));
     }
 }

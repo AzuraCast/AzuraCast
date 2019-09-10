@@ -148,7 +148,7 @@ class EditController extends FilesControllerAbstract
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
             return $response->withRedirect($request->getRouter()->named('stations:files:index',
-                    ['station' => $station->getId()]) . '#' . $file_dir, 302);
+                    ['station_id' => $station->getId()]) . '#' . $file_dir, 302);
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [

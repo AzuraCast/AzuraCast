@@ -99,10 +99,10 @@ class ListController extends FilesControllerAbstract
                     'album' => $media_row['album'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                     'art' => (string)$router->named('api:stations:media:art',
-                        ['station' => $station->getId(), 'media_id' => $media_row['unique_id']]),
+                        ['station_id' => $station->getId(), 'media_id' => $media_row['unique_id']]),
                     'edit_url' => (string)$router->named('stations:files:edit',
-                        ['station' => $station->getId(), 'id' => $media_row['id']]),
-                    'play_url' => (string)$router->named('stations:files:download', ['station' => $station->getId()],
+                        ['station_id' => $station->getId(), 'id' => $media_row['id']]),
+                    'play_url' => (string)$router->named('stations:files:download', ['station_id' => $station->getId()],
                         ['file' => $media_row['path']], true),
                     'playlists' => $playlists,
                 ] + $custom_fields;
@@ -145,7 +145,7 @@ class ListController extends FilesControllerAbstract
                 'path' => $short,
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
-                'rename_url' => (string)$router->named('stations:files:rename', ['station' => $station->getId()],
+                'rename_url' => (string)$router->named('stations:files:rename', ['station_id' => $station->getId()],
                     ['file' => $short]),
             ];
 

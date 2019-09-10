@@ -91,7 +91,7 @@ class PlaylistsController extends AbstractStationCrudController
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'station_tz' => $station_tz,
             'station_now' => $now->toIso8601String(),
-            'schedule_url' => $request->getRouter()->named('stations:playlists:schedule', ['station' => $station->getId()]),
+            'schedule_url' => $request->getRouter()->named('stations:playlists:schedule', ['station_id' => $station->getId()]),
         ]);
     }
 
@@ -150,7 +150,7 @@ class PlaylistsController extends AbstractStationCrudController
                     'start' => $playlist_start->toIso8601String(),
                     'end' => $playlist_end->toIso8601String(),
                     'url' => (string)$request->getRouter()->named('stations:playlists:edit',
-                        ['station' => $station->getId(), 'id' => $playlist->getId()]),
+                        ['station_id' => $station->getId(), 'id' => $playlist->getId()]),
                 ];
             }
 

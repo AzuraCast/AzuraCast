@@ -56,7 +56,7 @@ class ApiUtilities
         }
 
         $path = $this->router->named('api:stations:media:art',
-            ['station' => $station_id, 'media_id' => $media_unique_id], []);
+            ['station_id' => $station_id, 'media_id' => $media_unique_id], []);
         return UriResolver::resolve($base_url, $path);
     }
 

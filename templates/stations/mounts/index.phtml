@@ -32,8 +32,8 @@
             <tr class="align-middle">
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:mounts:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->fromHere('stations:mounts:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </div>
                 </td>
                 <td>

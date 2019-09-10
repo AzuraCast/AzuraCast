@@ -11,7 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20181202180617 extends AbstractMigration
 {
-    public function preUp(Schema $schema)
+    public function preup(Schema $schema): void
     {
         $stations = $this->connection->fetchAll('SELECT s.* FROM station AS s');
 

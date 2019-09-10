@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20180320052444 extends AbstractMigration
 {
-    public function preUp(Schema $schema)
+    public function preup(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
             'Migration can only be executed safely on \'mysql\'.');
@@ -19,12 +19,12 @@ final class Version20180320052444 extends AbstractMigration
         $this->connection->exec('DELETE FROM station_media_art WHERE media_id NOT IN (SELECT id FROM station_media)');
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE station_media_art ADD CONSTRAINT FK_35E0CAB2EA9FDD75 FOREIGN KEY (media_id) REFERENCES station_media (id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',

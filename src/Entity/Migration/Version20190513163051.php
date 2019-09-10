@@ -26,7 +26,7 @@ final class Version20190513163051 extends AbstractMigration
         $this->addSql('ALTER TABLE users DROP timezone');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         // Use the system setting for "global timezone" to set the station timezones.
         $global_tz = $this->connection->fetchColumn('SELECT setting_value FROM settings WHERE setting_key="timezone"');

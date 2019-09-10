@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20180415235105 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
@@ -22,7 +22,7 @@ final class Version20180415235105 extends AbstractMigration
         $this->addSql('ALTER TABLE station_media_custom_field ADD CONSTRAINT FK_35DC02AA443707B0 FOREIGN KEY (field_id) REFERENCES custom_field (id) ON DELETE CASCADE');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',

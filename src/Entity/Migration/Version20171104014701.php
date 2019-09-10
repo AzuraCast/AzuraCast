@@ -12,7 +12,7 @@ final class Version20171104014701 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
@@ -21,7 +21,7 @@ final class Version20171104014701 extends AbstractMigration
         $this->addSql('ALTER TABLE station_media ADD unique_id VARCHAR(25) DEFAULT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         $all_records = $this->connection->fetchAll("SELECT * FROM station_media");
 
@@ -37,7 +37,7 @@ final class Version20171104014701 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',

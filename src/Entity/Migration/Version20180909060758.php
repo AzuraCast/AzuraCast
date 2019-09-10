@@ -19,7 +19,7 @@ final class Version20180909060758 extends AbstractMigration
         $this->addSql('ALTER TABLE station_mounts DROP remote_type, DROP remote_url, DROP remote_mount, DROP remote_source_username, DROP remote_source_password');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         $stations = $this->connection->fetchAll("SELECT id FROM station WHERE frontend_type = 'remote'");
 

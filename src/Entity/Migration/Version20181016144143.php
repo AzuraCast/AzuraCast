@@ -16,7 +16,7 @@ final class Version20181016144143 extends AbstractMigration
         $this->addSql('SELECT 1');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         $shuffled_playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp WHERE sp.playback_order = :order',
             [

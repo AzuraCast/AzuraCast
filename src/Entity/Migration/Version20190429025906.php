@@ -19,7 +19,7 @@ final class Version20190429025906 extends AbstractMigration
         $this->addSql('ALTER TABLE station_playlists ADD backend_options VARCHAR(255) DEFAULT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postup(Schema $schema): void
     {
         $playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp');
 

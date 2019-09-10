@@ -9,31 +9,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class RestartRadio extends CommandAbstract
+class RestartRadioCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:radio:restart')
-            ->setDescription('Restart all radio stations.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $io = new SymfonyStyle($input, $output);
-
+    public function __invoke(
+        SymfonyStyle $io,
+        EntityManager $em,
+        Configuration $configuration
+    ) {
         $io->section('Restarting all radio stations...');
-
-        /** @var EntityManager $em */
-        $em = $this->get(EntityManager::class);
-
-        /** @var Configuration $configuration */
-        $configuration = $this->get(Configuration::class);
 
         /** @var Station[] $stations */
         $stations = $em->getRepository(Station::class)->findAll();
@@ -53,7 +36,6 @@ class RestartRadio extends CommandAbstract
         }
 
         $io->progressFinish();
-
         return 0;
     }
 }

@@ -8,32 +8,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Sync extends CommandAbstract
+class SyncCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('sync:run')
-            ->setDescription(__('Run one or more scheduled synchronization tasks.'))
-            ->addArgument(
-                'task',
-                InputArgument::OPTIONAL,
-                __('The task to run (%s).', 'nowplaying,short,medium,long'),
-                'nowplaying'
-            );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        /** @var Runner $sync */
-        $sync = $this->get(Runner::class);
-
-        switch ($input->getArgument('task')) {
+    public function __invoke(
+        Runner $sync,
+        string $task = 'nowplaying'
+    ) {
+        switch ($task) {
             case 'long':
                 $sync->syncLong();
                 break;

@@ -4,48 +4,36 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Service\AzuraCastCentral;
 use Azura\Console\Command\CommandAbstract;
+use Azura\Settings;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class Setup extends CommandAbstract
+class SetupCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:setup')
-            ->setDescription(__('Run all general AzuraCast setup steps.'))
-            ->addOption('update', null, InputOption::VALUE_NONE, __('Only update the existing installation.'))
-            ->addOption('load-fixtures', null, InputOption::VALUE_NONE,
-                __('Load predefined fixtures (for development purposes).'))
-            ->addOption('release', null, InputOption::VALUE_NONE, __('Used for updating only to a tagged release.'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $update_only = (bool)$input->getOption('update');
-        $load_fixtures = (bool)$input->getOption('load-fixtures');
-
-        $io = new SymfonyStyle($input, $output);
+    public function __invoke(
+        SymfonyStyle $io,
+        OutputInterface $output,
+        Settings $settings,
+        EntityManager $em,
+        AzuraCastCentral $acCentral,
+        bool $update = false,
+        bool $loadFixtures = false
+    ) {
         $io->title(__('AzuraCast Setup'));
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
         $io->listing([
-            __('Environment: %s', ucfirst(APP_APPLICATION_ENV)),
-            __('Installation Method: %s', APP_INSIDE_DOCKER ? 'Docker' : 'Ansible'),
+            __('Environment: %s', ucfirst($settings[Settings::APP_ENV])),
+            __('Installation Method: %s', $settings->isDocker() ? 'Docker' : 'Ansible'),
         ]);
 
-        if ($update_only) {
+        if ($update) {
             $io->note(__('Running in update mode.'));
 
-            if (!APP_INSIDE_DOCKER) {
+            if (!$settings->isDocker()) {
                 $io->section(__('Migrating Legacy Configuration'));
                 $this->runCommand($output, 'azuracast:config:migrate');
                 $io->newLine();
@@ -69,7 +57,7 @@ class Setup extends CommandAbstract
 
         $this->runCommand($output, 'orm:generate-proxies');
 
-        if ($load_fixtures || (!APP_IN_PRODUCTION && !$update_only)) {
+        if ($loadFixtures || (!$settings->isProduction() && !$update)) {
             $io->newLine();
             $io->section(__('Installing Data Fixtures'));
 
@@ -84,9 +72,6 @@ class Setup extends CommandAbstract
 
         // Clear update information.
 
-        /** @var EntityManager $em */
-        $em = $this->get(EntityManager::class);
-
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $em->getRepository(Entity\Settings::class);
 
@@ -95,14 +80,12 @@ class Setup extends CommandAbstract
 
         $io->newLine();
 
-        if ($update_only) {
+        if ($update) {
             $io->success([
                 __('AzuraCast is now updated to the latest version!'),
             ]);
         } else {
-            /** @var AzuraCastCentral $ac_central */
-            $ac_central = $this->get(AzuraCastCentral::class);
-            $public_ip = $ac_central->getIp(false);
+            $public_ip = $acCentral->getIp(false);
 
             $io->success([
                 __('AzuraCast installation complete!'),

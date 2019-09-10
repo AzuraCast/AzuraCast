@@ -2,35 +2,25 @@
 namespace App\Console\Command;
 
 use Azura\Console\Command\CommandAbstract;
+use Azura\Settings;
 use InfluxDB\Database;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SetupInflux extends CommandAbstract
+class SetupInfluxCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:setup:influx')
-            ->setDescription(__('Initial setup of InfluxDB.'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        /** @var Database $influxdb */
-        $influxdb = $this->get(Database::class);
-
+    public function __invoke(
+        SymfonyStyle $io,
+        Database $influxdb,
+        Settings $settings
+    ) {
         $db_name = $influxdb->getName();
 
         // Create the database (if it doesn't exist)
         $influxdb->create();
 
-        $output->writeln(__('Database created.'));
+        $io->writeln(__('Database created.'));
 
         // Establish retention policies
         $retention_policies = [
@@ -64,7 +54,7 @@ class SetupInflux extends CommandAbstract
             }
         }
 
-        $output->writeln(__('Retention policies updated.'));
+        $io->writeln(__('Retention policies updated.'));
 
         // Drop existing continuous queries.
         $cqs = $influxdb->query('SHOW CONTINUOUS QUERIES');
@@ -84,14 +74,14 @@ class SetupInflux extends CommandAbstract
                 $cq_name, $db_name, $cq_fields, $dr, $dr));
         }
 
-        $output->writeln(__('Continuous queries created.'));
+        $io->writeln(__('Continuous queries created.'));
 
         // Print debug information
-        if (!APP_IN_PRODUCTION) {
+        if (!$settings->isProduction()) {
             $rps_raw = $influxdb->query('SHOW RETENTION POLICIES');
             $rps = (array)$rps_raw->getPoints();
 
-            $output->writeln(print_r($rps, true));
+            $io->writeln(print_r($rps, true));
 
             $cqs_raw = $influxdb->query('SHOW CONTINUOUS QUERIES');
             $cqs = [];
@@ -100,10 +90,10 @@ class SetupInflux extends CommandAbstract
                 $cqs[$cq['name']] = $cq['query'];
             }
 
-            $output->writeln(print_r($cqs, true));
+            $io->writeln(print_r($cqs, true));
         }
 
-        $output->writeln(__('InfluxDB databases created.'));
+        $io->writeln(__('InfluxDB databases created.'));
         return 0;
     }
 }

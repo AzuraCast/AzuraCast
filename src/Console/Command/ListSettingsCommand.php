@@ -9,27 +9,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ListSettings extends CommandAbstract
+class ListSettingsCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:settings:list')
-            ->setDescription(__('List all settings in the AzuraCast settings database.'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $io = new SymfonyStyle($input, $output);
+    public function __invoke(
+        SymfonyStyle $io,
+        EntityManager $em
+    ) {
         $io->title(__('AzuraCast Settings'));
-
-        /** @var EntityManager $em */
-        $em = $this->get(EntityManager::class);
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $em->getRepository(Entity\Settings::class);

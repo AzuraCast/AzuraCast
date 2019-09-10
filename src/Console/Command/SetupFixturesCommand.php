@@ -3,6 +3,7 @@ namespace App\Console\Command;
 
 use App\Entity\Station;
 use Azura\Console\Command\CommandAbstract;
+use Azura\Settings;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
@@ -12,39 +13,25 @@ use InfluxDB\Database;
 use InfluxDB\Point;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SetupFixtures extends CommandAbstract
+class SetupFixturesCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:setup:fixtures')
-            ->setDescription(__('Install fixtures for demo / local development.'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    public function __invoke(
+        SymfonyStyle $io,
+        EntityManager $em,
+        Database $influx,
+        Settings $settings
+    ) {
         $loader = new Loader();
-        $loader->loadFromDirectory(APP_INCLUDE_ROOT . '/src/Entity/Fixture');
-
-        /** @var EntityManager $em */
-        $em = $this->get(EntityManager::class);
+        $loader->loadFromDirectory($settings[Settings::BASE_DIR] . '/src/Entity/Fixture');
 
         $purger = new ORMPurger($em);
         $executor = new ORMExecutor($em, $purger);
         $executor->execute($loader->getFixtures());
 
         // Preload sample data.
-
         $stations = $em->getRepository(Station::class)->findAll();
-
-        /** @var Database $influx */
-        $influx = $this->get(Database::class);
 
         $midnight_utc = Chronos::now('UTC')->setTime(0, 0);
         $influx_points = [];
@@ -80,7 +67,7 @@ class SetupFixtures extends CommandAbstract
 
         $influx->writePoints($influx_points, Database::PRECISION_SECONDS, '1d');
 
-        $output->writeln(__('Fixtures loaded.'));
+        $io->writeln(__('Fixtures loaded.'));
 
         return 0;
     }

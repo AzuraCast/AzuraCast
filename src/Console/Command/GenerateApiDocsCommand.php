@@ -6,27 +6,15 @@ use Azura\Console\Command\CommandAbstract;
 use Azura\Settings;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use function OpenApi\scan;
 
-class GenerateApiDocs extends CommandAbstract
+class GenerateApiDocsCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('azuracast:api:docs')
-            ->setDescription('Trigger regeneration of AzuraCast API documentation.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        /** @var Settings $settings */
-        $settings = $this->get(Settings::class);
-
+    public function __invoke(
+        SymfonyStyle $io,
+        Settings $settings
+    ) {
         define('AZURACAST_API_URL', 'https://demo.azuracast.com/api');
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define('AZURACAST_VERSION', Version::FALLBACK_VERSION);
@@ -48,7 +36,7 @@ class GenerateApiDocs extends CommandAbstract
 
         file_put_contents($yaml_path, $yaml);
 
-        $output->writeln('API documentation updated!');
+        $io->writeln('API documentation updated!');
         return 0;
     }
 }

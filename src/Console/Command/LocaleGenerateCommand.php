@@ -10,25 +10,14 @@ use RecursiveRegexIterator;
 use RegexIterator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LocaleGenerate extends CommandAbstract
+class LocaleGenerateCommand extends CommandAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName('locale:generate')
-            ->setDescription(__('Generate the translation locale file.'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $settings = $this->get('settings');
-
+    public function __invoke(
+        SymfonyStyle $io,
+        Settings $settings
+    ) {
         $dest_file = $settings[Settings::BASE_DIR] . '/resources/locale/default.pot';
         $translations = new Translations;
 
@@ -52,7 +41,7 @@ class LocaleGenerate extends CommandAbstract
 
         $translations->toPoFile($dest_file);
 
-        $output->writeln(__('Locales generated.'));
+        $io->writeln(__('Locales generated.'));
         return 0;
     }
 }

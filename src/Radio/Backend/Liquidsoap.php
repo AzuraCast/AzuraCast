@@ -668,7 +668,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '# DJ Authentication',
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
-            '  ret = ' . $this->_getApiUrlCommand($station, 'auth', ['dj_user' => 'user', 'dj_password' => 'password']),
+            '  ret = ' . $this->_getApiUrlCommand($station, 'auth', ['dj-user' => 'user', 'dj-password' => 'password']),
             '  log("AzuraCast DJ Auth Response: #{ret}")',
             '  bool_of_string(ret)',
             'end',

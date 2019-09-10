@@ -16,7 +16,7 @@ class UptimeWaitCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManager $em,
-        string $service = 'database'
+        ?string $service = 'database'
     ) {
         $attempts = 0;
         $total_attempts = 5;

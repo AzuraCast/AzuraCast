@@ -52,11 +52,10 @@ class MountsController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
         $id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash('<b>' . __('Mount Point deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));

@@ -86,7 +86,7 @@ return function(App $app)
             $group->get('', Controller\Admin\LogsController::class)
                 ->setName('admin:logs:index');
 
-            $group->get('/view/{station}/{log}', Controller\Admin\LogsController::class.':viewAction')
+            $group->get('/view/{station_id}/{log}', Controller\Admin\LogsController::class.':viewAction')
                 ->setName('admin:logs:view')
                 ->add(Middleware\GetStation::class);
 
@@ -185,7 +185,7 @@ return function(App $app)
 
         $group->group('/internal', function (RouteCollectorProxy $group) {
 
-            $group->group('/{station}', function(RouteCollectorProxy $group) {
+            $group->group('/{station_id}', function(RouteCollectorProxy $group) {
 
                 // Liquidsoap internal authentication functions
                 $group->map(['GET', 'POST'], '/auth', Controller\Api\InternalController::class.':authAction')
@@ -214,7 +214,7 @@ return function(App $app)
 
         });
 
-        $group->get('/nowplaying[/{station}]', Controller\Api\NowplayingController::class)
+        $group->get('/nowplaying[/{station_id}]', Controller\Api\NowplayingController::class)
             ->setName('api:nowplaying:index');
 
         $group->get('/stations', Controller\Api\Stations\IndexController::class.':listAction')
@@ -262,7 +262,7 @@ return function(App $app)
             }
         });
 
-        $group->group('/station/{station}', function (RouteCollectorProxy $group) {
+        $group->group('/station/{station_id}', function (RouteCollectorProxy $group) {
 
             $group->get('', Controller\Api\Stations\IndexController::class.':indexAction')
                 ->setName('api:stations:index')
@@ -418,7 +418,7 @@ return function(App $app)
     })
         ->add(AzuraMiddleware\EnableView::class);
 
-    $app->group('/public/{station}', function (RouteCollectorProxy $group) {
+    $app->group('/public/{station_id}', function (RouteCollectorProxy $group) {
 
         $group->get('', Controller\Frontend\PublicController::class.':indexAction')
             ->setName('public:index');
@@ -439,7 +439,7 @@ return function(App $app)
         ->add(Middleware\GetStation::class)
         ->add(AzuraMiddleware\EnableView::class);
 
-    $app->group('/station/{station}', function (RouteCollectorProxy $group) {
+    $app->group('/station/{station_id}', function (RouteCollectorProxy $group) {
 
         $group->get('', function (ServerRequest $request, Response $response) {
             return $response->withRedirect((string)$request->getRouter()->fromHere('stations:profile:index'));

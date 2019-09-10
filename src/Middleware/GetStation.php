@@ -41,7 +41,7 @@ class GetStation implements MiddlewareInterface
         $routeContext = RouteContext::fromRequest($request);
         $route_args = $routeContext->getRoute()->getArguments();
 
-        $id = $route_args['station'] ?? null;
+        $id = $route_args['station_id'] ?? null;
 
         if (!empty($id)) {
             if (is_numeric($id)) {

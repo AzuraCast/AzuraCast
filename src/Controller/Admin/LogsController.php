@@ -79,9 +79,9 @@ class LogsController
         return $log_paths;
     }
 
-    public function viewAction(ServerRequest $request, Response $response, $station, $log_key): ResponseInterface
+    public function viewAction(ServerRequest $request, Response $response, $station_id, $log_key): ResponseInterface
     {
-        if ('global' === $station) {
+        if ('global' === $station_id) {
             $log_areas = $this->_getGlobalLogs();
         } else {
             $log_areas = $this->_getStationLogs($request->getStation());

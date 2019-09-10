@@ -53,9 +53,9 @@ class RemotesController extends AbstractStationCrudController
         ServerRequest $request,
         Response $response,
         $id,
-        $csrf_token
+        $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash('<b>' . __('Remote Relay deleted.') . '</b>', 'green');
 

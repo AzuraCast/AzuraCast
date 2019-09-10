@@ -104,9 +104,9 @@ class ApiKeysController
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');

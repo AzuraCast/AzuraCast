@@ -50,9 +50,9 @@ class ApiController extends AbstractAdminCrudController
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash(__('API Key deleted.'), 'green');
         return $response->withRedirect($request->getRouter()->named('admin:api:index'));

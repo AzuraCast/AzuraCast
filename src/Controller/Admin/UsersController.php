@@ -65,9 +65,9 @@ class UsersController extends AbstractAdminCrudController
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
@@ -85,9 +85,9 @@ class UsersController extends AbstractAdminCrudController
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
     }
 
-    public function impersonateAction(ServerRequest $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function impersonateAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 

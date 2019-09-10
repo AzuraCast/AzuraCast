@@ -46,9 +46,9 @@ class CustomFieldsController extends AbstractAdminCrudController
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash('<b>' . __('Custom Field deleted.') . '</b>', 'green');
 

@@ -69,9 +69,9 @@ class PermissionsController extends AbstractAdminCrudController
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf_token): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $this->_doDelete($request, $id, $csrf_token);
+        $this->_doDelete($request, $id, $csrf);
 
         $request->getSession()->flash('<b>' . __('Permission deleted.') . '</b>', 'green');
         return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));

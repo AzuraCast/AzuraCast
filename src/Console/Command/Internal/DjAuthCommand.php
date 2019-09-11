@@ -20,7 +20,7 @@ class DjAuthCommand extends CommandAbstract
         Adapters $adapters,
         int $stationId,
         string $djUser = '',
-        string $djPass = ''
+        string $djPassword = ''
     ) {
         $station = $em->getRepository(Entity\Station::class)->find($stationId);
 
@@ -32,7 +32,7 @@ class DjAuthCommand extends CommandAbstract
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $response = $adapter->authenticateStreamer($station, $djUser, $djPass);
+            $response = $adapter->authenticateStreamer($station, $djUser, $djPassword);
             $io->write($response);
             return null;
         }

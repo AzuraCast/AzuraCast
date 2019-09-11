@@ -54,9 +54,11 @@ return function(Application $console)
     )->setDescription('Process a file uploaded in PureFTPD');
 
     $console->command(
-        'azuracast:internal:nextsong station-id as-autodj',
+        'azuracast:internal:nextsong station-id [as-autodj]',
         Command\Internal\NextSongCommand::class
-    )->setDescription('Return the next song to the AutoDJ.');
+    )->defaults([
+        'as-autodj' => true,
+    ])->setDescription('Return the next song to the AutoDJ.');
 
     // Locales
     $console->command(

@@ -79,7 +79,7 @@ class LogsController
         return $log_paths;
     }
 
-    public function viewAction(ServerRequest $request, Response $response, $station_id, $log_key): ResponseInterface
+    public function viewAction(ServerRequest $request, Response $response, $station_id, $log): ResponseInterface
     {
         if ('global' === $station_id) {
             $log_areas = $this->_getGlobalLogs();
@@ -87,11 +87,11 @@ class LogsController
             $log_areas = $this->_getStationLogs($request->getStation());
         }
 
-        if (!isset($log_areas[$log_key])) {
+        if (!isset($log_areas[$log])) {
             throw new Exception('Invalid log file specified.');
         }
 
-        $log = $log_areas[$log_key];
+        $log = $log_areas[$log];
         return $this->_view($request, $response, $log['path'], $log['tail'] ?? true);
     }
 }

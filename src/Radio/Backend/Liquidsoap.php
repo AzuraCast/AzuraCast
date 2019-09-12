@@ -187,8 +187,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         // Create a new default playlist if one doesn't exist.
         if (!$has_default_playlist) {
-
-            $this->logger->info('No default playlist existed for this station; new one was automatically created.',
+            Logger::getInstance()->info('No default playlist existed for this station; new one was automatically created.',
                 ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
 
             // Auto-create an empty default playlist.

@@ -2,6 +2,7 @@
 namespace App\Radio\Backend;
 
 use App\Entity;
+use Azura\Logger;
 
 class None extends AbstractBackend
 {
@@ -37,7 +38,7 @@ class None extends AbstractBackend
 
     public function start(Entity\Station $station): void
     {
-        $this->logger->error('Cannot start process; AutoDJ is currently disabled.',
+        Logger::getInstance()->error('Cannot start process; AutoDJ is currently disabled.',
             ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
     }
 }

@@ -23,6 +23,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EntityForm extends Form
 {
+    /** @var EntityManager */
+    protected $em;
+
     /** @var Serializer */
     protected $serializer;
 

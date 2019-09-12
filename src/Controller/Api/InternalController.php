@@ -65,8 +65,8 @@ class InternalController
         }
 
         $params = $request->getParams();
-        $user = $params['dj_user'] ?? '';
-        $pass = $params['dj_password'] ?? '';
+        $user = $params['dj-user'] ?? '';
+        $pass = $params['dj-password'] ?? '';
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {

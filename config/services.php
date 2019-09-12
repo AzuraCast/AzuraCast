@@ -3,7 +3,7 @@
  * PHP-DI Services
  */
 
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 

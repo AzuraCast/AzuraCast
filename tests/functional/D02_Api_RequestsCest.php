@@ -16,7 +16,7 @@ class D02_Api_RequestsCest extends CestAbstract
         $this->em->flush();
 
         // Upload a test song.
-        $song_src = APP_INCLUDE_ROOT.'/resources/error.mp3';
+        $song_src = '/var/azuracast/www/resources/error.mp3';
         $song_dest = $this->test_station->getRadioMediaDir().'/test.mp3';
         copy($song_src, $song_dest);
 

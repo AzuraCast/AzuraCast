@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-use Azura\Settings;
+use App\Settings;
 use DateTime;
 use DateTimeZone;
 use Psr\SimpleCache\CacheInterface;

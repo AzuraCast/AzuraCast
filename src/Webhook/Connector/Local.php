@@ -4,6 +4,7 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use App\Event\SendWebhooks;
 use App\Service\NChan;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use InfluxDB\Database;
@@ -111,7 +112,7 @@ class Local
         // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
         $this->logger->debug('Writing static nowplaying text file...');
 
-        $static_np_dir = APP_INCLUDE_TEMP . '/nowplaying';
+        $static_np_dir = Settings::getInstance()->getTempDirectory() . '/nowplaying';
         if (!is_dir($static_np_dir) && !mkdir($static_np_dir) && !is_dir($static_np_dir)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $static_np_dir));
         }

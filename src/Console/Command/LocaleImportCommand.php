@@ -2,7 +2,7 @@
 namespace App\Console\Command;
 
 use Azura\Console\Command\CommandAbstract;
-use Azura\Settings;
+use App\Settings;
 use Gettext\Translations;
 use Symfony\Component\Console\Style\SymfonyStyle;
 

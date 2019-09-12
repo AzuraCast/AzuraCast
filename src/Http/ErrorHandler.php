@@ -7,7 +7,7 @@ use App\Exception\PermissionDeniedException;
 use App\Service\Sentry;
 use Azura\Exception;
 use Azura\Session;
-use Azura\Settings;
+use App\Settings;
 use Azura\View;
 use Gettext\Translator;
 use Monolog\Logger;

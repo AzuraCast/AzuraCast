@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.111.0",
+            "version": "3.111.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a31376012346118b2b88df6d2f0c185af71e3096"
+                "reference": "5e80d4bec17e197be494af4f38e1fcd17f728138"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a31376012346118b2b88df6d2f0c185af71e3096",
-                "reference": "a31376012346118b2b88df6d2f0c185af71e3096",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5e80d4bec17e197be494af4f38e1fcd17f728138",
+                "reference": "5e80d4bec17e197be494af4f38e1fcd17f728138",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-09T18:13:28+00:00"
+            "time": "2019-09-11T18:16:47+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "7fae6fe42c33350d2c16425512450aeac3fa939b"
+                "reference": "3f31357e03e91249c4284d579cf593891e206412"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/7fae6fe42c33350d2c16425512450aeac3fa939b",
-                "reference": "7fae6fe42c33350d2c16425512450aeac3fa939b",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/3f31357e03e91249c4284d579cf593891e206412",
+                "reference": "3f31357e03e91249c4284d579cf593891e206412",
                 "shasum": ""
             },
             "require": {
@@ -154,7 +154,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-09-10T17:41:01+00:00"
+            "time": "2019-09-12T04:10:12+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -3650,16 +3650,16 @@
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v1.10.1",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "5115fa44886d1c2785d2f135ef4626db868eac4b"
+                "reference": "fee1b6ea9c83dac7b4a17febf58fb712ada7dd6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/5115fa44886d1c2785d2f135ef4626db868eac4b",
-                "reference": "5115fa44886d1c2785d2f135ef4626db868eac4b",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/fee1b6ea9c83dac7b4a17febf58fb712ada7dd6e",
+                "reference": "fee1b6ea9c83dac7b4a17febf58fb712ada7dd6e",
                 "shasum": ""
             },
             "require": {
@@ -3728,7 +3728,7 @@
                 "secret-key cryptography",
                 "side-channel resistant"
             ],
-            "time": "2019-07-12T16:36:59+00:00"
+            "time": "2019-09-11T23:58:35+00:00"
         },
         {
             "name": "php-di/invoker",

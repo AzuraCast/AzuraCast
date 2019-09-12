@@ -4,12 +4,13 @@ namespace App\Radio\Frontend;
 use App\Entity;
 use App\Http\Router;
 use App\Radio\AbstractAdapter;
+use App\Settings;
 use App\Xml\Reader;
 use Azura\EventDispatcher;
+use Azura\Logger;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
-use Monolog\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
@@ -25,12 +26,11 @@ abstract class AbstractFrontend extends AbstractAdapter
     public function __construct(
         EntityManager $em,
         Supervisor $supervisor,
-        Logger $logger,
         EventDispatcher $dispatcher,
         Client $client,
         Router $router
     ) {
-        parent::__construct($em, $supervisor, $logger, $dispatcher);
+        parent::__construct($em, $supervisor, $dispatcher);
 
         $this->http_client = $client;
         $this->router = $router;
@@ -146,7 +146,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
         if ($use_radio_proxy
-            || (!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER)
+            || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
             || 'https' === $base_url->getScheme()) {
             // Web proxy support.
             return $base_url
@@ -223,7 +223,7 @@ abstract class AbstractFrontend extends AbstractAdapter
             $np['listeners']['clients'] = [];
         }
 
-        $this->logger->debug('Response for mount point', ['mount' => $mount->getName(), 'response' => $np]);
+        Logger::getInstance()->debug('Response for mount point', ['mount' => $mount->getName(), 'response' => $np]);
 
         $mount->setListenersTotal($np['listeners']['total']);
         $mount->setListenersUnique($np['listeners']['unique']);

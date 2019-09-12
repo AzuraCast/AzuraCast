@@ -5,7 +5,7 @@ use App\Acl;
 use App\Entity;
 use App\Http\Router;
 use App\Utilities;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use RuntimeException;

@@ -2,7 +2,7 @@
 namespace App\Http;
 
 use App\Entity;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;

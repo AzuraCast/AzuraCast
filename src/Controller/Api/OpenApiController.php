@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
-use Azura\Settings;
+use App\Settings;
 use Psr\Http\Message\ResponseInterface;
 use function OpenApi\scan;
 

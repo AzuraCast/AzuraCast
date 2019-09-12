@@ -3,20 +3,17 @@
  * PHPStan Bootstrap File
  */
 
-// Register gettext to avoid related errors
-$translator = new \Gettext\Translator();
-$translator->register();
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set('display_errors', 1);
 
-// Define APP_ constants used by AzuraCast.
-define('APP_IS_COMMAND_LINE', true);
-define('APP_INCLUDE_ROOT', dirname(__DIR__));
-define('APP_INCLUDE_TEMP', dirname(APP_INCLUDE_ROOT).'/www_tmp');
+$autoloader = require dirname(__DIR__).'/vendor/autoload.php';
 
-define('APP_INSIDE_DOCKER', true);
-define('APP_DOCKER_REVISION', 1);
+$app = App\AppFactory::create($autoloader, [
+    Azura\Settings::BASE_DIR => dirname(__DIR__),
+]);
 
-define('APP_TESTING_MODE', true);
-define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
+$di = $app->getContainer();
 
-define('APP_APPLICATION_ENV', 'testing');
-define('APP_IN_PRODUCTION', false);
+/** @var App\Customization $customization */
+$customization = $di->get(App\Customization::class);
+$customization->init();

@@ -3,8 +3,9 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Radio\Adapters;
+use App\Settings;
+use Azura\Logger;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
 use studio24\Rotate;
 use Supervisor\Supervisor;
 use Symfony\Component\Finder\Finder;
@@ -20,22 +21,17 @@ class RotateLogs extends AbstractTask
     /** @var Supervisor */
     protected $supervisor;
 
-    /** @var Logger */
-    protected $logger;
-
     /**
      * @param EntityManager $em
-     * @param Logger $logger
      * @param Adapters $adapters
      * @param Supervisor $supervisor
      */
     public function __construct(
         EntityManager $em,
-        Logger $logger,
         Adapters $adapters,
         Supervisor $supervisor
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
 
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
@@ -51,7 +47,7 @@ class RotateLogs extends AbstractTask
         if (!empty($stations)) {
             foreach ($stations as $station) {
                 /** @var Entity\Station $station */
-                $this->logger->info('Processing logs for station.',
+                Logger::getInstance()->info('Processing logs for station.',
                     ['id' => $station->getId(), 'name' => $station->getName()]);
 
                 $this->rotateStationLogs($station);
@@ -59,7 +55,7 @@ class RotateLogs extends AbstractTask
         }
 
         // Rotate the main AzuraCast log.
-        $rotate = new Rotate\Rotate(APP_INCLUDE_TEMP . '/app.log');
+        $rotate = new Rotate\Rotate(Settings::getInstance()->getTempDirectory() . '/app.log');
         $rotate->keep(5);
         $rotate->size('5MB');
         $rotate->run();

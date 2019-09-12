@@ -5,6 +5,7 @@ use App\Controller\Traits\LogViewerTrait;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Settings;
 use Azura\Exception;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
@@ -45,38 +46,39 @@ class LogsController
 
     protected function _getGlobalLogs(): array
     {
-        $log_paths = [];
+        $tempDir = Settings::getInstance()->getTempDirectory();
+        $logPaths = [];
 
-        $log_paths['azuracast_log'] = [
+        $logPaths['azuracast_log'] = [
             'name' => __('AzuraCast Application Log'),
-            'path' => APP_INCLUDE_TEMP . '/app.log',
+            'path' => $tempDir . '/app.log',
             'tail' => true,
         ];
 
-        if (!APP_INSIDE_DOCKER) {
-            $log_paths['nginx_access'] = [
+        if (!Settings::getInstance()->isDocker()) {
+            $logPaths['nginx_access'] = [
                 'name' => __('Nginx Access Log'),
-                'path' => APP_INCLUDE_TEMP . '/access.log',
+                'path' => $tempDir . '/access.log',
                 'tail' => true,
             ];
-            $log_paths['nginx_error'] = [
+            $logPaths['nginx_error'] = [
                 'name' => __('Nginx Error Log'),
-                'path' => APP_INCLUDE_TEMP . '/error.log',
+                'path' => $tempDir . '/error.log',
                 'tail' => true,
             ];
-            $log_paths['php'] = [
+            $logPaths['php'] = [
                 'name' => __('PHP Application Log'),
-                'path' => APP_INCLUDE_TEMP . '/php_errors.log',
+                'path' => $tempDir . '/php_errors.log',
                 'tail' => true,
             ];
-            $log_paths['supervisord'] = [
+            $logPaths['supervisord'] = [
                 'name' => __('Supervisord Log'),
-                'path' => APP_INCLUDE_TEMP . '/supervisord.log',
+                'path' => $tempDir . '/supervisord.log',
                 'tail' => true,
             ];
         }
 
-        return $log_paths;
+        return $logPaths;
     }
 
     public function viewAction(ServerRequest $request, Response $response, $station_id, $log): ResponseInterface

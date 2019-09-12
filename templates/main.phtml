@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 /**
  * @var \League\Plates\Template\Template $this
@@ -15,6 +14,7 @@
 
 $user = $request->getUser();
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -148,7 +148,7 @@ echo $assets->js();
 </section>
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$settings['name'].'</a> &bull; '.$version->getVersionText().' &bull; '.(APP_INSIDE_DOCKER ? 'Docker' : 'Ansible').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
+    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$settings['name'].'</a> &bull; '.$version->getVersionText().' &bull; '.(\App\Settings::getInstance()->isDocker() ? 'Docker' : 'Ansible').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
     <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>', 'https://www.azuracast.com/donate.html') ?>
 </footer>
 

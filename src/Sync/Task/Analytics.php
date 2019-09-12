@@ -2,6 +2,7 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Monolog\Logger;
@@ -13,22 +14,18 @@ class Analytics extends AbstractTask
 
     /**
      * @param EntityManager $em
-     * @param Logger $logger
      * @param Database $influx
      */
-    public function __construct(EntityManager $em, Logger $logger, Database $influx)
+    public function __construct(EntityManager $em, Database $influx)
     {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
 
         $this->influx = $influx;
     }
 
     public function run($force = false): void
     {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $analytics_level = $settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $this->settingsRepo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $this->_purgeAnalytics();

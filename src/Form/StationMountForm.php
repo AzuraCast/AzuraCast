@@ -5,6 +5,7 @@ use App\Entity;
 use App\Entity\Station;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use App\Settings;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
@@ -19,12 +20,14 @@ class StationMountForm extends EntityForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
+     * @param Settings $settings
      * @param Config $config
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
+        Settings $settings,
         Config $config
     ) {
         $form_configs = [
@@ -32,7 +35,7 @@ class StationMountForm extends EntityForm
             Adapters::FRONTEND_SHOUTCAST => $config->get('forms/mount/shoutcast2'),
         ];
 
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($em, $serializer, $validator, $settings);
 
         $this->entityClass = Entity\StationMount::class;
         $this->form_configs = $form_configs;

@@ -3,6 +3,7 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Event\SendWebhooks;
+use App\Settings;
 use Azura\Exception;
 use InvalidArgumentException;
 use Monolog\Handler\TestHandler;
@@ -33,7 +34,7 @@ class Dispatcher implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        if (APP_TESTING_MODE) {
+        if (Settings::getInstance()->isTesting()) {
             return [];
         }
 
@@ -64,7 +65,7 @@ class Dispatcher implements EventSubscriberInterface
      */
     public function dispatch(SendWebhooks $event): void
     {
-        if (APP_TESTING_MODE) {
+        if (Settings::getInstance()->isTesting()) {
             $this->logger->info('In testing mode; no webhooks dispatched.');
             return;
         }

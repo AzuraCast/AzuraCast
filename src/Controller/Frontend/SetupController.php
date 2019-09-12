@@ -9,6 +9,7 @@ use App\Form\Form;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Settings;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
@@ -30,25 +31,31 @@ class SetupController
     /** @var array */
     protected $settings_form_config;
 
+    /** @var Settings */
+    protected $settings;
+
     /**
      * @param EntityManager $em
      * @param Auth $auth
      * @param Acl $acl
      * @param StationForm $station_form
      * @param Config $config
+     * @param Settings $settings
      */
     public function __construct(
         EntityManager $em,
         Auth $auth,
         Acl $acl,
         StationForm $station_form,
-        Config $config
+        Config $config,
+        Settings $settings
     ) {
         $this->em = $em;
         $this->auth = $auth;
         $this->acl = $acl;
         $this->station_form = $station_form;
         $this->settings_form_config = $config->get('forms/settings');
+        $this->settings = $settings;
     }
 
     /**
@@ -126,7 +133,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step !== 'register' && APP_IN_PRODUCTION) {
+        if ($current_step !== 'register' && $this->settings->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
@@ -179,7 +186,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step !== 'station' && APP_IN_PRODUCTION) {
+        if ($current_step !== 'station' && $this->settings->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
@@ -204,7 +211,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step !== 'settings' && APP_IN_PRODUCTION) {
+        if ($current_step !== 'settings' && $this->settings->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 

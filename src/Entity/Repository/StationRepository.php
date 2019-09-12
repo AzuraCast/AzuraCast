@@ -5,6 +5,7 @@ use App\Entity;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
+use App\Settings;
 use App\Sync\Task\Media;
 use App\Utilities;
 use Azura\Doctrine\Repository;
@@ -156,7 +157,7 @@ class StationRepository extends Repository
     public function create(Entity\Station $station): void
     {
         // Create path for station.
-        $station_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
+        $station_base_dir = Settings::getInstance()->getStationDirectory();
 
         $station_dir = $station_base_dir . '/' . $station->getShortName();
         $station->setRadioBaseDir($station_dir);

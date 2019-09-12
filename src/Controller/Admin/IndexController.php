@@ -6,6 +6,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Quota;
 use App\Sync\Runner;
+use App\Settings;
 use Brick\Math\BigInteger;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -54,7 +55,7 @@ class IndexController
             ]);
         }
 
-        $stations_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
+        $stations_base_dir = Settings::getInstance()->getStationDirectory();
 
         $space_total = BigInteger::of(disk_total_space($stations_base_dir));
         $space_free = BigInteger::of(disk_free_space($stations_base_dir));

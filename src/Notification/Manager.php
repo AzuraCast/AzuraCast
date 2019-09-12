@@ -4,7 +4,7 @@ namespace App\Notification;
 use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

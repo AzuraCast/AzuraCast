@@ -12,7 +12,7 @@ class C05_Station_AutomationCest extends CestAbstract
         $I->wantTo('Test station automation.');
 
         // Set up automation preconditions.
-        $song_src = APP_INCLUDE_ROOT.'/resources/error.mp3';
+        $song_src = '/var/azuracast/www/resources/error.mp3';
         $song_dest = $this->test_station->getRadioMediaDir().'/test.mp3';
         copy($song_src, $song_dest);
 

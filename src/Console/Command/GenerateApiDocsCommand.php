@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App\Version;
 use Azura\Console\Command\CommandAbstract;
-use Azura\Settings;
+use App\Settings;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;

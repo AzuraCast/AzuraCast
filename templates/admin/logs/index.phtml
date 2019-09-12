@@ -12,7 +12,7 @@ $this->layout('main', [
                 <h2 class="card-title"><?=__('System Logs') ?></h2>
             </div>
             <div class="card-body">
-                <?php if (APP_INSIDE_DOCKER): ?>
+                <?php if (\App\Settings::getInstance()->isDocker()): ?>
                     <p><?=__('Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.', 'docker-compose logs -f (nginx|web|stations|...)') ?></p>
                 <?php endif; ?>
             </div>

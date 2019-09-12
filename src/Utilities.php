@@ -214,27 +214,6 @@ class Utilities
     }
 
     /**
-     * Attempt to fetch the most likely "external" IP for this instance.
-     *
-     * @return false|string
-     */
-    public static function getPublicIp()
-    {
-        if (APP_INSIDE_DOCKER) {
-            if (APP_IN_PRODUCTION) {
-                $public_ip = @file_get_contents('http://ipecho.net/plain');
-                if (!empty($public_ip)) {
-                    return $public_ip;
-                }
-            }
-
-            return 'localhost';
-        }
-
-        return gethostbyname(gethostname()) ?? 'localhost';
-    }
-
-    /**
      * Flatten an array from format:
      * [
      *   'user' => [

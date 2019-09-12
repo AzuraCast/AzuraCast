@@ -5,8 +5,8 @@ use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use Azura\EventDispatcher;
+use Azura\Logger;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
 
 class RadioRequests extends AbstractTask
 {
@@ -18,17 +18,15 @@ class RadioRequests extends AbstractTask
 
     /**
      * @param EntityManager $em
-     * @param Logger $logger
      * @param Adapters $adapters
      * @param EventDispatcher $dispatcher
      */
     public function __construct(
         EntityManager $em,
-        Logger $logger,
         Adapters $adapters,
         EventDispatcher $dispatcher
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
 
         $this->dispatcher = $dispatcher;
         $this->adapters = $adapters;
@@ -117,10 +115,10 @@ class RadioRequests extends AbstractTask
         $track = $event->buildAnnotations();
 
         // Queue request with Liquidsoap.
-        $this->logger->debug('Submitting request to AutoDJ.', ['track' => $track]);
+        Logger::getInstance()->debug('Submitting request to AutoDJ.', ['track' => $track]);
         $response = $backend->request($station, $track);
 
-        $this->logger->debug('AutoDJ request response', ['response' => $response]);
+        Logger::getInstance()->debug('AutoDJ request response', ['response' => $response]);
 
         // Log the request as played.
         $request->setPlayedAt(time());

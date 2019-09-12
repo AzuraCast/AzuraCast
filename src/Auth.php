@@ -7,7 +7,7 @@ use App\Exception\NotLoggedInException;
 use Azura\Exception;
 use Azura\Session;
 use Azura\Session\NamespaceInterface;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 
 class Auth
@@ -21,9 +21,6 @@ class Auth
     /** @var NamespaceInterface */
     protected $session_namespace;
 
-    /** @var Settings */
-    protected $settings;
-
     /** @var UserRepository */
     protected $user_repo;
 
@@ -36,19 +33,15 @@ class Auth
     /**
      * @param Session $session
      * @param EntityManager $em
-     * @param Settings $settings
      */
     public function __construct(
         Session $session,
-        EntityManager $em,
-        Settings $settings
+        EntityManager $em
     ) {
         $this->user_repo = $em->getRepository(User::class);
 
         $this->session = $session;
         $this->session_namespace = $this->session->get('auth');
-
-        $this->settings = $settings;
     }
 
     /**
@@ -134,7 +127,7 @@ class Auth
      */
     public function isLoggedIn(): bool
     {
-        if (APP_IS_COMMAND_LINE && !APP_TESTING_MODE) {
+        if (Settings::getInstance()->isCli() && !Settings::getInstance()->isTesting()) {
             return false;
         }
 

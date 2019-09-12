@@ -6,7 +6,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Sync\Task\RadioAutomation;
 use Azura\Config;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Psr\Http\Message\ResponseInterface;

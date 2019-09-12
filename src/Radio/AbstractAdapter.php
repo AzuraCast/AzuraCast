@@ -5,10 +5,11 @@ use App\Entity;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\BadNameException;
 use App\Exception\Supervisor\NotRunningException;
+use App\Settings;
 use Azura\EventDispatcher;
+use Azura\Logger;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
-use Monolog\Logger;
 use Supervisor\Process;
 use Supervisor\Supervisor;
 
@@ -20,27 +21,21 @@ abstract class AbstractAdapter
     /** @var Supervisor */
     protected $supervisor;
 
-    /** @var Logger */
-    protected $logger;
-
     /** @var EventDispatcher */
     protected $dispatcher;
 
     /**
      * @param EntityManager $em
      * @param Supervisor $supervisor
-     * @param Logger $logger
      * @param EventDispatcher $dispatcher
      */
     public function __construct(
         EntityManager $em,
         Supervisor $supervisor,
-        Logger $logger,
         EventDispatcher $dispatcher
     ) {
         $this->em = $em;
         $this->supervisor = $supervisor;
-        $this->logger = $logger;
         $this->dispatcher = $dispatcher;
     }
 
@@ -98,7 +93,7 @@ abstract class AbstractAdapter
      */
     public function hasCommand(Entity\Station $station): bool
     {
-        if (APP_TESTING_MODE || !$station->isEnabled()) {
+        if (Settings::getInstance()->isTesting() || !$station->isEnabled()) {
             return false;
         }
 
@@ -152,7 +147,7 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->stopProcess($program_name);
-                $this->logger->info('Adapter "' . get_called_class() . '" stopped.',
+                Logger::getInstance()->info('Adapter "' . get_called_class() . '" stopped.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (FaultException $e) {
                 $this->_handleSupervisorException($e, $program_name, $station);
@@ -245,7 +240,7 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->startProcess($program_name);
-                $this->logger->info('Adapter "' . get_called_class() . '" started.',
+                Logger::getInstance()->info('Adapter "' . get_called_class() . '" started.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (FaultException $e) {
                 $this->_handleSupervisorException($e, $program_name, $station);
@@ -267,16 +262,5 @@ abstract class AbstractAdapter
         $class_name = array_pop($class_parts);
 
         return $config_dir . '/' . strtolower($class_name) . '.log';
-    }
-
-    /**
-     *
-     *
-     * @param array $clients
-     * @return array
-     */
-    protected function _filterClients(array $clients): array
-    {
-
     }
 }

@@ -5,7 +5,7 @@ use App\Entity;
 use App\Exception\SupervisorException;
 use App\Version;
 use Azura\Exception;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
@@ -72,7 +72,7 @@ class Sentry
             return;
         }
 
-        if (APP_TESTING_MODE) {
+        if ($this->app_settings->isTesting()) {
             return;
         }
 

@@ -4,7 +4,7 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Service\AzuraCastCentral;
 use Azura\Console\Command\CommandAbstract;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

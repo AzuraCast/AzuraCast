@@ -17,12 +17,11 @@ class RadioAutomation extends AbstractTask
 
     /**
      * @param EntityManager $em
-     * @param Logger $logger
      * @param Adapters $adapters
      */
-    public function __construct(EntityManager $em, Logger $logger, Adapters $adapters)
+    public function __construct(EntityManager $em, Adapters $adapters)
     {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
 
         $this->adapters = $adapters;
     }

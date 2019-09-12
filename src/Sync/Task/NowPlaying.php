@@ -9,6 +9,7 @@ use App\Message;
 use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
+use App\Settings;
 use Azura\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -41,6 +42,9 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     /** @var MessageQueue */
     protected $message_queue;
 
+    /** @var Logger */
+    protected $logger;
+
     /** @var ApiUtilities */
     protected $api_utils;
 
@@ -61,27 +65,27 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     /**
      * @param EntityManager $em
-     * @param Logger $logger
      * @param Adapters $adapters
      * @param ApiUtilities $api_utils
      * @param AutoDJ $autodj
      * @param CacheInterface $cache
      * @param Database $influx
+     * @param Logger $logger
      * @param EventDispatcher $event_dispatcher
      * @param MessageQueue $message_queue
      */
     public function __construct(
         EntityManager $em,
-        Logger $logger,
         Adapters $adapters,
         ApiUtilities $api_utils,
         AutoDJ $autodj,
         CacheInterface $cache,
         Database $influx,
+        Logger $logger,
         EventDispatcher $event_dispatcher,
         MessageQueue $message_queue
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
 
         $this->adapters = $adapters;
         $this->api_utils = $api_utils;
@@ -90,6 +94,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->event_dispatcher = $event_dispatcher;
         $this->message_queue = $message_queue;
         $this->influx = $influx;
+        $this->logger = $logger;
 
         $this->history_repo = $em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $em->getRepository(Entity\Song::class);
@@ -104,7 +109,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        if (APP_TESTING_MODE) {
+        if (Settings::getInstance()->isTesting()) {
             return [];
         }
 

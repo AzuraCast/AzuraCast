@@ -7,7 +7,7 @@ use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Config;
-use Azura\Settings;
+use App\Settings;
 use AzuraForms\Field\AbstractField;
 use BaconQrCode;
 use Doctrine\ORM\EntityManager;

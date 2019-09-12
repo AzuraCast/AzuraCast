@@ -5,6 +5,7 @@ use App\Acl;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
+use App\Settings;
 use App\Sync\Task\Media;
 use Azura\Config;
 use DeepCopy;
@@ -23,7 +24,6 @@ class StationCloneForm extends StationForm
     protected $media_sync;
 
     /**
-     * StationCloneForm constructor.
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
@@ -168,7 +168,7 @@ class StationCloneForm extends StationForm
             }
 
             // Set new radio base directory
-            $station_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
+            $station_base_dir = Settings::getInstance()->getStationDirectory();
             $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
 
             // Persist all newly created records (and relations).

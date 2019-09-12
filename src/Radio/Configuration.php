@@ -2,6 +2,7 @@
 namespace App\Radio;
 
 use App\Entity\Station;
+use App\Settings;
 use Azura\Exception;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
@@ -55,7 +56,7 @@ class Configuration
      */
     public function writeConfiguration(Station $station, $regen_auth_key = false, $force_restart = false): void
     {
-        if (APP_TESTING_MODE) {
+        if (Settings::getInstance()->isTesting()) {
             return;
         }
 
@@ -408,7 +409,7 @@ class Configuration
      */
     public function removeConfiguration(Station $station): void
     {
-        if (APP_TESTING_MODE) {
+        if (Settings::getInstance()->isTesting()) {
             return;
         }
 

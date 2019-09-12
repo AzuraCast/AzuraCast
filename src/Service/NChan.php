@@ -1,6 +1,8 @@
 <?php
 namespace App\Service;
 
+use App\Settings;
+
 /**
  * Utility class for managing NChan, the nginx websocket/SSE/long-polling module.
  */
@@ -11,12 +13,14 @@ class NChan
      */
     public static function isSupported(): bool
     {
-        if (APP_TESTING_MODE) {
+        $settings = Settings::getInstance();
+
+        if ($settings->isTesting()) {
             return false;
         }
 
-        if (APP_INSIDE_DOCKER) {
-            return APP_DOCKER_REVISION >= 5;
+        if ($settings->isDocker()) {
+            return $settings[Settings::DOCKER_REVISION] >= 5;
         }
 
         $os_details = self::getOperatingSystemDetails();

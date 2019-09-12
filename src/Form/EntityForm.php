@@ -3,6 +3,7 @@ namespace App\Form;
 
 use App\Entity\Station;
 use App\Http\ServerRequest;
+use App\Settings;
 use Azura\Doctrine\Repository;
 use Azura\Exception;
 use Azura\Normalizer\DoctrineEntityNormalizer;
@@ -22,9 +23,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EntityForm extends Form
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Serializer */
     protected $serializer;
 
@@ -142,7 +140,7 @@ class EntityForm extends Form
             $this->em->flush($record);
 
             // Intentionally refresh the station entity in case it didn't refresh elsewhere.
-            if ($this->station instanceof Station && APP_TESTING_MODE) {
+            if ($this->station instanceof Station && Settings::getInstance()->isTesting()) {
                 $this->em->refresh($this->station);
             }
 

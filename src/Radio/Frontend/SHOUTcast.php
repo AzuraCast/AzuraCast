@@ -2,6 +2,7 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Settings;
 use App\Utilities;
 use NowPlaying\Adapter\AdapterAbstract;
 use NowPlaying\Adapter\SHOUTcast2;
@@ -34,10 +35,11 @@ class SHOUTcast extends AbstractFrontend
 
     public static function getBinary()
     {
-        $new_path = dirname(APP_INCLUDE_ROOT) . '/servers/shoutcast2/sc_serv';
+        $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
 
         // Docker versions before 3 included the SC binary across the board.
-        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION < 3) {
+        $settings = Settings::getInstance();
+        if ($settings->isDocker() && $settings[Settings::DOCKER_REVISION] < 3) {
             return $new_path;
         }
 
@@ -51,7 +53,7 @@ class SHOUTcast extends AbstractFrontend
         $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        $base_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port;
+        $base_url = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radio_port;
 
         $np_adapter = new SHOUTcast2($base_url, $this->http_client);
         $np_adapter->setAdminPassword($fe_config['admin_pw']);

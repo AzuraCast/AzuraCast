@@ -6,6 +6,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
+use App\Settings;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -40,7 +41,7 @@ class InstallShoutcastController
 
         if ('POST' === $request->getMethod() && $form->isValid($_POST)) {
             try {
-                $sc_base_dir = dirname(APP_INCLUDE_ROOT) . '/servers/shoutcast2';
+                $sc_base_dir = Settings::getInstance()->getParentDirectory() . '/servers/shoutcast2';
 
                 $files = $request->getUploadedFiles();
                 /** @var UploadedFileInterface $import_file */

@@ -4,6 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Message;
 use App\MessageQueue;
+use App\Settings;
 use Azura\Console\Application;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
@@ -13,32 +14,25 @@ class Backup extends AbstractTask
 {
     public const BASE_DIR = '/var/azuracast/backups';
 
-    /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
-
     /** @var MessageQueue */
-    protected $message_queue;
+    protected $messageQueue;
 
     /** @var Application */
     protected $console;
 
     /**
      * @param EntityManager $em
-     * @param Logger $logger
      * @param MessageQueue $message_queue
      * @param Application $console
      */
     public function __construct(
         EntityManager $em,
-        Logger $logger,
         MessageQueue $message_queue,
         Application $console
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
 
-        $this->settings_repo = $em->getRepository(Entity\Settings::class);
-
-        $this->message_queue = $message_queue;
+        $this->messageQueue = $message_queue;
         $this->console = $console;
     }
 
@@ -56,9 +50,9 @@ class Backup extends AbstractTask
                 $message->exclude_media
             );
 
-            $this->settings_repo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
-            $this->settings_repo->setSetting(Entity\Settings::BACKUP_LAST_RESULT, $result_code);
-            $this->settings_repo->setSetting(Entity\Settings::BACKUP_LAST_OUTPUT, $result_output);
+            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
+            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RESULT, $result_code);
+            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_OUTPUT, $result_output);
         }
     }
 
@@ -77,7 +71,7 @@ class Backup extends AbstractTask
             $input_params['--exclude-media'] = true;
         }
 
-        return $this->console->runCommand('azuracast:backup', $input_params);
+        return $this->console->runCommandWithArgs('azuracast:backup', $input_params);
     }
 
     /**
@@ -85,20 +79,20 @@ class Backup extends AbstractTask
      */
     public function run($force = false): void
     {
-        $backup_enabled = (bool)$this->settings_repo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
+        $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
         if (!$backup_enabled) {
-            $this->logger->debug('Automated backups disabled; skipping...');
+            \Azura\Logger::getInstance()->debug('Automated backups disabled; skipping...');
             return;
         }
 
         $now_utc = Chronos::now('UTC');
 
         $threshold = $now_utc->subDay()->getTimestamp();
-        $last_run = $this->settings_repo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
+        $last_run = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
 
         if ($last_run <= $threshold) {
             // Check if the backup time matches (if it's set).
-            $backup_timecode = (int)$this->settings_repo->getSetting(Entity\Settings::BACKUP_TIME);
+            $backup_timecode = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME);
             if (0 !== $backup_timecode) {
                 $current_timecode = (int)$now_utc->format('Hi');
 
@@ -110,8 +104,8 @@ class Backup extends AbstractTask
             // Trigger a new backup.
             $message = new Message\BackupMessage;
             $message->path = 'automatic_backup.zip';
-            $message->exclude_media = (bool)$this->settings_repo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
-            $this->message_queue->produce($message);
+            $message->exclude_media = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
+            $this->messageQueue->produce($message);
         }
     }
 }

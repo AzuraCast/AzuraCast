@@ -66,7 +66,7 @@ $assets
         <div class="card-body">
             <p class="card-text"><?=__('To restore a backup from your host computer, run:') ?></p>
 
-        <?php if (APP_INSIDE_DOCKER): ?>
+        <?php if (\App\Settings::getInstance()->isDocker()): ?>
             <pre><code>./docker.sh restore path_to_backup.zip</code></pre>
         <?php else: ?>
             <pre><code>/var/azuracast/www/bin/azuracast azuracast:restore path_to_backup.zip</code></pre>

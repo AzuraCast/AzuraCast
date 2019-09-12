@@ -2,9 +2,11 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
+use Azura\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
 use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;
@@ -21,7 +23,7 @@ class Icecast extends AbstractFrontend
         $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        $base_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port;
+        $base_url = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radio_port;
 
         $np_adapter = new \NowPlaying\Adapter\Icecast($base_url, $this->http_client);
         $np_adapter->setAdminPassword($fe_config['admin_pw']);
@@ -40,9 +42,9 @@ class Icecast extends AbstractFrontend
                 );
             }
 
-            $this->logger->debug('Aggregated NowPlaying response', ['response' => $np_final]);
+            Logger::getInstance()->debug('Aggregated NowPlaying response', ['response' => $np_final]);
         } catch (Exception $e) {
-            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
         return $np_final;
@@ -129,7 +131,7 @@ class Icecast extends AbstractFrontend
             'logging' => [
                 'accesslog' => 'icecast_access.log',
                 'errorlog' => '/dev/stderr',
-                'loglevel' => (APP_IN_PRODUCTION) ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
+                'loglevel' => Settings::getInstance()->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
                 'logsize' => 10000,
             ],
             'security' => [
@@ -138,7 +140,9 @@ class Icecast extends AbstractFrontend
         ];
 
         // Allow all sources to set the X-Forwarded-For header
-        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION >= 3) {
+        $settings = Settings::getInstance();
+
+        if ($settings->isDocker() && $settings[Settings::DOCKER_REVISION] >= 3) {
             $defaults['paths']['all-x-forwarded-for'] = '1';
         }
 
@@ -318,7 +322,7 @@ class Icecast extends AbstractFrontend
         $new_path = '/usr/local/bin/icecast';
         $legacy_path = '/usr/bin/icecast2';
 
-        if (APP_INSIDE_DOCKER || file_exists($new_path)) {
+        if (Settings::getInstance()->isDocker() || file_exists($new_path)) {
             return $new_path;
         } elseif (file_exists($legacy_path)) {
             return $legacy_path;

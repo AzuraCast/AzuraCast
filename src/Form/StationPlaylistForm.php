@@ -5,6 +5,7 @@ use App\Customization;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\PlaylistParser;
+use App\Settings;
 use Azura\Config;
 use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StationPlaylistForm extends EntityForm
 {
     /** @var Entity\Repository\StationPlaylistMediaRepository */
-    protected $playlist_media_repo;
+    protected $playlistMediaRepo;
 
     /**
      * @param EntityManager $em
@@ -40,7 +41,7 @@ class StationPlaylistForm extends EntityForm
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\StationPlaylist::class;
-        $this->playlist_media_repo = $em->getRepository(Entity\StationPlaylistMedia::class);
+        $this->playlistMediaRepo = $em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
     public function process(ServerRequest $request, $record = null)
@@ -147,13 +148,13 @@ class StationPlaylistForm extends EntityForm
                 ->setParameter('matched_ids', $matches)
                 ->execute();
 
-            $weight = $this->playlist_media_repo->getHighestSongWeight($playlist);
+            $weight = $this->playlistMediaRepo->getHighestSongWeight($playlist);
 
             foreach ($matched_media as $media) {
                 $weight++;
 
                 /** @var Entity\StationMedia $media */
-                $this->playlist_media_repo->addMediaToPlaylist($media, $playlist, $weight);
+                $this->playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
             }
 
             $this->em->flush();

@@ -7,22 +7,36 @@ use Azura\App;
 use Azura\Exception;
 use Azura\Http\Factory\ResponseFactory;
 use Azura\Http\Factory\ServerRequestFactory;
-use Azura\Settings;
+use Azura\Logger;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use DI;
+use Psr\Log\LoggerInterface;
 
 class AppFactory extends \Azura\AppFactory
 {
     /**
      * @inheritDoc
      */
-    public static function create($autoloader = null, $settings = [], $diDefinitions = []): App
+    public static function create($autoloader = null, $appSettings = [], $diDefinitions = []): App
     {
         // Register Annotation autoloader
         if (null !== $autoloader) {
             AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
         }
 
-        $settings = self::buildSettings($settings);
+        $settings = new Settings(self::buildSettings($appSettings));
+        Settings::setInstance($settings);
+
+        self::applyPhpSettings($settings);
+
+        // Helper constants for annotations.
+        /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+        define('SAMPLE_TIMESTAMP', random_int(time() - 86400, time() + 86400));
+
+        // Override DI definitions for settings.
+        $diDefinitions[Settings::class] = $settings;
+        $diDefinitions[\Azura\Settings::class] = DI\get(Settings::class);
+        $diDefinitions['settings'] = DI\get(Settings::class);
 
         self::applyPhpSettings($settings);
 
@@ -38,6 +52,8 @@ class AppFactory extends \Azura\AppFactory
 
         $di = self::buildContainer($settings, $diDefinitions);
 
+        Logger::setInstance($di->get(LoggerInterface::class));
+
         // Set Response/Request decoratorclasses.
         ServerRequestFactory::setServerRequestClass(ServerRequest::class);
         ResponseFactory::setResponseClass(Response::class);
@@ -49,15 +65,10 @@ class AppFactory extends \Azura\AppFactory
         self::updateRouteHandling($app);
         self::buildRoutes($app);
 
-        $settings = $di->get(Settings::class);
-
-        define('APP_APPLICATION_ENV', $settings[Settings::APP_ENV]);
-        define('APP_IN_PRODUCTION', $settings->isProduction());
-
         return $app;
     }
 
-    protected static function buildSettings($settings): Settings
+    protected static function buildSettings(array $settings): array
     {
         if (!isset($settings[Settings::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');
@@ -65,22 +76,11 @@ class AppFactory extends \Azura\AppFactory
 
         $settings[Settings::TEMP_DIR] = dirname($settings[Settings::BASE_DIR]) . '/www_tmp';
 
-        // Define the "helper" constants used by AzuraCast.
-        define('APP_IS_COMMAND_LINE', PHP_SAPI === 'cli');
+        $settings[Settings::IS_DOCKER] = file_exists(dirname($settings[Settings::BASE_DIR]) . '/.docker');
+        $settings[Settings::DOCKER_REVISION] = getenv('AZURACAST_DC_REVISION') ?? 1;
 
-        define('APP_INCLUDE_ROOT', $settings[Settings::BASE_DIR]);
-        define('APP_INCLUDE_TEMP', $settings[Settings::TEMP_DIR]);
-
-        define('APP_INSIDE_DOCKER', file_exists(dirname($settings[Settings::BASE_DIR]) . '/.docker'));
-        define('APP_DOCKER_REVISION', getenv('AZURACAST_DC_REVISION') ?? 1);
-
-        $settings[Settings::IS_DOCKER] = APP_INSIDE_DOCKER;
-
-        define('APP_TESTING_MODE',
-            (isset($settings[Settings::APP_ENV]) && Settings::ENV_TESTING === $settings[Settings::APP_ENV]));
-
-        // Constants used in annotations
-        define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
+        $settings[Settings::CONFIG_DIR] = $settings[Settings::BASE_DIR].'/config';
+        $settings[Settings::VIEWS_DIR] = $settings[Settings::BASE_DIR].'/templates';
 
         return parent::buildSettings($settings);
     }

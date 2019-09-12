@@ -6,6 +6,7 @@ use App\Message;
 use App\MessageQueue;
 use App\Radio\Filesystem;
 use App\Radio\Quota;
+use App\Settings;
 use Bernard\Envelope;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
@@ -19,24 +20,22 @@ class Media extends AbstractTask
     protected $filesystem;
 
     /** @var MessageQueue */
-    protected $message_queue;
+    protected $messageQueue;
 
     /**
      * @param EntityManager $em
-     * @param Logger $logger
      * @param Filesystem $filesystem
-     * @param MessageQueue $message_queue
+     * @param MessageQueue $messageQueue
      */
     public function __construct(
         EntityManager $em,
-        Logger $logger,
         Filesystem $filesystem,
-        MessageQueue $message_queue
+        MessageQueue $messageQueue
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
 
         $this->filesystem = $filesystem;
-        $this->message_queue = $message_queue;
+        $this->messageQueue = $messageQueue;
     }
 
     /**
@@ -128,7 +127,7 @@ class Media extends AbstractTask
         $queued_media_updates = [];
         $queued_new_files = [];
 
-        $queue = $this->message_queue->getGlobalQueue();
+        $queue = $this->messageQueue->getGlobalQueue();
 
         $queue_position = 0;
         $queue_iteration = 20;
@@ -195,7 +194,7 @@ class Media extends AbstractTask
                         $message->media_id = $media_row->getId();
                         $message->force = $force_reprocess;
 
-                        $this->message_queue->produce($message);
+                        $this->messageQueue->produce($message);
 
                         $stats['updated']++;
                     } else {
@@ -232,7 +231,7 @@ class Media extends AbstractTask
                 $message->station_id = $station->getId();
                 $message->path = $new_music_file['path'];
 
-                $this->message_queue->produce($message);
+                $this->messageQueue->produce($message);
 
                 $stats['created']++;
             }
@@ -240,7 +239,7 @@ class Media extends AbstractTask
 
         $fs->flushAllCaches(true);
 
-        $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
+        \Azura\Logger::getInstance()->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }
 
     /**

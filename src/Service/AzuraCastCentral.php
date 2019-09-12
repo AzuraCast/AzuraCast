@@ -3,7 +3,7 @@ namespace App\Service;
 
 use App\Entity;
 use App\Version;
-use Azura\Settings;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 

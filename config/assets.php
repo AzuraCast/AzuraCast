@@ -1,4 +1,6 @@
 <?php
+
+use App\Settings;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -26,7 +28,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/vue/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js'),
+                    'src' => 'dist/lib/vue/' . (Settings::getInstance()->isProduction() ? 'vue.min.js' : 'vue.js'),
                 ],
             ],
         ],

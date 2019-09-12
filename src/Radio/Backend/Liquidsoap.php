@@ -7,10 +7,11 @@ use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Radio\Filesystem;
+use App\Settings;
 use Azura\EventDispatcher;
+use Azura\Logger;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,7 +32,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /**
      * @param EntityManager $em
      * @param Supervisor $supervisor
-     * @param Logger $logger
      * @param EventDispatcher $dispatcher
      * @param AutoDJ $autodj
      * @param Filesystem $filesystem
@@ -39,12 +39,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public function __construct(
         EntityManager $em,
         Supervisor $supervisor,
-        Logger $logger,
         EventDispatcher $dispatcher,
         AutoDJ $autodj,
         Filesystem $filesystem
     ) {
-        parent::__construct($em, $supervisor, $logger, $dispatcher);
+        parent::__construct($em, $supervisor, $dispatcher);
 
         $this->autodj = $autodj;
         $this->filesystem = $filesystem;
@@ -103,7 +102,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'set("log.stdout", true)',
             'set("log.file", false)',
             'set("server.telnet",true)',
-            'set("server.telnet.bind_addr","' . (APP_INSIDE_DOCKER ? '0.0.0.0' : '127.0.0.1') . '")',
+            'set("server.telnet.bind_addr","' . (Settings::getInstance()->isDocker() ? '0.0.0.0' : '127.0.0.1') . '")',
             'set("server.telnet.port", ' . $this->_getTelnetPort($station) . ')',
             'set("harbor.bind_addrs",["0.0.0.0"])',
             '',
@@ -421,9 +420,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             ]);
         }
 
-        $error_file = APP_INSIDE_DOCKER
+        $error_file = Settings::getInstance()->isDocker()
             ? '/usr/local/share/icecast/web/error.mp3'
-            : APP_INCLUDE_ROOT . '/resources/error.mp3';
+            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
 
         $event->appendLines([
             'requests = audio_to_stereo(request.queue(id="' . $this->_getVarName('requests', $station) . '"))',
@@ -486,7 +485,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             try {
                 $this->command($station, $playlist_var_name . '.reload');
             } catch (Exception $e) {
-                $this->logger->error('Could not reload playlist with AutoDJ.', [
+                Logger::getInstance()->error('Could not reload playlist with AutoDJ.', [
                     'message' => $e->getMessage(),
                     'playlist' => $playlist_var_name,
                     'station' => $station->getId(),
@@ -507,7 +506,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      */
     public function command(Entity\Station $station, $command_str)
     {
-        $fp = stream_socket_client('tcp://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $this->_getTelnetPort($station),
+        $fp = stream_socket_client('tcp://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $this->_getTelnetPort($station),
             $errno, $errstr, 20);
 
         if (!$fp) {
@@ -627,12 +626,14 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      */
     protected function _getApiUrlCommand(Entity\Station $station, $endpoint, $params = []): string
     {
+        $settings = Settings::getInstance();
+
         // Docker cURL-based API URL call with API authentication.
-        if (APP_INSIDE_DOCKER) {
+        if ($settings->isDocker()) {
             $params = (array)$params;
             $params['api_auth'] = '"' . $station->getAdapterApiKey() . '"';
 
-            $service_uri = (APP_DOCKER_REVISION >= 5) ? 'web' : 'nginx';
+            $service_uri = ($settings[Settings::DOCKER_REVISION] >= 5) ? 'web' : 'nginx';
             $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
             $command = 'curl -s --request POST --url ' . $api_url;
             foreach ($params as $param_key => $param_val) {
@@ -640,7 +641,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         } else {
             // Ansible shell-script call.
-            $shell_path = '/usr/bin/php ' . APP_INCLUDE_ROOT . '/bin/azuracast';
+            $shell_path = '/usr/bin/php ' . $settings->getBaseDirectory() . '/bin/azuracast';
 
             $shell_args = [];
             $shell_args[] = 'azuracast:internal:' . $endpoint;
@@ -962,7 +963,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public static function getBinary()
     {
         // Docker revisions 3 and later use the `radio` container.
-        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION < 3) {
+        $settings = Settings::getInstance();
+
+        if ($settings->isDocker() && $settings[Settings::DOCKER_REVISION] < 3) {
             return '/var/azuracast/.opam/system/bin/liquidsoap';
         }
 
@@ -1053,7 +1056,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $streamer = $streamer_repo->authenticate($station, $user, $pass);
 
         if ($streamer instanceof Entity\StationStreamer) {
-            $this->logger->debug('DJ successfully authenticated.', ['username' => $user]);
+            Logger::getInstance()->debug('DJ successfully authenticated.', ['username' => $user]);
 
             try {
                 // Successful authentication: update current streamer on station.
@@ -1061,7 +1064,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $this->em->persist($station);
                 $this->em->flush();
             } catch (Exception $e) {
-                $this->logger->error('Error when calling post-DJ-authentication functions.', [
+                Logger::getInstance()->error('Error when calling post-DJ-authentication functions.', [
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
                     'code' => $e->getCode(),

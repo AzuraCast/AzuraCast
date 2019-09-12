@@ -3,6 +3,7 @@ namespace App\Sync;
 
 use App\Entity;
 use App\Entity\Repository\SettingsRepository;
+use App\Settings;
 use Monolog\Logger;
 use Pimple\ServiceIterator;
 
@@ -15,7 +16,7 @@ class Runner
     protected $logger;
 
     /** @var SettingsRepository */
-    protected $settings;
+    protected $settingsRepo;
 
     /** @var Task\AbstractTask[] */
     protected $tasks_nowplaying;
@@ -30,14 +31,14 @@ class Runner
     protected $tasks_long;
 
     public function __construct(
-        SettingsRepository $settings,
+        SettingsRepository $settingsRepo,
         Logger $logger,
         array $tasks_nowplaying,
         array $tasks_short,
         array $tasks_medium,
         array $tasks_long
     ) {
-        $this->settings = $settings;
+        $this->settingsRepo = $settingsRepo;
         $this->logger = $logger;
 
         $this->tasks_nowplaying = $tasks_nowplaying;
@@ -59,14 +60,14 @@ class Runner
         $this->_initSync(10);
 
         // Prevent nowplaying from running on top of itself.
-        $last_start = $this->settings->getSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, 0);
-        $last_end = $this->settings->getSetting(Entity\Settings::NOWPLAYING_LAST_RUN, 0);
+        $last_start = $this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, 0);
+        $last_end = $this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING_LAST_RUN, 0);
 
         if ($last_start > $last_end && $last_start >= (time() - 10) && !$force) {
             return;
         }
 
-        $this->settings->setSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, time());
+        $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, time());
 
         foreach ($this->tasks_nowplaying as $task) {
             $this->_runTimer(get_class($task), function () use ($task, $force) {
@@ -75,20 +76,20 @@ class Runner
             });
         }
 
-        $this->settings->setSetting(Entity\Settings::NOWPLAYING_LAST_RUN, time());
+        $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING_LAST_RUN, time());
     }
 
     protected function _initSync($script_timeout = 60)
     {
         // Immediately halt if setup is not complete.
-        if ($this->settings->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
+        if ($this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
             die('Setup not complete; halting synchronized task.');
         }
 
         set_time_limit($script_timeout);
         ini_set('memory_limit', '256M');
 
-        if (APP_IS_COMMAND_LINE) {
+        if (Settings::getInstance()->isCli()) {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
             ini_set('display_errors', 1);
             ini_set('log_errors', 1);
@@ -129,7 +130,7 @@ class Runner
             });
         }
 
-        $this->settings->setSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, time());
+        $this->settingsRepo->setSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, time());
     }
 
     /**
@@ -150,7 +151,7 @@ class Runner
             });
         }
 
-        $this->settings->setSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, time());
+        $this->settingsRepo->setSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, time());
     }
 
     /**
@@ -171,38 +172,38 @@ class Runner
             });
         }
 
-        $this->settings->setSetting(Entity\Settings::LONG_SYNC_LAST_RUN, time());
+        $this->settingsRepo->setSetting(Entity\Settings::LONG_SYNC_LAST_RUN, time());
     }
 
     public function getSyncTimes()
     {
-        $this->settings->clearCache();
+        $this->settingsRepo->clearCache();
 
         $syncs = [
             'nowplaying' => [
                 'name' => __('Now Playing Data'),
-                'latest' => $this->settings->getSetting(Entity\Settings::NOWPLAYING_LAST_RUN, 0),
+                'latest' => $this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING_LAST_RUN, 0),
                 'contents' => [
                     __('Now Playing Data'),
                 ],
             ],
             'short' => [
                 'name' => __('1-Minute Sync'),
-                'latest' => $this->settings->getSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, 0),
+                'latest' => $this->settingsRepo->getSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, 0),
                 'contents' => [
                     __('Song Requests Queue'),
                 ],
             ],
             'medium' => [
                 'name' => __('5-Minute Sync'),
-                'latest' => $this->settings->getSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, 0),
+                'latest' => $this->settingsRepo->getSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, 0),
                 'contents' => [
                     __('Check Media Folders'),
                 ],
             ],
             'long' => [
                 'name' => __('1-Hour Sync'),
-                'latest' => $this->settings->getSetting(Entity\Settings::LONG_SYNC_LAST_RUN, 0),
+                'latest' => $this->settingsRepo->getSetting(Entity\Settings::LONG_SYNC_LAST_RUN, 0),
                 'contents' => [
                     __('Analytics/Statistics'),
                     __('Cleanup'),

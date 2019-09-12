@@ -2,6 +2,7 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;

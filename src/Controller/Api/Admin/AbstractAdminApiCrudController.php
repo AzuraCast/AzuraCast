@@ -64,38 +64,38 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param mixed $record_id
+     * @param mixed $id
      * @return ResponseInterface
      */
-    public function getAction(ServerRequest $request, Response $response, $record_id): ResponseInterface
+    public function getAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
-        $record = $this->_getRecord($record_id);
+        $record = $this->_getRecord($id);
 
         $return = $this->_viewRecord($record, $request->getRouter());
         return $response->withJson($return);
     }
 
     /**
-     * @param mixed $record_id
+     * @param mixed $id
      * @return object|null
      * @throws ORMException
      * @throws OptimisticLockException
      * @throws TransactionRequiredException
      */
-    protected function _getRecord($record_id)
+    protected function _getRecord($id)
     {
-        return $this->em->find($this->entityClass, $record_id);
+        return $this->em->find($this->entityClass, $id);
     }
 
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param mixed $record_id
+     * @param mixed $id
      * @return ResponseInterface
      */
-    public function editAction(ServerRequest $request, Response $response, $record_id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
-        $record = $this->_getRecord($record_id);
+        $record = $this->_getRecord($id);
 
         if (null === $record) {
             return $response->withStatus(404)
@@ -110,12 +110,12 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param mixed $record_id
+     * @param mixed $id
      * @return ResponseInterface
      */
-    public function deleteAction(ServerRequest $request, Response $response, $record_id): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
-        $record = $this->_getRecord($record_id);
+        $record = $this->_getRecord($id);
 
         if (null === $record) {
             return $response->withStatus(404)

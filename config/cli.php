@@ -94,9 +94,9 @@ return function(Application $console)
 
     // Maintenance
     $console->command(
-        'azuracast:radio:restart',
+        'azuracast:radio:restart [station-name]',
         Command\RestartRadioCommand::class
-    )->setDescription('Restart all radio stations.');
+    )->setDescription('Restart all radio stations, or a single one if specified.');
 
     $console->command(
         'sync:run [task]',

@@ -1,12 +1,11 @@
 <?php
 namespace App\Console\Command;
 
+use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Radio\Configuration;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RestartRadioCommand extends CommandAbstract
@@ -14,12 +13,27 @@ class RestartRadioCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManager $em,
-        Configuration $configuration
+        Configuration $configuration,
+        ?string $stationName = null
     ) {
-        $io->section('Restarting all radio stations...');
+        /** @var StationRepository $stationRepo */
+        $stationRepo = $em->getRepository(Station::class);
 
-        /** @var Station[] $stations */
-        $stations = $em->getRepository(Station::class)->findAll();
+        if (!empty($stationName)) {
+            $station = $stationRepo->findByIdentifier($stationName);
+
+            if (!$station instanceof Station) {
+                $io->error('Station not found.');
+                return 1;
+            }
+
+            $stations = [$station];
+        } else {
+            $io->section('Restarting all radio stations...');
+
+            /** @var Station[] $stations */
+            $stations = $stationRepo->findAll();
+        }
 
         $io->progressStart(count($stations));
 

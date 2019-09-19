@@ -44,11 +44,7 @@ class GetStation implements MiddlewareInterface
         $id = $route_args['station_id'] ?? null;
 
         if (!empty($id)) {
-            if (is_numeric($id)) {
-                $record = $this->station_repo->find($id);
-            } else {
-                $record = $this->station_repo->findByShortCode($id);
-            }
+            $record = $this->station_repo->findByIdentifier($id);
 
             if ($record instanceof Entity\Station) {
                 $backend = $this->adapters->getBackendAdapter($record);

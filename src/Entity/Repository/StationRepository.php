@@ -48,6 +48,17 @@ class StationRepository extends Repository
     protected $cache;
 
     /**
+     * @param string $identifier A numeric or string identifier for a station.
+     * @return Entity\Station|null
+     */
+    public function findByIdentifier(string $identifier): ?Entity\Station
+    {
+        return is_numeric($identifier)
+            ? $this->find($identifier)
+            : $this->findOneBy(['short_name' => $identifier]);
+    }
+
+    /**
      * @return mixed
      */
     public function fetchAll()

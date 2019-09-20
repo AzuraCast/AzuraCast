@@ -23,6 +23,7 @@ class PermissionsController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface

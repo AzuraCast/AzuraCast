@@ -8,8 +8,8 @@ use Azura\Exception;
 use Azura\Http\Factory\ResponseFactory;
 use Azura\Http\Factory\ServerRequestFactory;
 use Azura\Logger;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use DI;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Log\LoggerInterface;
 
 class AppFactory extends \Azura\AppFactory
@@ -79,8 +79,8 @@ class AppFactory extends \Azura\AppFactory
         $settings[Settings::IS_DOCKER] = file_exists(dirname($settings[Settings::BASE_DIR]) . '/.docker');
         $settings[Settings::DOCKER_REVISION] = getenv('AZURACAST_DC_REVISION') ?? 1;
 
-        $settings[Settings::CONFIG_DIR] = $settings[Settings::BASE_DIR].'/config';
-        $settings[Settings::VIEWS_DIR] = $settings[Settings::BASE_DIR].'/templates';
+        $settings[Settings::CONFIG_DIR] = $settings[Settings::BASE_DIR] . '/config';
+        $settings[Settings::VIEWS_DIR] = $settings[Settings::BASE_DIR] . '/templates';
 
         return parent::buildSettings($settings);
     }

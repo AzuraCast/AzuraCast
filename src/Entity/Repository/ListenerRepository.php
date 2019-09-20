@@ -13,6 +13,7 @@ class ListenerRepository extends Repository
      * @param Entity\Station $station
      * @param int $timestamp_start
      * @param int $timestamp_end
+     *
      * @return mixed
      */
     public function getUniqueListeners(Entity\Station $station, $timestamp_start, $timestamp_end)

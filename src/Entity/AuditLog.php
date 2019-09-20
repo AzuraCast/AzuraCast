@@ -104,6 +104,7 @@ class AuditLog
 
     /**
      * @param string|null $class The FQDN for a class
+     *
      * @return string|null The non-namespaced class name
      */
     protected function _filterClassName(?string $class): ?string

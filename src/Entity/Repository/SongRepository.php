@@ -28,6 +28,7 @@ class SongRepository extends Repository
      *
      * @param array|string $song_info
      * @param bool $is_radio_play
+     *
      * @return Entity\Song
      */
     public function getOrCreate($song_info, $is_radio_play = false): Entity\Song

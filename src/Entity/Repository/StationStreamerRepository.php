@@ -12,6 +12,7 @@ class StationStreamerRepository extends Repository
      * @param Entity\Station $station
      * @param string $username
      * @param string $password
+     *
      * @return Entity\StationStreamer|bool
      */
     public function authenticate(Entity\Station $station, $username, $password)
@@ -40,6 +41,7 @@ class StationStreamerRepository extends Repository
      * Fetch all streamers who are deactivated and have a reactivate at timestamp set
      *
      * @param int $reactivate_at
+     *
      * @return Entity\StationStreamer[]
      */
     public function getStreamersDueForReactivation(int $reactivate_at = null)

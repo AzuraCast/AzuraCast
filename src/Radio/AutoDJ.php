@@ -65,6 +65,7 @@ class AutoDJ implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param bool $as_autodj
+     *
      * @return string
      */
     public function annotateNextSong(Entity\Station $station, $as_autodj = false): string
@@ -84,6 +85,7 @@ class AutoDJ implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param bool $is_autodj
+     *
      * @return Entity\SongHistory|null
      */
     public function getNextSong(Entity\Station $station, $is_autodj = false): ?Entity\SongHistory
@@ -308,6 +310,7 @@ class AutoDJ implements EventSubscriberInterface
      *
      * @param Entity\StationPlaylist $playlist
      * @param array $recent_song_history
+     *
      * @return Entity\SongHistory|string|null
      */
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist, array $recent_song_history)
@@ -359,6 +362,7 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * @param Entity\StationPlaylist $playlist
      * @param array $recent_song_history
+     *
      * @return Entity\StationMedia|array|null
      */
     protected function _getQueuedSong(Entity\StationPlaylist $playlist, array $recent_song_history)
@@ -486,6 +490,7 @@ class AutoDJ implements EventSubscriberInterface
      * @param array $eligible_media
      * @param array $played_media
      * @param bool $accept_duplicate Whether to return a media ID even if duplicates can't be prevented.
+     *
      * @return int|null
      */
     protected function _preventDuplicates(

@@ -58,6 +58,7 @@ class RolePermission implements JsonSerializable
 
     /**
      * RolePermission constructor.
+     *
      * @param Role $role
      * @param Station|null $station
      */

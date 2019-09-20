@@ -3,8 +3,8 @@ namespace App\Controller\Api;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Version;
 use App\Settings;
+use App\Version;
 use Psr\Http\Message\ResponseInterface;
 use function OpenApi\scan;
 

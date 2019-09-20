@@ -4,8 +4,8 @@ namespace App\Service;
 use App\Acl;
 use App\Entity;
 use App\Http\Router;
-use App\Utilities;
 use App\Settings;
+use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -68,6 +68,7 @@ class Ftp
      *
      * @param string $username
      * @param string $password
+     *
      * @return array
      */
     public function auth(string $username, string $password): array

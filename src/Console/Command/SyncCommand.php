@@ -4,9 +4,6 @@ namespace App\Console\Command;
 use App;
 use App\Sync\Runner;
 use Azura\Console\Command\CommandAbstract;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncCommand extends CommandAbstract
 {

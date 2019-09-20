@@ -106,6 +106,7 @@ class SettingsRepository extends Repository
      * @param bool $cached
      * @param null $order_by
      * @param string $order_dir
+     *
      * @return array
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
@@ -144,6 +145,7 @@ class SettingsRepository extends Repository
      * @param string $key
      * @param mixed|null $default_value
      * @param bool $cached
+     *
      * @return mixed|null
      */
     public function getSetting($key, $default_value = null, $cached = true)

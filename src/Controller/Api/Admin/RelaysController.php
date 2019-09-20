@@ -45,6 +45,7 @@ class RelaysController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -91,6 +92,7 @@ class RelaysController
 
     /**
      * @param ServerRequest $request
+     *
      * @return Entity\Station[]
      */
     protected function getManageableStations(ServerRequest $request): array

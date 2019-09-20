@@ -2,7 +2,6 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
-use App\Settings;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
@@ -35,6 +34,7 @@ abstract class AbstractRemote
      * @param Entity\StationRemote $remote
      * @param array $np_aggregate
      * @param bool $include_clients
+     *
      * @return array The aggregated now-playing result.
      */
     public function updateNowPlaying(
@@ -49,6 +49,7 @@ abstract class AbstractRemote
      * Return the likely "public" listen URL for the remote.
      *
      * @param Entity\StationRemote $remote
+     *
      * @return string
      */
     public function getPublicUrl(Entity\StationRemote $remote): string
@@ -65,6 +66,7 @@ abstract class AbstractRemote
      *
      * @param Entity\StationRemote $remote
      * @param null $custom_path
+     *
      * @return string
      */
     protected function _getRemoteUrl(Entity\StationRemote $remote, $custom_path = null): string
@@ -81,6 +83,7 @@ abstract class AbstractRemote
      * @param array $np_aggregate
      * @param string $adapter_class
      * @param bool $include_clients
+     *
      * @return array The resulting aggregated now-playing response.
      */
     protected function _updateNowPlayingFromAdapter(

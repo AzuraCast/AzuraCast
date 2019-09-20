@@ -38,6 +38,7 @@ class StationMediaRepository extends Repository
      * @param Entity\Station $station
      * @param string $tmp_path
      * @param string $dest
+     *
      * @return Entity\StationMedia
      */
     public function uploadFile(Entity\Station $station, $tmp_path, $dest): Entity\StationMedia
@@ -71,6 +72,7 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param null $file_path
+     *
      * @throws getid3_exception
      */
     public function loadFromFile(Entity\StationMedia $media, $file_path = null): void
@@ -150,6 +152,7 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param string $raw_art_string The raw image data, as would be retrieved from file_get_contents.
+     *
      * @return bool
      */
     public function writeAlbumArt(Entity\StationMedia $media, $raw_art_string): bool
@@ -211,6 +214,7 @@ class StationMediaRepository extends Repository
     /**
      * @param Entity\Station $station
      * @param string $path
+     *
      * @return Entity\StationMedia
      * @throws Exception
      */
@@ -246,6 +250,7 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param bool $force
+     *
      * @return bool Whether reprocessing was required for this file.
      *
      * @throws ORMException
@@ -284,6 +289,7 @@ class StationMediaRepository extends Repository
      * Write modified metadata directly to the file as ID3 information.
      *
      * @param Entity\StationMedia $media
+     *
      * @return bool
      * @throws getid3_exception
      */
@@ -350,6 +356,7 @@ class StationMediaRepository extends Repository
      * Read the contents of the album art from storage (if it exists).
      *
      * @param Entity\StationMedia $media
+     *
      * @return string|null
      */
     public function readAlbumArt(Entity\StationMedia $media): ?string
@@ -368,6 +375,7 @@ class StationMediaRepository extends Repository
      * Return the full path associated with a media entity.
      *
      * @param Entity\StationMedia $media
+     *
      * @return string
      */
     public function getFullPath(Entity\StationMedia $media): string
@@ -383,6 +391,7 @@ class StationMediaRepository extends Repository
      * Retrieve a key-value representation of all custom metadata for the specified media.
      *
      * @param Entity\StationMedia $media
+     *
      * @return array
      */
     public function getCustomFields(Entity\StationMedia $media)

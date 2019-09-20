@@ -22,6 +22,7 @@ class Notification
 
     /**
      * Notification constructor.
+     *
      * @param string $title
      * @param string $body
      * @param string $type

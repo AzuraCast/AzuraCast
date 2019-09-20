@@ -15,6 +15,7 @@ class SettingsController
 
     /**
      * SettingsController constructor.
+     *
      * @param Config $config
      * @param EntityManager $em
      */

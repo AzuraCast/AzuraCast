@@ -63,6 +63,7 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
@@ -112,6 +113,7 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function completeAction(ServerRequest $request, Response $response): ResponseInterface
@@ -127,6 +129,7 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function registerAction(ServerRequest $request, Response $response): ResponseInterface
@@ -180,6 +183,7 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function stationAction(ServerRequest $request, Response $response): ResponseInterface
@@ -205,6 +209,7 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function settingsAction(ServerRequest $request, Response $response): ResponseInterface

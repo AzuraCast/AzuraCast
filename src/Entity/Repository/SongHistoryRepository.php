@@ -12,6 +12,7 @@ class SongHistoryRepository extends Repository
      * @param Entity\Station $station
      * @param ApiUtilities $api_utils
      * @param UriInterface|null $base_url
+     *
      * @return Entity\Api\SongHistory[]
      */
     public function getHistoryForStation(
@@ -49,6 +50,7 @@ class SongHistoryRepository extends Repository
      * @param Entity\Song $song
      * @param Entity\Station $station
      * @param array $np
+     *
      * @return Entity\SongHistory
      */
     public function register(
@@ -138,6 +140,7 @@ class SongHistoryRepository extends Repository
     /**
      * @param Entity\Song $song
      * @param Entity\Station $station
+     *
      * @return Entity\SongHistory|null
      */
     public function getCuedSong(Entity\Song $song, Entity\Station $station): ?Entity\SongHistory

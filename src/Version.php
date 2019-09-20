@@ -1,7 +1,6 @@
 <?php
 namespace App;
 
-use App\Settings;
 use DateTime;
 use DateTimeZone;
 use Psr\SimpleCache\CacheInterface;
@@ -112,6 +111,7 @@ class Version
      *
      * @param array $proc
      * @param string $default
+     *
      * @return string
      */
     protected function _runProcess($proc, $default = ''): string

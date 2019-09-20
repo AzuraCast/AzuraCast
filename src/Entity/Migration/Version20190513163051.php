@@ -76,6 +76,7 @@ final class Version20190513163051 extends AbstractMigration
     /**
      * @param mixed $time_code
      * @param int $offset_hours
+     *
      * @return int
      */
     protected function _applyOffset($time_code, $offset_hours): int

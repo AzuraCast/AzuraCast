@@ -18,6 +18,7 @@ class Writer extends Xml
      *
      * @param mixed $config
      * @param string $base_element
+     *
      * @return string
      * @see    WriterInterface::toString()
      */
@@ -37,6 +38,7 @@ class Writer extends Xml
      *
      * @param array $config
      * @param string $base_element
+     *
      * @return string
      */
     public function processConfig(array $config, $base_element = 'zend-config')
@@ -76,6 +78,7 @@ class Writer extends Xml
      * @param string $branchName
      * @param array $config
      * @param XMLWriter $writer
+     *
      * @return void
      * @throws Exception\RuntimeException
      */

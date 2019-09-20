@@ -101,6 +101,7 @@ class EntityForm extends Form
     /**
      * @param ServerRequest $request
      * @param object|null $record
+     *
      * @return object|bool The modified object if edited/created, or `false` if not processed.
      */
     public function process(ServerRequest $request, $record = null)
@@ -158,6 +159,7 @@ class EntityForm extends Form
      *
      * @param object $record
      * @param array $context
+     *
      * @return array
      */
     protected function _normalizeRecord($record, array $context = []): array
@@ -188,6 +190,7 @@ class EntityForm extends Form
 
     /**
      * @param object $object
+     *
      * @return mixed
      */
     protected function _displayShortenedObject($object)
@@ -205,6 +208,7 @@ class EntityForm extends Form
      * @param array $data
      * @param object|null $record
      * @param array $context
+     *
      * @return object
      */
     protected function _denormalizeToRecord($data, $record = null, array $context = []): object

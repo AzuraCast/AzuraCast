@@ -35,6 +35,7 @@ class Adapters
 
     /**
      * @param Entity\Station $station
+     *
      * @return Frontend\AbstractFrontend
      * @throws NotFoundException
      */
@@ -59,6 +60,7 @@ class Adapters
 
     /**
      * @param bool $check_installed
+     *
      * @return array
      */
     public static function listFrontendAdapters($check_installed = false): array
@@ -95,6 +97,7 @@ class Adapters
 
     /**
      * @param Entity\Station $station
+     *
      * @return Backend\AbstractBackend
      * @throws NotFoundException
      */
@@ -150,6 +153,7 @@ class Adapters
 
     /**
      * @param Entity\Station $station
+     *
      * @return Remote\AdapterProxy[]
      * @throws NotFoundException
      */
@@ -169,6 +173,7 @@ class Adapters
      *
      * @param Entity\Station $station
      * @param Entity\StationRemote $remote
+     *
      * @return Remote\AbstractRemote
      * @throws NotFoundException
      */

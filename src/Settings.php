@@ -18,7 +18,7 @@ class Settings extends \Azura\Settings
      */
     public function getStationDirectory(): string
     {
-        return $this->getParentDirectory().'/stations';
+        return $this->getParentDirectory() . '/stations';
     }
 
 

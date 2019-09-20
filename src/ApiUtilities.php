@@ -47,6 +47,7 @@ class ApiUtilities
      * @param int $station_id
      * @param string $media_unique_id
      * @param UriInterface|null $base_url
+     *
      * @return UriInterface
      */
     public function getAlbumArtUrl($station_id, $media_unique_id, UriInterface $base_url = null): UriInterface
@@ -62,6 +63,7 @@ class ApiUtilities
 
     /**
      * @param UriInterface|null $base_url
+     *
      * @return UriInterface
      */
     public function getDefaultAlbumArtUrl(UriInterface $base_url = null): UriInterface
@@ -77,6 +79,7 @@ class ApiUtilities
      * Return all custom fields, either with a null value or with the custom value assigned to the given Media ID.
      *
      * @param null $media_id
+     *
      * @return array
      */
     public function getCustomFields($media_id = null): array

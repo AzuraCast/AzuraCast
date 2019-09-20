@@ -72,6 +72,7 @@ class Song
 
     /**
      * Song constructor.
+     *
      * @param array $song_info
      */
     public function __construct(array $song_info)
@@ -115,6 +116,7 @@ class Song
 
     /**
      * @param array|object|string $song_info
+     *
      * @return string
      */
     public static function getSongHash($song_info): string
@@ -226,6 +228,7 @@ class Song
      *
      * @param ApiUtilities $api_utils
      * @param UriInterface|null $base_url
+     *
      * @return Api\Song
      */
     public function api(ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song

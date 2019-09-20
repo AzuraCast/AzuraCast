@@ -5,7 +5,6 @@ use App\Acl;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
-use App\Settings;
 use Azura\Config;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;

@@ -421,6 +421,7 @@ class Station
 
     /**
      * @param string $name
+     *
      * @return string
      */
     public static function getStationShortName($name): string
@@ -585,6 +586,7 @@ class Station
      * Authenticate the supplied adapter API key.
      *
      * @param string $api_key
+     *
      * @return bool
      */
     public function validateAdapterApiKey($api_key): bool
@@ -676,6 +678,7 @@ class Station
      * Given an absolute path, return a path relative to this station's media directory.
      *
      * @param string $full_path
+     *
      * @return string
      */
     public function getRelativeMediaPath($full_path): string

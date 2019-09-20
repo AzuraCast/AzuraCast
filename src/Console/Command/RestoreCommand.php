@@ -1,14 +1,11 @@
 <?php
 namespace App\Console\Command;
 
+use App\Sync\Task\Backup;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
-use Monolog\Logger;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
@@ -29,7 +26,7 @@ class RestoreCommand extends CommandAbstract
         $io->writeln('Please wait while the backup is restored...');
 
         if ('/' !== $path[0]) {
-            $path = \App\Sync\Task\Backup::BASE_DIR . '/' . $path;
+            $path = Backup::BASE_DIR . '/' . $path;
         }
 
         if (!file_exists($path)) {
@@ -153,7 +150,7 @@ class RestoreCommand extends CommandAbstract
                 $stdout[] = $data;
             }
         }, $env);
-        
+
         return $process;
     }
 }

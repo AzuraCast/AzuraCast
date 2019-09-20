@@ -47,6 +47,7 @@ class InternalController
     /**
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function authAction(ServerRequest $request, Response $response): ResponseInterface

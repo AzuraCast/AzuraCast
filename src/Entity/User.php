@@ -207,6 +207,7 @@ class User
 
     /**
      * @param string $password
+     *
      * @return bool
      */
     public function verifyPassword($password): bool
@@ -303,6 +304,7 @@ class User
 
     /**
      * @param string $otp
+     *
      * @return bool
      */
     public function verifyTwoFactor(string $otp): bool
@@ -349,6 +351,7 @@ class User
 
     /**
      * @param int $size
+     *
      * @return string
      */
     public function getAvatar($size = 50): string

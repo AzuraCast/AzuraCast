@@ -15,6 +15,7 @@ class GetNotifications extends Event
 
     /**
      * GetNotifications constructor.
+     *
      * @param User $current_user
      */
     public function __construct(User $current_user)

@@ -1,11 +1,9 @@
 <?php
 namespace App\Console\Command;
 
+use App\Settings;
 use App\Version;
 use Azura\Console\Command\CommandAbstract;
-use App\Settings;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use function OpenApi\scan;
 

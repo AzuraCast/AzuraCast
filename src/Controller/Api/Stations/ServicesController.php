@@ -36,6 +36,7 @@ class ServicesController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function statusAction(ServerRequest $request, Response $response): ResponseInterface
@@ -63,6 +64,7 @@ class ServicesController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function restartAction(ServerRequest $request, Response $response): ResponseInterface
@@ -96,6 +98,7 @@ class ServicesController
      * @param ServerRequest $request
      * @param Response $response
      * @param string $do
+     *
      * @return ResponseInterface
      */
     public function frontendAction(
@@ -157,6 +160,7 @@ class ServicesController
      * @param ServerRequest $request
      * @param Response $response
      * @param string $do
+     *
      * @return ResponseInterface
      */
     public function backendAction(

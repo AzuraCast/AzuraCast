@@ -49,6 +49,7 @@ class StationRepository extends Repository
 
     /**
      * @param string $identifier A numeric or string identifier for a station.
+     *
      * @return Entity\Station|null
      */
     public function findByIdentifier(string $identifier): ?Entity\Station
@@ -72,6 +73,7 @@ class StationRepository extends Repository
      * @param Closure|NULL $display
      * @param string $pk
      * @param string $order_by
+     *
      * @return array
      */
     public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name')
@@ -98,6 +100,7 @@ class StationRepository extends Repository
 
     /**
      * @param string $short_code
+     *
      * @return null|object
      */
     public function findByShortCode($short_code)
@@ -208,6 +211,7 @@ class StationRepository extends Repository
 
     /**
      * @param Entity\Station $station
+     *
      * @throws Exception
      */
     public function destroy(Entity\Station $station): void

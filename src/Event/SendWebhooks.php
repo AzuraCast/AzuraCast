@@ -83,6 +83,7 @@ class SendWebhooks extends Event
 
     /**
      * @param string $trigger_name
+     *
      * @return bool
      */
     public function hasTrigger($trigger_name): bool

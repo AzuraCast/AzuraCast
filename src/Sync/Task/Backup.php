@@ -4,11 +4,10 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Message;
 use App\MessageQueue;
-use App\Settings;
 use Azura\Console\Application;
+use Azura\Logger;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
 
 class Backup extends AbstractTask
 {
@@ -59,6 +58,7 @@ class Backup extends AbstractTask
     /**
      * @param string|null $path
      * @param bool $exclude_media
+     *
      * @return array [$result_code, $result_output]
      */
     public function runBackup($path = null, $exclude_media = false): array
@@ -81,7 +81,7 @@ class Backup extends AbstractTask
     {
         $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
         if (!$backup_enabled) {
-            \Azura\Logger::getInstance()->debug('Automated backups disabled; skipping...');
+            Logger::getInstance()->debug('Automated backups disabled; skipping...');
             return;
         }
 

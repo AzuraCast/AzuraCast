@@ -67,6 +67,7 @@ class Listener
 
     /**
      * Listener constructor.
+     *
      * @param Station $station
      * @param array $client
      */
@@ -85,6 +86,7 @@ class Listener
 
     /**
      * @param array $client
+     *
      * @return string
      */
     public static function calculateListenerHash($client): string
@@ -96,6 +98,7 @@ class Listener
      * Filter clients to exclude any listeners that shouldn't be included (i.e. relays).
      *
      * @param array $clients
+     *
      * @return array
      */
     public static function filterClients(array $clients): array

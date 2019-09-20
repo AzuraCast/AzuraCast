@@ -6,7 +6,6 @@ use App\Radio\Adapters;
 use Azura\Exception;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
 
 class RadioAutomation extends AbstractTask
 {
@@ -28,6 +27,7 @@ class RadioAutomation extends AbstractTask
 
     /**
      * Iterate through all stations and attempt to run automated assignment.
+     *
      * @param bool $force
      */
     public function run($force = false): void
@@ -59,6 +59,7 @@ class RadioAutomation extends AbstractTask
      *
      * @param Entity\Station $station
      * @param bool $force
+     *
      * @return bool
      * @throws Exception
      */
@@ -197,6 +198,7 @@ class RadioAutomation extends AbstractTask
      *
      * @param Entity\Station $station
      * @param int $threshold_days
+     *
      * @return array
      */
     public function generateReport(Entity\Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)

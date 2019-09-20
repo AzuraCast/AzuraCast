@@ -11,6 +11,7 @@ class Quota
     /**
      * @param Math\BigInteger $size
      * @param Math\BigInteger $total
+     *
      * @return int
      */
     public static function getPercentage(Math\BigInteger $size, Math\BigInteger $total): int
@@ -28,6 +29,7 @@ class Quota
     /**
      * @param Math\BigInteger $bytes
      * @param int $decimals
+     *
      * @return string
      */
     public static function getReadableSize(Math\BigInteger $bytes, $decimals = 1): string
@@ -50,6 +52,7 @@ class Quota
 
     /**
      * @param string $size
+     *
      * @return Math\BigInteger|null
      */
     public static function convertFromReadableSize($size): ?Math\BigInteger

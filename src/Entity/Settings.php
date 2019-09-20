@@ -82,6 +82,7 @@ class Settings
 
     /**
      * Settings constructor.
+     *
      * @param string $setting_key
      */
     public function __construct(string $setting_key)

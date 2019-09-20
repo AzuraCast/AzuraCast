@@ -37,6 +37,7 @@ abstract class AbstractStationCrudController
     /**
      * @param ServerRequest $request
      * @param string|int|null $id
+     *
      * @return object|bool|null
      */
     protected function _doEdit(ServerRequest $request, $id = null)
@@ -57,6 +58,7 @@ abstract class AbstractStationCrudController
     /**
      * @param Station $station
      * @param string|int|null $id
+     *
      * @return object|null
      */
     protected function _getRecord(Station $station, $id = null): ?object

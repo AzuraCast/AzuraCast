@@ -478,6 +478,7 @@ class StationPlaylist
      *
      * @param string|int $time_code
      * @param Chronos|null $now
+     *
      * @return Chronos
      */
     public static function getDateTime($time_code, Chronos $now = null): Chronos
@@ -650,6 +651,7 @@ class StationPlaylist
      *
      * @param Chronos|null $now
      * @param array $recentSongHistory
+     *
      * @return bool
      */
     public function shouldPlayNow(Chronos $now = null, array $recentSongHistory = []): bool
@@ -701,6 +703,7 @@ class StationPlaylist
 
     /**
      * @param Chronos $now
+     *
      * @return bool
      */
     protected function shouldPlayNowPerHour(Chronos $now): bool
@@ -756,6 +759,7 @@ class StationPlaylist
     /**
      * @param array $songHistoryEntries
      * @param int $length
+     *
      * @return bool
      */
     protected function wasPlayedRecently(array $songHistoryEntries = [], $length = 15): bool
@@ -797,6 +801,7 @@ class StationPlaylist
 
     /**
      * @param Chronos $now
+     *
      * @return bool
      */
     protected function shouldPlayNowPerMinute(Chronos $now): bool
@@ -856,6 +861,7 @@ class StationPlaylist
      * Returns whether the playlist is scheduled to play once.
      *
      * @param Chronos $now
+     *
      * @return bool
      */
     protected function shouldPlayNowOnce(Chronos $now): bool
@@ -879,6 +885,7 @@ class StationPlaylist
      * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
      *
      * @param int $day_to_check
+     *
      * @return bool
      */
     protected function isScheduledToPlayToday(int $day_to_check): bool
@@ -908,6 +915,7 @@ class StationPlaylist
      * Returns whether the playlist is scheduled to play according to schedule rules.
      *
      * @param Chronos $now
+     *
      * @return bool
      */
     protected function shouldPlayNowScheduled(Chronos $now): bool
@@ -963,6 +971,7 @@ class StationPlaylist
      * @param string $file_format
      * @param bool $absolute_paths
      * @param bool $with_annotations
+     *
      * @return string
      */
     public function export($file_format = 'pls', $absolute_paths = false, $with_annotations = false): string

@@ -91,6 +91,7 @@ class FilesController extends AbstractStationApiCrudController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface

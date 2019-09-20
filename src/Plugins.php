@@ -60,6 +60,7 @@ class Plugins
      * Register or override any services contained in the global Dependency Injection container.
      *
      * @param array $diDefinitions
+     *
      * @return array
      */
     public function registerServices(array $diDefinitions = []): array

@@ -2,8 +2,8 @@
 namespace App\Service;
 
 use App\Entity;
-use App\Version;
 use App\Settings;
+use App\Version;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 
@@ -79,6 +79,7 @@ class AzuraCastCentral
      * Ping the AzuraCast Central server to retrieve this installation's likely public-facing IP.
      *
      * @param bool $cached
+     *
      * @return string|null
      */
     public function getIp(bool $cached = true): ?string

@@ -113,6 +113,7 @@ class Dispatcher implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param Entity\StationWebhook $webhook
+     *
      * @return TestHandler
      * @throws Exception
      */
@@ -144,6 +145,7 @@ class Dispatcher implements EventSubscriberInterface
      * Directly access a webhook connector of the specified type.
      *
      * @param string $type
+     *
      * @return Connector\ConnectorInterface
      */
     public function getConnector($type): Connector\ConnectorInterface

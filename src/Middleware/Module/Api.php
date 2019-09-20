@@ -31,6 +31,7 @@ class Api
     /**
      * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
+     *
      * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
@@ -105,6 +106,7 @@ class Api
 
     /**
      * @param ServerRequest $request
+     *
      * @return string|null
      */
     protected function getApiKey(ServerRequest $request): ?string

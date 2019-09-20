@@ -9,6 +9,7 @@ class UserRepository extends Repository
     /**
      * @param string $username
      * @param string $password
+     *
      * @return bool|null|object
      */
     public function authenticate($username, $password)
@@ -29,6 +30,7 @@ class UserRepository extends Repository
      * Creates or returns an existing user with the specified e-mail address.
      *
      * @param string $email
+     *
      * @return Entity\User
      */
     public function getOrCreate($email): Entity\User

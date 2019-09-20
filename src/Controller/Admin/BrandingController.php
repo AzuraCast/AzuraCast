@@ -4,8 +4,8 @@ namespace App\Controller\Admin;
 use App\Form\SettingsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Config;
 use App\Settings;
+use Azura\Config;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 

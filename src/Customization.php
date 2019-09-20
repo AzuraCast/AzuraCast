@@ -48,6 +48,7 @@ class Customization
      * Initialize timezone and locale settings for the current user, and write them as attributes to the request.
      *
      * @param Request|null $request
+     *
      * @return Request|null
      */
     public function init(?Request $request = null): ?Request
@@ -81,6 +82,7 @@ class Customization
      * Return the user-customized, browser-specified or system default locale.
      *
      * @param Request|null $request
+     *
      * @return string|null
      */
     protected function initLocale(?Request $request = null): ?string
@@ -240,6 +242,7 @@ class Customization
      * Return the calculated page title given branding settings and the application environment.
      *
      * @param string|null $title
+     *
      * @return string
      */
     public function getPageTitle($title = null): string

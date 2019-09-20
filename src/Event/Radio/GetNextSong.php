@@ -27,6 +27,7 @@ class GetNextSong extends Event
 
     /**
      * @param Entity\SongHistory|string|null $next_song
+     *
      * @return bool
      */
     public function setNextSong($next_song): bool

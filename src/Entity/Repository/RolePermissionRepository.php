@@ -27,6 +27,7 @@ class RolePermissionRepository extends Repository
 
     /**
      * @param Entity\Role $role
+     *
      * @return array
      */
     public function getActionsForRole(Entity\Role $role): array

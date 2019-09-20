@@ -43,6 +43,7 @@ abstract class AbstractApiCrudController
     /**
      * @param object $record
      * @param RouterInterface $router
+     *
      * @return mixed
      */
     protected function _viewRecord($record, RouterInterface $router)
@@ -64,6 +65,7 @@ abstract class AbstractApiCrudController
      *
      * @param object $record
      * @param array $context
+     *
      * @return array|mixed
      */
     protected function _normalizeRecord($record, array $context = [])
@@ -91,6 +93,7 @@ abstract class AbstractApiCrudController
 
     /**
      * @param object $object
+     *
      * @return mixed
      */
     protected function _displayShortenedObject($object)
@@ -106,6 +109,7 @@ abstract class AbstractApiCrudController
      * @param array $data
      * @param object|null $record
      * @param array $context
+     *
      * @return object
      */
     protected function _editRecord($data, $record = null, array $context = []): object
@@ -135,6 +139,7 @@ abstract class AbstractApiCrudController
      * @param array $data
      * @param object|null $record
      * @param array $context
+     *
      * @return object
      */
     protected function _denormalizeToRecord($data, $record = null, array $context = []): object
@@ -148,6 +153,7 @@ abstract class AbstractApiCrudController
 
     /**
      * @param object $record
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */

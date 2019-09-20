@@ -212,6 +212,7 @@ class Icecast extends AbstractFrontend
      *
      * @param array $array1
      * @param array $array2
+     *
      * @return array
      * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
      * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>

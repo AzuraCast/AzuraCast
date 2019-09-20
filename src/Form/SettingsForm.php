@@ -45,6 +45,7 @@ class SettingsForm extends Form
 
     /**
      * @param ServerRequest $request
+     *
      * @return bool
      */
     public function process(ServerRequest $request): bool

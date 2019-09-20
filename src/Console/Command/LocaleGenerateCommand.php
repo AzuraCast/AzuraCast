@@ -1,15 +1,13 @@
 <?php
 namespace App\Console\Command;
 
-use Azura\Console\Command\CommandAbstract;
 use App\Settings;
+use Azura\Console\Command\CommandAbstract;
 use Gettext\Translations;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class LocaleGenerateCommand extends CommandAbstract

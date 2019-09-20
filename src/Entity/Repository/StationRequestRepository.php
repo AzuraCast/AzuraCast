@@ -15,6 +15,7 @@ class StationRequestRepository extends Repository
      * @param Entity\Station $station
      * @param int $track_id
      * @param bool $is_authenticated
+     *
      * @return mixed
      * @throws Exception
      */
@@ -82,6 +83,7 @@ class StationRequestRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
+     *
      * @return bool
      * @throws Exception
      */
@@ -117,6 +119,7 @@ class StationRequestRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
+     *
      * @return bool
      * @throws Exception
      */

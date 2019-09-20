@@ -74,6 +74,7 @@ abstract class AbstractFrontend extends AbstractAdapter
      * Read configuration from external service to Station object.
      *
      * @param Entity\Station $station
+     *
      * @return bool
      */
     abstract public function read(Entity\Station $station): bool;
@@ -89,6 +90,7 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * @param Entity\Station $station
      * @param UriInterface|null $base_url
+     *
      * @return UriInterface
      */
     public function getStreamUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
@@ -162,6 +164,7 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * @param Entity\Station $station
      * @param UriInterface|null $base_url
+     *
      * @return UriInterface[]
      */
     public function getStreamUrls(Entity\Station $station, UriInterface $base_url = null): array
@@ -180,6 +183,7 @@ abstract class AbstractFrontend extends AbstractAdapter
      * @param Entity\Station $station
      * @param string|null $payload A prepopulated payload (to avoid duplicate web requests)
      * @param bool $include_clients Whether to try to retrieve detailed listener client info
+     *
      * @return array Whether the NP update succeeded
      */
     public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
@@ -192,6 +196,7 @@ abstract class AbstractFrontend extends AbstractAdapter
      * @param array $np_aggregate The aggregated nowplaying data for all mounts.
      * @param array $np The nowplaying data for this specific mount.
      * @param array|null $clients
+     *
      * @return array The processed aggregate nowplaying data for all mounts.
      */
     protected function _processNowPlayingForMount(

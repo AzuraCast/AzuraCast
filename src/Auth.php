@@ -7,7 +7,6 @@ use App\Exception\NotLoggedInException;
 use Azura\Exception;
 use Azura\Session;
 use Azura\Session\NamespaceInterface;
-use App\Settings;
 use Doctrine\ORM\EntityManager;
 
 class Auth
@@ -49,6 +48,7 @@ class Auth
      *
      * @param string $username
      * @param string $password
+     *
      * @return User|null
      */
     public function authenticate($username, $password): ?User
@@ -67,6 +67,7 @@ class Auth
      * Get the currently logged in user.
      *
      * @param bool $real_user_only
+     *
      * @return User|null
      * @throws Exception
      */
@@ -258,6 +259,7 @@ class Auth
      * Verify a supplied one-time password.
      *
      * @param string $otp
+     *
      * @return bool
      */
     public function verifyTwoFactor(string $otp): bool

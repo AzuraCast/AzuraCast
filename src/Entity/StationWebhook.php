@@ -225,6 +225,7 @@ class StationWebhook
      *
      * @param string $key
      * @param mixed|null $default
+     *
      * @return mixed|null
      */
     public function getMetadataKey(string $key, $default = null)

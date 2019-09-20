@@ -36,6 +36,7 @@ abstract class AbstractAdminCrudController
     /**
      * @param ServerRequest $request
      * @param string|int|null $id
+     *
      * @return object|bool|null
      */
     protected function _doEdit(ServerRequest $request, $id = null)
@@ -46,6 +47,7 @@ abstract class AbstractAdminCrudController
 
     /**
      * @param string|int|null $id
+     *
      * @return object|null
      */
     protected function _getRecord($id = null): ?object

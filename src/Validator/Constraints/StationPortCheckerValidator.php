@@ -14,6 +14,7 @@ class StationPortCheckerValidator extends ConstraintValidator
 
     /**
      * StationPortCheckerValidator constructor.
+     *
      * @param Configuration $configuration
      */
     public function __construct(Configuration $configuration)

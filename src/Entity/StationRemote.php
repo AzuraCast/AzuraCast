@@ -574,6 +574,7 @@ class StationRemote implements StationMountInterface
      * Retrieve the API version of the object/array.
      *
      * @param AbstractRemote $adapter
+     *
      * @return Api\StationRemote
      */
     public function api(

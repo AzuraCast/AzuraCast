@@ -15,6 +15,7 @@ class StationPlaylistMediaRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\StationPlaylist $playlist
      * @param int $weight
+     *
      * @return int The weight assigned to the newly added record.
      */
     public function addMediaToPlaylist(
@@ -78,6 +79,7 @@ class StationPlaylistMediaRepository extends Repository
      * Remove all playlist associations from the specified media object.
      *
      * @param Entity\StationMedia $media
+     *
      * @return array The IDs and records for all affected playlists.
      */
     public function clearPlaylistsFromMedia(Entity\StationMedia $media): array

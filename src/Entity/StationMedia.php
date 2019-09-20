@@ -549,6 +549,7 @@ class StationMedia
 
     /**
      * @param StationPlaylist $playlist
+     *
      * @return StationPlaylistMedia|null
      */
     public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
@@ -581,6 +582,7 @@ class StationMedia
      * Indicate whether this media needs reprocessing given certain factors.
      *
      * @param int $current_mtime
+     *
      * @return bool
      */
     public function needsReprocessing($current_mtime = 0): bool
@@ -728,7 +730,7 @@ class StationMedia
      */
     public function __toString(): string
     {
-        return $this->unique_id.': '.$this->artist.' - '.$this->title;
+        return $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;
     }
 
     /**
@@ -736,6 +738,7 @@ class StationMedia
      *
      * @param ApiUtilities $api_utils
      * @param UriInterface|null $base_url
+     *
      * @return Api\Song
      */
     public function api(ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song

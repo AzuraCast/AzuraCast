@@ -2,8 +2,8 @@
 namespace App\Console\Command;
 
 use App\Entity\Station;
-use Azura\Console\Command\CommandAbstract;
 use App\Settings;
+use Azura\Console\Command\CommandAbstract;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
@@ -11,8 +11,6 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use InfluxDB\Point;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetupFixturesCommand extends CommandAbstract

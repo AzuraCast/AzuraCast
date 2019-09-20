@@ -41,6 +41,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      * @throws Exception
      */
@@ -54,6 +55,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
     /**
      * @param array $data
+     *
      * @return object
      */
     protected function _createRecord($data): object
@@ -65,6 +67,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      * @param mixed $id
+     *
      * @return ResponseInterface
      */
     public function getAction(ServerRequest $request, Response $response, $id): ResponseInterface
@@ -82,6 +85,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
     /**
      * @param mixed $id
+     *
      * @return object|null
      * @throws ORMException
      * @throws OptimisticLockException
@@ -96,6 +100,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      * @param mixed $id
+     *
      * @return ResponseInterface
      */
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
@@ -116,6 +121,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      * @param mixed $id
+     *
      * @return ResponseInterface
      */
     public function deleteAction(ServerRequest $request, Response $response, $id): ResponseInterface

@@ -21,6 +21,7 @@ class ListController extends FilesControllerAbstract
 
     /**
      * ListController constructor.
+     *
      * @param EntityManager $em
      * @param Filesystem $filesystem
      */

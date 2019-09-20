@@ -6,12 +6,11 @@ use App\Message;
 use App\MessageQueue;
 use App\Radio\Filesystem;
 use App\Radio\Quota;
-use App\Settings;
+use Azura\Logger;
 use Bernard\Envelope;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
 use Symfony\Component\Finder\Finder;
 
 class Media extends AbstractTask
@@ -42,6 +41,7 @@ class Media extends AbstractTask
      * Handle event dispatch.
      *
      * @param Message\AbstractMessage $message
+     *
      * @throws MappingException
      */
     public function __invoke(Message\AbstractMessage $message)
@@ -239,7 +239,7 @@ class Media extends AbstractTask
 
         $fs->flushAllCaches(true);
 
-        \Azura\Logger::getInstance()->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
+        Logger::getInstance()->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }
 
     /**

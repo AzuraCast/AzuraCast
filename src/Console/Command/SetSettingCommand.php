@@ -4,9 +4,6 @@ namespace App\Console\Command;
 use App\Entity;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetSettingCommand extends CommandAbstract

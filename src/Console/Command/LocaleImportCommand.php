@@ -1,8 +1,8 @@
 <?php
 namespace App\Console\Command;
 
-use Azura\Console\Command\CommandAbstract;
 use App\Settings;
+use Azura\Console\Command\CommandAbstract;
 use Gettext\Translations;
 use Symfony\Component\Console\Style\SymfonyStyle;
 

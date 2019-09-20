@@ -91,6 +91,7 @@ class NowplayingController implements EventSubscriberInterface
      * @param ServerRequest $request
      * @param Response $response
      * @param int|string|null $station_id
+     *
      * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface

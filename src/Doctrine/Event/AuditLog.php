@@ -224,6 +224,7 @@ class AuditLog implements EventSubscriber
     /**
      * @param EntityManager $em
      * @param object|string $class
+     *
      * @return bool
      */
     protected function isEntity(EntityManager $em, $class): bool
@@ -250,6 +251,7 @@ class AuditLog implements EventSubscriber
      *
      * @param ReflectionClass $reflectionClass
      * @param object $entity
+     *
      * @return string|null
      */
     protected function getIdentifier(ReflectionClass $reflectionClass, $entity): ?string

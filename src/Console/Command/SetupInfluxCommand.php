@@ -1,11 +1,9 @@
 <?php
 namespace App\Console\Command;
 
-use Azura\Console\Command\CommandAbstract;
 use App\Settings;
+use Azura\Console\Command\CommandAbstract;
 use InfluxDB\Database;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetupInfluxCommand extends CommandAbstract

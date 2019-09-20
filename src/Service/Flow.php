@@ -41,6 +41,7 @@ class Flow
      * @param ServerRequest $request
      * @param Response $response
      * @param string|null $temp_dir
+     *
      * @return array|ResponseInterface|null
      */
     public static function process(
@@ -119,6 +120,7 @@ class Flow
      * @param string $chunkBaseDir
      * @param int $targetSize
      * @param int $targetChunkNumber
+     *
      * @return bool
      */
     protected static function allPartsExist(
@@ -183,7 +185,9 @@ class Flow
 
     /**
      * Delete a directory RECURSIVELY
+     *
      * @param string $dir - directory path
+     *
      * @link http://php.net/manual/en/function.rmdir.php
      */
     protected static function rrmdir($dir): void

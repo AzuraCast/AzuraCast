@@ -6,6 +6,7 @@ trait TruncateInts
     /**
      * @param int|null $int
      * @param bool $unsigned
+     *
      * @return int|null
      */
     protected function _truncateSmallInt(?int $int = null, bool $unsigned = false): ?int
@@ -18,6 +19,7 @@ trait TruncateInts
      * @param int $unsigned_limit
      * @param bool $unsigned
      * @param int|null $int
+     *
      * @return int|null
      */
     protected function _truncateIntToLimit(
@@ -46,6 +48,7 @@ trait TruncateInts
     /**
      * @param int|null $int
      * @param bool $unsigned
+     *
      * @return int|null
      */
     protected function _truncateTinyInt(?int $int = null, bool $unsigned = false): ?int

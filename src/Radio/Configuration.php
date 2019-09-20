@@ -147,6 +147,7 @@ class Configuration
 
     /**
      * @param Station $station
+     *
      * @return string
      */
     protected function getSupervisorConfigFile(Station $station): string
@@ -273,6 +274,7 @@ class Configuration
      * Determine the first available 10-port block that has no stations occupying it.
      *
      * @param Station|null $station A station to exclude, or null to include all stations.
+     *
      * @return int The first available radio port to use.
      */
     public function getFirstAvailableRadioPort(Station $station = null): int
@@ -317,6 +319,7 @@ class Configuration
      * Get an array of all used ports across the system, except the ones used by the station specified (if specified).
      *
      * @param Station|null $except_station
+     *
      * @return array
      */
     public function getUsedPorts(Station $except_station = null): array

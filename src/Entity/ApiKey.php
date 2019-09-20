@@ -76,6 +76,7 @@ class ApiKey implements JsonSerializable
 
     /**
      * @param string $original
+     *
      * @return string The hashed verifier.
      */
     protected function hashVerifier(string $original): string

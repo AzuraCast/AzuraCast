@@ -197,6 +197,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param bool $standalone Whether the request is for this station alone or part of the regular sync process.
+     *
      * @return Entity\Api\NowPlaying
      */
     public function processStation(

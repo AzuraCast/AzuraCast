@@ -17,6 +17,7 @@ class RequireLogin
     /**
      * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
+     *
      * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface

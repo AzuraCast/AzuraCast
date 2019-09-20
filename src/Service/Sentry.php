@@ -3,9 +3,9 @@ namespace App\Service;
 
 use App\Entity;
 use App\Exception\SupervisorException;
+use App\Settings;
 use App\Version;
 use Azura\Exception;
-use App\Settings;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;

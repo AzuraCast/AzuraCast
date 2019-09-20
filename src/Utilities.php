@@ -16,6 +16,7 @@ class Utilities
      * Generate a randomized password of specified length.
      *
      * @param int $char_length
+     *
      * @return string
      */
     public static function generatePassword($char_length = 8): string
@@ -41,6 +42,7 @@ class Utilities
      *
      * @param string $url
      * @param int $length
+     *
      * @return string
      */
     public static function truncateUrl($url, $length = 40): string
@@ -56,6 +58,7 @@ class Utilities
      * @param string $text
      * @param int $limit
      * @param string $pad
+     *
      * @return string
      */
     public static function truncateText($text, $limit = 80, $pad = '...'): string
@@ -85,6 +88,7 @@ class Utilities
      * @param int $width
      * @param string $break
      * @param bool $cut
+     *
      * @return string
      */
     public static function mbWordwrap($str, $width = 75, $break = "\n", $cut = false): string
@@ -129,6 +133,7 @@ class Utilities
      *
      * @param array $data
      * @param array $args
+     *
      * @return mixed
      */
     public static function arrayOrderBy($data, array $args = [])
@@ -180,6 +185,7 @@ class Utilities
      * Recursively remove a directory and its contents.
      *
      * @param string $source
+     *
      * @return bool
      */
     public static function rmdirRecursive(string $source): bool
@@ -233,6 +239,7 @@ class Utilities
      * @param array|object $array
      * @param string $separator
      * @param null $prefix
+     *
      * @return array
      */
     public static function flattenArray($array, $separator = '.', $prefix = null): array

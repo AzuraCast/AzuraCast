@@ -70,6 +70,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Special thanks to the team of PonyvilleFM for assisting with Liquidsoap configuration and debugging.
      *
      * @param Entity\Station $station
+     *
      * @return bool
      */
     public function write(Entity\Station $station): bool
@@ -118,6 +119,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Returns the internal port used to relay requests and other changes from AzuraCast to LiquidSoap.
      *
      * @param Entity\Station $station
+     *
      * @return int The port number to use for this station.
      */
     protected function _getTelnetPort(Entity\Station $station): int
@@ -130,6 +132,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Returns the port used for DJs/Streamers to connect to LiquidSoap for broadcasting.
      *
      * @param Entity\Station $station
+     *
      * @return int The port number to use for this station.
      */
     public function getStreamPort(Entity\Station $station): int
@@ -151,6 +154,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Filter a user-supplied string to be a valid LiquidSoap config entry.
      *
      * @param string $string
+     *
      * @return mixed
      */
     protected function _cleanUpString($string)
@@ -442,6 +446,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param Entity\StationPlaylist $playlist
      * @param bool $notify
+     *
      * @return string The full path that was written to.
      */
     public function writePlaylistFile(Entity\StationPlaylist $playlist, $notify = true): ?string
@@ -500,6 +505,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param string $command_str
+     *
      * @return array
      * @throws \Azura\Exception
      */
@@ -528,6 +534,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
      *
      * @param Entity\StationPlaylist $playlist
+     *
      * @return string
      */
     protected function _getScheduledPlaylistPlayTime(Entity\StationPlaylist $playlist): string
@@ -589,6 +596,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Configure the time offset
      *
      * @param int $time_code
+     *
      * @return string
      */
     protected function _formatTimeCode($time_code): string
@@ -604,6 +612,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param string $original_name
      * @param Entity\Station $station
+     *
      * @return string
      */
     protected function _getVarName($original_name, Entity\Station $station): string
@@ -621,6 +630,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param string $endpoint
      * @param array $params
+     *
      * @return string
      */
     protected function _getApiUrlCommand(Entity\Station $station, $endpoint, $params = []): string
@@ -787,6 +797,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param float $number
      * @param int $decimals
+     *
      * @return string
      */
     public static function toFloat($number, $decimals = 2): string
@@ -850,6 +861,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param Entity\StationMountInterface $mount
      * @param string $id
+     *
      * @return string
      */
     protected function _getOutputString(Entity\Station $station, Entity\StationMountInterface $mount, $id = '')
@@ -976,6 +988,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param string $music_file
+     *
      * @return array
      */
     public function request(Entity\Station $station, $music_file): array
@@ -999,6 +1012,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Tell LiquidSoap to skip the currently playing song.
      *
      * @param Entity\Station $station
+     *
      * @return array
      */
     public function skip(Entity\Station $station): array
@@ -1013,6 +1027,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * Tell LiquidSoap to disconnect the current live streamer.
      *
      * @param Entity\Station $station
+     *
      * @return array
      */
     public function disconnectStreamer(Entity\Station $station): array

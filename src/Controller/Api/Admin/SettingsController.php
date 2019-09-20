@@ -64,6 +64,7 @@ class SettingsController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
@@ -87,6 +88,7 @@ class SettingsController
      *
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @return ResponseInterface
      * @throws ValidationException
      */

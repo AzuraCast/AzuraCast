@@ -45,6 +45,7 @@ class EntityFormManager
      * @param string $entity_class
      * @param array|null $form_config
      * @param array|null $defaults
+     *
      * @return EntityForm
      */
     public function getForm($entity_class, array $form_config = null, array $defaults = null): EntityForm

@@ -19,6 +19,7 @@ class IndexController
 
     /**
      * StationsController constructor.
+     *
      * @param EntityManager $em
      * @param Adapters $adapters
      */

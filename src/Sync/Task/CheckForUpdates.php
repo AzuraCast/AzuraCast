@@ -4,9 +4,9 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Service\AzuraCastCentral;
 use App\Settings;
+use Azura\Logger;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Exception\TransferException;
-use Monolog\Logger;
 
 class CheckForUpdates extends AbstractTask
 {
@@ -30,7 +30,7 @@ class CheckForUpdates extends AbstractTask
 
     public function run($force = false): void
     {
-        $logger = \Azura\Logger::getInstance();
+        $logger = Logger::getInstance();
 
         if (!$force) {
             $update_last_run = (int)$this->settingsRepo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);

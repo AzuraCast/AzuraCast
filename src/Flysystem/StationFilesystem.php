@@ -16,6 +16,7 @@ class StationFilesystem extends MountManager
      *
      * @param string $from The permanent path to copy from
      * @param string|null $to The temporary path to copy to (temp://original if not specified)
+     *
      * @return string The temporary path
      */
     public function copyToTemp($from, $to = null): string
@@ -42,6 +43,7 @@ class StationFilesystem extends MountManager
      * @param string $from The temporary path to update from
      * @param string $to The permanent path to update to
      * @param array $config
+     *
      * @return string
      */
     public function updateFromTemp($from, $to, array $config = []): string
@@ -70,6 +72,7 @@ class StationFilesystem extends MountManager
      * @param string $local_path
      * @param string $to
      * @param array $config
+     *
      * @return bool
      */
     public function upload($local_path, $to, array $config = []): bool
@@ -97,6 +100,7 @@ class StationFilesystem extends MountManager
      *       use non-local adapters that will trigger an exception here.
      *
      * @param string $uri
+     *
      * @return string
      */
     public function getFullPath($uri): string

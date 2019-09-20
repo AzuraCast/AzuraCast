@@ -1,5 +1,5 @@
 <?php
-class D03_API_Admin_CustomFieldsCest extends CestAbstract
+class D03_Api_Admin_CustomFieldsCest extends CestAbstract
 {
     /**
      * @before setupComplete
@@ -33,7 +33,7 @@ class D03_API_Admin_CustomFieldsCest extends CestAbstract
         ]);
 
         // List all records.
-        $I->sendGET('/api/admin/custom_fields');
+        $I->sendGET('/api/admin/custom_field/'.$newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,

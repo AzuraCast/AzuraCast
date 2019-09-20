@@ -1,5 +1,5 @@
 <?php
-class D04_API_Admin_StationsCest extends CestAbstract
+class D04_Api_Admin_StationsCest extends CestAbstract
 {
     /**
      * @before setupComplete
@@ -34,7 +34,7 @@ class D04_API_Admin_StationsCest extends CestAbstract
         ]);
 
         // List all records.
-        $I->sendGET('/api/admin/stations');
+        $I->sendGET('/api/admin/station/'.$newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,

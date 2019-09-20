@@ -1,5 +1,5 @@
 <?php
-class D05_API_Admin_UsersCest extends CestAbstract
+class D05_Api_Admin_UsersCest extends CestAbstract
 {
     /**
      * @before setupComplete
@@ -34,7 +34,7 @@ class D05_API_Admin_UsersCest extends CestAbstract
         ]);
 
         // List all records.
-        $I->sendGET('/api/admin/users');
+        $I->sendGET('/api/admin/user/'.$newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,

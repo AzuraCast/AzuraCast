@@ -37,6 +37,8 @@ abstract class CestAbstract
 
             $this->test_station = null;
         }
+
+        $this->em->clear();
     }
 
     protected $login_username = 'azuracast@azuracast.com';

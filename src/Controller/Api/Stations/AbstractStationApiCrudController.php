@@ -99,6 +99,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         $station = $this->_getStation($request);
         $record = $this->_getRecord($station, $id);
 
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+        }
+
         $return = $this->_viewRecord($record, $request->getRouter());
         return $response->withJson($return);
     }

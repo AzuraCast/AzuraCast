@@ -21,6 +21,8 @@ tmp/cache/*---*
 /util/fixtures/*
 /util/fixtures/**/*
 !/util/fixtures/.gitkeep
+/util/local_ssl/*
+!/util/local_ssl/.gitkeep
 /web/static/yarn-error.log
 /util/package_usage_report*
 

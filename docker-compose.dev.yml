@@ -9,8 +9,7 @@ services:
       - '${AZURACAST_HTTP_PORT:-80}:80'
       - '${AZURACAST_HTTPS_PORT:-443}:443'
     volumes:
-      - letsencrypt:/etc/nginx/certs
-      - letsencrypt_html:/usr/share/nginx/html
+      - ./util/local_ssl:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
@@ -33,7 +32,6 @@ services:
     ports:
       - '${AZURACAST_FTP_PORT:-21}:21'
     volumes:
-      - letsencrypt:/etc/letsencrypt
       - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
@@ -108,7 +106,7 @@ services:
      - '8046:8046'
     volumes:
      - station_data:/var/azuracast/stations
-     - letsencrypt:/etc/nginx/ssl:ro
+     - ./util/local_ssl:/etc/nginx/ssl:ro
      - shoutcast2_install:/var/azuracast/servers/shoutcast2
      - tmp_data:/var/azuracast/www_tmp
     init: true
@@ -138,8 +136,6 @@ services:
 #      BLACKFIRE_SERVER_TOKEN: ""
 
 volumes:
-  letsencrypt: {}
-  letsencrypt_html: {}
   db_data: {}
   influx_data: {}
   station_data: {}

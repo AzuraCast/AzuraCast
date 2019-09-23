@@ -11,6 +11,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Settings;
 use Azura\Config;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -118,7 +119,7 @@ class SetupController
      */
     public function completeAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
+        $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
@@ -238,7 +239,7 @@ class SetupController
 
             // Notify the user and redirect to homepage.
             $request->getSession()->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
-                'green');
+                Flash::SUCCESS);
 
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         }

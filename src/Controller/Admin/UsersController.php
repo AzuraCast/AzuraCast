@@ -7,6 +7,7 @@ use App\Exception\NotFoundException;
 use App\Form\UserForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Azura\Session\Flash;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -49,13 +50,13 @@ class UsersController extends AbstractAdminCrudController
     {
         try {
             if (false !== $this->_doEdit($request, $id)) {
-                $request->getSession()->flash(($id ? __('User updated.') : __('User added.')), 'green');
+                $request->getSession()->flash(($id ? __('User updated.') : __('User added.')), Flash::SUCCESS);
 
                 return $response->withRedirect($request->getRouter()->named('admin:users:index'));
             }
         } catch (UniqueConstraintViolationException $e) {
             $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'),
-                'red');
+                Flash::ERROR);
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -74,12 +75,12 @@ class UsersController extends AbstractAdminCrudController
         $current_user = $request->getUser();
 
         if ($user === $current_user) {
-            $request->getSession()->flash('<b>' . __('You cannot delete your own account.') . '</b>', 'red');
+            $request->getSession()->flash('<b>' . __('You cannot delete your own account.') . '</b>', Flash::ERROR);
         } elseif ($user instanceof Entity\User) {
             $this->em->remove($user);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('User deleted.') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('User deleted.') . '</b>', Flash::SUCCESS);
         }
 
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
@@ -97,7 +98,7 @@ class UsersController extends AbstractAdminCrudController
 
         $this->auth->masqueradeAsUser($user);
 
-        $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+        $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }

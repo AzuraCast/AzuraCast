@@ -15,10 +15,6 @@ class C02_Station_MediaCest extends CestAbstract
         $test_song = tempnam(sys_get_temp_dir(), 'azuracast');
         copy($test_song_orig, $test_song);
 
-        /** @var \Azura\Session $session */
-        $session = $this->di->get(\Azura\Session::class);
-        $csrf = $session->getCsrf();
-
         $test_file = [
             'tmp_name'  => $test_song,
             'name'      => basename($test_song),
@@ -29,7 +25,7 @@ class C02_Station_MediaCest extends CestAbstract
 
         $I->sendPOST('/station/'.$station_id.'/files/upload', [
             'file' => '',
-            'csrf' => $csrf->generate('stations_files'),
+            'csrf' =>'', // CSRF disabled in testing.
             'flowIdentifier' => 'uploadtest',
             'flowChunkNumber' => 1,
             'flowCurrentChunkSize' => filesize($test_song),

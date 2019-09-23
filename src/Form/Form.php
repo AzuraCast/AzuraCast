@@ -14,5 +14,12 @@ class Form extends \AzuraForms\Form
 
         parent::__construct($options, $defaults);
     }
+
+    protected function addCsrfField(): void
+    {
+        $this->addField(self::CSRF_FIELD_NAME, Field\Csrf::class, [
+            'csrf_key' => $this->name,
+        ]);
+    }
 }
 

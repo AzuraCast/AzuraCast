@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Exception\RateLimitExceededException;
 use Azura\RateLimit;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -78,9 +79,6 @@ class AccountController
             $user = $this->auth->authenticate($_POST['username'], $_POST['password']);
 
             if ($user instanceof User) {
-                // Regenerate session ID
-                $session->regenerate();
-
                 // Reload ACL permissions.
                 $this->acl->reload();
 
@@ -93,7 +91,7 @@ class AccountController
                     return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
                 }
 
-                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
 
                 $referrer = $session->get('login_referrer');
                 if (!empty($referrer->url)) {
@@ -146,7 +144,6 @@ class AccountController
     public function logoutAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->auth->logout();
-        $request->getSession()->destroy();
 
         return $response->withRedirect($request->getRouter()->named('account:login'));
     }

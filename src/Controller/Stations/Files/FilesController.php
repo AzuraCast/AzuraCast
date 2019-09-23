@@ -10,6 +10,7 @@ use App\Service\Flow;
 use App\Service\Ftp;
 use Azura\Config;
 use Azura\Exception\CsrfValidationException;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Error;
 use Exception;
@@ -134,7 +135,7 @@ class FilesController extends FilesControllerAbstract
                 $path = $new_path;
             }
 
-            $request->getSession()->flash('<b>' . __('File renamed!') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('File renamed!') . '</b>', Flash::SUCCESS);
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
 

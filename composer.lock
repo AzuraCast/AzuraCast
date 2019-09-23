@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.4",
+            "version": "3.112.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "13e5e52f8ceccd7e476cc6caef3eed941797fd31"
+                "reference": "5c6f05d68576f845a8391b83020b480840eca759"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/13e5e52f8ceccd7e476cc6caef3eed941797fd31",
-                "reference": "13e5e52f8ceccd7e476cc6caef3eed941797fd31",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5c6f05d68576f845a8391b83020b480840eca759",
+                "reference": "5c6f05d68576f845a8391b83020b480840eca759",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-19T20:36:59+00:00"
+            "time": "2019-09-20T22:08:27+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "915730683fa322fa7443b1b9c6b3e0aacabc177e"
+                "reference": "26408f0dbb8f27167668db3d8479253497a789b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/915730683fa322fa7443b1b9c6b3e0aacabc177e",
-                "reference": "915730683fa322fa7443b1b9c6b3e0aacabc177e",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/26408f0dbb8f27167668db3d8479253497a789b4",
+                "reference": "26408f0dbb8f27167668db3d8479253497a789b4",
                 "shasum": ""
             },
             "require": {
@@ -122,6 +122,7 @@
                 "php": ">=7.2",
                 "php-di/php-di": "^6.0",
                 "php-di/slim-bridge": "^3.0",
+                "psr7-sessions/storageless": "^5.1",
                 "slim/http": "^0.8",
                 "slim/slim": "^4.2",
                 "symfony/console": "^4.3",
@@ -154,7 +155,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-09-20T01:41:10+00:00"
+            "time": "2019-09-23T02:53:28+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -162,12 +163,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "523b74a5da8c77b19323e3dceffab51b81c66024"
+                "reference": "6cc5fb9139369cd16d5b09ed5fe9bd43a61720ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/523b74a5da8c77b19323e3dceffab51b81c66024",
-                "reference": "523b74a5da8c77b19323e3dceffab51b81c66024",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/6cc5fb9139369cd16d5b09ed5fe9bd43a61720ff",
+                "reference": "6cc5fb9139369cd16d5b09ed5fe9bd43a61720ff",
                 "shasum": ""
             },
             "require": {
@@ -192,20 +193,20 @@
             "authors": [
                 {
                     "name": "Buster 'Silver Eagle' Neece",
-                    "role": "Lead Developer of AzuraForms Fork",
                     "email": "buster@busterneece.com",
-                    "homepage": "https://dashdev.net/"
+                    "homepage": "https://dashdev.net/",
+                    "role": "Lead Developer of AzuraForms Fork"
                 },
                 {
                     "name": "Luke Rotherfield",
-                    "role": "Developer of original Nibble Forms",
                     "email": "luke@lrotherfield.com",
-                    "homepage": "http://lrotherfield.com"
+                    "homepage": "http://lrotherfield.com",
+                    "role": "Developer of original Nibble Forms"
                 }
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2019-08-20T04:30:13+00:00"
+            "time": "2019-09-23T03:15:28+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -922,6 +923,60 @@
                 "map"
             ],
             "time": "2017-10-25T22:45:27+00:00"
+        },
+        {
+            "name": "dflydev/fig-cookies",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dflydev/dflydev-fig-cookies.git",
+                "reference": "a59857139b9e30978b5b802b3631b5eaf34e8c66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dflydev/dflydev-fig-cookies/zipball/a59857139b9e30978b5b802b3631b5eaf34e8c66",
+                "reference": "a59857139b9e30978b5b802b3631b5eaf34e8c66",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "php": "^7.2",
+                "psr/http-message": "^1"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^4",
+                "phpstan/phpstan": "^0.10.1",
+                "phpunit/phpunit": "^7.2.6",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dflydev\\FigCookies\\": "src/Dflydev/FigCookies"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Beau Simensen",
+                    "email": "beau@dflydev.com"
+                }
+            ],
+            "description": "Cookies for PSR-7 HTTP Message Interface.",
+            "keywords": [
+                "cookies",
+                "psr-7",
+                "psr7"
+            ],
+            "time": "2018-07-11T06:54:37+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2584,6 +2639,111 @@
                 "tokenizer"
             ],
             "time": "2018-03-21T22:21:57+00:00"
+        },
+        {
+            "name": "lcobucci/clock",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lcobucci/clock.git",
+                "reference": "13fda71158032b805cb9c8c7544e6c99019dc267"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/clock/zipball/13fda71158032b805cb9c8c7544e6c99019dc267",
+                "reference": "13fda71158032b805cb9c8c7544e6c99019dc267",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "infection/infection": "^0.10",
+                "lcobucci/coding-standard": "^1.0",
+                "phpstan/phpstan": "^0.10",
+                "phpstan/phpstan-deprecation-rules": "^0.10",
+                "phpstan/phpstan-phpunit": "^0.10",
+                "phpstan/phpstan-strict-rules": "^0.10",
+                "phpunit/phpunit": "^7.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\Clock\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Cobucci",
+                    "email": "lcobucci@gmail.com"
+                }
+            ],
+            "description": "Yet another clock abstraction",
+            "time": "2018-08-12T16:47:48+00:00"
+        },
+        {
+            "name": "lcobucci/jwt",
+            "version": "3.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lcobucci/jwt.git",
+                "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
+                "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "~1.5",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/php-invoker": "~1.1",
+                "phpunit/phpunit": "^5.7 || ^7.3",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Otávio Cobucci Oblonczyk",
+                    "email": "lcobucci@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+            "keywords": [
+                "JWS",
+                "jwt"
+            ],
+            "time": "2019-05-24T18:30:49+00:00"
         },
         {
             "name": "league/flysystem",
@@ -4775,6 +4935,75 @@
                 "simple-cache"
             ],
             "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
+            "name": "psr7-sessions/storageless",
+            "version": "5.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/psr7-sessions/storageless.git",
+                "reference": "9ca6ba69d0091f4f9e842bb699e348e7070fcebd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/psr7-sessions/storageless/zipball/9ca6ba69d0091f4f9e842bb699e348e7070fcebd",
+                "reference": "9ca6ba69d0091f4f9e842bb699e348e7070fcebd",
+                "shasum": ""
+            },
+            "require": {
+                "dflydev/fig-cookies": "^2.0.0",
+                "ext-json": "*",
+                "lcobucci/clock": "^1.2.0",
+                "lcobucci/jwt": "^3.3.1",
+                "php": "^7.2",
+                "psr/http-message": "^1.0.1",
+                "psr/http-server-handler": "^1.0.1",
+                "psr/http-server-middleware": "^1.0.1"
+            },
+            "replace": {
+                "ocramius/psr7-session": "self.version"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^6.0.0",
+                "infection/infection": "^0.13.4",
+                "phpstan/phpstan": "^0.11.12",
+                "phpstan/phpstan-phpunit": "^0.11.2",
+                "phpstan/phpstan-strict-rules": "^0.11.1",
+                "phpunit/phpunit": "^8.3.3",
+                "squizlabs/php_codesniffer": "^3.4.2",
+                "zendframework/zend-diactoros": "^2.1.3",
+                "zendframework/zend-httphandlerrunner": "^1.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PSR7Sessions\\Storageless\\": "src/Storageless"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com",
+                    "homepage": "http://ocramius.github.io/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Jefersson Nathan",
+                    "email": "malukenho@phpse.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Luís Otávio Cobucci Oblonczyk",
+                    "email": "lcobucci@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Storageless PSR-7 Session support",
+            "time": "2019-08-11T00:16:00+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

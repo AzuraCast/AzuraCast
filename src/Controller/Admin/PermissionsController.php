@@ -5,6 +5,7 @@ use App\Acl;
 use App\Form\PermissionsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController
@@ -58,7 +59,7 @@ class PermissionsController extends AbstractAdminCrudController
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
-                'green');
+                Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
         }
 
@@ -73,7 +74,7 @@ class PermissionsController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Permission deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Permission deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
     }
 }

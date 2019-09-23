@@ -5,6 +5,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -101,7 +102,7 @@ class DuplicatesController
             $this->em->remove($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>Duplicate file deleted!</b>', 'green');
+            $request->getSession()->flash('<b>Duplicate file deleted!</b>', Flash::SUCCESS);
         }
 
         return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates',

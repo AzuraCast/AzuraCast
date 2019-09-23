@@ -7,6 +7,7 @@ use App\Http\ServerRequest;
 use App\Settings;
 use App\Sync\Task\RadioAutomation;
 use Azura\Config;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -60,7 +61,7 @@ class AutomationController
             $this->em->persist($station);
             $this->em->flush();
 
-            $request->getSession()->flash(__('Changes saved.'), 'green');
+            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
 
             return $response->withRedirect($request->getUri());
         }
@@ -77,11 +78,11 @@ class AutomationController
 
         try {
             if ($this->sync_task->runStation($station, true)) {
-                $request->getSession()->flash('<b>' . __('Automated assignment complete!') . '</b>', 'green');
+                $request->getSession()->flash('<b>' . __('Automated assignment complete!') . '</b>', Flash::SUCCESS);
             }
         } catch (Exception $e) {
             $request->getSession()->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(),
-                'red');
+                Flash::ERROR);
         }
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:automation:index'));

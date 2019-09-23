@@ -6,6 +6,7 @@ use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Config;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class ApiController extends AbstractAdminCrudController
@@ -39,7 +40,7 @@ class ApiController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(__('API Key updated.'), 'green');
+            $request->getSession()->flash(__('API Key updated.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:api:index'));
         }
 
@@ -54,7 +55,7 @@ class ApiController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash(__('API Key deleted.'), 'green');
+        $request->getSession()->flash(__('API Key deleted.'), Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:api:index'));
     }
 }

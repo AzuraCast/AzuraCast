@@ -6,19 +6,19 @@ use App\Entity\User;
 use App\Exception\NotLoggedInException;
 use Azura\Exception;
 use Azura\Session;
-use Azura\Session\NamespaceInterface;
 use Doctrine\ORM\EntityManager;
 
 class Auth
 {
+    public const SESSION_IS_LOGIN_COMPLETE_KEY = 'is_login_complete';
+    public const SESSION_USER_ID_KEY = 'user_id';
+    public const SESSION_MASQUERADE_USER_ID_KEY = 'masquerade_user_id';
+
     /** @var int The window of valid one-time passwords outside the current timestamp. */
     public const TOTP_WINDOW = 5;
 
     /** @var Session */
     protected $session;
-
-    /** @var NamespaceInterface */
-    protected $session_namespace;
 
     /** @var UserRepository */
     protected $user_repo;
@@ -38,9 +38,7 @@ class Auth
         EntityManager $em
     ) {
         $this->user_repo = $em->getRepository(User::class);
-
         $this->session = $session;
-        $this->session_namespace = $this->session->get('auth');
     }
 
     /**
@@ -97,10 +95,10 @@ class Auth
         }
 
         if (null === $this->masqueraded_user) {
-            if (!$this->session_namespace->isset('masquerade_user_id')) {
+            if (!$this->session->has(self::SESSION_MASQUERADE_USER_ID_KEY)) {
                 $this->masqueraded_user = false;
             } else {
-                $mask_user_id = (int)$this->session_namespace->get('masquerade_user_id');
+                $mask_user_id = (int)$this->session->get(self::SESSION_MASQUERADE_USER_ID_KEY);
                 if (0 !== $mask_user_id) {
                     $user = $this->user_repo->find($mask_user_id);
                 } else {
@@ -110,9 +108,7 @@ class Auth
                 if ($user instanceof User) {
                     $this->masqueraded_user = $user;
                 } else {
-                    $this->session_namespace->unset('user_id')
-                        ->unset('masquerade_user_id');
-
+                    $this->session->clear();
                     $this->masqueraded_user = false;
                 }
             }
@@ -148,7 +144,7 @@ class Auth
      */
     public function isLoginComplete(): bool
     {
-        return $this->session_namespace->get('login_complete') ?? false;
+        return $this->session->get(self::SESSION_IS_LOGIN_COMPLETE_KEY, false) ?? false;
     }
 
     /**
@@ -160,7 +156,7 @@ class Auth
     public function getUser(): ?User
     {
         if (null === $this->user) {
-            $user_id = (int)$this->session_namespace->get('user_id');
+            $user_id = (int)$this->session->get(self::SESSION_USER_ID_KEY);
 
             if (0 === $user_id) {
                 $this->user = false;
@@ -194,8 +190,8 @@ class Auth
      */
     public function setUser(User $user): void
     {
-        $this->session_namespace->set('login_complete', null === $user->getTwoFactorSecret())
-            ->set('user_id', $user->getId());
+        $this->session->set(self::SESSION_IS_LOGIN_COMPLETE_KEY, null === $user->getTwoFactorSecret());
+        $this->session->set(self::SESSION_USER_ID_KEY, $user->getId());
 
         $this->user = $user;
     }
@@ -205,14 +201,8 @@ class Auth
      */
     public function logout(): void
     {
-        $this->session_namespace
-            ->set('login_complete', false)
-            ->unset('user_id')
-            ->unset('masquerade_user_id');
-
+        $this->session->clear();
         $this->user = null;
-
-        $this->session->destroy();
     }
 
     /**
@@ -240,8 +230,7 @@ class Auth
             throw new Exception('Invalid user!');
         }
 
-        $this->session_namespace->set('masquerade_user_id', $user_info->getId());
-
+        $this->session->set(self::SESSION_MASQUERADE_USER_ID_KEY, $user_info->getId());
         $this->masqueraded_user = $user_info;
     }
 
@@ -250,8 +239,7 @@ class Auth
      */
     public function endMasquerade(): void
     {
-        $this->session_namespace->unset('masquerade_user_id');
-
+        $this->session->remove(self::SESSION_MASQUERADE_USER_ID_KEY);
         $this->masqueraded_user = null;
     }
 
@@ -271,7 +259,7 @@ class Auth
         }
 
         if ($user->verifyTwoFactor($otp)) {
-            $this->session_namespace->set('login_complete', true);
+            $this->session->set(self::SESSION_IS_LOGIN_COMPLETE_KEY, true);
             return true;
         }
 

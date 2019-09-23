@@ -8,6 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use Azura\Config;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class StreamersController extends AbstractStationCrudController
@@ -51,7 +52,7 @@ class StreamersController extends AbstractStationCrudController
                 $this->em->flush();
 
                 $request->getSession()->flash('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
-                    'green');
+                    Flash::SUCCESS);
 
                 return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
             }
@@ -78,7 +79,7 @@ class StreamersController extends AbstractStationCrudController
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>',
-                'green');
+                Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
         }
 
@@ -97,7 +98,7 @@ class StreamersController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Streamer deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Streamer deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
     }
 }

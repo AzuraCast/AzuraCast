@@ -5,6 +5,7 @@ use App\Exception\StationUnsupportedException;
 use App\Form\StationMountForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class MountsController extends AbstractStationCrudController
@@ -38,7 +39,7 @@ class MountsController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . __('Changes saved.') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('Changes saved.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
 
@@ -57,7 +58,7 @@ class MountsController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Mount Point deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Mount Point deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
     }
 }

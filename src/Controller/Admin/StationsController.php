@@ -6,6 +6,7 @@ use App\Exception\NotFoundException;
 use App\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class StationsController extends AbstractAdminCrudController
@@ -38,7 +39,7 @@ class StationsController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(($id ? __('Station updated.') : __('Station added.')), 'green');
+            $request->getSession()->flash(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
@@ -59,7 +60,7 @@ class StationsController extends AbstractAdminCrudController
             $record_repo->destroy($record);
         }
 
-        $request->getSession()->flash(__('Station deleted.'), 'green');
+        $request->getSession()->flash(__('Station deleted.'), Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
     }
 
@@ -71,7 +72,7 @@ class StationsController extends AbstractAdminCrudController
         }
 
         if (false !== $this->clone_form->process($request, $record)) {
-            $request->getSession()->flash(__('Changes saved.'), 'green');
+            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 

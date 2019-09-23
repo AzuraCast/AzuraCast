@@ -11,6 +11,7 @@ use App\Radio\Filesystem;
 use Azura\Config;
 use Azura\Doctrine\Repository;
 use Azura\Exception;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -144,7 +145,7 @@ class EditController extends FilesControllerAbstract
             $this->em->persist($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('Media updated.') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('Media updated.') . '</b>', Flash::SUCCESS);
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
             return $response->withRedirect($request->getRouter()->named('stations:files:index',

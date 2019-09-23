@@ -8,6 +8,7 @@ use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Config;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class RemotesController extends AbstractStationCrudController
@@ -38,7 +39,7 @@ class RemotesController extends AbstractStationCrudController
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
-                'green');
+                Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
         }
 
@@ -57,7 +58,7 @@ class RemotesController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Remote Relay deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Remote Relay deleted.') . '</b>', Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
     }

@@ -36,13 +36,6 @@ class Api
      */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Prevent unnecessary session creation on API pages from flooding the session databases
-        $session = $request->getSession();
-
-        if (!$session->exists()) {
-            $session->disable();
-        }
-
         // Set "is API call" attribute on the request so error handling responds correctly.
         $request = $request->withAttribute(ServerRequest::ATTR_IS_API_CALL, true);
 

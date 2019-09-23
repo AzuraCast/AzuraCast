@@ -7,6 +7,7 @@ use App\Form\StationPlaylistForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Exception;
+use Azura\Session\Flash;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
 use Psr\Http\Message\ResponseInterface;
@@ -255,7 +256,7 @@ class PlaylistsController extends AbstractStationCrudController
             ? __('Playlist enabled.')
             : __('Playlist disabled.');
 
-        $request->getSession()->flash('<b>' . $flash_message . '</b><br>' . $record->getName(), 'green');
+        $request->getSession()->flash('<b>' . $flash_message . '</b><br>' . $record->getName(), Flash::SUCCESS);
 
         $referrer = $request->getHeaderLine('Referer');
 
@@ -268,7 +269,7 @@ class PlaylistsController extends AbstractStationCrudController
     {
         if (false !== $this->_doEdit($request, $id)) {
             $request->getSession()->flash('<b>' . ($id ? __('Playlist updated.') : __('Playlist added.')) . '</b>',
-                'green');
+                Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
         }
 
@@ -286,7 +287,7 @@ class PlaylistsController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Playlist deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Playlist deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
     }
 }

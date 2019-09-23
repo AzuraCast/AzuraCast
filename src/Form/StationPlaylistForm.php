@@ -6,6 +6,7 @@ use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\PlaylistParser;
 use Azura\Config;
+use Azura\Session\Flash;
 use AzuraForms\Field\Markup;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
@@ -73,7 +74,7 @@ class StationPlaylistForm extends EntityForm
 
                 if (is_int($matches)) {
                     $request->getSession()->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.',
-                            $matches), 'blue');
+                            $matches), Flash::INFO);
                 }
             }
 

@@ -6,6 +6,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Settings;
 use Azura\Config;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -31,7 +32,7 @@ class BrandingController
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         if (false !== $this->form->process($request)) {
-            $request->getSession()->flash(__('Changes saved.'), 'green');
+            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getUri()->getPath());
         }
 

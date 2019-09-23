@@ -6,6 +6,7 @@ use App\Form\StationWebhookForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Webhook\Dispatcher;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class WebhooksController extends AbstractStationCrudController
@@ -59,7 +60,7 @@ class WebhooksController extends AbstractStationCrudController
         $record = new Entity\StationWebhook($request->getStation(), $type);
 
         if (false !== $this->form->process($request, $record)) {
-            $request->getSession()->flash('<b>' . __('Web Hook added.') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('Web Hook added.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
@@ -73,7 +74,7 @@ class WebhooksController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . __('Web Hook updated.') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('Web Hook updated.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
@@ -101,7 +102,7 @@ class WebhooksController extends AbstractStationCrudController
         $this->em->flush();
 
         $request->getSession()->flash('<b>' . ($new_status ? __('Web hook enabled.') : __('Web Hook disabled.')) . '</b>',
-            'green');
+            Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }
 
@@ -135,7 +136,7 @@ class WebhooksController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Web Hook deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Web Hook deleted.') . '</b>', Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }

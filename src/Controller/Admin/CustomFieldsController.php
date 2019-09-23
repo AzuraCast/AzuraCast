@@ -6,6 +6,7 @@ use App\Form\EntityFormManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Azura\Config;
+use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class CustomFieldsController extends AbstractAdminCrudController
@@ -35,7 +36,7 @@ class CustomFieldsController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(($id ? __('Custom Field updated.') : __('Custom Field added.')), 'green');
+            $request->getSession()->flash(($id ? __('Custom Field updated.') : __('Custom Field added.')), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
         }
 
@@ -50,7 +51,7 @@ class CustomFieldsController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Custom Field deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Custom Field deleted.') . '</b>', Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
     }

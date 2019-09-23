@@ -1,5 +1,6 @@
 <?php
 
+use Azura\Exception\SessionNotReadyException;
 use Psr\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity;
@@ -25,10 +26,12 @@ abstract class CestAbstract
 
     public function _after(FunctionalTester $I)
     {
-        /** @var \App\Auth $auth */
-        $auth = $this->di->get(\App\Auth::class);
-        $auth->logout();
-
+        try {
+            /** @var \App\Auth $auth */
+            $auth = $this->di->get(\App\Auth::class);
+            $auth->logout();
+        } catch(SessionNotReadyException $e) {}
+        
         if ($this->test_station instanceof Entity\Station)
         {
             /** @var Entity\Repository\StationRepository $station_repo */
@@ -118,9 +121,11 @@ abstract class CestAbstract
         foreach($clean_tables as $clean_table)
             $this->em->createQuery('DELETE FROM '.$clean_table.' t')->execute();
 
-        /** @var \App\Auth $auth */
-        $auth = $this->di->get(\App\Auth::class);
-        $auth->logout();
+        try {
+            /** @var \App\Auth $auth */
+            $auth = $this->di->get(\App\Auth::class);
+            $auth->logout();
+        } catch(SessionNotReadyException $e) {}
     }
 
     protected function login(FunctionalTester $I)

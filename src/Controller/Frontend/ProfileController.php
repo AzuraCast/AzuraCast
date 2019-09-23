@@ -8,6 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Settings;
 use Azura\Config;
+use Azura\Session\Flash;
 use AzuraForms\Field\AbstractField;
 use BaconQrCode;
 use Doctrine\ORM\EntityManager;
@@ -100,7 +101,7 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush();
 
-            $request->getSession()->flash(__('Profile saved!'), 'green');
+            $request->getSession()->flash(__('Profile saved!'), Flash::SUCCESS);
 
             return $response->withRedirect($request->getRouter()->named('profile:index'));
         }
@@ -154,14 +155,14 @@ class ProfileController
                 : __('The token you supplied is invalid. Please try again.');
         });
 
-        $twoFactorSession = $request->getSession()->getNamespace('twofactor');
+        $session = $request->getSession();
 
         if ($request->isPost()) {
-            $secret = $twoFactorSession->get('secret');
+            $secret = $session->get('totp_secret');
         } else {
             // Generate new TOTP secret.
             $secret = substr(trim(Base32::encodeUpper(random_bytes(128)), '='), 0, 64);
-            $twoFactorSession->set('secret', $secret);
+            $session->set('totp_secret', $secret);
         }
 
         // Customize TOTP code
@@ -173,7 +174,7 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush($user);
 
-            $request->getSession()->flash(__('Two-factor authentication enabled.'), 'green');
+            $request->getSession()->flash(__('Two-factor authentication enabled.'), Flash::SUCCESS);
 
             return $response->withRedirect($request->getRouter()->named('profile:index'));
         }
@@ -207,7 +208,7 @@ class ProfileController
         $this->em->persist($user);
         $this->em->flush($user);
 
-        $request->getSession()->flash(__('Two-factor authentication disabled.'), 'green');
+        $request->getSession()->flash(__('Two-factor authentication disabled.'), Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->named('profile:index'));
     }

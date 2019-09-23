@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Sync\Task\Backup;
 use Azura\Config;
+use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use League\Flysystem\Adapter\Local;
@@ -73,7 +74,7 @@ class BackupsController
     public function configureAction(ServerRequest $request, Response $response): ResponseInterface
     {
         if (false !== $this->settings_form->process($request)) {
-            $request->getSession()->flash(__('Changes saved.'), 'green');
+            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('admin:backups:index'));
         }
 
@@ -148,7 +149,7 @@ class BackupsController
         $path = $this->getFilePath($path);
         $this->backup_fs->delete($path);
 
-        $request->getSession()->flash('<b>' . __('Backup deleted.') . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:backups:index'));
     }
 

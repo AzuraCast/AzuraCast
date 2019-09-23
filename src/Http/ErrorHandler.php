@@ -90,11 +90,10 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             }
 
             // Redirect to login page for not-logged-in users.
-            $this->session->flash(__('You must be logged in to access this page.'), 'red');
+            $this->session->flash(__('You must be logged in to access this page.'), Session\Flash::ERROR);
 
             // Set referrer for login redirection.
-            $referrer_login = $this->session->get('login_referrer');
-            $referrer_login->url = $this->request->getUri()->getPath();
+            $this->session->set('login_referrer', $this->request->getUri()->getPath());
 
             return $response->withRedirect((string)$this->router->named('account:login'));
         }

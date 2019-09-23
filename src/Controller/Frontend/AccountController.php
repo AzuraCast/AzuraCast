@@ -71,7 +71,7 @@ class AccountController
                 $this->rate_limit->checkRateLimit($request, 'login', 30, 5);
             } catch (RateLimitExceededException $e) {
                 $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
-                    'red');
+                    Flash::ERROR);
 
                 return $response->withRedirect($request->getUri()->getPath());
             }
@@ -94,15 +94,15 @@ class AccountController
                 $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
 
                 $referrer = $session->get('login_referrer');
-                if (!empty($referrer->url)) {
-                    return $response->withRedirect($referrer->url);
+                if (!empty($referrer)) {
+                    return $response->withRedirect($referrer);
                 }
 
                 return $response->withRedirect($request->getRouter()->named('dashboard'));
             }
 
             $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
-                'red');
+                Flash::ERROR);
 
             return $response->withRedirect($request->getUri());
         }
@@ -122,7 +122,7 @@ class AccountController
 
                 $user = $this->auth->getUser();
 
-                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
 
                 $referrer = $session->get('login_referrer');
                 if (!empty($referrer->url)) {
@@ -133,7 +133,7 @@ class AccountController
             }
 
             $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
-                'red');
+                Flash::ERROR);
 
             return $response->withRedirect($request->getUri());
         }

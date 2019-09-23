@@ -31,7 +31,7 @@ abstract class CestAbstract
             $auth = $this->di->get(\App\Auth::class);
             $auth->logout();
         } catch(SessionNotReadyException $e) {}
-        
+
         if ($this->test_station instanceof Entity\Station)
         {
             /** @var Entity\Repository\StationRepository $station_repo */

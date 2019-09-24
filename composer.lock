@@ -95,15 +95,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "fcbc08fca32d3cc33f368f22c6732dba4fe1d117"
+                "reference": "c2d44c363e1f674cae1bcdca67f61dd67c1f869e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/fcbc08fca32d3cc33f368f22c6732dba4fe1d117",
-                "reference": "fcbc08fca32d3cc33f368f22c6732dba4fe1d117",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/c2d44c363e1f674cae1bcdca67f61dd67c1f869e",
+                "reference": "c2d44c363e1f674cae1bcdca67f61dd67c1f869e",
                 "shasum": ""
             },
             "require": {
+                "cache/array-adapter": "^1.0",
+                "cache/prefixed-cache": "^1.0",
+                "cache/psr-6-doctrine-bridge": "^3.0",
                 "cache/redis-adapter": "^1.0",
                 "doctrine/data-fixtures": "^1.3",
                 "doctrine/dbal": "^2.8",
@@ -156,7 +159,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-09-24T01:46:20+00:00"
+            "time": "2019-09-24T05:33:22+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -586,6 +589,75 @@
             "time": "2018-07-08T13:04:33+00:00"
         },
         {
+            "name": "cache/array-adapter",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/array-adapter.git",
+                "reference": "6e9ae7f8bbf1b07bdd6144cb944059f91ae65a14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/array-adapter/zipball/6e9ae7f8bbf1b07bdd6144cb944059f91ae65a14",
+                "reference": "6e9ae7f8bbf1b07bdd6144cb944059f91ae65a14",
+                "shasum": ""
+            },
+            "require": {
+                "cache/adapter-common": "^1.0",
+                "cache/hierarchical-cache": "^1.0",
+                "php": "^5.6 || ^7.0",
+                "psr/cache": "^1.0",
+                "psr/simple-cache": "^1.0"
+            },
+            "provide": {
+                "psr/cache-implementation": "^1.0",
+                "psr/simple-cache-implementation": "^1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.16",
+                "phpunit/phpunit": "^5.7.21"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Adapter\\PHPArray\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/Nyholm"
+                }
+            ],
+            "description": "A PSR-6 cache implementation using a php array. This implementation supports tags",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "array",
+                "cache",
+                "psr-6",
+                "tag"
+            ],
+            "time": "2017-11-19T11:08:05+00:00"
+        },
+        {
             "name": "cache/hierarchical-cache",
             "version": "1.0.0",
             "source": {
@@ -643,6 +715,120 @@
                 "cache",
                 "hierarchical",
                 "hierarchy",
+                "psr-6"
+            ],
+            "time": "2017-07-16T21:58:17+00:00"
+        },
+        {
+            "name": "cache/prefixed-cache",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/prefixed-cache.git",
+                "reference": "2f584c6505cbf96b3053849f7a22137725e8aa85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/prefixed-cache/zipball/2f584c6505cbf96b3053849f7a22137725e8aa85",
+                "reference": "2f584c6505cbf96b3053849f7a22137725e8aa85",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "psr/cache": "^1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.16",
+                "phpunit/phpunit": "^5.7.21"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Prefixed\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/Nyholm"
+                }
+            ],
+            "description": "A decorator that makes your cache support prefix",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "prefix",
+                "psr-6"
+            ],
+            "time": "2017-07-17T11:14:46+00:00"
+        },
+        {
+            "name": "cache/psr-6-doctrine-bridge",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/doctrine-bridge.git",
+                "reference": "ccfdf02914741994746ac5eb88dd33bf4780cb64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/doctrine-bridge/zipball/ccfdf02914741994746ac5eb88dd33bf4780cb64",
+                "reference": "ccfdf02914741994746ac5eb88dd33bf4780cb64",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/cache": "^1.6",
+                "php": "^5.6 || ^7.0",
+                "psr/cache-implementation": "^1.0"
+            },
+            "require-dev": {
+                "cache/doctrine-adapter": "^1.0",
+                "mockery/mockery": "^0.9.9",
+                "phpunit/phpunit": "^5.7.21"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Bridge\\Doctrine\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                }
+            ],
+            "description": "PSR-6 Doctrine bridge",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "doctrine",
                 "psr-6"
             ],
             "time": "2017-07-16T21:58:17+00:00"

@@ -3,10 +3,12 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Flysystem\StationFilesystem;
+use Cache\Prefixed\PrefixedCachePool;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
-use League\Flysystem\Cached\Storage\PhpRedis;
+use League\Flysystem\Cached\Storage\Psr6Cache;
 use League\Flysystem\Filesystem as LeagueFilesystem;
+use Psr\Cache\CacheItemPoolInterface;
 use Redis;
 
 /**
@@ -14,18 +16,18 @@ use Redis;
  */
 class Filesystem
 {
-    /** @var Redis */
-    protected $redis;
+    /** @var CacheItemPoolInterface */
+    protected $cachePool;
 
     /** @var StationFilesystem[] All current interfaces managed by this */
     protected $interfaces = [];
 
     /**
-     * @param Redis $redis
+     * @param CacheItemPoolInterface $cachePool
      */
-    public function __construct(Redis $redis)
+    public function __construct(CacheItemPoolInterface $cachePool)
     {
-        $this->redis = $redis;
+        $this->cachePool = new PrefixedCachePool($cachePool, 'fs|');
     }
 
     public function getForStation(Entity\Station $station): StationFilesystem
@@ -41,18 +43,27 @@ class Filesystem
             ];
 
             $filesystems = [];
-            foreach ($aliases as $alias => $local_path) {
-                $adapter = new Local($local_path);
+            foreach ($aliases as $alias => $localPath) {
+                $adapter = new Local($localPath);
 
-                $fs_location_key = 'fs_' . substr(md5($local_path), 0, 10);
-
-                $cached_client = new PhpRedis($this->redis, $fs_location_key, 3600);
-                $filesystems[$alias] = new LeagueFilesystem(new CachedAdapter($adapter, $cached_client));
+                $cachedClient = new Psr6Cache($this->cachePool, $this->normalizeCacheKey($localPath), 3600);
+                $filesystems[$alias] = new LeagueFilesystem(new CachedAdapter($adapter, $cachedClient));
             }
 
             $this->interfaces[$station_id] = new StationFilesystem($filesystems);
         }
 
         return $this->interfaces[$station_id];
+    }
+
+    protected function normalizeCacheKey(string $path): string
+    {
+        $path = ltrim($path, '/');
+
+        if (preg_match('|[\{\}\(\)/\\\@\:]|', $path)) {
+            return preg_replace('|[\{\}\(\)/\\\@\:]|', '_', $path);
+        }
+
+        return $path;
     }
 }

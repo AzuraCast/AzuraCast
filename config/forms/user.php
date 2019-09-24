@@ -7,7 +7,7 @@ return [
         'name' => [
             'text',
             [
-                'label' => __('Name'),
+                'label' => __('Display Name'),
                 'class' => 'half-width',
                 'label_class' => 'mb-2',
             ]

@@ -31,14 +31,14 @@ class RemotesController extends AbstractStationCrudController
 
         return $request->getView()->renderToResponse($response, 'stations/remotes/index', [
             'remotes' => $station->getRemotes(),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
+            $request->getFlash()->addMessage('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
                 Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
         }
@@ -58,7 +58,7 @@ class RemotesController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Remote Relay deleted.') . '</b>', Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Remote Relay deleted.') . '</b>', Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
     }

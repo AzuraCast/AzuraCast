@@ -82,7 +82,7 @@ class FilesController extends FilesControllerAbstract
             'space_total' => $station->getStorageAvailable(),
             'space_percent' => $station->getStorageUsePercentage(),
             'files_count' => $files_count,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -135,7 +135,7 @@ class FilesController extends FilesControllerAbstract
                 $path = $new_path;
             }
 
-            $request->getSession()->flash('<b>' . __('File renamed!') . '</b>', Flash::SUCCESS);
+            $request->getFlash()->addMessage('<b>' . __('File renamed!') . '</b>', Flash::SUCCESS);
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
 
@@ -185,7 +185,7 @@ class FilesController extends FilesControllerAbstract
         $params = $request->getParams();
 
         try {
-            $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+            $request->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch (CsrfValidationException $e) {
             return $this->_err($response, 403, 'CSRF Failure: ' . $e->getMessage());
         }
@@ -209,7 +209,7 @@ class FilesController extends FilesControllerAbstract
         $params = $request->getParams();
 
         try {
-            $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+            $request->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch (CsrfValidationException $e) {
             return $this->_err($response, 403, 'CSRF Failure: ' . $e->getMessage());
         }

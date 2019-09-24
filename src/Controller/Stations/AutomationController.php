@@ -61,7 +61,7 @@ class AutomationController
             $this->em->persist($station);
             $this->em->flush();
 
-            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
+            $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
 
             return $response->withRedirect($request->getUri());
         }
@@ -78,10 +78,10 @@ class AutomationController
 
         try {
             if ($this->sync_task->runStation($station, true)) {
-                $request->getSession()->flash('<b>' . __('Automated assignment complete!') . '</b>', Flash::SUCCESS);
+                $request->getFlash()->addMessage('<b>' . __('Automated assignment complete!') . '</b>', Flash::SUCCESS);
             }
         } catch (Exception $e) {
-            $request->getSession()->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(),
+            $request->getFlash()->addMessage('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(),
                 Flash::ERROR);
         }
 

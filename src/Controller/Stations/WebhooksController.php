@@ -42,7 +42,7 @@ class WebhooksController extends AbstractStationCrudController
         return $request->getView()->renderToResponse($response, 'stations/webhooks/index', [
             'webhooks' => $station->getWebhooks(),
             'webhook_config' => $this->webhook_config,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -60,7 +60,7 @@ class WebhooksController extends AbstractStationCrudController
         $record = new Entity\StationWebhook($request->getStation(), $type);
 
         if (false !== $this->form->process($request, $record)) {
-            $request->getSession()->flash('<b>' . __('Web Hook added.') . '</b>', Flash::SUCCESS);
+            $request->getFlash()->addMessage('<b>' . __('Web Hook added.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
@@ -74,7 +74,7 @@ class WebhooksController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . __('Web Hook updated.') . '</b>', Flash::SUCCESS);
+            $request->getFlash()->addMessage('<b>' . __('Web Hook updated.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
@@ -91,7 +91,7 @@ class WebhooksController extends AbstractStationCrudController
         $id,
         $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         /** @var Entity\StationWebhook $record */
         $record = $this->_getRecord($request->getStation(), $id);
@@ -101,7 +101,7 @@ class WebhooksController extends AbstractStationCrudController
         $this->em->persist($record);
         $this->em->flush();
 
-        $request->getSession()->flash('<b>' . ($new_status ? __('Web hook enabled.') : __('Web Hook disabled.')) . '</b>',
+        $request->getFlash()->addMessage('<b>' . ($new_status ? __('Web hook enabled.') : __('Web Hook disabled.')) . '</b>',
             Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }
@@ -112,7 +112,7 @@ class WebhooksController extends AbstractStationCrudController
         $id,
         $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $station = $request->getStation();
 
@@ -136,7 +136,7 @@ class WebhooksController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Web Hook deleted.') . '</b>', Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Web Hook deleted.') . '</b>', Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }

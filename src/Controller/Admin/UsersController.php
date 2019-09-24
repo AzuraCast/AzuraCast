@@ -42,7 +42,7 @@ class UsersController extends AbstractAdminCrudController
         return $request->getView()->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -50,12 +50,12 @@ class UsersController extends AbstractAdminCrudController
     {
         try {
             if (false !== $this->_doEdit($request, $id)) {
-                $request->getSession()->flash(($id ? __('User updated.') : __('User added.')), Flash::SUCCESS);
+                $request->getFlash()->addMessage(($id ? __('User updated.') : __('User added.')), Flash::SUCCESS);
 
                 return $response->withRedirect($request->getRouter()->named('admin:users:index'));
             }
         } catch (UniqueConstraintViolationException $e) {
-            $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'),
+            $request->getFlash()->addMessage(__('Another user already exists with this e-mail address. Please update the e-mail address.'),
                 Flash::ERROR);
         }
 
@@ -68,19 +68,19 @@ class UsersController extends AbstractAdminCrudController
 
     public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
         $current_user = $request->getUser();
 
         if ($user === $current_user) {
-            $request->getSession()->flash('<b>' . __('You cannot delete your own account.') . '</b>', Flash::ERROR);
+            $request->getFlash()->addMessage('<b>' . __('You cannot delete your own account.') . '</b>', Flash::ERROR);
         } elseif ($user instanceof Entity\User) {
             $this->em->remove($user);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>' . __('User deleted.') . '</b>', Flash::SUCCESS);
+            $request->getFlash()->addMessage('<b>' . __('User deleted.') . '</b>', Flash::SUCCESS);
         }
 
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
@@ -88,7 +88,7 @@ class UsersController extends AbstractAdminCrudController
 
     public function impersonateAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
@@ -98,7 +98,7 @@ class UsersController extends AbstractAdminCrudController
 
         $this->auth->masqueradeAsUser($user);
 
-        $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }

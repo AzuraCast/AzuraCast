@@ -24,7 +24,6 @@ class Csrf extends \AzuraForms\Field\Csrf
 
     protected function getCsrf(): Session\Csrf
     {
-        $session = Session::getInstance();
-        return $session->getCsrf();
+        return Session\Csrf::getInstance();
     }
 }

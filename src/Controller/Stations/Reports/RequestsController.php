@@ -40,7 +40,7 @@ class RequestsController
 
         return $request->getView()->renderToResponse($response, 'stations/reports/requests', [
             'requests' => $requests,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -50,7 +50,7 @@ class RequestsController
         $request_id,
         $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $station = $request->getStation();
 
@@ -64,7 +64,7 @@ class RequestsController
             $this->em->remove($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>Request deleted!</b>', Flash::SUCCESS);
+            $request->getFlash()->addMessage('<b>Request deleted!</b>', Flash::SUCCESS);
         }
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));

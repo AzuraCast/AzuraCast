@@ -89,7 +89,7 @@ class PlaylistsController extends AbstractStationCrudController
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/index', [
             'playlists' => $playlists,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
             'station_tz' => $station_tz,
             'station_now' => $now->toIso8601String(),
             'schedule_url' => $request->getRouter()->named('stations:playlists:schedule',
@@ -179,7 +179,7 @@ class PlaylistsController extends AbstractStationCrudController
 
         if ('POST' === $request->getMethod()) {
             try {
-                $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+                $request->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
             } catch (Exception\CsrfValidationException $e) {
                 return $response->withStatus(403)
                     ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: ' . $e->getMessage()]]);
@@ -208,7 +208,7 @@ class PlaylistsController extends AbstractStationCrudController
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/reorder', [
             'playlist' => $record,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
             'media_items' => $media_items,
         ]);
     }
@@ -256,7 +256,7 @@ class PlaylistsController extends AbstractStationCrudController
             ? __('Playlist enabled.')
             : __('Playlist disabled.');
 
-        $request->getSession()->flash('<b>' . $flash_message . '</b><br>' . $record->getName(), Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . $flash_message . '</b><br>' . $record->getName(), Flash::SUCCESS);
 
         $referrer = $request->getHeaderLine('Referer');
 
@@ -268,7 +268,7 @@ class PlaylistsController extends AbstractStationCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . ($id ? __('Playlist updated.') : __('Playlist added.')) . '</b>',
+            $request->getFlash()->addMessage('<b>' . ($id ? __('Playlist updated.') : __('Playlist added.')) . '</b>',
                 Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
         }
@@ -287,7 +287,7 @@ class PlaylistsController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Playlist deleted.') . '</b>', Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Playlist deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
     }
 }

@@ -133,7 +133,7 @@ class ProfileController
             'frontend_config' => (array)$station->getFrontendConfig(),
             'nowplaying' => $np,
             'user' => $request->getUser(),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
 
         return $view->renderToResponse($response, 'stations/profile/index');
@@ -158,7 +158,7 @@ class ProfileController
         $feature,
         $csrf
     ): ResponseInterface {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $station = $request->getStation();
 

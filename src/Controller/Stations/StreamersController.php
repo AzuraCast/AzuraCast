@@ -51,7 +51,7 @@ class StreamersController extends AbstractStationCrudController
                 $this->em->persist($station);
                 $this->em->flush();
 
-                $request->getSession()->flash('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
+                $request->getFlash()->addMessage('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
                     Flash::SUCCESS);
 
                 return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
@@ -71,14 +71,14 @@ class StreamersController extends AbstractStationCrudController
             'ip' => $this->ac_central->getIp(),
             'streamers' => $station->getStreamers(),
             'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>',
+            $request->getFlash()->addMessage('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>',
                 Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
         }
@@ -98,7 +98,7 @@ class StreamersController extends AbstractStationCrudController
     ): ResponseInterface {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Streamer deleted.') . '</b>', Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Streamer deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
     }
 }

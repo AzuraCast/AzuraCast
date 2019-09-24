@@ -35,7 +35,7 @@ class BatchController extends FilesControllerAbstract
         $params = $request->getParams();
 
         try {
-            $request->getSession()->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+            $request->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
         } catch (CsrfValidationException $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: ' . $e->getMessage()]]);

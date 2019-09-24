@@ -101,7 +101,7 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush();
 
-            $request->getSession()->flash(__('Profile saved!'), Flash::SUCCESS);
+            $request->getFlash()->addMessage(__('Profile saved!'), Flash::SUCCESS);
 
             return $response->withRedirect($request->getRouter()->named('profile:index'));
         }
@@ -174,7 +174,7 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush($user);
 
-            $request->getSession()->flash(__('Two-factor authentication enabled.'), Flash::SUCCESS);
+            $request->getFlash()->addMessage(__('Two-factor authentication enabled.'), Flash::SUCCESS);
 
             return $response->withRedirect($request->getRouter()->named('profile:index'));
         }
@@ -208,7 +208,7 @@ class ProfileController
         $this->em->persist($user);
         $this->em->flush($user);
 
-        $request->getSession()->flash(__('Two-factor authentication disabled.'), Flash::SUCCESS);
+        $request->getFlash()->addMessage(__('Two-factor authentication disabled.'), Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->named('profile:index'));
     }

@@ -5,8 +5,8 @@ use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
 use Azura\Exception;
-use Azura\Session;
 use Doctrine\ORM\EntityManager;
+use Zend\Expressive\Session\SessionInterface;
 
 class Auth
 {
@@ -17,11 +17,11 @@ class Auth
     /** @var int The window of valid one-time passwords outside the current timestamp. */
     public const TOTP_WINDOW = 5;
 
-    /** @var Session */
+    /** @var SessionInterface */
     protected $session;
 
     /** @var UserRepository */
-    protected $user_repo;
+    protected $userRepo;
 
     /** @var User|bool|null */
     protected $user;
@@ -30,14 +30,15 @@ class Auth
     protected $masqueraded_user;
 
     /**
-     * @param Session $session
      * @param EntityManager $em
      */
-    public function __construct(
-        Session $session,
-        EntityManager $em
-    ) {
-        $this->user_repo = $em->getRepository(User::class);
+    public function __construct(EntityManager $em)
+    {
+        $this->userRepo = $em->getRepository(User::class);
+    }
+
+    public function setSession(SessionInterface $session): void
+    {
         $this->session = $session;
     }
 
@@ -51,7 +52,7 @@ class Auth
      */
     public function authenticate($username, $password): ?User
     {
-        $user_auth = $this->user_repo->authenticate($username, $password);
+        $user_auth = $this->userRepo->authenticate($username, $password);
 
         if ($user_auth instanceof User) {
             $this->setUser($user_auth);
@@ -100,7 +101,7 @@ class Auth
             } else {
                 $mask_user_id = (int)$this->session->get(self::SESSION_MASQUERADE_USER_ID_KEY);
                 if (0 !== $mask_user_id) {
-                    $user = $this->user_repo->find($mask_user_id);
+                    $user = $this->userRepo->find($mask_user_id);
                 } else {
                     $user = null;
                 }
@@ -163,7 +164,7 @@ class Auth
                 return null;
             }
 
-            $user = $this->user_repo->find($user_id);
+            $user = $this->userRepo->find($user_id);
             if ($user instanceof User) {
                 $this->user = $user;
             } else {
@@ -201,7 +202,10 @@ class Auth
      */
     public function logout(): void
     {
-        $this->session->clear();
+        if ($this->session instanceof SessionInterface) {
+            $this->session->clear();
+        }
+
         $this->user = null;
     }
 
@@ -223,7 +227,7 @@ class Auth
     public function masqueradeAsUser($user_info): void
     {
         if (!($user_info instanceof User)) {
-            $user_info = $this->user_repo->findOneBy($user_info);
+            $user_info = $this->userRepo->findOneBy($user_info);
         }
 
         if (!($user_info instanceof User)) {
@@ -239,7 +243,7 @@ class Auth
      */
     public function endMasquerade(): void
     {
-        $this->session->remove(self::SESSION_MASQUERADE_USER_ID_KEY);
+        $this->session->unset(self::SESSION_MASQUERADE_USER_ID_KEY);
         $this->masqueraded_user = null;
     }
 

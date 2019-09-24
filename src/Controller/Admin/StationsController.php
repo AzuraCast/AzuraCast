@@ -32,14 +32,14 @@ class StationsController extends AbstractAdminCrudController
 
         return $request->getView()->renderToResponse($response, 'admin/stations/index', [
             'stations' => $stations,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
+            $request->getFlash()->addMessage(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
@@ -51,7 +51,7 @@ class StationsController extends AbstractAdminCrudController
 
     public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $record = $this->record_repo->find((int)$id);
         if ($record instanceof Entity\Station) {
@@ -60,7 +60,7 @@ class StationsController extends AbstractAdminCrudController
             $record_repo->destroy($record);
         }
 
-        $request->getSession()->flash(__('Station deleted.'), Flash::SUCCESS);
+        $request->getFlash()->addMessage(__('Station deleted.'), Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
     }
 
@@ -72,7 +72,7 @@ class StationsController extends AbstractAdminCrudController
         }
 
         if (false !== $this->clone_form->process($request, $record)) {
-            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
+            $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 

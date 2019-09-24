@@ -119,7 +119,7 @@ class SetupController
      */
     public function completeAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
+        $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
@@ -238,7 +238,7 @@ class SetupController
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            $request->getSession()->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
+            $request->getFlash()->addMessage('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
                 Flash::SUCCESS);
 
             return $response->withRedirect($request->getRouter()->named('dashboard'));

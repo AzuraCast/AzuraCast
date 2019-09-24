@@ -7,7 +7,7 @@ use App\Exception\PermissionDeniedException;
 use App\Service\Sentry;
 use App\Settings;
 use Azura\Exception;
-use Azura\Session;
+use Azura\Session\Flash;
 use Azura\View;
 use Gettext\Translator;
 use Monolog\Logger;
@@ -17,12 +17,10 @@ use Slim\App;
 use Slim\Exception\HttpNotFoundException;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
+use Zend\Expressive\Session\SessionInterface;
 
 class ErrorHandler extends \Azura\Http\ErrorHandler
 {
-    /** @var Session */
-    protected $session;
-
     /** @var Router */
     protected $router;
 
@@ -35,7 +33,6 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
     public function __construct(
         App $app,
         Logger $logger,
-        Session $session,
         Router $router,
         View $view,
         Sentry $sentry,
@@ -43,7 +40,6 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
     ) {
         parent::__construct($app, $logger, $settings);
 
-        $this->session = $session;
         $this->router = $router;
         $this->view = $view;
         $this->sentry = $sentry;
@@ -80,6 +76,12 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
         }
 
         if ($this->exception instanceof NotLoggedInException) {
+            /** @var SessionInterface $session */
+            $session = $this->request->getAttribute(ServerRequest::ATTR_SESSION);
+
+            /** @var Flash $flash */
+            $flash = $this->request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
+
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
@@ -90,15 +92,18 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             }
 
             // Redirect to login page for not-logged-in users.
-            $this->session->flash(__('You must be logged in to access this page.'), Session\Flash::ERROR);
+            $flash->addMessage(__('You must be logged in to access this page.'), Flash::ERROR);
 
             // Set referrer for login redirection.
-            $this->session->set('login_referrer', $this->request->getUri()->getPath());
+            $session->set('login_referrer', $this->request->getUri()->getPath());
 
             return $response->withRedirect((string)$this->router->named('account:login'));
         }
 
         if ($this->exception instanceof PermissionDeniedException) {
+            /** @var Flash $flash */
+            $flash = $this->request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
+
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
@@ -109,8 +114,8 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             }
 
             // Bounce back to homepage for permission-denied users.
-            $this->session->flash(__('You do not have permission to access this portion of the site.'),
-                Session\Flash::ERROR);
+            $flash->addMessage(__('You do not have permission to access this portion of the site.'),
+                Flash::ERROR);
 
             return $response->withRedirect((string)$this->router->named('home'));
         }

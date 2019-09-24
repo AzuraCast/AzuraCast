@@ -26,11 +26,9 @@ abstract class CestAbstract
 
     public function _after(FunctionalTester $I)
     {
-        try {
-            /** @var \App\Auth $auth */
-            $auth = $this->di->get(\App\Auth::class);
-            $auth->logout();
-        } catch(SessionNotReadyException $e) {}
+        /** @var \App\Auth $auth */
+        $auth = $this->di->get(\App\Auth::class);
+        $auth->logout();
 
         if ($this->test_station instanceof Entity\Station)
         {
@@ -118,14 +116,14 @@ abstract class CestAbstract
             Entity\Role::class,
             Entity\Station::class,
         ];
-        foreach($clean_tables as $clean_table)
-            $this->em->createQuery('DELETE FROM '.$clean_table.' t')->execute();
 
-        try {
-            /** @var \App\Auth $auth */
-            $auth = $this->di->get(\App\Auth::class);
-            $auth->logout();
-        } catch(SessionNotReadyException $e) {}
+        foreach($clean_tables as $clean_table) {
+            $this->em->createQuery('DELETE FROM '.$clean_table.' t')->execute();
+        }
+
+        /** @var \App\Auth $auth */
+        $auth = $this->di->get(\App\Auth::class);
+        $auth->logout();
     }
 
     protected function login(FunctionalTester $I)

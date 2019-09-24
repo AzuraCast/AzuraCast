@@ -32,7 +32,7 @@ class BrandingController
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         if (false !== $this->form->process($request)) {
-            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
+            $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getUri()->getPath());
         }
 

@@ -51,14 +51,14 @@ class PermissionsController extends AbstractAdminCrudController
 
         return $request->getView()->renderToResponse($response, 'admin/permissions/index', [
             'roles' => $roles,
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getSession()->flash('<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
+            $request->getFlash()->addMessage('<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
                 Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
         }
@@ -74,7 +74,7 @@ class PermissionsController extends AbstractAdminCrudController
     {
         $this->_doDelete($request, $id, $csrf);
 
-        $request->getSession()->flash('<b>' . __('Permission deleted.') . '</b>', Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Permission deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
     }
 }

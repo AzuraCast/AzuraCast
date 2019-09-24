@@ -102,7 +102,7 @@ class DuplicatesController
             $this->em->remove($media);
             $this->em->flush();
 
-            $request->getSession()->flash('<b>Duplicate file deleted!</b>', Flash::SUCCESS);
+            $request->getFlash()->addMessage('<b>Duplicate file deleted!</b>', Flash::SUCCESS);
         }
 
         return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates',

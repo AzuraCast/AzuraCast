@@ -67,14 +67,14 @@ class BackupsController
             'last_run' => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RUN, 0),
             'last_result' => $this->settings_repo->getSetting(Settings::BACKUP_LAST_RESULT, 0),
             'last_output' => $this->settings_repo->getSetting(Settings::BACKUP_LAST_OUTPUT, ''),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function configureAction(ServerRequest $request, Response $response): ResponseInterface
     {
         if (false !== $this->settings_form->process($request)) {
-            $request->getSession()->flash(__('Changes saved.'), Flash::SUCCESS);
+            $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('admin:backups:index'));
         }
 
@@ -144,12 +144,12 @@ class BackupsController
 
     public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $path = $this->getFilePath($path);
         $this->backup_fs->delete($path);
 
-        $request->getSession()->flash('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:backups:index'));
     }
 

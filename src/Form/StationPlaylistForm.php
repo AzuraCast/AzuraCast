@@ -73,7 +73,7 @@ class StationPlaylistForm extends EntityForm
                 $matches = $this->_importPlaylist($record, $import_file);
 
                 if (is_int($matches)) {
-                    $request->getSession()->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.',
+                    $request->getFlash()->addMessage('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.',
                             $matches), Flash::INFO);
                 }
             }

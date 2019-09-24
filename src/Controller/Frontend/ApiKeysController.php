@@ -42,7 +42,7 @@ class ApiKeysController
 
         return $request->getView()->renderToResponse($response, 'frontend/api_keys/index', [
             'records' => $user->getApiKeys(),
-            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
+            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -93,7 +93,7 @@ class ApiKeysController
                 ]);
             }
 
-            $request->getSession()->flash(__('API Key updated.'), 'green');
+            $request->getFlash()->addMessage(__('API Key updated.'), 'green');
             return $response->withRedirect($request->getRouter()->named('api_keys:index'));
         }
 
@@ -106,7 +106,7 @@ class ApiKeysController
 
     public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $request->getSession()->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
@@ -120,7 +120,7 @@ class ApiKeysController
         $this->em->flush();
         $this->em->refresh($user);
 
-        $request->getSession()->flash(__('API Key deleted.'), 'green');
+        $request->getFlash()->addMessage(__('API Key deleted.'), 'green');
 
         return $response->withRedirect($request->getRouter()->named('api_keys:index'));
     }

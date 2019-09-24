@@ -64,13 +64,13 @@ class AccountController
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
-        $session = $request->getSession();
+        $flash = $request->getFlash();
 
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
                 $this->rate_limit->checkRateLimit($request, 'login', 30, 5);
             } catch (RateLimitExceededException $e) {
-                $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
+                $flash->addMessage('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     Flash::ERROR);
 
                 return $response->withRedirect($request->getUri()->getPath());
@@ -91,9 +91,9 @@ class AccountController
                     return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
                 }
 
-                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
+                $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
 
-                $referrer = $session->get('login_referrer');
+                $referrer = $request->getSession()->get('login_referrer');
                 if (!empty($referrer)) {
                     return $response->withRedirect($referrer);
                 }
@@ -101,7 +101,7 @@ class AccountController
                 return $response->withRedirect($request->getRouter()->named('dashboard'));
             }
 
-            $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+            $flash->addMessage('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 Flash::ERROR);
 
             return $response->withRedirect($request->getUri());
@@ -113,7 +113,7 @@ class AccountController
     public function twoFactorAction(ServerRequest $request, Response $response): ResponseInterface
     {
         if ('POST' === $request->getMethod()) {
-            $session = $request->getSession();
+            $flash = $request->getFlash();
 
             $parsedBody = $request->getParsedBody();
             $otp = $parsedBody['otp'];
@@ -122,17 +122,17 @@ class AccountController
 
                 $user = $this->auth->getUser();
 
-                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
+                $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
 
-                $referrer = $session->get('login_referrer');
-                if (!empty($referrer->url)) {
-                    return $response->withRedirect($referrer->url);
+                $referrer = $request->getSession()->get('login_referrer');
+                if (!empty($referrer)) {
+                    return $response->withRedirect($referrer);
                 }
 
                 return $response->withRedirect($request->getRouter()->named('dashboard'));
             }
 
-            $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+            $flash->addMessage('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 Flash::ERROR);
 
             return $response->withRedirect($request->getUri());

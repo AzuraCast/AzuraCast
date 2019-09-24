@@ -453,51 +453,61 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     {
         $station = $playlist->getStation();
 
-        $playlist_path = $station->getRadioPlaylistsDir();
-        $playlist_var_name = 'playlist_' . $playlist->getShortName();
+        $playlistPath = $station->getRadioPlaylistsDir();
+        $playlistVarName = 'playlist_' . $playlist->getShortName();
 
-        $media_base_dir = $station->getRadioMediaDir() . '/';
-        $playlist_file = [];
-        foreach ($playlist->getMediaItems() as $media_item) {
-            /** @var Entity\StationMedia $media_file */
-            $media_file = $media_item->getMedia();
+        $mediaBaseDir = $station->getRadioMediaDir() . '/';
+        $playlistFile = [];
 
-            $media_file_path = $media_base_dir . $media_file->getPath();
-            $media_annotations = $media_file->getAnnotations();
+        $mediaQuery = $this->em->createQuery(/** @lang DQL */'SELECT DISTINCT sm 
+            FROM App\Entity\StationMedia sm 
+            JOIN sm.playlists spm  
+            WHERE spm.playlist = :playlist
+            ORDER BY spm.weight ASC
+        ')->setParameter('playlist', $playlist);
+
+        $mediaIterator = $mediaQuery->iterate();
+
+        foreach ($mediaIterator as $row) {
+            /** @var Entity\StationMedia $mediaFile */
+            $mediaFile = $row[0];
+
+            $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
+            $mediaAnnotations = $mediaFile->getAnnotations();
 
             if ($playlist->isJingle()) {
-                $media_annotations['is_jingle_mode'] = 'true';
-                unset($media_annotations['media_id']);
+                $mediaAnnotations['is_jingle_mode'] = 'true';
+                unset($mediaAnnotations['media_id']);
             } else {
-                $media_annotations['playlist_id'] = $playlist->getId();
+                $mediaAnnotations['playlist_id'] = $playlist->getId();
             }
 
             $annotations_str = [];
-            foreach ($media_annotations as $annotation_key => $annotation_val) {
+            foreach ($mediaAnnotations as $annotation_key => $annotation_val) {
                 $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
             }
 
-            $playlist_file[] = 'annotate:' . implode(',', $annotations_str) . ':' . $media_file_path;
+            $playlistFile[] = 'annotate:' . implode(',', $annotations_str) . ':' . $mediaFilePath;
+            $this->em->detach($row[0]);
         }
 
-        $playlist_file_path = $playlist_path . '/' . $playlist_var_name . '.m3u';
-        $playlist_file_contents = implode("\n", $playlist_file);
+        $playlistFilePath = $playlistPath . '/' . $playlistVarName . '.m3u';
 
-        file_put_contents($playlist_file_path, $playlist_file_contents);
+        file_put_contents($playlistFilePath, implode("\n", $playlistFile));
 
         if ($notify) {
             try {
-                $this->command($station, $playlist_var_name . '.reload');
+                $this->command($station, $playlistVarName . '.reload');
             } catch (Exception $e) {
                 Logger::getInstance()->error('Could not reload playlist with AutoDJ.', [
                     'message' => $e->getMessage(),
-                    'playlist' => $playlist_var_name,
+                    'playlist' => $playlistVarName,
                     'station' => $station->getId(),
                 ]);
             }
         }
 
-        return $playlist_file_path;
+        return $playlistFilePath;
     }
 
     /**

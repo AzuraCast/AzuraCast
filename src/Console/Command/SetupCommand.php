@@ -68,13 +68,14 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'cache:clear');
         $this->runCommand($output, 'azuracast:radio:restart');
 
-        // Clear update information.
-
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $em->getRepository(Entity\Settings::class);
 
+        // Clear settings that should be reset upon update.
         $settings_repo->setSetting(Entity\Settings::UPDATE_RESULTS, null);
         $settings_repo->setSetting(Entity\Settings::UPDATE_LAST_RUN, time());
+        $settings_repo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
+        $settings_repo->deleteSetting(Entity\Settings::EXTERNAL_IP);
 
         $io->newLine();
 
@@ -89,9 +90,6 @@ class SetupCommand extends CommandAbstract
                 __('AzuraCast installation complete!'),
                 __('Visit %s to complete setup.', 'http://' . $public_ip),
             ]);
-
-            $settings_repo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
-            $settings_repo->deleteSetting(Entity\Settings::EXTERNAL_IP);
         }
 
         return 0;

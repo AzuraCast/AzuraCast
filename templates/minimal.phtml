@@ -47,7 +47,7 @@ echo $assets->js();
     </footer>
 <?php endif; ?>
 
-<?php if ($flash->hasMessages()): ?>
+<?php if (null !== $flash && $flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
         $(function() {
             <?php foreach($flash->getMessages() as $message): ?>

@@ -154,7 +154,7 @@ echo $assets->js();
 
 <div id="radio-player"></div>
 
-<?php if ($flash->hasMessages()): ?>
+<?php if (null !== $flash && $flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
         $(function() {
             <?php foreach($flash->getMessages() as $message): ?>

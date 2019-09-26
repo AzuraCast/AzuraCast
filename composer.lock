@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.6",
+            "version": "3.112.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8dac6904e89d8fb7dcaf8044b964c7e77f332289"
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8dac6904e89d8fb7dcaf8044b964c7e77f332289",
-                "reference": "8dac6904e89d8fb7dcaf8044b964c7e77f332289",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-23T18:11:10+00:00"
+            "time": "2019-09-26T18:13:00+00:00"
         },
         {
             "name": "azuracast/azuracore",
@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "c2d44c363e1f674cae1bcdca67f61dd67c1f869e"
+                "reference": "df5f740eb584999742e8455d807b2d2450b18b89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/c2d44c363e1f674cae1bcdca67f61dd67c1f869e",
-                "reference": "c2d44c363e1f674cae1bcdca67f61dd67c1f869e",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/df5f740eb584999742e8455d807b2d2450b18b89",
+                "reference": "df5f740eb584999742e8455d807b2d2450b18b89",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +159,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-09-24T05:33:22+00:00"
+            "time": "2019-09-26T22:18:25+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -4079,16 +4079,16 @@
         },
         {
             "name": "php-di/phpdoc-reader",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/PhpDocReader.git",
-                "reference": "7d0de60b9341933c8afd172a6255cd7557601e0e"
+                "reference": "15678f7451c020226807f520efb867ad26fbbfcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/PhpDocReader/zipball/7d0de60b9341933c8afd172a6255cd7557601e0e",
-                "reference": "7d0de60b9341933c8afd172a6255cd7557601e0e",
+                "url": "https://api.github.com/repos/PHP-DI/PhpDocReader/zipball/15678f7451c020226807f520efb867ad26fbbfcf",
+                "reference": "15678f7451c020226807f520efb867ad26fbbfcf",
                 "shasum": ""
             },
             "require": {
@@ -4112,7 +4112,7 @@
                 "phpdoc",
                 "reflection"
             ],
-            "time": "2018-02-18T17:39:01+00:00"
+            "time": "2019-09-26T11:24:58+00:00"
         },
         {
             "name": "php-di/slim-bridge",
@@ -9241,12 +9241,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "99b60dd3718d19e6627b6dfc0e5a99dbce1b915d"
+                "reference": "3a9ab646603efdccb4f7c4acbb3b36974ef257d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/99b60dd3718d19e6627b6dfc0e5a99dbce1b915d",
-                "reference": "99b60dd3718d19e6627b6dfc0e5a99dbce1b915d",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3a9ab646603efdccb4f7c4acbb3b36974ef257d8",
+                "reference": "3a9ab646603efdccb4f7c4acbb3b36974ef257d8",
                 "shasum": ""
             },
             "conflict": {
@@ -9270,6 +9270,7 @@
                 "contao/core-bundle": ">=4,<4.4.39|>=4.5,<4.7.5",
                 "contao/listing-bundle": ">=4,<4.4.8",
                 "contao/newsletter-bundle": ">=4,<4.1",
+                "datadog/dd-trace": ">=0.30,<0.30.2",
                 "david-garcia/phpwhois": "<=4.3.1",
                 "doctrine/annotations": ">=1,<1.2.7",
                 "doctrine/cache": ">=1,<1.3.2|>=1.4,<1.4.2",
@@ -9449,7 +9450,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-09-23T15:43:18+00:00"
+            "time": "2019-09-26T17:56:56+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

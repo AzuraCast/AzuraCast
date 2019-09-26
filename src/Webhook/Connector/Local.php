@@ -118,7 +118,7 @@ class Local
         }
 
         $static_path = $static_np_dir . '/' . $station->getShortName() . '.json';
-        file_put_contents($static_path, json_encode($np, JSON_PRETTY_PRINT));
+        file_put_contents($static_path, json_encode($np, JSON_PRETTY_PRINT & JSON_UNESCAPED_SLASHES));
 
         // Send Nchan notification.
         if (NChan::isSupported()) {

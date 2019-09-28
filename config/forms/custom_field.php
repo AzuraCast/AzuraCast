@@ -25,7 +25,7 @@ return [
                     ],
                 ],
 
-                'auto_set_from' => [
+                'auto_assign' => [
                     'select',
                     [
                         'label' => __('Automatically Set from ID3v2 Value'),

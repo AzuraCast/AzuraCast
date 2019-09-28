@@ -66,7 +66,7 @@ class SetupCommand extends CommandAbstract
         $io->section(__('Reload System Data'));
 
         $this->runCommand($output, 'azura:cache:clear');
-        $this->runCommand($output, 'azura:');
+        $this->runCommand($output, 'azura:ca-certs:update');
 
         $io->newLine();
         $io->section(__('Refreshing All Stations'));

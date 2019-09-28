@@ -41,7 +41,7 @@ class SetupCommand extends CommandAbstract
         $io->section(__('Setting Up InfluxDB'));
 
         $this->runCommand($output, 'azuracast:setup:influx');
-        $this->runCommand($output, 'cache:clear');
+        $this->runCommand($output, 'azura:cache:clear');
 
         $io->newLine();
         $io->section(__('Running Database Migrations'));
@@ -63,9 +63,13 @@ class SetupCommand extends CommandAbstract
         }
 
         $io->newLine();
-        $io->section(__('Refreshing All Stations'));
+        $io->section(__('Reload System Data'));
 
-        $this->runCommand($output, 'cache:clear');
+        $this->runCommand($output, 'azura:cache:clear');
+        $this->runCommand($output, 'azura:');
+
+        $io->newLine();
+        $io->section(__('Refreshing All Stations'));
         $this->runCommand($output, 'azuracast:radio:restart');
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */

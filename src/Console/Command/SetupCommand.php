@@ -40,7 +40,6 @@ class SetupCommand extends CommandAbstract
         $io->section(__('Setting Up InfluxDB'));
 
         $this->runCommand($output, 'azuracast:setup:influx');
-        $this->runCommand($output, 'azura:cache:clear');
 
         $io->newLine();
         $io->section(__('Running Database Migrations'));

@@ -95,12 +95,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuracore.git",
-                "reference": "4a5edf75087409d6199f58b0a7d81440e403e308"
+                "reference": "fbbc8bd18d9bc462debe547d031b03ffc6ad0e62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/4a5edf75087409d6199f58b0a7d81440e403e308",
-                "reference": "4a5edf75087409d6199f58b0a7d81440e403e308",
+                "url": "https://api.github.com/repos/AzuraCast/azuracore/zipball/fbbc8bd18d9bc462debe547d031b03ffc6ad0e62",
+                "reference": "fbbc8bd18d9bc462debe547d031b03ffc6ad0e62",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +159,7 @@
                 }
             ],
             "description": "A lightweight core application framework.",
-            "time": "2019-09-29T05:11:36+00:00"
+            "time": "2019-09-29T22:43:56+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -3724,16 +3724,16 @@
         },
         {
             "name": "paragonie/certainty",
-            "version": "v2.5.0",
+            "version": "v2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/certainty.git",
-                "reference": "cc39b91595e577fdff6128d7ce787892bd117274"
+                "reference": "e323b0640af27fa90105c5fbad8e15e6eff226de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/certainty/zipball/cc39b91595e577fdff6128d7ce787892bd117274",
-                "reference": "cc39b91595e577fdff6128d7ce787892bd117274",
+                "url": "https://api.github.com/repos/paragonie/certainty/zipball/e323b0640af27fa90105c5fbad8e15e6eff226de",
+                "reference": "e323b0640af27fa90105c5fbad8e15e6eff226de",
                 "shasum": ""
             },
             "require": {
@@ -3782,7 +3782,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2019-09-27T22:26:33+00:00"
+            "time": "2019-09-29T08:05:22+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

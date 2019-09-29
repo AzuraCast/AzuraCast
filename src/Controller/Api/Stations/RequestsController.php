@@ -17,7 +17,7 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Entity\Repository\StationRepository */
+    /** @var Entity\Repository\StationRequestRepository */
     protected $requestRepo;
 
     /** @var ApiUtilities */

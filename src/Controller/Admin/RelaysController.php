@@ -22,9 +22,11 @@ class RelaysController
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $record_repo = $this->em->getRepository(Entity\Relay::class);
-        $relays = $record_repo->fetchArray(false);
-
+        $relays = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\Relay::class, 'e')
+            ->getQuery()->getArrayResult();
+        
         return $request->getView()->renderToResponse($response, 'admin/relays/index', [
             'relays' => $relays,
         ]);

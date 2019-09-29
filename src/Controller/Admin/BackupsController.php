@@ -49,7 +49,7 @@ class BackupsController
         Config $config,
         Backup $backup_task
     ) {
-        $settings_form = new SettingsForm($em, $config->get('forms/backup'));
+        $settings_form = new SettingsForm($em, $settings_repo, $config->get('forms/backup'));
         $backup_run_form = new Form($config->get('forms/backup_run'));
 
         $this->settings_form = $settings_form;

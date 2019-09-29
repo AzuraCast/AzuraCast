@@ -6,7 +6,6 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -115,7 +114,6 @@ class RelaysController
 
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        /** @var Repository $relay_repo */
         $relay_repo = $this->em->getRepository(Entity\Relay::class);
 
         $body = $request->getParsedBody();

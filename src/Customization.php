@@ -282,4 +282,24 @@ class Customization
         return (bool)$this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING_USE_WEBSOCKETS, false);
     }
 
+    /**
+     * Initialize the CLI without instantiating the Doctrine DB stack (allowing cache clearing, etc.).
+     */
+    public static function initCli(): void
+    {
+        $translator = new Translator();
+
+        /*
+         * TODO: Load translations from environment locale.
+        $locale_base = Settings::getInstance()->getBaseDirectory() . '/resources/locale/compiled';
+        $locale_path = $locale_base . '/' . $this->locale . '.php';
+
+        if (file_exists($locale_path)) {
+            $translator->loadTranslations($locale_path);
+        }
+        */
+
+        $translator->register();
+    }
+
 }

@@ -5,7 +5,7 @@ use App\Entity;
 use App\Service\AzuraCastCentral;
 use App\Settings;
 use Azura\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -15,9 +15,7 @@ class SetupCommand extends CommandAbstract
         SymfonyStyle $io,
         OutputInterface $output,
         Settings $settings,
-        EntityManager $em,
-        Entity\Repository\SettingsRepository $settings_repo,
-        AzuraCastCentral $acCentral,
+        ContainerInterface $di,
         bool $update = false,
         bool $loadFixtures = false
     ) {
@@ -74,6 +72,11 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'azuracast:radio:restart');
 
         // Clear settings that should be reset upon update.
+        // Lazy-load the settings repo to avoid Doctrine being used up until this point.
+
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $di->get(Entity\Repository\SettingsRepository::class);
+
         $settings_repo->setSetting(Entity\Settings::UPDATE_RESULTS, null);
         $settings_repo->setSetting(Entity\Settings::UPDATE_LAST_RUN, time());
         $settings_repo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
@@ -86,6 +89,9 @@ class SetupCommand extends CommandAbstract
                 __('AzuraCast is now updated to the latest version!'),
             ]);
         } else {
+            /** @var AzuraCastCentral $acCentral */
+            $acCentral = $di->get(AzuraCastCentral::class);
+
             $public_ip = $acCentral->getIp(false);
 
             $io->success([

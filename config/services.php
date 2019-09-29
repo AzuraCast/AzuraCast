@@ -379,6 +379,8 @@ return [
      * Controller Groups
      */
 
+    'App\Entity\Fixture\*' => DI\autowire(),
+
     'App\Controller\Admin\*Controller' => DI\autowire(),
 
     'App\Controller\Api\*Controller' => DI\autowire(),

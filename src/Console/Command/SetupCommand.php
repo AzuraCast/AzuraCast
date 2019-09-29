@@ -16,6 +16,7 @@ class SetupCommand extends CommandAbstract
         OutputInterface $output,
         Settings $settings,
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
         AzuraCastCentral $acCentral,
         bool $update = false,
         bool $loadFixtures = false
@@ -71,9 +72,6 @@ class SetupCommand extends CommandAbstract
         $io->newLine();
         $io->section(__('Refreshing All Stations'));
         $this->runCommand($output, 'azuracast:radio:restart');
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
 
         // Clear settings that should be reset upon update.
         $settings_repo->setSetting(Entity\Settings::UPDATE_RESULTS, null);

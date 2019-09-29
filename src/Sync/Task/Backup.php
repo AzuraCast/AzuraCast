@@ -21,15 +21,17 @@ class Backup extends AbstractTask
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      * @param MessageQueue $message_queue
      * @param Application $console
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         MessageQueue $message_queue,
         Application $console
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepo);
 
         $this->messageQueue = $message_queue;
         $this->console = $console;

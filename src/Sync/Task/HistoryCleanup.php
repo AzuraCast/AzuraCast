@@ -8,10 +8,7 @@ class HistoryCleanup extends AbstractTask
 {
     public function run($force = false): void
     {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $days_to_keep = (int)$settings_repo->getSetting(Entity\Settings::HISTORY_KEEP_DAYS,
+        $days_to_keep = (int)$this->settingsRepo->getSetting(Entity\Settings::HISTORY_KEEP_DAYS,
             Entity\SongHistory::DEFAULT_DAYS_TO_KEEP);
 
         if ($days_to_keep !== 0) {

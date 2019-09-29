@@ -12,7 +12,7 @@ use Psr\Http\Message\UriInterface;
  * @ORM\Table(name="songs", indexes={
  *   @ORM\Index(name="search_idx", columns={"text", "artist", "title"})
  * })
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SongRepository")
+ * @ORM\Entity()
  */
 class Song
 {

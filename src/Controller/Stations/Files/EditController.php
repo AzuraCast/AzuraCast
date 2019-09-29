@@ -30,19 +30,31 @@ class EditController extends FilesControllerAbstract
     /** @var array */
     protected $form_config;
 
+    /** @var Entity\Repository\SongRepository */
+    protected $songRepo;
+
+    /** @var Entity\Repository\StationMediaRepository */
+    protected $mediaRepo;
+
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SongRepository $songRepo
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
      * @param Filesystem $filesystem
      * @param Config $config
      * @param Router $router
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SongRepository $songRepo,
+        Entity\Repository\StationMediaRepository $mediaRepo,
         Filesystem $filesystem,
         Config $config,
         Router $router
     ) {
         $this->em = $em;
+        $this->songRepo = $songRepo;
+        $this->mediaRepo = $mediaRepo;
         $this->filesystem = $filesystem;
         $this->form_config = $config->get('forms/media', [
             'router' => $router,
@@ -58,10 +70,7 @@ class EditController extends FilesControllerAbstract
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $media = $media_repo->findOneBy([
-            'station_id' => $station->getId(),
-            'id' => $id,
-        ]);
+        $media = $this->mediaRepo->find($id, $station);
 
         if (!($media instanceof Entity\StationMedia)) {
             throw new NotFoundException(__('Media not found.'));
@@ -88,9 +97,9 @@ class EditController extends FilesControllerAbstract
         $form = new Form($form_config);
 
         // Populate custom fields in form.
-        $media_array = $media_repo->toArray($media);
+        $media_array = $this->mediaRepo->toArray($media);
         if (!empty($custom_fields)) {
-            $media_array['custom_fields'] = $media_repo->getCustomFields($media);
+            $media_array['custom_fields'] = $this->mediaRepo->getCustomFields($media);
         }
 
         $form->populate($media_array);
@@ -118,24 +127,19 @@ class EditController extends FilesControllerAbstract
 
                 /** @var UploadedFileInterface $file */
                 if ($file->getError() === UPLOAD_ERR_OK) {
-                    $media_repo->writeAlbumArt($media, $file->getStream()->getContents());
-                } else {
-                    if ($file->getError() !== UPLOAD_ERR_NO_FILE) {
-                        throw new Exception('Error ' . $file->getError() . ' in uploaded file!');
-                    }
+                    $this->mediaRepo->writeAlbumArt($media, $file->getStream()->getContents());
+                } elseif ($file->getError() !== UPLOAD_ERR_NO_FILE) {
+                    throw new Exception('Error ' . $file->getError() . ' in uploaded file!');
                 }
             }
 
             if ($media_repo->writeToFile($media)) {
-                /** @var Entity\Repository\SongRepository $song_repo */
-                $song_repo = $this->em->getRepository(Entity\Song::class);
-
                 $song_info = [
                     'title' => $media->getTitle(),
                     'artist' => $media->getArtist(),
                 ];
 
-                $song = $song_repo->getOrCreate($song_info);
+                $song = $this->songRepo->getOrCreate($song_info);
                 $song->update($song_info);
                 $this->em->persist($song);
 

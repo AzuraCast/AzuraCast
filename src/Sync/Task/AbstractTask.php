@@ -14,11 +14,12 @@ abstract class AbstractTask
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, Entity\Repository\SettingsRepository $settingsRepo)
     {
         $this->em = $em;
-        $this->settingsRepo = $em->getRepository(Entity\Settings::class);
+        $this->settingsRepo = $settingsRepo;
     }
 
     abstract public function run($force = false): void;

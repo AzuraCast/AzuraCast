@@ -9,7 +9,7 @@ use Psr\Http\Message\UriInterface;
  * @ORM\Table(name="song_history", indexes={
  *   @ORM\Index(name="history_idx", columns={"timestamp_start","timestamp_end","listeners_start"}),
  * })
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SongHistoryRepository")
+ * @ORM\Entity()
  */
 class SongHistory
 {

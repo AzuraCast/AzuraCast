@@ -14,7 +14,7 @@ class UserRepository extends Repository
      */
     public function authenticate($username, $password)
     {
-        $login_info = $this->findOneBy(['email' => $username]);
+        $login_info = $this->repository->findOneBy(['email' => $username]);
 
         if (!($login_info instanceof Entity\User)) {
             return false;
@@ -35,7 +35,7 @@ class UserRepository extends Repository
      */
     public function getOrCreate($email): Entity\User
     {
-        $user = $this->findOneBy(['email' => $email]);
+        $user = $this->repository->findOneBy(['email' => $email]);
 
         if (!($user instanceof Entity\User)) {
             $user = new Entity\User;

@@ -31,17 +31,22 @@ class Manager implements EventSubscriberInterface
      *
      * @param Acl $acl
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settings_repo
      * @param Logger $logger
      * @param Settings $app_settings
      */
-    public function __construct(Acl $acl, EntityManager $em, Logger $logger, Settings $app_settings)
-    {
+    public function __construct(
+        Acl $acl,
+        EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
+        Logger $logger,
+        Settings $app_settings
+    ) {
         $this->acl = $acl;
         $this->em = $em;
         $this->logger = $logger;
         $this->app_settings = $app_settings;
-
-        $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
+        $this->settings_repo = $settings_repo;
     }
 
     public static function getSubscribedEvents()

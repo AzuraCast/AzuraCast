@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  * }, uniqueConstraints={
  *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
  * })
- * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMediaRepository")
+ * @ORM\Entity()
  *
  * @OA\Schema(type="object")
  */

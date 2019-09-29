@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="station_mounts")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *
  * @AuditLog\Auditable

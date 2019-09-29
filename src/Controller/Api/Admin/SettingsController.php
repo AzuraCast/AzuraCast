@@ -31,17 +31,19 @@ class SettingsController
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settings_repo
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManager $em, Serializer $serializer, ValidatorInterface $validator)
-    {
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
+        Serializer $serializer,
+        ValidatorInterface $validator
+    ) {
         $this->em = $em;
         $this->serializer = $serializer;
         $this->validator = $validator;
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
 
         $this->settings_repo = $settings_repo;
         $all_settings = $settings_repo->fetchAll();

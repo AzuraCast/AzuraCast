@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
  * @ORM\Table(name="station_streamers")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\StationStreamerRepository")
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *
  * @AuditLog\Auditable

@@ -14,16 +14,24 @@ class DuplicatesController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\StationMediaRepository */
+    protected $mediaRepo;
+
     /** @var Filesystem */
     protected $filesystem;
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
      * @param Filesystem $filesystem
      */
-    public function __construct(EntityManager $em, Filesystem $filesystem)
-    {
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\StationMediaRepository $mediaRepo,
+        Filesystem $filesystem
+    ) {
         $this->em = $em;
+        $this->mediaRepo = $mediaRepo;
         $this->filesystem = $filesystem;
     }
 
@@ -89,12 +97,7 @@ class DuplicatesController
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
 
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-        $media = $media_repo->findOneBy([
-            'id' => $media_id,
-            'station_id' => $station->getId(),
-        ]);
+        $media = $this->mediaRepo->find($media_id, $station);
 
         if ($media instanceof Entity\StationMedia) {
             $fs->delete($media->getPathUri());

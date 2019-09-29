@@ -15,16 +15,18 @@ class SettingsForm extends Form
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settings_repo
      * @param array $form_config
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
         array $form_config
     ) {
         parent::__construct($form_config);
 
         $this->em = $em;
-        $this->settings_repo = $em->getRepository(Entity\Settings::class);
+        $this->settings_repo = $settings_repo;
     }
 
     /**

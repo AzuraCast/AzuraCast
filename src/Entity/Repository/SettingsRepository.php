@@ -8,14 +8,14 @@ use Ramsey\Uuid\Uuid;
 class SettingsRepository extends Repository
 {
     /** @var array */
-    protected static $settings;
+    protected static $cachedSettings;
 
     /**
      * @param array $settings
      */
     public function setSettings(array $settings): void
     {
-        $all_records_raw = $this->findAll();
+        $all_records_raw = $this->repository->findAll();
 
         $all_records = [];
         foreach ($all_records_raw as $record) {
@@ -35,10 +35,10 @@ class SettingsRepository extends Repository
             }
 
             $record->setSettingValue($setting_value);
-            $this->_em->persist($record);
+            $this->em->persist($record);
 
             // Update cached value
-            self::$settings[$setting_key] = $setting_value;
+            self::$cachedSettings[$setting_key] = $setting_value;
 
             // Include change in audit log.
             if ($prev !== $setting_value) {
@@ -56,10 +56,10 @@ class SettingsRepository extends Repository
                 $changes
             );
 
-            $this->_em->persist($auditLog);
+            $this->em->persist($auditLog);
         }
 
-        $this->_em->flush();
+        $this->em->flush();
     }
 
     /**
@@ -67,14 +67,14 @@ class SettingsRepository extends Repository
      */
     public function deleteSetting($key): void
     {
-        $record = $this->findOneBy(['setting_key' => $key]);
+        $record = $this->repository->findOneBy(['setting_key' => $key]);
 
         if ($record instanceof Entity\Settings) {
-            $this->_em->remove($record);
-            $this->_em->flush($record);
+            $this->em->remove($record);
+            $this->em->flush($record);
         }
 
-        unset(self::$settings[$key]);
+        unset(self::$cachedSettings[$key]);
     }
 
     /**
@@ -82,7 +82,7 @@ class SettingsRepository extends Repository
      */
     public function fetchAll(): array
     {
-        $all_records_raw = $this->findAll();
+        $all_records_raw = $this->repository->findAll();
 
         $all_records = [];
         foreach ($all_records_raw as $record) {
@@ -111,17 +111,17 @@ class SettingsRepository extends Repository
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
-        if (!self::$settings || !$cached) {
-            $settings_raw = $this->_em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC')
+        if (!self::$cachedSettings || !$cached) {
+            $settings_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC')
                 ->getArrayResult();
 
-            self::$settings = [];
+            self::$cachedSettings = [];
             foreach ($settings_raw as $setting) {
-                self::$settings[$setting['setting_key']] = $setting['setting_value'];
+                self::$cachedSettings[$setting['setting_key']] = $setting['setting_value'];
             }
         }
 
-        return self::$settings;
+        return self::$cachedSettings;
     }
 
     /**
@@ -160,17 +160,17 @@ class SettingsRepository extends Repository
      */
     public function setSetting($key, $value): void
     {
-        $record = $this->findOneBy(['setting_key' => $key]);
+        $record = $this->repository->findOneBy(['setting_key' => $key]);
 
         if (!$record instanceof Entity\Settings) {
             $record = new Entity\Settings($key);
         }
 
         $record->setSettingValue($value);
-        $this->_em->persist($record);
-        $this->_em->flush($record);
+        $this->em->persist($record);
+        $this->em->flush($record);
 
         // Update cached value
-        self::$settings[$key] = $value;
+        self::$cachedSettings[$key] = $value;
     }
 }

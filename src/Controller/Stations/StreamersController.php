@@ -16,20 +16,26 @@ class StreamersController extends AbstractStationCrudController
     /** @var AzuraCastCentral */
     protected $ac_central;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settingsRepo;
+
     /**
      * @param EntityFormManager $formManager
      * @param Config $config
      * @param AzuraCastCentral $ac_central
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      */
     public function __construct(
         EntityFormManager $formManager,
         Config $config,
-        AzuraCastCentral $ac_central
+        AzuraCastCentral $ac_central,
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $form = $formManager->getForm(Entity\StationStreamer::class, $config->get('forms/streamer'));
         parent::__construct($form);
 
         $this->ac_central = $ac_central;
+        $this->settingsRepo = $settingsRepo;
         $this->csrf_namespace = 'stations_streamers';
     }
 
@@ -61,12 +67,9 @@ class StreamersController extends AbstractStationCrudController
         }
 
         $be_settings = (array)$station->getBackendConfig();
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
+        
         return $view->renderToResponse($response, 'stations/streamers/index', [
-            'server_url' => $settings_repo->getSetting(Entity\Settings::BASE_URL, ''),
+            'server_url' => $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, ''),
             'stream_port' => $backend->getStreamPort($station),
             'ip' => $this->ac_central->getIp(),
             'streamers' => $station->getStreamers(),

@@ -3,7 +3,6 @@ namespace App\Http;
 
 use App\Entity;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -17,15 +16,13 @@ class Router extends \Azura\Http\Router
     /**
      * @param Settings $settings
      * @param RouteParserInterface $route_parser
-     * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      */
     public function __construct(
         Settings $settings,
         RouteParserInterface $route_parser,
-        EntityManager $em
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        /** @var Entity\Repository\SettingsRepository $settingsRepo */
-        $settingsRepo = $em->getRepository(Entity\Settings::class);
         $this->settingsRepo = $settingsRepo;
 
         parent::__construct($settings, $route_parser);

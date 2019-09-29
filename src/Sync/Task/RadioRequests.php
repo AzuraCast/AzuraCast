@@ -16,18 +16,26 @@ class RadioRequests extends AbstractTask
     /** @var EventDispatcher */
     protected $dispatcher;
 
+    /** @var Entity\Repository\StationRequestRepository */
+    protected $requestRepo;
+
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
+     * @param Entity\Repository\StationRequestRepository $requestRepo
      * @param Adapters $adapters
      * @param EventDispatcher $dispatcher
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\StationRequestRepository $requestRepo,
         Adapters $adapters,
         EventDispatcher $dispatcher
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepo);
 
+        $this->requestRepo = $requestRepo;
         $this->dispatcher = $dispatcher;
         $this->adapters = $adapters;
     }
@@ -41,9 +49,6 @@ class RadioRequests extends AbstractTask
     {
         /** @var Entity\Repository\StationRepository $stations */
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
-
-        /** @var Entity\Repository\StationRequestRepository $request_repo */
-        $request_repo = $this->em->getRepository(Entity\StationRequest::class);
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
@@ -70,7 +75,7 @@ class RadioRequests extends AbstractTask
 
             foreach ($requests as $request) {
                 /** @var Entity\StationRequest $request */
-                $request_repo->checkRecentPlay($request->getTrack(), $station);
+                $this->requestRepo->checkRecentPlay($request->getTrack(), $station);
                 $this->_submitRequest($station, $request);
                 break;
             }
@@ -85,11 +90,8 @@ class RadioRequests extends AbstractTask
             return false;
         }
 
-        /** @var Entity\Repository\SongHistoryRepository $sh_repo */
-        $sh_repo = $this->em->getRepository(Entity\SongHistory::class);
-
         // Check for an existing SongHistory record and skip if one exists.
-        $sh = $sh_repo->findOneBy([
+        $sh = $this->em->getRepository(Entity\SongHistory::class)->findOneBy([
             'station' => $station,
             'request' => $request,
         ]);

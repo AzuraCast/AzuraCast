@@ -5,8 +5,8 @@ use App\Entity\Station;
 use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
-use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 abstract class AbstractStationCrudController
 {
@@ -19,7 +19,7 @@ abstract class AbstractStationCrudController
     /** @var string */
     protected $entity_class;
 
-    /** @var Repository */
+    /** @var EntityRepository */
     protected $record_repo;
 
     /** @var string */

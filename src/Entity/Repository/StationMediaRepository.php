@@ -5,33 +5,64 @@ use App\Entity;
 use App\Exception\MediaProcessingException;
 use App\Radio\Filesystem;
 use Azura\Doctrine\Repository;
-use DI\Annotation\Inject;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping;
+use Azura\Settings;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Exception;
 use getID3;
 use getid3_exception;
 use getid3_writetags;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class StationMediaRepository extends Repository
 {
-    /**
-     * @Inject
-     * @var Filesystem
-     */
+    /** @var Filesystem */
     protected $filesystem;
 
-    /**
-     * @var SongRepository
-     */
+    /** @var SongRepository */
     protected $song_repo;
 
-    public function __construct(EntityManagerInterface $em, Mapping\ClassMetadata $class)
-    {
-        parent::__construct($em, $class);
+    public function __construct(
+        EntityManager $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger,
+        Filesystem $filesystem,
+        SongRepository $song_repo
+    ) {
+        $this->filesystem = $filesystem;
+        $this->song_repo = $song_repo;
 
-        $this->song_repo = $em->getRepository(Entity\Song::class);
+        parent::__construct($em, $serializer, $settings, $logger);
+    }
+
+    /**
+     * @param mixed $id
+     * @param Entity\Station $station
+     *
+     * @return Entity\StationMedia|null
+     */
+    public function find($id, Entity\Station $station): ?Entity\StationMedia
+    {
+        return $this->repository->findOneBy([
+            'station' => $station,
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * @param string $path
+     * @param Entity\Station $station
+     *
+     * @return Entity\StationMedia|null
+     */
+    public function findByPath(string $path, Entity\Station $station): ?Entity\StationMedia
+    {
+        return $this->repository->findOneBy([
+            'station' => $station,
+            'path' => $path,
+        ]);
     }
 
     /**
@@ -45,7 +76,7 @@ class StationMediaRepository extends Repository
     {
         [$dest_prefix, $dest_path] = explode('://', $dest, 2);
 
-        $record = $this->findOneBy([
+        $record = $this->repository->findOneBy([
             'station_id' => $station->getId(),
             'path' => $dest_path,
         ]);
@@ -61,8 +92,8 @@ class StationMediaRepository extends Repository
 
         $record->setMtime(time());
 
-        $this->_em->persist($record);
-        $this->_em->flush($record);
+        $this->em->persist($record);
+        $this->em->flush($record);
 
         return $record;
     }
@@ -88,7 +119,6 @@ class StationMediaRepository extends Repository
 
         // Report any errors found by the file analysis to the logs
         if (!empty($file_info['error'])) {
-
             $media_warning = 'Warning for uploaded media file "' . pathinfo($media->getPath(),
                     PATHINFO_FILENAME) . '": ' . json_encode($file_info['error']);
             error_log($media_warning);
@@ -117,11 +147,9 @@ class StationMediaRepository extends Repository
         if (!empty($file_info['attached_picture'][0])) {
             $picture = $file_info['attached_picture'][0];
             $this->writeAlbumArt($media, $picture['data']);
-        } else {
-            if (!empty($file_info['comments']['picture'][0])) {
-                $picture = $file_info['comments']['picture'][0];
-                $this->writeAlbumArt($media, $picture['data']);
-            }
+        } elseif (!empty($file_info['comments']['picture'][0])) {
+            $picture = $file_info['comments']['picture'][0];
+            $this->writeAlbumArt($media, $picture['data']);
         }
 
         // Attempt to derive title and artist from filename.
@@ -224,7 +252,7 @@ class StationMediaRepository extends Repository
             [$path_prefix, $path] = explode('://', $path, 2);
         }
 
-        $record = $this->findOneBy([
+        $record = $this->repository->findOneBy([
             'station_id' => $station->getId(),
             'path' => $path,
         ]);
@@ -238,8 +266,8 @@ class StationMediaRepository extends Repository
         $processed = $this->processMedia($record);
 
         if ($created) {
-            $this->_em->persist($record);
-            $this->_em->flush($record);
+            $this->em->persist($record);
+            $this->em->flush($record);
         }
 
         return $record;
@@ -280,7 +308,7 @@ class StationMediaRepository extends Repository
         $fs->delete($tmp_uri);
 
         $media->setMtime($media_mtime);
-        $this->_em->persist($media);
+        $this->em->persist($media);
 
         return true;
     }
@@ -396,7 +424,7 @@ class StationMediaRepository extends Repository
      */
     public function getCustomFields(Entity\StationMedia $media)
     {
-        $metadata_raw = $this->_em->createQuery(/** @lang DQL */ 'SELECT e 
+        $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT e 
             FROM App\Entity\StationMediaCustomField e 
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
@@ -418,19 +446,19 @@ class StationMediaRepository extends Repository
      */
     public function setCustomFields(Entity\StationMedia $media, array $custom_fields)
     {
-        $this->_em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->execute();
 
         foreach ($custom_fields as $field_id => $field_value) {
             /** @var Entity\CustomField $field */
-            $field = $this->_em->getReference(Entity\CustomField::class, $field_id);
+            $field = $this->em->getReference(Entity\CustomField::class, $field_id);
 
             $record = new Entity\StationMediaCustomField($media, $field);
             $record->setValue($field_value);
-            $this->_em->persist($record);
+            $this->em->persist($record);
         }
 
-        $this->_em->flush();
+        $this->em->flush();
     }
 }

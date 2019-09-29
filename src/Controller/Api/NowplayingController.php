@@ -17,6 +17,9 @@ class NowplayingController implements EventSubscriberInterface
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settingsRepo;
+
     /** @var CacheInterface */
     protected $cache;
 
@@ -25,12 +28,18 @@ class NowplayingController implements EventSubscriberInterface
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      * @param CacheInterface $cache
      * @param EventDispatcher $dispatcher
      */
-    public function __construct(EntityManager $em, CacheInterface $cache, EventDispatcher $dispatcher)
-    {
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        CacheInterface $cache,
+        EventDispatcher $dispatcher
+    ) {
         $this->em = $em;
+        $this->settingsRepo = $settingsRepo;
         $this->cache = $cache;
         $this->dispatcher = $dispatcher;
     }
@@ -144,10 +153,7 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromSettings(LoadNowPlaying $event)
     {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $event->setNowPlaying((array)$settings_repo->getSetting('nowplaying'), 'settings');
+        $event->setNowPlaying((array)$this->settingsRepo->getSetting('nowplaying'), 'settings');
     }
 
     public function loadFromStations(LoadNowPlaying $event)

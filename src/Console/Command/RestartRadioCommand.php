@@ -13,12 +13,10 @@ class RestartRadioCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManager $em,
+        StationRepository $stationRepo,
         Configuration $configuration,
         ?string $stationName = null
     ) {
-        /** @var StationRepository $stationRepo */
-        $stationRepo = $em->getRepository(Station::class);
-
         if (!empty($stationName)) {
             $station = $stationRepo->findByIdentifier($stationName);
 
@@ -32,7 +30,7 @@ class RestartRadioCommand extends CommandAbstract
             $io->section('Restarting all radio stations...');
 
             /** @var Station[] $stations */
-            $stations = $stationRepo->findAll();
+            $stations = $stationRepo->fetchAll();
         }
 
         $io->progressStart(count($stations));

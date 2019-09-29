@@ -19,12 +19,13 @@ class Settings extends AbstractFixture
             Entity\Settings::CENTRAL_UPDATES => Entity\Settings::UPDATES_NONE,
             Entity\Settings::EXTERNAL_IP => '127.0.0.1',
         ];
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
+        
         foreach ($settings as $setting_key => $setting_value) {
-            $settings_repo->setSetting($setting_key, $setting_value);
+            $record = new Entity\Settings($setting_key);
+            $record->setSettingValue($setting_value);
+            $em->persist($record);
         }
+
+        $em->flush();
     }
 }

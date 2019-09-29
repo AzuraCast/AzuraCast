@@ -3,21 +3,17 @@ namespace App\Console\Command;
 
 use App\Entity;
 use Azura\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetSettingCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
         string $settingKey,
         string $settingValue
     ) {
         $io->title('AzuraCast Settings');
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
 
         if (strtolower($settingValue) === 'null') {
             $settings_repo->deleteSetting($settingKey);

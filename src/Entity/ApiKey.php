@@ -8,7 +8,7 @@ use JsonSerializable;
 
 /**
  * @ORM\Table(name="api_keys")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ApiKeyRepository")
+ * @ORM\Entity()
  *
  * @AuditLog\Auditable
  */

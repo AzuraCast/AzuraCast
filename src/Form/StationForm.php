@@ -6,7 +6,6 @@ use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
 use Azura\Config;
-use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -27,6 +26,7 @@ class StationForm extends EntityForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
+     * @param Entity\Repository\StationRepository $station_repo
      * @param Acl $acl
      * @param Config $config
      */
@@ -34,6 +34,7 @@ class StationForm extends EntityForm
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
+        Entity\Repository\StationRepository $station_repo,
         Acl $acl,
         Config $config
     ) {
@@ -43,15 +44,7 @@ class StationForm extends EntityForm
 
         $this->acl = $acl;
         $this->entityClass = Entity\Station::class;
-        $this->station_repo = $em->getRepository(Entity\Station::class);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getEntityRepository(): Repository
-    {
-        return $this->station_repo;
+        $this->station_repo = $station_repo;
     }
 
     /**

@@ -5,7 +5,6 @@ use App\Entity;
 use App\Entity\Repository\StationRepository;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -24,10 +23,10 @@ class GetStation implements MiddlewareInterface
     protected $adapters;
 
     public function __construct(
-        EntityManager $em,
+        StationRepository $station_repo,
         Adapters $adapters
     ) {
-        $this->station_repo = $em->getRepository(Entity\Station::class);
+        $this->station_repo = $station_repo;
         $this->adapters = $adapters;
     }
 

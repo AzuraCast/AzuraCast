@@ -26,14 +26,15 @@ class ApiKeysController
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\ApiKeyRepository $apiKeyRepository
      * @param Config $config
      */
-    public function __construct(EntityManager $em, Config $config)
+    public function __construct(EntityManager $em, Entity\Repository\ApiKeyRepository $apiKeyRepository, Config $config)
     {
         $this->em = $em;
-        $this->form_config = $config->get('forms/api_key');
+        $this->record_repo = $apiKeyRepository;
 
-        $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
+        $this->form_config = $config->get('forms/api_key');
     }
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
@@ -55,7 +56,7 @@ class ApiKeysController
 
         if (!empty($id)) {
             $new_record = false;
-            $record = $this->record_repo->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
+            $record = $this->record_repo->getRepository()->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
 
             if (!($record instanceof Entity\ApiKey)) {
                 throw new NotFoundException(__('API Key not found.'));
@@ -111,7 +112,7 @@ class ApiKeysController
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
 
-        $record = $this->record_repo->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
+        $record = $this->record_repo->getRepository()->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
 
         if ($record instanceof Entity\ApiKey) {
             $this->em->remove($record);

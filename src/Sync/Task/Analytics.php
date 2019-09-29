@@ -12,11 +12,12 @@ class Analytics extends AbstractTask
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      * @param Database $influx
      */
-    public function __construct(EntityManager $em, Database $influx)
+    public function __construct(EntityManager $em, Entity\Repository\SettingsRepository $settingsRepo, Database $influx)
     {
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepo);
 
         $this->influx = $influx;
     }

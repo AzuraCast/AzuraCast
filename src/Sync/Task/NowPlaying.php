@@ -57,9 +57,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     /** @var Entity\Repository\ListenerRepository */
     protected $listener_repo;
 
-    /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
-
     /** @var string */
     protected $analytics_level;
 
@@ -73,6 +70,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Logger $logger
      * @param EventDispatcher $event_dispatcher
      * @param MessageQueue $message_queue
+     * @param Entity\Repository\SongHistoryRepository $historyRepository
+     * @param Entity\Repository\SongRepository $songRepository
+     * @param Entity\Repository\ListenerRepository $listenerRepository
+     * @param Entity\Repository\SettingsRepository $settingsRepository
      */
     public function __construct(
         EntityManager $em,
@@ -83,9 +84,13 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Database $influx,
         Logger $logger,
         EventDispatcher $event_dispatcher,
-        MessageQueue $message_queue
+        MessageQueue $message_queue,
+        Entity\Repository\SongHistoryRepository $historyRepository,
+        Entity\Repository\SongRepository $songRepository,
+        Entity\Repository\ListenerRepository $listenerRepository,
+        Entity\Repository\SettingsRepository $settingsRepository
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepository);
 
         $this->adapters = $adapters;
         $this->api_utils = $api_utils;
@@ -96,15 +101,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->influx = $influx;
         $this->logger = $logger;
 
-        $this->history_repo = $em->getRepository(Entity\SongHistory::class);
-        $this->song_repo = $em->getRepository(Entity\Song::class);
-        $this->listener_repo = $em->getRepository(Entity\Listener::class);
+        $this->history_repo = $historyRepository;
+        $this->song_repo = $songRepository;
+        $this->listener_repo = $listenerRepository;
 
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
-        $this->settings_repo = $settings_repo;
-        $this->analytics_level = $settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $this->analytics_level = $settingsRepository->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
     }
 
     public static function getSubscribedEvents()
@@ -159,7 +160,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         }
 
         $this->cache->set('api_nowplaying_data', $nowplaying, 120);
-        $this->settings_repo->setSetting('nowplaying', $nowplaying);
+        $this->settingsRepo->setSetting('nowplaying', $nowplaying);
     }
 
     /**
@@ -265,7 +266,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             if ($np_old instanceof Entity\Api\NowPlaying && strcmp($current_song_hash,
                     $np_old->now_playing->song->id) === 0) {
                 /** @var Entity\Song $song_obj */
-                $song_obj = $this->song_repo->find($current_song_hash);
+                $song_obj = $this->song_repo->getRepository()->find($current_song_hash);
 
                 $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
@@ -343,7 +344,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
         // Process extra metadata sent by Liquidsoap (if it exists).
         if (!empty($extra_metadata['song_id'])) {
-            $song = $this->song_repo->find($extra_metadata['song_id']);
+            $song = $this->song_repo->getRepository()->find($extra_metadata['song_id']);
 
             if ($song instanceof Entity\Song) {
                 $sh = $this->history_repo->getCuedSong($song, $station);

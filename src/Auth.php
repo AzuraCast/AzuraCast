@@ -5,7 +5,6 @@ use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
 use Azura\Exception;
-use Doctrine\ORM\EntityManager;
 use Zend\Expressive\Session\SessionInterface;
 
 class Auth
@@ -30,11 +29,11 @@ class Auth
     protected $masqueraded_user;
 
     /**
-     * @param EntityManager $em
+     * @param UserRepository $userRepo
      */
-    public function __construct(EntityManager $em)
+    public function __construct(UserRepository $userRepo)
     {
-        $this->userRepo = $em->getRepository(User::class);
+        $this->userRepo = $userRepo;
     }
 
     public function setSession(SessionInterface $session): void
@@ -101,7 +100,7 @@ class Auth
             } else {
                 $mask_user_id = (int)$this->session->get(self::SESSION_MASQUERADE_USER_ID_KEY);
                 if (0 !== $mask_user_id) {
-                    $user = $this->userRepo->find($mask_user_id);
+                    $user = $this->userRepo->getRepository()->find($mask_user_id);
                 } else {
                     $user = null;
                 }
@@ -164,7 +163,7 @@ class Auth
                 return null;
             }
 
-            $user = $this->userRepo->find($user_id);
+            $user = $this->userRepo->getRepository()->find($user_id);
             if ($user instanceof User) {
                 $this->user = $user;
             } else {
@@ -227,7 +226,7 @@ class Auth
     public function masqueradeAsUser($user_info): void
     {
         if (!($user_info instanceof User)) {
-            $user_info = $this->userRepo->findOneBy($user_info);
+            $user_info = $this->userRepo->getRepository()->findOneBy($user_info);
         }
 
         if (!($user_info instanceof User)) {

@@ -24,15 +24,16 @@ class ProfileController
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\StationRepository $station_repo
      * @param StationForm $station_form
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\StationRepository $station_repo,
         StationForm $station_form
     ) {
         $this->em = $em;
-        $this->station_repo = $em->getRepository(Entity\Station::class);
-
+        $this->station_repo = $station_repo;
         $this->station_form = $station_form;
     }
 

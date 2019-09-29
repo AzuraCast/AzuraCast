@@ -17,7 +17,7 @@ use const PASSWORD_BCRYPT;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
- * @ORM\Entity(repositoryClass="App\Entity\Repository\UserRepository")
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *
  * @AuditLog\Auditable

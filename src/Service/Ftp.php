@@ -41,6 +41,8 @@ class Ftp
      * @param Acl $acl
      * @param Settings $app_settings
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settings_repo
+     * @param Entity\Repository\UserRepository $user_repo
      * @param LoggerInterface $logger
      * @param Router $router
      */
@@ -49,6 +51,8 @@ class Ftp
         Acl $acl,
         Settings $app_settings,
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
+        Entity\Repository\UserRepository $user_repo,
         LoggerInterface $logger,
         Router $router
     ) {
@@ -59,8 +63,8 @@ class Ftp
         $this->logger = $logger;
         $this->router = $router;
 
-        $this->user_repo = $em->getRepository(Entity\User::class);
-        $this->settings_repo = $em->getRepository(Entity\Settings::class);
+        $this->user_repo = $user_repo;
+        $this->settings_repo = $settings_repo;
     }
 
     /**

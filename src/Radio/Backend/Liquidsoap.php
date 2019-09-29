@@ -29,10 +29,14 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /** @var Filesystem */
     protected $filesystem;
 
+    /** @var Entity\Repository\StationStreamerRepository */
+    protected $streamerRepo;
+
     /**
      * @param EntityManager $em
      * @param Supervisor $supervisor
      * @param EventDispatcher $dispatcher
+     * @param Entity\Repository\StationStreamerRepository $streamerRepo
      * @param AutoDJ $autodj
      * @param Filesystem $filesystem
      */
@@ -40,11 +44,13 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         EntityManager $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
+        Entity\Repository\StationStreamerRepository $streamerRepo,
         AutoDJ $autodj,
         Filesystem $filesystem
     ) {
         parent::__construct($em, $supervisor, $dispatcher);
 
+        $this->streamerRepo = $streamerRepo;
         $this->autodj = $autodj;
         $this->filesystem = $filesystem;
     }
@@ -459,7 +465,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $mediaBaseDir = $station->getRadioMediaDir() . '/';
         $playlistFile = [];
 
-        $mediaQuery = $this->em->createQuery(/** @lang DQL */'SELECT DISTINCT sm 
+        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm 
             FROM App\Entity\StationMedia sm 
             JOIN sm.playlists spm  
             WHERE spm.playlist = :playlist
@@ -1073,11 +1079,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         if (strpos($pass, ':') !== false) {
             [$user, $pass] = explode(':', $pass);
         }
-
-        /** @var Entity\Repository\StationStreamerRepository $streamer_repo */
-        $streamer_repo = $this->em->getRepository(Entity\StationStreamer::class);
-
-        $streamer = $streamer_repo->authenticate($station, $user, $pass);
+        
+        $streamer = $this->streamerRepo->authenticate($station, $user, $pass);
 
         if ($streamer instanceof Entity\StationStreamer) {
             Logger::getInstance()->debug('DJ successfully authenticated.', ['username' => $user]);

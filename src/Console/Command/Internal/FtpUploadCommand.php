@@ -15,6 +15,7 @@ class FtpUploadCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManager $em,
+        Entity\Repository\StationRepository $stationRepo,
         LoggerInterface $logger,
         Filesystem $filesystem,
         MessageQueue $messageQueue,
@@ -22,12 +23,9 @@ class FtpUploadCommand extends CommandAbstract
     ) {
         $logger->info('FTP file uploaded', ['path' => $path]);
 
-        /** @var Entity\Repository\StationRepository $station_repo */
-        $stations_repo = $em->getRepository(Entity\Station::class);
-
         // Working backwards from the media's path, find the associated station(s) to process.
         $stations = [];
-        $all_stations = $stations_repo->findAll();
+        $all_stations = $stationRepo->fetchAll();
 
         $parts = explode('/', dirname($path));
         for ($i = count($parts); $i >= 1; $i--) {

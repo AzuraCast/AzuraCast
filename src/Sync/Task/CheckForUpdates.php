@@ -17,13 +17,15 @@ class CheckForUpdates extends AbstractTask
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      * @param AzuraCastCentral $azuracastCentral
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         AzuraCastCentral $azuracastCentral
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepo);
 
         $this->azuracastCentral = $azuracastCentral;
     }

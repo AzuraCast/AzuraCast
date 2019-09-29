@@ -6,7 +6,7 @@ use JsonSerializable;
 
 /**
  * @ORM\Table(name="station_playlist_media")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\StationPlaylistMediaRepository")
+ * @ORM\Entity()
  */
 class StationPlaylistMedia implements JsonSerializable
 {

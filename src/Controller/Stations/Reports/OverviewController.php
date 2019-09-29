@@ -18,16 +18,21 @@ class OverviewController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settingsRepo;
+
     /** @var Database */
     protected $influx;
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      * @param Database $influx
      */
-    public function __construct(EntityManager $em, Database $influx)
+    public function __construct(EntityManager $em, Entity\Repository\SettingsRepository $settingsRepo, Database $influx)
     {
         $this->em = $em;
+        $this->settingsRepo = $settingsRepo;
         $this->influx = $influx;
     }
 
@@ -38,11 +43,8 @@ class OverviewController
         $station_tz = new DateTimeZone($station->getTimezone());
 
         // Get current analytics level.
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $analytics_level = $settings_repo->getSetting(Entity\Settings::LISTENER_ANALYTICS, Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
+            Entity\Analytics::LEVEL_ALL);
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
@@ -198,9 +200,6 @@ class OverviewController
 
         // Compile the above data.
         $song_totals = [];
-
-        /** @var Entity\Repository\SongRepository $song_repo */
-        $song_repo = $this->em->getRepository(Entity\Song::class);
 
         $get_song_q = $this->em->createQuery(/** @lang DQL */ 'SELECT s 
             FROM App\Entity\Song s

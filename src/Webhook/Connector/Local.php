@@ -5,7 +5,6 @@ use App\Entity;
 use App\Event\SendWebhooks;
 use App\Service\NChan;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use InfluxDB\Database;
 use InfluxDB\Point;
@@ -38,11 +37,8 @@ class Local
         Client $http_client,
         Database $influx,
         CacheInterface $cache,
-        EntityManager $em
+        Entity\Repository\SettingsRepository $settings_repo
     ) {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
         $this->logger = $logger;
         $this->http_client = $http_client;
         $this->influx = $influx;

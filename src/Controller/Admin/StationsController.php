@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity;
+use App\Entity\Repository\StationRepository;
 use App\Exception\NotFoundException;
 use App\Form;
 use App\Http\Response;
@@ -11,24 +12,32 @@ use Psr\Http\Message\ResponseInterface;
 
 class StationsController extends AbstractAdminCrudController
 {
+    /** @var Entity\Repository\StationRepository */
+    protected $stationRepo;
+
     /** @var Form\StationCloneForm */
     protected $clone_form;
 
     /**
+     * @param StationRepository $stationRepository
      * @param Form\StationForm $form
      * @param Form\StationCloneForm $clone_form
      */
-    public function __construct(Form\StationForm $form, Form\StationCloneForm $clone_form)
-    {
+    public function __construct(
+        StationRepository $stationRepository,
+        Form\StationForm $form,
+        Form\StationCloneForm $clone_form
+    ) {
         parent::__construct($form);
 
+        $this->stationRepo = $stationRepository;
         $this->clone_form = $clone_form;
         $this->csrf_namespace = 'admin_stations';
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $stations = $this->record_repo->fetchArray(false, 'name');
+        $stations = $this->stationRepo->fetchArray(false, 'name');
 
         return $request->getView()->renderToResponse($response, 'admin/stations/index', [
             'stations' => $stations,
@@ -55,9 +64,7 @@ class StationsController extends AbstractAdminCrudController
 
         $record = $this->record_repo->find((int)$id);
         if ($record instanceof Entity\Station) {
-            /** @var Entity\Repository\StationRepository $record_repo */
-            $record_repo = $this->record_repo;
-            $record_repo->destroy($record);
+            $this->stationRepo->destroy($record);
         }
 
         $request->getFlash()->addMessage(__('Station deleted.'), Flash::SUCCESS);

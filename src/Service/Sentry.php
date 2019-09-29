@@ -7,7 +7,6 @@ use App\Settings;
 use App\Version;
 use Azura\Exception;
 use Doctrine\DBAL\Exception\TableNotFoundException;
-use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
@@ -41,14 +40,11 @@ class Sentry
     protected $hub;
 
     public function __construct(
-        EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
         Settings $app_settings,
         Version $version,
         Client $http_client
     ) {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
         $this->settings_repo = $settings_repo;
         $this->app_settings = $app_settings;
         $this->version = $version;

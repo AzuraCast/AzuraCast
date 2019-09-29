@@ -54,10 +54,7 @@ class AzuraRelay extends AbstractRemote
         $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
+        $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
 
         if ($use_radio_proxy
             || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
@@ -65,11 +62,11 @@ class AzuraRelay extends AbstractRemote
             // Web proxy support.
             return (string)$base_url
                 ->withPath($base_url->getPath() . '/radio/' . $radio_port . $remote->getMount());
-        } else {
-            // Remove port number and other decorations.
-            return (string)$base_url
-                ->withPort($radio_port)
-                ->withPath($remote->getMount());
         }
+
+        // Remove port number and other decorations.
+        return (string)$base_url
+            ->withPort($radio_port)
+            ->withPath($remote->getMount());
     }
 }

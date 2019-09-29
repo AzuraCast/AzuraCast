@@ -13,7 +13,7 @@ class StationMountRepository extends Repository
      */
     public function getDefaultMount(Entity\Station $station): ?Entity\StationMount
     {
-        $mount = $this->findOneBy(['station_id' => $station->getId(), 'is_default' => true]);
+        $mount = $this->repository->findOneBy(['station_id' => $station->getId(), 'is_default' => true]);
 
         if ($mount instanceof Entity\StationMount) {
             return $mount;
@@ -24,8 +24,8 @@ class StationMountRepository extends Repository
 
         if ($mount instanceof Entity\StationMount) {
             $mount->setIsDefault(true);
-            $this->_em->persist($mount);
-            $this->_em->flush();
+            $this->em->persist($mount);
+            $this->em->flush();
 
             return $mount;
         }

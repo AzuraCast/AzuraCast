@@ -4,7 +4,6 @@ namespace App\Middleware\Module;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -20,12 +19,15 @@ class Api
     protected $settings_repo;
 
     /**
-     * @param EntityManager $em
+     * @param Entity\Repository\ApiKeyRepository $apiKeyRepository
+     * @param Entity\Repository\SettingsRepository $settingsRepository
      */
-    public function __construct(EntityManager $em)
-    {
-        $this->api_repo = $em->getRepository(Entity\ApiKey::class);
-        $this->settings_repo = $em->getRepository(Entity\Settings::class);
+    public function __construct(
+        Entity\Repository\ApiKeyRepository $apiKeyRepository,
+        Entity\Repository\SettingsRepository $settingsRepository
+    ) {
+        $this->api_repo = $apiKeyRepository;
+        $this->settings_repo = $settingsRepository;
     }
 
     /**

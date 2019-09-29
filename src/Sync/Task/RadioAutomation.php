@@ -9,19 +9,29 @@ use Doctrine\ORM\EntityManager;
 
 class RadioAutomation extends AbstractTask
 {
-    const DEFAULT_THRESHOLD_DAYS = 14;
+    public const DEFAULT_THRESHOLD_DAYS = 14;
+
+    /** @var Entity\Repository\StationMediaRepository */
+    protected $mediaRepo;
 
     /** @var Adapters */
     protected $adapters;
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
      * @param Adapters $adapters
      */
-    public function __construct(EntityManager $em, Adapters $adapters)
-    {
-        parent::__construct($em);
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\StationMediaRepository $mediaRepo,
+        Adapters $adapters
+    ) {
+        parent::__construct($em, $settingsRepo);
 
+        $this->mediaRepo = $mediaRepo;
         $this->adapters = $adapters;
     }
 
@@ -35,10 +45,7 @@ class RadioAutomation extends AbstractTask
         // Check all stations for automation settings.
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $automation_log = $settings_repo->getSetting('automation_log', []);
+        $automation_log = $this->settingsRepo->getSetting('automation_log', []);
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
@@ -51,7 +58,7 @@ class RadioAutomation extends AbstractTask
             }
         }
 
-        $settings_repo->setSetting('automation_log', $automation_log);
+        $this->settingsRepo->setSetting('automation_log', $automation_log);
     }
 
     /**
@@ -228,10 +235,7 @@ class RadioAutomation extends AbstractTask
 
             $data_points[$row['song_id']][] = $row;
         }
-
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
+        
         $media_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm, spm, sp 
             FROM App\Entity\StationMedia sm 
@@ -246,7 +250,7 @@ class RadioAutomation extends AbstractTask
 
         foreach ($media_raw as $row_obj) {
             /** @var Entity\StationMedia $row_obj */
-            $row = $media_repo->toArray($row_obj);
+            $row = $this->mediaRepo->toArray($row_obj);
 
             $media = [
                 'song_id' => $row['song_id'],

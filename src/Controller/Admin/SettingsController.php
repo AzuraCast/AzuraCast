@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Entity\Repository\SettingsRepository;
 use App\Form\SettingsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -19,10 +20,11 @@ class SettingsController
      *
      * @param Config $config
      * @param EntityManager $em
+     * @param SettingsRepository $settingsRepo
      */
-    public function __construct(Config $config, EntityManager $em)
+    public function __construct(Config $config, EntityManager $em, SettingsRepository $settingsRepo)
     {
-        $form = new SettingsForm($em, $config->get('forms/settings'));
+        $form = new SettingsForm($em, $settingsRepo, $config->get('forms/settings'));
         $this->form = $form;
     }
 

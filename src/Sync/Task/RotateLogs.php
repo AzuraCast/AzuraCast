@@ -12,9 +12,6 @@ use Symfony\Component\Finder\Finder;
 
 class RotateLogs extends AbstractTask
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Adapters */
     protected $adapters;
 
@@ -23,15 +20,17 @@ class RotateLogs extends AbstractTask
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      * @param Adapters $adapters
      * @param Supervisor $supervisor
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Adapters $adapters,
         Supervisor $supervisor
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepo);
 
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
@@ -40,7 +39,6 @@ class RotateLogs extends AbstractTask
     public function run($force = false): void
     {
         // Rotate logs for individual stations.
-        /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
 
         $stations = $station_repo->findAll();
@@ -61,10 +59,7 @@ class RotateLogs extends AbstractTask
         $rotate->run();
 
         // Rotate the automated backups.
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $backups_to_keep = (int)$settings_repo->getSetting(Entity\Settings::BACKUP_KEEP_COPIES, 0);
+        $backups_to_keep = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_KEEP_COPIES, 0);
 
         if ($backups_to_keep > 0) {
             $rotate = new Rotate\Rotate(Backup::BASE_DIR . '/automatic_backup.zip');

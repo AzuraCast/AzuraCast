@@ -2,15 +2,9 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Radio\Adapters;
-use App\Settings;
 use Azura\CaCertificates;
-use Azura\Logger;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
-use studio24\Rotate;
-use Supervisor\Supervisor;
-use Symfony\Component\Finder\Finder;
 
 class UpdateCaCertificates extends AbstractTask
 {
@@ -20,12 +14,16 @@ class UpdateCaCertificates extends AbstractTask
     /** @var LoggerInterface */
     protected $logger;
 
-    public function __construct(EntityManager $em, CaCertificates $caCertificates, LoggerInterface $logger)
-    {
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        CaCertificates $caCertificates,
+        LoggerInterface $logger
+    ) {
         $this->caCertificates = $caCertificates;
         $this->logger = $logger;
 
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepo);
     }
 
     public function run($force = false): void

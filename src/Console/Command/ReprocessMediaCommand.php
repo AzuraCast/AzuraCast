@@ -11,14 +11,12 @@ class ReprocessMediaCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em
+        EntityManager $em,
+        Entity\Repository\StationMediaRepository $media_repo
     ) {
         $io->writeLn('Reloading all metadata for all media...');
 
         $stations = $em->getRepository(Entity\Station::class)->findAll();
-
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $em->getRepository(Entity\StationMedia::class);
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */

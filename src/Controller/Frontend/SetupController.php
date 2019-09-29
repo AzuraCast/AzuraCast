@@ -20,6 +20,9 @@ class SetupController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settings_repo;
+
     /** @var Auth */
     protected $auth;
 
@@ -45,6 +48,7 @@ class SetupController
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepository,
         Auth $auth,
         Acl $acl,
         StationForm $station_form,
@@ -52,6 +56,7 @@ class SetupController
         Settings $settings
     ) {
         $this->em = $em;
+        $this->settings_repo = $settingsRepository;
         $this->auth = $auth;
         $this->acl = $acl;
         $this->station_form = $station_form;
@@ -81,10 +86,7 @@ class SetupController
      */
     protected function _getSetupStep(): string
     {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        if (0 !== (int)$settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
+        if (0 !== (int)$this->settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
             return 'complete';
         }
 
@@ -222,11 +224,8 @@ class SetupController
         }
 
         $form = new Form($this->settings_form_config);
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $existing_settings = $settings_repo->fetchArray(false);
+        
+        $existing_settings = $this->settings_repo->fetchArray(false);
         $form->populate($existing_settings);
 
         if ($request->getMethod() === 'POST' && $form->isValid($_POST)) {
@@ -235,7 +234,7 @@ class SetupController
             // Mark setup as complete along with other settings changes.
             $data['setup_complete'] = time();
 
-            $settings_repo->setSettings($data);
+            $this->settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
             $request->getFlash()->addMessage('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),

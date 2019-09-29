@@ -3,6 +3,7 @@
  * PHP-DI Services
  */
 
+use App;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
@@ -14,13 +15,13 @@ return [
      */
 
     // URL Router helper
-    App\Http\Router::class => function(
+    App\Http\Router::class => function (
         Settings $settings,
         \Slim\App $app,
-        EntityManager $em
+        App\Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $route_parser = $app->getRouteCollector()->getRouteParser();
-        return new App\Http\Router($settings, $route_parser, $em);
+        return new App\Http\Router($settings, $route_parser, $settingsRepo);
     },
     Azura\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
@@ -32,7 +33,7 @@ return [
      * Doctrine Database
      */
 
-    EntityManager::class => DI\decorate(function(EntityManager $em, ContainerInterface $di) {
+    EntityManager::class => DI\decorate(function (EntityManager $em, ContainerInterface $di) {
         $event_manager = $em->getEventManager();
         $event_manager->addEventSubscriber($di->get(App\Doctrine\Event\StationRequiresRestart::class));
         $event_manager->addEventSubscriber($di->get(App\Doctrine\Event\AuditLog::class));
@@ -43,11 +44,28 @@ return [
     App\Doctrine\Event\AuditLog::class => DI\autowire(),
     App\Doctrine\Event\StationRequiresRestart::class => DI\autowire(),
 
+    // Repositories
+    App\Entity\Repository\ApiKeyRepository::class => DI\autowire(),
+    App\Entity\Repository\ListenerRepository::class => DI\autowire(),
+    App\Entity\Repository\RoleRepository::class => DI\autowire(),
+    App\Entity\Repository\RolePermissionRepository::class => DI\autowire(),
+    App\Entity\Repository\SettingsRepository::class => DI\autowire(),
+    App\Entity\Repository\SongHistoryRepository::class => DI\autowire(),
+    App\Entity\Repository\SongRepository::class => DI\autowire(),
+    App\Entity\Repository\StationMediaRepository::class => DI\autowire(),
+    App\Entity\Repository\StationMountRepository::class => DI\autowire(),
+    App\Entity\Repository\StationPlaylistRepository::class => DI\autowire(),
+    App\Entity\Repository\StationPlaylistMediaRepository::class => DI\autowire(),
+    App\Entity\Repository\StationRepository::class => DI\autowire(),
+    App\Entity\Repository\StationRequestRepository::class => DI\autowire(),
+    App\Entity\Repository\StationStreamerRepository::class => DI\autowire(),
+    App\Entity\Repository\UserRepository::class => DI\autowire(),
+
     /*
      * View
      */
 
-    Azura\View::class => DI\decorate(function(Azura\View $view, ContainerInterface $di) {
+    Azura\View::class => DI\decorate(function (Azura\View $view, ContainerInterface $di) {
         $view->registerFunction('mailto', function ($address, $link_text = null) {
             $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
             $link_text = $link_text ?? $address;
@@ -62,19 +80,19 @@ return [
         $view->registerFunction('truncate', function ($text, $length = 80) {
             return App\Utilities::truncateText($text, $length);
         });
-        $view->registerFunction('truncateUrl', function($url) {
+        $view->registerFunction('truncateUrl', function ($url) {
             return App\Utilities::truncateUrl($url);
         });
-        $view->registerFunction('link', function($url, $external = true, $truncate = true) {
+        $view->registerFunction('link', function ($url, $external = true, $truncate = true) {
             $url = htmlspecialchars($url, \ENT_QUOTES, 'UTF-8');
 
-            $a = ['href="'.$url.'"'];
+            $a = ['href="' . $url . '"'];
             if ($external) {
                 $a[] = 'target="_blank"';
             }
 
             $a_body = ($truncate) ? App\Utilities::truncateUrl($url) : $url;
-            return '<a '.implode(' ', $a).'>'.$a_body.'</a>';
+            return '<a ' . implode(' ', $a) . '>' . $a_body . '</a>';
         });
 
         $view->addData([
@@ -91,7 +109,7 @@ return [
      * Event Dispatcher
      */
 
-    Azura\EventDispatcher::class => DI\decorate(function(Azura\EventDispatcher $dispatcher, ContainerInterface $di) {
+    Azura\EventDispatcher::class => DI\decorate(function (Azura\EventDispatcher $dispatcher, ContainerInterface $di) {
         if ($di->has(App\Plugins::class)) {
             /** @var App\Plugins $plugins */
             $plugins = $di->get(App\Plugins::class);
@@ -118,7 +136,7 @@ return [
     App\Validator\Constraints\StationPortCheckerValidator::class => DI\autowire(),
 
     // Message queue manager class
-    App\MessageQueue::class => function(
+    App\MessageQueue::class => function (
         \Redis $redis,
         ContainerInterface $di,
         Monolog\Logger $logger
@@ -128,7 +146,7 @@ return [
 
         $normalizer = new Normalt\Normalizer\AggregateNormalizer([
             new Bernard\Normalizer\EnvelopeNormalizer,
-            new Symfony\Component\Serializer\Normalizer\PropertyNormalizer
+            new Symfony\Component\Serializer\Normalizer\PropertyNormalizer,
         ]);
 
         $symfony_serializer = new Symfony\Component\Serializer\Serializer([$normalizer]);
@@ -160,13 +178,13 @@ return [
     },
 
     // MaxMind (IP Geolocation database for listener metadata)
-    MaxMind\Db\Reader::class => function(Settings $settings) {
-        $mmdb_path = dirname($settings[Settings::BASE_DIR]).'/geoip/GeoLite2-City.mmdb';
+    MaxMind\Db\Reader::class => function (Settings $settings) {
+        $mmdb_path = dirname($settings[Settings::BASE_DIR]) . '/geoip/GeoLite2-City.mmdb';
         return new MaxMind\Db\Reader($mmdb_path);
     },
 
     // InfluxDB
-    InfluxDB\Database::class => function(Settings $settings) {
+    InfluxDB\Database::class => function (Settings $settings) {
         $opts = [
             'host' => $settings->isDocker() ? 'influxdb' : 'localhost',
             'port' => 8086,
@@ -177,7 +195,7 @@ return [
     },
 
     // Supervisor manager
-    Supervisor\Supervisor::class => function(Settings $settings) {
+    Supervisor\Supervisor::class => function (Settings $settings) {
         $guzzle_client = new GuzzleHttp\Client();
         $client = new fXmlRpc\Client(
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
@@ -197,11 +215,11 @@ return [
         return $supervisor;
     },
 
-    Azura\Assets::class => function(Azura\Config $config, Settings $settings) {
+    Azura\Assets::class => function (Azura\Config $config, Settings $settings) {
         $libraries = $config->get('assets');
 
         $versioned_files = [];
-        $assets_file = $settings[Settings::BASE_DIR].'/web/static/assets.json';
+        $assets_file = $settings[Settings::BASE_DIR] . '/web/static/assets.json';
         if (file_exists($assets_file)) {
             $versioned_files = json_decode(file_get_contents($assets_file), true);
         }
@@ -235,14 +253,12 @@ return [
      * Synchronized (Cron) Tasks
      */
 
-    App\Sync\Runner::class => function(
+    App\Sync\Runner::class => function (
         ContainerInterface $di,
         EntityManager $em,
-        Monolog\Logger $logger
+        Monolog\Logger $logger,
+        App\Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        /** @var App\Entity\Repository\SettingsRepository $settingsRepo */
-        $settingsRepo = $em->getRepository(App\Entity\Settings::class);
-
         return new App\Sync\Runner(
             $settingsRepo,
             $logger,
@@ -286,14 +302,14 @@ return [
      * Web Hooks
      */
 
-    App\Webhook\Dispatcher::class => function(
+    App\Webhook\Dispatcher::class => function (
         ContainerInterface $di,
         Azura\Config $config,
         Monolog\Logger $logger
-    ){
+    ) {
         $webhooks = $config->get('webhooks');
         $services = [];
-        foreach($webhooks['webhooks'] as $webhook_key => $webhook_info) {
+        foreach ($webhooks['webhooks'] as $webhook_key => $webhook_info) {
             $services[$webhook_key] = $di->get($webhook_info['class']);
         }
 
@@ -333,19 +349,19 @@ return [
      * Forms
      */
 
-    App\Form\EntityFormManager::class => function(
+    App\Form\EntityFormManager::class => function (
         EntityManager $em,
         Symfony\Component\Serializer\Serializer $serializer,
         Symfony\Component\Validator\Validator\ValidatorInterface $validator,
         ContainerInterface $di
     ) {
         $custom_forms = [
-            App\Entity\Station::class           => $di->get(App\Form\StationForm::class),
-            App\Entity\User::class              => $di->get(App\Form\UserForm::class),
-            App\Entity\RolePermission::class    => $di->get(App\Form\PermissionsForm::class),
-            App\Entity\StationPlaylist::class   => $di->get(App\Form\StationPlaylistForm::class),
-            App\Entity\StationMount::class      => $di->get(App\Form\StationMountForm::class),
-            App\Entity\StationWebhook::class    => $di->get(App\Form\StationWebhookForm::class),
+            App\Entity\Station::class => $di->get(App\Form\StationForm::class),
+            App\Entity\User::class => $di->get(App\Form\UserForm::class),
+            App\Entity\RolePermission::class => $di->get(App\Form\PermissionsForm::class),
+            App\Entity\StationPlaylist::class => $di->get(App\Form\StationPlaylistForm::class),
+            App\Entity\StationMount::class => $di->get(App\Form\StationMountForm::class),
+            App\Entity\StationWebhook::class => $di->get(App\Form\StationWebhookForm::class),
         ];
 
         return new App\Form\EntityFormManager($em, $serializer, $validator, $custom_forms);

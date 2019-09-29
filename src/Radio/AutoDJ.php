@@ -16,6 +16,12 @@ class AutoDJ implements EventSubscriberInterface
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\SongRepository */
+    protected $songRepo;
+
+    /** @var Entity\Repository\StationPlaylistMediaRepository */
+    protected $spmRepo;
+
     /** @var EventDispatcher */
     protected $dispatcher;
 
@@ -27,17 +33,23 @@ class AutoDJ implements EventSubscriberInterface
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SongRepository $songRepo
+     * @param Entity\Repository\StationPlaylistMediaRepository $spmRepo
      * @param EventDispatcher $dispatcher
      * @param Filesystem $filesystem
      * @param Logger $logger
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SongRepository $songRepo,
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
         Logger $logger
     ) {
         $this->em = $em;
+        $this->songRepo = $songRepo;
+        $this->spmRepo = $spmRepo;
         $this->dispatcher = $dispatcher;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
@@ -169,22 +181,18 @@ class AutoDJ implements EventSubscriberInterface
                         }
                     }
                 }
-            } else {
-                if (!empty($sh->getAutodjCustomUri())) {
-                    $custom_uri = $sh->getAutodjCustomUri();
+            } elseif (!empty($sh->getAutodjCustomUri())) {
+                $custom_uri = $sh->getAutodjCustomUri();
 
-                    $event->setSongPath($custom_uri);
-                    if ($sh->getDuration()) {
-                        $event->addAnnotations([
-                            'length' => $sh->getDuration(),
-                        ]);
-                    }
+                $event->setSongPath($custom_uri);
+                if ($sh->getDuration()) {
+                    $event->addAnnotations([
+                        'length' => $sh->getDuration(),
+                    ]);
                 }
             }
-        } else {
-            if (null !== $sh) {
-                $event->setSongPath((string)$sh);
-            }
+        } elseif (null !== $sh) {
+            $event->setSongPath((string)$sh);
         }
     }
 
@@ -315,9 +323,6 @@ class AutoDJ implements EventSubscriberInterface
      */
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist, array $recent_song_history)
     {
-        /** @var Entity\Repository\SongRepository $song_repo */
-        $song_repo = $this->em->getRepository(Entity\Song::class);
-
         $media_to_play = $this->_getQueuedSong($playlist, $recent_song_history);
 
         if ($media_to_play instanceof Entity\StationMedia) {
@@ -341,7 +346,7 @@ class AutoDJ implements EventSubscriberInterface
         if (is_array($media_to_play)) {
             [$media_uri, $media_duration] = $media_to_play;
 
-            $sh = new Entity\SongHistory($song_repo->getOrCreate([
+            $sh = new Entity\SongHistory($this->songRepo->getOrCreate([
                 'text' => 'Remote Playlist URL',
             ]), $playlist->getStation());
 
@@ -371,12 +376,9 @@ class AutoDJ implements EventSubscriberInterface
             return $this->_playRemoteUrl($playlist);
         }
 
-        /** @var Entity\Repository\StationPlaylistMediaRepository $spm_repo */
-        $spm_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
-
         switch ($playlist->getOrder()) {
             case Entity\StationPlaylist::ORDER_RANDOM:
-                $media_queue = $spm_repo->getPlayableMedia($playlist);
+                $media_queue = $this->spmRepo->getPlayableMedia($playlist);
                 $media_id = $this->_preventDuplicates($media_queue, $recent_song_history);
                 break;
 
@@ -384,7 +386,7 @@ class AutoDJ implements EventSubscriberInterface
                 $media_queue = $playlist->getQueue();
 
                 if (empty($media_queue)) {
-                    $media_queue = $spm_repo->getPlayableMedia($playlist);
+                    $media_queue = $this->spmRepo->getPlayableMedia($playlist);
                 }
 
                 $media_arr = array_shift($media_queue);
@@ -399,7 +401,7 @@ class AutoDJ implements EventSubscriberInterface
                 $media_queue_cached = $playlist->getQueue();
 
                 if (empty($media_queue_cached)) {
-                    $media_queue = $spm_repo->getPlayableMedia($playlist);
+                    $media_queue = $this->spmRepo->getPlayableMedia($playlist);
                 } else {
                     // Rekey the media queue because redis won't always properly store keys.
                     $media_queue = [];
@@ -414,7 +416,7 @@ class AutoDJ implements EventSubscriberInterface
                     $this->logger->warning('Duplicate prevention yielded no playable song; resetting song queue.');
 
                     // Pull the entire shuffled playlist if a duplicate title can't be avoided.
-                    $media_queue = $spm_repo->getPlayableMedia($playlist);
+                    $media_queue = $this->spmRepo->getPlayableMedia($playlist);
                     $media_id = $this->_preventDuplicates($media_queue, $recent_song_history, true);
                 }
 

@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="station_requests")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\StationRequestRepository")
+ * @ORM\Entity()
  */
 class StationRequest
 {

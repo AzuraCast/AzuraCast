@@ -39,11 +39,13 @@ class BackupsController
 
     /**
      * @param EntityManager $em
+     * @param SettingsRepository $settings_repo
      * @param Config $config
      * @param Backup $backup_task
      */
     public function __construct(
         EntityManager $em,
+        SettingsRepository $settings_repo,
         Config $config,
         Backup $backup_task
     ) {
@@ -51,7 +53,7 @@ class BackupsController
         $backup_run_form = new Form($config->get('forms/backup_run'));
 
         $this->settings_form = $settings_form;
-        $this->settings_repo = $settings_form->getEntityRepository();
+        $this->settings_repo = $settings_repo;
 
         $this->backup_run_form = $backup_run_form;
 

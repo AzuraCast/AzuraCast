@@ -4,19 +4,15 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Utilities;
 use Azura\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ListSettingsCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em
+        Entity\Repository\SettingsRepository $settings_repo
     ) {
         $io->title(__('AzuraCast Settings'));
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
 
         $headers = [
             __('Setting Key'),

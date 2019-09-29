@@ -4,7 +4,6 @@ namespace App\Service;
 use App\Entity;
 use App\Settings;
 use App\Version;
-use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 
 class AzuraCastCentral
@@ -24,18 +23,18 @@ class AzuraCastCentral
     protected $version;
 
     /**
-     * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settings_repo
      * @param Settings $app_settings
      * @param Version $version
      * @param Client $http_client
      */
     public function __construct(
-        EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
         Settings $app_settings,
         Version $version,
         Client $http_client
     ) {
-        $this->settings_repo = $em->getRepository(Entity\Settings::class);
+        $this->settings_repo = $settings_repo;
         $this->app_settings = $app_settings;
         $this->version = $version;
         $this->http_client = $http_client;

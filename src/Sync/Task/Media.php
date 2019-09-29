@@ -15,6 +15,12 @@ use Symfony\Component\Finder\Finder;
 
 class Media extends AbstractTask
 {
+    /** @var Entity\Repository\StationMediaRepository */
+    protected $mediaRepo;
+
+    /** @var Entity\Repository\StationPlaylistMediaRepository */
+    protected $spmRepo;
+
     /** @var Filesystem */
     protected $filesystem;
 
@@ -23,16 +29,24 @@ class Media extends AbstractTask
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
+     * @param Entity\Repository\StationPlaylistMediaRepository $spmRepo
      * @param Filesystem $filesystem
      * @param MessageQueue $messageQueue
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\StationMediaRepository $mediaRepo,
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Filesystem $filesystem,
         MessageQueue $messageQueue
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $settingsRepo);
 
+        $this->mediaRepo = $mediaRepo;
+        $this->spmRepo = $spmRepo;
         $this->filesystem = $filesystem;
         $this->messageQueue = $messageQueue;
     }
@@ -46,25 +60,20 @@ class Media extends AbstractTask
      */
     public function __invoke(Message\AbstractMessage $message)
     {
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
         try {
             if ($message instanceof Message\ReprocessMediaMessage) {
-                $media_row = $media_repo->find($message->media_id);
+                $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
 
                 if ($media_row instanceof Entity\StationMedia) {
-                    $media_repo->processMedia($media_row, $message->force);
+                    $this->mediaRepo->processMedia($media_row, $message->force);
 
                     $this->em->flush($media_row);
                 }
-            } else {
-                if ($message instanceof Message\AddNewMediaMessage) {
-                    $station = $this->em->find(Entity\Station::class, $message->station_id);
+            } elseif ($message instanceof Message\AddNewMediaMessage) {
+                $station = $this->em->find(Entity\Station::class, $message->station_id);
 
-                    if ($station instanceof Entity\Station) {
-                        $media_repo->getOrCreate($station, $message->path);
-                    }
+                if ($station instanceof Entity\Station) {
+                    $this->mediaRepo->getOrCreate($station, $message->path);
                 }
             }
         } finally {
@@ -141,10 +150,8 @@ class Media extends AbstractTask
 
                 if ($message instanceof Message\ReprocessMediaMessage) {
                     $queued_media_updates[$message->media_id] = true;
-                } else {
-                    if ($message instanceof Message\AddNewMediaMessage && $message->station_id === $station->getId()) {
-                        $queued_new_files[$message->path] = true;
-                    }
+                } elseif ($message instanceof Message\AddNewMediaMessage && $message->station_id === $station->getId()) {
+                    $queued_new_files[$message->path] = true;
                 }
             }
 
@@ -154,12 +161,6 @@ class Media extends AbstractTask
 
             $queue_position += $queue_iteration;
         }
-
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
-        /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
-        $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
 
         $existing_media_q = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm 
@@ -204,7 +205,7 @@ class Media extends AbstractTask
 
                 unset($music_files[$path_hash]);
             } else {
-                $playlists_media_repo->clearPlaylistsFromMedia($media_row);
+                $this->spmRepo->clearPlaylistsFromMedia($media_row);
 
                 // Delete the now-nonexistent media item.
                 $this->em->remove($media_row);

@@ -80,15 +80,12 @@ class Icecast extends AbstractFrontend
 
     protected function _getDefaults(Entity\Station $station)
     {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
         $config_dir = $station->getRadioConfigDir();
 
         $defaults = [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
-            'hostname' => $settings_repo->getSetting('base_url', 'localhost'),
+            'hostname' => $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, 'localhost'),
             'limits' => [
                 'clients' => 2500,
                 'sources' => $station->getMounts()->count(),

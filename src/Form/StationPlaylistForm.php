@@ -22,6 +22,7 @@ class StationPlaylistForm extends EntityForm
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
      * @param Config $config
@@ -29,6 +30,7 @@ class StationPlaylistForm extends EntityForm
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config,
@@ -41,7 +43,7 @@ class StationPlaylistForm extends EntityForm
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\StationPlaylist::class;
-        $this->playlistMediaRepo = $em->getRepository(Entity\StationPlaylistMedia::class);
+        $this->playlistMediaRepo = $playlistMediaRepo;
     }
 
     public function process(ServerRequest $request, $record = null)

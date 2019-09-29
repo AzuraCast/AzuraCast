@@ -4,7 +4,6 @@ namespace App\Entity\Repository;
 use App\Entity;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\NoResultException;
-use Exception;
 
 class StationPlaylistMediaRepository extends Repository
 {
@@ -24,12 +23,12 @@ class StationPlaylistMediaRepository extends Repository
         int $weight = 0
     ): int {
         if ($playlist->getSource() !== Entity\StationPlaylist::SOURCE_SONGS) {
-            throw new Exception('This playlist is not meant to contain songs!');
+            throw new \RuntimeException('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
-            $record = $this->findOneBy([
+            $record = $this->repository->findOneBy([
                 'media_id' => $media->getId(),
                 'playlist_id' => $playlist->getId(),
             ]);
@@ -40,7 +39,7 @@ class StationPlaylistMediaRepository extends Repository
         if ($record instanceof Entity\StationPlaylistMedia) {
             if (0 !== $weight) {
                 $record->setWeight($weight);
-                $this->_em->persist($record);
+                $this->em->persist($record);
             }
         } else {
             if (0 === $weight) {
@@ -49,12 +48,12 @@ class StationPlaylistMediaRepository extends Repository
 
             $record = new Entity\StationPlaylistMedia($playlist, $media);
             $record->setWeight($weight);
-            $this->_em->persist($record);
+            $this->em->persist($record);
         }
 
         // Add the newly added song into the cached queue.
         $playlist->setQueue(null);
-        $this->_em->persist($playlist);
+        $this->em->persist($playlist);
 
         return $weight;
     }
@@ -62,7 +61,7 @@ class StationPlaylistMediaRepository extends Repository
     public function getHighestSongWeight(Entity\StationPlaylist $playlist): int
     {
         try {
-            $highest_weight = $this->_em->createQuery(/** @lang DQL */ 'SELECT 
+            $highest_weight = $this->em->createQuery(/** @lang DQL */ 'SELECT 
                 MAX(e.weight) 
                 FROM App\Entity\StationPlaylistMedia e 
                 WHERE e.playlist_id = :playlist_id')
@@ -85,7 +84,7 @@ class StationPlaylistMediaRepository extends Repository
     public function clearPlaylistsFromMedia(Entity\StationMedia $media): array
     {
         $affected_playlists = [];
-        $playlists = $this->_em->createQuery(/** @lang DQL */ 'SELECT e, p 
+        $playlists = $this->em->createQuery(/** @lang DQL */ 'SELECT e, p 
             FROM App\Entity\StationPlaylistMedia e JOIN e.playlist p 
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
@@ -99,13 +98,13 @@ class StationPlaylistMediaRepository extends Repository
 
         // Clear the playback queue.
         if (!empty($affected_playlists)) {
-            $this->_em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\StationPlaylist sp
+            $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\StationPlaylist sp
             SET sp.queue=null WHERE sp.id IN (:ids)')
                 ->setParameter('ids', array_keys($affected_playlists))
                 ->execute();
         }
 
-        $this->_em->createQuery(/** @lang DQL */ 'DELETE 
+        $this->em->createQuery(/** @lang DQL */ 'DELETE 
             FROM App\Entity\StationPlaylistMedia e
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
@@ -126,7 +125,7 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping): void
     {
-        $update_query = $this->_em->createQuery(/** @lang DQL */ 'UPDATE 
+        $update_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE 
             App\Entity\StationPlaylistMedia e 
             SET e.weight = :weight
             WHERE e.playlist_id = :playlist_id 
@@ -141,13 +140,13 @@ class StationPlaylistMediaRepository extends Repository
 
         // Clear the playback queue.
         $playlist->setQueue(null);
-        $this->_em->persist($playlist);
-        $this->_em->flush($playlist);
+        $this->em->persist($playlist);
+        $this->em->flush($playlist);
     }
 
     public function getPlayableMedia(Entity\StationPlaylist $playlist): array
     {
-        $all_media = $this->_em->createQuery(/** @lang DQL */ 'SELECT 
+        $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm.id, sm.song_id, sm.artist, sm.title
             FROM App\Entity\StationMedia sm
             JOIN sm.playlists spm

@@ -18,11 +18,15 @@ class StationsController extends AbstractAdminApiCrudController
     /** @var Entity\Repository\StationRepository */
     protected $station_repo;
 
-    public function __construct(EntityManager $em, Serializer $serializer, ValidatorInterface $validator)
-    {
+    public function __construct(
+        EntityManager $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        Entity\Repository\StationRepository $station_repo
+    ) {
         parent::__construct($em, $serializer, $validator);
 
-        $this->station_repo = $em->getRepository(Entity\Station::class);
+        $this->station_repo = $station_repo;
     }
 
     /**

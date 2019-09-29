@@ -17,16 +17,30 @@ class BatchController extends FilesControllerAbstract
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\StationMediaRepository */
+    protected $mediaRepo;
+
+    /** @var Entity\Repository\StationPlaylistMediaRepository */
+    protected $playlistMediaRepo;
+
     /** @var Filesystem */
     protected $filesystem;
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
+     * @param Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo
      * @param Filesystem $filesystem
      */
-    public function __construct(EntityManager $em, Filesystem $filesystem)
-    {
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\StationMediaRepository $mediaRepo,
+        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        Filesystem $filesystem
+    ) {
         $this->em = $em;
+        $this->mediaRepo = $mediaRepo;
+        $this->playlistMediaRepo = $playlistMediaRepo;
         $this->filesystem = $filesystem;
     }
 
@@ -43,12 +57,6 @@ class BatchController extends FilesControllerAbstract
 
         $station = $request->getStation();
         $fs = $this->filesystem->getForStation($station);
-
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
-        /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
-        $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
 
         // Convert from pipe-separated files parameter into actual paths.
         $files_raw = $_POST['files'];
@@ -84,12 +92,9 @@ class BatchController extends FilesControllerAbstract
                 foreach ($music_files as $file) {
                     try {
                         /** @var Entity\StationMedia $media */
-                        $media = $media_repo->findOneBy([
-                            'station_id' => $station->getId(),
-                            'path' => $file['path'],
-                        ]);
+                        $media = $this->mediaRepo->findByPath($file['path'], $station);
 
-                        $media_playlists = $playlists_media_repo->clearPlaylistsFromMedia($media);
+                        $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media);
 
                         foreach ($media_playlists as $playlist_id => $playlist) {
                             if (!isset($affected_playlists[$playlist_id])) {
@@ -171,7 +176,7 @@ class BatchController extends FilesControllerAbstract
                         if ($playlist instanceof Entity\StationPlaylist) {
                             $affected_playlists[$playlist->getId()] = $playlist;
                             $playlists[] = $playlist;
-                            $playlist_weights[$playlist->getId()] = $playlists_media_repo->getHighestSongWeight($playlist);
+                            $playlist_weights[$playlist->getId()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
                         }
                     }
                 }
@@ -181,9 +186,9 @@ class BatchController extends FilesControllerAbstract
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $media_repo->getOrCreate($station, $file['path']);
+                        $media = $this->mediaRepo->getOrCreate($station, $file['path']);
 
-                        $media_playlists = $playlists_media_repo->clearPlaylistsFromMedia($media);
+                        $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media);
                         foreach ($media_playlists as $playlist_id => $playlist) {
                             if (!isset($affected_playlists[$playlist_id])) {
                                 $affected_playlists[$playlist_id] = $playlist;
@@ -194,7 +199,7 @@ class BatchController extends FilesControllerAbstract
                             $playlist_weights[$playlist->getId()]++;
                             $weight = $playlist_weights[$playlist->getId()];
 
-                            $playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
+                            $this->playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
@@ -231,7 +236,7 @@ class BatchController extends FilesControllerAbstract
                             throw new \Azura\Exception(__('Path "%s" is not a folder.', $directory_path_full));
                         }
 
-                        $media = $media_repo->getOrCreate($station, $file['path']);
+                        $media = $this->mediaRepo->getOrCreate($station, $file['path']);
 
                         $old_full_path = $media->getPathUri();
                         $media->setPath($directory_path . DIRECTORY_SEPARATOR . $file['basename']);

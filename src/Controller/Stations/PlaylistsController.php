@@ -14,18 +14,25 @@ use Psr\Http\Message\ResponseInterface;
 
 class PlaylistsController extends AbstractStationCrudController
 {
+    /** @var Entity\Repository\StationPlaylistRepository */
+    protected $playlist_repo;
+
     /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected $playlist_media_repo;
 
     /**
      * @param StationPlaylistForm $form
      */
-    public function __construct(StationPlaylistForm $form)
-    {
+    public function __construct(
+        StationPlaylistForm $form,
+        Entity\Repository\StationPlaylistRepository $playlistRepo,
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo
+    ) {
         parent::__construct($form);
 
         $this->csrf_namespace = 'stations_playlists';
-        $this->playlist_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
+        $this->playlist_repo = $playlistRepo;
+        $this->playlist_media_repo = $spmRepo;
     }
 
     /**
@@ -65,7 +72,7 @@ class PlaylistsController extends AbstractStationCrudController
             WHERE spm.playlist = :playlist');
 
         foreach ($all_playlists as $playlist) {
-            $playlist_row = $this->record_repo->toArray($playlist);
+            $playlist_row = $this->playlist_repo->toArray($playlist);
 
             if ($playlist->getIsEnabled()) {
                 if (Entity\StationPlaylist::TYPE_DEFAULT === $playlist->getType()) {

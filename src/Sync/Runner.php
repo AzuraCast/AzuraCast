@@ -5,7 +5,6 @@ use App\Entity;
 use App\Entity\Repository\SettingsRepository;
 use App\Settings;
 use Monolog\Logger;
-use Pimple\ServiceIterator;
 
 /**
  * The runner of scheduled synchronization tasks.

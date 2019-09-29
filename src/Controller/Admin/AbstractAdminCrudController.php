@@ -4,8 +4,8 @@ namespace App\Controller\Admin;
 use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
-use Azura\Doctrine\Repository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 abstract class AbstractAdminCrudController
 {
@@ -18,7 +18,7 @@ abstract class AbstractAdminCrudController
     /** @var string */
     protected $entity_class;
 
-    /** @var Repository */
+    /** @var EntityRepository */
     protected $record_repo;
 
     /** @var string */

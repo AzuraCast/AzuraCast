@@ -21,6 +21,12 @@ class FilesController extends FilesControllerAbstract
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\StationMediaRepository */
+    protected $mediaRepo;
+
+    /** @var Entity\Repository\StationPlaylistMediaRepository */
+    protected $spmRepo;
+
     /** @var Filesystem */
     protected $filesystem;
 
@@ -32,17 +38,23 @@ class FilesController extends FilesControllerAbstract
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
+     * @param Entity\Repository\StationPlaylistMediaRepository $spmRepo
      * @param Filesystem $filesystem
      * @param Config $config
      * @param Ftp $ftp
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\StationMediaRepository $mediaRepo,
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Filesystem $filesystem,
         Config $config,
         Ftp $ftp
     ) {
         $this->em = $em;
+        $this->mediaRepo = $mediaRepo;
+        $this->spmRepo = $spmRepo;
         $this->filesystem = $filesystem;
         $this->form_config = $config->get('forms/rename');
         $this->ftp = $ftp;
@@ -227,12 +239,6 @@ class FilesController extends FilesControllerAbstract
             }
 
             if (is_array($flow_response)) {
-                /** @var Entity\Repository\StationMediaRepository $media_repo */
-                $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
-                /** @var Entity\Repository\StationPlaylistMediaRepository $playlists_media_repo */
-                $playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
-
                 $file = $request->getAttribute('file');
                 $file_path = $request->getAttribute('file_path');
 
@@ -242,7 +248,7 @@ class FilesController extends FilesControllerAbstract
                     ? $file_path . $sanitized_name
                     : $file_path . '/' . $sanitized_name;
 
-                $station_media = $media_repo->uploadFile($station, $flow_response['path'], $final_path);
+                $station_media = $this->mediaRepo->uploadFile($station, $flow_response['path'], $final_path);
 
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
                 if (!empty($params['searchPhrase'])) {
@@ -257,7 +263,7 @@ class FilesController extends FilesControllerAbstract
                         ]);
 
                         if ($playlist instanceof Entity\StationPlaylist) {
-                            $playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
+                            $this->spmRepo->addMediaToPlaylist($station_media, $playlist);
                             $this->em->flush();
                         }
                     }

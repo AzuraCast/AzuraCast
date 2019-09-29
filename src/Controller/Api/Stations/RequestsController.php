@@ -17,16 +17,24 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\StationRepository */
+    protected $requestRepo;
+
     /** @var ApiUtilities */
     protected $api_utils;
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\StationRequestRepository $requestRepo
      * @param ApiUtilities $api_utils
      */
-    public function __construct(EntityManager $em, ApiUtilities $api_utils)
-    {
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\StationRequestRepository $requestRepo,
+        ApiUtilities $api_utils
+    ) {
         $this->em = $em;
+        $this->requestRepo = $requestRepo;
         $this->api_utils = $api_utils;
     }
 
@@ -161,9 +169,7 @@ class RequestsController
         $is_authenticated = !empty($request->getAttribute(ServerRequest::ATTR_USER));
 
         try {
-            /** @var Entity\Repository\StationRequestRepository $request_repo */
-            $request_repo = $this->em->getRepository(Entity\StationRequest::class);
-            $request_repo->submit($station, $media_id, $is_authenticated);
+            $this->requestRepo->submit($station, $media_id, $is_authenticated);
 
             return $response->withJson(new Entity\Api\Status(true, __('Request submitted successfully.')));
         } catch (Exception $e) {

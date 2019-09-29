@@ -25,7 +25,11 @@ class CustomFieldsController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $records = $this->record_repo->fetchArray(true, 'name');
+        $records = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\CustomField::class, 'e')
+            ->orderBy('e.name')
+            ->getQuery()->getArrayResult();
 
         return $request->getView()->renderToResponse($response, 'admin/custom_fields/index', [
             'records' => $records,
@@ -36,7 +40,8 @@ class CustomFieldsController extends AbstractAdminCrudController
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
         if (false !== $this->_doEdit($request, $id)) {
-            $request->getFlash()->addMessage(($id ? __('Custom Field updated.') : __('Custom Field added.')), Flash::SUCCESS);
+            $request->getFlash()->addMessage(($id ? __('Custom Field updated.') : __('Custom Field added.')),
+                Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
         }
 

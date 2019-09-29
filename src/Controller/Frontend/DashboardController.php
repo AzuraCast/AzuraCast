@@ -20,6 +20,9 @@ class DashboardController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settingsRepo;
+
     /** @var Acl */
     protected $acl;
 
@@ -40,6 +43,7 @@ class DashboardController
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\SettingsRepository $settingsRepo
      * @param Acl $acl
      * @param CacheInterface $cache
      * @param Database $influx
@@ -48,6 +52,7 @@ class DashboardController
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Acl $acl,
         CacheInterface $cache,
         Database $influx,
@@ -55,6 +60,7 @@ class DashboardController
         EventDispatcher $dispatcher
     ) {
         $this->em = $em;
+        $this->settingsRepo = $settingsRepo;
         $this->acl = $acl;
         $this->cache = $cache;
         $this->influx = $influx;
@@ -70,11 +76,8 @@ class DashboardController
 
         $show_admin = $this->acl->userAllowed($user, Acl::GLOBAL_VIEW);
 
-        /** @var Entity\Repository\StationRepository $station_repo */
-        $station_repo = $this->em->getRepository(Entity\Station::class);
-
         /** @var Entity\Station[] $stations */
-        $stations = $station_repo->findAll();
+        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         // Don't show stations the user can't manage.
         $stations = array_filter($stations, function ($station) use ($user) {
@@ -134,11 +137,8 @@ class DashboardController
         }
 
         // Detect current analytics level.
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
-        $analytics_level = $settings_repo->getSetting(Entity\Settings::LISTENER_ANALYTICS, Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
+            Entity\Analytics::LEVEL_ALL);
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $metrics = null;

@@ -15,9 +15,9 @@ class ApiKeyRepository extends Repository
      */
     public function authenticate($key_string): ?Entity\User
     {
-        list($key_identifier, $key_verifier) = explode(':', $key_string);
+        [$key_identifier, $key_verifier] = explode(':', $key_string);
 
-        $api_key = $this->find($key_identifier);
+        $api_key = $this->repository->find($key_identifier);
 
         if ($api_key instanceof Entity\ApiKey) {
             return ($api_key->verify($key_verifier))

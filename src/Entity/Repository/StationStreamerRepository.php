@@ -22,7 +22,7 @@ class StationStreamerRepository extends Repository
             return false;
         }
 
-        $streamer = $this->findOneBy([
+        $streamer = $this->repository->findOneBy([
             'station_id' => $station->getId(),
             'streamer_username' => $username,
             'is_active' => 1,
@@ -48,7 +48,7 @@ class StationStreamerRepository extends Repository
     {
         $reactivate_at = $reactivate_at ?? time();
 
-        return $this->createQueryBuilder('s')
+        return $this->repository->createQueryBuilder('s')
             ->where('s.is_active = 0')
             ->andWhere('s.reactivate_at <= :reactivate_at')
             ->setParameter('reactivate_at', $reactivate_at)

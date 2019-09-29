@@ -27,21 +27,26 @@ class StationCloneForm extends StationForm
      * @param EntityManager $em
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
+     * @param Entity\Repository\StationRepository $station_repo
      * @param Acl $acl
      * @param Configuration $configuration
      * @param Media $media_sync
      * @param Config $config
+     *
+     * @throws \AzuraForms\Exception\FieldAlreadyExists
+     * @throws \AzuraForms\Exception\FieldClassNotFound
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
+        Entity\Repository\StationRepository $station_repo,
         Acl $acl,
         Configuration $configuration,
         Media $media_sync,
         Config $config
     ) {
-        parent::__construct($em, $serializer, $validator, $acl, $config);
+        parent::__construct($em, $serializer, $validator, $station_repo, $acl, $config);
 
         $form_config = $config->get('forms/station_clone');
         $this->configure($form_config);

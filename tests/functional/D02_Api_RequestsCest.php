@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity;
 
 class D02_Api_RequestsCest extends CestAbstract
@@ -17,7 +18,7 @@ class D02_Api_RequestsCest extends CestAbstract
 
         // Upload a test song.
         $song_src = '/var/azuracast/www/resources/error.mp3';
-        $song_dest = $this->test_station->getRadioMediaDir().'/test.mp3';
+        $song_dest = $this->test_station->getRadioMediaDir() . '/test.mp3';
         copy($song_src, $song_dest);
 
         $playlist = new Entity\StationPlaylist($this->test_station);
@@ -26,7 +27,7 @@ class D02_Api_RequestsCest extends CestAbstract
         $this->em->persist($playlist);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+        $media_repo = $this->di->get(Entity\Repository\StationMediaRepository::class);
 
         $media = new Entity\StationMedia($this->test_station, 'test.mp3');
         $media_repo->loadFromFile($media, $song_dest);
@@ -43,12 +44,12 @@ class D02_Api_RequestsCest extends CestAbstract
 
         $station_id = $this->test_station->getId();
 
-        $I->sendGET('/api/station/'.$station_id.'/requests');
+        $I->sendGET('/api/station/' . $station_id . '/requests');
 
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);
 
-        $I->sendGET('/api/station/'.$station_id.'/request/'.$media->getUniqueId());
+        $I->sendGET('/api/station/' . $station_id . '/request/' . $media->getUniqueId());
 
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);

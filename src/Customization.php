@@ -3,7 +3,6 @@ namespace App;
 
 use App\Entity;
 use App\Service\NChan;
-use Doctrine\ORM\EntityManager;
 use Gettext\Translator;
 use GuzzleHttp\Psr7\Uri;
 use Locale;
@@ -26,12 +25,9 @@ class Customization
     /** @var string|null */
     protected $locale;
 
-    public function __construct(EntityManager $em)
+    public function __construct(Entity\Repository\SettingsRepository $settingsRepo)
     {
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
-        $this->settingsRepo = $settings_repo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**

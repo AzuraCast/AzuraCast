@@ -32,7 +32,7 @@ class StationRequestRepository extends Repository
         }
 
         // Verify that Track ID exists with station.
-        $media_repo = $this->_em->getRepository(Entity\StationMedia::class);
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
         $media_item = $media_repo->findOneBy(['unique_id' => $track_id, 'station_id' => $station->getId()]);
 
         if (!($media_item instanceof Entity\StationMedia)) {
@@ -57,7 +57,7 @@ class StationRequestRepository extends Repository
             $threshold_mins = $station->getRequestThreshold() ?? 5;
             $threshold_seconds = $threshold_mins * 60;
 
-            $recent_requests = $this->_em->createQuery(/** @lang DQL */ 'SELECT sr 
+            $recent_requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr 
                 FROM App\Entity\StationRequest sr 
                 WHERE sr.ip = :user_ip 
                 AND sr.timestamp >= :threshold')
@@ -72,8 +72,8 @@ class StationRequestRepository extends Repository
 
         // Save request locally.
         $record = new Entity\StationRequest($station, $media_item);
-        $this->_em->persist($record);
-        $this->_em->flush();
+        $this->em->persist($record);
+        $this->em->flush();
 
         return $record->getId();
     }
@@ -92,7 +92,7 @@ class StationRequestRepository extends Repository
         $pending_request_threshold = time() - (60 * 10);
 
         try {
-            $pending_request = $this->_em->createQuery(/** @lang DQL */ 'SELECT sr.timestamp 
+            $pending_request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr.timestamp 
                 FROM App\Entity\StationRequest sr
                 WHERE sr.track_id = :track_id 
                 AND sr.station_id = :station_id 
@@ -134,7 +134,7 @@ class StationRequestRepository extends Repository
         $last_play_threshold = time() - ($last_play_threshold_mins * 60);
 
         try {
-            $last_play_time = $this->_em->createQuery(/** @lang DQL */ 'SELECT sh.timestamp_start 
+            $last_play_time = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.timestamp_start 
                 FROM App\Entity\SongHistory sh 
                 WHERE sh.media_id = :media_id 
                 AND sh.station_id = :station_id

@@ -5,7 +5,6 @@ use App\Entity;
 use App\Http\Response;
 use Azura\App;
 use Azura\Assets;
-use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,9 +19,6 @@ class EnforceSecurity implements MiddlewareInterface
     /** @var ResponseFactoryInterface */
     protected $responseFactory;
 
-    /** @var EntityManager */
-    protected $em;
-
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
@@ -31,14 +27,11 @@ class EnforceSecurity implements MiddlewareInterface
 
     public function __construct(
         App $app,
-        EntityManager $em,
+        Entity\Repository\SettingsRepository $settings_repo,
         Assets $assets
     ) {
         $this->responseFactory = $app->getResponseFactory();
-
-        $this->em = $em;
-        $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
-
+        $this->settings_repo = $settings_repo;
         $this->assets = $assets;
     }
 

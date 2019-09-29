@@ -12,6 +12,7 @@ class SetAdministratorCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManager $em,
+        Entity\Repository\RolePermissionRepository $perms_repo,
         string $email
     ) {
         $io->title('Set Administrator');
@@ -22,9 +23,6 @@ class SetAdministratorCommand extends CommandAbstract
         if ($user instanceof Entity\User) {
             $admin_role = $em->getRepository(Entity\Role::class)
                 ->find(Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID);
-
-            /** @var Entity\Repository\RolePermissionRepository $perms_repo */
-            $perms_repo = $em->getRepository(Entity\RolePermission::class);
 
             $perms_repo->setActionsForRole($admin_role, [
                 'actions_global' => [

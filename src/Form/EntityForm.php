@@ -4,10 +4,10 @@ namespace App\Form;
 use App\Entity\Station;
 use App\Http\ServerRequest;
 use App\Settings;
-use Azura\Doctrine\Repository;
 use Azura\Exception;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -87,9 +87,9 @@ class EntityForm extends Form
     }
 
     /**
-     * @return Repository
+     * @return EntityRepository
      */
-    public function getEntityRepository(): Repository
+    public function getEntityRepository(): EntityRepository
     {
         if (null === $this->entityClass) {
             throw new Exception('Entity class name is not specified.');

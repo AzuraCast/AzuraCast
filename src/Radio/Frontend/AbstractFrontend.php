@@ -23,14 +23,25 @@ abstract class AbstractFrontend extends AbstractAdapter
     /** @var Router */
     protected $router;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settingsRepo;
+
+    /** @var Entity\Repository\StationMountRepository */
+    protected $stationMountRepo;
+
     public function __construct(
         EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\StationMountRepository $stationMountRepo,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
         Client $client,
         Router $router
     ) {
         parent::__construct($em, $supervisor, $dispatcher);
+
+        $this->settingsRepo = $settingsRepo;
+        $this->stationMountRepo = $stationMountRepo;
 
         $this->http_client = $client;
         $this->router = $router;
@@ -95,9 +106,7 @@ abstract class AbstractFrontend extends AbstractAdapter
      */
     public function getStreamUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
     {
-        /** @var Entity\Repository\StationMountRepository $mount_repo */
-        $mount_repo = $this->em->getRepository(Entity\StationMount::class);
-        $default_mount = $mount_repo->getDefaultMount($station);
+        $default_mount = $this->stationMountRepo->getDefaultMount($station);
 
         return $this->getUrlForMount($station, $default_mount, $base_url);
     }
@@ -137,15 +146,12 @@ abstract class AbstractFrontend extends AbstractAdapter
     {
         $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
-
-        /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Entity\Settings::class);
-
+        
         if (!($base_url instanceof UriInterface)) {
             $base_url = $this->router->getBaseUrl();
         }
 
-        $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
+        $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
 
         if ($use_radio_proxy
             || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
@@ -153,12 +159,12 @@ abstract class AbstractFrontend extends AbstractAdapter
             // Web proxy support.
             return $base_url
                 ->withPath($base_url->getPath() . '/radio/' . $radio_port);
-        } else {
-            // Remove port number and other decorations.
-            return $base_url
-                ->withPort($radio_port)
-                ->withPath('');
         }
+
+        // Remove port number and other decorations.
+        return $base_url
+            ->withPort($radio_port)
+            ->withPath('');
     }
 
     /**

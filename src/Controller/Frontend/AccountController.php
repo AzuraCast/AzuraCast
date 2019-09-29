@@ -19,6 +19,9 @@ class AccountController
     /** @var EntityManager */
     protected $em;
 
+    /** @var SettingsRepository */
+    protected $settingsRepo;
+
     /** @var Auth */
     protected $auth;
 
@@ -30,17 +33,20 @@ class AccountController
 
     /**
      * @param EntityManager $em
+     * @param SettingsRepository $settingsRepo
      * @param Auth $auth
      * @param RateLimit $rate_limit
      * @param Acl $acl
      */
     public function __construct(
         EntityManager $em,
+        SettingsRepository $settingsRepo,
         Auth $auth,
         RateLimit $rate_limit,
         Acl $acl
     ) {
         $this->em = $em;
+        $this->settingsRepo = $settingsRepo;
         $this->auth = $auth;
         $this->rate_limit = $rate_limit;
         $this->acl = $acl;
@@ -49,10 +55,7 @@ class AccountController
     public function loginAction(ServerRequest $request, Response $response): ResponseInterface
     {
         // Check installation completion progress.
-
-        /** @var SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Settings::class);
-        if ($settings_repo->getSetting(Settings::SETUP_COMPLETE, 0) == 0) {
+        if ($this->settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) == 0) {
             $num_users = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')->getSingleScalarResult();
 
             if ($num_users == 0) {
@@ -91,7 +94,8 @@ class AccountController
                     return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
                 }
 
-                $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
+                $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+                    Flash::SUCCESS);
 
                 $referrer = $request->getSession()->get('login_referrer');
                 if (!empty($referrer)) {
@@ -122,7 +126,8 @@ class AccountController
 
                 $user = $this->auth->getUser();
 
-                $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
+                $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+                    Flash::SUCCESS);
 
                 $referrer = $request->getSession()->get('login_referrer');
                 if (!empty($referrer)) {

@@ -32,11 +32,13 @@ class ProfileController
 
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\UserRepository $userRepo
      * @param Config $config
      * @param Settings $settings
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\UserRepository $userRepo,
         Config $config,
         Settings $settings
     ) {
@@ -46,7 +48,7 @@ class ProfileController
         ]);
         $this->two_factor_form = $config->get('forms/profile_two_factor');
 
-        $this->user_repo = $this->em->getRepository(Entity\User::class);
+        $this->user_repo = $userRepo;
     }
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface

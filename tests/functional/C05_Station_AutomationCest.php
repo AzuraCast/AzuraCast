@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity;
 
 class C05_Station_AutomationCest extends CestAbstract
@@ -13,7 +14,7 @@ class C05_Station_AutomationCest extends CestAbstract
 
         // Set up automation preconditions.
         $song_src = '/var/azuracast/www/resources/error.mp3';
-        $song_dest = $this->test_station->getRadioMediaDir().'/test.mp3';
+        $song_dest = $this->test_station->getRadioMediaDir() . '/test.mp3';
         copy($song_src, $song_dest);
 
         $playlist = new Entity\StationPlaylist($this->test_station);
@@ -23,7 +24,7 @@ class C05_Station_AutomationCest extends CestAbstract
         $this->em->persist($playlist);
 
         /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+        $media_repo = $this->di->get(Entity\Repository\StationMediaRepository::class);
 
         $media = new Entity\StationMedia($this->test_station, 'test.mp3');
         $media_repo->loadFromFile($media, $song_dest);
@@ -41,13 +42,13 @@ class C05_Station_AutomationCest extends CestAbstract
         // Attempt to enable and run automation.
         $station_id = $this->test_station->getId();
 
-        $I->amOnPage('/station/'.$station_id.'/automation');
+        $I->amOnPage('/station/' . $station_id . '/automation');
 
         $I->submitForm('.form', [
             'is_enabled' => '1',
         ]);
 
-        $I->seeCurrentUrlEquals('/station/'.$station_id.'/automation');
+        $I->seeCurrentUrlEquals('/station/' . $station_id . '/automation');
         $I->click('Run Automated Assignment');
 
         $I->seeInSource('Automated assignment complete!');

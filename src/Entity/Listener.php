@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  *   @ORM\Index(name="update_idx", columns={"listener_hash"}),
  *   @ORM\Index(name="search_idx", columns={"listener_uid", "timestamp_end"})
  * })
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ListenerRepository")
+ * @ORM\Entity()
  */
 class Listener
 {

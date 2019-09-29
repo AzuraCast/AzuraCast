@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Entity\Repository\SettingsRepository;
 use App\Form\SettingsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -17,16 +18,18 @@ class BrandingController
 
     /**
      * @param EntityManager $em
+     * @param SettingsRepository $settingsRepo
      * @param Config $config
      * @param Settings $settings
      */
     public function __construct(
         EntityManager $em,
+        SettingsRepository $settingsRepo,
         Config $config,
         Settings $settings
     ) {
         $form_config = $config->get('forms/branding', ['settings' => $settings]);
-        $this->form = new SettingsForm($em, $form_config);
+        $this->form = new SettingsForm($em, $settingsRepo, $form_config);
     }
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface

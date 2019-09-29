@@ -2,7 +2,6 @@
 namespace App;
 
 use App\Entity;
-use Doctrine\ORM\EntityManager;
 use function in_array;
 use function is_array;
 
@@ -38,9 +37,9 @@ class Acl
     /** @var array|null An array of actions enabled by each role. */
     protected $_actions = null;
 
-    public function __construct(EntityManager $em)
+    public function __construct(Entity\Repository\RolePermissionRepository $rolePermissionRepository)
     {
-        $this->permission_repo = $em->getRepository(Entity\RolePermission::class);
+        $this->permission_repo = $rolePermissionRepository;
         $this->reload();
     }
 

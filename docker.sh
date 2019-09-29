@@ -159,6 +159,7 @@ update() {
 
     docker volume rm azuracast_www_data
     docker volume rm azuracast_tmp_data
+    docker volume rm azuracast_redis_data
 
     docker-compose run --user="azuracast" --rm web azuracast_update $*
     docker-compose up -d

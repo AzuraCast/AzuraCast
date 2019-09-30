@@ -28,6 +28,9 @@ class FilesController extends AbstractStationApiCrudController
     /** @var Adapters */
     protected $adapters;
 
+    /** @var Entity\Repository\CustomFieldRepository */
+    protected $custom_fields_repo;
+
     /** @var Entity\Repository\StationMediaRepository */
     protected $media_repo;
 
@@ -43,22 +46,31 @@ class FilesController extends AbstractStationApiCrudController
      * @param ValidatorInterface $validator
      * @param Filesystem $filesystem
      * @param Adapters $adapters
+     * @param Entity\Repository\CustomFieldRepository $custom_fields_repo
+     * @param Entity\Repository\StationMediaRepository $media_repo
+     * @param Entity\Repository\StationPlaylistRepository $playlist_repo
+     * @param Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
      */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Filesystem $filesystem,
-        Adapters $adapters
+        Adapters $adapters,
+        Entity\Repository\CustomFieldRepository $custom_fields_repo,
+        Entity\Repository\StationMediaRepository $media_repo,
+        Entity\Repository\StationPlaylistRepository $playlist_repo,
+        Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
     ) {
         parent::__construct($em, $serializer, $validator);
 
         $this->filesystem = $filesystem;
         $this->adapters = $adapters;
 
-        $this->media_repo = $em->getRepository(Entity\StationMedia::class);
-        $this->playlist_repo = $em->getRepository(Entity\StationPlaylist::class);
-        $this->playlist_media_repo = $em->getRepository(Entity\StationPlaylistMedia::class);
+        $this->custom_fields_repo = $custom_fields_repo;
+        $this->media_repo = $media_repo;
+        $this->playlist_repo = $playlist_repo;
+        $this->playlist_media_repo = $playlist_media_repo;
     }
 
     /**
@@ -194,7 +206,7 @@ class FilesController extends AbstractStationApiCrudController
         $row = parent::_normalizeRecord($record, $context);
 
         if ($record instanceof Entity\StationMedia) {
-            $row['custom_fields'] = $this->media_repo->getCustomFields($record);
+            $row['custom_fields'] = $this->custom_fields_repo->getCustomFields($record);
         }
 
         return $row;
@@ -227,7 +239,7 @@ class FilesController extends AbstractStationApiCrudController
 
         if ($record instanceof Entity\StationMedia) {
             if (null !== $custom_fields) {
-                $this->media_repo->setCustomFields($record, $custom_fields);
+                $this->custom_fields_repo->setCustomFields($record, $custom_fields);
             }
 
             if (null !== $playlists) {

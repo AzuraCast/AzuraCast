@@ -5,7 +5,7 @@
 
 use App\Acl;
 
-return function(\App\Event\BuildStationMenu $e) {
+return function (\App\Event\BuildStationMenu $e) {
     $router = $e->getRouter();
     $station = $e->getStation();
     $backend = $e->getStationBackend();
@@ -27,7 +27,7 @@ return function(\App\Event\BuildStationMenu $e) {
             'icon' => 'refresh',
             'url' => $router->fromHere('api:stations:restart'),
             'class' => 'api-call text-warning',
-            'visible' => $station->getNeedsRestart(),
+            'visible' => $station->getHasStarted() && $station->getNeedsRestart(),
             'permission' => Acl::STATION_BROADCASTING,
         ],
         'profile' => [
@@ -127,7 +127,7 @@ return function(\App\Event\BuildStationMenu $e) {
                     'url' => $router->fromHere('stations:reports:soundexchange'),
                     'visible' => $frontend::supportsListenerDetail(),
                 ],
-            ]
+            ],
         ],
         'utilities' => [
             'label' => __('Utilities'),
@@ -155,7 +155,7 @@ return function(\App\Event\BuildStationMenu $e) {
                     'class' => 'api-call',
                     'permission' => Acl::STATION_BROADCASTING,
                 ],
-            ]
+            ],
         ],
     ]);
 };

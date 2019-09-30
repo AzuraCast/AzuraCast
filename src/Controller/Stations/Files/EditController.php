@@ -9,7 +9,6 @@ use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use Azura\Config;
-use Azura\Doctrine\Repository;
 use Azura\Exception;
 use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
@@ -36,8 +35,12 @@ class EditController extends FilesControllerAbstract
     /** @var Entity\Repository\StationMediaRepository */
     protected $mediaRepo;
 
+    /** @var Entity\Repository\CustomFieldRepository */
+    protected $customFieldRepo;
+
     /**
      * @param EntityManager $em
+     * @param Entity\Repository\CustomFieldRepository $customFieldRepo
      * @param Entity\Repository\SongRepository $songRepo
      * @param Entity\Repository\StationMediaRepository $mediaRepo
      * @param Filesystem $filesystem
@@ -46,6 +49,7 @@ class EditController extends FilesControllerAbstract
      */
     public function __construct(
         EntityManager $em,
+        Entity\Repository\CustomFieldRepository $customFieldRepo,
         Entity\Repository\SongRepository $songRepo,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Filesystem $filesystem,
@@ -53,6 +57,7 @@ class EditController extends FilesControllerAbstract
         Router $router
     ) {
         $this->em = $em;
+        $this->customFieldRepo = $customFieldRepo;
         $this->songRepo = $songRepo;
         $this->mediaRepo = $mediaRepo;
         $this->filesystem = $filesystem;
@@ -67,9 +72,6 @@ class EditController extends FilesControllerAbstract
 
         $fs = $this->filesystem->getForStation($station);
 
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
         $media = $this->mediaRepo->find($id, $station);
 
         if (!($media instanceof Entity\StationMedia)) {
@@ -79,10 +81,7 @@ class EditController extends FilesControllerAbstract
         $form_config = $this->form_config;
 
         // Add custom fields to form configuration.
-
-        /** @var Repository $custom_fields_repo */
-        $custom_fields_repo = $this->em->getRepository(Entity\CustomField::class);
-        $custom_fields = $custom_fields_repo->fetchArray();
+        $custom_fields = $this->customFieldRepo->fetchArray();
 
         foreach ($custom_fields as $custom_field) {
             $form_config['groups']['custom_fields']['elements'][$custom_field['id']] = [
@@ -99,7 +98,7 @@ class EditController extends FilesControllerAbstract
         // Populate custom fields in form.
         $media_array = $this->mediaRepo->toArray($media);
         if (!empty($custom_fields)) {
-            $media_array['custom_fields'] = $this->mediaRepo->getCustomFields($media);
+            $media_array['custom_fields'] = $this->customFieldRepo->getCustomFields($media);
         }
 
         $form->populate($media_array);
@@ -114,11 +113,11 @@ class EditController extends FilesControllerAbstract
             }
 
             if (!empty($custom_fields)) {
-                $media_repo->setCustomFields($media, $data['custom_fields']);
+                $this->customFieldRepo->setCustomFields($media, $data['custom_fields']);
                 unset($data['custom_fields']);
             }
 
-            $media_repo->fromArray($media, $data);
+            $this->mediaRepo->fromArray($media, $data);
 
             // Handle uploaded artwork files.
             $files = $request->getUploadedFiles();
@@ -133,7 +132,7 @@ class EditController extends FilesControllerAbstract
                 }
             }
 
-            if ($media_repo->writeToFile($media)) {
+            if ($this->mediaRepo->writeToFile($media)) {
                 $song_info = [
                     'title' => $media->getTitle(),
                     'artist' => $media->getArtist(),

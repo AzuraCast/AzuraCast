@@ -21,7 +21,10 @@ class StationMediaRepository extends Repository
     protected $filesystem;
 
     /** @var SongRepository */
-    protected $song_repo;
+    protected $songRepo;
+
+    /** @var CustomFieldRepository */
+    protected $customFieldRepo;
 
     public function __construct(
         EntityManager $em,
@@ -29,10 +32,12 @@ class StationMediaRepository extends Repository
         Settings $settings,
         LoggerInterface $logger,
         Filesystem $filesystem,
-        SongRepository $song_repo
+        SongRepository $songRepo,
+        CustomFieldRepository $customFieldRepo
     ) {
         $this->filesystem = $filesystem;
-        $this->song_repo = $song_repo;
+        $this->songRepo = $songRepo;
+        $this->customFieldRepo = $customFieldRepo;
 
         parent::__construct($em, $serializer, $settings, $logger);
     }
@@ -93,7 +98,7 @@ class StationMediaRepository extends Repository
         $record->setMtime(time());
 
         $this->em->persist($record);
-        $this->em->flush($record);
+        $this->em->flush();
 
         return $record;
     }
@@ -121,7 +126,7 @@ class StationMediaRepository extends Repository
         if (!empty($file_info['error'])) {
             $media_warning = 'Warning for uploaded media file "' . pathinfo($media->getPath(),
                     PATHINFO_FILENAME) . '": ' . json_encode($file_info['error']);
-            error_log($media_warning);
+            $this->logger->error($media_warning);
         }
 
         // Set playtime length if the analysis was able to determine it
@@ -129,12 +134,31 @@ class StationMediaRepository extends Repository
             $media->setLength($file_info['playtime_seconds']);
         }
 
-        $tags_to_set = ['title', 'artist', 'album'];
+        $tagsToSet = ['title', 'artist', 'album'];
+
+        // Clear existing auto-assigned custom fields.
+        foreach ($media->getCustomFields() as $customField) {
+            /** @var Entity\CustomField $customField */
+            if ($customField->hasAutoAssign()) {
+                $this->em->remove($customField);
+            }
+        }
+
+        $customFieldsToSet = $this->customFieldRepo->getAutoAssignableFields();
+
         if (!empty($file_info['tags'])) {
             foreach ($file_info['tags'] as $tag_type => $tag_data) {
-                foreach ($tags_to_set as $tag) {
+                foreach ($tagsToSet as $tag) {
                     if (!empty($tag_data[$tag][0])) {
-                        $media->{'set' . ucfirst($tag)}(mb_convert_encoding($tag_data[$tag][0], "UTF-8"));
+                        $media->{'set' . ucfirst($tag)}(mb_convert_encoding($tag_data[$tag][0], 'UTF-8'));
+                    }
+                }
+
+                foreach ($customFieldsToSet as $tag => $customFieldKey) {
+                    if (!empty($tag_data[$tag][0])) {
+                        $customFieldRow = new Entity\StationMediaCustomField($media, $customFieldKey);
+                        $customFieldRow->setValue(mb_convert_encoding($tag_data[$tag][0], 'UTF-8'));
+                        $this->em->persist($customFieldRow);
                     }
                 }
 
@@ -169,7 +193,7 @@ class StationMediaRepository extends Repository
             }
         }
 
-        $media->setSong($this->song_repo->getOrCreate([
+        $media->setSong($this->songRepo->getOrCreate([
             'artist' => $media->getArtist(),
             'title' => $media->getTitle(),
         ]));
@@ -413,52 +437,5 @@ class StationMediaRepository extends Repository
         $uri = $media->getPathUri();
 
         return $fs->getFullPath($uri);
-    }
-
-    /**
-     * Retrieve a key-value representation of all custom metadata for the specified media.
-     *
-     * @param Entity\StationMedia $media
-     *
-     * @return array
-     */
-    public function getCustomFields(Entity\StationMedia $media)
-    {
-        $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT e 
-            FROM App\Entity\StationMediaCustomField e 
-            WHERE e.media_id = :media_id')
-            ->setParameter('media_id', $media->getId())
-            ->getArrayResult();
-
-        $result = [];
-        foreach ($metadata_raw as $row) {
-            $result[$row['field_id']] = $row['value'];
-        }
-
-        return $result;
-    }
-
-    /**
-     * Set the custom metadata for a specified station based on a provided key-value array.
-     *
-     * @param Entity\StationMedia $media
-     * @param array $custom_fields
-     */
-    public function setCustomFields(Entity\StationMedia $media, array $custom_fields)
-    {
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
-            ->setParameter('media_id', $media->getId())
-            ->execute();
-
-        foreach ($custom_fields as $field_id => $field_value) {
-            /** @var Entity\CustomField $field */
-            $field = $this->em->getReference(Entity\CustomField::class, $field_id);
-
-            $record = new Entity\StationMediaCustomField($media, $field);
-            $record->setValue($field_value);
-            $this->em->persist($record);
-        }
-
-        $this->em->flush();
     }
 }

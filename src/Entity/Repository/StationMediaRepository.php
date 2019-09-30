@@ -122,6 +122,9 @@ class StationMediaRepository extends Repository
 
         $file_info = $id3->analyze($file_path);
 
+        // Persist the media record for later custom field operations.
+        $this->em->persist($media);
+
         // Report any errors found by the file analysis to the logs
         if (!empty($file_info['error'])) {
             $media_warning = 'Warning for uploaded media file "' . pathinfo($media->getPath(),
@@ -134,13 +137,19 @@ class StationMediaRepository extends Repository
             $media->setLength($file_info['playtime_seconds']);
         }
 
-        $tagsToSet = ['title', 'artist', 'album'];
+        $tagsToSet = [
+            'title' => 'setTitle',
+            'artist' => 'setArtist',
+            'album' => 'setAlbum',
+            'unsynchronized_lyric' => 'setLyrics',
+            'isrc' => 'setIsrc',
+        ];
 
         // Clear existing auto-assigned custom fields.
-        foreach ($media->getCustomFields() as $customField) {
-            /** @var Entity\CustomField $customField */
-            if ($customField->hasAutoAssign()) {
-                $this->em->remove($customField);
+        foreach ($media->getCustomFields() as $existingCustomField) {
+            /** @var Entity\StationMediaCustomField $existingCustomField */
+            if ($existingCustomField->getField()->hasAutoAssign()) {
+                $this->em->remove($existingCustomField);
             }
         }
 
@@ -148,9 +157,9 @@ class StationMediaRepository extends Repository
 
         if (!empty($file_info['tags'])) {
             foreach ($file_info['tags'] as $tag_type => $tag_data) {
-                foreach ($tagsToSet as $tag) {
+                foreach ($tagsToSet as $tag => $tagMethod) {
                     if (!empty($tag_data[$tag][0])) {
-                        $media->{'set' . ucfirst($tag)}(mb_convert_encoding($tag_data[$tag][0], 'UTF-8'));
+                        $media->{$tagMethod}(mb_convert_encoding($tag_data[$tag][0], 'UTF-8'));
                     }
                 }
 
@@ -160,10 +169,6 @@ class StationMediaRepository extends Repository
                         $customFieldRow->setValue(mb_convert_encoding($tag_data[$tag][0], 'UTF-8'));
                         $this->em->persist($customFieldRow);
                     }
-                }
-
-                if (!empty($tag_data['unsynchronized_lyric'][0])) {
-                    $media->setLyrics($tag_data['unsynchronized_lyric'][0]);
                 }
             }
         }
@@ -184,7 +189,7 @@ class StationMediaRepository extends Repository
             $string_parts = explode('-', $filename);
 
             // If not normally delimited, return "text" only.
-            if (count($string_parts) == 1) {
+            if (1 === count($string_parts)) {
                 $media->setTitle(trim($filename));
                 $media->setArtist('');
             } else {

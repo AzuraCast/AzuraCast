@@ -14,6 +14,7 @@ use getid3_exception;
 use getid3_writetags;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
+use voku\helper\UTF8;
 
 class StationMediaRepository extends Repository
 {
@@ -159,14 +160,17 @@ class StationMediaRepository extends Repository
             foreach ($file_info['tags'] as $tag_type => $tag_data) {
                 foreach ($tagsToSet as $tag => $tagMethod) {
                     if (!empty($tag_data[$tag][0])) {
-                        $media->{$tagMethod}(mb_convert_encoding($tag_data[$tag][0], 'UTF-8'));
+                        $tagValue = $this->cleanUpString($tag_data[$tag][0]);
+                        $media->{$tagMethod}($tagValue);
                     }
                 }
 
                 foreach ($customFieldsToSet as $tag => $customFieldKey) {
                     if (!empty($tag_data[$tag][0])) {
+                        $tagValue = $this->cleanUpString($tag_data[$tag][0]);
+
                         $customFieldRow = new Entity\StationMediaCustomField($media, $customFieldKey);
-                        $customFieldRow->setValue(mb_convert_encoding($tag_data[$tag][0], 'UTF-8'));
+                        $customFieldRow->setValue($tagValue);
                         $this->em->persist($customFieldRow);
                     }
                 }
@@ -202,6 +206,12 @@ class StationMediaRepository extends Repository
             'artist' => $media->getArtist(),
             'title' => $media->getTitle(),
         ]));
+    }
+
+    protected function cleanUpString(string $original): string
+    {
+        $string = UTF8::cleanup($original);
+        return UTF8::clean($string, true, true, true);
     }
 
     /**

@@ -210,8 +210,16 @@ class StationMediaRepository extends Repository
 
     protected function cleanUpString(string $original): string
     {
-        $string = UTF8::cleanup($original);
-        return UTF8::clean($string, true, true, true);
+        $string = UTF8::encode('UTF-8', $original);
+        $string = UTF8::fix_simple_utf8($string);
+        return UTF8::clean(
+            $string,
+            true,
+            true,
+            true,
+            true,
+            true
+        );
     }
 
     /**

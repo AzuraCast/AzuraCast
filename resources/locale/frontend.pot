@@ -1,0 +1,34 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: easygettext\n"
+"Project-Id-Version: \n"
+
+#: ./vue/radio_player.vue:386
+msgid "Album Art"
+msgstr ""
+
+#: ./vue/radio_player.vue:385
+msgid "Full Volume"
+msgstr ""
+
+#: ./vue/radio_player.vue:10
+msgid "Live"
+msgstr ""
+
+#: ./vue/radio_player.vue:383
+msgid "Mute"
+msgstr ""
+
+#: ./vue/radio_player.vue:382
+msgid "Pause"
+msgstr ""
+
+#: ./vue/radio_player.vue:381
+msgid "Play"
+msgstr ""
+
+#: ./vue/radio_player.vue:384
+msgid "Volume"
+msgstr ""

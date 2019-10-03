@@ -34,18 +34,7 @@ return [
         ],
         'inline' => [
             'js' => [
-                'Vue.prototype.$eventHub = new Vue();'
-            ],
-        ],
-    ],
-
-    'vue-i18n' => [
-        'order' => 2,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/vue-i18n/vue-i18n.min.js',
-                ],
+                'Vue.prototype.$eventHub = new Vue();',
             ],
         ],
     ],
@@ -56,9 +45,9 @@ return [
             'js' => [
                 [
                     'src' => 'dist/lib/lodash/lodash.min.js',
-                ]
-            ]
-        ]
+                ],
+            ],
+        ],
     ],
 
     /*
@@ -82,7 +71,7 @@ return [
                 ],
                 [
                     'src' => 'dist/material.js',
-                ]
+                ],
             ],
             'css' => [
                 [
@@ -123,7 +112,7 @@ return [
                     'href' => 'dist/dark.css',
                 ],
             ],
-        ]
+        ],
     ],
     'theme_light' => [
         'order' => 50,
@@ -133,7 +122,7 @@ return [
                     'href' => 'dist/light.css',
                 ],
             ],
-        ]
+        ],
     ],
 
     /*
@@ -184,9 +173,9 @@ return [
             'css' => [
                 [
                     'href' => 'dist/lib/chartjs/Chart.min.css',
-                ]
+                ],
             ],
-        ]
+        ],
     ],
 
     'zxcvbn' => [
@@ -218,7 +207,7 @@ return [
                 [
                     'href' => 'dist/lib/chosen/chosen.min.css',
                 ],
-            ]
+            ],
         ],
     ],
 
@@ -228,18 +217,18 @@ return [
             'js' => [
                 [
                     'src' => 'dist/lib/moment/moment.min.js',
-                ]
-            ]
+                ],
+            ],
         ],
         'inline' => [
             'js' => [
-                function(Request $request) {
+                function (Request $request) {
                     if ('' !== $request->getAttribute('locale', '')) {
                         return '';
                     }
 
                     $locale = str_replace('_', '-', explode('.', $request->getAttribute('locale'))[0]);
-                    return 'moment.locale('.json_encode($locale).');';
+                    return 'moment.locale(' . json_encode($locale) . ');';
                 },
             ],
         ],
@@ -254,8 +243,8 @@ return [
                 [
                     'src' => 'dist/lib/moment/locales.min.js',
                     'charset' => 'UTF-8',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
 
@@ -266,8 +255,8 @@ return [
             'js' => [
                 [
                     'src' => 'dist/lib/moment-timezone/moment-timezone-with-data-10-year-range.min.js',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
 
@@ -337,9 +326,9 @@ return [
                 [
                     'src' => 'dist/lib/dirrty/jquery.dirrty.js',
                     'defer' => true,
-                ]
+                ],
             ],
-        ]
+        ],
     ],
 
     'fancybox' => [
@@ -354,7 +343,7 @@ return [
             'css' => [
                 [
                     'href' => 'dist/lib/fancybox/jquery.fancybox.min.css',
-                ]
+                ],
             ],
         ],
     ],
@@ -387,8 +376,8 @@ return [
             'css' => [
                 [
                     'href' => 'dist/lib/fullcalendar/fullcalendar.min.css',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
 
@@ -423,12 +412,12 @@ return [
                 [
                     'src' => 'dist/lib/leaflet/leaflet.js',
                     'defer' => true,
-                ]
+                ],
             ],
             'css' => [
                 [
                     'href' => 'dist/lib/leaflet/leaflet.css',
-                ]
+                ],
             ],
         ],
     ],
@@ -453,20 +442,20 @@ return [
                 [
                     'src' => 'dist/webcaster.js',
                 ],
-            ]
-        ]
+            ],
+        ],
     ],
 
     'radio_player' => [
         'order' => 10,
-        'require' => ['vue', 'vue-i18n'],
+        'require' => ['vue'],
         'files' => [
             'js' => [
                 [
                     'src' => 'dist/radio_player.js',
                 ],
-            ]
-        ]
+            ],
+        ],
     ],
 
     'inline_player' => [
@@ -477,7 +466,7 @@ return [
                 [
                     'src' => 'dist/inline_player.js',
                 ],
-            ]
-        ]
+            ],
+        ],
     ],
 ];

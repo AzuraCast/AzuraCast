@@ -5,8 +5,9 @@ services:
     build:
       context: ./util/docker/static
     volumes:
-      - ./web/static:/data
-      - static_node_modules:/data/node_modules
+      - ./resources/locale:/data/resources/locale
+      - ./web/static:/data/web/static
+      - static_node_modules:/data/web/static/node_modules
 
 volumes:
   static_node_modules: {}

@@ -2,7 +2,9 @@
   "name": "azuracast",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "gulp"
+    "build": "gulp",
+    "generate-locales": "gettext-extract --attribute v-translate --keywords '$gettext' --output ../../resources/locale/frontend.pot $(find ./vue -type f -name '*.vue')",
+    "import-locales": "gettext-compile --output ../../resources/locale/translations.json $(find ../../resources/locale/*.UTF-8 -type f -name 'frontend.po')"
   },
   "dependencies": {
     "@fancyapps/fancybox": "^3.5.7",
@@ -19,10 +21,11 @@
     "clipboard": "^2.0.4",
     "codemirror": "^5.47.0",
     "dirrty": "^1.0.0",
+    "easygettext": "^2.7.0",
     "fullcalendar": "^3.10.0",
     "jquery": "^3.4",
     "leaflet": "^1.5.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "material-icons": "^0.3.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.25",
@@ -33,7 +36,7 @@
     "store": "^1.3.20",
     "sweetalert": "^2.1.2",
     "vue": "^2.6.10",
-    "vue-i18n": "^8.11.2",
+    "vue-gettext": "^2.1.5",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

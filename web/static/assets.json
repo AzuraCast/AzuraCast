@@ -1,7 +1,7 @@
 {
-  "dist/app.js": "dist/app-a37eac52e5.js",
+  "dist/app.js": "dist/app-0d97b71b03.js",
   "dist/bootgrid.js": "dist/bootgrid-dbc21837bc.js",
-  "dist/dark.css": "dist/dark-856068d412.css",
+  "dist/dark.css": "dist/dark-a023bb96c5.css",
   "dist/inline_player.js": "dist/inline_player-85d0fd7da0.js",
   "dist/lib/autosize/autosize.min.js": "dist/lib/autosize/autosize-ad0656589d.min.js",
   "dist/lib/bootstrap-notify/bootstrap-notify.min.js": "dist/lib/bootstrap-notify/bootstrap-notify-a02f92a499.min.js",
@@ -28,7 +28,7 @@
   "dist/lib/jquery/jquery.min.js": "dist/lib/jquery/jquery-220afd743d.min.js",
   "dist/lib/leaflet/leaflet.css": "dist/lib/leaflet/leaflet-6b7939304e.css",
   "dist/lib/leaflet/leaflet.js": "dist/lib/leaflet/leaflet-762a6b64eb.js",
-  "dist/lib/lodash/lodash.min.js": "dist/lib/lodash/lodash-62acde2a26.min.js",
+  "dist/lib/lodash/lodash.min.js": "dist/lib/lodash/lodash-bc0594c544.min.js",
   "dist/lib/material-icons/material-icons.css": "dist/lib/material-icons/material-icons-6b78e76e7f.css",
   "dist/lib/moment-timezone/moment-timezone-with-data-10-year-range.min.js": "dist/lib/moment-timezone/moment-timezone-with-data-10-year-range-b8864b90a3.min.js",
   "dist/lib/moment/locales.min.js": "dist/lib/moment/locales-473153bad8.min.js",
@@ -38,13 +38,12 @@
   "dist/lib/sortable/Sortable.min.js": "dist/lib/sortable/Sortable-e0005b2a86.min.js",
   "dist/lib/store/store.min.js": "dist/lib/store/store-2a66d57f0e.min.js",
   "dist/lib/sweetalert/sweetalert.min.js": "dist/lib/sweetalert/sweetalert-f3b8ce97ff.min.js",
-  "dist/lib/vue-i18n/vue-i18n.min.js": "dist/lib/vue-i18n/vue-i18n-40a1d42f5a.min.js",
   "dist/lib/vue/vue.js": "dist/lib/vue/vue-d5c38adb09.js",
   "dist/lib/vue/vue.min.js": "dist/lib/vue/vue-17e942ea08.min.js",
   "dist/lib/zxcvbn/zxcvbn.js": "dist/lib/zxcvbn/zxcvbn-9cf6916dc0.js",
-  "dist/light.css": "dist/light-a4a2ef0cc5.css",
-  "dist/material.js": "dist/material-c652fed16a.js",
-  "dist/radio_player.js": "dist/radio_player-0f6ee4b3dc.js",
+  "dist/light.css": "dist/light-dcae2d25e2.css",
+  "dist/material.js": "dist/material-8a0f31e5be.js",
+  "dist/radio_player.js": "dist/radio_player-ad843e9184.js",
   "dist/webcaster.js": "dist/webcaster-60f00ddbcb.js",
-  "dist/zxcvbn.js": "dist/zxcvbn-82c9dedeea.js"
+  "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

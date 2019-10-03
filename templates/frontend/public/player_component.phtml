@@ -1,7 +1,6 @@
 <?php
 /** @var \Azura\Assets $assets */
 $assets
-    ->load('vue')
     ->load('radio_player')
     ->addInlineJs($this->fetch('frontend/public/player_component.js', [
         'station' => $station,

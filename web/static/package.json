@@ -37,6 +37,7 @@
     "sweetalert": "^2.1.2",
     "vue": "^2.6.10",
     "vue-gettext": "^2.1.5",
+    "vue-i18n": "^8.14.1",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

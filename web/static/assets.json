@@ -38,6 +38,7 @@
   "dist/lib/sortable/Sortable.min.js": "dist/lib/sortable/Sortable-e0005b2a86.min.js",
   "dist/lib/store/store.min.js": "dist/lib/store/store-2a66d57f0e.min.js",
   "dist/lib/sweetalert/sweetalert.min.js": "dist/lib/sweetalert/sweetalert-f3b8ce97ff.min.js",
+  "dist/lib/vue-i18n/vue-i18n.min.js": "dist/lib/vue-i18n/vue-i18n-b8fa4dbeec.min.js",
   "dist/lib/vue/vue.js": "dist/lib/vue/vue-d5c38adb09.js",
   "dist/lib/vue/vue.min.js": "dist/lib/vue/vue-17e942ea08.min.js",
   "dist/lib/zxcvbn/zxcvbn.js": "dist/lib/zxcvbn/zxcvbn-9cf6916dc0.js",

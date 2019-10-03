@@ -39,6 +39,17 @@ return [
         ],
     ],
 
+    'vue-i18n' => [
+        'order' => 2,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/vue-i18n/vue-i18n.min.js',
+                ],
+            ],
+        ],
+    ],
+
     'lodash' => [
         'order' => 2,
         'files' => [

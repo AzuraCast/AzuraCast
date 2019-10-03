@@ -27,6 +27,12 @@ var jsFiles = {
       'node_modules/vue/dist/vue.min.js'
     ]
   },
+  'vue-i18n': {
+    base: 'node_modules/vue-i18n/dist',
+    files: [
+      'node_modules/vue-i18n/dist/vue-i18n.min.js'
+    ]
+  },
   'lodash': {
     base: 'node_modules/lodash',
     files: [

@@ -225,18 +225,23 @@ gulp.task('concat-js', function () {
 })
 
 var vueProjects = {
+  'vue_gettext': {
+    'src_file': 'vue/vue_gettext.js',
+    'filename': 'vue_gettext.js',
+    'library': 'VueTranslations'
+  },
   'webcaster': {
-    'src_file': 'vue/webcaster.js',
+    'src_file': 'vue/webcaster.vue',
     'filename': 'webcaster.js',
     'library': 'Webcaster'
   },
   'radio_player': {
-    'src_file': 'vue/radio_player.js',
+    'src_file': 'vue/radio_player.vue',
     'filename': 'radio_player.js',
     'library': 'RadioPlayer'
   },
   'inline_player': {
-    'src_file': 'vue/inline_player.js',
+    'src_file': 'vue/inline_player.vue',
     'filename': 'inline_player.js',
     'library': 'InlinePlayer'
   }

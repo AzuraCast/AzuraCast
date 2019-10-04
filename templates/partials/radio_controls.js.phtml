@@ -8,9 +8,11 @@ var pause_text = <?=$this->escapeJs(__('Pause')) ?>;
 var play_text = <?=$this->escapeJs(__('Play')) ?>;
 
 $(function () {
-  inline_player = InlinePlayer.default({
+  inline_player = new Vue({
     el: '#radio-player-controls',
-    lang: <?=$customization->getVueLocale() ?>
+    render: function (createElement) {
+      return createElement(InlinePlayer.default);
+    }
   });
 
   $('.btn-audio').each(function () {

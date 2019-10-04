@@ -23,9 +23,12 @@ if ($customization->useWebSocketsForNowPlaying()) {
 var radio_player;
 
 $(function () {
-  radio_player = RadioPlayer.default({
+  radio_player = new Vue({
     el: '#station-nowplaying',
-    lang: <?=$customization->getVueLocale() ?>,
-    props: <?=json_encode($props) ?>
+    render: function (createElement) {
+      return createElement(RadioPlayer.default, {
+        props: <?=json_encode($props) ?>
+      });
+    }
   });
 });

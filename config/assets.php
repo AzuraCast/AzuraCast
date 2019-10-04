@@ -1,5 +1,6 @@
 <?php
 
+use App\Customization;
 use App\Settings;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -35,6 +36,26 @@ return [
         'inline' => [
             'js' => [
                 'Vue.prototype.$eventHub = new Vue();',
+            ],
+        ],
+    ],
+
+    'vue-translations' => [
+        'order' => 2,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/vue_gettext.js',
+                ],
+            ],
+        ],
+        'inline' => [
+            'js' => [
+                function (Request $request) {
+                    $locale = $request->getAttribute('locale', Customization::DEFAULT_LOCALE);
+                    $locale = substr($locale, 0, 5);
+                    return 'VueTranslations.default(' . json_encode($locale) . ');';
+                },
             ],
         ],
     ],
@@ -223,11 +244,8 @@ return [
         'inline' => [
             'js' => [
                 function (Request $request) {
-                    if ('' !== $request->getAttribute('locale', '')) {
-                        return '';
-                    }
-
-                    $locale = str_replace('_', '-', explode('.', $request->getAttribute('locale'))[0]);
+                    $locale = $request->getAttribute('locale', Customization::DEFAULT_LOCALE);
+                    $locale = str_replace('_', '-', explode('.', $locale)[0]);
                     return 'moment.locale(' . json_encode($locale) . ');';
                 },
             ],
@@ -424,6 +442,7 @@ return [
 
     'webcaster' => [
         'order' => 10,
+        'require' => ['vue', 'vue-translations'],
         'files' => [
             'js' => [
                 [
@@ -447,6 +466,7 @@ return [
 
     'radio_player' => [
         'order' => 10,
+        'require' => ['vue', 'vue-translations'],
         'files' => [
             'js' => [
                 [
@@ -458,6 +478,7 @@ return [
 
     'inline_player' => [
         'order' => 10,
+        'require' => ['vue', 'vue-translations'],
         'files' => [
             'js' => [
                 [

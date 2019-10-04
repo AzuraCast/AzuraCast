@@ -210,7 +210,6 @@
 </style>
 
 <script>
-  import Vue from 'vue'
   import axios from 'axios'
   import NchanSubscriber from 'nchan'
   import store from 'store'
@@ -474,7 +473,7 @@
           })
         }
 
-        Vue.prototype.$eventHub.$emit('np_updated', np_new)
+        this.$eventHub.$emit('np_updated', np_new)
       },
       iterateTimer () {
         let current_time = Math.floor(Date.now() / 1000)

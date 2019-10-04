@@ -24,9 +24,12 @@ $props = [
 ?>
 
 $(function () {
-  const web_dj = Webcaster.default({
+  const web_dj = new Vue({
     el: '#web_dj',
-    lang: <?=$customization->getVueLocale() ?>,
-    props: <?=json_encode($props) ?>
+    render: function (createElement) {
+      return createElement(Webcaster.default, {
+        props: <?=json_encode($props) ?>
+      });
+    }
   });
 });

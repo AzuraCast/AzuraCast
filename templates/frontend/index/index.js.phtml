@@ -1,37 +1,37 @@
 <?php
 $station_ids = [];
-foreach($stations['stations'] as $station) {
+foreach ($stations['stations'] as $station) {
     $station_ids[] = urlencode($station['station']['short_name']);
 }
 ?>
 
 var station_dashboard;
 
-$(function() {
-    station_dashboard = new Vue({
-        el: '#station_dashboard',
-        data: <?=json_encode($stations) ?>,
-        methods: {
-            toggle: function (url) {
-                this.$eventHub.$emit('player_toggle', url);
-            }
-        }
-    });
+$(function () {
+  station_dashboard = new Vue({
+    el: '#station_dashboard',
+    data: <?=json_encode($stations) ?>,
+    methods: {
+      toggle: function (url) {
+        this.$eventHub.$emit('player_toggle', url);
+      }
+    }
+  });
 });
 
-$(function() {
+$(function () {
+  setTimeout(loadNowPlaying, 15000);
+});
+
+function loadNowPlaying () {
+  $.getJSON('<?=$router->named('api:nowplaying:index') ?>', function (data) {
+    $.each(data, function (k, row) {
+      var station_id = row.station.id;
+      station_dashboard['stations'][station_id]['np'] = row;
+    });
+
     setTimeout(loadNowPlaying, 15000);
-});
-
-function loadNowPlaying() {
-    $.getJSON('<?=$router->named('api:nowplaying:index') ?>', function(data) {
-        $.each(data, function(k, row) {
-            var station_id = row.station.id;
-            station_dashboard['stations'][station_id]['np'] = row;
-        });
-
-        setTimeout(loadNowPlaying, 15000);
-    }).fail(function() {
-        setTimeout(loadNowPlaying, 30000);
-    });
+  }).fail(function () {
+    setTimeout(loadNowPlaying, 30000);
+  });
 }

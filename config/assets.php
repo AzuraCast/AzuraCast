@@ -39,17 +39,6 @@ return [
         ],
     ],
 
-    'vue-i18n' => [
-        'order' => 2,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/vue-i18n/vue-i18n.min.js',
-                ],
-            ],
-        ],
-    ],
-
     'lodash' => [
         'order' => 2,
         'files' => [
@@ -435,20 +424,19 @@ return [
 
     'webcaster' => [
         'order' => 10,
-        'require' => ['vue', 'vue-i18n', 'lodash'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdn.rawgit.com/toots/shine/master/js/dist/libshine.js',
+                    'src' => 'dist/lib/webcaster/libshine.js',
                 ],
                 [
-                    'src' => 'https://cdn.rawgit.com/webcast/libsamplerate.js/master/dist/libsamplerate.js',
+                    'src' => 'dist/lib/webcaster/libsamplerate.js',
                 ],
                 [
-                    'src' => 'https://cdn.rawgit.com/webcast/taglib.js/master/dist/taglib.js',
+                    'src' => 'dist/lib/webcaster/taglib.js',
                 ],
                 [
-                    'src' => 'https://cdn.rawgit.com/webcast/webcast.js/master/lib/webcast.js',
+                    'src' => 'dist/lib/webcaster/webcast.js',
                 ],
                 [
                     'src' => 'dist/webcaster.js',
@@ -459,7 +447,6 @@ return [
 
     'radio_player' => [
         'order' => 10,
-        'require' => ['vue'],
         'files' => [
             'js' => [
                 [
@@ -471,7 +458,6 @@ return [
 
     'inline_player' => [
         'order' => 10,
-        'require' => ['vue', 'vue-i18n'],
         'files' => [
             'js' => [
                 [

@@ -7,13 +7,14 @@
             <li>
                 <a href="#" class="dropdown-item jp-pause" @click.prevent="stop()">
                     <i class="material-icons" aria-hidden="true">pause</i>
-                    {{ $t('pause') }}
+                    <translate>Pause</translate>
                 </a>
             </li>
             <li>
             <span class="dropdown-item dropdown-item-text">
                 <i class="material-icons" aria-hidden="true">volume_up</i>
-                <input type="range" :title="$t('volume')" class="player-volume-range custom-range" min="0" max="100" step="1" v-model="volume">
+                <input type="range" :title="lang_volume" class="player-volume-range custom-range" min="0" max="100"
+                       step="1" v-model="volume">
             </span>
             </li>
         </ul>
@@ -21,82 +22,87 @@
 </template>
 
 <style lang="scss">
-.player-inline {
-    .player-volume-range {
-        width: 100px;
+    .player-inline {
+        .player-volume-range {
+            width: 100px;
+        }
     }
-}
 </style>
 
 <script>
-import store from 'store';
+  import store from 'store'
 
-export default {
-    data: function() {
-        return {
-            "is_playing": false,
-            "volume": 55,
-            "audio": null
-        };
+  export default {
+    data () {
+      return {
+        'is_playing': false,
+        'volume': 55,
+        'audio': null
+      }
     },
-    created: function() {
-        this.audio = document.createElement('audio');
+    created () {
+      this.audio = document.createElement('audio')
 
-        this.audio.onended = () => {
-            this.stop();
-        };
+      this.audio.onended = () => {
+        this.stop()
+      }
 
-        // Allow pausing from the mobile metadata update.
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.setActionHandler('pause', () => {
-                this.stop();
-            });
+      // Allow pausing from the mobile metadata update.
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('pause', () => {
+          this.stop()
+        })
+      }
+
+      // Check webstorage for existing volume preference.
+      if (store.enabled && store.get('player_volume') !== undefined) {
+        this.volume = store.get('player_volume', this.volume)
+      }
+
+      this.$eventHub.$on('player_toggle', (url) => {
+        if (this.is_playing && this.audio.src === url) {
+          this.stop()
+        } else {
+          this.play(url)
         }
-
-        // Check webstorage for existing volume preference.
-        if (store.enabled && store.get('player_volume') !== undefined) {
-            this.volume = store.get('player_volume', this.volume);
-        }
-
-        this.$eventHub.$on('player_toggle', (url) => {
-            if (this.is_playing && this.audio.src === url) {
-                this.stop();
-            } else {
-                this.play(url);
-            }
-        });
+      })
+    },
+    computed: {
+      lang_volume () {
+        return this.$gettext('Volume')
+      }
     },
     watch: {
-        "volume": function(volume) {
-            this.audio.volume = Math.min((Math.exp(volume/100)-1)/(Math.E-1), 1);
+      volume (volume) {
+        this.audio.volume = Math.min((Math.exp(volume / 100) - 1) / (Math.E - 1), 1)
 
-            if (store.enabled) {
-                store.set('player_volume', volume);
-            }
-        },
+        if (store.enabled) {
+          store.set('player_volume', volume)
+        }
+      }
     },
     methods: {
-        "play": function(url) {
-            this.audio.src = url;
+      play (url) {
+        this.audio.src = url
 
-            this.audio.load();
-            this.audio.play();
+        this.audio.load()
+        this.audio.play()
 
-            this.is_playing = true;
+        this.is_playing = true
 
-            this.$eventHub.$emit('player_playing', url);
-        },
-        "stop": function() {
-            this.is_playing = false;
-            this.$eventHub.$emit('player_stopped', this.audio.src);
+        this.$eventHub.$emit('player_playing', url)
+      },
+      stop () {
+        this.is_playing = false
+        this.$eventHub.$emit('player_stopped', this.audio.src)
 
-            this.audio.pause();
-            this.audio.src = '';
+        this.audio.pause()
+        this.audio.src = ''
 
-            setTimeout(() => {
-                this.audio.load();
-            });
-        }
+        setTimeout(() => {
+          this.audio.load()
+        })
+      }
     }
-}
+  }
 </script>

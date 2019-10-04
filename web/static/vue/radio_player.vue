@@ -214,8 +214,7 @@
   import axios from 'axios'
   import NchanSubscriber from 'nchan'
   import store from 'store'
-  import './event_bus.js'
-  import './translations.js'
+
 
   export default {
     props: {
@@ -322,7 +321,25 @@
       this.np_timeout = setTimeout(this.checkNowPlaying, 5000)
     },
     computed: {
-      'streams': function () {
+      lang_play_btn () {
+        return this.$gettext('Play')
+      },
+      lang_pause_btn () {
+        return this.$gettext('Pause')
+      },
+      lang_mute_btn () {
+        return this.$gettext('Mute')
+      },
+      lang_volume_slider () {
+        return this.$gettext('Volume')
+      },
+      lang_full_volume_btn () {
+        return this.$gettext('Full Volume')
+      },
+      lang_album_art_alt () {
+        return this.$gettext('Album Art')
+      },
+      streams () {
         let all_streams = []
         this.np.station.mounts.forEach(function (mount) {
           all_streams.push({
@@ -338,7 +355,7 @@
         })
         return all_streams
       },
-      'time_percent': function () {
+      time_percent () {
         let time_played = this.np_elapsed
         let time_total = this.np.now_playing.duration
 
@@ -351,7 +368,7 @@
 
         return (time_played / time_total) * 100
       },
-      'time_display_played': function () {
+      time_display_played () {
         let time_played = this.np_elapsed
         let time_total = this.np.now_playing.duration
 
@@ -365,13 +382,13 @@
 
         return this.formatTime(time_played)
       },
-      'time_display_total': function () {
+      time_display_total () {
         let time_total = this.np.now_playing.duration
         return (time_total) ? this.formatTime(time_total) : null
       }
     },
     watch: {
-      'volume': function (volume) {
+      volume (volume) {
         this.audio.volume = Math.min((Math.exp(volume / 100) - 1) / (Math.E - 1), 1)
 
         if (store.enabled) {
@@ -380,13 +397,7 @@
       }
     },
     methods: {
-      'lang_play_btn': () => this.$gettext('Play'),
-      'lang_pause_btn': () => this.$gettext('Pause'),
-      'lang_mute_btn': () => this.$gettext('Mute'),
-      'lang_volume_slider': () => this.$gettext('Volume'),
-      'lang_full_volume_btn': () => this.$gettext('Full Volume'),
-      'lang_album_art_alt': () => this.$gettext('Album Art'),
-      'play': function () {
+      play () {
         this.audio.src = this.current_stream.url
         this.audio.load()
 
@@ -394,7 +405,7 @@
 
         this.is_playing = true
       },
-      'stop': function () {
+      stop () {
         this.is_playing = false
 
         this.audio.pause()
@@ -404,18 +415,18 @@
           this.audio.load()
         })
       },
-      'toggle': function () {
+      toggle () {
         if (this.is_playing) {
           this.stop()
         } else {
           this.play()
         }
       },
-      'switchStream': function (new_stream) {
+      switchStream (new_stream) {
         this.current_stream = new_stream
         this.play()
       },
-      'checkNowPlaying': function () {
+      checkNowPlaying () {
         if (this.use_nchan) {
           this.nchan_subscriber = new NchanSubscriber(this.now_playing_uri)
           this.nchan_subscriber.on('message', (message, message_metadata) => {
@@ -436,7 +447,7 @@
           })
         }
       },
-      'setNowPlaying': function (np_new) {
+      setNowPlaying (np_new) {
         this.np = np_new
 
         // Set a "default" current stream if none exists.
@@ -465,7 +476,7 @@
 
         Vue.prototype.$eventHub.$emit('np_updated', np_new)
       },
-      'iterateTimer': function () {
+      iterateTimer () {
         let current_time = Math.floor(Date.now() / 1000)
         let np_elapsed = current_time - this.np.now_playing.played_at
         if (np_elapsed < 0) {
@@ -475,7 +486,7 @@
         }
         this.np_elapsed = np_elapsed
       },
-      'formatTime': function (time) {
+      formatTime (time) {
         let sec_num = parseInt(time, 10)
 
         let hours = Math.floor(sec_num / 3600)

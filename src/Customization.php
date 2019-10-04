@@ -131,11 +131,19 @@ class Customization
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getLocale(): ?string
+    public function getLocale(): string
     {
         return $this->locale ?? self::DEFAULT_LOCALE;
+    }
+
+    /**
+     * @return string A shortened locale (minus .UTF-8) for use in Vue.
+     */
+    public function getVueLocale(): string
+    {
+        return json_encode(substr($this->getLocale(), 0, 5));
     }
 
     /**

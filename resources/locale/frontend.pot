@@ -5,11 +5,37 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Project-Id-Version: \n"
 
-#: ./vue/radio_player.vue:386
+#: ./vue/webcaster/playlist.vue:56
+msgid "Add Files to Playlist"
+msgstr ""
+
+#: ./vue/radio_player.vue:340
 msgid "Album Art"
 msgstr ""
 
-#: ./vue/radio_player.vue:385
+#: ./vue/webcaster/settings.vue:115
+msgid "Artist"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:66
+msgid "Continuous Play"
+msgstr ""
+
+#: ./vue/webcaster/microphone.vue:17
+#: ./vue/webcaster/playlist.vue:23
+#: ./vue/webcaster/settings.vue:139
+msgid "Cue"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:83
+msgid "DJ Credentials"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:27
+msgid "Encoder"
+msgstr ""
+
+#: ./vue/radio_player.vue:337
 msgid "Full Volume"
 msgstr ""
 
@@ -17,18 +43,101 @@ msgstr ""
 msgid "Live"
 msgstr ""
 
-#: ./vue/radio_player.vue:383
+#: ./vue/webcaster/settings.vue:15
+msgid "Metadata"
+msgstr ""
+
+#: ./vue/webcaster/microphone.vue:4
+msgid "Microphone"
+msgstr ""
+
+#: ./vue/webcaster/microphone.vue:33
+msgid "Microphone Source"
+msgstr ""
+
+#: ./vue/webcaster/mixer.vue:3
+msgid "Mixer"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:32
+msgid "MP3"
+msgstr ""
+
+#: ./vue/radio_player.vue:331
 msgid "Mute"
 msgstr ""
 
-#: ./vue/radio_player.vue:382
+#: ./vue/webcaster/settings.vue:171
+msgid "Password"
+msgstr ""
+
+#: ./vue/inline_player.vue:9
+#: ./vue/radio_player.vue:328
 msgid "Pause"
 msgstr ""
 
-#: ./vue/radio_player.vue:381
+#: ./vue/radio_player.vue:325
 msgid "Play"
 msgstr ""
 
-#: ./vue/radio_player.vue:384
+#: ./vue/webcaster/playlist.vue:119
+msgid "Playlist 1"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:120
+msgid "Playlist 2"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:37
+msgid "Raw"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:72
+msgid "Repeat Playlist"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:42
+#: ./vue/webcaster/settings.vue:58
+msgid "Sample Rate"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:10
+msgid "Settings"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:133
+msgid "Start Streaming"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:136
+msgid "Stop Streaming"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:108
+msgid "Title"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:126
+msgid "Unknown Artist"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:123
+msgid "Unknown Title"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:122
+msgid "Update Metadata"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:100
+msgid "Use Asynchronous Worker"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:168
+msgid "Username"
+msgstr ""
+
+#: ./vue/inline_player.vue:72
+#: ./vue/radio_player.vue:334
 msgid "Volume"
 msgstr ""

@@ -1,73 +1,70 @@
-$(function() {
-    // Song history Vue component
-    songHistory = new Vue({
-        el: '#station-history',
-        data: {
-            history: [
-                {
-                    song: {
-                        title: '<?=__('Song Title') ?>',
-                        artist: '<?=__('Song Artist') ?>'
-                    }
-                }
-            ]
-        },
-        created: function() {
-            Vue.prototype.$eventHub.$on('np_updated', function(np_new) {
-                songHistory.history = np_new.song_history;
-            });
+$(function () {
+  // Song history Vue component
+  var songHistory = new Vue({
+    el: '#station-history',
+    data: {
+      history: [
+        {
+          song: {
+            title: '<?=__('Song Title') ?>',
+            artist: '<?=__('Song Artist') ?>'
+          }
         }
-    });
+      ]
+    },
+    mounted: function () {
+      radio_player.$eventHub.$on('np_updated', function (np_new) {
+        songHistory.history = np_new.song_history;
+      });
+    }
+  });
 
-    $('[data-fancybox]').fancybox({
-        buttons: ['close']
-    });
+  $('[data-fancybox]').fancybox({
+    buttons: ['close']
+  });
 
-    // Song request modal dialog component
-	var request_dialog = $('#modal-request');
+  // Song request modal dialog component
+  var request_dialog = $('#modal-request');
 
-	request_dialog.on('show.bs.modal', function (event) {
+  request_dialog.on('show.bs.modal', function (event) {
 
-		if (!request_dialog.data('request_loaded'))
-		{
-			var grid = $("#requests-table").bootgrid({
-				ajax: true,
-                ajaxSettings: {
-                    method: "GET",
-                    cache: false
-                },
-				rowSelect: false,
-				caseSensitive: false,
-				url: "<?=$router->named('api:requests:list', ['station_id' => $station->getId()]) ?>",
-				formatters: {
-					"commands": function(column, row) {
-						return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'" tabindex="0"><?=__('Request') ?></a>';
-					}
-				}
-			}).on("loaded.rs.jquery.bootgrid", function()
-			{
-				/* Executes after data is loaded and rendered */
-				grid.find(".btn-request").on("click", function(e)
-				{
-					e.preventDefault();
-					request_dialog.modal('hide');
+    if (!request_dialog.data('request_loaded')) {
+      var grid = $("#requests-table").bootgrid({
+        ajax: true,
+        ajaxSettings: {
+          method: "GET",
+          cache: false
+        },
+        rowSelect: false,
+        caseSensitive: false,
+        url: "<?=$router->named('api:requests:list', ['station_id' => $station->getId()]) ?>",
+        formatters: {
+          "commands": function (column, row) {
+            return '<a class="btn btn-request btn-sm btn-primary" data-url="' + row.request_url + '" tabindex="0"><?=__('Request') ?></a>';
+          }
+        }
+      }).on("loaded.rs.jquery.bootgrid", function () {
+        /* Executes after data is loaded and rendered */
+        grid.find(".btn-request").on("click", function (e) {
+          e.preventDefault();
+          request_dialog.modal('hide');
 
-					$.ajax({
-						dataType: "json",
-						url: $(this).data('url')
-					}).done(function(data) {
-						notify(data.message, 'success');
-					}).fail(function(jqXhr) {
-                        var response = jqXhr.responseJSON;
-						notify('Error: ' + response.message, 'danger');
-					});
+          $.ajax({
+            dataType: "json",
+            url: $(this).data('url')
+          }).done(function (data) {
+            notify(data.message, 'success');
+          }).fail(function (jqXhr) {
+            var response = jqXhr.responseJSON;
+            notify('Error: ' + response.message, 'danger');
+          });
 
-					return false;
-				});
-			});
+          return false;
+        });
+      });
 
-			request_dialog.data('request_loaded', true);
-		}
+      request_dialog.data('request_loaded', true);
+    }
 
-	});
+  });
 });

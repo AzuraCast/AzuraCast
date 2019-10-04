@@ -1,8 +1,8 @@
 <template>
     <div class="mixer card">
         <div class="card-header bg-primary-dark">
-            <h5 class="card-title">
-                {{ $t('headers.mixer') }}
+            <h5 class="card-title" v-translate>
+                Mixer
             </h5>
         </div>
         <div class="card-body">
@@ -18,16 +18,16 @@
 </template>
 
 <script>
-export default {
-    data: function() {
-        return {
-            "position": 0.5
-        };
+  export default {
+    data () {
+      return {
+        'position': 0.5
+      }
     },
     watch: {
-        position: function(val, oldVal) {
-            this.$root.$emit('new-mixer-value', val);
-        }
+      position (val, oldVal) {
+        this.$root.$emit('new-mixer-value', val)
+      }
     }
-}
+  }
 </script>

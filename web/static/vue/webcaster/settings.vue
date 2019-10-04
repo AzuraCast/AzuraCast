@@ -8,10 +8,14 @@
                 <div class="col-sm-12">
                     <ul class="nav nav-tabs card-header-tabs mt-0">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#settings" data-toggle="tab">{{ $t('headers.settings') }}</a>
+                            <a class="nav-link active" href="#settings" data-toggle="tab" v-translate>
+                                Settings
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#metadata" data-toggle="tab">{{ $t('headers.metadata') }}</a>
+                            <a class="nav-link" href="#metadata" data-toggle="tab" v-translate>
+                                Metadata
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -21,20 +25,22 @@
                     <div class="tab-content mt-1">
                         <div class="tab-pane active" id="settings">
                             <div class="form-group">
-                                <label class="mb-2">{{ $t('settings.encoder') }}</label>
+                                <label class="mb-2" v-translate>Encoder</label>
                                 <div class="controls">
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input id="encoder_mp3" type="radio" v-model="encoder" value="mp3" class="custom-control-input">
-                                        <label for="encoder_mp3" class="custom-control-label">{{ $t('settings.encoder_mp3') }}</label>
+                                        <input id="encoder_mp3" type="radio" v-model="encoder" value="mp3"
+                                               class="custom-control-input">
+                                        <label for="encoder_mp3" class="custom-control-label" v-translate>MP3</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input id="encoder_raw" type="radio" v-model="encoder" value="raw" class="custom-control-input">
-                                        <label for="encoder_raw" class="custom-control-label">{{ $t('settings.encoder_raw') }}</label>
+                                        <input id="encoder_raw" type="radio" v-model="encoder" value="raw"
+                                               class="custom-control-input">
+                                        <label for="encoder_raw" class="custom-control-label" v-translate>Raw</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="select_samplerate" class="mb-2">{{ $t('settings.samplerate') }}</label>
+                                <label for="select_samplerate" class="mb-2" v-translate>Sample Rate</label>
                                 <div class="controls">
                                     <select id="select_samplerate" class="form-control" v-model.number="samplerate">
                                         <option value="8000">8 kHz</option>
@@ -50,7 +56,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="select_bitrate" class="mb-2">{{ $t('settings.bitrate') }}</label>
+                                <label for="select_bitrate" class="mb-2" v-translate>Sample Rate</label>
                                 <div class="controls">
                                     <select id="select_bitrate" class="form-control" v-model.number="bitrate">
                                         <option value="8">8 kbps</option>
@@ -75,39 +81,48 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="mb-2">{{ $t('settings.djCredentials') }}</label>
+                                <label class="mb-2" v-translate>DJ Credentials</label>
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="text" v-model="djUsername" class="form-control" v-bind:placeholder="$t('settings.djUsername')">
+                                        <input type="text" v-model="djUsername" class="form-control"
+                                               v-bind:placeholder="lang_dj_username">
                                     </div>
                                     <div class="col-6">
-                                        <input type="password" v-model="djPassword" class="form-control" v-bind:placeholder="$t('settings.djPassword')">
+                                        <input type="password" v-model="djPassword" class="form-control"
+                                               v-bind:placeholder="lang_dj_password">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group mb-0">
                                 <div class="custom-control custom-checkbox">
-                                    <input id="use_async_worker" type="checkbox" v-model="asynchronous" class="custom-control-input">
-                                    <label for="use_async_worker" class="custom-control-label">{{ $t('settings.asynchronous') }}</label>
+                                    <input id="use_async_worker" type="checkbox" v-model="asynchronous"
+                                           class="custom-control-input">
+                                    <label for="use_async_worker" class="custom-control-label" v-translate>
+                                        Use Asynchronous Worker
+                                    </label>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="metadata">
                             <div class="form-group">
-                                <label for="metadata_title" class="mb-2">{{ $t('settings.metadataTitle') }}</label>
+                                <label for="metadata_title" class="mb-2" v-translate>Title</label>
                                 <div class="controls">
-                                    <input id="metadata_title" class="form-control" type="text" v-model="metadata.title" v-bind:disabled="!isStreaming">
+                                    <input id="metadata_title" class="form-control" type="text" v-model="metadata.title"
+                                           v-bind:disabled="!isStreaming">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="metadata_artist" class="mb-2">{{ $t('settings.metadataArtist') }}</label>
+                                <label for="metadata_artist" class="mb-2" v-translate>Artist</label>
                                 <div class="controls">
-                                    <input id="metadata_artist" class="form-control" type="text" v-model="metadata.artist" v-bind:disabled="!isStreaming">
+                                    <input id="metadata_artist" class="form-control" type="text"
+                                           v-model="metadata.artist" v-bind:disabled="!isStreaming">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary" v-on:click="updateMetadata" v-bind:disabled="!isStreaming">{{ $t('buttons.updateMetadata') }}</button>
+                                <button class="btn btn-primary" v-on:click="updateMetadata"
+                                        v-bind:disabled="!isStreaming" v-translate>Update Metadata
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -116,113 +131,122 @@
         </div>
 
         <div class="card-actions">
-            <button class="btn btn-success" v-on:click="startStreaming" v-if="!isStreaming">{{ $t('buttons.startStreaming') }}</button>
-            <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming">{{ $t('buttons.stopStreaming') }}</button>
-            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">{{ $t('buttons.cue') }}</button>
+            <button class="btn btn-success" v-on:click="startStreaming" v-if="!isStreaming" v-translate>
+                Start Streaming
+            </button>
+            <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming" v-translate>
+                Stop Streaming
+            </button>
+            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }" v-translate>
+                Cue
+            </button>
         </div>
     </div>
 </template>
 
 <script>
-export default {
+  export default {
     inject: ['getStream', 'resumeStream'],
-    data: function() {
-        return {
-            "isStreaming": false,
-            "djUsername": "",
-            "djPassword": "",
-            "bitrate": 128,
-            "samplerate": 44100,
-            "encoder": "mp3",
-            "asynchronous": true,
-            "passThrough": false,
-            "metadata": {
-                "title": "",
-                "artist": "",
-            }
-        };
+    data () {
+      return {
+        'isStreaming': false,
+        'djUsername': '',
+        'djPassword': '',
+        'bitrate': 128,
+        'samplerate': 44100,
+        'encoder': 'mp3',
+        'asynchronous': true,
+        'passThrough': false,
+        'metadata': {
+          'title': '',
+          'artist': ''
+        }
+      }
     },
     computed: {
-        uri: function() {
-            return 'wss://'+this.djUsername+':'+this.djPassword+'@'+this.baseUri;
-        }
+      lang_dj_username () {
+        return this.$gettext('Username')
+      },
+      lang_dj_password () {
+        return this.$gettext('Password')
+      },
+      uri () {
+        return 'wss://' + this.djUsername + ':' + this.djPassword + '@' + this.baseUri
+      }
     },
     props: {
-        stationName: String,
-        baseUri: String
+      stationName: String,
+      libUrls: Array,
+      baseUri: String
     },
-    mounted: function() {
-        this.$root.$on('new-cue', this.onNewCue);
-        this.$root.$on('metadata-update', this.onMetadataUpdate);
+    mounted () {
+      this.$root.$on('new-cue', this.onNewCue)
+      this.$root.$on('metadata-update', this.onMetadataUpdate)
     },
     methods: {
-        cue: function() {
-            this.resumeStream();
+      cue () {
+        this.resumeStream()
 
-            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'master');
-        },
-        onNewCue: function(new_cue) {
-            this.passThrough = (new_cue === 'master');
-            this.getStream().webcast.setPassThrough(this.passThrough);
-        },
-        startStreaming: function() {
-            this.resumeStream();
+        this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'master')
+      },
+      onNewCue (new_cue) {
+        this.passThrough = (new_cue === 'master')
+        this.getStream().webcast.setPassThrough(this.passThrough)
+      },
+      startStreaming () {
+        this.resumeStream()
 
-            var encoderClass;
-            switch (this.encoder) {
-                case "mp3":
-                    encoderClass = Webcast.Encoder.Mp3;
-                    break;
-                case "raw":
-                    encoderClass = Webcast.Encoder.Raw;
-            }
-
-            var encoder = new encoderClass({
-                channels: 2,
-                samplerate: this.samplerate,
-                bitrate: this.bitrate
-            });
-
-            if (this.samplerate !== this.getStream().context.sampleRate) {
-                encoder = new Webcast.Encoder.Resample({
-                    encoder: encoder,
-                    type: Samplerate.LINEAR,
-                    samplerate: this.getStream().context.sampleRate
-                });
-            }
-
-            if (this.asynchronous) {
-                encoder = new Webcast.Encoder.Asynchronous({
-                    encoder: encoder,
-                    scripts: [
-                        "https://cdn.rawgit.com/webcast/libsamplerate.js/master/dist/libsamplerate.js",
-                        "https://cdn.rawgit.com/savonet/shine/master/js/dist/libshine.js",
-                        "https://cdn.rawgit.com/webcast/webcast.js/master/lib/webcast.js"
-                    ]
-                });
-            }
-
-            this.getStream().webcast.connectSocket(encoder, this.uri);
-            this.isStreaming = true;
-        },
-        stopStreaming: function() {
-            this.getStream().webcast.close();
-            this.isStreaming = false;
-        },
-        updateMetadata: function() {
-            this.$root.$emit('metadata-update', {
-                title: this.metadata.title,
-                artist: this.metadata.artist
-            });
-
-            notify('Metadata updated!', 'success', true);
-        },
-        onMetadataUpdate: function(new_metadata) {
-            this.metadata.title = new_metadata.title;
-            this.metadata.artist = new_metadata.artist;
-
-            return this.getStream().webcast.sendMetadata(new_metadata);
+        var encoderClass
+        switch (this.encoder) {
+          case 'mp3':
+            encoderClass = Webcast.Encoder.Mp3
+            break
+          case 'raw':
+            encoderClass = Webcast.Encoder.Raw
         }
+
+        let encoder = new encoderClass({
+          channels: 2,
+          samplerate: this.samplerate,
+          bitrate: this.bitrate
+        })
+
+        if (this.samplerate !== this.getStream().context.sampleRate) {
+          encoder = new Webcast.Encoder.Resample({
+            encoder: encoder,
+            type: Samplerate.LINEAR,
+            samplerate: this.getStream().context.sampleRate
+          })
+        }
+
+        if (this.asynchronous) {
+          encoder = new Webcast.Encoder.Asynchronous({
+            encoder: encoder,
+            scripts: this.libUrls
+          })
+        }
+
+        this.getStream().webcast.connectSocket(encoder, this.uri)
+        this.isStreaming = true
+      },
+      stopStreaming () {
+        this.getStream().webcast.close()
+        this.isStreaming = false
+      },
+      updateMetadata () {
+        this.$root.$emit('metadata-update', {
+          title: this.metadata.title,
+          artist: this.metadata.artist
+        })
+
+        notify('Metadata updated!', 'success', true)
+      },
+      onMetadataUpdate (new_metadata) {
+        this.metadata.title = new_metadata.title
+        this.metadata.artist = new_metadata.artist
+
+        return this.getStream().webcast.sendMetadata(new_metadata)
+      }
     }
-}
+  }
 </script>

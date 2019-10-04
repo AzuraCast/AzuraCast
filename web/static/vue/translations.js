@@ -4,5 +4,6 @@ import translations from '../../../resources/locale/translations'
 
 Vue.use(GetTextPlugin, {
   defaultLanguage: 'en_US',
-  translations: translations
+  translations: translations,
+  silent: true
 })

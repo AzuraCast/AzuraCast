@@ -27,12 +27,6 @@ var jsFiles = {
       'node_modules/vue/dist/vue.min.js'
     ]
   },
-  'vue-i18n': {
-    base: 'node_modules/vue-i18n/dist',
-    files: [
-      'node_modules/vue-i18n/dist/vue-i18n.min.js'
-    ]
-  },
   'lodash': {
     base: 'node_modules/lodash',
     files: [
@@ -186,6 +180,12 @@ var jsFiles = {
     files: [
       'node_modules/nchan/NchanSubscriber.js'
     ]
+  },
+  'webcaster': {
+    base: null,
+    files: [
+      'js/webcaster/*.js'
+    ]
   }
 }
 
@@ -226,17 +226,17 @@ gulp.task('concat-js', function () {
 
 var vueProjects = {
   'webcaster': {
-    'src_file': 'vue/webcaster.vue',
+    'src_file': 'vue/webcaster.js',
     'filename': 'webcaster.js',
     'library': 'Webcaster'
   },
   'radio_player': {
-    'src_file': 'vue/radio_player.vue',
+    'src_file': 'vue/radio_player.js',
     'filename': 'radio_player.js',
     'library': 'RadioPlayer'
   },
   'inline_player': {
-    'src_file': 'vue/inline_player.vue',
+    'src_file': 'vue/inline_player.js',
     'filename': 'inline_player.js',
     'library': 'InlinePlayer'
   }

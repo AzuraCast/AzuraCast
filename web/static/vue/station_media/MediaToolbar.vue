@@ -123,32 +123,32 @@
         this.setPlaylists(e)
       },
       setPlaylists: function (e) {
-        this.selectedFiles.length && $.post(this.batchUrl, {
-            'do': 'playlist',
-            'playlists': this.checkedPlaylists,
-            'new_playlist_name': this.newPlaylist,
-            'files': this.selectedFiles,
-            'csrf': this.csrf,
-            'file': getUrlHash()
-          }, (data) => {
-            if (data.success && data.record) {
-              this.playlists.push(data.record)
-            }
+        this.selectedFiles.length && axios.post(this.batchUrl, {
+          'do': 'playlist',
+          'playlists': this.checkedPlaylists,
+          'new_playlist_name': this.newPlaylist,
+          'files': this.selectedFiles,
+          'csrf': this.csrf,
+          'file': this.currentDirectory
+        }).then((resp) => {
+          if (resp.data.success && resp.data.record) {
+            this.playlists.push(resp.data.record)
+          }
 
-            let notifyMessage = (this.checkedPlaylists.length > 0)
-              ? this.$gettext('Playlists updated for selected files:')
-              : this.$gettext('Playlists cleared for selected files:')
-            notify('<b>' + notifyMessage + '</b><br>' + $files.join('<br>'), 'success', false)
+          let notifyMessage = (this.checkedPlaylists.length > 0)
+            ? this.$gettext('Playlists updated for selected files:')
+            : this.$gettext('Playlists cleared for selected files:')
+          notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
 
-            this.checkedPlaylists = []
-            this.newPlaylist = ''
+          this.checkedPlaylists = []
+          this.newPlaylist = ''
 
-            $(e.target).closest('.dropdown').find('[data-toggle=dropdown]').dropdown('toggle')
+          $(e.target).closest('.dropdown').find('[data-toggle=dropdown]').dropdown('toggle')
 
-            this.$emit('relist')
-          }, 'json'
-        )
-
+          this.$emit('relist')
+        }).catch((err) => {
+          console.error(err)
+        })
       }
     }
   }

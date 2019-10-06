@@ -1,16 +1,18 @@
 <template>
     <div>
-        <b-row>
+        <b-row class="align-items-center">
             <b-col md="6">
-                <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"></b-pagination>
+                <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
+                              class="mb-0">
+                </b-pagination>
             </b-col>
-            <b-col md="6">
-                <div class="search form-group">
-                    <div class="input-group">
-                        <span class="icon glyphicon input-group-addon search"></span>
-                        <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
-                    </div>
+            <b-col md="3">
+                <div class="input-group">
+                    <span class="icon glyphicon input-group-addon search"></span>
+                    <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
                 </div>
+            </b-col>
+            <b-col md="3">
                 <div class="actions btn-group">
                     <button class="btn btn-default" type="button" title="Refresh" @click="refresh()">
                         <i class="material-icons">refresh</i>
@@ -33,18 +35,14 @@
             </b-col>
         </b-row>
 
-        <b-table ref="table" show-empty :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
+        <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="fields"
-                 :filter="filter" @filtered="onFiltered">
+                 tbody-tr-class="align-middle" selected-variant=""
+                 :filter="filter" :filter-debounce="200" @filtered="onFiltered">
             <template v-slot:cell(selected)="{ rowSelected }">
-                <template v-if="rowSelected">
-                    <span aria-hidden="true">&check;</span>
-                    <span class="sr-only">Selected</span>
-                </template>
-                <template v-else>
-                    <span aria-hidden="true">&nbsp;</span>
-                    <span class="sr-only">Not selected</span>
-                </template>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" :checked="rowSelected">
+                </div>
             </template>
             <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
             <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
@@ -52,7 +50,9 @@
             </template>
         </b-table>
 
-        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"></b-pagination>
+        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
+                      class="mb-0">
+        </b-pagination>
     </div>
 </template>
 
@@ -73,9 +73,15 @@
     props: {
       id: String,
       apiUrl: String,
-      defaultPerPage: Number,
+      defaultPerPage: {
+        type: Number,
+        default: 10
+      },
       fields: Array,
-      selectable: Boolean,
+      selectable: {
+        type: Boolean,
+        default: false
+      },
       requestConfig: Function,
       requestProcess: Function
     },
@@ -118,7 +124,7 @@
         this.flushCache = true
         this.refresh()
       },
-      filter (newTerm) {
+      setFilter (newTerm) {
         this.filter = newTerm
       },
       loadItems (ctx, callback) {

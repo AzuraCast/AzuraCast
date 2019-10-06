@@ -44,7 +44,7 @@
         files: []
       }
     },
-    created () {
+    mounted () {
       this.flow = new Flow({
         target: this.uploadUrl,
         query: function () {

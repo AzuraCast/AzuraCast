@@ -32,7 +32,9 @@
                                                 <i class="material-icons" aria-hidden="true">folder</i>
                                             </span>
 
-                                            <a href="#" @click.prevent="enterDirectory(row.path)">{{ row.name }}</a>
+                                            <a href="#" @click.prevent="enterDirectory(row.item.path)">
+                                                {{ row.item.name }}
+                                            </a>
                                         </div>
                                     </template>
                                 </data-table>
@@ -60,7 +62,7 @@
     components: { DataTable },
     props: {
       selectedFiles: Array,
-      currentDirectory: File,
+      currentDirectory: String,
       batchUrl: String,
       listDirectoriesUrl: String,
       csrf: String

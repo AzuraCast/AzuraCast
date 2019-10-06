@@ -1,68 +1,72 @@
 <template>
-    <b-row>
-        <b-col md="6">
-            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"></b-pagination>
-        </b-col>
-        <b-col md="6">
-            <div class="search form-group">
-                <div class="input-group">
-                    <span class="icon glyphicon input-group-addon search"></span>
-                    <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
+    <div>
+        <b-row>
+            <b-col md="6">
+                <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"></b-pagination>
+            </b-col>
+            <b-col md="6">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="icon glyphicon input-group-addon search"></span>
+                        <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
+                    </div>
                 </div>
-            </div>
-            <div class="actions btn-group">
-                <button class="btn btn-default" type="button" title="Refresh" @click="refresh()">
-                    <i class="material-icons">refresh</i>
-                </button>
-                <div class="dropdown btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        <span class="dropdown-text">{{ perPageLabel }}</span>
-                        <span class="caret"></span>
+                <div class="actions btn-group">
+                    <button class="btn btn-default" type="button" title="Refresh" @click="refresh()">
+                        <i class="material-icons">refresh</i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        <li v-for="pageOption in pageOptions" :class="{ active: (pageOption === perPage) }">
-                            <a href="#" @click.prevent="setPerPage(pageOption)"
-                               class="dropdown-item dropdown-item-button">
-                                {{ getPerPageLabel(pageOption) }}
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="dropdown btn-group">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                            <span class="dropdown-text">{{ perPageLabel }}</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li v-for="pageOption in pageOptions" :class="{ active: (pageOption === perPage) }">
+                                <a href="#" @click.prevent="setPerPage(pageOption)"
+                                   class="dropdown-item dropdown-item-button">
+                                    {{ getPerPageLabel(pageOption) }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </b-col>
-    </b-row>
+            </b-col>
+        </b-row>
 
-    <b-table ref="table" show-empty :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-             :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="fields"
-             :filter="filter" @filtered="onFiltered">
-        <template v-slot:cell(selected)="{ rowSelected }">
-            <template v-if="rowSelected">
-                <span aria-hidden="true">&check;</span>
-                <span class="sr-only">Selected</span>
+        <b-table ref="table" show-empty :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
+                 :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="fields"
+                 :filter="filter" @filtered="onFiltered">
+            <template v-slot:cell(selected)="{ rowSelected }">
+                <template v-if="rowSelected">
+                    <span aria-hidden="true">&check;</span>
+                    <span class="sr-only">Selected</span>
+                </template>
+                <template v-else>
+                    <span aria-hidden="true">&nbsp;</span>
+                    <span class="sr-only">Not selected</span>
+                </template>
             </template>
-            <template v-else>
-                <span aria-hidden="true">&nbsp;</span>
-                <span class="sr-only">Not selected</span>
+            <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
+            <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
+                <slot :name="name" v-bind="slotData"/>
             </template>
-        </template>
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
-        </template>
-    </b-table>
+        </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"></b-pagination>
+        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"></b-pagination>
+    </div>
 </template>
 
 <script>
   import axios from 'axios'
-  import Vue from 'vue'
-  import { LayoutPlugin, PaginationPlugin, TablePlugin } from 'bootstrap-vue'
   import store from 'store'
+  // import Vue from 'vue'
+  // import { LayoutPlugin, PaginationPlugin, TablePlugin } from 'bootstrap-vue'
 
+  /*
   Vue.use(LayoutPlugin)
   Vue.use(TablePlugin)
   Vue.use(PaginationPlugin)
+  */
 
   export default {
     name: 'DataTable',

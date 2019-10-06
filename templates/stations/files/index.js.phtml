@@ -1,447 +1,198 @@
-$(function() {
-    var CSRF = '<?=$csrf ?>';
+<?php
+$props = [
+    'csrf' => $csrf,
+    'listUrl' => $router->fromHere('stations:files:list'),
+    'batchUrl' => ,
+]
+?>
+// grid.find('.album-art').fancybox({});
 
-    var appToolbar = new Vue({
-        el: '#app-toolbar',
-        data: {
-            playlists: <?=json_encode($playlists) ?>,
-            checkedPlaylists: [],
-            newPlaylist: ''
-        },
-        watch: {
-            newPlaylist: function (text) {
-                if (text !== '') {
-                    if (!this.checkedPlaylists.includes('new')) {
-                        this.checkedPlaylists.push('new');
-                    }
-                }
-            }
-        },
-        computed: {
-            newPlaylistIsChecked: function() {
-                return this.newPlaylist !== '';
-            }
-        },
-        methods: {
-            doDelete: function (e) {
-                var buttonText = <?=$this->escapeJs(__('Delete')) ?>;
-                var buttonConfirm = <?=$this->escapeJs(__('Delete {NUM} media file(s)?')) ?>;
+$(function () {
 
-                var $files = getSelectedFiles();
-                swal({
-                    title: buttonConfirm.replace('{NUM}', $files.length),
-                    buttons: [true, buttonText],
-                    dangerMode: true
-                }).then(function(value) {
-                    if (value) {
-                        var notifyMessage = <?=$this->escapeJs(__('Files removed:')) ?>;
-                        appToolbar.doBatch('delete', notifyMessage);
-                    }
-                });
-            },
-            doBatch: function (action, notifyMessage) {
-                var $files = getSelectedFiles();
-                $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
-                    'do': action,
-                    'files': $files,
-                    'csrf': CSRF,
-                    'file': getUrlHash()
-                }, function() {
-                    notify('<b>'+notifyMessage+'</b><br>'+$files.join('<br>'), 'success', false);
+  appMoveFilesModal.directory_grid = $("#directory-table").bootgrid({
+    ajax: true,
+    navigation: 0,
+    selection: false,
+    rowSelect: false,
+    caseSensitive: false,
+    url: "<?=$router->fromHere('stations:files:directories')  ?>",
+    post: function () {
+      return {
+        'csrf': CSRF,
+        'file': appMoveFilesModal.move_dir
+      };
+    },
+    formatters: {
+      "directory": function (column, row) {
+        $icon = '<span class="file-icon"><i class="material-icons" aria-hidden="true">folder</i></span> ';
 
-                    list();
-                },'json');
-            },
-            clearPlaylists: function(e) {
-                this.checkedPlaylists = [];
-                this.newPlaylist = '';
+        return '<div class="is_dir">' + $icon + row.name + '</div>';
+      },
+      "commands": function (column, row) {
+        var btn_text = <?=$this->escapeJs(__('Select')) ?>;
+        return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="' + window.btoa(encodeURIComponent(row.path)) + '">' + btn_text + '</a>';
+      }
+    }
+  }).on("loaded.rs.jquery.bootgrid", function () {
+    /* Handle directory selection */
+    appMoveFilesModal.directory_grid.find(".btn-select").on("click", function (e) {
+      e.preventDefault();
 
-                this.setPlaylists(e);
-            },
-            setPlaylists: function(e) {
-                var $files = getSelectedFiles();
-                $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
-                    'do': 'playlist',
-                    'playlists': this.checkedPlaylists,
-                    'new_playlist_name': this.newPlaylist,
-                    'files': $files,
-                    'csrf': CSRF,
-                    'file': getUrlHash()
-                }, function(data) {
-                    if (data.success && data.record) {
-                        appToolbar.playlists.push(data.record);
-                    }
+      var $files = getSelectedFiles();
+      $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>', {
+        'do': 'move',
+        'files': $files,
+        'csrf': CSRF,
+        'directory': decodeURIComponent(window.atob($(this).data('path')))
+      }, function (data) {
+        list();
+        $('#mdl-move-file').modal('hide');
+      }, 'json');
 
-                    if (appToolbar.checkedPlaylists.length > 0) {
-                        var notifyMessage = <?=$this->escapeJs(__('Playlists updated for selected files:')) ?>;
-                    } else {
-                        var notifyMessage = <?=$this->escapeJs(__('Playlists cleared for selected files:')) ?>;
-                    }
-                    notify('<b>'+notifyMessage+'</b><br>'+$files.join('<br>'), 'success', false);
-
-                    appToolbar.checkedPlaylists = [];
-                    appToolbar.newPlaylist = '';
-
-                    $(e.target).closest('.dropdown').find('[data-toggle=dropdown]').dropdown('toggle');
-
-                    list();
-                },'json');
-            }
-        }
+      return false;
     });
+  }).on("click.rs.jquery.bootgrid", function (e, columns, row) {
+    appMoveFilesModal.dir_history.push(row.path);
+    appMoveFilesModal.move_dir = row.path;
+    appMoveFilesModal.directory_grid.bootgrid("reload");
+  });
 
-    var appMoveFilesModal = new Vue({
-        el: '#mdl-move-file',
-        data: {
-            selected_files: 0,
-            move_dir: '',
-            dir_history: [],
-            directory_grid: null
-        },
-        methods: {
-            pageBack: function(e) {
-                e.preventDefault();
+  $('#mdl-move-file').on('show.bs.modal', function (e) {
+    appMoveFilesModal.dir_history = [];
+    appMoveFilesModal.move_dir = '';
+    appMoveFilesModal.directory_grid.bootgrid("reload");
+  });
 
-                this.dir_history.pop();
-                this.move_dir = this.dir_history.slice(-1)[0];
-                this.directory_grid.bootgrid("reload");
-            }
-        }
-    });
+  // Check if initial URL has a hash.
+  var hashval = getUrlHash();
 
-    var currentDir = '';
-    var flushCache = false;
+  if (hashval.length > 0)
+    list();
+  else
+    $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
 
-    var grid = $("#file-table").bootgrid({
-        ajax: true,
-        selection: true,
-        multiSelect: true,
-        rowSelect: false,
-        caseSensitive: false,
-        url: "<?=$router->fromHere('stations:files:list') ?>",
-        post: function() {
-            var postVars = {
-                'file': currentDir,
-                'csrf': CSRF
-            };
+  $(window).bind('hashchange', list);
 
-            if (flushCache) {
-                postVars.flush_cache = 'true';
-                flushCache = false;
-            }
+  // Create new directory
+  $('form#mkdir').submit(function (e) {
+    e.preventDefault();
 
-            return postVars;
-        },
-        formatters: {
-            "playable": function(column, row) {
-                var $url = row.is_dir ? '#' + row.path : row.media_play_url;
-                var $icon = '';
-
-                if (row.media_is_playable)
-                    $icon = '<a class="file-icon btn-audio" href="#" data-url="'+$url+'"><i class="material-icons" aria-hidden="true">play_circle_filled</i></a>';
-                else
-                    $icon = '<span class="file-icon"><i class="material-icons" aria-hidden="true">'+(row.is_dir ? 'folder' : 'note')+'</i></span>';
-
-                var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+(row.is_dir ? row.text : row.media_name)+'</a>';
-
-                var art_alt = <?=$this->escapeJs(__('Album Artwork')) ?>;
-                var art_src = (row.media_art) ? row.media_art : '/static/img/generic_song.jpg';
-                var $art = (row.is_dir) ? '' : '<a href="'+art_src+'" class="album-art float-right pl-3" target="_blank"><img style="width: 40px; height: auto; border-radius: 5px;" alt="'+art_alt+'" src="'+art_src+'"></a>';
-
-                return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$art+$icon + $link + '<br><small>'+(row.is_dir ? 'Directory' : row.text)+'</small></div>';
-            },
-            "commands": function(column, row) {
-                if (row.media_edit_url) {
-                    var btn_href = row.media_edit_url;
-                    var btn_name = <?=$this->escapeJs(__('Edit')) ?>;
-                } else {
-                    var btn_href = row.rename_url;
-                    var btn_name = <?=$this->escapeJs(__('Rename')) ?>;
-                }
-
-                return '<a class="btn btn-sm btn-primary" href="'+btn_href+'">'+btn_name+'</a>';
-            },
-            "file_length": function(column, row) {
-                if (!row.media_length_text) {
-                    return '';
-                }
-
-                return row.media_length_text;
-            },
-            "file_size": function(column, row) {
-                if (!row.size) {
-                    return '';
-                }
-
-                return formatFileSize(row.size);
-            },
-            "file_mtime": function(column, row) {
-                if (!row.mtime) {
-                    return '';
-                }
-
-                return moment.unix(row.mtime).format('lll');
-            },
-            "playlists": function(column, row) {
-                if (row.media_playlists.length > 0) {
-                    var playlists = [];
-                    var playlist;
-
-                    for (var i = 0; i < row.media_playlists.length; i++) {
-                        playlist = row.media_playlists[i];
-                        playlists.push('<a class="btn-search" href="#" data-term="playlist:'+playlist+'">'+playlist+'</a>');
-                    }
-
-                    return playlists.join(', ');
-                } else {
-                    return '';
-                }
-            }
-        }
-    }).on("loaded.rs.jquery.bootgrid", function() {
-        /* Executes after data is loaded and rendered */
-        grid.find(".btn-audio").on("click", function(e) {
-            e.preventDefault();
-            inline_player.$eventHub.$emit('player_toggle', $(this).data('url'));
-            return false;
-        });
-
-        /* Handle playlist search function */
-        grid.find(".btn-search").on("click", function(e) {
-            e.preventDefault();
-            grid.bootgrid("clear").bootgrid("search", $(this).data('term'));
-            return false;
-        });
-
-        /* Handle album art clicking. */
-        grid.find('.album-art').fancybox({});
-
-        appMoveFilesModal.selected_files = getSelectedFiles().length;
-    }).on("selected.rs.jquery.bootgrid", function(e, columns, row) {
-        appMoveFilesModal.selected_files = getSelectedFiles().length;
-    }).on("deselected.rs.jquery.bootgrid", function(e, columns, row) {
-        appMoveFilesModal.selected_files = getSelectedFiles().length;
-    });
-
-    appMoveFilesModal.directory_grid = $("#directory-table").bootgrid({
-        ajax: true,
-        navigation: 0,
-        selection: false,
-        rowSelect: false,
-        caseSensitive: false,
-        url: "<?=$router->fromHere('stations:files:directories')  ?>",
-        post: function() {
-            return {
-                'csrf': CSRF,
-                'file': appMoveFilesModal.move_dir
-            };
-        },
-        formatters: {
-            "directory": function(column, row) {
-                $icon = '<span class="file-icon"><i class="material-icons" aria-hidden="true">folder</i></span> ';
-
-                return '<div class="is_dir">'+$icon + row.name +'</div>';
-            },
-            "commands": function(column, row) {
-                var btn_text = <?=$this->escapeJs(__('Select')) ?>;
-                return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="'+window.btoa(encodeURIComponent(row.path))+'">'+btn_text+'</a>';
-            }
-        }
-    }).on("loaded.rs.jquery.bootgrid", function() {
-        /* Handle directory selection */
-        appMoveFilesModal.directory_grid.find(".btn-select").on("click", function(e) {
-            e.preventDefault();
-
-            var $files = getSelectedFiles();
-            $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
-                'do': 'move',
-                'files': $files,
-                'csrf': CSRF,
-                'directory': decodeURIComponent(window.atob($(this).data('path')))
-            },function(data){
-                list();
-                $('#mdl-move-file').modal('hide');
-            },'json');
-
-            return false;
-        });
-    }).on("click.rs.jquery.bootgrid", function(e, columns, row) {
-        appMoveFilesModal.dir_history.push(row.path);
-        appMoveFilesModal.move_dir = row.path;
-        appMoveFilesModal.directory_grid.bootgrid("reload");
-    });
-
-    $('#mdl-move-file').on('show.bs.modal', function (e) {
-        appMoveFilesModal.dir_history = [];
-        appMoveFilesModal.move_dir = '';
-        appMoveFilesModal.directory_grid.bootgrid("reload");
-    });
-
-    // Check if initial URL has a hash.
     var hashval = getUrlHash();
+    var $dir = $(this).find('[name=name]');
 
-    if (hashval.length > 0)
-        list();
-    else
-        $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
+    $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>', {
+      name: $dir.val(),
+      csrf: CSRF,
+      file: hashval
+    }, function (data) {
+      list();
+    }, 'json');
 
-    $(window).bind('hashchange',list);
+    $dir.val('');
+    return false;
+  });
 
-    // Create new directory
-    $('form#mkdir').submit(function(e) {
-        e.preventDefault();
+  // Allow playlist dropdown to stay open.
+  $('#frm-create-directory').submit(function (e) {
+    e.preventDefault();
 
-        var hashval = getUrlHash();
-        var $dir = $(this).find('[name=name]');
+    var $dir = $('#fld-directory-name');
 
-        $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>',{
-            name: $dir.val(),
-            csrf: CSRF,
-            file: hashval
-        },function(data){
-            list();
-        },'json');
+    $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>', {
+      name: $dir.val(),
+      csrf: CSRF,
+      file: getUrlHash()
+    }, function (data) {
+      list();
+    }, 'json');
 
-        $dir.val('');
-        return false;
+    $dir.val('');
+    $('#mdl-create-directory').modal('hide');
+    return false;
+  });
+
+  // File upload stuff
+  var flow = new Flow({
+    target: '<?=$router->fromHere('stations:files:upload') ?>',
+    query: function () {
+      return {
+        csrf: CSRF,
+        file: getUrlHash(),
+        searchPhrase: $('input.search-field').val()
+      };
+    },
+    headers: {
+      'Accept': 'application/json'
+    },
+    withCredentials: true,
+    allowDuplicateUploads: true,
+    fileParameterName: 'file_data'
+  });
+
+  flow.assignBrowse(document.getElementById('file_browse_target'));
+  flow.assignDrop(document.getElementById('file_drop_target'));
+
+  flow.on('fileAdded', function (file, event) {
+    var $row = $('<div class="uploading-file" id="file_upload_' + file.uniqueIdentifier + '"/>')
+      .append($('<div class="fileuploadname" />').text(file.name))
+      .append($('<div class="progress"><div class="progress-bar"></div></div>'))
+      .append($('<div class="upload-status" />'))
+      .append($('<div class="size" />').text(formatFileSize(file.size)));
+
+    $('#upload_progress').append($row);
+    return true;
+  });
+
+  flow.on('filesSubmitted', function (array, event) {
+    flow.upload();
+  });
+
+  flow.on('fileProgress', function (file) {
+    var $row = $('#file_upload_' + file.uniqueIdentifier);
+    $row.find('.progress-bar').css('width', (file.progress() * 100) + '%');
+  });
+
+  flow.on('fileSuccess', function (file, message) {
+    var $row = $('#file_upload_' + file.uniqueIdentifier);
+
+    $row.addClass('text-success');
+    $row.find('.progress').hide();
+  });
+
+  flow.on('fileError', function (file, message) {
+    var message_json = JSON.parse(message);
+
+    var $row = $('#file_upload_' + file.uniqueIdentifier);
+    $row.addClass('text-danger');
+    $row.find('.progress').hide();
+    $row.find('.upload-status').text(message_json.message);
+  });
+
+  flow.on('error', function (message, file, chunk) {
+    console.error(message, file, chunk);
+  });
+
+  flow.on('complete', function () {
+    $('.uploading-file').fadeOut();
+
+    flushCache = true;
+    list();
+  });
+
+  function renderBreadcrumbs (path) {
+    // noinspection JSAnnotator
+    var base = "",
+      $html = $('<div/>').append($('<a href=#>'+<?=$this->escapeJs(__('Home')) ?>+
+    '</a></div>'
+  ) )
+    ;
+    $.each(path.split('/'), function (k, v) {
+      if (v) {
+        $html.append($('<span/>').text(' ▸ '))
+          .append($('<a/>').attr('href', '#' + base + v).text(v));
+        base += v + '/';
+      }
     });
-
-    // Allow playlist dropdown to stay open.
-    $('#frm-create-directory').submit(function(e) {
-        e.preventDefault();
-
-        var $dir = $('#fld-directory-name');
-
-        $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>',{
-            name: $dir.val(),
-            csrf: CSRF,
-            file: getUrlHash()
-        },function(data){
-            list();
-        },'json');
-
-        $dir.val('');
-        $('#mdl-create-directory').modal('hide');
-        return false;
-    });
-
-    // File upload stuff
-    var flow = new Flow({
-        target: '<?=$router->fromHere('stations:files:upload') ?>',
-        query: function() {
-            return {
-                csrf: CSRF,
-                file: getUrlHash(),
-                searchPhrase: $('input.search-field').val()
-            };
-        },
-        headers: {
-            'Accept': 'application/json'
-        },
-        withCredentials: true,
-        allowDuplicateUploads: true,
-        fileParameterName: 'file_data'
-    });
-
-    flow.assignBrowse(document.getElementById('file_browse_target'));
-    flow.assignDrop(document.getElementById('file_drop_target'));
-
-    flow.on('fileAdded', function(file, event) {
-        var $row = $('<div class="uploading-file" id="file_upload_'+file.uniqueIdentifier+'"/>')
-            .append( $('<div class="fileuploadname" />').text(file.name) )
-            .append( $('<div class="progress"><div class="progress-bar"></div></div>') )
-            .append( $('<div class="upload-status" />') )
-            .append( $('<div class="size" />').text(formatFileSize(file.size)) );
-
-        $('#upload_progress').append($row);
-        return true;
-    });
-
-    flow.on('filesSubmitted', function(array, event) {
-        flow.upload();
-    });
-
-    flow.on('fileProgress', function(file) {
-        var $row = $('#file_upload_'+file.uniqueIdentifier);
-        $row.find('.progress-bar').css('width',(file.progress() * 100)+'%' );
-    });
-
-    flow.on('fileSuccess', function(file, message) {
-        var $row = $('#file_upload_'+file.uniqueIdentifier);
-
-        $row.addClass('text-success');
-        $row.find('.progress').hide();
-    });
-
-    flow.on('fileError', function(file, message) {
-        var message_json = JSON.parse(message);
-
-        var $row = $('#file_upload_'+file.uniqueIdentifier);
-        $row.addClass('text-danger');
-        $row.find('.progress').hide();
-        $row.find('.upload-status').text(message_json.message);
-    });
-
-    flow.on('error', function(message, file, chunk) {
-        console.error(message, file, chunk);
-    });
-
-    flow.on('complete', function() {
-        $('.uploading-file').fadeOut();
-
-        flushCache = true;
-        list();
-    });
-
-    function list() {
-        var hashval = getUrlHash();
-        $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
-
-        console.log('Relisting for directory: #'+hashval);
-
-        currentDir = hashval;
-        $('#file-table').bootgrid("reload");
-    }
-
-    function getUrlHash() {
-        var url_hash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, "%20"));
-
-        if (url_hash.substr(0, 9) === 'playlist:') {
-            window.location.hash = '';
-            grid.bootgrid("clear").bootgrid("search", url_hash);
-            return '';
-        }
-
-        return url_hash;
-    }
-
-    function getSelectedFiles() {
-        $files = [];
-        $('#file-table').find('tr.active').each(function() {
-            $files.push($(this).data('row-id'));
-        });
-
-        return $files;
-    }
-
-    function renderBreadcrumbs(path) {
-        // noinspection JSAnnotator
-        var base = "",
-            $html = $('<div/>').append( $('<a href=#>'+<?=$this->escapeJs(__('Home')) ?>+'</a></div>') );
-        $.each(path.split('/'),function(k,v){
-            if(v) {
-                $html.append( $('<span/>').text(' ▸ ') )
-                    .append( $('<a/>').attr('href','#'+base+v).text(v) );
-                base += v + '/';
-            }
-        });
-        return $html;
-    }
-
-    function formatFileSize(bytes) {
-        var s = ['bytes', 'KB','MB','GB','TB','PB','EB'];
-        for(var pos = 0;bytes >= 1000; pos++,bytes /= 1000);
-        var d = Math.round(bytes*10);
-        return pos ? [parseInt(d/10),".",d%10," ",s[pos]].join('') : bytes + ' bytes';
-    }
+    return $html;
+  }
 });

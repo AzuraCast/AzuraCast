@@ -226,22 +226,22 @@ gulp.task('concat-js', function () {
 
 var vueProjects = {
   'vue_gettext': {
-    'src_file': 'vue/vue_gettext.js',
+    'src_file': 'vue/VueTranslations.js',
     'filename': 'vue_gettext.js',
     'library': 'VueTranslations'
   },
   'webcaster': {
-    'src_file': 'vue/webcaster.vue',
+    'src_file': 'vue/Webcaster.vue',
     'filename': 'webcaster.js',
     'library': 'Webcaster'
   },
   'radio_player': {
-    'src_file': 'vue/radio_player.vue',
+    'src_file': 'vue/RadioPlayer.vue',
     'filename': 'radio_player.js',
     'library': 'RadioPlayer'
   },
   'inline_player': {
-    'src_file': 'vue/inline_player.vue',
+    'src_file': 'vue/InlinePlayer.vue',
     'filename': 'inline_player.js',
     'library': 'InlinePlayer'
   }
@@ -277,7 +277,12 @@ vueTasks.forEach(function (libName) {
               ]
             }
           ]
-        }
+        },
+        plugins: [
+          new webpack.IgnorePlugin({
+            resourceRegExp: /^vue$/
+          })
+        ]
       }))
       .pipe(babel({
         presets: ['@babel/env']

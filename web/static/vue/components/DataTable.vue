@@ -34,7 +34,7 @@
 
     <b-table ref="table" show-empty :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
              :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="fields"
-             :filter="filter">
+             :filter="filter" @filtered="onFiltered">
         <template v-slot:cell(selected)="{ rowSelected }">
             <template v-if="rowSelected">
                 <span aria-hidden="true">&check;</span>
@@ -159,6 +159,9 @@
       onRowSelected (items) {
         this.selected = items
         this.$emit('row-selected', items)
+      },
+      onFiltered (filter) {
+        this.$emit('filtered', filter)
       }
     }
   }

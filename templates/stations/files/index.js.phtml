@@ -2,197 +2,23 @@
 $props = [
     'csrf' => $csrf,
     'listUrl' => $router->fromHere('stations:files:list'),
-    'batchUrl' => ,
+    'batchUrl' => $router->fromHere('stations:files:batch'),
+    'uploadUrl' => $router->fromHere('stations:files:upload'),
+    'listDirectoriesUrl' => $router->fromHere('stations:files:directories'),
+    'mkdirUrl' => $router->fromHere('stations:files:mkdir'),
 ]
 ?>
 // grid.find('.album-art').fancybox({});
 
+var station_media_manager;
+
 $(function () {
-
-  appMoveFilesModal.directory_grid = $("#directory-table").bootgrid({
-    ajax: true,
-    navigation: 0,
-    selection: false,
-    rowSelect: false,
-    caseSensitive: false,
-    url: "<?=$router->fromHere('stations:files:directories')  ?>",
-    post: function () {
-      return {
-        'csrf': CSRF,
-        'file': appMoveFilesModal.move_dir
-      };
-    },
-    formatters: {
-      "directory": function (column, row) {
-        $icon = '<span class="file-icon"><i class="material-icons" aria-hidden="true">folder</i></span> ';
-
-        return '<div class="is_dir">' + $icon + row.name + '</div>';
-      },
-      "commands": function (column, row) {
-        var btn_text = <?=$this->escapeJs(__('Select')) ?>;
-        return '<a class="btn btn-sm btn-primary btn-select" href="#" data-path="' + window.btoa(encodeURIComponent(row.path)) + '">' + btn_text + '</a>';
-      }
+  station_media_manager = new Vue({
+    el: '#media-manager',
+    render: function (createElement) {
+      return createElement(StationMedia.default, {
+        props: <?=json_encode($props) ?>
+      });
     }
-  }).on("loaded.rs.jquery.bootgrid", function () {
-    /* Handle directory selection */
-    appMoveFilesModal.directory_grid.find(".btn-select").on("click", function (e) {
-      e.preventDefault();
-
-      var $files = getSelectedFiles();
-      $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>', {
-        'do': 'move',
-        'files': $files,
-        'csrf': CSRF,
-        'directory': decodeURIComponent(window.atob($(this).data('path')))
-      }, function (data) {
-        list();
-        $('#mdl-move-file').modal('hide');
-      }, 'json');
-
-      return false;
-    });
-  }).on("click.rs.jquery.bootgrid", function (e, columns, row) {
-    appMoveFilesModal.dir_history.push(row.path);
-    appMoveFilesModal.move_dir = row.path;
-    appMoveFilesModal.directory_grid.bootgrid("reload");
   });
-
-  $('#mdl-move-file').on('show.bs.modal', function (e) {
-    appMoveFilesModal.dir_history = [];
-    appMoveFilesModal.move_dir = '';
-    appMoveFilesModal.directory_grid.bootgrid("reload");
-  });
-
-  // Check if initial URL has a hash.
-  var hashval = getUrlHash();
-
-  if (hashval.length > 0)
-    list();
-  else
-    $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
-
-  $(window).bind('hashchange', list);
-
-  // Create new directory
-  $('form#mkdir').submit(function (e) {
-    e.preventDefault();
-
-    var hashval = getUrlHash();
-    var $dir = $(this).find('[name=name]');
-
-    $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>', {
-      name: $dir.val(),
-      csrf: CSRF,
-      file: hashval
-    }, function (data) {
-      list();
-    }, 'json');
-
-    $dir.val('');
-    return false;
-  });
-
-  // Allow playlist dropdown to stay open.
-  $('#frm-create-directory').submit(function (e) {
-    e.preventDefault();
-
-    var $dir = $('#fld-directory-name');
-
-    $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>', {
-      name: $dir.val(),
-      csrf: CSRF,
-      file: getUrlHash()
-    }, function (data) {
-      list();
-    }, 'json');
-
-    $dir.val('');
-    $('#mdl-create-directory').modal('hide');
-    return false;
-  });
-
-  // File upload stuff
-  var flow = new Flow({
-    target: '<?=$router->fromHere('stations:files:upload') ?>',
-    query: function () {
-      return {
-        csrf: CSRF,
-        file: getUrlHash(),
-        searchPhrase: $('input.search-field').val()
-      };
-    },
-    headers: {
-      'Accept': 'application/json'
-    },
-    withCredentials: true,
-    allowDuplicateUploads: true,
-    fileParameterName: 'file_data'
-  });
-
-  flow.assignBrowse(document.getElementById('file_browse_target'));
-  flow.assignDrop(document.getElementById('file_drop_target'));
-
-  flow.on('fileAdded', function (file, event) {
-    var $row = $('<div class="uploading-file" id="file_upload_' + file.uniqueIdentifier + '"/>')
-      .append($('<div class="fileuploadname" />').text(file.name))
-      .append($('<div class="progress"><div class="progress-bar"></div></div>'))
-      .append($('<div class="upload-status" />'))
-      .append($('<div class="size" />').text(formatFileSize(file.size)));
-
-    $('#upload_progress').append($row);
-    return true;
-  });
-
-  flow.on('filesSubmitted', function (array, event) {
-    flow.upload();
-  });
-
-  flow.on('fileProgress', function (file) {
-    var $row = $('#file_upload_' + file.uniqueIdentifier);
-    $row.find('.progress-bar').css('width', (file.progress() * 100) + '%');
-  });
-
-  flow.on('fileSuccess', function (file, message) {
-    var $row = $('#file_upload_' + file.uniqueIdentifier);
-
-    $row.addClass('text-success');
-    $row.find('.progress').hide();
-  });
-
-  flow.on('fileError', function (file, message) {
-    var message_json = JSON.parse(message);
-
-    var $row = $('#file_upload_' + file.uniqueIdentifier);
-    $row.addClass('text-danger');
-    $row.find('.progress').hide();
-    $row.find('.upload-status').text(message_json.message);
-  });
-
-  flow.on('error', function (message, file, chunk) {
-    console.error(message, file, chunk);
-  });
-
-  flow.on('complete', function () {
-    $('.uploading-file').fadeOut();
-
-    flushCache = true;
-    list();
-  });
-
-  function renderBreadcrumbs (path) {
-    // noinspection JSAnnotator
-    var base = "",
-      $html = $('<div/>').append($('<a href=#>'+<?=$this->escapeJs(__('Home')) ?>+
-    '</a></div>'
-  ) )
-    ;
-    $.each(path.split('/'), function (k, v) {
-      if (v) {
-        $html.append($('<span/>').text(' ▸ '))
-          .append($('<a/>').attr('href', '#' + base + v).text(v));
-        base += v + '/';
-      }
-    });
-    return $html;
-  }
 });

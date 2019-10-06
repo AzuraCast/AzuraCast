@@ -60,6 +60,22 @@ return [
         ],
     ],
 
+    'bootstrap-vue' => [
+        'order' => 3,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/bootstrap-vue/bootstrap-vue.min.js',
+                ],
+            ],
+            'css' => [
+                [
+                    'href' => 'dist/lib/bootstrap-vue/bootstrap-vue.min.css',
+                ],
+            ],
+        ],
+    ],
+
     'lodash' => [
         'order' => 2,
         'files' => [
@@ -483,6 +499,18 @@ return [
             'js' => [
                 [
                     'src' => 'dist/inline_player.js',
+                ],
+            ],
+        ],
+    ],
+
+    'station_media_manager' => [
+        'order' => 10,
+        'require' => ['vue', 'vue-translations', 'bootstrap-vue'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/station_media.js',
                 ],
             ],
         ],

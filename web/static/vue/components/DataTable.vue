@@ -1,18 +1,18 @@
 <template>
     <div>
-        <b-row class="align-items-center" v-if="showToolbar">
-            <b-col md="6">
+        <div class="d-flex align-items-center mb-2" v-if="showToolbar">
+            <div class="flex-fill">
                 <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                              class="mb-0" v-if="paginated">
+                              class="mb-0" v-if="showPagination">
                 </b-pagination>
-            </b-col>
-            <b-col md="3">
+            </div>
+            <div class="flex-shrink-1 pl-3">
                 <div class="input-group">
                     <span class="icon glyphicon input-group-addon search"></span>
                     <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
                 </div>
-            </b-col>
-            <b-col md="3">
+            </div>
+            <div class="flex-shrink-1 pl-3 pr-3">
                 <div class="actions btn-group">
                     <button class="btn btn-default" type="button" title="Refresh"
                             @click.stop.prevent="onClickRefresh">
@@ -33,8 +33,8 @@
                         </ul>
                     </div>
                 </div>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
         <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="fields"
@@ -53,7 +53,7 @@
         </b-table>
 
         <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                      class="mb-0" v-if="paginated">
+                      class="mb-0 mt-2" v-if="showPagination">
         </b-pagination>
     </div>
 </template>
@@ -114,8 +114,7 @@
         storeKey: 'datatable_' + this.id + '_perpage',
         filter: null,
         perPage: (this.paginated) ? this.defaultPerPage : 0,
-        perPageText: this.defaultPerPage,
-        pageOptions: [10, 25, 50, -1],
+        pageOptions: [10, 25, 50, 0],
         currentPage: 1,
         totalRows: 0,
         flushCache: false
@@ -132,13 +131,16 @@
       }
     },
     computed: {
+      showPagination () {
+        return this.paginated && this.perPage !== 0
+      },
       perPageLabel () {
         return this.getPerPageLabel(this.perPage)
       }
     },
     methods: {
       getPerPageLabel (num) {
-        return (num === -1) ? 'All' : num
+        return (num === 0) ? 'All' : num
       },
       setPerPage (num) {
         this.perPage = num
@@ -179,8 +181,8 @@
         }
 
         if ('' !== ctx.sortBy) {
-          queryParams.sort = {}
-          queryParams.sort[ctx.sortBy] = (ctx.sortDesc) ? 'DESC' : 'ASC'
+          queryParams.sort = ctx.sortBy
+          queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC'
         }
 
         let requestConfig = { params: queryParams }

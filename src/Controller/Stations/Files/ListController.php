@@ -163,13 +163,9 @@ class ListController extends FilesControllerAbstract
         // Apply sorting and limiting.
         $sort_by = ['is_dir', SORT_DESC];
 
-        if (!empty($_REQUEST['sort'])) {
-            foreach ($_REQUEST['sort'] as $sort_key => $sort_direction) {
-                $sort_dir = (strtolower($sort_direction) === 'desc') ? SORT_DESC : SORT_ASC;
-
-                $sort_by[] = $sort_key;
-                $sort_by[] = $sort_dir;
-            }
+        if (!empty($params['sort'])) {
+            $sort_by[] = $params['sort'];
+            $sort_by[] = (strtolower($params['sortOrder'] ?? 'asc') === 'desc') ? SORT_DESC : SORT_ASC;
         } else {
             $sort_by[] = 'name';
             $sort_by[] = SORT_ASC;
@@ -179,10 +175,10 @@ class ListController extends FilesControllerAbstract
 
         $num_results = count($result);
 
-        $page = $params['current'] ?? 1;
-        $row_count = $params['rowCount'] ?? 15;
+        $page = (int)($params['current'] ?? 1);
+        $row_count = (int)($params['rowCount'] ?? 15);
 
-        if ($row_count == -1) {
+        if ($row_count === 0) {
             $row_count = $num_results;
         }
 

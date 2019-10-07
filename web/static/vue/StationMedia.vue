@@ -4,7 +4,7 @@
             <breadcrumb :current-directory="currentDirectory" @change-directory="changeDirectory"></breadcrumb>
 
             <file-upload :csrf="csrf" :upload-url="uploadUrl" :search-phrase="searchPhrase"
-                         @relist="onTriggerRelist"></file-upload>
+                         :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
 
             <media-toolbar :selected-files="selectedFiles" :batch-url="batchUrl" :csrf="csrf"
                            :current-directory="currentDirectory"

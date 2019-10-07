@@ -1,9 +1,9 @@
 <template>
     <div>
         <div id="upload_progress">
-            <div class="uploading-file" v-for="(_, file) in files" :id="'file_upload_' + file.uniqueIdentifier"
+            <div class="uploading-file pt-1" v-for="(file, _) in files" :id="'file_upload_' + file.uniqueIdentifier"
                  :class="{ 'text-success': file.is_completed, 'text-danger': file.error }">
-                <div class="fileuploadname">{{ file.name }}</div>
+                <h6 class="fileuploadname m-0">{{ file.name }}</h6>
                 <div class="progress" v-if="!file.is_completed">
                     <div class="progress-bar" :style="{ width: file.progress_percent+'%' }"></div>
                 </div>
@@ -47,7 +47,7 @@
     mounted () {
       this.flow = new Flow({
         target: this.uploadUrl,
-        query: function () {
+        query: () => {
           return {
             csrf: this.csrf,
             file: this.currentDirectory,
@@ -65,7 +65,7 @@
       this.flow.assignBrowse(document.getElementById('file_browse_target'))
       this.flow.assignDrop(document.getElementById('file_drop_target'))
 
-      this.flow.on('fileAdded', function (file, event) {
+      this.flow.on('fileAdded', (file, event) => {
         file.progress_percent = 0
         file.is_completed = false
         file.error = null
@@ -75,28 +75,28 @@
         return true
       })
 
-      this.flow.on('filesSubmitted', function (array, event) {
+      this.flow.on('filesSubmitted', (array, event) => {
         this.flow.upload()
       })
 
-      this.flow.on('fileProgress', function (file) {
-        file.progress_percent = file.progress * 100
+      this.flow.on('fileProgress', (file) => {
+        file.progress_percent = file.progress() * 100
       })
 
-      this.flow.on('fileSuccess', function (file, message) {
+      this.flow.on('fileSuccess', (file, message) => {
         file.is_completed = true
       })
 
-      this.flow.on('fileError', function (file, message) {
+      this.flow.on('fileError', (file, message) => {
         let messageJson = JSON.parse(message)
         file.error = messageJson.message
       })
 
-      this.flow.on('error', function (message, file, chunk) {
+      this.flow.on('error', (message, file, chunk) => {
         console.error(message, file, chunk)
       })
 
-      this.flow.on('complete', function () {
+      this.flow.on('complete', () => {
         this.files = []
         this.$emit('relist')
       })

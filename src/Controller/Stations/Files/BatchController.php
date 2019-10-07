@@ -46,10 +46,8 @@ class BatchController extends FilesControllerAbstract
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $params = $request->getParams();
-
         try {
-            $request->getCsrf()->verify($params['csrf'], $this->csrf_namespace);
+            $request->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch (CsrfValidationException $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: ' . $e->getMessage()]]);
@@ -59,7 +57,7 @@ class BatchController extends FilesControllerAbstract
         $fs = $this->filesystem->getForStation($station);
 
         // Convert from pipe-separated files parameter into actual paths.
-        $files_raw = $_POST['files'];
+        $files_raw = $request->getParam('files');
         $files = [];
 
         foreach ($files_raw as $file) {
@@ -76,9 +74,7 @@ class BatchController extends FilesControllerAbstract
         $response_record = null;
         $errors = [];
 
-        $post_data = $request->getParsedBody();
-
-        [$action, $action_id] = explode('_', $post_data['do']);
+        [$action, $action_id] = explode('_', $request->getParam('do'));
 
         switch ($action) {
             case 'delete':
@@ -151,10 +147,10 @@ class BatchController extends FilesControllerAbstract
                 $playlists = [];
                 $playlist_weights = [];
 
-                foreach ($post_data['playlists'] as $playlist_id) {
+                foreach ($request->getParam('playlists') as $playlist_id) {
                     if ('new' === $playlist_id) {
                         $playlist = new Entity\StationPlaylist($station);
-                        $playlist->setName($post_data['new_playlist_name']);
+                        $playlist->setName($request->getParam('new_playlist_name'));
 
                         $this->em->persist($playlist);
                         $this->em->flush();
@@ -225,21 +221,27 @@ class BatchController extends FilesControllerAbstract
                 $music_files = $this->_getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
-                $directory_path = ((array)$request->getParsedBody())['directory'];
+                $directory_path = $request->getParam('directory');
                 $directory_path_full = 'media://' . $directory_path;
 
-                foreach ($music_files as $file) {
-                    try {
+                try {
+                    // Verify that you're moving to a directory (if it's not the root dir).
+                    if ('' !== $directory_path) {
                         $directory_path_meta = $fs->getMetadata($directory_path_full);
-
                         if ('dir' !== $directory_path_meta['type']) {
                             throw new \Azura\Exception(__('Path "%s" is not a folder.', $directory_path_full));
                         }
+                    }
 
+                    foreach ($music_files as $file) {
                         $media = $this->mediaRepo->getOrCreate($station, $file['path']);
 
                         $old_full_path = $media->getPathUri();
-                        $media->setPath($directory_path . DIRECTORY_SEPARATOR . $file['basename']);
+
+                        $newPath = ('' === $directory_path)
+                            ? $file['basename']
+                            : $directory_path . '/' . $file['basename'];
+                        $media->setPath($newPath);
 
                         if (!$fs->rename($old_full_path, $media->getPath())) {
                             throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path,
@@ -248,11 +250,10 @@ class BatchController extends FilesControllerAbstract
 
                         $this->em->persist($media);
                         $this->em->flush($media);
-                    } catch (Exception $e) {
-                        $errors[] = $file . ': ' . $e->getMessage();
+                        $files_affected++;
                     }
-
-                    $files_affected++;
+                } catch (Exception $e) {
+                    $errors[] = $e->getMessage();
                 }
 
                 $this->em->flush();

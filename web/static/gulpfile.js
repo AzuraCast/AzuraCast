@@ -10,7 +10,8 @@ const sourcemaps = require('gulp-sourcemaps')
 const sass = require('gulp-sass')
 const clean_css = require('gulp-clean-css')
 const revdel = require('gulp-rev-delete-original')
-const webpack = require('webpack-stream')
+const webpackStream = require('webpack-stream')
+const webpack = require('webpack')
 
 var jsFiles = {
   // Core Libraries
@@ -186,6 +187,13 @@ var jsFiles = {
     files: [
       'js/webcaster/*.js'
     ]
+  },
+  'bootstrap-vue': {
+    base: null,
+    files: [
+      'node_modules/bootstrap-vue/dist/bootstrap-vue.min.js',
+      'node_modules/bootstrap-vue/dist/bootstrap-vue.min.css'
+    ]
   }
 }
 
@@ -226,24 +234,29 @@ gulp.task('concat-js', function () {
 
 var vueProjects = {
   'vue_gettext': {
-    'src_file': 'vue/vue_gettext.js',
+    'src_file': 'vue/VueTranslations.js',
     'filename': 'vue_gettext.js',
     'library': 'VueTranslations'
   },
   'webcaster': {
-    'src_file': 'vue/webcaster.vue',
+    'src_file': 'vue/Webcaster.vue',
     'filename': 'webcaster.js',
     'library': 'Webcaster'
   },
   'radio_player': {
-    'src_file': 'vue/radio_player.vue',
+    'src_file': 'vue/RadioPlayer.vue',
     'filename': 'radio_player.js',
     'library': 'RadioPlayer'
   },
   'inline_player': {
-    'src_file': 'vue/inline_player.vue',
+    'src_file': 'vue/InlinePlayer.vue',
     'filename': 'inline_player.js',
     'library': 'InlinePlayer'
+  },
+  'station_media': {
+    'src_file': 'vue/StationMedia.vue',
+    'filename': 'station_media.js',
+    'library': 'StationMedia'
   }
 }
 
@@ -254,7 +267,7 @@ vueTasks.forEach(function (libName) {
     var vueProject = vueProjects[libName]
     return gulp.src(vueProject.src_file)
       .pipe(sourcemaps.init())
-      .pipe(webpack({
+      .pipe(webpackStream({
         mode: 'production',
         output: {
           publicPath: '/static/dist',
@@ -277,7 +290,12 @@ vueTasks.forEach(function (libName) {
               ]
             }
           ]
-        }
+        },
+        plugins: [
+          new webpack.IgnorePlugin({
+            resourceRegExp: /^vue$/
+          })
+        ]
       }))
       .pipe(babel({
         presets: ['@babel/env']

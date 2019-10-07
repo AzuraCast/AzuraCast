@@ -4,11 +4,10 @@
 /** @var \Azura\Assets $assets */
 $assets
     ->load('vue')
-    ->load('bootgrid')
     ->load('moment')
-    ->load('flowjs')
     ->load('fancybox')
     ->load('inline_player')
+    ->load('station_media_manager')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->addInlineJs($this->fetch('stations/files/index.js', [
         'csrf' => $csrf,
@@ -22,180 +21,37 @@ $assets
             <div class="card-header bg-primary-dark">
                 <div class="row align-items-center">
                     <div class="col-md-7">
-                        <h2 class="card-title"><?=__('Music Files') ?></h2>
+                        <h2 class="card-title"><?= __('Music Files') ?></h2>
                     </div>
                     <div class="col-md-5 text-right">
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
-                                <span class="sr-only"><?=$space_percent ?>%</span>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="<?= $space_percent ?>"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: <?= $space_percent ?>%;">
+                                <span class="sr-only"><?= $space_percent ?>%</span>
                             </div>
                         </div>
-                        <?=__('%s of %s Used (%d Files)', $space_used, $space_total, $files_count) ?>
+                        <?= __('%s of %s Used (%d Files)', $space_used, $space_total, $files_count) ?>
                     </div>
                 </div>
             </div>
-        <?php if ($ftp_info): ?>
-            <div class="card-body alert-info d-flex align-items-center" role="alert">
-                <div class="flex-shrink-0 mr-2">
-                    <i class="material-icons" aria-hidden="true">info</i>
-                </div>
-                <div class="flex-fill">
-                    <p class="mb-0">
-                        <?=__('You can also upload files in bulk via FTP.') ?><br>
-                        <button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#ftpinfo">
-                            <?=__('View connection instructions') ?>
-                        </button>
-                    </p>
-                </div>
-            </div>
-        <?php endif; ?>
-            <div class="card-body">
-                <h3 class="card-subtitle mt-0 mb-2" id="breadcrumb">&nbsp;</h3>
-
-                <div id="upload_progress"></div>
-                <div id="file_drop_target">
-                    <?=__('Drag files here to upload to this folder or ') ?>
-                    <button id="file_browse_target" class="file-upload btn btn-primary text-center ml-1" type="button">
-                        <?=__('Select File') ?> <i class="material-icons" aria-hidden="true">cloud_upload</i>
-                    </button>
-                    <small class="file-name"></small>
-                    <input type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,.flac,audio/*" multiple style="visibility: hidden; position: absolute;" />
-                </div>
-
-                <div class="row pt-4" id="app-toolbar">
-                    <div class="col-md-8">
-                        <div class="btn-group dropdown allow-focus">
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle mb-1" data-toggle="dropdown" aria-expanded="false">
-                                <i class="material-icons" aria-hidden="true">clear_all</i>
-                                <?=__('Set Playlists') ?>
-                                <span class="caret"></span>
+            <?php if ($ftp_info): ?>
+                <div class="card-body alert-info d-flex align-items-center" role="alert">
+                    <div class="flex-shrink-0 mr-2">
+                        <i class="material-icons" aria-hidden="true">info</i>
+                    </div>
+                    <div class="flex-fill">
+                        <p class="mb-0">
+                            <?= __('You can also upload files in bulk via FTP.') ?><br>
+                            <button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#ftpinfo">
+                                <?= __('View connection instructions') ?>
                             </button>
-                            <div class="dropdown-menu" role="menu" v-on:click.stop="" style="line-height: inherit">
-                                <form id="frm_set_playlists" v-on:submit.stop.prevent="setPlaylists" class="px-3 py-3">
-                                    <div v-for="playlist in playlists" class="form-group">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" v-bind:id="'chk_playlist_' + playlist.id" name="playlists[]" v-model="checkedPlaylists" v-bind:value="playlist.id">
-                                            <label class="custom-control-label" v-bind:for="'chk_playlist_'+playlist.id">
-                                                {{ playlist.name }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="chk_playlist_new" v-model="checkedPlaylists" value="new">
-                                            <label class="custom-control-label" for="chk_playlist_new">
-                                                <input type="text" class="form-control p-2" id="new_playlist_name" name="new_playlist_name" v-model="newPlaylist" placeholder="<?=__('New Playlist') ?>">
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-sm btn-primary"><?=__('Save') ?></button>
-                                </form>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-warning mb-1" v-on:click.stop.prevent="clearPlaylists">
-                            <i class="material-icons" aria-hidden="true">clear_all</i>
-                            <?=__('Clear Playlists') ?>
-                        </button>
-                        <a href="#" class="btn btn-sm btn-primary mb-1" data-toggle="modal" data-target="#mdl-move-file">
-                            <i class="material-icons" aria-hidden="true">open_with</i>
-                            <?=__('Move') ?>
-                        </a>
-                        <button type="button" class="btn btn-sm btn-danger mb-1" v-on:click.stop.prevent="doDelete">
-                            <i class="material-icons" aria-hidden="true">delete</i>
-                            <?=__('Delete') ?>
-                        </button>
-                    </div>
-                    <div class="col-md-4 text-right">
-                        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="material-icons" aria-hidden="true">folder</i> <?=__('New Folder') ?></a>
+                        </p>
                     </div>
                 </div>
-            </div>
-            <div class="table-responsive">
-                <table class="data-table table table-striped" id="file-table">
-                    <thead>
-                        <tr>
-                            <th data-column-id="name" data-formatter="playable" data-identifier="true"><?=__('Name') ?></th>
-                            <th data-column-id="media_title" data-visible="false"><?=__('Title') ?></th>
-                            <th data-column-id="media_artist" data-visible="false"><?=__('Artist') ?></th>
-                            <th data-column-id="media_album" data-visible="false"><?=__('Album') ?></th>
-                            <th data-column-id="media_length" data-formatter="file_length"><?=__('Length') ?></th>
-                        <?php foreach($custom_fields as $field_key => $field_label): ?>
-                            <th data-column-id="<?=$field_key ?>" data-visible="false"><?=$this->e($field_label) ?></th>
-                        <?php endforeach; ?>
-                            <th data-column-id="size" data-formatter="file_size"><?=__('Size') ?></th>
-                            <th data-column-id="mtime" data-formatter="file_mtime"><?=__('Modified') ?></th>
-                            <th data-column-id="media_playlists" data-formatter="playlists"><?=__('Playlists') ?></th>
-                            <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=__('Actions') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+            <?php endif; ?>
+
+            <div id="media-manager"></div>
         </div>
-    </div>
-</div>
-
-<div class="modal fade" id="mdl-create-directory" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <form id="frm-create-directory">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel"><?=__('New Directory') ?></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name" class="control-label"><?=__('Directory Name') ?>:</label>
-                        <input type="text" class="form-control" id="fld-directory-name" name="name">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=__('Create Directory') ?></button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="modal fade" id="mdl-move-file" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <form id="frm-move-file">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel"><?=__('Move {{ selected_files }} File(s) to') ?></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <button type="button" class="btn btn-primary" v-on:click="pageBack" v-bind:disabled="dir_history.length == 0"><i class="material-icons" aria-hidden="true">chevron_left</i> <?=__('Back') ?></button>
-                            <span>&nbsp;{{ move_dir }}</span>
-                            <br/><br/>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <table class="data-table table table-striped table-hover" id="directory-table">
-                                <thead>
-                                    <tr>
-                                        <th data-column-id="directory" data-formatter="directory" data-sortable="false"><?=__('Directory') ?></th>
-                                        <th data-column-id="commands" data-formatter="commands" data-align="right" data-sortable="false"><?=__('Actions') ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -204,7 +60,7 @@ $assets
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><?=__('FTP Connection Information') ?></h5>
+                    <h5 class="modal-title"><?= __('FTP Connection Information') ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -216,48 +72,49 @@ $assets
                             <col width="60%">
                         </colgroup>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <?=__('Server') ?>
-                                </td>
-                                <td>
-                                    <?=$ftp_info['url'] ?><br>
-                                    <small><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.', $ftp_info['ip']) ?></small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <?=__('Port') ?>
-                                </td>
-                                <td>
-                                    <?=$ftp_info['port'] ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <?=__('Protocol') ?>
-                                </td>
-                                <td>
-                                    <?=__('FTP with Explicit TLS (FTPS)') ?><br>
-                                    <small><?=__('Unencrypted FTP is also allowed, but not recommended.') ?></small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <?=__('Username') ?>
-                                </td>
-                                <td>
-                                    <?=__('Your AzuraCast E-mail Address') ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <?=__('Password') ?>
-                                </td>
-                                <td>
-                                    <?=__('Your AzuraCast Password') ?>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                <?= __('Server') ?>
+                            </td>
+                            <td>
+                                <?= $ftp_info['url'] ?><br>
+                                <small><?= __('You may need to connect directly via your IP address, which is <code>%s</code>.',
+                                        $ftp_info['ip']) ?></small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= __('Port') ?>
+                            </td>
+                            <td>
+                                <?= $ftp_info['port'] ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= __('Protocol') ?>
+                            </td>
+                            <td>
+                                <?= __('FTP with Explicit TLS (FTPS)') ?><br>
+                                <small><?= __('Unencrypted FTP is also allowed, but not recommended.') ?></small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= __('Username') ?>
+                            </td>
+                            <td>
+                                <?= __('Your AzuraCast E-mail Address') ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= __('Password') ?>
+                            </td>
+                            <td>
+                                <?= __('Your AzuraCast Password') ?>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

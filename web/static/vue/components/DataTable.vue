@@ -13,31 +13,40 @@
                 </div>
             </div>
             <div class="flex-shrink-1 pl-3 pr-3">
-                <div class="actions btn-group">
-                    <button class="btn btn-default" type="button" title="Refresh"
-                            @click.stop.prevent="onClickRefresh">
+                <b-btn-group class="actions">
+                    <b-button variant="default" title="Refresh" @click="onClickRefresh">
                         <i class="material-icons">refresh</i>
-                    </button>
-                    <div class="dropdown btn-group" v-if="paginated">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                            <span class="dropdown-text">{{ perPageLabel }}</span>
+                    </b-button>
+                    <b-dropdown variant="default" :text="perPageLabel">
+                        <b-dropdown-item v-for="pageOption in pageOptions" :key="pageOption"
+                                         :active="(pageOption === perPage)" @click="setPerPage(pageOption)">
+                            {{ getPerPageLabel(pageOption) }}
+                        </b-dropdown-item>
+                    </b-dropdown>
+                    <b-dropdown variant="default" v-if="selectFields">
+                        <template v-slot:button-content>
+                            <i class="material-icons" aria-hidden="true">filter_list</i>
                             <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li v-for="pageOption in pageOptions" :class="{ active: (pageOption === perPage) }">
-                                <a href="#" @click.prevent="setPerPage(pageOption)"
-                                   class="dropdown-item dropdown-item-button">
-                                    {{ getPerPageLabel(pageOption) }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                        </template>
+                        <b-dropdown-form class="pt-3">
+                            <div v-for="field in selectableFields" class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"
+                                           v-bind:id="'chk_field_' + field.key" name="is_field_visible"
+                                           v-model="field.visible" @change="storeSettings">
+                                    <label class="custom-control-label" v-bind:for="'chk_field_'+field.key">
+                                        {{ field.label }}
+                                    </label>
+                                </div>
+                            </div>
+                        </b-dropdown-form>
+                    </b-dropdown>
+                </b-btn-group>
             </div>
         </div>
 
         <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-                 :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="fields"
+                 :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                  tbody-tr-class="align-middle" selected-variant=""
                  :filter="filter" :filter-debounce="200" @filtered="onFiltered">
             <template v-slot:cell(selected)="{ rowSelected }">
@@ -73,15 +82,7 @@
 <script>
   import axios from 'axios'
   import store from 'store'
-
-  // import Vue from 'vue'
-  // import { LayoutPlugin, PaginationPlugin, TablePlugin } from 'bootstrap-vue'
-
-  /*
-  Vue.use(LayoutPlugin)
-  Vue.use(TablePlugin)
-  Vue.use(PaginationPlugin)
-  */
+  import _ from 'lodash'
 
   export default {
     name: 'DataTable',
@@ -105,13 +106,17 @@
         type: Boolean,
         default: false
       },
+      selectFields: {
+        type: Boolean,
+        default: false
+      },
       requestConfig: Function,
       requestProcess: Function
     },
     data () {
       return {
         selected: [],
-        storeKey: 'datatable_' + this.id + '_perpage',
+        storeKey: 'datatable_' + this.id + '_settings',
         filter: null,
         perPage: (this.paginated) ? this.defaultPerPage : 0,
         pageOptions: [10, 25, 50, 0],
@@ -121,16 +126,28 @@
       }
     },
     mounted () {
-      if (store.enabled && store.get(this.storeKey) !== undefined) {
-        this.perPage = store.get(this.storeKey)
-      }
-    },
-    watch: {
-      perPage (newPerPage, oldPerPage) {
-        store.set(this.storeKey, newPerPage)
-      }
+      this.loadStoredSettings()
     },
     computed: {
+      visibleFields () {
+        if (!this.selectFields) {
+          return this.fields
+        }
+
+        return _.filter(this.fields, (field) => {
+          let isSelectable = _.defaultTo(field.selectable, false)
+          if (!isSelectable) {
+            return true
+          }
+
+          return _.defaultTo(field.visible, true)
+        })
+      },
+      selectableFields () {
+        return _.filter(this.fields, (field) => {
+          return _.defaultTo(field.selectable, false)
+        })
+      },
       showPagination () {
         return this.paginated && this.perPage !== 0
       },
@@ -139,11 +156,34 @@
       }
     },
     methods: {
+      loadStoredSettings () {
+        if (store.enabled && store.get(this.storeKey) !== undefined) {
+          let settings = store.get(this.storeKey)
+
+          this.perPage = _.defaultTo(settings.perPage, this.defaultPerPage)
+
+          _.forEach(this.selectableFields, (field) => {
+            field.visible = _.includes(settings.visibleFields, field.key)
+          })
+        }
+      },
+      storeSettings () {
+        if (!store.enabled) {
+          return
+        }
+
+        let settings = {
+          'perPage': this.perPage,
+          'visibleFields': _.map(this.visibleFields, 'key')
+        }
+        store.set(this.storeKey, settings)
+      },
       getPerPageLabel (num) {
-        return (num === 0) ? 'All' : num
+        return (num === 0) ? 'All' : num.toString()
       },
       setPerPage (num) {
         this.perPage = num
+        this.storeSettings()
       },
       onClickRefresh (e) {
         if (e.shiftKey) {

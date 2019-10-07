@@ -12,8 +12,9 @@
         </div>
 
         <div class="table-responsive table-responsive-lg">
-            <data-table ref="datatable" selectable paginated @row-selected="onRowSelected" id="station_media"
-                        :fields="fields" :api-url="listUrl" :request-config="requestConfig">
+            <data-table ref="datatable" id="station_media" selectable paginated select-fields
+                        @row-selected="onRowSelected" :fields="fields" :api-url="listUrl"
+                        :request-config="requestConfig">
                 <template v-slot:cell(name)="row">
                     <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
                         <a :href="row.item.media_art" class="album-art float-right pl-3" target="_blank"
@@ -122,12 +123,12 @@
         fields: [
           { key: 'selected', label: '', sortable: false },
           { key: 'name', label: this.$gettext('Name'), sortable: true },
-          // { key: 'media_title', label: this.$gettext('Title'), sortable: true },
-          // { key: 'media_artist', label: this.$gettext('Artist'), sortable: true },
-          // { key: 'media_album', label: this.$gettext('Album'), sortable: true },
-          { key: 'media_length', label: this.$gettext('Length'), sortable: true },
-          // custom fields
-          { key: 'size', label: this.$gettext('Size'), sortable: true },
+          { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
+          { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true, visible: false },
+          { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
+          { key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true },
+          // TODO custom fields
+          { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
           {
             key: 'mtime',
             label: this.$gettext('Modified'),
@@ -137,9 +138,11 @@
                 return ''
               }
               return moment.unix(value).format('lll')
-            }
+            },
+            selectable: true,
+            visible: true
           },
-          { key: 'playlists', label: this.$gettext('Playlists'), sortable: true },
+          { key: 'playlists', label: this.$gettext('Playlists'), sortable: true, selectable: true, visible: true },
           { key: 'commands', label: this.$gettext('Actions'), sortable: false }
         ]
       }

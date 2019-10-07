@@ -8,7 +8,7 @@
                         <translate>Set Playlists</translate>
                         <span class="caret"></span>
                     </template>
-                    <b-dropdown-form @submit.prevent="setPlaylists">
+                    <b-dropdown-form class="pt-3" @submit.prevent="setPlaylists">
                         <div v-for="playlist in playlists" class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input"

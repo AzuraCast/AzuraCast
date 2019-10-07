@@ -1,61 +1,48 @@
 <template>
-    <div class="modal fade" id="mdl-move-file" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <form id="frm-move-file">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLabel">{{ lang_header }}</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <button type="button" class="btn btn-primary" v-on:click="pageBack"
-                                        :disabled="dirHistory.length === 0">
-                                    <i class="material-icons" aria-hidden="true">chevron_left</i>
-                                    <translate>Back</translate>
-                                </button>
-                                <span>&nbsp;{{ destinationDirectory }}</span>
-                                <br/><br/>
-                            </div>
-                        </div>
+    <b-modal id="move_file" size="xl" centered ref="modal" :title="langHeader">
+        <b-row class="mb-3 align-items-center">
+            <b-col md="6">
+                <b-button size="sm" variant="primary" @click="pageBack" :disabled="dirHistory.length === 0">
+                    <i class="material-icons" aria-hidden="true">chevron_left</i>
+                    <translate>Back</translate>
+                </b-button>
+            </b-col>
+            <b-col md="6" class="text-right">
+                <h6 class="m-0">{{ destinationDirectory }}</h6>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col md="12">
+                <data-table ref="datatable" id="station_media" :show-toolbar="false"
+                            :selectable="false" :fields="fields"
+                            :api-url="listDirectoriesUrl" :request-config="requestConfig">
+                    <template v-slot:cell(directory)="row">
+                        <div class="is_dir">
+                            <span class="file-icon">
+                                <i class="material-icons" aria-hidden="true">folder</i>
+                            </span>
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <data-table ref="datatable" id="station_media" :fields="fields"
-                                            :api-url="listDirectoriesUrl" :request-config="requestConfig">
-                                    <template v-slot:cell(directory)="row">
-                                        <div class="is_dir">
-                                            <span class="file-icon">
-                                                <i class="material-icons" aria-hidden="true">folder</i>
-                                            </span>
-
-                                            <a href="#" @click.prevent="enterDirectory(row.item.path)">
-                                                {{ row.item.name }}
-                                            </a>
-                                        </div>
-                                    </template>
-                                </data-table>
-                            </div>
+                            <a href="#" @click.prevent="enterDirectory(row.item.path)">
+                                {{ row.item.name }}
+                            </a>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" v-translate>
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary" @click.prevent="doMove()" v-translate>
-                            Move to Directory
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+                    </template>
+                </data-table>
+            </b-col>
+        </b-row>
+        <template v-slot:modal-footer>
+            <b-button variant="default" @click="close" v-translate>
+                Close
+            </b-button>
+            <b-button variant="primary" @click="doMove" v-translate>
+                Move to Directory
+            </b-button>
+        </template>
+    </b-modal>
 </template>
 <script>
   import DataTable from '../components/DataTable.vue'
+  import axios from 'axios'
 
   export default {
     name: 'MoveFilesModal',
@@ -72,17 +59,23 @@
         destinationDirectory: '',
         dirHistory: [],
         fields: [
-          { id: 'directory', label: this.$gettext('Directory'), sortable: false }
+          { key: 'directory', label: this.$gettext('Directory'), sortable: false }
         ]
       }
     },
     computed: {
-      lang_header () {
+      langHeader () {
         let headerText = this.$gettext('Move %{ num } File(s) to')
         return this.$gettextInterpolate(headerText, { num: this.selectedFiles.length })
       }
     },
     methods: {
+      close () {
+        this.dirHistory = []
+        this.destinationDirectory = ''
+
+        this.$refs.modal.hide()
+      },
       doMove () {
         this.selectedFiles.length && axios.post(this.batchUrl, {
           'do': 'move',
@@ -90,11 +83,11 @@
           'csrf': this.csrf,
           'directory': this.destinationDirectory
         }).then((resp) => {
+          this.close()
           this.$emit('relist')
-          $('#mdl-move-file').modal('hide')
         }).catch((err) => {
+          this.close()
           this.$emit('relist')
-          $('#mdl-move-file').modal('hide')
         })
       },
       enterDirectory (path) {

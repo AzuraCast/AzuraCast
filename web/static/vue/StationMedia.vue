@@ -6,18 +6,19 @@
             <file-upload :csrf="csrf" :upload-url="uploadUrl" :search-phrase="searchPhrase"
                          @relist="onTriggerRelist"></file-upload>
 
-            <media-toolbar :selected-files="selectedFiles" :csrf="csrf" :current-directory="currentDirectory"
-                           @relist="onTriggerRelist" @filtered="onFiltered"></media-toolbar>
+            <media-toolbar :selected-files="selectedFiles" :batch-url="batchUrl" :csrf="csrf"
+                           :current-directory="currentDirectory"
+                           :initial-playlists="initialPlaylists" @relist="onTriggerRelist"></media-toolbar>
         </div>
 
         <div class="table-responsive table-responsive-lg">
-            <data-table ref="datatable" selectable @row-selected="onRowSelected" id="station_media" :fields="fields"
-                        :api-url="listUrl" :request-config="requestConfig">
+            <data-table ref="datatable" selectable paginated @row-selected="onRowSelected" id="station_media"
+                        :fields="fields" :api-url="listUrl" :request-config="requestConfig">
                 <template v-slot:cell(name)="row">
                     <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
                         <a :href="row.item.media_art" class="album-art float-right pl-3" target="_blank"
                            v-if="row.item.media_art">
-                            <img class="media_manager_album_art" :alt="lang_album_art" :src="row.item.media_art">
+                            <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
                         </a>
                         <template v-if="row.item.media_is_playable">
                             <a class="file-icon btn-audio" href="#" :data-url="row.item.media_play_url"
@@ -51,15 +52,15 @@
                     {{ row.item.media_length_text }}
                 </template>
                 <template v-slot:cell(size)="row">
-                    <template v-if="!row.value">&nbsp;</template>
+                    <template v-if="!row.item.size">&nbsp;</template>
                     <template v-else>
-                        {{ formatFileSize(row.value) }}
+                        {{ formatFileSize(row.item.size) }}
                     </template>
                 </template>
                 <template v-slot:cell(playlists)="row">
-                    <template v-for="(index, playlist) in row.item.media_playlists">
+                    <template v-for="(playlist, index) in row.item.media_playlists">
                         <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist)">{{ playlist }}</a>
-                        <span v-if="index+1 < row.media_playlists.length">, </span>
+                        <span v-if="index+1 < row.item.media_playlists.length">, </span>
                     </template>
                 </template>
                 <template v-slot:cell(commands)="row">
@@ -100,6 +101,7 @@
   import NewDirectoryModal from './station_media/NewDirectoryModal.vue'
   import MoveFilesModal from './station_media/MoveFilesModal.vue'
   import { formatFileSize } from './station_media/utils'
+  import _ from 'lodash'
 
   export default {
     components: { MoveFilesModal, NewDirectoryModal, FileUpload, MediaToolbar, DataTable, Breadcrumb },
@@ -109,7 +111,8 @@
       batchUrl: String,
       uploadUrl: String,
       listDirectoriesUrl: String,
-      mkdirUrl: String
+      mkdirUrl: String,
+      initialPlaylists: Array
     },
     data () {
       return {
@@ -141,8 +144,21 @@
         ]
       }
     },
+    mounted () {
+      // Load directory from URL hash, if applicable.
+      let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'))
+
+      if (urlHash.substr(0, 9) === 'playlist:') {
+        window.location.hash = ''
+        this.filter(urlHash)
+      }
+
+      if (urlHash !== '') {
+        this.changeDirectory(urlHash)
+      }
+    },
     computed: {
-      lang_album_art () {
+      langAlbumArt () {
         return this.$gettext('Album Art')
       }
     },
@@ -151,7 +167,7 @@
         return formatFileSize(size)
       },
       onRowSelected (items) {
-        this.selectedFiles = items
+        this.selectedFiles = _.map(items, 'name')
       },
       onTriggerRelist () {
         this.$refs.datatable.list()
@@ -160,7 +176,10 @@
         this.$eventHub.$emit('player_toggle', url)
       },
       changeDirectory (newDir) {
+        window.location.hash = newDir
+
         this.currentDirectory = newDir
+        this.onTriggerRelist()
       },
       filter (newFilter) {
         this.$refs.datatable.setFilter(newFilter)

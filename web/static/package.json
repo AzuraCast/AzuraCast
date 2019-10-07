@@ -4,7 +4,7 @@
   "scripts": {
     "build": "gulp",
     "generate-locales": "gettext-extract --attribute v-translate --keywords '$gettext' --output ../../resources/locale/frontend.pot $(find ./vue -type f -name '*.vue')",
-    "import-locales": "gettext-compile --output ../../resources/locale/translations.json $(find ../../resources/locale/*.UTF-8 -type f -name 'frontend.po')"
+    "import-locales": "gettext-compile --output ../../resources/locale/translations.json $(find ../../resources/locale/*.UTF-8 -type f -name '*.po')"
   },
   "dependencies": {
     "@fancyapps/fancybox": "^3.5.7",

@@ -39,7 +39,7 @@ class ListController extends FilesControllerAbstract
         $fs = $this->filesystem->getForStation($station);
         $params = $request->getParams();
 
-        if ('true' === $params['flush_cache']) {
+        if ($params['flushCache'] ?? false) {
             $fs->flushAllCaches();
         }
 

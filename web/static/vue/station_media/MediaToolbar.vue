@@ -2,14 +2,13 @@
     <div class="row pt-4" id="app-toolbar">
         <div class="col-md-8">
             <div class="btn-group dropdown allow-focus">
-                <button type="button" class="btn btn-sm btn-primary dropdown-toggle mb-1" data-toggle="dropdown"
-                        aria-expanded="false">
-                    <i class="material-icons" aria-hidden="true">clear_all</i>
-                    <translate>Set Playlists</translate>
-                    <span class="caret"></span>
-                </button>
-                <div class="dropdown-menu" role="menu" @click.stop="" style="line-height: inherit">
-                    <form id="frm_set_playlists" @submit.stop.prevent="setPlaylists" class="px-3 py-3">
+                <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown">
+                    <template v-slot:button-content>
+                        <i class="material-icons" aria-hidden="true">clear_all</i>
+                        <translate>Set Playlists</translate>
+                        <span class="caret"></span>
+                    </template>
+                    <b-dropdown-form @submit.prevent="setPlaylists">
                         <div v-for="playlist in playlists" class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input"
@@ -27,33 +26,33 @@
                                 <label class="custom-control-label" for="chk_playlist_new">
                                     <input type="text" class="form-control p-2" id="new_playlist_name"
                                            name="new_playlist_name" v-model="newPlaylist"
-                                           placeholder="<?=__('New Playlist') ?>">
+                                           :placeholder="langNewPlaylist">
                                 </label>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary" v-translate>Save</button>
-                    </form>
-                </div>
+                        <b-button type="submit" size="sm" variant="primary" v-translate>Save</b-button>
+                    </b-dropdown-form>
+                </b-dropdown>
             </div>
-            <button type="button" class="btn btn-sm btn-warning mb-1" @click.stop.prevent="clearPlaylists">
+            <b-button size="sm" variant="warning" @click="clearPlaylists">
                 <i class="material-icons" aria-hidden="true">clear_all</i>
                 <translate>Clear Playlists</translate>
-            </button>
-            <a href="#" class="btn btn-sm btn-primary mb-1" data-toggle="modal" data-target="#mdl-move-file">
+            </b-button>
+            <b-button size="sm" variant="primary" v-b-modal.move_file>
                 <i class="material-icons" aria-hidden="true">open_with</i>
                 <translate>Move</translate>
-            </a>
-            <button type="button" class="btn btn-sm btn-danger mb-1" @click.stop.prevent="doDelete">
+            </b-button>
+            <b-button size="sm" variant="danger" @click="doDelete">
                 <i class="material-icons" aria-hidden="true">delete</i>
                 <translate>Delete</translate>
-            </button>
+            </b-button>
         </div>
         <div class="col-md-4 text-right">
-            <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#mdl-create-directory">
+            <b-button size="sm" variant="primary" v-b-modal.create_directory>
                 <i class="material-icons" aria-hidden="true">folder</i>
                 <translate>New Folder</translate>
-            </a>
+            </b-button>
         </div>
     </div>
 </template>
@@ -77,7 +76,7 @@
       }
     },
     watch: {
-      newPlaylist: function (text) {
+      newPlaylist (text) {
         if (text !== '') {
           if (!this.checkedPlaylists.includes('new')) {
             this.checkedPlaylists.push('new')
@@ -86,12 +85,15 @@
       }
     },
     computed: {
-      newPlaylistIsChecked: function () {
+      langNewPlaylist () {
+        return this.$gettext('New Playlist')
+      },
+      newPlaylistIsChecked () {
         return this.newPlaylist !== ''
       }
     },
     methods: {
-      doDelete: function (e) {
+      doDelete (e) {
         let buttonText = this.$gettext('Delete')
         let buttonConfirmText = this.$gettext('Delete %{ num } media file(s)?')
 
@@ -111,10 +113,12 @@
           'files': this.selectedFiles,
           'csrf': this.csrf,
           'file': this.currentDirectory
-        }, () => {
+        }).then((resp) => {
           notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
           this.$emit('relist')
-        }, 'json')
+        }).catch((err) => {
+          console.error(err)
+        })
       },
       clearPlaylists (e) {
         this.checkedPlaylists = []
@@ -122,7 +126,7 @@
 
         this.setPlaylists(e)
       },
-      setPlaylists: function (e) {
+      setPlaylists (e) {
         this.selectedFiles.length && axios.post(this.batchUrl, {
           'do': 'playlist',
           'playlists': this.checkedPlaylists,
@@ -143,8 +147,7 @@
           this.checkedPlaylists = []
           this.newPlaylist = ''
 
-          $(e.target).closest('.dropdown').find('[data-toggle=dropdown]').dropdown('toggle')
-
+          this.$refs.setPlaylistsDropdown.hide()
           this.$emit('relist')
         }).catch((err) => {
           console.error(err)

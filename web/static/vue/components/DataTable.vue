@@ -1,9 +1,9 @@
 <template>
     <div>
-        <b-row class="align-items-center">
+        <b-row class="align-items-center" v-if="showToolbar">
             <b-col md="6">
                 <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                              class="mb-0">
+                              class="mb-0" v-if="paginated">
                 </b-pagination>
             </b-col>
             <b-col md="3">
@@ -14,10 +14,11 @@
             </b-col>
             <b-col md="3">
                 <div class="actions btn-group">
-                    <button class="btn btn-default" type="button" title="Refresh" @click="refresh()">
+                    <button class="btn btn-default" type="button" title="Refresh"
+                            @click.stop.prevent="onClickRefresh">
                         <i class="material-icons">refresh</i>
                     </button>
-                    <div class="dropdown btn-group">
+                    <div class="dropdown btn-group" v-if="paginated">
                         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                             <span class="dropdown-text">{{ perPageLabel }}</span>
                             <span class="caret"></span>
@@ -40,8 +41,9 @@
                  tbody-tr-class="align-middle" selected-variant=""
                  :filter="filter" :filter-debounce="200" @filtered="onFiltered">
             <template v-slot:cell(selected)="{ rowSelected }">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" :checked="rowSelected">
+                <div class="custom-control custom-checkbox pl-0">
+                    <input type="checkbox" class="custom-control-input position-static" :checked="rowSelected">
+                    <label class="custom-control-label"></label>
                 </div>
             </template>
             <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
@@ -51,14 +53,27 @@
         </b-table>
 
         <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                      class="mb-0">
+                      class="mb-0" v-if="paginated">
         </b-pagination>
     </div>
 </template>
 
+<style lang="scss">
+    table.b-table-selectable {
+        tr > td:nth-child(1) {
+            padding-right: 0.75rem;
+        }
+
+        tr > td:nth-child(2) {
+            padding-left: 0.5rem;
+        }
+    }
+</style>
+
 <script>
   import axios from 'axios'
   import store from 'store'
+
   // import Vue from 'vue'
   // import { LayoutPlugin, PaginationPlugin, TablePlugin } from 'bootstrap-vue'
 
@@ -73,6 +88,14 @@
     props: {
       id: String,
       apiUrl: String,
+      paginated: {
+        type: Boolean,
+        default: false
+      },
+      showToolbar: {
+        type: Boolean,
+        default: true
+      },
       defaultPerPage: {
         type: Number,
         default: 10
@@ -87,8 +110,10 @@
     },
     data () {
       return {
+        selected: [],
+        storeKey: 'datatable_' + this.id + '_perpage',
         filter: null,
-        perPage: this.defaultPerPage,
+        perPage: (this.paginated) ? this.defaultPerPage : 0,
         perPageText: this.defaultPerPage,
         pageOptions: [10, 25, 50, -1],
         currentPage: 1,
@@ -96,11 +121,14 @@
         flushCache: false
       }
     },
-    created () {
-      let storeKey = 'datatable_' + this.id + '_perpage'
-
-      if (store.enabled && store.get(storeKey) !== undefined) {
-        this.perPage = store.get(storeKey)
+    mounted () {
+      if (store.enabled && store.get(this.storeKey) !== undefined) {
+        this.perPage = store.get(this.storeKey)
+      }
+    },
+    watch: {
+      perPage (newPerPage, oldPerPage) {
+        store.set(this.storeKey, newPerPage)
       }
     },
     computed: {
@@ -115,6 +143,13 @@
       setPerPage (num) {
         this.perPage = num
       },
+      onClickRefresh (e) {
+        if (e.shiftKey) {
+          this.list()
+        } else {
+          this.refresh()
+        }
+      },
       refresh () {
         this.$refs.table.refresh()
       },
@@ -128,18 +163,23 @@
         this.filter = newTerm
       },
       loadItems (ctx, callback) {
-        let queryParams = {
-          rowCount: ctx.perPage,
-          current: ctx.currentPage,
-          searchPhrase: ctx.filter,
-          sort: []
+        let queryParams = {}
+
+        if (this.paginated) {
+          queryParams.rowCount = ctx.perPage
+          queryParams.current = ctx.currentPage
         }
 
         if (this.flushCache) {
-          queryParams.flush_cache = true
+          queryParams.flushCache = true
+        }
+
+        if (typeof ctx.filter === 'string') {
+          queryParams.searchPhrase = ctx.filter
         }
 
         if ('' !== ctx.sortBy) {
+          queryParams.sort = {}
           queryParams.sort[ctx.sortBy] = (ctx.sortDesc) ? 'DESC' : 'ASC'
         }
 

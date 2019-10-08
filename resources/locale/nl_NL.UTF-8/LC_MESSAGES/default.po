@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
-"PO-Revision-Date: 2019-10-08 18:00\n"
+"PO-Revision-Date: 2019-10-08 18:10\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -479,7 +479,7 @@ msgstr "Je kunt jezelf niet verwijderen."
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:158
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:30
 msgid "This station does not accept requests currently."
-msgstr "Dit station accepteert momenteel geen requests."
+msgstr "Dit station accepteert momenteel geen verzoeken."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:168
 msgid "Request submitted successfully."

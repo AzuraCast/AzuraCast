@@ -121,7 +121,6 @@
         currentDirectory: '',
         searchPhrase: null,
         fields: [
-          { key: 'selected', label: '', sortable: false },
           { key: 'name', label: this.$gettext('Name'), sortable: true },
           { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
           { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true, visible: false },

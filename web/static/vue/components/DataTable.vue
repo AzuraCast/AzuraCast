@@ -49,18 +49,18 @@
 
         <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
-                 tbody-tr-class="align-middle" selected-variant=""
+                 tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                  :filter="filter" :filter-debounce="200" @filtered="onFiltered">
             <template v-slot:head(selected)="data">
                 <div class="custom-control custom-checkbox pl-0" @click="toggleSelected">
-                    <input type="checkbox" class="custom-control-input position-static" :checked="allSelected">
-                    <label class="custom-control-label"></label>
+                    <input type="checkbox" class="custom-control-input" :checked="allSelected">
+                    <label class="custom-control-label">&nbsp;</label>
                 </div>
             </template>
             <template v-slot:cell(selected)="{ rowSelected }">
                 <div class="custom-control custom-checkbox pl-0">
-                    <input type="checkbox" class="custom-control-input position-static" :checked="rowSelected">
-                    <label class="custom-control-label"></label>
+                    <input type="checkbox" class="custom-control-input" :checked="rowSelected">
+                    <label class="custom-control-label">&nbsp;</label>
                 </div>
             </template>
             <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
@@ -77,11 +77,14 @@
 
 <style lang="scss">
     table.b-table-selectable {
-        tr > td:nth-child(1) {
+        thead tr th:nth-child(1),
+        tbody tr td:nth-child(1) {
             padding-right: 0.75rem;
+            width: 3rem;
         }
 
-        tr > td:nth-child(2) {
+        thead tr th:nth-child(2),
+        tbody tr td:nth-child(2) {
             padding-left: 0.5rem;
         }
     }
@@ -148,11 +151,17 @@
         return this.$gettext('Select displayed fields')
       },
       visibleFields () {
-        if (!this.selectFields) {
-          return this.fields
+        let fields = this.fields.slice()
+
+        if (this.selectable) {
+          fields.unshift({ key: 'selected', label: '', sortable: false })
         }
 
-        return _.filter(this.fields, (field) => {
+        if (!this.selectFields) {
+          return fields
+        }
+
+        return _.filter(fields, (field) => {
           let isSelectable = _.defaultTo(field.selectable, false)
           if (!isSelectable) {
             return true

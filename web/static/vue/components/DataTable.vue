@@ -14,16 +14,18 @@
             </div>
             <div class="flex-shrink-1 pl-3 pr-3">
                 <b-btn-group class="actions">
-                    <b-button variant="default" title="Refresh" @click="onClickRefresh">
+                    <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
+                              :title="langRefreshTooltip">
                         <i class="material-icons">refresh</i>
                     </b-button>
-                    <b-dropdown variant="default" :text="perPageLabel">
+                    <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover :title="langPerPageTooltip">
                         <b-dropdown-item v-for="pageOption in pageOptions" :key="pageOption"
                                          :active="(pageOption === perPage)" @click="setPerPage(pageOption)">
                             {{ getPerPageLabel(pageOption) }}
                         </b-dropdown-item>
                     </b-dropdown>
-                    <b-dropdown variant="default" v-if="selectFields">
+                    <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
+                                :title="langSelectFieldsTooltip">
                         <template v-slot:button-content>
                             <i class="material-icons" aria-hidden="true">filter_list</i>
                             <span class="caret"></span>
@@ -129,6 +131,15 @@
       this.loadStoredSettings()
     },
     computed: {
+      langRefreshTooltip () {
+        return this.$gettext('Refresh rows')
+      },
+      langPerPageTooltip () {
+        return this.$gettext('Rows per page')
+      },
+      langSelectFieldsTooltip () {
+        return this.$gettext('Select displayed fields')
+      },
       visibleFields () {
         if (!this.selectFields) {
           return this.fields

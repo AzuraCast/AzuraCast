@@ -2,13 +2,18 @@
     <div class="row pt-4" id="app-toolbar">
         <div class="col-md-8">
             <div class="btn-group dropdown allow-focus">
-                <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown">
+                <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown" v-b-tooltip.hover
+                            :title="langPlaylistDropdown">
                     <template v-slot:button-content>
                         <i class="material-icons" aria-hidden="true">clear_all</i>
-                        <translate>Set Playlists</translate>
+                        <translate>Playlists</translate>
                         <span class="caret"></span>
                     </template>
-                    <b-dropdown-form class="pt-3" @submit.prevent="setPlaylists">
+                    <b-dropdown-item @click="clearPlaylists" v-translate>
+                        Clear Playlists
+                    </b-dropdown-item>
+                    <b-dropdown-divider></b-dropdown-divider>
+                    <b-dropdown-form class="pt-2" @submit.prevent="setPlaylists">
                         <div v-for="playlist in playlists" class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input"
@@ -25,7 +30,7 @@
                                        v-model="checkedPlaylists" value="new">
                                 <label class="custom-control-label" for="chk_playlist_new">
                                     <input type="text" class="form-control p-2" id="new_playlist_name"
-                                           name="new_playlist_name" v-model="newPlaylist"
+                                           name="new_playlist_name" v-model="newPlaylist" style="min-width: 150px;"
                                            :placeholder="langNewPlaylist">
                                 </label>
                             </div>
@@ -35,9 +40,9 @@
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
-            <b-button size="sm" variant="warning" @click="clearPlaylists">
-                <i class="material-icons" aria-hidden="true">clear_all</i>
-                <translate>Clear Playlists</translate>
+            <b-button size="sm" variant="primary" @click="doQueue" v-b-tooltip.hover :title="langQueue">
+                <i class="material-icons" aria-hidden="true">queue_play_next</i>
+                <translate>Queue</translate>
             </b-button>
             <b-button size="sm" variant="primary" v-b-modal.move_file>
                 <i class="material-icons" aria-hidden="true">open_with</i>
@@ -85,14 +90,23 @@
       }
     },
     computed: {
+      langPlaylistDropdown () {
+        return this.$gettext('Set or clear playlists from the selected media')
+      },
       langNewPlaylist () {
         return this.$gettext('New Playlist')
+      },
+      langQueue () {
+        return this.$gettext('Queue the selected media to play next')
       },
       newPlaylistIsChecked () {
         return this.newPlaylist !== ''
       }
     },
     methods: {
+      doQueue (e) {
+        this.doBatch('queue', this.$gettext('Files queued for playback:'))
+      },
       doDelete (e) {
         let buttonText = this.$gettext('Delete')
         let buttonConfirmText = this.$gettext('Delete %{ num } media file(s)?')

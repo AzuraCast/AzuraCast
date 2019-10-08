@@ -258,11 +258,30 @@ class BatchController extends FilesControllerAbstract
 
                 $this->em->flush();
                 break;
+
+            case 'queue':
+                $music_files = $this->_getMusicFiles($fs, $files);
+                $files_found = count($music_files);
+
+                try {
+                    foreach ($music_files as $file) {
+                        $media = $this->mediaRepo->getOrCreate($station, $file['path']);
+
+                        $newRequest = new Entity\StationRequest($station, $media);
+                        $this->em->persist($newRequest);
+                        $this->em->flush($newRequest);
+                        $files_affected++;
+                    }
+                } catch (Exception $e) {
+                    $errors[] = $e->getMessage();
+                }
+                break;
         }
 
         $this->em->clear(Entity\StationMedia::class);
         $this->em->clear(Entity\StationPlaylist::class);
         $this->em->clear(Entity\StationPlaylistMedia::class);
+        $this->em->clear(Entity\StationRequest::class);
 
         return $response->withJson([
             'success' => true,

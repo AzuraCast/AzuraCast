@@ -607,10 +607,6 @@ class AutoDJ implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (!$station->getEnableRequests()) {
-            return;
-        }
-
         $min_minutes = (int)$station->getRequestDelay();
         $threshold_minutes = $min_minutes + random_int(0, $min_minutes);
 

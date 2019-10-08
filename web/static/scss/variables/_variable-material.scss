@@ -470,14 +470,14 @@ $toolbar-dark-element-bg:       $white-divider !default;
 // Tooltip (Bootstrap tooltip)
 // Based on https://material.google.com/components/tooltips.html#tooltips-tooltips-desktop
 
-$tooltip-bg:                $material-color-grey-700 !default;
+$tooltip-bg:                $material-color-grey-800 !default;
 $tooltip-border-radius:     $border-radius !default;
 $tooltip-breakpoint:        md !default;
 $tooltip-color:             $white-primary !default;
 $tooltip-font-size:         0.875rem !default;
-$tooltip-font-size-desktop: 0.625rem !default;
+$tooltip-font-size-desktop: 0.875rem !default;
 $tooltip-height:            2rem !default;
-$tooltip-height-desktop:    1.375rem !default;
+$tooltip-height-desktop:    1.8rem !default;
 $tooltip-line-height:       $line-height-base !default;
 $tooltip-margin:            1.5rem !default;
 $tooltip-margin-desktop:    0.875rem !default;

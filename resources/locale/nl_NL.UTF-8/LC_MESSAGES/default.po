@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
-"PO-Revision-Date: 2019-09-10 23:36\n"
+"PO-Revision-Date: 2019-10-08 18:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -483,7 +483,7 @@ msgstr "Dit station accepteert momenteel geen requests."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:168
 msgid "Request submitted successfully."
-msgstr "Request succesvol ingediend."
+msgstr "Verzoekplaat succesvol ingediend."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:73
 msgid "Station restarted."
@@ -927,11 +927,11 @@ msgstr "Het opgeven nummer ID voor dit station kan niet worden aangevraagd."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:68
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr "U heeft kortgeleden al een request ingediend! Wacht even voordat u een volgende indient."
+msgstr "U heeft kortgeleden al een verzoekplaat ingediend! Wacht aub 15 minuten voordat u een volgende indient."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:109
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr "Dit nummer is al aangevraagd en zal binnenkort worden afgespeeld."
+msgstr "Dit nummer staat al in de wachtrij, en zal binnen 15 minuten worden afgespeeld."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:150
 msgid "This song was already played too recently. Wait a while before requesting it again."
@@ -1073,7 +1073,7 @@ msgstr "1 minuut synchronisatie"
 
 #: /var/azuracast/www/src/Sync/Runner.php:193
 msgid "Song Requests Queue"
-msgstr "Requests in wachtrij"
+msgstr "Verzoeknummers in wachtrij"
 
 #: /var/azuracast/www/src/Sync/Runner.php:197
 msgid "5-Minute Sync"
@@ -2467,7 +2467,7 @@ msgstr "Comprimeer en normaliseer de audio van uw station, met een meer uniform 
 
 #: /var/azuracast/www/config/forms/station.php:271
 msgid "Allow Song Requests"
-msgstr "Accepteer requests"
+msgstr "Accepteer verzoeknummers door luisteraars"
 
 #: /var/azuracast/www/config/forms/station.php:272
 msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
@@ -2475,7 +2475,7 @@ msgstr "Schakel in om luisteraars requests aan te laten vragen, om afspeelt te w
 
 #: /var/azuracast/www/config/forms/station.php:283
 msgid "Request Minimum Delay (Minutes)"
-msgstr "Minimale vertraging van requests (in minuten)"
+msgstr "Minimale vertraging van verzoeknummers (in minuten)"
 
 #: /var/azuracast/www/config/forms/station.php:284
 msgid "If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information."
@@ -3093,7 +3093,7 @@ msgstr "Statistieken overzicht"
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:1
 #: /var/azuracast/www/templates/stations/reports/requests.phtml:13
 msgid "Song Requests"
-msgstr "Nummer requests"
+msgstr "Verzoeknummer"
 
 #: /var/azuracast/www/config/menus/station.php:112
 #: /var/azuracast/www/templates/stations/reports/timeline.phtml:1
@@ -3809,7 +3809,7 @@ msgstr "Onbekende artiest"
 #: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:44
 msgid "Request"
-msgstr "Request"
+msgstr "Aanvragen"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
 #: /var/azuracast/www/templates/frontend/public/index.phtml:77

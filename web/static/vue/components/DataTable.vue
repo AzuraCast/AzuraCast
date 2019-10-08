@@ -51,6 +51,12 @@
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                  tbody-tr-class="align-middle" selected-variant=""
                  :filter="filter" :filter-debounce="200" @filtered="onFiltered">
+            <template v-slot:head(selected)="data">
+                <div class="custom-control custom-checkbox pl-0" @click="toggleSelected">
+                    <input type="checkbox" class="custom-control-input position-static" :checked="allSelected">
+                    <label class="custom-control-label"></label>
+                </div>
+            </template>
             <template v-slot:cell(selected)="{ rowSelected }">
                 <div class="custom-control custom-checkbox pl-0">
                     <input type="checkbox" class="custom-control-input position-static" :checked="rowSelected">
@@ -118,6 +124,7 @@
     data () {
       return {
         selected: [],
+        allSelected: false,
         storeKey: 'datatable_' + this.id + '_settings',
         filter: null,
         perPage: (this.paginated) ? this.defaultPerPage : 0,
@@ -260,8 +267,23 @@
         })
       },
       onRowSelected (items) {
+        if (this.perPage === 0) {
+          this.allSelected = items.length === this.totalRows
+        } else {
+          this.allSelected = items.length === this.perPage
+        }
+
         this.selected = items
         this.$emit('row-selected', items)
+      },
+      toggleSelected () {
+        if (this.allSelected) {
+          this.$refs.table.clearSelected()
+          this.allSelected = false
+        } else {
+          this.$refs.table.selectAllRows()
+          this.allSelected = true
+        }
       },
       onFiltered (filter) {
         this.$emit('filtered', filter)

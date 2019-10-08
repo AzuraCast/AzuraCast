@@ -50,8 +50,8 @@
   "dist/light.css": "dist/light-97511efaa3.css",
   "dist/material.js": "dist/material-8a0f31e5be.js",
   "dist/radio_player.js": "dist/radio_player-b8df57d8b4.js",
-  "dist/station_media.js": "dist/station_media-6b7ef896b5.js",
-  "dist/vue_gettext.js": "dist/vue_gettext-310c29053d.js",
+  "dist/station_media.js": "dist/station_media-0a20ba0c1b.js",
+  "dist/vue_gettext.js": "dist/vue_gettext-3680f650b9.js",
   "dist/webcaster.js": "dist/webcaster-137f49b033.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

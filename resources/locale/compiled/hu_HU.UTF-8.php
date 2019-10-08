@@ -14,8 +14,8 @@ Language-Team: Hungarian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-08-21T22:24:59+00:00
-PO-Revision-Date: 2019-08-23 03:09
+POT-Creation-Date: 2019-09-10T23:21:55+00:00
+PO-Revision-Date: 2019-10-08 07:42
 Language: hu_HU
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -108,18 +108,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Back up the AzuraCast database and statistics (and optionally media).' => 
-      array (
-        0 => '',
-      ),
-      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
-      array (
-        0 => '',
-      ),
-      'Exclude media from the backup.' => 
-      array (
-        0 => '',
-      ),
       'AzuraCast Backup' => 
       array (
         0 => '',
@@ -156,14 +144,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Backup process error' => 
-      array (
-        0 => '',
-      ),
-      'List all settings in the AzuraCast settings database.' => 
-      array (
-        0 => '',
-      ),
       'AzuraCast Settings' => 
       array (
         0 => '',
@@ -176,15 +156,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Generate the translation locale file.' => 
-      array (
-        0 => '',
-      ),
       'Locales generated.' => 
-      array (
-        0 => '',
-      ),
-      'Convert translated locale files into PHP arrays.' => 
       array (
         0 => '',
       ),
@@ -196,19 +168,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Migrate existing configuration to new INI format if any exists.' => 
-      array (
-        0 => '',
-      ),
       'Configuration already set up.' => 
       array (
         0 => '',
       ),
       'Configuration successfully written.' => 
-      array (
-        0 => '',
-      ),
-      'Process the message queue.' => 
       array (
         0 => '',
       ),
@@ -221,22 +185,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Account not found.' => 
-      array (
-        0 => '',
-      ),
-      'Run all general AzuraCast setup steps.' => 
-      array (
-        0 => '',
-      ),
-      'Only update the existing installation.' => 
-      array (
-        0 => '',
-      ),
-      'Load predefined fixtures (for development purposes).' => 
-      array (
-        0 => '',
-      ),
-      'Used for updating only to a tagged release.' => 
       array (
         0 => '',
       ),
@@ -296,15 +244,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Install fixtures for demo / local development.' => 
-      array (
-        0 => '',
-      ),
       'Fixtures loaded.' => 
-      array (
-        0 => '',
-      ),
-      'Initial setup of InfluxDB.' => 
       array (
         0 => '',
       ),
@@ -321,14 +261,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'InfluxDB databases created.' => 
-      array (
-        0 => '',
-      ),
-      'Run one or more scheduled synchronization tasks.' => 
-      array (
-        0 => '',
-      ),
-      'The task to run (%s).' => 
       array (
         0 => '',
       ),
@@ -360,11 +292,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Backup deleted.' => 
+      'Backup not found.' => 
       array (
         0 => '',
       ),
-      'Backup not found.' => 
+      'Backup deleted.' => 
       array (
         0 => '',
       ),
@@ -1077,6 +1009,46 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Password cannot contain the following characters: %s' => 
+      array (
+        0 => '',
+      ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => '',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => '',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => '',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => '',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => '',
+      ),
+      'Run all general AzuraCast setup steps.' => 
+      array (
+        0 => '',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => '',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => '',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => '',
+      ),
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
       array (
         0 => '',
       ),
@@ -1972,6 +1944,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Enable Built-in FTP Server' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage.' => 
+      array (
+        0 => '',
+      ),
       'API "Access-Control-Allow-Origin" header' => 
       array (
         0 => '',
@@ -2779,10 +2759,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Sugárzás újra indítása',
       ),
-      'Get Next Song Debug Mode' => 
-      array (
-        0 => '',
-      ),
       'Generic Web Hook' => 
       array (
         0 => '',
@@ -3564,7 +3540,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
+      'You can also upload files in bulk via FTP.' => 
+      array (
+        0 => '',
+      ),
+      'View connection instructions' => 
       array (
         0 => '',
       ),
@@ -3621,6 +3601,42 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Back' => 
+      array (
+        0 => '',
+      ),
+      'FTP Connection Information' => 
+      array (
+        0 => '',
+      ),
+      'Server' => 
+      array (
+        0 => 'Szerver',
+      ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => '',
+      ),
+      'Port' => 
+      array (
+        0 => 'Port',
+      ),
+      'Protocol' => 
+      array (
+        0 => '',
+      ),
+      'FTP with Explicit TLS (FTPS)' => 
+      array (
+        0 => '',
+      ),
+      'Unencrypted FTP is also allowed, but not recommended.' => 
+      array (
+        0 => '',
+      ),
+      'Your AzuraCast E-mail Address' => 
+      array (
+        0 => '',
+      ),
+      'Your AzuraCast Password' => 
       array (
         0 => '',
       ),
@@ -4099,18 +4115,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'IceCast Clients' => 
       array (
         0 => 'IceCast kliensek',
-      ),
-      'Server' => 
-      array (
-        0 => 'Szerver',
-      ),
-      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
-      array (
-        0 => '',
-      ),
-      'Port' => 
-      array (
-        0 => 'Port',
       ),
       'Mount Name' => 
       array (

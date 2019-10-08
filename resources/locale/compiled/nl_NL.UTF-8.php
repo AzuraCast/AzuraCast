@@ -14,8 +14,8 @@ Language-Team: Dutch
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-08-21T22:24:59+00:00
-PO-Revision-Date: 2019-08-23 03:09
+POT-Creation-Date: 2019-09-10T23:21:55+00:00
+PO-Revision-Date: 2019-10-08 07:42
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -26,11 +26,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'All Permissions' => 
       array (
-        0 => 'Alle machtigingen',
+        0 => 'Alle rollen',
       ),
       'View Administration Page' => 
       array (
-        0 => 'Bekijk beheerpagina',
+        0 => 'Bekijk beheerders pagina',
       ),
       'View System Logs' => 
       array (
@@ -108,18 +108,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Beheer webhooks van station',
       ),
-      'Back up the AzuraCast database and statistics (and optionally media).' => 
-      array (
-        0 => 'Back-up de AzuraCast database en statistieken (en optionele media).',
-      ),
-      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
-      array (
-        0 => '',
-      ),
-      'Exclude media from the backup.' => 
-      array (
-        0 => 'Media uitsluiten van de back-up.',
-      ),
       'AzuraCast Backup' => 
       array (
         0 => 'AzuraCast back-up',
@@ -156,14 +144,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Back-up voltooid in %.2f seconden.',
       ),
-      'Backup process error' => 
-      array (
-        0 => 'Back-up proces fout',
-      ),
-      'List all settings in the AzuraCast settings database.' => 
-      array (
-        0 => 'Lijst van alle instellingen in de AzuraCast instellingen database.',
-      ),
       'AzuraCast Settings' => 
       array (
         0 => 'AzuraCast instellingen',
@@ -176,17 +156,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Instellingswaarde',
       ),
-      'Generate the translation locale file.' => 
-      array (
-        0 => 'Genereer het vertalingsbestand.',
-      ),
       'Locales generated.' => 
       array (
         0 => 'Talen gegenereerd.',
-      ),
-      'Convert translated locale files into PHP arrays.' => 
-      array (
-        0 => 'Converteer vertalingsbestanden naar PHP arrays.',
       ),
       'Imported locale: %s' => 
       array (
@@ -196,10 +168,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Talen geïmporteerd.',
       ),
-      'Migrate existing configuration to new INI format if any exists.' => 
-      array (
-        0 => 'Bestaande configuratie migreren naar nieuw INI-formaat indien er een bestaat.',
-      ),
       'Configuration already set up.' => 
       array (
         0 => 'Configuratie is al ingesteld.',
@@ -207,10 +175,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Configuration successfully written.' => 
       array (
         0 => 'Configuratie succesvol opgeslagen.',
-      ),
-      'Process the message queue.' => 
-      array (
-        0 => 'Verwerk de berichtwachtrij.',
       ),
       'Backup path %s not found!' => 
       array (
@@ -224,29 +188,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Account niet gevonden.',
       ),
-      'Run all general AzuraCast setup steps.' => 
-      array (
-        0 => 'Voer alle algemene AzuraCast setup stappen uit.',
-      ),
-      'Only update the existing installation.' => 
-      array (
-        0 => 'Werk alleen de bestaande installatie bij.',
-      ),
-      'Load predefined fixtures (for development purposes).' => 
-      array (
-        0 => 'Laad vooraf gedefinieerde fixtures (voor ontwikkelingsdoeleinden).',
-      ),
-      'Used for updating only to a tagged release.' => 
-      array (
-        0 => '',
-      ),
       'AzuraCast Setup' => 
       array (
         0 => 'AzuraCast setup',
       ),
       'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
       array (
-        0 => '',
+        0 => 'Welkom bij AzuraCast. Een ogenblik geduld terwijl enkele code afhankelijkheden worden ingesteld...',
       ),
       'Environment: %s' => 
       array (
@@ -262,7 +210,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Migrating Legacy Configuration' => 
       array (
-        0 => '',
+        0 => 'Oude configuratie migreren',
       ),
       'Setting Up InfluxDB' => 
       array (
@@ -296,17 +244,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Bezoek %s om de setup te voltooien.',
       ),
-      'Install fixtures for demo / local development.' => 
-      array (
-        0 => '',
-      ),
       'Fixtures loaded.' => 
       array (
-        0 => '',
-      ),
-      'Initial setup of InfluxDB.' => 
-      array (
-        0 => 'Eerste setup van InfluxDB.',
+        0 => 'Fixtures geladen.',
       ),
       'Database created.' => 
       array (
@@ -314,23 +254,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Retention policies updated.' => 
       array (
-        0 => '',
+        0 => 'Retentiebeleid bijgewerkt.',
       ),
       'Continuous queries created.' => 
       array (
-        0 => '',
+        0 => 'Zoekopdrachten gemaakt.',
       ),
       'InfluxDB databases created.' => 
       array (
         0 => 'InfluxDB databases aangemaakt.',
-      ),
-      'Run one or more scheduled synchronization tasks.' => 
-      array (
-        0 => 'Voer een of meer geplande synchronisatie taken uit.',
-      ),
-      'The task to run (%s).' => 
-      array (
-        0 => 'De taak die moet worden uitgevoerd (%s).',
       ),
       'Record not found.' => 
       array (
@@ -360,13 +292,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Handmatige back-up uitvoeren',
       ),
-      'Backup deleted.' => 
-      array (
-        0 => 'Back-up verwijderd.',
-      ),
       'Backup not found.' => 
       array (
         0 => 'Back-up niet gevonden.',
+      ),
+      'Backup deleted.' => 
+      array (
+        0 => 'Back-up verwijderd.',
       ),
       'Custom Field updated.' => 
       array (
@@ -402,7 +334,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AzuraCast Application Log' => 
       array (
-        0 => 'AzuraCast Applicatie Log',
+        0 => 'AzuraCast applicatielog',
       ),
       'Nginx Access Log' => 
       array (
@@ -414,7 +346,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'PHP Application Log' => 
       array (
-        0 => 'PHP Applicatie Log',
+        0 => 'PHP applicatielog',
       ),
       'Supervisord Log' => 
       array (
@@ -502,7 +434,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Logged in successfully.' => 
       array (
-        0 => 'Succesvol ingelogd.',
+        0 => 'U bent succesvol ingelogd.',
       ),
       'Record not found!' => 
       array (
@@ -594,7 +526,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Listeners' => 
       array (
-        0 => 'Luisteraars',
+        0 => 'Aantal luisteraars',
       ),
       'Profile saved!' => 
       array (
@@ -630,7 +562,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Super Administrator' => 
       array (
-        0 => 'Super administrator',
+        0 => 'Systeembeheerder',
       ),
       'Setup is now complete!' => 
       array (
@@ -638,7 +570,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Continue setting up your station in the main AzuraCast app.' => 
       array (
-        0 => 'Ga verder met het instellen van je station in de AzuraCast app.',
+        0 => 'Ga verder met het instellen van je station in de AzuraCast applicatie.',
       ),
       'Automated assignment complete!' => 
       array (
@@ -690,7 +622,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This feature is not currently supported on this station.' => 
       array (
-        0 => 'Deze functionaliteit is momenteel niet toegestaan op dit station.',
+        0 => 'Deze functionaliteit is momenteel niet ondersteund op dit station.',
       ),
       'Edit Mount Point' => 
       array (
@@ -770,11 +702,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Listeners by Day' => 
       array (
-        0 => 'Luisteraars per dag',
+        0 => 'Aantal luisteraars per dag',
       ),
       'Listeners by Day of Week' => 
       array (
-        0 => 'Luisteraars per dag van de week',
+        0 => 'Aantal luisteraars per dag van de week',
       ),
       'Monday' => 
       array (
@@ -806,11 +738,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Listeners by Hour' => 
       array (
-        0 => 'Luisteraars per uur',
+        0 => 'Aantal luisteraars per uur',
       ),
       'SoundExchange Report' => 
       array (
-        0 => 'Rapporteer SoundExchange',
+        0 => 'SoundExchange verslag',
       ),
       'Streamers enabled!' => 
       array (
@@ -866,7 +798,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Web Hook Test Output' => 
       array (
-        0 => 'Web Hook test uitvoer',
+        0 => 'Webhook test uitvoer',
       ),
       'Web Hook deleted.' => 
       array (
@@ -874,7 +806,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Liquidsoap Log' => 
       array (
-        0 => 'Liquidsoap Log',
+        0 => 'Liquidsoap log',
       ),
       'Liquidsoap Configuration' => 
       array (
@@ -906,15 +838,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The song ID you specified could not be found in the station.' => 
       array (
-        0 => '',
+        0 => 'Het opgeven nummer ID voor dit station kan niet worden gevonden.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
-        0 => '',
+        0 => 'Het opgeven nummer ID voor dit station kan niet worden aangevraagd.',
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
-        0 => 'U heeft een verzoek te kort ingediend! Wacht even voordat u een andere indient.',
+        0 => 'U heeft kortgeleden al een request ingediend! Wacht even voordat u een volgende indient.',
       ),
       'Duplicate request: this song was already requested and will play soon.' => 
       array (
@@ -930,7 +862,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
-        0 => 'Wilt u SHOUTcast 2 gebruiken? <a href="%s" target="_blank">Installeer het hier</a>, en laad deze pagina opnieuw.',
+        0 => 'Wilt u SHOUTcast 2 gebruiken? <a href="%s" target="_blank">Installeer het hier</a>, ververs daarna deze pagina.',
       ),
       'This station\'s time zone is currently %s.' => 
       array (
@@ -954,7 +886,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You do not have permission to access this portion of the site.' => 
       array (
-        0 => 'U heeft geen toestemming om toegang te krijgen tot dit deel van de site.',
+        0 => 'U heeft geen toestemming om dit deel van de website te bezoeken.',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (
@@ -974,7 +906,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You are currently running version %s. Updating is highly recommended.' => 
       array (
-        0 => 'U draait momenteel versie %s. Bijwerken is zeer aanbevolen.',
+        0 => 'U draait momenteel versie %s. We raden u aan een update uit te voeren.',
       ),
       'New AzuraCast Release Version Available' => 
       array (
@@ -982,19 +914,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The following improvements have been made since your last update:' => 
       array (
-        0 => 'De volgende verbeteringen zijn aangebracht sinds de laatste update:',
+        0 => 'De volgende verbeteringen zijn toegepast sinds de laatste update:',
       ),
       'Your installation is currently %d update(s) behind the latest version.' => 
       array (
-        0 => 'Uw installatie is momenteel %d update(s) achter de laatste versie.',
+        0 => 'Uw installatie loopt momenteel %d updates achter op de laatste versie.',
       ),
       'You should update to take advantage of bug and security fixes.' => 
       array (
-        0 => 'U moet bijwerken om gebruik te maken van bug en beveiligingsfixes.',
+        0 => 'U dient bij te werken om gebruik te maken van de laatste bug- en beveiligingsupdates.',
       ),
       'New AzuraCast Updates Available' => 
       array (
-        0 => 'Nieuwe AzuraCast updates beschikbaar',
+        0 => 'Er zijn nieuwe AzuraCast updates beschikbaar',
       ),
       '%s is not recognized as a service.' => 
       array (
@@ -1006,7 +938,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '%s cannot start' => 
       array (
-        0 => '%s kan niet beginnen',
+        0 => '%s kan niet worden gestart',
       ),
       'It is already running.' => 
       array (
@@ -1038,7 +970,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '<b>Do not use</b> an AutoDJ service' => 
       array (
-        0 => '<b>Gebruik geen</b> een AutoDJ-service',
+        0 => 'Gebruik <b>geen</b> AutoDJ-service',
       ),
       'Now Playing Data' => 
       array (
@@ -1050,7 +982,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song Requests Queue' => 
       array (
-        0 => 'Verzoeknummers in wachtrij',
+        0 => 'Requests in wachtrij',
       ),
       '5-Minute Sync' => 
       array (
@@ -1080,9 +1012,49 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Wachtwoord kan de volgende tekens niet bevatten: %s',
       ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => 'Genereer het vertalingsbestand.',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => 'Converteer vertalingsbestanden naar PHP arrays.',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => 'Bestaande configuratie migreren naar nieuw INI-formaat indien er een bestaat.',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => 'Eerste setup van InfluxDB.',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => 'Installeer fixtures voor demo / lokale ontwikkeling.',
+      ),
+      'Run all general AzuraCast setup steps.' => 
+      array (
+        0 => 'Voer alle algemene AzuraCast setup stappen uit.',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => 'Voer een of meer geplande synchronisatie taken uit.',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => 'Verwerk de berichtwachtrij.',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => 'Lijst van alle instellingen in de AzuraCast instellingen database.',
+      ),
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
+      array (
+        0 => 'Back-up de AzuraCast database en statistieken (en optionele media).',
+      ),
       'Comments' => 
       array (
-        0 => 'Reacties',
+        0 => 'Opmerkingen',
       ),
       'Describe the use-case for this API key for future reference.' => 
       array (
@@ -1106,7 +1078,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Enabled' => 
       array (
-        0 => 'Geactiveerd',
+        0 => 'Ingeschakeld',
       ),
       'Days Between Automated Assignments' => 
       array (
@@ -1142,7 +1114,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => 'De tijd (in UTC) om de geautomatiseerde back-up te draaien, indien ingeschakeld.',
+        0 => 'De tijd (in UTC) om de geautomatiseerde back-up uit te voeren, indien ingeschakeld.',
       ),
       'Exclude Media from Backups' => 
       array (
@@ -1214,7 +1186,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Default Album Art URL' => 
       array (
-        0 => 'Standaard albumhoes URL',
+        0 => 'URL van standaard albumhoes',
       ),
       'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
@@ -1234,7 +1206,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This CSS will be applied to the station public pages and login page.' => 
       array (
-        0 => 'Deze CSS zal worden toegepast op openbare pagina\'s van het station en op inlogpagina.',
+        0 => 'Deze CSS zal worden toegepast op de inlogpagina en openbare pagina\'s van het station.',
       ),
       'Custom JS for Public Pages' => 
       array (
@@ -1242,7 +1214,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This javascript code will be applied to the station public pages and login page.' => 
       array (
-        0 => 'Deze javascript code zal worden toegepast op de openbare pagina\'s van het station en op de inlogpagina.',
+        0 => 'Deze javascript code zal worden toegepast op de openbare pagina\'s van het station en de inlogpagina.',
       ),
       'Custom CSS for Internal Pages' => 
       array (
@@ -1274,7 +1246,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS is geen gratis software en de restrictieve licentie staat AzuraCast niet toe de SHOUTcast binary te verspreiden. Om SHOUTcast te installeren, moet u de Linux x64 binary downloaden van de <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload de <code>sc_serv2_linux_x64-latest.tar.gz</code> naar het veld hieronder om het automatisch in de juiste map uit te laten pakken.</p>',
+        0 => '<p>SHOUTcast 2 DNAS is geen vrije software en de restrictieve licentie staat AzuraCast niet toe de SHOUTcast binary te verspreiden. Om SHOUTcast te installeren, moet u de Linux x64 binary downloaden van de <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload de <code>sc_serv2_linux_x64-latest.tar.gz</code> naar het veld hieronder om het automatisch in de juiste map uit te laten pakken.</p>',
       ),
       'Current Installed Version' => 
       array (
@@ -1282,7 +1254,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => 'SHOUTcast is momenteel niet geïnstalleerd op deze installatie.',
+        0 => 'SHOUTcast is momenteel niet geïnstalleerd.',
       ),
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
@@ -1338,7 +1310,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
       array (
-        0 => 'Beheerders kunnen de velden aanpassen die hier verschijnen op de <a href="%s">beheerpagina</a>.',
+        0 => 'Beheerders kunnen de velden aanpassen die hier verschijnen via de <a href="%s">beheerpagina</a>.',
       ),
       'Control Song Playback' => 
       array (
@@ -1362,7 +1334,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The time period that the song should fade in. Leave blank to use the system default.' => 
       array (
-        0 => 'De periode waarin het liedje moet infaden. Leeg laten om de systeemstandaard te gebruiken.',
+        0 => 'De periode waarin het nummer moet infaden. Leeg laten om de systeemstandaard te gebruiken.',
       ),
       'Custom Fading: Fade-Out Time (seconds)' => 
       array (
@@ -1370,7 +1342,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The time period that the song should fade out. Leave blank to use the system default.' => 
       array (
-        0 => 'De periode waarin het liedje moet uitfaden. Leeg laten om de systeemstandaard te gebruiken.',
+        0 => 'De periode waarin het nummer moet uitfaden. Leeg laten om de systeemstandaard te gebruiken.',
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
@@ -1414,15 +1386,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Set as Default Mount Point' => 
       array (
-        0 => 'Instellen als standaard Mount Punt',
+        0 => 'Instellen als standaard mount point',
       ),
       'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => 'Als deze mount standaard is, zal deze gebruikt worden in de radiospeler op de publieke radio pagina van dit systeem.',
+        0 => 'Als dit mount point standaard is, zal deze gebruikt worden binnen de radiospeler op de publieke radio pagina van dit systeem.',
       ),
       'Relay Stream URL' => 
       array (
-        0 => 'Doorstuur Stream URL',
+        0 => 'Relay stream URL',
       ),
       'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
@@ -1430,11 +1402,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Publish to "Yellow Pages" Directories' => 
       array (
-        0 => '',
+        0 => 'Publiceren naar "Yellow Pages" gids',
       ),
       'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
       array (
-        0 => '',
+        0 => 'Schakel in om dit mountpoint binnen de publieke "Yellow Pages" weer te geven.',
       ),
       'Enable AutoDJ' => 
       array (
@@ -1446,31 +1418,31 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AutoDJ Format' => 
       array (
-        0 => 'AutoDJ Formaat',
+        0 => 'AutoDJ formaat',
       ),
       'AutoDJ Bitrate (kbps)' => 
       array (
-        0 => 'AutoDJ Bitrate (kbps)',
+        0 => 'AutoDJ bitrate (kbps)',
       ),
       'Custom Stream URL' => 
       array (
-        0 => 'Aangepaste Stream URL',
+        0 => 'Aangepaste stream URL',
       ),
       'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
       array (
-        0 => '',
+        0 => 'U kunt een aangepaste URL instellen voor de stream die door AzuraCast wordt gebruikt. Laat leeg om de standaardwaarde te gebruiken.',
       ),
       'Fallback Mount' => 
       array (
-        0 => 'Terugval Mount',
+        0 => 'Back-up mount point',
       ),
       'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => 'Wanneer dit mount punt geen audio speelt, zullen luisteraars doorverwezen worden naar dit mount punt. De standaard is /error.mp3, welke herhaaldelijk een foutmelding laat horen.',
+        0 => 'Wanneer dit mount point geen audio speelt, zullen luisteraars doorverwezen worden naar dit mount punt. De standaard is /error.mp3, welke herhaaldelijk een foutmelding laat horen.',
       ),
       'Custom Frontend Configuration' => 
       array (
-        0 => 'Aangepaste Frontend configuratie',
+        0 => 'Aangepaste front-end configuratie',
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
@@ -1506,7 +1478,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
       array (
-        0 => 'Wanneer gekozen voor "Nee", zal de afspeellijst niet worden afgespeeld op de radio. De afspeellijst kan nog steeds worden beheert.',
+        0 => 'Wanneer niet aangevinkt, zal de afspeellijst niet worden afgespeeld op de radio. De afspeellijst kan nog steeds worden beheert.',
       ),
       'Playlist Name' => 
       array (
@@ -1530,7 +1502,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song-Based Playlist' => 
       array (
-        0 => 'Afspeellijst op Nummer gebaseerd',
+        0 => 'Op nummer gebaseerde afspeellijst',
       ),
       'A playlist containing media files hosted on this server.' => 
       array (
@@ -1542,7 +1514,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'A playlist that instructs the station to play from a remote URL.' => 
       array (
-        0 => 'Een afspeellijst die het station opdracht geeft om te spelen vanaf een externe URL.',
+        0 => 'Een afspeellijst, opgehaald vanaf een externe URL, waarin staat welke nummers in welke volgorde afgespeeld moeten worden.',
       ),
       'Song Playback Order' => 
       array (
@@ -1790,7 +1762,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
       array (
-        0 => 'Voer de huidige code in die door uw authenticator app is opgegeven om te controleren of het correct werkt.',
+        0 => 'Voer de huidige code in die door uw authenticator app is opgegeven om te controleren of alles correct werkt.',
       ),
       'Verify Authenticator' => 
       array (
@@ -1806,7 +1778,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Enable to allow listeners to select this relay on this station\'s public pages.' => 
       array (
-        0 => '',
+        0 => 'Inschakelen om luisteraars toe te staan dit mount point te selecteren op de publieke pagina van het station.',
       ),
       'Remote Station Type' => 
       array (
@@ -1818,7 +1790,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Station Listening URL' => 
       array (
-        0 => '',
+        0 => 'Luister URL van extern station',
       ),
       'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
       array (
@@ -1826,7 +1798,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Station Listening Mountpoint/SID' => 
       array (
-        0 => '',
+        0 => 'Mountpoint/SID van extern station',
       ),
       'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
       array (
@@ -1886,7 +1858,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Permissions for %s' => 
       array (
-        0 => 'Rechten voor %s',
+        0 => 'Rollen voor %s',
       ),
       'Site Base URL' => 
       array (
@@ -1972,13 +1944,21 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Stel in op "Ja" om altijd "https://" (veilige) URL\'s te gebruiken en automatisch naar de beveiligde URL te verwijzen wanneer een onveilige URL wordt bezocht.',
       ),
+      'Enable Built-in FTP Server' => 
+      array (
+        0 => 'Ingebouwde FTP-server inschakelen',
+      ),
+      'If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage.' => 
+      array (
+        0 => 'Indien ingeschakeld, kunnen gebruikers via FTP inloggen met zijn of haar AzuraCast inloggegevens. Via FTP kunnen direct mediabestanden geüpload worden naar stations die de gebruiker beheert.',
+      ),
       'API "Access-Control-Allow-Origin" header' => 
       array (
         0 => 'API "Access-Control-Allow-Origin" header',
       ),
       '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
       array (
-        0 => '',
+        0 => '<a href="%s" target="_blank">Lees meer over deze header</a>. Stil in op \'*\', om alle bronnen toe te staan, of specificeer een lijst van bronnen (gescheiden door een komma \',\').',
       ),
       'Privacy Controls' => 
       array (
@@ -1990,7 +1970,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Listener Analytics Collection' => 
       array (
-        0 => '',
+        0 => 'Luisteraars statistieken',
       ),
       'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
       array (
@@ -2010,7 +1990,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AzuraCast Installation Telemetry' => 
       array (
-        0 => '',
+        0 => 'Ondersteuning van AzuraCast-installatie',
       ),
       'Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.' => 
       array (
@@ -2110,15 +2090,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'URL Stub' => 
       array (
-        0 => '',
+        0 => 'URL-vriendelijke naam',
       ),
       'Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.' => 
       array (
-        0 => 'Geef optioneel een korte URL-vriendelijke naam op, zoals <code>mijn_station_name</code>, die gebruikt zal worden in de URL\'s van dit station. Laat dit veld leeg om er automatisch een te maken op basis van de station naam.',
+        0 => 'Geef optioneel een korte URL-vriendelijke naam op, zoals <code>naam_van_mijn_station</code>, die gebruikt zal worden in de URL\'s van dit station. Laat dit veld leeg om er automatisch een te maken op basis van de station naam.',
       ),
       'Number of Recently Played Songs' => 
       array (
-        0 => 'Aantal onlangs afgespeeld nummers',
+        0 => 'Aantal weer te geven nummers in geschiedenis',
       ),
       'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
@@ -2126,27 +2106,27 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Broadcasting Service' => 
       array (
-        0 => 'Uitzendingsdienst',
+        0 => 'Uitzend-service',
       ),
       'This software delivers your broadcast to the listening audience.' => 
       array (
-        0 => 'Deze software levert je uitzending naar het luisterpubliek.',
+        0 => 'Deze software verstuurt je radiouitzending naar het publiek.',
       ),
       'Customize Broadcasting Port' => 
       array (
-        0 => 'Pas uitzendpoort aan',
+        0 => 'Uitzendpoort aanpassen',
       ),
       'No other program can be using this port. Leave blank to automatically assign a port.' => 
       array (
-        0 => 'Deze poort kan niet door een ander programma gebruikt worden. Laat dit veld leeg om automatisch een poort toe te laten kennen.',
+        0 => 'Deze poort kan niet door een ander programma gebruikt worden. Laat dit veld leeg om het systeem automatisch een poort te laten kiezen.',
       ),
       'Maximum Listeners' => 
       array (
-        0 => 'Maximaal aantal luisteraars',
+        0 => 'Maximumaantal luisteraars',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
-        0 => 'Maximaal aantal luisteraars, over alle stations. Laat leeg om de standaard waarde (250) te gebruiken.',
+        0 => 'Maximumaantal luisteraars over alle stations. Laat leeg om de standaard limiet (250) te gebruiken.',
       ),
       'Customize Source Password' => 
       array (
@@ -2154,11 +2134,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Leave blank to automatically generate a new password.' => 
       array (
-        0 => 'Laat leeg om automatisch een wachtwoord te genereren.',
+        0 => 'Laat dit veld leeg om automatisch een wachtwoord te genereren.',
       ),
       'Customize Administrator Password' => 
       array (
-        0 => 'Beheerder wachtwoord aanpassen',
+        0 => 'Beheerderswachtwoord aanpassen',
       ),
       'Custom Configuration' => 
       array (
@@ -2174,7 +2154,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This software shuffles from playlists of music constantly and plays when no other radio source is available.' => 
       array (
-        0 => '',
+        0 => 'Deze software kiest willekeurige muziek uit afspeellijsten en speelt wanneer er geen audiobron beschikbaar is.',
       ),
       'Crossfade Method' => 
       array (
@@ -2214,7 +2194,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Allow Song Requests' => 
       array (
-        0 => 'Accepteer verzoeknummers',
+        0 => 'Accepteer requests',
       ),
       'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.' => 
       array (
@@ -2222,7 +2202,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Request Minimum Delay (Minutes)' => 
       array (
-        0 => 'Minimale vertraging van verzoeknummers (minuten)',
+        0 => 'Minimale vertraging van requests (in minuten)',
       ),
       'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
       array (
@@ -2250,7 +2230,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely.' => 
       array (
-        0 => '',
+        0 => 'Aantal seconden om een streamer uit te schakelen nadat handmatig de verbinding is verbroken. Stel in op 0 om deze functie niet te gebruiken.',
       ),
       'Customize DJ/Streamer Port' => 
       array (
@@ -2274,7 +2254,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.' => 
       array (
-        0 => '',
+        0 => 'Het aantal seconden van het signaal dat opgeslagen moet worden in geval van een onderbreking.',
       ),
       'Customize DJ/Streamer Mount Point' => 
       array (
@@ -2282,7 +2262,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
       array (
-        0 => 'Als je streaming software een specifiek pad voor het mount point vereist, geef het hier op. Anders gebruik je de standaard.',
+        0 => 'Als je streaming software een specifiek pad voor het mount point vereist, geef deze dan hier op. Gebruik anders de standaard.',
       ),
       'Use Replaygain Metadata' => 
       array (
@@ -2298,7 +2278,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
       array (
-        0 => 'Deze modus schakelt de beheermogelijkheden van AzuraCasts AutoDJ uit, in plaats daarvan wordt Liquidsoap zelf gebruik om het afspelen van nummers te beheren. Onder andere de functie voor het weergeven van het volgende nummer zal hierdoor niet beschikbaar zijn.',
+        0 => 'Deze modus schakelt de beheermogelijkheden van AzuraCasts AutoDJ uit, in plaats daarvan wordt Liquidsoap zelf gebruik om het afspelen van nummers te beheren. Hierdoor zal onder andere de functie voor het weergeven van het volgende nummer niet beschikbaar zijn.',
       ),
       'Character Set Encoding' => 
       array (
@@ -2318,7 +2298,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If disabled, the station will not broadcast or shuffle its AutoDJ.' => 
       array (
-        0 => 'Indien uitgeschakeld, zal het station zijn AutoDJ niet uitzenden.',
+        0 => 'Indien uitgeschakeld zal er geen AutoDJ uit worden gezonden op dit station.',
       ),
       'Storage Quota' => 
       array (
@@ -2330,7 +2310,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Base Station Directory' => 
       array (
-        0 => '',
+        0 => 'Station basis directory',
       ),
       'The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.' => 
       array (
@@ -2342,7 +2322,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The directory where media files are stored. Leave blank to use default directory.' => 
       array (
-        0 => 'Locatie waar bestanden opgeslagen worden. Laat dit veld leeg om de standaard locatie te gebruiken.',
+        0 => 'Locatie waar mediabestanden opgeslagen worden. Laat dit veld leeg om de standaard locatie te gebruiken.',
       ),
       'New Station Name' => 
       array (
@@ -2466,7 +2446,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
       array (
-        0 => '',
+        0 => 'Variabelen zijn in de vorm van <code>{{ var.name }}</code>. Alle waarden uit de <a href="%s" target="_blank">Nu speelt API</a> zijn te gebruiken. Lege velden worden genegeerd.',
       ),
       'Main Message Content' => 
       array (
@@ -2498,7 +2478,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Powered by %s' => 
       array (
-        0 => 'Powered by %s',
+        0 => 'Mogelijk gemaakt door %s',
       ),
       'Web Hook Details' => 
       array (
@@ -2510,7 +2490,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
                 optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => '',
+        0 => 'Web hooks sturen automatisch een HTTP POST-verzoek naar de URL die u heeft opgegeven om 
+
+                een melding te sturen, wanneer een van de door uw gespecificeerde triggers zich op uw station voordoen. Het bericht van het POST-verzoek
+
+                is precies hetzelfde als de <a href="%s" target="_blank">Nu speelt API-reactie</a> van uw station. 
+
+                Om een snelle werking van het systeem te garanderen hebben web hooks een korte timeout, waardoor de reagerende service geoptimaliseerd
+
+                moet zijn om het verzoek in minder dan 2 seconden te verwerken.',
       ),
       'Web Hook URL' => 
       array (
@@ -2566,7 +2554,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Message parsing mode' => 
       array (
-        0 => '',
+        0 => 'Berichtverwerking modus',
       ),
       'TuneIn Station ID' => 
       array (
@@ -2597,7 +2585,21 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => '',
+        0 => 'Stappen om een Twitter applicatie te configureren:<br>
+
+                  <ol type="1">
+
+                    <li>Maak een nieuwe app aan op de <a href="%s" target="_blank">Twitter applicaties site</a>.
+
+                    Gebruik de basis URL van deze installatie als de applicatie URL</li>
+
+                    <li>Klik op "Keys and Access Tokens" in de zojuist aangemaakte de applicatie.</li>
+
+                    <li>Klik op "Create my access token" onderaan de pagina.</li>
+
+                </ol>
+
+                <p>Vul, nadat bovenstaande stappen zijn afgerond, de informatie uit "Keys and Access Tokens" in binnen onderstaande velden.</p>',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -2641,7 +2643,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Custom Branding' => 
       array (
-        0 => 'Aangepaste merk',
+        0 => 'Aangepaste huisstijl',
       ),
       'API Keys' => 
       array (
@@ -2653,7 +2655,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Audit Log' => 
       array (
-        0 => '',
+        0 => 'Controle logboek',
       ),
       'Backups' => 
       array (
@@ -2705,7 +2707,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Music Files' => 
       array (
-        0 => 'Muziek bestanden',
+        0 => 'Mediabestanden',
       ),
       'Playlists' => 
       array (
@@ -2741,7 +2743,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song Requests' => 
       array (
-        0 => 'Verzoeknummers',
+        0 => 'Nummer requests',
       ),
       'Song Playback Timeline' => 
       array (
@@ -2757,7 +2759,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'SoundExchange Royalties' => 
       array (
-        0 => 'SoundExchange Royalties',
+        0 => 'SoundExchange royalty\'s',
       ),
       'Utilities' => 
       array (
@@ -2765,11 +2767,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Automated Assignment' => 
       array (
-        0 => 'Automatisch toegewezen',
+        0 => 'Automatische toewijzing',
       ),
       'Log Viewer' => 
       array (
-        0 => '',
+        0 => 'Log weergave',
       ),
       'Upcoming Song Queue' => 
       array (
@@ -2777,11 +2779,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Restart Broadcasting' => 
       array (
-        0 => 'Herstart uitzending',
-      ),
-      'Get Next Song Debug Mode' => 
-      array (
-        0 => '',
+        0 => 'Uitzending herstarten',
       ),
       'Generic Web Hook' => 
       array (
@@ -2861,7 +2859,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Insert' => 
       array (
-        0 => 'Voeg in',
+        0 => 'Invoegen',
       ),
       'Delete' => 
       array (
@@ -2905,7 +2903,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Identifier' => 
       array (
-        0 => '',
+        0 => 'Identificatiecode',
       ),
       'Target' => 
       array (
@@ -2953,7 +2951,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'To restore a backup from your host computer, run:' => 
       array (
-        0 => 'Om een back-up te herstellen vanaf uw computer, voer uit:',
+        0 => 'Om een back-up te herstellen vanaf uw computer, voer het volgende commando uit:',
       ),
       'Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.' => 
       array (
@@ -3005,7 +3003,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '15-Minute CPU Load Average' => 
       array (
-        0 => '',
+        0 => 'Gemiddelde CPU-belasting in een periode van 15 minuten',
       ),
       '%s of %s Used' => 
       array (
@@ -3146,7 +3144,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'API keys can be used to access some system functionality without needing to log in. All of the keys 
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => '',
+        0 => 'API sleutels kunnen gebruikt worden om toegang te krijgen tot sommige functionaliteiten binnen het systeem zonder in te loggen. Alle sleutels die je toevoegt hebben dezelfde permissies als je account. Voor meer informatie, zie de <a href="%s">API documentatie</a>.',
       ),
       'Key Identifier' => 
       array (
@@ -3190,7 +3188,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Listeners Per Station' => 
       array (
-        0 => 'Luisteraars per station',
+        0 => 'Aantal luisteraars per station',
       ),
       'Station Overview' => 
       array (
@@ -3202,7 +3200,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Now Playing' => 
       array (
-        0 => 'Nu speelt',
+        0 => 'Huidig nummer',
       ),
       'Error: No Available Stations' => 
       array (
@@ -3230,11 +3228,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'To verify that the code was set up correctly, enter the 6-digit code the app shows you.' => 
       array (
-        0 => 'Om te controleren of de code correct is ingesteld, voer de 6-cijferige code in die in de app wordt weergegeven.',
+        0 => 'Om te controleren of de code correct is ingesteld, voert u de 6-cijferige code in die binnen de app wordt getoond.',
       ),
       'QR-Code' => 
       array (
-        0 => 'QR-Code',
+        0 => 'QR-code',
       ),
       'Customize' => 
       array (
@@ -3298,7 +3296,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'DJ Credentials' => 
       array (
-        0 => 'DJ Aanmeldgegevens',
+        0 => 'DJ inloggegevens',
       ),
       'Username' => 
       array (
@@ -3354,7 +3352,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Request' => 
       array (
-        0 => 'Verzoek',
+        0 => 'Request',
       ),
       'Album' => 
       array (
@@ -3414,7 +3412,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Let\'s get started by creating your Super Administrator account.' => 
       array (
-        0 => 'Laten we beginnen met het maken van een Super Administrator account.',
+        0 => 'Laten we beginnen met het maken van een account voor de systeembeheerder.',
       ),
       'This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.' => 
       array (
@@ -3430,7 +3428,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Customize AzuraCast Settings' => 
       array (
-        0 => 'AzuraCast Instellingen aanpassen',
+        0 => 'AzuraCast instellingen aanpassen',
       ),
       'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
@@ -3490,7 +3488,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
-        0 => 'Als je een bug of fout ondervindt, kun je een GitHub issue indienen met behulp van de onderstaande link.',
+        0 => 'Als je een bug of fout ontdekt, kun je een GitHub issue indienen met behulp van de onderstaande link.',
       ),
       'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
       array (
@@ -3506,7 +3504,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Automatically scroll to the bottom of the log' => 
       array (
-        0 => 'Automatisch scrollen naar de onderkant van het logboek',
+        0 => 'Scroll automatisch naar de onderkant van het logboek',
       ),
       'Automated Playlist Assignment' => 
       array (
@@ -3550,7 +3548,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Rename' => 
       array (
-        0 => 'Naam aanpassen',
+        0 => 'Hernoemen',
       ),
       'Select' => 
       array (
@@ -3564,9 +3562,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '%s van %s gebruikt (%d bestanden)',
       ),
-      'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
+      'You can also upload files in bulk via FTP.' => 
       array (
-        0 => 'U kunt ook bestanden in bulk uploaden via SFTP door <a href="%s" target="_blank">deze instructies</a>te volgen. Nieuw geüploade bestanden worden automatisch binnen enkele minuten verwerkt.',
+        0 => 'U kunt ook bestanden in bulk uploaden via FTP.',
+      ),
+      'View connection instructions' => 
+      array (
+        0 => 'Bekijk verbindingsinstructies',
       ),
       'Drag files here to upload to this folder or ' => 
       array (
@@ -3610,7 +3612,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Directory Name' => 
       array (
-        0 => 'Naam van de map',
+        0 => 'Mapnaam',
       ),
       'Create Directory' => 
       array (
@@ -3623,6 +3625,42 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Back' => 
       array (
         0 => 'Terug',
+      ),
+      'FTP Connection Information' => 
+      array (
+        0 => 'FTP verbindingsgegevens',
+      ),
+      'Server' => 
+      array (
+        0 => 'Server',
+      ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => 'Je moet mogelijk direct verbinding maken met je IP-adres, dit is <code>%s</code>.',
+      ),
+      'Port' => 
+      array (
+        0 => 'Poort',
+      ),
+      'Protocol' => 
+      array (
+        0 => 'Protocol',
+      ),
+      'FTP with Explicit TLS (FTPS)' => 
+      array (
+        0 => 'FTP met Explicit TLS (FTPS)',
+      ),
+      'Unencrypted FTP is also allowed, but not recommended.' => 
+      array (
+        0 => 'Niet-versleutelde FTP is ook toegestaan, maar niet aanbevolen.',
+      ),
+      'Your AzuraCast E-mail Address' => 
+      array (
+        0 => 'Uw AzuraCast e-mailadres',
+      ),
+      'Your AzuraCast Password' => 
+      array (
+        0 => 'Uw AzuraCast wachtwoord',
       ),
       'Available Logs' => 
       array (
@@ -3642,7 +3680,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Default Mount' => 
       array (
-        0 => 'Standaard Mount',
+        0 => 'Standaard mount point',
       ),
       'All Playlists' => 
       array (
@@ -3654,7 +3692,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '# Songs' => 
       array (
-        0 => '# Nummers',
+        0 => '# nummers',
       ),
       'Delete playlist "%s"?' => 
       array (
@@ -3666,11 +3704,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Disable' => 
       array (
-        0 => 'Uitschakelen',
+        0 => 'Schakel uit',
       ),
       'Enable' => 
       array (
-        0 => 'Inschakelen',
+        0 => 'Schakel in',
       ),
       'Reorder' => 
       array (
@@ -3682,7 +3720,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song-based' => 
       array (
-        0 => 'Nummer-gebaseerd',
+        0 => 'Op-nummer-gebaseerd',
       ),
       'Jingle Mode' => 
       array (
@@ -3802,7 +3840,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Unique' => 
       array (
-        0 => 'Uniek',
+        0 => 'uniek',
       ),
       'Playing Next' => 
       array (
@@ -3894,7 +3932,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
-        0 => '',
+        0 => 'Externe relays laten u werken met uitzendsoftware buiten deze server. Elk relay die u hier toevoegt zal worden opgenomen in de statistieken van uw station. U kunt ook vanuit deze server naar externe relays uitzenden.',
       ),
       'Remote Relay' => 
       array (
@@ -3922,7 +3960,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'There are too many data points to map!' => 
       array (
-        0 => '',
+        0 => 'Er zijn teveel datapunten om in kaart te brengen!',
       ),
       'Download CSV' => 
       array (
@@ -3970,7 +4008,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
       array (
-        0 => 'Dit product bevat GeoLite2 gegevens gemaakt door MaxMind, beschikbaar van %s.',
+        0 => 'Deze functionaliteit bevat gegevens uit de GeoLite2 database van MaxMind, welke beschikbaar is via %s.',
       ),
       'Hour' => 
       array (
@@ -3998,7 +4036,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Most Played Songs' => 
       array (
-        0 => 'Meest afgespeelde nummers',
+        0 => 'Meest gedraaide nummers',
       ),
       'in the last month' => 
       array (
@@ -4006,7 +4044,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Plays' => 
       array (
-        0 => 'Speelt',
+        0 => 'Aantal keer gespeeld',
       ),
       'Filename' => 
       array (
@@ -4099,18 +4137,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'IceCast Clients' => 
       array (
         0 => 'IceCast gebruikers',
-      ),
-      'Server' => 
-      array (
-        0 => 'Server',
-      ),
-      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
-      array (
-        0 => 'Je moet mogelijk direct verbinding maken met je IP-adres, dit is <code>%s</code>.',
-      ),
-      'Port' => 
-      array (
-        0 => 'Poort',
       ),
       'Mount Name' => 
       array (

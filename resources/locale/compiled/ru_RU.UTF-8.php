@@ -14,8 +14,8 @@ Language-Team: Russian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-08-21T22:24:59+00:00
-PO-Revision-Date: 2019-08-23 03:09
+POT-Creation-Date: 2019-09-10T23:21:55+00:00
+PO-Revision-Date: 2019-10-08 07:42
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
 X-Generator: crowdin.com
@@ -108,113 +108,77 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Управление Веб-хуками Станции',
       ),
-      'Back up the AzuraCast database and statistics (and optionally media).' => 
-      array (
-        0 => '',
-      ),
-      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
-      array (
-        0 => '',
-      ),
-      'Exclude media from the backup.' => 
-      array (
-        0 => '',
-      ),
       'AzuraCast Backup' => 
       array (
-        0 => '',
+        0 => 'Резервная копия AzuraCast',
       ),
       'Please wait while a backup is generated...' => 
       array (
-        0 => '',
+        0 => 'Пожалуйста, подождите, пока будет создана резервная копия...',
       ),
       'Creating temporary directories...' => 
       array (
-        0 => '',
+        0 => 'Создание временных каталогов...',
       ),
       'Directory "%s" was not created' => 
       array (
-        0 => '',
+        0 => 'Каталог "%s" не был создан',
       ),
       'Backing up MariaDB...' => 
       array (
-        0 => '',
+        0 => 'Резервное копирование MariaDB...',
       ),
       'Backing up InfluxDB...' => 
       array (
-        0 => '',
+        0 => 'Резервное копирование InfluxDB...',
       ),
       'Creating backup archive...' => 
       array (
-        0 => '',
+        0 => 'Создание архива резервной копии...',
       ),
       'Cleaning up temporary files...' => 
       array (
-        0 => '',
+        0 => 'Очистка временных файлов...',
       ),
       'Backup complete in %.2f seconds.' => 
       array (
-        0 => '',
-      ),
-      'Backup process error' => 
-      array (
-        0 => '',
-      ),
-      'List all settings in the AzuraCast settings database.' => 
-      array (
-        0 => '',
+        0 => 'Резервное копирование завершено за %.2f секунд.',
       ),
       'AzuraCast Settings' => 
       array (
-        0 => '',
+        0 => 'Настройки AzuraCast',
       ),
       'Setting Key' => 
       array (
-        0 => '',
+        0 => 'Ключ настройки',
       ),
       'Setting Value' => 
       array (
-        0 => '',
-      ),
-      'Generate the translation locale file.' => 
-      array (
-        0 => '',
+        0 => 'Заданное значение',
       ),
       'Locales generated.' => 
       array (
-        0 => '',
-      ),
-      'Convert translated locale files into PHP arrays.' => 
-      array (
-        0 => '',
+        0 => 'Файл локализации создан.',
       ),
       'Imported locale: %s' => 
       array (
-        0 => '',
+        0 => 'Импорт локализации: %s',
       ),
       'Locales imported.' => 
       array (
-        0 => '',
-      ),
-      'Migrate existing configuration to new INI format if any exists.' => 
-      array (
-        0 => '',
+        0 => 'Локализация импортирована.',
       ),
       'Configuration already set up.' => 
       array (
-        0 => '',
+        0 => 'Конфигурация уже настроена.',
       ),
       'Configuration successfully written.' => 
       array (
-        0 => '',
-      ),
-      'Process the message queue.' => 
-      array (
-        0 => '',
+        0 => 'Конфигурация успешно записана.',
       ),
       'Backup path %s not found!' => 
       array (
-        0 => '',
+        0 => 'Путь резервной копии %s не найден!',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
@@ -224,129 +188,97 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Аккаунт не найден.',
       ),
-      'Run all general AzuraCast setup steps.' => 
-      array (
-        0 => '',
-      ),
-      'Only update the existing installation.' => 
-      array (
-        0 => '',
-      ),
-      'Load predefined fixtures (for development purposes).' => 
-      array (
-        0 => '',
-      ),
-      'Used for updating only to a tagged release.' => 
-      array (
-        0 => '',
-      ),
       'AzuraCast Setup' => 
       array (
-        0 => '',
+        0 => 'Настройка AzuraCast',
       ),
       'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
       array (
-        0 => '',
+        0 => 'Добро пожаловать в AzuraCast. Пожалуйста, подождите, пока настраиваются некоторые ключевые зависимости AzuraCast...',
       ),
       'Environment: %s' => 
       array (
-        0 => '',
+        0 => 'Окружающая среда: %s',
       ),
       'Installation Method: %s' => 
       array (
-        0 => '',
+        0 => 'Способ установки: %s',
       ),
       'Running in update mode.' => 
       array (
-        0 => '',
+        0 => 'Запуск в режиме обновления.',
       ),
       'Migrating Legacy Configuration' => 
       array (
-        0 => '',
+        0 => 'Миграция устаревшей конфигурации',
       ),
       'Setting Up InfluxDB' => 
       array (
-        0 => '',
+        0 => 'Настройка InfluxDB',
       ),
       'Running Database Migrations' => 
       array (
-        0 => '',
+        0 => 'Запуск миграции базы данных',
       ),
       'Generating Database Proxy Classes' => 
       array (
-        0 => '',
+        0 => 'Создание Прокси-Классов Базы Данных',
       ),
       'Installing Data Fixtures' => 
       array (
-        0 => '',
+        0 => 'Установка модификатора данных',
       ),
       'Refreshing All Stations' => 
       array (
-        0 => '',
+        0 => 'Обновление всех станций',
       ),
       'AzuraCast is now updated to the latest version!' => 
       array (
-        0 => '',
+        0 => 'AzuraCast теперь обновлен до последней версии!',
       ),
       'AzuraCast installation complete!' => 
       array (
-        0 => '',
+        0 => 'Установка AzuraCast завершена!',
       ),
       'Visit %s to complete setup.' => 
       array (
-        0 => '',
-      ),
-      'Install fixtures for demo / local development.' => 
-      array (
-        0 => '',
+        0 => 'Посетите %s для завершения установки.',
       ),
       'Fixtures loaded.' => 
       array (
-        0 => '',
-      ),
-      'Initial setup of InfluxDB.' => 
-      array (
-        0 => '',
+        0 => 'Модификатор загружен.',
       ),
       'Database created.' => 
       array (
-        0 => '',
+        0 => 'База данных создана.',
       ),
       'Retention policies updated.' => 
       array (
-        0 => '',
+        0 => 'Политика хранения обновлена.',
       ),
       'Continuous queries created.' => 
       array (
-        0 => '',
+        0 => 'Созданы непрерывные запросы.',
       ),
       'InfluxDB databases created.' => 
       array (
-        0 => '',
-      ),
-      'Run one or more scheduled synchronization tasks.' => 
-      array (
-        0 => '',
-      ),
-      'The task to run (%s).' => 
-      array (
-        0 => '',
+        0 => 'Созданы базы данных InfluxDB.',
       ),
       'Record not found.' => 
       array (
-        0 => '',
+        0 => 'Запись не найдена.',
       ),
       'API Key updated.' => 
       array (
-        0 => '',
+        0 => 'API ключ обновлён.',
       ),
       'Edit API Key' => 
       array (
-        0 => '',
+        0 => 'Редактировать API ключ',
       ),
       'API Key deleted.' => 
       array (
-        0 => '',
+        0 => 'API ключ удалён.',
       ),
       'Changes saved.' => 
       array (
@@ -360,33 +292,33 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Запуск Резервного Копирования Вручную',
       ),
-      'Backup deleted.' => 
-      array (
-        0 => '',
-      ),
       'Backup not found.' => 
       array (
-        0 => '',
+        0 => 'Резервная копия не найдена.',
+      ),
+      'Backup deleted.' => 
+      array (
+        0 => 'Резервная копия удалена.',
       ),
       'Custom Field updated.' => 
       array (
-        0 => '',
+        0 => 'Настраиваемое поле обновлено.',
       ),
       'Custom Field added.' => 
       array (
-        0 => '',
+        0 => 'Настраиваемое поле добавлено.',
       ),
       'Edit Custom Field' => 
       array (
-        0 => '',
+        0 => 'Редактирование настраиваемого поля',
       ),
       'Add Custom Field' => 
       array (
-        0 => '',
+        0 => 'Добавить Настраиваемое Поле',
       ),
       'Custom Field deleted.' => 
       array (
-        0 => '',
+        0 => 'Настраиваемое поле удалено.',
       ),
       'Sync Task Output' => 
       array (
@@ -422,23 +354,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Permission updated.' => 
       array (
-        0 => '',
+        0 => 'Права доступа обновлены.',
       ),
       'Permission added.' => 
       array (
-        0 => '',
+        0 => 'Добавлены Права Доступа.',
       ),
       'Edit Permission' => 
       array (
-        0 => '',
+        0 => 'Редактирование Прав Доступа',
       ),
       'Add Permission' => 
       array (
-        0 => '',
+        0 => 'Добавить Права Доступа',
       ),
       'Permission deleted.' => 
       array (
-        0 => '',
+        0 => 'Права Доступа Удалены.',
       ),
       'System Settings' => 
       array (
@@ -446,23 +378,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Station updated.' => 
       array (
-        0 => '',
+        0 => 'Станция обновлена.',
       ),
       'Station added.' => 
       array (
-        0 => '',
+        0 => 'Станция добавлена.',
       ),
       'Edit Station' => 
       array (
-        0 => '',
+        0 => 'Редактировать Станцию',
       ),
       'Station deleted.' => 
       array (
-        0 => '',
+        0 => 'Станция удалена.',
       ),
       'Station not found.' => 
       array (
-        0 => '',
+        0 => 'Станция не найдена.',
       ),
       'Clone Station: %s' => 
       array (
@@ -470,11 +402,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'User updated.' => 
       array (
-        0 => '',
+        0 => 'Пользователь обновлен.',
       ),
       'User added.' => 
       array (
-        0 => '',
+        0 => 'Пользователь добавлен.',
       ),
       'Another user already exists with this e-mail address. Please update the e-mail address.' => 
       array (
@@ -482,11 +414,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Edit User' => 
       array (
-        0 => '',
+        0 => 'Редактирование Пользователя',
       ),
       'Add User' => 
       array (
-        0 => '',
+        0 => 'Добавить Пользователя',
       ),
       'You cannot delete your own account.' => 
       array (
@@ -494,11 +426,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'User deleted.' => 
       array (
-        0 => '',
+        0 => 'Пользователь удалён.',
       ),
       'User not found.' => 
       array (
-        0 => '',
+        0 => 'Пользователь не найден.',
       ),
       'Logged in successfully.' => 
       array (
@@ -506,43 +438,43 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Record not found!' => 
       array (
-        0 => '',
+        0 => 'Запись не найдена!',
       ),
       'Changes saved successfully.' => 
       array (
-        0 => '',
+        0 => 'Изменения успешно сохранены.',
       ),
       'Record deleted successfully.' => 
       array (
-        0 => '',
+        0 => 'Запись успешно удалена.',
       ),
       'You cannot remove yourself.' => 
       array (
-        0 => '',
+        0 => 'Вы не можете удалить себя.',
       ),
       'This station does not accept requests currently.' => 
       array (
-        0 => '',
+        0 => 'Эта станция не принимает запросы в настоящее время.',
       ),
       'Request submitted successfully.' => 
       array (
-        0 => '',
+        0 => 'Запрос успешно отправлен.',
       ),
       'Station restarted.' => 
       array (
-        0 => '',
+        0 => 'Станция перезапущена.',
       ),
       'Frontend stopped.' => 
       array (
-        0 => '',
+        0 => 'Интерфейс остановлен.',
       ),
       'Frontend started.' => 
       array (
-        0 => '',
+        0 => 'Интерфейс запущен.',
       ),
       'Frontend restarted.' => 
       array (
-        0 => '',
+        0 => 'Интерфейс перезапущен.',
       ),
       'Song skipped.' => 
       array (
@@ -554,15 +486,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backend stopped.' => 
       array (
-        0 => '',
+        0 => 'Бэкэнд остановлен.',
       ),
       'Backend started.' => 
       array (
-        0 => '',
+        0 => 'Бэкэнд запущен.',
       ),
       'Backend restarted.' => 
       array (
-        0 => '',
+        0 => 'Бэкэнд перезапущен.',
       ),
       'Too many login attempts' => 
       array (
@@ -582,11 +514,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'API Key not found.' => 
       array (
-        0 => '',
+        0 => 'API ключ не найден.',
       ),
       'Add API Key' => 
       array (
-        0 => '',
+        0 => 'Добавить API ключ',
       ),
       'All Stations' => 
       array (
@@ -658,15 +590,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Media not found.' => 
       array (
-        0 => '',
+        0 => 'Медиафайл не найден.',
       ),
       'Media updated.' => 
       array (
-        0 => '',
+        0 => 'Медиафайл обновлён.',
       ),
       'Edit Media' => 
       array (
-        0 => '',
+        0 => 'Редактирование Медиафайла',
       ),
       'File renamed!' => 
       array (
@@ -694,19 +626,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Edit Mount Point' => 
       array (
-        0 => '',
+        0 => 'Редактирование Точки Подключения',
       ),
       'Add Mount Point' => 
       array (
-        0 => '',
+        0 => 'Добавить Точку Подключения',
       ),
       'Mount Point deleted.' => 
       array (
-        0 => '',
+        0 => 'Точка подключения удалена.',
       ),
       'Playlist not found.' => 
       array (
-        0 => '',
+        0 => 'Плейлист не найден.',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
@@ -714,7 +646,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Format not found.' => 
       array (
-        0 => '',
+        0 => 'Формат не найден.',
       ),
       'Playlist enabled.' => 
       array (
@@ -726,47 +658,47 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Playlist updated.' => 
       array (
-        0 => '',
+        0 => 'Плейлист обновлён.',
       ),
       'Playlist added.' => 
       array (
-        0 => '',
+        0 => 'Плейлист добавлен.',
       ),
       'Edit Playlist' => 
       array (
-        0 => '',
+        0 => 'Редактирование Плейлиста',
       ),
       'Add Playlist' => 
       array (
-        0 => '',
+        0 => 'Добавить Плейлист',
       ),
       'Playlist deleted.' => 
       array (
-        0 => '',
+        0 => 'Плейлист удалён.',
       ),
       'Remote Relay updated.' => 
       array (
-        0 => '',
+        0 => 'Отдалённый Ретранслятор обновлён.',
       ),
       'Remote Relay added.' => 
       array (
-        0 => '',
+        0 => 'Отдалённый Ретранслятор добавлен.',
       ),
       'Edit Remote Relay' => 
       array (
-        0 => '',
+        0 => 'Редактирование Отдалённого Ретранслятора',
       ),
       'Add Remote Relay' => 
       array (
-        0 => '',
+        0 => 'Добавить Отдалённый Ретранслятор',
       ),
       'Remote Relay deleted.' => 
       array (
-        0 => '',
+        0 => 'Отдалённый Ретранслятор удалён.',
       ),
       'This record cannot be edited.' => 
       array (
-        0 => '',
+        0 => 'Эта запись не может быть отредактирована.',
       ),
       'Listeners by Day' => 
       array (
@@ -822,47 +754,47 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Streamer updated.' => 
       array (
-        0 => '',
+        0 => 'Стример обновлён.',
       ),
       'Streamer added.' => 
       array (
-        0 => '',
+        0 => 'Стример добавлен.',
       ),
       'Edit Streamer' => 
       array (
-        0 => '',
+        0 => 'Редактировать Стримера',
       ),
       'Add Streamer' => 
       array (
-        0 => '',
+        0 => 'Добавить стримера',
       ),
       'Streamer deleted.' => 
       array (
-        0 => '',
+        0 => 'Стример удалён.',
       ),
       'Web Hook added.' => 
       array (
-        0 => '',
+        0 => 'Веб-хук добавлен.',
       ),
       'Add Web Hook' => 
       array (
-        0 => '',
+        0 => 'Добавить Веб-хук',
       ),
       'Web Hook updated.' => 
       array (
-        0 => '',
+        0 => 'Веб-хук обновлён.',
       ),
       'Edit Web Hook' => 
       array (
-        0 => '',
+        0 => 'Изменить веб-хук',
       ),
       'Web hook enabled.' => 
       array (
-        0 => '',
+        0 => 'Веб-хук включен.',
       ),
       'Web Hook disabled.' => 
       array (
-        0 => '',
+        0 => 'Веб-хук отключен.',
       ),
       'Web Hook Test Output' => 
       array (
@@ -870,7 +802,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Web Hook deleted.' => 
       array (
-        0 => '',
+        0 => 'Веб-хук удалён.',
       ),
       'Liquidsoap Log' => 
       array (
@@ -902,15 +834,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
-        0 => '',
+        0 => 'Поисковые роботы не могут использовать эту функцию.',
       ),
       'The song ID you specified could not be found in the station.' => 
       array (
-        0 => '',
+        0 => 'Указанный вами идентификатор песни не найден на станции.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
-        0 => '',
+        0 => 'Указанный идентификатор песни не может быть запрошен для этой станции.',
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
@@ -918,7 +850,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Duplicate request: this song was already requested and will play soon.' => 
       array (
-        0 => '',
+        0 => 'Дубликат запроса: эта песня уже была запрошена и скоро будет играть.',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
@@ -1079,6 +1011,46 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Password cannot contain the following characters: %s' => 
       array (
         0 => 'Пароль не может содержать следующие символы: %s',
+      ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => 'Создание файла локализации перевода.',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => 'Преобразование переведенных файлов локализации в PHP массивы.',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => 'Перенос существующей конфигурации в новый формат INI, если таковой существует.',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => 'Начальная настройка InfluxDB.',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => 'Установка модификатора для демонстрации / локальной разработки.',
+      ),
+      'Run all general AzuraCast setup steps.' => 
+      array (
+        0 => 'Выполните все действия по установке AzuraCast.',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => 'Выполните одну или несколько запланированных задач синхронизации.',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => 'Обработать очередь сообщений.',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => 'Список всех параметров в базе данных настроек AzuraCast.',
+      ),
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
+      array (
+        0 => 'Резервное копирование базы данных и статистики AzuraCast (и при необходимости медиафайлов).',
       ),
       'Comments' => 
       array (
@@ -1738,11 +1710,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Minute of Hour to Play' => 
       array (
-        0 => 'Минуты Часа для проигрывания',
+        0 => 'Минута Часа для Воспроизведения',
       ),
       'Specify the minute of every hour that this playlist should play.' => 
       array (
-        0 => 'В указанную минуту каждый час будет играть этот плейлист.',
+        0 => 'Укажите минуту в которую каждый час должен начать играть этот плейлист.',
       ),
       'Use Browser Default' => 
       array (
@@ -1818,7 +1790,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Station Listening URL' => 
       array (
-        0 => 'URL-адрес прослушивания отдалённой станции',
+        0 => 'URL-адрес подключения к отдалённой станции',
       ),
       'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
       array (
@@ -1826,7 +1798,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Station Listening Mountpoint/SID' => 
       array (
-        0 => 'Точка прослушивания отдалённой станции /SID',
+        0 => 'Точка подключения отдалённой станции /SID',
       ),
       'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
       array (
@@ -1834,11 +1806,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Broadcast AutoDJ to Remote Station' => 
       array (
-        0 => 'Вещание АвтоДиджея с отдалённой станции',
+        0 => 'Вещание АвтоДиджея на отдалённую станцию',
       ),
       'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
       array (
-        0 => 'Если включено, АвтоДиджей автоматически воспроизводит музыку в этой точке подключения.',
+        0 => 'Если этот параметр включен, АвтоДиджей в этой установке будет автоматически воспроизводит музыку в этой точке подключения.',
       ),
       'Configure AutoDJ Broadcasting' => 
       array (
@@ -1850,23 +1822,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
       array (
-        0 => 'Если порт, с которого вы транслируете, отличается от того, который вы указали в URL выше, укажите источник порта здесь.',
+        0 => 'Если порт, на который осуществляется трансляция, отличается от указанного в URL-адресе выше, укажите здесь исходный порт.',
       ),
       'Remote Station Source Mountpoint/SID' => 
       array (
-        0 => 'Исходная точка подключения отдалённой станции/SID',
+        0 => 'Точка подключения отдалённой станции/SID',
       ),
       'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
       array (
-        0 => 'Если точка подключения (т.е. <code>/radio.mp3</code>) или Shoutcast SID (т.е. <code>2</code>) с которой вы вещаете, отличается от указанной выше точки, укажите точку подключения источника здесь.',
+        0 => 'Если точка подключения (т.е. <code>/radio.mp3</code>) или Shoutcast SID (т.е. <code>2</code>) на которую вы вещаете, отличается от указанной выше точки, укажите точку подключения Source здесь.',
       ),
       'Remote Station Source Username' => 
       array (
-        0 => 'Имя пользователя источника отдалённой станции',
+        0 => 'Имя пользователя отдалённой станции',
       ),
       'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
       array (
-        0 => 'Если вы транслируете с помощью АвтоДиджея, введите имя Source здесь. Оно может быть пустым.',
+        0 => 'Если вы транслируете с помощью АвтоДиджея, введите имя источника здесь. Оно может быть пустым.',
       ),
       'Remote Station Source Password' => 
       array (
@@ -1874,7 +1846,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If you are broadcasting using AutoDJ, enter the source password here.' => 
       array (
-        0 => 'Если вы транслируете с помощью АвтоДиджея, введите пароль Source здесь.',
+        0 => 'Если вы транслируете с помощью АвтоДиджея, введите пароль источника здесь.',
       ),
       'Role Name' => 
       array (
@@ -1886,7 +1858,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Permissions for %s' => 
       array (
-        0 => 'Разрешения для %s',
+        0 => 'Права доступа для %s',
       ),
       'Site Base URL' => 
       array (
@@ -1922,7 +1894,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Days of Playback History to Keep' => 
       array (
-        0 => 'Количество дней истории проигранного, для хранения',
+        0 => 'Количество дней для хранения истории проигранного',
       ),
       'Set longer to preserve more playback history for stations. Set shorter to save disk space.' => 
       array (
@@ -1970,7 +1942,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
       array (
-        0 => 'Установите "Да" для того, чтобы всегда использовать "https://" безопасные URL, и автоматически перенаправлять на безопасный URL, когда посещается небезопасный URL.',
+        0 => 'Выберите параметр для того, чтобы всегда использовать безопасные URL-адресы "https://" и автоматически перенаправлять на безопасный URL-адрес, когда посещается небезопасный URL-адрес.',
+      ),
+      'Enable Built-in FTP Server' => 
+      array (
+        0 => 'Включить встроенный FTP сервер',
+      ),
+      'If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage.' => 
+      array (
+        0 => 'Если включено, пользователи могут подключаться через FTP, используя свои учетные данные AzuraCast, для загрузки медиафайлов напрямую на любые станции, которыми они управляют.',
       ),
       'API "Access-Control-Allow-Origin" header' => 
       array (
@@ -1986,7 +1966,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here.' => 
       array (
-        0 => 'AzuraCast не отправляет данные вашей станции или слушателя на какой-либо внешний сервер. Вы можете контролировать сколько данных о ваших слушателях здесь.',
+        0 => 'AzuraCast не отправляет данные вашей станции или слушателя на какой-либо внешний сервер. Вы можете контролировать, сколько данных AzuraCast регистрирует о ваших слушателях здесь.',
       ),
       'Listener Analytics Collection' => 
       array (
@@ -1994,15 +1974,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
       array (
-        0 => 'Собираемая статистика о слушателях используется для отображения отчетов о станциях в системе. Статистика слушателей на основе IP-адреса используется для просмотра отслеживания онлайн слушателей и может потребоваться для роялти отчетов.',
+        0 => 'Собираемая статистика о слушателях используется для отображения отчетов станции в системе. Статистика слушателей на основе IP-адреса используется для просмотра отслеживания онлайн слушателей и может потребоваться для роялти отчетов.',
       ),
       '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
       array (
-        0 => '<b>Полная:</b> Собирается совокупная статистика слушателя и статистика о слушателях на основе IP-адреса',
+        0 => '<b>Полная:</b> Сбор статистических данных слушателя и статистика на основе IP-адреса ',
       ),
       '<b>Limited:</b> Only collect aggregate listener statistics' => 
       array (
-        0 => '<b>Ограничено:</b> Собирается только совокупная статистика слушателя',
+        0 => '<b>Ограничено:</b> Сбор только статистических данных слушателя',
       ),
       '<b>None:</b> Do not collect any listener analytics' => 
       array (
@@ -2174,11 +2154,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This software shuffles from playlists of music constantly and plays when no other radio source is available.' => 
       array (
-        0 => 'Это программное обеспечение постоянно перетасовывает музыку из плейлистов и проигрывает, когда нет другого источника Радио.',
+        0 => 'Это программное обеспечение постоянно проигрывает и перетасовывает музыку из плейлистов, когда другой источник радио недоступен.',
       ),
       'Crossfade Method' => 
       array (
-        0 => 'Метод кроссфейда',
+        0 => 'Режим кроссфейда',
       ),
       'Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.' => 
       array (
@@ -2442,11 +2422,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Web Hook Name' => 
       array (
-        0 => '',
+        0 => 'Название веб-хука',
       ),
       'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
-        0 => 'Выберите имя для этого веб-хука, которое поможет вам отличить его от других. Это будет показано только на странице администрирования.',
+        0 => 'Выберите название для этого веб-хука, которое поможет вам отличить его от других. Оно будет показано только на странице администрирования.',
       ),
       'Discord Web Hook URL' => 
       array (
@@ -2470,7 +2450,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Main Message Content' => 
       array (
-        0 => 'Содержимое главного сообщения',
+        0 => 'Содержание Основного Сообщения',
       ),
       'Now playing on %s:' => 
       array (
@@ -2510,7 +2490,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
                 optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => '',
+        0 => 'Веб-хуки автоматически отправляют HTTP POST запрос на указанный вами URL-адрес 
+
+                уведомляя его каждый раз, когда на вашей станции происходит один из указанных вами триггеров. Основа POST сообщения
+
+                это то же самое, что и <a href="%s" target="_blank">Ответ API Now Playing</a> для вашей станции. 
+
+                Для быстрой обработки веб-хуки имеют короткий тайм-аут, поэтому отвечающая служба должна быть
+
+                оптимизирована для обработки запроса менее чем за 2 секунды.',
       ),
       'Web Hook URL' => 
       array (
@@ -2522,7 +2510,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Optional: HTTP Basic Authentication Username' => 
       array (
-        0 => 'По желанию: имя пользователя базовой аутентификации HTTP',
+        0 => 'При необходимости: имя пользователя базовой аутентификации HTTP',
       ),
       'If your web hook requires HTTP basic authentication, provide the username here.' => 
       array (
@@ -2530,7 +2518,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Optional: HTTP Basic Authentication Password' => 
       array (
-        0 => 'По желанию: пароль базовой аутентификации HTTP',
+        0 => 'При необходимости: пароль базовой аутентификации HTTP',
       ),
       'If your web hook requires HTTP basic authentication, provide the password here.' => 
       array (
@@ -2562,7 +2550,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Now playing on %s: %s by %s! Tune in now.' => 
       array (
-        0 => 'Сейчас играет на %s: %s от %s! Настройтесь сейчас.',
+        0 => 'Сейчас играет на %s: %s - %s! Подключайтесь сейчас.',
       ),
       'Message parsing mode' => 
       array (
@@ -2597,7 +2585,21 @@ X-Crowdin-File: /master/resources/locale/default.pot
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => '',
+        0 => 'Шаги по настройке приложения Twitter:<br>
+
+                <ol type="1">
+
+                    <li>Создайте новое приложение на сайте <a href="%s" target="_blank">Twitter Applications</a>. 
+
+                    Используйте базовый URL-адрес этой установки в качестве URL-адреса приложения.</li>
+
+                    <li>Во вновь созданном приложении перейдите на вкладку "Ключи и токены доступа".</li>
+
+                    <li>В нижней части страницы нажмите "Создать мой токен доступа".</li>
+
+                </ol>
+
+                <p>После завершения этих шагов введите информацию со страницы «Ключи и токены доступа» в поля ниже.</p>',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -2653,7 +2655,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Audit Log' => 
       array (
-        0 => '',
+        0 => 'Журнал Изменений',
       ),
       'Backups' => 
       array (
@@ -2779,10 +2781,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Перезапустить вещание',
       ),
-      'Get Next Song Debug Mode' => 
-      array (
-        0 => '',
-      ),
       'Generic Web Hook' => 
       array (
         0 => 'Общий веб-хук',
@@ -2861,7 +2859,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Insert' => 
       array (
-        0 => '',
+        0 => 'Вставить',
       ),
       'Delete' => 
       array (
@@ -2869,11 +2867,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Update' => 
       array (
-        0 => '',
+        0 => 'Обновить',
       ),
       'Changes' => 
       array (
-        0 => '',
+        0 => 'Изменения',
       ),
       'Today' => 
       array (
@@ -2905,11 +2903,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Identifier' => 
       array (
-        0 => '',
+        0 => 'Обозначение',
       ),
       'Target' => 
       array (
-        0 => '',
+        0 => 'Цель',
       ),
       'Actions' => 
       array (
@@ -2917,15 +2915,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Field' => 
       array (
-        0 => '',
+        0 => 'Поле',
       ),
       'Previous' => 
       array (
-        0 => '',
+        0 => 'Было',
       ),
       'Updated' => 
       array (
-        0 => '',
+        0 => 'Стало',
       ),
       'Automatic Backups' => 
       array (
@@ -2953,7 +2951,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'To restore a backup from your host computer, run:' => 
       array (
-        0 => 'Чтобы восстановить резервную копию с Вашего компьютера, выполните:',
+        0 => 'Чтобы восстановить резервную копию на вашем сервере, выполните:',
       ),
       'Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.' => 
       array (
@@ -3069,7 +3067,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Add Station' => 
       array (
-        0 => '',
+        0 => 'Добавить станцию',
       ),
       'Station' => 
       array (
@@ -3146,7 +3144,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'API keys can be used to access some system functionality without needing to log in. All of the keys 
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => '',
+        0 => 'Ключи API можно использовать для доступа к некоторым функциям системы без необходимости входа в систему. Все ключи
+
+            которые вы создаете получают ваши права доступа в системе. Для получения дополнительной информации см. <a href="%s">документацию по API</a>.',
       ),
       'Key Identifier' => 
       array (
@@ -3250,11 +3250,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Disable Two-Factor' => 
       array (
-        0 => 'Отключить двухфакторный',
+        0 => 'Отключить Двухфакторную',
       ),
       'Enable Two-Factor' => 
       array (
-        0 => 'Включить двухфакторный',
+        0 => 'Включить Двухфакторную',
       ),
       'Microphone' => 
       array (
@@ -3498,7 +3498,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Add New GitHub Issue' => 
       array (
-        0 => '',
+        0 => 'Новый запрос на GitHub',
       ),
       'Log View' => 
       array (
@@ -3538,11 +3538,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Playlists updated for selected files:' => 
       array (
-        0 => 'Обновлены плейлисты выбранными файлами:',
+        0 => 'Плейлисты обновлены выбранными файлами:',
       ),
       'Playlists cleared for selected files:' => 
       array (
-        0 => 'Плейлисты очищены для выбранных файлов:',
+        0 => 'Плейлисты очищены от выбранных файлов:',
       ),
       'Album Artwork' => 
       array (
@@ -3564,9 +3564,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Использовано %s из %s (%d Файлов)',
       ),
-      'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
+      'You can also upload files in bulk via FTP.' => 
       array (
-        0 => 'Вы также можете загружать файлы в массовом режиме через SFTP <a href="%s" target="_blank">следуя этим инструкциям</a>. Новые загруженные файлы будут автоматически обработаны в течение нескольких минут.',
+        0 => 'Вы также можете загружать файлы оптом через FTP.',
+      ),
+      'View connection instructions' => 
+      array (
+        0 => 'Просмотр инструкций по подключению',
       ),
       'Drag files here to upload to this folder or ' => 
       array (
@@ -3623,6 +3627,42 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Back' => 
       array (
         0 => 'Назад',
+      ),
+      'FTP Connection Information' => 
+      array (
+        0 => 'Информация о подключении по FTP',
+      ),
+      'Server' => 
+      array (
+        0 => 'Сервер',
+      ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => 'Возможно, вам потребуется подключиться напрямую через ваш IP-адрес <code>%s</code>.',
+      ),
+      'Port' => 
+      array (
+        0 => 'Порт',
+      ),
+      'Protocol' => 
+      array (
+        0 => 'Протокол',
+      ),
+      'FTP with Explicit TLS (FTPS)' => 
+      array (
+        0 => 'FTP с явным TLS (FTPS)',
+      ),
+      'Unencrypted FTP is also allowed, but not recommended.' => 
+      array (
+        0 => 'Незашифрованный FTP также разрешен, но не рекомендуется.',
+      ),
+      'Your AzuraCast E-mail Address' => 
+      array (
+        0 => 'Ваш адрес электронной почты AzuraCast',
+      ),
+      'Your AzuraCast Password' => 
+      array (
+        0 => 'Ваш пароль AzuraCast',
       ),
       'Available Logs' => 
       array (
@@ -3718,7 +3758,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Custom' => 
       array (
-        0 => 'Собственные',
+        0 => 'Собственное',
       ),
       'Reorder Playlist' => 
       array (
@@ -3738,11 +3778,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Station Broadcasting Disabled' => 
       array (
-        0 => 'Трансляция станции отключена',
+        0 => 'Вещание станции отключено',
       ),
       'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
       array (
-        0 => 'Ваша станция в настоящее время не включена для трансляции. Вы можете управлять медиа, плейлистами и другими настройками станции. Чтобы включить трансляцию, <a href="%s">отредактируйте профиль станции</a>.',
+        0 => 'Ваша станция в настоящее время не включена для вещания. Вы можете управлять медиафайлами, плейлистами и другими настройками станции. Чтобы включить вещание, <a href="%s">отредактируйте профиль станции</a>.',
       ),
       'Running' => 
       array (
@@ -3870,11 +3910,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Download PLS' => 
       array (
-        0 => '',
+        0 => 'Скачать PLS',
       ),
       'Download M3U' => 
       array (
-        0 => '',
+        0 => 'Скачать M3U',
       ),
       'Listener Request' => 
       array (
@@ -3918,11 +3958,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Live Listeners' => 
       array (
-        0 => 'Живые слушатели',
+        0 => 'Слушают сейчас',
       ),
       'There are too many data points to map!' => 
       array (
-        0 => 'Слишком много точек с данными для карты!',
+        0 => 'Слишком много точек с данными для отображения!',
       ),
       'Download CSV' => 
       array (
@@ -3962,7 +4002,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Desktop Device' => 
       array (
-        0 => 'Устройство рабочего стола',
+        0 => 'Настольный компьютер',
       ),
       'Unknown' => 
       array (
@@ -4099,18 +4139,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'IceCast Clients' => 
       array (
         0 => 'Клиенты IceCast',
-      ),
-      'Server' => 
-      array (
-        0 => 'Сервер',
-      ),
-      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
-      array (
-        0 => 'Вы можете подключиться напрямую по вашему IP-адресу <code>%s</code>.',
-      ),
-      'Port' => 
-      array (
-        0 => 'Порт',
       ),
       'Mount Name' => 
       array (

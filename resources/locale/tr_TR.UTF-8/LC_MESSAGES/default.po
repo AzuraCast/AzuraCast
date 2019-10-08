@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-08-21T22:24:59+00:00\n"
-"PO-Revision-Date: 2019-08-23 03:09\n"
+"POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
+"PO-Revision-Date: 2019-10-08 07:42\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -16,318 +16,250 @@ msgstr ""
 "X-Crowdin-Language: tr\n"
 "X-Crowdin-File: /master/resources/locale/default.pot\n"
 
-#: /var/azuracast/www/src/Acl.php:184
-#: /var/azuracast/www/src/Acl.php:196
+#: /var/azuracast/www/src/Acl.php:79
+#: /var/azuracast/www/src/Acl.php:91
 msgid "All Permissions"
 msgstr "Tüm İzinler"
 
-#: /var/azuracast/www/src/Acl.php:185
+#: /var/azuracast/www/src/Acl.php:80
 msgid "View Administration Page"
 msgstr "Yönetici Panelini Görme"
 
-#: /var/azuracast/www/src/Acl.php:186
+#: /var/azuracast/www/src/Acl.php:81
 msgid "View System Logs"
 msgstr "Sistem Günlüklerini Görme"
 
-#: /var/azuracast/www/src/Acl.php:187
+#: /var/azuracast/www/src/Acl.php:82
 msgid "Administer Settings"
 msgstr "Ayar Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:188
+#: /var/azuracast/www/src/Acl.php:83
 msgid "Administer API Keys"
 msgstr "API Anahtarı Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:189
+#: /var/azuracast/www/src/Acl.php:84
 msgid "Administer Users"
 msgstr "Kullanıcı Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:190
+#: /var/azuracast/www/src/Acl.php:85
 msgid "Administer Permissions"
 msgstr "İzin Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:191
+#: /var/azuracast/www/src/Acl.php:86
 msgid "Administer Stations"
 msgstr "Radyo Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:192
+#: /var/azuracast/www/src/Acl.php:87
 msgid "Administer Custom Fields"
 msgstr "Özel Alan Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:193
+#: /var/azuracast/www/src/Acl.php:88
 msgid "Administer Backups"
 msgstr "Yedekleme Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:197
+#: /var/azuracast/www/src/Acl.php:92
 msgid "View Station Page"
 msgstr "Radyo Sayfasını Görme"
 
-#: /var/azuracast/www/src/Acl.php:198
+#: /var/azuracast/www/src/Acl.php:93
 msgid "View Station Reports"
 msgstr "Radyo Raporlarını Görme"
 
-#: /var/azuracast/www/src/Acl.php:199
+#: /var/azuracast/www/src/Acl.php:94
 msgid "View Station Logs"
 msgstr "Radyo Günlüklerini Görme"
 
-#: /var/azuracast/www/src/Acl.php:200
+#: /var/azuracast/www/src/Acl.php:95
 msgid "Manage Station Profile"
 msgstr "Radyo Profil Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:201
+#: /var/azuracast/www/src/Acl.php:96
 msgid "Manage Station Broadcasting"
 msgstr "Radyo Canlı Yayın Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:202
+#: /var/azuracast/www/src/Acl.php:97
 msgid "Manage Station Streamers"
 msgstr "Radyo DJ Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:203
+#: /var/azuracast/www/src/Acl.php:98
 msgid "Manage Station Mount Points"
 msgstr "Radyo Bağlantı Noktası Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:204
+#: /var/azuracast/www/src/Acl.php:99
 msgid "Manage Station Remote Relays"
 msgstr "Radyo Yönlendirme Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:205
+#: /var/azuracast/www/src/Acl.php:100
 msgid "Manage Station Media"
 msgstr "Radyo Müzik Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:206
+#: /var/azuracast/www/src/Acl.php:101
 msgid "Manage Station Automation"
 msgstr "Radyo Otomasyon Yönetimi"
 
-#: /var/azuracast/www/src/Acl.php:207
+#: /var/azuracast/www/src/Acl.php:102
 msgid "Manage Station Web Hooks"
 msgstr "Radyo Web Kancası Yönetimi"
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:25
-msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr "AzuraCast veritabanını ve istatistiklerini (ve isteğe bağlı olarak medyayı) yedekleyin."
-
-#: /var/azuracast/www/src/Console/Command/Backup.php:30
-msgid "The absolute (or relative to /var/azuracast/backups) path to generate the backup."
-msgstr "Yedeklemenin oluşturulacağı kesin dizini (veya geçici \\\"/var/azuracast/backups\\\" dizini kullanın) belirtin."
-
-#: /var/azuracast/www/src/Console/Command/Backup.php:37
-msgid "Exclude media from the backup."
-msgstr "Yedeklemeye Müzik Dosyalarını Dahil Etme"
-
-#: /var/azuracast/www/src/Console/Command/Backup.php:61
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:39
 msgid "AzuraCast Backup"
 msgstr "AzuraCast Yedekleme"
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:62
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:40
 msgid "Please wait while a backup is generated..."
 msgstr "Lütfen bir yedekleme oluşturulurken bekleyin..."
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:65
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:43
 msgid "Creating temporary directories..."
 msgstr "Geçici dizinler oluşturuluyor..."
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:69
-#: /var/azuracast/www/src/Console/Command/Backup.php:75
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:47
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:53
 msgid "Directory \"%s\" was not created"
 msgstr "\"%s\" dizini oluşturulamadı!"
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:82
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:60
 msgid "Backing up MariaDB..."
 msgstr "MariaDB yedekleniyor..."
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:107
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:83
 msgid "Backing up InfluxDB..."
 msgstr "InfluxDB yedekleniyor..."
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:147
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:122
 msgid "Creating backup archive..."
 msgstr "Yedekleme arşivi oluşturuluyor..."
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:185
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:161
 msgid "Cleaning up temporary files..."
 msgstr "Geçici dizin dosyaları temizleniyor..."
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:196
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:172
 msgid "Backup complete in %.2f seconds."
 msgstr "Yedekleme %.2f saniyede tamamlandı."
 
-#: /var/azuracast/www/src/Console/Command/Backup.php:230
-msgid "Backup process error"
-msgstr "Yedek işleme hatası"
-
-#: /var/azuracast/www/src/Console/Command/ListSettings.php:20
-msgid "List all settings in the AzuraCast settings database."
-msgstr "AzuraCast ayarları veritabanında tüm ayarları listeleyin."
-
-#: /var/azuracast/www/src/Console/Command/ListSettings.php:29
+#: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:18
 msgid "AzuraCast Settings"
 msgstr "AzuraCast Ayarları"
 
-#: /var/azuracast/www/src/Console/Command/ListSettings.php:38
+#: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:24
 msgid "Setting Key"
 msgstr "Ayar Anahtarı"
 
-#: /var/azuracast/www/src/Console/Command/ListSettings.php:39
+#: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:25
 msgid "Setting Value"
 msgstr "Ayar Değeri"
 
-#: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:17
-msgid "Generate the translation locale file."
-msgstr "Dil çevirisi yerel dosyasını oluşturun."
-
-#: /var/azuracast/www/src/Console/Command/LocaleGenerate.php:50
+#: /var/azuracast/www/src/Console/Command/LocaleGenerateCommand.php:44
 msgid "Locales generated."
 msgstr "Yerel dosya oluşturuldu!"
 
-#: /var/azuracast/www/src/Console/Command/LocaleImport.php:17
-msgid "Convert translated locale files into PHP arrays."
-msgstr "Çevrilen yerel dosyaları PHP dizilerine dönüştürün."
-
-#: /var/azuracast/www/src/Console/Command/LocaleImport.php:41
+#: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:29
 msgid "Imported locale: %s"
 msgstr "İçe aktarılan dil: %s"
 
-#: /var/azuracast/www/src/Console/Command/LocaleImport.php:45
+#: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:33
 msgid "Locales imported."
 msgstr "Yerel dosya içe aktarıldı!"
 
-#: /var/azuracast/www/src/Console/Command/MigrateConfig.php:16
-msgid "Migrate existing configuration to new INI format if any exists."
-msgstr "Varsa mevcut ayarları yeni bir INI formatına taşıyın."
-
-#: /var/azuracast/www/src/Console/Command/MigrateConfig.php:31
+#: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:23
 msgid "Configuration already set up."
 msgstr "Yapılandırma zaten ayarlandı."
 
-#: /var/azuracast/www/src/Console/Command/MigrateConfig.php:72
+#: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:64
 msgid "Configuration successfully written."
 msgstr "Yapılandırma başarıyla yazıldı."
 
-#: /var/azuracast/www/src/Console/Command/ProcessMessageQueue.php:19
-msgid "Process the message queue."
-msgstr "Mesaj kuyruğunu işleyin."
-
-#: /var/azuracast/www/src/Console/Command/Restore.php:52
+#: /var/azuracast/www/src/Console/Command/RestoreCommand.php:36
 msgid "Backup path %s not found!"
 msgstr "Yedekleme dizini %s bulunamadı!"
 
-#: /var/azuracast/www/src/Console/Command/SetAdministrator.php:67
+#: /var/azuracast/www/src/Console/Command/SetAdministratorCommand.php:47
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr "\\\"%s\\\" e-posta adresi yönetici olarak atandı."
+msgstr "%s e-posta adresi yönetici olarak atandı."
 
-#: /var/azuracast/www/src/Console/Command/SetAdministrator.php:72
+#: /var/azuracast/www/src/Console/Command/SetAdministratorCommand.php:53
 msgid "Account not found."
 msgstr "Hesap bulunamadı."
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:22
-msgid "Run all general AzuraCast setup steps."
-msgstr "Tüm genel AzuraCast kurulum adımlarını çalıştırın."
-
-#: /var/azuracast/www/src/Console/Command/Setup.php:23
-msgid "Only update the existing installation."
-msgstr "Sadece mevcut kurulumu güncelle."
-
-#: /var/azuracast/www/src/Console/Command/Setup.php:24
-msgid "Load predefined fixtures (for development purposes)."
-msgstr "Önceden tanımlanmış fixture\\'leri yükleyin. (geliştirme amaçları için)"
-
-#: /var/azuracast/www/src/Console/Command/Setup.php:25
-msgid "Used for updating only to a tagged release."
-msgstr "Yalnızca etiketli bir sürüme güncelleme yapmak için kullanılır."
-
-#: /var/azuracast/www/src/Console/Command/Setup.php:37
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:25
 msgid "AzuraCast Setup"
 msgstr "AzuraCast Kurulumu"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:38
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:26
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr "AzuraCast\\'a hoşgeldiniz. AzuraCast\\’in bazı temel sistemleri kurulurken lütfen bekleyin..."
+msgstr "AzuraCast'a hoşgeldiniz. AzuraCast’in bazı temel sistemleri kurulurken lütfen bekleyin..."
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:41
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:29
 msgid "Environment: %s"
 msgstr "Ortam: %s"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:42
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:30
 msgid "Installation Method: %s"
 msgstr "Kurulum Yöntemi: %s"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:46
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:34
 msgid "Running in update mode."
 msgstr "Güncelleme modunda çalışıyor."
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:49
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:37
 msgid "Migrating Legacy Configuration"
 msgstr "Eski Yapılandırma Taşınıyor"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:55
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:43
 msgid "Setting Up InfluxDB"
 msgstr "InfluxDB Ayarlanıyor"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:61
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:49
 msgid "Running Database Migrations"
 msgstr "Veritabanı Geçişleri Çalışıyor"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:68
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:56
 msgid "Generating Database Proxy Classes"
 msgstr "Veritabanı Proxy Sınıfları Oluşturuluyor"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:74
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:62
 msgid "Installing Data Fixtures"
-msgstr "Veri Fixture\\'leri Kuruluyor"
+msgstr "Veri Fikstürleri Kuruluyor"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:80
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:68
 msgid "Refreshing All Stations"
 msgstr "Tüm Radyolar Yenileniyor"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:100
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:85
 msgid "AzuraCast is now updated to the latest version!"
 msgstr "AzuraCast şimdi en son sürüme güncellendi!"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:108
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:91
 msgid "AzuraCast installation complete!"
 msgstr "AzuraCast kurulumu tamamlandı!"
 
-#: /var/azuracast/www/src/Console/Command/Setup.php:109
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:92
 msgid "Visit %s to complete setup."
 msgstr "Kurulumu tamamlamak için %s adresini ziyaret edin."
 
-#: /var/azuracast/www/src/Console/Command/SetupFixtures.php:23
-msgid "Install fixtures for demo / local development."
-msgstr "Demo / yerel geliştirme için fixture\\'leri kurun."
-
-#: /var/azuracast/www/src/Console/Command/SetupFixtures.php:82
+#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:70
 msgid "Fixtures loaded."
-msgstr "Fixture\\'ler yüklendi."
+msgstr "Fikstürler yüklendi."
 
-#: /var/azuracast/www/src/Console/Command/SetupInflux.php:17
-msgid "Initial setup of InfluxDB."
-msgstr "InfluxDB ilk kurulumu"
-
-#: /var/azuracast/www/src/Console/Command/SetupInflux.php:33
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:23
 msgid "Database created."
 msgstr "Veritabanı oluşturuldu."
 
-#: /var/azuracast/www/src/Console/Command/SetupInflux.php:67
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:57
 msgid "Retention policies updated."
 msgstr "Saklama politikaları güncellendi."
 
-#: /var/azuracast/www/src/Console/Command/SetupInflux.php:86
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:77
 msgid "Continuous queries created."
 msgstr "Sorgular oluşturuldu."
 
-#: /var/azuracast/www/src/Console/Command/SetupInflux.php:105
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:96
 msgid "InfluxDB databases created."
 msgstr "InfluxDB veritabanları oluşturuldu."
 
-#: /var/azuracast/www/src/Console/Command/Sync.php:19
-msgid "Run one or more scheduled synchronization tasks."
-msgstr "Bir veya daha fazla zamanlanmış senkronizasyon görevi çalıştırın."
-
-#: /var/azuracast/www/src/Console/Command/Sync.php:23
-msgid "The task to run (%s)."
-msgstr "(%s) görevini çalıştır."
-
-#: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:74
-#: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:85
+#: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:60
+#: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:71
 msgid "Record not found."
 msgstr "Kayıt bulunamadı!"
 
@@ -346,34 +278,34 @@ msgstr "API Anahtarı Düzenle"
 msgid "API Key deleted."
 msgstr "API Anahtarı silindi!"
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:74
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:76
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:34
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:30
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:73
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:62
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:40
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:74
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:63
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:41
 msgid "Changes saved."
 msgstr "Değişiklikler Kaydedildi."
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:81
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:83
 msgid "Configure Backups"
 msgstr "Yedeklemeyi Yapılandır"
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:96
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:106
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:98
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:108
 #: /var/azuracast/www/templates/admin/backups/index.phtml:87
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
 msgstr "Manuel Yedeklemeyi Çalıştır"
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:137
-msgid "Backup deleted."
-msgstr "Yedekleme silindi!"
-
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:147
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:138
 msgid "Backup not found."
 msgstr "Yedekleme bulunamadı!"
+
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:151
+msgid "Backup deleted."
+msgstr "Yedekleme silindi!"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:38
 msgid "Custom Field updated."
@@ -400,32 +332,32 @@ msgstr "Özel alan silindi!"
 msgid "Sync Task Output"
 msgstr "Senkronizasyon Görev Çıktısı"
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:33
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:35
 msgid "SHOUTcast version \"%s\" is currently installed."
-msgstr "SHOUTcast \\\"%s\\ versiyonu kuruludur."
+msgstr "SHOUTcast \"%s\" versiyonu kuruludur."
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:75
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:77
 #: /var/azuracast/www/config/menus/admin.php:84
 msgid "Install SHOUTcast"
 msgstr "SHOUTcast Kurulumu"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:68
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:51
 msgid "AzuraCast Application Log"
 msgstr "AzuraCast Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:75
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:58
 msgid "Nginx Access Log"
 msgstr "Nginx Erişim Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:80
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:63
 msgid "Nginx Error Log"
 msgstr "Nginx Hata Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:85
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:68
 msgid "PHP Application Log"
 msgstr "PHP Uygulama Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:90
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:73
 msgid "Supervisord Log"
 msgstr "Supervisord Günlüğü"
 
@@ -437,16 +369,16 @@ msgstr "İzin güncellendi!"
 msgid "Permission added."
 msgstr "İzin eklendi!"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:68
 msgid "Edit Permission"
 msgstr "İzin Düzenle"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:67
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:68
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
 msgstr "İzin Ekle"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:75
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:76
 msgid "Permission deleted."
 msgstr "İzin silindi!"
 
@@ -457,85 +389,85 @@ msgstr "İzin silindi!"
 msgid "System Settings"
 msgstr "Sistem Ayarları"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:41
 msgid "Station updated."
 msgstr "Radyo güncellendi!"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:40
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:41
 msgid "Station added."
 msgstr "Radyo eklendi!"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:46
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:47
 msgid "Edit Station"
 msgstr "Radyo Düzenle"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:61
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:62
 msgid "Station deleted."
 msgstr "Radyo silindi!"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:69
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:70
 msgid "Station not found."
 msgstr "Radyo bulunamadı!"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:80
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:81
 msgid "Clone Station: %s"
 msgstr "Radyo Kopyala: %s"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:52
 msgid "User updated."
 msgstr "Kullanıcı güncellendi!"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:51
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:52
 msgid "User added."
 msgstr "Kullanıcı eklendi!"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:56
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:57
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
 msgstr "Bu e-posta adresi başka bir kullanıcı için kullanılmaktadır. Lütfen farklı bir e-posta adresi ile tekrar deneyiniz."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:64
 msgid "Edit User"
 msgstr "Kullanıcı Düzenle"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:62
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:64
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "Add User"
 msgstr "Kullanıcı Ekle"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:75
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:77
 msgid "You cannot delete your own account."
 msgstr "Kendi hesabını silemezsin!"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:80
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:82
 msgid "User deleted."
 msgstr "Kullanıcı silindi!"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:93
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:95
 msgid "User not found."
 msgstr "Kullanıcı bulunamadı!"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:98
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:100
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:96
 #: /var/azuracast/www/src/Controller/Frontend/AccountController.php:127
 msgid "Logged in successfully."
 msgstr "Giriş Yapıldı!"
 
-#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:86
-#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:106
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:102
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:122
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:104
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:93
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:114
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:133
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:154
 msgid "Record not found!"
 msgstr "Kayıt bulunamadı!"
 
-#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:91
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:98
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:107
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:138
 msgid "Changes saved successfully."
 msgstr "Değişiklikler başarıyla kaydedildi."
 
-#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:111
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:127
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:116
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:119
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:159
 msgid "Record deleted successfully."
 msgstr "Kayıt başarıyla silindi."
 
@@ -543,9 +475,9 @@ msgstr "Kayıt başarıyla silindi."
 msgid "You cannot remove yourself."
 msgstr "Kendini silemezsin!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:59
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:60
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:158
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:27
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:30
 msgid "This station does not accept requests currently."
 msgstr "Bu radyo şu anda istekleri kabul etmiyor."
 
@@ -553,39 +485,39 @@ msgstr "Bu radyo şu anda istekleri kabul etmiyor."
 msgid "Request submitted successfully."
 msgstr "İsteğiniz başarıyla gönderildi."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:72
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:73
 msgid "Station restarted."
 msgstr "Sunucu yeniden başlatıldı!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:110
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:113
 msgid "Frontend stopped."
 msgstr "Sunucu durduruldu!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:119
 msgid "Frontend started."
 msgstr "Sunucu başlatıldı!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:129
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:132
 msgid "Frontend restarted."
 msgstr "Sunucu yeniden başlatıldı!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:176
 msgid "Song skipped."
 msgstr "Şarkı atlandı!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:179
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:184
 msgid "Streamer disconnected."
 msgstr "DJ bağlantısı kesildi!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:185
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:190
 msgid "Backend stopped."
 msgstr "AutoDJ durduruldu!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:196
 msgid "Backend started."
 msgstr "AutoDJ başlatıldı!"
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:209
 msgid "Backend restarted."
 msgstr "AutoDJ yeniden başlatıldı!"
 
@@ -616,16 +548,16 @@ msgstr "API anahtarı bulunamadı!"
 msgid "Add API Key"
 msgstr "API Anahtarı Ekle"
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:204
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:205
 msgid "All Stations"
 msgstr "Tüm Radyolar"
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:234
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:79
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:119
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:169
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:235
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:84
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:124
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:174
 #: /var/azuracast/www/config/menus/station.php:102
-#: /var/azuracast/www/templates/frontend/index/index.phtml:124
+#: /var/azuracast/www/templates/frontend/index/index.phtml:120
 #: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:32
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:28
@@ -638,32 +570,32 @@ msgstr "Tüm Radyolar"
 msgid "Listeners"
 msgstr "Dinleyiciler"
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:102
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:103
 msgid "Profile saved!"
 msgstr "Profil Kaydedildi!"
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:110
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:111
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:32
 #: /var/azuracast/www/templates/stations/profile/edit.phtml:1
 #: /var/azuracast/www/templates/stations/profile/panel_header.phtml:25
 msgid "Edit Profile"
 msgstr "Profili Düzenle"
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:153
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:154
 msgid "The token you supplied is invalid. Please try again."
 msgstr "Geçersiz bilgi girildi. Lütfen tekrar deneyiniz."
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:177
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:176
 msgid "Two-factor authentication enabled."
 msgstr "İki faktörlü kimlik doğrulama etkinleştirildi."
 
-#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:211
+#: /var/azuracast/www/src/Controller/Frontend/ProfileController.php:210
 msgid "Two-factor authentication disabled."
 msgstr "İki faktörlü kimlik doğrulama devredışı bırakıldı."
 
-#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:47
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:95
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:113
+#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:39
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:94
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:112
 #: /var/azuracast/www/config/forms/media.php:22
 #: /var/azuracast/www/config/forms/song.php:37
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:9
@@ -673,249 +605,249 @@ msgstr "İki faktörlü kimlik doğrulama devredışı bırakıldı."
 msgid "Song Title"
 msgstr "Şarkı"
 
-#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:48
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:96
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:114
+#: /var/azuracast/www/src/Controller/Frontend/PublicController.php:40
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:95
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:113
 #: /var/azuracast/www/config/forms/media.php:30
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:10
 msgid "Song Artist"
 msgstr "Sanatçı"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:75
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:112
 msgid "Setup has already been completed!"
 msgstr "Kurulum zaten tamamlanmış!"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:102
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:139
 msgid "Super Administrator"
 msgstr "Süper Yönetici"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:191
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:228
 msgid "Setup is now complete!"
 msgstr "Kurulum tamamlandı!"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:191
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:228
 msgid "Continue setting up your station in the main AzuraCast app."
 msgstr "AzuraCast uygulamasında radyonuzu ayarlamaya devam edin."
 
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:79
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:80
 msgid "Automated assignment complete!"
 msgstr "Otomatik atama tamamlandı!"
 
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:82
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:83
 msgid "Automated assignment error"
 msgstr "Otomatik atama hatası!"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:230
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:150
+#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:231
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:162
 msgid "Path \"%s\" is not a folder."
-msgstr "\\\"%s\\\" bir klasör değildir."
+msgstr "\"%s\" bir klasör değildir."
 
-#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:239
+#: /var/azuracast/www/src/Controller/Stations/Files/BatchController.php:240
 msgid "Could not move \"%s\" to \"%s\""
-msgstr "\\\"%s\\\" &#61;&#62; \\\"%s\\ taşınamadı."
+msgstr "\"%s\" &#61;&#62; \"%s\" taşınamadı."
 
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:63
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:66
 msgid "Media not found."
 msgstr "Müzik dosyası bulunamadı!"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:142
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:147
 msgid "Media updated."
 msgstr "Müzik dosyası güncellendi!"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:151
+#: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:157
 msgid "Edit Media"
 msgstr "Müzik Dosyası Düzenle"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:125
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:137
 msgid "File renamed!"
 msgstr "Dosya yeniden adlandırıldı!"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:135
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:147
 msgid "Rename File/Directory"
 msgstr "Dosya/Klasör Yeniden Adlandır"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:207
+#: /var/azuracast/www/src/Controller/Stations/Files/FilesController.php:219
 msgid "This station is out of available storage space."
 msgstr "Radyo depolama alanı doldu."
 
-#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:122
-#: /var/azuracast/www/templates/stations/files/index.phtml:179
+#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:128
+#: /var/azuracast/www/templates/stations/files/index.phtml:184
 msgid "Directory"
 msgstr "Klasör"
 
-#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:126
+#: /var/azuracast/www/src/Controller/Stations/Files/ListController.php:132
 msgid "File Not Processed"
 msgstr "Dosya İşlenemedi!"
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:27
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:39
-#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:23
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:28
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:42
+#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:24
 msgid "This feature is not currently supported on this station."
 msgstr "Bu radyoda bu özellik şu an desteklenmiyor."
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:48
 msgid "Edit Mount Point"
 msgstr "Bağlantı Noktası Düzenle"
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:47
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:48
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
 msgstr "Bağlantı Noktası Ekle"
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:55
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:60
 msgid "Mount Point deleted."
 msgstr "Bağlantı noktası silindi!"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:237
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:168
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:244
 msgid "Playlist not found."
 msgstr "Çalma listesi bulunamadı!"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:173
 msgid "This playlist is not a sequential playlist."
-msgstr "Bu çalma listesi \\\"SIRALI\\\" bir çalma listesi değildir."
+msgstr "Bu çalma listesi \"SIRALI\" bir çalma listesi değildir."
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:221
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:228
 msgid "Format not found."
 msgstr "Biçim bulunamadı!"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:247
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:254
 msgid "Playlist enabled."
 msgstr "Çalma Listesi Etkinleştirildi!"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:248
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:255
 msgid "Playlist disabled."
 msgstr "Çalma Listesi Devredışı Bırakıldı!"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:269
 msgid "Playlist updated."
 msgstr "Çalma listesi güncellendi!"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:262
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:269
 msgid "Playlist added."
 msgstr "Çalma listesi eklendi!"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Edit Playlist"
 msgstr "Çalma Listesi Düzenle"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:268
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 msgid "Add Playlist"
 msgstr "Çalma Listesi Ekle"
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:288
 msgid "Playlist deleted."
 msgstr "Çalma listesi silindi!"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:40
 msgid "Remote Relay updated."
 msgstr "Yönlendirme güncellendi!"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:39
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:40
 msgid "Remote Relay added."
 msgstr "Yönlendirme eklendi!"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:48
 msgid "Edit Remote Relay"
 msgstr "Yönlendirme Düzenle"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:46
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:48
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
 msgstr "Yönlendirme Ekle"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:60
 msgid "Remote Relay deleted."
 msgstr "Yönlendirme silindi!"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:64
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:70
 msgid "This record cannot be edited."
 msgstr "Bu kayıt düzenlenemez!"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:57
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:62
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
 msgstr "Günlük Dinleyiciler"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:93
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:98
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:42
 msgid "Listeners by Day of Week"
 msgstr "Haftanın Günlerine Göre Dinleyiciler"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:106
 #: /var/azuracast/www/config/forms/playlist.php:299
 msgid "Monday"
 msgstr "Pazartesi"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:102
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:107
 #: /var/azuracast/www/config/forms/playlist.php:300
 msgid "Tuesday"
 msgstr "Salı"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:103
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:108
 #: /var/azuracast/www/config/forms/playlist.php:301
 msgid "Wednesday"
 msgstr "Çarşamba"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:104
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:109
 #: /var/azuracast/www/config/forms/playlist.php:302
 msgid "Thursday"
 msgstr "Perşembe"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:105
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:110
 #: /var/azuracast/www/config/forms/playlist.php:303
 msgid "Friday"
 msgstr "Cuma"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:106
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:111
 #: /var/azuracast/www/config/forms/playlist.php:304
 msgid "Saturday"
 msgstr "Cumartesi"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:107
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:112
 #: /var/azuracast/www/config/forms/playlist.php:305
 msgid "Sunday"
 msgstr "Pazar"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:153
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:158
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
 msgstr "Saatlik Dinleyiciler"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:174
+#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:176
 msgid "SoundExchange Report"
 msgstr "SoundExchange Raporu"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:53
 msgid "Streamers enabled!"
 msgstr "DJ Etkinleştirildi!"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:53
 msgid "You can now set up streamer (DJ) accounts."
 msgstr "DJ hesaplarını şimdi ekleyebilirsiniz."
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:80
 msgid "Streamer updated."
 msgstr "DJ güncellendi!"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:79
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:80
 msgid "Streamer added."
 msgstr "DJ eklendi!"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:88
 msgid "Edit Streamer"
 msgstr "DJ Düzenle"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:86
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:88
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
 msgstr "DJ Ekle"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:94
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:100
 msgid "Streamer deleted."
 msgstr "DJ silindi!"
 
@@ -937,110 +869,110 @@ msgstr "Web kancası güncellendi!"
 msgid "Edit Web Hook"
 msgstr "Web Kancasını Düzenle"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:103
 msgid "Web hook enabled."
 msgstr "Web kancası etkinleştirildi!"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:103
 msgid "Web Hook disabled."
 msgstr "Web kancası devredışı bırakıldı!"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:116
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
 msgid "Web Hook Test Output"
 msgstr "Web Kancası Test Sonucu"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:138
 msgid "Web Hook deleted."
 msgstr "Web kancası silindi!"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:84
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:90
 msgid "Liquidsoap Log"
 msgstr "Liquidsoap Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:89
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:95
 msgid "Liquidsoap Configuration"
 msgstr "Liquidsoap Ayar Dosyası"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:100
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:105
 msgid "Icecast Access Log"
 msgstr "Icecast Erişim Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:105
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:110
 msgid "Icecast Error Log"
 msgstr "Icecast Hata Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:110
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:115
 msgid "Icecast Configuration"
 msgstr "Icecast Ayar Dosyası"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:118
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:123
 msgid "SHOUTcast Log"
 msgstr "SHOUTcast Günlüğü"
 
-#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:123
+#: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:128
 msgid "SHOUTcast Configuration"
 msgstr "SHOUTcast Ayar Dosyası"
 
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:22
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:25
 msgid "Search engine crawlers are not permitted to use this feature."
 msgstr "Arama motoru tarayıcılarının bu özelliği kullanmasına izin verilmemektedir."
 
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:38
 msgid "The song ID you specified could not be found in the station."
 msgstr "Belirttiğiniz şarkı kimliği radyoda bulunamadı."
 
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:42
 msgid "The song ID you specified cannot be requested for this station."
 msgstr "Belirttiğiniz şarkı kimliği bu radyo için talep edilemez."
 
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:65
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:68
 msgid "You have submitted a request too recently! Please wait before submitting another one."
 msgstr "Çok yakın zamanda bir istek gönderdiniz! Lütfen başka bir tane göndermeden önce bekleyin."
 
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:106
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:109
 msgid "Duplicate request: this song was already requested and will play soon."
 msgstr "Yinelenen İstek: Bu şarkı zaten talep edildi ve yakında çalınacaktır."
 
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:147
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:150
 msgid "This song was already played too recently. Wait a while before requesting it again."
 msgstr "Bu şarkı zaten çok yeni çalındı. Tekrar talep etmeden önce biraz bekleyin."
 
-#: /var/azuracast/www/src/Form/Field/File.php:11
+#: /var/azuracast/www/src/Form/Field/File.php:10
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
 #: /var/azuracast/www/config/forms/media.php:57
 #: /var/azuracast/www/config/forms/playlist.php:121
-#: /var/azuracast/www/templates/stations/files/index.phtml:54
+#: /var/azuracast/www/templates/stations/files/index.phtml:59
 msgid "Select File"
 msgstr "Dosya Seç"
 
 #: /var/azuracast/www/src/Form/StationForm.php:82
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
-msgstr "SHOUTcast v2 kurmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın ve sonrasında sayfayı yenileyin."
+msgstr "SHOUTcast v2 kurmak için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın ve sonrasında sayfayı yenileyin."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:53
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:54
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:32
 msgid "This station's time zone is currently %s."
 msgstr "Bu radyonun saat dilimi %s olarak ayarlanmıştır."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:55
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:56
 msgid "The current time in the station's time zone is %s."
 msgstr "%s radyonun saat dilimine göre geçerli zamanıdır."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:73
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:75
 msgid "Existing playlist imported."
 msgstr "Çalma listesi içe aktarıldı."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:73
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:75
 msgid "%d song(s) were imported into the playlist."
 msgstr "%d şarkı(lar) çalma listesine aktarıldı."
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:78
-#: /var/azuracast/www/src/Http/ErrorHandler.php:85
+#: /var/azuracast/www/src/Http/ErrorHandler.php:86
+#: /var/azuracast/www/src/Http/ErrorHandler.php:93
 msgid "You must be logged in to access this page."
 msgstr "Bu sayfayı görüntülemek için giriş yapmalısınız."
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:98
-#: /var/azuracast/www/src/Http/ErrorHandler.php:105
+#: /var/azuracast/www/src/Http/ErrorHandler.php:106
+#: /var/azuracast/www/src/Http/ErrorHandler.php:113
 msgid "You do not have permission to access this portion of the site."
 msgstr "Sitenin bu bölümüne erişmek için yetkiniz bulunmamaktadır."
 
@@ -1050,116 +982,116 @@ msgstr "<code>docker-compose.yml</code> dosyanız güncel değildir!"
 
 #: /var/azuracast/www/src/Notification/Manager.php:73
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
-msgstr "En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz."
+msgstr "En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz."
 
-#: /var/azuracast/www/src/Notification/Manager.php:99
+#: /var/azuracast/www/src/Notification/Manager.php:100
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
-msgstr "Güncelleme talimatları konusunda detaylı bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
+msgstr "Güncelleme talimatları konusunda detaylı bilgi için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın."
 
-#: /var/azuracast/www/src/Notification/Manager.php:103
+#: /var/azuracast/www/src/Notification/Manager.php:105
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
-msgstr "AzuraCast <a href=\\\"%s\\\" target=\\\"_blank\\\">%s sürümü</a> şu an kullanılabilir."
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">%s sürümü</a> şu an kullanılabilir."
 
-#: /var/azuracast/www/src/Notification/Manager.php:104
+#: /var/azuracast/www/src/Notification/Manager.php:107
 msgid "You are currently running version %s. Updating is highly recommended."
 msgstr "Şu anda AzuraCast %s sürümüne sahipsiniz. Güncelleme şiddetle tavsiye edilir."
 
-#: /var/azuracast/www/src/Notification/Manager.php:109
+#: /var/azuracast/www/src/Notification/Manager.php:113
 msgid "New AzuraCast Release Version Available"
 msgstr "AzuraCast Yeni Sürümü Yayınlandı!"
 
-#: /var/azuracast/www/src/Notification/Manager.php:119
+#: /var/azuracast/www/src/Notification/Manager.php:123
 msgid "The following improvements have been made since your last update:"
 msgstr "Son güncellemenizden bu yana aşağıdaki iyileştirmeler yapıldı:"
 
-#: /var/azuracast/www/src/Notification/Manager.php:122
+#: /var/azuracast/www/src/Notification/Manager.php:127
 msgid "Your installation is currently %d update(s) behind the latest version."
 msgstr "AzuraCast şu anda en son sürümün %d güncellemesini içerir."
 
-#: /var/azuracast/www/src/Notification/Manager.php:123
+#: /var/azuracast/www/src/Notification/Manager.php:129
 msgid "You should update to take advantage of bug and security fixes."
 msgstr "Hata ve güvenlik düzeltmelerinden yararlanmak için güncelleme yapmalısınız."
 
-#: /var/azuracast/www/src/Notification/Manager.php:129
+#: /var/azuracast/www/src/Notification/Manager.php:135
 msgid "New AzuraCast Updates Available"
 msgstr "AzuraCast Yeni Güncellemesi Yayınlandı!"
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:195
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:180
 msgid "%s is not recognized as a service."
 msgstr "%s bir servis olarak tanınmıyor."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:196
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:181
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr "Henüz Supervisor\\'a kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
+msgstr "Supervisor'a henüz kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:204
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:190
 msgid "%s cannot start"
 msgstr "%s başlatılamadı!"
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:205
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:191
 msgid "It is already running."
 msgstr "Zaten Çalışıyor."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:213
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:200
 msgid "%s cannot stop"
 msgstr "%s durdurulamadı!"
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:214
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:201
 msgid "It is not running."
 msgstr "Zaten Çalışmıyor."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:222
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:209
 msgid "%s encountered an error"
 msgstr "%s bir hata ile karşılaştı."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:231
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:218
 msgid "Check the log for details."
 msgstr "Detaylar için günlükleri kontrol edin."
 
-#: /var/azuracast/www/src/Radio/Adapters.php:138
-#: /var/azuracast/www/src/Radio/Adapters.php:142
-#: /var/azuracast/www/src/Radio/Adapters.php:173
+#: /var/azuracast/www/src/Radio/Adapters.php:71
+#: /var/azuracast/www/src/Radio/Adapters.php:75
+#: /var/azuracast/www/src/Radio/Adapters.php:130
 msgid "Use <b>%s</b> on this server"
 msgstr "<b>%s</b> kullan"
 
-#: /var/azuracast/www/src/Radio/Adapters.php:146
+#: /var/azuracast/www/src/Radio/Adapters.php:79
 msgid "Connect to a <b>remote radio server</b>"
 msgstr "<b>Yönlendirme</b> kullan"
 
-#: /var/azuracast/www/src/Radio/Adapters.php:177
+#: /var/azuracast/www/src/Radio/Adapters.php:134
 msgid "<b>Do not use</b> an AutoDJ service"
 msgstr "AutoDJ <b>kullanmayın</b>"
 
-#: /var/azuracast/www/src/Sync/Runner.php:167
-#: /var/azuracast/www/src/Sync/Runner.php:170
+#: /var/azuracast/www/src/Sync/Runner.php:183
+#: /var/azuracast/www/src/Sync/Runner.php:186
 msgid "Now Playing Data"
 msgstr "Şimdi Çalan Şarkı Bilgisi"
 
-#: /var/azuracast/www/src/Sync/Runner.php:174
+#: /var/azuracast/www/src/Sync/Runner.php:190
 msgid "1-Minute Sync"
 msgstr "1-Dakika Senkronizasyonu"
 
-#: /var/azuracast/www/src/Sync/Runner.php:177
+#: /var/azuracast/www/src/Sync/Runner.php:193
 msgid "Song Requests Queue"
 msgstr "Şarkı İstek Kuyruğu"
 
-#: /var/azuracast/www/src/Sync/Runner.php:181
+#: /var/azuracast/www/src/Sync/Runner.php:197
 msgid "5-Minute Sync"
 msgstr "5-Dakika Senkronizasyonu"
 
-#: /var/azuracast/www/src/Sync/Runner.php:184
+#: /var/azuracast/www/src/Sync/Runner.php:200
 msgid "Check Media Folders"
 msgstr "Müzik Klasörlerini Kontrol Et"
 
-#: /var/azuracast/www/src/Sync/Runner.php:188
+#: /var/azuracast/www/src/Sync/Runner.php:204
 msgid "1-Hour Sync"
 msgstr "1-Saat Senkronizasyonu"
 
-#: /var/azuracast/www/src/Sync/Runner.php:191
+#: /var/azuracast/www/src/Sync/Runner.php:207
 msgid "Analytics/Statistics"
 msgstr "İstatistik"
 
-#: /var/azuracast/www/src/Sync/Runner.php:192
+#: /var/azuracast/www/src/Sync/Runner.php:208
 msgid "Cleanup"
 msgstr "Temizleme"
 
@@ -1170,6 +1102,46 @@ msgstr "%s portu başka bir radyo tarafından kullanılıyor."
 #: /var/azuracast/www/src/Validator/Constraints/StreamerPassword.php:15
 msgid "Password cannot contain the following characters: %s"
 msgstr "Şifre şu karakterleri içeremez: %s"
+
+#: /var/azuracast/www/config/cli.php:65
+msgid "Generate the translation locale file."
+msgstr "Dil çevirisi yerel dosyasını oluşturun."
+
+#: /var/azuracast/www/config/cli.php:70
+msgid "Convert translated locale files into PHP arrays."
+msgstr "Çevrilen yerel dosyaları PHP dizilerine dönüştürün."
+
+#: /var/azuracast/www/config/cli.php:76
+msgid "Migrate existing configuration to new INI format if any exists."
+msgstr "Varsa mevcut ayarları yeni bir INI formatına taşıyın."
+
+#: /var/azuracast/www/config/cli.php:81
+msgid "Initial setup of InfluxDB."
+msgstr "InfluxDB ilk kurulumu"
+
+#: /var/azuracast/www/config/cli.php:86
+msgid "Install fixtures for demo / local development."
+msgstr "Demo / yerel geliştirme için fikstürleri kurun."
+
+#: /var/azuracast/www/config/cli.php:91
+msgid "Run all general AzuraCast setup steps."
+msgstr "Tüm genel AzuraCast kurulum adımlarını çalıştırın."
+
+#: /var/azuracast/www/config/cli.php:102
+msgid "Run one or more scheduled synchronization tasks."
+msgstr "Bir veya daha fazla zamanlanmış senkronizasyon görevi çalıştırın."
+
+#: /var/azuracast/www/config/cli.php:107
+msgid "Process the message queue."
+msgstr "Mesaj kuyruğunu işleyin."
+
+#: /var/azuracast/www/config/cli.php:138
+msgid "List all settings in the AzuraCast settings database."
+msgstr "AzuraCast ayarları veritabanında tüm ayarları listeleyin."
+
+#: /var/azuracast/www/config/cli.php:148
+msgid "Back up the AzuraCast database and statistics (and optionally media)."
+msgstr "AzuraCast veritabanını ve istatistiklerini (ve isteğe bağlı olarak medyayı) yedekleyin."
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
@@ -1195,7 +1167,7 @@ msgstr "İleride başvurmak üzere bu API anahtarının kullanım durumunu açı
 #: /var/azuracast/www/config/forms/remote.php:184
 #: /var/azuracast/www/config/forms/rename.php:18
 #: /var/azuracast/www/config/forms/role.php:46
-#: /var/azuracast/www/config/forms/settings.php:184
+#: /var/azuracast/www/config/forms/settings.php:200
 #: /var/azuracast/www/config/forms/song.php:53
 #: /var/azuracast/www/config/forms/station.php:492
 #: /var/azuracast/www/config/forms/streamer.php:63
@@ -1214,7 +1186,7 @@ msgstr "Otomatik Atamayı Etkinleştir"
 
 #: /var/azuracast/www/config/forms/automation.php:11
 msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
-msgstr "Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek \\\"Etkin\\\" olarak ayarlanmışsa ve en az bir parça listesi \\\"Otomatik Atamaya Dahil Et\\\" olarak ayarlanmışsa çalışır."
+msgstr "Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek \"Etkin\" olarak ayarlanmışsa ve en az bir parça listesi \"Otomatik Atamaya Dahil Et\" olarak ayarlanmışsa çalışır."
 
 #: /var/azuracast/www/config/forms/automation.php:14
 #: /var/azuracast/www/config/forms/station.php:108
@@ -1283,8 +1255,9 @@ msgstr "AzuraCast her gece belirtilen saatte otomatik olarak yedekleme yapmasın
 #: /var/azuracast/www/config/forms/settings.php:39
 #: /var/azuracast/www/config/forms/settings.php:51
 #: /var/azuracast/www/config/forms/settings.php:81
-#: /var/azuracast/www/config/forms/settings.php:100
-#: /var/azuracast/www/config/forms/settings.php:168
+#: /var/azuracast/www/config/forms/settings.php:102
+#: /var/azuracast/www/config/forms/settings.php:114
+#: /var/azuracast/www/config/forms/settings.php:184
 #: /var/azuracast/www/config/forms/station.php:84
 #: /var/azuracast/www/config/forms/station.php:261
 #: /var/azuracast/www/config/forms/station.php:273
@@ -1319,8 +1292,9 @@ msgstr "Evet"
 #: /var/azuracast/www/config/forms/settings.php:40
 #: /var/azuracast/www/config/forms/settings.php:52
 #: /var/azuracast/www/config/forms/settings.php:82
-#: /var/azuracast/www/config/forms/settings.php:101
-#: /var/azuracast/www/config/forms/settings.php:169
+#: /var/azuracast/www/config/forms/settings.php:103
+#: /var/azuracast/www/config/forms/settings.php:115
+#: /var/azuracast/www/config/forms/settings.php:185
 #: /var/azuracast/www/config/forms/station.php:85
 #: /var/azuracast/www/config/forms/station.php:262
 #: /var/azuracast/www/config/forms/station.php:274
@@ -1479,7 +1453,7 @@ msgstr "Önemli Notlar"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr "<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">SHOUTcast Radio Manager</a> sitesinden \\\"linux x64\\\" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>"
+msgstr "<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> sitesinden \"linux x64\" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
@@ -1514,6 +1488,7 @@ msgstr "E-Posta Adresi"
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:25
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:47
+#: /var/azuracast/www/templates/stations/files/index.phtml:255
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:81
 msgid "Password"
 msgstr "Şifre"
@@ -1561,7 +1536,7 @@ msgstr "Özelleştirme"
 
 #: /var/azuracast/www/config/forms/media.php:75
 msgid "Administrators can customize the fields that appear here in the <a href=\"%s\">administration page</a>."
-msgstr "Yöneticiler burada görünen alanları <a href=\\\"%s\\\">yönetici sayfası</a>ndan özelleştirebilir."
+msgstr "Yöneticiler burada görünen alanları <a href=\"%s\">yönetici sayfası</a>ndan özelleştirebilir."
 
 #: /var/azuracast/www/config/forms/media.php:82
 msgid "Control Song Playback"
@@ -1601,7 +1576,7 @@ msgstr "Custom Cues: Giriş Noktası (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:127
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
-msgstr "AutoDJ\\'in şarkıyı çalmaya başlaması için gereken zamanı belirtin."
+msgstr "AutoDJ'in şarkıyı çalmaya başlaması için gereken zamanı belirtin."
 
 #: /var/azuracast/www/config/forms/media.php:135
 msgid "Custom Cues: Cue-Out Point (seconds)"
@@ -1609,7 +1584,7 @@ msgstr "Custom Cues: Çıkış Noktası (saniye)"
 
 #: /var/azuracast/www/config/forms/media.php:136
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
-msgstr "AutoDJ\\'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin."
+msgstr "AutoDJ'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:15
 msgid "Mount Point URL"
@@ -1657,12 +1632,12 @@ msgstr "Yönlendirilmek üzere uzak sunucu URLsini belirtin."
 #: /var/azuracast/www/config/forms/mount/generic.php:68
 #: /var/azuracast/www/config/forms/remote.php:165
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr "\\\"Yellow Pages\\\" Dizininde Yayınla"
+msgstr "\"Yellow Pages\" Dizininde Yayınla"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr "Rayoyu \\\"Yellow Pages\\\" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz."
+msgstr "Radyoyu \"Yellow Pages\" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
@@ -1704,7 +1679,7 @@ msgstr "Özelleştirilmiş Sunucu Ayarları"
 
 #: /var/azuracast/www/config/forms/mount/icecast.php:29
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
-msgstr "Özel bağlantı noktası ayarlarını JSON için { key: \\'value\\' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz."
+msgstr "Özel bağlantı noktası ayarlarını JSON için { key: 'value' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz."
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:11
 msgid "Stream path cannot include reserved keywords: %s"
@@ -1716,11 +1691,11 @@ msgstr "YP Dizini Yetkilendirme Kodu"
 
 #: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
-msgstr "Radyoyu \\\"Yellow Pages\\\" dizininde görüntülenmesini istiyorsanız <a href=\\\"%s\\\" target=\\\"_blank\\\">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir."
+msgstr "Radyoyu \"Yellow Pages\" dizininde görüntülenmesini istiyorsanız <a href=\"%s\" target=\"_blank\">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir."
 
 #: /var/azuracast/www/config/forms/playlist.php:11
 msgid "Basic Information"
-msgstr "Basit Ayarlar"
+msgstr "Temel Bilgiler"
 
 #: /var/azuracast/www/config/forms/playlist.php:12
 #: /var/azuracast/www/config/forms/playlist.php:71
@@ -1741,7 +1716,7 @@ msgstr "Çalma Listesini Etkinleştir"
 
 #: /var/azuracast/www/config/forms/playlist.php:28
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."
-msgstr "\\\"HAYIR\\\" olarak ayarlanırsa AutoDJ müzik çalamaz."
+msgstr "\"HAYIR\" olarak ayarlanırsa AutoDJ müzik çalamaz."
 
 #: /var/azuracast/www/config/forms/playlist.php:39
 msgid "Playlist Name"
@@ -1814,7 +1789,7 @@ msgstr "Radyodaki çalan müzikleri kullanıcıların erişimine açmak için bu
 
 #: /var/azuracast/www/config/forms/playlist.php:141
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
-msgstr "Meta Verilerini Gizle (\\\"Jingle Mode\\\")"
+msgstr "Meta Verilerini Gizle (\"Jingle Mode\")"
 
 #: /var/azuracast/www/config/forms/playlist.php:143
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
@@ -1894,7 +1869,7 @@ msgstr "Gelişmiş"
 
 #: /var/azuracast/www/config/forms/playlist.php:213
 msgid "Manually define how this playlist is used in Liquidsoap configuration. <a href=\"%s\" target=\"_blank\">Learn about Advanced Playlists</a>"
-msgstr "Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
+msgstr "Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın."
 
 #: /var/azuracast/www/config/forms/playlist.php:224
 msgid "AutoDJ Scheduling Options"
@@ -1986,13 +1961,13 @@ msgstr "Bu çalma listesinin saatin hangi dakikasında oynatılmasını istiyors
 
 #: /var/azuracast/www/config/forms/profile.php:3
 msgid "Use Browser Default"
-msgstr "Varsayılan"
+msgstr "Tarayıcı Dilini Kullan"
 
 #: /var/azuracast/www/config/forms/profile.php:16
 #: /var/azuracast/www/config/forms/station.php:37
 #: /var/azuracast/www/config/forms/user.php:10
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
-#: /var/azuracast/www/templates/stations/files/index.phtml:113
+#: /var/azuracast/www/templates/stations/files/index.phtml:118
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:25
 msgid "Name"
 msgstr "İsim"
@@ -2031,15 +2006,15 @@ msgstr "Dil"
 msgid "Site Theme"
 msgstr "Site Teması"
 
-#: /var/azuracast/www/config/forms/profile_two_factor.php:10
+#: /var/azuracast/www/config/forms/profile_two_factor.php:8
 msgid "Code from Authenticator App"
 msgstr "Authenticator Uygulaması Kodu"
 
-#: /var/azuracast/www/config/forms/profile_two_factor.php:11
+#: /var/azuracast/www/config/forms/profile_two_factor.php:9
 msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
 msgstr "Doğru çalıştığını doğrulamak için doğrulayıcı uygulamanız tarafından sağlanan geçerli kodu girin."
 
-#: /var/azuracast/www/config/forms/profile_two_factor.php:21
+#: /var/azuracast/www/config/forms/profile_two_factor.php:19
 msgid "Verify Authenticator"
 msgstr "Authenticator Kodunu Doğrula"
 
@@ -2162,7 +2137,7 @@ msgstr "Tarayıcı URLsini Tercih Et (Varsa)"
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr "Bu ayar \\\"Evet\\\" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için \\\"Hayır\\\" olarak ayarlayın."
+msgstr "Bu ayar \"Evet\" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için \"Hayır\" olarak ayarlayın."
 
 #: /var/azuracast/www/config/forms/settings.php:49
 msgid "Use Web Proxy for Radio"
@@ -2213,7 +2188,7 @@ msgstr "Süresiz"
 
 #: /var/azuracast/www/config/forms/settings.php:79
 msgid "Use WebSockets for Now Playing Updates"
-msgstr "Çalan Şarkı Bilgisi İçin WebSockets Kullanın"
+msgstr "Çalan Şarkı Bilgisi İçin WebSocket Kullanın"
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
@@ -2223,89 +2198,97 @@ msgstr "Genel oynatıcılarda canlı güncellemeler almak için daha yeni ve dah
 msgid "Security Controls"
 msgstr "Güvenlik Kontrolleri"
 
-#: /var/azuracast/www/config/forms/settings.php:98
+#: /var/azuracast/www/config/forms/settings.php:100
 msgid "Always Use HTTPS"
 msgstr "Her Zaman HTTPS Kullan"
 
-#: /var/azuracast/www/config/forms/settings.php:99
+#: /var/azuracast/www/config/forms/settings.php:101
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr "\\\"Evet\\\" olarak ayarlandığında her zaman güvenli bağlantı \\\"https://\\\" kullanılır."
+msgstr "\"Evet\" olarak ayarlandığında her zaman güvenli bağlantı \"https://\" kullanılır."
 
-#: /var/azuracast/www/config/forms/settings.php:109
+#: /var/azuracast/www/config/forms/settings.php:112
+msgid "Enable Built-in FTP Server"
+msgstr "FTP Sunucusunu Etkinleştir"
+
+#: /var/azuracast/www/config/forms/settings.php:113
+msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
+msgstr "Kullanıcıların müzik dosyalarını yönettikleri herhangi bir radyoya AzuraCast kimlik bilgilerini kullanarak FTP yoluyla yüklemesine izin vermek için etkinleştirmelisiniz."
+
+#: /var/azuracast/www/config/forms/settings.php:124
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr "\\\"Access-Control-Allow-Origin\\\" API Başlığı"
+msgstr "\"Access-Control-Allow-Origin\" API Başlığı"
 
-#: /var/azuracast/www/config/forms/settings.php:111
+#: /var/azuracast/www/config/forms/settings.php:126
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr "Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">burayı</a> tıklayın."
+msgstr "Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href=\"%s\" target=\"_blank\">burayı</a> tıklayın."
 
-#: /var/azuracast/www/config/forms/settings.php:120
+#: /var/azuracast/www/config/forms/settings.php:136
 msgid "Privacy Controls"
 msgstr "Gizlilik Kontrolleri"
 
-#: /var/azuracast/www/config/forms/settings.php:121
+#: /var/azuracast/www/config/forms/settings.php:137
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
-msgstr "AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast\\'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin."
+msgstr "AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin."
 
-#: /var/azuracast/www/config/forms/settings.php:128
+#: /var/azuracast/www/config/forms/settings.php:144
 msgid "Listener Analytics Collection"
 msgstr "Dinleyici İstatistik Koleksiyonu"
 
-#: /var/azuracast/www/config/forms/settings.php:129
+#: /var/azuracast/www/config/forms/settings.php:145
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr "Dinleyici istatistik koleksiyonu sistemdeki radyo raporlarını göstermek için kullanılır. IP tabanlı dinleyici istatistikleri canlı dinleyici izlemesini görüntülemek için kullanılır ve telif hakkı raporları için gerekli olabilir."
 
-#: /var/azuracast/www/config/forms/settings.php:132
+#: /var/azuracast/www/config/forms/settings.php:148
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
 msgstr "<b>TAM:</b> Toplu dinleyici istatistiklerini ve IP tabanlı dinleyici istatistiklerini toplayın"
 
-#: /var/azuracast/www/config/forms/settings.php:133
+#: /var/azuracast/www/config/forms/settings.php:149
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
 msgstr "<b>SINIRLI:</b> Yalnızca toplu dinleyici istatistiklerini topla"
 
-#: /var/azuracast/www/config/forms/settings.php:134
+#: /var/azuracast/www/config/forms/settings.php:150
 msgid "<b>None:</b> Do not collect any listener analytics"
 msgstr "<b>KAPALI:</b> Herhangi bir dinleyici istatistiği toplamayın"
 
-#: /var/azuracast/www/config/forms/settings.php:143
+#: /var/azuracast/www/config/forms/settings.php:159
 msgid "AzuraCast Installation Telemetry"
 msgstr "AzuraCast Kurulumu Desteği"
 
-#: /var/azuracast/www/config/forms/settings.php:144
+#: /var/azuracast/www/config/forms/settings.php:160
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr "Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\\\"%s\\\" target=\\\"_blank\\\">gizlilik politikası</a>nı inceleyebilirsiniz."
+msgstr "Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\"%s\" target=\"_blank\">Gizlilik Politikası</a>nı inceleyebilirsiniz."
 
-#: /var/azuracast/www/config/forms/settings.php:151
+#: /var/azuracast/www/config/forms/settings.php:167
 msgid "Check for Updates and Announcements"
 msgstr "Güncellemeleri ve Duyuruları Kontrol Et"
 
-#: /var/azuracast/www/config/forms/settings.php:152
+#: /var/azuracast/www/config/forms/settings.php:168
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
 msgstr "Güncellenen yazılım sürümlerini ve önemli duyuruları kontrol etmek için AzuraCast kurulumunuz hakkında en az ayrıntıyı AzuraCast merkezi sunucuya gönderin."
 
-#: /var/azuracast/www/config/forms/settings.php:155
+#: /var/azuracast/www/config/forms/settings.php:171
 msgid "<b>None:</b> Do not check for updates or announcements."
 msgstr "<b>KAPALI:</b> Güncellemeleri veya duyuruları kontrol etmeyin."
 
-#: /var/azuracast/www/config/forms/settings.php:156
+#: /var/azuracast/www/config/forms/settings.php:172
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
 msgstr "<b>YALNIZCA SÜRÜM:</b> Kritik duyuruları ve yalnızca yeni sürümleri kontrol edin."
 
-#: /var/azuracast/www/config/forms/settings.php:157
+#: /var/azuracast/www/config/forms/settings.php:173
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
 msgstr "<b>TÜM GÜNCELLEMELER:</b> Tüm duyuruları ve küçük güncellemeleri kontrol edin."
 
-#: /var/azuracast/www/config/forms/settings.php:166
+#: /var/azuracast/www/config/forms/settings.php:182
 msgid "Automatically Send Error Reports to AzuraCast"
 msgstr "Hata Raporlarını AzuraCast Sunucularına Otomatik Gönder"
 
-#: /var/azuracast/www/config/forms/settings.php:167
+#: /var/azuracast/www/config/forms/settings.php:183
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
 msgstr "Web uygulaması bir hatayla karşılaşırsa daha hızlı tanım ve çözüm için otomatik olarak sorunun anonim bir raporunu AzuraCast ekibine göndermeyi seçebilirsiniz."
 
-#: /var/azuracast/www/config/forms/settings.php:167
+#: /var/azuracast/www/config/forms/settings.php:183
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
-msgstr "Hata raporları <a href=\\\"%s\\\" target=\\\"_blank\\\">%s</a> tarafından desteklenmektedir."
+msgstr "Hata raporları <a href=\"%s\" target=\"_blank\">%s</a> tarafından desteklenmektedir."
 
 #: /var/azuracast/www/config/forms/song.php:8
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:12
@@ -2337,7 +2320,7 @@ msgstr "AutoDJ"
 #: /var/azuracast/www/config/forms/station.php:25
 #: /var/azuracast/www/templates/admin/index/index.phtml:18
 #: /var/azuracast/www/templates/admin/sidebar.phtml:3
-#: /var/azuracast/www/templates/frontend/index/index.phtml:59
+#: /var/azuracast/www/templates/frontend/index/index.phtml:55
 msgid "Administration"
 msgstr "Yönetim"
 
@@ -2380,7 +2363,7 @@ msgstr "Sabit URL"
 
 #: /var/azuracast/www/config/forms/station.php:96
 msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
-msgstr "İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL-dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın."
+msgstr "İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın."
 
 #: /var/azuracast/www/config/forms/station.php:104
 msgid "Number of Recently Played Songs"
@@ -2388,7 +2371,7 @@ msgstr "En Son Çalınan Şarkı Sayısı"
 
 #: /var/azuracast/www/config/forms/station.php:106
 msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
-msgstr "Bu istasyon için \\\"Şarkı Geçmişi\\\" bölümünde ve tüm ortak APIlerde görünecek şarkı sayısını belirtin."
+msgstr "Bu istasyon için \"Şarkı Geçmişi\" bölümünde ve tüm ortak API'lerde görünecek şarkı sayısını belirtin."
 
 #: /var/azuracast/www/config/forms/station.php:128
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:16
@@ -2435,7 +2418,7 @@ msgstr "Özel Yapılandırma"
 
 #: /var/azuracast/www/config/forms/station.php:195
 msgid "This code will be included in the frontend configuration. You can use either JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;."
-msgstr "Bu kod sunucu yapılandırmasına dahil edilecektir. JSON için {\\\"new_key\\\": \\\"new_value\\\"} veya XML için &lt;new_key&gt;new_value&lt;/new_key&gt; biçimini kullanabilirsiniz."
+msgstr "Bu kod sunucu yapılandırmasına dahil edilecektir. JSON için {\"new_key\": \"new_value\"} veya XML için &lt;new_key&gt;new_value&lt;/new_key&gt; biçimini kullanabilirsiniz."
 
 #: /var/azuracast/www/config/forms/station.php:209
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:16
@@ -2480,7 +2463,7 @@ msgstr "Normalleştirme ve Sıkıştırma Uygula"
 
 #: /var/azuracast/www/config/forms/station.php:260
 msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
-msgstr "Daha düzenli ve \\\"tam\\\" bir ses üreten radyonuzun sesini sıkıştırın ve normalleştirin."
+msgstr "Daha düzenli ve \"tam\" bir ses üreten radyonuzun sesini sıkıştırın ve normalleştirin."
 
 #: /var/azuracast/www/config/forms/station.php:271
 msgid "Allow Song Requests"
@@ -2568,7 +2551,7 @@ msgstr "Manuel AutoDJ Modu"
 
 #: /var/azuracast/www/config/forms/station.php:396
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
-msgstr "Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. \\\"Sıradaki Şarkı\\\" ve diğer bazı özellikler kullanılamayacaktır."
+msgstr "Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. \"Sıradaki Şarkı\" ve diğer bazı özellikler kullanılamayacaktır."
 
 #: /var/azuracast/www/config/forms/station.php:408
 msgid "Character Set Encoding"
@@ -2596,7 +2579,7 @@ msgstr "Depolama Alanı"
 
 #: /var/azuracast/www/config/forms/station.php:458
 msgid "Set a maximum disk space that this station can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
-msgstr "Bu radyonun kullanabileceği maksimum disk alanı ayarlayın. Boş bırakırsanız sunucu depolama alanı dolana kadar kullanılabilir. Depolama alanı büyüklüğünü 1024 bayt cinsinden hesaplayarak yazmalınısız. Örnek: \\\"2 GB\\\" veya \\\"2048 MB\\\""
+msgstr "Bu radyonun kullanabileceği maksimum disk alanı ayarlayın. Boş bırakırsanız sunucu depolama alanı dolana kadar kullanılabilir. Depolama alanı büyüklüğünü 1024 bayt cinsinden hesaplayarak yazmalınısız. Örnek: \"2 GB\" veya \"2048 MB\""
 
 #: /var/azuracast/www/config/forms/station.php:466
 msgid "Base Station Directory"
@@ -2652,7 +2635,7 @@ msgstr "Çalma listeleri kopyalansın mı?"
 
 #: /var/azuracast/www/config/forms/station_clone.php:67
 msgid "Copy Streamer/DJ Accounts?"
-msgstr "DJ hesapları kopyalansın mı?\""
+msgstr "DJ hesapları kopyalansın mı?"
 
 #: /var/azuracast/www/config/forms/station_clone.php:80
 msgid "Copy Permissions?"
@@ -2660,7 +2643,7 @@ msgstr "İzinler kopyalansın mı?"
 
 #: /var/azuracast/www/config/forms/station_clone.php:81
 msgid "Selecting \"Yes\" will assign any users with permissions to the current station to have permissions to the new one."
-msgstr "\\\"Evet\\\" seçilirse mevcut radyo izinlerine sahip olan kullanıcıları yeni radyoya atanacaktır."
+msgstr "\"Evet\" seçilirse mevcut radyo izinlerine sahip olan kullanıcıları yeni radyoya atanacaktır."
 
 #: /var/azuracast/www/config/forms/station_clone.php:100
 msgid "Create New Station"
@@ -2752,7 +2735,7 @@ msgstr "Mesajı Özelleştir"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:75
 #: /var/azuracast/www/config/forms/webhook/twitter.php:123
 msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
-msgstr "Değişkenler {{ var.name }} biçimindedir. <a href=\\\"%s\\\" target=\\\"_blank\\\"> Çalan Şarkı API</a>si tüm değerler kullanım için uygundur. Boş alanlar dikkate alınmaz."
+msgstr "Değişkenler {{ var.name }} biçimindedir. <a href=\"%s\" target=\"_blank\"> Çalan Şarkı API</a>si tüm değerler kullanım için uygundur. Boş alanlar dikkate alınmaz."
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:60
 #: /var/azuracast/www/config/forms/webhook/telegram.php:82
@@ -2767,7 +2750,7 @@ msgstr "%s Şimdi Çalıyor: "
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:27
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
 #: /var/azuracast/www/templates/frontend/public/index.phtml:75
-#: /var/azuracast/www/templates/stations/files/index.phtml:114
+#: /var/azuracast/www/templates/stations/files/index.phtml:119
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:30
 msgid "Title"
@@ -2807,7 +2790,7 @@ msgid "Web hooks automatically send a HTTP POST request to the URL you specify t
 "                optimized to handle the request in under 2 seconds."
 msgstr "Web kancaları belirlediğiniz tetikleyicilerden birinin radyonuzda gerçekleştiği zaman \n"
 "                bildirmek için belirttiğiniz URL’ye otomatik olarak bir HTTP POST isteği gönderir.\n"
-"                POST mesajının gövdesi radyonuz için <a href=\\\"%s\\\" target=\\\"_blank\\\">Çalan Şarkı API</a> cevabıyla aynıdır.\n"
+"                POST mesajının gövdesi radyonuz için <a href=\"%s\" target=\"_blank\">Çalan Şarkı API</a> cevabıyla aynıdır.\n"
 "                Hızlı bir şekilde işlemek için entegresyonların kısa bir zaman aşımı süresi vardır. bu nedenle\n"
 "                yanıtlayan hizmetin isteği 2 saniyeden daha kısa sürede ele alması için en iyi duruma getirilmesi gerekir.\""
 
@@ -2842,7 +2825,7 @@ msgstr "Bot Bilgisi"
 #: /var/azuracast/www/config/forms/webhook/telegram.php:29
 #: /var/azuracast/www/config/forms/webhook/telegram.php:94
 msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
-msgstr "Daha fazla bilgi için <a href=\\\"%s\\\" target=\\\"_blank\\\">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz."
+msgstr "Daha fazla bilgi için <a href=\"%s\" target=\"_blank\">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz."
 
 #: /var/azuracast/www/config/forms/webhook/telegram.php:39
 msgid "Chat ID"
@@ -2875,7 +2858,7 @@ msgstr "TuneIn Radyo ID"
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:28
 msgid "The station ID will be a numeric string that starts with the letter S."
-msgstr "\\\"S\\\" harfi ile başlayan TuneIn Radyo ID\\'sini buraya yazın."
+msgstr "\"S\" harfi ile başlayan TuneIn Radyo ID'sini buraya yazın."
 
 #: /var/azuracast/www/config/forms/webhook/tunein.php:38
 msgid "TuneIn Partner ID"
@@ -2900,12 +2883,12 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
 msgstr "\"Twitter hesabı yapılandırma adımları:<br>\n"
 "                <ol type=\"1\">\n"
-"                    <li><a href=\\\"%s\\\" target=\\\"_blank\\\">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.\n"
+"                    <li><a href=\"%s\" target=\"_blank\">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.\n"
 "                    Bu kurulum uygulama URLsi olarak temel URLdir.</li>\n"
-"                    <li>Yeni oluşturulan uygulamada \\\"Anahtarlar ve Erişim Bilgileri\\\" sekmesini tıklayın.</li>\n"
-"                    <li>Sayfanın alt tarafında \\\"Erişim Kartımı Oluştur\\\" düğmesine tıklayın.</li>\n"
+"                    <li>Yeni oluşturulan uygulamada \"Anahtarlar ve Erişim Bilgileri\" sekmesini tıklayın.</li>\n"
+"                    <li>Sayfanın alt tarafında \"Erişim Kartımı Oluştur\" düğmesine tıklayın.</li>\n"
 "                </ol>\n"
-"                <p>Bu adımlar tamamlandıktan sonra \\\"Anahtarlar ve Erişim Bilgileri\\\" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>"
+"                <p>Bu adımlar tamamlandıktan sonra \"Anahtarlar ve Erişim Bilgileri\" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -3045,7 +3028,7 @@ msgid "Music Files"
 msgstr "Müzik Dosyaları"
 
 #: /var/azuracast/www/config/menus/station.php:53
-#: /var/azuracast/www/templates/stations/files/index.phtml:123
+#: /var/azuracast/www/templates/stations/files/index.phtml:128
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:4
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:17
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:34
@@ -3145,10 +3128,6 @@ msgstr "Sıradaki Şarkı Kuyruğu"
 msgid "Restart Broadcasting"
 msgstr "Yayını Yeniden Başlat"
 
-#: /var/azuracast/www/config/routes.dev.php:29
-msgid "Get Next Song Debug Mode"
-msgstr "Sıradaki Şarkı Hata Ayıklama Moduna Ayarla"
-
 #: /var/azuracast/www/config/webhooks.php:15
 msgid "Generic Web Hook"
 msgstr "Genel Web Kancası"
@@ -3163,7 +3142,7 @@ msgstr "TuneIn Web Kancası"
 
 #: /var/azuracast/www/config/webhooks.php:21
 msgid "Send song metadata changes to TuneIn."
-msgstr "Şarkı meta verileri değişikliklerini TuneIn\\'e gönderin."
+msgstr "Şarkı meta verileri değişikliklerini TuneIn'e gönderin."
 
 #: /var/azuracast/www/config/webhooks.php:25
 msgid "Discord Webhook"
@@ -3250,7 +3229,7 @@ msgstr "Ekle"
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 #: /var/azuracast/www/templates/admin/users/index.phtml:39
 #: /var/azuracast/www/templates/stations/files/index.js.phtml:27
-#: /var/azuracast/www/templates/stations/files/index.phtml:101
+#: /var/azuracast/www/templates/stations/files/index.phtml:106
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
@@ -3326,8 +3305,8 @@ msgstr "Hedef"
 #: /var/azuracast/www/templates/admin/users/index.phtml:21
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
 #: /var/azuracast/www/templates/frontend/public/index.phtml:78
-#: /var/azuracast/www/templates/stations/files/index.phtml:124
-#: /var/azuracast/www/templates/stations/files/index.phtml:180
+#: /var/azuracast/www/templates/stations/files/index.phtml:129
+#: /var/azuracast/www/templates/stations/files/index.phtml:185
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:24
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:54
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:29
@@ -3397,7 +3376,7 @@ msgid "Last Modified"
 msgstr "Değişiklik Tarihi"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
-#: /var/azuracast/www/templates/stations/files/index.phtml:121
+#: /var/azuracast/www/templates/stations/files/index.phtml:126
 msgid "Size"
 msgstr "Boyut"
 
@@ -3407,7 +3386,7 @@ msgstr "İndir"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Delete backup \"%s\"?"
-msgstr "\\\"%s\\ yedeklemesi silinsin mi?"
+msgstr "\"%s\" yedeklemesi silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
@@ -3423,7 +3402,7 @@ msgstr "Yedekleme çalışırken hatalarla karşılaştı. Ayrıntılar için a�
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"
-msgstr "\\\"%s\\ özel alan silinsin mi?"
+msgstr "\"%s\" özel alan silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
@@ -3467,7 +3446,7 @@ msgstr "Radyo Günlükleri"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:34
 msgid "Delete role \"%s\"?"
-msgstr "\\\"%s\\ yetki silinsin mi?"
+msgstr "\"%s\" yetki silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "This role cannot be deleted."
@@ -3498,7 +3477,7 @@ msgid "Manage Stations"
 msgstr "Radyo Yönetimi"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
-#: /var/azuracast/www/templates/frontend/index/index.phtml:108
+#: /var/azuracast/www/templates/frontend/index/index.phtml:104
 msgid "Add Station"
 msgstr "Radyo Ekle"
 
@@ -3507,7 +3486,7 @@ msgid "Station"
 msgstr "Radyo"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:29
-#: /var/azuracast/www/templates/frontend/index/index.phtml:152
+#: /var/azuracast/www/templates/frontend/index/index.phtml:148
 #: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:26
 msgid "Manage"
 msgstr "Yönetim"
@@ -3518,7 +3497,7 @@ msgstr "Kopyalama"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 msgid "Delete station \"%s\"?"
-msgstr "\\\"%s\\\" radyo silinsin mi?"
+msgstr "\"%s\" radyo silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:33
 #: /var/azuracast/www/templates/frontend/account/login.phtml:3
@@ -3528,7 +3507,7 @@ msgstr "Giriş Yap"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
-msgstr "\\\"%s\\\" kullanıcı silinsin mi?"
+msgstr "\"%s\" kullanıcı silinsin mi?"
 
 #: /var/azuracast/www/templates/admin/users/index.phtml:47
 msgid "(You)"
@@ -3544,7 +3523,7 @@ msgstr "Hoşgeldiniz!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:34
 msgid "name@example.com"
-msgstr "Mail Adresinizi Yazın"
+msgstr "E-Posta Adresinizi Yazın"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 msgid "Enter your password"
@@ -3563,7 +3542,7 @@ msgstr "Devam etmek için lütfen giriş yapın."
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
-msgstr "<a href=\\\"%s\\\" target=\\\"_blank\\\">Şifreni mi unuttun?</a>"
+msgstr "<a href=\"%s\" target=\"_blank\">Şifreni mi unuttun?</a>"
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
@@ -3589,7 +3568,7 @@ msgstr "API Anahtarlarım"
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
 msgstr "API anahtarları bazı sistem işlevlerine giriş yapmak zorunda kalmadan erişmek için kullanılabilir. Oluşturduğunuz tüm anahtarlar\n"
-"            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href=\\\"%s\\\">API Belgeleri</a>ne bakın."
+"            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href=\"%s\">API Belgeleri</a>ne bakın."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3619,7 +3598,7 @@ msgstr "Panoya Kopyala"
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:25
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
-msgstr "API çağrıları yaparken bu değeri \\\"X-API-Key\\\" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz."
+msgstr "API çağrıları yaparken bu değeri \"X-API-Key\" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz."
 
 #: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:28
 msgid "Continue"
@@ -3632,31 +3611,31 @@ msgstr "Devam Et"
 msgid "Dashboard"
 msgstr "Anasayfa"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:44
+#: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
 msgstr "AzuraCast Kullanıcısı"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:54
+#: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:20
 #: /var/azuracast/www/templates/main.phtml:79
 msgid "My Account"
 msgstr "Hesabım"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:90
-#: /var/azuracast/www/templates/frontend/index/index.phtml:93
+#: /var/azuracast/www/templates/frontend/index/index.phtml:86
+#: /var/azuracast/www/templates/frontend/index/index.phtml:89
 msgid "Listeners Per Station"
 msgstr "Radyo Başına Dinleyici"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:102
+#: /var/azuracast/www/templates/frontend/index/index.phtml:98
 msgid "Station Overview"
 msgstr "Radyo Önizlemesi"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:123
+#: /var/azuracast/www/templates/frontend/index/index.phtml:119
 msgid "Station Name"
 msgstr "Radyo İsmi"
 
-#: /var/azuracast/www/templates/frontend/index/index.phtml:125
+#: /var/azuracast/www/templates/frontend/index/index.phtml:121
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:30
 msgid "Now Playing"
 msgstr "Çalan Şarkı"
@@ -3759,6 +3738,7 @@ msgid "DJ Credentials"
 msgstr "DJ Bilgileri"
 
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:24
+#: /var/azuracast/www/templates/stations/files/index.phtml:247
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:25
 msgid "Username"
 msgstr "Kullanıcı Adı"
@@ -3770,7 +3750,7 @@ msgstr "Eşzamansız Çalışma Kullan"
 #: /var/azuracast/www/templates/frontend/public/dj.js.phtml:28
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
 #: /var/azuracast/www/templates/frontend/public/index.phtml:76
-#: /var/azuracast/www/templates/stations/files/index.phtml:115
+#: /var/azuracast/www/templates/stations/files/index.phtml:120
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:27
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:31
 msgid "Artist"
@@ -3823,7 +3803,7 @@ msgstr "İstek"
 
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
 #: /var/azuracast/www/templates/frontend/public/index.phtml:77
-#: /var/azuracast/www/templates/stations/files/index.phtml:116
+#: /var/azuracast/www/templates/stations/files/index.phtml:121
 #: /var/azuracast/www/templates/stations/playlists/reorder.phtml:28
 msgid "Album"
 msgstr "Albüm"
@@ -3835,7 +3815,7 @@ msgstr "Şarkı Geçmişi"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:33
 msgid "Request Song"
-msgstr "Şarkı İsteme"
+msgstr "Şarkı İste"
 
 #: /var/azuracast/www/templates/frontend/public/index.phtml:37
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:55
@@ -3889,7 +3869,7 @@ msgstr "AzuraCast İlk Kurulumu"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:20
 msgid "Welcome to AzuraCast!"
-msgstr "AzuraCast\\'e Hoşgeldiniz!"
+msgstr "AzuraCast'e Hoşgeldiniz!"
 
 #: /var/azuracast/www/templates/frontend/setup/register.phtml:27
 msgid "Let's get started by creating your Super Administrator account."
@@ -3914,7 +3894,7 @@ msgstr "AzuraCast Ayarlarını Özelleştir"
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:34
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
-msgstr "İlk radyo istasyonunuzu aşğıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz."
+msgstr "İlk radyo radyonuzu aşağıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz."
 
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:41
 msgid "Create a New Radio Station"
@@ -3954,7 +3934,7 @@ msgstr "Çıkış Yap"
 
 #: /var/azuracast/www/templates/main.phtml:152
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
-msgstr "Türkçeleştirme\\: ByBiLaL \\- AzuraCast\\'i beğendiniz mi? <a href=\\\"%s\\\" target=\\\"_blank\\\">Destek olmak için bağış yapın!</a>"
+msgstr "Türkçeleştirme: ByBiLaL - AzuraCast'i beğendiniz mi? <a href=\"%s\" target=\"_blank\">Destek olmak için bağış yapın!</a>"
 
 #: /var/azuracast/www/templates/minimal.phtml:46
 msgid "Mascot designed by %s"
@@ -3966,7 +3946,7 @@ msgstr "Yardıma Mı İhtiyacınız Var?"
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:6
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
-msgstr "SSS belgelerine ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">destek dökümanları</a> sayfasına göz atabilirsiniz."
+msgstr "SSS belgelerine ulaşmak için <a href=\"%s\" target=\"_blank\">destek dökümanları</a> sayfasına göz atabilirsiniz."
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:8
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
@@ -3999,7 +3979,7 @@ msgstr "%s şarkılarınızın performansına bağlı olarak en yüksek öncelik
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:11
 msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
-msgstr "Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda \\\"Etkinleştir\\\" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır."
+msgstr "Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda \"Etkinleştir\" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır."
 
 #: /var/azuracast/www/templates/stations/automation/index.phtml:13
 msgid "Run Automated Assignment"
@@ -4045,67 +4025,113 @@ msgstr "Anasayfa"
 msgid "%s of %s Used (%d Files)"
 msgstr "Kullanılan Depolama Alanı: %s / %s (%d Dosya)"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:43
-msgid "You can also upload files in bulk via SFTP by <a href=\"%s\" target=\"_blank\">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes."
-msgstr "Ayrıca dosyaları SFTP kullanarak yüklemek için <a href=\\\"%s\\\" target=\\\"_blank\\\">buradaki</a> dökümanı inceleyebilirsiniz. Yeni yüklenen dosyalar birkaç dakika içinde otomatik olarak işlenecektir."
+#: /var/azuracast/www/templates/stations/files/index.phtml:44
+msgid "You can also upload files in bulk via FTP."
+msgstr "Ayrıca dosyaları FTP üzerinden toplu olarak da yükleyebilirsiniz."
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:52
+#: /var/azuracast/www/templates/stations/files/index.phtml:46
+msgid "View connection instructions"
+msgstr "Bağlantı Talimatlarını Görüntüle"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:57
 msgid "Drag files here to upload to this folder or "
 msgstr "Bu klasöre müzik yüklemek için dosyaları buraya sürekleyip bırakın veya "
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:65
+#: /var/azuracast/www/templates/stations/files/index.phtml:70
 msgid "Set Playlists"
 msgstr "Çalma Listesine Ekle"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:82
+#: /var/azuracast/www/templates/stations/files/index.phtml:87
 msgid "New Playlist"
 msgstr "Yeni Çalma Listesi"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:87
+#: /var/azuracast/www/templates/stations/files/index.phtml:92
 msgid "Save"
 msgstr "Kaydet"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:93
+#: /var/azuracast/www/templates/stations/files/index.phtml:98
 msgid "Clear Playlists"
 msgstr "Çalma Listesini Temizle"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:97
+#: /var/azuracast/www/templates/stations/files/index.phtml:102
 msgid "Move"
 msgstr "Taşı"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:105
+#: /var/azuracast/www/templates/stations/files/index.phtml:110
 msgid "New Folder"
 msgstr "Yeni Klasör"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:117
+#: /var/azuracast/www/templates/stations/files/index.phtml:122
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26
 #: /var/azuracast/www/templates/stations/reports/performance.phtml:33
 msgid "Length"
 msgstr "Uzunluk"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:122
+#: /var/azuracast/www/templates/stations/files/index.phtml:127
 msgid "Modified"
 msgstr "Değiştirme Zamanı"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:139
+#: /var/azuracast/www/templates/stations/files/index.phtml:144
 msgid "New Directory"
 msgstr "Yeni Dizin"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:144
+#: /var/azuracast/www/templates/stations/files/index.phtml:149
 msgid "Directory Name"
 msgstr "Dizin İsmi"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:150
+#: /var/azuracast/www/templates/stations/files/index.phtml:155
 msgid "Create Directory"
 msgstr "Dizin Oluştur"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:162
+#: /var/azuracast/www/templates/stations/files/index.phtml:167
 msgid "Move {{ selected_files }} File(s) to"
 msgstr "{{ selected_files }} şuraya taşı"
 
-#: /var/azuracast/www/templates/stations/files/index.phtml:168
+#: /var/azuracast/www/templates/stations/files/index.phtml:173
 msgid "Back"
 msgstr "Geri"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:207
+msgid "FTP Connection Information"
+msgstr "FTP Bağlantı Bilgisi"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:221
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:57
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:72
+msgid "Server"
+msgstr "Sunucu"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:225
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:60
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:75
+msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
+msgstr "<code>%s</code> IP adresiniz üzerinden bağlantı kurabilirsiniz."
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:230
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:63
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:78
+msgid "Port"
+msgstr "Port"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:238
+msgid "Protocol"
+msgstr "Protokol"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:241
+msgid "FTP with Explicit TLS (FTPS)"
+msgstr "FTP için Aktif TLS Kullan (FTPS)"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:242
+msgid "Unencrypted FTP is also allowed, but not recommended."
+msgstr "Şifrelenmemiş FTP bağlantısına izin ver. Ancak bu <b>\"ÖNERİLMEZ\"</b>!"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:250
+msgid "Your AzuraCast E-mail Address"
+msgstr "AzuraCast E-Posta Adresiniz"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:258
+msgid "Your AzuraCast Password"
+msgstr "AzuraCast Şifreniz"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
@@ -4121,7 +4147,7 @@ msgstr "Bağlantı Noktası"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:36
 msgid "Delete mount point \"%s\"?"
-msgstr "\\\"%s\\\" bağlantı noktası silinsin mi?"
+msgstr "\"%s\" bağlantı noktası silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:43
 msgid "Default Mount"
@@ -4141,7 +4167,7 @@ msgstr "# Şarkılar"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:66
 msgid "Delete playlist \"%s\"?"
-msgstr "\\\"%s\\\" çalma listesi silinsin mi?"
+msgstr "\"%s\" çalma listesi silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:70
 msgid "More"
@@ -4233,7 +4259,7 @@ msgstr "Radyo Canlı Yayını Devredışı"
 
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
-msgstr "Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href=\\\"%s\\\">radyo profili</a>ni düzenleyin."
+msgstr "Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href=\"%s\">radyo profili</a>ni düzenleyin."
 
 #: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:18
 #: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:18
@@ -4404,7 +4430,7 @@ msgstr "Yönlendirme"
 
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:37
 msgid "Delete remote relay \"%s\"?"
-msgstr "\\\"%s\\\" yönlendirme silinsin mi?"
+msgstr "\"%s\" yönlendirme silinsin mi?"
 
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
 #: /var/azuracast/www/templates/stations/reports/duplicates.phtml:5
@@ -4607,7 +4633,7 @@ msgstr "Notlar"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:37
 msgid "Delete streamer \"%s\"?"
-msgstr "\\\"%s\\\" silmek istediğinizden emin misiniz?"
+msgstr "\"%s\" silmek istediğinizden emin misiniz?"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:52
 msgid "Connection Information"
@@ -4616,21 +4642,6 @@ msgstr "Canlı Yayın Bilgileri"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:55
 msgid "IceCast Clients"
 msgstr "IceCast Bilgileri"
-
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:57
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:72
-msgid "Server"
-msgstr "Sunucu"
-
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:60
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:75
-msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr "<code>%s</code> IP adresiniz üzerinden yayına bağlanabilirsiniz."
-
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:63
-#: /var/azuracast/www/templates/stations/streamers/index.phtml:78
-msgid "Port"
-msgstr "Port"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:66
 msgid "Mount Name"
@@ -4650,7 +4661,7 @@ msgstr "(DJ kullanıcı adı iki nokta üst üste şifre şeklinde yazmalısın�
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:88
 msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
-msgstr "Canlı yayın programlarına ait dökümanlara ulaşmak için <a href=\\\"%s\\\" target=\\\"_blank\\\">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz."
+msgstr "Canlı yayın programlarına ait dökümanlara ulaşmak için <a href=\"%s\" target=\"_blank\">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz."
 
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:7
 msgid "Select the type of web hook to create."
@@ -4678,7 +4689,7 @@ msgstr "Deneme"
 
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:37
 msgid "Delete web hook \"%s\"?"
-msgstr "\\\"%s\\\" web kancasını silmek istediğinizden emin misiniz?"
+msgstr "\"%s\" web kancasını silmek istediğinizden emin misiniz?"
 
 #: /var/azuracast/www/templates/system/error_pagenotfound.phtml:11
 msgid "The page you requested was not found."

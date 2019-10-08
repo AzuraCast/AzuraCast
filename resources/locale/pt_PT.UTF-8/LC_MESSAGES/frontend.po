@@ -1,0 +1,308 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: easygettext\n"
+"Project-Id-Version: azuracast\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: azuracast\n"
+"X-Crowdin-Language: pt-PT\n"
+"X-Crowdin-File: /master/resources/locale/frontend.pot\n"
+"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
+"Language-Team: Portuguese\n"
+"Language: pt_PT\n"
+"PO-Revision-Date: 2019-10-08 07:42\n"
+
+#: ./vue/StationMedia.vue:146
+msgid "Actions"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:56
+msgid "Add Files to Playlist"
+msgstr ""
+
+#: ./vue/StationMedia.vue:128
+msgid "Album"
+msgstr ""
+
+#: ./vue/RadioPlayer.vue:339
+#: ./vue/StationMedia.vue:165
+msgid "Album Art"
+msgstr ""
+
+#: ./vue/StationMedia.vue:127
+#: ./vue/webcaster/settings.vue:115
+msgid "Artist"
+msgstr ""
+
+#: ./vue/station_media/MoveFilesModal.vue:6
+msgid "Back"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:11
+msgid "Clear Playlists"
+msgstr ""
+
+#: ./vue/station_media/MoveFilesModal.vue:33
+#: ./vue/station_media/NewDirectoryModal.vue:9
+msgid "Close"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:66
+msgid "Continuous Play"
+msgstr ""
+
+#: ./vue/station_media/NewDirectoryModal.vue:12
+msgid "Create Directory"
+msgstr ""
+
+#: ./vue/webcaster/microphone.vue:17
+#: ./vue/webcaster/playlist.vue:23
+#: ./vue/webcaster/settings.vue:139
+msgid "Cue"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:52
+#: ./vue/station_media/MediaToolbar.vue:111
+msgid "Delete"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:112
+msgid "Delete %{ num } media file(s)?"
+msgstr ""
+
+#: ./vue/StationMedia.vue:47
+#: ./vue/station_media/MoveFilesModal.vue:62
+msgid "Directory"
+msgstr "Diretório"
+
+#: ./vue/station_media/NewDirectoryModal.vue:4
+msgid "Directory Name:"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:83
+msgid "DJ Credentials"
+msgstr ""
+
+#: ./vue/station_media/FileUpload.vue:16
+msgid "Drag files here to upload to this folder or"
+msgstr ""
+
+#: ./vue/StationMedia.vue:68
+msgid "Edit"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:27
+msgid "Encoder"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:108
+msgid "Files queued for playback:"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:120
+msgid "Files removed:"
+msgstr ""
+
+#: ./vue/RadioPlayer.vue:336
+msgid "Full Volume"
+msgstr ""
+
+#: ./vue/station_media/Breadcrumb.vue:2
+msgid "Home"
+msgstr ""
+
+#: ./vue/StationMedia.vue:129
+msgid "Length"
+msgstr ""
+
+#: ./vue/RadioPlayer.vue:10
+msgid "Live"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:15
+msgid "Metadata"
+msgstr "Metadados"
+
+#: ./vue/webcaster/microphone.vue:4
+msgid "Microphone"
+msgstr ""
+
+#: ./vue/webcaster/microphone.vue:33
+msgid "Microphone Source"
+msgstr ""
+
+#: ./vue/webcaster/mixer.vue:3
+msgid "Mixer"
+msgstr ""
+
+#: ./vue/StationMedia.vue:134
+msgid "Modified"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:48
+msgid "Move"
+msgstr ""
+
+#: ./vue/station_media/MoveFilesModal.vue:68
+msgid "Move %{ num } File(s) to"
+msgstr ""
+
+#: ./vue/station_media/MoveFilesModal.vue:36
+msgid "Move to Directory"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:32
+msgid "MP3"
+msgstr ""
+
+#: ./vue/RadioPlayer.vue:330
+msgid "Mute"
+msgstr ""
+
+#: ./vue/StationMedia.vue:125
+msgid "Name"
+msgstr "Nome"
+
+#: ./vue/station_media/NewDirectoryModal.vue:36
+msgid "New Directory"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:58
+msgid "New Folder"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:97
+msgid "New Playlist"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:171
+msgid "Password"
+msgstr "Palavra-Passe"
+
+#: ./vue/InlinePlayer.vue:9
+#: ./vue/RadioPlayer.vue:327
+msgid "Pause"
+msgstr ""
+
+#: ./vue/RadioPlayer.vue:324
+msgid "Play"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:119
+msgid "Playlist 1"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:120
+msgid "Playlist 2"
+msgstr ""
+
+#: ./vue/StationMedia.vue:145
+#: ./vue/station_media/MediaToolbar.vue:8
+msgid "Playlists"
+msgstr "Listas de Reprodução"
+
+#: ./vue/station_media/MediaToolbar.vue:158
+msgid "Playlists cleared for selected files:"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:157
+msgid "Playlists updated for selected files:"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:44
+msgid "Queue"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:100
+msgid "Queue the selected media to play next"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:37
+msgid "Raw"
+msgstr ""
+
+#: ./vue/components/DataTable.vue:135
+msgid "Refresh rows"
+msgstr ""
+
+#: ./vue/StationMedia.vue:71
+msgid "Rename"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:72
+msgid "Repeat Playlist"
+msgstr ""
+
+#: ./vue/components/DataTable.vue:138
+msgid "Rows per page"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:42
+#: ./vue/webcaster/settings.vue:58
+msgid "Sample Rate"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:38
+msgid "Save"
+msgstr ""
+
+#: ./vue/components/DataTable.vue:141
+msgid "Select displayed fields"
+msgstr ""
+
+#: ./vue/station_media/FileUpload.vue:18
+msgid "Select File"
+msgstr "Selecionar Ficheiro"
+
+#: ./vue/station_media/MediaToolbar.vue:94
+msgid "Set or clear playlists from the selected media"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:10
+msgid "Settings"
+msgstr "Definições"
+
+#: ./vue/StationMedia.vue:131
+msgid "Size"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:133
+msgid "Start Streaming"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:136
+msgid "Stop Streaming"
+msgstr ""
+
+#: ./vue/StationMedia.vue:126
+#: ./vue/webcaster/settings.vue:108
+msgid "Title"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:126
+msgid "Unknown Artist"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:123
+msgid "Unknown Title"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:122
+msgid "Update Metadata"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:100
+msgid "Use Asynchronous Worker"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:168
+msgid "Username"
+msgstr ""
+
+#: ./vue/InlinePlayer.vue:72
+#: ./vue/RadioPlayer.vue:333
+msgid "Volume"
+msgstr ""
+

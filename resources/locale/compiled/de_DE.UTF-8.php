@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-08-21T22:24:59+00:00
-PO-Revision-Date: 2019-08-23 03:09
+POT-Creation-Date: 2019-09-10T23:21:55+00:00
+PO-Revision-Date: 2019-10-08 07:42
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -108,18 +108,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Stations-WebHooks verwalten',
       ),
-      'Back up the AzuraCast database and statistics (and optionally media).' => 
-      array (
-        0 => 'Sichere die AzuraCast-Datenbank und die Statistiken (+ optional die Medien).',
-      ),
-      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
-      array (
-        0 => 'Der absolute oder relative (relativ zu /var/azuracast/backups) Speicherpfad für Backups.',
-      ),
-      'Exclude media from the backup.' => 
-      array (
-        0 => 'Medien aus Backup ausschließen.',
-      ),
       'AzuraCast Backup' => 
       array (
         0 => 'AzuraCast Backup',
@@ -156,37 +144,21 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Backup in %.2f Sekunden abgeschlossen.',
       ),
-      'Backup process error' => 
-      array (
-        0 => 'Fehler beim Backup-Prozess',
-      ),
-      'List all settings in the AzuraCast settings database.' => 
-      array (
-        0 => 'Alle Einstellungen in der AzuraCast-Einstellungsdatenbank auflisten.',
-      ),
       'AzuraCast Settings' => 
       array (
         0 => 'AzuraCast-Einstellungen',
       ),
       'Setting Key' => 
       array (
-        0 => '',
+        0 => 'Einstellungsschlüssel',
       ),
       'Setting Value' => 
       array (
-        0 => '',
-      ),
-      'Generate the translation locale file.' => 
-      array (
-        0 => 'Generiere Lokalisierungs-/Übersetzungsdaten.',
+        0 => 'Einstellungswert',
       ),
       'Locales generated.' => 
       array (
         0 => 'Lokalisierungsdaten generiert.',
-      ),
-      'Convert translated locale files into PHP arrays.' => 
-      array (
-        0 => 'Konvertiere übersetzte Lokalisierungsdaten in PHP-Arrays.',
       ),
       'Imported locale: %s' => 
       array (
@@ -196,10 +168,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Lokalisierungsdaten importiert.',
       ),
-      'Migrate existing configuration to new INI format if any exists.' => 
-      array (
-        0 => 'Bestehende Konfiguration in neues INI-Format migrieren, falls vorhanden.',
-      ),
       'Configuration already set up.' => 
       array (
         0 => 'Konfiguration bereits eingerichtet.',
@@ -207,10 +175,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Configuration successfully written.' => 
       array (
         0 => 'Die Konfiguration wurde gespeichert.',
-      ),
-      'Process the message queue.' => 
-      array (
-        0 => 'Bearbeiten der Nachrichtenschlange.',
       ),
       'Backup path %s not found!' => 
       array (
@@ -223,22 +187,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Account not found.' => 
       array (
         0 => 'Konto nicht gefunden.',
-      ),
-      'Run all general AzuraCast setup steps.' => 
-      array (
-        0 => 'Ausführen aller allgemeinen AzuraCast-Setup-Schritte.',
-      ),
-      'Only update the existing installation.' => 
-      array (
-        0 => 'Nur die vorhandene Installation aktualisieren.',
-      ),
-      'Load predefined fixtures (for development purposes).' => 
-      array (
-        0 => 'Vordefinierte Fixtures laden (zu Entwicklungszwecken).',
-      ),
-      'Used for updating only to a tagged release.' => 
-      array (
-        0 => 'Wird nur für die Aktualisierung auf eine markierte Version verwendet.',
       ),
       'AzuraCast Setup' => 
       array (
@@ -296,17 +244,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Einrichtung unter %s abschließen.',
       ),
-      'Install fixtures for demo / local development.' => 
-      array (
-        0 => 'Installiere Fixtures für Demo / lokale Entwicklung.',
-      ),
       'Fixtures loaded.' => 
       array (
         0 => 'Fixtures geladen.',
-      ),
-      'Initial setup of InfluxDB.' => 
-      array (
-        0 => 'Initiale Einrichtung von InfluxDB.',
       ),
       'Database created.' => 
       array (
@@ -323,14 +263,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'InfluxDB databases created.' => 
       array (
         0 => 'InfluxDB-Datenbanken erstellt.',
-      ),
-      'Run one or more scheduled synchronization tasks.' => 
-      array (
-        0 => 'Einen oder mehrere geplante Synchronisationsaufgaben ausführen.',
-      ),
-      'The task to run (%s).' => 
-      array (
-        0 => 'Die auszuführende Aufgabe (%s).',
       ),
       'Record not found.' => 
       array (
@@ -360,13 +292,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Manuelles Backup ausführen',
       ),
-      'Backup deleted.' => 
-      array (
-        0 => 'Backup gelöscht.',
-      ),
       'Backup not found.' => 
       array (
         0 => 'Backup nicht gefunden.',
+      ),
+      'Backup deleted.' => 
+      array (
+        0 => 'Backup gelöscht.',
       ),
       'Custom Field updated.' => 
       array (
@@ -1079,6 +1011,46 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Password cannot contain the following characters: %s' => 
       array (
         0 => 'Das Passwort darf die folgenden Zeichen nicht enthalten: %s',
+      ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => 'Generiere Lokalisierungs-/Übersetzungsdaten.',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => 'Konvertiere übersetzte Lokalisierungsdaten in PHP-Arrays.',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => 'Bestehende Konfiguration in neues INI-Format migrieren, falls vorhanden.',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => 'Initiale Einrichtung von InfluxDB.',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => 'Installiere Fixtures für Demo / lokale Entwicklung.',
+      ),
+      'Run all general AzuraCast setup steps.' => 
+      array (
+        0 => 'Ausführen aller allgemeinen AzuraCast-Setup-Schritte.',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => 'Einen oder mehrere geplante Synchronisationsaufgaben ausführen.',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => 'Bearbeiten der Nachrichtenschlange.',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => 'Alle Einstellungen in der AzuraCast-Einstellungsdatenbank auflisten.',
+      ),
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
+      array (
+        0 => 'Sichere die AzuraCast-Datenbank und die Statistiken (+ optional die Medien).',
       ),
       'Comments' => 
       array (
@@ -1973,6 +1945,14 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Auf "Ja" setzen, um immer "https://" sichere URLs zu verwenden und automatisch auf die sichere URL umzuleiten, wenn eine unsichere URL besucht wird.',
       ),
+      'Enable Built-in FTP Server' => 
+      array (
+        0 => 'Integrierten FTP-Server aktivieren',
+      ),
+      'If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage.' => 
+      array (
+        0 => 'Wenn aktiviert, können sich Benutzer mit ihren AzuraCast-Zugangsdaten via FTP verbinden, um Medien direkt auf alle von ihnen verwalteten Sender hochzuladen.',
+      ),
       'API "Access-Control-Allow-Origin" header' => 
       array (
         0 => 'API "Access-Control-Allow-Origin"-Header',
@@ -2798,10 +2778,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Streaming neustart',
       ),
-      'Get Next Song Debug Mode' => 
-      array (
-        0 => '',
-      ),
       'Generic Web Hook' => 
       array (
         0 => 'Generischer WebHook',
@@ -2940,11 +2916,11 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Previous' => 
       array (
-        0 => 'Vorherige',
+        0 => 'Vorher',
       ),
       'Updated' => 
       array (
-        0 => 'Aktualisiert',
+        0 => 'Jetzt',
       ),
       'Automatic Backups' => 
       array (
@@ -3584,9 +3560,13 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => '%s von %s belegt (%d Dateien)',
       ),
-      'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
+      'You can also upload files in bulk via FTP.' => 
       array (
-        0 => 'Du kannst auch Dateien über SFTP hochladen, indem du dieser Anleitung <a href="%s" target="_blank">folgst</a>. Neu hochgeladene Dateien werden automatisch innerhalb weniger Minuten verarbeitet.',
+        0 => 'Du kannst Dateien auch per Massen-Upload über FTP hochladen.',
+      ),
+      'View connection instructions' => 
+      array (
+        0 => 'Verbindungsanleitungen anzeigen',
       ),
       'Drag files here to upload to this folder or ' => 
       array (
@@ -3643,6 +3623,42 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Back' => 
       array (
         0 => 'Zurück',
+      ),
+      'FTP Connection Information' => 
+      array (
+        0 => 'FTP-Verbindungsinformationen',
+      ),
+      'Server' => 
+      array (
+        0 => 'Server',
+      ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => 'Evtl. muss die Verbindung direkt via IP-Adresse hergestellt werden. Server-IP: <code>%s</code>.',
+      ),
+      'Port' => 
+      array (
+        0 => 'Port',
+      ),
+      'Protocol' => 
+      array (
+        0 => 'Protokoll',
+      ),
+      'FTP with Explicit TLS (FTPS)' => 
+      array (
+        0 => 'FTP mit Explizitem TLS (FTPS)',
+      ),
+      'Unencrypted FTP is also allowed, but not recommended.' => 
+      array (
+        0 => 'Unverschlüsseltes FTP ist ebenfalls erlaubt, wird aber nicht empfohlen.',
+      ),
+      'Your AzuraCast E-mail Address' => 
+      array (
+        0 => 'AzuraCast E-Mail-Adresse',
+      ),
+      'Your AzuraCast Password' => 
+      array (
+        0 => 'AzuraCast-Passwort',
       ),
       'Available Logs' => 
       array (
@@ -4119,18 +4135,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'IceCast Clients' => 
       array (
         0 => 'Icecast Nutzer',
-      ),
-      'Server' => 
-      array (
-        0 => 'Server',
-      ),
-      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
-      array (
-        0 => 'Evtl. muss die Verbindung direkt via IP-Adresse hergestellt werden. Server-IP: <code>%s</code>.',
-      ),
-      'Port' => 
-      array (
-        0 => 'Port',
       ),
       'Mount Name' => 
       array (

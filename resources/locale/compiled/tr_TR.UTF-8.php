@@ -14,8 +14,8 @@ Language-Team: Turkish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-08-21T22:24:59+00:00
-PO-Revision-Date: 2019-08-23 03:09
+POT-Creation-Date: 2019-09-10T23:21:55+00:00
+PO-Revision-Date: 2019-10-08 07:42
 Language: tr_TR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -108,18 +108,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Radyo Web Kancası Yönetimi',
       ),
-      'Back up the AzuraCast database and statistics (and optionally media).' => 
-      array (
-        0 => 'AzuraCast veritabanını ve istatistiklerini (ve isteğe bağlı olarak medyayı) yedekleyin.',
-      ),
-      'The absolute (or relative to /var/azuracast/backups) path to generate the backup.' => 
-      array (
-        0 => 'Yedeklemenin oluşturulacağı kesin dizini (veya geçici \\"/var/azuracast/backups\\" dizini kullanın) belirtin.',
-      ),
-      'Exclude media from the backup.' => 
-      array (
-        0 => 'Yedeklemeye Müzik Dosyalarını Dahil Etme',
-      ),
       'AzuraCast Backup' => 
       array (
         0 => 'AzuraCast Yedekleme',
@@ -156,14 +144,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Yedekleme %.2f saniyede tamamlandı.',
       ),
-      'Backup process error' => 
-      array (
-        0 => 'Yedek işleme hatası',
-      ),
-      'List all settings in the AzuraCast settings database.' => 
-      array (
-        0 => 'AzuraCast ayarları veritabanında tüm ayarları listeleyin.',
-      ),
       'AzuraCast Settings' => 
       array (
         0 => 'AzuraCast Ayarları',
@@ -176,17 +156,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ayar Değeri',
       ),
-      'Generate the translation locale file.' => 
-      array (
-        0 => 'Dil çevirisi yerel dosyasını oluşturun.',
-      ),
       'Locales generated.' => 
       array (
         0 => 'Yerel dosya oluşturuldu!',
-      ),
-      'Convert translated locale files into PHP arrays.' => 
-      array (
-        0 => 'Çevrilen yerel dosyaları PHP dizilerine dönüştürün.',
       ),
       'Imported locale: %s' => 
       array (
@@ -196,10 +168,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Yerel dosya içe aktarıldı!',
       ),
-      'Migrate existing configuration to new INI format if any exists.' => 
-      array (
-        0 => 'Varsa mevcut ayarları yeni bir INI formatına taşıyın.',
-      ),
       'Configuration already set up.' => 
       array (
         0 => 'Yapılandırma zaten ayarlandı.',
@@ -208,37 +176,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Yapılandırma başarıyla yazıldı.',
       ),
-      'Process the message queue.' => 
-      array (
-        0 => 'Mesaj kuyruğunu işleyin.',
-      ),
       'Backup path %s not found!' => 
       array (
         0 => 'Yedekleme dizini %s bulunamadı!',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
-        0 => '\\"%s\\" e-posta adresi yönetici olarak atandı.',
+        0 => '%s e-posta adresi yönetici olarak atandı.',
       ),
       'Account not found.' => 
       array (
         0 => 'Hesap bulunamadı.',
-      ),
-      'Run all general AzuraCast setup steps.' => 
-      array (
-        0 => 'Tüm genel AzuraCast kurulum adımlarını çalıştırın.',
-      ),
-      'Only update the existing installation.' => 
-      array (
-        0 => 'Sadece mevcut kurulumu güncelle.',
-      ),
-      'Load predefined fixtures (for development purposes).' => 
-      array (
-        0 => 'Önceden tanımlanmış fixture\\\'leri yükleyin. (geliştirme amaçları için)',
-      ),
-      'Used for updating only to a tagged release.' => 
-      array (
-        0 => 'Yalnızca etiketli bir sürüme güncelleme yapmak için kullanılır.',
       ),
       'AzuraCast Setup' => 
       array (
@@ -246,7 +194,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
       array (
-        0 => 'AzuraCast\\\'a hoşgeldiniz. AzuraCast\\’in bazı temel sistemleri kurulurken lütfen bekleyin...',
+        0 => 'AzuraCast\'a hoşgeldiniz. AzuraCast’in bazı temel sistemleri kurulurken lütfen bekleyin...',
       ),
       'Environment: %s' => 
       array (
@@ -278,7 +226,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Installing Data Fixtures' => 
       array (
-        0 => 'Veri Fixture\\\'leri Kuruluyor',
+        0 => 'Veri Fikstürleri Kuruluyor',
       ),
       'Refreshing All Stations' => 
       array (
@@ -296,17 +244,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Kurulumu tamamlamak için %s adresini ziyaret edin.',
       ),
-      'Install fixtures for demo / local development.' => 
-      array (
-        0 => 'Demo / yerel geliştirme için fixture\\\'leri kurun.',
-      ),
       'Fixtures loaded.' => 
       array (
-        0 => 'Fixture\\\'ler yüklendi.',
-      ),
-      'Initial setup of InfluxDB.' => 
-      array (
-        0 => 'InfluxDB ilk kurulumu',
+        0 => 'Fikstürler yüklendi.',
       ),
       'Database created.' => 
       array (
@@ -323,14 +263,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'InfluxDB databases created.' => 
       array (
         0 => 'InfluxDB veritabanları oluşturuldu.',
-      ),
-      'Run one or more scheduled synchronization tasks.' => 
-      array (
-        0 => 'Bir veya daha fazla zamanlanmış senkronizasyon görevi çalıştırın.',
-      ),
-      'The task to run (%s).' => 
-      array (
-        0 => '(%s) görevini çalıştır.',
       ),
       'Record not found.' => 
       array (
@@ -360,13 +292,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Manuel Yedeklemeyi Çalıştır',
       ),
-      'Backup deleted.' => 
-      array (
-        0 => 'Yedekleme silindi!',
-      ),
       'Backup not found.' => 
       array (
         0 => 'Yedekleme bulunamadı!',
+      ),
+      'Backup deleted.' => 
+      array (
+        0 => 'Yedekleme silindi!',
       ),
       'Custom Field updated.' => 
       array (
@@ -394,7 +326,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
-        0 => 'SHOUTcast \\"%s\\ versiyonu kuruludur.',
+        0 => 'SHOUTcast "%s" versiyonu kuruludur.',
       ),
       'Install SHOUTcast' => 
       array (
@@ -650,11 +582,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Path "%s" is not a folder.' => 
       array (
-        0 => '\\"%s\\" bir klasör değildir.',
+        0 => '"%s" bir klasör değildir.',
       ),
       'Could not move "%s" to "%s"' => 
       array (
-        0 => '\\"%s\\" &#61;&#62; \\"%s\\ taşınamadı.',
+        0 => '"%s" &#61;&#62; "%s" taşınamadı.',
       ),
       'Media not found.' => 
       array (
@@ -710,7 +642,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This playlist is not a sequential playlist.' => 
       array (
-        0 => 'Bu çalma listesi \\"SIRALI\\" bir çalma listesi değildir.',
+        0 => 'Bu çalma listesi "SIRALI" bir çalma listesi değildir.',
       ),
       'Format not found.' => 
       array (
@@ -930,7 +862,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
-        0 => 'SHOUTcast v2 kurmak için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın ve sonrasında sayfayı yenileyin.',
+        0 => 'SHOUTcast v2 kurmak için <a href="%s" target="_blank">burayı</a> tıklayın ve sonrasında sayfayı yenileyin.',
       ),
       'This station\'s time zone is currently %s.' => 
       array (
@@ -962,15 +894,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href="%s" target="_blank">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file.' => 
       array (
-        0 => 'En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz.',
+        0 => 'En yeni değişikliklere sahip olmak için <code>docker-compose.yml</code> dosyanızı güncelleyiniz. Dosyanın son sürümüne ulaşmak için <a href="%s" target="_blank">burayı</a> tıklayın.<br> Dosyanızı yardımcı program ile otomatik olarak güncellemek için <code>./docker.sh</code> komutunu kullanabilirsiniz.',
       ),
       'Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.' => 
       array (
-        0 => 'Güncelleme talimatları konusunda detaylı bilgi için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.',
+        0 => 'Güncelleme talimatları konusunda detaylı bilgi için <a href="%s" target="_blank">burayı</a> tıklayın.',
       ),
       'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
       array (
-        0 => 'AzuraCast <a href=\\"%s\\" target=\\"_blank\\">%s sürümü</a> şu an kullanılabilir.',
+        0 => 'AzuraCast <a href="%s" target="_blank">%s sürümü</a> şu an kullanılabilir.',
       ),
       'You are currently running version %s. Updating is highly recommended.' => 
       array (
@@ -1002,7 +934,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
       array (
-        0 => 'Henüz Supervisor\\\'a kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir.',
+        0 => 'Supervisor\'a henüz kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir.',
       ),
       '%s cannot start' => 
       array (
@@ -1080,6 +1012,46 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Şifre şu karakterleri içeremez: %s',
       ),
+      'Generate the translation locale file.' => 
+      array (
+        0 => 'Dil çevirisi yerel dosyasını oluşturun.',
+      ),
+      'Convert translated locale files into PHP arrays.' => 
+      array (
+        0 => 'Çevrilen yerel dosyaları PHP dizilerine dönüştürün.',
+      ),
+      'Migrate existing configuration to new INI format if any exists.' => 
+      array (
+        0 => 'Varsa mevcut ayarları yeni bir INI formatına taşıyın.',
+      ),
+      'Initial setup of InfluxDB.' => 
+      array (
+        0 => 'InfluxDB ilk kurulumu',
+      ),
+      'Install fixtures for demo / local development.' => 
+      array (
+        0 => 'Demo / yerel geliştirme için fikstürleri kurun.',
+      ),
+      'Run all general AzuraCast setup steps.' => 
+      array (
+        0 => 'Tüm genel AzuraCast kurulum adımlarını çalıştırın.',
+      ),
+      'Run one or more scheduled synchronization tasks.' => 
+      array (
+        0 => 'Bir veya daha fazla zamanlanmış senkronizasyon görevi çalıştırın.',
+      ),
+      'Process the message queue.' => 
+      array (
+        0 => 'Mesaj kuyruğunu işleyin.',
+      ),
+      'List all settings in the AzuraCast settings database.' => 
+      array (
+        0 => 'AzuraCast ayarları veritabanında tüm ayarları listeleyin.',
+      ),
+      'Back up the AzuraCast database and statistics (and optionally media).' => 
+      array (
+        0 => 'AzuraCast veritabanını ve istatistiklerini (ve isteğe bağlı olarak medyayı) yedekleyin.',
+      ),
       'Comments' => 
       array (
         0 => 'Açıklamalar',
@@ -1098,7 +1070,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => 'Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek \\"Etkin\\" olarak ayarlanmışsa ve en az bir parça listesi \\"Otomatik Atamaya Dahil Et\\" olarak ayarlanmışsa çalışır.',
+        0 => 'Sistemin performanslarına bağlı olarak şarkı listelerinin otomatik olarak şarkı listelerine atamasına izin verin. Bu işlem arka planda çalışır ve yalnızca bu seçenek "Etkin" olarak ayarlanmışsa ve en az bir parça listesi "Otomatik Atamaya Dahil Et" olarak ayarlanmışsa çalışır.',
       ),
       'Disabled' => 
       array (
@@ -1274,7 +1246,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href=\\"%s\\" target=\\"_blank\\">SHOUTcast Radio Manager</a> sitesinden \\"linux x64\\" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>',
+        0 => '<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href="%s" target="_blank">SHOUTcast Radio Manager</a> sitesinden "linux x64" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>',
       ),
       'Current Installed Version' => 
       array (
@@ -1338,7 +1310,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
       array (
-        0 => 'Yöneticiler burada görünen alanları <a href=\\"%s\\">yönetici sayfası</a>ndan özelleştirebilir.',
+        0 => 'Yöneticiler burada görünen alanları <a href="%s">yönetici sayfası</a>ndan özelleştirebilir.',
       ),
       'Control Song Playback' => 
       array (
@@ -1378,7 +1350,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Seconds from the start of the song that the AutoDJ should start playing.' => 
       array (
-        0 => 'AutoDJ\\\'in şarkıyı çalmaya başlaması için gereken zamanı belirtin.',
+        0 => 'AutoDJ\'in şarkıyı çalmaya başlaması için gereken zamanı belirtin.',
       ),
       'Custom Cues: Cue-Out Point (seconds)' => 
       array (
@@ -1386,7 +1358,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Seconds from the start of the song that the AutoDJ should stop playing.' => 
       array (
-        0 => 'AutoDJ\\\'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin.',
+        0 => 'AutoDJ\'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin.',
       ),
       'Mount Point URL' => 
       array (
@@ -1430,11 +1402,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Publish to "Yellow Pages" Directories' => 
       array (
-        0 => '\\"Yellow Pages\\" Dizininde Yayınla',
+        0 => '"Yellow Pages" Dizininde Yayınla',
       ),
       'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
       array (
-        0 => 'Rayoyu \\"Yellow Pages\\" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz.',
+        0 => 'Radyoyu "Yellow Pages" dizininde yayınlamak istiyorsanız etkinleştirmelisiniz.',
       ),
       'Enable AutoDJ' => 
       array (
@@ -1474,7 +1446,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => 'Özel bağlantı noktası ayarlarını JSON için { key: \\\'value\\\' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz.',
+        0 => 'Özel bağlantı noktası ayarlarını JSON için { key: \'value\' } biçiminde veya XML için &lt;key&gt;value&lt;/key&gt; biçiminde buraya dahil edebilirsiniz.',
       ),
       'Stream path cannot include reserved keywords: %s' => 
       array (
@@ -1486,11 +1458,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
       array (
-        0 => 'Radyoyu \\"Yellow Pages\\" dizininde görüntülenmesini istiyorsanız <a href=\\"%s\\" target=\\"_blank\\">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir.',
+        0 => 'Radyoyu "Yellow Pages" dizininde görüntülenmesini istiyorsanız <a href="%s" target="_blank">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir.',
       ),
       'Basic Information' => 
       array (
-        0 => 'Basit Ayarlar',
+        0 => 'Temel Bilgiler',
       ),
       'Source' => 
       array (
@@ -1506,7 +1478,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
       array (
-        0 => '\\"HAYIR\\" olarak ayarlanırsa AutoDJ müzik çalamaz.',
+        0 => '"HAYIR" olarak ayarlanırsa AutoDJ müzik çalamaz.',
       ),
       'Playlist Name' => 
       array (
@@ -1578,7 +1550,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Hide Metadata from Listeners ("Jingle Mode")' => 
       array (
-        0 => 'Meta Verilerini Gizle (\\"Jingle Mode\\")',
+        0 => 'Meta Verilerini Gizle ("Jingle Mode")',
       ),
       'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
       array (
@@ -1654,7 +1626,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
       array (
-        0 => 'Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.',
+        0 => 'Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href="%s" target="_blank">burayı</a> tıklayın.',
       ),
       'AutoDJ Scheduling Options' => 
       array (
@@ -1746,7 +1718,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Use Browser Default' => 
       array (
-        0 => 'Varsayılan',
+        0 => 'Tarayıcı Dilini Kullan',
       ),
       'Name' => 
       array (
@@ -1910,7 +1882,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
       array (
-        0 => 'Bu ayar \\"Evet\\" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için \\"Hayır\\" olarak ayarlayın.',
+        0 => 'Bu ayar "Evet" olarak ayarlanmışsa kullanılabilir olduğunda temel URL yerine tarayıcı URLsi kullanılacaktır. Her zaman temel URLyi kullanmak için "Hayır" olarak ayarlayın.',
       ),
       'Use Web Proxy for Radio' => 
       array (
@@ -1954,7 +1926,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Use WebSockets for Now Playing Updates' => 
       array (
-        0 => 'Çalan Şarkı Bilgisi İçin WebSockets Kullanın',
+        0 => 'Çalan Şarkı Bilgisi İçin WebSocket Kullanın',
       ),
       'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
       array (
@@ -1970,15 +1942,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
       array (
-        0 => '\\"Evet\\" olarak ayarlandığında her zaman güvenli bağlantı \\"https://\\" kullanılır.',
+        0 => '"Evet" olarak ayarlandığında her zaman güvenli bağlantı "https://" kullanılır.',
+      ),
+      'Enable Built-in FTP Server' => 
+      array (
+        0 => 'FTP Sunucusunu Etkinleştir',
+      ),
+      'If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage.' => 
+      array (
+        0 => 'Kullanıcıların müzik dosyalarını yönettikleri herhangi bir radyoya AzuraCast kimlik bilgilerini kullanarak FTP yoluyla yüklemesine izin vermek için etkinleştirmelisiniz.',
       ),
       'API "Access-Control-Allow-Origin" header' => 
       array (
-        0 => '\\"Access-Control-Allow-Origin\\" API Başlığı',
+        0 => '"Access-Control-Allow-Origin" API Başlığı',
       ),
       '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
       array (
-        0 => 'Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href=\\"%s\\" target=\\"_blank\\">burayı</a> tıklayın.',
+        0 => 'Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir kaynak listesi belirtin. Daha fazla bilgi için <a href="%s" target="_blank">burayı</a> tıklayın.',
       ),
       'Privacy Controls' => 
       array (
@@ -1986,7 +1966,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here.' => 
       array (
-        0 => 'AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast\\\'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin.',
+        0 => 'AzuraCast radyo veya dinleyici verilerinizi herhangi bir harici sunucuya göndermez. AzuraCast\'in dinleyicileriniz hakkında ne kadar veri toplayacağını belirtin.',
       ),
       'Listener Analytics Collection' => 
       array (
@@ -2014,7 +1994,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.' => 
       array (
-        0 => 'Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href=\\"%s\\" target=\\"_blank\\">gizlilik politikası</a>nı inceleyebilirsiniz.',
+        0 => 'Kurulumunuzun güncellemeleri ve duyuruları kontrol etmek için AzuraCast merkezi sunucularıyla iletişim kurup kurmayacağını seçin.<br>AzuraCast gizliliğinize önem verir. Daha fazla bilgi için AzuraCast <a href="%s" target="_blank">Gizlilik Politikası</a>nı inceleyebilirsiniz.',
       ),
       'Check for Updates and Announcements' => 
       array (
@@ -2046,7 +2026,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Error reports are powered by <a href="%s" target="_blank">%s</a>.' => 
       array (
-        0 => 'Hata raporları <a href=\\"%s\\" target=\\"_blank\\">%s</a> tarafından desteklenmektedir.',
+        0 => 'Hata raporları <a href="%s" target="_blank">%s</a> tarafından desteklenmektedir.',
       ),
       'Metadata' => 
       array (
@@ -2114,7 +2094,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.' => 
       array (
-        0 => 'İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL-dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın.',
+        0 => 'İsteğe bağlı olarak bu radyonun URLsi için kullanılacak kısa bir URL dostu isim yazın. Radyo adına göre otomatik olarak oluşturmak için bu alanı boş bırakın.',
       ),
       'Number of Recently Played Songs' => 
       array (
@@ -2122,7 +2102,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
-        0 => 'Bu istasyon için \\"Şarkı Geçmişi\\" bölümünde ve tüm ortak APIlerde görünecek şarkı sayısını belirtin.',
+        0 => 'Bu istasyon için "Şarkı Geçmişi" bölümünde ve tüm ortak API\'lerde görünecek şarkı sayısını belirtin.',
       ),
       'Broadcasting Service' => 
       array (
@@ -2166,7 +2146,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
       array (
-        0 => 'Bu kod sunucu yapılandırmasına dahil edilecektir. JSON için {\\"new_key\\": \\"new_value\\"} veya XML için &lt;new_key&gt;new_value&lt;/new_key&gt; biçimini kullanabilirsiniz.',
+        0 => 'Bu kod sunucu yapılandırmasına dahil edilecektir. JSON için {"new_key": "new_value"} veya XML için &lt;new_key&gt;new_value&lt;/new_key&gt; biçimini kullanabilirsiniz.',
       ),
       'AutoDJ Service' => 
       array (
@@ -2210,7 +2190,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Compress and normalize your station\'s audio, producing a more uniform and "full" sound.' => 
       array (
-        0 => 'Daha düzenli ve \\"tam\\" bir ses üreten radyonuzun sesini sıkıştırın ve normalleştirin.',
+        0 => 'Daha düzenli ve "tam" bir ses üreten radyonuzun sesini sıkıştırın ve normalleştirin.',
       ),
       'Allow Song Requests' => 
       array (
@@ -2298,7 +2278,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
       array (
-        0 => 'Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. \\"Sıradaki Şarkı\\" ve diğer bazı özellikler kullanılamayacaktır.',
+        0 => 'Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. "Sıradaki Şarkı" ve diğer bazı özellikler kullanılamayacaktır.',
       ),
       'Character Set Encoding' => 
       array (
@@ -2326,7 +2306,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
       array (
-        0 => 'Bu radyonun kullanabileceği maksimum disk alanı ayarlayın. Boş bırakırsanız sunucu depolama alanı dolana kadar kullanılabilir. Depolama alanı büyüklüğünü 1024 bayt cinsinden hesaplayarak yazmalınısız. Örnek: \\"2 GB\\" veya \\"2048 MB\\"',
+        0 => 'Bu radyonun kullanabileceği maksimum disk alanı ayarlayın. Boş bırakırsanız sunucu depolama alanı dolana kadar kullanılabilir. Depolama alanı büyüklüğünü 1024 bayt cinsinden hesaplayarak yazmalınısız. Örnek: "2 GB" veya "2048 MB"',
       ),
       'Base Station Directory' => 
       array (
@@ -2382,7 +2362,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Copy Streamer/DJ Accounts?' => 
       array (
-        0 => 'DJ hesapları kopyalansın mı?"',
+        0 => 'DJ hesapları kopyalansın mı?',
       ),
       'Copy Permissions?' => 
       array (
@@ -2390,7 +2370,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.' => 
       array (
-        0 => '\\"Evet\\" seçilirse mevcut radyo izinlerine sahip olan kullanıcıları yeni radyoya atanacaktır.',
+        0 => '"Evet" seçilirse mevcut radyo izinlerine sahip olan kullanıcıları yeni radyoya atanacaktır.',
       ),
       'Create New Station' => 
       array (
@@ -2466,7 +2446,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
       array (
-        0 => 'Değişkenler {{ var.name }} biçimindedir. <a href=\\"%s\\" target=\\"_blank\\"> Çalan Şarkı API</a>si tüm değerler kullanım için uygundur. Boş alanlar dikkate alınmaz.',
+        0 => 'Değişkenler {{ var.name }} biçimindedir. <a href="%s" target="_blank"> Çalan Şarkı API</a>si tüm değerler kullanım için uygundur. Boş alanlar dikkate alınmaz.',
       ),
       'Main Message Content' => 
       array (
@@ -2512,7 +2492,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Web kancaları belirlediğiniz tetikleyicilerden birinin radyonuzda gerçekleştiği zaman 
                 bildirmek için belirttiğiniz URL’ye otomatik olarak bir HTTP POST isteği gönderir.
-                POST mesajının gövdesi radyonuz için <a href=\\"%s\\" target=\\"_blank\\">Çalan Şarkı API</a> cevabıyla aynıdır.
+                POST mesajının gövdesi radyonuz için <a href="%s" target="_blank">Çalan Şarkı API</a> cevabıyla aynıdır.
                 Hızlı bir şekilde işlemek için entegresyonların kısa bir zaman aşımı süresi vardır. bu nedenle
                 yanıtlayan hizmetin isteği 2 saniyeden daha kısa sürede ele alması için en iyi duruma getirilmesi gerekir."',
       ),
@@ -2546,7 +2526,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
       array (
-        0 => 'Daha fazla bilgi için <a href=\\"%s\\" target=\\"_blank\\">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz.',
+        0 => 'Daha fazla bilgi için <a href="%s" target="_blank">Telegram Dökümanları</a> sayfasını ziyaret edebilirsiniz.',
       ),
       'Chat ID' => 
       array (
@@ -2578,7 +2558,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The station ID will be a numeric string that starts with the letter S.' => 
       array (
-        0 => '\\"S\\" harfi ile başlayan TuneIn Radyo ID\\\'sini buraya yazın.',
+        0 => '"S" harfi ile başlayan TuneIn Radyo ID\'sini buraya yazın.',
       ),
       'TuneIn Partner ID' => 
       array (
@@ -2603,12 +2583,12 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '"Twitter hesabı yapılandırma adımları:<br>
                 <ol type="1">
-                    <li><a href=\\"%s\\" target=\\"_blank\\">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.
+                    <li><a href="%s" target="_blank">Twitter Uygulama</a> sitesinde bir uygulama oluşturun.
                     Bu kurulum uygulama URLsi olarak temel URLdir.</li>
-                    <li>Yeni oluşturulan uygulamada \\"Anahtarlar ve Erişim Bilgileri\\" sekmesini tıklayın.</li>
-                    <li>Sayfanın alt tarafında \\"Erişim Kartımı Oluştur\\" düğmesine tıklayın.</li>
+                    <li>Yeni oluşturulan uygulamada "Anahtarlar ve Erişim Bilgileri" sekmesini tıklayın.</li>
+                    <li>Sayfanın alt tarafında "Erişim Kartımı Oluştur" düğmesine tıklayın.</li>
                 </ol>
-                <p>Bu adımlar tamamlandıktan sonra \\"Anahtarlar ve Erişim Bilgileri\\" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>',
+                <p>Bu adımlar tamamlandıktan sonra "Anahtarlar ve Erişim Bilgileri" sayfasındaki bilgileri aşağıdaki alanlara girin.</p>',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -2790,10 +2770,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Yayını Yeniden Başlat',
       ),
-      'Get Next Song Debug Mode' => 
-      array (
-        0 => 'Sıradaki Şarkı Hata Ayıklama Moduna Ayarla',
-      ),
       'Generic Web Hook' => 
       array (
         0 => 'Genel Web Kancası',
@@ -2808,7 +2784,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Send song metadata changes to TuneIn.' => 
       array (
-        0 => 'Şarkı meta verileri değişikliklerini TuneIn\\\'e gönderin.',
+        0 => 'Şarkı meta verileri değişikliklerini TuneIn\'e gönderin.',
       ),
       'Discord Webhook' => 
       array (
@@ -2988,7 +2964,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete backup "%s"?' => 
       array (
-        0 => '\\"%s\\ yedeklemesi silinsin mi?',
+        0 => '"%s" yedeklemesi silinsin mi?',
       ),
       'Backups Home' => 
       array (
@@ -3004,7 +2980,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete custom field "%s"?' => 
       array (
-        0 => '\\"%s\\ özel alan silinsin mi?',
+        0 => '"%s" özel alan silinsin mi?',
       ),
       'Server Status' => 
       array (
@@ -3048,7 +3024,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete role "%s"?' => 
       array (
-        0 => '\\"%s\\ yetki silinsin mi?',
+        0 => '"%s" yetki silinsin mi?',
       ),
       'This role cannot be deleted.' => 
       array (
@@ -3096,7 +3072,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete station "%s"?' => 
       array (
-        0 => '\\"%s\\" radyo silinsin mi?',
+        0 => '"%s" radyo silinsin mi?',
       ),
       'Log In' => 
       array (
@@ -3104,7 +3080,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete user "%s"?' => 
       array (
-        0 => '\\"%s\\" kullanıcı silinsin mi?',
+        0 => '"%s" kullanıcı silinsin mi?',
       ),
       '(You)' => 
       array (
@@ -3120,7 +3096,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'name@example.com' => 
       array (
-        0 => 'Mail Adresinizi Yazın',
+        0 => 'E-Posta Adresinizi Yazın',
       ),
       'Enter your password' => 
       array (
@@ -3136,7 +3112,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       '<a href="%s" target="_blank">Forgot your password?</a>' => 
       array (
-        0 => '<a href=\\"%s\\" target=\\"_blank\\">Şifreni mi unuttun?</a>',
+        0 => '<a href="%s" target="_blank">Şifreni mi unuttun?</a>',
       ),
       'Enter Two-Factor Code' => 
       array (
@@ -3158,7 +3134,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
         0 => 'API anahtarları bazı sistem işlevlerine giriş yapmak zorunda kalmadan erişmek için kullanılabilir. Oluşturduğunuz tüm anahtarlar
-            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href=\\"%s\\">API Belgeleri</a>ne bakın.',
+            sistemdeki izinlerinizi paylaşır. Daha fazla bilgi için <a href="%s">API Belgeleri</a>ne bakın.',
       ),
       'Key Identifier' => 
       array (
@@ -3182,7 +3158,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
       array (
-        0 => 'API çağrıları yaparken bu değeri \\"X-API-Key\\" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz.',
+        0 => 'API çağrıları yaparken bu değeri "X-API-Key" başlığında kendiniz gibi doğrulamak için iletebilirsiniz. Yalnızca kullanıcı hesabınızın gerçekleştirmesine izin verilen işlemleri gerçekleştirebilirsiniz.',
       ),
       'Continue' => 
       array (
@@ -3378,7 +3354,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Request Song' => 
       array (
-        0 => 'Şarkı İsteme',
+        0 => 'Şarkı İste',
       ),
       'Playlist' => 
       array (
@@ -3422,7 +3398,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Welcome to AzuraCast!' => 
       array (
-        0 => 'AzuraCast\\\'e Hoşgeldiniz!',
+        0 => 'AzuraCast\'e Hoşgeldiniz!',
       ),
       'Let\'s get started by creating your Super Administrator account.' => 
       array (
@@ -3446,7 +3422,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
-        0 => 'İlk radyo istasyonunuzu aşğıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz.',
+        0 => 'İlk radyo radyonuzu aşağıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz.',
       ),
       'Create a New Radio Station' => 
       array (
@@ -3486,7 +3462,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
       array (
-        0 => 'Türkçeleştirme\\: ByBiLaL \\- AzuraCast\\\'i beğendiniz mi? <a href=\\"%s\\" target=\\"_blank\\">Destek olmak için bağış yapın!</a>',
+        0 => 'Türkçeleştirme: ByBiLaL - AzuraCast\'i beğendiniz mi? <a href="%s" target="_blank">Destek olmak için bağış yapın!</a>',
       ),
       'Mascot designed by %s' => 
       array (
@@ -3498,7 +3474,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
       array (
-        0 => 'SSS belgelerine ulaşmak için <a href=\\"%s\\" target=\\"_blank\\">destek dökümanları</a> sayfasına göz atabilirsiniz.',
+        0 => 'SSS belgelerine ulaşmak için <a href="%s" target="_blank">destek dökümanları</a> sayfasına göz atabilirsiniz.',
       ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
@@ -3530,7 +3506,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
       array (
-        0 => 'Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda \\"Etkinleştir\\" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır.',
+        0 => 'Otomatik atamayı yapılandırdıktan sonra otomatik atama işlemini çalıştırmak için aşağıdaki düğmeyi tıklayın. Aşağıda "Etkinleştir" seçeneğini seçmediğiniz sürece bu işlem hiç çalışmayacaktır.',
       ),
       'Run Automated Assignment' => 
       array (
@@ -3576,9 +3552,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Kullanılan Depolama Alanı: %s / %s (%d Dosya)',
       ),
-      'You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.' => 
+      'You can also upload files in bulk via FTP.' => 
       array (
-        0 => 'Ayrıca dosyaları SFTP kullanarak yüklemek için <a href=\\"%s\\" target=\\"_blank\\">buradaki</a> dökümanı inceleyebilirsiniz. Yeni yüklenen dosyalar birkaç dakika içinde otomatik olarak işlenecektir.',
+        0 => 'Ayrıca dosyaları FTP üzerinden toplu olarak da yükleyebilirsiniz.',
+      ),
+      'View connection instructions' => 
+      array (
+        0 => 'Bağlantı Talimatlarını Görüntüle',
       ),
       'Drag files here to upload to this folder or ' => 
       array (
@@ -3636,6 +3616,42 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Geri',
       ),
+      'FTP Connection Information' => 
+      array (
+        0 => 'FTP Bağlantı Bilgisi',
+      ),
+      'Server' => 
+      array (
+        0 => 'Sunucu',
+      ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => '<code>%s</code> IP adresiniz üzerinden bağlantı kurabilirsiniz.',
+      ),
+      'Port' => 
+      array (
+        0 => 'Port',
+      ),
+      'Protocol' => 
+      array (
+        0 => 'Protokol',
+      ),
+      'FTP with Explicit TLS (FTPS)' => 
+      array (
+        0 => 'FTP için Aktif TLS Kullan (FTPS)',
+      ),
+      'Unencrypted FTP is also allowed, but not recommended.' => 
+      array (
+        0 => 'Şifrelenmemiş FTP bağlantısına izin ver. Ancak bu <b>"ÖNERİLMEZ"</b>!',
+      ),
+      'Your AzuraCast E-mail Address' => 
+      array (
+        0 => 'AzuraCast E-Posta Adresiniz',
+      ),
+      'Your AzuraCast Password' => 
+      array (
+        0 => 'AzuraCast Şifreniz',
+      ),
       'Available Logs' => 
       array (
         0 => 'Mevcut Günlükler',
@@ -3650,7 +3666,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete mount point "%s"?' => 
       array (
-        0 => '\\"%s\\" bağlantı noktası silinsin mi?',
+        0 => '"%s" bağlantı noktası silinsin mi?',
       ),
       'Default Mount' => 
       array (
@@ -3670,7 +3686,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete playlist "%s"?' => 
       array (
-        0 => '\\"%s\\" çalma listesi silinsin mi?',
+        0 => '"%s" çalma listesi silinsin mi?',
       ),
       'More' => 
       array (
@@ -3754,7 +3770,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
       array (
-        0 => 'Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href=\\"%s\\">radyo profili</a>ni düzenleyin.',
+        0 => 'Radyonuz yayın için şu anda etkin değildir. Müzikleri, çalma listelerini ve diğer radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için <a href="%s">radyo profili</a>ni düzenleyin.',
       ),
       'Running' => 
       array (
@@ -3914,7 +3930,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete remote relay "%s"?' => 
       array (
-        0 => '\\"%s\\" yönlendirme silinsin mi?',
+        0 => '"%s" yönlendirme silinsin mi?',
       ),
       'Song Duplicates' => 
       array (
@@ -4102,7 +4118,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete streamer "%s"?' => 
       array (
-        0 => '\\"%s\\" silmek istediğinizden emin misiniz?',
+        0 => '"%s" silmek istediğinizden emin misiniz?',
       ),
       'Connection Information' => 
       array (
@@ -4111,18 +4127,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'IceCast Clients' => 
       array (
         0 => 'IceCast Bilgileri',
-      ),
-      'Server' => 
-      array (
-        0 => 'Sunucu',
-      ),
-      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
-      array (
-        0 => '<code>%s</code> IP adresiniz üzerinden yayına bağlanabilirsiniz.',
-      ),
-      'Port' => 
-      array (
-        0 => 'Port',
       ),
       'Mount Name' => 
       array (
@@ -4142,7 +4146,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
       array (
-        0 => 'Canlı yayın programlarına ait dökümanlara ulaşmak için <a href=\\"%s\\" target=\\"_blank\\">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz.',
+        0 => 'Canlı yayın programlarına ait dökümanlara ulaşmak için <a href="%s" target="_blank">AzuraCast Wiki</a> sayfasını ziyaret edebilirsiniz.',
       ),
       'Select the type of web hook to create.' => 
       array (
@@ -4170,7 +4174,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete web hook "%s"?' => 
       array (
-        0 => '\\"%s\\" web kancasını silmek istediğinizden emin misiniz?',
+        0 => '"%s" web kancasını silmek istediğinizden emin misiniz?',
       ),
       'The page you requested was not found.' => 
       array (

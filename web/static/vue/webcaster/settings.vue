@@ -86,11 +86,11 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <input type="text" v-model="djUsername" class="form-control"
-                                               v-bind:placeholder="lang_dj_username">
+                                               v-bind:placeholder="langDjUsername">
                                     </div>
                                     <div class="col-6">
                                         <input type="password" v-model="djPassword" class="form-control"
-                                               v-bind:placeholder="lang_dj_password">
+                                               v-bind:placeholder="langDjPassword">
                                     </div>
                                 </div>
                             </div>
@@ -131,11 +131,11 @@
         </div>
 
         <div class="card-actions">
-            <button class="btn btn-success" v-on:click="startStreaming" v-if="!isStreaming" v-translate>
-                Start Streaming
+            <button class="btn btn-success" v-on:click="startStreaming" v-if="!isStreaming">
+                {{ langStreamButton }}
             </button>
-            <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming" v-translate>
-                Stop Streaming
+            <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming">
+                {{ langStreamButton }}
             </button>
             <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }" v-translate>
                 Cue
@@ -164,11 +164,16 @@
       }
     },
     computed: {
-      lang_dj_username () {
+      langDjUsername () {
         return this.$gettext('Username')
       },
-      lang_dj_password () {
+      langDjPassword () {
         return this.$gettext('Password')
+      },
+      langStreamButton () {
+        return (this.isStreaming)
+          ? this.$gettext('Stop Streaming')
+          : this.$gettext('Start Streaming')
       },
       uri () {
         return 'wss://' + this.djUsername + ':' + this.djPassword + '@' + this.baseUri

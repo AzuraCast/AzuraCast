@@ -171,7 +171,7 @@
         })
       },
       selectableFields () {
-        return _.filter(this.fields, (field) => {
+        return _.filter(this.fields.slice(), (field) => {
           return _.defaultTo(field.selectable, false)
         })
       },

@@ -81,9 +81,17 @@
           'files': this.selectedFiles,
           'directory': this.destinationDirectory
         }).then((resp) => {
+          let notifyMessage = this.$gettext('Files moved:')
+          notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+
           this.close()
           this.$emit('relist')
         }).catch((err) => {
+          console.error(err)
+
+          let notifyMessage = this.$gettext('An error occurred and your request could not be completed.')
+          notify('<b>' + notifyMessage + '</b>', 'danger', false)
+
           this.close()
           this.$emit('relist')
         })

@@ -32,12 +32,16 @@ class FilesController
             ->getSingleScalarResult();
 
         // Get list of custom fields.
-        $custom_fields_raw = $em->createQuery(/** @lang DQL */ 'SELECT cf.id, cf.name FROM App\Entity\CustomField cf ORDER BY cf.name ASC')
+        $custom_fields_raw = $em->createQuery(/** @lang DQL */ 'SELECT cf.id, cf.short_name, cf.name FROM App\Entity\CustomField cf ORDER BY cf.name ASC')
             ->getArrayResult();
 
         $custom_fields = [];
         foreach ($custom_fields_raw as $row) {
-            $custom_fields['media_custom_' . $row['id']] = $row['name'];
+            $custom_fields[] = [
+                'display_key' => 'media_custom_' . $row['id'],
+                'key' => $row['short_name'],
+                'label' => $row['name'],
+            ];
         }
 
         return $request->getView()->renderToResponse($response, 'stations/files/index', [

@@ -57,6 +57,7 @@
                                                  :state="$v.form.lyrics.$dirty ? !$v.form.lyrics.$error : null"></b-form-textarea>
                             </b-form-group>
                         </b-col>
+                        <!--
                         <b-col md="6">
                             <b-form-group label-for="edit_form_art">
                                 <template v-slot:label v-translate>
@@ -66,6 +67,7 @@
                                              :state="$v.form.art.$dirty ? !$v.form.art.$error : null"></b-form-file>
                             </b-form-group>
                         </b-col>
+                        -->
                         <b-col md="6">
                             <b-form-group label-for="edit_form_isrc">
                                 <template v-slot:label v-translate>
@@ -82,7 +84,12 @@
                 </b-tab>
                 <b-tab :title="langCustomFieldsTab">
                     <b-row>
-
+                        <b-col md="6" v-for="(field, _) in customFields" :key="field.key">
+                            <b-form-group :label-for="'edit_form_custom_'+field.key" :label="field.label">
+                                <b-form-input type="text" :id="'edit_form_custom_'+field.key"
+                                              v-model="form.custom_fields[field.key]"></b-form-input>
+                            </b-form-group>
+                        </b-col>
                     </b-row>
                 </b-tab>
                 <b-tab :title="langAdvancedSettingsTab">
@@ -173,10 +180,14 @@
   import { validationMixin } from 'vuelidate'
   import axios from 'axios'
   import required from 'vuelidate/src/validators/required'
+  import _ from 'lodash'
 
   export default {
     name: 'EditModal',
     mixins: [validationMixin],
+    props: {
+      customFields: Array
+    },
     data () {
       return {
         loading: true,
@@ -218,6 +229,12 @@
     },
     methods: {
       getBlankForm () {
+        let customFields = {}
+
+        _.forEach(this.customFields.slice(), (field) => {
+          customFields[field.key] = null
+        })
+
         return {
           path: null,
           title: null,
@@ -225,12 +242,12 @@
           album: null,
           lyrics: null,
           isrc: null,
-          art: null,
           fade_overlap: null,
           fade_in: null,
           fade_out: null,
           cue_in: null,
-          cue_out: null
+          cue_out: null,
+          custom_fields: customFields
         }
       },
       open (recordUrl) {
@@ -252,8 +269,14 @@
             fade_in: d.fade_in,
             fade_out: d.fade_out,
             cue_in: d.cue_in,
-            cue_out: d.cue_out
+            cue_out: d.cue_out,
+            custom_fields: {}
           }
+
+          _.forEach(this.customFields.slice(), (field) => {
+            this.form.custom_fields[field.key] = _.defaultTo(d.custom_fields[field.key], null)
+          })
+
           this.loading = false
         }).catch((err) => {
           console.log(err)
@@ -274,10 +297,17 @@
         }
 
         axios.put(this.recordUrl, this.form).then((resp) => {
+          let notifyMessage = this.$gettext('Changes saved.')
+          notify('<b>' + notifyMessage + '</b>', 'success', false)
+
           this.$emit('relist')
           this.close()
         }).catch((err) => {
           console.error(err)
+
+          let notifyMessage = this.$gettext('An error occurred and your request could not be completed.')
+          notify('<b>' + notifyMessage + '</b>', 'danger', false)
+
           this.$emit('relist')
           this.close()
         })

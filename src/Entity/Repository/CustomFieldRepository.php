@@ -34,15 +34,15 @@ class CustomFieldRepository extends Repository
      */
     public function getCustomFields(Entity\StationMedia $media): array
     {
-        $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT e 
-            FROM App\Entity\StationMediaCustomField e 
+        $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT cf.short_name, e.value 
+            FROM App\Entity\StationMediaCustomField e JOIN e.field cf
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->getArrayResult();
 
         $result = [];
         foreach ($metadata_raw as $row) {
-            $result[$row['field_id']] = $row['value'];
+            $result[$row['short_name']] = $row['value'];
         }
 
         return $result;
@@ -61,12 +61,15 @@ class CustomFieldRepository extends Repository
             ->execute();
 
         foreach ($custom_fields as $field_id => $field_value) {
-            /** @var Entity\CustomField $field */
-            $field = $this->em->getReference(Entity\CustomField::class, $field_id);
+            $field = is_numeric($field_id)
+                ? $this->em->find(Entity\CustomField::class, $field_id)
+                : $this->em->getRepository(Entity\CustomField::class)->findOneBy(['short_name' => $field_id]);
 
-            $record = new Entity\StationMediaCustomField($media, $field);
-            $record->setValue($field_value);
-            $this->em->persist($record);
+            if ($field instanceof Entity\CustomField) {
+                $record = new Entity\StationMediaCustomField($media, $field);
+                $record->setValue($field_value);
+                $this->em->persist($record);
+            }
         }
 
         $this->em->flush();

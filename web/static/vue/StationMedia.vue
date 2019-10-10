@@ -91,7 +91,7 @@
         <rename-modal :rename-url="renameUrl" ref="renameModal" @relist="onTriggerRelist">
         </rename-modal>
 
-        <edit-modal ref="editModal" @relist="onTriggerRelist"></edit-modal>
+        <edit-modal ref="editModal" :custom-fields="customFields" @relist="onTriggerRelist"></edit-modal>
     </div>
 </template>
 
@@ -134,37 +134,52 @@
       mkdirUrl: String,
       renameUrl: String,
       editUrl: String,
-      initialPlaylists: Array
+      initialPlaylists: Array,
+      customFields: Array
     },
     data () {
+      let fields = [
+        { key: 'name', label: this.$gettext('Name'), sortable: true },
+        { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
+        { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true, visible: false },
+        { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
+        { key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true }
+      ]
+
+      _.forEach(this.customFields.slice(), (field) => {
+        fields.push({
+          key: field.display_key,
+          label: field.label,
+          sortable: true,
+          selectable: true,
+          visible: false
+        })
+      })
+
+      fields.push(
+        { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
+        {
+          key: 'mtime',
+          label: this.$gettext('Modified'),
+          sortable: true,
+          formatter: (value, key, item) => {
+            if (!value) {
+              return ''
+            }
+            return moment.unix(value).format('lll')
+          },
+          selectable: true,
+          visible: true
+        },
+        { key: 'playlists', label: this.$gettext('Playlists'), sortable: true, selectable: true, visible: true },
+        { key: 'commands', label: this.$gettext('Actions'), sortable: false }
+      )
+
       return {
+        fields: fields,
         selectedFiles: [],
         currentDirectory: '',
-        searchPhrase: null,
-        fields: [
-          { key: 'name', label: this.$gettext('Name'), sortable: true },
-          { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
-          { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true, visible: false },
-          { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
-          { key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true },
-          // TODO custom fields
-          { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
-          {
-            key: 'mtime',
-            label: this.$gettext('Modified'),
-            sortable: true,
-            formatter: (value, key, item) => {
-              if (!value) {
-                return ''
-              }
-              return moment.unix(value).format('lll')
-            },
-            selectable: true,
-            visible: true
-          },
-          { key: 'playlists', label: this.$gettext('Playlists'), sortable: true, selectable: true, visible: true },
-          { key: 'commands', label: this.$gettext('Actions'), sortable: false }
-        ]
+        searchPhrase: null
       }
     },
     mounted () {

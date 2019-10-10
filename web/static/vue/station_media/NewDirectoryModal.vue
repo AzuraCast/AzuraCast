@@ -65,10 +65,17 @@
           name: this.newDirectory,
           file: this.currentDirectory
         }).then((resp) => {
+          let notifyMessage = this.$gettext('New directory created.')
+          notify('<b>' + notifyMessage + '</b>', 'success', false)
+
           this.$emit('relist')
           this.close()
         }).catch((err) => {
           console.error(err)
+
+          let notifyMessage = this.$gettext('An error occurred and your request could not be completed.')
+          notify('<b>' + notifyMessage + '</b>', 'danger', false)
+
           this.$emit('relist')
           this.close()
         })

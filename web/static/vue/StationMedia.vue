@@ -66,12 +66,14 @@
                 </template>
                 <template v-slot:cell(commands)="row">
                     <template v-if="row.item.media_can_edit">
-                        <a class="btn btn-sm btn-primary" :href="row.item.media_edit_url">{{ langEditButton }}</a>
+                        <b-button size="sm" variant="primary" :href="row.item.media_edit_url">
+                            {{ langEditButton }}
+                        </b-button>
                     </template>
                     <template v-else-if="row.item.can_rename">
-                        <a class="btn btn-sm btn-primary" @click.prevent="rename(row.item.path)">
+                        <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
                             {{ langRenameButton }}
-                        </a>
+                        </b-button>
                     </template>
                     <template v-else>&nbsp;</template>
                 </template>

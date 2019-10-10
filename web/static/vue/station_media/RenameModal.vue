@@ -1,26 +1,35 @@
 <template>
     <b-modal id="rename_file" centered ref="modal" :title="langRenameFile">
-        <form @submit.prevent="doRename">
-            <div class="form-group">
-                <label for="new_path" class="control-label" v-translate>New File Name:</label>
-                <input type="text" class="form-control" id="new_path" v-model="form.newPath" required>
-            </div>
-        </form>
+        <b-form @submit.prevent="doRename">
+            <b-form-group label-for="new_directory_name">
+                <template v-slot:label v-translate>
+                    New File Name
+                </template>
+                <b-input type="text" id="new_directory_name" v-model="$v.form.newPath.$model"
+                         :state="$v.form.newPath.$dirty ? !$v.form.newPath.$error : null"></b-input>
+                <b-form-invalid-feedback v-translate>
+                    This field is required.
+                </b-form-invalid-feedback>
+            </b-form-group>
+        </b-form>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close" v-translate>
                 Close
             </b-button>
-            <b-button variant="primary" @click="doRename" v-translate>
+            <b-button variant="primary" @click="doRename" :disabled="$v.form.$invalid" v-translate>
                 Rename
             </b-button>
         </template>
     </b-modal>
 </template>
 <script>
+  import { validationMixin } from 'vuelidate'
+  import { required } from 'vuelidate/lib/validators'
   import axios from 'axios'
 
   export default {
     name: 'RenameModal',
+    mixins: [validationMixin],
     props: {
       renameUrl: String
     },
@@ -29,6 +38,13 @@
         form: {
           file: null,
           newPath: null
+        }
+      }
+    },
+    validations: {
+      form: {
+        newPath: {
+          required
         }
       }
     },
@@ -45,9 +61,15 @@
         this.$refs.modal.show()
       },
       close () {
+        this.$v.form.$reset()
         this.$refs.modal.hide()
       },
       doRename () {
+        this.$v.form.$touch()
+        if (this.$v.form.$anyError) {
+          return
+        }
+
         axios.put(this.renameUrl, this.form).then((resp) => {
           this.$refs.modal.hide()
           this.$emit('relist')

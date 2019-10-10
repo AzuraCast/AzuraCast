@@ -66,7 +66,7 @@
                 </template>
                 <template v-slot:cell(commands)="row">
                     <template v-if="row.item.media_can_edit">
-                        <b-button size="sm" variant="primary" :href="row.item.media_edit_url">
+                        <b-button size="sm" variant="primary" @click.prevent="edit(row.item.media_edit_url)">
                             {{ langEditButton }}
                         </b-button>
                     </template>
@@ -90,6 +90,8 @@
 
         <rename-modal :rename-url="renameUrl" ref="renameModal" @relist="onTriggerRelist">
         </rename-modal>
+
+        <edit-modal ref="editModal" @relist="onTriggerRelist"></edit-modal>
     </div>
 </template>
 
@@ -109,11 +111,21 @@
   import NewDirectoryModal from './station_media/NewDirectoryModal.vue'
   import MoveFilesModal from './station_media/MoveFilesModal.vue'
   import RenameModal from './station_media/RenameModal.vue'
+  import EditModal from './station_media/EditModal.vue'
   import { formatFileSize } from './station_media/utils'
   import _ from 'lodash'
 
   export default {
-    components: { RenameModal, MoveFilesModal, NewDirectoryModal, FileUpload, MediaToolbar, DataTable, Breadcrumb },
+    components: {
+      EditModal,
+      RenameModal,
+      MoveFilesModal,
+      NewDirectoryModal,
+      FileUpload,
+      MediaToolbar,
+      DataTable,
+      Breadcrumb
+    },
     props: {
       listUrl: String,
       batchUrl: String,
@@ -206,6 +218,9 @@
       },
       rename (path) {
         this.$refs.renameModal.open(path)
+      },
+      edit (recordUrl) {
+        this.$refs.editModal.open(recordUrl)
       },
       requestConfig (config) {
         config.params.file = this.currentDirectory

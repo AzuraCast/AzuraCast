@@ -88,7 +88,7 @@ class ListAction
                     'art' => (string)$router->named('api:stations:media:art',
                         ['station_id' => $station->getId(), 'media_id' => $media_row['unique_id']]),
                     'can_edit' => true,
-                    'edit_url' => (string)$router->named('stations:files:edit',
+                    'edit_url' => (string)$router->named('api:stations:file',
                         ['station_id' => $station->getId(), 'id' => $media_row['id']]),
                     'play_url' => (string)$router->named('api:stations:files:download',
                         ['station_id' => $station->getId()],

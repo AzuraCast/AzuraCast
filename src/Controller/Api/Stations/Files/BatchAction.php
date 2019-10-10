@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Stations\Files;
+namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
 use App\Flysystem\StationFilesystem;
@@ -7,54 +7,22 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
-use Azura\Exception\CsrfValidationException;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 
-class BatchController extends FilesControllerAbstract
+class BatchAction
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var Entity\Repository\StationMediaRepository */
-    protected $mediaRepo;
-
-    /** @var Entity\Repository\StationPlaylistMediaRepository */
-    protected $playlistMediaRepo;
-
-    /** @var Filesystem */
-    protected $filesystem;
-
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @param Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo
-     * @param Filesystem $filesystem
-     */
-    public function __construct(
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
         EntityManager $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         Filesystem $filesystem
-    ) {
-        $this->em = $em;
-        $this->mediaRepo = $mediaRepo;
-        $this->playlistMediaRepo = $playlistMediaRepo;
-        $this->filesystem = $filesystem;
-    }
-
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
-        try {
-            $request->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
-        } catch (CsrfValidationException $e) {
-            return $response->withStatus(403)
-                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: ' . $e->getMessage()]]);
-        }
-
+    ): ResponseInterface {
         $station = $request->getStation();
-        $fs = $this->filesystem->getForStation($station);
+        $fs = $filesystem->getForStation($station);
 
         // Convert from pipe-separated files parameter into actual paths.
         $files_raw = $request->getParam('files');
@@ -73,10 +41,8 @@ class BatchController extends FilesControllerAbstract
 
         $response_record = null;
         $errors = [];
-
-        [$action, $action_id] = explode('_', $request->getParam('do'));
-
-        switch ($action) {
+        
+        switch ($request->getParam('do')) {
             case 'delete':
                 // Remove the database entries of any music being removed.
                 $music_files = $this->_getMusicFiles($fs, $files);
@@ -88,9 +54,9 @@ class BatchController extends FilesControllerAbstract
                 foreach ($music_files as $file) {
                     try {
                         /** @var Entity\StationMedia $media */
-                        $media = $this->mediaRepo->findByPath($file['path'], $station);
+                        $media = $mediaRepo->findByPath($file['path'], $station);
 
-                        $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media);
+                        $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
 
                         foreach ($media_playlists as $playlist_id => $playlist) {
                             if (!isset($affected_playlists[$playlist_id])) {
@@ -99,7 +65,7 @@ class BatchController extends FilesControllerAbstract
                         }
 
                         if ($media instanceof Entity\StationMedia) {
-                            $this->em->remove($media);
+                            $em->remove($media);
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
@@ -108,7 +74,7 @@ class BatchController extends FilesControllerAbstract
                     $files_affected++;
                 }
 
-                $this->em->flush();
+                $em->flush();
 
                 // Delete all selected files.
                 foreach ($files as $file) {
@@ -123,8 +89,8 @@ class BatchController extends FilesControllerAbstract
                     }
                 }
 
-                $this->em->persist($station);
-                $this->em->flush($station);
+                $em->persist($station);
+                $em->flush($station);
 
                 // Write new PLS playlist configuration.
                 $backend = $request->getStationBackend();
@@ -152,8 +118,8 @@ class BatchController extends FilesControllerAbstract
                         $playlist = new Entity\StationPlaylist($station);
                         $playlist->setName($request->getParam('new_playlist_name'));
 
-                        $this->em->persist($playlist);
-                        $this->em->flush();
+                        $em->persist($playlist);
+                        $em->flush();
 
                         $response_record = [
                             'id' => $playlist->getId(),
@@ -164,7 +130,7 @@ class BatchController extends FilesControllerAbstract
                         $playlists[] = $playlist;
                         $playlist_weights[$playlist->getId()] = 0;
                     } else {
-                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                        $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy([
                             'station_id' => $station->getId(),
                             'id' => (int)$playlist_id,
                         ]);
@@ -172,7 +138,7 @@ class BatchController extends FilesControllerAbstract
                         if ($playlist instanceof Entity\StationPlaylist) {
                             $affected_playlists[$playlist->getId()] = $playlist;
                             $playlists[] = $playlist;
-                            $playlist_weights[$playlist->getId()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
+                            $playlist_weights[$playlist->getId()] = $playlistMediaRepo->getHighestSongWeight($playlist);
                         }
                     }
                 }
@@ -182,9 +148,9 @@ class BatchController extends FilesControllerAbstract
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->mediaRepo->getOrCreate($station, $file['path']);
+                        $media = $mediaRepo->getOrCreate($station, $file['path']);
 
-                        $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media);
+                        $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
                         foreach ($media_playlists as $playlist_id => $playlist) {
                             if (!isset($affected_playlists[$playlist_id])) {
                                 $affected_playlists[$playlist_id] = $playlist;
@@ -195,7 +161,7 @@ class BatchController extends FilesControllerAbstract
                             $playlist_weights[$playlist->getId()]++;
                             $weight = $playlist_weights[$playlist->getId()];
 
-                            $this->playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
+                            $playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
@@ -204,7 +170,7 @@ class BatchController extends FilesControllerAbstract
                     $files_affected++;
                 }
 
-                $this->em->flush();
+                $em->flush();
 
                 // Write new PLS playlist configuration.
                 $backend = $request->getStationBackend();
@@ -234,7 +200,7 @@ class BatchController extends FilesControllerAbstract
                     }
 
                     foreach ($music_files as $file) {
-                        $media = $this->mediaRepo->getOrCreate($station, $file['path']);
+                        $media = $mediaRepo->getOrCreate($station, $file['path']);
 
                         $old_full_path = $media->getPathUri();
 
@@ -248,15 +214,15 @@ class BatchController extends FilesControllerAbstract
                                 $media->getPath()));
                         }
 
-                        $this->em->persist($media);
-                        $this->em->flush($media);
+                        $em->persist($media);
+                        $em->flush($media);
                         $files_affected++;
                     }
                 } catch (Exception $e) {
                     $errors[] = $e->getMessage();
                 }
 
-                $this->em->flush();
+                $em->flush();
                 break;
 
             case 'queue':
@@ -265,11 +231,11 @@ class BatchController extends FilesControllerAbstract
 
                 try {
                     foreach ($music_files as $file) {
-                        $media = $this->mediaRepo->getOrCreate($station, $file['path']);
+                        $media = $mediaRepo->getOrCreate($station, $file['path']);
 
                         $newRequest = new Entity\StationRequest($station, $media);
-                        $this->em->persist($newRequest);
-                        $this->em->flush($newRequest);
+                        $em->persist($newRequest);
+                        $em->flush($newRequest);
                         $files_affected++;
                     }
                 } catch (Exception $e) {
@@ -278,10 +244,10 @@ class BatchController extends FilesControllerAbstract
                 break;
         }
 
-        $this->em->clear(Entity\StationMedia::class);
-        $this->em->clear(Entity\StationPlaylist::class);
-        $this->em->clear(Entity\StationPlaylistMedia::class);
-        $this->em->clear(Entity\StationRequest::class);
+        $em->clear(Entity\StationMedia::class);
+        $em->clear(Entity\StationPlaylist::class);
+        $em->clear(Entity\StationPlaylistMedia::class);
+        $em->clear(Entity\StationRequest::class);
 
         return $response->withJson([
             'success' => true,

@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Stations\Files;
+namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
 use App\Http\Response;
@@ -11,32 +11,18 @@ use Psr\Http\Message\ResponseInterface;
 use const SORT_ASC;
 use const SORT_DESC;
 
-class ListController extends FilesControllerAbstract
+class ListAction
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var Filesystem */
-    protected $filesystem;
-
-    /**
-     * ListController constructor.
-     *
-     * @param EntityManager $em
-     * @param Filesystem $filesystem
-     */
-    public function __construct(EntityManager $em, Filesystem $filesystem)
-    {
-        $this->em = $em;
-        $this->filesystem = $filesystem;
-    }
-
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        EntityManager $em,
+        Filesystem $filesystem
+    ): ResponseInterface {
         $station = $request->getStation();
         $router = $request->getRouter();
 
-        $fs = $this->filesystem->getForStation($station);
+        $fs = $filesystem->getForStation($station);
         $params = $request->getParams();
 
         if ($params['flushCache'] ?? false) {
@@ -50,7 +36,7 @@ class ListController extends FilesControllerAbstract
 
         $search_phrase = trim($params['searchPhrase'] ?? '');
 
-        $media_query = $this->em->createQueryBuilder()
+        $media_query = $em->createQueryBuilder()
             ->select('partial sm.{id, unique_id, path, length, length_text, artist, title, album}')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
@@ -101,9 +87,11 @@ class ListController extends FilesControllerAbstract
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                     'art' => (string)$router->named('api:stations:media:art',
                         ['station_id' => $station->getId(), 'media_id' => $media_row['unique_id']]),
+                    'can_edit' => true,
                     'edit_url' => (string)$router->named('stations:files:edit',
                         ['station_id' => $station->getId(), 'id' => $media_row['id']]),
-                    'play_url' => (string)$router->named('stations:files:download', ['station_id' => $station->getId()],
+                    'play_url' => (string)$router->named('api:stations:files:download',
+                        ['station_id' => $station->getId()],
                         ['file' => $media_row['path']], true),
                     'playlists' => $playlists,
                 ] + $custom_fields;
@@ -146,7 +134,8 @@ class ListController extends FilesControllerAbstract
                 'path' => $short,
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
-                'rename_url' => (string)$router->named('stations:files:rename', ['station_id' => $station->getId()],
+                'can_rename' => true,
+                'rename_url' => (string)$router->named('api:stations:files:rename', ['station_id' => $station->getId()],
                     ['file' => $short]),
             ];
 

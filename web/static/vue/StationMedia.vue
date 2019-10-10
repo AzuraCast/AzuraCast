@@ -3,10 +3,10 @@
         <div class="card-body">
             <breadcrumb :current-directory="currentDirectory" @change-directory="changeDirectory"></breadcrumb>
 
-            <file-upload :csrf="csrf" :upload-url="uploadUrl" :search-phrase="searchPhrase"
+            <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase"
                          :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
 
-            <media-toolbar :selected-files="selectedFiles" :batch-url="batchUrl" :csrf="csrf"
+            <media-toolbar :selected-files="selectedFiles" :batch-url="batchUrl"
                            :current-directory="currentDirectory"
                            :initial-playlists="initialPlaylists" @relist="onTriggerRelist"></media-toolbar>
         </div>
@@ -65,24 +65,29 @@
                     </template>
                 </template>
                 <template v-slot:cell(commands)="row">
-                    <template v-if="row.item.media_edit_url">
-                        <a class="btn btn-sm btn-primary" :href="row.item.media_edit_url" v-translate>Edit</a>
+                    <template v-if="row.item.media_can_edit">
+                        <a class="btn btn-sm btn-primary" :href="row.item.media_edit_url">{{ langEditButton }}</a>
                     </template>
-                    <template v-else-if="row.item.rename_url">
-                        <a class="btn btn-sm btn-primary" :href="row.item.rename_url" v-translate>Rename</a>
+                    <template v-else-if="row.item.can_rename">
+                        <a class="btn btn-sm btn-primary" @click.prevent="rename(row.item.path)">
+                            {{ langRenameButton }}
+                        </a>
                     </template>
                     <template v-else>&nbsp;</template>
                 </template>
             </data-table>
         </div>
 
-        <new-directory-modal :current-directory="currentDirectory" :mkdir-url="mkdirUrl" :csrf="csrf"
+        <new-directory-modal :current-directory="currentDirectory" :mkdir-url="mkdirUrl"
                              @relist="onTriggerRelist">
         </new-directory-modal>
 
         <move-files-modal :selected-files="selectedFiles" :current-directory="currentDirectory" :batch-url="batchUrl"
-                          :list-directories-url="listDirectoriesUrl" :csrf="csrf" @relist="onTriggerRelist">
+                          :list-directories-url="listDirectoriesUrl" @relist="onTriggerRelist">
         </move-files-modal>
+
+        <rename-modal :rename-url="renameUrl" ref="renameModal" @relist="onTriggerRelist">
+        </rename-modal>
     </div>
 </template>
 
@@ -101,18 +106,20 @@
   import FileUpload from './station_media/FileUpload.vue'
   import NewDirectoryModal from './station_media/NewDirectoryModal.vue'
   import MoveFilesModal from './station_media/MoveFilesModal.vue'
+  import RenameModal from './station_media/RenameModal.vue'
   import { formatFileSize } from './station_media/utils'
   import _ from 'lodash'
 
   export default {
-    components: { MoveFilesModal, NewDirectoryModal, FileUpload, MediaToolbar, DataTable, Breadcrumb },
+    components: { RenameModal, MoveFilesModal, NewDirectoryModal, FileUpload, MediaToolbar, DataTable, Breadcrumb },
     props: {
-      csrf: String,
       listUrl: String,
       batchUrl: String,
       uploadUrl: String,
       listDirectoriesUrl: String,
       mkdirUrl: String,
+      renameUrl: String,
+      editUrl: String,
       initialPlaylists: Array
     },
     data () {
@@ -162,6 +169,12 @@
     computed: {
       langAlbumArt () {
         return this.$gettext('Album Art')
+      },
+      langRenameButton () {
+        return this.$gettext('Rename')
+      },
+      langEditButton () {
+        return this.$gettext('Edit')
       }
     },
     methods: {
@@ -189,10 +202,11 @@
       onFiltered (newFilter) {
         this.searchPhrase = newFilter
       },
+      rename (path) {
+        this.$refs.renameModal.open(path)
+      },
       requestConfig (config) {
         config.params.file = this.currentDirectory
-        config.params.csrf = this.csrf
-
         return config
       }
     }

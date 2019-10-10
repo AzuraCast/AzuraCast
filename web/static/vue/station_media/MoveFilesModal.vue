@@ -51,8 +51,7 @@
       selectedFiles: Array,
       currentDirectory: String,
       batchUrl: String,
-      listDirectoriesUrl: String,
-      csrf: String
+      listDirectoriesUrl: String
     },
     data () {
       return {
@@ -80,7 +79,6 @@
         this.selectedFiles.length && axios.post(this.batchUrl, {
           'do': 'move',
           'files': this.selectedFiles,
-          'csrf': this.csrf,
           'directory': this.destinationDirectory
         }).then((resp) => {
           this.close()

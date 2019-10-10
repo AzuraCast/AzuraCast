@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Api\Stations;
+namespace App\Controller\Api\Stations\Media;
 
 use App\Customization;
 use App\Http\Response;
@@ -8,24 +8,8 @@ use App\Radio\Filesystem;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
-class ArtController
+class GetArtAction
 {
-    /** @var Customization */
-    protected $customization;
-
-    /** @var Filesystem */
-    protected $filesystem;
-
-    /**
-     * @param Customization $customization
-     * @param Filesystem $filesystem
-     */
-    public function __construct(Customization $customization, Filesystem $filesystem)
-    {
-        $this->customization = $customization;
-        $this->filesystem = $filesystem;
-    }
-
     /**
      * @OA\Get(path="/station/{station_id}/art/{media_id}",
      *   tags={"Stations: Media"},
@@ -46,20 +30,27 @@ class ArtController
      *
      * @param ServerRequest $request
      * @param Response $response
+     * @param Customization $customization
+     * @param Filesystem $filesystem
      * @param string $media_id
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequest $request, Response $response, $media_id): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        Customization $customization,
+        Filesystem $filesystem,
+        $media_id
+    ): ResponseInterface {
         $station = $request->getStation();
-        $filesystem = $this->filesystem->getForStation($station);
+        $fs = $filesystem->getForStation($station);
 
         $media_path = 'albumart://' . $media_id . '.jpg';
 
-        if ($filesystem->has($media_path)) {
-            $file_meta = $filesystem->getMetadata($media_path);
-            $art = $filesystem->readStream($media_path);
+        if ($fs->has($media_path)) {
+            $file_meta = $fs->getMetadata($media_path);
+            $art = $fs->readStream($media_path);
 
             if (is_resource($art)) {
                 return $response->withFile($art, 'image/jpeg')

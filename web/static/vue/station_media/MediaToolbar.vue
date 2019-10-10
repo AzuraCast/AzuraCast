@@ -9,10 +9,6 @@
                         <translate>Playlists</translate>
                         <span class="caret"></span>
                     </template>
-                    <b-dropdown-item @click="clearPlaylists" v-translate>
-                        Clear Playlists
-                    </b-dropdown-item>
-                    <b-dropdown-divider></b-dropdown-divider>
                     <b-dropdown-form class="pt-2" @submit.prevent="setPlaylists">
                         <div v-for="playlist in playlists" class="form-group">
                             <div class="custom-control custom-checkbox">
@@ -36,7 +32,12 @@
                             </div>
                         </div>
 
-                        <b-button type="submit" size="sm" variant="primary" v-translate>Save</b-button>
+                        <b-button type="submit" size="sm" variant="primary" v-translate>
+                            Save
+                        </b-button>
+                        <b-button type="button" size="sm" variant="warning" @click="clearPlaylists()" v-translate>
+                            Clear
+                        </b-button>
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
@@ -70,8 +71,7 @@
       currentDirectory: String,
       selectedFiles: Array,
       initialPlaylists: Array,
-      batchUrl: String,
-      csrf: String
+      batchUrl: String
     },
     data () {
       return {
@@ -122,10 +122,9 @@
         })
       },
       doBatch (action, notifyMessage) {
-        this.selectedFiles.length && axios.post(this.batchUrl, {
+        this.selectedFiles.length && axios.put(this.batchUrl, {
           'do': action,
           'files': this.selectedFiles,
-          'csrf': this.csrf,
           'file': this.currentDirectory
         }).then((resp) => {
           notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
@@ -134,19 +133,18 @@
           console.error(err)
         })
       },
-      clearPlaylists (e) {
+      clearPlaylists () {
         this.checkedPlaylists = []
         this.newPlaylist = ''
 
-        this.setPlaylists(e)
+        this.setPlaylists()
       },
-      setPlaylists (e) {
-        this.selectedFiles.length && axios.post(this.batchUrl, {
+      setPlaylists () {
+        this.selectedFiles.length && axios.put(this.batchUrl, {
           'do': 'playlist',
           'playlists': this.checkedPlaylists,
           'new_playlist_name': this.newPlaylist,
           'files': this.selectedFiles,
-          'csrf': this.csrf,
           'file': this.currentDirectory
         }).then((resp) => {
           if (resp.data.success && resp.data.record) {

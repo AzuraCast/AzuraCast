@@ -10,7 +10,6 @@ $assets
     ->load('station_media_manager')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->addInlineJs($this->fetch('stations/files/index.js', [
-        'csrf' => $csrf,
         'playlists' => $playlists,
     ]));
 ?>

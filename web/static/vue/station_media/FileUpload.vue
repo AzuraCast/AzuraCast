@@ -35,8 +35,7 @@
     props: {
       uploadUrl: String,
       currentDirectory: String,
-      searchPhrase: String,
-      csrf: String
+      searchPhrase: String
     },
     data () {
       return {
@@ -49,7 +48,6 @@
         target: this.uploadUrl,
         query: () => {
           return {
-            csrf: this.csrf,
             file: this.currentDirectory,
             searchPhrase: this.searchPhrase
           }

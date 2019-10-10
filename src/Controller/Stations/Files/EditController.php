@@ -18,7 +18,7 @@ use Psr\Http\Message\UploadedFileInterface;
 /**
  * Abstract out the Edit File functionality, as it has significant extra code.
  */
-class EditController extends FilesControllerAbstract
+class EditController
 {
     /** @var EntityManager */
     protected $em;

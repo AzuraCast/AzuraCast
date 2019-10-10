@@ -1,11 +1,12 @@
 <?php
 $props = [
-    'csrf' => $csrf,
-    'listUrl' => $router->fromHere('stations:files:list'),
-    'batchUrl' => $router->fromHere('stations:files:batch'),
-    'uploadUrl' => $router->fromHere('stations:files:upload'),
-    'listDirectoriesUrl' => $router->fromHere('stations:files:directories'),
-    'mkdirUrl' => $router->fromHere('stations:files:mkdir'),
+    'listUrl' => $router->fromHere('api:stations:files:list'),
+    'batchUrl' => $router->fromHere('api:stations:files:batch'),
+    'uploadUrl' => $router->fromHere('api:stations:files:upload'),
+    'listDirectoriesUrl' => $router->fromHere('api:stations:files:directories'),
+    'mkdirUrl' => $router->fromHere('api:stations:files:mkdir'),
+    'renameUrl' => $router->fromHere('api:stations:files:rename'),
+    'editUrl' => '',
     'initialPlaylists' => $playlists,
 ]
 ?>

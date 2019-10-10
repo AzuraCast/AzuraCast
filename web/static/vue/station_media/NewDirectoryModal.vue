@@ -23,8 +23,7 @@
     name: 'NewDirectoryModal',
     props: {
       currentDirectory: String,
-      mkdirUrl: String,
-      csrf: String
+      mkdirUrl: String
     },
     data () {
       return {
@@ -43,7 +42,6 @@
       doMkdir () {
         this.newDirectory.length && axios.post(this.mkdirUrl, {
           name: this.newDirectory,
-          csrf: this.csrf,
           file: this.currentDirectory
         }).then((resp) => {
           this.$refs.modal.hide()

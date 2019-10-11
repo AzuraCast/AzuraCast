@@ -74,7 +74,7 @@
                 <b-tab :title="langAlbumArtTab">
                     <b-row>
                         <b-col md="4">
-                            <img :src="albumArtSrc" :alt="langAlbumArtTab" style="max-width: 100%">
+                            <b-img :src="albumArtSrc" :alt="langAlbumArtTab" rounded fluid></b-img>
                         </b-col>
                         <b-col md="8">
                             <b-form-group label-for="edit_form_art">

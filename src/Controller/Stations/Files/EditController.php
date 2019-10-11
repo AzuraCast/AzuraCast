@@ -9,11 +9,9 @@ use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use Azura\Config;
-use Azura\Exception;
 use Azura\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Abstract out the Edit File functionality, as it has significant extra code.
@@ -120,17 +118,7 @@ class EditController
             $this->mediaRepo->fromArray($media, $data);
 
             // Handle uploaded artwork files.
-            $files = $request->getUploadedFiles();
-            if (!empty($files['art'])) {
-                $file = $files['art'];
-
-                /** @var UploadedFileInterface $file */
-                if ($file->getError() === UPLOAD_ERR_OK) {
-                    $this->mediaRepo->writeAlbumArt($media, $file->getStream()->getContents());
-                } elseif ($file->getError() !== UPLOAD_ERR_NO_FILE) {
-                    throw new Exception('Error ' . $file->getError() . ' in uploaded file!');
-                }
-            }
+            
 
             if ($this->mediaRepo->writeToFile($media)) {
                 $song_info = [

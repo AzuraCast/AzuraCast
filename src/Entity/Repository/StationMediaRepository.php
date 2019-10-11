@@ -72,6 +72,20 @@ class StationMediaRepository extends Repository
     }
 
     /**
+     * @param string $uniqueId
+     * @param Entity\Station $station
+     *
+     * @return Entity\StationMedia|null
+     */
+    public function findByUniqueId(string $uniqueId, Entity\Station $station): ?Entity\StationMedia
+    {
+        return $this->repository->findOneBy([
+            'station' => $station,
+            'unique_id' => $uniqueId,
+        ]);
+    }
+
+    /**
      * @param Entity\Station $station
      * @param string $tmp_path
      * @param string $dest
@@ -226,13 +240,13 @@ class StationMediaRepository extends Repository
      * Crop album art and write the resulting image to storage.
      *
      * @param Entity\StationMedia $media
-     * @param string $raw_art_string The raw image data, as would be retrieved from file_get_contents.
+     * @param string $rawArtString The raw image data, as would be retrieved from file_get_contents.
      *
      * @return bool
      */
-    public function writeAlbumArt(Entity\StationMedia $media, $raw_art_string): bool
+    public function writeAlbumArt(Entity\StationMedia $media, $rawArtString): bool
     {
-        $source_image_info = getimagesizefromstring($raw_art_string);
+        $source_image_info = getimagesizefromstring($rawArtString);
         $source_image_width = $source_image_info[0] ?? 0;
         $source_image_height = $source_image_info[1] ?? 0;
         $source_mime_type = $source_image_info['mime'] ?? 'unknown';
@@ -244,9 +258,9 @@ class StationMediaRepository extends Repository
 
         // Avoid GD entirely if it's already a JPEG within our parameters.
         if ($source_mime_type === 'image/jpeg' && $source_inside_dest) {
-            $album_art = $raw_art_string;
+            $albumArt = $rawArtString;
         } else {
-            $source_gd_image = imagecreatefromstring($raw_art_string);
+            $source_gd_image = imagecreatefromstring($rawArtString);
 
             if (!is_resource($source_gd_image)) {
                 return false;
@@ -274,16 +288,40 @@ class StationMediaRepository extends Repository
 
             ob_start();
             imagejpeg($thumbnail_gd_image, null, 90);
-            $album_art = ob_get_clean();
+            $albumArt = ob_get_clean();
 
             imagedestroy($source_gd_image);
             imagedestroy($thumbnail_gd_image);
         }
 
-        $album_art_path = $media->getArtPath();
         $fs = $this->filesystem->getForStation($media->getStation());
+        $currentAlbumArtPath = $media->getArtPath();
 
-        return $fs->put($album_art_path, $album_art);
+        if ($fs->has($currentAlbumArtPath)) {
+            $fs->delete($currentAlbumArtPath);
+        }
+
+        // Generate a new unique ID.
+        $media->generateUniqueId(true);
+        $this->em->persist($media);
+        $this->em->flush($media);
+
+        $newAlbumArtPath = $media->getArtPath();
+        return $fs->put($newAlbumArtPath, $albumArt);
+    }
+
+    public function removeAlbumArt(Entity\StationMedia $media): void
+    {
+        // Remove the album art, if it exists.
+        $fs = $this->filesystem->getForStation($media->getStation());
+        $currentAlbumArtPath = $media->getArtPath();
+
+        $fs->delete($currentAlbumArtPath);
+
+        // Generate a new unique ID.
+        $media->generateUniqueId(true);
+        $this->em->persist($media);
+        $this->em->flush($media);
     }
 
     /**

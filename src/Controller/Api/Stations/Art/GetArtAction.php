@@ -1,7 +1,9 @@
 <?php
-namespace App\Controller\Api\Stations\Media;
+namespace App\Controller\Api\Stations\Art;
 
 use App\Customization;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\StationMedia;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
@@ -32,6 +34,7 @@ class GetArtAction
      * @param Response $response
      * @param Customization $customization
      * @param Filesystem $filesystem
+     * @param StationMediaRepository $mediaRepo
      * @param string $media_id
      *
      * @return ResponseInterface
@@ -41,16 +44,24 @@ class GetArtAction
         Response $response,
         Customization $customization,
         Filesystem $filesystem,
+        StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
         $station = $request->getStation();
         $fs = $filesystem->getForStation($station);
 
-        $media_path = 'albumart://' . $media_id . '.jpg';
+        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
+            $mediaPath = 'albumart://' . $media_id . '.jpg';
+        } else {
+            $media = $mediaRepo->find($media_id, $station);
+            if ($media instanceof StationMedia) {
+                $mediaPath = $media->getArtPath();
+            }
+        }
 
-        if ($fs->has($media_path)) {
-            $file_meta = $fs->getMetadata($media_path);
-            $art = $fs->readStream($media_path);
+        if ($fs->has($mediaPath)) {
+            $file_meta = $fs->getMetadata($mediaPath);
+            $art = $fs->readStream($mediaPath);
 
             if (is_resource($art)) {
                 return $response->withFile($art, 'image/jpeg')
@@ -59,6 +70,6 @@ class GetArtAction
             }
         }
 
-        return $response->withRedirect($this->customization->getDefaultAlbumArtUrl(), 302);
+        return $response->withRedirect($customization->getDefaultAlbumArtUrl(), 302);
     }
 }

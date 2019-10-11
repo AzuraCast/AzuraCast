@@ -57,17 +57,6 @@
                                                  :state="$v.form.lyrics.$dirty ? !$v.form.lyrics.$error : null"></b-form-textarea>
                             </b-form-group>
                         </b-col>
-                        <!--
-                        <b-col md="6">
-                            <b-form-group label-for="edit_form_art">
-                                <template v-slot:label v-translate>
-                                    Replace Album Cover Art
-                                </template>
-                                <b-form-file id="edit_form_art" v-model="$v.form.art.$model"
-                                             :state="$v.form.art.$dirty ? !$v.form.art.$error : null"></b-form-file>
-                            </b-form-group>
-                        </b-col>
-                        -->
                         <b-col md="6">
                             <b-form-group label-for="edit_form_isrc">
                                 <template v-slot:label v-translate>
@@ -79,6 +68,30 @@
                                 <b-form-input type="text" id="edit_form_isrc" v-model="$v.form.isrc.$model"
                                               :state="$v.form.isrc.$dirty ? !$v.form.isrc.$error : null"></b-form-input>
                             </b-form-group>
+                        </b-col>
+                    </b-row>
+                </b-tab>
+                <b-tab :title="langAlbumArtTab">
+                    <b-row>
+                        <b-col md="4">
+                            <img :src="albumArtSrc" :alt="langAlbumArtTab" style="max-width: 100%">
+                        </b-col>
+                        <b-col md="8">
+                            <b-form-group label-for="edit_form_art">
+                                <template v-slot:label v-translate>
+                                    Replace Album Cover Art
+                                </template>
+                                <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"></b-form-file>
+                            </b-form-group>
+
+                            <div class="buttons">
+                                <b-button variant="primary" @click="uploadNewArt" v-translate>
+                                    Upload New Art
+                                </b-button>
+                                <b-button variant="danger" @click="deleteArt" v-translate>
+                                    Delete Album Art
+                                </b-button>
+                            </div>
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -192,6 +205,9 @@
       return {
         loading: true,
         recordUrl: null,
+        albumArtUrl: null,
+        albumArtSrc: null,
+        artFile: null,
         form: this.getBlankForm()
       }
     },
@@ -219,6 +235,9 @@
       },
       langBasicInfoTab () {
         return this.$gettext('Basic Information')
+      },
+      langAlbumArtTab () {
+        return this.$gettext('Album Art')
       },
       langCustomFieldsTab () {
         return this.$gettext('Custom Fields')
@@ -250,9 +269,13 @@
           custom_fields: customFields
         }
       },
-      open (recordUrl) {
+      open (recordUrl, albumArtUrl) {
         this.loading = true
         this.$refs.modal.show()
+
+        this.albumArtUrl = albumArtUrl
+        this.albumArtSrc = albumArtUrl
+        this.artFile = null
 
         this.recordUrl = recordUrl
 
@@ -285,6 +308,9 @@
       },
       close () {
         this.loading = false
+        this.albumArtUrl = null
+        this.albumArtSrc = null
+
         this.form = this.getBlankForm()
 
         this.$v.form.$reset()
@@ -311,6 +337,29 @@
           this.$emit('relist')
           this.close()
         })
+      },
+      uploadNewArt () {
+        let formData = new FormData()
+        formData.append('art', this.artFile)
+
+        axios.post(this.albumArtUrl, formData).then((resp) => {
+          this.reloadArt()
+        }).catch((err) => {
+          console.log(err)
+          this.reloadArt()
+        })
+      },
+      deleteArt () {
+        axios.delete(this.albumArtUrl).then((resp) => {
+          this.reloadArt()
+        }).catch((err) => {
+          console.log(err)
+          this.reloadArt()
+        })
+      },
+      reloadArt () {
+        this.artFile = null
+        this.albumArtSrc = this.albumArtUrl + '?' + Math.floor(Date.now() / 1000)
       }
     }
   }

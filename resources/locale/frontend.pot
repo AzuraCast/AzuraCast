@@ -5,7 +5,7 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Project-Id-Version: \n"
 
-#: ./vue/StationMedia.vue:175
+#: ./vue/StationMedia.vue:176
 msgid "Actions"
 msgstr ""
 
@@ -13,26 +13,27 @@ msgstr ""
 msgid "Add Files to Playlist"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:227
+#: ./vue/station_media/EditModal.vue:251
 msgid "Advanced Playback Settings"
 msgstr ""
 
-#: ./vue/StationMedia.vue:145
+#: ./vue/StationMedia.vue:146
 msgid "Album"
 msgstr ""
 
 #: ./vue/RadioPlayer.vue:339
-#: ./vue/StationMedia.vue:200
+#: ./vue/StationMedia.vue:201
+#: ./vue/station_media/EditModal.vue:245
 msgid "Album Art"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:308
+#: ./vue/station_media/EditModal.vue:339
 #: ./vue/station_media/MoveFilesModal.vue:92
 #: ./vue/station_media/NewDirectoryModal.vue:76
 msgid "An error occurred and your request could not be completed."
 msgstr ""
 
-#: ./vue/StationMedia.vue:144
+#: ./vue/StationMedia.vue:145
 #: ./vue/webcaster/settings.vue:115
 msgid "Artist"
 msgstr ""
@@ -41,11 +42,11 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:221
+#: ./vue/station_media/EditModal.vue:242
 msgid "Basic Information"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:300
+#: ./vue/station_media/EditModal.vue:331
 msgid "Changes saved."
 msgstr ""
 
@@ -53,7 +54,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:169
+#: ./vue/station_media/EditModal.vue:187
 #: ./vue/station_media/MoveFilesModal.vue:33
 #: ./vue/station_media/NewDirectoryModal.vue:15
 #: ./vue/station_media/RenameModal.vue:15
@@ -74,27 +75,27 @@ msgstr ""
 msgid "Cue"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:140
+#: ./vue/station_media/EditModal.vue:158
 msgid "Custom Cues: Cue-In Point (seconds)"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:153
+#: ./vue/station_media/EditModal.vue:171
 msgid "Custom Cues: Cue-Out Point (seconds)"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:112
+#: ./vue/station_media/EditModal.vue:130
 msgid "Custom Fading: Fade-In Time (seconds)"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:126
+#: ./vue/station_media/EditModal.vue:144
 msgid "Custom Fading: Fade-Out Time (seconds)"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:98
+#: ./vue/station_media/EditModal.vue:116
 msgid "Custom Fading: Overlap Time (seconds)"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:224
+#: ./vue/station_media/EditModal.vue:248
 msgid "Custom Fields"
 msgstr ""
 
@@ -105,6 +106,10 @@ msgstr ""
 
 #: ./vue/station_media/MediaToolbar.vue:112
 msgid "Delete %{ num } media file(s)?"
+msgstr ""
+
+#: ./vue/station_media/EditModal.vue:95
+msgid "Delete Album Art"
 msgstr ""
 
 #: ./vue/StationMedia.vue:47
@@ -124,11 +129,11 @@ msgstr ""
 msgid "Drag files here to upload to this folder or"
 msgstr ""
 
-#: ./vue/StationMedia.vue:206
+#: ./vue/StationMedia.vue:207
 msgid "Edit"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:218
+#: ./vue/station_media/EditModal.vue:239
 msgid "Edit Media"
 msgstr ""
 
@@ -160,15 +165,15 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:75
+#: ./vue/station_media/EditModal.vue:69
 msgid "International Standard Recording Code, used for licensing reports."
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:72
+#: ./vue/station_media/EditModal.vue:66
 msgid "ISRC"
 msgstr ""
 
-#: ./vue/StationMedia.vue:146
+#: ./vue/StationMedia.vue:147
 msgid "Length"
 msgstr ""
 
@@ -192,7 +197,7 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
-#: ./vue/StationMedia.vue:163
+#: ./vue/StationMedia.vue:164
 msgid "Modified"
 msgstr ""
 
@@ -216,7 +221,7 @@ msgstr ""
 msgid "Mute"
 msgstr ""
 
-#: ./vue/StationMedia.vue:142
+#: ./vue/StationMedia.vue:143
 msgid "Name"
 msgstr ""
 
@@ -261,7 +266,7 @@ msgstr ""
 msgid "Playlist 2"
 msgstr ""
 
-#: ./vue/StationMedia.vue:174
+#: ./vue/StationMedia.vue:175
 #: ./vue/station_media/MediaToolbar.vue:8
 msgid "Playlists"
 msgstr ""
@@ -290,7 +295,7 @@ msgstr ""
 msgid "Refresh rows"
 msgstr ""
 
-#: ./vue/StationMedia.vue:203
+#: ./vue/StationMedia.vue:204
 #: ./vue/station_media/RenameModal.vue:18
 msgid "Rename"
 msgstr ""
@@ -303,7 +308,7 @@ msgstr ""
 msgid "Repeat Playlist"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:3
+#: ./vue/station_media/EditModal.vue:85
 msgid "Replace Album Cover Art"
 msgstr ""
 
@@ -320,15 +325,15 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:172
+#: ./vue/station_media/EditModal.vue:190
 msgid "Save Changes"
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:143
+#: ./vue/station_media/EditModal.vue:161
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:156
+#: ./vue/station_media/EditModal.vue:174
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr ""
 
@@ -348,7 +353,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: ./vue/StationMedia.vue:160
+#: ./vue/StationMedia.vue:161
 msgid "Size"
 msgstr ""
 
@@ -380,19 +385,19 @@ msgstr ""
 msgid "The relative path of the file in the station's media directory."
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:115
+#: ./vue/station_media/EditModal.vue:133
 msgid ""
 "The time period that the song should fade in. Leave\n"
 "                                blank to use the system default."
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:129
+#: ./vue/station_media/EditModal.vue:147
 msgid ""
 "The time period that the song should fade out. Leave\n"
 "                                blank to use the system default."
 msgstr ""
 
-#: ./vue/station_media/EditModal.vue:101
+#: ./vue/station_media/EditModal.vue:119
 msgid ""
 "The time that this song should overlap its surrounding songs when fading. Leave\n"
 "                                blank to use the system default."
@@ -404,7 +409,7 @@ msgstr ""
 msgid "This field is required."
 msgstr ""
 
-#: ./vue/StationMedia.vue:143
+#: ./vue/StationMedia.vue:144
 #: ./vue/webcaster/settings.vue:108
 msgid "Title"
 msgstr ""
@@ -419,6 +424,10 @@ msgstr ""
 
 #: ./vue/webcaster/settings.vue:122
 msgid "Update Metadata"
+msgstr ""
+
+#: ./vue/station_media/EditModal.vue:92
+msgid "Upload New Art"
 msgstr ""
 
 #: ./vue/webcaster/settings.vue:100

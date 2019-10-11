@@ -25,6 +25,8 @@ class StationMedia
 {
     use Traits\UniqueId, Traits\TruncateStrings;
 
+    public const UNIQUE_ID_LENGTH = 24;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id

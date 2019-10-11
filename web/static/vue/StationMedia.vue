@@ -66,7 +66,8 @@
                 </template>
                 <template v-slot:cell(commands)="row">
                     <template v-if="row.item.media_can_edit">
-                        <b-button size="sm" variant="primary" @click.prevent="edit(row.item.media_edit_url)">
+                        <b-button size="sm" variant="primary"
+                                  @click.prevent="edit(row.item.media_edit_url, row.item.media_art_url)">
                             {{ langEditButton }}
                         </b-button>
                     </template>
@@ -234,8 +235,8 @@
       rename (path) {
         this.$refs.renameModal.open(path)
       },
-      edit (recordUrl) {
-        this.$refs.editModal.open(recordUrl)
+      edit (recordUrl, albumArtUrl) {
+        this.$refs.editModal.open(recordUrl, albumArtUrl)
       },
       requestConfig (config) {
         config.params.file = this.currentDirectory

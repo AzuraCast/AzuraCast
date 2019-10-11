@@ -214,7 +214,7 @@
       },
       onClickRefresh (e) {
         if (e.shiftKey) {
-          this.list()
+          this.relist()
         } else {
           this.refresh()
         }
@@ -222,13 +222,19 @@
       refresh () {
         this.$refs.table.refresh()
       },
-      list () {
+      navigate () {
         this.filter = null
         this.currentPage = 1
         this.flushCache = true
         this.refresh()
       },
+      relist () {
+        this.filter = null
+        this.flushCache = true
+        this.refresh()
+      },
       setFilter (newTerm) {
+        this.currentPage = 1
         this.filter = newTerm
       },
       loadItems (ctx, callback) {

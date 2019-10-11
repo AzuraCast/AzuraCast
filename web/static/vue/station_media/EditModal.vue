@@ -95,7 +95,7 @@
                         </b-col>
                     </b-row>
                 </b-tab>
-                <b-tab :title="langCustomFieldsTab">
+                <b-tab :title="langCustomFieldsTab" v-if="customFields.length > 0">
                     <b-row>
                         <b-col md="6" v-for="(field, _) in customFields" :key="field.key">
                             <b-form-group :label-for="'edit_form_custom_'+field.key" :label="field.label">

@@ -214,8 +214,11 @@
       onRowSelected (items) {
         this.selectedFiles = _.map(items, 'name')
       },
+      onTriggerNavigate () {
+        this.$refs.datatable.navigate()
+      },
       onTriggerRelist () {
-        this.$refs.datatable.list()
+        this.$refs.datatable.relist()
       },
       playAudio (url) {
         this.$eventHub.$emit('player_toggle', url)
@@ -224,7 +227,7 @@
         window.location.hash = newDir
 
         this.currentDirectory = newDir
-        this.onTriggerRelist()
+        this.onTriggerNavigate()
       },
       filter (newFilter) {
         this.$refs.datatable.setFilter(newFilter)

@@ -47,6 +47,8 @@ class GetArtAction
         StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
+        $defaultArtRedirect = $response->withRedirect($customization->getDefaultAlbumArtUrl(), 302);
+
         $station = $request->getStation();
         $fs = $filesystem->getForStation($station);
 
@@ -56,6 +58,8 @@ class GetArtAction
             $media = $mediaRepo->find($media_id, $station);
             if ($media instanceof StationMedia) {
                 $mediaPath = $media->getArtPath();
+            } else {
+                return $defaultArtRedirect;
             }
         }
 
@@ -70,6 +74,6 @@ class GetArtAction
             }
         }
 
-        return $response->withRedirect($customization->getDefaultAlbumArtUrl(), 302);
+        return $defaultArtRedirect;
     }
 }

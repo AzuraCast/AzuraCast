@@ -13,12 +13,12 @@
 
         <div class="table-responsive table-responsive-lg">
             <data-table ref="datatable" id="station_media" selectable paginated select-fields
-                        @row-selected="onRowSelected" :fields="fields" :api-url="listUrl"
+                        @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
                         :request-config="requestConfig">
                 <template v-slot:cell(name)="row">
                     <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
                         <a :href="row.item.media_art" class="album-art float-right pl-3" target="_blank"
-                           v-if="row.item.media_art">
+                           v-if="row.item.media_art" data-fancybox="gallery">
                             <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
                         </a>
                         <template v-if="row.item.media_is_playable">
@@ -213,6 +213,9 @@
       },
       onRowSelected (items) {
         this.selectedFiles = _.map(items, 'name')
+      },
+      onRefreshed () {
+        this.$eventHub.$emit('refreshed')
       },
       onTriggerNavigate () {
         this.$refs.datatable.navigate()

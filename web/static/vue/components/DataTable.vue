@@ -50,7 +50,7 @@
         <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                  tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
-                 :filter="filter" :filter-debounce="200" @filtered="onFiltered">
+                 :filter="filter" :filter-debounce="200" @filtered="onFiltered" @refreshed="onRefreshed">
             <template v-slot:head(selected)="data">
                 <div class="custom-control custom-checkbox pl-0" @click="toggleSelected">
                     <input type="checkbox" class="custom-control-input" :checked="allSelected">
@@ -218,6 +218,9 @@
         } else {
           this.refresh()
         }
+      },
+      onRefreshed () {
+        this.$emit('refreshed')
       },
       refresh () {
         this.$refs.table.refresh()

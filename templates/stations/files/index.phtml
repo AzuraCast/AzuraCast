@@ -1,7 +1,11 @@
-<?php $this->layout('main', ['title' => __('Music Files'), 'manual' => true, 'page_class' => 'page-file-manager']) ?>
-
 <?php
 /** @var \Azura\Assets $assets */
+$this->layout('main', [
+    'title' => __('Music Files'),
+    'manual' => true,
+    'page_class' => 'page-file-manager',
+]);
+
 $assets
     ->load('vue')
     ->load('moment')

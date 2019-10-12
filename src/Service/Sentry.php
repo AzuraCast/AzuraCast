@@ -22,19 +22,22 @@ use Throwable;
 class Sentry
 {
     /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
+    protected $settingsRepo;
 
     /** @var Settings */
-    protected $app_settings;
+    protected $appSettings;
 
     /** @var Client */
-    protected $http_client;
+    protected $httpClient;
 
     /** @var Version */
     protected $version;
 
     /** @var bool */
-    protected $is_enabled = false;
+    protected $isEnabled = false;
+
+    /** @var bool */
+    protected $isInitialized = false;
 
     /** @var Hub */
     protected $hub;
@@ -45,12 +48,10 @@ class Sentry
         Version $version,
         Client $http_client
     ) {
-        $this->settings_repo = $settings_repo;
-        $this->app_settings = $app_settings;
+        $this->settingsRepo = $settings_repo;
+        $this->appSettings = $app_settings;
         $this->version = $version;
-        $this->http_client = $http_client;
-
-        $this->init();
+        $this->httpClient = $http_client;
     }
 
     /**
@@ -58,9 +59,15 @@ class Sentry
      */
     public function init(): void
     {
+        if ($this->isInitialized) {
+            return;
+        }
+
+        $this->isInitialized = true;
+
         // Check for enabled status.
         try {
-            $send_error_reports = (bool)$this->settings_repo->getSetting(Entity\Settings::SEND_ERROR_REPORTS, false);
+            $send_error_reports = (bool)$this->settingsRepo->getSetting(Entity\Settings::SEND_ERROR_REPORTS, false);
             if (!$send_error_reports) {
                 return;
             }
@@ -68,21 +75,21 @@ class Sentry
             return;
         }
 
-        if ($this->app_settings->isTesting()) {
+        if ($this->appSettings->isTesting()) {
             return;
         }
 
-        $this->is_enabled = true;
+        $this->isEnabled = true;
 
-        $server_uuid = $this->settings_repo->getUniqueIdentifier();
+        $server_uuid = $this->settingsRepo->getUniqueIdentifier();
         $options = [
-            'dsn' => $this->app_settings['sentry_io']['dsn'],
-            'environment' => $this->app_settings[Settings::APP_ENV],
+            'dsn' => $this->appSettings['sentry_io']['dsn'],
+            'environment' => $this->appSettings[Settings::APP_ENV],
             'server_name' => $server_uuid,
             'prefixes' => [
-                $this->app_settings[Settings::BASE_DIR],
+                $this->appSettings[Settings::BASE_DIR],
             ],
-            'project_root' => $this->app_settings[Settings::BASE_DIR] . '/src',
+            'project_root' => $this->appSettings[Settings::BASE_DIR] . '/src',
             'error_types' => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
             'excluded_exceptions' => [
                 FileNotFoundException::class,
@@ -98,7 +105,7 @@ class Sentry
 
         $options = new Options($options);
         $builder = new ClientBuilder($options);
-        $builder->setHttpClient(new GuzzleAdapter($this->http_client));
+        $builder->setHttpClient(new GuzzleAdapter($this->httpClient));
 
         $this->hub = new Hub($builder->getClient());
         $this->hub->configureScope([$this, 'configureScope']);
@@ -115,7 +122,7 @@ class Sentry
             'ip' => null,
         ]);
 
-        $install_type = $this->app_settings->isDocker() ? 'docker' : 'traditional';
+        $install_type = $this->appSettings->isDocker() ? 'docker' : 'traditional';
         $scope->setTag('type', $install_type);
     }
 
@@ -124,6 +131,8 @@ class Sentry
      */
     public function getHub(): Hub
     {
+        $this->init();
+
         return $this->hub;
     }
 
@@ -132,7 +141,9 @@ class Sentry
      */
     public function isEnabled(): bool
     {
-        return $this->is_enabled;
+        $this->init();
+
+        return $this->isEnabled;
     }
 
     /**
@@ -140,7 +151,9 @@ class Sentry
      */
     public function handleException(Throwable $e): void
     {
-        if (!$this->is_enabled) {
+        $this->init();
+
+        if (!$this->isEnabled) {
             return;
         }
 

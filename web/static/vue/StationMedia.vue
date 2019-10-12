@@ -190,9 +190,7 @@
       if (urlHash.substr(0, 9) === 'playlist:') {
         window.location.hash = ''
         this.filter(urlHash)
-      }
-
-      if (urlHash !== '') {
+      } else if (urlHash !== '') {
         this.changeDirectory(urlHash)
       }
     },

@@ -25,7 +25,7 @@ final class Version20170829030442 extends AbstractMigration
     {
         $db_name = $this->connection->getDatabase();
 
-        $this->addSql([
+        $sqlLines = [
             'ALTER TABLE listener CHANGE listener_user_agent listener_user_agent VARCHAR(255) NOT NULL',
             'ALTER TABLE station CHANGE url url VARCHAR(255) DEFAULT NULL, CHANGE radio_base_dir radio_base_dir VARCHAR(255) DEFAULT NULL, CHANGE radio_media_dir radio_media_dir VARCHAR(255) DEFAULT NULL',
             'ALTER TABLE station_media CHANGE path path VARCHAR(255) DEFAULT NULL',
@@ -55,7 +55,11 @@ final class Version20170829030442 extends AbstractMigration
             'ALTER TABLE `users` CONVERT TO CHARACTER SET ' . $charset . ' COLLATE ' . $collate,
             'ALTER TABLE `song_history` ADD CONSTRAINT FK_2AD16164A0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE CASCADE',
             'ALTER TABLE `station_media` ADD CONSTRAINT FK_32AADE3AA0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE SET NULL',
-        ]);
+        ];
+
+        foreach ($sqlLines as $sql) {
+            $this->addSql($sql);
+        }
     }
 
     /**

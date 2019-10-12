@@ -24,7 +24,7 @@ final class Version20180425050351 extends AbstractMigration
 
     protected function changeCharset($charset, $collate)
     {
-        $this->addSql([
+        $sqlLines = [
             'ALTER TABLE `station_media` DROP FOREIGN KEY FK_32AADE3AA0BDB2F3',
             'ALTER TABLE `song_history` DROP FOREIGN KEY FK_2AD16164A0BDB2F3',
             'ALTER TABLE `station_media` CONVERT TO CHARACTER SET ' . $charset . ' COLLATE ' . $collate,
@@ -32,7 +32,11 @@ final class Version20180425050351 extends AbstractMigration
             'ALTER TABLE `songs` CONVERT TO CHARACTER SET ' . $charset . ' COLLATE ' . $collate,
             'ALTER TABLE `song_history` ADD CONSTRAINT FK_2AD16164A0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE CASCADE',
             'ALTER TABLE `station_media` ADD CONSTRAINT FK_32AADE3AA0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE SET NULL',
-        ]);
+        ];
+
+        foreach ($sqlLines as $sql) {
+            $this->addSql($sql);
+        }
     }
 
     /**

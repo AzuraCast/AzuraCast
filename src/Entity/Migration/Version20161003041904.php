@@ -19,7 +19,7 @@ final class Version20161003041904 extends AbstractMigration
             'Migration can only be executed safely on \'mysql\'.');
 
         // Apply the original database schema.
-        $this->addSql([
+        $initialSql = [
             'SET NAMES utf8mb4',
             'SET FOREIGN_KEY_CHECKS=0',
 
@@ -49,7 +49,11 @@ final class Version20161003041904 extends AbstractMigration
             'UPDATE action SET is_global=1',
 
             'SET FOREIGN_KEY_CHECKS=1',
-        ]);
+        ];
+
+        foreach ($initialSql as $sqlLine) {
+            $this->addSql($sqlLine);
+        }
 
         $actions = [
             ['view administration', 1],
@@ -90,18 +94,10 @@ final class Version20161003041904 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
+        $this->
+
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
             'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('CREATE TABLE role_has_action (role_id INT NOT NULL, action_id INT NOT NULL, INDEX IDX_E4DAF125D60322AC (role_id), INDEX IDX_E4DAF1259D32F035 (action_id), PRIMARY KEY(role_id, action_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE role_has_action ADD CONSTRAINT FK_E4DAF1259D32F035 FOREIGN KEY (action_id) REFERENCES action (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE role_has_action ADD CONSTRAINT FK_E4DAF125D60322AC FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE');
-
-        $this->addSql('DELETE FROM action WHERE is_global = 0');
-        $this->addSql('INSERT INTO role_has_action (role_id, action_id) SELECT role_id, action_id FROM role_has_actions');
-
-        $this->addSql('DROP TABLE role_has_actions');
-        $this->addSql('ALTER TABLE action DROP is_global');
     }
 }

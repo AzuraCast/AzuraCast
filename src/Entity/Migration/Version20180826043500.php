@@ -52,20 +52,26 @@ final class Version20180826043500 extends AbstractMigration
             'users',
         ];
 
-        $this->addSql([
+        $sqlLines = [
             'ALTER DATABASE ' . $this->connection->quoteIdentifier($db_name) . ' CHARACTER SET = ' . $charset . ' COLLATE = ' . $collate,
             'ALTER TABLE `song_history` DROP FOREIGN KEY FK_2AD16164A0BDB2F3',
             'ALTER TABLE `station_media` DROP FOREIGN KEY FK_32AADE3AA0BDB2F3',
-        ]);
+        ];
+        foreach ($sqlLines as $sql) {
+            $this->addSql($sql);
+        }
 
         foreach ($tables as $table_name) {
             $this->addSql('ALTER TABLE ' . $this->connection->quoteIdentifier($table_name) . ' CONVERT TO CHARACTER SET ' . $charset . ' COLLATE ' . $collate);
         }
 
-        $this->addSql([
+        $sqlLines = [
             'ALTER TABLE `song_history` ADD CONSTRAINT FK_2AD16164A0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE CASCADE',
             'ALTER TABLE `station_media` ADD CONSTRAINT FK_32AADE3AA0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE SET NULL',
-        ]);
+        ];
+        foreach ($sqlLines as $sql) {
+            $this->addSql($sql);
+        }
     }
 
     /**

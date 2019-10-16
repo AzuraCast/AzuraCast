@@ -75,23 +75,19 @@
                     <b-row>
                         <b-col md="4">
                             <b-img :src="albumArtSrc" :alt="langAlbumArtTab" rounded fluid></b-img>
+                            <br>
+                            <b-button block variant="link" class="text-danger mt-2" @click="deleteArt" v-translate>
+                                Delete Album Art
+                            </b-button>
                         </b-col>
                         <b-col md="8">
                             <b-form-group label-for="edit_form_art">
                                 <template v-slot:label v-translate>
                                     Replace Album Cover Art
                                 </template>
-                                <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"></b-form-file>
+                                <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"
+                                             @input="uploadNewArt"></b-form-file>
                             </b-form-group>
-
-                            <div class="buttons">
-                                <b-button variant="primary" @click="uploadNewArt" v-translate>
-                                    Upload New Art
-                                </b-button>
-                                <b-button variant="danger" @click="deleteArt" v-translate>
-                                    Delete Album Art
-                                </b-button>
-                            </div>
                         </b-col>
                     </b-row>
                 </b-tab>

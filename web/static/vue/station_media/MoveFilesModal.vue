@@ -76,7 +76,7 @@
         this.$refs.modal.hide()
       },
       doMove () {
-        this.selectedFiles.length && axios.post(this.batchUrl, {
+        this.selectedFiles.length && axios.put(this.batchUrl, {
           'do': 'move',
           'files': this.selectedFiles,
           'directory': this.destinationDirectory

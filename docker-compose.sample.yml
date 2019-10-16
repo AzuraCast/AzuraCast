@@ -13,6 +13,7 @@ version: '2.2'
 
 services:
   web:
+    container_name: azuracast_web
     image: azuracast/azuracast_web_v2:latest
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#use-non-standard-ports

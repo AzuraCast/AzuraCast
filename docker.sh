@@ -210,9 +210,9 @@ backup() {
     BACKUP_EXT="${BACKUP_FILENAME##*.}"
     shift
 
-    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web_1 azuracast_cli azuracast:backup /tmp/cli_backup.${BACKUP_EXT} $*
-    docker cp azuracast_web_1:tmp/cli_backup.${BACKUP_EXT} ${BACKUP_PATH}
-    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web_1 rm -f /tmp/cli_backup.${BACKUP_EXT}
+    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_cli azuracast:backup /tmp/cli_backup.${BACKUP_EXT} $*
+    docker cp azuracast_web:tmp/cli_backup.${BACKUP_EXT} ${BACKUP_PATH}
+    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web rm -f /tmp/cli_backup.${BACKUP_EXT}
     exit
 }
 
@@ -242,8 +242,8 @@ restore() {
         docker-compose down -v
         docker-compose pull
         docker-compose up -d web
-        docker cp ${BACKUP_PATH} azuracast_web_1:tmp/cli_backup.${BACKUP_EXT}
-        MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web_1 azuracast_restore /tmp/cli_backup.${BACKUP_EXT} $*
+        docker cp ${BACKUP_PATH} azuracast_web:tmp/cli_backup.${BACKUP_EXT}
+        MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_restore /tmp/cli_backup.${BACKUP_EXT} $*
 
         docker-compose down
         docker-compose up -d

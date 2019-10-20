@@ -385,12 +385,20 @@ class StationMediaRepository extends Repository
             return false;
         }
 
-        $tmp_uri = $fs->copyToTemp($media_uri);
-        $tmp_path = $fs->getFullPath($tmp_uri);
+        $tmp_uri = null;
+
+        try {
+            $tmp_path = $fs->getFullPath($media_uri);
+        } catch (\InvalidArgumentException $e) {
+            $tmp_uri = $fs->copyToTemp($media_uri);
+            $tmp_path = $fs->getFullPath($tmp_uri);
+        }
 
         $this->loadFromFile($media, $tmp_path);
 
-        $fs->delete($tmp_uri);
+        if (null !== $tmp_uri) {
+            $fs->delete($tmp_uri);
+        }
 
         $media->setMtime($media_mtime);
         $this->em->persist($media);
@@ -413,8 +421,15 @@ class StationMediaRepository extends Repository
         $getID3 = new getID3;
         $getID3->setOption(['encoding' => 'UTF8']);
 
-        $tmp_uri = $fs->copyToTemp($media->getPathUri());
-        $tmp_path = $fs->getFullPath($tmp_uri);
+        $media_uri = $media->getPathUri();
+        $tmp_uri = null;
+
+        try {
+            $tmp_path = $fs->getFullPath($media_uri);
+        } catch (\InvalidArgumentException $e) {
+            $tmp_uri = $fs->copyToTemp($media_uri);
+            $tmp_path = $fs->getFullPath($tmp_uri);
+        }
 
         $tagwriter = new getid3_writetags;
         $tagwriter->filename = $tmp_path;
@@ -458,7 +473,9 @@ class StationMediaRepository extends Repository
         if ($tagwriter->WriteTags()) {
             $media->setMtime(time());
 
-            $fs->updateFromTemp($tmp_uri, $media->getPathUri());
+            if (null !== $tmp_uri) {
+                $fs->updateFromTemp($tmp_uri, $media_uri);
+            }
             return true;
         }
 

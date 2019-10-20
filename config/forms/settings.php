@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity;
 
 return [
@@ -14,12 +15,12 @@ return [
                         'label' => __('Site Base URL'),
                         'description' => __('The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.'),
                         'default' => $_SERVER['HTTP_HOST'],
-                        'filter' => function($str) {
+                        'filter' => function ($str) {
                             return str_replace(['http://', 'https://'], ['', ''], trim($str));
                         },
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::INSTANCE_NAME => [
@@ -40,7 +41,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::USE_RADIO_PROXY => [
@@ -50,9 +51,9 @@ return [
                         'description' => __('By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
-                        'default' => false,
+                        'default' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::HISTORY_KEEP_DAYS => [
@@ -70,7 +71,7 @@ return [
                         ],
                         'default' => \App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
                         'form_group_class' => 'col-sm-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::NOWPLAYING_USE_WEBSOCKETS => [
@@ -82,7 +83,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
             ],
@@ -103,7 +104,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::ENABLE_FTP_SERVER => [
@@ -115,7 +116,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::API_ACCESS_CONTROL => [
@@ -123,10 +124,11 @@ return [
                     [
                         'label' => __('API "Access-Control-Allow-Origin" header'),
                         'class' => 'advanced',
-                        'description' => __('<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).', 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin'),
+                        'description' => __('<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).',
+                            'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin'),
                         'default' => '',
                         'form_group_class' => 'col-md-12',
-                    ]
+                    ],
                 ],
 
             ],
@@ -150,14 +152,15 @@ return [
                             Entity\Analytics::LEVEL_NONE => __('<b>None:</b> Do not collect any listener analytics'),
                         ],
                         'default' => Entity\Analytics::LEVEL_ALL,
-                    ]
+                    ],
                 ],
             ],
         ],
 
         'channels' => [
             'legend' => __('AzuraCast Installation Telemetry'),
-            'description' => __('Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.', 'https://www.azuracast.com/privacy.html'),
+            'description' => __('Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.',
+                'https://www.azuracast.com/privacy.html'),
 
             'elements' => [
 
@@ -173,18 +176,19 @@ return [
                             Entity\Settings::UPDATES_ALL => __('<b>All Updates:</b> Include all announcements and minor updates.'),
                         ],
                         'default' => Entity\Settings::UPDATES_RELEASE_ONLY,
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::SEND_ERROR_REPORTS => [
                     'toggle',
                     [
                         'label' => __('Automatically Send Error Reports to AzuraCast'),
-                        'description' => __('If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution.').'<br>'.__('Error reports are powered by <a href="%s" target="_blank">%s</a>.', 'https://sentry.io/', 'Sentry'),
+                        'description' => __('If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution.') . '<br>' . __('Error reports are powered by <a href="%s" target="_blank">%s</a>.',
+                                'https://sentry.io/', 'Sentry'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                    ]
+                    ],
                 ],
 
             ],
@@ -199,7 +203,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
-                    ]
+                    ],
                 ],
             ],
         ],

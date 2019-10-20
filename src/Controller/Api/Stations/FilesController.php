@@ -31,6 +31,9 @@ class FilesController extends AbstractStationApiCrudController
     /** @var Entity\Repository\CustomFieldRepository */
     protected $custom_fields_repo;
 
+    /** @var Entity\Repository\SongRepository */
+    protected $song_repo;
+
     /** @var Entity\Repository\StationMediaRepository */
     protected $media_repo;
 
@@ -47,6 +50,7 @@ class FilesController extends AbstractStationApiCrudController
      * @param Filesystem $filesystem
      * @param Adapters $adapters
      * @param Entity\Repository\CustomFieldRepository $custom_fields_repo
+     * @param Entity\Repository\SongRepository $song_repo
      * @param Entity\Repository\StationMediaRepository $media_repo
      * @param Entity\Repository\StationPlaylistRepository $playlist_repo
      * @param Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
@@ -58,6 +62,7 @@ class FilesController extends AbstractStationApiCrudController
         Filesystem $filesystem,
         Adapters $adapters,
         Entity\Repository\CustomFieldRepository $custom_fields_repo,
+        Entity\Repository\SongRepository $song_repo,
         Entity\Repository\StationMediaRepository $media_repo,
         Entity\Repository\StationPlaylistRepository $playlist_repo,
         Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
@@ -69,6 +74,7 @@ class FilesController extends AbstractStationApiCrudController
 
         $this->custom_fields_repo = $custom_fields_repo;
         $this->media_repo = $media_repo;
+        $this->song_repo = $song_repo;
         $this->playlist_repo = $playlist_repo;
         $this->playlist_media_repo = $playlist_media_repo;
     }
@@ -238,6 +244,19 @@ class FilesController extends AbstractStationApiCrudController
         ]));
 
         if ($record instanceof Entity\StationMedia) {
+            if ($this->media_repo->writeToFile($record)) {
+                $song_info = [
+                    'title' => $record->getTitle(),
+                    'artist' => $record->getArtist(),
+                ];
+
+                $song = $this->song_repo->getOrCreate($song_info);
+                $song->update($song_info);
+                $this->em->persist($song);
+
+                $record->setSong($song);
+            }
+            
             if (null !== $custom_fields) {
                 $this->custom_fields_repo->setCustomFields($record, $custom_fields);
             }

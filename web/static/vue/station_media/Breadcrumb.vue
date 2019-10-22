@@ -26,7 +26,12 @@
         let dirSegments = this.currentDirectory.split('/')
 
         dirSegments.forEach((part) => {
-          builtDir += '/' + part
+          if (builtDir === '') {
+            builtDir += part
+          } else {
+            builtDir += '/' + part
+          }
+
           dirParts.push({ dir: builtDir, display: part })
         })
 

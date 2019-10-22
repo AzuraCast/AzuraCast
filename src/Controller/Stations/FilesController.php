@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Stations\Files;
+namespace App\Controller\Stations;
 
 use App\Entity;
 use App\Http\Response;

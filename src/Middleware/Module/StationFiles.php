@@ -26,7 +26,7 @@ class StationFiles
         }
 
         $params = $request->getParams();
-        $file = $params['file'] ?? '';
+        $file = ltrim($params['file'] ?? '', '/');
         $file_path = 'media://' . $file;
 
         $request = $request->withAttribute('file', $file)

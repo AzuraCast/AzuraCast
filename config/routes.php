@@ -499,15 +499,8 @@ return function (App $app) {
 
         })->add(new Middleware\Permissions(Acl::STATION_AUTOMATION, true));
 
-        $group->group('/files', function (RouteCollectorProxy $group) {
-
-            $group->get('', Controller\Stations\Files\FilesController::class)
-                ->setName('stations:files:index');
-
-            $group->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\Files\EditController::class)
-                ->setName('stations:files:edit');
-
-        })
+        $group->get('/files', Controller\Stations\FilesController::class)
+            ->setName('stations:files:index')
             ->add(Middleware\Module\StationFiles::class)
             ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 

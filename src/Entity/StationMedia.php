@@ -133,7 +133,7 @@ class StationMedia
      *
      * @var string|null The formatted song duration (in mm:ss format)
      */
-    protected $length_text;
+    protected $length_text = '0:00';
 
     /**
      * @ORM\Column(name="path", type="string", length=500, nullable=true)
@@ -151,7 +151,7 @@ class StationMedia
      *
      * @var int|null The UNIX timestamp when the database was last modified.
      */
-    protected $mtime;
+    protected $mtime = 0;
 
     /**
      * @ORM\Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
@@ -210,7 +210,7 @@ class StationMedia
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The latest time (UNIX timestamp) when album art was updated.
      */
-    protected $art_updated_at;
+    protected $art_updated_at = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
@@ -234,11 +234,6 @@ class StationMedia
     public function __construct(Station $station, string $path)
     {
         $this->station = $station;
-
-        $this->length = 0;
-        $this->length_text = '0:00';
-
-        $this->mtime = 0;
 
         $this->playlists = new ArrayCollection;
         $this->custom_fields = new ArrayCollection;

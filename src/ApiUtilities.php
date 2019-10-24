@@ -44,35 +44,49 @@ class ApiUtilities
     /**
      * Get the album art URL for a given unique StationMedia identifier.
      *
-     * @param int $station_id
-     * @param string $media_unique_id
-     * @param UriInterface|null $base_url
+     * @param int $stationId
+     * @param string $mediaUniqueId
+     * @param int $mediaUpdatedTimestamp
+     * @param UriInterface|null $baseUri
      *
      * @return UriInterface
      */
-    public function getAlbumArtUrl($station_id, $media_unique_id, UriInterface $base_url = null): UriInterface
-    {
-        if ($base_url === null) {
-            $base_url = $this->router->getBaseUrl();
+    public function getAlbumArtUrl(
+        $stationId,
+        $mediaUniqueId,
+        int $mediaUpdatedTimestamp,
+        UriInterface $baseUri = null
+    ): UriInterface {
+        if (0 === $mediaUpdatedTimestamp) {
+            return $this->getDefaultAlbumArtUrl($baseUri);
         }
 
-        $path = $this->router->named('api:stations:media:art',
-            ['station_id' => $station_id, 'media_id' => $media_unique_id], []);
-        return UriResolver::resolve($base_url, $path);
+        if ($baseUri === null) {
+            $baseUri = $this->router->getBaseUrl();
+        }
+
+        $path = $this->router->named(
+            'api:stations:media:art',
+            [
+                'station_id' => $stationId,
+                'media_id' => $mediaUniqueId . '-' . $mediaUpdatedTimestamp,
+            ]
+        );
+        return UriResolver::resolve($baseUri, $path);
     }
 
     /**
-     * @param UriInterface|null $base_url
+     * @param UriInterface|null $baseUri
      *
      * @return UriInterface
      */
-    public function getDefaultAlbumArtUrl(UriInterface $base_url = null): UriInterface
+    public function getDefaultAlbumArtUrl(UriInterface $baseUri = null): UriInterface
     {
-        if ($base_url === null) {
-            $base_url = $this->router->getBaseUrl();
+        if ($baseUri === null) {
+            $baseUri = $this->router->getBaseUrl();
         }
 
-        return UriResolver::resolve($base_url, $this->customization->getDefaultAlbumArtUrl());
+        return UriResolver::resolve($baseUri, $this->customization->getDefaultAlbumArtUrl());
     }
 
     /**

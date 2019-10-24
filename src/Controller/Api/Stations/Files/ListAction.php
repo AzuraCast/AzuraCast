@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Api\Stations\Files;
 
+use App\Customization;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -17,7 +18,8 @@ class ListAction
         ServerRequest $request,
         Response $response,
         EntityManager $em,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        Customization $customization
     ): ResponseInterface {
         $station = $request->getStation();
         $router = $request->getRouter();
@@ -37,7 +39,7 @@ class ListAction
         $search_phrase = trim($params['searchPhrase'] ?? '');
 
         $media_query = $em->createQueryBuilder()
-            ->select('partial sm.{id, unique_id, path, length, length_text, artist, title, album}')
+            ->select('partial sm.{id, unique_id, art_updated_at, path, length, length_text, artist, title, album}')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
             ->from(Entity\StationMedia::class, 'sm')
@@ -77,6 +79,14 @@ class ListAction
                 $custom_fields['custom_' . $custom_field['field_id']] = $custom_field['value'];
             }
 
+            $artImgSrc = (0 === $media_row['art_updated_at'])
+                ? (string)$customization->getDefaultAlbumArtUrl()
+                : (string)$router->named('api:stations:media:art',
+                    [
+                        'station_id' => $station->getId(),
+                        'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
+                    ]);
+
             $media_in_dir[$media_row['path']] = [
                     'is_playable' => ($media_row['length'] !== 0),
                     'length' => $media_row['length'],
@@ -85,8 +95,7 @@ class ListAction
                     'title' => $media_row['title'],
                     'album' => $media_row['album'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                    'art' => (string)$router->named('api:stations:media:art',
-                        ['station_id' => $station->getId(), 'media_id' => $media_row['unique_id']]),
+                    'art' => $artImgSrc,
                     'art_url' => (string)$router->named('api:stations:media:art-internal',
                         ['station_id' => $station->getId(), 'media_id' => $media_row['id']]),
                     'can_edit' => true,

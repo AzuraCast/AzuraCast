@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use App\ApiUtilities;
 use App\Radio\Backend\Liquidsoap;
 use Azura\Normalizer\Annotation\DeepNormalize;
@@ -201,6 +202,15 @@ class StationMedia
      *                 equivalent to Liquidsoap's "liq_cue_out" annotation.
      */
     protected $cue_out;
+
+    /**
+     * @ORM\Column(name="art_updated_at", type="integer")
+     * @AuditLog\AuditIgnore()
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The latest time (UNIX timestamp) when album art was updated.
+     */
+    protected $art_updated_at;
 
     /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
@@ -550,6 +560,22 @@ class StationMedia
     }
 
     /**
+     * @return int
+     */
+    public function getArtUpdatedAt(): int
+    {
+        return $this->art_updated_at;
+    }
+
+    /**
+     * @param int $art_updated_at
+     */
+    public function setArtUpdatedAt(int $art_updated_at): void
+    {
+        $this->art_updated_at = $art_updated_at;
+    }
+
+    /**
      * @param StationPlaylist $playlist
      *
      * @return StationPlaylistMedia|null
@@ -738,12 +764,12 @@ class StationMedia
     /**
      * Retrieve the API version of the object/array.
      *
-     * @param ApiUtilities $api_utils
-     * @param UriInterface|null $base_url
+     * @param ApiUtilities $apiUtils
+     * @param UriInterface|null $baseUri
      *
      * @return Api\Song
      */
-    public function api(ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song
+    public function api(ApiUtilities $apiUtils, UriInterface $baseUri = null): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->song_id;
@@ -754,8 +780,13 @@ class StationMedia
         $response->album = (string)$this->album;
         $response->lyrics = (string)$this->lyrics;
 
-        $response->art = $api_utils->getAlbumArtUrl($this->station_id, $this->unique_id, $base_url);
-        $response->custom_fields = $api_utils->getCustomFields($this->id);
+        $response->art = $apiUtils->getAlbumArtUrl(
+            $this->station_id,
+            $this->unique_id,
+            $this->art_updated_at,
+            $baseUri
+        );
+        $response->custom_fields = $apiUtils->getCustomFields($this->id);
 
         return $response;
     }

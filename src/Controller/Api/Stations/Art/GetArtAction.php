@@ -52,6 +52,9 @@ class GetArtAction
         $station = $request->getStation();
         $fs = $filesystem->getForStation($station);
 
+        // If a timestamp delimiter is added, strip it automatically.
+        $media_id = explode('-', $media_id)[0];
+
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $mediaPath = 'albumart://' . $media_id . '.jpg';
         } else {

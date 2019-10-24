@@ -295,19 +295,13 @@ class StationMediaRepository extends Repository
         }
 
         $fs = $this->filesystem->getForStation($media->getStation());
-        $currentAlbumArtPath = $media->getArtPath();
+        $albumArtPath = $media->getArtPath();
 
-        if ($fs->has($currentAlbumArtPath)) {
-            $fs->delete($currentAlbumArtPath);
-        }
-
-        // Generate a new unique ID.
-        $media->generateUniqueId(true);
+        $media->setArtUpdatedAt(time());
         $this->em->persist($media);
         $this->em->flush($media);
 
-        $newAlbumArtPath = $media->getArtPath();
-        return $fs->put($newAlbumArtPath, $albumArt);
+        return $fs->put($albumArtPath, $albumArt);
     }
 
     public function removeAlbumArt(Entity\StationMedia $media): void
@@ -318,8 +312,7 @@ class StationMediaRepository extends Repository
 
         $fs->delete($currentAlbumArtPath);
 
-        // Generate a new unique ID.
-        $media->generateUniqueId(true);
+        $media->setArtUpdatedAt(0);
         $this->em->persist($media);
         $this->em->flush($media);
     }

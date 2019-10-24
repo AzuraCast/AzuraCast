@@ -302,10 +302,10 @@ return function (App $app) {
                 ->setName('api:listeners:index')
                 ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
-            $group->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\Art\GetArtAction::class)
+            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}.jpg', Controller\Api\Stations\Art\GetArtAction::class)
                 ->setName('api:stations:media:art');
 
-            $group->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\GetArtAction::class)
+            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}', Controller\Api\Stations\Art\GetArtAction::class)
                 ->setName('api:stations:media:art-internal');
 
             $group->post('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\PostArtAction::class)

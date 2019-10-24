@@ -256,7 +256,7 @@ class FilesController extends AbstractStationApiCrudController
 
                 $record->setSong($song);
             }
-            
+
             if (null !== $custom_fields) {
                 $this->custom_fields_repo->setCustomFields($record, $custom_fields);
             }
@@ -333,7 +333,9 @@ class FilesController extends AbstractStationApiCrudController
 
         // Delete the media file off the filesystem.
         $fs = $this->filesystem->getForStation($station);
+
         $fs->delete($record->getPathUri());
+        $fs->delete($record->getArtPath());
 
         // Write new PLS playlist configuration.
         $backend = $this->adapters->getBackendAdapter($station);

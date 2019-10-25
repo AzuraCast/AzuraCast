@@ -66,7 +66,6 @@ class SetupCommand extends CommandAbstract
         $io->section(__('Reload System Data'));
 
         $this->runCommand($output, 'cache:clear');
-        $this->runCommand($output, 'ca-certs:update');
 
         $io->newLine();
         $io->section(__('Refreshing All Stations'));

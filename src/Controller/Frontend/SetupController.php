@@ -162,7 +162,7 @@ class SetupController
             // Create user account.
             $user = new Entity\User;
             $user->setEmail($data['username']);
-            $user->setAuthPassword($data['password']);
+            $user->setNewPassword($data['password']);
             $user->getRoles()->add($role);
             $this->em->persist($user);
 
@@ -224,7 +224,7 @@ class SetupController
         }
 
         $form = new Form($this->settings_form_config);
-        
+
         $existing_settings = $this->settings_repo->fetchArray(false);
         $form->populate($existing_settings);
 

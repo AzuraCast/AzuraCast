@@ -10,36 +10,36 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
             <div class="card-body">
                 <div class="media">
                     <a class="align-self-center" href="http://www.gravatar.com/" target="_blank">
-                        <img src="<?=$user->getAvatar(64) ?>" style="width: 64px; height: auto;" alt="">
+                        <img src="<?= $user->getAvatar(64) ?>" style="width: 64px; height: auto;" alt="">
                     </a>
                     <div class="media-body ml-3">
                         <h2 class="card-title mt-2">
                             <?php if (!empty($user->getName())): ?>
-                                <?=$this->e($user->getName()) ?>
+                                <?= $this->e($user->getName()) ?>
                             <?php else: ?>
-                                <?=__('My Account') ?>
+                                <?= __('My Account') ?>
                             <?php endif; ?>
                         </h2>
                         <h3 class="card-subtitle">
-                            <?=$this->e($user->getEmail()) ?>
+                            <?= $this->e($user->getEmail()) ?>
                         </h3>
                     </div>
                 </div>
             </div>
             <div class="card-actions">
-                <a class="btn btn-outline-primary" href="<?=$router->named('profile:edit') ?>">
+                <a class="btn btn-outline-primary" href="<?= $router->named('profile:edit') ?>">
                     <i class="material-icons" aria-hidden="true">edit</i>
-                    <?=__('Edit Profile') ?>
+                    <?= __('Edit Profile') ?>
                 </a>
             </div>
         </div>
         <div class="card">
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Roles') ?></h2>
+                <h2 class="card-title"><?= __('Roles') ?></h2>
             </div>
             <ul class="list-group list-group-flush">
-                <?php foreach($user->getRoles() as $role): ?>
-                    <li class="list-group-item"><?=$this->e($role->getName()) ?></li>
+                <?php foreach ($user->getRoles() as $role): ?>
+                    <li class="list-group-item"><?= $this->e($role->getName()) ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -47,15 +47,15 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
     <div class="col-4">
         <div class="card">
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Customization') ?></h2>
+                <h2 class="card-title"><?= __('Customization') ?></h2>
             </div>
             <div class="card-body">
-                <?=$customization_form->renderView() ?>
+                <?= $profileView ?>
             </div>
             <div class="card-actions">
-                <a class="btn btn-outline-primary" href="<?=$router->named('profile:edit') ?>#customization">
+                <a class="btn btn-outline-primary" href="<?= $router->named('profile:edit') ?>#customization">
                     <i class="material-icons" aria-hidden="true">edit</i>
-                    <?=__('Customize') ?>
+                    <?= __('Customize') ?>
                 </a>
             </div>
         </div>
@@ -63,29 +63,29 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
     <div class="col-4">
         <div class="card">
             <div class="card-header bg-primary-dark mb-3">
-                <h2 class="card-title"><?=__('Two-Factor Authentication') ?></h2>
+                <h2 class="card-title"><?= __('Two-Factor Authentication') ?></h2>
             </div>
             <div class="card-body">
                 <?php if (null !== $user->getTwoFactorSecret()): ?>
-                    <h3 class="card-subtitle text-success"><?=__('Enabled') ?></h3>
+                    <h3 class="card-subtitle text-success"><?= __('Enabled') ?></h3>
                 <?php else: ?>
-                    <h3 class="card-subtitle text-danger"><?=__('Disabled') ?></h3>
+                    <h3 class="card-subtitle text-danger"><?= __('Disabled') ?></h3>
                 <?php endif; ?>
 
-                <p class="card-text mt-3"><?=__('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.') ?></p>
+                <p class="card-text mt-3"><?= __('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.') ?></p>
             </div>
             <div class="card-actions">
-            <?php if (null !== $user->getTwoFactorSecret()): ?>
-                <a class="btn btn-outline-primary" href="<?=$router->named('profile:2fa:disable') ?>">
-                    <i class="material-icons" aria-hidden="true">lock_open</i>
-                    <?=__('Disable Two-Factor') ?>
-                </a>
-            <?php else: ?>
-                <a class="btn btn-outline-primary" href="<?=$router->named('profile:2fa:enable') ?>">
-                    <i class="material-icons" aria-hidden="true">lock</i>
-                    <?=__('Enable Two-Factor') ?>
-                </a>
-            <?php endif; ?>
+                <?php if (null !== $user->getTwoFactorSecret()): ?>
+                    <a class="btn btn-outline-primary" href="<?= $router->named('profile:2fa:disable') ?>">
+                        <i class="material-icons" aria-hidden="true">lock_open</i>
+                        <?= __('Disable Two-Factor') ?>
+                    </a>
+                <?php else: ?>
+                    <a class="btn btn-outline-primary" href="<?= $router->named('profile:2fa:enable') ?>">
+                        <i class="material-icons" aria-hidden="true">lock</i>
+                        <?= __('Enable Two-Factor') ?>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

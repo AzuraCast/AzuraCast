@@ -395,27 +395,27 @@ return function (App $app) {
         $group->get('/dashboard', Controller\Frontend\DashboardController::class . ':indexAction')
             ->setName('dashboard');
 
-        $group->get('/logout', Controller\Frontend\AccountController::class . ':logoutAction')
+        $group->get('/logout', Controller\Frontend\Account\LogoutAction::class)
             ->setName('account:logout');
 
-        $group->get('/endsession', Controller\Frontend\AccountController::class . ':endmasqueradeAction')
+        $group->get('/endsession', Controller\Frontend\Account\EndMasqueradeAction::class)
             ->setName('account:endmasquerade');
 
-        $group->get('/profile', Controller\Frontend\ProfileController::class . ':indexAction')
+        $group->get('/profile', Controller\Frontend\Profile\IndexAction::class)
             ->setName('profile:index');
 
-        $group->map(['GET', 'POST'], '/profile/edit', Controller\Frontend\ProfileController::class . ':editAction')
+        $group->map(['GET', 'POST'], '/profile/edit', Controller\Frontend\Profile\EditAction::class)
             ->setName('profile:edit');
 
         $group->map(['GET', 'POST'], '/profile/2fa/enable',
-            Controller\Frontend\ProfileController::class . ':enableTwoFactorAction')
+            Controller\Frontend\Profile\EnableTwoFactorAction::class)
             ->setName('profile:2fa:enable');
 
         $group->map(['GET', 'POST'], '/profile/2fa/disable',
-            Controller\Frontend\ProfileController::class . ':disableTwoFactorAction')
+            Controller\Frontend\Profile\DisableTwoFactorAction::class)
             ->setName('profile:2fa:disable');
 
-        $group->get('/profile/theme', Controller\Frontend\ProfileController::class . ':themeAction')
+        $group->get('/profile/theme', Controller\Frontend\Profile\ThemeAction::class)
             ->setName('profile:theme');
 
         $group->get('/api_keys', Controller\Frontend\ApiKeysController::class . ':indexAction')
@@ -434,11 +434,11 @@ return function (App $app) {
         ->add(AzuraMiddleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);
 
-    $app->map(['GET', 'POST'], '/login', Controller\Frontend\AccountController::class . ':loginAction')
+    $app->map(['GET', 'POST'], '/login', Controller\Frontend\Account\LoginAction::class)
         ->setName('account:login')
         ->add(AzuraMiddleware\EnableView::class);
 
-    $app->map(['GET', 'POST'], '/login/2fa', Controller\Frontend\AccountController::class . ':twoFactorAction')
+    $app->map(['GET', 'POST'], '/login/2fa', Controller\Frontend\Account\TwoFactorAction::class)
         ->setName('account:login:2fa')
         ->add(AzuraMiddleware\EnableView::class);
 

@@ -371,6 +371,7 @@ return [
     App\Form\StationPlaylistForm::class => DI\autowire(),
     App\Form\StationWebhookForm::class => DI\autowire(),
     App\Form\UserForm::class => DI\autowire(),
+    App\Form\UserProfileForm::class => DI\autowire(),
 
     /*
      * Controller Groups

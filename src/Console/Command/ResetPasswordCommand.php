@@ -22,7 +22,7 @@ class ResetPasswordCommand extends CommandAbstract
         if ($user instanceof Entity\User) {
             $temp_pw = Utilities::generatePassword(15);
 
-            $user->setAuthPassword($temp_pw);
+            $user->setNewPassword($temp_pw);
             $user->setTwoFactorSecret(null);
 
             $em->persist($user);

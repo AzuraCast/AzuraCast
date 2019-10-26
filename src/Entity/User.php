@@ -216,7 +216,7 @@ class User
             [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
 
             if (password_needs_rehash($this->auth_password, $algo, $algo_opts)) {
-                $this->setAuthPassword($password);
+                $this->setNewPassword($password);
             }
             return true;
         }
@@ -241,7 +241,7 @@ class User
     /**
      * @param string $password
      */
-    public function setAuthPassword(string $password): void
+    public function setNewPassword(string $password): void
     {
         if (trim($password)) {
             [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
@@ -251,7 +251,7 @@ class User
 
     public function generateRandomPassword(): void
     {
-        $this->setAuthPassword(bin2hex(random_bytes(20)));
+        $this->setNewPassword(bin2hex(random_bytes(20)));
     }
 
     /**

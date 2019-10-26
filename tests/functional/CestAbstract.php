@@ -79,7 +79,7 @@ abstract class CestAbstract
         $user = new Entity\User;
         $user->setName('AzuraCast Test User');
         $user->setEmail($this->login_username);
-        $user->setAuthPassword($this->login_password);
+        $user->setNewPassword($this->login_password);
 
         $user->getRoles()->add($role);
 
@@ -87,7 +87,7 @@ abstract class CestAbstract
         $this->em->flush();
 
         $this->di->get(\App\Acl::class)->reload();
-        
+
         $test_station = new Entity\Station();
         $test_station->setName('Functional Test Radio');
         $test_station->setDescription('Test radio station.');

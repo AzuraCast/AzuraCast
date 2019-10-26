@@ -104,6 +104,15 @@
                 <b-tab :title="langAdvancedSettingsTab">
                     <b-row>
                         <b-col md="6">
+                            <b-form-group label-for="edit_form_song_length">
+                                <template v-slot:label v-translate>
+                                    Song Length
+                                </template>
+
+                                <b-form-input id="edit_form_song_length" readonly :value="songLength"></b-form-input>
+                            </b-form-group>
+                        </b-col>
+                        <b-col md="6">
                             <b-form-group label-for="edit_form_fade_overlap">
                                 <template v-slot:label v-translate>
                                     Custom Fading: Overlap Time (seconds)
@@ -204,6 +213,7 @@
         albumArtUrl: null,
         albumArtSrc: null,
         artFile: null,
+        songLength: null,
         form: this.getBlankForm()
       }
     },
@@ -277,6 +287,8 @@
 
         axios.get(recordUrl).then((resp) => {
           let d = resp.data
+
+          this.songLength = d.length_text
           this.form = {
             path: d.path,
             title: d.title,

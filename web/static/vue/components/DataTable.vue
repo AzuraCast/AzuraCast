@@ -1,51 +1,54 @@
 <template>
     <div>
-        <div class="d-flex align-items-center mb-2" v-if="showToolbar">
-            <div class="flex-fill">
+        <b-row class="align-items-center mb-2" v-if="showToolbar">
+            <b-col xl="7" md="6" sm="12">
                 <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
                               class="mb-0" v-if="showPagination">
                 </b-pagination>
-            </div>
-            <div class="flex-shrink-1 pl-3">
-                <div class="input-group">
-                    <span class="icon glyphicon input-group-addon search"></span>
-                    <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
+            </b-col>
+            <b-col xl="5" md="6" sm="12" class="d-flex">
+                <div class="flex-fill">
+                    <div class="input-group">
+                        <span class="icon glyphicon input-group-addon search"></span>
+                        <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
+                    </div>
                 </div>
-            </div>
-            <div class="flex-shrink-1 pl-3 pr-3">
-                <b-btn-group class="actions">
-                    <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
-                              :title="langRefreshTooltip">
-                        <i class="material-icons">refresh</i>
-                    </b-button>
-                    <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover :title="langPerPageTooltip">
-                        <b-dropdown-item v-for="pageOption in pageOptions" :key="pageOption"
-                                         :active="(pageOption === perPage)" @click="setPerPage(pageOption)">
-                            {{ getPerPageLabel(pageOption) }}
-                        </b-dropdown-item>
-                    </b-dropdown>
-                    <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
-                                :title="langSelectFieldsTooltip">
-                        <template v-slot:button-content>
-                            <i class="material-icons" aria-hidden="true">filter_list</i>
-                            <span class="caret"></span>
-                        </template>
-                        <b-dropdown-form class="pt-3">
-                            <div v-for="field in selectableFields" class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"
-                                           v-bind:id="'chk_field_' + field.key" name="is_field_visible"
-                                           v-model="field.visible" @change="storeSettings">
-                                    <label class="custom-control-label" v-bind:for="'chk_field_'+field.key">
-                                        {{ field.label }}
-                                    </label>
+                <div class="flex-shrink-1 pl-3 pr-3">
+                    <b-btn-group class="actions">
+                        <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
+                                  :title="langRefreshTooltip">
+                            <i class="material-icons">refresh</i>
+                        </b-button>
+                        <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover
+                                    :title="langPerPageTooltip">
+                            <b-dropdown-item v-for="pageOption in pageOptions" :key="pageOption"
+                                             :active="(pageOption === perPage)" @click="setPerPage(pageOption)">
+                                {{ getPerPageLabel(pageOption) }}
+                            </b-dropdown-item>
+                        </b-dropdown>
+                        <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
+                                    :title="langSelectFieldsTooltip">
+                            <template v-slot:button-content>
+                                <i class="material-icons" aria-hidden="true">filter_list</i>
+                                <span class="caret"></span>
+                            </template>
+                            <b-dropdown-form class="pt-3">
+                                <div v-for="field in selectableFields" class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                               v-bind:id="'chk_field_' + field.key" name="is_field_visible"
+                                               v-model="field.visible" @change="storeSettings">
+                                        <label class="custom-control-label" v-bind:for="'chk_field_'+field.key">
+                                            {{ field.label }}
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        </b-dropdown-form>
-                    </b-dropdown>
-                </b-btn-group>
-            </div>
-        </div>
+                            </b-dropdown-form>
+                        </b-dropdown>
+                    </b-btn-group>
+                </div>
+            </b-col>
+        </b-row>
 
         <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"

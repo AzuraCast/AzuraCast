@@ -86,10 +86,14 @@ class Media extends AbstractTask
      */
     public function run($force = false): void
     {
-        $station_repo = $this->em->getRepository(Entity\Station::class);
-        $stations = $station_repo->findAll();
+        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
+        $logger = Logger::getInstance();
 
         foreach ($stations as $station) {
+            $logger->info('Processing media for station...', [
+                'station' => $station->getName(),
+            ]);
+
             $this->importMusic($station);
             gc_collect_cycles();
         }
@@ -189,18 +193,16 @@ class Media extends AbstractTask
                 $file_info = $music_files[$path_hash];
                 if (isset($queued_media_updates[$media_row->getId()])) {
                     $stats['already_queued']++;
+                } elseif ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+                    $message = new Message\ReprocessMediaMessage;
+                    $message->media_id = $media_row->getId();
+                    $message->force = $force_reprocess;
+
+                    $this->messageQueue->produce($message);
+
+                    $stats['updated']++;
                 } else {
-                    if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
-                        $message = new Message\ReprocessMediaMessage;
-                        $message->media_id = $media_row->getId();
-                        $message->force = $force_reprocess;
-
-                        $this->messageQueue->produce($message);
-
-                        $stats['updated']++;
-                    } else {
-                        $stats['unchanged']++;
-                    }
+                    $stats['unchanged']++;
                 }
 
                 unset($music_files[$path_hash]);

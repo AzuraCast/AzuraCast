@@ -5,6 +5,8 @@ use App\Entity;
 use App\Flysystem\StationFilesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Message\WritePlaylistFileMessage;
+use App\MessageQueue;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
@@ -19,7 +21,8 @@ class BatchAction
         EntityManager $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        MessageQueue $messageQueue
     ): ResponseInterface {
         $station = $request->getStation();
         $fs = $filesystem->getForStation($station);
@@ -41,7 +44,7 @@ class BatchAction
 
         $response_record = null;
         $errors = [];
-        
+
         switch ($request->getParam('do')) {
             case 'delete':
                 // Remove the database entries of any music being removed.
@@ -177,8 +180,10 @@ class BatchAction
 
                 if ($backend instanceof Liquidsoap) {
                     foreach ($affected_playlists as $playlist) {
-                        /** @var Entity\StationPlaylist $playlist */
-                        $backend->writePlaylistFile($playlist);
+                        // Instruct the message queue to start a new "write playlist to file" task.
+                        $message = new WritePlaylistFileMessage;
+                        $message->playlist_id = $playlist->getId();
+                        $messageQueue->produce($message);
                     }
                 }
                 break;

@@ -4,6 +4,7 @@ namespace App\Radio\Backend;
 
 use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
+use App\Message;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Radio\Filesystem;
@@ -53,6 +54,26 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $this->streamerRepo = $streamerRepo;
         $this->autodj = $autodj;
         $this->filesystem = $filesystem;
+    }
+
+    /**
+     * Handle event dispatch.
+     *
+     * @param Message\AbstractMessage $message
+     */
+    public function __invoke(Message\AbstractMessage $message)
+    {
+        try {
+            if ($message instanceof Message\WritePlaylistFileMessage) {
+                $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
+
+                if ($playlist instanceof Entity\StationPlaylist) {
+                    $this->writePlaylistFile($playlist, true);
+                }
+            }
+        } finally {
+            $this->em->clear();
+        }
     }
 
     public static function getSubscribedEvents()
@@ -462,6 +483,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $playlistPath = $station->getRadioPlaylistsDir();
         $playlistVarName = 'playlist_' . $playlist->getShortName();
 
+        $logger = Logger::getInstance();
+        $logger->info('Writing playlist file to disk...', [
+            'station' => $station->getName(),
+            'playlist' => $playlist->getName(),
+        ]);
+
         $mediaBaseDir = $station->getRadioMediaDir() . '/';
         $playlistFile = [];
 
@@ -494,7 +521,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
 
             $playlistFile[] = 'annotate:' . implode(',', $annotations_str) . ':' . $mediaFilePath;
-            $this->em->detach($row[0]);
+
+            $this->em->detach($mediaFile);
+            unset($mediaFile);
         }
 
         $playlistFilePath = $playlistPath . '/' . $playlistVarName . '.m3u';
@@ -1079,7 +1108,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         if (strpos($pass, ':') !== false) {
             [$user, $pass] = explode(':', $pass);
         }
-        
+
         $streamer = $this->streamerRepo->authenticate($station, $user, $pass);
 
         if ($streamer instanceof Entity\StationStreamer) {

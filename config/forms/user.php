@@ -10,7 +10,7 @@ return [
                 'label' => __('Display Name'),
                 'class' => 'half-width',
                 'label_class' => 'mb-2',
-            ]
+            ],
         ],
 
         'email' => [
@@ -21,10 +21,10 @@ return [
                 'autocomplete' => 'new-password',
                 'label_class' => 'mb-2',
                 'form_group_class' => 'mt-3',
-            ]
+            ],
         ],
 
-        'auth_password' => [
+        'new_password' => [
             'password',
             [
                 'label' => __('Reset Password'),
@@ -33,7 +33,7 @@ return [
                 'required' => false,
                 'label_class' => 'mb-2',
                 'form_group_class' => 'mt-3',
-            ]
+            ],
         ],
 
         'roles' => [
@@ -42,7 +42,7 @@ return [
                 'label' => __('Roles'),
                 'options' => $roles,
                 'form_group_class' => 'mt-3',
-            ]
+            ],
         ],
 
         'submit' => [
@@ -53,7 +53,7 @@ return [
 
                 'class' => 'btn btn-lg btn-primary',
                 'form_group_class' => 'mt-3',
-            ]
+            ],
         ],
     ],
 ];

@@ -69,6 +69,7 @@ class BatchAction
 
                         if ($media instanceof Entity\StationMedia) {
                             $em->remove($media);
+                            $em->flush($media);
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
@@ -99,9 +100,11 @@ class BatchAction
                 $backend = $request->getStationBackend();
 
                 if ($backend instanceof Liquidsoap) {
-                    foreach ($affected_playlists as $playlist) {
-                        /** @var Entity\StationPlaylist $playlist */
-                        $backend->writePlaylistFile($playlist);
+                    foreach ($affected_playlists as $playlist_id => $playlist_row) {
+                        // Instruct the message queue to start a new "write playlist to file" task.
+                        $message = new WritePlaylistFileMessage;
+                        $message->playlist_id = $playlist_id;
+                        $messageQueue->produce($message);
                     }
                 }
                 break;
@@ -129,7 +132,7 @@ class BatchAction
                             'name' => $playlist->getName(),
                         ];
 
-                        $affected_playlists[$playlist->getId()] = $playlist;
+                        $affected_playlists[$playlist->getId()] = $playlist->getId();
                         $playlists[] = $playlist;
                         $playlist_weights[$playlist->getId()] = 0;
                     } else {
@@ -139,7 +142,7 @@ class BatchAction
                         ]);
 
                         if ($playlist instanceof Entity\StationPlaylist) {
-                            $affected_playlists[$playlist->getId()] = $playlist;
+                            $affected_playlists[$playlist->getId()] = $playlist->getId();
                             $playlists[] = $playlist;
                             $playlist_weights[$playlist->getId()] = $playlistMediaRepo->getHighestSongWeight($playlist);
                         }
@@ -179,10 +182,10 @@ class BatchAction
                 $backend = $request->getStationBackend();
 
                 if ($backend instanceof Liquidsoap) {
-                    foreach ($affected_playlists as $playlist) {
+                    foreach ($affected_playlists as $playlist_id => $playlist_row) {
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage;
-                        $message->playlist_id = $playlist->getId();
+                        $message->playlist_id = $playlist_id;
                         $messageQueue->produce($message);
                     }
                 }

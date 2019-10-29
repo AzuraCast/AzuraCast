@@ -5,6 +5,8 @@ use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Message\WritePlaylistFileMessage;
+use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
@@ -28,6 +30,9 @@ class FilesController extends AbstractStationApiCrudController
     /** @var Adapters */
     protected $adapters;
 
+    /** @var MessageQueue */
+    protected $messageQueue;
+
     /** @var Entity\Repository\CustomFieldRepository */
     protected $custom_fields_repo;
 
@@ -49,6 +54,7 @@ class FilesController extends AbstractStationApiCrudController
      * @param ValidatorInterface $validator
      * @param Filesystem $filesystem
      * @param Adapters $adapters
+     * @param MessageQueue $messageQueue
      * @param Entity\Repository\CustomFieldRepository $custom_fields_repo
      * @param Entity\Repository\SongRepository $song_repo
      * @param Entity\Repository\StationMediaRepository $media_repo
@@ -61,6 +67,7 @@ class FilesController extends AbstractStationApiCrudController
         ValidatorInterface $validator,
         Filesystem $filesystem,
         Adapters $adapters,
+        MessageQueue $messageQueue,
         Entity\Repository\CustomFieldRepository $custom_fields_repo,
         Entity\Repository\SongRepository $song_repo,
         Entity\Repository\StationMediaRepository $media_repo,
@@ -71,6 +78,7 @@ class FilesController extends AbstractStationApiCrudController
 
         $this->filesystem = $filesystem;
         $this->adapters = $adapters;
+        $this->messageQueue = $messageQueue;
 
         $this->custom_fields_repo = $custom_fields_repo;
         $this->media_repo = $media_repo;
@@ -299,9 +307,11 @@ class FilesController extends AbstractStationApiCrudController
                 // Handle playlist changes.
                 $backend = $this->adapters->getBackendAdapter($station);
                 if ($backend instanceof Liquidsoap) {
-                    foreach ($affected_playlists as $playlist) {
-                        /** @var Entity\StationPlaylist $playlist */
-                        $backend->writePlaylistFile($playlist);
+                    foreach ($affected_playlists as $playlist_id => $playlist_row) {
+                        // Instruct the message queue to start a new "write playlist to file" task.
+                        $message = new WritePlaylistFileMessage;
+                        $message->playlist_id = $playlist_id;
+                        $this->messageQueue->produce($message);
                     }
                 }
             }
@@ -340,9 +350,11 @@ class FilesController extends AbstractStationApiCrudController
         // Write new PLS playlist configuration.
         $backend = $this->adapters->getBackendAdapter($station);
         if ($backend instanceof Liquidsoap) {
-            foreach ($affected_playlists as $playlist) {
-                /** @var Entity\StationPlaylist $playlist */
-                $backend->writePlaylistFile($playlist);
+            foreach ($affected_playlists as $playlist_id => $playlist_row) {
+                // Instruct the message queue to start a new "write playlist to file" task.
+                $message = new WritePlaylistFileMessage;
+                $message->playlist_id = $playlist_id;
+                $this->messageQueue->produce($message);
             }
         }
 

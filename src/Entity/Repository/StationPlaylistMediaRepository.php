@@ -93,7 +93,10 @@ class StationPlaylistMediaRepository extends Repository
         foreach ($playlists as $row) {
             /** @var Entity\StationPlaylistMedia $row */
             $playlist = $row->getPlaylist();
-            $affected_playlists[$playlist->getId()] = $playlist;
+            $affected_playlists[$playlist->getId()] = $playlist->getId();
+
+            $this->em->detach($row);
+            $this->em->detach($playlist);
         }
 
         // Clear the playback queue.

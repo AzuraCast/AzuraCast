@@ -122,6 +122,10 @@ class Media extends AbstractTask
         ]);
 
         foreach ($fsIterator as $file) {
+            if (!empty($file['size'])) {
+                $total_size = $total_size->plus($file['size']);
+            }
+            
             $path_hash = md5($file['path']);
             $music_files[$path_hash] = $file;
         }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fd0a77c0fa0cd68767a10b46305fbef",
+    "content-hash": "daa64133b5f78f421c131b53091c1edc",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2245,12 +2245,12 @@
             "version": "v4.7.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/oscarotero/Gettext.git",
+                "url": "https://github.com/php-gettext/Gettext.git",
                 "reference": "739c935503853759b1607f375960c73a5b03909b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/Gettext/zipball/739c935503853759b1607f375960c73a5b03909b",
+                "url": "https://api.github.com/repos/php-gettext/Gettext/zipball/739c935503853759b1607f375960c73a5b03909b",
                 "reference": "739c935503853759b1607f375960c73a5b03909b",
                 "shasum": ""
             },
@@ -2884,6 +2884,48 @@
                 "tokenizer"
             ],
             "time": "2018-03-21T22:21:57+00:00"
+        },
+        {
+            "name": "jhofm/flysystem-iterator",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jhofm/flysystem-iterator.git",
+                "reference": "0192e062ebef4d7f102463b1301aa52513c559ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jhofm/flysystem-iterator/zipball/0192e062ebef4d7f102463b1301aa52513c559ad",
+                "reference": "0192e062ebef4d7f102463b1301aa52513c559ad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "league/flysystem": "^1.0",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "league/flysystem-memory": "^1.0",
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jhofm\\FlysystemIterator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes Hofmann",
+                    "email": "hofmann.johannes@gmail.com"
+                }
+            ],
+            "description": "Iterator plugin for league/flysystem",
+            "time": "2019-04-22T19:59:38+00:00"
         },
         {
             "name": "league/flysystem",

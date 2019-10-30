@@ -9,7 +9,6 @@ use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\Psr6Cache;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 use Psr\Cache\CacheItemPoolInterface;
-use Redis;
 
 /**
  * A wrapper and manager class for accessing assets on the filesystem.
@@ -30,7 +29,7 @@ class Filesystem
         $this->cachePool = new PrefixedCachePool($cachePool, 'fs|');
     }
 
-    public function getForStation(Entity\Station $station): StationFilesystem
+    public function getForStation(Entity\Station $station, bool $cached = true): StationFilesystem
     {
         $station_id = $station->getId();
         if (!isset($this->interfaces[$station_id])) {
@@ -46,8 +45,12 @@ class Filesystem
             foreach ($aliases as $alias => $localPath) {
                 $adapter = new Local($localPath);
 
-                $cachedClient = new Psr6Cache($this->cachePool, $this->normalizeCacheKey($localPath), 3600);
-                $filesystems[$alias] = new LeagueFilesystem(new CachedAdapter($adapter, $cachedClient));
+                if ($cached) {
+                    $cachedClient = new Psr6Cache($this->cachePool, $this->normalizeCacheKey($localPath), 3600);
+                    $adapter = new CachedAdapter($adapter, $cachedClient);
+                }
+
+                $filesystems[$alias] = new LeagueFilesystem($adapter);
             }
 
             $this->interfaces[$station_id] = new StationFilesystem($filesystems);

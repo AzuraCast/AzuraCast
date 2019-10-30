@@ -3,6 +3,10 @@ namespace App\Flysystem;
 
 use Azura\Exception;
 use InvalidArgumentException;
+use Jhofm\FlysystemIterator\FilesystemFilterIterator;
+use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\Options\Options;
+use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\AbstractCache;
@@ -105,7 +109,7 @@ class StationFilesystem extends MountManager
      */
     public function getFullPath($uri): string
     {
-        list($prefix, $path) = $this->getPrefixAndPath($uri);
+        [$prefix, $path] = $this->getPrefixAndPath($uri);
 
         $fs = $this->getFilesystem($prefix);
 
@@ -153,5 +157,30 @@ class StationFilesystem extends MountManager
                 }
             }
         }
+    }
+
+    /**
+     * Create an iterator that loops through the entire contents of a given prefix.
+     *
+     * @param string $uri
+     * @param array $iteratorOptions
+     *
+     * @return \Iterator
+     */
+    public function createIterator(string $uri, array $iteratorOptions = []): \Iterator
+    {
+        [$prefix, $path] = $this->getPrefixAndPath($uri);
+
+        $fs = $this->getFilesystem($prefix);
+        $iterator = new FilesystemIterator($fs, $path, $iteratorOptions);
+
+        $options = Options::fromArray($iteratorOptions);
+        if ($options->{Options::OPTION_IS_RECURSIVE}) {
+            $iterator = new RecursiveFilesystemIteratorIterator($iterator);
+        }
+        if ($options->{Options::OPTION_FILTER} !== null) {
+            $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
+        }
+        return $iterator;
     }
 }

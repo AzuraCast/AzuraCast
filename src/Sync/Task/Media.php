@@ -11,6 +11,7 @@ use Bernard\Envelope;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use Symfony\Component\Finder\Finder;
 
 class Media extends AbstractTask
@@ -101,8 +102,7 @@ class Media extends AbstractTask
 
     public function importMusic(Entity\Station $station)
     {
-        $fs = $this->filesystem->getForStation($station);
-        $fs->flushAllCaches();
+        $fs = $this->filesystem->getForStation($station, false);
 
         $stats = [
             'total_size' => '0',
@@ -117,15 +117,11 @@ class Media extends AbstractTask
         $music_files = [];
         $total_size = BigInteger::zero();
 
-        foreach ($fs->listContents('media://', true) as $file) {
-            if (!empty($file['size'])) {
-                $total_size = $total_size->plus($file['size']);
-            }
+        $fsIterator = $fs->createIterator('media://', [
+            'filter' => FilterFactory::isFile(),
+        ]);
 
-            if ('file' !== $file['type']) {
-                continue;
-            }
-
+        foreach ($fsIterator as $file) {
             $path_hash = md5($file['path']);
             $music_files[$path_hash] = $file;
         }
@@ -239,8 +235,6 @@ class Media extends AbstractTask
                 $stats['created']++;
             }
         }
-
-        $fs->flushAllCaches(true);
 
         Logger::getInstance()->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }

@@ -122,16 +122,22 @@
         })
       },
       doBatch (action, notifyMessage) {
-        this.selectedFiles.length && axios.put(this.batchUrl, {
-          'do': action,
-          'files': this.selectedFiles,
-          'file': this.currentDirectory
-        }).then((resp) => {
-          notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
-          this.$emit('relist')
-        }).catch((err) => {
-          console.error(err)
-        })
+        if (this.selectedFiles.length) {
+          this.notifyPending()
+
+          axios.put(this.batchUrl, {
+            'do': action,
+            'files': this.selectedFiles,
+            'file': this.currentDirectory
+          }).then((resp) => {
+            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+            this.$emit('relist')
+          }).catch((err) => {
+            this.handleError(err)
+          })
+        } else {
+          this.notifyNoFiles()
+        }
       },
       clearPlaylists () {
         this.checkedPlaylists = []
@@ -140,30 +146,51 @@
         this.setPlaylists()
       },
       setPlaylists () {
-        this.selectedFiles.length && axios.put(this.batchUrl, {
-          'do': 'playlist',
-          'playlists': this.checkedPlaylists,
-          'new_playlist_name': this.newPlaylist,
-          'files': this.selectedFiles,
-          'file': this.currentDirectory
-        }).then((resp) => {
-          if (resp.data.success && resp.data.record) {
-            this.playlists.push(resp.data.record)
-          }
+        this.$refs.setPlaylistsDropdown.hide()
 
-          let notifyMessage = (this.checkedPlaylists.length > 0)
-            ? this.$gettext('Playlists updated for selected files:')
-            : this.$gettext('Playlists cleared for selected files:')
-          notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+        if (this.selectedFiles.length) {
+          this.notifyPending()
 
-          this.checkedPlaylists = []
-          this.newPlaylist = ''
+          axios.put(this.batchUrl, {
+            'do': 'playlist',
+            'playlists': this.checkedPlaylists,
+            'new_playlist_name': this.newPlaylist,
+            'files': this.selectedFiles,
+            'file': this.currentDirectory
+          }).then((resp) => {
+            if (resp.data.success && resp.data.record) {
+              this.playlists.push(resp.data.record)
+            }
 
-          this.$refs.setPlaylistsDropdown.hide()
-          this.$emit('relist')
-        }).catch((err) => {
-          console.error(err)
+            let notifyMessage = (this.checkedPlaylists.length > 0)
+              ? this.$gettext('Playlists updated for selected files:')
+              : this.$gettext('Playlists cleared for selected files:')
+            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+
+            this.checkedPlaylists = []
+            this.newPlaylist = ''
+
+            this.$emit('relist')
+          }).catch((err) => {
+            this.handleError(err)
+          })
+        } else {
+          this.notifyNoFiles()
+        }
+      },
+      notifyPending () {
+        notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
+          delay: 3000
         })
+      },
+      notifyNoFiles () {
+        notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger')
+      },
+      handleError (err) {
+        if (err.response.message) {
+          notify('<b>' + err.response.message + '</b>', 'danger')
+          console.error(err)
+        }
       }
     }
   }

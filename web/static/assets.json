@@ -1,5 +1,5 @@
 {
-  "dist/app.js": "dist/app-0d97b71b03.js",
+  "dist/app.js": "dist/app-e71c721caa.js",
   "dist/bootgrid.js": "dist/bootgrid-dbc21837bc.js",
   "dist/dark.css": "dist/dark-6d2a272036.css",
   "dist/inline_player.js": "dist/inline_player-f5a2664b3b.js",
@@ -50,7 +50,7 @@
   "dist/light.css": "dist/light-97511efaa3.css",
   "dist/material.js": "dist/material-8a0f31e5be.js",
   "dist/radio_player.js": "dist/radio_player-b8df57d8b4.js",
-  "dist/station_media.js": "dist/station_media-a46f5cc80b.js",
+  "dist/station_media.js": "dist/station_media-f55d41e17e.js",
   "dist/vue_gettext.js": "dist/vue_gettext-3680f650b9.js",
   "dist/webcaster.js": "dist/webcaster-137f49b033.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"

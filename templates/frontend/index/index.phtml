@@ -30,29 +30,29 @@ $user = $request->getUser();
 <section class="card mb-4" role="region">
     <div class="card-header bg-primary-dark d-flex align-items-center">
         <a class="flex-shrink-0" href="http://www.gravatar.com/" target="_blank">
-            <img src="<?= $user->getAvatar(64) ?>" style="width: 64px; height: auto;" alt="">
+            <img src="<?=$user->getAvatar(64)?>" style="width: 64px; height: auto;" alt="">
         </a>
         <div class="flex-fill ml-3">
             <h2 class="card-title mt-0">
                 <?php if (!empty($user->getName())): ?>
-                    <?= $this->e($user->getName()) ?>
+                    <?=$this->e($user->getName())?>
                 <?php else: ?>
-                    <?= __('AzuraCast User') ?>
+                    <?=__('AzuraCast User')?>
                 <?php endif; ?>
             </h2>
             <h3 class="card-subtitle">
-                <?= $this->e($user->getEmail()) ?>
+                <?=$this->e($user->getEmail())?>
             </h3>
         </div>
         <div class="flex-shrink-0">
-            <a class="btn btn-bg" role="button" href="<?= $router->named('profile:index') ?>">
+            <a class="btn btn-bg" role="button" href="<?=$router->named('profile:index')?>">
                 <i class="material-icons" aria-hidden="true">account_circle</i>
-                <?= __('My Account') ?>
+                <?=__('My Account')?>
             </a>
             <?php if ($show_admin): ?>
-                <a class="btn btn-bg ml-2" role="button" href="<?= $router->named('admin:index:index') ?>">
+                <a class="btn btn-bg ml-2" role="button" href="<?=$router->named('admin:index:index')?>">
                     <i class="material-icons" aria-hidden="true">settings</i>
-                    <?= __('Administration') ?>
+                    <?=__('Administration')?>
                 </a>
             <?php endif; ?>
         </div>
@@ -61,7 +61,7 @@ $user = $request->getUser();
     <?php if (!empty($notifications)): ?>
         <?php foreach ($notifications as $notification): ?>
             <?php /** @var \App\Notification\Notification $notification */ ?>
-            <div class="card-body alert-<?= $notification->getType() ?> d-flex" role="alert">
+            <div class="card-body alert-<?=$notification->getType()?> d-flex" role="alert">
                 <div class="flex-shrink-0 mt-3 mr-3">
                     <?php if (\App\Notification\Notification::INFO === $notification->getType()): ?>
                         <i class="material-icons lg" aria-hidden="true">info</i>
@@ -70,9 +70,9 @@ $user = $request->getUser();
                     <?php endif; ?>
                 </div>
                 <div class="flex-fill">
-                    <h4><?= $notification->getTitle() ?></h4>
+                    <h4><?=$notification->getTitle()?></h4>
                     <p class="card-text">
-                        <?= $notification->getBody() ?>
+                        <?=$notification->getBody()?>
                     </p>
                 </div>
             </div>
@@ -83,11 +83,11 @@ $user = $request->getUser();
 <?php if ($metrics): ?>
     <section class="card mb-4" role="region">
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title"><?= __('Listeners Per Station') ?></h3>
+            <h3 class="card-title"><?=__('Listeners Per Station')?></h3>
         </div>
         <div class="card-body">
-            <canvas id="station_chart" style="width: 100%;" aria-label="<?= __('Listeners Per Station') ?>" role="img">
-                <?= $metrics['station_alt'] ?>
+            <canvas id="station_chart" style="width: 100%;" aria-label="<?=__('Listeners Per Station')?>" role="img">
+                <?=$metrics['station_alt']?>
             </canvas>
         </div>
     </section>
@@ -95,13 +95,13 @@ $user = $request->getUser();
 
 <section class="card" role="region">
     <div class="card-header bg-primary-dark">
-        <h3 class="card-title"><?= __('Station Overview') ?></h3>
+        <h3 class="card-title"><?=__('Station Overview')?></h3>
     </div>
     <?php if ($acl->userAllowed($user, 'administer stations')): ?>
         <div class="card-actions">
-            <a class="btn btn-outline-primary" href="<?= $router->named('admin:stations:add') ?>">
+            <a class="btn btn-outline-primary" href="<?=$router->named('admin:stations:add')?>">
                 <i class="material-icons" aria-hidden="true">add</i>
-                <?= __('Add Station') ?>
+                <?=__('Add Station')?>
             </a>
         </div>
     <?php endif; ?>
@@ -116,9 +116,9 @@ $user = $request->getUser();
         <thead>
         <tr>
             <th class="pr-3">&nbsp;</th>
-            <th class="pl-2"><?= __('Station Name') ?></th>
-            <th class="text-center"><?= __('Listeners') ?></th>
-            <th><?= __('Now Playing') ?></th>
+            <th class="pl-2"><?=__('Station Name')?></th>
+            <th class="text-center"><?=__('Listeners')?></th>
+            <th><?=__('Now Playing')?></th>
             <th class="text-right"></th>
         </tr>
         </thead>
@@ -145,7 +145,7 @@ $user = $request->getUser();
                 </div>
             </td>
             <td class="text-right">
-                <a class="btn btn-primary" role="button" v-bind:href="row.manage_url"><?= __('Manage') ?></a>
+                <a class="btn btn-primary" v-bind:href="row.manage_url"><?=__('Manage')?></a>
             </td>
         </tr>
         </tbody>

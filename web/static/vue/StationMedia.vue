@@ -23,7 +23,7 @@
                         </a>
                         <template v-if="row.item.media_is_playable">
                             <a class="file-icon btn-audio" href="#" :data-url="row.item.media_play_url"
-                               @click.prevent="playAudio(row.item.media_play_url)">
+                               @click.prevent="playAudio(row.item.media_play_url)" :title="langPlayPause">
                                 <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                             </a>
                         </template>
@@ -60,7 +60,8 @@
                 </template>
                 <template v-slot:cell(playlists)="row">
                     <template v-for="(playlist, index) in row.item.media_playlists">
-                        <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist)">{{ playlist }}</a>
+                        <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist)"
+                           :title="langPlaylistSelect">{{ playlist }}</a>
                         <span v-if="index+1 < row.item.media_playlists.length">, </span>
                     </template>
                 </template>
@@ -203,6 +204,12 @@
       },
       langEditButton () {
         return this.$gettext('Edit')
+      },
+      langPlayPause () {
+        return this.$gettext('Play/Pause')
+      },
+      langPlaylistSelect () {
+        return this.$gettext('View tracks in playlist')
       }
     },
     methods: {

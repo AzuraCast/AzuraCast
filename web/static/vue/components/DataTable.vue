@@ -55,16 +55,14 @@
                  tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                  :filter="filter" :filter-debounce="200" @filtered="onFiltered" @refreshed="onRefreshed">
             <template v-slot:head(selected)="data">
-                <div class="custom-control custom-checkbox pl-0" @click="toggleSelected">
-                    <input type="checkbox" class="custom-control-input" :checked="allSelected">
-                    <label class="custom-control-label">&nbsp;</label>
-                </div>
+                <b-form-checkbox :aria-label="langSelectAll" v-model="allSelected"
+                                 @change="toggleSelected"></b-form-checkbox>
             </template>
             <template v-slot:cell(selected)="{ rowSelected }">
-                <div class="custom-control custom-checkbox pl-0">
-                    <input type="checkbox" class="custom-control-input" :checked="rowSelected">
-                    <label class="custom-control-label">&nbsp;</label>
-                </div>
+                <i class="material-icons">
+                    <template v-if="rowSelected">check_box</template>
+                    <template v-else>check_box_outline_blank</template>
+                </i>
             </template>
             <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
             <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
@@ -152,6 +150,12 @@
       },
       langSelectFieldsTooltip () {
         return this.$gettext('Select displayed fields')
+      },
+      langSelectAll () {
+        return this.$gettext('Select all visible rows')
+      },
+      langSelectRow () {
+        return this.$gettext('Select this row')
       },
       visibleFields () {
         let fields = this.fields.slice()

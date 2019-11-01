@@ -139,7 +139,8 @@ return [
     App\MessageQueue::class => function (
         \Redis $redis,
         ContainerInterface $di,
-        Monolog\Logger $logger
+        Monolog\Logger $logger,
+        EntityManager $em
     ) {
         // Build QueueFactory
         $driver = new Bernard\Driver\PhpRedis\Driver($redis);
@@ -149,7 +150,6 @@ return [
             new Symfony\Component\Serializer\Normalizer\PropertyNormalizer,
         ]);
 
-        $symfony_serializer = new Symfony\Component\Serializer\Serializer([$normalizer]);
         $serializer = new Bernard\Serializer($normalizer);
 
         $queue_factory = new Bernard\QueueFactory\PersistentFactory($driver, $serializer);
@@ -170,7 +170,8 @@ return [
             $queue_factory,
             $producer,
             $consumer,
-            $logger
+            $logger,
+            $em
         );
 
         $dispatcher->addSubscriber($mq);

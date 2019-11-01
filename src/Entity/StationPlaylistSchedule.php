@@ -1,13 +1,10 @@
 <?php
 namespace App\Entity;
 
-use Cake\Chronos\Chronos;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use App\Annotations\AuditLog;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="station_playlist_schedules")
@@ -28,12 +25,6 @@ class StationPlaylistSchedule
      * @var int|null
      */
     protected $id;
-
-    /**
-     * @ORM\Column(name="playlist_id", type="integer")
-     * @var int
-     */
-    protected $playlist_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="schedules")
@@ -61,6 +52,20 @@ class StationPlaylistSchedule
      * @var int
      */
     protected $end_time = 0;
+
+    /**
+     * @ORM\Column(name="start_date", type="string", length=10, nullable=true)
+     *
+     * @var string|null The optional start date for this scheduled period.
+     */
+    protected $start_date;
+
+    /**
+     * @ORM\Column(name="end_date", type="string", length=10, nullable=true)
+     *
+     * @var string|null The optional end date for this scheduled period.
+     */
+    protected $end_date;
 
     /**
      * @ORM\Column(name="days", type="string", length=50, nullable=true)
@@ -146,6 +151,38 @@ class StationPlaylistSchedule
     }
 
     /**
+     * @return string|null
+     */
+    public function getStartDate(): ?string
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * @param string|null $start_date
+     */
+    public function setStartDate(?string $start_date): void
+    {
+        $this->start_date = $start_date;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEndDate(): ?string
+    {
+        return $this->end_date;
+    }
+
+    /**
+     * @param string|null $end_date
+     */
+    public function setEndDate(?string $end_date): void
+    {
+        $this->end_date = $end_date;
+    }
+
+    /**
      * @return array|null
      */
     public function getDays(): ?array
@@ -165,6 +202,7 @@ class StationPlaylistSchedule
      * Parent function for determining whether a playlist of any type can be played by the AutoDJ.
      *
      * @param Chronos $now
+     *
      * @return bool
      */
     public function shouldPlayNow(Chronos $now): bool
@@ -185,18 +223,34 @@ class StationPlaylistSchedule
             if ($current_timecode <= $schedule_end_time) {
                 // Check the previous day, since it's before the end time.
                 $day_to_check = (1 === $day_to_check) ? 7 : $day_to_check - 1;
-            } else if ($current_timecode < $schedule_start_time) {
+            } elseif ($current_timecode < $schedule_start_time) {
                 // The playlist shouldn't be playing before the start time on the current date.
                 return false;
             }
             // Non-overnight playlist check
-        } else if ($current_timecode < $schedule_start_time || $current_timecode > $schedule_end_time) {
+        } elseif ($current_timecode < $schedule_start_time || $current_timecode > $schedule_end_time) {
             return false;
         }
 
         // Check that the current day is one of the scheduled play days.
-        if (!$this->isScheduledToPlayToday($day_to_check)) {
-            return false;
+        return $this->shouldPlayOnCurrentDate($now)
+            && $this->isScheduledToPlayToday($day_to_check);
+    }
+
+    protected function shouldPlayOnCurrentDate(Chronos $now): bool
+    {
+        if (!empty($this->start_date)) {
+            $startDate = Chronos::parse($this->start_date . ' 00:00:00', $now->getTimezone());
+            if ($now->lt($startDate)) {
+                return false;
+            }
+        }
+
+        if (!empty($this->end_date)) {
+            $endDate = Chronos::parse($this->end_date . ' 23:59:59', $now->getTimezone());
+            if ($now->gt($endDate)) {
+                return false;
+            }
         }
 
         return true;
@@ -206,6 +260,7 @@ class StationPlaylistSchedule
      * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
      *
      * @param int $day_to_check
+     *
      * @return bool
      */
     protected function isScheduledToPlayToday(int $day_to_check): bool
@@ -220,6 +275,7 @@ class StationPlaylistSchedule
      *
      * @param string|int $time_code
      * @param Chronos|null $now
+     *
      * @return Chronos
      */
     public static function getDateTime($time_code, Chronos $now = null): Chronos

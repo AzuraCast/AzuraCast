@@ -124,7 +124,7 @@ class StationMedia
      *
      * @var int The song duration in seconds.
      */
-    protected $length;
+    protected $length = 0;
 
     /**
      * @ORM\Column(name="length_text", type="string", length=10, nullable=true)

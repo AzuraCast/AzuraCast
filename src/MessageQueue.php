@@ -10,6 +10,7 @@ use Bernard\Message;
 use Bernard\Producer;
 use Bernard\Queue;
 use Bernard\QueueFactory;
+use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -29,22 +30,28 @@ class MessageQueue implements EventSubscriberInterface
     /** @var Logger */
     protected $logger;
 
+    /** @var EntityManager */
+    protected $em;
+
     /**
      * @param QueueFactory $queues
      * @param Producer $producer
      * @param Consumer $consumer
      * @param Logger $logger
+     * @param EntityManager $em
      */
     public function __construct(
         QueueFactory $queues,
         Producer $producer,
         Consumer $consumer,
-        Logger $logger
+        Logger $logger,
+        EntityManager $em
     ) {
         $this->queues = $queues;
         $this->producer = $producer;
         $this->consumer = $consumer;
         $this->logger = $logger;
+        $this->em = $em;
     }
 
     /**
@@ -53,6 +60,9 @@ class MessageQueue implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            BernardEvents::PING => [
+                ['checkEntityManager', -10],
+            ],
             BernardEvents::PRODUCE => [
                 ['logProduce', -5],
             ],
@@ -127,6 +137,17 @@ class MessageQueue implements EventSubscriberInterface
             $delay_us = $message->delay;
             usleep($delay_us);
         }
+    }
+
+    public function checkEntityManager(): void
+    {
+        // Shut the process manager down if the entity manager isn't open.
+        if (!$this->em->isOpen()) {
+            exit;
+        }
+
+        // Clear the EM before running any new tasks.
+        $this->em->clear();
     }
 
     /**

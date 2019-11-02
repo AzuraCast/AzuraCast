@@ -2,7 +2,13 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Http\Response;
+use App\Http\ServerRequest;
+use App\Utilities;
+use Azura\Doctrine\Paginator;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class PlaylistsController extends AbstractStationApiCrudController
 {
@@ -92,4 +98,57 @@ class PlaylistsController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+    /**
+     * @inheritDoc
+     */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('sp, spc')
+            ->from(Entity\StationPlaylist::class, 'sp')
+            ->leftJoin('sp.schedule_items', 'spc')
+            ->where('sp.station = :station')
+            ->setParameter('station', $station);
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('sp.name LIKE :name')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        $paginator = new Paginator($qb);
+        $paginator->setFromRequest($request);
+
+        $is_bootgrid = $paginator->isFromBootgrid();
+        $router = $request->getRouter();
+
+        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router) {
+            $return = $this->_viewRecord($row, $router);
+            if ($is_bootgrid) {
+                return Utilities::flattenArray($return, '_');
+            }
+
+            return $return;
+        });
+
+        return $paginator->write($response);
+    }
+
+    protected function _getRecord(Entity\Station $station, $id)
+    {
+        return $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sp, spc FROM Entity\StationPlaylist sp JOIN sp.schedule_items spc WHERE sp.id = :id AND sp.station = :station')
+            ->setParameter('id', $id)
+            ->setParameter('station', $station)
+            ->getSingleResult();
+    }
+
+    protected function _normalizeRecord($record, array $context = [])
+    {
+        return parent::_normalizeRecord($record, array_merge($context, [
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue'],
+        ]));
+    }
 }

@@ -1,5 +1,6 @@
 <?php
-use \App\Entity\StationPlaylist;
+
+use App\Entity\StationPlaylist;
 
 /** @var \App\Customization $customization */
 
@@ -8,8 +9,8 @@ return [
     'enctype' => 'multipart/form-data',
 
     'tabs' => [
-        'info'      => __('Basic Information'),
-        'source'    => __('Source'),
+        'info' => __('Basic Information'),
+        'source' => __('Source'),
         'scheduling' => __('Scheduling'),
     ],
 
@@ -30,7 +31,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => true,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'name' => [
@@ -39,7 +40,7 @@ return [
                         'label' => __('Playlist Name'),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'weight' => [
@@ -50,14 +51,14 @@ return [
                         'default' => 3,
                         'required' => true,
                         'choices' => [
-                            1 => '1 - '.__('Low'),
-                            2 => '2',
-                            3 => '3 - '.__('Default'),
-                            4 => '4',
-                            5 => '5 - '.__('High'),
-                        ] + array_combine(range(6, 25), range(6, 25)),
+                                1 => '1 - ' . __('Low'),
+                                2 => '2',
+                                3 => '3 - ' . __('Default'),
+                                4 => '4',
+                                5 => '5 - ' . __('High'),
+                            ] + array_combine(range(6, 25), range(6, 25)),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
             ],
         ],
@@ -70,17 +71,17 @@ return [
                     [
                         'label' => __('Source'),
                         'choices' => [
-                            StationPlaylist::SOURCE_SONGS => '<b>' . __('Song-Based Playlist') .':</b> ' . __('A playlist containing media files hosted on this server.'),
-                            StationPlaylist::SOURCE_REMOTE_URL => '<b>'.__('Remote URL Playlist').':</b> ' . __('A playlist that instructs the station to play from a remote URL.'),
+                            StationPlaylist::SOURCE_SONGS => '<b>' . __('Song-Based Playlist') . ':</b> ' . __('A playlist containing media files hosted on this server.'),
+                            StationPlaylist::SOURCE_REMOTE_URL => '<b>' . __('Remote URL Playlist') . ':</b> ' . __('A playlist that instructs the station to play from a remote URL.'),
                         ],
                         'default' => StationPlaylist::SOURCE_SONGS,
                         'required' => true,
-                    ]
+                    ],
                 ],
             ],
         ],
 
-        'source_'.StationPlaylist::SOURCE_SONGS => [
+        'source_' . StationPlaylist::SOURCE_SONGS => [
             'use_grid' => true,
             'class' => 'source_fieldset',
             'tab' => 'source',
@@ -119,8 +120,8 @@ return [
                         ],
                         'form_group_class' => 'col-md-6',
                         'button_text' => __('Select File'),
-                        'button_icon' => 'cloud_upload'
-                    ]
+                        'button_icon' => 'cloud_upload',
+                    ],
                 ],
 
                 'include_in_requests' => [
@@ -132,7 +133,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'is_jingle' => [
@@ -145,13 +146,13 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
             ],
         ],
 
-        'source_'.StationPlaylist::SOURCE_REMOTE_URL => [
+        'source_' . StationPlaylist::SOURCE_REMOTE_URL => [
             'use_grid' => true,
             'class' => 'source_fieldset',
             'tab' => 'source',
@@ -163,7 +164,7 @@ return [
                     [
                         'label' => __('Remote URL'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'remote_type' => [
@@ -176,7 +177,7 @@ return [
                             StationPlaylist::REMOTE_TYPE_PLAYLIST => __('Playlist (M3U/PLS) URL'),
                         ],
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'remote_buffer' => [
@@ -189,10 +190,10 @@ return [
                         'min' => 0,
                         'max' => 120,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
-            ]
+            ],
         ],
 
         'select_type' => [
@@ -206,16 +207,16 @@ return [
                         'label' => __('Scheduling'),
                         'choices' => [
                             StationPlaylist::TYPE_DEFAULT => '<b>' . __('General Rotation') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
-                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled') . ':</b> ' . __('Play during a scheduled time range.'),
                             StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs.'),
                             StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes.'),
-                            StationPlaylist::TYPE_ONCE_PER_HOUR => '<b>'.__('Once per Hour') . ':</b> '.__('Play once per hour at the specified minute.'),
-                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://www.azuracast.com/help/advanced_playlists.html'),
+                            StationPlaylist::TYPE_ONCE_PER_HOUR => '<b>' . __('Once per Hour') . ':</b> ' . __('Play once per hour at the specified minute.'),
+                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') . '</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>',
+                                    'https://www.azuracast.com/help/advanced_playlists.html'),
                         ],
                         'default' => StationPlaylist::TYPE_DEFAULT,
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'backend_options' => [
@@ -223,7 +224,7 @@ return [
                     [
                         'label' => __('AutoDJ Scheduling Options'),
                         'label_class' => 'advanced',
-                        'description' => __('Control how this playlist is handled by the AutoDJ software.').'<br>'.__('<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.'),
+                        'description' => __('Control how this playlist is handled by the AutoDJ software.') . '<br>' . __('<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.'),
                         'choices' => [
                             StationPlaylist::OPTION_INTERRUPT_OTHER_SONGS => __('Interrupt other songs to play at scheduled time.'),
                             StationPlaylist::OPTION_LOOP_PLAYLIST_ONCE => __('Only loop through playlist once.'),
@@ -231,12 +232,12 @@ return [
                             StationPlaylist::OPTION_MERGE => __('Merge playlist to play as a single track.'),
                         ],
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
 
-        'type_'.StationPlaylist::TYPE_DEFAULT => [
+        'type_' . StationPlaylist::TYPE_DEFAULT => [
             'class' => 'type_fieldset',
             'tab' => 'scheduling',
 
@@ -250,13 +251,13 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                    ]
+                    ],
                 ],
 
             ],
         ],
 
-        'type_'.StationPlaylist::TYPE_SCHEDULED => [
+        'type_' . StationPlaylist::TYPE_SCHEDULED => [
             'use_grid' => true,
             'class' => 'type_fieldset',
             'tab' => 'scheduling',
@@ -269,7 +270,7 @@ return [
                         'label' => __('Start Time'),
                         'description' => __('To play once per day, set the start and end times to the same value.'),
                         'form_group_class' => 'col-md-3',
-                    ]
+                    ],
                 ],
 
                 'schedule_end_time' => [
@@ -278,7 +279,7 @@ return [
                         'label' => __('End Time'),
                         'description' => __('If the end time is before the start time, the playlist will play overnight.'),
                         'form_group_class' => 'col-md-3',
-                    ]
+                    ],
                 ],
 
                 'station_time_zone' => [
@@ -287,7 +288,7 @@ return [
                         'label' => __('Station Time Zone'),
                         'description' => '',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'schedule_days' => [
@@ -305,13 +306,13 @@ return [
                             7 => __('Sunday'),
                         ],
                         'form_group_class' => 'col-md-12',
-                    ]
+                    ],
                 ],
 
             ],
         ],
 
-        'type_'.StationPlaylist::TYPE_ONCE_PER_X_SONGS => [
+        'type_' . StationPlaylist::TYPE_ONCE_PER_X_SONGS => [
             'class' => 'type_fieldset',
             'tab' => 'scheduling',
 
@@ -325,13 +326,13 @@ return [
                         'default' => 1,
                         'min' => 0,
                         'max' => 150,
-                    ]
+                    ],
                 ],
 
             ],
         ],
 
-        'type_'.StationPlaylist::TYPE_ONCE_PER_X_MINUTES => [
+        'type_' . StationPlaylist::TYPE_ONCE_PER_X_MINUTES => [
             'class' => 'type_fieldset',
             'tab' => 'scheduling',
 
@@ -345,13 +346,13 @@ return [
                         'default' => 1,
                         'min' => 0,
                         'max' => 360,
-                    ]
+                    ],
                 ],
 
-            ]
+            ],
         ],
 
-        'type_'.StationPlaylist::TYPE_ONCE_PER_HOUR => [
+        'type_' . StationPlaylist::TYPE_ONCE_PER_HOUR => [
             'class' => 'type_fieldset',
             'tab' => 'scheduling',
 
@@ -365,10 +366,10 @@ return [
                         'default' => 0,
                         'min' => 0,
                         'max' => 59,
-                    ]
+                    ],
                 ],
 
-            ]
+            ],
         ],
 
         'grp_submit' => [
@@ -380,7 +381,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
-                    ]
+                    ],
                 ],
 
             ],

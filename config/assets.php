@@ -515,4 +515,16 @@ return [
             ],
         ],
     ],
+
+    'station_playlists' => [
+        'order' => 10,
+        'require' => ['vue', 'vue-translations', 'bootstrap-vue'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/station_playlists.js',
+                ],
+            ],
+        ],
+    ],
 ];

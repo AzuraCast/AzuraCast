@@ -2,10 +2,14 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
+use Azura\Exception;
+use Azura\Http\RouterInterface;
+use Cake\Chronos\Chronos;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -122,12 +126,12 @@ class PlaylistsController extends AbstractStationApiCrudController
         $paginator = new Paginator($qb);
         $paginator->setFromRequest($request);
 
-        $is_bootgrid = $paginator->isFromBootgrid();
+        $isBootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router) {
+        $paginator->setPostprocessor(function ($row) use ($isBootgrid, $router) {
             $return = $this->_viewRecord($row, $router);
-            if ($is_bootgrid) {
+            if ($isBootgrid) {
                 return Utilities::flattenArray($return, '_');
             }
 
@@ -137,12 +141,213 @@ class PlaylistsController extends AbstractStationApiCrudController
         return $paginator->write($response);
     }
 
+    /**
+     * Controller used to respond to AJAX requests from the playlist "Schedule View".
+     *
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     */
+    public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+        $tz = new \DateTimeZone($station->getTimezone());
+
+        $params = $request->getQueryParams();
+
+        $startDateStr = substr($params['start'], 0, 10);
+        $startDate = Chronos::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
+
+        $endDateStr = substr($params['end'], 0, 10);
+        $endDate = Chronos::createFromFormat('Y-m-d', $endDateStr, $tz);
+
+        /** @var Entity\StationPlaylist[] $all_playlists */
+        $playlists = $station->getPlaylists()->filter(function ($record) {
+            /** @var Entity\StationPlaylist $record */
+            return (!$record->isJingle() && $record->getScheduleItems()->count() > 0);
+        });
+
+        $events = [];
+        foreach ($playlists as $playlist) {
+            /** @var Entity\StationPlaylist $playlist */
+            foreach ($playlist->getScheduleItems() as $scheduleItem) {
+                /** @var Entity\StationPlaylistSchedule $scheduleItem */
+                $i = $startDate;
+                while ($i <= $endDate) {
+                    $dayOfWeek = $i->format('N');
+
+                    if ($scheduleItem->shouldPlayOnCurrentDate($i)
+                        && $scheduleItem->isScheduledToPlayToday($dayOfWeek)) {
+                        $playlistStart = Entity\StationPlaylist::getDateTime($scheduleItem->getScheduleStartTime(), $i);
+                        $playlistEnd = Entity\StationPlaylist::getDateTime($scheduleItem->getScheduleEndTime(), $i);
+
+                        // Handle overnight playlists
+                        if ($playlistEnd < $playlistStart) {
+                            $playlistEnd = $playlistEnd->addDay();
+                        }
+
+                        $events[] = [
+                            'id' => $playlist->getId(),
+                            'title' => $playlist->getName(),
+                            'start' => $playlistStart->toIso8601String(),
+                            'end' => $playlistEnd->toIso8601String(),
+                            'url' => (string)$request->getRouter()->named(
+                                'stations:playlists:edit',
+                                ['station_id' => $station->getId(), 'id' => $playlist->getId()]
+                            ),
+                        ];
+                    }
+
+                    $i = $i->addDay();
+                }
+            }
+        }
+
+        return $response->withJson($events);
+    }
+
+    public function getOrderAction(
+        ServerRequest $request,
+        Response $response,
+        $id
+    ): ResponseInterface {
+        $record = $this->_getRecord($request->getStation(), $id);
+
+        if (!$record instanceof Entity\StationPlaylist) {
+            throw new NotFoundException(__('Playlist not found.'));
+        }
+
+        if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
+            || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
+            throw new Exception(__('This playlist is not a sequential playlist.'));
+        }
+
+        $media_items = $this->em->createQuery(/** @lang DQL */ 'SELECT spm, sm 
+            FROM App\Entity\StationPlaylistMedia spm
+            JOIN spm.media sm
+            WHERE spm.playlist_id = :playlist_id
+            ORDER BY spm.weight ASC')
+            ->setParameter('playlist_id', $id)
+            ->getArrayResult();
+
+        return $request->getView()->renderToResponse($response, 'stations/playlists/reorder', [
+            'playlist' => $record,
+            'media_items' => $media_items,
+        ]);
+    }
+
+    public function postOrderAction(
+        ServerRequest $request,
+        Response $response,
+        $id
+    ): ResponseInterface {
+        $record = $this->_getRecord($request->getStation(), $id);
+
+        if (!$record instanceof Entity\StationPlaylist) {
+            throw new NotFoundException(__('Playlist not found.'));
+        }
+
+        if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
+            || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
+            throw new Exception(__('This playlist is not a sequential playlist.'));
+        }
+
+        $params = $request->getParams();
+
+        $order_raw = $params['order'];
+        $order = json_decode($order_raw, true);
+
+        $mapping = [];
+        foreach ($order as $weight => $row_id) {
+            $mapping[$row_id] = $weight + 1;
+        }
+
+        $this->playlist_media_repo->setMediaOrder($record, $mapping);
+        return $response->withJson($mapping);
+    }
+
+    public function exportAction(
+        ServerRequest $request,
+        Response $response,
+        $id,
+        $format = 'pls'
+    ): ResponseInterface {
+        $record = $this->_getRecord($request->getStation(), $id);
+
+        if (!$record instanceof Entity\StationPlaylist) {
+            throw new NotFoundException(__('Playlist not found.'));
+        }
+
+        $formats = [
+            'pls' => 'audio/x-scpls',
+            'm3u' => 'application/x-mpegURL',
+        ];
+
+        if (!isset($formats[$format])) {
+            throw new NotFoundException(__('Format not found.'));
+        }
+
+        $file_name = 'playlist_' . $record->getShortName() . '.' . $format;
+
+        $response->getBody()->write($record->export($format));
+        return $response
+            ->withHeader('Content-Type', $formats[$format])
+            ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name);
+    }
+
+    public function toggleAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    {
+        $record = $this->_getRecord($request->getStation(), $id);
+
+        if (!$record instanceof Entity\StationPlaylist) {
+            throw new NotFoundException(__('Playlist not found.'));
+        }
+
+        $new_value = !$record->getIsEnabled();
+
+        $record->setIsEnabled($new_value);
+        $this->em->persist($record);
+        $this->em->flush();
+
+        $flash_message = ($new_value)
+            ? __('Playlist enabled.')
+            : __('Playlist disabled.');
+
+        return $response->withJson(new Entity\Api\Status(true, $flash_message));
+    }
+
     protected function _getRecord(Entity\Station $station, $id)
     {
         return $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sp, spc FROM Entity\StationPlaylist sp JOIN sp.schedule_items spc WHERE sp.id = :id AND sp.station = :station')
             ->setParameter('id', $id)
             ->setParameter('station', $station)
             ->getSingleResult();
+    }
+
+    protected function _viewRecord($record, RouterInterface $router)
+    {
+        if (!($record instanceof $this->entityClass)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $return = $this->_normalizeRecord($record);
+
+        $song_totals = $this->em->createQuery(/** @lang DQL */ '
+            SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
+            FROM App\Entity\StationMedia sm
+            JOIN sm.playlists spm
+            WHERE spm.playlist = :playlist')
+            ->setParameter('playlist', $record)
+            ->getArrayResult();
+
+        $return['num_songs'] = (int)$song_totals[0]['num_songs'];
+        $return['total_length'] = (int)$song_totals[0]['total_length'];
+
+        $return['links'] = [
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+        ];
+        return $return;
     }
 
     protected function _normalizeRecord($record, array $context = [])

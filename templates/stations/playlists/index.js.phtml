@@ -1,41 +1,21 @@
-$(function() {
+<?php
+$props = [
+    'listUrl' => $router->fromHere('api:stations:playlists:list'),
+    'calendarUrl' => $router->fromHere('api:stations:playlists:calendar'),
+    'locale' => substr($customization->getLocale(), 0, 2),
+    'filesUrl' => $router->fromHere('stations:files:index'),
+    'stationTimeZone' => $station_tz,
+]
+?>
+var station_playlists;
 
-    moment.relativeTimeThreshold('ss', 1);
-    moment.relativeTimeRounding(function(value) { return Math.round(value * 10) / 10; });
-
-    $('time[data-content]').each(function() {
-        let tz_display = $(this).data('content');
-        $(this).text(moment(tz_display).tz('<?=$station_tz ?>').format('LT'));
-    });
-
-    $('time[data-duration]').each(function () {
-        $(this).text(moment.duration($(this).data('duration'), "seconds").humanize());
-    });
-
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var target = $(e.target).attr("href");
-
-        if (target == '#schedule-view') {
-
-            $('#playlist-calendar').fullCalendar({
-                plugins: [ 'momentTimezone' ],
-                timeZone: '<?=$station_tz ?>',
-                themeSystem: 'bootstrap4',
-                nowIndicator: true,
-                defaultView: 'agendaWeek',
-                defaultTimedEventDuration: '00:20',
-                locale: '<?=substr(strtolower($customization->getLocale()), 0, 2) ?>',
-                header: false,
-                footer: false,
-                height: 'auto',
-                now: '<?=$station_now ?>',
-                events: '<?=$schedule_url ?>'
-            });
-
-        } else {
-
-            $('#playlist-calendar').fullCalendar('destroy').removeClass().empty();
-
-        }
-    });
+$(function () {
+  station_playlists = new Vue({
+    el: '#station-playlist',
+    render: function (createElement) {
+      return createElement(StationMedia.default, {
+        props: <?=json_encode($props) ?>
+      });
+    }
+  });
 });

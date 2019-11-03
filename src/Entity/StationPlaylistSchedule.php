@@ -237,7 +237,7 @@ class StationPlaylistSchedule
             && $this->isScheduledToPlayToday($day_to_check);
     }
 
-    protected function shouldPlayOnCurrentDate(Chronos $now): bool
+    public function shouldPlayOnCurrentDate(Chronos $now): bool
     {
         if (!empty($this->start_date)) {
             $startDate = Chronos::parse($this->start_date . ' 00:00:00', $now->getTimezone());
@@ -263,7 +263,7 @@ class StationPlaylistSchedule
      *
      * @return bool
      */
-    protected function isScheduledToPlayToday(int $day_to_check): bool
+    public function isScheduledToPlayToday(int $day_to_check): bool
     {
         $play_once_days = $this->getDays();
         return empty($play_once_days)

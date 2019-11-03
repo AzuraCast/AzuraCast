@@ -9,7 +9,9 @@
   "dependencies": {
     "@fancyapps/fancybox": "^3.5.7",
     "@flowjs/flow.js": "^2.13.1",
-    "@fullcalendar/core": "^4.1.0",
+    "@fullcalendar/core": "^4.3.1",
+    "@fullcalendar/daygrid": "^4.3.0",
+    "@fullcalendar/vue": "^4.3.1",
     "autosize": "^4.0.2",
     "axios": "^0.18.1",
     "bootstrap": "^4.3.1",

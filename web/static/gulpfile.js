@@ -257,6 +257,11 @@ var vueProjects = {
     'src_file': 'vue/StationMedia.vue',
     'filename': 'station_media.js',
     'library': 'StationMedia'
+  },
+  'station_playlists': {
+    'src_file': 'vue/StationPlaylists.vue',
+    'filename': 'station_playlists.js',
+    'library': 'StationPlaylist'
   }
 }
 

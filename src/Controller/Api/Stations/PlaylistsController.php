@@ -232,15 +232,13 @@ class PlaylistsController extends AbstractStationApiCrudController
             ->setParameter('playlist_id', $id)
             ->getArrayResult();
 
-        return $request->getView()->renderToResponse($response, 'stations/playlists/reorder', [
-            'playlist' => $record,
-            'media_items' => $media_items,
-        ]);
+        return $response->withJson($media_items);
     }
 
-    public function postOrderAction(
+    public function putOrderAction(
         ServerRequest $request,
         Response $response,
+        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepository,
         $id
     ): ResponseInterface {
         $record = $this->_getRecord($request->getStation(), $id);
@@ -254,18 +252,10 @@ class PlaylistsController extends AbstractStationApiCrudController
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
 
-        $params = $request->getParams();
+        $order = $request->getParam('order');
 
-        $order_raw = $params['order'];
-        $order = json_decode($order_raw, true);
-
-        $mapping = [];
-        foreach ($order as $weight => $row_id) {
-            $mapping[$row_id] = $weight + 1;
-        }
-
-        $this->playlist_media_repo->setMediaOrder($record, $mapping);
-        return $response->withJson($mapping);
+        $playlistMediaRepository->setMediaOrder($record, $order);
+        return $response->withJson($order);
     }
 
     public function exportAction(
@@ -346,10 +336,20 @@ class PlaylistsController extends AbstractStationApiCrudController
         $return['total_length'] = (int)$song_totals[0]['total_length'];
 
         $return['links'] = [
-            'toggle' => (string)$router->fromHere('api:station:playlist:toggle', ['id' => $record->getId()], [], true),
-            'order' => (string)$router->fromHere('api:station:playlist:order', ['id' => $record->getId()], [], true),
+            'toggle' => (string)$router->fromHere('api:stations:playlist:toggle', ['id' => $record->getId()], [], true),
+            'order' => (string)$router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], true),
             'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
         ];
+
+        foreach (['pls', 'm3u'] as $format) {
+            $return['links']['export_' . $format] = (string)$router->fromHere(
+                'api:stations:playlist:export',
+                ['id' => $record->getId(), 'format' => $format],
+                [],
+                true
+            );
+        }
+
         return $return;
     }
 

@@ -27,26 +27,25 @@
                                     :api-url="listUrl">
                             <template v-slot:cell(actions)="row">
                                 <b-button-group size="sm">
-                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item)" v-translate>
-                                        Edit
+                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item)">
+                                        <translate>Edit</translate>
                                     </b-button>
-                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item)"
-                                              v-translate>
-                                        Delete
+                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item)">
+                                        <translate>Delete</translate>
                                     </b-button>
 
                                     <b-dropdown size="sm" variant="dark" :text="langMore">
                                         <b-dropdown-item @click.prevent="doToggle(row.item)">
                                             {{ langToggleButton(row.item) }}
                                         </b-dropdown-item>
-                                        <b-dropdown-item
-                                                v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                                @click.prevent="doReorder(row.item)" v-translate>
-                                            Reorder
+                                        <b-dropdown-item @click.prevent="doReorder(row.item)"
+                                                         v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
+                                            {{ langReorderButton }}
                                         </b-dropdown-item>
-                                        <template v-for="format in ['PLS', 'M3U']">
-                                            <b-dropdown-item :href="row.item['links_export_'+format]">
-                                                <translate :translate-params="{ format: format }">Export %{format}
+                                        <template v-for="format in ['pls', 'm3u']">
+                                            <b-dropdown-item :href="row.item['links_export_'+format]" target="_blank">
+                                                <translate :translate-params="{ format: format.toUpperCase() }">Export
+                                                    %{format}
                                                 </translate>
                                             </b-dropdown-item>
                                         </template>
@@ -95,8 +94,8 @@
             </b-tabs>
         </b-card>
 
-        <edit-modal></edit-modal>
-        <reorder-modal></reorder-modal>
+        <edit-modal ref="editModal" :create-url="listUrl"></edit-modal>
+        <reorder-modal ref="reorderModal"></reorder-modal>
     </div>
 </template>
 
@@ -136,6 +135,9 @@
       },
       langMore () {
         return this.$gettext('More')
+      },
+      langReorderButton () {
+        return this.$gettext('Reorder')
       }
     },
     mounted () {
@@ -192,7 +194,7 @@
         this.$refs.editModal.edit(record.links_self)
       },
       doReorder (record) {
-        this.$refs.reorderModal.reorder(record.links_reorder)
+        this.$refs.reorderModal.open(record.links_order)
       },
       doToggle (record) {
         notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {

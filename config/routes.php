@@ -370,12 +370,16 @@ return function (App $app) {
             $group->group('/playlist/{id}', function (RouteCollectorProxy $group) {
 
                 $group->put('/toggle', Controller\Api\Stations\PlaylistsController::class . ':toggleAction')
-                    ->setName('api:station:playlist:toggle');
+                    ->setName('api:stations:playlist:toggle');
 
                 $group->get('/order', Controller\Api\Stations\PlaylistsController::class . ':getOrderAction')
-                    ->setName('api:station:playlist:order');
+                    ->setName('api:stations:playlist:order');
 
                 $group->put('/order', Controller\Api\Stations\PlaylistsController::class . ':putOrderAction');
+
+                $group->get('/export[/{format}]',
+                    Controller\Api\Stations\PlaylistsController::class . ':exportAction')
+                    ->setName('api:stations:playlist:export');
 
             })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 

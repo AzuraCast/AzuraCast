@@ -382,57 +382,12 @@ return [
         ],
     ],
 
-    'flowjs' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/flowjs/flow.min.js',
-                    'defer' => true,
-                ],
-            ],
-        ],
-    ],
-
-    'fullcalendar' => [
-        'order' => 10,
-        'require' => ['moment_base', 'moment_timezone'],
-        'replace' => ['moment'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/fullcalendar/fullcalendar.min.js',
-                ],
-                [
-                    'src' => 'dist/lib/fullcalendar/locale-all.js',
-                ],
-            ],
-            'css' => [
-                [
-                    'href' => 'dist/lib/fullcalendar/fullcalendar.min.css',
-                ],
-            ],
-        ],
-    ],
-
     'nchan' => [
         'order' => 10,
         'files' => [
             'js' => [
                 [
                     'src' => 'dist/lib/nchan/NchanSubscriber.js',
-                    'defer' => true,
-                ],
-            ],
-        ],
-    ],
-
-    'sortable' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/sortable/Sortable.min.js',
                     'defer' => true,
                 ],
             ],
@@ -518,7 +473,8 @@ return [
 
     'station_playlists' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations', 'bootstrap-vue', 'moment_timezone'],
+        'require' => ['vue', 'vue-translations', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
+        'replace' => ['moment'],
         'files' => [
             'js' => [
                 [

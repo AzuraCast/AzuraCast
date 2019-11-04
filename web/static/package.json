@@ -44,6 +44,7 @@
     "vue": "^2.6.10",
     "vue-gettext": "^2.1.5",
     "vue-i18n": "^8.14.1",
+    "vuedraggable": "^2.23.2",
     "vuelidate": "^0.7.4",
     "webpack": "^4.41.0",
     "zxcvbn": "^4.4.2"

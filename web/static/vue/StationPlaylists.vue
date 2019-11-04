@@ -1,132 +1,118 @@
 <template>
-    <b-card no-body>
-        <b-card-header>
-            <b-row>
-                <b-col md="6">
-                    <h2 class="card-title" v-translate>Playlists</h2>
-                </b-col>
-                <b-col md="6">
-                    <translate :translate-params="{ tz: stationTimeZone }">
-                        This station's time zone is currently %{tz}.
-                    </translate>
-                </b-col>
-            </b-row>
-        </b-card-header>
-        <b-tabs pills card>
-            <b-tab :title="langAllPlaylistsTab">
-                <a class="btn btn-outline-primary" role="button" @click.prevent="doCreate">
-                    <i class="material-icons" aria-hidden="true">add</i>
-                    <translate>Add Playlist</translate>
-                </a>
+    <div>
+        <b-card no-body>
+            <b-card-header>
+                <b-row class="align-items-center">
+                    <b-col md="6">
+                        <h2 class="card-title" v-translate>Playlists</h2>
+                    </b-col>
+                    <b-col md="6" class="text-right text-muted">
+                        <translate :translate-params="{ tz: stationTimeZone }">
+                            This station's time zone is currently %{tz}.
+                        </translate>
+                    </b-col>
+                </b-row>
+            </b-card-header>
+            <b-tabs pills card lazy>
+                <b-tab :title="langAllPlaylistsTab" no-body>
+                    <b-card-body body-class="card-padding-sm">
+                        <b-button variant="outline-primary" @click.prevent="doCreate">
+                            <i class="material-icons" aria-hidden="true">add</i>
+                            <translate>Add Playlist</translate>
+                        </b-button>
+                    </b-card-body>
 
-                <div class="table-responsive table-responsive-lg">
-                    <data-table ref="datatable" id="station_playlists" paginated :fields="fields" :api-url="listUrl">
-                        <template v-slot:cell(actions)="row">
-                            <b-button-group size="sm">
-                                <b-button size="sm" variant="primary" @click.prevent="doEdit" v-translate>
-                                    Edit
-                                </b-button>
-                                <b-button size="sm" variant="danger" @click.prevent="doDelete" v-translate>
-                                    Delete
-                                </b-button>
+                    <div class="table-responsive table-responsive-lg">
+                        <data-table ref="datatable" id="station_playlists" paginated :fields="fields"
+                                    :api-url="listUrl">
+                            <template v-slot:cell(actions)="row">
+                                <b-button-group size="sm">
+                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item)" v-translate>
+                                        Edit
+                                    </b-button>
+                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item)"
+                                              v-translate>
+                                        Delete
+                                    </b-button>
 
-                                <b-dropdown size="sm" variant="dark" :text="langMore">
-                                    <b-dropdown-item @click.prevent="doToggle">
-                                        <translate v-if="row.item.is_enabled">Disable</translate>
-                                        <translate v-else>Enable</translate>
-                                    </b-dropdown-item>
-                                    <b-dropdown-item
-                                            v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                            @click.prevent="doReorder" v-translate>
-                                        Reorder
-                                    </b-dropdown-item>
-                                    <template v-for="format in ['PLS', 'M3U']">
-                                        <b-dropdown-item @click="doExport(format)">
-                                            <translate :translate-params="{ format: format }">Export %{format}
-                                            </translate>
+                                    <b-dropdown size="sm" variant="dark" :text="langMore">
+                                        <b-dropdown-item @click.prevent="doToggle(row.item)">
+                                            {{ langToggleButton(row.item) }}
                                         </b-dropdown-item>
-                                    </template>
-                                </b-dropdown>
-                            </b-button-group>
-                        </template>
-                        <template v-slot:cell(name)="row">
-                            <h5 class="m-0">{{ row.item.name }}</h5>
-                            <div>
-                                <span class="badge badge-dark">
-                                    <translate v-if="row.item.source === 'songs'">
-                                        Song-based
-                                    </translate>
-                                    <translate v-else>
-                                        Remote URL
-                                    </translate>
-                                </span>
-                                <span class="badge badge-primary" v-if="row.item.is_jingle">
-                                    <translate>Jingle Mode</translate>
-                                </span>
-                                <span class="badge badge-info"
-                                      v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
-                                    <translate>Sequential</translate>
-                                </span>
-                                <span class="badge badge-success" v-if="row.item.include_in_automation">
-                                    <translate>Auto-Assigned</translate>
-                                </span>
-                            </div>
-                        </template>
-                        <template v-slot:cell(scheduling)="row">
-                            <template v-if="!row.item.is_enabled">
-                                <translate>Disabled</translate>
+                                        <b-dropdown-item
+                                                v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
+                                                @click.prevent="doReorder(row.item)" v-translate>
+                                            Reorder
+                                        </b-dropdown-item>
+                                        <template v-for="format in ['PLS', 'M3U']">
+                                            <b-dropdown-item :href="row.item['links_export_'+format]">
+                                                <translate :translate-params="{ format: format }">Export %{format}
+                                                </translate>
+                                            </b-dropdown-item>
+                                        </template>
+                                    </b-dropdown>
+                                </b-button-group>
                             </template>
-                            <template v-else-if="row.item.type === 'default'">
-                                <translate>General Rotation</translate>
-                                <br>
-                                <translate>Weight</translate>
-                                : {{ row.item.weight }} ({{ row.item.probability }})
+                            <template v-slot:cell(name)="row">
+                                <h5 class="m-0">{{ row.item.name }}</h5>
+                                <div>
+                                    <span class="badge badge-dark">
+                                        <translate v-if="row.item.source === 'songs'">
+                                            Song-based
+                                        </translate>
+                                        <translate v-else>
+                                            Remote URL
+                                        </translate>
+                                    </span>
+                                    <span class="badge badge-primary" v-if="row.item.is_jingle">
+                                        <translate>Jingle Mode</translate>
+                                    </span>
+                                    <span class="badge badge-info"
+                                          v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
+                                        <translate>Sequential</translate>
+                                    </span>
+                                    <span class="badge badge-success" v-if="row.item.include_in_automation">
+                                        <translate>Auto-Assigned</translate>
+                                    </span>
+                                </div>
                             </template>
-                            <template v-else-if="row.item.type === 'once_per_x_songs'">
-                                <translate :translate-params="{ songs: row.item.play_per_songs }">
-                                    Once per %{songs} Songs
-                                </translate>
+                            <template v-slot:cell(scheduling)="row">
+                                <span v-html="formatType(row.item)"></span>
                             </template>
-                            <template v-else-if="row.item.type === 'once_per_x_minutes'">
-                                <translate :translate-params="{ minutes: row.item.play_per_minutes }">
-                                    Once per %{minutes} Minutes
-                                </translate>
+                            <template v-slot:cell(num_songs)="row">
+                                <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
+                                    {{ row.item.num_songs }}
+                                </a>
+                                ({{ formatLength(row.item.total_length) }})
                             </template>
-                            <template v-else-if="row.item.type === 'once_per_hour'">
-                                <translate :translate-params="{ minute: row.item.play_per_hour_minute }">
-                                    Once per hour (at %{minute})
-                                </translate>
-                            </template>
-                            <template v-else>
-                                <translate>Custom</translate>
-                            </template>
-                        </template>
-                        <template v-slot:cell(num_songs)="row">
-                            <a :href="this.filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
-                                {{ row.item.num_songs }}
-                            </a>
-                            ( {{ formatLength(row.item.total_length) }} )
-                        </template>
-                    </data-table>
-                </div>
-            </b-tab>
-            <b-tab :title="langScheduleViewTab">
-                <calendar :calendar-url="calendarUrl" :station-time-zone="stationTimeZone" :locale="locale"></calendar>
-            </b-tab>
-        </b-tabs>
-    </b-card>
+                        </data-table>
+                    </div>
+                </b-tab>
+                <b-tab :title="langScheduleViewTab" no-body>
+                    <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"
+                              :locale="locale"></schedule>
+                </b-tab>
+            </b-tabs>
+        </b-card>
+
+        <edit-modal></edit-modal>
+        <reorder-modal></reorder-modal>
+    </div>
 </template>
 
 <script>
   import DataTable from './components/DataTable.vue'
-  import Calendar from './station_playlists/Calendar.vue'
+  import Schedule from './station_playlists/Schedule.vue'
+  import EditModal from './station_playlists/EditModal.vue'
+  import ReorderModal from './station_playlists/ReorderModal.vue'
+  import axios from 'axios'
 
   export default {
     name: 'StationPlaylists',
-    components: { Calendar, DataTable },
+    components: { ReorderModal, EditModal, Schedule, DataTable },
     props: {
       listUrl: String,
-      calendarUrl: String,
+      scheduleUrl: String,
       locale: String,
       filesUrl: String,
       stationTimeZone: String
@@ -159,23 +145,70 @@
       })
     },
     methods: {
+      langToggleButton (record) {
+        return (record.is_enabled)
+          ? this.$gettext('Disable')
+          : this.$gettext('Enable')
+      },
       formatTime (time) {
         return moment(time).tz(this.stationTimeZone).format('LT')
       },
       formatLength (length) {
         return moment.duration(length, 'seconds').humanize()
       },
+      formatType (record) {
+        if (!record.is_enabled) {
+          return this.$gettext('Disabled')
+        }
+
+        switch (record.type) {
+          case 'default':
+            return this.$gettext('General Rotation') + '<br>' + this.$gettext('Weight') + ': ' + record.weight
+
+          case 'once_per_x_songs':
+            let oncePerSongs = this.$gettext('Once per %{songs} Songs')
+            return this.$gettextInterpolate(oncePerSongs, { songs: record.play_per_songs })
+
+          case 'once_per_x_minutes':
+            let oncePerMinutes = this.$gettext('Once per %{minutes} Minutes')
+            return this.$gettextInterpolate(oncePerMinutes, { minutes: record.play_per_minutes })
+
+          case 'once_per_hour':
+            let oncePerHour = this.$gettext('Once per Hour (at %{minute})')
+            return this.$gettextInterpolate(oncePerHour, { minute: record.play_per_hour_minute })
+
+          default:
+            return this.$gettext('Custom')
+        }
+      },
+      relist () {
+        this.$refs.datatable.refresh()
+        this.$refs.schedule.refresh()
+      },
       doCreate () {
-
+        this.$refs.editModal.create()
       },
-      doEdit () {
-
+      doEdit (record) {
+        this.$refs.editModal.edit(record.links_self)
       },
-      doReorder () {
-
+      doReorder (record) {
+        this.$refs.reorderModal.reorder(record.links_reorder)
       },
-      doToggle () {
+      doToggle (record) {
+        notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
+          delay: 3000
+        })
 
+        axios.put(record.links_toggle).then((resp) => {
+          notify('<b>' + resp.data.message + '</b>', 'success')
+
+          this.relist()
+        }).catch((err) => {
+          console.error(err)
+          if (err.response.message) {
+            notify('<b>' + err.response.message + '</b>', 'danger')
+          }
+        })
       },
       doExport () {
 

@@ -363,6 +363,22 @@ return function (App $app) {
                 ->add(Middleware\Module\StationFiles::class)
                 ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+            $group->get('/playlists/schedule', Controller\Api\Stations\PlaylistsController::class . ':scheduleAction')
+                ->setName('api:stations:playlists:schedule')
+                ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+
+            $group->group('/playlist/{id}', function (RouteCollectorProxy $group) {
+
+                $group->put('/toggle', Controller\Api\Stations\PlaylistsController::class . ':toggleAction')
+                    ->setName('api:station:playlist:toggle');
+
+                $group->get('/order', Controller\Api\Stations\PlaylistsController::class . ':getOrderAction')
+                    ->setName('api:station:playlist:order');
+
+                $group->put('/order', Controller\Api\Stations\PlaylistsController::class . ':putOrderAction');
+
+            })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+
             $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                 ->setName('api:stations:status')
                 ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
@@ -514,34 +530,9 @@ return function (App $app) {
 
         })->add(new Middleware\Permissions(Acl::STATION_LOGS, true));
 
-        $group->group('/playlists', function (RouteCollectorProxy $group) {
-
-            $group->get('', Controller\Stations\PlaylistsController::class . ':indexAction')
-                ->setName('stations:playlists:index');
-
-            $group->get('/schedule', Controller\Stations\PlaylistsController::class . ':scheduleAction')
-                ->setName('stations:playlists:schedule');
-
-            $group->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\PlaylistsController::class . ':editAction')
-                ->setName('stations:playlists:edit');
-
-            $group->map(['GET', 'POST'], '/add', Controller\Stations\PlaylistsController::class . ':editAction')
-                ->setName('stations:playlists:add');
-
-            $group->get('/delete/{id}/{csrf}', Controller\Stations\PlaylistsController::class . ':deleteAction')
-                ->setName('stations:playlists:delete');
-
-            $group->map(['GET', 'POST'], '/reorder/{id}',
-                Controller\Stations\PlaylistsController::class . ':reorderAction')
-                ->setName('stations:playlists:reorder');
-
-            $group->get('/toggle/{id}', Controller\Stations\PlaylistsController::class . ':toggleAction')
-                ->setName('stations:playlists:toggle');
-
-            $group->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class . ':exportAction')
-                ->setName('stations:playlists:export');
-
-        })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+        $group->get('/playlists', Controller\Stations\PlaylistsController::class)
+            ->setName('stations:playlists:index')
+            ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
         $group->group('/mounts', function (RouteCollectorProxy $group) {
 

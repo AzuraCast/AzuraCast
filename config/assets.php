@@ -518,7 +518,7 @@ return [
 
     'station_playlists' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations', 'bootstrap-vue'],
+        'require' => ['vue', 'vue-translations', 'bootstrap-vue', 'moment_timezone'],
         'files' => [
             'js' => [
                 [

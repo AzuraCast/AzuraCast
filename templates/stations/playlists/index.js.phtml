@@ -1,7 +1,7 @@
 <?php
 $props = [
-    'listUrl' => $router->fromHere('api:stations:playlists:list'),
-    'calendarUrl' => $router->fromHere('api:stations:playlists:calendar'),
+    'listUrl' => $router->fromHere('api:stations:playlists'),
+    'scheduleUrl' => $router->fromHere('api:stations:playlists:schedule'),
     'locale' => substr($customization->getLocale(), 0, 2),
     'filesUrl' => $router->fromHere('stations:files:index'),
     'stationTimeZone' => $station_tz,
@@ -13,7 +13,7 @@ $(function () {
   station_playlists = new Vue({
     el: '#station-playlist',
     render: function (createElement) {
-      return createElement(StationMedia.default, {
+      return createElement(StationPlaylist.default, {
         props: <?=json_encode($props) ?>
       });
     }

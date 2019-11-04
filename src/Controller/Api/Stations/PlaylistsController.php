@@ -115,6 +115,7 @@ class PlaylistsController extends AbstractStationApiCrudController
             ->from(Entity\StationPlaylist::class, 'sp')
             ->leftJoin('sp.schedule_items', 'spc')
             ->where('sp.station = :station')
+            ->orderBy('sp.name', 'ASC')
             ->setParameter('station', $station);
 
         $searchPhrase = trim($request->getParam('searchPhrase', ''));
@@ -179,8 +180,8 @@ class PlaylistsController extends AbstractStationApiCrudController
 
                     if ($scheduleItem->shouldPlayOnCurrentDate($i)
                         && $scheduleItem->isScheduledToPlayToday($dayOfWeek)) {
-                        $playlistStart = Entity\StationPlaylist::getDateTime($scheduleItem->getScheduleStartTime(), $i);
-                        $playlistEnd = Entity\StationPlaylist::getDateTime($scheduleItem->getScheduleEndTime(), $i);
+                        $playlistStart = Entity\StationPlaylist::getDateTime($scheduleItem->getStartTime(), $i);
+                        $playlistEnd = Entity\StationPlaylist::getDateTime($scheduleItem->getEndTime(), $i);
 
                         // Handle overnight playlists
                         if ($playlistEnd < $playlistStart) {
@@ -193,7 +194,7 @@ class PlaylistsController extends AbstractStationApiCrudController
                             'start' => $playlistStart->toIso8601String(),
                             'end' => $playlistEnd->toIso8601String(),
                             'url' => (string)$request->getRouter()->named(
-                                'stations:playlists:edit',
+                                'api:stations:playlist',
                                 ['station_id' => $station->getId(), 'id' => $playlist->getId()]
                             ),
                         ];
@@ -319,7 +320,7 @@ class PlaylistsController extends AbstractStationApiCrudController
 
     protected function _getRecord(Entity\Station $station, $id)
     {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sp, spc FROM Entity\StationPlaylist sp JOIN sp.schedule_items spc WHERE sp.id = :id AND sp.station = :station')
+        return $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sp, spc FROM App\Entity\StationPlaylist sp JOIN sp.schedule_items spc WHERE sp.id = :id AND sp.station = :station')
             ->setParameter('id', $id)
             ->setParameter('station', $station)
             ->getSingleResult();
@@ -345,6 +346,8 @@ class PlaylistsController extends AbstractStationApiCrudController
         $return['total_length'] = (int)$song_totals[0]['total_length'];
 
         $return['links'] = [
+            'toggle' => (string)$router->fromHere('api:station:playlist:toggle', ['id' => $record->getId()], [], true),
+            'order' => (string)$router->fromHere('api:station:playlist:order', ['id' => $record->getId()], [], true),
             'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
         ];
         return $return;

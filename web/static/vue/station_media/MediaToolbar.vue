@@ -187,9 +187,9 @@
         notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger')
       },
       handleError (err) {
+        console.error(err)
         if (err.response.message) {
           notify('<b>' + err.response.message + '</b>', 'danger')
-          console.error(err)
         }
       }
     }

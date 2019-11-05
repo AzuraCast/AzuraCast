@@ -266,6 +266,9 @@ vueTasks.forEach(function (libName) {
           filename: vueProject.filename,
           library: vueProject.library
         },
+        resolve: {
+          extensions: ['*', '.js', '.vue', '.json']
+        },
         module: {
           rules: [
             {

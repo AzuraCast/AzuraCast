@@ -27,23 +27,23 @@
                                     :api-url="listUrl">
                             <template v-slot:cell(actions)="row">
                                 <b-button-group size="sm">
-                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item)">
+                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                                         <translate>Edit</translate>
                                     </b-button>
-                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item)">
+                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
                                         <translate>Delete</translate>
                                     </b-button>
 
                                     <b-dropdown size="sm" variant="dark" :text="langMore">
-                                        <b-dropdown-item @click.prevent="doToggle(row.item)">
+                                        <b-dropdown-item @click.prevent="doToggle(row.item.links.toggle)">
                                             {{ langToggleButton(row.item) }}
                                         </b-dropdown-item>
-                                        <b-dropdown-item @click.prevent="doReorder(row.item)"
+                                        <b-dropdown-item @click.prevent="doReorder(row.item.links.order)"
                                                          v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
                                             {{ langReorderButton }}
                                         </b-dropdown-item>
                                         <template v-for="format in ['pls', 'm3u']">
-                                            <b-dropdown-item :href="row.item['links_export_'+format]" target="_blank">
+                                            <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
                                                 <translate :translate-params="{ format: format.toUpperCase() }">Export
                                                     %{format}
                                                 </translate>
@@ -89,7 +89,7 @@
                 </b-tab>
                 <b-tab :title="langScheduleViewTab" no-body>
                     <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"
-                              :locale="locale"></schedule>
+                              :locale="locale" @edit="doEdit"></schedule>
                 </b-tab>
             </b-tabs>
         </b-card>
@@ -100,10 +100,10 @@
 </template>
 
 <script>
-  import DataTable from './components/DataTable.vue'
-  import Schedule from './station_playlists/Schedule.vue'
-  import EditModal from './station_playlists/EditModal.vue'
-  import ReorderModal from './station_playlists/ReorderModal.vue'
+  import DataTable from './components/DataTable'
+  import Schedule from './station_playlists/PlaylistSchedule'
+  import EditModal from './station_playlists/PlaylistEditModal'
+  import ReorderModal from './station_playlists/PlaylistReorderModal'
   import axios from 'axios'
 
   export default {
@@ -190,13 +190,13 @@
       doCreate () {
         this.$refs.editModal.create()
       },
-      doEdit (record) {
-        this.$refs.editModal.edit(record.links_self)
+      doEdit (url) {
+        this.$refs.editModal.edit(url)
       },
-      doReorder (record) {
-        this.$refs.reorderModal.open(record.links_order)
+      doReorder (url) {
+        this.$refs.reorderModal.open(url)
       },
-      doToggle (record) {
+      doToggle (url) {
         notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
           delay: 3000
         })
@@ -211,9 +211,6 @@
             notify('<b>' + err.response.message + '</b>', 'danger')
           }
         })
-      },
-      doExport () {
-
       },
       doDelete () {
 

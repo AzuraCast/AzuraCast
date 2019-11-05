@@ -3,7 +3,7 @@
                    theme-system="bootstrap4"
                    :now-indicator="true" default-view="timeGridWeek" default-timed-event-duration="00:20"
                    :locale="locale" :header="false" :footer="false" height="auto"
-                   :events="scheduleUrl">
+                   :events="scheduleUrl" @eventClick="onEventClick">
     </full-calendar>
 </template>
 
@@ -31,6 +31,9 @@
     methods: {
       refresh () {
 
+      },
+      onEventClick (arg) {
+        this.$emit('edit', arg.event.extendedProps.edit_url)
       }
     }
   }

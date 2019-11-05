@@ -1,7 +1,7 @@
 {
   "dist/app.js": "dist/app-e71c721caa.js",
   "dist/bootgrid.js": "dist/bootgrid-dbc21837bc.js",
-  "dist/dark.css": "dist/dark-6d2a272036.css",
+  "dist/dark.css": "dist/dark-d8373bbfc0.css",
   "dist/inline_player.js": "dist/inline_player-f5a2664b3b.js",
   "dist/lib/autosize/autosize.min.js": "dist/lib/autosize/autosize-ad0656589d.min.js",
   "dist/lib/bootstrap-notify/bootstrap-notify.min.js": "dist/lib/bootstrap-notify/bootstrap-notify-a02f92a499.min.js",
@@ -43,11 +43,11 @@
   "dist/lib/webcaster/taglib.js": "dist/lib/webcaster/taglib-9009697b4d.js",
   "dist/lib/webcaster/webcast.js": "dist/lib/webcaster/webcast-75f3ecd006.js",
   "dist/lib/zxcvbn/zxcvbn.js": "dist/lib/zxcvbn/zxcvbn-9cf6916dc0.js",
-  "dist/light.css": "dist/light-97511efaa3.css",
+  "dist/light.css": "dist/light-a0a23d9ad3.css",
   "dist/material.js": "dist/material-8a0f31e5be.js",
   "dist/radio_player.js": "dist/radio_player-b8df57d8b4.js",
-  "dist/station_media.js": "dist/station_media-7bf9066b1f.js",
-  "dist/station_playlists.js": "dist/station_playlists-31c2b9b9a7.js",
+  "dist/station_media.js": "dist/station_media-05d6d23bfa.js",
+  "dist/station_playlists.js": "dist/station_playlists-f1b5c19c44.js",
   "dist/vue_gettext.js": "dist/vue_gettext-3680f650b9.js",
   "dist/webcaster.js": "dist/webcaster-137f49b033.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"

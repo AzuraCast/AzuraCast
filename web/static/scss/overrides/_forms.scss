@@ -4,19 +4,17 @@ input, textarea {
   }
 }
 
-select {
-  &.form-control {
-    option {
-      background: $menu-bg;
-    }
-  }
+select.form-control option,
+select.custom-select option {
+  background: $menu-bg;
 }
 
 .form {
   fieldset {
     margin-bottom: 1rem;
 
-    div.fieldset-legend {
+    div.fieldset-legend,
+    legend.col-form-label {
       border-bottom: 2px dotted;
       border-color: theme-color-dark(primary);
       margin-bottom: 10px;

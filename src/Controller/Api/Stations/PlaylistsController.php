@@ -5,7 +5,6 @@ use App\Entity;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Utilities;
 use Azura\Doctrine\Paginator;
 use Azura\Exception;
 use Azura\Http\RouterInterface;
@@ -127,16 +126,10 @@ class PlaylistsController extends AbstractStationApiCrudController
         $paginator = new Paginator($qb);
         $paginator->setFromRequest($request);
 
-        $isBootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($row) use ($isBootgrid, $router) {
-            $return = $this->_viewRecord($row, $router);
-            if ($isBootgrid) {
-                return Utilities::flattenArray($return, '_');
-            }
-
-            return $return;
+        $paginator->setPostprocessor(function ($row) use ($router) {
+            return $this->_viewRecord($row, $router);
         });
 
         return $paginator->write($response);
@@ -193,7 +186,7 @@ class PlaylistsController extends AbstractStationApiCrudController
                             'title' => $playlist->getName(),
                             'start' => $playlistStart->toIso8601String(),
                             'end' => $playlistEnd->toIso8601String(),
-                            'url' => (string)$request->getRouter()->named(
+                            'edit_url' => (string)$request->getRouter()->named(
                                 'api:stations:playlist',
                                 ['station_id' => $station->getId(), 'id' => $playlist->getId()]
                             ),
@@ -308,14 +301,6 @@ class PlaylistsController extends AbstractStationApiCrudController
         return $response->withJson(new Entity\Api\Status(true, $flash_message));
     }
 
-    protected function _getRecord(Entity\Station $station, $id)
-    {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sp, spc FROM App\Entity\StationPlaylist sp JOIN sp.schedule_items spc WHERE sp.id = :id AND sp.station = :station')
-            ->setParameter('id', $id)
-            ->setParameter('station', $station)
-            ->getSingleResult();
-    }
-
     protected function _viewRecord($record, RouterInterface $router)
     {
         if (!($record instanceof $this->entityClass)) {
@@ -342,7 +327,7 @@ class PlaylistsController extends AbstractStationApiCrudController
         ];
 
         foreach (['pls', 'm3u'] as $format) {
-            $return['links']['export_' . $format] = (string)$router->fromHere(
+            $return['links']['export'][$format] = (string)$router->fromHere(
                 'api:stations:playlist:export',
                 ['id' => $record->getId(), 'format' => $format],
                 [],

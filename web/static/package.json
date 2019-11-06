@@ -9,7 +9,12 @@
   "dependencies": {
     "@fancyapps/fancybox": "^3.5.7",
     "@flowjs/flow.js": "^2.13.1",
-    "@fullcalendar/core": "^4.1.0",
+    "@fullcalendar/core": "^4.3.1",
+    "@fullcalendar/daygrid": "^4.3.0",
+    "@fullcalendar/moment": "^4.3.0",
+    "@fullcalendar/moment-timezone": "^4.3.0",
+    "@fullcalendar/timegrid": "^4.3.0",
+    "@fullcalendar/vue": "^4.3.1",
     "autosize": "^4.0.2",
     "axios": "^0.18.1",
     "bootstrap": "^4.3.1",
@@ -39,6 +44,7 @@
     "vue": "^2.6.10",
     "vue-gettext": "^2.1.5",
     "vue-i18n": "^8.14.1",
+    "vuedraggable": "^2.23.2",
     "vuelidate": "^0.7.4",
     "webpack": "^4.41.0",
     "zxcvbn": "^4.4.2"

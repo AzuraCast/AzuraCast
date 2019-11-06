@@ -106,14 +106,14 @@
 </style>
 
 <script>
-  import DataTable from './components/DataTable.vue'
-  import MediaToolbar from './station_media/MediaToolbar.vue'
-  import Breadcrumb from './station_media/Breadcrumb.vue'
-  import FileUpload from './station_media/FileUpload.vue'
-  import NewDirectoryModal from './station_media/NewDirectoryModal.vue'
-  import MoveFilesModal from './station_media/MoveFilesModal.vue'
-  import RenameModal from './station_media/RenameModal.vue'
-  import EditModal from './station_media/EditModal.vue'
+  import DataTable from './components/DataTable'
+  import MediaToolbar from './station_media/MediaToolbar'
+  import Breadcrumb from './station_media/MediaBreadcrumb'
+  import FileUpload from './station_media/MediaFileUpload'
+  import NewDirectoryModal from './station_media/MediaNewDirectoryModal'
+  import MoveFilesModal from './station_media/MediaMoveFilesModal'
+  import RenameModal from './station_media/MediaRenameModal'
+  import EditModal from './station_media/MediaEditModal'
   import { formatFileSize } from './station_media/utils'
   import _ from 'lodash'
 

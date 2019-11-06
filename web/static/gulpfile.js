@@ -155,19 +155,6 @@ var jsFiles = {
       'node_modules/@flowjs/flow.js/dist/flow.min.js'
     ]
   },
-  'fullcalendar': {
-    base: 'node_modules/fullcalendar/dist',
-    files: [
-      'node_modules/fullcalendar/dist/fullcalendar.min.*',
-      'node_modules/fullcalendar/dist/locale-all.js'
-    ]
-  },
-  'sortable': {
-    base: null,
-    files: [
-      'node_modules/sortablejs/Sortable.min.js'
-    ]
-  },
   'leaflet': {
     base: 'node_modules/leaflet/dist',
     files: [
@@ -257,6 +244,11 @@ var vueProjects = {
     'src_file': 'vue/StationMedia.vue',
     'filename': 'station_media.js',
     'library': 'StationMedia'
+  },
+  'station_playlists': {
+    'src_file': 'vue/StationPlaylists.vue',
+    'filename': 'station_playlists.js',
+    'library': 'StationPlaylist'
   }
 }
 
@@ -273,6 +265,9 @@ vueTasks.forEach(function (libName) {
           publicPath: '/static/dist',
           filename: vueProject.filename,
           library: vueProject.library
+        },
+        resolve: {
+          extensions: ['*', '.js', '.vue', '.json']
         },
         module: {
           rules: [

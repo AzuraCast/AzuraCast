@@ -350,42 +350,75 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $playlist_var_name = 'once(' . $playlist_var_name . ')';
             }
 
+            $scheduleItems = $playlist->getScheduleItems();
+
             switch ($playlist->getType()) {
                 case Entity\StationPlaylist::TYPE_DEFAULT:
-                    $gen_playlist_weights[] = $playlist->getWeight();
-                    $gen_playlist_vars[] = $playlist_var_name;
-                    break;
+                    if ($scheduleItems->count() > 0) {
+                        foreach ($scheduleItems as $scheduleItem) {
+                            $play_time = $this->_getScheduledPlaylistPlayTime($scheduleItem);
 
-                case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
-                    $special_playlists['once_per_x_songs'][] = 'radio = rotate(weights=[1,' . $playlist->getPlayPerSongs() . '], [' . $playlist_var_name . ', radio])';
-                    break;
-
-                case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
-                    $delay_seconds = $playlist->getPlayPerMinutes() * 60;
-                    $delay_track_sensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
-
-                    $special_playlists['once_per_x_minutes'][] = 'radio = fallback(track_sensitive=' . $delay_track_sensitive . ', [delay(' . $delay_seconds . '., ' . $playlist_var_name . '), radio])';
-                    break;
-
-                case Entity\StationPlaylist::TYPE_ONCE_PER_HOUR:
-                    $play_time = $playlist->getPlayPerHourMinute() . 'm';
-
-                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
-                    if ($playlist->backendInterruptOtherSongs()) {
-                        $schedule_switches_interrupting[] = $schedule_timing;
+                            $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                            if ($playlist->backendInterruptOtherSongs()) {
+                                $schedule_switches_interrupting[] = $schedule_timing;
+                            } else {
+                                $schedule_switches[] = $schedule_timing;
+                            }
+                        }
                     } else {
-                        $schedule_switches[] = $schedule_timing;
+                        $gen_playlist_weights[] = $playlist->getWeight();
+                        $gen_playlist_vars[] = $playlist_var_name;
                     }
                     break;
 
-                case Entity\StationPlaylist::TYPE_SCHEDULED:
-                    $play_time = $this->_getScheduledPlaylistPlayTime($playlist);
-
-                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
-                    if ($playlist->backendInterruptOtherSongs()) {
-                        $schedule_switches_interrupting[] = $schedule_timing;
+                case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
+                case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
+                    if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $playlist->getType()) {
+                        $playlistScheduleVar = 'rotate(weights=[1,' . $playlist->getPlayPerSongs() . '], [' . $playlist_var_name . ', radio])';
                     } else {
-                        $schedule_switches[] = $schedule_timing;
+                        $delaySeconds = $playlist->getPlayPerMinutes() * 60;
+                        $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
+
+                        $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlist_var_name . '), radio])';
+                    }
+
+                    if ($scheduleItems->count() > 0) {
+                        foreach ($scheduleItems as $scheduleItem) {
+                            $play_time = $this->_getScheduledPlaylistPlayTime($scheduleItem);
+
+                            $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistScheduleVar . ')';
+                            if ($playlist->backendInterruptOtherSongs()) {
+                                $schedule_switches_interrupting[] = $schedule_timing;
+                            } else {
+                                $schedule_switches[] = $schedule_timing;
+                            }
+                        }
+                    } else {
+                        $special_playlists[$playlist->getType()][] = 'radio = ' . $playlistScheduleVar;
+                    }
+                    break;
+
+                case Entity\StationPlaylist::TYPE_ONCE_PER_HOUR:
+                    $minutePlayTime = $playlist->getPlayPerHourMinute() . 'm';
+
+                    if ($scheduleItems->count() > 0) {
+                        foreach ($scheduleItems as $scheduleItem) {
+                            $playTime = '(' . $minutePlayTime . ') and (' . $this->_getScheduledPlaylistPlayTime($scheduleItem) . ')';
+
+                            $schedule_timing = '({ ' . $playTime . ' }, ' . $playlist_var_name . ')';
+                            if ($playlist->backendInterruptOtherSongs()) {
+                                $schedule_switches_interrupting[] = $schedule_timing;
+                            } else {
+                                $schedule_switches[] = $schedule_timing;
+                            }
+                        }
+                    } else {
+                        $schedule_timing = '({ ' . $minutePlayTime . ' }, ' . $playlist_var_name . ')';
+                        if ($playlist->backendInterruptOtherSongs()) {
+                            $schedule_switches_interrupting[] = $schedule_timing;
+                        } else {
+                            $schedule_switches[] = $schedule_timing;
+                        }
                     }
                     break;
             }
@@ -578,14 +611,14 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /**
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
      *
-     * @param Entity\StationPlaylist $playlist
+     * @param Entity\StationPlaylistSchedule $playlistSchedule
      *
      * @return string
      */
-    protected function _getScheduledPlaylistPlayTime(Entity\StationPlaylist $playlist): string
+    protected function _getScheduledPlaylistPlayTime(Entity\StationPlaylistSchedule $playlistSchedule): string
     {
-        $start_time = $playlist->getScheduleStartTime();
-        $end_time = $playlist->getScheduleEndTime();
+        $start_time = $playlistSchedule->getStartTime();
+        $end_time = $playlistSchedule->getEndTime();
 
         // Handle multi-day playlists.
         if ($start_time > $end_time) {
@@ -594,7 +627,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 '00h00m-' . $this->_formatTimeCode($end_time),
             ];
 
-            $playlist_schedule_days = $playlist->getScheduleDays();
+            $playlist_schedule_days = $playlistSchedule->getDays();
             if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
                 $current_play_days = [];
                 $next_play_days = [];
@@ -622,7 +655,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             ? $this->_formatTimeCode($start_time)
             : $this->_formatTimeCode($start_time) . '-' . $this->_formatTimeCode($end_time);
 
-        $playlist_schedule_days = $playlist->getScheduleDays();
+        $playlist_schedule_days = $playlistSchedule->getDays();
         if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
             $play_days = [];
 

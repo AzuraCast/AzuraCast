@@ -11,7 +11,6 @@ use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -42,9 +41,6 @@ class FilesController extends AbstractStationApiCrudController
     /** @var Entity\Repository\StationMediaRepository */
     protected $media_repo;
 
-    /** @var EntityRepository */
-    protected $playlist_repo;
-
     /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected $playlist_media_repo;
 
@@ -58,7 +54,6 @@ class FilesController extends AbstractStationApiCrudController
      * @param Entity\Repository\CustomFieldRepository $custom_fields_repo
      * @param Entity\Repository\SongRepository $song_repo
      * @param Entity\Repository\StationMediaRepository $media_repo
-     * @param Entity\Repository\StationPlaylistRepository $playlist_repo
      * @param Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
      */
     public function __construct(
@@ -71,7 +66,6 @@ class FilesController extends AbstractStationApiCrudController
         Entity\Repository\CustomFieldRepository $custom_fields_repo,
         Entity\Repository\SongRepository $song_repo,
         Entity\Repository\StationMediaRepository $media_repo,
-        Entity\Repository\StationPlaylistRepository $playlist_repo,
         Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
     ) {
         parent::__construct($em, $serializer, $validator);
@@ -83,7 +77,6 @@ class FilesController extends AbstractStationApiCrudController
         $this->custom_fields_repo = $custom_fields_repo;
         $this->media_repo = $media_repo;
         $this->song_repo = $song_repo;
-        $this->playlist_repo = $playlist_repo;
         $this->playlist_media_repo = $playlist_media_repo;
     }
 
@@ -293,7 +286,7 @@ class FilesController extends AbstractStationApiCrudController
                         $playlist_weight = 0;
                     }
 
-                    $playlist = $this->playlist_repo->findOneBy([
+                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
                         'station_id' => $station->getId(),
                         'id' => (int)$playlist_id,
                     ]);

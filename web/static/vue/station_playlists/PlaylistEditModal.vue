@@ -116,9 +116,10 @@
       edit (recordUrl) {
         this.resetForm()
         this.loading = true
+        this.editUrl = recordUrl
         this.$refs.modal.show()
 
-        axios.get(recordUrl).then((resp) => {
+        axios.get(this.editUrl).then((resp) => {
           let d = resp.data
 
           this.form = {

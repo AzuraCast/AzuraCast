@@ -94,7 +94,8 @@
             </b-tabs>
         </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"></edit-modal>
+        <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
+                    @relist="relist"></edit-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
     </div>
 </template>
@@ -184,8 +185,12 @@
         }
       },
       relist () {
-        this.$refs.datatable.refresh()
-        this.$refs.schedule.refresh()
+        if (this.$refs.datatable) {
+          this.$refs.datatable.refresh()
+        }
+        if (this.$refs.schedule) {
+          this.$refs.schedule.refresh()
+        }
       },
       doCreate () {
         this.$refs.editModal.create()

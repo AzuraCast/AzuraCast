@@ -54,7 +54,7 @@ return [
     App\Entity\Repository\SongRepository::class => DI\autowire(),
     App\Entity\Repository\StationMediaRepository::class => DI\autowire(),
     App\Entity\Repository\StationMountRepository::class => DI\autowire(),
-    App\Entity\Repository\StationPlaylistRepository::class => DI\autowire(),
+    App\Entity\Repository\StationPlaylistScheduleRepository::class => DI\autowire(),
     App\Entity\Repository\StationPlaylistMediaRepository::class => DI\autowire(),
     App\Entity\Repository\StationRepository::class => DI\autowire(),
     App\Entity\Repository\StationRequestRepository::class => DI\autowire(),

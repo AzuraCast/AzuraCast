@@ -146,7 +146,13 @@
     },
     methods: {
       add () {
-        this.scheduleItems.push({})
+        this.scheduleItems.push({
+          start_time: null,
+          end_time: null,
+          start_date: null,
+          end_date: null,
+          days: []
+        })
       },
       remove (index) {
         this.scheduleItems.splice(index, 1)

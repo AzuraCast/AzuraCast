@@ -9,14 +9,31 @@ use Azura\Doctrine\Paginator;
 use Azura\Exception;
 use Azura\Http\RouterInterface;
 use Cake\Chronos\Chronos;
+use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PlaylistsController extends AbstractStationApiCrudController
 {
     protected $entityClass = Entity\StationPlaylist::class;
     protected $resourceRouteName = 'api:stations:playlist';
+
+    /** @var Entity\Repository\StationPlaylistScheduleRepository */
+    protected $playlistScheduleRepo;
+
+    public function __construct(
+        EntityManager $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        Entity\Repository\StationPlaylistScheduleRepository $playlistScheduleRepo
+    ) {
+        parent::__construct($em, $serializer, $validator);
+
+        $this->playlistScheduleRepo = $playlistScheduleRepo;
+    }
 
     /**
      * @OA\Get(path="/station/{station_id}/playlists",
@@ -343,5 +360,24 @@ class PlaylistsController extends AbstractStationApiCrudController
         return parent::_normalizeRecord($record, array_merge($context, [
             AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue'],
         ]));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    {
+        $scheduleItems = $data['schedule_items'] ?? null;
+        unset($data['schedule_items']);
+
+        $record = parent::_denormalizeToRecord($data, $record, $context);
+
+        if ($record instanceof Entity\StationPlaylist) {
+            if (null !== $scheduleItems) {
+                $this->playlistScheduleRepo->setScheduleItems($record, $scheduleItems);
+            }
+        }
+
+        return $record;
     }
 }

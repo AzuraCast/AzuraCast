@@ -7,10 +7,18 @@
             <b-tabs content-class="mt-3">
                 <form-basic-info :form="$v.form"></form-basic-info>
                 <form-source :form="$v.form"></form-source>
-                <form-order :form="$v.form"></form-order>
-                <form-schedule :form="$v.form"></form-schedule>
+                <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
+                               :station-time-zone="stationTimeZone"></form-schedule>
             </b-tabs>
         </b-form>
+        <template v-slot:modal-footer>
+            <b-button variant="default" @click="close">
+                <translate>Close</translate>
+            </b-button>
+            <b-button variant="primary" @click="doSubmit" :disabled="$v.form.$invalid">
+                <translate>Save Changes</translate>
+            </b-button>
+        </template>
     </b-modal>
 </template>
 
@@ -19,16 +27,16 @@
   import { validationMixin } from 'vuelidate'
   import required from 'vuelidate/src/validators/required'
   import FormBasicInfo from './form/PlaylistFormBasicInfo'
-  import FormOrder from './form/PlaylistFormOrder'
   import FormSource from './form/PlaylistFormSource'
   import FormSchedule from './form/PlaylistFormSchedule'
 
   export default {
     name: 'EditModal',
-    components: { FormSchedule, FormSource, FormBasicInfo, FormOrder },
+    components: { FormSchedule, FormSource, FormBasicInfo },
     mixins: [validationMixin],
     props: {
-      createUrl: String
+      createUrl: String,
+      stationTimeZone: String
     },
     data () {
       return {
@@ -39,7 +47,12 @@
     },
     computed: {
       langTitle () {
-        return this.$gettext('Edit Playlist')
+        return this.isEditMode
+          ? this.$gettext('Edit Playlist')
+          : this.$gettext('Add Playlist')
+      },
+      isEditMode () {
+        return this.editUrl !== null
       }
     },
     validations: {
@@ -61,7 +74,13 @@
         'include_in_automation': {},
         'backend_options': {},
         'schedule_items': {
-          $each: {}
+          $each: {
+            'start_time': { required },
+            'end_time': { required },
+            'start_date': {},
+            'end_date': {},
+            'days': {}
+          }
         }
       }
     },
@@ -135,8 +154,12 @@
         }
 
         axios({
-          method: (this.editUrl === null) ? 'POST' : 'PUT',
-          url: (this.editUrl === null) ? this.createUrl : this.editUrl,
+          method: (this.isEditMode)
+            ? 'PUT'
+            : 'POST',
+          url: (this.isEditMode)
+            ? this.editUrl
+            : this.createUrl,
           data: this.form
         }).then((resp) => {
           let notifyMessage = this.$gettext('Changes saved.')
@@ -153,15 +176,15 @@
           this.$emit('relist')
           this.close()
         })
-      }
-    },
-    close () {
-      this.loading = false
-      this.editUrl = null
-      this.resetForm()
+      },
+      close () {
+        this.loading = false
+        this.editUrl = null
+        this.resetForm()
 
-      this.$v.form.$reset()
-      this.$refs.modal.hide()
+        this.$v.form.$reset()
+        this.$refs.modal.hide()
+      }
     }
   }
 </script>

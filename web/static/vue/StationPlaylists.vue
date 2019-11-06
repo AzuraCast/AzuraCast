@@ -44,8 +44,8 @@
                                         </b-dropdown-item>
                                         <template v-for="format in ['pls', 'm3u']">
                                             <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
-                                                <translate :translate-params="{ format: format.toUpperCase() }">Export
-                                                    %{format}
+                                                <translate :translate-params="{ format: format.toUpperCase() }">
+                                                    Export %{format}
                                                 </translate>
                                             </b-dropdown-item>
                                         </template>
@@ -94,7 +94,7 @@
             </b-tabs>
         </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl"></edit-modal>
+        <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"></edit-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
     </div>
 </template>
@@ -201,7 +201,7 @@
           delay: 3000
         })
 
-        axios.put(record.links_toggle).then((resp) => {
+        axios.put(url).then((resp) => {
           notify('<b>' + resp.data.message + '</b>', 'success')
 
           this.relist()
@@ -212,13 +212,29 @@
           }
         })
       },
-      doDelete () {
+      doDelete (url) {
+        let buttonText = this.$gettext('Delete')
+        let buttonConfirmText = this.$gettext('Delete playlist?')
 
+        swal({
+          title: buttonConfirmText,
+          buttons: [true, buttonText],
+          dangerMode: true
+        }).then((value) => {
+          if (value) {
+            axios.delete(url).then((resp) => {
+              notify('<b>' + resp.data.message + '</b>', 'success')
+
+              this.relist()
+            }).catch((err) => {
+              console.error(err)
+              if (err.response.message) {
+                notify('<b>' + err.response.message + '</b>', 'danger')
+              }
+            })
+          }
+        })
       }
     }
   }
 </script>
-
-<style lang="scss">
-
-</style>

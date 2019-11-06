@@ -1,175 +1,131 @@
 <template>
     <b-tab :title="langTabTitle">
-        <b-form-group :label="langTabTitle">
+        <b-form-group>
             <b-row>
-                <b-col md="12">
-                    <b-form-group label-for="edit_form_is_enabled">
-                        <template v-slot:label v-translate>
-                            Is Enabled
-                        </template>
-                        <template v-slot:description v-translate>
-                            If set to "No", the playlist will not be included in radio playback, but can still be
-                            managed.
-                        </template>
-                        <b-form-checkbox v-model="form.is_enabled" id="edit_form_is_enabled" switch v-translate>
-                            Is Enabled
-                        </b-form-checkbox>
-                    </b-form-group>
-                </b-col>
-                <b-col md="6">
-                    <b-form-group label-for="edit_form_name">
-                        <template v-slot:label v-translate>
-                            Playlist Name
-                        </template>
-                        <b-form-input type="text" id="edit_form_name" v-model="form.name.$model"
-                                      :state="form.name.$dirty ? !form.name.$error : null"></b-form-input>
-                        <b-form-invalid-feedback v-translate>
-                            This field is required.
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-                </b-col>
+                <b-form-group class="col-md-6" label-for="edit_form_source">
+                    <template v-slot:label v-translate>
+                        Source
+                    </template>
+                    <b-form-radio-group stacked id="edit_form_source" v-model="form.source.$model">
+                        <b-form-radio value="songs">
+                            <b>
+                                <translate>Song-Based Playlist</translate>
+                                :</b>
+                            <translate>
+                                A playlist containing media files hosted on this server.
+                            </translate>
+                        </b-form-radio>
+                        <b-form-radio value="remote_url">
+                            <b>
+                                <translate>Remote URL Playlist</translate>
+                                :</b>
+                            <translate>
+                                A playlist that instructs the station to play from a remote URL.
+                            </translate>
+                        </b-form-radio>
+                    </b-form-radio-group>
+                </b-form-group>
             </b-row>
         </b-form-group>
 
-        'select_source' => [
-        'tab' => 'source',
-        'elements' => [
-        'source' => [
-        'radio',
-        [
-        'label' => __('Source'),
-        'choices' => [
-        StationPlaylist::SOURCE_SONGS => '<b>' . __('Song-Based Playlist') . ':</b> ' . __('A playlist containing media
-        files hosted on this server.'),
-        StationPlaylist::SOURCE_REMOTE_URL => '<b>' . __('Remote URL Playlist') . ':</b> ' . __('A playlist that
-        instructs the station to play from a remote URL.'),
-        ],
-        'default' => StationPlaylist::SOURCE_SONGS,
-        'required' => true,
-        ],
-        ],
-        ],
-        ],
+        <b-form-group v-if="form.source.$model === 'songs'">
+            <template v-slot:label v-translate>
+                Song-Based Playlist
+            </template>
 
-        'source_' . StationPlaylist::SOURCE_SONGS => [
-        'use_grid' => true,
-        'class' => 'source_fieldset',
-        'tab' => 'source',
+            <b-row>
 
-        'elements' => [
+                <b-form-group class="col-md-12" label-for="edit_form_order">
+                    <template v-slot:label v-translate>
+                        Song Playback Order
+                    </template>
+                    <b-form-radio-group stacked id="edit_form_order" v-model="form.order.$model">
+                        <b-form-radio value="shuffle">
+                            <template>Shuffled</template>
+                        </b-form-radio>
+                        <b-form-radio value="random">
+                            <template>Random</template>
+                        </b-form-radio>
+                        <b-form-radio value="sequential">
+                            <template>Sequential</template>
+                        </b-form-radio>
+                    </b-form-radio-group>
+                </b-form-group>
 
-        'order' => [
-        'radio',
-        [
-        'label' => __('Song Playback Order'),
-        'required' => true,
-        'choices' => [
-        StationPlaylist::ORDER_SHUFFLE => __('Shuffled'),
-        StationPlaylist::ORDER_RANDOM => __('Random'),
-        StationPlaylist::ORDER_SEQUENTIAL => __('Sequential'),
-        ],
-        'default' => StationPlaylist::ORDER_SHUFFLE,
-        'form_group_class' => 'col-md-6',
-        ],
-        ],
+                <b-form-group class="col-md-6" label-for="form_edit_include_in_requests">
+                    <template v-slot:description v-translate>
+                        If requests are enabled for your station, users will be able to request media that
+                        is on this playlist.
+                    </template>
+                    <b-form-checkbox id="form_edit_include_in_requests" v-model="form.include_in_requests.$model">
+                        <translate>Allow Requests from This Playlist</translate>
+                    </b-form-checkbox>
+                </b-form-group>
 
-        'import' => [
-        'file',
-        [
-        'label' => __('Import Existing Playlist'),
-        'description' => __('Select an existing playlist file to add its contents to this playlist. PLS and M3U are
-        supported.'),
-        'required' => false,
-        'type' => [
-        'audio/x-scpls',
-        'application/vnd.apple.mpegurl',
-        'application/mpegurl',
-        'application/x-mpegurl',
-        'audio/mpegurl',
-        'audio/x-mpegurl',
-        'application/octet-stream',
-        ],
-        'form_group_class' => 'col-md-6',
-        'button_text' => __('Select File'),
-        'button_icon' => 'cloud_upload',
-        ],
-        ],
+                <b-form-group class="col-md-6" label-for="form_edit_is_jingle">
+                    <template v-slot:description v-translate>
+                        Enable this setting to prevent metadata from being sent to the AutoDJ for files in
+                        this playlist. This is useful if the playlist contains jingles or bumpers.
+                    </template>
+                    <b-form-checkbox id="form_edit_is_jingle" v-model="form.is_jingle.$model">
+                        <translate>Hide Metadata from Listeners ("Jingle Mode")</translate>
+                    </b-form-checkbox>
+                </b-form-group>
 
-        'include_in_requests' => [
-        'toggle',
-        [
-        'label' => __('Allow Requests from This Playlist'),
-        'description' => __('If requests are enabled for your station, users will be able to request media that is on
-        this playlist.'),
-        'selected_text' => __('Yes'),
-        'deselected_text' => __('No'),
-        'default' => true,
-        'form_group_class' => 'col-md-6',
-        ],
-        ],
+            </b-row>
+        </b-form-group>
 
-        'is_jingle' => [
-        'toggle',
-        [
-        'label' => __('Hide Metadata from Listeners ("Jingle Mode")'),
-        'label_class' => 'advanced',
-        'description' => __('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this
-        playlist. This is useful if the playlist contains jingles or bumpers.'),
-        'selected_text' => __('Yes'),
-        'deselected_text' => __('No'),
-        'default' => false,
-        'form_group_class' => 'col-md-6',
-        ],
-        ],
+        <b-form-group v-if="form.source.$model === 'remote_url'">
+            <template v-slot:label v-translate>
+                Remote URL Playlist
+            </template>
 
-        ],
-        ],
+            <b-row>
 
-        'source_' . StationPlaylist::SOURCE_REMOTE_URL => [
-        'use_grid' => true,
-        'class' => 'source_fieldset',
-        'tab' => 'source',
+                <b-form-group class="col-md-6" label-for="form_edit_remote_url">
+                    <template v-slot:label v-translate>
+                        Remote URL
+                    </template>
+                    <b-form-input id="form_edit_remote_url" type="text"
+                                  v-model="form.remote_url.$model"
+                                  :state="form.remote_url.$dirty ? !form.remote_url.$error : null"></b-form-input>
+                    <b-form-invalid-feedback v-translate>
+                        This field is required.
+                    </b-form-invalid-feedback>
+                </b-form-group>
 
-        'elements' => [
+                <b-form-group class="col-md-6" label-for="edit_form_remote_type">
+                    <template v-slot:label v-translate>
+                        Remote URL Type
+                    </template>
+                    <b-form-radio-group stacked id="edit_form_remote_type" v-model="form.remote_type.$model">
+                        <b-form-radio value="stream">
+                            <template>Direct Stream URL</template>
+                        </b-form-radio>
+                        <b-form-radio value="playlist">
+                            <template>Playlist (M3U/PLS) URL</template>
+                        </b-form-radio>
+                    </b-form-radio-group>
+                </b-form-group>
 
-        'remote_url' => [
-        'text',
-        [
-        'label' => __('Remote URL'),
-        'form_group_class' => 'col-md-6',
-        ],
-        ],
+                <b-form-group class="col-md-6" label-for="form_edit_remote_buffer">
+                    <template v-slot:label v-translate>
+                        Remote Playback Buffer (Seconds)
+                    </template>
+                    <template v-slot:description v-translate>
+                        The length of playback time that Liquidsoap should buffer when playing this remote
+                        playlist. Shorter times may lead to intermittent playback on unstable connections.
+                    </template>
+                    <b-form-input id="form_edit_remote_buffer" type="number" min="0" max="120"
+                                  v-model="form.remote_buffer.$model"
+                                  :state="form.remote_buffer.$dirty ? !form.remote_buffer.$error : null"></b-form-input>
+                    <b-form-invalid-feedback v-translate>
+                        This field is required.
+                    </b-form-invalid-feedback>
+                </b-form-group>
 
-        'remote_type' => [
-        'radio',
-        [
-        'label' => __('Remote URL Type'),
-        'default' => StationPlaylist::REMOTE_TYPE_STREAM,
-        'choices' => [
-        StationPlaylist::REMOTE_TYPE_STREAM => __('Direct Stream URL'),
-        StationPlaylist::REMOTE_TYPE_PLAYLIST => __('Playlist (M3U/PLS) URL'),
-        ],
-        'form_group_class' => 'col-md-6',
-        ],
-        ],
-
-        'remote_buffer' => [
-        'number',
-        [
-        'label' => __('Remote Playback Buffer (Seconds)'),
-        'label_class' => 'advanced mb-2',
-        'description' => __('The length of playback time that Liquidsoap should buffer when playing this remote
-        playlist. Shorter times may lead to intermittent playback on unstable connections.'),
-        'default' => StationPlaylist::DEFAULT_REMOTE_BUFFER,
-        'min' => 0,
-        'max' => 120,
-        'form_group_class' => 'col-md-6',
-        ],
-        ],
-
-        ],
-        ],
-
+            </b-row>
+        </b-form-group>
     </b-tab>
 </template>
 

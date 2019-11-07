@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
-"PO-Revision-Date: 2019-11-07 06:50\n"
+"PO-Revision-Date: 2019-11-07 07:00\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -31,31 +31,31 @@ msgstr "Ver registros del sistema"
 
 #: /var/azuracast/www/src/Acl.php:82
 msgid "Administer Settings"
-msgstr ""
+msgstr "Administrar ajustes"
 
 #: /var/azuracast/www/src/Acl.php:83
 msgid "Administer API Keys"
-msgstr ""
+msgstr "Administrar claves API"
 
 #: /var/azuracast/www/src/Acl.php:84
 msgid "Administer Users"
-msgstr ""
+msgstr "Administrar usuarios"
 
 #: /var/azuracast/www/src/Acl.php:85
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Administrar permisos"
 
 #: /var/azuracast/www/src/Acl.php:86
 msgid "Administer Stations"
-msgstr ""
+msgstr "Administrar estaciones"
 
 #: /var/azuracast/www/src/Acl.php:87
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Administrar campos personalizados"
 
 #: /var/azuracast/www/src/Acl.php:88
 msgid "Administer Backups"
-msgstr ""
+msgstr "Administrar copias de seguridad"
 
 #: /var/azuracast/www/src/Acl.php:92
 msgid "View Station Page"
@@ -71,23 +71,23 @@ msgstr "Ver registros de la estación"
 
 #: /var/azuracast/www/src/Acl.php:95
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Administrar Perfil de la estación"
 
 #: /var/azuracast/www/src/Acl.php:96
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Administrar estaciones de radio"
 
 #: /var/azuracast/www/src/Acl.php:97
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Administrar emisoras de radio"
 
 #: /var/azuracast/www/src/Acl.php:98
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Gestionar puntos de montaje de la estación"
 
 #: /var/azuracast/www/src/Acl.php:99
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Administrar la estación de forma remota"
 
 #: /var/azuracast/www/src/Acl.php:100
 msgid "Manage Station Media"

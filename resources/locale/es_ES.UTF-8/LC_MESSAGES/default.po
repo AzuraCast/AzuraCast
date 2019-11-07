@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
-"PO-Revision-Date: 2019-11-07 07:20\n"
+"PO-Revision-Date: 2019-11-07 07:30\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -240,7 +240,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:70
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Fixtures cargados."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:23
 msgid "Database created."
@@ -248,11 +248,11 @@ msgstr "Base de datos creada."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:57
 msgid "Retention policies updated."
-msgstr ""
+msgstr "Políticas de retención actualizadas."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:77
 msgid "Continuous queries created."
-msgstr ""
+msgstr "Se han creado consultas continuas."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:96
 msgid "InfluxDB databases created."
@@ -546,7 +546,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
-msgstr ""
+msgstr "Añadir clave API"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:205
 msgid "All Stations"
@@ -687,21 +687,21 @@ msgstr "Esta característica no es soportada actualmente por esta estación."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:48
 msgid "Edit Mount Point"
-msgstr ""
+msgstr "Editar punto de montaje"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:48
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
-msgstr ""
+msgstr "Añadir punto de montaje"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:60
 msgid "Mount Point deleted."
-msgstr ""
+msgstr "Punto de montaje eliminado."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:168
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:244
 msgid "Playlist not found."
-msgstr ""
+msgstr "Lista de reproducción no encontrada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:173
 msgid "This playlist is not a sequential playlist."
@@ -709,7 +709,7 @@ msgstr "Esta lista no es de reproducción secuencial."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:228
 msgid "Format not found."
-msgstr ""
+msgstr "Formato no encontrado."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:254
 msgid "Playlist enabled."
@@ -721,24 +721,24 @@ msgstr "Lista desactivada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:269
 msgid "Playlist updated."
-msgstr ""
+msgstr "Lista de reproducción actualizada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:269
 msgid "Playlist added."
-msgstr ""
+msgstr "Lista de reproducción añadida."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Edit Playlist"
-msgstr ""
+msgstr "Editar lista de reproducción."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 msgid "Add Playlist"
-msgstr ""
+msgstr "Añadir lista de reproducción"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:288
 msgid "Playlist deleted."
-msgstr ""
+msgstr "Lista de producción borrada."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:40
 msgid "Remote Relay updated."
@@ -1764,7 +1764,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
-msgstr ""
+msgstr "Aleatorio"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92

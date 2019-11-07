@@ -523,7 +523,7 @@ class StationMedia
      *
      * @return float|null
      */
-    protected function parseSeconds(?string $seconds = null): ?float
+    protected function parseSeconds($seconds = null): ?float
     {
         if ($seconds === '') {
             return null;
@@ -532,7 +532,7 @@ class StationMedia
         if (false !== strpos($seconds, ':')) {
             $sec = 0;
             foreach (array_reverse(explode(':', $seconds)) as $k => $v) {
-                $sec += (60 ** $k) * $v;
+                $sec += (60 ** (int)$k) * $v;
             }
 
             return $sec;

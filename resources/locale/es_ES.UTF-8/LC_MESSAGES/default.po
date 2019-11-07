@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
-"PO-Revision-Date: 2019-11-07 07:10\n"
+"PO-Revision-Date: 2019-11-07 07:20\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -140,11 +140,11 @@ msgstr "Copia de seguridad completada en %.2f segundos."
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:18
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "Configuración de AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:24
 msgid "Setting Key"
-msgstr ""
+msgstr "Configurar clave"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:25
 msgid "Setting Value"
@@ -152,27 +152,27 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerateCommand.php:44
 msgid "Locales generated."
-msgstr ""
+msgstr "Idioma generado."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:29
 msgid "Imported locale: %s"
-msgstr ""
+msgstr "Importado idioma: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:33
 msgid "Locales imported."
-msgstr ""
+msgstr "Idiomas importados."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:23
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Configuración ya creada."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:64
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Configuración escrita con éxito."
 
 #: /var/azuracast/www/src/Console/Command/RestoreCommand.php:36
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Ruta de copia de seguridad %s no encontrado!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministratorCommand.php:47
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -184,23 +184,23 @@ msgstr "Cuenta no encontrada."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:25
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "Configurar AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:26
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "Bienvenido a AzuraCast. Por favor, espere mientras se configuran algunas dependencias clave de AzuraCast..."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:29
 msgid "Environment: %s"
-msgstr ""
+msgstr "Entorno: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:30
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Método de instalación: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:34
 msgid "Running in update mode."
-msgstr ""
+msgstr "Ejecutando en modo actualización."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:37
 msgid "Migrating Legacy Configuration"
@@ -224,7 +224,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:68
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "Actualizando todas las estaciones"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:85
 msgid "AzuraCast is now updated to the latest version!"
@@ -232,7 +232,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:91
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "¡Instalación completa de AzuraCast!"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:92
 msgid "Visit %s to complete setup."

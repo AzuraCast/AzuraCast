@@ -463,15 +463,11 @@ class StationMedia
     }
 
     /**
-     * @param float|null $fade_in
+     * @param string|float|null $fade_in
      */
     public function setFadeIn($fade_in = null): void
     {
-        if ($fade_in === '') {
-            $fade_in = null;
-        }
-
-        $this->fade_in = $fade_in;
+        $this->fade_in = $this->parseSeconds($fade_in);
     }
 
     /**
@@ -483,15 +479,11 @@ class StationMedia
     }
 
     /**
-     * @param float|null $fade_out
+     * @param string|float|null $fade_out
      */
     public function setFadeOut($fade_out = null): void
     {
-        if ($fade_out === '') {
-            $fade_out = null;
-        }
-
-        $this->fade_out = $fade_out;
+        $this->fade_out = $this->parseSeconds($fade_out);
     }
 
     /**
@@ -503,15 +495,11 @@ class StationMedia
     }
 
     /**
-     * @param float|null $cue_in
+     * @param string|float|null $cue_in
      */
     public function setCueIn($cue_in = null): void
     {
-        if ($cue_in === '') {
-            $cue_in = null;
-        }
-
-        $this->cue_in = $cue_in;
+        $this->cue_in = $this->parseSeconds($cue_in);
     }
 
     /**
@@ -523,15 +511,34 @@ class StationMedia
     }
 
     /**
-     * @param float|null $cue_out
+     * @param string|float|null $cue_out
      */
     public function setCueOut($cue_out = null): void
     {
-        if ($cue_out === '') {
-            $cue_out = null;
+        $this->cue_out = $this->parseSeconds($cue_out);
+    }
+
+    /**
+     * @param string|float|null $seconds
+     *
+     * @return float|null
+     */
+    protected function parseSeconds(?string $seconds = null): ?float
+    {
+        if ($seconds === '') {
+            return null;
         }
 
-        $this->cue_out = $cue_out;
+        if (false !== strpos($seconds, ':')) {
+            $sec = 0;
+            foreach (array_reverse(explode(':', $seconds)) as $k => $v) {
+                $sec += (60 ** $k) * $v;
+            }
+
+            return $sec;
+        }
+
+        return $seconds;
     }
 
     /**

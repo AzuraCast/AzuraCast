@@ -272,7 +272,6 @@ class AutoDJ implements EventSubscriberInterface
             Entity\StationPlaylist::TYPE_ONCE_PER_HOUR,
             Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS,
             Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES,
-            Entity\StationPlaylist::TYPE_SCHEDULED,
             Entity\StationPlaylist::TYPE_DEFAULT,
         ];
 

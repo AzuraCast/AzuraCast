@@ -14,7 +14,7 @@ use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LogLevel;
 use Slim\App;
-use Slim\Exception\HttpNotFoundException;
+use Slim\Exception\HttpException;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Zend\Expressive\Session\SessionInterface;
@@ -68,10 +68,23 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
             'request' => $this->request,
         ]);
 
-        if ($this->exception instanceof HttpNotFoundException) {
+        if ($this->exception instanceof HttpException) {
+            /** @var Response $response */
+            $response = $this->responseFactory->createResponse($this->exception->getCode());
+
+            if ($this->returnJson) {
+                return $response->withJson(new Entity\Api\Error(
+                    $this->exception->getCode(),
+                    $this->exception->getMessage()
+                ));
+            }
+
             return $this->view->renderToResponse(
-                $this->responseFactory->createResponse(404),
-                'system/error_pagenotfound'
+                $response,
+                'system/error_http',
+                [
+                    'exception' => $this->exception,
+                ]
             );
         }
 

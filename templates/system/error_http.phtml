@@ -1,0 +1,23 @@
+<?php
+/** @var \Slim\Exception\HttpException $exception */
+
+$this->layout('minimal', [
+    'title' => $exception->getTitle(),
+    'page_class' => 'error-content',
+]);
+?>
+
+<div class="public-page">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="display-2 mt-2"><?=$exception->getCode()?></h2>
+            <h4><?=$exception->getMessage()?></h4>
+            <p><?=$exception->getDescription()?></p>
+
+            <a role="button" title="<?=__('Dashboard')?>" class="btn btn-login btn-primary btn-float"
+               href="<?=$router->named('home')?>">
+                <i class="material-icons" aria-hidden="true">home</i>
+            </a>
+        </div>
+    </div>
+</div>

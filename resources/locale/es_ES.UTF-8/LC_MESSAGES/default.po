@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
-"PO-Revision-Date: 2019-09-10 23:36\n"
+"PO-Revision-Date: 2019-11-07 06:50\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -244,7 +244,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:23
 msgid "Database created."
-msgstr ""
+msgstr "Base de datos creada."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:57
 msgid "Retention policies updated."

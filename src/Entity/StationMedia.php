@@ -532,7 +532,7 @@ class StationMedia
         if (false !== strpos($seconds, ':')) {
             $sec = 0;
             foreach (array_reverse(explode(':', $seconds)) as $k => $v) {
-                $sec += (60 ** (int)$k) * $v;
+                $sec += pow(60, (int)$k) * $v;
             }
 
             return $sec;

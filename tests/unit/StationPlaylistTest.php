@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity;
 
 class StationPlaylistTest extends \Codeception\Test\Unit
@@ -16,10 +17,12 @@ class StationPlaylistTest extends \Codeception\Test\Unit
         $playlist = new Entity\StationPlaylist($station);
 
         // Sample playlist that plays from 10PM to 4AM the next day.
-        $playlist->setType(Entity\StationPlaylist::TYPE_SCHEDULED);
-        $playlist->setScheduleStartTime(2200);
-        $playlist->setScheduleEndTime(400);
-        $playlist->setScheduleDays([1, 2, 3]); // Monday, Tuesday, Wednesday
+        $scheduleEntry = new Entity\StationPlaylistSchedule($playlist);
+        $scheduleEntry->setStartTime(2200);
+        $scheduleEntry->setEndTime(400);
+        $scheduleEntry->setDays([1, 2, 3]); // Monday, Tuesday, Wednesday
+
+        $playlist->getScheduleItems()->add($scheduleEntry);
 
         $utc = new \DateTimeZone('UTC');
         $test_monday = \Cake\Chronos\Chronos::create(2018, 1, 15, 0, 0, 0, $utc);
@@ -59,13 +62,13 @@ class StationPlaylistTest extends \Codeception\Test\Unit
         $test_day = \Cake\Chronos\Chronos::create(2018, 1, 15, 0, 0, 0, $utc);
 
         // Last played 20 minutes ago, SHOULD NOT play again.
-        $last_played = $test_day->addMinutes(0-20);
+        $last_played = $test_day->addMinutes(0 - 20);
         $playlist->setPlayedAt($last_played->getTimestamp());
 
         $this->assertFalse($playlist->shouldPlayNow($test_day));
 
         // Last played 40 minutes ago, SHOULD play again.
-        $last_played = $test_day->addMinutes(0-40);
+        $last_played = $test_day->addMinutes(0 - 40);
         $playlist->setPlayedAt($last_played->getTimestamp());
 
         $this->assertTrue($playlist->shouldPlayNow($test_day));

@@ -373,6 +373,9 @@ class PlaylistsController extends AbstractStationApiCrudController
         $record = parent::_denormalizeToRecord($data, $record, $context);
 
         if ($record instanceof Entity\StationPlaylist) {
+            $this->em->persist($record);
+            $this->em->flush($record);
+            
             if (null !== $scheduleItems) {
                 $this->playlistScheduleRepo->setScheduleItems($record, $scheduleItems);
             }

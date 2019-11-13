@@ -849,15 +849,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         if (self::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
             $start_next = round($crossfade * 1.5, 2);
-
-            if (self::CROSSFADE_SMART === $crossfade_type) {
-                $crossfade_function = 'smart_crossfade';
-            } else {
-                $crossfade_function = 'crossfade';
-            }
+            $crossfadeIsSmart = (self::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
 
             $event->appendLines([
-                'radio = ' . $crossfade_function . '(start_next=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
+                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
 

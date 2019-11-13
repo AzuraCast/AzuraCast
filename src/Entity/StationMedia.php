@@ -670,7 +670,7 @@ class StationMedia
             'duration' => $this->length,
             'song_id' => $this->getSong()->getId(),
             'media_id' => $this->id,
-            'liq_start_next' => $this->fade_overlap,
+            'liq_cross_duration' => $this->fade_overlap,
             'liq_fade_in' => $this->fade_in,
             'liq_fade_out' => $this->fade_out,
             'liq_cue_in' => $this->cue_in,

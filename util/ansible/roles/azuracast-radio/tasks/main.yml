@@ -70,41 +70,23 @@
        - unzip
        - bubblewrap
 
-  - name: Initialize OPAM (Xenial) - This takes a while...
+  - name: Initialize OPAM - This takes a while...
     become_user: azuracast
-    shell: "opam init -a --disable-sandboxing --bare && opam switch create 4.05.0"
+    shell: "opam init -a --disable-sandboxing --bare && opam switch create 4.08.0"
     args:
       chdir: "{{ app_base }}"
       executable: "bash" # Fixes some possible hang issues.
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
-
-  - name: Initialize OPAM (Bionic)
-    become_user: azuracast
-    shell: "opam init --disable-sandboxing -a"
-    args:
-      chdir: "{{ app_base }}"
-      executable: "bash" # Fixes some possible hang issues.
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
 
   - name: Build and Install Liquidsoap
     become_user: azuracast
-    shell: "opam install -y samplerate.0.1.4 taglib.0.3.3 mad.0.4.5 faad.0.4.0 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.1 cry.0.6.1 flac.0.1.4 opus.0.1.2 duppy.0.8.0 ssl liquidsoap.1.3.7"
+    shell: "opam install -y samplerate.0.1.4 taglib.0.3.3 mad.0.4.5 faad.0.4.0 fdkaac.0.3.1 lame.0.3.3 vorbis.0.7.1 cry.0.6.1 flac.0.1.5 opus.0.1.3 duppy.0.8.0 ssl liquidsoap.1.4.0"
     args:
       chdir: "{{ app_base }}"
       executable: "bash" # Fixes some possible hang issues.
 
-  - name: Link Liquidsoap binary (Xenial)
+  - name: Link Liquidsoap binary
     file:
-      src: /var/azuracast/.opam/4.05.0/bin/liquidsoap
+      src: /var/azuracast/.opam/4.08.0/bin/liquidsoap
       dest: /usr/local/bin/liquidsoap
       state: link
       force: yes
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
-
-  - name: Link Liquidsoap binary (Bionic)
-    file:
-      src: /var/azuracast/.opam/default/bin/liquidsoap
-      dest: /usr/local/bin/liquidsoap
-      state: link
-      force: yes
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'

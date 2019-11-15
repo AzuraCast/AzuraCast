@@ -160,6 +160,9 @@ class PublicController
         $station_id,
         $format = 'pls'
     ): ResponseInterface {
+        // Override system-wide iframe refusal
+        $response = $response->withHeader('X-Frame-Options', '*');
+
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {

@@ -719,7 +719,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
             $command = 'curl -s --request POST --url ' . $api_url;
             foreach ($params as $param_key => $param_val) {
-                $command .= ' --form ' . $param_key . '="^quote(' . $param_val . ')^"';
+                $command .= ' --form ' . $param_key . '="^string.quote(' . $param_val . ')^"';
             }
         } else {
             // Ansible shell-script call.
@@ -730,7 +730,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $shell_args[] = $station->getId();
 
             foreach ((array)$params as $param_key => $param_val) {
-                $shell_args [] = '--' . $param_key . '="^quote(' . $param_val . ')^"';
+                $shell_args [] = '--' . $param_key . '="^string.quote(' . $param_val . ')^"';
             }
 
             $command = $shell_path . ' ' . implode(' ', $shell_args);

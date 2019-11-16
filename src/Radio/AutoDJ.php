@@ -246,7 +246,8 @@ class AutoDJ implements EventSubscriberInterface
                     $song_history_count = max($song_history_count, $playlist->getPlayPerSongs());
                 }
 
-                $playlists_by_type[$type][$playlist->getId()] = $playlist;
+                $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
+                $playlists_by_type[$type . '_' . $subType][$playlist->getId()] = $playlist;
             }
         }
 
@@ -269,10 +270,14 @@ class AutoDJ implements EventSubscriberInterface
 
         // Types of playlists that should play, sorted by priority.
         $typesToPlay = [
-            Entity\StationPlaylist::TYPE_ONCE_PER_HOUR,
-            Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS,
-            Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES,
-            Entity\StationPlaylist::TYPE_DEFAULT,
+            Entity\StationPlaylist::TYPE_ONCE_PER_HOUR . '_scheduled',
+            Entity\StationPlaylist::TYPE_ONCE_PER_HOUR . '_unscheduled',
+            Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS . '_scheduled',
+            Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS . '_unscheduled',
+            Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES . '_scheduled',
+            Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES . '_unscheduled',
+            Entity\StationPlaylist::TYPE_DEFAULT . '_scheduled',
+            Entity\StationPlaylist::TYPE_DEFAULT . '_unscheduled',
         ];
 
         foreach ($typesToPlay as $type) {

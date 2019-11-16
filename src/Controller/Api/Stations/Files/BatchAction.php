@@ -67,12 +67,16 @@ class BatchAction
                                     $affected_playlists[$playlist_id] = $playlist;
                                 }
                             }
-                            
+
                             $em->remove($media);
                             $em->flush($media);
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
+
+                        if (!$em->isOpen()) {
+                            break 2;
+                        }
                     }
 
                     $files_affected++;
@@ -171,6 +175,10 @@ class BatchAction
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
+
+                        if (!$em->isOpen()) {
+                            break 2;
+                        }
                     }
 
                     $files_affected++;
@@ -228,6 +236,10 @@ class BatchAction
                     }
                 } catch (Exception $e) {
                     $errors[] = $e->getMessage();
+
+                    if (!$em->isOpen()) {
+                        break;
+                    }
                 }
 
                 $em->flush();
@@ -237,28 +249,34 @@ class BatchAction
                 $music_files = $this->_getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
-                try {
-                    foreach ($music_files as $file) {
+                foreach ($music_files as $file) {
+                    try {
                         $media = $mediaRepo->getOrCreate($station, $file['path']);
 
                         $newRequest = new Entity\StationRequest($station, $media);
                         $em->persist($newRequest);
                         $em->flush($newRequest);
                         $files_affected++;
+                    } catch (Exception $e) {
+                        $errors[] = $e->getMessage();
+
+                        if (!$em->isOpen()) {
+                            break 2;
+                        }
                     }
-                } catch (Exception $e) {
-                    $errors[] = $e->getMessage();
                 }
                 break;
         }
 
-        $em->clear(Entity\StationMedia::class);
-        $em->clear(Entity\StationPlaylist::class);
-        $em->clear(Entity\StationPlaylistMedia::class);
-        $em->clear(Entity\StationRequest::class);
+        if ($em->isOpen()) {
+            $em->clear(Entity\StationMedia::class);
+            $em->clear(Entity\StationPlaylist::class);
+            $em->clear(Entity\StationPlaylistMedia::class);
+            $em->clear(Entity\StationRequest::class);
+        }
 
         return $response->withJson([
-            'success' => true,
+            'success' => !empty($errors),
             'files_found' => $files_found,
             'files_affected' => $files_affected,
             'errors' => $errors,

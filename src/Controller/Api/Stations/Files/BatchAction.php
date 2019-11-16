@@ -59,15 +59,15 @@ class BatchAction
                         /** @var Entity\StationMedia $media */
                         $media = $mediaRepo->findByPath($file['path'], $station);
 
-                        $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
-
-                        foreach ($media_playlists as $playlist_id => $playlist) {
-                            if (!isset($affected_playlists[$playlist_id])) {
-                                $affected_playlists[$playlist_id] = $playlist;
-                            }
-                        }
-
                         if ($media instanceof Entity\StationMedia) {
+                            $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
+
+                            foreach ($media_playlists as $playlist_id => $playlist) {
+                                if (!isset($affected_playlists[$playlist_id])) {
+                                    $affected_playlists[$playlist_id] = $playlist;
+                                }
+                            }
+                            
                             $em->remove($media);
                             $em->flush($media);
                         }

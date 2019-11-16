@@ -246,7 +246,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         $schedule_switches = [];
         $schedule_switches_interrupting = [];
-        $use_azuracast_autodj = true;
 
         foreach ($playlist_objects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
@@ -258,15 +257,13 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             if ($playlist->backendLoopPlaylistOnce()) {
                 $playlist_func_name = 'playlist.once';
+            } elseif ($playlist->backendMerge()) {
+                $playlist_func_name = 'playlist.merge';
+                $uses_reload_mode = false;
             } else {
-                if ($playlist->backendMerge()) {
-                    $playlist_func_name = 'playlist.merge';
-                    $uses_reload_mode = false;
-                } else {
-                    $playlist_func_name = 'playlist';
-                    $uses_random = false;
-                    $uses_conservative = true;
-                }
+                $playlist_func_name = 'playlist';
+                $uses_random = false;
+                $uses_conservative = true;
             }
 
             $playlist_config_lines = [];
@@ -312,8 +309,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 $playlist_config_lines[] = $playlist_var_name . ' = ' . $playlist_func_name . '(' . implode(',',
                         $playlist_params) . ')';
             } else {
-                $use_azuracast_autodj = false;
-
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
                         $playlist_func = $playlist_func_name . '("' . $this->_cleanUpString($playlist->getRemoteUrl()) . '")';
@@ -448,7 +443,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         }
 
-        if ($use_azuracast_autodj && !$station->useManualAutoDJ()) {
+        if (!$station->useManualAutoDJ()) {
             $event->appendLines([
                 '# AutoDJ Next Song Script',
                 'def azuracast_next_song() =',

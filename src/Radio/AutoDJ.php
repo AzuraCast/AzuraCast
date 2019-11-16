@@ -453,19 +453,9 @@ class AutoDJ implements EventSubscriberInterface
 
         // Handle a raw stream URL of possibly indeterminate length.
         if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remote_type) {
-            // Temporarily disable remote URL streams being served via the Azura-AutoDJ.
-            // TODO: Evaluate a potential fix for this.
-            return null;
-
-            /*
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
-            if (Entity\StationPlaylist::TYPE_SCHEDULED === $playlist->getType()) {
-                $duration = $playlist->getScheduleDuration();
-                return [$playlist->getRemoteUrl(), $duration];
-            }
-
-            return [$playlist->getRemoteUrl(), 0];
-            */
+            $duration = $playlist->getScheduleDuration();
+            return [$playlist->getRemoteUrl(), $duration];
         }
 
         // Handle a remote playlist containing songs or streams.

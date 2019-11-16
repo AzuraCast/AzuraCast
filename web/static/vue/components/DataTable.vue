@@ -10,7 +10,8 @@
                 <div class="flex-fill">
                     <div class="input-group">
                         <span class="icon glyphicon input-group-addon search"></span>
-                        <input type="text" v-model="filter" class="search-field form-control" placeholder="Search">
+                        <b-form-input debounce="200" v-model="filter" class="search-field form-control"
+                                      placeholder="Search"></b-form-input>
                     </div>
                 </div>
                 <div class="flex-shrink-1 pl-3 pr-3">
@@ -53,7 +54,7 @@
         <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                  tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
-                 :filter="filter" :filter-debounce="200" @filtered="onFiltered" @refreshed="onRefreshed">
+                 :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
             <template v-slot:head(selected)="data">
                 <b-form-checkbox :aria-label="langSelectAll" v-model="allSelected"
                                  @change="toggleSelected"></b-form-checkbox>

@@ -99,6 +99,9 @@
       langQueue () {
         return this.$gettext('Queue the selected media to play next')
       },
+      langErrors () {
+        return this.$gettext('The request could not be processed.')
+      },
       newPlaylistIsChecked () {
         return this.newPlaylist !== ''
       }
@@ -130,7 +133,12 @@
             'files': this.selectedFiles,
             'file': this.currentDirectory
           }).then((resp) => {
-            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+            if (resp.data.success) {
+              notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+            } else {
+              notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger')
+            }
+
             this.$emit('relist')
           }).catch((err) => {
             this.handleError(err)
@@ -158,17 +166,21 @@
             'files': this.selectedFiles,
             'file': this.currentDirectory
           }).then((resp) => {
-            if (resp.data.success && resp.data.record) {
-              this.playlists.push(resp.data.record)
+            if (resp.data.success) {
+              if (resp.data.record) {
+                this.playlists.push(resp.data.record)
+              }
+
+              let notifyMessage = (this.checkedPlaylists.length > 0)
+                ? this.$gettext('Playlists updated for selected files:')
+                : this.$gettext('Playlists cleared for selected files:')
+              notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success')
+
+              this.checkedPlaylists = []
+              this.newPlaylist = ''
+            } else {
+              notify(resp.data.errors.join('<br>'), 'danger')
             }
-
-            let notifyMessage = (this.checkedPlaylists.length > 0)
-              ? this.$gettext('Playlists updated for selected files:')
-              : this.$gettext('Playlists cleared for selected files:')
-            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
-
-            this.checkedPlaylists = []
-            this.newPlaylist = ''
 
             this.$emit('relist')
           }).catch((err) => {

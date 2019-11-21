@@ -1168,8 +1168,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     {
         $stream_port = $this->getStreamPort($station);
 
+        $settings = (array)$station->getBackendConfig();
+        $djMount = $settings['dj_mount_point'] ?? '/';
+
         return $base_url
             ->withScheme('wss')
-            ->withPath($base_url->getPath() . '/radio/' . $stream_port . '/');
+            ->withPath($base_url->getPath() . '/radio/' . $stream_port . $djMount);
     }
 }

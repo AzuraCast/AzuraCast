@@ -52,11 +52,15 @@ class User
      * @ORM\Column(name="auth_password", type="string", length=255, nullable=true)
      *
      * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example="")
      * @var string|null
      */
     protected $auth_password;
+
+    /**
+     * @OA\Property(example="")
+     * @var string|null
+     */
+    protected $new_password;
 
     /**
      * @ORM\Column(name="name", type="string", length=100, nullable=true)

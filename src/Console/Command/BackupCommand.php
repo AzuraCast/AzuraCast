@@ -172,7 +172,7 @@ class BackupCommand extends CommandAbstract
 
     protected function passThruProcess(SymfonyStyle $io, $cmd, $cwd = null, array $env = []): Process
     {
-        set_time_limit(7200);
+        set_time_limit(14400);
 
         if (is_array($cmd)) {
             $process = new Process($cmd, $cwd);
@@ -180,7 +180,7 @@ class BackupCommand extends CommandAbstract
             $process = Process::fromShellCommandline($cmd, $cwd);
         }
 
-        $process->setTimeout(7200);
+        $process->setTimeout(14200);
         $process->setIdleTimeout(3600);
 
         $stdout = [];

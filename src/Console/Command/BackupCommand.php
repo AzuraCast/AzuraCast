@@ -8,11 +8,12 @@ use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 use const PATHINFO_EXTENSION;
 
 class BackupCommand extends CommandAbstract
 {
+    use Traits\PassThruProcess;
+
     public function __invoke(
         SymfonyStyle $io,
         EntityManager $em,
@@ -168,34 +169,5 @@ class BackupCommand extends CommandAbstract
             __('Backup complete in %.2f seconds.', $time_diff),
         ]);
         return 0;
-    }
-
-    protected function passThruProcess(SymfonyStyle $io, $cmd, $cwd = null, array $env = []): Process
-    {
-        set_time_limit(14400);
-
-        if (is_array($cmd)) {
-            $process = new Process($cmd, $cwd);
-        } else {
-            $process = Process::fromShellCommandline($cmd, $cwd);
-        }
-
-        $process->setTimeout(14200);
-        $process->setIdleTimeout(3600);
-
-        $stdout = [];
-        $stderr = [];
-
-        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr) {
-            if ($process::ERR === $type) {
-                $io->getErrorStyle()->write($data);
-                $stderr[] = $data;
-            } else {
-                $io->write($data);
-                $stdout[] = $data;
-            }
-        }, $env);
-
-        return $process;
     }
 }

@@ -13,6 +13,8 @@ use const PATHINFO_EXTENSION;
 
 class RestoreCommand extends CommandAbstract
 {
+    use Traits\PassThruProcess;
+
     public function __invoke(
         SymfonyStyle $io,
         OutputInterface $output,

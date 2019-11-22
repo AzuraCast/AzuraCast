@@ -4,8 +4,7 @@ use App\Console\Command;
 use Azura\Console\Application;
 use Azura\Settings;
 
-return function(Application $console)
-{
+return function (Application $console) {
     // Set console version and name.
     $di = $console->getContainer();
 
@@ -15,7 +14,7 @@ return function(Application $console)
     /** @var Settings $settings */
     $settings = $di->get(Settings::class);
 
-    $console->setName($settings[Settings::APP_NAME].' Command Line Tools ('.$settings[Settings::APP_ENV].')');
+    $console->setName($settings[Settings::APP_NAME] . ' Command Line Tools (' . $settings[Settings::APP_ENV] . ')');
     $console->setVersion($version->getVersion());
 
     /*
@@ -59,6 +58,11 @@ return function(Application $console)
     )->defaults([
         'as-autodj' => true,
     ])->setDescription('Return the next song to the AutoDJ.');
+
+    $console->command(
+        'azuracast:internal:ip',
+        Command\Internal\GetIpCommand::class
+    )->setDescription('Get the external IP address for this instance.');
 
     // Locales
     $console->command(

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2019-10-08 07:42\n"
+"PO-Revision-Date: 2019-11-23 21:50\n"
 
 #: ./vue/StationMedia.vue:146
 msgid "Actions"
@@ -47,7 +47,7 @@ msgstr ""
 #: ./vue/station_media/MoveFilesModal.vue:33
 #: ./vue/station_media/NewDirectoryModal.vue:9
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: ./vue/webcaster/playlist.vue:66
 msgid "Continuous Play"
@@ -87,7 +87,7 @@ msgstr ""
 
 #: ./vue/station_media/FileUpload.vue:16
 msgid "Drag files here to upload to this folder or"
-msgstr ""
+msgstr "Arrastrar archivos aquí para subir a esta carpeta o "
 
 #: ./vue/StationMedia.vue:68
 msgid "Edit"
@@ -147,11 +147,11 @@ msgstr ""
 
 #: ./vue/station_media/MoveFilesModal.vue:68
 msgid "Move %{ num } File(s) to"
-msgstr ""
+msgstr "Mover %{ num } archivo(s) a"
 
 #: ./vue/station_media/MoveFilesModal.vue:36
 msgid "Move to Directory"
-msgstr ""
+msgstr "Mover al directorio"
 
 #: ./vue/webcaster/settings.vue:32
 msgid "MP3"
@@ -213,7 +213,7 @@ msgstr ""
 
 #: ./vue/station_media/MediaToolbar.vue:44
 msgid "Queue"
-msgstr ""
+msgstr "Cola"
 
 #: ./vue/station_media/MediaToolbar.vue:100
 msgid "Queue the selected media to play next"
@@ -225,7 +225,7 @@ msgstr ""
 
 #: ./vue/components/DataTable.vue:135
 msgid "Refresh rows"
-msgstr ""
+msgstr "Actualizar ahora"
 
 #: ./vue/StationMedia.vue:71
 msgid "Rename"
@@ -237,7 +237,7 @@ msgstr ""
 
 #: ./vue/components/DataTable.vue:138
 msgid "Rows per page"
-msgstr ""
+msgstr "Filas por página"
 
 #: ./vue/webcaster/settings.vue:42
 #: ./vue/webcaster/settings.vue:58
@@ -250,7 +250,7 @@ msgstr ""
 
 #: ./vue/components/DataTable.vue:141
 msgid "Select displayed fields"
-msgstr ""
+msgstr "Elija los campos mostrados"
 
 #: ./vue/station_media/FileUpload.vue:18
 msgid "Select File"
@@ -258,7 +258,7 @@ msgstr "Seleccionar Archivo"
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"
-msgstr ""
+msgstr "Establecer o borrar listas de reproducción del medio seleccionado"
 
 #: ./vue/webcaster/settings.vue:10
 msgid "Settings"

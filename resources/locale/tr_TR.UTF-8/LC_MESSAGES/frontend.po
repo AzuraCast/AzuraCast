@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
-"PO-Revision-Date: 2019-10-08 07:42\n"
+"PO-Revision-Date: 2019-11-23 21:50\n"
 
 #: ./vue/StationMedia.vue:146
 msgid "Actions"
@@ -47,7 +47,7 @@ msgstr "Çalma Listesini Temizle"
 #: ./vue/station_media/MoveFilesModal.vue:33
 #: ./vue/station_media/NewDirectoryModal.vue:9
 msgid "Close"
-msgstr ""
+msgstr "Kapat"
 
 #: ./vue/webcaster/playlist.vue:66
 msgid "Continuous Play"
@@ -70,7 +70,7 @@ msgstr "Sil"
 
 #: ./vue/station_media/MediaToolbar.vue:112
 msgid "Delete %{ num } media file(s)?"
-msgstr ""
+msgstr "%{ num } adet müzik dosyası silinsin mi?"
 
 #: ./vue/StationMedia.vue:47
 #: ./vue/station_media/MoveFilesModal.vue:62
@@ -79,7 +79,7 @@ msgstr "Klasör"
 
 #: ./vue/station_media/NewDirectoryModal.vue:4
 msgid "Directory Name:"
-msgstr ""
+msgstr "Dizin İsmi:"
 
 #: ./vue/webcaster/settings.vue:83
 msgid "DJ Credentials"
@@ -87,7 +87,7 @@ msgstr "DJ Bilgileri"
 
 #: ./vue/station_media/FileUpload.vue:16
 msgid "Drag files here to upload to this folder or"
-msgstr ""
+msgstr "Bu klasöre müzik yüklemek için dosyaları buraya sürekleyip bırakın veya "
 
 #: ./vue/StationMedia.vue:68
 msgid "Edit"
@@ -99,11 +99,11 @@ msgstr "Encoder"
 
 #: ./vue/station_media/MediaToolbar.vue:108
 msgid "Files queued for playback:"
-msgstr ""
+msgstr "Çalınmak üzere sıraya alınmış müzik dosyaları:"
 
 #: ./vue/station_media/MediaToolbar.vue:120
 msgid "Files removed:"
-msgstr "Silinen Dosyalar: "
+msgstr "Silinen Dosyalar:"
 
 #: ./vue/RadioPlayer.vue:336
 msgid "Full Volume"
@@ -147,11 +147,11 @@ msgstr "Taşı"
 
 #: ./vue/station_media/MoveFilesModal.vue:68
 msgid "Move %{ num } File(s) to"
-msgstr ""
+msgstr "%{ num } adet dosyayı taşı"
 
 #: ./vue/station_media/MoveFilesModal.vue:36
 msgid "Move to Directory"
-msgstr ""
+msgstr "Dizine Taşı"
 
 #: ./vue/webcaster/settings.vue:32
 msgid "MP3"
@@ -205,19 +205,19 @@ msgstr "Çalma Listeleri"
 
 #: ./vue/station_media/MediaToolbar.vue:158
 msgid "Playlists cleared for selected files:"
-msgstr "Seçilen dosyalar çalma listesiden silindi: "
+msgstr "Seçilen dosyalar çalma listesiden silindi:"
 
 #: ./vue/station_media/MediaToolbar.vue:157
 msgid "Playlists updated for selected files:"
-msgstr "Seçilen dosyalar çalma listesinde güncellendi: "
+msgstr "Seçilen dosyalar çalma listesinde güncellendi:"
 
 #: ./vue/station_media/MediaToolbar.vue:44
 msgid "Queue"
-msgstr ""
+msgstr "Sırala"
 
 #: ./vue/station_media/MediaToolbar.vue:100
 msgid "Queue the selected media to play next"
-msgstr ""
+msgstr "Bir sonrakini oynatmak için seçilen müzik dosyasını sırala"
 
 #: ./vue/webcaster/settings.vue:37
 msgid "Raw"
@@ -225,7 +225,7 @@ msgstr "HAM DATA"
 
 #: ./vue/components/DataTable.vue:135
 msgid "Refresh rows"
-msgstr ""
+msgstr "Satırları Yenile"
 
 #: ./vue/StationMedia.vue:71
 msgid "Rename"
@@ -237,7 +237,7 @@ msgstr "Çalma Listesini Tekrarla"
 
 #: ./vue/components/DataTable.vue:138
 msgid "Rows per page"
-msgstr ""
+msgstr "Sayfa Başına Satır"
 
 #: ./vue/webcaster/settings.vue:42
 #: ./vue/webcaster/settings.vue:58
@@ -250,7 +250,7 @@ msgstr "Kaydet"
 
 #: ./vue/components/DataTable.vue:141
 msgid "Select displayed fields"
-msgstr ""
+msgstr "Gösterilecek Alanları Seçin"
 
 #: ./vue/station_media/FileUpload.vue:18
 msgid "Select File"
@@ -258,7 +258,7 @@ msgstr "Dosya Seç"
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"
-msgstr ""
+msgstr "Seçilen müzik dosyalarını çalma listesinden temizle veya ekle"
 
 #: ./vue/webcaster/settings.vue:10
 msgid "Settings"

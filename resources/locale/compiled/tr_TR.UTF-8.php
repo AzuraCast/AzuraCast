@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-09-10T23:21:55+00:00
-PO-Revision-Date: 2019-10-08 07:42
+PO-Revision-Date: 2019-11-23 21:50
 Language: tr_TR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -3422,7 +3422,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
-        0 => 'İlk radyo radyonuzu aşağıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz.',
+        0 => 'İlk radyonuzu aşağıdan oluşturarak kurulum işlemine devam edin. Bu ayrıntılardan herhangi birini daha sonra düzenleyebilirsiniz.',
       ),
       'Create a New Radio Station' => 
       array (

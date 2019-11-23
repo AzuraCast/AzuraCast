@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
-"PO-Revision-Date: 2019-10-08 07:42\n"
+"PO-Revision-Date: 2019-11-23 21:50\n"
 
 #: ./vue/StationMedia.vue:146
 msgid "Actions"
@@ -47,7 +47,7 @@ msgstr "Afspeellijsten legen"
 #: ./vue/station_media/MoveFilesModal.vue:33
 #: ./vue/station_media/NewDirectoryModal.vue:9
 msgid "Close"
-msgstr ""
+msgstr "Sluit"
 
 #: ./vue/webcaster/playlist.vue:66
 msgid "Continuous Play"
@@ -70,7 +70,7 @@ msgstr "Verwijderen"
 
 #: ./vue/station_media/MediaToolbar.vue:112
 msgid "Delete %{ num } media file(s)?"
-msgstr ""
+msgstr "%{ num } mediabestand(en) verwijderen?"
 
 #: ./vue/StationMedia.vue:47
 #: ./vue/station_media/MoveFilesModal.vue:62
@@ -79,7 +79,7 @@ msgstr "Map"
 
 #: ./vue/station_media/NewDirectoryModal.vue:4
 msgid "Directory Name:"
-msgstr ""
+msgstr "Mapnaam:"
 
 #: ./vue/webcaster/settings.vue:83
 msgid "DJ Credentials"
@@ -87,7 +87,7 @@ msgstr "DJ inloggegevens"
 
 #: ./vue/station_media/FileUpload.vue:16
 msgid "Drag files here to upload to this folder or"
-msgstr ""
+msgstr "Plaats hier bestanden om naar deze map te uploaden"
 
 #: ./vue/StationMedia.vue:68
 msgid "Edit"
@@ -99,7 +99,7 @@ msgstr "Encoder"
 
 #: ./vue/station_media/MediaToolbar.vue:108
 msgid "Files queued for playback:"
-msgstr ""
+msgstr "Bestanden in de afspeelwachtrij:"
 
 #: ./vue/station_media/MediaToolbar.vue:120
 msgid "Files removed:"
@@ -147,11 +147,11 @@ msgstr "Verplaats"
 
 #: ./vue/station_media/MoveFilesModal.vue:68
 msgid "Move %{ num } File(s) to"
-msgstr ""
+msgstr "Verplaats %{ num } bestand(en) naar"
 
 #: ./vue/station_media/MoveFilesModal.vue:36
 msgid "Move to Directory"
-msgstr ""
+msgstr "Verplaats naar map"
 
 #: ./vue/webcaster/settings.vue:32
 msgid "MP3"
@@ -213,11 +213,11 @@ msgstr "Afspeellijsten bijgewerkt voor geselecteerde bestanden:"
 
 #: ./vue/station_media/MediaToolbar.vue:44
 msgid "Queue"
-msgstr ""
+msgstr "Wachtrij"
 
 #: ./vue/station_media/MediaToolbar.vue:100
 msgid "Queue the selected media to play next"
-msgstr ""
+msgstr "Voeg de geselecteerde media toe aan de wachtrij om hierna af te spelen"
 
 #: ./vue/webcaster/settings.vue:37
 msgid "Raw"
@@ -225,7 +225,7 @@ msgstr "Raw"
 
 #: ./vue/components/DataTable.vue:135
 msgid "Refresh rows"
-msgstr ""
+msgstr "Ververs rijen"
 
 #: ./vue/StationMedia.vue:71
 msgid "Rename"
@@ -237,7 +237,7 @@ msgstr "Herhaal afspeellijst"
 
 #: ./vue/components/DataTable.vue:138
 msgid "Rows per page"
-msgstr ""
+msgstr "Rijen per pagina"
 
 #: ./vue/webcaster/settings.vue:42
 #: ./vue/webcaster/settings.vue:58
@@ -250,7 +250,7 @@ msgstr "Opslaan"
 
 #: ./vue/components/DataTable.vue:141
 msgid "Select displayed fields"
-msgstr ""
+msgstr "Selecteer weer te geven velden"
 
 #: ./vue/station_media/FileUpload.vue:18
 msgid "Select File"
@@ -258,7 +258,7 @@ msgstr "Selecteer bestand"
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"
-msgstr ""
+msgstr "Afspeellijsten van geselecteerde media instellen of legen"
 
 #: ./vue/webcaster/settings.vue:10
 msgid "Settings"

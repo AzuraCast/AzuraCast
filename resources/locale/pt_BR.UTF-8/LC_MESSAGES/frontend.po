@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
-"PO-Revision-Date: 2019-10-08 07:42\n"
+"PO-Revision-Date: 2019-11-23 21:50\n"
 
 #: ./vue/StationMedia.vue:146
 msgid "Actions"
@@ -147,7 +147,7 @@ msgstr "Mover"
 
 #: ./vue/station_media/MoveFilesModal.vue:68
 msgid "Move %{ num } File(s) to"
-msgstr ""
+msgstr "Mover %{ num } Arquivo(s) para"
 
 #: ./vue/station_media/MoveFilesModal.vue:36
 msgid "Move to Directory"
@@ -217,7 +217,7 @@ msgstr ""
 
 #: ./vue/station_media/MediaToolbar.vue:100
 msgid "Queue the selected media to play next"
-msgstr ""
+msgstr "Lista de mídia selecionada para reproduzir em seguida"
 
 #: ./vue/webcaster/settings.vue:37
 msgid "Raw"
@@ -250,7 +250,7 @@ msgstr "Salvar"
 
 #: ./vue/components/DataTable.vue:141
 msgid "Select displayed fields"
-msgstr ""
+msgstr "Selecionar campos exibidos"
 
 #: ./vue/station_media/FileUpload.vue:18
 msgid "Select File"
@@ -258,7 +258,7 @@ msgstr ""
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"
-msgstr ""
+msgstr "Definir ou limpar as playlists da mídia selecionada"
 
 #: ./vue/webcaster/settings.vue:10
 msgid "Settings"

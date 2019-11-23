@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-10T23:21:55+00:00\n"
-"PO-Revision-Date: 2019-10-08 07:42\n"
+"PO-Revision-Date: 2019-11-23 21:50\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -31,31 +31,31 @@ msgstr "Ver registros del sistema"
 
 #: /var/azuracast/www/src/Acl.php:82
 msgid "Administer Settings"
-msgstr ""
+msgstr "Administrar ajustes"
 
 #: /var/azuracast/www/src/Acl.php:83
 msgid "Administer API Keys"
-msgstr ""
+msgstr "Administrar claves API"
 
 #: /var/azuracast/www/src/Acl.php:84
 msgid "Administer Users"
-msgstr ""
+msgstr "Administrar usuarios"
 
 #: /var/azuracast/www/src/Acl.php:85
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Administrar permisos"
 
 #: /var/azuracast/www/src/Acl.php:86
 msgid "Administer Stations"
-msgstr ""
+msgstr "Administrar estaciones"
 
 #: /var/azuracast/www/src/Acl.php:87
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Administrar campos personalizados"
 
 #: /var/azuracast/www/src/Acl.php:88
 msgid "Administer Backups"
-msgstr ""
+msgstr "Administrar copias de seguridad"
 
 #: /var/azuracast/www/src/Acl.php:92
 msgid "View Station Page"
@@ -71,80 +71,80 @@ msgstr "Ver registros de la estación"
 
 #: /var/azuracast/www/src/Acl.php:95
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Administrar Perfil de la estación"
 
 #: /var/azuracast/www/src/Acl.php:96
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Administrar estaciones de radio"
 
 #: /var/azuracast/www/src/Acl.php:97
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Administrar emisoras de radio"
 
 #: /var/azuracast/www/src/Acl.php:98
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Gestionar puntos de montaje de la estación"
 
 #: /var/azuracast/www/src/Acl.php:99
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Administrar la estación de forma remota"
 
 #: /var/azuracast/www/src/Acl.php:100
 msgid "Manage Station Media"
-msgstr ""
+msgstr "Administrar la estación de radio"
 
 #: /var/azuracast/www/src/Acl.php:101
 msgid "Manage Station Automation"
-msgstr ""
+msgstr "Administrar AutoDJ"
 
 #: /var/azuracast/www/src/Acl.php:102
 msgid "Manage Station Web Hooks"
-msgstr ""
+msgstr "Administrar los Web Hooks de la Estación"
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:39
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "Copia de seguridad de AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:40
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Por favor, espere mientras se genera una copia de seguridad..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:43
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Creando directorios temporales..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:47
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:53
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "El directorio \"%s\" no fue creado"
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:60
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "Haciendo una copia de seguridad de MariaDB..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:83
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "Copia de seguridad de InfluxDB..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:122
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Creando archivo de respaldo..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:161
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Limpiando archivos temporales..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:172
 msgid "Backup complete in %.2f seconds."
-msgstr ""
+msgstr "Copia de seguridad completada en %.2f segundos."
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:18
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "Configuración de AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:24
 msgid "Setting Key"
-msgstr ""
+msgstr "Configurar clave"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:25
 msgid "Setting Value"
@@ -152,27 +152,27 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerateCommand.php:44
 msgid "Locales generated."
-msgstr ""
+msgstr "Idioma generado."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:29
 msgid "Imported locale: %s"
-msgstr ""
+msgstr "Importado idioma: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:33
 msgid "Locales imported."
-msgstr ""
+msgstr "Idiomas importados."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:23
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Configuración ya creada."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:64
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Configuración escrita con éxito."
 
 #: /var/azuracast/www/src/Console/Command/RestoreCommand.php:36
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Ruta de copia de seguridad %s no encontrado!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministratorCommand.php:47
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -184,23 +184,23 @@ msgstr "Cuenta no encontrada."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:25
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "Configurar AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:26
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "Bienvenido a AzuraCast. Por favor, espere mientras se configuran algunas dependencias clave de AzuraCast..."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:29
 msgid "Environment: %s"
-msgstr ""
+msgstr "Entorno: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:30
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Método de instalación: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:34
 msgid "Running in update mode."
-msgstr ""
+msgstr "Ejecutando en modo actualización."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:37
 msgid "Migrating Legacy Configuration"
@@ -224,7 +224,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:68
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "Actualizando todas las estaciones"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:85
 msgid "AzuraCast is now updated to the latest version!"
@@ -232,7 +232,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:91
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "¡Instalación completa de AzuraCast!"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:92
 msgid "Visit %s to complete setup."
@@ -240,19 +240,19 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:70
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Fixtures cargados."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:23
 msgid "Database created."
-msgstr ""
+msgstr "Base de datos creada."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:57
 msgid "Retention policies updated."
-msgstr ""
+msgstr "Políticas de retención actualizadas."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:77
 msgid "Continuous queries created."
-msgstr ""
+msgstr "Se han creado consultas continuas."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:96
 msgid "InfluxDB databases created."
@@ -546,7 +546,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:103
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
-msgstr ""
+msgstr "Añadir clave API"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:205
 msgid "All Stations"
@@ -687,21 +687,21 @@ msgstr "Esta característica no es soportada actualmente por esta estación."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:48
 msgid "Edit Mount Point"
-msgstr ""
+msgstr "Editar punto de montaje"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:48
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
-msgstr ""
+msgstr "Añadir punto de montaje"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:60
 msgid "Mount Point deleted."
-msgstr ""
+msgstr "Punto de montaje eliminado."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:168
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:244
 msgid "Playlist not found."
-msgstr ""
+msgstr "Lista de reproducción no encontrada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:173
 msgid "This playlist is not a sequential playlist."
@@ -709,7 +709,7 @@ msgstr "Esta lista no es de reproducción secuencial."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:228
 msgid "Format not found."
-msgstr ""
+msgstr "Formato no encontrado."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:254
 msgid "Playlist enabled."
@@ -721,24 +721,24 @@ msgstr "Lista desactivada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:269
 msgid "Playlist updated."
-msgstr ""
+msgstr "Lista de reproducción actualizada."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:269
 msgid "Playlist added."
-msgstr ""
+msgstr "Lista de reproducción añadida."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Edit Playlist"
-msgstr ""
+msgstr "Editar lista de reproducción."
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:42
 msgid "Add Playlist"
-msgstr ""
+msgstr "Añadir lista de reproducción"
 
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:288
 msgid "Playlist deleted."
-msgstr ""
+msgstr "Lista de producción borrada."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:40
 msgid "Remote Relay updated."
@@ -1764,7 +1764,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/playlist.php:97
 msgid "Random"
-msgstr ""
+msgstr "Aleatorio"
 
 #: /var/azuracast/www/config/forms/playlist.php:98
 #: /var/azuracast/www/templates/stations/playlists/index.phtml:92

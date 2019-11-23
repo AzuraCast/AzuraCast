@@ -86,7 +86,7 @@ msgid "An error occurred and your request could not be completed."
 msgstr ""
 
 #: ./vue/StationPlaylists.vue:205
-#: ./vue/station_media/MediaToolbar.vue:182
+#: ./vue/station_media/MediaToolbar.vue:194
 msgid "Applying changes..."
 msgstr ""
 
@@ -186,11 +186,11 @@ msgstr ""
 #: ./vue/StationPlaylists.vue:33
 #: ./vue/StationPlaylists.vue:221
 #: ./vue/station_media/MediaToolbar.vue:53
-#: ./vue/station_media/MediaToolbar.vue:111
+#: ./vue/station_media/MediaToolbar.vue:114
 msgid "Delete"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:112
+#: ./vue/station_media/MediaToolbar.vue:115
 msgid "Delete %{ num } media file(s)?"
 msgstr ""
 
@@ -278,11 +278,11 @@ msgstr ""
 msgid "Files moved:"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:108
+#: ./vue/station_media/MediaToolbar.vue:111
 msgid "Files queued for playback:"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:120
+#: ./vue/station_media/MediaToolbar.vue:123
 msgid "Files removed:"
 msgstr ""
 
@@ -468,7 +468,7 @@ msgstr ""
 msgid "New Playlist"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:187
+#: ./vue/station_media/MediaToolbar.vue:199
 msgid "No files selected."
 msgstr ""
 
@@ -582,11 +582,11 @@ msgstr ""
 msgid "Playlists"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:167
+#: ./vue/station_media/MediaToolbar.vue:176
 msgid "Playlists cleared for selected files:"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:166
+#: ./vue/station_media/MediaToolbar.vue:175
 msgid "Playlists updated for selected files:"
 msgstr ""
 
@@ -602,7 +602,7 @@ msgstr ""
 msgid "Raw"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:146
+#: ./vue/components/DataTable.vue:147
 msgid "Refresh rows"
 msgstr ""
 
@@ -653,7 +653,7 @@ msgstr ""
 msgid "Replace Album Cover Art"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:149
+#: ./vue/components/DataTable.vue:150
 msgid "Rows per page"
 msgstr ""
 
@@ -703,11 +703,11 @@ msgstr ""
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr ""
 
-#: ./vue/components/DataTable.vue:155
+#: ./vue/components/DataTable.vue:156
 msgid "Select all visible rows"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:152
+#: ./vue/components/DataTable.vue:153
 msgid "Select displayed fields"
 msgstr ""
 
@@ -715,7 +715,7 @@ msgstr ""
 msgid "Select File"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:158
+#: ./vue/components/DataTable.vue:159
 msgid "Select this row"
 msgstr ""
 
@@ -813,6 +813,10 @@ msgstr ""
 
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:8
 msgid "The relative path of the file in the station's media directory."
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:103
+msgid "The request could not be processed."
 msgstr ""
 
 #: ./vue/station_media/form/MediaFormAdvancedSettings.vue:27

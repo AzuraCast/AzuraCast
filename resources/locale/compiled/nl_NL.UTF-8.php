@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-09-10T23:21:55+00:00
-PO-Revision-Date: 2019-10-08 07:42
+PO-Revision-Date: 2019-11-23 21:50
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -454,11 +454,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This station does not accept requests currently.' => 
       array (
-        0 => 'Dit station accepteert momenteel geen requests.',
+        0 => 'Dit station accepteert momenteel geen verzoeken.',
       ),
       'Request submitted successfully.' => 
       array (
-        0 => 'Request succesvol ingediend.',
+        0 => 'Verzoekplaat succesvol ingediend.',
       ),
       'Station restarted.' => 
       array (
@@ -846,11 +846,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
-        0 => 'U heeft kortgeleden al een request ingediend! Wacht even voordat u een volgende indient.',
+        0 => 'U heeft kortgeleden al een verzoekplaat ingediend! Wacht aub 15 minuten voordat u een volgende indient.',
       ),
       'Duplicate request: this song was already requested and will play soon.' => 
       array (
-        0 => 'Dit nummer is al aangevraagd en zal binnenkort worden afgespeeld.',
+        0 => 'Dit nummer staat al in de wachtrij, en zal binnen 15 minuten worden afgespeeld.',
       ),
       'This song was already played too recently. Wait a while before requesting it again.' => 
       array (
@@ -982,7 +982,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song Requests Queue' => 
       array (
-        0 => 'Requests in wachtrij',
+        0 => 'Verzoeknummers in wachtrij',
       ),
       '5-Minute Sync' => 
       array (
@@ -2194,7 +2194,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Allow Song Requests' => 
       array (
-        0 => 'Accepteer requests',
+        0 => 'Accepteer verzoeknummers door luisteraars',
       ),
       'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.' => 
       array (
@@ -2202,7 +2202,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Request Minimum Delay (Minutes)' => 
       array (
-        0 => 'Minimale vertraging van requests (in minuten)',
+        0 => 'Minimale vertraging van verzoeknummers (in minuten)',
       ),
       'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
       array (
@@ -2743,7 +2743,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Song Requests' => 
       array (
-        0 => 'Nummer requests',
+        0 => 'Verzoeknummer',
       ),
       'Song Playback Timeline' => 
       array (
@@ -3352,7 +3352,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Request' => 
       array (
-        0 => 'Request',
+        0 => 'Aanvragen',
       ),
       'Album' => 
       array (

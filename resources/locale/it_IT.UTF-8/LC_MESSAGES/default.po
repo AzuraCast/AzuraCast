@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-11-24 00:20\n"
+"PO-Revision-Date: 2019-11-24 00:30\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -3846,7 +3846,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:67
 msgid "FTP Connection Information"
-msgstr ""
+msgstr "Info Connessione FTP"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:81
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:57

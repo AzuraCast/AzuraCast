@@ -1,30 +1,39 @@
 <template>
-    <div class="dropdown ml-3 player-inline" v-if="is_playing">
-        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" type="button">
-            <i class="material-icons" aria-hidden="true">radio</i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-                <a href="#" class="dropdown-item jp-pause" @click.prevent="stop()">
-                    <i class="material-icons" aria-hidden="true">pause</i>
-                    <translate>Pause</translate>
+    <div class="ml-3 player-inline" v-if="isPlaying">
+        <a class="btn btn-sm px-2" href="#" @click.prevent="stop()">
+            <i class="material-icons" aria-hidden="true">pause</i>
+            <span class="sr-only" v-translate>Pause</span>
+        </a>
+        <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
+            <div class="flex-shrink-0">
+                <a class="btn btn-sm px-2" href="#" @click.prevent="volume = 0">
+                    <i class="material-icons" aria-hidden="true">volume_mute</i>
+                    <span class="sr-only" v-translate>Mute</span>
                 </a>
-            </li>
-            <li>
-            <span class="dropdown-item dropdown-item-text">
-                <i class="material-icons" aria-hidden="true">volume_up</i>
+            </div>
+            <div class="flex-fill mx-1">
                 <input type="range" :title="lang_volume" class="player-volume-range custom-range" min="0" max="100"
                        step="1" v-model="volume">
-            </span>
-            </li>
-        </ul>
+            </div>
+            <div class="flex-shrink-0">
+                <a class="btn btn-sm px-2" href="#" @click.prevent="volume = 100">
+                    <i class="material-icons" aria-hidden="true">volume_up</i>
+                    <span class="sr-only" v-translate>Full Volume</span>
+                </a>
+            </div>
+        </div>
     </div>
 </template>
 
 <style lang="scss">
     .player-inline {
-        .player-volume-range {
-            width: 100px;
+        .inline-volume-controls {
+            width: 175px;
+        }
+
+        input.player-volume-range {
+            width: 100%;
+            height: 10px;
         }
     }
 </style>
@@ -35,7 +44,7 @@
   export default {
     data () {
       return {
-        'is_playing': false,
+        'isPlaying': false,
         'volume': 55,
         'audio': null
       }
@@ -60,7 +69,7 @@
       }
 
       this.$eventHub.$on('player_toggle', (url) => {
-        if (this.is_playing && this.audio.src === url) {
+        if (this.isPlaying && this.audio.src === url) {
           this.stop()
         } else {
           this.play(url)
@@ -88,12 +97,12 @@
         this.audio.load()
         this.audio.play()
 
-        this.is_playing = true
+        this.isPlaying = true
 
         this.$eventHub.$emit('player_playing', url)
       },
       stop () {
-        this.is_playing = false
+        this.isPlaying = false
         this.$eventHub.$emit('player_stopped', this.audio.src)
 
         this.audio.pause()

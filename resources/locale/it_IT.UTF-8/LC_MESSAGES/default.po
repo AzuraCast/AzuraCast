@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-11-23 22:00\n"
+"PO-Revision-Date: 2019-11-24 00:11\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -225,7 +225,7 @@ msgstr "Installazione di dispositivi di dati"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:66
 msgid "Reload System Data"
-msgstr ""
+msgstr "Ricarica dati di sistema"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:71
 msgid "Refreshing All Stations"
@@ -503,11 +503,11 @@ msgstr "File non processato"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:24
 msgid "File not specified."
-msgstr ""
+msgstr "File non specificato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:30
 msgid "New path not specified."
-msgstr ""
+msgstr "Nuovo percorso non specificato."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/UploadAction.php:25
 msgid "This station is out of available storage space."
@@ -1401,7 +1401,7 @@ msgstr "Specificare facoltativamente un nome utilizzabile dalle API, come <code>
 
 #: /var/azuracast/www/config/forms/custom_field.php:31
 msgid "Automatically Set from ID3v2 Value"
-msgstr ""
+msgstr "Imposta automaticamente dal valore ID3v2"
 
 #: /var/azuracast/www/config/forms/custom_field.php:32
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
@@ -3452,7 +3452,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"
-msgstr ""
+msgstr "Ultimi aggiornamenti"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3461,7 +3461,7 @@ msgstr "Gestisci stazioni"
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/frontend/index/index.phtml:104
 msgid "Add Station"
-msgstr ""
+msgstr "Aggiungi stazione"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
 msgid "Station"
@@ -3793,7 +3793,7 @@ msgstr "La tua attuale installazione è di tipo <b>%s </b>. Assicurati di includ
 
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:15
 msgid "Add New GitHub Issue"
-msgstr ""
+msgstr "Aggiungi nuova segnalazione su GitHub"
 
 #: /var/azuracast/www/templates/partials/log_viewer.phtml:11
 msgid "Log View"
@@ -3858,7 +3858,7 @@ msgstr "Server"
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:60
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:75
 msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
-msgstr ""
+msgstr "Potrebbe essere necessario connettersi direttamente tramite il tuo indirizzo IP, vale a dire <code>%s</code>."
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:91
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:63
@@ -3868,7 +3868,7 @@ msgstr "Porta"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:99
 msgid "Protocol"
-msgstr ""
+msgstr "Protocollo"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:102
 msgid "FTP with Explicit TLS (FTPS)"
@@ -3885,7 +3885,7 @@ msgstr "Nome utente"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:111
 msgid "Your AzuraCast E-mail Address"
-msgstr ""
+msgstr "Il tuo indirizzo E-mail AzuraCast"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:119
 msgid "Your AzuraCast Password"
@@ -4013,7 +4013,7 @@ msgstr "Prossimo in riproduzione"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Live"
-msgstr ""
+msgstr "In diretta"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:99
 msgid "Skip Song"
@@ -4086,11 +4086,11 @@ msgstr "Flussi locali"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:86
 msgid "Download PLS"
-msgstr ""
+msgstr "Scarica PLS"
 
 #: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:90
 msgid "Download M3U"
-msgstr ""
+msgstr "Scarica M3U"
 
 #: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
@@ -4160,7 +4160,7 @@ msgstr "Scarica CSV"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:40
 msgid "Unique Listeners"
-msgstr ""
+msgstr "Ascoltatori Unici"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
@@ -4169,7 +4169,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"
-msgstr ""
+msgstr "Totale ore di ascolto"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:56
 msgid "IP"
@@ -4348,7 +4348,7 @@ msgstr "Client ShoutCast v1"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:79
 msgid "%d (%d for some clients)"
-msgstr ""
+msgstr "%d (%d per alcuni client)"
 
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:84
 msgid "(DJ username and password separated by a colon)"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-11-24 00:11\n"
+"PO-Revision-Date: 2019-11-24 00:20\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1488,15 +1488,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:53
 msgid "Copyright"
-msgstr ""
+msgstr "Copyright"
 
 #: /var/azuracast/www/config/forms/custom_field.php:54
 msgid "Copyright Message"
-msgstr ""
+msgstr "Messaggio di copyright"
 
 #: /var/azuracast/www/config/forms/custom_field.php:55
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: /var/azuracast/www/config/forms/custom_field.php:56
 msgid "Encoded By"
@@ -1536,7 +1536,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:65
 msgid "File Type"
-msgstr ""
+msgstr "Tipo File"
 
 #: /var/azuracast/www/config/forms/custom_field.php:66
 msgid "General Encapsulated Object"
@@ -1557,11 +1557,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:70
 msgid "Internet Radio Station Name"
-msgstr ""
+msgstr "Nome della Stazione Radiofonica"
 
 #: /var/azuracast/www/config/forms/custom_field.php:71
 msgid "Internet Radio Station Owner"
-msgstr ""
+msgstr "Proprietario della Stazione Radiofonica"
 
 #: /var/azuracast/www/config/forms/custom_field.php:72
 msgid "Involved People List"
@@ -1612,15 +1612,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:83
 msgid "Original Album"
-msgstr ""
+msgstr "Album originale"
 
 #: /var/azuracast/www/config/forms/custom_field.php:84
 msgid "Original Artist"
-msgstr ""
+msgstr "Artista originale"
 
 #: /var/azuracast/www/config/forms/custom_field.php:85
 msgid "Original Filename"
-msgstr ""
+msgstr "Nome File Originale"
 
 #: /var/azuracast/www/config/forms/custom_field.php:86
 msgid "Original Lyricist"
@@ -1712,7 +1712,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:108
 msgid "Reverb"
-msgstr ""
+msgstr "Riverbero"
 
 #: /var/azuracast/www/config/forms/custom_field.php:109
 msgid "Seek Frame"
@@ -1733,7 +1733,7 @@ msgstr "Dimensione"
 
 #: /var/azuracast/www/config/forms/custom_field.php:113
 msgid "Subtitle"
-msgstr ""
+msgstr "Sottotitolo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:114
 msgid "Synced Tempo Codes"
@@ -1757,11 +1757,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:119
 msgid "Text"
-msgstr ""
+msgstr "Testo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:120
 msgid "Time"
-msgstr ""
+msgstr "Orario"
 
 #: /var/azuracast/www/config/forms/custom_field.php:121
 #: /var/azuracast/www/config/forms/webhook/discord.php:70
@@ -1778,11 +1778,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:123
 msgid "Track Number"
-msgstr ""
+msgstr "Numero Traccia"
 
 #: /var/azuracast/www/config/forms/custom_field.php:124
 msgid "Unique File Identifier"
-msgstr ""
+msgstr "Identifica File Unico"
 
 #: /var/azuracast/www/config/forms/custom_field.php:125
 msgid "Unsynchronised Lyric"
@@ -1790,7 +1790,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:126
 msgid "URL Artist"
-msgstr ""
+msgstr "URL Artista"
 
 #: /var/azuracast/www/config/forms/custom_field.php:127
 msgid "URL File"
@@ -1798,27 +1798,27 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:128
 msgid "URL Payment"
-msgstr ""
+msgstr "URL Pagamenti"
 
 #: /var/azuracast/www/config/forms/custom_field.php:129
 msgid "URL Publisher"
-msgstr ""
+msgstr "URL Pubblicazione"
 
 #: /var/azuracast/www/config/forms/custom_field.php:130
 msgid "URL Source"
-msgstr ""
+msgstr "Origine URL"
 
 #: /var/azuracast/www/config/forms/custom_field.php:131
 msgid "URL Station"
-msgstr ""
+msgstr "URL Stazione"
 
 #: /var/azuracast/www/config/forms/custom_field.php:132
 msgid "URL User"
-msgstr ""
+msgstr "URL Utente"
 
 #: /var/azuracast/www/config/forms/custom_field.php:133
 msgid "Year"
-msgstr ""
+msgstr "Anno"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
 msgid "Important Notes"
@@ -3233,12 +3233,12 @@ msgstr "Elimina"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:42
 msgid "Update"
-msgstr ""
+msgstr "Aggiorna"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:58
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:59
 msgid "Changes"
-msgstr ""
+msgstr "Modifiche"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:83
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
@@ -3281,7 +3281,7 @@ msgstr "Utente"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:44
 msgid "Identifier"
-msgstr ""
+msgstr "Identifica"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
 msgid "Target"
@@ -3444,11 +3444,11 @@ msgstr ""
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
-msgstr ""
+msgstr "È pubblico"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"
-msgstr ""
+msgstr "Primo connesso"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"

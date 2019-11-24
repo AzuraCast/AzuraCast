@@ -1,12 +1,12 @@
 <template>
     <div class="ml-3 player-inline" v-if="isPlaying">
-        <a class="btn btn-sm px-2" href="#" @click.prevent="stop()">
+        <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="stop()">
             <i class="material-icons" aria-hidden="true">pause</i>
             <span class="sr-only" v-translate>Pause</span>
         </a>
         <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
             <div class="flex-shrink-0">
-                <a class="btn btn-sm px-2" href="#" @click.prevent="volume = 0">
+                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 0">
                     <i class="material-icons" aria-hidden="true">volume_mute</i>
                     <span class="sr-only" v-translate>Mute</span>
                 </a>
@@ -16,7 +16,7 @@
                        step="1" v-model="volume">
             </div>
             <div class="flex-shrink-0">
-                <a class="btn btn-sm px-2" href="#" @click.prevent="volume = 100">
+                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 100">
                     <i class="material-icons" aria-hidden="true">volume_up</i>
                     <span class="sr-only" v-translate>Full Volume</span>
                 </a>

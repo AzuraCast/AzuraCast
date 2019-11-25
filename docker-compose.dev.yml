@@ -31,6 +31,7 @@ services:
       AZURACAST_FTP_PORT: ${AZURACAST_FTP_PORT:-21}
     ports:
       - '${AZURACAST_FTP_PORT:-21}:21'
+      - '${AZURACAST_FTP_PASV_RANGE:-30000-30049}:30000-30049' # FTP PASV support
     volumes:
       - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp

@@ -61,7 +61,7 @@ return function (App $app) {
 
         })->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
 
-        $group->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class . ':indexAction')
+        $group->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class)
             ->setName('admin:branding:index')
             ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
@@ -112,7 +112,7 @@ return function (App $app) {
             ->setName('admin:relays:index')
             ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 
-        $group->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class . ':indexAction')
+        $group->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class)
             ->setName('admin:settings:index')
             ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 

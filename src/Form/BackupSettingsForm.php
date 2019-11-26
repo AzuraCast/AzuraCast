@@ -6,7 +6,7 @@ use App\Settings;
 use Azura\Config;
 use Doctrine\ORM\EntityManager;
 
-class SettingsForm extends AbstractSettingsForm
+class BackupSettingsForm extends AbstractSettingsForm
 {
     /**
      * @param EntityManager $em
@@ -20,7 +20,7 @@ class SettingsForm extends AbstractSettingsForm
         Settings $settings,
         Config $config
     ) {
-        $formConfig = $config->get('forms/settings', [
+        $formConfig = $config->get('forms/backup', [
             'settings' => $settings,
         ]);
 

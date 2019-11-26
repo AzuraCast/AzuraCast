@@ -357,6 +357,7 @@ return [
             App\Entity\Station::class => $di->get(App\Form\StationForm::class),
             App\Entity\User::class => $di->get(App\Form\UserForm::class),
             App\Entity\RolePermission::class => $di->get(App\Form\PermissionsForm::class),
+            App\Entity\Settings::class => $di->get(App\Form\SettingsForm::class),
             App\Entity\StationPlaylist::class => $di->get(App\Form\StationPlaylistForm::class),
             App\Entity\StationMount::class => $di->get(App\Form\StationMountForm::class),
             App\Entity\StationWebhook::class => $di->get(App\Form\StationWebhookForm::class),
@@ -365,7 +366,10 @@ return [
         return new App\Form\EntityFormManager($em, $serializer, $validator, $custom_forms);
     },
 
+    App\Form\BackupSettingsForm::class => DI\autowire(),
+    App\Form\BrandingSettingsForm::class => DI\autowire(),
     App\Form\PermissionsForm::class => DI\autowire(),
+    App\Form\SettingsForm::class => DI\autowire(),
     App\Form\StationForm::class => DI\autowire(),
     App\Form\StationCloneForm::class => DI\autowire(),
     App\Form\StationMountForm::class => DI\autowire(),

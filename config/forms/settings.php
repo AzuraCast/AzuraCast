@@ -1,8 +1,9 @@
 <?php
+/** @var \App\Settings $settings */
 
 use App\Entity;
 
-return [
+$config = [
     'groups' => [
 
         'system' => [
@@ -209,3 +210,9 @@ return [
         ],
     ],
 ];
+
+if (!$settings->isDocker()) {
+    unset($config['groups']['security']['elements'][Entity\Settings::ENABLE_FTP_SERVER]);
+}
+
+return $config;

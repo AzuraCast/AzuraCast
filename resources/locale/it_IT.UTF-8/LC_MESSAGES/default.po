@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-11-26 11:21\n"
+"PO-Revision-Date: 2019-11-26 11:32\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1456,11 +1456,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:45
 msgid "Bpm"
-msgstr ""
+msgstr "Bpm"
 
 #: /var/azuracast/www/config/forms/custom_field.php:46
 msgid "Comment"
-msgstr ""
+msgstr "Commento"
 
 #: /var/azuracast/www/config/forms/custom_field.php:47
 msgid "Commercial Frame"
@@ -1472,7 +1472,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:49
 msgid "Composer"
-msgstr ""
+msgstr "Compositore"
 
 #: /var/azuracast/www/config/forms/custom_field.php:50
 msgid "Composer Sort Order"
@@ -1480,11 +1480,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:51
 msgid "Conductor"
-msgstr ""
+msgstr "Conduttore"
 
 #: /var/azuracast/www/config/forms/custom_field.php:52
 msgid "Content Group Description"
-msgstr ""
+msgstr "Descrizione Gruppo di Contenuti"
 
 #: /var/azuracast/www/config/forms/custom_field.php:53
 msgid "Copyright"
@@ -1504,19 +1504,19 @@ msgstr "Codificato da"
 
 #: /var/azuracast/www/config/forms/custom_field.php:57
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Impostazioni Encoder"
 
 #: /var/azuracast/www/config/forms/custom_field.php:58
 msgid "Encoding Time"
-msgstr ""
+msgstr "Tempo di codifica"
 
 #: /var/azuracast/www/config/forms/custom_field.php:59
 msgid "Encrypted Meta Frame"
-msgstr ""
+msgstr "Meta Frame Criptato"
 
 #: /var/azuracast/www/config/forms/custom_field.php:60
 msgid "Encryption Method Registration"
-msgstr ""
+msgstr "Registrazione metodo di crittografia"
 
 #: /var/azuracast/www/config/forms/custom_field.php:61
 msgid "Equalisation"
@@ -1532,7 +1532,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:64
 msgid "File Owner"
-msgstr ""
+msgstr "File Proprietario"
 
 #: /var/azuracast/www/config/forms/custom_field.php:65
 msgid "File Type"
@@ -1656,7 +1656,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:94
 msgid "Playlist Delay"
-msgstr ""
+msgstr "Ritardo playlist"
 
 #: /var/azuracast/www/config/forms/custom_field.php:95
 msgid "Popularimeter"
@@ -1668,7 +1668,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:97
 msgid "Private Frame"
-msgstr ""
+msgstr "Frame privato"
 
 #: /var/azuracast/www/config/forms/custom_field.php:98
 msgid "Produced Notice"
@@ -1676,7 +1676,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:99
 msgid "Publisher"
-msgstr ""
+msgstr "Editore"
 
 #: /var/azuracast/www/config/forms/custom_field.php:100
 msgid "Recommended Buffer Size"
@@ -1688,11 +1688,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:102
 msgid "Recording Studio"
-msgstr ""
+msgstr "Studio di registrazione"
 
 #: /var/azuracast/www/config/forms/custom_field.php:103
 msgid "Recording Time"
-msgstr ""
+msgstr "Tempo di registrazione"
 
 #: /var/azuracast/www/config/forms/custom_field.php:104
 msgid "Relative Volume Adjustment"
@@ -1700,7 +1700,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:105
 msgid "Release Time"
-msgstr ""
+msgstr "Ora di rilascio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:106
 msgid "Remixer"
@@ -1720,7 +1720,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:110
 msgid "Set Subtitle"
-msgstr ""
+msgstr "Imposta sottotitolo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:111
 msgid "Signature Frame"
@@ -2989,7 +2989,7 @@ msgstr "Campi personalizzati"
 #: /var/azuracast/www/templates/admin/relays/index.phtml:3
 #: /var/azuracast/www/templates/admin/relays/index.phtml:15
 msgid "Connected AzuraRelays"
-msgstr ""
+msgstr "AzuraRelays Collegato"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
@@ -3211,7 +3211,7 @@ msgstr "Revoca"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
 msgid "Insert"
-msgstr ""
+msgstr "Inserisci"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
@@ -3285,7 +3285,7 @@ msgstr "Identifica"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
 msgid "Target"
-msgstr ""
+msgstr "Target"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:46
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
@@ -3308,15 +3308,15 @@ msgstr "Azioni"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:71
 msgid "Field"
-msgstr ""
+msgstr "Campo"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:72
 msgid "Previous"
-msgstr ""
+msgstr "Precedente"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:73
 msgid "Updated"
-msgstr ""
+msgstr "Aggiornato"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
@@ -3842,7 +3842,7 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:50
 msgid "View connection instructions"
-msgstr ""
+msgstr "Visualizza istruzioni di connessione"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:67
 msgid "FTP Connection Information"
@@ -3889,7 +3889,7 @@ msgstr "Il tuo indirizzo E-mail AzuraCast"
 
 #: /var/azuracast/www/templates/stations/files/index.phtml:119
 msgid "Your AzuraCast Password"
-msgstr ""
+msgstr "La tua password AzuraCast"
 
 #: /var/azuracast/www/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
@@ -4165,7 +4165,7 @@ msgstr "Ascoltatori Unici"
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:41
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:48
 msgid "for selected period"
-msgstr ""
+msgstr "per il periodo selezionato"
 
 #: /var/azuracast/www/templates/stations/reports/listeners.phtml:47
 msgid "Total Listener Hours"

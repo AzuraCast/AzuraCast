@@ -34,30 +34,40 @@
        - php7.1-mbstring
        - php7.1-intl
        - php7.1-redis
+       - php7.2-fpm
+       - php7.2-cli
+       - php7.2-gd
+       - php7.2-curl
+       - php7.2-xml
+       - php7.2-zip
+       - php7.2-mysqlnd
+       - php7.2-mbstring
+       - php7.2-intl
+       - php7.2-redis
 
-  - name: Install PHP 7.2
+  - name: Install PHP 7.4
     apt:
       name: "{{ packages }}"
       state: latest
     vars:
       packages:
-       - php7.2-fpm
-       - php7.2-cli
-       - php7.2-gd
-       - php7.2-curl
-       - php7.2-xml         # IceCast XML config
-       - php7.2-zip         # Composer installs
-       - php7.2-mysqlnd     # MySQL Native Driver (Doctrine)
-       - php7.2-mbstring    # Codeception Tests
-       - php7.2-intl        # Localization
-       - php7.2-redis       # Cache
+       - php7.4-fpm
+       - php7.4-cli
+       - php7.4-gd
+       - php7.4-curl
+       - php7.4-xml         # IceCast XML config
+       - php7.4-zip         # Composer installs
+       - php7.4-mysqlnd     # MySQL Native Driver (Doctrine)
+       - php7.4-mbstring    # Codeception Tests
+       - php7.4-intl        # Localization
+       - php7.4-redis       # Cache
 
   - name: Configure PHP FPM Pool
-    template: src=fpmpool.j2 dest=/etc/php/7.2/fpm/pool.d/www.conf force=true
+    template: src=fpmpool.j2 dest=/etc/php/7.4/fpm/pool.d/www.conf force=true
 
   - name: Configure php-fpm php.ini
     ini_file:
-      dest: /etc/php/7.2/fpm/php.ini
+      dest: /etc/php/7.4/fpm/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"
@@ -68,7 +78,7 @@
 
   - name: Configure php-cli php.ini
     ini_file:
-      dest: /etc/php/7.2/cli/php.ini
+      dest: /etc/php/7.4/cli/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"

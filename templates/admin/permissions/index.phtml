@@ -2,12 +2,12 @@
 
 <div class="card">
     <div class="card-header bg-primary-dark">
-        <h2 class="card-title"><?=__('Permissions') ?></h2>
+        <h2 class="card-title"><?=__('Permissions')?></h2>
     </div>
     <div class="card-actions">
-        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:permissions:add') ?>">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:permissions:add')?>">
             <i class="material-icons" aria-hidden="true">add</i>
-            <?=__('Add Permission') ?>
+            <?=__('Add Permission')?>
         </a>
     </div>
     <table class="table table-responsive-md table-striped mb-0">
@@ -18,34 +18,39 @@
         </colgroup>
         <thead>
         <tr>
-            <th><?=__('Actions') ?></th>
-            <th><?=__('Role Name') ?></th>
-            <th><?=__('Permissions') ?></th>
+            <th><?=__('Actions')?></th>
+            <th><?=__('Role Name')?></th>
+            <th><?=__('Permissions')?></th>
         </tr>
         </thead>
         <tbody>
-        <?php foreach($roles as $role): ?>
+        <?php foreach ($roles as $role): ?>
             <tr class="align-middle">
                 <td class="center">
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:permissions:edit', ['id' => $role['id']]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:permissions:edit',
+                            ['id' => $role['id']])?>"><?=__('Edit')?></a>
 
-                        <?php if( $role['id'] != 1 ): ?>
-                            <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete role "%s"?', $role['name'])) ?>" href="<?=$router->named('admin:permissions:delete', ['id' => $role['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <?php if ($role['id'] != 1): ?>
+                            <a class="btn btn-sm btn-danger"
+                               data-confirm-title="<?=$this->e(__('Delete role "%s"?', $role['name']))?>"
+                               href="<?=$router->named('admin:permissions:delete',
+                                   ['id' => $role['id'], 'csrf' => $csrf])?>"><?=__('Delete')?></a>
                         <?php else: ?>
-                            <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('<?=__('This role cannot be deleted.') ?>'); return false;"><?=__('Delete') ?></a>
+                            <a class="btn btn-sm btn-danger disabled" href="#"
+                               onclick="alert('<?=__('This role cannot be deleted.')?>'); return false;"><?=__('Delete')?></a>
                         <?php endif; ?>
                     </div>
                 </td>
                 <td>
-                    <div class="typography-subheading"><?=$this->e($role['name']) ?></div>
+                    <div class="typography-subheading"><?=$this->e($role['name'])?></div>
                 </td>
                 <td>
                     <?php if (!empty($role['permissions_global'])): ?>
-                        <div><b><?=__('Global') ?>:</b> <?=implode($role['permissions_global'], ', ') ?></div>
+                        <div><b><?=__('Global')?>:</b> <?=implode(', ', $role['permissions_global'])?></div>
                     <?php endif; ?>
-                    <?php foreach($role['permissions_station'] as $station_name => $station_perms): ?>
-                        <div><b><?=$this->e($station_name) ?></b>: <?=implode($station_perms, ', ') ?></div>
+                    <?php foreach ($role['permissions_station'] as $station_name => $station_perms): ?>
+                        <div><b><?=$this->e($station_name)?></b>: <?=implode(', ', $station_perms)?></div>
                     <?php endforeach; ?>
                 </td>
             </tr>

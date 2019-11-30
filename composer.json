@@ -78,7 +78,7 @@
       "@composer install",
       "@phplint",
       "@phpstan",
-      "@codeception"
+      "@codeception-no-coverage"
     ],
     "phplint": "phplint",
     "phpstan": "phpstan analyze",

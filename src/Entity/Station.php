@@ -8,6 +8,7 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Quota;
 use App\Radio\Remote\AdapterProxy;
 use App\Validator\Constraints as AppAssert;
+use Azura\File;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -426,7 +427,7 @@ class Station
      */
     public static function getStationShortName($name): string
     {
-        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
+        return File::sanitizeFileName($name);
     }
 
     /**

@@ -659,11 +659,18 @@ class StationPlaylist
         }
 
         if ($this->schedule_items->count() > 0) {
+            $isScheduled = false;
+
             foreach ($this->schedule_items as $scheduleItem) {
                 /** @var StationPlaylistSchedule $scheduleItem */
-                if (!$scheduleItem->shouldPlayNow($now)) {
-                    return false;
+                if ($scheduleItem->shouldPlayNow($now)) {
+                    $isScheduled = true;
+                    break;
                 }
+            }
+
+            if (!$isScheduled) {
+                return false;
             }
         }
 

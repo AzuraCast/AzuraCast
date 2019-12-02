@@ -249,7 +249,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         foreach ($playlist_objects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            $playlist_var_name = 'playlist_' . $playlist->getShortName();
+            $playlist_var_name = 'playlist_' . str_replace('-', '_', $playlist->getShortName());
 
             $uses_random = true;
             $uses_reload_mode = true;

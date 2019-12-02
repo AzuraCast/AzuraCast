@@ -297,7 +297,7 @@ class StationPlaylist
      */
     public function getShortName(): string
     {
-        return Station::getStationShortName($this->name);
+        return str_replace('-', '_', Station::getStationShortName($this->name)) ;
     }
 
     /**

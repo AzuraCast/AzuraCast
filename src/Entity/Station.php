@@ -420,14 +420,9 @@ class Station
         }
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    public static function getStationShortName($name): string
+    public static function getStationShortName(string $str): string
     {
-        return File::sanitizeFileName($name);
+        return File::sanitizeFileName($str);
     }
 
     /**

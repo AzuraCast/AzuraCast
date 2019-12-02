@@ -9,7 +9,7 @@
     with_items:
      - influxdb
      - mysql
-     - php7.2-fpm
+     - php7.4-fpm
      - nginx
      - redis-server
      - supervisor
@@ -88,6 +88,7 @@
 
       # PHP 7.2
       - php7.2-*
+      - php7.4-*
 
       # MariaDB
       - mariadb-*

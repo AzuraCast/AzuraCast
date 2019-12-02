@@ -7,6 +7,6 @@
   with_items:
    - "influxdb"
    - "mysql"
-   - "php7.2-fpm"
+   - "php7.4-fpm"
    - "nginx"
    - "redis"

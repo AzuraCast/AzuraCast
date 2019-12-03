@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-11-23 22:00\n"
+"PO-Revision-Date: 2019-12-03 15:12\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -225,7 +225,7 @@ msgstr "Installation des fixations de données"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:66
 msgid "Reload System Data"
-msgstr ""
+msgstr "Recharger les données du système"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:71
 msgid "Refreshing All Stations"
@@ -503,11 +503,11 @@ msgstr "Fichier non traité"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:24
 msgid "File not specified."
-msgstr ""
+msgstr "Fichier non spécifié."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:30
 msgid "New path not specified."
-msgstr ""
+msgstr "Nouveau répertoire non spécifié."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/UploadAction.php:25
 msgid "This station is out of available storage space."
@@ -1401,11 +1401,11 @@ msgstr "En option, spécifiez un nom convivial pour l'API, tel que <code>field_n
 
 #: /var/azuracast/www/config/forms/custom_field.php:31
 msgid "Automatically Set from ID3v2 Value"
-msgstr ""
+msgstr "Automatiquement défini à partir de la valeur ID3v2"
 
 #: /var/azuracast/www/config/forms/custom_field.php:32
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
-msgstr ""
+msgstr "Optionnellement, sélectionnez un champ de métadonnées ID3v2 qui, s'il est présent, sera utilisé pour définir la valeur de ce champ."
 
 #: /var/azuracast/www/config/forms/custom_field.php:36
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
@@ -1424,11 +1424,11 @@ msgstr "Album"
 
 #: /var/azuracast/www/config/forms/custom_field.php:38
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Ordre de tri des artistes de l'album"
 
 #: /var/azuracast/www/config/forms/custom_field.php:39
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Ordre de tri par albums"
 
 #: /var/azuracast/www/config/forms/custom_field.php:40
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
@@ -1440,11 +1440,11 @@ msgstr "Artiste"
 
 #: /var/azuracast/www/config/forms/custom_field.php:41
 msgid "Attached Picture"
-msgstr ""
+msgstr "Image jointe"
 
 #: /var/azuracast/www/config/forms/custom_field.php:42
 msgid "Audio Encryption"
-msgstr ""
+msgstr "Chiffrement audio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:43
 msgid "Audio Seek Point Index"

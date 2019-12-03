@@ -40,7 +40,7 @@ $config = [
                         'description' => __('If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
-                        'default' => false,
+                        'default' => true,
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

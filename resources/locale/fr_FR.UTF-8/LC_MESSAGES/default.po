@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-03 15:12\n"
+"PO-Revision-Date: 2019-12-03 15:20\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
@@ -1448,99 +1448,99 @@ msgstr "Chiffrement audio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:43
 msgid "Audio Seek Point Index"
-msgstr ""
+msgstr "Index des points de recherche audio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:44
 msgid "Band"
-msgstr ""
+msgstr "Bande passante"
 
 #: /var/azuracast/www/config/forms/custom_field.php:45
 msgid "Bpm"
-msgstr ""
+msgstr "Bpm"
 
 #: /var/azuracast/www/config/forms/custom_field.php:46
 msgid "Comment"
-msgstr ""
+msgstr "Commentaire"
 
 #: /var/azuracast/www/config/forms/custom_field.php:47
 msgid "Commercial Frame"
-msgstr ""
+msgstr "Cadre commercial"
 
 #: /var/azuracast/www/config/forms/custom_field.php:48
 msgid "Commercial Information"
-msgstr ""
+msgstr "Renseignements commerciaux"
 
 #: /var/azuracast/www/config/forms/custom_field.php:49
 msgid "Composer"
-msgstr ""
+msgstr "Compositeur"
 
 #: /var/azuracast/www/config/forms/custom_field.php:50
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Ordre de tri par compositeur"
 
 #: /var/azuracast/www/config/forms/custom_field.php:51
 msgid "Conductor"
-msgstr ""
+msgstr "Conducteur"
 
 #: /var/azuracast/www/config/forms/custom_field.php:52
 msgid "Content Group Description"
-msgstr ""
+msgstr "Description du groupe de contenu"
 
 #: /var/azuracast/www/config/forms/custom_field.php:53
 msgid "Copyright"
-msgstr ""
+msgstr "Droits d'auteur"
 
 #: /var/azuracast/www/config/forms/custom_field.php:54
 msgid "Copyright Message"
-msgstr ""
+msgstr "Message sur les droits d'auteur"
 
 #: /var/azuracast/www/config/forms/custom_field.php:55
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #: /var/azuracast/www/config/forms/custom_field.php:56
 msgid "Encoded By"
-msgstr ""
+msgstr "Encodé par"
 
 #: /var/azuracast/www/config/forms/custom_field.php:57
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Réglages de l'encodeur"
 
 #: /var/azuracast/www/config/forms/custom_field.php:58
 msgid "Encoding Time"
-msgstr ""
+msgstr "Durée d'encodage"
 
 #: /var/azuracast/www/config/forms/custom_field.php:59
 msgid "Encrypted Meta Frame"
-msgstr ""
+msgstr "Meta Frame chiffré"
 
 #: /var/azuracast/www/config/forms/custom_field.php:60
 msgid "Encryption Method Registration"
-msgstr ""
+msgstr "Enregistrement de la méthode de chiffrement"
 
 #: /var/azuracast/www/config/forms/custom_field.php:61
 msgid "Equalisation"
-msgstr ""
+msgstr "Égalisation"
 
 #: /var/azuracast/www/config/forms/custom_field.php:62
 msgid "Event Timing Codes"
-msgstr ""
+msgstr "Horaires des événements"
 
 #: /var/azuracast/www/config/forms/custom_field.php:63
 msgid "Featured Artist"
-msgstr ""
+msgstr "Artiste invité"
 
 #: /var/azuracast/www/config/forms/custom_field.php:64
 msgid "File Owner"
-msgstr ""
+msgstr "Propriétaire du fichier"
 
 #: /var/azuracast/www/config/forms/custom_field.php:65
 msgid "File Type"
-msgstr ""
+msgstr "Type de fichier"
 
 #: /var/azuracast/www/config/forms/custom_field.php:66
 msgid "General Encapsulated Object"
-msgstr ""
+msgstr "Objet général encapsulé"
 
 #: /var/azuracast/www/config/forms/custom_field.php:67
 #: /var/azuracast/www/config/forms/station.php:54
@@ -1549,23 +1549,23 @@ msgstr "Genre"
 
 #: /var/azuracast/www/config/forms/custom_field.php:68
 msgid "Group Identification Registration"
-msgstr ""
+msgstr "Enregistrement d'identification de groupe"
 
 #: /var/azuracast/www/config/forms/custom_field.php:69
 msgid "Initial Key"
-msgstr ""
+msgstr "Clé initiale"
 
 #: /var/azuracast/www/config/forms/custom_field.php:70
 msgid "Internet Radio Station Name"
-msgstr ""
+msgstr "Nom de la webradio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:71
 msgid "Internet Radio Station Owner"
-msgstr ""
+msgstr "Propriétaire de la webradio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:72
 msgid "Involved People List"
-msgstr ""
+msgstr "Liste des personnes impliquées"
 
 #: /var/azuracast/www/config/forms/custom_field.php:73
 msgid "ISRC"
@@ -1584,51 +1584,51 @@ msgstr "Durée"
 
 #: /var/azuracast/www/config/forms/custom_field.php:76
 msgid "Linked Information"
-msgstr ""
+msgstr "Informations liées"
 
 #: /var/azuracast/www/config/forms/custom_field.php:77
 msgid "Lyricist"
-msgstr ""
+msgstr "Paroles"
 
 #: /var/azuracast/www/config/forms/custom_field.php:78
 msgid "Media Type"
-msgstr ""
+msgstr "Type de média"
 
 #: /var/azuracast/www/config/forms/custom_field.php:79
 msgid "Mood"
-msgstr ""
+msgstr "Humeur"
 
 #: /var/azuracast/www/config/forms/custom_field.php:80
 msgid "MPEG Location Lookup Table"
-msgstr ""
+msgstr "Table de recherche d'emplacement MPEG"
 
 #: /var/azuracast/www/config/forms/custom_field.php:81
 msgid "Music CD Identifier"
-msgstr ""
+msgstr "Identifiant du CD musical"
 
 #: /var/azuracast/www/config/forms/custom_field.php:82
 msgid "Musician Credits List"
-msgstr ""
+msgstr "Liste de crédits des musiciens"
 
 #: /var/azuracast/www/config/forms/custom_field.php:83
 msgid "Original Album"
-msgstr ""
+msgstr "Album original"
 
 #: /var/azuracast/www/config/forms/custom_field.php:84
 msgid "Original Artist"
-msgstr ""
+msgstr "Artiste original"
 
 #: /var/azuracast/www/config/forms/custom_field.php:85
 msgid "Original Filename"
-msgstr ""
+msgstr "Nom du fichier d'origine"
 
 #: /var/azuracast/www/config/forms/custom_field.php:86
 msgid "Original Lyricist"
-msgstr ""
+msgstr "Paroles originales"
 
 #: /var/azuracast/www/config/forms/custom_field.php:87
 msgid "Original Release Time"
-msgstr ""
+msgstr "Date de sortie originale"
 
 #: /var/azuracast/www/config/forms/custom_field.php:88
 msgid "Original Year"

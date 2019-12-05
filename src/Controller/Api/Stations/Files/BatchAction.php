@@ -276,7 +276,7 @@ class BatchAction
         }
 
         return $response->withJson([
-            'success' => !empty($errors),
+            'success' => empty($errors),
             'files_found' => $files_found,
             'files_affected' => $files_affected,
             'errors' => $errors,

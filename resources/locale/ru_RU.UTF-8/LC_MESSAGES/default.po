@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-06 20:20\n"
+"PO-Revision-Date: 2019-12-06 20:30\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
@@ -1588,7 +1588,7 @@ msgstr "Связанная информация"
 
 #: /var/azuracast/www/config/forms/custom_field.php:77
 msgid "Lyricist"
-msgstr ""
+msgstr "Автор текстов"
 
 #: /var/azuracast/www/config/forms/custom_field.php:78
 msgid "Media Type"
@@ -1652,15 +1652,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:93
 msgid "Play Counter"
-msgstr ""
+msgstr "Счетчик воспроизведения"
 
 #: /var/azuracast/www/config/forms/custom_field.php:94
 msgid "Playlist Delay"
-msgstr ""
+msgstr "Задержка плейлиста"
 
 #: /var/azuracast/www/config/forms/custom_field.php:95
 msgid "Popularimeter"
-msgstr ""
+msgstr "Популяриметр"
 
 #: /var/azuracast/www/config/forms/custom_field.php:96
 msgid "Position Synchronisation Frame"
@@ -1668,7 +1668,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:97
 msgid "Private Frame"
-msgstr ""
+msgstr "Частный фрейм"
 
 #: /var/azuracast/www/config/forms/custom_field.php:98
 msgid "Produced Notice"
@@ -1708,19 +1708,19 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:107
 msgid "ReplayGain Adjustment"
-msgstr ""
+msgstr "Уровень ReplayGain"
 
 #: /var/azuracast/www/config/forms/custom_field.php:108
 msgid "Reverb"
-msgstr ""
+msgstr "Реверберация"
 
 #: /var/azuracast/www/config/forms/custom_field.php:109
 msgid "Seek Frame"
-msgstr ""
+msgstr "Поиск фрейма"
 
 #: /var/azuracast/www/config/forms/custom_field.php:110
 msgid "Set Subtitle"
-msgstr ""
+msgstr "Установить субтитры"
 
 #: /var/azuracast/www/config/forms/custom_field.php:111
 msgid "Signature Frame"
@@ -1733,7 +1733,7 @@ msgstr "Размер"
 
 #: /var/azuracast/www/config/forms/custom_field.php:113
 msgid "Subtitle"
-msgstr ""
+msgstr "Субтитры"
 
 #: /var/azuracast/www/config/forms/custom_field.php:114
 msgid "Synced Tempo Codes"
@@ -1741,7 +1741,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:115
 msgid "Synchronised Lyric"
-msgstr ""
+msgstr "Синхронизированный текст"
 
 #: /var/azuracast/www/config/forms/custom_field.php:116
 msgid "Synchronised Tempo Codes"
@@ -1757,7 +1757,7 @@ msgstr "Условия использования"
 
 #: /var/azuracast/www/config/forms/custom_field.php:119
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #: /var/azuracast/www/config/forms/custom_field.php:120
 msgid "Time"
@@ -1786,7 +1786,7 @@ msgstr "Уникальный идентификатор файла"
 
 #: /var/azuracast/www/config/forms/custom_field.php:125
 msgid "Unsynchronised Lyric"
-msgstr ""
+msgstr "Несинхронизированный текст"
 
 #: /var/azuracast/www/config/forms/custom_field.php:126
 msgid "URL Artist"

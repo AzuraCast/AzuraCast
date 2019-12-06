@@ -78,11 +78,11 @@
       "@composer install",
       "@phplint",
       "@phpstan",
-      "@codeception"
+      "@codeception-no-coverage"
     ],
     "phplint": "phplint",
     "phpstan": "phpstan analyze",
-    "codeception": "codecept run --no-interaction --coverage --coverage-xml",
+    "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction"
   },
   "authors": [

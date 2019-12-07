@@ -13,18 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Adapters */
     protected Adapters $adapters;
 
-    /**
-     * StationsController constructor.
-     *
-     * @param EntityManager $em
-     * @param Adapters $adapters
-     */
     public function __construct(EntityManager $em, Adapters $adapters)
     {
         $this->em = $em;

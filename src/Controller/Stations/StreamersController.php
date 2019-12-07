@@ -13,18 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class StreamersController extends AbstractStationCrudController
 {
-    /** @var AzuraCastCentral */
     protected AzuraCastCentral $ac_central;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /**
-     * @param EntityFormManager $formManager
-     * @param Config $config
-     * @param AzuraCastCentral $ac_central
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     */
     public function __construct(
         EntityFormManager $formManager,
         Config $config,

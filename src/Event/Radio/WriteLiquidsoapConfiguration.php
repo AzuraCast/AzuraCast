@@ -6,10 +6,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class WriteLiquidsoapConfiguration extends Event
 {
-    /** @var array */
     protected array $config_lines;
-
-    /** @var Station */
+    
     protected Station $station;
 
     public function __construct(Station $station)

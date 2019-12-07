@@ -13,13 +13,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class UsersController extends AbstractAdminCrudController
 {
-    /** @var Auth */
     protected Auth $auth;
 
-    /**
-     * @param UserForm $form
-     * @param Auth $auth
-     */
     public function __construct(
         UserForm $form,
         Auth $auth
@@ -98,7 +93,8 @@ class UsersController extends AbstractAdminCrudController
 
         $this->auth->masqueradeAsUser($user);
 
-        $request->getFlash()->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), Flash::SUCCESS);
+        $request->getFlash()->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+            Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }

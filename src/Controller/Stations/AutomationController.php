@@ -14,24 +14,14 @@ use Psr\Http\Message\ResponseInterface;
 
 class AutomationController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var RadioAutomation */
     protected RadioAutomation $sync_task;
 
-    /** @var Settings */
     protected Settings $app_settings;
 
-    /** @var array */
     protected array $form_config;
 
-    /**
-     * @param EntityManager $em
-     * @param RadioAutomation $sync_task
-     * @param Settings $app_settings
-     * @param Config $config
-     */
     public function __construct(
         EntityManager $em,
         RadioAutomation $sync_task,

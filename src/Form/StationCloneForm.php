@@ -8,8 +8,6 @@ use App\Radio\Configuration;
 use App\Settings;
 use App\Sync\Task\Media;
 use Azura\Config;
-use AzuraForms\Exception\FieldAlreadyExists;
-use AzuraForms\Exception\FieldClassNotFound;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
@@ -20,25 +18,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationCloneForm extends StationForm
 {
-    /** @var Configuration */
     protected Configuration $configuration;
 
-    /** @var Media */
     protected Media $media_sync;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Entity\Repository\StationRepository $station_repo
-     * @param Acl $acl
-     * @param Configuration $configuration
-     * @param Media $media_sync
-     * @param Config $config
-     *
-     * @throws FieldAlreadyExists
-     * @throws FieldClassNotFound
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
@@ -58,9 +41,6 @@ class StationCloneForm extends StationForm
         $this->media_sync = $media_sync;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\Station) {

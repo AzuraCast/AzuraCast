@@ -11,10 +11,8 @@ use Monolog\Logger;
  */
 class Runner
 {
-    /** @var Logger */
     protected Logger $logger;
 
-    /** @var SettingsRepository */
     protected SettingsRepository $settingsRepo;
 
     /** @var Task\AbstractTask[] */

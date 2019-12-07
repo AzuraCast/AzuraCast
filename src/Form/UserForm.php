@@ -10,13 +10,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserForm extends EntityForm
 {
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Config $config
-     * @param Entity\Repository\RoleRepository $roleRepo
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
@@ -33,9 +26,6 @@ class UserForm extends EntityForm
         $this->entityClass = Entity\User::class;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.

@@ -15,20 +15,12 @@ use function array_slice;
 
 class OverviewController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /** @var Database */
     protected Database $influx;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param Database $influx
-     */
     public function __construct(EntityManager $em, Entity\Repository\SettingsRepository $settingsRepo, Database $influx)
     {
         $this->em = $em;

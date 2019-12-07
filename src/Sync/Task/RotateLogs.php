@@ -12,18 +12,10 @@ use Symfony\Component\Finder\Finder;
 
 class RotateLogs extends AbstractTask
 {
-    /** @var Adapters */
     protected Adapters $adapters;
 
-    /** @var Supervisor */
     protected Supervisor $supervisor;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param Adapters $adapters
-     * @param Supervisor $supervisor
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,

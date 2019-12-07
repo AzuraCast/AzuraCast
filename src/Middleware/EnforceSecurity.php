@@ -16,13 +16,10 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class EnforceSecurity implements MiddlewareInterface
 {
-    /** @var ResponseFactoryInterface */
     protected ResponseFactoryInterface $responseFactory;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settings_repo;
 
-    /** @var Assets */
     protected Assets $assets;
 
     public function __construct(

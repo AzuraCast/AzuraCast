@@ -16,20 +16,12 @@ use Supervisor\Supervisor;
 
 abstract class AbstractAdapter
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Supervisor */
     protected Supervisor $supervisor;
 
-    /** @var EventDispatcher */
     protected EventDispatcher $dispatcher;
 
-    /**
-     * @param EntityManager $em
-     * @param Supervisor $supervisor
-     * @param EventDispatcher $dispatcher
-     */
     public function __construct(
         EntityManager $em,
         Supervisor $supervisor,

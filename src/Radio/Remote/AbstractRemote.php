@@ -11,16 +11,12 @@ use NowPlaying\Exception;
 
 abstract class AbstractRemote
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /** @var Client */
     protected Client $http_client;
 
-    /** @var Logger */
     protected Logger $logger;
 
     public function __construct(

@@ -25,7 +25,6 @@ class Adapters
     public const DEFAULT_FRONTEND = self::FRONTEND_ICECAST;
     public const DEFAULT_BACKEND = self::BACKEND_LIQUIDSOAP;
 
-    /** @var ContainerInterface */
     protected ContainerInterface $adapters;
 
     public function __construct(ContainerInterface $adapters)

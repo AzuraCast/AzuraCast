@@ -3,7 +3,6 @@ namespace App\Message;
 
 class UpdateNowPlayingMessage extends AbstractDelayedMessage
 {
-    /** @var int */
     public int $station_id;
 
     public function __construct()

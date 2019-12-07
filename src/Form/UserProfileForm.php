@@ -12,13 +12,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserProfileForm extends EntityForm
 {
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Config $config
-     * @param Settings $settings
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
@@ -34,9 +27,6 @@ class UserProfileForm extends EntityForm
         $this->entityClass = Entity\User::class;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function process(ServerRequest $request, $record = null)
     {
         $user = $request->getUser();

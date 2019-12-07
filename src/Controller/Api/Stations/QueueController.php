@@ -19,7 +19,6 @@ class QueueController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\SongHistory::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
-    /** @var App\ApiUtilities */
     protected App\ApiUtilities $apiUtils;
 
     public function __construct(

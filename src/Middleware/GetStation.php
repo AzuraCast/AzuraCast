@@ -16,10 +16,8 @@ use Slim\Routing\RouteContext;
  */
 class GetStation implements MiddlewareInterface
 {
-    /** @var StationRepository */
     protected StationRepository $station_repo;
 
-    /** @var Adapters */
     protected Adapters $adapters;
 
     public function __construct(
@@ -29,13 +27,7 @@ class GetStation implements MiddlewareInterface
         $this->station_repo = $station_repo;
         $this->adapters = $adapters;
     }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
+    
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeContext = RouteContext::fromRequest($request);

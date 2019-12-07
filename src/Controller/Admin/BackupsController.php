@@ -18,16 +18,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class BackupsController
 {
-    /** @var SettingsRepository */
     protected SettingsRepository $settingsRepo;
 
-    /** @var Backup */
     protected Backup $backupTask;
 
-    /** @var Filesystem */
     protected Filesystem $backupFs;
 
-    /** @var string */
     protected string $csrfNamespace = 'admin_backups';
 
     public function __construct(

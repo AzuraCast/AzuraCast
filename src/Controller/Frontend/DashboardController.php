@@ -17,39 +17,22 @@ use stdClass;
 
 class DashboardController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /** @var Acl */
     protected Acl $acl;
 
-    /** @var CacheInterface */
     protected CacheInterface $cache;
 
-    /** @var Database */
     protected Database $influx;
 
-    /** @var Router */
     protected Router $router;
 
-    /** @var Adapters */
     protected Adapters $adapter_manager;
 
-    /** @var EventDispatcher */
     protected EventDispatcher $dispatcher;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param Acl $acl
-     * @param CacheInterface $cache
-     * @param Database $influx
-     * @param Adapters $adapter_manager
-     * @param EventDispatcher $dispatcher
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,

@@ -8,12 +8,6 @@ use Brick\Math;
  */
 class Quota
 {
-    /**
-     * @param Math\BigInteger $size
-     * @param Math\BigInteger $total
-     *
-     * @return int
-     */
     public static function getPercentage(Math\BigInteger $size, Math\BigInteger $total): int
     {
         if (-1 !== $size->compareTo($total)) {
@@ -26,12 +20,6 @@ class Quota
             ->toInt();
     }
 
-    /**
-     * @param Math\BigInteger $bytes
-     * @param int $decimals
-     *
-     * @return string
-     */
     public static function getReadableSize(Math\BigInteger $bytes, $decimals = 1): string
     {
         $bytes_str = (string)$bytes;
@@ -50,11 +38,6 @@ class Quota
         return $bytes_str;
     }
 
-    /**
-     * @param string $size
-     *
-     * @return Math\BigInteger|null
-     */
     public static function convertFromReadableSize($size): ?Math\BigInteger
     {
         if ($size instanceof Math\BigInteger) {

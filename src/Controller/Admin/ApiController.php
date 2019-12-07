@@ -11,10 +11,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class ApiController extends AbstractAdminCrudController
 {
-    /**
-     * @param Config $config
-     * @param EntityFormManager $formManager
-     */
     public function __construct(
         Config $config,
         EntityFormManager $formManager

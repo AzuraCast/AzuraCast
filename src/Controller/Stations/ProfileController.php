@@ -10,23 +10,14 @@ use Psr\Http\Message\ResponseInterface;
 
 class ProfileController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\StationRepository */
     protected Entity\Repository\StationRepository $station_repo;
 
-    /** @var StationForm */
     protected StationForm $station_form;
 
-    /** @var string */
     protected string $csrf_namespace = 'stations_profile';
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\StationRepository $station_repo
-     * @param StationForm $station_form
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\StationRepository $station_repo,

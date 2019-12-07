@@ -12,20 +12,12 @@ use Psr\Http\Message\UriInterface;
  */
 class ApiUtilities
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Router */
     protected Router $router;
 
-    /** @var Customization */
     protected Customization $customization;
 
-    /**
-     * @param EntityManager $em
-     * @param Router $router
-     * @param Customization $customization
-     */
     public function __construct(EntityManager $em, Router $router, Customization $customization)
     {
         $this->em = $em;
@@ -33,9 +25,6 @@ class ApiUtilities
         $this->customization = $customization;
     }
 
-    /**
-     * @return Router
-     */
     public function getRouter(): Router
     {
         return $this->router;
@@ -80,7 +69,7 @@ class ApiUtilities
      *
      * @return UriInterface
      */
-    public function getDefaultAlbumArtUrl(UriInterface $baseUri = null): UriInterface
+    public function getDefaultAlbumArtUrl(?UriInterface $baseUri = null): UriInterface
     {
         if ($baseUri === null) {
             $baseUri = $this->router->getBaseUrl();

@@ -12,15 +12,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationMountForm extends EntityForm
 {
-    /** @var array */
     protected array $form_configs;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Config $config
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,

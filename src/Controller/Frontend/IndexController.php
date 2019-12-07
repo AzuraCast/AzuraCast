@@ -8,12 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settings_repo;
 
-    /**
-     * @param Entity\Repository\SettingsRepository $settings_repo
-     */
     public function __construct(Entity\Repository\SettingsRepository $settings_repo)
     {
         $this->settings_repo = $settings_repo;

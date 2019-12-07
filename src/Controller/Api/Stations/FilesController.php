@@ -23,39 +23,20 @@ class FilesController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
-    /** @var Filesystem */
     protected Filesystem $filesystem;
 
-    /** @var Adapters */
     protected Adapters $adapters;
 
-    /** @var MessageQueue */
     protected MessageQueue $messageQueue;
 
-    /** @var Entity\Repository\CustomFieldRepository */
     protected Entity\Repository\CustomFieldRepository $custom_fields_repo;
 
-    /** @var Entity\Repository\SongRepository */
     protected Entity\Repository\SongRepository $song_repo;
 
-    /** @var Entity\Repository\StationMediaRepository */
     protected Entity\Repository\StationMediaRepository $media_repo;
 
-    /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Filesystem $filesystem
-     * @param Adapters $adapters
-     * @param MessageQueue $messageQueue
-     * @param Entity\Repository\CustomFieldRepository $custom_fields_repo
-     * @param Entity\Repository\SongRepository $song_repo
-     * @param Entity\Repository\StationMediaRepository $media_repo
-     * @param Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,

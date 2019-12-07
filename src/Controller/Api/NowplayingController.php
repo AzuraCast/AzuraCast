@@ -14,24 +14,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NowplayingController implements EventSubscriberInterface
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /** @var CacheInterface */
     protected CacheInterface $cache;
 
-    /** @var EventDispatcher */
     protected EventDispatcher $dispatcher;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param CacheInterface $cache
-     * @param EventDispatcher $dispatcher
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,

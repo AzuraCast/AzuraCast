@@ -8,19 +8,14 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class SendWebhooks extends Event
 {
-    /** @var Station */
     protected Station $station;
 
-    /** @var NowPlaying */
     protected NowPlaying $np;
 
-    /** @var Router */
     protected Router $router;
 
-    /** @var array */
     protected array $triggers = [];
 
-    /** @var bool */
     protected bool $is_standalone = true;
 
     public function __construct(
@@ -57,36 +52,22 @@ class SendWebhooks extends Event
         $this->triggers = $to_trigger;
     }
 
-    /**
-     * @return Station
-     */
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    /**
-     * @return NowPlaying
-     */
     public function getNowPlaying(): NowPlaying
     {
         return $this->np;
     }
 
-    /**
-     * @return array
-     */
     public function getTriggers(): array
     {
         return $this->triggers;
     }
 
-    /**
-     * @param string $trigger_name
-     *
-     * @return bool
-     */
-    public function hasTrigger($trigger_name): bool
+    public function hasTrigger(string $trigger_name): bool
     {
         return in_array($trigger_name, $this->triggers, true);
     }
@@ -98,10 +79,7 @@ class SendWebhooks extends Event
     {
         return count($this->triggers) > 1;
     }
-
-    /**
-     * @return bool
-     */
+    
     public function isStandalone(): bool
     {
         return $this->is_standalone;

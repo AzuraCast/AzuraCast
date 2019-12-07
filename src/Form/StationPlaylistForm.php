@@ -17,17 +17,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationPlaylistForm extends EntityForm
 {
-    /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Config $config
-     * @param Customization $customization
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
@@ -87,13 +78,7 @@ class StationPlaylistForm extends EntityForm
 
         return $record;
     }
-
-    /**
-     * @param Entity\StationPlaylist $playlist
-     * @param UploadedFileInterface $playlist_file
-     *
-     * @return bool|int
-     */
+    
     protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFileInterface $playlist_file)
     {
         $station_id = $this->station->getId();

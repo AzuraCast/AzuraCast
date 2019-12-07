@@ -14,13 +14,10 @@ class Version
     /** @var string Version that is displayed if no Git repository information is present. */
     public const FALLBACK_VERSION = '0.9.8';
 
-    /** @var CacheInterface */
     protected CacheInterface $cache;
 
-    /** @var string */
-    protected $repo_dir;
+    protected string $repo_dir;
 
-    /** @var Settings */
     protected Settings $app_settings;
 
     public function __construct(CacheInterface $cache, Settings $app_settings)

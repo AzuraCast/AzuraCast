@@ -14,12 +14,8 @@ class LogsController
 {
     use LogViewerTrait;
 
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /**
-     * @param EntityManager $em
-     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;

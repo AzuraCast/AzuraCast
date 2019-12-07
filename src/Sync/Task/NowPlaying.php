@@ -24,57 +24,31 @@ use function DeepCopy\deep_copy;
 
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
 {
-    /** @var Database */
     protected Database $influx;
 
-    /** @var CacheInterface */
     protected CacheInterface $cache;
 
-    /** @var Adapters */
     protected Adapters $adapters;
 
-    /** @var AutoDJ */
     protected AutoDJ $autodj;
 
-    /** @var EventDispatcher */
     protected EventDispatcher $event_dispatcher;
 
-    /** @var MessageQueue */
     protected MessageQueue $message_queue;
 
-    /** @var Logger */
     protected Logger $logger;
 
-    /** @var ApiUtilities */
     protected ApiUtilities $api_utils;
 
-    /** @var Entity\Repository\SongHistoryRepository */
     protected Entity\Repository\SongHistoryRepository $history_repo;
 
-    /** @var Entity\Repository\SongRepository */
     protected Entity\Repository\SongRepository $song_repo;
 
-    /** @var Entity\Repository\ListenerRepository */
     protected Entity\Repository\ListenerRepository $listener_repo;
 
     /** @var string */
     protected $analytics_level;
 
-    /**
-     * @param EntityManager $em
-     * @param Adapters $adapters
-     * @param ApiUtilities $api_utils
-     * @param AutoDJ $autodj
-     * @param CacheInterface $cache
-     * @param Database $influx
-     * @param Logger $logger
-     * @param EventDispatcher $event_dispatcher
-     * @param MessageQueue $message_queue
-     * @param Entity\Repository\SongHistoryRepository $historyRepository
-     * @param Entity\Repository\SongRepository $songRepository
-     * @param Entity\Repository\ListenerRepository $listenerRepository
-     * @param Entity\Repository\SettingsRepository $settingsRepository
-     */
     public function __construct(
         EntityManager $em,
         Adapters $adapters,

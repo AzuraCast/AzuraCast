@@ -7,24 +7,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EntityFormManager
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Serializer */
     protected Serializer $serializer;
 
-    /** @var ValidatorInterface */
     protected ValidatorInterface $validator;
 
     /** @var EntityForm[] */
     protected array $custom_forms;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param array $custom_forms
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,

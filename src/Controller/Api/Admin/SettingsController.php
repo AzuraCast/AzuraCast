@@ -14,27 +14,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SettingsController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Serializer */
     protected Serializer $serializer;
 
-    /** @var ValidatorInterface */
     protected ValidatorInterface $validator;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settings_repo;
 
-    /** @var Entity\Api\Admin\Settings */
     protected Entity\Api\Admin\Settings $api_settings;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settings_repo
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settings_repo,

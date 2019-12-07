@@ -23,23 +23,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public const CROSSFADE_SMART = 'smart';
     public const CROSSFADE_NORMAL = 'normal';
 
-    /** @var AutoDJ */
     protected AutoDJ $autodj;
 
-    /** @var Filesystem */
     protected Filesystem $filesystem;
 
-    /** @var Entity\Repository\StationStreamerRepository */
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
-    /**
-     * @param EntityManager $em
-     * @param Supervisor $supervisor
-     * @param EventDispatcher $dispatcher
-     * @param Entity\Repository\StationStreamerRepository $streamerRepo
-     * @param AutoDJ $autodj
-     * @param Filesystem $filesystem
-     */
     public function __construct(
         EntityManager $em,
         Supervisor $supervisor,

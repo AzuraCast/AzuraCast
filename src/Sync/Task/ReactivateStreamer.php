@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManager;
 
 class ReactivateStreamer extends AbstractTask
 {
-    /** @var Entity\Repository\StationStreamerRepository */
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
     public function __construct(

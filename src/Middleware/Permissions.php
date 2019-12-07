@@ -12,11 +12,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class Permissions
 {
-    /** @var string */
-    protected $action;
+    protected string $action;
 
-    /** @var bool */
-    protected $use_station;
+    protected bool $use_station;
 
     public function __construct(
         string $action,

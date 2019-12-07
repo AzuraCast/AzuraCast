@@ -9,14 +9,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class StationPortCheckerValidator extends ConstraintValidator
 {
-    /** @var Configuration */
     protected Configuration $configuration;
 
-    /**
-     * StationPortCheckerValidator constructor.
-     *
-     * @param Configuration $configuration
-     */
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;

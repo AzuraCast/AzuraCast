@@ -11,18 +11,10 @@ class RadioAutomation extends AbstractTask
 {
     public const DEFAULT_THRESHOLD_DAYS = 14;
 
-    /** @var Entity\Repository\StationMediaRepository */
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
-    /** @var Adapters */
     protected Adapters $adapters;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @param Adapters $adapters
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,

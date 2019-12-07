@@ -18,28 +18,16 @@ class MessageQueue implements EventSubscriberInterface
 {
     public const GLOBAL_QUEUE_NAME = 'azuracast';
 
-    /** @var QueueFactory */
     protected QueueFactory $queues;
 
-    /** @var Producer */
     protected Producer $producer;
 
-    /** @var Consumer */
     protected Consumer $consumer;
 
-    /** @var Logger */
     protected Logger $logger;
 
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /**
-     * @param QueueFactory $queues
-     * @param Producer $producer
-     * @param Consumer $consumer
-     * @param Logger $logger
-     * @param EntityManager $em
-     */
     public function __construct(
         QueueFactory $queues,
         Producer $producer,
@@ -76,25 +64,16 @@ class MessageQueue implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @return Queue
-     */
     public function getGlobalQueue(): Queue
     {
         return $this->queues->create(self::GLOBAL_QUEUE_NAME);
     }
 
-    /**
-     * @return Producer
-     */
     public function getProducer(): Producer
     {
         return $this->producer;
     }
 
-    /**
-     * @return Consumer
-     */
     public function getConsumer(): Consumer
     {
         return $this->consumer;

@@ -17,10 +17,9 @@ class AnnotateNextSong extends Event
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     protected array $annotations = [];
 
-    /** @var string The path of the song to */
+    /** @var string The path of the song to annotate. */
     protected string $song_path;
 
-    /** @var Entity\Station */
     protected Entity\Station $station;
 
     public function __construct(Entity\Station $station, $next_song = null)

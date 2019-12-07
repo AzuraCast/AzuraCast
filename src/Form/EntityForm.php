@@ -23,13 +23,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EntityForm extends Form
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Serializer */
     protected Serializer $serializer;
 
-    /** @var ValidatorInterface */
     protected ValidatorInterface $validator;
 
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
@@ -38,16 +35,8 @@ class EntityForm extends Form
     /** @var array The default context sent to form normalization/denormalization functions. */
     protected array $defaultContext = [];
 
-    /** @var Station|null */
     protected ?Station $station = null;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param array $options
-     * @param array|null $defaults
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
@@ -62,33 +51,21 @@ class EntityForm extends Form
         $this->validator = $validator;
     }
 
-    /**
-     * @return string
-     */
     public function getEntityClass(): string
     {
         return $this->entityClass;
     }
 
-    /**
-     * @param string $entityClass
-     */
     public function setEntityClass(string $entityClass): void
     {
         $this->entityClass = $entityClass;
     }
 
-    /**
-     * @return EntityManager
-     */
     public function getEntityManager(): EntityManager
     {
         return $this->em;
     }
 
-    /**
-     * @return EntityRepository
-     */
     public function getEntityRepository(): EntityRepository
     {
         if (null === $this->entityClass) {

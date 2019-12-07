@@ -19,10 +19,8 @@ class Customization
     /** @var Entity\User|null */
     protected ?Entity\User $user = null;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /** @var string|null */
     protected ?string $locale = null;
 
     public function __construct(Entity\Repository\SettingsRepository $settingsRepo)

@@ -23,7 +23,6 @@ class PlaylistsController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
 
-    /** @var Entity\Repository\StationPlaylistScheduleRepository */
     protected Entity\Repository\StationPlaylistScheduleRepository $playlistScheduleRepo;
 
     public function __construct(

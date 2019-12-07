@@ -8,12 +8,6 @@ use Doctrine\ORM\EntityManager;
 
 class BackupSettingsForm extends AbstractSettingsForm
 {
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param Settings $settings
-     * @param Config $config
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,

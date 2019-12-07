@@ -12,10 +12,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class ServicesController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Configuration */
     protected Configuration $configuration;
 
     public function __construct(EntityManager $em, Configuration $configuration)

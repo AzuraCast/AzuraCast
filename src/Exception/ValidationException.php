@@ -8,7 +8,6 @@ use Throwable;
 
 class ValidationException extends Exception
 {
-    /** @var ConstraintViolationListInterface */
     protected ConstraintViolationListInterface $detailedErrors;
 
     public function __construct(
@@ -20,17 +19,11 @@ class ValidationException extends Exception
         parent::__construct($message, $code, $previous, $loggerLevel);
     }
 
-    /**
-     * @return ConstraintViolationListInterface
-     */
     public function getDetailedErrors(): ConstraintViolationListInterface
     {
         return $this->detailedErrors;
     }
-
-    /**
-     * @param ConstraintViolationListInterface $detailedErrors
-     */
+    
     public function setDetailedErrors(ConstraintViolationListInterface $detailedErrors): void
     {
         $this->detailedErrors = $detailedErrors;

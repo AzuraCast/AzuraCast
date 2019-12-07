@@ -13,20 +13,13 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class InjectAcl implements MiddlewareInterface
 {
-    /** @var Acl */
     protected Acl $acl;
 
     public function __construct(Acl $acl)
     {
         $this->acl = $acl;
     }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
+    
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $request = $request->withAttribute(ServerRequest::ATTR_ACL, $this->acl);

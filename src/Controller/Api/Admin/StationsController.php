@@ -15,7 +15,6 @@ class StationsController extends AbstractAdminApiCrudController
     protected string $entityClass = Entity\Station::class;
     protected string $resourceRouteName = 'api:admin:station';
 
-    /** @var Entity\Repository\StationRepository */
     protected Entity\Repository\StationRepository $station_repo;
 
     public function __construct(

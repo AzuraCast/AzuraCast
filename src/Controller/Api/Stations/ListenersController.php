@@ -16,16 +16,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class ListenersController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Reader */
     protected Reader $geoip;
 
-    /**
-     * @param EntityManager $em
-     * @param Reader $geoip
-     */
     public function __construct(EntityManager $em, Reader $geoip)
     {
         $this->em = $em;

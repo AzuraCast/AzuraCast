@@ -13,10 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class RemotesController extends AbstractStationCrudController
 {
-    /**
-     * @param EntityFormManager $formManager
-     * @param Config $config
-     */
     public function __construct(EntityFormManager $formManager, Config $config)
     {
         $form = $formManager->getForm(StationRemote::class, $config->get('forms/remote'));

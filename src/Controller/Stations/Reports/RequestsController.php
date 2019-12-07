@@ -10,15 +10,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var string */
     protected string $csrf_namespace = 'stations_requests';
 
-    /**
-     * @param EntityManager $em
-     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;

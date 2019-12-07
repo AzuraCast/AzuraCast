@@ -15,26 +15,14 @@ class Configuration
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
 
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Adapters */
     protected Adapters $adapters;
 
-    /** @var Supervisor */
     protected Supervisor $supervisor;
 
-    /** @var Logger */
     protected Logger $logger;
 
-    /**
-     * Configuration constructor.
-     *
-     * @param EntityManager $em
-     * @param Adapters $adapters
-     * @param Supervisor $supervisor
-     * @param Logger $logger
-     */
     public function __construct(
         EntityManager $em,
         Adapters $adapters,

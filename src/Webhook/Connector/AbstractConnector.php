@@ -33,9 +33,9 @@ abstract class AbstractConnector implements ConnectorInterface
             (?:\? (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%%[0-9A-Fa-f]{2})* )?   # a query (optional)
             (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%%[0-9A-Fa-f]{2})* )?   # a fragment (optional)
         $~ixu';
-    /** @var Client */
+
     protected Client $http_client;
-    /** @var Logger */
+
     protected Logger $logger;
 
     public function __construct(Logger $logger, Client $http_client)

@@ -11,22 +11,12 @@ class Notification
     public const ERROR = Flash::ERROR;
     public const INFO = Flash::INFO;
 
-    /** @var string */
     protected string $title;
 
-    /** @var string */
     protected string $body;
 
-    /** @var string */
     protected string $type;
 
-    /**
-     * Notification constructor.
-     *
-     * @param string $title
-     * @param string $body
-     * @param string $type
-     */
     public function __construct(string $title, string $body, string $type)
     {
         $this->title = $title;
@@ -34,25 +24,16 @@ class Notification
         $this->type = $type;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getBody(): string
     {
         return $this->body;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;

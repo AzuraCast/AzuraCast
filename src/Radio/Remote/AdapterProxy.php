@@ -5,10 +5,8 @@ use App\Entity;
 
 class AdapterProxy
 {
-    /** @var AbstractRemote */
     protected AbstractRemote $adapter;
 
-    /** @var Entity\StationRemote */
     protected Entity\StationRemote $remote;
 
     public function __construct(AbstractRemote $adapter, Entity\StationRemote $remote)

@@ -13,23 +13,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationForm extends EntityForm
 {
-    /** @var Entity\Repository\StationRepository */
     protected Entity\Repository\StationRepository $station_repo;
 
-    /** @var Acl */
     protected Acl $acl;
 
-    /** @var bool */
     protected bool $can_see_administration = false;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Entity\Repository\StationRepository $station_repo
-     * @param Acl $acl
-     * @param Config $config
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
@@ -47,17 +36,11 @@ class StationForm extends EntityForm
         $this->station_repo = $station_repo;
     }
 
-    /**
-     * @return bool
-     */
     public function canSeeAdministration(): bool
     {
         return $this->can_see_administration;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.

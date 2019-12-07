@@ -9,23 +9,14 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractBuildMenu extends Event
 {
-    /** @var Acl */
     protected Acl $acl;
 
-    /** @var User */
     protected User $user;
 
-    /** @var RouterInterface */
     protected RouterInterface $router;
 
-    /** @var array */
     protected array $menu = [];
 
-    /**
-     * @param Acl $acl
-     * @param User $user
-     * @param RouterInterface $router
-     */
     public function __construct(Acl $acl, User $user, RouterInterface $router)
     {
         $this->acl = $acl;
@@ -33,17 +24,11 @@ abstract class AbstractBuildMenu extends Event
         $this->router = $router;
     }
 
-    /**
-     * @return Acl
-     */
     public function getAcl(): Acl
     {
         return $this->acl;
     }
-
-    /**
-     * @return Router
-     */
+    
     public function getRouter(): Router
     {
         return $this->router;

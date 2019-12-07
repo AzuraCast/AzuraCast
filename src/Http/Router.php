@@ -10,14 +10,8 @@ use Slim\Interfaces\RouteParserInterface;
 
 class Router extends \Azura\Http\Router
 {
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /**
-     * @param Settings $settings
-     * @param RouteParserInterface $route_parser
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     */
     public function __construct(
         Settings $settings,
         RouteParserInterface $route_parser,
@@ -28,9 +22,6 @@ class Router extends \Azura\Http\Router
         parent::__construct($settings, $route_parser);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBaseUrl(bool $use_request = true): UriInterface
     {
         $base_url = new Uri('');

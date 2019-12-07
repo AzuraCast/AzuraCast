@@ -12,19 +12,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationWebhookForm extends EntityForm
 {
-    /** @var array */
     protected array $config;
 
-    /** @var array */
     protected array $forms;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Config $config
-     * @param Router $router
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
@@ -50,17 +41,11 @@ class StationWebhookForm extends EntityForm
         $this->entityClass = Entity\StationWebhook::class;
     }
 
-    /**
-     * @return array
-     */
     public function getConfig(): array
     {
         return $this->config;
     }
 
-    /**
-     * @return array
-     */
     public function getForms(): array
     {
         return $this->forms;

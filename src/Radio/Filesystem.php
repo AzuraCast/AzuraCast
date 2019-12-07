@@ -15,15 +15,11 @@ use Psr\Cache\CacheItemPoolInterface;
  */
 class Filesystem
 {
-    /** @var CacheItemPoolInterface */
-    protected $cachePool;
+    protected CacheItemPoolInterface $cachePool;
 
     /** @var StationFilesystem[] All current interfaces managed by this */
     protected array $interfaces = [];
 
-    /**
-     * @param CacheItemPoolInterface $cachePool
-     */
     public function __construct(CacheItemPoolInterface $cachePool)
     {
         $this->cachePool = new PrefixedCachePool($cachePool, 'fs|');

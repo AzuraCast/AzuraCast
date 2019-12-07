@@ -14,16 +14,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    /** @var Logger */
     protected Logger $logger;
 
-    /** @var Runner */
     protected Runner $sync;
 
-    /**
-     * @param Logger $logger
-     * @param Runner $sync
-     */
     public function __construct(Logger $logger, Runner $sync)
     {
         $this->logger = $logger;

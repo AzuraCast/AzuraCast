@@ -10,24 +10,14 @@ class AzuraCastCentral
 {
     protected const BASE_URL = 'https://central.azuracast.com';
 
-    /** @var Settings */
     protected Settings $app_settings;
 
-    /** @var Client */
     protected Client $http_client;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settings_repo;
 
-    /** @var Version */
     protected Version $version;
 
-    /**
-     * @param Entity\Repository\SettingsRepository $settings_repo
-     * @param Settings $app_settings
-     * @param Version $version
-     * @param Client $http_client
-     */
     public function __construct(
         Entity\Repository\SettingsRepository $settings_repo,
         Settings $app_settings,

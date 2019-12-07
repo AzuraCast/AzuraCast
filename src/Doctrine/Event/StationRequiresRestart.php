@@ -15,12 +15,8 @@ use ReflectionObject;
  */
 class StationRequiresRestart implements EventSubscriber
 {
-    /** @var Reader */
     protected Reader $reader;
 
-    /**
-     * @param Reader $reader
-     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;

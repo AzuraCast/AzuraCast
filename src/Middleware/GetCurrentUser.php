@@ -15,10 +15,8 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class GetCurrentUser implements MiddlewareInterface
 {
-    /** @var Auth */
     protected Auth $auth;
 
-    /** @var Customization */
     protected Customization $customization;
 
     public function __construct(Auth $auth, Customization $customization)
@@ -27,12 +25,6 @@ class GetCurrentUser implements MiddlewareInterface
         $this->customization = $customization;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $this->auth->setSession($request->getAttribute(ServerRequest::ATTR_SESSION));

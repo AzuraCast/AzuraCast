@@ -11,30 +11,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Manager implements EventSubscriberInterface
 {
-    /** @var Acl */
     protected Acl $acl;
 
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Logger */
     protected Logger $logger;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settings_repo;
 
-    /** @var Settings */
     protected Settings $app_settings;
 
-    /**
-     * Manager constructor.
-     *
-     * @param Acl $acl
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settings_repo
-     * @param Logger $logger
-     * @param Settings $app_settings
-     */
     public function __construct(
         Acl $acl,
         EntityManager $em,

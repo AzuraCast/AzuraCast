@@ -12,14 +12,8 @@ class CheckForUpdates extends AbstractTask
 {
     protected const UPDATE_THRESHOLD = 3780;
 
-    /** @var AzuraCastCentral */
     protected AzuraCastCentral $azuracastCentral;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param AzuraCastCentral $azuracastCentral
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,

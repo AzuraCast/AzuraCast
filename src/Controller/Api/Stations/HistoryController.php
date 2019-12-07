@@ -15,18 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class HistoryController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var App\ApiUtilities */
     protected App\ApiUtilities $api_utils;
 
-    /**
-     * @param EntityManager $em
-     * @param App\ApiUtilities $api_utils
-     *
-     * @see App\Controller\Api\ApiProvider
-     */
     public function __construct(EntityManager $em, App\ApiUtilities $api_utils)
     {
         $this->em = $em;

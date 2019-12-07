@@ -10,9 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class MountsController extends AbstractStationCrudController
 {
-    /**
-     * @param StationMountForm $form
-     */
     public function __construct(StationMountForm $form)
     {
         parent::__construct($form);

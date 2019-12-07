@@ -12,16 +12,10 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class Api
 {
-    /** @var Entity\Repository\ApiKeyRepository */
     protected Entity\Repository\ApiKeyRepository $api_repo;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settings_repo;
 
-    /**
-     * @param Entity\Repository\ApiKeyRepository $apiKeyRepository
-     * @param Entity\Repository\SettingsRepository $settingsRepository
-     */
     public function __construct(
         Entity\Repository\ApiKeyRepository $apiKeyRepository,
         Entity\Repository\SettingsRepository $settingsRepository
@@ -30,12 +24,6 @@ class Api
         $this->settings_repo = $settingsRepository;
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Set "is API call" attribute on the request so error handling responds correctly.

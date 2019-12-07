@@ -14,24 +14,14 @@ use Psr\Http\Message\ResponseInterface;
 
 class InternalController
 {
-    /** @var Acl */
     protected Acl $acl;
 
-    /** @var NowPlaying */
     protected NowPlaying $sync_nowplaying;
 
-    /** @var AutoDJ */
     protected AutoDJ $autodj;
 
-    /** @var Logger */
     protected Logger $logger;
 
-    /**
-     * @param Acl $acl
-     * @param NowPlaying $sync_nowplaying
-     * @param AutoDJ $autodj
-     * @param Logger $logger
-     */
     public function __construct(
         Acl $acl,
         NowPlaying $sync_nowplaying,
@@ -44,12 +34,6 @@ class InternalController
         $this->logger = $logger;
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @return ResponseInterface
-     */
     public function authAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->_checkStationAuth($request);
@@ -79,9 +63,6 @@ class InternalController
         return $response;
     }
 
-    /**
-     * @param ServerRequest $request
-     */
     protected function _checkStationAuth(ServerRequest $request): void
     {
         $station = $request->getStation();

@@ -12,17 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class StationsController extends AbstractAdminCrudController
 {
-    /** @var Entity\Repository\StationRepository */
     protected StationRepository $stationRepo;
 
-    /** @var Form\StationCloneForm */
     protected Form\StationCloneForm $clone_form;
 
-    /**
-     * @param StationRepository $stationRepository
-     * @param Form\StationForm $form
-     * @param Form\StationCloneForm $clone_form
-     */
     public function __construct(
         StationRepository $stationRepository,
         Form\StationForm $form,

@@ -8,12 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class ListenersController
 {
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /**
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     */
     public function __construct(Entity\Repository\SettingsRepository $settingsRepo)
     {
         $this->settingsRepo = $settingsRepo;

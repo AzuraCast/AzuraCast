@@ -7,16 +7,13 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class GenerateRawNowPlaying extends Event
 {
-    /** @var Station */
     protected Station $station;
 
-    /** @var Radio\Frontend\AbstractFrontend */
     protected Radio\Frontend\AbstractFrontend $frontend;
 
     /** @var Radio\Remote\AdapterProxy[] */
     protected array $remotes;
 
-    /** @var bool */
     protected bool $include_clients = false;
 
     /** @var string|null The preloaded "payload" to supply to the nowplaying adapters, if one is available. */

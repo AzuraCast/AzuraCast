@@ -21,13 +21,10 @@ use Zend\Expressive\Session\SessionInterface;
 
 class ErrorHandler extends \Azura\Http\ErrorHandler
 {
-    /** @var Router */
     protected Router $router;
 
-    /** @var View */
     protected View $view;
 
-    /** @var Sentry */
     protected Sentry $sentry;
 
     public function __construct(

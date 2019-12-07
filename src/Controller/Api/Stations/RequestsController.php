@@ -14,20 +14,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\StationRequestRepository */
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
-    /** @var ApiUtilities */
     protected ApiUtilities $api_utils;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\StationRequestRepository $requestRepo
-     * @param ApiUtilities $api_utils
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\StationRequestRepository $requestRepo,

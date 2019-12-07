@@ -16,16 +16,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class Dispatcher implements EventSubscriberInterface
 {
-    /** @var Logger */
     protected Logger $logger;
 
     /** @var Connector\ConnectorInterface[] */
     protected array $connectors;
 
-    /**
-     * @param Logger $logger
-     * @param array $connectors
-     */
     public function __construct(Logger $logger, array $connectors)
     {
         $this->logger = $logger;

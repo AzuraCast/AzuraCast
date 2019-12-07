@@ -16,18 +16,11 @@ class ServerRequest extends \Azura\Http\ServerRequest
     public const ATTR_STATION_REMOTES = 'station_remotes';
     public const ATTR_USER = 'user';
 
-    /**
-     * @return bool
-     */
     public function isApiCall(): bool
     {
         return $this->serverRequest->getAttribute(self::ATTR_IS_API_CALL, false);
     }
 
-    /**
-     * @return Acl
-     * @throws Exception
-     */
     public function getAcl(): Acl
     {
         return $this->getAttributeOfClass(self::ATTR_ACL, Acl::class);

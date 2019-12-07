@@ -12,40 +12,22 @@ use RuntimeException;
 
 class Ftp
 {
-    /** @var AzuraCastCentral */
     protected AzuraCastCentral $ac_central;
 
-    /** @var Acl */
     protected Acl $acl;
 
-    /** @var Settings */
     protected Settings $app_settings;
 
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\UserRepository */
     protected Entity\Repository\UserRepository $user_repo;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settings_repo;
 
-    /** @var LoggerInterface */
     protected LoggerInterface $logger;
 
-    /** @var Router */
     protected Router $router;
 
-    /**
-     * @param AzuraCastCentral $ac_central
-     * @param Acl $acl
-     * @param Settings $app_settings
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settings_repo
-     * @param Entity\Repository\UserRepository $user_repo
-     * @param LoggerInterface $logger
-     * @param Router $router
-     */
     public function __construct(
         AzuraCastCentral $ac_central,
         Acl $acl,

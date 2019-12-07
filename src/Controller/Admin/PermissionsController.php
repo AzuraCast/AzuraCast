@@ -10,9 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController
 {
-    /**
-     * @param PermissionsForm $form
-     */
     public function __construct(PermissionsForm $form)
     {
         parent::__construct($form);

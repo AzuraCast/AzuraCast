@@ -16,26 +16,14 @@ use Symfony\Component\Finder\Finder;
 
 class Media extends AbstractTask
 {
-    /** @var Entity\Repository\StationMediaRepository */
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
-    /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
-    /** @var Filesystem */
     protected Filesystem $filesystem;
 
-    /** @var MessageQueue */
     protected MessageQueue $messageQueue;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @param Entity\Repository\StationPlaylistMediaRepository $spmRepo
-     * @param Filesystem $filesystem
-     * @param MessageQueue $messageQueue
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,

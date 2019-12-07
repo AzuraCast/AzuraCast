@@ -14,14 +14,8 @@ class Twitter extends AbstractConnector
 {
     public const NAME = 'twitter';
 
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /**
-     * @param Logger $logger
-     * @param Client $http_client
-     * @param EntityManager $em
-     */
     public function __construct(Logger $logger, Client $http_client, EntityManager $em)
     {
         parent::__construct($logger, $http_client);

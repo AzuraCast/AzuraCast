@@ -8,21 +8,12 @@ use Doctrine\ORM\EntityManager;
 
 abstract class AbstractSettingsForm extends Form
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\SettingsRepository */
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /** @var Settings */
     protected Settings $settings;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SettingsRepository $settingsRepo
-     * @param Settings $settings
-     * @param array $formConfig
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
@@ -36,35 +27,21 @@ abstract class AbstractSettingsForm extends Form
         $this->settingsRepo = $settingsRepo;
     }
 
-    /**
-     * @return EntityManager
-     */
     public function getEntityManager(): EntityManager
     {
         return $this->em;
     }
 
-    /**
-     * @return Entity\Repository\SettingsRepository
-     */
     public function getEntityRepository(): Entity\Repository\SettingsRepository
     {
         return $this->settingsRepo;
     }
 
-    /**
-     * @return Settings
-     */
     public function getSettings(): Settings
     {
         return $this->settings;
     }
 
-    /**
-     * @param ServerRequest $request
-     *
-     * @return bool
-     */
     public function process(ServerRequest $request): bool
     {
         // Populate the form with existing values (if they exist).

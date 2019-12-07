@@ -10,20 +10,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PermissionsForm extends EntityForm
 {
-    /** @var Entity\Repository\RolePermissionRepository */
     protected Entity\Repository\RolePermissionRepository $permissions_repo;
 
-    /** @var bool */
     protected bool $set_permissions = true;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param ValidatorInterface $validator
-     * @param Config $config
-     * @param Entity\Repository\StationRepository $stations_repo
-     * @param Entity\Repository\RolePermissionRepository $permissions_repo
-     */
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
@@ -42,9 +32,6 @@ class PermissionsForm extends EntityForm
         $this->permissions_repo = $permissions_repo;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function process(ServerRequest $request, $record = null)
     {
         if ($record instanceof Entity\Role && Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID === $record->getId()) {
@@ -61,9 +48,6 @@ class PermissionsForm extends EntityForm
         return parent::process($request, $record);
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function _denormalizeToRecord($data, $record = null, array $context = []): object
     {
         $record = parent::_denormalizeToRecord($data, $record, $context);
@@ -77,10 +61,7 @@ class PermissionsForm extends EntityForm
 
         return $record;
     }
-
-    /**
-     * @inheritdoc
-     */
+    
     protected function _normalizeRecord($record, array $context = []): array
     {
         $data = parent::_normalizeRecord($record, $context);

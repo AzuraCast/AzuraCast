@@ -14,23 +14,13 @@ use Slim\Routing\RouteContext;
  */
 class Stations
 {
-    /** @var EventDispatcher */
     protected EventDispatcher $dispatcher;
 
-    /**
-     * @param EventDispatcher $dispatcher
-     */
     public function __construct(EventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $view = $request->getView();

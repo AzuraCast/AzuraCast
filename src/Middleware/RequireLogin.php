@@ -14,12 +14,6 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class RequireLogin
 {
-    /**
-     * @param ServerRequest $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {

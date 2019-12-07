@@ -13,32 +13,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var Entity\Repository\SongRepository */
     protected Entity\Repository\SongRepository $songRepo;
 
-    /** @var Entity\Repository\StationPlaylistMediaRepository */
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
-    /** @var EventDispatcher */
     protected EventDispatcher $dispatcher;
 
-    /** @var Filesystem */
     protected Filesystem $filesystem;
 
-    /** @var Logger */
     protected Logger $logger;
 
-    /**
-     * @param EntityManager $em
-     * @param Entity\Repository\SongRepository $songRepo
-     * @param Entity\Repository\StationPlaylistMediaRepository $spmRepo
-     * @param EventDispatcher $dispatcher
-     * @param Filesystem $filesystem
-     * @param Logger $logger
-     */
     public function __construct(
         EntityManager $em,
         Entity\Repository\SongRepository $songRepo,

@@ -11,16 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class PerformanceController
 {
-    /** @var EntityManager */
     protected EntityManager $em;
 
-    /** @var RadioAutomation */
     protected RadioAutomation $sync_automation;
 
-    /**
-     * @param EntityManager $em
-     * @param RadioAutomation $sync_automation
-     */
     public function __construct(EntityManager $em, RadioAutomation $sync_automation)
     {
         $this->em = $em;

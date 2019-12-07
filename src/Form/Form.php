@@ -3,9 +3,6 @@ namespace App\Form;
 
 class Form extends \AzuraForms\Form
 {
-    /**
-     * @inheritdoc
-     */
     public function __construct(array $options = [], ?array $defaults = null)
     {
         array_unshift($this->field_namespaces, '\\App\\Form\\Field');

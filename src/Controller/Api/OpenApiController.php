@@ -10,16 +10,10 @@ use function OpenApi\scan;
 
 class OpenApiController
 {
-    /** @var Settings */
     protected Settings $settings;
 
-    /** @var Version */
     protected Version $version;
 
-    /**
-     * @param Settings $settings
-     * @param Version $version
-     */
     public function __construct(Settings $settings, Version $version)
     {
         $this->settings = $settings;

@@ -14,23 +14,13 @@ use Slim\Routing\RouteContext;
  */
 class Admin
 {
-    /** @var EventDispatcher */
     protected EventDispatcher $dispatcher;
 
-    /**
-     * @param EventDispatcher $dispatcher
-     */
     public function __construct(EventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $event = new Event\BuildAdminMenu($request->getAcl(), $request->getUser(), $request->getRouter());

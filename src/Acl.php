@@ -31,10 +31,8 @@ class Acl
     public const STATION_AUTOMATION = 'manage station automation';
     public const STATION_WEB_HOOKS = 'manage station web hooks';
 
-    /** @var Entity\Repository\RolePermissionRepository */
     protected Entity\Repository\RolePermissionRepository $permission_repo;
 
-    /** @var array|null An array of actions enabled by each role. */
     protected ?array $_actions;
 
     public function __construct(Entity\Repository\RolePermissionRepository $rolePermissionRepository)

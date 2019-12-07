@@ -15,13 +15,13 @@ use Psr\Http\Message\ResponseInterface;
 class RequestsController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\StationRequestRepository */
-    protected $requestRepo;
+    protected Entity\Repository\StationRequestRepository $requestRepo;
 
     /** @var ApiUtilities */
-    protected $api_utils;
+    protected ApiUtilities $api_utils;
 
     /**
      * @param EntityManager $em

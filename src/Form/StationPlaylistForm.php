@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StationPlaylistForm extends EntityForm
 {
     /** @var Entity\Repository\StationPlaylistMediaRepository */
-    protected $playlistMediaRepo;
+    protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo;
 
     /**
      * @param EntityManager $em

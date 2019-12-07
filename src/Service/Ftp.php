@@ -13,28 +13,28 @@ use RuntimeException;
 class Ftp
 {
     /** @var AzuraCastCentral */
-    protected $ac_central;
+    protected AzuraCastCentral $ac_central;
 
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     /** @var Settings */
-    protected $app_settings;
+    protected Settings $app_settings;
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\UserRepository */
-    protected $user_repo;
+    protected Entity\Repository\UserRepository $user_repo;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
+    protected Entity\Repository\SettingsRepository $settings_repo;
 
     /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /** @var Router */
-    protected $router;
+    protected Router $router;
 
     /**
      * @param AzuraCastCentral $ac_central

@@ -12,10 +12,10 @@ class RadioAutomation extends AbstractTask
     public const DEFAULT_THRESHOLD_DAYS = 14;
 
     /** @var Entity\Repository\StationMediaRepository */
-    protected $mediaRepo;
+    protected Entity\Repository\StationMediaRepository $mediaRepo;
 
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     /**
      * @param EntityManager $em
@@ -235,7 +235,7 @@ class RadioAutomation extends AbstractTask
 
             $data_points[$row['song_id']][] = $row;
         }
-        
+
         $media_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm, spm, sp 
             FROM App\Entity\StationMedia sm 

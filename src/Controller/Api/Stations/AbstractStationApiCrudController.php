@@ -7,6 +7,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
 use Azura\Doctrine\Paginator;
+use Azura\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -99,7 +100,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param int|string $id
      *
      * @return ResponseInterface
-     * @throws \Azura\Exception
+     * @throws Exception
      */
     public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {

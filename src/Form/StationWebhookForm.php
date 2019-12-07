@@ -13,10 +13,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StationWebhookForm extends EntityForm
 {
     /** @var array */
-    protected $config;
+    protected array $config;
 
     /** @var array */
-    protected $forms;
+    protected array $forms;
 
     /**
      * @param EntityManager $em

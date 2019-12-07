@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StationForm extends EntityForm
 {
     /** @var Entity\Repository\StationRepository */
-    protected $station_repo;
+    protected Entity\Repository\StationRepository $station_repo;
 
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     /** @var bool */
-    protected $can_see_administration = false;
+    protected bool $can_see_administration = false;
 
     /**
      * @param EntityManager $em

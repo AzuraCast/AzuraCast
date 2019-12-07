@@ -15,13 +15,13 @@ class Version
     public const FALLBACK_VERSION = '0.9.8';
 
     /** @var CacheInterface */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /** @var string */
     protected $repo_dir;
 
     /** @var Settings */
-    protected $app_settings;
+    protected Settings $app_settings;
 
     public function __construct(CacheInterface $cache, Settings $app_settings)
     {

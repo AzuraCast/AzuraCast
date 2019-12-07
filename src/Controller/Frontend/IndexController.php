@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 class IndexController
 {
     /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
+    protected Entity\Repository\SettingsRepository $settings_repo;
 
     /**
      * @param Entity\Repository\SettingsRepository $settings_repo

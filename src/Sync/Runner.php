@@ -12,22 +12,22 @@ use Monolog\Logger;
 class Runner
 {
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /** @var SettingsRepository */
-    protected $settingsRepo;
+    protected SettingsRepository $settingsRepo;
 
     /** @var Task\AbstractTask[] */
-    protected $tasks_nowplaying;
+    protected array $tasks_nowplaying;
 
     /** @var Task\AbstractTask[] */
-    protected $tasks_short;
+    protected array $tasks_short;
 
     /** @var Task\AbstractTask[] */
-    protected $tasks_medium;
+    protected array $tasks_medium;
 
     /** @var Task\AbstractTask[] */
-    protected $tasks_long;
+    protected array $tasks_long;
 
     public function __construct(
         SettingsRepository $settingsRepo,

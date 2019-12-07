@@ -7,11 +7,11 @@ use App\Entity\SongHistory;
 class NotifyNChanMessage extends AbstractDelayedMessage
 {
     /** @var int */
-    public $station_id;
+    public int $station_id;
     /** @var string */
-    public $station_shortcode;
+    public string $station_shortcode;
     /** @var NowPlaying */
-    public $nowplaying;
+    public NowPlaying $nowplaying;
 
     public function __construct()
     {

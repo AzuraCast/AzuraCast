@@ -15,7 +15,7 @@ class Twitter extends AbstractConnector
     public const NAME = 'twitter';
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /**
      * @param Logger $logger

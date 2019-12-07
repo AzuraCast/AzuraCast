@@ -10,19 +10,19 @@ use Doctrine\ORM\EntityRepository;
 abstract class AbstractAdminCrudController
 {
     /** @var EntityForm */
-    protected $form;
+    protected EntityForm $form;
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var string */
-    protected $entity_class;
+    protected string $entity_class;
 
     /** @var EntityRepository */
-    protected $record_repo;
+    protected EntityRepository $record_repo;
 
     /** @var string */
-    protected $csrf_namespace;
+    protected string $csrf_namespace;
 
     public function __construct(EntityForm $form)
     {

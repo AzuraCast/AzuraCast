@@ -15,19 +15,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SettingsController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Serializer */
-    protected $serializer;
+    protected Serializer $serializer;
 
     /** @var ValidatorInterface */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
+    protected Entity\Repository\SettingsRepository $settings_repo;
 
     /** @var Entity\Api\Admin\Settings */
-    protected $api_settings;
+    protected Entity\Api\Admin\Settings $api_settings;
 
     /**
      * @param EntityManager $em

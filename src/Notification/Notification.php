@@ -12,13 +12,13 @@ class Notification
     public const INFO = Flash::INFO;
 
     /** @var string */
-    protected $title;
+    protected string $title;
 
     /** @var string */
-    protected $body;
+    protected string $body;
 
     /** @var string */
-    protected $type;
+    protected string $type;
 
     /**
      * Notification constructor.

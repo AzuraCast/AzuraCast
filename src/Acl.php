@@ -32,10 +32,10 @@ class Acl
     public const STATION_WEB_HOOKS = 'manage station web hooks';
 
     /** @var Entity\Repository\RolePermissionRepository */
-    protected $permission_repo;
+    protected Entity\Repository\RolePermissionRepository $permission_repo;
 
     /** @var array|null An array of actions enabled by each role. */
-    protected $_actions;
+    protected ?array $_actions;
 
     public function __construct(Entity\Repository\RolePermissionRepository $rolePermissionRepository)
     {

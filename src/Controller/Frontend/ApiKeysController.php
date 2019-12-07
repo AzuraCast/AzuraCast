@@ -13,16 +13,16 @@ use Psr\Http\Message\ResponseInterface;
 class ApiKeysController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var string */
-    protected $csrf_namespace = 'frontend_api_keys';
+    protected string $csrf_namespace = 'frontend_api_keys';
 
     /** @var Entity\Repository\ApiKeyRepository */
-    protected $record_repo;
+    protected Entity\Repository\ApiKeyRepository $record_repo;
 
     /** @var array */
-    protected $form_config;
+    protected array $form_config;
 
     /**
      * @param EntityManager $em

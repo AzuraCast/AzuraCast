@@ -16,10 +16,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 class GetCurrentUser implements MiddlewareInterface
 {
     /** @var Auth */
-    protected $auth;
+    protected Auth $auth;
 
     /** @var Customization */
-    protected $customization;
+    protected Customization $customization;
 
     public function __construct(Auth $auth, Customization $customization)
     {

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StationMountForm extends EntityForm
 {
     /** @var array */
-    protected $form_configs;
+    protected array $form_configs;
 
     /**
      * @param EntityManager $em

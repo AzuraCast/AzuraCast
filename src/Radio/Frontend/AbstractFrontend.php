@@ -18,16 +18,16 @@ use Supervisor\Supervisor;
 abstract class AbstractFrontend extends AbstractAdapter
 {
     /** @var Client */
-    protected $http_client;
+    protected Client $http_client;
 
     /** @var Router */
-    protected $router;
+    protected Router $router;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var Entity\Repository\StationMountRepository */
-    protected $stationMountRepo;
+    protected Entity\Repository\StationMountRepository $stationMountRepo;
 
     public function __construct(
         EntityManager $em,

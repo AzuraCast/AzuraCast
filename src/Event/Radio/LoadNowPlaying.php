@@ -7,7 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 class LoadNowPlaying extends Event
 {
     /** @var NowPlaying[] */
-    protected $np = [];
+    protected array $np = [];
 
     /**
      * @param array $np_raw

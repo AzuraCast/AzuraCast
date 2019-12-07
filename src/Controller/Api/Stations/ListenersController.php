@@ -17,10 +17,10 @@ use Psr\Http\Message\ResponseInterface;
 class ListenersController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Reader */
-    protected $geoip;
+    protected Reader $geoip;
 
     /**
      * @param EntityManager $em

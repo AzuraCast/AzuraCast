@@ -17,13 +17,13 @@ use Supervisor\Supervisor;
 abstract class AbstractAdapter
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Supervisor */
-    protected $supervisor;
+    protected Supervisor $supervisor;
 
     /** @var EventDispatcher */
-    protected $dispatcher;
+    protected EventDispatcher $dispatcher;
 
     /**
      * @param EntityManager $em

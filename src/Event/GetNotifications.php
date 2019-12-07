@@ -8,10 +8,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 class GetNotifications extends Event
 {
     /** @var User */
-    protected $current_user;
+    protected User $current_user;
 
     /** @var array */
-    protected $notifications;
+    protected array $notifications;
 
     /**
      * GetNotifications constructor.

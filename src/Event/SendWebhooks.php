@@ -9,19 +9,19 @@ use Symfony\Contracts\EventDispatcher\Event;
 class SendWebhooks extends Event
 {
     /** @var Station */
-    protected $station;
+    protected Station $station;
 
     /** @var NowPlaying */
-    protected $np;
+    protected NowPlaying $np;
 
     /** @var Router */
-    protected $router;
+    protected Router $router;
 
     /** @var array */
-    protected $triggers = [];
+    protected array $triggers = [];
 
     /** @var bool */
-    protected $is_standalone = true;
+    protected bool $is_standalone = true;
 
     public function __construct(
         Station $station,

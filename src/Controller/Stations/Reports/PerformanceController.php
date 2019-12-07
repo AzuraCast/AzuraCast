@@ -12,10 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 class PerformanceController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var RadioAutomation */
-    protected $sync_automation;
+    protected RadioAutomation $sync_automation;
 
     /**
      * @param EntityManager $em

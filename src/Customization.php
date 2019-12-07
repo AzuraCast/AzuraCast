@@ -17,13 +17,13 @@ class Customization
     public const DEFAULT_THEME = 'light';
 
     /** @var Entity\User|null */
-    protected $user;
+    protected ?Entity\User $user = null;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var string|null */
-    protected $locale;
+    protected ?string $locale = null;
 
     public function __construct(Entity\Repository\SettingsRepository $settingsRepo)
     {

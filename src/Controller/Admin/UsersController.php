@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 class UsersController extends AbstractAdminCrudController
 {
     /** @var Auth */
-    protected $auth;
+    protected Auth $auth;
 
     /**
      * @param UserForm $form

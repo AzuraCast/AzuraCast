@@ -11,7 +11,7 @@ use Slim\Interfaces\RouteParserInterface;
 class Router extends \Azura\Http\Router
 {
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /**
      * @param Settings $settings

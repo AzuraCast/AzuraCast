@@ -17,19 +17,19 @@ use Psr\Http\Message\ResponseInterface;
 class SetupController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var Auth */
-    protected $auth;
+    protected Auth $auth;
 
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
     public function __construct(
         EntityManager $em,

@@ -14,16 +14,17 @@ use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationCloneForm extends StationForm
 {
     /** @var Configuration */
-    protected $configuration;
+    protected Configuration $configuration;
 
     /** @var Media */
-    protected $media_sync;
+    protected Media $media_sync;
 
     /**
      * @param EntityManager $em
@@ -243,7 +244,7 @@ class StationCloneForm extends StationForm
 
             if (is_dir($src . '/' . $file) && ($file !== '.') && ($file !== '..')) {
                 if (!mkdir($concurrentDirectory = $dest . '/' . $file) && !is_dir($concurrentDirectory)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+                    throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
                 }
                 $this->_copy($src . '/' . $file, $dest . '/' . $file);
             } else {

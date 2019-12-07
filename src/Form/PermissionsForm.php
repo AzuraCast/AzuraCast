@@ -11,10 +11,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PermissionsForm extends EntityForm
 {
     /** @var Entity\Repository\RolePermissionRepository */
-    protected $permissions_repo;
+    protected Entity\Repository\RolePermissionRepository $permissions_repo;
 
     /** @var bool */
-    protected $set_permissions = true;
+    protected bool $set_permissions = true;
 
     /**
      * @param EntityManager $em

@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 class ListenersController
 {
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /**
      * @param Entity\Repository\SettingsRepository $settingsRepo
@@ -22,7 +22,7 @@ class ListenersController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $view = $request->getView();
-        
+
         $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
             Entity\Analytics::LEVEL_ALL);
 

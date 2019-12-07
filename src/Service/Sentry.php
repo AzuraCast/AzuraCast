@@ -22,25 +22,25 @@ use Throwable;
 class Sentry
 {
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var Settings */
-    protected $appSettings;
+    protected Settings $appSettings;
 
     /** @var Client */
-    protected $httpClient;
+    protected Client $httpClient;
 
     /** @var Version */
-    protected $version;
+    protected Version $version;
 
     /** @var bool */
-    protected $isEnabled = false;
+    protected bool $isEnabled = false;
 
     /** @var bool */
-    protected $isInitialized = false;
+    protected bool $isInitialized = false;
 
     /** @var Hub */
-    protected $hub;
+    protected Hub $hub;
 
     public function __construct(
         Entity\Repository\SettingsRepository $settings_repo,

@@ -22,13 +22,13 @@ use Zend\Expressive\Session\SessionInterface;
 class ErrorHandler extends \Azura\Http\ErrorHandler
 {
     /** @var Router */
-    protected $router;
+    protected Router $router;
 
     /** @var View */
-    protected $view;
+    protected View $view;
 
     /** @var Sentry */
-    protected $sentry;
+    protected Sentry $sentry;
 
     public function __construct(
         App $app,
@@ -141,6 +141,16 @@ class ErrorHandler extends \Azura\Http\ErrorHandler
         $response = $this->responseFactory->createResponse(500);
 
         if ($this->returnJson) {
+            if ($this->showDetailed) {
+                return $response->withJson([
+                    'code' => $this->exception->getCode(),
+                    'message' => $this->exception->getMessage(),
+                    'file' => $this->exception->getFile(),
+                    'line' => $this->exception->getLine(),
+                    'trace' => $this->exception->getTrace(),
+                ]);
+            }
+
             $api_response = new Entity\Api\Error(
                 $this->exception->getCode(),
                 $this->exception->getMessage(),

@@ -15,7 +15,7 @@ use Slim\Routing\RouteContext;
 class Stations
 {
     /** @var EventDispatcher */
-    protected $dispatcher;
+    protected EventDispatcher $dispatcher;
 
     /**
      * @param EventDispatcher $dispatcher

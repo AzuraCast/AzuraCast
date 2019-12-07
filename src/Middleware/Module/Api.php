@@ -13,10 +13,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 class Api
 {
     /** @var Entity\Repository\ApiKeyRepository */
-    protected $api_repo;
+    protected Entity\Repository\ApiKeyRepository $api_repo;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
+    protected Entity\Repository\SettingsRepository $settings_repo;
 
     /**
      * @param Entity\Repository\ApiKeyRepository $apiKeyRepository

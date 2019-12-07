@@ -11,13 +11,13 @@ use Doctrine\ORM\EntityManager;
 class RadioRequests extends AbstractTask
 {
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     /** @var EventDispatcher */
-    protected $dispatcher;
+    protected EventDispatcher $dispatcher;
 
     /** @var Entity\Repository\StationRequestRepository */
-    protected $requestRepo;
+    protected Entity\Repository\StationRequestRepository $requestRepo;
 
     /**
      * @param EntityManager $em

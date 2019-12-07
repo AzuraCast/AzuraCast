@@ -14,7 +14,7 @@ use const JSON_PRETTY_PRINT;
 class AuditLogController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /**
      * @param EntityManager $em

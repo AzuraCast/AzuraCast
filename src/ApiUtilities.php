@@ -13,13 +13,13 @@ use Psr\Http\Message\UriInterface;
 class ApiUtilities
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Router */
-    protected $router;
+    protected Router $router;
 
     /** @var Customization */
-    protected $customization;
+    protected Customization $customization;
 
     /**
      * @param EntityManager $em

@@ -16,16 +16,16 @@ class Configuration
     public const DEFAULT_PORT_MAX = 8499;
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     /** @var Supervisor */
-    protected $supervisor;
+    protected Supervisor $supervisor;
 
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /**
      * Configuration constructor.

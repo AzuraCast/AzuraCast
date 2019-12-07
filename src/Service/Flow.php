@@ -31,6 +31,7 @@ use Azura\Exception;
 use Azura\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use RuntimeException;
 use const SCANDIR_SORT_NONE;
 
 class Flow
@@ -93,7 +94,7 @@ class Flow
                 // the file is stored in a temporary directory
                 if (!is_dir($chunkBaseDir)) {
                     if (!mkdir($chunkBaseDir, 0777, true) && !is_dir($chunkBaseDir)) {
-                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $chunkBaseDir));
+                        throw new RuntimeException(sprintf('Directory "%s" was not created', $chunkBaseDir));
                     }
                 }
 

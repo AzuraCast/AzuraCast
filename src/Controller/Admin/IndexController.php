@@ -15,10 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 class IndexController
 {
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /** @var Runner */
-    protected $sync;
+    protected Runner $sync;
 
     /**
      * @param Logger $logger

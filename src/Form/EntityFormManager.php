@@ -8,16 +8,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EntityFormManager
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Serializer */
-    protected $serializer;
+    protected Serializer $serializer;
 
     /** @var ValidatorInterface */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /** @var EntityForm[] */
-    protected $custom_forms;
+    protected array $custom_forms;
 
     /**
      * @param EntityManager $em

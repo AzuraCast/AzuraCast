@@ -11,7 +11,7 @@ use Symfony\Component\Finder\SplFileInfo;
 class Plugins
 {
     /** @var array An array of all plugins and their capabilities. */
-    protected $plugins = [];
+    protected array $plugins = [];
 
     public function __construct($base_dir)
     {

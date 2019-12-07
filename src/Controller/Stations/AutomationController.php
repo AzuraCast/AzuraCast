@@ -15,16 +15,16 @@ use Psr\Http\Message\ResponseInterface;
 class AutomationController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var RadioAutomation */
-    protected $sync_task;
+    protected RadioAutomation $sync_task;
 
     /** @var Settings */
-    protected $app_settings;
+    protected Settings $app_settings;
 
     /** @var array */
-    protected $form_config;
+    protected array $form_config;
 
     /**
      * @param EntityManager $em

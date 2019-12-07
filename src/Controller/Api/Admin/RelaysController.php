@@ -13,10 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 class RelaysController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     /**
      * @param EntityManager $em

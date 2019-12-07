@@ -17,10 +17,10 @@ use Slim\Routing\RouteContext;
 class GetStation implements MiddlewareInterface
 {
     /** @var StationRepository */
-    protected $station_repo;
+    protected StationRepository $station_repo;
 
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     public function __construct(
         StationRepository $station_repo,

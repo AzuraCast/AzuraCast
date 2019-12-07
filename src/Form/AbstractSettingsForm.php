@@ -9,13 +9,13 @@ use Doctrine\ORM\EntityManager;
 abstract class AbstractSettingsForm extends Form
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
     /**
      * @param EntityManager $em

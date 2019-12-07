@@ -8,7 +8,7 @@ use InfluxDB\Database;
 class Analytics extends AbstractTask
 {
     /** @var Database */
-    protected $influx;
+    protected Database $influx;
 
     /**
      * @param EntityManager $em

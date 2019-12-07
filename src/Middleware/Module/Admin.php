@@ -15,7 +15,7 @@ use Slim\Routing\RouteContext;
 class Admin
 {
     /** @var EventDispatcher */
-    protected $dispatcher;
+    protected EventDispatcher $dispatcher;
 
     /**
      * @param EventDispatcher $dispatcher

@@ -8,22 +8,22 @@ use Symfony\Contracts\EventDispatcher\Event;
 class GenerateRawNowPlaying extends Event
 {
     /** @var Station */
-    protected $station;
+    protected Station $station;
 
     /** @var Radio\Frontend\AbstractFrontend */
-    protected $frontend;
+    protected Radio\Frontend\AbstractFrontend $frontend;
 
     /** @var Radio\Remote\AdapterProxy[] */
-    protected $remotes;
+    protected array $remotes;
 
     /** @var bool */
-    protected $include_clients = false;
+    protected bool $include_clients = false;
 
     /** @var string|null The preloaded "payload" to supply to the nowplaying adapters, if one is available. */
-    protected $payload;
+    protected ?string $payload;
 
     /** @var array The composed "raw" NowPlaying data. */
-    protected $np_raw = [];
+    protected array $np_raw = [];
 
     public function __construct(
         Station $station,

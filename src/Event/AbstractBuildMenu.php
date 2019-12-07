@@ -10,16 +10,16 @@ use Symfony\Contracts\EventDispatcher\Event;
 abstract class AbstractBuildMenu extends Event
 {
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     /** @var User */
-    protected $user;
+    protected User $user;
 
     /** @var RouterInterface */
-    protected $router;
+    protected RouterInterface $router;
 
     /** @var array */
-    protected $menu = [];
+    protected array $menu = [];
 
     /**
      * @param Acl $acl

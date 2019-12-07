@@ -19,19 +19,19 @@ class MessageQueue implements EventSubscriberInterface
     public const GLOBAL_QUEUE_NAME = 'azuracast';
 
     /** @var QueueFactory */
-    protected $queues;
+    protected QueueFactory $queues;
 
     /** @var Producer */
-    protected $producer;
+    protected Producer $producer;
 
     /** @var Consumer */
-    protected $consumer;
+    protected Consumer $consumer;
 
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /**
      * @param QueueFactory $queues

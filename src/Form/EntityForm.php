@@ -24,22 +24,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EntityForm extends Form
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Serializer */
-    protected $serializer;
+    protected Serializer $serializer;
 
     /** @var ValidatorInterface */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
-    protected $entityClass;
+    protected string $entityClass;
 
     /** @var array The default context sent to form normalization/denormalization functions. */
-    protected $defaultContext = [];
+    protected array $defaultContext = [];
 
     /** @var Station|null */
-    protected $station;
+    protected ?Station $station = null;
 
     /**
      * @param EntityManager $em

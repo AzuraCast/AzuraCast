@@ -14,19 +14,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class AbstractApiCrudController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Serializer */
-    protected $serializer;
+    protected Serializer $serializer;
 
     /** @var ValidatorInterface */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
-    protected $entityClass;
+    protected string $entityClass;
 
     /** @var string The route name used to generate the "self" links for each record. */
-    protected $resourceRouteName;
+    protected string $resourceRouteName;
 
     /**
      * @param EntityManager $em

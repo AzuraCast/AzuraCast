@@ -15,7 +15,7 @@ class LogsController
     use LogViewerTrait;
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /**
      * @param EntityManager $em

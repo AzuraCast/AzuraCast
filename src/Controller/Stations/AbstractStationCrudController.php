@@ -5,25 +5,29 @@ use App\Entity\Station;
 use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
+use Azura\Exception;
+use Azura\Exception\CsrfValidationException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 
 abstract class AbstractStationCrudController
 {
     /** @var EntityForm */
-    protected $form;
+    protected EntityForm $form;
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var string */
-    protected $entity_class;
+    protected string $entity_class;
 
     /** @var EntityRepository */
-    protected $record_repo;
+    protected EntityRepository $record_repo;
 
     /** @var string */
-    protected $csrf_namespace;
+    protected string $csrf_namespace;
 
     public function __construct(EntityForm $form)
     {
@@ -82,10 +86,10 @@ abstract class AbstractStationCrudController
      * @param string $csrf
      *
      * @throws NotFoundException
-     * @throws \Azura\Exception
-     * @throws \Azura\Exception\CsrfValidationException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws Exception
+     * @throws CsrfValidationException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     protected function _doDelete(ServerRequest $request, $id, $csrf): void
     {

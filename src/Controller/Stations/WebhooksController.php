@@ -12,10 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 class WebhooksController extends AbstractStationCrudController
 {
     /** @var Dispatcher */
-    protected $dispatcher;
+    protected Dispatcher $dispatcher;
 
     /** @var array */
-    protected $webhook_config;
+    protected array $webhook_config;
 
     /**
      * @param StationWebhookForm $form

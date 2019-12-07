@@ -6,8 +6,8 @@ use OpenApi\Annotations as OA;
 
 class CustomFieldsController extends AbstractAdminApiCrudController
 {
-    protected $entityClass = Entity\CustomField::class;
-    protected $resourceRouteName = 'api:admin:custom_field';
+    protected string $entityClass = Entity\CustomField::class;
+    protected string $resourceRouteName = 'api:admin:custom_field';
 
     /**
      * @OA\Get(path="/admin/custom_fields",

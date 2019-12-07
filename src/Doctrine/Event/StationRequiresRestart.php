@@ -16,7 +16,7 @@ use ReflectionObject;
 class StationRequiresRestart implements EventSubscriber
 {
     /** @var Reader */
-    protected $reader;
+    protected Reader $reader;
 
     /**
      * @param Reader $reader

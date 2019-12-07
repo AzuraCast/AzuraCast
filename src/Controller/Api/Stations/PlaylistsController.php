@@ -20,11 +20,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PlaylistsController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\StationPlaylist::class;
-    protected $resourceRouteName = 'api:stations:playlist';
+    protected string $entityClass = Entity\StationPlaylist::class;
+    protected string $resourceRouteName = 'api:stations:playlist';
 
     /** @var Entity\Repository\StationPlaylistScheduleRepository */
-    protected $playlistScheduleRepo;
+    protected Entity\Repository\StationPlaylistScheduleRepository $playlistScheduleRepo;
 
     public function __construct(
         EntityManager $em,

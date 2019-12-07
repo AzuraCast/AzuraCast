@@ -25,37 +25,37 @@ use function DeepCopy\deep_copy;
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
 {
     /** @var Database */
-    protected $influx;
+    protected Database $influx;
 
     /** @var CacheInterface */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     /** @var AutoDJ */
-    protected $autodj;
+    protected AutoDJ $autodj;
 
     /** @var EventDispatcher */
-    protected $event_dispatcher;
+    protected EventDispatcher $event_dispatcher;
 
     /** @var MessageQueue */
-    protected $message_queue;
+    protected MessageQueue $message_queue;
 
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /** @var ApiUtilities */
-    protected $api_utils;
+    protected ApiUtilities $api_utils;
 
     /** @var Entity\Repository\SongHistoryRepository */
-    protected $history_repo;
+    protected Entity\Repository\SongHistoryRepository $history_repo;
 
     /** @var Entity\Repository\SongRepository */
-    protected $song_repo;
+    protected Entity\Repository\SongRepository $song_repo;
 
     /** @var Entity\Repository\ListenerRepository */
-    protected $listener_repo;
+    protected Entity\Repository\ListenerRepository $listener_repo;
 
     /** @var string */
     protected $analytics_level;

@@ -18,19 +18,19 @@ class Local
     public const NAME = 'local';
 
     /** @var Client */
-    protected $http_client;
+    protected Client $http_client;
 
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /** @var Database */
-    protected $influx;
+    protected Database $influx;
 
     /** @var CacheInterface */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
+    protected Entity\Repository\SettingsRepository $settings_repo;
 
     public function __construct(
         Logger $logger,

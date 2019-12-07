@@ -9,8 +9,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class UsersController extends AbstractAdminApiCrudController
 {
-    protected $entityClass = Entity\User::class;
-    protected $resourceRouteName = 'api:admin:user';
+    protected string $entityClass = Entity\User::class;
+    protected string $resourceRouteName = 'api:admin:user';
 
     /**
      * @OA\Get(path="/admin/users",

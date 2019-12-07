@@ -11,10 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 class RequestsController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var string */
-    protected $csrf_namespace = 'stations_requests';
+    protected string $csrf_namespace = 'stations_requests';
 
     /**
      * @param EntityManager $em

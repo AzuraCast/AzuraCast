@@ -17,10 +17,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class Dispatcher implements EventSubscriberInterface
 {
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /** @var Connector\ConnectorInterface[] */
-    protected $connectors;
+    protected array $connectors;
 
     /**
      * @param Logger $logger

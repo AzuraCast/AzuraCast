@@ -15,16 +15,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class NowplayingController implements EventSubscriberInterface
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var CacheInterface */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /** @var EventDispatcher */
-    protected $dispatcher;
+    protected EventDispatcher $dispatcher;
 
     /**
      * @param EntityManager $em

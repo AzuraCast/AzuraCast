@@ -19,7 +19,7 @@ class Filesystem
     protected $cachePool;
 
     /** @var StationFilesystem[] All current interfaces managed by this */
-    protected $interfaces = [];
+    protected array $interfaces = [];
 
     /**
      * @param CacheItemPoolInterface $cachePool

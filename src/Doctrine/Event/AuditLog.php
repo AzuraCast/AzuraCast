@@ -27,7 +27,7 @@ use ReflectionObject;
 class AuditLog implements EventSubscriber
 {
     /** @var Reader */
-    protected $reader;
+    protected Reader $reader;
 
     /**
      * @param Reader $reader

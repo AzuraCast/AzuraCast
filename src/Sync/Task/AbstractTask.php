@@ -7,10 +7,10 @@ use Doctrine\ORM\EntityManager;
 abstract class AbstractTask
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /**
      * @param EntityManager $em

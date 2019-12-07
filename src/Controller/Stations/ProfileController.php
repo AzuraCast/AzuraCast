@@ -11,16 +11,16 @@ use Psr\Http\Message\ResponseInterface;
 class ProfileController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\StationRepository */
-    protected $station_repo;
+    protected Entity\Repository\StationRepository $station_repo;
 
     /** @var StationForm */
-    protected $station_form;
+    protected StationForm $station_form;
 
     /** @var string */
-    protected $csrf_namespace = 'stations_profile';
+    protected string $csrf_namespace = 'stations_profile';
 
     /**
      * @param EntityManager $em

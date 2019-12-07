@@ -14,10 +14,10 @@ use Psr\Http\Message\ResponseInterface;
 class StreamersController extends AbstractStationCrudController
 {
     /** @var AzuraCastCentral */
-    protected $ac_central;
+    protected AzuraCastCentral $ac_central;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /**
      * @param EntityFormManager $formManager
@@ -67,7 +67,7 @@ class StreamersController extends AbstractStationCrudController
         }
 
         $be_settings = (array)$station->getBackendConfig();
-        
+
         return $view->renderToResponse($response, 'stations/streamers/index', [
             'server_url' => $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, ''),
             'stream_port' => $backend->getStreamPort($station),

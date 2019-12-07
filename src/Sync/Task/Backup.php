@@ -14,10 +14,10 @@ class Backup extends AbstractTask
     public const BASE_DIR = '/var/azuracast/backups';
 
     /** @var MessageQueue */
-    protected $messageQueue;
+    protected MessageQueue $messageQueue;
 
     /** @var Application */
-    protected $console;
+    protected Application $console;
 
     /**
      * @param EntityManager $em

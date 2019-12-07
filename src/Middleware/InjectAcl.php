@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class InjectAcl implements MiddlewareInterface
 {
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     public function __construct(Acl $acl)
     {

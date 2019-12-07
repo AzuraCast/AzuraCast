@@ -26,7 +26,7 @@ class Adapters
     public const DEFAULT_BACKEND = self::BACKEND_LIQUIDSOAP;
 
     /** @var ContainerInterface */
-    protected $adapters;
+    protected ContainerInterface $adapters;
 
     public function __construct(ContainerInterface $adapters)
     {

@@ -10,5 +10,5 @@ abstract class AbstractDelayedMessage extends AbstractMessage
     public const ONE_SEC = 1000000;
 
     /** @var int The delay before the message should be processed, in seconds. */
-    public $delay = 0;
+    public int $delay = 0;
 }

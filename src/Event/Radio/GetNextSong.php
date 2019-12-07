@@ -10,7 +10,7 @@ class GetNextSong extends Event
     protected $next_song;
 
     /** @var Entity\Station */
-    protected $station;
+    protected Entity\Station $station;
 
     public function __construct(Entity\Station $station)
     {

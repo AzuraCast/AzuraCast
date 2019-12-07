@@ -15,16 +15,16 @@ use Psr\Http\Message\ResponseInterface;
 class InternalController
 {
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     /** @var NowPlaying */
-    protected $sync_nowplaying;
+    protected NowPlaying $sync_nowplaying;
 
     /** @var AutoDJ */
-    protected $autodj;
+    protected AutoDJ $autodj;
 
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /**
      * @param Acl $acl

@@ -16,10 +16,10 @@ use Psr\Http\Message\ResponseInterface;
 class HistoryController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var App\ApiUtilities */
-    protected $api_utils;
+    protected App\ApiUtilities $api_utils;
 
     /**
      * @param EntityManager $em

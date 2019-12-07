@@ -8,8 +8,8 @@ use OpenApi\Annotations as OA;
 
 class StreamersController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\StationStreamer::class;
-    protected $resourceRouteName = 'api:stations:streamer';
+    protected string $entityClass = Entity\StationStreamer::class;
+    protected string $resourceRouteName = 'api:stations:streamer';
 
     /**
      * @OA\Get(path="/station/{station_id}/streamers",

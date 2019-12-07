@@ -11,13 +11,13 @@ use Azura\Http\RouterInterface;
 class BuildStationMenu extends AbstractBuildMenu
 {
     /** @var Station */
-    protected $station;
+    protected Station $station;
 
     /** @var AbstractBackend */
-    protected $backend;
+    protected AbstractBackend $backend;
 
     /** @var AbstractFrontend */
-    protected $frontend;
+    protected AbstractFrontend $frontend;
 
     /**
      * @param Acl $acl

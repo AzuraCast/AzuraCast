@@ -20,29 +20,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FilesController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\StationMedia::class;
-    protected $resourceRouteName = 'api:stations:file';
+    protected string $entityClass = Entity\StationMedia::class;
+    protected string $resourceRouteName = 'api:stations:file';
 
     /** @var Filesystem */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     /** @var MessageQueue */
-    protected $messageQueue;
+    protected MessageQueue $messageQueue;
 
     /** @var Entity\Repository\CustomFieldRepository */
-    protected $custom_fields_repo;
+    protected Entity\Repository\CustomFieldRepository $custom_fields_repo;
 
     /** @var Entity\Repository\SongRepository */
-    protected $song_repo;
+    protected Entity\Repository\SongRepository $song_repo;
 
     /** @var Entity\Repository\StationMediaRepository */
-    protected $media_repo;
+    protected Entity\Repository\StationMediaRepository $media_repo;
 
     /** @var Entity\Repository\StationPlaylistMediaRepository */
-    protected $playlist_media_repo;
+    protected Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo;
 
     /**
      * @param EntityManager $em

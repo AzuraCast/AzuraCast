@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 class RelaysController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /**
      * @param EntityManager $em
@@ -26,7 +26,7 @@ class RelaysController
             ->select('e')
             ->from(Entity\Relay::class, 'e')
             ->getQuery()->getArrayResult();
-        
+
         return $request->getView()->renderToResponse($response, 'admin/relays/index', [
             'relays' => $relays,
         ]);

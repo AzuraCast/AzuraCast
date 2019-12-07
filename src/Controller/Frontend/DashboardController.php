@@ -18,28 +18,28 @@ use stdClass;
 class DashboardController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     /** @var CacheInterface */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /** @var Database */
-    protected $influx;
+    protected Database $influx;
 
     /** @var Router */
-    protected $router;
+    protected Router $router;
 
     /** @var Adapters */
-    protected $adapter_manager;
+    protected Adapters $adapter_manager;
 
     /** @var EventDispatcher */
-    protected $dispatcher;
+    protected EventDispatcher $dispatcher;
 
     /**
      * @param EntityManager $em

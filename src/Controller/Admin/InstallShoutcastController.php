@@ -16,7 +16,7 @@ use const UPLOAD_ERR_OK;
 class InstallShoutcastController
 {
     /** @var array */
-    protected $form_config;
+    protected array $form_config;
 
     /**
      * @param Config $config

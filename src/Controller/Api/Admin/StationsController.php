@@ -12,11 +12,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationsController extends AbstractAdminApiCrudController
 {
-    protected $entityClass = Entity\Station::class;
-    protected $resourceRouteName = 'api:admin:station';
+    protected string $entityClass = Entity\Station::class;
+    protected string $resourceRouteName = 'api:admin:station';
 
     /** @var Entity\Repository\StationRepository */
-    protected $station_repo;
+    protected Entity\Repository\StationRepository $station_repo;
 
     public function __construct(
         EntityManager $em,

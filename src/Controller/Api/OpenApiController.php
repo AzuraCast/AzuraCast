@@ -11,10 +11,10 @@ use function OpenApi\scan;
 class OpenApiController
 {
     /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
     /** @var Version */
-    protected $version;
+    protected Version $version;
 
     /**
      * @param Settings $settings

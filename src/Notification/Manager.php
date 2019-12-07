@@ -12,19 +12,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class Manager implements EventSubscriberInterface
 {
     /** @var Acl */
-    protected $acl;
+    protected Acl $acl;
 
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Logger */
-    protected $logger;
+    protected Logger $logger;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settings_repo;
+    protected Entity\Repository\SettingsRepository $settings_repo;
 
     /** @var Settings */
-    protected $app_settings;
+    protected Settings $app_settings;
 
     /**
      * Manager constructor.

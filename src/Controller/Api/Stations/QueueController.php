@@ -16,11 +16,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QueueController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\SongHistory::class;
-    protected $resourceRouteName = 'api:stations:queue:record';
+    protected string $entityClass = Entity\SongHistory::class;
+    protected string $resourceRouteName = 'api:stations:queue:record';
 
     /** @var App\ApiUtilities */
-    protected $apiUtils;
+    protected App\ApiUtilities $apiUtils;
 
     public function __construct(
         EntityManager $em,

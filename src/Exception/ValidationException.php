@@ -9,7 +9,7 @@ use Throwable;
 class ValidationException extends Exception
 {
     /** @var ConstraintViolationListInterface */
-    protected $detailedErrors;
+    protected ConstraintViolationListInterface $detailedErrors;
 
     public function __construct(
         string $message = 'Validation error.',

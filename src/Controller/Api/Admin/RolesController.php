@@ -8,8 +8,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class RolesController extends AbstractAdminApiCrudController
 {
-    protected $entityClass = Entity\Role::class;
-    protected $resourceRouteName = 'api:admin:role';
+    protected string $entityClass = Entity\Role::class;
+    protected string $resourceRouteName = 'api:admin:role';
 
     /**
      * @OA\Get(path="/admin/roles",

@@ -2,9 +2,11 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use Azura\Exception;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -12,10 +14,10 @@ use Psr\Http\Message\ResponseInterface;
 class IndexController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
     /**
      * StationsController constructor.
@@ -44,8 +46,8 @@ class IndexController
      * @param Response $response
      *
      * @return ResponseInterface
-     * @throws \App\Exception\NotFoundException
-     * @throws \Azura\Exception
+     * @throws NotFoundException
+     * @throws Exception
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -84,7 +86,7 @@ class IndexController
      * @param Response $response
      *
      * @return ResponseInterface
-     * @throws \Azura\Exception
+     * @throws Exception
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {

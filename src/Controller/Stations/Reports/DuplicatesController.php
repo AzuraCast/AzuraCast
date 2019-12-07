@@ -12,13 +12,13 @@ use Psr\Http\Message\ResponseInterface;
 class DuplicatesController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\StationMediaRepository */
-    protected $mediaRepo;
+    protected Entity\Repository\StationMediaRepository $mediaRepo;
 
     /** @var Filesystem */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
     /**
      * @param EntityManager $em

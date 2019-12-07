@@ -8,8 +8,8 @@ use OpenApi\Annotations as OA;
 
 class MountsController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\StationMount::class;
-    protected $resourceRouteName = 'api:stations:mount';
+    protected string $entityClass = Entity\StationMount::class;
+    protected string $resourceRouteName = 'api:stations:mount';
 
     /**
      * @OA\Get(path="/station/{station_id}/mounts",

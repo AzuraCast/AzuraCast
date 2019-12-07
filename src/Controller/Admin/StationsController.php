@@ -13,10 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 class StationsController extends AbstractAdminCrudController
 {
     /** @var Entity\Repository\StationRepository */
-    protected $stationRepo;
+    protected StationRepository $stationRepo;
 
     /** @var Form\StationCloneForm */
-    protected $clone_form;
+    protected Form\StationCloneForm $clone_form;
 
     /**
      * @param StationRepository $stationRepository

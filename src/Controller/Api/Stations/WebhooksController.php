@@ -6,8 +6,8 @@ use OpenApi\Annotations as OA;
 
 class WebhooksController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\StationWebhook::class;
-    protected $resourceRouteName = 'api:stations:webhook';
+    protected string $entityClass = Entity\StationWebhook::class;
+    protected string $resourceRouteName = 'api:stations:webhook';
 
     /**
      * @OA\Get(path="/station/{station_id}/webhooks",

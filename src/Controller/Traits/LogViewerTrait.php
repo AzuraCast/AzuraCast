@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 trait LogViewerTrait
 {
-    public static $maximum_log_size = 1048576;
+    public static int $maximum_log_size = 1048576;
 
     protected function _view(
         ServerRequest $request,

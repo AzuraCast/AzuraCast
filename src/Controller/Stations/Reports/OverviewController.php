@@ -16,13 +16,13 @@ use function array_slice;
 class OverviewController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     /** @var Database */
-    protected $influx;
+    protected Database $influx;
 
     /**
      * @param EntityManager $em

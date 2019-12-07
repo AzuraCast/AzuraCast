@@ -8,8 +8,8 @@ use OpenApi\Annotations as OA;
 
 class RemotesController extends AbstractStationApiCrudController
 {
-    protected $entityClass = Entity\StationRemote::class;
-    protected $resourceRouteName = 'api:stations:remote';
+    protected string $entityClass = Entity\StationRemote::class;
+    protected string $resourceRouteName = 'api:stations:remote';
 
     /**
      * @OA\Get(path="/station/{station_id}/remotes",

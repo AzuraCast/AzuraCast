@@ -4,8 +4,8 @@ namespace App\Message;
 class ReprocessMediaMessage extends AbstractMessage
 {
     /** @var int The numeric identifier for the StationMedia record being processed. */
-    public $media_id;
+    public int $media_id;
 
     /** @var bool Whether to force reprocessing even if checks indicate it is not necessary. */
-    public $force = false;
+    public bool $force = false;
 }

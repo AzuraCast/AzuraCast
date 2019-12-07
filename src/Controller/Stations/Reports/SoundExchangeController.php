@@ -16,13 +16,13 @@ use Psr\Http\Message\ResponseInterface;
 class SoundExchangeController
 {
     /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
     /** @var Client */
-    protected $http_client;
+    protected Client $http_client;
 
     /** @var array */
-    protected $form_config;
+    protected array $form_config;
 
     /**
      * @param EntityManager $em

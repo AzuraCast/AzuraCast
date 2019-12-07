@@ -17,10 +17,10 @@ class Auth
     public const TOTP_WINDOW = 5;
 
     /** @var SessionInterface */
-    protected $session;
+    protected SessionInterface $session;
 
     /** @var UserRepository */
-    protected $userRepo;
+    protected UserRepository $userRepo;
 
     /** @var User|bool|null */
     protected $user;
@@ -201,7 +201,7 @@ class Auth
      */
     public function logout(): void
     {
-        if ($this->session instanceof SessionInterface) {
+        if (isset($this->session) && $this->session instanceof SessionInterface) {
             $this->session->clear();
         }
 

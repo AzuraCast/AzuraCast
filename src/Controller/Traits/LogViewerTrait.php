@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 trait LogViewerTrait
 {
-    static $maximum_log_size = 1048576;
+    public static $maximum_log_size = 1048576;
 
     protected function _view(
         ServerRequest $request,
@@ -26,7 +26,7 @@ trait LogViewerTrait
 
         if (!$tail_file) {
             $log_contents_parts = explode("\n", file_get_contents($log_path));
-            $log_contents_parts = str_replace([">", "<"], ["&gt;", "&lt;"], $log_contents_parts);
+            $log_contents_parts = str_replace(['>', '<'], ['&gt;', '&lt;'], $log_contents_parts);
 
             return $response->withJson([
                 'contents' => implode("\n", $log_contents_parts),
@@ -61,11 +61,11 @@ trait LogViewerTrait
             if ($cut_first_line) {
                 array_shift($log_contents_parts);
             }
-            if (end($log_contents_parts) == "") {
+            if (end($log_contents_parts) == '') {
                 array_pop($log_contents_parts);
             }
 
-            $log_contents_parts = str_replace([">", "<"], ["&gt;", "&lt;"], $log_contents_parts);
+            $log_contents_parts = str_replace(['>', '<'], ['&gt;', '&lt;'], $log_contents_parts);
             $log_contents = implode("\n", $log_contents_parts);
 
             fclose($fp);

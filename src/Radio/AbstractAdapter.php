@@ -130,7 +130,7 @@ abstract class AbstractAdapter
      *
      * @param Entity\Station $station
      *
-     * @throws \App\Exception\SupervisorException
+     * @throws SupervisorException
      * @throws AlreadyRunningException
      * @throws NotRunningException
      */
@@ -145,7 +145,7 @@ abstract class AbstractAdapter
      *
      * @param Entity\Station $station
      *
-     * @throws \App\Exception\SupervisorException
+     * @throws SupervisorException
      * @throws NotRunningException
      */
     public function stop(Entity\Station $station): void
@@ -155,7 +155,7 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->stopProcess($program_name);
-                Logger::getInstance()->info('Adapter "' . get_called_class() . '" stopped.',
+                Logger::getInstance()->info('Adapter "' . static::class . '" stopped.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (FaultException $e) {
                 $this->_handleSupervisorException($e, $program_name, $station);
@@ -170,7 +170,7 @@ abstract class AbstractAdapter
      * @param string $program_name
      * @param Entity\Station $station
      *
-     * @throws \App\Exception\SupervisorException
+     * @throws SupervisorException
      * @throws AlreadyRunningException
      * @throws NotRunningException
      */
@@ -188,43 +188,39 @@ abstract class AbstractAdapter
                 $e->getCode(),
                 $e
             );
+        } elseif (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
+            $e_headline = __('%s cannot start', $class_name);
+            $e_body = __('It is already running.');
+
+            $app_e = new AlreadyRunningException(
+                $e_headline . '; ' . $e_body,
+                $e->getCode(),
+                $e
+            );
+        } elseif (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
+            $e_headline = __('%s cannot stop', $class_name);
+            $e_body = __('It is not running.');
+
+            $app_e = new NotRunningException(
+                $e_headline . '; ' . $e_body,
+                $e->getCode(),
+                $e
+            );
         } else {
-            if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
-                $e_headline = __('%s cannot start', $class_name);
-                $e_body = __('It is already running.');
+            $e_headline = __('%s encountered an error', $class_name);
 
-                $app_e = new AlreadyRunningException(
-                    $e_headline . '; ' . $e_body,
-                    $e->getCode(),
-                    $e
-                );
-            } else {
-                if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
-                    $e_headline = __('%s cannot stop', $class_name);
-                    $e_body = __('It is not running.');
+            // Get more detailed information for more significant errors.
+            $process_log = $this->supervisor->tailProcessStdoutLog($program_name, 0, 500);
+            $process_log = array_filter(explode("\n", $process_log[0]));
+            $process_log = array_slice($process_log, -6);
 
-                    $app_e = new NotRunningException(
-                        $e_headline . '; ' . $e_body,
-                        $e->getCode(),
-                        $e
-                    );
-                } else {
-                    $e_headline = __('%s encountered an error', $class_name);
+            $e_body = (!empty($process_log))
+                ? implode('<br>', $process_log)
+                : __('Check the log for details.');
 
-                    // Get more detailed information for more significant errors.
-                    $process_log = $this->supervisor->tailProcessStdoutLog($program_name, 0, 500);
-                    $process_log = array_filter(explode("\n", $process_log[0]));
-                    $process_log = array_slice($process_log, -6);
-
-                    $e_body = (!empty($process_log))
-                        ? implode('<br>', $process_log)
-                        : __('Check the log for details.');
-
-                    $app_e = new SupervisorException($e_headline, $e->getCode(), $e);
-                    $app_e->addExtraData('supervisor_log', $process_log);
-                    $app_e->addExtraData('supervisor_process_info', $this->supervisor->getProcessInfo($program_name));
-                }
-            }
+            $app_e = new SupervisorException($e_headline, $e->getCode(), $e);
+            $app_e->addExtraData('supervisor_log', $process_log);
+            $app_e->addExtraData('supervisor_process_info', $this->supervisor->getProcessInfo($program_name));
         }
 
         $app_e->setFormattedMessage('<b>' . $e_headline . '</b><br>' . $e_body);
@@ -239,7 +235,7 @@ abstract class AbstractAdapter
      *
      * @param Entity\Station $station
      *
-     * @throws \App\Exception\SupervisorException
+     * @throws SupervisorException
      * @throws AlreadyRunningException
      */
     public function start(Entity\Station $station): void
@@ -249,7 +245,7 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->startProcess($program_name);
-                Logger::getInstance()->info('Adapter "' . get_called_class() . '" started.',
+                Logger::getInstance()->info('Adapter "' . static::class . '" started.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (FaultException $e) {
                 $this->_handleSupervisorException($e, $program_name, $station);

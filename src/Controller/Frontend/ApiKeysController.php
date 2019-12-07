@@ -77,7 +77,7 @@ class ApiKeysController
 
             if ($new_record) {
                 $record = new Entity\ApiKey($user);
-                list($key_identifier, $key_verifier) = $record->generate();
+                [$key_identifier, $key_verifier] = $record->generate();
             }
 
             $this->record_repo->fromArray($record, $data);

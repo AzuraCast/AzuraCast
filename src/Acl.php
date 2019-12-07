@@ -35,7 +35,7 @@ class Acl
     protected $permission_repo;
 
     /** @var array|null An array of actions enabled by each role. */
-    protected $_actions = null;
+    protected $_actions;
 
     public function __construct(Entity\Repository\RolePermissionRepository $rolePermissionRepository)
     {

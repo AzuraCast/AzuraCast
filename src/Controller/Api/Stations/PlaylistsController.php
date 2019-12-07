@@ -9,7 +9,9 @@ use Azura\Doctrine\Paginator;
 use Azura\Exception;
 use Azura\Http\RouterInterface;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\EntityManager;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -163,7 +165,7 @@ class PlaylistsController extends AbstractStationApiCrudController
     public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $tz = new \DateTimeZone($station->getTimezone());
+        $tz = new DateTimeZone($station->getTimezone());
 
         $params = $request->getQueryParams();
 
@@ -321,7 +323,7 @@ class PlaylistsController extends AbstractStationApiCrudController
     protected function _viewRecord($record, RouterInterface $router)
     {
         if (!($record instanceof $this->entityClass)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $return = $this->_normalizeRecord($record);
@@ -338,13 +340,13 @@ class PlaylistsController extends AbstractStationApiCrudController
         $return['total_length'] = (int)$song_totals[0]['total_length'];
 
         $return['links'] = [
-            'toggle' => (string)$router->fromHere('api:stations:playlist:toggle', ['id' => $record->getId()], [], true),
-            'order' => (string)$router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], true),
-            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+            'toggle' => $router->fromHere('api:stations:playlist:toggle', ['id' => $record->getId()], [], true),
+            'order' => $router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], true),
+            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
         ];
 
         foreach (['pls', 'm3u'] as $format) {
-            $return['links']['export'][$format] = (string)$router->fromHere(
+            $return['links']['export'][$format] = $router->fromHere(
                 'api:stations:playlist:export',
                 ['id' => $record->getId(), 'format' => $format],
                 [],
@@ -375,7 +377,7 @@ class PlaylistsController extends AbstractStationApiCrudController
         if ($record instanceof Entity\StationPlaylist) {
             $this->em->persist($record);
             $this->em->flush($record);
-            
+
             if (null !== $scheduleItems) {
                 $this->playlistScheduleRepo->setScheduleItems($record, $scheduleItems);
             }

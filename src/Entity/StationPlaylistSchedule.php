@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
@@ -143,7 +144,6 @@ class StationPlaylistSchedule
             ->getTimestamp();
 
         if ($start_time > $end_time) {
-            /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
             return 86400 - ($start_time - $end_time);
         }
 
@@ -281,7 +281,7 @@ class StationPlaylistSchedule
     public static function getDateTime($time_code, Chronos $now = null): Chronos
     {
         if ($now === null) {
-            $now = Chronos::now(new \DateTimeZone('UTC'));
+            $now = Chronos::now(new DateTimeZone('UTC'));
         }
 
         $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);

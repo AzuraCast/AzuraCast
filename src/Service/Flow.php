@@ -92,7 +92,9 @@ class Flow
 
                 // the file is stored in a temporary directory
                 if (!is_dir($chunkBaseDir)) {
-                    @mkdir($chunkBaseDir, 0777, true);
+                    if (!mkdir($chunkBaseDir, 0777, true) && !is_dir($chunkBaseDir)) {
+                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $chunkBaseDir));
+                    }
                 }
 
                 if ($file->getSize() !== $currentChunkSize) {
@@ -160,7 +162,7 @@ class Flow
         $originalFileName = File::sanitizeFileName(basename($originalFileName));
         $finalPath = $tempDir . '/' . $originalFileName;
 
-        $fp = fopen($finalPath, 'w+');
+        $fp = fopen($finalPath, 'wb+');
 
         for ($i = 1; $i <= $numChunks; $i++) {
             fwrite($fp, file_get_contents($chunkBaseDir . '/' . $chunkIdentifier . '.part' . $i));

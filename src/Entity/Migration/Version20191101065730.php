@@ -6,17 +6,13 @@ namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use PDO;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
 final class Version20191101065730 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -32,7 +28,7 @@ final class Version20191101065730 extends AbstractMigration
         $playlists = $this->connection->fetchAll(
             'SELECT sp.* FROM station_playlists AS sp WHERE sp.type = ?',
             ['scheduled'],
-            [\PDO::PARAM_STR]
+            [PDO::PARAM_STR]
         );
 
         foreach ($playlists as $row) {

@@ -13,6 +13,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Proxy\Proxy;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionObject;
 
@@ -230,13 +231,11 @@ class AuditLog implements EventSubscriber
     protected function isEntity(EntityManager $em, $class): bool
     {
         if (is_object($class)) {
-            $class = ($class instanceof Proxy)
+            $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
                 ? get_parent_class($class)
                 : get_class($class);
-        } else {
-            if (!is_string($class)) {
-                return false;
-            }
+        } elseif (!is_string($class)) {
+            return false;
         }
 
         if (!class_exists($class)) {

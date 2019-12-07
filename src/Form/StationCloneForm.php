@@ -8,6 +8,8 @@ use App\Radio\Configuration;
 use App\Settings;
 use App\Sync\Task\Media;
 use Azura\Config;
+use AzuraForms\Exception\FieldAlreadyExists;
+use AzuraForms\Exception\FieldClassNotFound;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
@@ -33,8 +35,8 @@ class StationCloneForm extends StationForm
      * @param Media $media_sync
      * @param Config $config
      *
-     * @throws \AzuraForms\Exception\FieldAlreadyExists
-     * @throws \AzuraForms\Exception\FieldClassNotFound
+     * @throws FieldAlreadyExists
+     * @throws FieldClassNotFound
      */
     public function __construct(
         EntityManager $em,
@@ -240,7 +242,9 @@ class StationCloneForm extends StationForm
             }
 
             if (is_dir($src . '/' . $file) && ($file !== '.') && ($file !== '..')) {
-                mkdir($dest . '/' . $file);
+                if (!mkdir($concurrentDirectory = $dest . '/' . $file) && !is_dir($concurrentDirectory)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+                }
                 $this->_copy($src . '/' . $file, $dest . '/' . $file);
             } else {
                 copy($src . '/' . $file, $dest . '/' . $file);

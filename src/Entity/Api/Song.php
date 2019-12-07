@@ -48,7 +48,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Moving Castle")
      * @var string
      */
-    public $album = "";
+    public $album = '';
 
     /**
      * Lyrics to the song.
@@ -56,7 +56,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="")
      * @var string
      */
-    public $lyrics = "";
+    public $lyrics = '';
 
     /**
      * URL to the album artwork (if available).
@@ -64,7 +64,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="https://picsum.photos/1200/1200")
      * @var string
      */
-    public $art = "";
+    public $art = '';
 
     /**
      * @OA\Property(

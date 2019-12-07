@@ -114,6 +114,8 @@ class ApiKey implements JsonSerializable
     /**
      * Verify an incoming API key against the verifier on this record.
      *
+     * @param string $verifier
+     *
      * @return bool
      */
     public function verify($verifier): bool

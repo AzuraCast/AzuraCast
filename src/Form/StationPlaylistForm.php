@@ -132,7 +132,7 @@ class StationPlaylistForm extends EntityForm
 
             // Work backwards from the basename to try to find matches.
             $path_parts = explode('/', $path_raw);
-            for ($i = 1; $i <= count($path_parts); $i++) {
+            for ($i = 1, $iMax = count($path_parts); $i <= $iMax; $i++) {
                 $path_attempt = implode('/', array_slice($path_parts, 0 - $i));
                 $path_hash = md5($path_attempt);
 

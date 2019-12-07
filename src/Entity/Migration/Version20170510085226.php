@@ -35,7 +35,7 @@ final class Version20170510085226 extends AbstractMigration
 
     public function postdown(Schema $schema): void
     {
-        $all_stations = $this->connection->fetchAll("SELECT * FROM station");
+        $all_stations = $this->connection->fetchAll('SELECT * FROM station');
 
         foreach ($all_stations as $station) {
             $this->connection->update('station', [

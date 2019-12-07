@@ -174,7 +174,7 @@ class SHOUTcast extends AbstractFrontend
 
         $sc_file = '';
         foreach ($config as $config_key => $config_value) {
-            $sc_file .= $config_key . '=' . str_replace("\n", "", $config_value) . "\n";
+            $sc_file .= $config_key . '=' . str_replace("\n", '', $config_value) . "\n";
         }
 
         file_put_contents($sc_path, $sc_file);
@@ -185,7 +185,7 @@ class SHOUTcast extends AbstractFrontend
     {
         $config_path = $station->getRadioConfigDir();
 
-        $defaults = [
+        return [
             'password' => Utilities::generatePassword(),
             'adminpassword' => Utilities::generatePassword(),
             'logfile' => '/tmp/sc_serv.log',
@@ -196,8 +196,6 @@ class SHOUTcast extends AbstractFrontend
             'portbase' => $this->_getRadioPort($station),
             'requirestreamconfigs' => 1,
         ];
-
-        return $defaults;
     }
 
     public function getCommand(Entity\Station $station): ?string

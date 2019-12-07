@@ -137,7 +137,7 @@ class QueueController extends AbstractStationApiCrudController
         $row->resolveUrls($router->getBaseUrl());
 
         $row->links = [
-            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
         ];
 
         return $row;

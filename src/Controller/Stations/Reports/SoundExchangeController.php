@@ -204,8 +204,7 @@ class SoundExchangeController
 
         if (!empty($search_result['tracks']['items'])) {
             $track = $search_result['tracks']['items'][0];
-            $isrc = str_replace('-', '', $track['external_ids']['isrc']);
-            return $isrc;
+            return str_replace('-', '', $track['external_ids']['isrc']);
         }
 
         return '';

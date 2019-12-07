@@ -40,6 +40,12 @@ class IndexController
      *     )
      *   )
      * )
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     * @throws \App\Exception\NotFoundException
+     * @throws \Azura\Exception
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -74,6 +80,11 @@ class IndexController
      *   ),
      *   @OA\Response(response=404, description="Station not found")
      * )
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     * @throws \Azura\Exception
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {

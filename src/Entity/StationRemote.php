@@ -465,10 +465,8 @@ class StationRemote implements StationMountInterface
      */
     public function setUrl(?string $url): void
     {
-        if (!empty($url)) {
-            if (substr($url, 0, 4) !== 'http') {
-                $url = 'http://' . $url;
-            }
+        if (!empty($url) && substr($url, 0, 4) !== 'http') {
+            $url = 'http://' . $url;
         }
 
         $this->url = $this->_truncateString($url);

@@ -224,10 +224,6 @@ class ListenersController
 
         // Check for a match of the first portion, i.e. "en"
         $locale = strtolower(substr($locale, 0, 2));
-        if (isset($names[$locale])) {
-            return $names[$locale];
-        }
-
-        return $names['en'];
+        return $names[$locale] ?? $names['en'];
     }
 }

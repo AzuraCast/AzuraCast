@@ -21,6 +21,8 @@ class PermissionsForm extends EntityForm
      * @param Serializer $serializer
      * @param ValidatorInterface $validator
      * @param Config $config
+     * @param Entity\Repository\StationRepository $stations_repo
+     * @param Entity\Repository\RolePermissionRepository $permissions_repo
      */
     public function __construct(
         EntityManager $em,

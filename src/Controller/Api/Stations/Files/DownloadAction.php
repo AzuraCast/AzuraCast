@@ -4,6 +4,7 @@ namespace App\Controller\Api\Stations\Files;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class DownloadAction
@@ -27,7 +28,7 @@ class DownloadAction
 
         try {
             $file_mime = $fs->getMimetype($file_path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $file_mime = 'application/octet-stream';
         }
 

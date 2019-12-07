@@ -21,13 +21,13 @@ class UptimeWaitCommand extends CommandAbstract
 
         $service_name = strtolower($service);
         switch ($service_name) {
-            case "influxdb":
-            case "influx":
+            case 'influxdb':
+            case 'influx':
                 break;
 
-            case "database":
-            case "mariadb":
-            case "mysql":
+            case 'database':
+            case 'mariadb':
+            case 'mysql':
             default:
                 $conn = $em->getConnection();
 

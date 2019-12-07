@@ -29,12 +29,10 @@ class Analytics extends AbstractTask
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $this->_purgeAnalytics();
             $this->_purgeListeners();
+        } elseif ($analytics_level === Entity\Analytics::LEVEL_NO_IP) {
+            $this->_purgeListeners();
         } else {
-            if ($analytics_level === Entity\Analytics::LEVEL_NO_IP) {
-                $this->_purgeListeners();
-            } else {
-                $this->_clearOldAnalytics();
-            }
+            $this->_clearOldAnalytics();
         }
     }
 

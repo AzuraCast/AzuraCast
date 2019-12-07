@@ -1,5 +1,4 @@
-<?php /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
-
+<?php
 namespace App\Radio\Backend;
 
 use App\Entity;
@@ -937,7 +936,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $settings = (array)$station->getBackendConfig();
         $charset = $settings['charset'] ?? 'UTF-8';
 
-        $bitrate = (int)($mount->getAutodjBitrate() ?? 128);
+        $bitrate = ($mount->getAutodjBitrate() ?? 128);
 
         switch (strtolower($mount->getAutodjFormat())) {
             case $mount::FORMAT_AAC:
@@ -1101,7 +1100,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     public function disconnectStreamer(Entity\Station $station): array
     {
         $current_streamer = $station->getCurrentStreamer();
-        $disconnect_timeout = (int)$station->getDisconnectDeactivateStreamer();
+        $disconnect_timeout = $station->getDisconnectDeactivateStreamer();
 
         if ($current_streamer instanceof Entity\StationStreamer && $disconnect_timeout > 0) {
             $current_streamer->deactivateFor($disconnect_timeout);

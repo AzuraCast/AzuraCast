@@ -21,11 +21,13 @@ class Listener
      * @var int
      */
     protected $id;
+
     /**
      * @ORM\Column(name="station_id", type="integer")
      * @var int
      */
     protected $station_id;
+
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
      * @ORM\JoinColumns({
@@ -34,31 +36,37 @@ class Listener
      * @var Station
      */
     protected $station;
+
     /**
      * @ORM\Column(name="listener_uid", type="integer")
      * @var int
      */
     protected $listener_uid;
+
     /**
      * @ORM\Column(name="listener_ip", type="string", length=45)
      * @var string
      */
     protected $listener_ip;
+
     /**
      * @ORM\Column(name="listener_user_agent", type="string", length=255)
      * @var string
      */
     protected $listener_user_agent;
+
     /**
      * @ORM\Column(name="listener_hash", type="string", length=32)
      * @var string
      */
     protected $listener_hash;
+
     /**
      * @ORM\Column(name="timestamp_start", type="integer")
      * @var int
      */
     protected $timestamp_start;
+
     /**
      * @ORM\Column(name="timestamp_end", type="integer")
      * @var int
@@ -105,11 +113,7 @@ class Listener
     {
         return array_filter($clients, function ($client) {
             // Ignore clients with the "Icecast" UA as those are relays and not listeners.
-            if (false !== stripos($client['user_agent'], 'Icecast')) {
-                return false;
-            }
-
-            return true;
+            return !(false !== stripos($client['user_agent'], 'Icecast'));
         });
     }
 

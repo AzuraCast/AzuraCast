@@ -6,6 +6,8 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
 use Doctrine\ORM\EntityManager;
+use Error;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class UploadAction
@@ -67,7 +69,7 @@ class UploadAction
 
                 return $response->withJson(new Entity\Api\Status);
             }
-        } catch (\Exception | \Error $e) {
+        } catch (Exception | Error $e) {
             return $response->withStatus(500)
                 ->withJson(new Entity\Api\Error(500, $e->getMessage()));
         }

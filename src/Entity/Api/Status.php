@@ -32,6 +32,6 @@ class Status
         $this->success = (bool)$success;
         $this->message = (string)$message;
 
-        $this->formatted_message = (string)($formatted_message ?? $message);
+        $this->formatted_message = ($formatted_message ?? $message);
     }
 }

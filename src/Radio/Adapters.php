@@ -121,6 +121,8 @@ class Adapters
     }
 
     /**
+     * @param bool $check_installed
+     *
      * @return array
      */
     public static function listBackendAdapters($check_installed = false): array

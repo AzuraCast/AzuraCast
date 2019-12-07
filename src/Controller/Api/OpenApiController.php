@@ -30,7 +30,7 @@ class OpenApiController
     {
         $router = $request->getRouter();
 
-        $api_base_url = (string)$router->fromHere(null, [], [], true);
+        $api_base_url = $router->fromHere(null, [], [], true);
         $api_base_url = str_replace('/openapi.yml', '', $api_base_url);
 
         define('AZURACAST_API_URL', $api_base_url);

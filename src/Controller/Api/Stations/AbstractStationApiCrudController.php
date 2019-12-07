@@ -95,9 +95,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
+     * @param int|string $station_id
      * @param int|string $id
      *
      * @return ResponseInterface
+     * @throws \Azura\Exception
      */
     public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {

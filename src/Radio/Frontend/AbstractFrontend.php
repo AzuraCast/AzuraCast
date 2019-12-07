@@ -146,7 +146,7 @@ abstract class AbstractFrontend extends AbstractAdapter
     {
         $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
-        
+
         if (!($base_url instanceof UriInterface)) {
             $base_url = $this->router->getBaseUrl();
         }
@@ -259,9 +259,9 @@ abstract class AbstractFrontend extends AbstractAdapter
     {
         $custom_config = [];
 
-        if (substr($custom_config_raw, 0, 1) == '{') {
+        if (strpos($custom_config_raw, '{') === 0) {
             $custom_config = @json_decode($custom_config_raw, true);
-        } elseif (substr($custom_config_raw, 0, 1) == '<') {
+        } elseif (strpos($custom_config_raw, '<') === 0) {
             $reader = new Reader;
             $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
         }

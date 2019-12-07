@@ -79,12 +79,12 @@ class EnforceSecurity implements MiddlewareInterface
         if (($response instanceof Response) && !$response->hasCacheLifetime()) {
             // CSP JavaScript policy
             // Note: unsafe-eval included for Vue template compiling
-            $csp_script_src = (array)$this->assets->getCspDomains();
+            $csp_script_src = $this->assets->getCspDomains();
             $csp_script_src[] = "'self'";
             $csp_script_src[] = "'unsafe-eval'";
             $csp_script_src[] = "'nonce-" . $this->assets->getCspNonce() . "'";
 
-            $csp[] = "script-src " . implode(' ', $csp_script_src);
+            $csp[] = 'script-src ' . implode(' ', $csp_script_src);
 
             $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
         }

@@ -700,10 +700,8 @@ class Station
         $new_dir = $this->_truncateString(trim($new_dir));
 
         if ($new_dir && $new_dir !== $this->radio_media_dir) {
-            if (!empty($new_dir) && !file_exists($new_dir)) {
-                if (!mkdir($new_dir, 0777, true) && !is_dir($new_dir)) {
-                    throw new RuntimeException(sprintf('Directory "%s" was not created', $new_dir));
-                }
+            if (!empty($new_dir) && !file_exists($new_dir) && !mkdir($new_dir, 0777, true) && !is_dir($new_dir)) {
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $new_dir));
             }
 
             $this->radio_media_dir = $new_dir;

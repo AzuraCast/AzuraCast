@@ -10,6 +10,6 @@ abstract class AbstractMessage implements Message
      */
     public function getName(): string
     {
-        return get_called_class();
+        return static::class;
     }
 }

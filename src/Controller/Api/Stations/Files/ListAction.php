@@ -53,7 +53,7 @@ class ListAction
 
         // Apply searching
         if (!empty($search_phrase)) {
-            if (substr($search_phrase, 0, 9) === 'playlist:') {
+            if (strpos($search_phrase, 'playlist:') === 0) {
                 $playlist_name = substr($search_phrase, 9);
                 $media_query->andWhere('sp.name = :playlist_name')
                     ->setParameter('playlist_name', $playlist_name);

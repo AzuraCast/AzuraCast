@@ -6,10 +6,10 @@ use Azura\Session\Flash;
 class Notification
 {
     // Alert type constants.
-    const SUCCESS = Flash::SUCCESS;
-    const WARNING = Flash::WARNING;
-    const ERROR = Flash::ERROR;
-    const INFO = Flash::INFO;
+    public const SUCCESS = Flash::SUCCESS;
+    public const WARNING = Flash::WARNING;
+    public const ERROR = Flash::ERROR;
+    public const INFO = Flash::INFO;
 
     /** @var string */
     protected $title;

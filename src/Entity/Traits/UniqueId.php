@@ -28,6 +28,10 @@ trait UniqueId
 
     /**
      * Generate a new unique ID for this item.
+     *
+     * @param bool $force_new
+     *
+     * @throws \Exception
      */
     public function generateUniqueId($force_new = false)
     {

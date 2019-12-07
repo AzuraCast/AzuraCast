@@ -112,7 +112,7 @@ class SongHistoryRepository extends Repository
             $delta_negative = 0;
             $delta_total = 0;
 
-            for ($i = 1; $i < count($delta_points); $i++) {
+            for ($i = 1, $iMax = count($delta_points); $i < $iMax; $i++) {
                 $current_delta = $delta_points[$i];
                 $previous_delta = $delta_points[$i - 1];
 

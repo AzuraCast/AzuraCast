@@ -4,6 +4,7 @@ namespace App\Entity\Repository;
 use App\Entity;
 use Azura\Doctrine\Repository;
 use Doctrine\ORM\NoResultException;
+use RuntimeException;
 
 class StationPlaylistMediaRepository extends Repository
 {
@@ -23,7 +24,7 @@ class StationPlaylistMediaRepository extends Repository
         int $weight = 0
     ): int {
         if ($playlist->getSource() !== Entity\StationPlaylist::SOURCE_SONGS) {
-            throw new \RuntimeException('This playlist is not meant to contain songs!');
+            throw new RuntimeException('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.

@@ -125,7 +125,7 @@ class StationRequestRepository extends Repository
      */
     public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
     {
-        $last_play_threshold_mins = (int)($station->getRequestThreshold() ?? 15);
+        $last_play_threshold_mins = ($station->getRequestThreshold() ?? 15);
 
         if (0 === $last_play_threshold_mins) {
             return true;

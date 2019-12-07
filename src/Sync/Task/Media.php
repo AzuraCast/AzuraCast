@@ -125,7 +125,7 @@ class Media extends AbstractTask
             if (!empty($file['size'])) {
                 $total_size = $total_size->plus($file['size']);
             }
-            
+
             $path_hash = md5($file['path']);
             $music_files[$path_hash] = $file;
         }
@@ -293,7 +293,7 @@ class Media extends AbstractTask
 
             foreach ($playlist_lines as $line_raw) {
                 $line = trim($line_raw);
-                if (empty($line) || $line[0] === '#') {
+                if (empty($line) || strpos($line, '#') === 0) {
                     continue;
                 }
 

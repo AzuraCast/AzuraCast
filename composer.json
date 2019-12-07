@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "type": "project",
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.4",
     "ext-fileinfo": "*",
     "ext-gd": "*",
     "ext-iconv": "*",
@@ -76,6 +76,11 @@
   "scripts": {
     "test": [
       "@composer install",
+      "@phplint",
+      "@phpstan",
+      "@codeception-no-coverage"
+    ],
+    "dev-test": [
       "@phplint",
       "@phpstan",
       "@codeception-no-coverage"

@@ -322,7 +322,9 @@ class Icecast extends AbstractFrontend
 
         if (Settings::getInstance()->isDocker() || file_exists($new_path)) {
             return $new_path;
-        } elseif (file_exists($legacy_path)) {
+        }
+
+        if (file_exists($legacy_path)) {
             return $legacy_path;
         } else {
             return false;

@@ -61,6 +61,7 @@ class RolePermission implements JsonSerializable
      *
      * @param Role $role
      * @param Station|null $station
+     * @param null $action_name
      */
     public function __construct(Role $role, Station $station = null, $action_name = null)
     {

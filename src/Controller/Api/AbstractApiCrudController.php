@@ -55,7 +55,7 @@ abstract class AbstractApiCrudController
         $return = $this->_normalizeRecord($record);
 
         $return['links'] = [
-            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
         ];
         return $return;
     }

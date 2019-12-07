@@ -68,7 +68,7 @@ class ProfileController
             $stream_urls['remote'][] = [
                 $remote->getId(),
                 $remote->getDisplayName(),
-                (string)$ra_proxy->getAdapter()->getPublicUrl($remote),
+                $ra_proxy->getAdapter()->getPublicUrl($remote),
             ];
         }
 

@@ -79,6 +79,13 @@ abstract class AbstractStationCrudController
     /**
      * @param ServerRequest $request
      * @param string|int $id
+     * @param string $csrf
+     *
+     * @throws NotFoundException
+     * @throws \Azura\Exception
+     * @throws \Azura\Exception\CsrfValidationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function _doDelete(ServerRequest $request, $id, $csrf): void
     {

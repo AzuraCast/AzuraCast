@@ -164,6 +164,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     }
 
     /**
+     * @param bool $force
+     *
      * @return Entity\Api\NowPlaying[]
      */
     protected function _loadNowPlaying($force = false): array

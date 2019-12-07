@@ -56,7 +56,7 @@ class Writer extends Xml
 
         foreach ($config as $sectionName => $data) {
             if (!is_array($data)) {
-                if (substr($sectionName, 0, 1) == '@') {
+                if (strpos($sectionName, '@') === 0) {
                     $writer->writeAttribute(substr($sectionName, 1), (string)$data);
                 } else {
                     $writer->writeElement($sectionName, (string)$data);
@@ -107,16 +107,12 @@ class Writer extends Xml
                 } else {
                     $writer->writeElement($branchName, (string)$value);
                 }
+            } elseif (is_array($value)) {
+                $this->addBranch($key, $value, $writer);
+            } elseif (substr($key, 0, 1) == '@') {
+                $writer->writeAttribute(substr($key, 1), (string)$value);
             } else {
-                if (is_array($value)) {
-                    $this->addBranch($key, $value, $writer);
-                } else {
-                    if (substr($key, 0, 1) == '@') {
-                        $writer->writeAttribute(substr($key, 1), (string)$value);
-                    } else {
-                        $writer->writeElement($key, (string)$value);
-                    }
-                }
+                $writer->writeElement($key, (string)$value);
             }
         }
 
@@ -127,14 +123,14 @@ class Writer extends Xml
 
     protected function _attributesFirst($a, $b)
     {
-        if (substr($a, 0, 1) == '@') {
+        if (strpos($a, '@') === 0) {
             return -1;
-        } else {
-            if (substr($b, 0, 1) == '@') {
-                return 1;
-            } else {
-                return 0;
-            }
         }
+
+        if (substr($b, 0, 1) == '@') {
+            return 1;
+        }
+
+        return 0;
     }
 }

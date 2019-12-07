@@ -3,6 +3,7 @@ namespace App\Flysystem;
 
 use Azura\Exception;
 use InvalidArgumentException;
+use Iterator;
 use Jhofm\FlysystemIterator\FilesystemFilterIterator;
 use Jhofm\FlysystemIterator\FilesystemIterator;
 use Jhofm\FlysystemIterator\Options\Options;
@@ -81,7 +82,7 @@ class StationFilesystem extends MountManager
      */
     public function upload($local_path, $to, array $config = []): bool
     {
-        $stream = fopen($local_path, 'r+');
+        $stream = fopen($local_path, 'rb+');
 
         $uploaded = $this->putStream($to, $stream);
 
@@ -165,9 +166,9 @@ class StationFilesystem extends MountManager
      * @param string $uri
      * @param array $iteratorOptions
      *
-     * @return \Iterator
+     * @return Iterator
      */
-    public function createIterator(string $uri, array $iteratorOptions = []): \Iterator
+    public function createIterator(string $uri, array $iteratorOptions = []): Iterator
     {
         [$prefix, $path] = $this->getPrefixAndPath($uri);
 

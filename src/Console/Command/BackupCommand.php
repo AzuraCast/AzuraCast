@@ -59,16 +59,17 @@ class BackupCommand extends CommandAbstract
         $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
         $conn = $em->getConnection();
+        $connParams = $conn->getParams();
 
         $process = $this->passThruProcess(
             $io,
             'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
             $tmp_dir_mariadb,
             [
-                'DB_HOST' => $conn->getHost(),
+                'DB_HOST' => $connParams['host'],
                 'DB_DATABASE' => $conn->getDatabase(),
-                'DB_USERNAME' => $conn->getUsername(),
-                'DB_PASSWORD' => $conn->getPassword(),
+                'DB_USERNAME' => $connParams['user'],
+                'DB_PASSWORD' => $connParams['password'],
                 'DB_DEST' => $path_db_dump,
             ]
         );

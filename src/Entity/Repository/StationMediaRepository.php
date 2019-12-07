@@ -12,6 +12,7 @@ use Exception;
 use getID3;
 use getid3_exception;
 use getid3_writetags;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use voku\helper\UTF8;
@@ -382,7 +383,7 @@ class StationMediaRepository extends Repository
 
         try {
             $tmp_path = $fs->getFullPath($media_uri);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $tmp_uri = $fs->copyToTemp($media_uri);
             $tmp_path = $fs->getFullPath($tmp_uri);
         }
@@ -419,7 +420,7 @@ class StationMediaRepository extends Repository
 
         try {
             $tmp_path = $fs->getFullPath($media_uri);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $tmp_uri = $fs->copyToTemp($media_uri);
             $tmp_path = $fs->getFullPath($tmp_uri);
         }

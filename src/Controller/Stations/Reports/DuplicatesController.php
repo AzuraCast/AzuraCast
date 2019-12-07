@@ -69,11 +69,11 @@ class DuplicatesController
         foreach ($songs_to_compare as $song_id => $media_row) {
             unset($songs_to_compare[$song_id]);
 
-            $media_text = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $media_row['song']['text']));
+            $media_text = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $media_row['song']['text']));
 
             $song_dupes = [];
             foreach ($songs_to_compare as $search_song_id => $search_media_row) {
-                $search_media_text = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $search_media_row['song']['text']));
+                $search_media_text = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $search_media_row['song']['text']));
                 $similarity = levenshtein($media_text, $search_media_text);
 
                 if ($similarity <= 5) {

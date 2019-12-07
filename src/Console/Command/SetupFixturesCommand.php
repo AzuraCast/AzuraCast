@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use InfluxDB\Point;
 use Psr\Container\ContainerInterface;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetupFixturesCommand extends CommandAbstract
@@ -28,9 +30,9 @@ class SetupFixturesCommand extends CommandAbstract
         // Dependency-inject the fixtures and load them.
         $fixturesDir = $settings[Settings::BASE_DIR] . '/src/Entity/Fixture';
 
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($fixturesDir),
-            \RecursiveIteratorIterator::LEAVES_ONLY
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($fixturesDir),
+            RecursiveIteratorIterator::LEAVES_ONLY
         );
 
         foreach ($iterator as $file) {

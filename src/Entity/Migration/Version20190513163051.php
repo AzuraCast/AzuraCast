@@ -86,10 +86,8 @@ final class Version20190513163051 extends AbstractMigration
 
         $hours += $offset_hours;
 
-        /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
         $hours %= 24;
         if ($hours < 0) {
-            /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
             $hours += 24;
         }
 

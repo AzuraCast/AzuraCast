@@ -30,7 +30,6 @@ class AppFactory extends \Azura\AppFactory
         self::applyPhpSettings($settings);
 
         // Helper constants for annotations.
-        /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
         define('SAMPLE_TIMESTAMP', random_int(time() - 86400, time() + 86400));
 
         // Override DI definitions for settings.

@@ -20,7 +20,9 @@ final class Version20181202180617 extends AbstractMigration
 
             $base_dir = $station['radio_base_dir'];
             $art_dir = $base_dir . '/album_art';
-            mkdir($art_dir, 0777);
+            if (!mkdir($art_dir, 0777) && !is_dir($art_dir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $art_dir));
+            }
 
             $stmt = $this->connection->executeQuery('SELECT sm.unique_id, sma.art 
                 FROM station_media AS sm 

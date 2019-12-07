@@ -57,7 +57,7 @@ class RadioRequests extends AbstractTask
             }
 
             $min_minutes = (int)$station->getRequestDelay();
-            $threshold_minutes = $min_minutes + mt_rand(0, $min_minutes);
+            $threshold_minutes = $min_minutes + random_int(0, $min_minutes);
 
             $threshold = time() - ($threshold_minutes * 60);
 

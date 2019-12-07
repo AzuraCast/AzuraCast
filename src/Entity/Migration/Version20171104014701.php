@@ -23,7 +23,7 @@ final class Version20171104014701 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $all_records = $this->connection->fetchAll("SELECT * FROM station_media");
+        $all_records = $this->connection->fetchAll('SELECT * FROM station_media');
 
         foreach ($all_records as $record) {
             $this->connection->update('station_media', [

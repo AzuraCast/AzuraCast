@@ -51,7 +51,7 @@ class AzuraCastCentral
 
         $request_body = [
             'id' => $app_uuid,
-            'is_docker' => (bool)$this->app_settings->isDocker(),
+            'is_docker' => $this->app_settings->isDocker(),
             'environment' => $this->app_settings[Settings::APP_ENV],
         ];
 

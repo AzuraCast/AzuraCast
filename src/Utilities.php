@@ -31,7 +31,7 @@ class Utilities
         $password = '';
         for ($i = 1; $i <= $char_length; $i++) {
             $char_array = $chars[$i % 3];
-            $password .= $char_array[mt_rand(0, count($char_array) - 1)];
+            $password .= $char_array[random_int(0, count($char_array) - 1)];
         }
 
         return str_shuffle($password);
@@ -209,10 +209,8 @@ class Utilities
                 if (!rmdir($fileinfo->getRealPath())) {
                     return false;
                 }
-            } else {
-                if (!unlink($fileinfo->getRealPath())) {
-                    return false;
-                }
+            } elseif (!unlink($fileinfo->getRealPath())) {
+                return false;
             }
         }
 

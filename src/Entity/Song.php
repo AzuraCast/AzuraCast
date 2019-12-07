@@ -107,10 +107,8 @@ class Song
 
         if (null === $this->id) {
             $this->id = $new_song_hash;
-        } else {
-            if ($this->id !== $new_song_hash) {
-                throw new Exception('New song data supplied would not produce the same song ID.');
-            }
+        } elseif ($this->id !== $new_song_hash) {
+            throw new Exception('New song data supplied would not produce the same song ID.');
         }
     }
 

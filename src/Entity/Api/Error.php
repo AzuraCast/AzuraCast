@@ -52,7 +52,7 @@ class Error
     ) {
         $this->code = (int)$code;
         $this->message = (string)$message;
-        $this->formatted_message = (string)($formatted_message ?? $message);
+        $this->formatted_message = ($formatted_message ?? $message);
         $this->extra_data = (array)$extra_data;
         $this->success = false;
     }

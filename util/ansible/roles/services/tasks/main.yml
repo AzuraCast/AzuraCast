@@ -10,3 +10,6 @@
    - "php7.4-fpm"
    - "nginx"
    - "redis"
+
+- name: Pause to allow InfluxDB to spin up
+  wait_for: port=8086 delay=5

@@ -78,7 +78,7 @@ class ListenersController
 
                 $hash = $listener['listener_hash'];
                 if (!isset($listeners_raw[$hash])) {
-                    $listener['connected_time'] = 0;
+                    $listener['intervals'] = [];
                     $listeners_raw[$hash] = $listener;
                 }
 
@@ -92,18 +92,39 @@ class ListenersController
                     $listener_end = $end_timestamp;
                 }
 
-                $listeners_raw[$hash]['connected_time'] += ($listener_end - $listener_start);
+                $listeners_raw[$hash]['intervals'][] = [
+                    'start' => $listener_start,
+                    'end' => $listener_end,
+                ];
             }
         } else {
             $range = 'live';
 
-            $listeners_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT 
                 l 
                 FROM App\Entity\Listener l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_end = 0')
                 ->setParameter('station_id', $station->getId())
                 ->getArrayResult();
+
+            $listeners_raw = [];
+
+            foreach ($listeners_unsorted as $listener) {
+                $hash = $listener['listener_hash'];
+                if (!isset($listeners_raw[$hash])) {
+                    $listener['intervals'] = [];
+                    $listeners_raw[$hash] = $listener;
+                }
+
+                $listener_start = (int)$listener['timestamp_start'];
+                $listener_end = time();
+
+                $listeners_raw[$hash]['intervals'][] = [
+                    'start' => $listener_start,
+                    'end' => $listener_end,
+                ];
+            }
         }
 
         $detect = new Mobile_Detect;
@@ -130,7 +151,7 @@ class ListenersController
 
                 $export_row = [
                     (string)$listener['listener_ip'],
-                    $listener['connected_time'] ?? (time() - $listener['timestamp_start']),
+                    Entity\Listener::getListenerSeconds($listener['intervals']),
                     (string)$listener['listener_user_agent'],
                     $detect->isMobile($listener['listener_user_agent']) ? 'true' : 'false',
                 ];
@@ -163,7 +184,7 @@ class ListenersController
             $api->user_agent = (string)$listener['listener_user_agent'];
             $api->is_mobile = $detect->isMobile($listener['listener_user_agent']);
             $api->connected_on = (int)$listener['timestamp_start'];
-            $api->connected_time = $listener['connected_time'] ?? (time() - $listener['timestamp_start']);
+            $api->connected_time = Entity\Listener::getListenerSeconds($listener['intervals']);
             $api->location = $this->_getLocationInfo($listener['listener_ip'], $locale);
 
             $listeners[] = $api;

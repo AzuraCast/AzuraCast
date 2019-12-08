@@ -204,4 +204,38 @@ class Listener
     {
         return $this->timestamp_end - $this->timestamp_start;
     }
+
+    public static function getListenerSeconds(array $intervals): int
+    {
+        // Sort by start time.
+        usort($intervals, function ($a, $b) {
+            return $a['start'] <=> $b['start'];
+        });
+
+        $seconds = 0;
+
+        while (count($intervals) > 0) {
+            $currentInterval = array_shift($intervals);
+            $start = $currentInterval['start'];
+            $end = $currentInterval['end'];
+
+            foreach ($intervals as $intervalKey => $interval) {
+                // Starts after this interval ends; no more entries to process
+                if ($interval['start'] > $end) {
+                    break;
+                }
+
+                // Extend the current interval's end
+                if ($interval['end'] > $end) {
+                    $end = $interval['end'];
+                }
+
+                unset($intervals[$intervalKey]);
+            }
+
+            $seconds += $end - $start;
+        }
+
+        return $seconds;
+    }
 }

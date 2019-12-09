@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-09 13:10\n"
+"PO-Revision-Date: 2019-12-09 13:21\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -577,11 +577,11 @@ msgstr "Backend zatrzymany."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:200
 msgid "Backend started."
-msgstr ""
+msgstr "Backend uruchomiony."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:213
 msgid "Backend restarted."
-msgstr ""
+msgstr "Backend został ponownie uruchomiony."
 
 #: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:48
 msgid "Too many login attempts"
@@ -603,12 +603,12 @@ msgstr "Nie można zweryfikować poświadczeń."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:62
 msgid "API Key not found."
-msgstr ""
+msgstr "Nie znaleziono klucza API."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
-msgstr ""
+msgstr "Dodaj klucz API"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:205
 msgid "All Stations"
@@ -705,41 +705,41 @@ msgstr "Ta funkcja nie jest obecnie obsługiwana na tej stacji."
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:49
 msgid "Edit Mount Point"
-msgstr ""
+msgstr "Edytuj punkt montowania"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:49
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
-msgstr ""
+msgstr "Dodaj punkt montowania"
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:61
 msgid "Mount Point deleted."
-msgstr ""
+msgstr "Punkt montowania usunięty."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:41
 msgid "Remote Relay updated."
-msgstr ""
+msgstr "Zdalny Przekaźnik zaktualizowany."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:41
 msgid "Remote Relay added."
-msgstr ""
+msgstr "Dodano zdalny przekaźnik."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:49
 msgid "Edit Remote Relay"
-msgstr ""
+msgstr "Edytuj zdalny Przekaźnik"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:49
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
-msgstr ""
+msgstr "Dodaj zdalny Przekaźnik"
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:61
 msgid "Remote Relay deleted."
-msgstr ""
+msgstr "Usunięto zdalny Przekaźnik."
 
 #: /var/azuracast/www/src/Controller/Stations/RemotesController.php:71
 msgid "This record cannot be edited."
-msgstr ""
+msgstr "Ten rekord nie może być edytowany."
 
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:64
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
@@ -801,50 +801,50 @@ msgstr "Można teraz skonfigurować konta Streamera (DJ)."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:84
 msgid "Streamer updated."
-msgstr ""
+msgstr "Streamer zaktualizowany."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:84
 msgid "Streamer added."
-msgstr ""
+msgstr "Streamer dodany."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:92
 msgid "Edit Streamer"
-msgstr ""
+msgstr "Edytuj streamera"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:92
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
-msgstr ""
+msgstr "Dodaj Streamera"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:104
 msgid "Streamer deleted."
-msgstr ""
+msgstr "Streamer usunięty."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:63
 msgid "Web Hook added."
-msgstr ""
+msgstr "Webhook dodany."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:70
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
-msgstr ""
+msgstr "Dodaj webhook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:77
 msgid "Web Hook updated."
-msgstr ""
+msgstr "Webhook zaktualizowany."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:84
 msgid "Edit Web Hook"
-msgstr ""
+msgstr "Edytuj webhook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:104
 msgid "Web hook enabled."
-msgstr ""
+msgstr "Włączono webhook."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:104
 msgid "Web Hook disabled."
-msgstr ""
+msgstr "Webhook wyłączony."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:126
 msgid "Web Hook Test Output"
@@ -852,7 +852,7 @@ msgstr "Wyjście testowe Web Hook'a"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:139
 msgid "Web Hook deleted."
-msgstr ""
+msgstr "Webhook usunięty."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:90
 msgid "Liquidsoap Log"
@@ -884,15 +884,15 @@ msgstr "Konfiguracja SHOUTcast'a"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:26
 msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
+msgstr "Wyszukiwarki nie mogą używać tej funkcji."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
 msgid "The song ID you specified could not be found in the station."
-msgstr ""
+msgstr "Identyfikator utworu, który podałeś nie został znaleziony w stacji."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:43
 msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
+msgstr "ID utworu, który podałeś nie może być żądany dla tej stacji."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:69
 msgid "You have submitted a request too recently! Please wait before submitting another one."
@@ -900,7 +900,7 @@ msgstr "Zbyt szybko wysyłasz kolejne żądania! Poczekaj chwilę zanim wyślesz
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:111
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
+msgstr "Zduplikowane żądanie: ta piosenka została już żądana i wkrótce zostanie odtworzona."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:153
 msgid "This song was already played too recently. Wait a while before requesting it again."
@@ -983,11 +983,11 @@ msgstr "Dostępne są nowe aktualizacje AzuraCast"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:183
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s nie jest rozpoznany jako usługa."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:184
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Nie może być jeszcze zarejestrowana przez Inspektora. Ponowne uruchomienie nadawania może okazać się pomocne."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:193
 msgid "%s cannot start"
@@ -1070,19 +1070,19 @@ msgstr "Hasło nie może zawierać następujących znaków: %s"
 
 #: /var/azuracast/www/config/cli.php:71
 msgid "Generate the translation locale file."
-msgstr ""
+msgstr "Wygeneruj plik językowy tłumaczenia."
 
 #: /var/azuracast/www/config/cli.php:76
 msgid "Convert translated locale files into PHP arrays."
-msgstr ""
+msgstr "Konwertuj przetłumaczone pliki językowe na tablice PHP arrays."
 
 #: /var/azuracast/www/config/cli.php:82
 msgid "Migrate existing configuration to new INI format if any exists."
-msgstr ""
+msgstr "Migruj istniejącą konfigurację do nowego formatu INI, jeśli istnieje."
 
 #: /var/azuracast/www/config/cli.php:87
 msgid "Initial setup of InfluxDB."
-msgstr ""
+msgstr "Wstępna konfiguracja InfluxDB."
 
 #: /var/azuracast/www/config/cli.php:92
 msgid "Install fixtures for demo / local development."
@@ -1090,23 +1090,23 @@ msgstr ""
 
 #: /var/azuracast/www/config/cli.php:97
 msgid "Run all general AzuraCast setup steps."
-msgstr ""
+msgstr "Uruchom wszystkie ogólne kroki konfiguracji AzuraCast."
 
 #: /var/azuracast/www/config/cli.php:108
 msgid "Run one or more scheduled synchronization tasks."
-msgstr ""
+msgstr "Uruchom jedno lub więcej zaplanowanych zadań synchronizacji."
 
 #: /var/azuracast/www/config/cli.php:113
 msgid "Process the message queue."
-msgstr ""
+msgstr "Przetwarzaj kolejkę wiadomości."
 
 #: /var/azuracast/www/config/cli.php:144
 msgid "List all settings in the AzuraCast settings database."
-msgstr ""
+msgstr "Wyświetl wszystkie ustawienia w bazie danych ustawień AzuraCast."
 
 #: /var/azuracast/www/config/cli.php:154
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr ""
+msgstr "Wykonaj kopię zapasową bazy danych AzuraCast i statystyk (i opcjonalnie mediów)."
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
@@ -1401,11 +1401,11 @@ msgstr "Opcjonalnie zdefiniuj nazwę przyjazną dla API, jak na przykład <code>
 
 #: /var/azuracast/www/config/forms/custom_field.php:31
 msgid "Automatically Set from ID3v2 Value"
-msgstr ""
+msgstr "Automatycznie ustaw z wartości ID3v2"
 
 #: /var/azuracast/www/config/forms/custom_field.php:32
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
-msgstr ""
+msgstr "Opcjonalnie wybierz pole metadanych ID3v2 (jeśli są), które zostanie użyte do ustawienia wartości tego pola."
 
 #: /var/azuracast/www/config/forms/custom_field.php:36
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
@@ -1440,11 +1440,11 @@ msgstr "Wykonawca"
 
 #: /var/azuracast/www/config/forms/custom_field.php:41
 msgid "Attached Picture"
-msgstr ""
+msgstr "Dołączony obrazek"
 
 #: /var/azuracast/www/config/forms/custom_field.php:42
 msgid "Audio Encryption"
-msgstr ""
+msgstr "Szyfrowanie dźwięku"
 
 #: /var/azuracast/www/config/forms/custom_field.php:43
 msgid "Audio Seek Point Index"
@@ -1452,27 +1452,27 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:44
 msgid "Band"
-msgstr ""
+msgstr "Zespół"
 
 #: /var/azuracast/www/config/forms/custom_field.php:45
 msgid "Bpm"
-msgstr ""
+msgstr "Bpm"
 
 #: /var/azuracast/www/config/forms/custom_field.php:46
 msgid "Comment"
-msgstr ""
+msgstr "Komentarz"
 
 #: /var/azuracast/www/config/forms/custom_field.php:47
 msgid "Commercial Frame"
-msgstr ""
+msgstr "Ramka komercyjna"
 
 #: /var/azuracast/www/config/forms/custom_field.php:48
 msgid "Commercial Information"
-msgstr ""
+msgstr "Informacje handlowe"
 
 #: /var/azuracast/www/config/forms/custom_field.php:49
 msgid "Composer"
-msgstr ""
+msgstr "Kompozytor"
 
 #: /var/azuracast/www/config/forms/custom_field.php:50
 msgid "Composer Sort Order"
@@ -1480,47 +1480,47 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:51
 msgid "Conductor"
-msgstr ""
+msgstr "Dyrygent"
 
 #: /var/azuracast/www/config/forms/custom_field.php:52
 msgid "Content Group Description"
-msgstr ""
+msgstr "Opis grupy treści"
 
 #: /var/azuracast/www/config/forms/custom_field.php:53
 msgid "Copyright"
-msgstr ""
+msgstr "Prawa autorskie"
 
 #: /var/azuracast/www/config/forms/custom_field.php:54
 msgid "Copyright Message"
-msgstr ""
+msgstr "Informacja o prawach autorskich"
 
 #: /var/azuracast/www/config/forms/custom_field.php:55
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: /var/azuracast/www/config/forms/custom_field.php:56
 msgid "Encoded By"
-msgstr ""
+msgstr "Kodowane przez"
 
 #: /var/azuracast/www/config/forms/custom_field.php:57
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Ustawienia enkodera"
 
 #: /var/azuracast/www/config/forms/custom_field.php:58
 msgid "Encoding Time"
-msgstr ""
+msgstr "Czas kodowania"
 
 #: /var/azuracast/www/config/forms/custom_field.php:59
 msgid "Encrypted Meta Frame"
-msgstr ""
+msgstr "Zakodowana ramka metadanych"
 
 #: /var/azuracast/www/config/forms/custom_field.php:60
 msgid "Encryption Method Registration"
-msgstr ""
+msgstr "Rejestracja metody szyfrowania"
 
 #: /var/azuracast/www/config/forms/custom_field.php:61
 msgid "Equalisation"
-msgstr ""
+msgstr "Wyrównanie"
 
 #: /var/azuracast/www/config/forms/custom_field.php:62
 msgid "Event Timing Codes"
@@ -1528,19 +1528,19 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:63
 msgid "Featured Artist"
-msgstr ""
+msgstr "Wyróżniony Artysta"
 
 #: /var/azuracast/www/config/forms/custom_field.php:64
 msgid "File Owner"
-msgstr ""
+msgstr "Właściciel pliku"
 
 #: /var/azuracast/www/config/forms/custom_field.php:65
 msgid "File Type"
-msgstr ""
+msgstr "Typ pliku"
 
 #: /var/azuracast/www/config/forms/custom_field.php:66
 msgid "General Encapsulated Object"
-msgstr ""
+msgstr "Obiekt ogólny zamknięty"
 
 #: /var/azuracast/www/config/forms/custom_field.php:67
 #: /var/azuracast/www/config/forms/station.php:54
@@ -1549,23 +1549,23 @@ msgstr "Gatunek"
 
 #: /var/azuracast/www/config/forms/custom_field.php:68
 msgid "Group Identification Registration"
-msgstr ""
+msgstr "Rejestracja identyfikacji grupy"
 
 #: /var/azuracast/www/config/forms/custom_field.php:69
 msgid "Initial Key"
-msgstr ""
+msgstr "Początkowy klucz"
 
 #: /var/azuracast/www/config/forms/custom_field.php:70
 msgid "Internet Radio Station Name"
-msgstr ""
+msgstr "Nazwa internetowej stacji radiowej"
 
 #: /var/azuracast/www/config/forms/custom_field.php:71
 msgid "Internet Radio Station Owner"
-msgstr ""
+msgstr "Właściciel internetowej stacji radiowej"
 
 #: /var/azuracast/www/config/forms/custom_field.php:72
 msgid "Involved People List"
-msgstr ""
+msgstr "Lista zaangażowanych osób"
 
 #: /var/azuracast/www/config/forms/custom_field.php:73
 msgid "ISRC"
@@ -1584,19 +1584,19 @@ msgstr "Długość"
 
 #: /var/azuracast/www/config/forms/custom_field.php:76
 msgid "Linked Information"
-msgstr ""
+msgstr "Powiązane informacje"
 
 #: /var/azuracast/www/config/forms/custom_field.php:77
 msgid "Lyricist"
-msgstr ""
+msgstr "Autor tekstu"
 
 #: /var/azuracast/www/config/forms/custom_field.php:78
 msgid "Media Type"
-msgstr ""
+msgstr "Typ multimediów"
 
 #: /var/azuracast/www/config/forms/custom_field.php:79
 msgid "Mood"
-msgstr ""
+msgstr "Nastrój"
 
 #: /var/azuracast/www/config/forms/custom_field.php:80
 msgid "MPEG Location Lookup Table"
@@ -1604,7 +1604,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:81
 msgid "Music CD Identifier"
-msgstr ""
+msgstr "Identyfikator płyty CD"
 
 #: /var/azuracast/www/config/forms/custom_field.php:82
 msgid "Musician Credits List"
@@ -1612,39 +1612,39 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:83
 msgid "Original Album"
-msgstr ""
+msgstr "Oryginalny album"
 
 #: /var/azuracast/www/config/forms/custom_field.php:84
 msgid "Original Artist"
-msgstr ""
+msgstr "Oryginalny Artysta"
 
 #: /var/azuracast/www/config/forms/custom_field.php:85
 msgid "Original Filename"
-msgstr ""
+msgstr "Oryginalna nazwa pliku"
 
 #: /var/azuracast/www/config/forms/custom_field.php:86
 msgid "Original Lyricist"
-msgstr ""
+msgstr "Oryginalny autor tekstu"
 
 #: /var/azuracast/www/config/forms/custom_field.php:87
 msgid "Original Release Time"
-msgstr ""
+msgstr "Oryginalny czas wydania"
 
 #: /var/azuracast/www/config/forms/custom_field.php:88
 msgid "Original Year"
-msgstr ""
+msgstr "Pierwotny rok"
 
 #: /var/azuracast/www/config/forms/custom_field.php:89
 msgid "Ownership Frame"
-msgstr ""
+msgstr "Ramka własności"
 
 #: /var/azuracast/www/config/forms/custom_field.php:90
 msgid "Part Of A Compilation"
-msgstr ""
+msgstr "Część składanki"
 
 #: /var/azuracast/www/config/forms/custom_field.php:91
 msgid "Part Of A Set"
-msgstr ""
+msgstr "Część zestawu"
 
 #: /var/azuracast/www/config/forms/custom_field.php:92
 msgid "Performer Sort Order"

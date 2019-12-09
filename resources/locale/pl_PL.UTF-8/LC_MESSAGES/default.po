@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-11-23 22:01\n"
+"PO-Revision-Date: 2019-12-09 12:41\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -31,31 +31,31 @@ msgstr "Przejrzyj dziennik systemowy"
 
 #: /var/azuracast/www/src/Acl.php:82
 msgid "Administer Settings"
-msgstr ""
+msgstr "Zarządzaj ustawieniami"
 
 #: /var/azuracast/www/src/Acl.php:83
 msgid "Administer API Keys"
-msgstr ""
+msgstr "Zarządzaj kluczami API"
 
 #: /var/azuracast/www/src/Acl.php:84
 msgid "Administer Users"
-msgstr ""
+msgstr "Zarządzaj użytkownikami"
 
 #: /var/azuracast/www/src/Acl.php:85
 msgid "Administer Permissions"
-msgstr ""
+msgstr "Zarządzaj uprawnieniami"
 
 #: /var/azuracast/www/src/Acl.php:86
 msgid "Administer Stations"
-msgstr ""
+msgstr "Zarządzaj stacjami"
 
 #: /var/azuracast/www/src/Acl.php:87
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "Zarządzaj własnymi polami"
 
 #: /var/azuracast/www/src/Acl.php:88
 msgid "Administer Backups"
-msgstr ""
+msgstr "Zarządzaj kopiami zapasowymi"
 
 #: /var/azuracast/www/src/Acl.php:92
 msgid "View Station Page"
@@ -71,97 +71,97 @@ msgstr "Wyświetl logi stacji"
 
 #: /var/azuracast/www/src/Acl.php:95
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "Edytuj profil stacji"
 
 #: /var/azuracast/www/src/Acl.php:96
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "Zarządzaj nadawaniem stacji"
 
 #: /var/azuracast/www/src/Acl.php:97
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "Zarządzaj streamerami stacji"
 
 #: /var/azuracast/www/src/Acl.php:98
 msgid "Manage Station Mount Points"
-msgstr ""
+msgstr "Zarządzaj punktami montowania stacji"
 
 #: /var/azuracast/www/src/Acl.php:99
 msgid "Manage Station Remote Relays"
-msgstr ""
+msgstr "Zarządzaj zdalnymi przekaźnikami stacji"
 
 #: /var/azuracast/www/src/Acl.php:100
 msgid "Manage Station Media"
-msgstr ""
+msgstr "Zarządzaj plikami dźwiękowymi stacji"
 
 #: /var/azuracast/www/src/Acl.php:101
 msgid "Manage Station Automation"
-msgstr ""
+msgstr "Zarządzaj automatyzacją stacji"
 
 #: /var/azuracast/www/src/Acl.php:102
 msgid "Manage Station Web Hooks"
-msgstr ""
+msgstr "Zarządzaj webhookami stacji"
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:36
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "Kopia zapasowa AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:37
 msgid "Please wait while a backup is generated..."
-msgstr ""
+msgstr "Proszę czekać na wygenerowanie kopii zapasowej..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:40
 msgid "Creating temporary directories..."
-msgstr ""
+msgstr "Tworzenie katalogów tymczasowych..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:44
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:50
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:28
 msgid "Directory \"%s\" was not created"
-msgstr ""
+msgstr "Katalog \"%s\" nie został utworzony"
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:57
 msgid "Backing up MariaDB..."
-msgstr ""
+msgstr "Tworzenie kopii zapasowej MariaDB..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:80
 msgid "Backing up InfluxDB..."
-msgstr ""
+msgstr "Tworzenie kopii zapasowej InfluxDB..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:119
 msgid "Creating backup archive..."
-msgstr ""
+msgstr "Tworzenie archiwum kopii zapasowej..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:158
 msgid "Cleaning up temporary files..."
-msgstr ""
+msgstr "Czyszczenie plików tymczasowych..."
 
 #: /var/azuracast/www/src/Console/Command/BackupCommand.php:169
 msgid "Backup complete in %.2f seconds."
-msgstr ""
+msgstr "Do ukończenia kopii zapasowej pozostało %.2f sekund."
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:15
 msgid "AzuraCast Settings"
-msgstr ""
+msgstr "Ustawienia AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:18
 msgid "Setting Key"
-msgstr ""
+msgstr "Ustawianie klucza"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:19
 msgid "Setting Value"
-msgstr ""
+msgstr "Ustawianie wartości"
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerateCommand.php:42
 msgid "Locales generated."
-msgstr ""
+msgstr "Wygenerowano języki."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:29
 msgid "Imported locale: %s"
-msgstr ""
+msgstr "Zaimportowano język: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:33
 msgid "Locales imported."
-msgstr ""
+msgstr "Zaimportowano języki."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:21
 msgid "Configuration already set up."

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-09 12:41\n"
+"PO-Revision-Date: 2019-12-09 13:10\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
@@ -51,7 +51,7 @@ msgstr "Zarządzaj stacjami"
 
 #: /var/azuracast/www/src/Acl.php:87
 msgid "Administer Custom Fields"
-msgstr "Zarządzaj własnymi polami"
+msgstr "Zarządzaj polami niestandardowymi"
 
 #: /var/azuracast/www/src/Acl.php:88
 msgid "Administer Backups"
@@ -165,15 +165,15 @@ msgstr "Zaimportowano języki."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:21
 msgid "Configuration already set up."
-msgstr ""
+msgstr "Konfiguracja została już przeprowadzona."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:62
 msgid "Configuration successfully written."
-msgstr ""
+msgstr "Konfiguracja została pomyślnie zapisana."
 
 #: /var/azuracast/www/src/Console/Command/RestoreCommand.php:35
 msgid "Backup path %s not found!"
-msgstr ""
+msgstr "Nie znaleziono ścieżki kopii zapasowej %s!"
 
 #: /var/azuracast/www/src/Console/Command/SetAdministratorCommand.php:42
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -185,39 +185,39 @@ msgstr "Nie znaleziono konta."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:24
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "Instalacja AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:25
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "Witamy w AzuraCast. Poczekaj, aż niektóre kluczowe zależności AzuraCast zostaną skonfigurowane..."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:28
 msgid "Environment: %s"
-msgstr ""
+msgstr "Środowisko: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:29
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Metoda instalacji: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:33
 msgid "Running in update mode."
-msgstr ""
+msgstr "Uruchamianie w trybie aktualizacji."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:36
 msgid "Migrating Legacy Configuration"
-msgstr ""
+msgstr "Migracja starszej konfiguracji"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:42
 msgid "Setting Up InfluxDB"
-msgstr ""
+msgstr "Konfigurowanie InfluxDB"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:47
 msgid "Running Database Migrations"
-msgstr ""
+msgstr "Uruchamianie migracji bazy danych"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:54
 msgid "Generating Database Proxy Classes"
-msgstr ""
+msgstr "Generowanie klas proxy bazy danych"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:60
 msgid "Installing Data Fixtures"
@@ -225,23 +225,23 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:66
 msgid "Reload System Data"
-msgstr ""
+msgstr "Przeładuj dane systemowe"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:71
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "Odświeżanie wszystkich stacji"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:84
 msgid "AzuraCast is now updated to the latest version!"
-msgstr ""
+msgstr "AzuraCast został zaktualizowany do najnowszej wersji!"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:90
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "Instalacja AzuraCast zakończona!"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:91
 msgid "Visit %s to complete setup."
-msgstr ""
+msgstr "Odwiedź %s aby zakończyć konfigurację."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:89
 msgid "Fixtures loaded."
@@ -249,7 +249,7 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:21
 msgid "Database created."
-msgstr ""
+msgstr "Baza danych utworzona."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:55
 msgid "Retention policies updated."
@@ -257,33 +257,33 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:75
 msgid "Continuous queries created."
-msgstr ""
+msgstr "Utworzono ciągłe zapytania."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:94
 msgid "InfluxDB databases created."
-msgstr ""
+msgstr "Utworzono bazy danych InfluxDB."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:62
 #: /var/azuracast/www/src/Controller/Api/Stations/Art/DeleteArtAction.php:25
 #: /var/azuracast/www/src/Controller/Api/Stations/Art/PostArtAction.php:25
 #: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:73
 msgid "Record not found."
-msgstr ""
+msgstr "Nie znaleziono rekordu."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:43
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:97
 msgid "API Key updated."
-msgstr ""
+msgstr "Klucz API zaktualizowany."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:50
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
 msgid "Edit API Key"
-msgstr ""
+msgstr "Edytuj klucz API"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:58
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:124
 msgid "API Key deleted."
-msgstr ""
+msgstr "Klucz API usunięty."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:38
@@ -308,32 +308,32 @@ msgstr "Uruchom ręczne tworzenie kopii zapasowej"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:141
 msgid "Backup not found."
-msgstr ""
+msgstr "Nie znaleziono kopii zapasowej."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:154
 msgid "Backup deleted."
-msgstr ""
+msgstr "Kopia zapasowa usunięta."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:43
 msgid "Custom Field updated."
-msgstr ""
+msgstr "Pole niestandardowe zaktualizowane."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:43
 msgid "Custom Field added."
-msgstr ""
+msgstr "Dodano pole niestandardowe."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:51
 msgid "Edit Custom Field"
-msgstr ""
+msgstr "Edytuj pole niestandardowe"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:51
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
 msgid "Add Custom Field"
-msgstr ""
+msgstr "Dodaj pole niestandardowe"
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:59
 msgid "Custom Field deleted."
-msgstr ""
+msgstr "Pole niestandardowe usunięte."
 
 #: /var/azuracast/www/src/Controller/Admin/IndexController.php:102
 msgid "Sync Task Output"
@@ -370,24 +370,24 @@ msgstr "Supervisord dziennika"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:61
 msgid "Permission updated."
-msgstr ""
+msgstr "Uprawnienie zaktualizowane."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:61
 msgid "Permission added."
-msgstr ""
+msgstr "Uprawnienie dodane."
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:69
 msgid "Edit Permission"
-msgstr ""
+msgstr "Edytuj uprawnienie"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:69
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
-msgstr ""
+msgstr "Dodaj uprawnienie"
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:77
 msgid "Permission deleted."
-msgstr ""
+msgstr "Uprawnienie usunięte."
 
 #: /var/azuracast/www/src/Controller/Admin/SettingsController.php:41
 #: /var/azuracast/www/config/menus/admin.php:17
@@ -398,23 +398,23 @@ msgstr "Ustawienia systemu"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:51
 msgid "Station updated."
-msgstr ""
+msgstr "Stacja zaktualizowana."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:51
 msgid "Station added."
-msgstr ""
+msgstr "Dodano stację."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:57
 msgid "Edit Station"
-msgstr ""
+msgstr "Edytuj stację"
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:70
 msgid "Station deleted."
-msgstr ""
+msgstr "Stacja usunięta."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:78
 msgid "Station not found."
-msgstr ""
+msgstr "Stacja nie znaleziona."
 
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:89
 msgid "Clone Station: %s"
@@ -422,11 +422,11 @@ msgstr "Klon stacji: %s"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:53
 msgid "User updated."
-msgstr ""
+msgstr "Użytkownik zaktualizowany."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:53
 msgid "User added."
-msgstr ""
+msgstr "Użytkownik dodany."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:58
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
@@ -434,12 +434,12 @@ msgstr "Inny użytkownik już istnieje z tym adresem e-mail. Proszę zaktualizow
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:65
 msgid "Edit User"
-msgstr ""
+msgstr "Edytuj użytkownika"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:65
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "Add User"
-msgstr ""
+msgstr "Dodaj użytkownika"
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:78
 msgid "You cannot delete your own account."
@@ -447,11 +447,11 @@ msgstr "Nie możesz usunąć swojego konta."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:83
 msgid "User deleted."
-msgstr ""
+msgstr "Użytkownik usunięty."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:96
 msgid "User not found."
-msgstr ""
+msgstr "Nie znaleziono użytkownika."
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:101
 #: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:69
@@ -467,22 +467,22 @@ msgstr "Zalogowany pomyślnie."
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:145
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:167
 msgid "Record not found!"
-msgstr ""
+msgstr "Nie znaleziono rekordu!"
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:117
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:150
 msgid "Changes saved successfully."
-msgstr ""
+msgstr "Zmiany zostały pomyślnie zapisane."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:138
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:116
 #: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:172
 msgid "Record deleted successfully."
-msgstr ""
+msgstr "Rekord został pomyślnie usunięty."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:111
 msgid "You cannot remove yourself."
-msgstr ""
+msgstr "Nie możesz usunąć samego siebie."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/BatchAction.php:214
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/ListDirectoriesAction.php:27
@@ -503,11 +503,11 @@ msgstr "Plik nie przetworzony"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:24
 msgid "File not specified."
-msgstr ""
+msgstr "Plik nie został określony."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:30
 msgid "New path not specified."
-msgstr ""
+msgstr "Nie określono nowej ścieżki."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/UploadAction.php:25
 msgid "This station is out of available storage space."
@@ -518,7 +518,7 @@ msgstr "Przestrzeń dyskowa dla tej stacji jest zapełniona."
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:280
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:305
 msgid "Playlist not found."
-msgstr ""
+msgstr "Nie znaleziono listy odtwarzania."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:234
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:262
@@ -527,7 +527,7 @@ msgstr "Ta lista odtwarzania nie jest listą odtwarzania sekwencyjnego."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:289
 msgid "Format not found."
-msgstr ""
+msgstr "Nie znaleziono formatu."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:315
 msgid "Playlist enabled."
@@ -541,27 +541,27 @@ msgstr "Playlista wyłączona."
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:166
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:31
 msgid "This station does not accept requests currently."
-msgstr ""
+msgstr "Ta stacja obecnie nie akceptuje żądań."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:174
 msgid "Request submitted successfully."
-msgstr ""
+msgstr "Żądanie wysłane pomyślnie."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:75
 msgid "Station restarted."
-msgstr ""
+msgstr "Stacja uruchomiona ponownie."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend stopped."
-msgstr ""
+msgstr "Frontend zatrzymany."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:122
 msgid "Frontend started."
-msgstr ""
+msgstr "Frontend uruchomiony."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:135
 msgid "Frontend restarted."
-msgstr ""
+msgstr "Frontend zrestartowany."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:180
 msgid "Song skipped."
@@ -573,7 +573,7 @@ msgstr "Streamer odłączony."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:194
 msgid "Backend stopped."
-msgstr ""
+msgstr "Backend zatrzymany."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:200
 msgid "Backend started."

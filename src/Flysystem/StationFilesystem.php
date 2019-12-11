@@ -82,6 +82,10 @@ class StationFilesystem extends MountManager
      */
     public function upload($local_path, $to, array $config = []): bool
     {
+        if (!file_exists($local_path)) {
+            throw new \RuntimeException(sprintf('Source upload file not found at path: %s', $local_path));
+        }
+
         $stream = fopen($local_path, 'rb+');
 
         $uploaded = $this->putStream($to, $stream);

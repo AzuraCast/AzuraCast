@@ -160,7 +160,18 @@ class Flow
         string $originalFileName,
         int $numChunks
     ): array {
-        $originalFileName = File::sanitizeFileName(basename($originalFileName));
+        $originalFileName = basename($originalFileName);
+        $originalFileName = \Normalizer::normalize($originalFileName, \Normalizer::FORM_KD);
+        $originalFileName = File::sanitizeFileName($originalFileName);
+
+        // Truncate filenames whose lengths are longer than 255 characters, while preserving extension.
+        if (strlen($originalFileName) > 255) {
+            $ext = pathinfo($originalFileName, \PATHINFO_EXTENSION);
+            $fileName = pathinfo($originalFileName, \PATHINFO_FILENAME);
+            $fileName = substr($fileName, 0, 255 - 1 - strlen($ext));
+            $originalFileName = $fileName . '.' . $ext;
+        }
+
         $finalPath = $tempDir . '/' . $originalFileName;
 
         $fp = fopen($finalPath, 'wb+');

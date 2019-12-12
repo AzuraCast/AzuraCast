@@ -213,23 +213,43 @@ class StationPlaylistSchedule
         $schedule_start_time = $this->getStartTime();
         $schedule_end_time = $this->getEndTime();
 
-        // Special handling for playlists ending at midnight (hour code "000").
-        if (0 === $schedule_end_time) {
-            $schedule_end_time = 2400;
-        }
+        // Playlists that should only "play once".
+        if ($schedule_start_time === $schedule_end_time) {
+            $compare_periods = [$current_timecode - $schedule_start_time];
 
-        // Handle overnight playlists that stretch into the next day.
-        if ($schedule_end_time < $schedule_start_time) {
-            if ($current_timecode <= $schedule_end_time) {
-                // Check the previous day, since it's before the end time.
-                $day_to_check = (1 === $day_to_check) ? 7 : $day_to_check - 1;
-            } elseif ($current_timecode < $schedule_start_time) {
-                // The playlist shouldn't be playing before the start time on the current date.
+            if ($current_timecode > 2400 - 15) {
+                $compare_periods[] = 2400 - $current_timecode;
+            }
+
+            foreach ($compare_periods as $period) {
+                $playlist_diff = $current_timecode - $schedule_start_time;
+                if ($playlist_diff < 0 || $playlist_diff > 15) {
+                    return false;
+                }
+            }
+
+            if ($this->playlist->wasPlayedInLastXMinutes($now, 30)) {
                 return false;
             }
-            // Non-overnight playlist check
-        } elseif ($current_timecode < $schedule_start_time || $current_timecode > $schedule_end_time) {
-            return false;
+        } else {
+            // Special handling for playlists ending at midnight (hour code "000").
+            if (0 === $schedule_end_time) {
+                $schedule_end_time = 2400;
+            }
+
+            // Handle overnight playlists that stretch into the next day.
+            if ($schedule_end_time < $schedule_start_time) {
+                if ($current_timecode <= $schedule_end_time) {
+                    // Check the previous day, since it's before the end time.
+                    $day_to_check = (1 === $day_to_check) ? 7 : $day_to_check - 1;
+                } elseif ($current_timecode < $schedule_start_time) {
+                    // The playlist shouldn't be playing before the start time on the current date.
+                    return false;
+                }
+                // Non-overnight playlist check
+            } elseif ($current_timecode < $schedule_start_time || $current_timecode > $schedule_end_time) {
+                return false;
+            }
         }
 
         // Check that the current day is one of the scheduled play days.

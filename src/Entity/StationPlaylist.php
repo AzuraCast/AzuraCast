@@ -751,7 +751,7 @@ class StationPlaylist
         $this->play_per_hour_minute = $play_per_hour_minute;
     }
 
-    protected function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
+    public function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
     {
         if (0 === $this->played_at) {
             return false;

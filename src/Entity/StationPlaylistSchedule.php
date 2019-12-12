@@ -221,14 +221,16 @@ class StationPlaylistSchedule
                 $compare_periods[] = 2400 - $current_timecode;
             }
 
+            $matchesPeriod = false;
             foreach ($compare_periods as $period) {
                 $playlist_diff = $current_timecode - $schedule_start_time;
-                if ($playlist_diff < 0 || $playlist_diff > 15) {
-                    return false;
+                if ($playlist_diff > 0 && $playlist_diff < 15) {
+                    $matchesPeriod = true;
+                    break;
                 }
             }
 
-            if ($this->playlist->wasPlayedInLastXMinutes($now, 30)) {
+            if (!$matchesPeriod || $this->playlist->wasPlayedInLastXMinutes($now, 30)) {
                 return false;
             }
         } else {

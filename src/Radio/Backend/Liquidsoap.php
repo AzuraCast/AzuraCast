@@ -945,7 +945,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             case $mount::FORMAT_MP3:
             default:
-                $output_format = '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
+                $output_format = '%mp3(samplerate=44100, internal_quality=0, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
                 break;
         }
 

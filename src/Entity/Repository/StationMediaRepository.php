@@ -346,7 +346,7 @@ class StationMediaRepository extends Repository
 
         if ($created) {
             $this->em->persist($record);
-            $this->em->flush($record);
+            $this->em->flush();
         }
 
         return $record;

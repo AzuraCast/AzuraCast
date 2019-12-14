@@ -55,8 +55,7 @@ class Media extends AbstractTask
 
                 if ($media_row instanceof Entity\StationMedia) {
                     $this->mediaRepo->processMedia($media_row, $message->force);
-
-                    $this->em->flush($media_row);
+                    $this->em->flush();
                 }
             } elseif ($message instanceof Message\AddNewMediaMessage) {
                 $station = $this->em->find(Entity\Station::class, $message->station_id);

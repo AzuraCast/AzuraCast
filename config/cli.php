@@ -113,7 +113,7 @@ return function (Application $console) {
     )->setDescription(__('Process the message queue.'));
 
     $console->command(
-        'azuracast:media:reprocess',
+        'azuracast:media:reprocess [station-name]',
         Command\ReprocessMediaCommand::class
     )->setDescription('Manually reload all media metadata from file.');
 

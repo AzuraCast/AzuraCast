@@ -2,6 +2,8 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
 use Azura\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -12,11 +14,25 @@ class ReprocessMediaCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManager $em,
-        Entity\Repository\StationMediaRepository $media_repo
+        StationRepository $stationRepo,
+        Entity\Repository\StationMediaRepository $media_repo,
+        ?string $stationName = null
     ) {
-        $io->writeLn('Reloading all metadata for all media...');
+        if (!empty($stationName)) {
+            $station = $stationRepo->findByIdentifier($stationName);
 
-        $stations = $em->getRepository(Entity\Station::class)->findAll();
+            if (!$station instanceof Station) {
+                $io->error('Station not found.');
+                return 1;
+            }
+
+            $stations = [$station];
+        } else {
+            $io->section('Restarting all radio stations...');
+
+            /** @var Station[] $stations */
+            $stations = $stationRepo->fetchAll();
+        }
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */

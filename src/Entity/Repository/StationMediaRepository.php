@@ -162,13 +162,13 @@ class StationMediaRepository extends Repository
         ];
 
         // Clear existing auto-assigned custom fields.
-        $existingFieldCollection = $media->getCustomFields();
+        $fieldCollection = $media->getCustomFields();
 
-        foreach ($existingFieldCollection as $existingCustomField) {
+        foreach ($fieldCollection as $existingCustomField) {
             /** @var Entity\StationMediaCustomField $existingCustomField */
             if ($existingCustomField->getField()->hasAutoAssign()) {
                 $this->em->remove($existingCustomField);
-                $existingFieldCollection->removeElement($existingCustomField);
+                $fieldCollection->removeElement($existingCustomField);
             }
         }
 
@@ -190,6 +190,8 @@ class StationMediaRepository extends Repository
                         $customFieldRow = new Entity\StationMediaCustomField($media, $customFieldKey);
                         $customFieldRow->setValue($tagValue);
                         $this->em->persist($customFieldRow);
+
+                        $fieldCollection->add($customFieldRow);
                     }
                 }
             }

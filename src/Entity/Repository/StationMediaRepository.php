@@ -162,10 +162,13 @@ class StationMediaRepository extends Repository
         ];
 
         // Clear existing auto-assigned custom fields.
-        foreach ($media->getCustomFields() as $existingCustomField) {
+        $existingFieldCollection = $media->getCustomFields();
+
+        foreach ($existingFieldCollection as $existingCustomField) {
             /** @var Entity\StationMediaCustomField $existingCustomField */
             if ($existingCustomField->getField()->hasAutoAssign()) {
                 $this->em->remove($existingCustomField);
+                $existingFieldCollection->removeElement($existingCustomField);
             }
         }
 

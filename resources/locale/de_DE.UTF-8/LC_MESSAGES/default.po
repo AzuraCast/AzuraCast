@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-19 09:56\n"
+"PO-Revision-Date: 2019-12-19 10:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -1488,31 +1488,31 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:53
 msgid "Copyright"
-msgstr ""
+msgstr "Copyright"
 
 #: /var/azuracast/www/config/forms/custom_field.php:54
 msgid "Copyright Message"
-msgstr ""
+msgstr "Copyright-Nachricht"
 
 #: /var/azuracast/www/config/forms/custom_field.php:55
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: /var/azuracast/www/config/forms/custom_field.php:56
 msgid "Encoded By"
-msgstr ""
+msgstr "Kodiert von"
 
 #: /var/azuracast/www/config/forms/custom_field.php:57
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Encoder-Einstellungen"
 
 #: /var/azuracast/www/config/forms/custom_field.php:58
 msgid "Encoding Time"
-msgstr ""
+msgstr "Kodierungs-Zeit"
 
 #: /var/azuracast/www/config/forms/custom_field.php:59
 msgid "Encrypted Meta Frame"
-msgstr ""
+msgstr "Verschlüsselter Meta-Rahmen"
 
 #: /var/azuracast/www/config/forms/custom_field.php:60
 msgid "Encryption Method Registration"
@@ -1596,7 +1596,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:79
 msgid "Mood"
-msgstr ""
+msgstr "Stimmung"
 
 #: /var/azuracast/www/config/forms/custom_field.php:80
 msgid "MPEG Location Lookup Table"

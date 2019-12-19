@@ -2,16 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
+"Last-Translator: \n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-11-23 22:01\n"
+"PO-Revision-Date: 2019-12-19 09:56\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: azuracast\n"
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /master/resources/locale/default.pot\n"
@@ -225,7 +224,7 @@ msgstr "Installiere Daten-Fixtures"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:66
 msgid "Reload System Data"
-msgstr ""
+msgstr "Systemdaten neu laden"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:71
 msgid "Refreshing All Stations"
@@ -503,11 +502,11 @@ msgstr "Datei nicht verarbeitet"
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:24
 msgid "File not specified."
-msgstr ""
+msgstr "Keine Datei gewählt."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:30
 msgid "New path not specified."
-msgstr ""
+msgstr "Neuer Pfad nicht angegeben."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/UploadAction.php:25
 msgid "This station is out of available storage space."
@@ -1402,11 +1401,11 @@ msgstr "Optional kann ein API freundlicher Name, wie z. b.<code>feld_name</code>
 
 #: /var/azuracast/www/config/forms/custom_field.php:31
 msgid "Automatically Set from ID3v2 Value"
-msgstr ""
+msgstr "Automatisch aus ID3v2 Wert setzen"
 
 #: /var/azuracast/www/config/forms/custom_field.php:32
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
-msgstr ""
+msgstr "Optional ein ID3v2-Metadatenfeld wählen, das, falls vorhanden, verwendet wird, um den Wert dieses Feldes festzulegen."
 
 #: /var/azuracast/www/config/forms/custom_field.php:36
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
@@ -1425,11 +1424,11 @@ msgstr "Album"
 
 #: /var/azuracast/www/config/forms/custom_field.php:38
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Album-Interpret Sortier-Reihenfolge"
 
 #: /var/azuracast/www/config/forms/custom_field.php:39
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Album-Sortierreihenfolge"
 
 #: /var/azuracast/www/config/forms/custom_field.php:40
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
@@ -1441,11 +1440,11 @@ msgstr "Interpret"
 
 #: /var/azuracast/www/config/forms/custom_field.php:41
 msgid "Attached Picture"
-msgstr ""
+msgstr "Angehängtes Bild"
 
 #: /var/azuracast/www/config/forms/custom_field.php:42
 msgid "Audio Encryption"
-msgstr ""
+msgstr "Audio-Verschlüsselung"
 
 #: /var/azuracast/www/config/forms/custom_field.php:43
 msgid "Audio Seek Point Index"

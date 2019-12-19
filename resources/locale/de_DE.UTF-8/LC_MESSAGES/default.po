@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-19 10:20\n"
+"PO-Revision-Date: 2019-12-19 13:20\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -1472,7 +1472,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:49
 msgid "Composer"
-msgstr ""
+msgstr "Komponist"
 
 #: /var/azuracast/www/config/forms/custom_field.php:50
 msgid "Composer Sort Order"
@@ -1532,11 +1532,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:64
 msgid "File Owner"
-msgstr ""
+msgstr "Dateieigentümer"
 
 #: /var/azuracast/www/config/forms/custom_field.php:65
 msgid "File Type"
-msgstr ""
+msgstr "Dateityp"
 
 #: /var/azuracast/www/config/forms/custom_field.php:66
 msgid "General Encapsulated Object"
@@ -1588,11 +1588,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:77
 msgid "Lyricist"
-msgstr ""
+msgstr "Lyricist"
 
 #: /var/azuracast/www/config/forms/custom_field.php:78
 msgid "Media Type"
-msgstr ""
+msgstr "Medientyp"
 
 #: /var/azuracast/www/config/forms/custom_field.php:79
 msgid "Mood"
@@ -1612,19 +1612,19 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:83
 msgid "Original Album"
-msgstr ""
+msgstr "Original Album"
 
 #: /var/azuracast/www/config/forms/custom_field.php:84
 msgid "Original Artist"
-msgstr ""
+msgstr "Original Künstler"
 
 #: /var/azuracast/www/config/forms/custom_field.php:85
 msgid "Original Filename"
-msgstr ""
+msgstr "Original Dateiname"
 
 #: /var/azuracast/www/config/forms/custom_field.php:86
 msgid "Original Lyricist"
-msgstr ""
+msgstr "Original Lyricist"
 
 #: /var/azuracast/www/config/forms/custom_field.php:87
 msgid "Original Release Time"
@@ -1684,15 +1684,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:101
 msgid "Recording Dates"
-msgstr ""
+msgstr "Aufnahmedatum"
 
 #: /var/azuracast/www/config/forms/custom_field.php:102
 msgid "Recording Studio"
-msgstr ""
+msgstr "Aufnahme-Studio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:103
 msgid "Recording Time"
-msgstr ""
+msgstr "Aufnahmezeit"
 
 #: /var/azuracast/www/config/forms/custom_field.php:104
 msgid "Relative Volume Adjustment"
@@ -1708,11 +1708,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:107
 msgid "ReplayGain Adjustment"
-msgstr ""
+msgstr "ReplayGain Anpassung"
 
 #: /var/azuracast/www/config/forms/custom_field.php:108
 msgid "Reverb"
-msgstr ""
+msgstr "Hall"
 
 #: /var/azuracast/www/config/forms/custom_field.php:109
 msgid "Seek Frame"
@@ -1733,7 +1733,7 @@ msgstr "Größe"
 
 #: /var/azuracast/www/config/forms/custom_field.php:113
 msgid "Subtitle"
-msgstr ""
+msgstr "Untertitel"
 
 #: /var/azuracast/www/config/forms/custom_field.php:114
 msgid "Synced Tempo Codes"
@@ -1753,15 +1753,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:118
 msgid "Terms Of Use"
-msgstr ""
+msgstr "Nutzungsbedingungen"
 
 #: /var/azuracast/www/config/forms/custom_field.php:119
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: /var/azuracast/www/config/forms/custom_field.php:120
 msgid "Time"
-msgstr ""
+msgstr "Zeit"
 
 #: /var/azuracast/www/config/forms/custom_field.php:121
 #: /var/azuracast/www/config/forms/webhook/discord.php:70
@@ -1778,11 +1778,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:123
 msgid "Track Number"
-msgstr ""
+msgstr "Titelnummer"
 
 #: /var/azuracast/www/config/forms/custom_field.php:124
 msgid "Unique File Identifier"
-msgstr ""
+msgstr "Eindeutige Datei-Kennung"
 
 #: /var/azuracast/www/config/forms/custom_field.php:125
 msgid "Unsynchronised Lyric"
@@ -1818,7 +1818,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:133
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
 msgid "Important Notes"

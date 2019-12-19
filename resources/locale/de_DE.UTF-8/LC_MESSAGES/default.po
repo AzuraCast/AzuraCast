@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-19 13:20\n"
+"PO-Revision-Date: 2019-12-19 13:30\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -1456,11 +1456,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:45
 msgid "Bpm"
-msgstr ""
+msgstr "BPM"
 
 #: /var/azuracast/www/config/forms/custom_field.php:46
 msgid "Comment"
-msgstr ""
+msgstr "Kommentar"
 
 #: /var/azuracast/www/config/forms/custom_field.php:47
 msgid "Commercial Frame"
@@ -1480,7 +1480,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:51
 msgid "Conductor"
-msgstr ""
+msgstr "Dirigent"
 
 #: /var/azuracast/www/config/forms/custom_field.php:52
 msgid "Content Group Description"
@@ -1628,7 +1628,7 @@ msgstr "Original Lyricist"
 
 #: /var/azuracast/www/config/forms/custom_field.php:87
 msgid "Original Release Time"
-msgstr ""
+msgstr "Original Releasezeit"
 
 #: /var/azuracast/www/config/forms/custom_field.php:88
 msgid "Original Year"
@@ -1640,11 +1640,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:90
 msgid "Part Of A Compilation"
-msgstr ""
+msgstr "Teil einer Zusammenstellung"
 
 #: /var/azuracast/www/config/forms/custom_field.php:91
 msgid "Part Of A Set"
-msgstr ""
+msgstr "Teil eines Sets"
 
 #: /var/azuracast/www/config/forms/custom_field.php:92
 msgid "Performer Sort Order"
@@ -1660,7 +1660,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:95
 msgid "Popularimeter"
-msgstr ""
+msgstr "Popularimeter"
 
 #: /var/azuracast/www/config/forms/custom_field.php:96
 msgid "Position Synchronisation Frame"
@@ -1676,11 +1676,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:99
 msgid "Publisher"
-msgstr ""
+msgstr "Herausgeber"
 
 #: /var/azuracast/www/config/forms/custom_field.php:100
 msgid "Recommended Buffer Size"
-msgstr ""
+msgstr "Empfohlene Puffergröße"
 
 #: /var/azuracast/www/config/forms/custom_field.php:101
 msgid "Recording Dates"

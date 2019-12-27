@@ -81,7 +81,7 @@ class Backup extends AbstractTask
 
         $now_utc = Chronos::now('UTC');
 
-        $threshold = $now_utc->subDay()->getTimestamp();
+        $threshold = $now_utc->subDay()->addMinutes(90)->getTimestamp();
         $last_run = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
 
         if ($last_run <= $threshold) {

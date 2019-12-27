@@ -38,12 +38,13 @@ class Backup extends AbstractTask
     {
         if ($message instanceof Message\BackupMessage) {
 
+            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
+
             [$result_code, $result_output] = $this->runBackup(
                 $message->path,
                 $message->exclude_media
             );
 
-            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RESULT, $result_code);
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_OUTPUT, $result_output);
         }
@@ -81,7 +82,7 @@ class Backup extends AbstractTask
 
         $now_utc = Chronos::now('UTC');
 
-        $threshold = $now_utc->subDay()->addMinutes(90)->getTimestamp();
+        $threshold = $now_utc->subDay()->getTimestamp();
         $last_run = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
 
         if ($last_run <= $threshold) {

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-28 13:10\n"
+"PO-Revision-Date: 2019-12-28 13:20\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -517,7 +517,7 @@ msgstr "Esta rádio ultrapassou o espaço disponível em disco."
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:280
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:305
 msgid "Playlist not found."
-msgstr ""
+msgstr "Playlist não encontrada."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:234
 #: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:262
@@ -548,19 +548,19 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:75
 msgid "Station restarted."
-msgstr ""
+msgstr "Estação reiniciada."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
 msgid "Frontend stopped."
-msgstr ""
+msgstr "Frontend parado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:122
 msgid "Frontend started."
-msgstr ""
+msgstr "Frontend iniciado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:135
 msgid "Frontend restarted."
-msgstr ""
+msgstr "Frontend reiniciado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:180
 msgid "Song skipped."
@@ -572,15 +572,15 @@ msgstr "Streamer desconectado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:194
 msgid "Backend stopped."
-msgstr ""
+msgstr "Backend parado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:200
 msgid "Backend started."
-msgstr ""
+msgstr "Backend iniciado."
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:213
 msgid "Backend restarted."
-msgstr ""
+msgstr "Backend reiniciado."
 
 #: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:48
 msgid "Too many login attempts"
@@ -602,16 +602,16 @@ msgstr "Suas credenciais não puderam ser verificadas."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:62
 msgid "API Key not found."
-msgstr ""
+msgstr "Chave API não encontrada."
 
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
-msgstr ""
+msgstr "Adicionar nova chave de API"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:205
 msgid "All Stations"
-msgstr ""
+msgstr "Todas as Estações"
 
 #: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:235
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:86
@@ -804,46 +804,46 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:84
 msgid "Streamer added."
-msgstr ""
+msgstr "Streamer adicionado."
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:92
 msgid "Edit Streamer"
-msgstr ""
+msgstr "Editar streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:92
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
-msgstr ""
+msgstr "Adicionar streamer"
 
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:104
 msgid "Streamer deleted."
-msgstr ""
+msgstr "Streamer excluído."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:63
 msgid "Web Hook added."
-msgstr ""
+msgstr "Hook web adicionado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:70
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
-msgstr ""
+msgstr "Adicionar Hook Web"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:77
 msgid "Web Hook updated."
-msgstr ""
+msgstr "Hook web atualizado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:84
 msgid "Edit Web Hook"
-msgstr ""
+msgstr "Editar Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:104
 msgid "Web hook enabled."
-msgstr ""
+msgstr "Hook Web ativado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:104
 msgid "Web Hook disabled."
-msgstr ""
+msgstr "Hook web desativado."
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:126
 msgid "Web Hook Test Output"
@@ -899,11 +899,11 @@ msgstr ""
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:111
 msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
+msgstr "Pedido duplicado: esta música já foi solicitada e será reproduzida em breve."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:153
 msgid "This song was already played too recently. Wait a while before requesting it again."
-msgstr ""
+msgstr "Esta música já foi reproduzida recentemente. Por favor espere antes de solicitar novamente."
 
 #: /var/azuracast/www/src/Form/Field/File.php:10
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
@@ -1651,11 +1651,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:93
 msgid "Play Counter"
-msgstr ""
+msgstr "Contador Player"
 
 #: /var/azuracast/www/config/forms/custom_field.php:94
 msgid "Playlist Delay"
-msgstr ""
+msgstr "Atraso da Playlist"
 
 #: /var/azuracast/www/config/forms/custom_field.php:95
 msgid "Popularimeter"
@@ -1707,7 +1707,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:107
 msgid "ReplayGain Adjustment"
-msgstr ""
+msgstr "Ajuste de Replay"
 
 #: /var/azuracast/www/config/forms/custom_field.php:108
 msgid "Reverb"
@@ -1885,7 +1885,7 @@ msgstr "Exibir nome"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:26
 msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "O nome de exibição atribuído a este ponto de montagem ao visualizá-lo em páginas administrativas ou públicas. Deixe em branco para gerar automaticamente um."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13
@@ -2051,7 +2051,7 @@ msgstr "Tipo de estação de rádio"
 
 #: /var/azuracast/www/config/forms/remote.php:40
 msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
-msgstr ""
+msgstr "O nome de exibição atribuído a este ponto de montagem ao visualizá-lo em páginas administrativas ou públicas. Deixe em branco para gerar automaticamente um."
 
 #: /var/azuracast/www/config/forms/remote.php:48
 msgid "Remote Station Listening URL"
@@ -2075,7 +2075,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/remote.php:76
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
-msgstr ""
+msgstr "Se definito como \"Sim\", o AutoDJ irá tocar músicas automaticamente neste ponto de montagem."
 
 #: /var/azuracast/www/config/forms/remote.php:89
 msgid "Configure AutoDJ Broadcasting"
@@ -2160,7 +2160,7 @@ msgstr "Por padrão, estações de rádio transmitem em suas próprias portas (e
 
 #: /var/azuracast/www/config/forms/settings.php:62
 msgid "Days of Playback History to Keep"
-msgstr ""
+msgstr "Dias do Histórico de Reprodução para Manter"
 
 #: /var/azuracast/www/config/forms/settings.php:63
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
@@ -2199,11 +2199,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/settings.php:80
 msgid "Use WebSockets for Now Playing Updates"
-msgstr ""
+msgstr "Usar WebSockets para Atualizações em Reprodução de Agora"
 
 #: /var/azuracast/www/config/forms/settings.php:81
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
-msgstr ""
+msgstr "Habilita ou desabilita o uso do novo e mais rápido sistema baseado em WebSocket para receber atualizações ao vivo de Players públicos. Você pode precisar desativar isto se encontrar problemas com ele."
 
 #: /var/azuracast/www/config/forms/settings.php:93
 msgid "Security Controls"
@@ -2353,7 +2353,7 @@ msgstr "Fuso horário"
 
 #: /var/azuracast/www/config/forms/station.php:72
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
-msgstr ""
+msgstr "Listas de reprodução agendadas e outros items cronometrados serão controlados por este fuso horário."
 
 #: /var/azuracast/www/config/forms/station.php:82
 msgid "Enable Public Page"
@@ -2545,11 +2545,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/station.php:380
 msgid "Use Replaygain Metadata"
-msgstr ""
+msgstr "Usar Metadados de Replaygain"
 
 #: /var/azuracast/www/config/forms/station.php:383
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr ""
+msgstr "Liquidsoap Instrue para usar qualquer metadados de replay associados a uma música para controlar seu nível de volume."
 
 #: /var/azuracast/www/config/forms/station.php:394
 msgid "Manual AutoDJ Mode"
@@ -4007,7 +4007,7 @@ msgstr "Arte do Álbum"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:58
 msgid "Playing Next"
-msgstr ""
+msgstr "Tocar a seguir"
 
 #: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:85
 msgid "Live"

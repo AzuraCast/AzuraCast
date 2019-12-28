@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-28 14:10\n"
+"PO-Revision-Date: 2019-12-28 14:20\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -148,11 +148,11 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:19
 msgid "Setting Value"
-msgstr ""
+msgstr "Configurando Valor"
 
 #: /var/azuracast/www/src/Console/Command/LocaleGenerateCommand.php:42
 msgid "Locales generated."
-msgstr ""
+msgstr "Locais gerados."
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:29
 msgid "Imported locale: %s"
@@ -192,31 +192,31 @@ msgstr "Bem-vindo ao AzuraCast. Por favor, aguarde enquanto algumas dependência
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:28
 msgid "Environment: %s"
-msgstr ""
+msgstr "Ambiente: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:29
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "Método de instalação: %s"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:33
 msgid "Running in update mode."
-msgstr ""
+msgstr "Executando no modo de atualização."
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:36
 msgid "Migrating Legacy Configuration"
-msgstr ""
+msgstr "Migrando Configuração Antiga"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:42
 msgid "Setting Up InfluxDB"
-msgstr ""
+msgstr "Configurando InfluxDB"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:47
 msgid "Running Database Migrations"
-msgstr ""
+msgstr "Migrações de banco de dados em execução"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:54
 msgid "Generating Database Proxy Classes"
-msgstr ""
+msgstr "Gerando Classes de Proxy do Banco de Dados"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:60
 msgid "Installing Data Fixtures"
@@ -224,23 +224,23 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:66
 msgid "Reload System Data"
-msgstr ""
+msgstr "Recarregar Dados do Sistema"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:71
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "Atualizando todas as estações"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:84
 msgid "AzuraCast is now updated to the latest version!"
-msgstr ""
+msgstr "AzuraCast agora está atualizado para a versão mais recente!"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:90
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "Instalação AzuraCast completa!"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:91
 msgid "Visit %s to complete setup."
-msgstr ""
+msgstr "Visite %s para concluir a configuração."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:89
 msgid "Fixtures loaded."
@@ -260,29 +260,29 @@ msgstr ""
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:94
 msgid "InfluxDB databases created."
-msgstr ""
+msgstr "Bancos de dados do InfluxDB criados."
 
 #: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:62
 #: /var/azuracast/www/src/Controller/Api/Stations/Art/DeleteArtAction.php:25
 #: /var/azuracast/www/src/Controller/Api/Stations/Art/PostArtAction.php:25
 #: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:73
 msgid "Record not found."
-msgstr ""
+msgstr "Registro não encontrado."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:43
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:97
 msgid "API Key updated."
-msgstr ""
+msgstr "Chave API atualizada."
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:50
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
 msgid "Edit API Key"
-msgstr ""
+msgstr "Editar chave de API"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:58
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:124
 msgid "API Key deleted."
-msgstr ""
+msgstr "Chave de API excluída."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
 #: /var/azuracast/www/src/Controller/Admin/BrandingController.php:38
@@ -295,7 +295,7 @@ msgstr "Alterações guardadas."
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:86
 msgid "Configure Backups"
-msgstr ""
+msgstr "Configurar Backups"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:101
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:111
@@ -303,7 +303,7 @@ msgstr ""
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
-msgstr ""
+msgstr "Executar Backup Manual"
 
 #: /var/azuracast/www/src/Controller/Admin/BackupsController.php:141
 msgid "Backup not found."
@@ -2207,35 +2207,35 @@ msgstr "Habilita ou desabilita o uso do novo e mais rápido sistema baseado em W
 
 #: /var/azuracast/www/config/forms/settings.php:93
 msgid "Security Controls"
-msgstr ""
+msgstr "Controles de segurança"
 
 #: /var/azuracast/www/config/forms/settings.php:101
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "Sempre usar HTTPS"
 
 #: /var/azuracast/www/config/forms/settings.php:102
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
-msgstr ""
+msgstr "Defina como \"Sim\" para sempre usar \"https://\" URLs seguras, e para redirecionar automaticamente para a URL segura quando uma URL insegura é visitada."
 
 #: /var/azuracast/www/config/forms/settings.php:113
 msgid "Enable Built-in FTP Server"
-msgstr ""
+msgstr "Habilitar Servidor FTP Integrado"
 
 #: /var/azuracast/www/config/forms/settings.php:114
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
-msgstr ""
+msgstr "Se habilitado, os usuários podem conectar via FTP usando suas credenciais AzuraCast para fazer o upload direto de qualquer estação que eles gerenciam."
 
 #: /var/azuracast/www/config/forms/settings.php:125
 msgid "API \"Access-Control-Allow-Origin\" header"
-msgstr ""
+msgstr "Cabeçalho da API \"Access-Control-Allow-Origin\""
 
 #: /var/azuracast/www/config/forms/settings.php:127
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Saiba mais sobre este cabeçalho</a>. Defina como * para permitir todas as fontes, ou especifique uma lista de origens separadas por uma vírgula (,)."
 
 #: /var/azuracast/www/config/forms/settings.php:138
 msgid "Privacy Controls"
-msgstr ""
+msgstr "Controles de privacidade"
 
 #: /var/azuracast/www/config/forms/settings.php:139
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
@@ -2243,7 +2243,7 @@ msgstr "O AzuraCast não envia seus dados de estação ou ouvinte para nenhum se
 
 #: /var/azuracast/www/config/forms/settings.php:146
 msgid "Listener Analytics Collection"
-msgstr ""
+msgstr "Coleção de Estatísticas de Ouvinte"
 
 #: /var/azuracast/www/config/forms/settings.php:147
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
@@ -2251,43 +2251,43 @@ msgstr "As estatísticas agregadas do listener são usadas para mostrar relatór
 
 #: /var/azuracast/www/config/forms/settings.php:150
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "<b>Total:</b> Colete estatísticas agregadas de ouvinte e estatísticas baseadas em IPs"
 
 #: /var/azuracast/www/config/forms/settings.php:151
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
-msgstr ""
+msgstr "<b>Limitado:</b> Apenas recolher estatísticas agregadas de ouvintes"
 
 #: /var/azuracast/www/config/forms/settings.php:152
 msgid "<b>None:</b> Do not collect any listener analytics"
-msgstr ""
+msgstr "<b>Nenhum:</b> Não colete nenhuma análise de ouvinte"
 
 #: /var/azuracast/www/config/forms/settings.php:161
 msgid "AzuraCast Installation Telemetry"
-msgstr ""
+msgstr "AzuraCast instalação Telemetry"
 
 #: /var/azuracast/www/config/forms/settings.php:162
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
-msgstr ""
+msgstr "Escolha se sua instalação se comunica com servidores centrais AzuraCast para verificar atualizações e anúncios.<br>AzuraCast respeita sua privacidade; veja a nossa <a href=\"%s\" target=\"_blank\">política de privacidade</a> para mais detalhes."
 
 #: /var/azuracast/www/config/forms/settings.php:170
 msgid "Check for Updates and Announcements"
-msgstr ""
+msgstr "Verificar atualizações e anúncios"
 
 #: /var/azuracast/www/config/forms/settings.php:171
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
-msgstr ""
+msgstr "Envie detalhes mínimos sobre sua instalação do AzuraCast no servidor central do AzuraCast para verificar se há versões atualizadas de software e anúncios importantes."
 
 #: /var/azuracast/www/config/forms/settings.php:174
 msgid "<b>None:</b> Do not check for updates or announcements."
-msgstr ""
+msgstr "<b>Nenhum:</b> Não verificar atualizações ou anúncios."
 
 #: /var/azuracast/www/config/forms/settings.php:175
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
-msgstr ""
+msgstr "<b>Novas Versões Apenas:</b> Anúncios críticos e novas versões apenas."
 
 #: /var/azuracast/www/config/forms/settings.php:176
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
-msgstr ""
+msgstr "<b>Todas as Atualizações:</b> Incluir todos os anúncios e pequenas atualizações."
 
 #: /var/azuracast/www/config/forms/settings.php:185
 msgid "Automatically Send Error Reports to AzuraCast"

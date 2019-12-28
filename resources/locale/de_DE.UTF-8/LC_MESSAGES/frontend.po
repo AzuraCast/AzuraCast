@@ -5,14 +5,12 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Project-Id-Version: azuracast\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: azuracast\n"
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /master/resources/locale/frontend.pot\n"
-"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2019-11-23 21:50\n"
+"PO-Revision-Date: 2019-12-28 17:56\n"
 
 #: ./vue/StationMedia.vue:146
 msgid "Actions"
@@ -47,7 +45,7 @@ msgstr "Playlist-Zuordnung bereinigen"
 #: ./vue/station_media/MoveFilesModal.vue:33
 #: ./vue/station_media/NewDirectoryModal.vue:9
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: ./vue/webcaster/playlist.vue:66
 msgid "Continuous Play"
@@ -70,7 +68,7 @@ msgstr "Löschen"
 
 #: ./vue/station_media/MediaToolbar.vue:112
 msgid "Delete %{ num } media file(s)?"
-msgstr ""
+msgstr "%{ num } Mediendatei(en) löschen?"
 
 #: ./vue/StationMedia.vue:47
 #: ./vue/station_media/MoveFilesModal.vue:62
@@ -79,7 +77,7 @@ msgstr "Verzeichnis"
 
 #: ./vue/station_media/NewDirectoryModal.vue:4
 msgid "Directory Name:"
-msgstr ""
+msgstr "Verzeichnisname:"
 
 #: ./vue/webcaster/settings.vue:83
 msgid "DJ Credentials"
@@ -87,7 +85,7 @@ msgstr "DJ Zugangsdaten"
 
 #: ./vue/station_media/FileUpload.vue:16
 msgid "Drag files here to upload to this folder or"
-msgstr ""
+msgstr "Dateien hierher ziehen, um in diesen Ordner hochzuladen oder"
 
 #: ./vue/StationMedia.vue:68
 msgid "Edit"
@@ -99,7 +97,7 @@ msgstr "Encoder"
 
 #: ./vue/station_media/MediaToolbar.vue:108
 msgid "Files queued for playback:"
-msgstr ""
+msgstr "Dateien in der Wiedergabe-Warteschlange:"
 
 #: ./vue/station_media/MediaToolbar.vue:120
 msgid "Files removed:"
@@ -147,11 +145,11 @@ msgstr "Bewegen"
 
 #: ./vue/station_media/MoveFilesModal.vue:68
 msgid "Move %{ num } File(s) to"
-msgstr ""
+msgstr "Verschiebe %{ num } Datei(en) nach"
 
 #: ./vue/station_media/MoveFilesModal.vue:36
 msgid "Move to Directory"
-msgstr ""
+msgstr "In Verzeichnis verschieben"
 
 #: ./vue/webcaster/settings.vue:32
 msgid "MP3"
@@ -213,11 +211,11 @@ msgstr "Playlisten aktualisiert für ausgewählte Dateien:"
 
 #: ./vue/station_media/MediaToolbar.vue:44
 msgid "Queue"
-msgstr ""
+msgstr "Einreihen"
 
 #: ./vue/station_media/MediaToolbar.vue:100
 msgid "Queue the selected media to play next"
-msgstr ""
+msgstr "Ausgewählte Medien einreihen"
 
 #: ./vue/webcaster/settings.vue:37
 msgid "Raw"
@@ -225,7 +223,7 @@ msgstr "Raw"
 
 #: ./vue/components/DataTable.vue:135
 msgid "Refresh rows"
-msgstr ""
+msgstr "Zeilen aktualisieren"
 
 #: ./vue/StationMedia.vue:71
 msgid "Rename"
@@ -237,7 +235,7 @@ msgstr "Wiedergabeliste wiederholen"
 
 #: ./vue/components/DataTable.vue:138
 msgid "Rows per page"
-msgstr ""
+msgstr "Zeilen pro Seite"
 
 #: ./vue/webcaster/settings.vue:42
 #: ./vue/webcaster/settings.vue:58
@@ -250,7 +248,7 @@ msgstr "Speichern"
 
 #: ./vue/components/DataTable.vue:141
 msgid "Select displayed fields"
-msgstr ""
+msgstr "Angezeigte Felder auswählen"
 
 #: ./vue/station_media/FileUpload.vue:18
 msgid "Select File"
@@ -258,7 +256,7 @@ msgstr "Datei auswählen"
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"
-msgstr ""
+msgstr "Ausgewählte Medien aus Playlisten entfernen oder hinzufügen"
 
 #: ./vue/webcaster/settings.vue:10
 msgid "Settings"

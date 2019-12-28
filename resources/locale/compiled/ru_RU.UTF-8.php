@@ -9,16 +9,15 @@
       array (
         0 => 'Project-Id-Version: azuracast
 Report-Msgid-Bugs-To: 
-Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)
+Last-Translator: 
 Language-Team: Russian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-09-10T23:21:55+00:00
-PO-Revision-Date: 2019-11-23 21:50
+POT-Creation-Date: 2019-11-23T21:40:24+00:00
+PO-Revision-Date: 2019-12-28 17:56
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
-X-Generator: crowdin.com
 X-Crowdin-Project: azuracast
 X-Crowdin-Language: ru
 X-Crowdin-File: /master/resources/locale/default.pot
@@ -227,6 +226,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Installing Data Fixtures' => 
       array (
         0 => 'Установка модификатора данных',
+      ),
+      'Reload System Data' => 
+      array (
+        0 => '',
       ),
       'Refreshing All Stations' => 
       array (
@@ -452,6 +455,54 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Вы не можете удалить себя.',
       ),
+      'Path "%s" is not a folder.' => 
+      array (
+        0 => 'Путь "%s" не является директорией.',
+      ),
+      'Could not move "%s" to "%s"' => 
+      array (
+        0 => 'Не удалось переместить "%s" в "%s"',
+      ),
+      'Directory' => 
+      array (
+        0 => 'Папка',
+      ),
+      'File Not Processed' => 
+      array (
+        0 => 'Файл не обрабатывается',
+      ),
+      'File not specified.' => 
+      array (
+        0 => 'Файл не указан.',
+      ),
+      'New path not specified.' => 
+      array (
+        0 => 'Новый путь не указан.',
+      ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'На этой станции нет свободного места для хранения.',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => 'Плейлист не найден.',
+      ),
+      'This playlist is not a sequential playlist.' => 
+      array (
+        0 => 'Этот плейлист не является последовательным.',
+      ),
+      'Format not found.' => 
+      array (
+        0 => 'Формат не найден.',
+      ),
+      'Playlist enabled.' => 
+      array (
+        0 => 'Плейлист включен.',
+      ),
+      'Playlist disabled.' => 
+      array (
+        0 => 'Плейлист отключен.',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Эта станция не принимает запросы в настоящее время.',
@@ -528,6 +579,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Слушатели',
       ),
+      'Two-factor authentication disabled.' => 
+      array (
+        0 => 'Двухфакторная аутентификация отключена.',
+      ),
       'Profile saved!' => 
       array (
         0 => 'Профиль сохранен!',
@@ -543,10 +598,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Two-factor authentication enabled.' => 
       array (
         0 => 'Двухфакторная аутентификация включена.',
-      ),
-      'Two-factor authentication disabled.' => 
-      array (
-        0 => 'Двухфакторная аутентификация отключена.',
       ),
       'Song Title' => 
       array (
@@ -580,46 +631,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ошибка автоматического назначения',
       ),
-      'Path "%s" is not a folder.' => 
-      array (
-        0 => 'Путь "%s" не является директорией.',
-      ),
-      'Could not move "%s" to "%s"' => 
-      array (
-        0 => 'Не удалось переместить "%s" в "%s"',
-      ),
-      'Media not found.' => 
-      array (
-        0 => 'Медиафайл не найден.',
-      ),
-      'Media updated.' => 
-      array (
-        0 => 'Медиафайл обновлён.',
-      ),
-      'Edit Media' => 
-      array (
-        0 => 'Редактирование Медиафайла',
-      ),
-      'File renamed!' => 
-      array (
-        0 => 'Файл переименован!',
-      ),
-      'Rename File/Directory' => 
-      array (
-        0 => 'Переименовать файл или директорию',
-      ),
-      'This station is out of available storage space.' => 
-      array (
-        0 => 'На этой станции нет свободного места для хранения.',
-      ),
-      'Directory' => 
-      array (
-        0 => 'Папка',
-      ),
-      'File Not Processed' => 
-      array (
-        0 => 'Файл не обрабатывается',
-      ),
       'This feature is not currently supported on this station.' => 
       array (
         0 => 'В данный момент, на этой станции, функция не поддерживается.',
@@ -635,46 +646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Mount Point deleted.' => 
       array (
         0 => 'Точка подключения удалена.',
-      ),
-      'Playlist not found.' => 
-      array (
-        0 => 'Плейлист не найден.',
-      ),
-      'This playlist is not a sequential playlist.' => 
-      array (
-        0 => 'Этот плейлист не является последовательным.',
-      ),
-      'Format not found.' => 
-      array (
-        0 => 'Формат не найден.',
-      ),
-      'Playlist enabled.' => 
-      array (
-        0 => 'Плейлист включен.',
-      ),
-      'Playlist disabled.' => 
-      array (
-        0 => 'Плейлист отключен.',
-      ),
-      'Playlist updated.' => 
-      array (
-        0 => 'Плейлист обновлён.',
-      ),
-      'Playlist added.' => 
-      array (
-        0 => 'Плейлист добавлен.',
-      ),
-      'Edit Playlist' => 
-      array (
-        0 => 'Редактирование Плейлиста',
-      ),
-      'Add Playlist' => 
-      array (
-        0 => 'Добавить Плейлист',
-      ),
-      'Playlist deleted.' => 
-      array (
-        0 => 'Плейлист удалён.',
       ),
       'Remote Relay updated.' => 
       array (
@@ -1240,6 +1211,406 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'При желании укажите дружественное название API, например <code>field_name</code>. Оставьте это поле пустым, чтобы автоматически создать одноимённое на основе названия.',
       ),
+      'Automatically Set from ID3v2 Value' => 
+      array (
+        0 => 'Автоматически устанавливать из значения ID3v2',
+      ),
+      'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
+      array (
+        0 => '',
+      ),
+      'Disable' => 
+      array (
+        0 => 'Выключить',
+      ),
+      'Album' => 
+      array (
+        0 => 'Альбом',
+      ),
+      'Album Artist Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Album Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Artist' => 
+      array (
+        0 => 'Исполнитель',
+      ),
+      'Attached Picture' => 
+      array (
+        0 => '',
+      ),
+      'Audio Encryption' => 
+      array (
+        0 => 'Шифрование аудио',
+      ),
+      'Audio Seek Point Index' => 
+      array (
+        0 => '',
+      ),
+      'Band' => 
+      array (
+        0 => '',
+      ),
+      'Bpm' => 
+      array (
+        0 => 'Bpm',
+      ),
+      'Comment' => 
+      array (
+        0 => 'Комментарий',
+      ),
+      'Commercial Frame' => 
+      array (
+        0 => 'Коммерческий фрейм',
+      ),
+      'Commercial Information' => 
+      array (
+        0 => 'Коммерческая информация',
+      ),
+      'Composer' => 
+      array (
+        0 => 'Исполнитель',
+      ),
+      'Composer Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Conductor' => 
+      array (
+        0 => '',
+      ),
+      'Content Group Description' => 
+      array (
+        0 => '',
+      ),
+      'Copyright' => 
+      array (
+        0 => 'Авторские права',
+      ),
+      'Copyright Message' => 
+      array (
+        0 => 'Сообщение об авторском праве',
+      ),
+      'Date' => 
+      array (
+        0 => 'Дата',
+      ),
+      'Encoded By' => 
+      array (
+        0 => 'Кодировка',
+      ),
+      'Encoder Settings' => 
+      array (
+        0 => 'Настройки кодировщика',
+      ),
+      'Encoding Time' => 
+      array (
+        0 => 'Время кодирования',
+      ),
+      'Encrypted Meta Frame' => 
+      array (
+        0 => 'Зашифрованный мета-фрейм',
+      ),
+      'Encryption Method Registration' => 
+      array (
+        0 => '',
+      ),
+      'Equalisation' => 
+      array (
+        0 => 'Эквализация',
+      ),
+      'Event Timing Codes' => 
+      array (
+        0 => '',
+      ),
+      'Featured Artist' => 
+      array (
+        0 => '',
+      ),
+      'File Owner' => 
+      array (
+        0 => 'Владелец файла',
+      ),
+      'File Type' => 
+      array (
+        0 => 'Тип файла',
+      ),
+      'General Encapsulated Object' => 
+      array (
+        0 => '',
+      ),
+      'Genre' => 
+      array (
+        0 => 'Жанр',
+      ),
+      'Group Identification Registration' => 
+      array (
+        0 => '',
+      ),
+      'Initial Key' => 
+      array (
+        0 => '',
+      ),
+      'Internet Radio Station Name' => 
+      array (
+        0 => 'Имя интернет-радиостанции',
+      ),
+      'Internet Radio Station Owner' => 
+      array (
+        0 => 'Владелец интернет-радиостанции',
+      ),
+      'Involved People List' => 
+      array (
+        0 => 'Список участников',
+      ),
+      'ISRC' => 
+      array (
+        0 => 'ISRC',
+      ),
+      'Language' => 
+      array (
+        0 => 'Язык',
+      ),
+      'Length' => 
+      array (
+        0 => 'Продолжительность',
+      ),
+      'Linked Information' => 
+      array (
+        0 => 'Связанная информация',
+      ),
+      'Lyricist' => 
+      array (
+        0 => 'Автор текстов',
+      ),
+      'Media Type' => 
+      array (
+        0 => 'Тип медиа',
+      ),
+      'Mood' => 
+      array (
+        0 => 'Настроение',
+      ),
+      'MPEG Location Lookup Table' => 
+      array (
+        0 => '',
+      ),
+      'Music CD Identifier' => 
+      array (
+        0 => 'Идентификатор CD',
+      ),
+      'Musician Credits List' => 
+      array (
+        0 => '',
+      ),
+      'Original Album' => 
+      array (
+        0 => '',
+      ),
+      'Original Artist' => 
+      array (
+        0 => '',
+      ),
+      'Original Filename' => 
+      array (
+        0 => '',
+      ),
+      'Original Lyricist' => 
+      array (
+        0 => '',
+      ),
+      'Original Release Time' => 
+      array (
+        0 => '',
+      ),
+      'Original Year' => 
+      array (
+        0 => '',
+      ),
+      'Ownership Frame' => 
+      array (
+        0 => '',
+      ),
+      'Part Of A Compilation' => 
+      array (
+        0 => '',
+      ),
+      'Part Of A Set' => 
+      array (
+        0 => '',
+      ),
+      'Performer Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Play Counter' => 
+      array (
+        0 => 'Счетчик воспроизведения',
+      ),
+      'Playlist Delay' => 
+      array (
+        0 => 'Задержка плейлиста',
+      ),
+      'Popularimeter' => 
+      array (
+        0 => 'Популяриметр',
+      ),
+      'Position Synchronisation Frame' => 
+      array (
+        0 => '',
+      ),
+      'Private Frame' => 
+      array (
+        0 => 'Частный фрейм',
+      ),
+      'Produced Notice' => 
+      array (
+        0 => '',
+      ),
+      'Publisher' => 
+      array (
+        0 => '',
+      ),
+      'Recommended Buffer Size' => 
+      array (
+        0 => '',
+      ),
+      'Recording Dates' => 
+      array (
+        0 => '',
+      ),
+      'Recording Studio' => 
+      array (
+        0 => '',
+      ),
+      'Recording Time' => 
+      array (
+        0 => '',
+      ),
+      'Relative Volume Adjustment' => 
+      array (
+        0 => '',
+      ),
+      'Release Time' => 
+      array (
+        0 => '',
+      ),
+      'Remixer' => 
+      array (
+        0 => '',
+      ),
+      'ReplayGain Adjustment' => 
+      array (
+        0 => 'Уровень ReplayGain',
+      ),
+      'Reverb' => 
+      array (
+        0 => 'Реверберация',
+      ),
+      'Seek Frame' => 
+      array (
+        0 => 'Поиск фрейма',
+      ),
+      'Set Subtitle' => 
+      array (
+        0 => 'Установить субтитры',
+      ),
+      'Signature Frame' => 
+      array (
+        0 => '',
+      ),
+      'Size' => 
+      array (
+        0 => 'Размер',
+      ),
+      'Subtitle' => 
+      array (
+        0 => 'Субтитры',
+      ),
+      'Synced Tempo Codes' => 
+      array (
+        0 => '',
+      ),
+      'Synchronised Lyric' => 
+      array (
+        0 => 'Синхронизированный текст',
+      ),
+      'Synchronised Tempo Codes' => 
+      array (
+        0 => '',
+      ),
+      'Tagging Time' => 
+      array (
+        0 => '',
+      ),
+      'Terms Of Use' => 
+      array (
+        0 => 'Условия использования',
+      ),
+      'Text' => 
+      array (
+        0 => 'Текст',
+      ),
+      'Time' => 
+      array (
+        0 => 'Время',
+      ),
+      'Title' => 
+      array (
+        0 => 'Заголовок',
+      ),
+      'Title Sort Order' => 
+      array (
+        0 => 'Сортировка по названию',
+      ),
+      'Track Number' => 
+      array (
+        0 => 'Номер трека',
+      ),
+      'Unique File Identifier' => 
+      array (
+        0 => 'Уникальный идентификатор файла',
+      ),
+      'Unsynchronised Lyric' => 
+      array (
+        0 => 'Несинхронизированный текст',
+      ),
+      'URL Artist' => 
+      array (
+        0 => '',
+      ),
+      'URL File' => 
+      array (
+        0 => '',
+      ),
+      'URL Payment' => 
+      array (
+        0 => '',
+      ),
+      'URL Publisher' => 
+      array (
+        0 => '',
+      ),
+      'URL Source' => 
+      array (
+        0 => '',
+      ),
+      'URL Station' => 
+      array (
+        0 => '',
+      ),
+      'URL User' => 
+      array (
+        0 => '',
+      ),
+      'Year' => 
+      array (
+        0 => 'Год',
+      ),
       'Important Notes' => 
       array (
         0 => 'Важные заметки',
@@ -1275,90 +1646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Log in' => 
       array (
         0 => 'Вход',
-      ),
-      'File Name' => 
-      array (
-        0 => 'Название файла',
-      ),
-      'The relative path of the file in the station\'s media directory.' => 
-      array (
-        0 => 'Относительный путь файла в медиа-каталоге станции.',
-      ),
-      'Song Album' => 
-      array (
-        0 => 'Альбом',
-      ),
-      'Song Lyrics' => 
-      array (
-        0 => 'Текст песни',
-      ),
-      'Replace Album Cover Art' => 
-      array (
-        0 => 'Заменить обложку альбома',
-      ),
-      'ISRC' => 
-      array (
-        0 => 'ISRC',
-      ),
-      'International Standard Recording Code, used for licensing reports.' => 
-      array (
-        0 => 'Международный стандартный код записи, используемый для получения лицензионных отчетов.',
-      ),
-      'Custom Fields' => 
-      array (
-        0 => 'Настраиваемые поля',
-      ),
-      'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
-      array (
-        0 => 'Администраторы могут настраивать поля, которые появятся здесь на <a href="%s">странице администрирования</a>.',
-      ),
-      'Control Song Playback' => 
-      array (
-        0 => 'Управление воспроизведением песен',
-      ),
-      'Song Length (seconds)' => 
-      array (
-        0 => 'Длина песни (в секундах)',
-      ),
-      'Custom Fading: Overlap Time (seconds)' => 
-      array (
-        0 => 'Пользовательское затухание: время (в секундах)',
-      ),
-      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
-      array (
-        0 => 'Время, когда эта песня должна перекрывать окружающие песни, когда они исчезают. Оставьте поле пустым, чтобы использовать систему по умолчанию.',
-      ),
-      'Custom Fading: Fade-In Time (seconds)' => 
-      array (
-        0 => 'Пользовательское затухание: время (в секундах)',
-      ),
-      'The time period that the song should fade in. Leave blank to use the system default.' => 
-      array (
-        0 => 'Время, в течение которого песня должна исчезнуть. Оставьте пустым, чтобы использовать систему по умолчанию.',
-      ),
-      'Custom Fading: Fade-Out Time (seconds)' => 
-      array (
-        0 => 'Пользовательское затухание: время (в секундах)',
-      ),
-      'The time period that the song should fade out. Leave blank to use the system default.' => 
-      array (
-        0 => 'Время, в течение которого песня должна исчезнуть. Оставьте пустым, чтобы использовать систему по умолчанию.',
-      ),
-      'Custom Cues: Cue-In Point (seconds)' => 
-      array (
-        0 => 'Пользовательские подсказки: точка приема (секунды)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should start playing.' => 
-      array (
-        0 => 'Секунды с начала песни, которую AutoDJ должен начать играть.',
-      ),
-      'Custom Cues: Cue-Out Point (seconds)' => 
-      array (
-        0 => 'Пользовательские подсказки: точка приема (секунды)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
-      array (
-        0 => 'Секунды с начала песни, которую AutoDJ должен начать играть.',
       ),
       'Mount Point URL' => 
       array (
@@ -1460,262 +1747,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Если ваш поток установлен для рекламы в каталогах "YP", вы должны указать хэш авторизации. Вы можете управлять хэшом авторизации<a href="%s" target="_blank">на SHOUTcast веб-сайте</a>.',
       ),
-      'Basic Information' => 
-      array (
-        0 => 'Основная информация',
-      ),
-      'Source' => 
-      array (
-        0 => 'Источник',
-      ),
-      'Scheduling' => 
-      array (
-        0 => 'Планирование',
-      ),
-      'Enable Playlist' => 
-      array (
-        0 => 'Включить плейлист',
-      ),
-      'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
-      array (
-        0 => 'Если установлено значение «Нет», список воспроизведения не будет включен в воспроизведение радио, но все равно можно управлять.',
-      ),
-      'Playlist Name' => 
-      array (
-        0 => 'Название плейлиста',
-      ),
-      'Playlist Weight' => 
-      array (
-        0 => 'Вес плейлиста',
-      ),
-      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
-      array (
-        0 => 'Плейлисты с более высоким весом чаще воспроизводятся по сравнению с другими плейлистами с более низким весом.',
-      ),
-      'Low' => 
-      array (
-        0 => 'Редко',
-      ),
-      'High' => 
-      array (
-        0 => 'Часто',
-      ),
-      'Song-Based Playlist' => 
-      array (
-        0 => 'Плейлист с базовыми песнями',
-      ),
-      'A playlist containing media files hosted on this server.' => 
-      array (
-        0 => 'Плейлист содержит медиа файлы, размещенные на этом сервере.',
-      ),
-      'Remote URL Playlist' => 
-      array (
-        0 => 'Отдалённый URL Плейлиста',
-      ),
-      'A playlist that instructs the station to play from a remote URL.' => 
-      array (
-        0 => 'Плейлист, который указывает станции для воспроизведения с отдалённого URL-адреса.',
-      ),
-      'Song Playback Order' => 
-      array (
-        0 => 'Сортировка воспроизведения песен',
-      ),
-      'Shuffled' => 
-      array (
-        0 => 'Перетасованный',
-      ),
-      'Random' => 
-      array (
-        0 => 'Случайно',
-      ),
-      'Sequential' => 
-      array (
-        0 => 'Последовательно',
-      ),
-      'Import Existing Playlist' => 
-      array (
-        0 => 'Импорт существующих плейлистов',
-      ),
-      'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
-      array (
-        0 => 'Выберите существующий файл списка воспроизведения, чтобы добавить его содержимое в этот список воспроизведения. Поддерживаются PLS и M3U.',
-      ),
-      'Allow Requests from This Playlist' => 
-      array (
-        0 => 'Разрешить запросы из этого плейлиста',
-      ),
-      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
-      array (
-        0 => 'Если запросы включены для вашей станции, пользователи смогут заказать песни, которые находятся в этом плейлисте.',
-      ),
-      'Hide Metadata from Listeners ("Jingle Mode")' => 
-      array (
-        0 => 'Скрыть метаданные от слушателей ("Режим Джингла")',
-      ),
-      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
-      array (
-        0 => 'Включите эту настройку, чтобы не допустить отправки метаданных в АвтоДиджей для файлов в этом плейлисте. Это полезно, если в плейлисте содержатся джинглы или бамперы.',
-      ),
-      'Remote URL' => 
-      array (
-        0 => 'Отдаленный URL',
-      ),
-      'Remote URL Type' => 
-      array (
-        0 => 'Тип отдалённого URL-адреса',
-      ),
-      'Direct Stream URL' => 
-      array (
-        0 => 'URL-адрес прямого потока',
-      ),
-      'Playlist (M3U/PLS) URL' => 
-      array (
-        0 => 'URL плейлиста (M3U/PLS)',
-      ),
-      'Remote Playback Buffer (Seconds)' => 
-      array (
-        0 => 'Буфер отдалённого воспроизведения (в секундах)',
-      ),
-      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
-      array (
-        0 => 'Длина времени воспроизведения, которое Liquidsoap должен буферизовать при воспроизведении этого отдаленного плейлиста. Малое время может привести к прерыванию воспроизведения при нестабильных соединениях.',
-      ),
-      'General Rotation' => 
-      array (
-        0 => 'Общая ротация',
-      ),
-      'Plays all day, shuffles with other standard playlists based on weight.' => 
-      array (
-        0 => 'Играет весь день, перетасовки с другими стандартными плейлистами по весу.',
-      ),
-      'Scheduled' => 
-      array (
-        0 => 'Запланированое',
-      ),
-      'Play during a scheduled time range.' => 
-      array (
-        0 => 'Играет в запланированный интервал времени.',
-      ),
-      'Once per x Songs' => 
-      array (
-        0 => 'Через каждые x песен',
-      ),
-      'Play exactly once every <i>x</i> songs.' => 
-      array (
-        0 => 'Играет один раз через каждые <i>x</i> песни.',
-      ),
-      'Once Per x Minutes' => 
-      array (
-        0 => 'Через каждые x минут',
-      ),
-      'Play exactly once every <i>x</i> minutes.' => 
-      array (
-        0 => 'Играет один раз через каждые <i>x</i> минут.',
-      ),
-      'Once per Hour' => 
-      array (
-        0 => 'Один раз в час',
-      ),
-      'Play once per hour at the specified minute.' => 
-      array (
-        0 => 'Играет один раз в час в указанную минуту.',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Продвинутый',
-      ),
-      'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
-      array (
-        0 => 'Вручную определите, как этот плейлист используется в конфигурации Liquidsoap. <a href="%s" target="_blank">Узнайте о продвинутых плейлистах</a>',
-      ),
-      'AutoDJ Scheduling Options' => 
-      array (
-        0 => 'Параметры Планирования АвтоДиджея',
-      ),
-      'Control how this playlist is handled by the AutoDJ software.' => 
-      array (
-        0 => 'Управляйте тем, как этот плейлист обрабатывается программным обеспечением АвтоДиджея.',
-      ),
-      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
-      array (
-        0 => '<b>Внимание:</b> Эти функции являются внутренними для Liquidsoap и повлияют на то, как работает ваш АвтоДиджей.',
-      ),
-      'Interrupt other songs to play at scheduled time.' => 
-      array (
-        0 => 'Прервать другие песни, чтобы играть в запланированное время.',
-      ),
-      'Only loop through playlist once.' => 
-      array (
-        0 => 'Проходить по плейлисту только один раз.',
-      ),
-      'Only play one track at scheduled time.' => 
-      array (
-        0 => 'Проигрывать только один трек в запланированное время.',
-      ),
-      'Merge playlist to play as a single track.' => 
-      array (
-        0 => 'Объединить плейлист, чтобы играть как один трек.',
-      ),
-      'Include in Automated Assignment' => 
-      array (
-        0 => 'Включить в автоматическое присвоение',
-      ),
-      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
-      array (
-        0 => 'Если автозадание включено, используйте этот плейлист как одну из целей для перераспределения песен. Это перезапишет существующее содержимое этого списка воспроизведения.',
-      ),
-      'Start Time' => 
-      array (
-        0 => 'Время начала',
-      ),
-      'To play once per day, set the start and end times to the same value.' => 
-      array (
-        0 => 'Чтобы играть один раз в день, установите время начала и окончания в одно и то же значение.',
-      ),
-      'End Time' => 
-      array (
-        0 => 'Время окончания',
-      ),
-      'If the end time is before the start time, the playlist will play overnight.' => 
-      array (
-        0 => 'Если время окончания до времени начала, плейлист будет воспроизводиться всю ночь.',
-      ),
-      'Station Time Zone' => 
-      array (
-        0 => 'Часовой пояс станции',
-      ),
-      'Scheduled Play Days of Week' => 
-      array (
-        0 => 'Запланированные дни недели для воспроизведения',
-      ),
-      'Leave blank to play on every day of the week.' => 
-      array (
-        0 => 'Оставьте пустым, чтобы играть каждый день недели.',
-      ),
-      'Number of Songs Between Plays' => 
-      array (
-        0 => 'Количество композиций между партиями',
-      ),
-      'This playlist will play every $x songs, where $x is specified below.' => 
-      array (
-        0 => 'Этот плейлист будет воспроизводить все песни $x, где $x указан ниже.',
-      ),
-      'Number of Minutes Between Plays' => 
-      array (
-        0 => 'Количество минут между воспроизведениями',
-      ),
-      'This playlist will play every $x minutes, where $x is specified below.' => 
-      array (
-        0 => 'Этот плейлист будет воспроизводить каждые $x минуты, где $x указан ниже.',
-      ),
-      'Minute of Hour to Play' => 
-      array (
-        0 => 'Минута Часа для Воспроизведения',
-      ),
-      'Specify the minute of every hour that this playlist should play.' => 
-      array (
-        0 => 'Укажите минуту в которую каждый час должен начать играть этот плейлист.',
-      ),
       'Use Browser Default' => 
       array (
         0 => 'Использовать по умолчанию',
@@ -1747,10 +1778,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Customization' => 
       array (
         0 => 'Настройка',
-      ),
-      'Language' => 
-      array (
-        0 => 'Язык',
       ),
       'Site Theme' => 
       array (
@@ -2059,10 +2086,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Description' => 
       array (
         0 => 'Описание',
-      ),
-      'Genre' => 
-      array (
-        0 => 'Жанр',
       ),
       'Web Site URL' => 
       array (
@@ -2456,10 +2479,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Сейчас играет на %s:',
       ),
-      'Title' => 
-      array (
-        0 => 'Заголовок',
-      ),
       'URL' => 
       array (
         0 => 'URL-адрес',
@@ -2676,6 +2695,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Stations' => 
       array (
         0 => 'Станции',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Настраиваемые поля',
       ),
       'Connected AzuraRelays' => 
       array (
@@ -2965,10 +2988,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Последнее Изменение',
       ),
-      'Size' => 
-      array (
-        0 => 'Размер',
-      ),
       'Download' => 
       array (
         0 => 'Скачать',
@@ -3256,109 +3275,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Включить Двухфакторную',
       ),
-      'Microphone' => 
-      array (
-        0 => 'Микрофон',
-      ),
-      'Settings' => 
-      array (
-        0 => 'Настройки',
-      ),
-      'Mixer' => 
-      array (
-        0 => 'Микшер',
-      ),
-      'Playlist 1' => 
-      array (
-        0 => 'Плейлист 1',
-      ),
-      'Playlist 2' => 
-      array (
-        0 => 'Плейлист 2',
-      ),
-      'Encoder' => 
-      array (
-        0 => 'Кодировщик',
-      ),
-      'MP3' => 
-      array (
-        0 => 'MP3',
-      ),
-      'Raw' => 
-      array (
-        0 => 'Исходное',
-      ),
-      'Sample Rate' => 
-      array (
-        0 => 'Частота Дискретизации',
-      ),
-      'Bit Rate' => 
-      array (
-        0 => 'Битрейт',
-      ),
-      'DJ Credentials' => 
-      array (
-        0 => 'Учётные Данные Диджея',
-      ),
-      'Username' => 
-      array (
-        0 => 'Имя пользователя',
-      ),
-      'Use Asynchronous Worker' => 
-      array (
-        0 => 'Использовать Асинхронную Работу',
-      ),
-      'Artist' => 
-      array (
-        0 => 'Исполнитель',
-      ),
-      'Continuous Play' => 
-      array (
-        0 => 'Непрерывное Воспроизведение',
-      ),
-      'Repeat Playlist' => 
-      array (
-        0 => 'Повторять плейлист',
-      ),
-      'Microphone Source' => 
-      array (
-        0 => 'Источник Микрофона',
-      ),
-      'Start Streaming' => 
-      array (
-        0 => 'Начать Вещание',
-      ),
-      'Stop Streaming' => 
-      array (
-        0 => 'Остановить Вещание',
-      ),
-      'Cue' => 
-      array (
-        0 => 'Говорить',
-      ),
-      'Update Metadata' => 
-      array (
-        0 => 'Обновить Метаданные',
-      ),
-      'Add Files to Playlist' => 
-      array (
-        0 => 'Добавить в плейлист',
-      ),
-      'Unknown Title' => 
-      array (
-        0 => 'Неизвестное название',
-      ),
-      'Unknown Artist' => 
-      array (
-        0 => 'Неизвестный артист',
-      ),
       'Request' => 
       array (
         0 => 'Запрос',
-      ),
-      'Album' => 
-      array (
-        0 => 'Альбом',
       ),
       'Song History' => 
       array (
@@ -3375,34 +3294,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Request a Song' => 
       array (
         0 => 'Запрос композиции',
-      ),
-      'Live' => 
-      array (
-        0 => 'Прямая трансляция',
-      ),
-      'Play' => 
-      array (
-        0 => 'Воспроизведение',
-      ),
-      'Pause' => 
-      array (
-        0 => 'Пауза',
-      ),
-      'Mute' => 
-      array (
-        0 => 'Откл. звук',
-      ),
-      'Volume' => 
-      array (
-        0 => 'Громкость',
-      ),
-      'Full Volume' => 
-      array (
-        0 => 'Полная Громкость',
-      ),
-      'Album Art' => 
-      array (
-        0 => 'Обложка Альбома',
       ),
       'AzuraCast First-Time Setup' => 
       array (
@@ -3508,6 +3399,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Автоматическая прокрутка до нижней части журнала',
       ),
+      'Pause' => 
+      array (
+        0 => 'Пауза',
+      ),
+      'Play' => 
+      array (
+        0 => 'Воспроизведение',
+      ),
       'Automated Playlist Assignment' => 
       array (
         0 => 'Автоматическое Назначение Плейлистам',
@@ -3528,38 +3427,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Настройка Автоматического Назначения',
       ),
-      'Delete {NUM} media file(s)?' => 
-      array (
-        0 => 'Удалить {NUM} медиа файл(ы)?',
-      ),
-      'Files removed:' => 
-      array (
-        0 => 'Файлы удалены:',
-      ),
-      'Playlists updated for selected files:' => 
-      array (
-        0 => 'Плейлисты обновлены выбранными файлами:',
-      ),
-      'Playlists cleared for selected files:' => 
-      array (
-        0 => 'Плейлисты очищены от выбранных файлов:',
-      ),
-      'Album Artwork' => 
-      array (
-        0 => 'Обложка альбома',
-      ),
-      'Rename' => 
-      array (
-        0 => 'Переименовать',
-      ),
-      'Select' => 
-      array (
-        0 => 'Выбрать',
-      ),
-      'Home' => 
-      array (
-        0 => 'Главная',
-      ),
       '%s of %s Used (%d Files)' => 
       array (
         0 => 'Использовано %s из %s (%d Файлов)',
@@ -3571,62 +3438,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'View connection instructions' => 
       array (
         0 => 'Просмотр инструкций по подключению',
-      ),
-      'Drag files here to upload to this folder or ' => 
-      array (
-        0 => 'Перетащите файлы сюда, чтобы загрузить в эту папку или ',
-      ),
-      'Set Playlists' => 
-      array (
-        0 => 'Выбрать плейлист',
-      ),
-      'New Playlist' => 
-      array (
-        0 => 'Новый Плейлист',
-      ),
-      'Save' => 
-      array (
-        0 => 'Сохранить',
-      ),
-      'Clear Playlists' => 
-      array (
-        0 => 'Очистить Плейлисты',
-      ),
-      'Move' => 
-      array (
-        0 => 'Переместить',
-      ),
-      'New Folder' => 
-      array (
-        0 => 'Новая папка',
-      ),
-      'Length' => 
-      array (
-        0 => 'Продолжительность',
-      ),
-      'Modified' => 
-      array (
-        0 => 'Изменён',
-      ),
-      'New Directory' => 
-      array (
-        0 => 'Новая директория',
-      ),
-      'Directory Name' => 
-      array (
-        0 => 'Название директории',
-      ),
-      'Create Directory' => 
-      array (
-        0 => 'Создать директорию',
-      ),
-      'Move {{ selected_files }} File(s) to' => 
-      array (
-        0 => 'Переместить {{ selected_files }} в',
-      ),
-      'Back' => 
-      array (
-        0 => 'Назад',
       ),
       'FTP Connection Information' => 
       array (
@@ -3656,6 +3467,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Незашифрованный FTP также разрешен, но не рекомендуется.',
       ),
+      'Username' => 
+      array (
+        0 => 'Имя пользователя',
+      ),
       'Your AzuraCast E-mail Address' => 
       array (
         0 => 'Ваш адрес электронной почты AzuraCast',
@@ -3683,82 +3498,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Default Mount' => 
       array (
         0 => 'Маунт по-умолчанию',
-      ),
-      'All Playlists' => 
-      array (
-        0 => 'Все плейлисты',
-      ),
-      'Schedule View' => 
-      array (
-        0 => 'Просмотр расписания',
-      ),
-      '# Songs' => 
-      array (
-        0 => '# Песни',
-      ),
-      'Delete playlist "%s"?' => 
-      array (
-        0 => 'Удалить плейлист "%s"?',
-      ),
-      'More' => 
-      array (
-        0 => 'Больше',
-      ),
-      'Disable' => 
-      array (
-        0 => 'Выключить',
-      ),
-      'Enable' => 
-      array (
-        0 => 'Включить',
-      ),
-      'Reorder' => 
-      array (
-        0 => 'Пересортировать',
-      ),
-      'Export %s' => 
-      array (
-        0 => 'Экспорт %s',
-      ),
-      'Song-based' => 
-      array (
-        0 => 'Песня на основе',
-      ),
-      'Jingle Mode' => 
-      array (
-        0 => 'Режим Джингла',
-      ),
-      'Auto-Assigned' => 
-      array (
-        0 => 'Автоматическое назначение',
-      ),
-      'Weight' => 
-      array (
-        0 => 'Вес',
-      ),
-      'Plays at %s' => 
-      array (
-        0 => 'Играет в %s',
-      ),
-      'Plays between %s and %s' => 
-      array (
-        0 => 'Проигрывать между %s и %s',
-      ),
-      'Once per %d Songs' => 
-      array (
-        0 => 'Раз в %d песен',
-      ),
-      'Once per %d Minutes' => 
-      array (
-        0 => 'Раз в %d минут',
-      ),
-      'Once per Hour (at :%02d)' => 
-      array (
-        0 => 'Один раз в час (в :%02d)',
-      ),
-      'Custom' => 
-      array (
-        0 => 'Собственное',
       ),
       'Reorder Playlist' => 
       array (
@@ -3844,9 +3583,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Уникальный',
       ),
+      'Album Art' => 
+      array (
+        0 => 'Обложка Альбома',
+      ),
       'Playing Next' => 
       array (
         0 => 'Следующее Играет',
+      ),
+      'Live' => 
+      array (
+        0 => 'Прямая трансляция',
       ),
       'Skip Song' => 
       array (
@@ -3875,6 +3622,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Enable public pages?' => 
       array (
         0 => 'Включить публичные страницы?',
+      ),
+      'Enable' => 
+      array (
+        0 => 'Включить',
       ),
       'View' => 
       array (
@@ -3931,6 +3682,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Cued On' => 
       array (
         0 => 'В Очереди',
+      ),
+      'Source' => 
+      array (
+        0 => 'Источник',
       ),
       'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
@@ -4188,10 +3943,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Удалить вебхук "%s"?',
       ),
-      'The page you requested was not found.' => 
-      array (
-        0 => 'Запрошенная вами страница не найдена.',
-      ),
       'Select...' => 
       array (
         0 => 'Выбрать...',
@@ -4199,6 +3950,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'No results found!' => 
       array (
         0 => 'Ничего не найдено!',
+      ),
+      'Advanced' => 
+      array (
+        0 => 'Продвинутый',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

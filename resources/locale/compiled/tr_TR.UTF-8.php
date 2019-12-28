@@ -9,16 +9,15 @@
       array (
         0 => 'Project-Id-Version: azuracast
 Report-Msgid-Bugs-To: 
-Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)
+Last-Translator: 
 Language-Team: Turkish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-09-10T23:21:55+00:00
-PO-Revision-Date: 2019-11-23 21:50
+POT-Creation-Date: 2019-11-23T21:40:24+00:00
+PO-Revision-Date: 2019-12-28 17:56
 Language: tr_TR
 Plural-Forms: nplurals=2; plural=(n != 1);
-X-Generator: crowdin.com
 X-Crowdin-Project: azuracast
 X-Crowdin-Language: tr
 X-Crowdin-File: /master/resources/locale/default.pot
@@ -227,6 +226,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Installing Data Fixtures' => 
       array (
         0 => 'Veri Fikstürleri Kuruluyor',
+      ),
+      'Reload System Data' => 
+      array (
+        0 => '',
       ),
       'Refreshing All Stations' => 
       array (
@@ -452,6 +455,54 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Kendini silemezsin!',
       ),
+      'Path "%s" is not a folder.' => 
+      array (
+        0 => '"%s" bir klasör değildir.',
+      ),
+      'Could not move "%s" to "%s"' => 
+      array (
+        0 => '"%s" &#61;&#62; "%s" taşınamadı.',
+      ),
+      'Directory' => 
+      array (
+        0 => 'Klasör',
+      ),
+      'File Not Processed' => 
+      array (
+        0 => 'Dosya İşlenemedi!',
+      ),
+      'File not specified.' => 
+      array (
+        0 => '',
+      ),
+      'New path not specified.' => 
+      array (
+        0 => '',
+      ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Radyo depolama alanı doldu.',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => 'Çalma listesi bulunamadı!',
+      ),
+      'This playlist is not a sequential playlist.' => 
+      array (
+        0 => 'Bu çalma listesi "SIRALI" bir çalma listesi değildir.',
+      ),
+      'Format not found.' => 
+      array (
+        0 => 'Biçim bulunamadı!',
+      ),
+      'Playlist enabled.' => 
+      array (
+        0 => 'Çalma Listesi Etkinleştirildi!',
+      ),
+      'Playlist disabled.' => 
+      array (
+        0 => 'Çalma Listesi Devredışı Bırakıldı!',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Bu radyo şu anda istekleri kabul etmiyor.',
@@ -528,6 +579,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Dinleyiciler',
       ),
+      'Two-factor authentication disabled.' => 
+      array (
+        0 => 'İki faktörlü kimlik doğrulama devredışı bırakıldı.',
+      ),
       'Profile saved!' => 
       array (
         0 => 'Profil Kaydedildi!',
@@ -543,10 +598,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Two-factor authentication enabled.' => 
       array (
         0 => 'İki faktörlü kimlik doğrulama etkinleştirildi.',
-      ),
-      'Two-factor authentication disabled.' => 
-      array (
-        0 => 'İki faktörlü kimlik doğrulama devredışı bırakıldı.',
       ),
       'Song Title' => 
       array (
@@ -580,46 +631,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Otomatik atama hatası!',
       ),
-      'Path "%s" is not a folder.' => 
-      array (
-        0 => '"%s" bir klasör değildir.',
-      ),
-      'Could not move "%s" to "%s"' => 
-      array (
-        0 => '"%s" &#61;&#62; "%s" taşınamadı.',
-      ),
-      'Media not found.' => 
-      array (
-        0 => 'Müzik dosyası bulunamadı!',
-      ),
-      'Media updated.' => 
-      array (
-        0 => 'Müzik dosyası güncellendi!',
-      ),
-      'Edit Media' => 
-      array (
-        0 => 'Müzik Dosyası Düzenle',
-      ),
-      'File renamed!' => 
-      array (
-        0 => 'Dosya yeniden adlandırıldı!',
-      ),
-      'Rename File/Directory' => 
-      array (
-        0 => 'Dosya/Klasör Yeniden Adlandır',
-      ),
-      'This station is out of available storage space.' => 
-      array (
-        0 => 'Radyo depolama alanı doldu.',
-      ),
-      'Directory' => 
-      array (
-        0 => 'Klasör',
-      ),
-      'File Not Processed' => 
-      array (
-        0 => 'Dosya İşlenemedi!',
-      ),
       'This feature is not currently supported on this station.' => 
       array (
         0 => 'Bu radyoda bu özellik şu an desteklenmiyor.',
@@ -635,46 +646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Mount Point deleted.' => 
       array (
         0 => 'Bağlantı noktası silindi!',
-      ),
-      'Playlist not found.' => 
-      array (
-        0 => 'Çalma listesi bulunamadı!',
-      ),
-      'This playlist is not a sequential playlist.' => 
-      array (
-        0 => 'Bu çalma listesi "SIRALI" bir çalma listesi değildir.',
-      ),
-      'Format not found.' => 
-      array (
-        0 => 'Biçim bulunamadı!',
-      ),
-      'Playlist enabled.' => 
-      array (
-        0 => 'Çalma Listesi Etkinleştirildi!',
-      ),
-      'Playlist disabled.' => 
-      array (
-        0 => 'Çalma Listesi Devredışı Bırakıldı!',
-      ),
-      'Playlist updated.' => 
-      array (
-        0 => 'Çalma listesi güncellendi!',
-      ),
-      'Playlist added.' => 
-      array (
-        0 => 'Çalma listesi eklendi!',
-      ),
-      'Edit Playlist' => 
-      array (
-        0 => 'Çalma Listesi Düzenle',
-      ),
-      'Add Playlist' => 
-      array (
-        0 => 'Çalma Listesi Ekle',
-      ),
-      'Playlist deleted.' => 
-      array (
-        0 => 'Çalma listesi silindi!',
       ),
       'Remote Relay updated.' => 
       array (
@@ -1240,6 +1211,406 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'İsteğe bağlı olarak <code>field_name</code> gibi bir API dostu isim belirtin. İsme göre otomatik olarak bir tane oluşturmak için bu alanı boş bırakın.',
       ),
+      'Automatically Set from ID3v2 Value' => 
+      array (
+        0 => '',
+      ),
+      'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
+      array (
+        0 => '',
+      ),
+      'Disable' => 
+      array (
+        0 => 'Devredışı',
+      ),
+      'Album' => 
+      array (
+        0 => 'Albüm',
+      ),
+      'Album Artist Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Album Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Artist' => 
+      array (
+        0 => 'Sanatçı',
+      ),
+      'Attached Picture' => 
+      array (
+        0 => '',
+      ),
+      'Audio Encryption' => 
+      array (
+        0 => '',
+      ),
+      'Audio Seek Point Index' => 
+      array (
+        0 => '',
+      ),
+      'Band' => 
+      array (
+        0 => '',
+      ),
+      'Bpm' => 
+      array (
+        0 => '',
+      ),
+      'Comment' => 
+      array (
+        0 => '',
+      ),
+      'Commercial Frame' => 
+      array (
+        0 => '',
+      ),
+      'Commercial Information' => 
+      array (
+        0 => '',
+      ),
+      'Composer' => 
+      array (
+        0 => '',
+      ),
+      'Composer Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Conductor' => 
+      array (
+        0 => '',
+      ),
+      'Content Group Description' => 
+      array (
+        0 => '',
+      ),
+      'Copyright' => 
+      array (
+        0 => '',
+      ),
+      'Copyright Message' => 
+      array (
+        0 => '',
+      ),
+      'Date' => 
+      array (
+        0 => '',
+      ),
+      'Encoded By' => 
+      array (
+        0 => '',
+      ),
+      'Encoder Settings' => 
+      array (
+        0 => '',
+      ),
+      'Encoding Time' => 
+      array (
+        0 => '',
+      ),
+      'Encrypted Meta Frame' => 
+      array (
+        0 => '',
+      ),
+      'Encryption Method Registration' => 
+      array (
+        0 => '',
+      ),
+      'Equalisation' => 
+      array (
+        0 => '',
+      ),
+      'Event Timing Codes' => 
+      array (
+        0 => '',
+      ),
+      'Featured Artist' => 
+      array (
+        0 => '',
+      ),
+      'File Owner' => 
+      array (
+        0 => '',
+      ),
+      'File Type' => 
+      array (
+        0 => '',
+      ),
+      'General Encapsulated Object' => 
+      array (
+        0 => '',
+      ),
+      'Genre' => 
+      array (
+        0 => 'Tür',
+      ),
+      'Group Identification Registration' => 
+      array (
+        0 => '',
+      ),
+      'Initial Key' => 
+      array (
+        0 => '',
+      ),
+      'Internet Radio Station Name' => 
+      array (
+        0 => '',
+      ),
+      'Internet Radio Station Owner' => 
+      array (
+        0 => '',
+      ),
+      'Involved People List' => 
+      array (
+        0 => '',
+      ),
+      'ISRC' => 
+      array (
+        0 => 'ISRC',
+      ),
+      'Language' => 
+      array (
+        0 => 'Dil',
+      ),
+      'Length' => 
+      array (
+        0 => 'Uzunluk',
+      ),
+      'Linked Information' => 
+      array (
+        0 => '',
+      ),
+      'Lyricist' => 
+      array (
+        0 => '',
+      ),
+      'Media Type' => 
+      array (
+        0 => '',
+      ),
+      'Mood' => 
+      array (
+        0 => '',
+      ),
+      'MPEG Location Lookup Table' => 
+      array (
+        0 => '',
+      ),
+      'Music CD Identifier' => 
+      array (
+        0 => '',
+      ),
+      'Musician Credits List' => 
+      array (
+        0 => '',
+      ),
+      'Original Album' => 
+      array (
+        0 => '',
+      ),
+      'Original Artist' => 
+      array (
+        0 => '',
+      ),
+      'Original Filename' => 
+      array (
+        0 => '',
+      ),
+      'Original Lyricist' => 
+      array (
+        0 => '',
+      ),
+      'Original Release Time' => 
+      array (
+        0 => '',
+      ),
+      'Original Year' => 
+      array (
+        0 => '',
+      ),
+      'Ownership Frame' => 
+      array (
+        0 => '',
+      ),
+      'Part Of A Compilation' => 
+      array (
+        0 => '',
+      ),
+      'Part Of A Set' => 
+      array (
+        0 => '',
+      ),
+      'Performer Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Play Counter' => 
+      array (
+        0 => '',
+      ),
+      'Playlist Delay' => 
+      array (
+        0 => '',
+      ),
+      'Popularimeter' => 
+      array (
+        0 => '',
+      ),
+      'Position Synchronisation Frame' => 
+      array (
+        0 => '',
+      ),
+      'Private Frame' => 
+      array (
+        0 => '',
+      ),
+      'Produced Notice' => 
+      array (
+        0 => '',
+      ),
+      'Publisher' => 
+      array (
+        0 => '',
+      ),
+      'Recommended Buffer Size' => 
+      array (
+        0 => '',
+      ),
+      'Recording Dates' => 
+      array (
+        0 => '',
+      ),
+      'Recording Studio' => 
+      array (
+        0 => '',
+      ),
+      'Recording Time' => 
+      array (
+        0 => '',
+      ),
+      'Relative Volume Adjustment' => 
+      array (
+        0 => '',
+      ),
+      'Release Time' => 
+      array (
+        0 => '',
+      ),
+      'Remixer' => 
+      array (
+        0 => '',
+      ),
+      'ReplayGain Adjustment' => 
+      array (
+        0 => '',
+      ),
+      'Reverb' => 
+      array (
+        0 => '',
+      ),
+      'Seek Frame' => 
+      array (
+        0 => '',
+      ),
+      'Set Subtitle' => 
+      array (
+        0 => '',
+      ),
+      'Signature Frame' => 
+      array (
+        0 => '',
+      ),
+      'Size' => 
+      array (
+        0 => 'Boyut',
+      ),
+      'Subtitle' => 
+      array (
+        0 => '',
+      ),
+      'Synced Tempo Codes' => 
+      array (
+        0 => '',
+      ),
+      'Synchronised Lyric' => 
+      array (
+        0 => '',
+      ),
+      'Synchronised Tempo Codes' => 
+      array (
+        0 => '',
+      ),
+      'Tagging Time' => 
+      array (
+        0 => '',
+      ),
+      'Terms Of Use' => 
+      array (
+        0 => '',
+      ),
+      'Text' => 
+      array (
+        0 => '',
+      ),
+      'Time' => 
+      array (
+        0 => '',
+      ),
+      'Title' => 
+      array (
+        0 => 'Çalan Şarkı İsmi',
+      ),
+      'Title Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Track Number' => 
+      array (
+        0 => '',
+      ),
+      'Unique File Identifier' => 
+      array (
+        0 => '',
+      ),
+      'Unsynchronised Lyric' => 
+      array (
+        0 => '',
+      ),
+      'URL Artist' => 
+      array (
+        0 => '',
+      ),
+      'URL File' => 
+      array (
+        0 => '',
+      ),
+      'URL Payment' => 
+      array (
+        0 => '',
+      ),
+      'URL Publisher' => 
+      array (
+        0 => '',
+      ),
+      'URL Source' => 
+      array (
+        0 => '',
+      ),
+      'URL Station' => 
+      array (
+        0 => '',
+      ),
+      'URL User' => 
+      array (
+        0 => '',
+      ),
+      'Year' => 
+      array (
+        0 => '',
+      ),
       'Important Notes' => 
       array (
         0 => 'Önemli Notlar',
@@ -1275,90 +1646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Log in' => 
       array (
         0 => 'Giriş Yap',
-      ),
-      'File Name' => 
-      array (
-        0 => 'Dosya Adı',
-      ),
-      'The relative path of the file in the station\'s media directory.' => 
-      array (
-        0 => 'Radyonun müzik dosyalarının geçici dizinidir.',
-      ),
-      'Song Album' => 
-      array (
-        0 => 'Albüm',
-      ),
-      'Song Lyrics' => 
-      array (
-        0 => 'Şarkı Sözleri',
-      ),
-      'Replace Album Cover Art' => 
-      array (
-        0 => 'Albüm Kapağını Değiştir',
-      ),
-      'ISRC' => 
-      array (
-        0 => 'ISRC',
-      ),
-      'International Standard Recording Code, used for licensing reports.' => 
-      array (
-        0 => 'Uluslararası Standart Kayıt Kodu lisans raporları için kullanılır.',
-      ),
-      'Custom Fields' => 
-      array (
-        0 => 'Özelleştirme',
-      ),
-      'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
-      array (
-        0 => 'Yöneticiler burada görünen alanları <a href="%s">yönetici sayfası</a>ndan özelleştirebilir.',
-      ),
-      'Control Song Playback' => 
-      array (
-        0 => 'Şarkı Çalma Kontrolü',
-      ),
-      'Song Length (seconds)' => 
-      array (
-        0 => 'Şarkı Uzunluğu (saniye)',
-      ),
-      'Custom Fading: Overlap Time (seconds)' => 
-      array (
-        0 => 'Custom Fading: Örtüşme Zamanı (saniye)',
-      ),
-      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
-      array (
-        0 => 'Bu şarkıdan sonraki şarkıya geçiş sırasında örtüşme süresini belirtin. Sistem varsayılan değeri için boş bırakın.',
-      ),
-      'Custom Fading: Fade-In Time (seconds)' => 
-      array (
-        0 => 'Custom Fading: Solma Zamanı (saniye)',
-      ),
-      'The time period that the song should fade in. Leave blank to use the system default.' => 
-      array (
-        0 => 'Bu şarkıya geçiş sırasında önceki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın.',
-      ),
-      'Custom Fading: Fade-Out Time (seconds)' => 
-      array (
-        0 => 'Custom Fading: Solma Zamanı (saniye)',
-      ),
-      'The time period that the song should fade out. Leave blank to use the system default.' => 
-      array (
-        0 => 'Bu şarkıdan diğer şarkıya geçiş sırasında sonraki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın.',
-      ),
-      'Custom Cues: Cue-In Point (seconds)' => 
-      array (
-        0 => 'Custom Cues: Giriş Noktası (saniye)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should start playing.' => 
-      array (
-        0 => 'AutoDJ\'in şarkıyı çalmaya başlaması için gereken zamanı belirtin.',
-      ),
-      'Custom Cues: Cue-Out Point (seconds)' => 
-      array (
-        0 => 'Custom Cues: Çıkış Noktası (saniye)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
-      array (
-        0 => 'AutoDJ\'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin.',
       ),
       'Mount Point URL' => 
       array (
@@ -1460,262 +1747,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Radyoyu "Yellow Pages" dizininde görüntülenmesini istiyorsanız <a href="%s" target="_blank">SHOUTcast YP Directory Authorization Hash</a> sayfasından yetkilendirme kodunu almanız gerekmektedir.',
       ),
-      'Basic Information' => 
-      array (
-        0 => 'Temel Bilgiler',
-      ),
-      'Source' => 
-      array (
-        0 => 'Kaynak',
-      ),
-      'Scheduling' => 
-      array (
-        0 => 'Zamanlama',
-      ),
-      'Enable Playlist' => 
-      array (
-        0 => 'Çalma Listesini Etkinleştir',
-      ),
-      'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
-      array (
-        0 => '"HAYIR" olarak ayarlanırsa AutoDJ müzik çalamaz.',
-      ),
-      'Playlist Name' => 
-      array (
-        0 => 'Çalma Listesi İsmi',
-      ),
-      'Playlist Weight' => 
-      array (
-        0 => 'Çalma Listesi Önceliği',
-      ),
-      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
-      array (
-        0 => 'Yüksek önceliğe sahip çalma listeleri daha sık çalınır.',
-      ),
-      'Low' => 
-      array (
-        0 => 'Düşük',
-      ),
-      'High' => 
-      array (
-        0 => 'Yüksek',
-      ),
-      'Song-Based Playlist' => 
-      array (
-        0 => 'Çalma Listesinden Çal',
-      ),
-      'A playlist containing media files hosted on this server.' => 
-      array (
-        0 => 'Bu sunucuda barındırılan müzik dosyalarını içeren bir çalma listesidir.',
-      ),
-      'Remote URL Playlist' => 
-      array (
-        0 => 'Uzak Çalma Listesi URLsi',
-      ),
-      'A playlist that instructs the station to play from a remote URL.' => 
-      array (
-        0 => 'Uzak sunucudaki müzik dosyalarını içeren bir çalma listesidir.',
-      ),
-      'Song Playback Order' => 
-      array (
-        0 => 'Şarkı Çalma Sırası',
-      ),
-      'Shuffled' => 
-      array (
-        0 => 'Karıştır (önerilir)',
-      ),
-      'Random' => 
-      array (
-        0 => 'Rastgele',
-      ),
-      'Sequential' => 
-      array (
-        0 => 'Sıralı',
-      ),
-      'Import Existing Playlist' => 
-      array (
-        0 => 'Çalma Listesi İçe Aktarma',
-      ),
-      'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
-      array (
-        0 => 'Mevcut bir PLS veya M3U biçimindeki çalma listesini içeri aktarabilirsiniz.',
-      ),
-      'Allow Requests from This Playlist' => 
-      array (
-        0 => 'Çalma Listesinde İstekleri Etkinleştir',
-      ),
-      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
-      array (
-        0 => 'Radyodaki çalan müzikleri kullanıcıların erişimine açmak için burayı etkinleştirebilirsiniz.',
-      ),
-      'Hide Metadata from Listeners ("Jingle Mode")' => 
-      array (
-        0 => 'Meta Verilerini Gizle ("Jingle Mode")',
-      ),
-      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
-      array (
-        0 => 'Bu çalma listesinde bulunan müziklerin meta verilerini dinleyicilerden gizlemek için etkinleştirebilirsiniz. Çalma listesinde Jingle veya Bumpers varsa işinize yarayacak bir özelliktir.',
-      ),
-      'Remote URL' => 
-      array (
-        0 => 'Uzak Çalma Listesi URLsi',
-      ),
-      'Remote URL Type' => 
-      array (
-        0 => 'Uzak Çalma Listesi Türü',
-      ),
-      'Direct Stream URL' => 
-      array (
-        0 => 'Doğrudan Yayın URLsi',
-      ),
-      'Playlist (M3U/PLS) URL' => 
-      array (
-        0 => 'Çalma Listesi URLsi (M3U/PLS)',
-      ),
-      'Remote Playback Buffer (Seconds)' => 
-      array (
-        0 => 'Uzaktan Oynatma Arabelliği (saniye)',
-      ),
-      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
-      array (
-        0 => 'Uzak çalma listesi Liquidsoap tarafından oynatılırken arabellek için gereken süreyi belirtin. Bağlantı sorunları oluştuğunda daha kısa süreler takılmalara neden olabilir.',
-      ),
-      'General Rotation' => 
-      array (
-        0 => 'Genel Oynatma',
-      ),
-      'Plays all day, shuffles with other standard playlists based on weight.' => 
-      array (
-        0 => 'Gün boyu oynatılır ve önceliğe göre diğer standart çalma listeleriyle karıştırılır.',
-      ),
-      'Scheduled' => 
-      array (
-        0 => 'Zamanlanmış',
-      ),
-      'Play during a scheduled time range.' => 
-      array (
-        0 => 'Belirlenmiş bir zaman aralığında oynatılır.',
-      ),
-      'Once per x Songs' => 
-      array (
-        0 => 'x Şarkıda Bir Çal',
-      ),
-      'Play exactly once every <i>x</i> songs.' => 
-      array (
-        0 => 'Her <i>x</i> şarkıda bir çalınır.',
-      ),
-      'Once Per x Minutes' => 
-      array (
-        0 => 'x Dakikada Bir Çal',
-      ),
-      'Play exactly once every <i>x</i> minutes.' => 
-      array (
-        0 => 'Her <i>x</i> dakikada bir çalınır.',
-      ),
-      'Once per Hour' => 
-      array (
-        0 => 'Saatte Bir Çal',
-      ),
-      'Play once per hour at the specified minute.' => 
-      array (
-        0 => 'Belirtilen dakikada saatte bir çalınır.',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Gelişmiş',
-      ),
-      'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
-      array (
-        0 => 'Bu çalma listesinin Liquidsoap yapılandırma dosyasında nasıl çalınacağını manuel olarak belirtin. Detaylar için <a href="%s" target="_blank">burayı</a> tıklayın.',
-      ),
-      'AutoDJ Scheduling Options' => 
-      array (
-        0 => 'AutoDJ Zamanlama Ayarları',
-      ),
-      'Control how this playlist is handled by the AutoDJ software.' => 
-      array (
-        0 => 'Bu çalma listesinin AutoDJ yazılımı tarafından nasıl işlendiğini ayarlayabilirsiniz.',
-      ),
-      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
-      array (
-        0 => '<b>Uyarı:</b> Bu ayarlar Liquidsoap ve AutoDJ yazılımlarına doğrudan etki eder. Yeniden başlatma gerekebilir.',
-      ),
-      'Interrupt other songs to play at scheduled time.' => 
-      array (
-        0 => 'Planlanan zamanda çalmak için diğer şarkıları kesin.',
-      ),
-      'Only loop through playlist once.' => 
-      array (
-        0 => 'Çalma listesinde yalnızca bir kez döngü yapın.',
-      ),
-      'Only play one track at scheduled time.' => 
-      array (
-        0 => 'Planlanan zamanda sadece bir parça çalın.',
-      ),
-      'Merge playlist to play as a single track.' => 
-      array (
-        0 => 'Tek bir parça olarak çalmak için çalma listesini birleştirin.',
-      ),
-      'Include in Automated Assignment' => 
-      array (
-        0 => 'Otomatik Atamaya Dahil Et',
-      ),
-      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
-      array (
-        0 => 'Otomatik atama etkinse bu çalma listesini yeniden dağıtılacak şarkıların hedeflerinden biri olarak kullanın. Bu, bu oynatma listesinin mevcut içeriğinin üzerine yazacaktır.',
-      ),
-      'Start Time' => 
-      array (
-        0 => 'Başlama Zamanı',
-      ),
-      'To play once per day, set the start and end times to the same value.' => 
-      array (
-        0 => 'Günde bir kez oynamak için başlangıç ​​ve bitiş zamanlarını aynı değere ayarlayın.',
-      ),
-      'End Time' => 
-      array (
-        0 => 'Bitiş Zamanı',
-      ),
-      'If the end time is before the start time, the playlist will play overnight.' => 
-      array (
-        0 => 'Bitiş saati başlangıç ​​saatinden önce ise çalma listesi gecede oynatılır.',
-      ),
-      'Station Time Zone' => 
-      array (
-        0 => 'Radyo Saat Dilimi',
-      ),
-      'Scheduled Play Days of Week' => 
-      array (
-        0 => 'Haftalık Zamanlama',
-      ),
-      'Leave blank to play on every day of the week.' => 
-      array (
-        0 => 'Haftanın hangi günlerinde oynatılmasını istiyorsanız seçin veya haftanın her günü oynatmak için boş bırakın.',
-      ),
-      'Number of Songs Between Plays' => 
-      array (
-        0 => 'Kaç Şarkıda Bir Çalınsın?',
-      ),
-      'This playlist will play every $x songs, where $x is specified below.' => 
-      array (
-        0 => 'Bu çalma listesi her $x şarkıda bir $x şarkı çalacaktır.',
-      ),
-      'Number of Minutes Between Plays' => 
-      array (
-        0 => 'Kaç Dakikada Bir Çalınsın?',
-      ),
-      'This playlist will play every $x minutes, where $x is specified below.' => 
-      array (
-        0 => 'Bu çalma listesi her $x dakikada bir $x şarkı çalacaktır.',
-      ),
-      'Minute of Hour to Play' => 
-      array (
-        0 => 'Saatin Hangi Dakikasında Çalınsın?',
-      ),
-      'Specify the minute of every hour that this playlist should play.' => 
-      array (
-        0 => 'Bu çalma listesinin saatin hangi dakikasında oynatılmasını istiyorsanız belirtin.',
-      ),
       'Use Browser Default' => 
       array (
         0 => 'Tarayıcı Dilini Kullan',
@@ -1747,10 +1778,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Customization' => 
       array (
         0 => 'Özelleştirme',
-      ),
-      'Language' => 
-      array (
-        0 => 'Dil',
       ),
       'Site Theme' => 
       array (
@@ -2059,10 +2086,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Description' => 
       array (
         0 => 'Açıklama',
-      ),
-      'Genre' => 
-      array (
-        0 => 'Tür',
       ),
       'Web Site URL' => 
       array (
@@ -2456,10 +2479,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '%s Şimdi Çalıyor: ',
       ),
-      'Title' => 
-      array (
-        0 => 'Çalan Şarkı İsmi',
-      ),
       'URL' => 
       array (
         0 => 'URL',
@@ -2665,6 +2684,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Stations' => 
       array (
         0 => 'Radyolar',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Özelleştirme',
       ),
       'Connected AzuraRelays' => 
       array (
@@ -2954,10 +2977,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Değişiklik Tarihi',
       ),
-      'Size' => 
-      array (
-        0 => 'Boyut',
-      ),
       'Download' => 
       array (
         0 => 'İndir',
@@ -3244,109 +3263,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'İki Faktörlü Doğrulamayı Etkinleştir',
       ),
-      'Microphone' => 
-      array (
-        0 => 'Mikrofon',
-      ),
-      'Settings' => 
-      array (
-        0 => 'Ayarlar',
-      ),
-      'Mixer' => 
-      array (
-        0 => 'Mixer',
-      ),
-      'Playlist 1' => 
-      array (
-        0 => 'Çalma Listesi 1',
-      ),
-      'Playlist 2' => 
-      array (
-        0 => 'Çalma Listesi 2',
-      ),
-      'Encoder' => 
-      array (
-        0 => 'Encoder',
-      ),
-      'MP3' => 
-      array (
-        0 => 'MP3',
-      ),
-      'Raw' => 
-      array (
-        0 => 'HAM DATA',
-      ),
-      'Sample Rate' => 
-      array (
-        0 => 'Sample Rate',
-      ),
-      'Bit Rate' => 
-      array (
-        0 => 'Bitrate',
-      ),
-      'DJ Credentials' => 
-      array (
-        0 => 'DJ Bilgileri',
-      ),
-      'Username' => 
-      array (
-        0 => 'Kullanıcı Adı',
-      ),
-      'Use Asynchronous Worker' => 
-      array (
-        0 => 'Eşzamansız Çalışma Kullan',
-      ),
-      'Artist' => 
-      array (
-        0 => 'Sanatçı',
-      ),
-      'Continuous Play' => 
-      array (
-        0 => 'Çalmaya Devam Et',
-      ),
-      'Repeat Playlist' => 
-      array (
-        0 => 'Çalma Listesini Tekrarla',
-      ),
-      'Microphone Source' => 
-      array (
-        0 => 'Mikrofon Kaynağı',
-      ),
-      'Start Streaming' => 
-      array (
-        0 => 'Yayını Başlat',
-      ),
-      'Stop Streaming' => 
-      array (
-        0 => 'Yayını Durdur',
-      ),
-      'Cue' => 
-      array (
-        0 => 'Bağla',
-      ),
-      'Update Metadata' => 
-      array (
-        0 => 'Meta Verilerini Güncelle',
-      ),
-      'Add Files to Playlist' => 
-      array (
-        0 => 'Çalma Listesine Ekle',
-      ),
-      'Unknown Title' => 
-      array (
-        0 => 'Bilinmeyen Şarkı İsmi',
-      ),
-      'Unknown Artist' => 
-      array (
-        0 => 'Bilinmeyen Sanatçı',
-      ),
       'Request' => 
       array (
         0 => 'İstek',
-      ),
-      'Album' => 
-      array (
-        0 => 'Albüm',
       ),
       'Song History' => 
       array (
@@ -3363,34 +3282,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Request a Song' => 
       array (
         0 => 'Bir Şarkı İsteyin',
-      ),
-      'Live' => 
-      array (
-        0 => 'Canlı',
-      ),
-      'Play' => 
-      array (
-        0 => 'Oynat',
-      ),
-      'Pause' => 
-      array (
-        0 => 'Duraklat',
-      ),
-      'Mute' => 
-      array (
-        0 => 'Sustur',
-      ),
-      'Volume' => 
-      array (
-        0 => 'Ses',
-      ),
-      'Full Volume' => 
-      array (
-        0 => 'Full Ses',
-      ),
-      'Album Art' => 
-      array (
-        0 => 'Albüm Sanatçısı',
       ),
       'AzuraCast First-Time Setup' => 
       array (
@@ -3462,7 +3353,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
       array (
-        0 => 'Türkçeleştirme: ByBiLaL - AzuraCast\'i beğendiniz mi? <a href="%s" target="_blank">Destek olmak için bağış yapın!</a>',
+        0 => 'AzuraCast\'i beğendiniz mi? <a href="%s" target="_blank">Destek olmak için bağış yapın!</a>',
       ),
       'Mascot designed by %s' => 
       array (
@@ -3496,6 +3387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Günlüğü en alta otomatik kaydır',
       ),
+      'Pause' => 
+      array (
+        0 => 'Duraklat',
+      ),
+      'Play' => 
+      array (
+        0 => 'Oynat',
+      ),
       'Automated Playlist Assignment' => 
       array (
         0 => 'Otomatik Oynatma Listesi Ataması',
@@ -3516,38 +3415,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Otomatik Atamayı Yapılandır',
       ),
-      'Delete {NUM} media file(s)?' => 
-      array (
-        0 => '{NUM} adet müzik dosyası silinsin mi?',
-      ),
-      'Files removed:' => 
-      array (
-        0 => 'Silinen Dosyalar: ',
-      ),
-      'Playlists updated for selected files:' => 
-      array (
-        0 => 'Seçilen dosyalar çalma listesinde güncellendi: ',
-      ),
-      'Playlists cleared for selected files:' => 
-      array (
-        0 => 'Seçilen dosyalar çalma listesiden silindi: ',
-      ),
-      'Album Artwork' => 
-      array (
-        0 => 'Albüm',
-      ),
-      'Rename' => 
-      array (
-        0 => 'Yeniden Adlandır',
-      ),
-      'Select' => 
-      array (
-        0 => 'Seç',
-      ),
-      'Home' => 
-      array (
-        0 => 'Anasayfa',
-      ),
       '%s of %s Used (%d Files)' => 
       array (
         0 => 'Kullanılan Depolama Alanı: %s / %s (%d Dosya)',
@@ -3559,62 +3426,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'View connection instructions' => 
       array (
         0 => 'Bağlantı Talimatlarını Görüntüle',
-      ),
-      'Drag files here to upload to this folder or ' => 
-      array (
-        0 => 'Bu klasöre müzik yüklemek için dosyaları buraya sürekleyip bırakın veya ',
-      ),
-      'Set Playlists' => 
-      array (
-        0 => 'Çalma Listesine Ekle',
-      ),
-      'New Playlist' => 
-      array (
-        0 => 'Yeni Çalma Listesi',
-      ),
-      'Save' => 
-      array (
-        0 => 'Kaydet',
-      ),
-      'Clear Playlists' => 
-      array (
-        0 => 'Çalma Listesini Temizle',
-      ),
-      'Move' => 
-      array (
-        0 => 'Taşı',
-      ),
-      'New Folder' => 
-      array (
-        0 => 'Yeni Klasör',
-      ),
-      'Length' => 
-      array (
-        0 => 'Uzunluk',
-      ),
-      'Modified' => 
-      array (
-        0 => 'Değiştirme Zamanı',
-      ),
-      'New Directory' => 
-      array (
-        0 => 'Yeni Dizin',
-      ),
-      'Directory Name' => 
-      array (
-        0 => 'Dizin İsmi',
-      ),
-      'Create Directory' => 
-      array (
-        0 => 'Dizin Oluştur',
-      ),
-      'Move {{ selected_files }} File(s) to' => 
-      array (
-        0 => '{{ selected_files }} şuraya taşı',
-      ),
-      'Back' => 
-      array (
-        0 => 'Geri',
       ),
       'FTP Connection Information' => 
       array (
@@ -3644,6 +3455,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Şifrelenmemiş FTP bağlantısına izin ver. Ancak bu <b>"ÖNERİLMEZ"</b>!',
       ),
+      'Username' => 
+      array (
+        0 => 'Kullanıcı Adı',
+      ),
       'Your AzuraCast E-mail Address' => 
       array (
         0 => 'AzuraCast E-Posta Adresiniz',
@@ -3671,82 +3486,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Default Mount' => 
       array (
         0 => 'Varsayılan Bağlantı Noktası',
-      ),
-      'All Playlists' => 
-      array (
-        0 => 'Tüm Çalma Listeleri',
-      ),
-      'Schedule View' => 
-      array (
-        0 => 'Zamanlama Görünümü',
-      ),
-      '# Songs' => 
-      array (
-        0 => '# Şarkılar',
-      ),
-      'Delete playlist "%s"?' => 
-      array (
-        0 => '"%s" çalma listesi silinsin mi?',
-      ),
-      'More' => 
-      array (
-        0 => 'Daha Fazla',
-      ),
-      'Disable' => 
-      array (
-        0 => 'Devredışı',
-      ),
-      'Enable' => 
-      array (
-        0 => 'Etkin',
-      ),
-      'Reorder' => 
-      array (
-        0 => 'Yeniden Sırala',
-      ),
-      'Export %s' => 
-      array (
-        0 => '%s Dışarı Aktar',
-      ),
-      'Song-based' => 
-      array (
-        0 => 'Çalma Listesi Modu',
-      ),
-      'Jingle Mode' => 
-      array (
-        0 => 'Jingle Modu',
-      ),
-      'Auto-Assigned' => 
-      array (
-        0 => 'Otomatik Atanmış',
-      ),
-      'Weight' => 
-      array (
-        0 => 'Öncelik',
-      ),
-      'Plays at %s' => 
-      array (
-        0 => '%s Oynat',
-      ),
-      'Plays between %s and %s' => 
-      array (
-        0 => '%s ile %s Arasında Oynat',
-      ),
-      'Once per %d Songs' => 
-      array (
-        0 => '%d Şarkıda Bir',
-      ),
-      'Once per %d Minutes' => 
-      array (
-        0 => '%d Dakikada Bir',
-      ),
-      'Once per Hour (at :%02d)' => 
-      array (
-        0 => 'Saatte Bir Kez (%02d)',
-      ),
-      'Custom' => 
-      array (
-        0 => 'Özel',
       ),
       'Reorder Playlist' => 
       array (
@@ -3832,9 +3571,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ziyaretçi',
       ),
+      'Album Art' => 
+      array (
+        0 => 'Albüm Sanatçısı',
+      ),
       'Playing Next' => 
       array (
         0 => 'Sıradaki Şarkı',
+      ),
+      'Live' => 
+      array (
+        0 => 'Canlı',
       ),
       'Skip Song' => 
       array (
@@ -3863,6 +3610,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Enable public pages?' => 
       array (
         0 => 'Genel sayfalar aktifleştirilsin mi?',
+      ),
+      'Enable' => 
+      array (
+        0 => 'Etkin',
       ),
       'View' => 
       array (
@@ -3919,6 +3670,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Cued On' => 
       array (
         0 => 'Bağla',
+      ),
+      'Source' => 
+      array (
+        0 => 'Kaynak',
       ),
       'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
@@ -4176,10 +3931,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '"%s" web kancasını silmek istediğinizden emin misiniz?',
       ),
-      'The page you requested was not found.' => 
-      array (
-        0 => 'Aradığınız sayfa bulunamadı!',
-      ),
       'Select...' => 
       array (
         0 => 'Seç...',
@@ -4187,6 +3938,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'No results found!' => 
       array (
         0 => 'Sonuç bulunamadı!',
+      ),
+      'Advanced' => 
+      array (
+        0 => 'Gelişmiş',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

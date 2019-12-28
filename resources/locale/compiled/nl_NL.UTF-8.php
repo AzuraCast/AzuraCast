@@ -9,16 +9,15 @@
       array (
         0 => 'Project-Id-Version: azuracast
 Report-Msgid-Bugs-To: 
-Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)
+Last-Translator: 
 Language-Team: Dutch
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-09-10T23:21:55+00:00
-PO-Revision-Date: 2019-11-23 21:50
+POT-Creation-Date: 2019-11-23T21:40:24+00:00
+PO-Revision-Date: 2019-12-28 17:56
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
-X-Generator: crowdin.com
 X-Crowdin-Project: azuracast
 X-Crowdin-Language: nl
 X-Crowdin-File: /master/resources/locale/default.pot
@@ -227,6 +226,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Installing Data Fixtures' => 
       array (
         0 => 'Data Fixtures installeren',
+      ),
+      'Reload System Data' => 
+      array (
+        0 => '',
       ),
       'Refreshing All Stations' => 
       array (
@@ -452,6 +455,54 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Je kunt jezelf niet verwijderen.',
       ),
+      'Path "%s" is not a folder.' => 
+      array (
+        0 => 'Pad "%s" is geen map.',
+      ),
+      'Could not move "%s" to "%s"' => 
+      array (
+        0 => 'Kan "%s" niet verplaatsen naar "%s"',
+      ),
+      'Directory' => 
+      array (
+        0 => 'Map',
+      ),
+      'File Not Processed' => 
+      array (
+        0 => 'Bestand niet verwerkt',
+      ),
+      'File not specified.' => 
+      array (
+        0 => '',
+      ),
+      'New path not specified.' => 
+      array (
+        0 => '',
+      ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Dit station gebruikt teveel opslagruimte.',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => 'Afspeellijst niet gevonden.',
+      ),
+      'This playlist is not a sequential playlist.' => 
+      array (
+        0 => 'Deze afspeellijst is geen opeenvolgende afspeellijst.',
+      ),
+      'Format not found.' => 
+      array (
+        0 => 'Formaat niet gevonden.',
+      ),
+      'Playlist enabled.' => 
+      array (
+        0 => 'Afspeellijst ingeschakeld.',
+      ),
+      'Playlist disabled.' => 
+      array (
+        0 => 'Afspeellijst uitgeschakeld.',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Dit station accepteert momenteel geen verzoeken.',
@@ -528,6 +579,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Aantal luisteraars',
       ),
+      'Two-factor authentication disabled.' => 
+      array (
+        0 => 'Tweestapsverificatie uitgeschakeld.',
+      ),
       'Profile saved!' => 
       array (
         0 => 'Profiel opgeslagen!',
@@ -543,10 +598,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Two-factor authentication enabled.' => 
       array (
         0 => 'Tweestapsverificatie ingeschakeld.',
-      ),
-      'Two-factor authentication disabled.' => 
-      array (
-        0 => 'Tweestapsverificatie uitgeschakeld.',
       ),
       'Song Title' => 
       array (
@@ -580,46 +631,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Fout bij automatisch toewijzen',
       ),
-      'Path "%s" is not a folder.' => 
-      array (
-        0 => 'Pad "%s" is geen map.',
-      ),
-      'Could not move "%s" to "%s"' => 
-      array (
-        0 => 'Kan "%s" niet verplaatsen naar "%s"',
-      ),
-      'Media not found.' => 
-      array (
-        0 => 'Media niet gevonden.',
-      ),
-      'Media updated.' => 
-      array (
-        0 => 'Media bijgewerkt.',
-      ),
-      'Edit Media' => 
-      array (
-        0 => 'Wijzig media',
-      ),
-      'File renamed!' => 
-      array (
-        0 => 'Bestand hernoemd!',
-      ),
-      'Rename File/Directory' => 
-      array (
-        0 => 'Wijzig bestand/map',
-      ),
-      'This station is out of available storage space.' => 
-      array (
-        0 => 'Dit station gebruikt teveel opslagruimte.',
-      ),
-      'Directory' => 
-      array (
-        0 => 'Map',
-      ),
-      'File Not Processed' => 
-      array (
-        0 => 'Bestand niet verwerkt',
-      ),
       'This feature is not currently supported on this station.' => 
       array (
         0 => 'Deze functionaliteit is momenteel niet ondersteund op dit station.',
@@ -635,46 +646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Mount Point deleted.' => 
       array (
         0 => 'Mount point verwijderd.',
-      ),
-      'Playlist not found.' => 
-      array (
-        0 => 'Afspeellijst niet gevonden.',
-      ),
-      'This playlist is not a sequential playlist.' => 
-      array (
-        0 => 'Deze afspeellijst is geen opeenvolgende afspeellijst.',
-      ),
-      'Format not found.' => 
-      array (
-        0 => 'Formaat niet gevonden.',
-      ),
-      'Playlist enabled.' => 
-      array (
-        0 => 'Afspeellijst ingeschakeld.',
-      ),
-      'Playlist disabled.' => 
-      array (
-        0 => 'Afspeellijst uitgeschakeld.',
-      ),
-      'Playlist updated.' => 
-      array (
-        0 => 'Afspeellijst bijgewerkt.',
-      ),
-      'Playlist added.' => 
-      array (
-        0 => 'Afspeellijst toegevoegd.',
-      ),
-      'Edit Playlist' => 
-      array (
-        0 => 'Wijzig afspeellijst',
-      ),
-      'Add Playlist' => 
-      array (
-        0 => 'Afspeellijst toevoegen',
-      ),
-      'Playlist deleted.' => 
-      array (
-        0 => 'Afspeellijst verwijderd.',
       ),
       'Remote Relay updated.' => 
       array (
@@ -1240,6 +1211,406 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Geef optioneel een API-vriendelijke naam op, zoals <code>veld_naam</code>. Laat dit veld leeg om er automatisch een te maken op basis van de naam.',
       ),
+      'Automatically Set from ID3v2 Value' => 
+      array (
+        0 => '',
+      ),
+      'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
+      array (
+        0 => '',
+      ),
+      'Disable' => 
+      array (
+        0 => 'Schakel uit',
+      ),
+      'Album' => 
+      array (
+        0 => 'Album',
+      ),
+      'Album Artist Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Album Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Artist' => 
+      array (
+        0 => 'Artiest',
+      ),
+      'Attached Picture' => 
+      array (
+        0 => '',
+      ),
+      'Audio Encryption' => 
+      array (
+        0 => '',
+      ),
+      'Audio Seek Point Index' => 
+      array (
+        0 => '',
+      ),
+      'Band' => 
+      array (
+        0 => '',
+      ),
+      'Bpm' => 
+      array (
+        0 => '',
+      ),
+      'Comment' => 
+      array (
+        0 => '',
+      ),
+      'Commercial Frame' => 
+      array (
+        0 => '',
+      ),
+      'Commercial Information' => 
+      array (
+        0 => '',
+      ),
+      'Composer' => 
+      array (
+        0 => '',
+      ),
+      'Composer Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Conductor' => 
+      array (
+        0 => '',
+      ),
+      'Content Group Description' => 
+      array (
+        0 => '',
+      ),
+      'Copyright' => 
+      array (
+        0 => '',
+      ),
+      'Copyright Message' => 
+      array (
+        0 => '',
+      ),
+      'Date' => 
+      array (
+        0 => '',
+      ),
+      'Encoded By' => 
+      array (
+        0 => '',
+      ),
+      'Encoder Settings' => 
+      array (
+        0 => '',
+      ),
+      'Encoding Time' => 
+      array (
+        0 => '',
+      ),
+      'Encrypted Meta Frame' => 
+      array (
+        0 => '',
+      ),
+      'Encryption Method Registration' => 
+      array (
+        0 => '',
+      ),
+      'Equalisation' => 
+      array (
+        0 => '',
+      ),
+      'Event Timing Codes' => 
+      array (
+        0 => '',
+      ),
+      'Featured Artist' => 
+      array (
+        0 => '',
+      ),
+      'File Owner' => 
+      array (
+        0 => '',
+      ),
+      'File Type' => 
+      array (
+        0 => '',
+      ),
+      'General Encapsulated Object' => 
+      array (
+        0 => '',
+      ),
+      'Genre' => 
+      array (
+        0 => 'Genre',
+      ),
+      'Group Identification Registration' => 
+      array (
+        0 => '',
+      ),
+      'Initial Key' => 
+      array (
+        0 => '',
+      ),
+      'Internet Radio Station Name' => 
+      array (
+        0 => '',
+      ),
+      'Internet Radio Station Owner' => 
+      array (
+        0 => '',
+      ),
+      'Involved People List' => 
+      array (
+        0 => '',
+      ),
+      'ISRC' => 
+      array (
+        0 => 'ISRC',
+      ),
+      'Language' => 
+      array (
+        0 => 'Taal',
+      ),
+      'Length' => 
+      array (
+        0 => 'Lengte',
+      ),
+      'Linked Information' => 
+      array (
+        0 => '',
+      ),
+      'Lyricist' => 
+      array (
+        0 => '',
+      ),
+      'Media Type' => 
+      array (
+        0 => '',
+      ),
+      'Mood' => 
+      array (
+        0 => '',
+      ),
+      'MPEG Location Lookup Table' => 
+      array (
+        0 => '',
+      ),
+      'Music CD Identifier' => 
+      array (
+        0 => '',
+      ),
+      'Musician Credits List' => 
+      array (
+        0 => '',
+      ),
+      'Original Album' => 
+      array (
+        0 => '',
+      ),
+      'Original Artist' => 
+      array (
+        0 => '',
+      ),
+      'Original Filename' => 
+      array (
+        0 => '',
+      ),
+      'Original Lyricist' => 
+      array (
+        0 => '',
+      ),
+      'Original Release Time' => 
+      array (
+        0 => '',
+      ),
+      'Original Year' => 
+      array (
+        0 => '',
+      ),
+      'Ownership Frame' => 
+      array (
+        0 => '',
+      ),
+      'Part Of A Compilation' => 
+      array (
+        0 => '',
+      ),
+      'Part Of A Set' => 
+      array (
+        0 => '',
+      ),
+      'Performer Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Play Counter' => 
+      array (
+        0 => '',
+      ),
+      'Playlist Delay' => 
+      array (
+        0 => '',
+      ),
+      'Popularimeter' => 
+      array (
+        0 => '',
+      ),
+      'Position Synchronisation Frame' => 
+      array (
+        0 => '',
+      ),
+      'Private Frame' => 
+      array (
+        0 => '',
+      ),
+      'Produced Notice' => 
+      array (
+        0 => '',
+      ),
+      'Publisher' => 
+      array (
+        0 => '',
+      ),
+      'Recommended Buffer Size' => 
+      array (
+        0 => '',
+      ),
+      'Recording Dates' => 
+      array (
+        0 => '',
+      ),
+      'Recording Studio' => 
+      array (
+        0 => '',
+      ),
+      'Recording Time' => 
+      array (
+        0 => '',
+      ),
+      'Relative Volume Adjustment' => 
+      array (
+        0 => '',
+      ),
+      'Release Time' => 
+      array (
+        0 => '',
+      ),
+      'Remixer' => 
+      array (
+        0 => '',
+      ),
+      'ReplayGain Adjustment' => 
+      array (
+        0 => '',
+      ),
+      'Reverb' => 
+      array (
+        0 => '',
+      ),
+      'Seek Frame' => 
+      array (
+        0 => '',
+      ),
+      'Set Subtitle' => 
+      array (
+        0 => '',
+      ),
+      'Signature Frame' => 
+      array (
+        0 => '',
+      ),
+      'Size' => 
+      array (
+        0 => 'Grootte',
+      ),
+      'Subtitle' => 
+      array (
+        0 => '',
+      ),
+      'Synced Tempo Codes' => 
+      array (
+        0 => '',
+      ),
+      'Synchronised Lyric' => 
+      array (
+        0 => '',
+      ),
+      'Synchronised Tempo Codes' => 
+      array (
+        0 => '',
+      ),
+      'Tagging Time' => 
+      array (
+        0 => '',
+      ),
+      'Terms Of Use' => 
+      array (
+        0 => '',
+      ),
+      'Text' => 
+      array (
+        0 => '',
+      ),
+      'Time' => 
+      array (
+        0 => '',
+      ),
+      'Title' => 
+      array (
+        0 => 'Titel',
+      ),
+      'Title Sort Order' => 
+      array (
+        0 => '',
+      ),
+      'Track Number' => 
+      array (
+        0 => '',
+      ),
+      'Unique File Identifier' => 
+      array (
+        0 => '',
+      ),
+      'Unsynchronised Lyric' => 
+      array (
+        0 => '',
+      ),
+      'URL Artist' => 
+      array (
+        0 => '',
+      ),
+      'URL File' => 
+      array (
+        0 => '',
+      ),
+      'URL Payment' => 
+      array (
+        0 => '',
+      ),
+      'URL Publisher' => 
+      array (
+        0 => '',
+      ),
+      'URL Source' => 
+      array (
+        0 => '',
+      ),
+      'URL Station' => 
+      array (
+        0 => '',
+      ),
+      'URL User' => 
+      array (
+        0 => '',
+      ),
+      'Year' => 
+      array (
+        0 => '',
+      ),
       'Important Notes' => 
       array (
         0 => 'Belangrijke notities',
@@ -1275,90 +1646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Log in' => 
       array (
         0 => 'Inloggen',
-      ),
-      'File Name' => 
-      array (
-        0 => 'Bestandsnaam',
-      ),
-      'The relative path of the file in the station\'s media directory.' => 
-      array (
-        0 => 'Het relatieve pad naar het bestand in de media map van het station.',
-      ),
-      'Song Album' => 
-      array (
-        0 => 'Album',
-      ),
-      'Song Lyrics' => 
-      array (
-        0 => 'Songtekst van nummer',
-      ),
-      'Replace Album Cover Art' => 
-      array (
-        0 => 'Vervang albumhoes',
-      ),
-      'ISRC' => 
-      array (
-        0 => 'ISRC',
-      ),
-      'International Standard Recording Code, used for licensing reports.' => 
-      array (
-        0 => 'International Standard Recording Code, wordt gebruikt voor licentierapporten.',
-      ),
-      'Custom Fields' => 
-      array (
-        0 => 'Aangepaste velden',
-      ),
-      'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
-      array (
-        0 => 'Beheerders kunnen de velden aanpassen die hier verschijnen via de <a href="%s">beheerpagina</a>.',
-      ),
-      'Control Song Playback' => 
-      array (
-        0 => 'Beheer het spelen van nummers',
-      ),
-      'Song Length (seconds)' => 
-      array (
-        0 => 'Lengte van nummer (seconden)',
-      ),
-      'Custom Fading: Overlap Time (seconds)' => 
-      array (
-        0 => 'Aangepaste overgang: Overlap tijd (in seconden)',
-      ),
-      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
-      array (
-        0 => 'De tijd dat dit nummer dient te overlappen met de nummers rondom bij het faden. Laat leeg om de standaard-waarde te gebruiken.',
-      ),
-      'Custom Fading: Fade-In Time (seconds)' => 
-      array (
-        0 => 'Aangepaste overgang: fade-in tijd (seconden)',
-      ),
-      'The time period that the song should fade in. Leave blank to use the system default.' => 
-      array (
-        0 => 'De periode waarin het nummer moet infaden. Leeg laten om de systeemstandaard te gebruiken.',
-      ),
-      'Custom Fading: Fade-Out Time (seconds)' => 
-      array (
-        0 => 'Aangepaste overgang: fade-out tijd (seconden)',
-      ),
-      'The time period that the song should fade out. Leave blank to use the system default.' => 
-      array (
-        0 => 'De periode waarin het nummer moet uitfaden. Leeg laten om de systeemstandaard te gebruiken.',
-      ),
-      'Custom Cues: Cue-In Point (seconds)' => 
-      array (
-        0 => 'Aangepaste Cues: Cue-In punt (seconden)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should start playing.' => 
-      array (
-        0 => 'Aantal seconden vanaf de start van het nummer waarop de AutoDJ moet beginnen met spelen.',
-      ),
-      'Custom Cues: Cue-Out Point (seconds)' => 
-      array (
-        0 => 'Aangepaste Cues: Cue-In punt (seconden)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
-      array (
-        0 => 'Aantal seconden vanaf de start van het nummer waarop de AutoDJ moet stoppen met spelen.',
       ),
       'Mount Point URL' => 
       array (
@@ -1460,262 +1747,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Indien u uw stream wilt toevoegen aan de YP directories, dien je een autorisatie hash op te geven. Je kunt een autorisatie hash registreren via <a href="%s" target="_blank">de SHOUTcast website</a>.',
       ),
-      'Basic Information' => 
-      array (
-        0 => 'Basisinformatie',
-      ),
-      'Source' => 
-      array (
-        0 => 'Bron',
-      ),
-      'Scheduling' => 
-      array (
-        0 => 'Planning',
-      ),
-      'Enable Playlist' => 
-      array (
-        0 => 'Activeer afspeellijst',
-      ),
-      'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
-      array (
-        0 => 'Wanneer niet aangevinkt, zal de afspeellijst niet worden afgespeeld op de radio. De afspeellijst kan nog steeds worden beheert.',
-      ),
-      'Playlist Name' => 
-      array (
-        0 => 'Naam van afspeellijst',
-      ),
-      'Playlist Weight' => 
-      array (
-        0 => 'Gewicht van afspeellijst',
-      ),
-      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
-      array (
-        0 => 'Afspeellijsten met een hoger gewicht worden vaker afgespeeld dan afspeellijsten met een lager gewicht.',
-      ),
-      'Low' => 
-      array (
-        0 => 'Laag',
-      ),
-      'High' => 
-      array (
-        0 => 'Hoog',
-      ),
-      'Song-Based Playlist' => 
-      array (
-        0 => 'Op nummer gebaseerde afspeellijst',
-      ),
-      'A playlist containing media files hosted on this server.' => 
-      array (
-        0 => 'Een afspeellijst met mediabestanden die op deze server worden gehost.',
-      ),
-      'Remote URL Playlist' => 
-      array (
-        0 => 'Afspeellijst vanaf externe URL',
-      ),
-      'A playlist that instructs the station to play from a remote URL.' => 
-      array (
-        0 => 'Een afspeellijst, opgehaald vanaf een externe URL, waarin staat welke nummers in welke volgorde afgespeeld moeten worden.',
-      ),
-      'Song Playback Order' => 
-      array (
-        0 => 'Volgorde van afspelen',
-      ),
-      'Shuffled' => 
-      array (
-        0 => 'Gemixt',
-      ),
-      'Random' => 
-      array (
-        0 => 'Willekeurig',
-      ),
-      'Sequential' => 
-      array (
-        0 => 'Opeenvolgend',
-      ),
-      'Import Existing Playlist' => 
-      array (
-        0 => 'Importeer bestaande afspeellijst',
-      ),
-      'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
-      array (
-        0 => 'Selecteer een bestaand afspeellijst bestand om de inhoud ervan toe te voegen aan deze afspeellijst. PLS en M3U bestanden worden ondersteund.',
-      ),
-      'Allow Requests from This Playlist' => 
-      array (
-        0 => 'Sta requests toe voor deze playlist',
-      ),
-      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
-      array (
-        0 => 'Als requests zijn ingeschakeld voor uw station zullen luisteraars de mogelijkheid hebben om nummers binnen deze afspeellijst aan te vragen.',
-      ),
-      'Hide Metadata from Listeners ("Jingle Mode")' => 
-      array (
-        0 => 'Metadata verbergen voor luisteraars ("Jingle modus")',
-      ),
-      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
-      array (
-        0 => 'Schakel deze instelling in om te voorkomen dat metadata naar de AutoDJ wordt verzonden voor bestanden binnen deze afspeellijst. Dit is handig wanneer de afspeellijst jingles of reclames bevat.',
-      ),
-      'Remote URL' => 
-      array (
-        0 => 'Externe URL',
-      ),
-      'Remote URL Type' => 
-      array (
-        0 => 'Externe URL type',
-      ),
-      'Direct Stream URL' => 
-      array (
-        0 => 'Directe stream URL',
-      ),
-      'Playlist (M3U/PLS) URL' => 
-      array (
-        0 => 'Afspeellijst (M3U/PLS) URL',
-      ),
-      'Remote Playback Buffer (Seconds)' => 
-      array (
-        0 => 'Externe afspeelbuffer (seconden)',
-      ),
-      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
-      array (
-        0 => 'De lengte van afspeeltijd dat Liquidsoap moet bufferen wanneer deze externe playlist wordt afgespeeld. Te korte buffers kunnen lijden tot onderbrekingen en instabiele verbindingen. ',
-      ),
-      'General Rotation' => 
-      array (
-        0 => 'Algemene rotatie',
-      ),
-      'Plays all day, shuffles with other standard playlists based on weight.' => 
-      array (
-        0 => 'Speelt de hele dag, samen met andere afspeellijsten in een willekeurige volgorde, op basis van het gewicht van de afspeellijst.',
-      ),
-      'Scheduled' => 
-      array (
-        0 => 'Gepland',
-      ),
-      'Play during a scheduled time range.' => 
-      array (
-        0 => 'Speel tijdens een geplande tijdsperiode.',
-      ),
-      'Once per x Songs' => 
-      array (
-        0 => 'Eenmaal per x nummers',
-      ),
-      'Play exactly once every <i>x</i> songs.' => 
-      array (
-        0 => 'Speel precies eenmaal elke <i>x</i> nummers.',
-      ),
-      'Once Per x Minutes' => 
-      array (
-        0 => 'Eenmaal per x minuten',
-      ),
-      'Play exactly once every <i>x</i> minutes.' => 
-      array (
-        0 => 'Speel precies één keer per <i>x</i> minuten.',
-      ),
-      'Once per Hour' => 
-      array (
-        0 => 'Eenmaal per uur',
-      ),
-      'Play once per hour at the specified minute.' => 
-      array (
-        0 => 'Speel één keer per uur op de opgegeven minuut.',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Geavanceerd',
-      ),
-      'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
-      array (
-        0 => 'Handmatig definiëren hoe deze afspeellijst wordt gebruikt in de Liquidsoap configuratie. <a href="%s" target="_blank">Lees meer over geavanceerde afspeellijsten</a>',
-      ),
-      'AutoDJ Scheduling Options' => 
-      array (
-        0 => 'AutoDJ planning opties',
-      ),
-      'Control how this playlist is handled by the AutoDJ software.' => 
-      array (
-        0 => 'Bepaal hoe deze afspeellijst wordt behandeld door de AutoDJ software.',
-      ),
-      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
-      array (
-        0 => '<b>Waarschuwing:</b> Deze functies zijn onderdeel van Liquidsoap en hebben invloed op de werking van uw AutoDJ.',
-      ),
-      'Interrupt other songs to play at scheduled time.' => 
-      array (
-        0 => 'Onderbreek andere nummers om af te spelen op de ingestelde tijd.',
-      ),
-      'Only loop through playlist once.' => 
-      array (
-        0 => 'Eenmalig door playlist lopen.',
-      ),
-      'Only play one track at scheduled time.' => 
-      array (
-        0 => 'Slechts één track afspelen op geplande tijd.',
-      ),
-      'Merge playlist to play as a single track.' => 
-      array (
-        0 => 'Voeg afspeellijst samen om af te spelen als één nummer.',
-      ),
-      'Include in Automated Assignment' => 
-      array (
-        0 => 'Automatische toewijzing inschakelen',
-      ),
-      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
-      array (
-        0 => 'Wanneer automatische toewijzig is ingeschakeld, gebruik dan deze afspeellijst als een bron van herverdeelbare nummers. Hiermee wordt de bestaande inhoud van deze afspeellijst overschreven.',
-      ),
-      'Start Time' => 
-      array (
-        0 => 'Starttijd',
-      ),
-      'To play once per day, set the start and end times to the same value.' => 
-      array (
-        0 => 'Stel de start- en eindtijd in op dezelfde waarde om één keer per dag te spelen.',
-      ),
-      'End Time' => 
-      array (
-        0 => 'Eindtijd',
-      ),
-      'If the end time is before the start time, the playlist will play overnight.' => 
-      array (
-        0 => 'Als de eindtijd voor de begintijd is, zal de afspeellijst van de ene op de andere dag afspelen.',
-      ),
-      'Station Time Zone' => 
-      array (
-        0 => 'Station tijdzone',
-      ),
-      'Scheduled Play Days of Week' => 
-      array (
-        0 => 'Geplande speeldagen van de week',
-      ),
-      'Leave blank to play on every day of the week.' => 
-      array (
-        0 => 'Laat leeg om elke dag van de week te spelen.',
-      ),
-      'Number of Songs Between Plays' => 
-      array (
-        0 => 'Aantal nummers tussen spelen',
-      ),
-      'This playlist will play every $x songs, where $x is specified below.' => 
-      array (
-        0 => 'Deze afspeellijst zal om $x nummers worden afgespeeld, waar $x hieronder is opgegeven.',
-      ),
-      'Number of Minutes Between Plays' => 
-      array (
-        0 => 'Aantal minuten tussen spelen',
-      ),
-      'This playlist will play every $x minutes, where $x is specified below.' => 
-      array (
-        0 => 'Deze afspeellijst zal elke $x minuten spelen, waar $x hieronder is opgegeven.',
-      ),
-      'Minute of Hour to Play' => 
-      array (
-        0 => 'Minuten van het uur om te spelen',
-      ),
-      'Specify the minute of every hour that this playlist should play.' => 
-      array (
-        0 => 'Geef de minuut van elk uur op dat deze afspeellijst moet spelen.',
-      ),
       'Use Browser Default' => 
       array (
         0 => 'Gebruik standaard browser',
@@ -1747,10 +1778,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Customization' => 
       array (
         0 => 'Aanpassen',
-      ),
-      'Language' => 
-      array (
-        0 => 'Taal',
       ),
       'Site Theme' => 
       array (
@@ -2059,10 +2086,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Description' => 
       array (
         0 => 'Omschrijving',
-      ),
-      'Genre' => 
-      array (
-        0 => 'Genre',
       ),
       'Web Site URL' => 
       array (
@@ -2456,10 +2479,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Nu aan het spelen op %s:',
       ),
-      'Title' => 
-      array (
-        0 => 'Titel',
-      ),
       'URL' => 
       array (
         0 => 'URL',
@@ -2676,6 +2695,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Stations' => 
       array (
         0 => 'Stations',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Aangepaste velden',
       ),
       'Connected AzuraRelays' => 
       array (
@@ -2965,10 +2988,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Laatst gewijzigd',
       ),
-      'Size' => 
-      array (
-        0 => 'Grootte',
-      ),
       'Download' => 
       array (
         0 => 'Download',
@@ -3254,109 +3273,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Twee-factor inschakelen',
       ),
-      'Microphone' => 
-      array (
-        0 => 'Microfoon',
-      ),
-      'Settings' => 
-      array (
-        0 => 'Instellingen',
-      ),
-      'Mixer' => 
-      array (
-        0 => 'Mixer',
-      ),
-      'Playlist 1' => 
-      array (
-        0 => 'Afspeellijst 1',
-      ),
-      'Playlist 2' => 
-      array (
-        0 => 'Afspeellijst 2',
-      ),
-      'Encoder' => 
-      array (
-        0 => 'Encoder',
-      ),
-      'MP3' => 
-      array (
-        0 => 'MP3',
-      ),
-      'Raw' => 
-      array (
-        0 => 'Raw',
-      ),
-      'Sample Rate' => 
-      array (
-        0 => 'Sample snelheid',
-      ),
-      'Bit Rate' => 
-      array (
-        0 => 'Bitrate',
-      ),
-      'DJ Credentials' => 
-      array (
-        0 => 'DJ inloggegevens',
-      ),
-      'Username' => 
-      array (
-        0 => 'Gebruikersnaam',
-      ),
-      'Use Asynchronous Worker' => 
-      array (
-        0 => 'Gebruik asynchrone streamer',
-      ),
-      'Artist' => 
-      array (
-        0 => 'Artiest',
-      ),
-      'Continuous Play' => 
-      array (
-        0 => 'Continu spelen',
-      ),
-      'Repeat Playlist' => 
-      array (
-        0 => 'Herhaal afspeellijst',
-      ),
-      'Microphone Source' => 
-      array (
-        0 => 'Microfoon bron',
-      ),
-      'Start Streaming' => 
-      array (
-        0 => 'Start streamen',
-      ),
-      'Stop Streaming' => 
-      array (
-        0 => 'Stoppen met streamen',
-      ),
-      'Cue' => 
-      array (
-        0 => 'Cue',
-      ),
-      'Update Metadata' => 
-      array (
-        0 => 'Metadata bijwerken',
-      ),
-      'Add Files to Playlist' => 
-      array (
-        0 => 'Bestanden toevoegen aan afspeellijst',
-      ),
-      'Unknown Title' => 
-      array (
-        0 => 'Onbekende titel',
-      ),
-      'Unknown Artist' => 
-      array (
-        0 => 'Onbekende artiest',
-      ),
       'Request' => 
       array (
         0 => 'Aanvragen',
-      ),
-      'Album' => 
-      array (
-        0 => 'Album',
       ),
       'Song History' => 
       array (
@@ -3373,34 +3292,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Request a Song' => 
       array (
         0 => 'Vraag een nummer aan',
-      ),
-      'Live' => 
-      array (
-        0 => 'Live',
-      ),
-      'Play' => 
-      array (
-        0 => 'Speel',
-      ),
-      'Pause' => 
-      array (
-        0 => 'Pauzeer',
-      ),
-      'Mute' => 
-      array (
-        0 => 'Geluid dempen',
-      ),
-      'Volume' => 
-      array (
-        0 => 'Volume',
-      ),
-      'Full Volume' => 
-      array (
-        0 => 'Volledige volume',
-      ),
-      'Album Art' => 
-      array (
-        0 => 'Albumhoes',
       ),
       'AzuraCast First-Time Setup' => 
       array (
@@ -3506,6 +3397,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Scroll automatisch naar de onderkant van het logboek',
       ),
+      'Pause' => 
+      array (
+        0 => 'Pauzeer',
+      ),
+      'Play' => 
+      array (
+        0 => 'Speel',
+      ),
       'Automated Playlist Assignment' => 
       array (
         0 => 'Automatische toewijzing van afspeellijsten',
@@ -3526,38 +3425,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Configureer automatische toewijzing',
       ),
-      'Delete {NUM} media file(s)?' => 
-      array (
-        0 => 'Verwijder {NUM} mediabestand(en)?',
-      ),
-      'Files removed:' => 
-      array (
-        0 => 'Bestanden verwijderd:',
-      ),
-      'Playlists updated for selected files:' => 
-      array (
-        0 => 'Afspeellijsten bijgewerkt voor geselecteerde bestanden:',
-      ),
-      'Playlists cleared for selected files:' => 
-      array (
-        0 => 'Afspeellijsten geleegd voor geselecteerde bestanden:',
-      ),
-      'Album Artwork' => 
-      array (
-        0 => 'Albumhoes',
-      ),
-      'Rename' => 
-      array (
-        0 => 'Hernoemen',
-      ),
-      'Select' => 
-      array (
-        0 => 'Selecteer',
-      ),
-      'Home' => 
-      array (
-        0 => 'Home',
-      ),
       '%s of %s Used (%d Files)' => 
       array (
         0 => '%s van %s gebruikt (%d bestanden)',
@@ -3569,62 +3436,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'View connection instructions' => 
       array (
         0 => 'Bekijk verbindingsinstructies',
-      ),
-      'Drag files here to upload to this folder or ' => 
-      array (
-        0 => 'Plaats bestanden hier om te uploaden naar deze map of ',
-      ),
-      'Set Playlists' => 
-      array (
-        0 => 'Afspeellijsten instellen',
-      ),
-      'New Playlist' => 
-      array (
-        0 => 'Nieuwe afspeellijst',
-      ),
-      'Save' => 
-      array (
-        0 => 'Opslaan',
-      ),
-      'Clear Playlists' => 
-      array (
-        0 => 'Afspeellijsten legen',
-      ),
-      'Move' => 
-      array (
-        0 => 'Verplaats',
-      ),
-      'New Folder' => 
-      array (
-        0 => 'Nieuwe map',
-      ),
-      'Length' => 
-      array (
-        0 => 'Lengte',
-      ),
-      'Modified' => 
-      array (
-        0 => 'Gewijzigd',
-      ),
-      'New Directory' => 
-      array (
-        0 => 'Nieuwe map',
-      ),
-      'Directory Name' => 
-      array (
-        0 => 'Mapnaam',
-      ),
-      'Create Directory' => 
-      array (
-        0 => 'Maak map',
-      ),
-      'Move {{ selected_files }} File(s) to' => 
-      array (
-        0 => 'Verplaats {{ selected_files }} bestand(en) naar',
-      ),
-      'Back' => 
-      array (
-        0 => 'Terug',
       ),
       'FTP Connection Information' => 
       array (
@@ -3654,6 +3465,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Niet-versleutelde FTP is ook toegestaan, maar niet aanbevolen.',
       ),
+      'Username' => 
+      array (
+        0 => 'Gebruikersnaam',
+      ),
       'Your AzuraCast E-mail Address' => 
       array (
         0 => 'Uw AzuraCast e-mailadres',
@@ -3681,82 +3496,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Default Mount' => 
       array (
         0 => 'Standaard mount point',
-      ),
-      'All Playlists' => 
-      array (
-        0 => 'Alle afspeellijsten',
-      ),
-      'Schedule View' => 
-      array (
-        0 => 'Planningsweergave',
-      ),
-      '# Songs' => 
-      array (
-        0 => '# nummers',
-      ),
-      'Delete playlist "%s"?' => 
-      array (
-        0 => 'Verwijder afspeellijst "%s"?',
-      ),
-      'More' => 
-      array (
-        0 => 'Meer',
-      ),
-      'Disable' => 
-      array (
-        0 => 'Schakel uit',
-      ),
-      'Enable' => 
-      array (
-        0 => 'Schakel in',
-      ),
-      'Reorder' => 
-      array (
-        0 => 'Herschikken',
-      ),
-      'Export %s' => 
-      array (
-        0 => 'Exporteer %s',
-      ),
-      'Song-based' => 
-      array (
-        0 => 'Op-nummer-gebaseerd',
-      ),
-      'Jingle Mode' => 
-      array (
-        0 => 'Jingle modus',
-      ),
-      'Auto-Assigned' => 
-      array (
-        0 => 'Automatisch toegewezen',
-      ),
-      'Weight' => 
-      array (
-        0 => 'Gewicht',
-      ),
-      'Plays at %s' => 
-      array (
-        0 => 'Speelt op %s',
-      ),
-      'Plays between %s and %s' => 
-      array (
-        0 => 'Speelt tussen %s and %s',
-      ),
-      'Once per %d Songs' => 
-      array (
-        0 => 'Eens per %d nummers',
-      ),
-      'Once per %d Minutes' => 
-      array (
-        0 => 'Eens in de %d minuten',
-      ),
-      'Once per Hour (at :%02d)' => 
-      array (
-        0 => 'Eenmaal per uur (op:%02d)',
-      ),
-      'Custom' => 
-      array (
-        0 => 'Aangepast',
       ),
       'Reorder Playlist' => 
       array (
@@ -3842,9 +3581,17 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'uniek',
       ),
+      'Album Art' => 
+      array (
+        0 => 'Albumhoes',
+      ),
       'Playing Next' => 
       array (
         0 => 'Speelt hierna',
+      ),
+      'Live' => 
+      array (
+        0 => 'Live',
       ),
       'Skip Song' => 
       array (
@@ -3873,6 +3620,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Enable public pages?' => 
       array (
         0 => 'Openbare pagina\'s inschakelen?',
+      ),
+      'Enable' => 
+      array (
+        0 => 'Schakel in',
       ),
       'View' => 
       array (
@@ -3929,6 +3680,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Cued On' => 
       array (
         0 => 'Gekozen op',
+      ),
+      'Source' => 
+      array (
+        0 => 'Bron',
       ),
       'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
@@ -4186,10 +3941,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Webhook "%s" verwijderen?',
       ),
-      'The page you requested was not found.' => 
-      array (
-        0 => 'De opgevraagde pagina is niet gevonden.',
-      ),
       'Select...' => 
       array (
         0 => 'Selecteer...',
@@ -4197,6 +3948,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'No results found!' => 
       array (
         0 => 'Geen resultaten gevonden!',
+      ),
+      'Advanced' => 
+      array (
+        0 => 'Geavanceerd',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

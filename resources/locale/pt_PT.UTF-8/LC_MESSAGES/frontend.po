@@ -5,14 +5,12 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Project-Id-Version: azuracast\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: azuracast\n"
 "X-Crowdin-Language: pt-PT\n"
 "X-Crowdin-File: /master/resources/locale/frontend.pot\n"
-"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
-"PO-Revision-Date: 2019-11-23 21:50\n"
+"PO-Revision-Date: 2019-12-28 17:56\n"
 
 #: ./vue/StationMedia.vue:146
 msgid "Actions"
@@ -20,7 +18,7 @@ msgstr ""
 
 #: ./vue/webcaster/playlist.vue:56
 msgid "Add Files to Playlist"
-msgstr ""
+msgstr "Adicionar Ficheiros à Lista de Reprodução"
 
 #: ./vue/StationMedia.vue:128
 msgid "Album"
@@ -38,30 +36,30 @@ msgstr ""
 
 #: ./vue/station_media/MoveFilesModal.vue:6
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #: ./vue/station_media/MediaToolbar.vue:11
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Limpar Listas de Reprodução"
 
 #: ./vue/station_media/MoveFilesModal.vue:33
 #: ./vue/station_media/NewDirectoryModal.vue:9
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: ./vue/webcaster/playlist.vue:66
 msgid "Continuous Play"
-msgstr ""
+msgstr "Reprodução Contínua"
 
 #: ./vue/station_media/NewDirectoryModal.vue:12
 msgid "Create Directory"
-msgstr ""
+msgstr "Criar Directório"
 
 #: ./vue/webcaster/microphone.vue:17
 #: ./vue/webcaster/playlist.vue:23
 #: ./vue/webcaster/settings.vue:139
 msgid "Cue"
-msgstr ""
+msgstr "Cue"
 
 #: ./vue/station_media/MediaToolbar.vue:52
 #: ./vue/station_media/MediaToolbar.vue:111
@@ -70,7 +68,7 @@ msgstr ""
 
 #: ./vue/station_media/MediaToolbar.vue:112
 msgid "Delete %{ num } media file(s)?"
-msgstr ""
+msgstr "Eliminar %{ num } ficheiro(s) multimédia?"
 
 #: ./vue/StationMedia.vue:47
 #: ./vue/station_media/MoveFilesModal.vue:62
@@ -79,15 +77,15 @@ msgstr "Diretório"
 
 #: ./vue/station_media/NewDirectoryModal.vue:4
 msgid "Directory Name:"
-msgstr ""
+msgstr "Nome do Directório:"
 
 #: ./vue/webcaster/settings.vue:83
 msgid "DJ Credentials"
-msgstr ""
+msgstr "Credenciais do DJ"
 
 #: ./vue/station_media/FileUpload.vue:16
 msgid "Drag files here to upload to this folder or"
-msgstr ""
+msgstr "Arraste ficheiros aqui para fazer upload para esta pasta ou"
 
 #: ./vue/StationMedia.vue:68
 msgid "Edit"
@@ -95,23 +93,23 @@ msgstr ""
 
 #: ./vue/webcaster/settings.vue:27
 msgid "Encoder"
-msgstr ""
+msgstr "Codificador"
 
 #: ./vue/station_media/MediaToolbar.vue:108
 msgid "Files queued for playback:"
-msgstr ""
+msgstr "Ficheiros na fila para reprodução:"
 
 #: ./vue/station_media/MediaToolbar.vue:120
 msgid "Files removed:"
-msgstr ""
+msgstr "Ficheiros removidos:"
 
 #: ./vue/RadioPlayer.vue:336
 msgid "Full Volume"
-msgstr ""
+msgstr "Volume Máximo"
 
 #: ./vue/station_media/Breadcrumb.vue:2
 msgid "Home"
-msgstr ""
+msgstr "Página Inicial"
 
 #: ./vue/StationMedia.vue:129
 msgid "Length"
@@ -127,39 +125,39 @@ msgstr "Metadados"
 
 #: ./vue/webcaster/microphone.vue:4
 msgid "Microphone"
-msgstr ""
+msgstr "Microfone"
 
 #: ./vue/webcaster/microphone.vue:33
 msgid "Microphone Source"
-msgstr ""
+msgstr "Fonte do Microfone"
 
 #: ./vue/webcaster/mixer.vue:3
 msgid "Mixer"
-msgstr ""
+msgstr "Misturador"
 
 #: ./vue/StationMedia.vue:134
 msgid "Modified"
-msgstr ""
+msgstr "Modificado"
 
 #: ./vue/station_media/MediaToolbar.vue:48
 msgid "Move"
-msgstr ""
+msgstr "Mover"
 
 #: ./vue/station_media/MoveFilesModal.vue:68
 msgid "Move %{ num } File(s) to"
-msgstr ""
+msgstr "Mover %{ num } Ficheiro(s) para"
 
 #: ./vue/station_media/MoveFilesModal.vue:36
 msgid "Move to Directory"
-msgstr ""
+msgstr "Mover para Directório"
 
 #: ./vue/webcaster/settings.vue:32
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: ./vue/RadioPlayer.vue:330
 msgid "Mute"
-msgstr ""
+msgstr "Mudo"
 
 #: ./vue/StationMedia.vue:125
 msgid "Name"
@@ -167,15 +165,15 @@ msgstr "Nome"
 
 #: ./vue/station_media/NewDirectoryModal.vue:36
 msgid "New Directory"
-msgstr ""
+msgstr "Novo Directório"
 
 #: ./vue/station_media/MediaToolbar.vue:58
 msgid "New Folder"
-msgstr ""
+msgstr "Nova Pasta"
 
 #: ./vue/station_media/MediaToolbar.vue:97
 msgid "New Playlist"
-msgstr ""
+msgstr "Nova Playlist"
 
 #: ./vue/webcaster/settings.vue:171
 msgid "Password"
@@ -192,11 +190,11 @@ msgstr ""
 
 #: ./vue/webcaster/playlist.vue:119
 msgid "Playlist 1"
-msgstr ""
+msgstr "Lista de Reprodução 1"
 
 #: ./vue/webcaster/playlist.vue:120
 msgid "Playlist 2"
-msgstr ""
+msgstr "Lista de Reprodução 2"
 
 #: ./vue/StationMedia.vue:145
 #: ./vue/station_media/MediaToolbar.vue:8
@@ -205,52 +203,52 @@ msgstr "Listas de Reprodução"
 
 #: ./vue/station_media/MediaToolbar.vue:158
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Listas de Reprodução limpas para os ficheiros selecionados:"
 
 #: ./vue/station_media/MediaToolbar.vue:157
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Listas de Reprodução atualizadas para os ficheiros selecionados:"
 
 #: ./vue/station_media/MediaToolbar.vue:44
 msgid "Queue"
-msgstr ""
+msgstr "Fila"
 
 #: ./vue/station_media/MediaToolbar.vue:100
 msgid "Queue the selected media to play next"
-msgstr ""
+msgstr "Colocar o ficheiro selecionado na fila para reproduzir de seguida"
 
 #: ./vue/webcaster/settings.vue:37
 msgid "Raw"
-msgstr ""
+msgstr "Raw"
 
 #: ./vue/components/DataTable.vue:135
 msgid "Refresh rows"
-msgstr ""
+msgstr "Atualizar linhas"
 
 #: ./vue/StationMedia.vue:71
 msgid "Rename"
-msgstr ""
+msgstr "Renomear"
 
 #: ./vue/webcaster/playlist.vue:72
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Repetir Lista de Reprodução"
 
 #: ./vue/components/DataTable.vue:138
 msgid "Rows per page"
-msgstr ""
+msgstr "Linhas por página"
 
 #: ./vue/webcaster/settings.vue:42
 #: ./vue/webcaster/settings.vue:58
 msgid "Sample Rate"
-msgstr ""
+msgstr "Frequência de Amostragem"
 
 #: ./vue/station_media/MediaToolbar.vue:38
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: ./vue/components/DataTable.vue:141
 msgid "Select displayed fields"
-msgstr ""
+msgstr "Escolha os campos apresentados"
 
 #: ./vue/station_media/FileUpload.vue:18
 msgid "Select File"
@@ -258,7 +256,7 @@ msgstr "Selecionar Ficheiro"
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"
-msgstr ""
+msgstr "Definir ou limpar listas de reprodução dos ficheiros multimédia selecionados"
 
 #: ./vue/webcaster/settings.vue:10
 msgid "Settings"
@@ -270,11 +268,11 @@ msgstr ""
 
 #: ./vue/webcaster/settings.vue:133
 msgid "Start Streaming"
-msgstr ""
+msgstr "Começar Transmissão"
 
 #: ./vue/webcaster/settings.vue:136
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Parar Transmissão"
 
 #: ./vue/StationMedia.vue:126
 #: ./vue/webcaster/settings.vue:108
@@ -283,19 +281,19 @@ msgstr ""
 
 #: ./vue/webcaster/playlist.vue:126
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Artista Desconhecido"
 
 #: ./vue/webcaster/playlist.vue:123
 msgid "Unknown Title"
-msgstr ""
+msgstr "Título Desconhecido"
 
 #: ./vue/webcaster/settings.vue:122
 msgid "Update Metadata"
-msgstr ""
+msgstr "Atualizar Metadados"
 
 #: ./vue/webcaster/settings.vue:100
 msgid "Use Asynchronous Worker"
-msgstr ""
+msgstr "Usar Trabalhador Assíncrono"
 
 #: ./vue/webcaster/settings.vue:168
 msgid "Username"
@@ -304,5 +302,5 @@ msgstr ""
 #: ./vue/InlinePlayer.vue:72
 #: ./vue/RadioPlayer.vue:333
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 

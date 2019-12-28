@@ -5,14 +5,12 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Project-Id-Version: azuracast\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: azuracast\n"
 "X-Crowdin-Language: pt-BR\n"
 "X-Crowdin-File: /master/resources/locale/frontend.pot\n"
-"Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
-"PO-Revision-Date: 2019-11-23 21:50\n"
+"PO-Revision-Date: 2019-12-28 17:56\n"
 
 #: ./vue/StationMedia.vue:146
 msgid "Actions"
@@ -29,7 +27,7 @@ msgstr "Álbum"
 #: ./vue/RadioPlayer.vue:339
 #: ./vue/StationMedia.vue:165
 msgid "Album Art"
-msgstr ""
+msgstr "Arte do Álbum"
 
 #: ./vue/StationMedia.vue:127
 #: ./vue/webcaster/settings.vue:115
@@ -42,12 +40,12 @@ msgstr "Voltar"
 
 #: ./vue/station_media/MediaToolbar.vue:11
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Limpar Listas de Reprodução"
 
 #: ./vue/station_media/MoveFilesModal.vue:33
 #: ./vue/station_media/NewDirectoryModal.vue:9
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: ./vue/webcaster/playlist.vue:66
 msgid "Continuous Play"
@@ -70,7 +68,7 @@ msgstr "Excluir"
 
 #: ./vue/station_media/MediaToolbar.vue:112
 msgid "Delete %{ num } media file(s)?"
-msgstr ""
+msgstr "Excluir %{ num } arquivos de mídia(s)?"
 
 #: ./vue/StationMedia.vue:47
 #: ./vue/station_media/MoveFilesModal.vue:62
@@ -79,7 +77,7 @@ msgstr "Diretório"
 
 #: ./vue/station_media/NewDirectoryModal.vue:4
 msgid "Directory Name:"
-msgstr ""
+msgstr "Nome do diretório:"
 
 #: ./vue/webcaster/settings.vue:83
 msgid "DJ Credentials"
@@ -87,7 +85,7 @@ msgstr "Credenciais do DJ"
 
 #: ./vue/station_media/FileUpload.vue:16
 msgid "Drag files here to upload to this folder or"
-msgstr ""
+msgstr "Arraste arquivos aqui para enviar para esta pasta ou"
 
 #: ./vue/StationMedia.vue:68
 msgid "Edit"
@@ -99,11 +97,11 @@ msgstr "Codificador"
 
 #: ./vue/station_media/MediaToolbar.vue:108
 msgid "Files queued for playback:"
-msgstr ""
+msgstr "Arquivos na fila para reproduzir:"
 
 #: ./vue/station_media/MediaToolbar.vue:120
 msgid "Files removed:"
-msgstr ""
+msgstr "Arquivos removidos:"
 
 #: ./vue/RadioPlayer.vue:336
 msgid "Full Volume"
@@ -119,7 +117,7 @@ msgstr "Duração"
 
 #: ./vue/RadioPlayer.vue:10
 msgid "Live"
-msgstr ""
+msgstr "Ao vivo"
 
 #: ./vue/webcaster/settings.vue:15
 msgid "Metadata"
@@ -151,7 +149,7 @@ msgstr "Mover %{ num } Arquivo(s) para"
 
 #: ./vue/station_media/MoveFilesModal.vue:36
 msgid "Move to Directory"
-msgstr ""
+msgstr "Mover para o diretório"
 
 #: ./vue/webcaster/settings.vue:32
 msgid "MP3"
@@ -188,7 +186,7 @@ msgstr "Pausar"
 
 #: ./vue/RadioPlayer.vue:324
 msgid "Play"
-msgstr ""
+msgstr "Tocar"
 
 #: ./vue/webcaster/playlist.vue:119
 msgid "Playlist 1"
@@ -205,15 +203,15 @@ msgstr "Listas de reprodução"
 
 #: ./vue/station_media/MediaToolbar.vue:158
 msgid "Playlists cleared for selected files:"
-msgstr ""
+msgstr "Playlists \"Limpa\" para os arquivos selecionados:"
 
 #: ./vue/station_media/MediaToolbar.vue:157
 msgid "Playlists updated for selected files:"
-msgstr ""
+msgstr "Listas de Reprodução atualizadas para os ficheiros selecionados:"
 
 #: ./vue/station_media/MediaToolbar.vue:44
 msgid "Queue"
-msgstr ""
+msgstr "Fila"
 
 #: ./vue/station_media/MediaToolbar.vue:100
 msgid "Queue the selected media to play next"
@@ -225,7 +223,7 @@ msgstr "Sem tratamento"
 
 #: ./vue/components/DataTable.vue:135
 msgid "Refresh rows"
-msgstr ""
+msgstr "Atualizar linhas"
 
 #: ./vue/StationMedia.vue:71
 msgid "Rename"
@@ -237,7 +235,7 @@ msgstr "Repetir lista"
 
 #: ./vue/components/DataTable.vue:138
 msgid "Rows per page"
-msgstr ""
+msgstr "Linhas por página"
 
 #: ./vue/webcaster/settings.vue:42
 #: ./vue/webcaster/settings.vue:58
@@ -254,7 +252,7 @@ msgstr "Selecionar campos exibidos"
 
 #: ./vue/station_media/FileUpload.vue:18
 msgid "Select File"
-msgstr ""
+msgstr "Selecione o arquivo"
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"

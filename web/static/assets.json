@@ -48,7 +48,7 @@
   "dist/radio_player.js": "dist/radio_player-7a388efed9.js",
   "dist/station_media.js": "dist/station_media-7fd1bb8e70.js",
   "dist/station_playlists.js": "dist/station_playlists-afa3152c68.js",
-  "dist/vue_gettext.js": "dist/vue_gettext-a3db6159c9.js",
+  "dist/vue_gettext.js": "dist/vue_gettext-3549ace00d.js",
   "dist/webcaster.js": "dist/webcaster-137f49b033.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

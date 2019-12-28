@@ -9,16 +9,15 @@
       array (
         0 => 'Project-Id-Version: azuracast
 Report-Msgid-Bugs-To: 
-Last-Translator: Buster "Silver Eagle" Neece (SlvrEagle23)
+Last-Translator: 
 Language-Team: French
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-09-10T23:21:55+00:00
-PO-Revision-Date: 2019-11-23 21:50
+POT-Creation-Date: 2019-11-23T21:40:24+00:00
+PO-Revision-Date: 2019-12-28 17:56
 Language: fr_FR
 Plural-Forms: nplurals=2; plural=(n > 1);
-X-Generator: crowdin.com
 X-Crowdin-Project: azuracast
 X-Crowdin-Language: fr
 X-Crowdin-File: /master/resources/locale/default.pot
@@ -227,6 +226,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Installing Data Fixtures' => 
       array (
         0 => 'Installation des fixations de données',
+      ),
+      'Reload System Data' => 
+      array (
+        0 => 'Recharger les données du système',
       ),
       'Refreshing All Stations' => 
       array (
@@ -452,6 +455,54 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Vous ne pouvez vous supprimer vous-même.',
       ),
+      'Path "%s" is not a folder.' => 
+      array (
+        0 => 'Le chemin "%s" n\'est pas un dossier.',
+      ),
+      'Could not move "%s" to "%s"' => 
+      array (
+        0 => 'Impossible de déplacer "%s" vers "%s"',
+      ),
+      'Directory' => 
+      array (
+        0 => 'Annuaire',
+      ),
+      'File Not Processed' => 
+      array (
+        0 => 'Fichier non traité',
+      ),
+      'File not specified.' => 
+      array (
+        0 => 'Fichier non spécifié.',
+      ),
+      'New path not specified.' => 
+      array (
+        0 => 'Nouveau répertoire non spécifié.',
+      ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Cette station n\'a plus d\'espace de stockage disponible.',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => 'La playlist n\'a pas été trouvée.',
+      ),
+      'This playlist is not a sequential playlist.' => 
+      array (
+        0 => 'Cette playlist n’est pas une playlist séquentielle.',
+      ),
+      'Format not found.' => 
+      array (
+        0 => 'Format non trouvé.',
+      ),
+      'Playlist enabled.' => 
+      array (
+        0 => 'Playlist activé.',
+      ),
+      'Playlist disabled.' => 
+      array (
+        0 => 'Playlist désactivée.',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Cette station n\'accepte pas de demandes pour le moment.',
@@ -528,6 +579,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Auditeurs',
       ),
+      'Two-factor authentication disabled.' => 
+      array (
+        0 => 'Authentification à deux facteurs désactivée.',
+      ),
       'Profile saved!' => 
       array (
         0 => 'Profil enregistré !',
@@ -543,10 +598,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Two-factor authentication enabled.' => 
       array (
         0 => 'Authentification à deux facteurs activée.',
-      ),
-      'Two-factor authentication disabled.' => 
-      array (
-        0 => 'Authentification à deux facteurs désactivée.',
       ),
       'Song Title' => 
       array (
@@ -580,46 +631,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Erreur lors de l\'affectation automatique',
       ),
-      'Path "%s" is not a folder.' => 
-      array (
-        0 => 'Le chemin "%s" n\'est pas un dossier.',
-      ),
-      'Could not move "%s" to "%s"' => 
-      array (
-        0 => 'Impossible de déplacer "%s" vers "%s"',
-      ),
-      'Media not found.' => 
-      array (
-        0 => 'Médias non trouvés.',
-      ),
-      'Media updated.' => 
-      array (
-        0 => 'Média mis à jour.',
-      ),
-      'Edit Media' => 
-      array (
-        0 => 'Modifier le média',
-      ),
-      'File renamed!' => 
-      array (
-        0 => 'Fichier renommé !',
-      ),
-      'Rename File/Directory' => 
-      array (
-        0 => 'Renommer le fichier/répertoire',
-      ),
-      'This station is out of available storage space.' => 
-      array (
-        0 => 'Cette station n\'a plus d\'espace de stockage disponible.',
-      ),
-      'Directory' => 
-      array (
-        0 => 'Annuaire',
-      ),
-      'File Not Processed' => 
-      array (
-        0 => 'Fichier non traité',
-      ),
       'This feature is not currently supported on this station.' => 
       array (
         0 => 'Cette fonctionnalité n\'est pas compatible avec cette station.',
@@ -635,46 +646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Mount Point deleted.' => 
       array (
         0 => 'Point de montage supprimé.',
-      ),
-      'Playlist not found.' => 
-      array (
-        0 => 'La playlist n\'a pas été trouvée.',
-      ),
-      'This playlist is not a sequential playlist.' => 
-      array (
-        0 => 'Cette playlist n’est pas une playlist séquentielle.',
-      ),
-      'Format not found.' => 
-      array (
-        0 => 'Format non trouvé.',
-      ),
-      'Playlist enabled.' => 
-      array (
-        0 => 'Playlist activé.',
-      ),
-      'Playlist disabled.' => 
-      array (
-        0 => 'Playlist désactivée.',
-      ),
-      'Playlist updated.' => 
-      array (
-        0 => 'Playlist mise à jour.',
-      ),
-      'Playlist added.' => 
-      array (
-        0 => 'Playlist ajoutée.',
-      ),
-      'Edit Playlist' => 
-      array (
-        0 => 'Modifier la playlist',
-      ),
-      'Add Playlist' => 
-      array (
-        0 => 'Ajouter une playlist',
-      ),
-      'Playlist deleted.' => 
-      array (
-        0 => 'Playlist supprimée.',
       ),
       'Remote Relay updated.' => 
       array (
@@ -1240,6 +1211,406 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'En option, spécifiez un nom convivial pour l\'API, tel que <code>field_name</code>. Laissez ce champ vide pour en créer un automatiquement en fonction du nom.',
       ),
+      'Automatically Set from ID3v2 Value' => 
+      array (
+        0 => 'Automatiquement défini à partir de la valeur ID3v2',
+      ),
+      'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
+      array (
+        0 => 'Optionnellement, sélectionnez un champ de métadonnées ID3v2 qui, s\'il est présent, sera utilisé pour définir la valeur de ce champ.',
+      ),
+      'Disable' => 
+      array (
+        0 => 'Désactiver',
+      ),
+      'Album' => 
+      array (
+        0 => 'Album',
+      ),
+      'Album Artist Sort Order' => 
+      array (
+        0 => 'Ordre de tri des artistes de l\'album',
+      ),
+      'Album Sort Order' => 
+      array (
+        0 => 'Ordre de tri par albums',
+      ),
+      'Artist' => 
+      array (
+        0 => 'Artiste',
+      ),
+      'Attached Picture' => 
+      array (
+        0 => 'Image jointe',
+      ),
+      'Audio Encryption' => 
+      array (
+        0 => 'Chiffrement audio',
+      ),
+      'Audio Seek Point Index' => 
+      array (
+        0 => 'Index des points de recherche audio',
+      ),
+      'Band' => 
+      array (
+        0 => 'Bande passante',
+      ),
+      'Bpm' => 
+      array (
+        0 => 'Bpm',
+      ),
+      'Comment' => 
+      array (
+        0 => 'Commentaire',
+      ),
+      'Commercial Frame' => 
+      array (
+        0 => 'Cadre commercial',
+      ),
+      'Commercial Information' => 
+      array (
+        0 => 'Renseignements commerciaux',
+      ),
+      'Composer' => 
+      array (
+        0 => 'Compositeur',
+      ),
+      'Composer Sort Order' => 
+      array (
+        0 => 'Ordre de tri par compositeur',
+      ),
+      'Conductor' => 
+      array (
+        0 => 'Conducteur',
+      ),
+      'Content Group Description' => 
+      array (
+        0 => 'Description du groupe de contenu',
+      ),
+      'Copyright' => 
+      array (
+        0 => 'Droits d\'auteur',
+      ),
+      'Copyright Message' => 
+      array (
+        0 => 'Message sur les droits d\'auteur',
+      ),
+      'Date' => 
+      array (
+        0 => 'Date',
+      ),
+      'Encoded By' => 
+      array (
+        0 => 'Encodé par',
+      ),
+      'Encoder Settings' => 
+      array (
+        0 => 'Réglages de l\'encodeur',
+      ),
+      'Encoding Time' => 
+      array (
+        0 => 'Durée d\'encodage',
+      ),
+      'Encrypted Meta Frame' => 
+      array (
+        0 => 'Meta Frame chiffré',
+      ),
+      'Encryption Method Registration' => 
+      array (
+        0 => 'Enregistrement de la méthode de chiffrement',
+      ),
+      'Equalisation' => 
+      array (
+        0 => 'Égalisation',
+      ),
+      'Event Timing Codes' => 
+      array (
+        0 => 'Horaires des événements',
+      ),
+      'Featured Artist' => 
+      array (
+        0 => 'Artiste invité',
+      ),
+      'File Owner' => 
+      array (
+        0 => 'Propriétaire du fichier',
+      ),
+      'File Type' => 
+      array (
+        0 => 'Type de fichier',
+      ),
+      'General Encapsulated Object' => 
+      array (
+        0 => 'Objet général encapsulé',
+      ),
+      'Genre' => 
+      array (
+        0 => 'Genre',
+      ),
+      'Group Identification Registration' => 
+      array (
+        0 => 'Enregistrement d\'identification de groupe',
+      ),
+      'Initial Key' => 
+      array (
+        0 => 'Clé initiale',
+      ),
+      'Internet Radio Station Name' => 
+      array (
+        0 => 'Nom de la webradio',
+      ),
+      'Internet Radio Station Owner' => 
+      array (
+        0 => 'Propriétaire de la webradio',
+      ),
+      'Involved People List' => 
+      array (
+        0 => 'Liste des personnes impliquées',
+      ),
+      'ISRC' => 
+      array (
+        0 => 'ISRC',
+      ),
+      'Language' => 
+      array (
+        0 => 'Langue',
+      ),
+      'Length' => 
+      array (
+        0 => 'Durée',
+      ),
+      'Linked Information' => 
+      array (
+        0 => 'Informations liées',
+      ),
+      'Lyricist' => 
+      array (
+        0 => 'Paroles',
+      ),
+      'Media Type' => 
+      array (
+        0 => 'Type de média',
+      ),
+      'Mood' => 
+      array (
+        0 => 'Humeur',
+      ),
+      'MPEG Location Lookup Table' => 
+      array (
+        0 => 'Table de recherche d\'emplacement MPEG',
+      ),
+      'Music CD Identifier' => 
+      array (
+        0 => 'Identifiant du CD musical',
+      ),
+      'Musician Credits List' => 
+      array (
+        0 => 'Liste de crédits des musiciens',
+      ),
+      'Original Album' => 
+      array (
+        0 => 'Album original',
+      ),
+      'Original Artist' => 
+      array (
+        0 => 'Artiste original',
+      ),
+      'Original Filename' => 
+      array (
+        0 => 'Nom du fichier d\'origine',
+      ),
+      'Original Lyricist' => 
+      array (
+        0 => 'Paroles originales',
+      ),
+      'Original Release Time' => 
+      array (
+        0 => 'Date de sortie originale',
+      ),
+      'Original Year' => 
+      array (
+        0 => 'Année d\'origine',
+      ),
+      'Ownership Frame' => 
+      array (
+        0 => 'Cadre de propriété',
+      ),
+      'Part Of A Compilation' => 
+      array (
+        0 => 'Partie d\'une compilation',
+      ),
+      'Part Of A Set' => 
+      array (
+        0 => 'Partie d\'un ensemble',
+      ),
+      'Performer Sort Order' => 
+      array (
+        0 => 'Ordre de tri par l\'interprète',
+      ),
+      'Play Counter' => 
+      array (
+        0 => 'Nombre de diffusion',
+      ),
+      'Playlist Delay' => 
+      array (
+        0 => 'Délai de la playlist',
+      ),
+      'Popularimeter' => 
+      array (
+        0 => 'Popularimètre',
+      ),
+      'Position Synchronisation Frame' => 
+      array (
+        0 => 'Cadre de synchronisation de position',
+      ),
+      'Private Frame' => 
+      array (
+        0 => 'Cadre privé',
+      ),
+      'Produced Notice' => 
+      array (
+        0 => 'Avis publié',
+      ),
+      'Publisher' => 
+      array (
+        0 => 'Éditeur',
+      ),
+      'Recommended Buffer Size' => 
+      array (
+        0 => 'Taille du tampon recommandée',
+      ),
+      'Recording Dates' => 
+      array (
+        0 => 'Dates d\'enregistrement',
+      ),
+      'Recording Studio' => 
+      array (
+        0 => 'Studio d\'enregistrement',
+      ),
+      'Recording Time' => 
+      array (
+        0 => 'Durée d\'enregistrement',
+      ),
+      'Relative Volume Adjustment' => 
+      array (
+        0 => 'Ajustement relatif du volume',
+      ),
+      'Release Time' => 
+      array (
+        0 => 'Date de sortie',
+      ),
+      'Remixer' => 
+      array (
+        0 => 'Remixer',
+      ),
+      'ReplayGain Adjustment' => 
+      array (
+        0 => 'Ajustement par ReplayGain',
+      ),
+      'Reverb' => 
+      array (
+        0 => 'Réverbération',
+      ),
+      'Seek Frame' => 
+      array (
+        0 => 'Chercher un cadre',
+      ),
+      'Set Subtitle' => 
+      array (
+        0 => 'Définir les sous-titres',
+      ),
+      'Signature Frame' => 
+      array (
+        0 => 'Cadre de signature',
+      ),
+      'Size' => 
+      array (
+        0 => 'Taille',
+      ),
+      'Subtitle' => 
+      array (
+        0 => 'Sous-titre',
+      ),
+      'Synced Tempo Codes' => 
+      array (
+        0 => 'Codes Tempo synchronisés',
+      ),
+      'Synchronised Lyric' => 
+      array (
+        0 => 'Paroles synchronisées',
+      ),
+      'Synchronised Tempo Codes' => 
+      array (
+        0 => 'Codes de Tempo synchronisés',
+      ),
+      'Tagging Time' => 
+      array (
+        0 => 'Durée du marquage',
+      ),
+      'Terms Of Use' => 
+      array (
+        0 => 'Conditions d\'utilisation',
+      ),
+      'Text' => 
+      array (
+        0 => 'Texte',
+      ),
+      'Time' => 
+      array (
+        0 => 'Heure',
+      ),
+      'Title' => 
+      array (
+        0 => 'Titre',
+      ),
+      'Title Sort Order' => 
+      array (
+        0 => 'Ordre de tri par titres',
+      ),
+      'Track Number' => 
+      array (
+        0 => 'Numéro de la musique',
+      ),
+      'Unique File Identifier' => 
+      array (
+        0 => 'Identifiant de fichier unique',
+      ),
+      'Unsynchronised Lyric' => 
+      array (
+        0 => 'Paroles non synchronisées',
+      ),
+      'URL Artist' => 
+      array (
+        0 => 'URL de l\'artiste',
+      ),
+      'URL File' => 
+      array (
+        0 => 'URL du fichier',
+      ),
+      'URL Payment' => 
+      array (
+        0 => 'URL de l\'achat',
+      ),
+      'URL Publisher' => 
+      array (
+        0 => 'URL de l\'éditeur',
+      ),
+      'URL Source' => 
+      array (
+        0 => 'URL de la source',
+      ),
+      'URL Station' => 
+      array (
+        0 => 'URL de la station',
+      ),
+      'URL User' => 
+      array (
+        0 => 'URL de l\'utilisateur',
+      ),
+      'Year' => 
+      array (
+        0 => 'Année',
+      ),
       'Important Notes' => 
       array (
         0 => 'Notes Importantes',
@@ -1275,90 +1646,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Log in' => 
       array (
         0 => 'Se connecter',
-      ),
-      'File Name' => 
-      array (
-        0 => 'Nom du Fichier',
-      ),
-      'The relative path of the file in the station\'s media directory.' => 
-      array (
-        0 => 'Le chemin relatif dans le répertoire des médias, pour cette station.',
-      ),
-      'Song Album' => 
-      array (
-        0 => 'Album de la musique',
-      ),
-      'Song Lyrics' => 
-      array (
-        0 => 'Paroles de musique',
-      ),
-      'Replace Album Cover Art' => 
-      array (
-        0 => 'Remplacer la pochette de l\'album',
-      ),
-      'ISRC' => 
-      array (
-        0 => 'ISRC',
-      ),
-      'International Standard Recording Code, used for licensing reports.' => 
-      array (
-        0 => 'L\'International Standard Recording Code, utilisé pour les licences de diffusion.',
-      ),
-      'Custom Fields' => 
-      array (
-        0 => 'Champs personnalisés',
-      ),
-      'Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.' => 
-      array (
-        0 => 'Les administrateurs peuvent personnaliser les champs qui apparaissent ici sur la<a href="%s">page d\'administration</a>.',
-      ),
-      'Control Song Playback' => 
-      array (
-        0 => 'Lecture du morceau de contrôle',
-      ),
-      'Song Length (seconds)' => 
-      array (
-        0 => 'Durée du titre (en secondes)',
-      ),
-      'Custom Fading: Overlap Time (seconds)' => 
-      array (
-        0 => 'Transition en fondu enchaîné : Durée de la superposition (en secondes)',
-      ),
-      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
-      array (
-        0 => 'Indique la durée quand ce titre sera superposé au titre suivant et précédent lors de la transition. Laissez vide pour utiliser la valeur par défaut.',
-      ),
-      'Custom Fading: Fade-In Time (seconds)' => 
-      array (
-        0 => 'Transition en fondu enchaîné : Durée de la transition de départ (en secondes)',
-      ),
-      'The time period that the song should fade in. Leave blank to use the system default.' => 
-      array (
-        0 => 'Indique a quel moment cette musique commencera sa transition de départ. Laissez vide pour utiliser la valeur par défaut.',
-      ),
-      'Custom Fading: Fade-Out Time (seconds)' => 
-      array (
-        0 => 'Transition en fondu enchaîné : Durée de la transition de fin (en secondes)',
-      ),
-      'The time period that the song should fade out. Leave blank to use the system default.' => 
-      array (
-        0 => 'Indique a quel moment cette musique commencera sa transition de fin. Laissez vide pour utiliser la valeur par défaut.',
-      ),
-      'Custom Cues: Cue-In Point (seconds)' => 
-      array (
-        0 => 'Repères personnalisés : Début du titre (en secondes)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should start playing.' => 
-      array (
-        0 => 'A quel moment, en secondes depuis le début, l\'AutoDJ commencera à lire ce titre.',
-      ),
-      'Custom Cues: Cue-Out Point (seconds)' => 
-      array (
-        0 => 'Repères personnalisés : Fin du titre (en secondes)',
-      ),
-      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
-      array (
-        0 => 'A quel moment, en secondes depuis le début, l\'AutoDJ arrêtera de lire ce titre.',
       ),
       'Mount Point URL' => 
       array (
@@ -1460,262 +1747,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Si votre flux est configuré pour faire de la publicité dans les répertoires YP ci-dessus, vous devez spécifier un hachage d\'autorisation. Vous pouvez gérer les authhashes <a href="%s" target="_blank">sur le site de SHOUTcast</a>.',
       ),
-      'Basic Information' => 
-      array (
-        0 => 'Renseignements de base',
-      ),
-      'Source' => 
-      array (
-        0 => 'Source',
-      ),
-      'Scheduling' => 
-      array (
-        0 => 'Calendrier',
-      ),
-      'Enable Playlist' => 
-      array (
-        0 => 'Activez la playlist',
-      ),
-      'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
-      array (
-        0 => 'Si la valeur est « Non », la playlist ne sera pas ajoutée dans la liste de lecture de la station, mais pourra toujours être gérée.',
-      ),
-      'Playlist Name' => 
-      array (
-        0 => 'Nom de la playlist',
-      ),
-      'Playlist Weight' => 
-      array (
-        0 => 'Priorité de la playlist',
-      ),
-      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
-      array (
-        0 => 'Les playlists aux priorités plus élevées joueront plus régulièrement que celle aux priorités plus basse.',
-      ),
-      'Low' => 
-      array (
-        0 => 'Faible',
-      ),
-      'High' => 
-      array (
-        0 => 'Élevée',
-      ),
-      'Song-Based Playlist' => 
-      array (
-        0 => 'Playlist de différents titres',
-      ),
-      'A playlist containing media files hosted on this server.' => 
-      array (
-        0 => 'Une playlist contenant les fichiers audio hébergés sur ce serveur.',
-      ),
-      'Remote URL Playlist' => 
-      array (
-        0 => 'Playlist URL distante',
-      ),
-      'A playlist that instructs the station to play from a remote URL.' => 
-      array (
-        0 => 'Une playlist qui demande à la station de diffuser à partir d\'une URL distante.',
-      ),
-      'Song Playback Order' => 
-      array (
-        0 => 'Ordre de lecture des morceaux',
-      ),
-      'Shuffled' => 
-      array (
-        0 => 'Aléatoire',
-      ),
-      'Random' => 
-      array (
-        0 => 'Au hasard',
-      ),
-      'Sequential' => 
-      array (
-        0 => 'Séquentiel',
-      ),
-      'Import Existing Playlist' => 
-      array (
-        0 => 'Importer une playlist existante',
-      ),
-      'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
-      array (
-        0 => 'Sélectionnez un fichier de playlist existant pour ajouter son contenu à cette liste de lecture. PLS et M3U sont pris en charge.',
-      ),
-      'Allow Requests from This Playlist' => 
-      array (
-        0 => 'Autoriser les requêtes pour cette playlist',
-      ),
-      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
-      array (
-        0 => 'Si les requêtes sont activées pour votre station, les utilisateurs pourront demander les médias qui se trouvent sur cette playlist.',
-      ),
-      'Hide Metadata from Listeners ("Jingle Mode")' => 
-      array (
-        0 => 'Masquer les métadonnées aux auditeurs ("Mode Jingle")',
-      ),
-      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
-      array (
-        0 => 'Activez ce paramètre pour empêcher l\'envoi de métadonnées à l\'AutoDJ pour les fichiers de cette playlist. Ceci est utile si la playlist contient des jingles ou des bumpers.',
-      ),
-      'Remote URL' => 
-      array (
-        0 => 'URL distante',
-      ),
-      'Remote URL Type' => 
-      array (
-        0 => 'Type d\'URL à distance',
-      ),
-      'Direct Stream URL' => 
-      array (
-        0 => 'URL de flux direct',
-      ),
-      'Playlist (M3U/PLS) URL' => 
-      array (
-        0 => 'URL de la playlist (M3U/PLS)',
-      ),
-      'Remote Playback Buffer (Seconds)' => 
-      array (
-        0 => 'Mémoire tampon de la diffusion (secondes)',
-      ),
-      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
-      array (
-        0 => 'La durée du temps de lecture que Liquidsoap doit mettre en mémoire tampon lors de la lecture de cette playlist distante. Des durées courtes peuvent entraîner une lecture discontinue sur des connexions instables.',
-      ),
-      'General Rotation' => 
-      array (
-        0 => 'Rotation générale',
-      ),
-      'Plays all day, shuffles with other standard playlists based on weight.' => 
-      array (
-        0 => 'Joue toute la journée, mélangée avec d’autres playlists basées sur leurs priorités.',
-      ),
-      'Scheduled' => 
-      array (
-        0 => 'Programmé',
-      ),
-      'Play during a scheduled time range.' => 
-      array (
-        0 => 'Jouez pendant un intervalle de temps programmé.',
-      ),
-      'Once per x Songs' => 
-      array (
-        0 => 'Une fois toutes les x musiques',
-      ),
-      'Play exactly once every <i>x</i> songs.' => 
-      array (
-        0 => 'Jouez exactement une fois toutes les <i>x</i> musiques.',
-      ),
-      'Once Per x Minutes' => 
-      array (
-        0 => 'Une fois toutes les x minutes',
-      ),
-      'Play exactly once every <i>x</i> minutes.' => 
-      array (
-        0 => 'Jouez exactement une fois toutes les <i>x</i> minutes.',
-      ),
-      'Once per Hour' => 
-      array (
-        0 => 'Une fois par heure',
-      ),
-      'Play once per hour at the specified minute.' => 
-      array (
-        0 => 'Jouez une fois par heure à la minute spécifiée.',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Avancé',
-      ),
-      'Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>' => 
-      array (
-        0 => 'Définissez manuellement comment cette liste de lecture est utilisée dans la configuration Liquidsoap. <a href="%s" target="_blank">En savoir plus sur les listes de lecture avancées</a>',
-      ),
-      'AutoDJ Scheduling Options' => 
-      array (
-        0 => 'Options de programmation AutoDJ',
-      ),
-      'Control how this playlist is handled by the AutoDJ software.' => 
-      array (
-        0 => 'Contrôlez la façon dont cette playlist est gérée par le logiciel AutoDJ.',
-      ),
-      '<b>Warning:</b> These functions are internal to Liquidsoap and will affect how your AutoDJ works.' => 
-      array (
-        0 => '<b>Attention :</b> Ces fonctions sont internes à Liquidsoap et affecteront le fonctionnement de votre AutoDJ.',
-      ),
-      'Interrupt other songs to play at scheduled time.' => 
-      array (
-        0 => 'Interruption de la lecture d\'autres chansons pour jouer à l\'heure prévue.',
-      ),
-      'Only loop through playlist once.' => 
-      array (
-        0 => 'Boucler une seule fois la liste de lecture.',
-      ),
-      'Only play one track at scheduled time.' => 
-      array (
-        0 => 'Lecture d\'un seul titre à l\'heure prévue.',
-      ),
-      'Merge playlist to play as a single track.' => 
-      array (
-        0 => 'Fusionner la liste de lecture pour jouer en une seule piste.',
-      ),
-      'Include in Automated Assignment' => 
-      array (
-        0 => 'Inclure dans l\'affectation automatique',
-      ),
-      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
-      array (
-        0 => 'Si l\'Affectation Automatique est activée, cette playlist sera l\'une des destinations en cas de redistribution des titres. Ceci va écraser le contenu de cette playlist.',
-      ),
-      'Start Time' => 
-      array (
-        0 => 'Heure de début',
-      ),
-      'To play once per day, set the start and end times to the same value.' => 
-      array (
-        0 => 'Pour diffuser une fois par jour, réglez les heures de début et de fin à la même valeur.',
-      ),
-      'End Time' => 
-      array (
-        0 => 'Heure de fin',
-      ),
-      'If the end time is before the start time, the playlist will play overnight.' => 
-      array (
-        0 => 'Si l\'heure de fin est antérieure à l\'heure de début, la playlist sera diffusée pendant la nuit.',
-      ),
-      'Station Time Zone' => 
-      array (
-        0 => 'Fuseau horaire de la station',
-      ),
-      'Scheduled Play Days of Week' => 
-      array (
-        0 => 'Jours de diffusion prévus pour la semaine',
-      ),
-      'Leave blank to play on every day of the week.' => 
-      array (
-        0 => 'Laisser vide pour jouer tous les jours de la semaine.',
-      ),
-      'Number of Songs Between Plays' => 
-      array (
-        0 => 'Nombre de musiques entre chaque lectures',
-      ),
-      'This playlist will play every $x songs, where $x is specified below.' => 
-      array (
-        0 => 'Cette playlist jouera chaque $x titres, où $x est indiqué ci-dessous.',
-      ),
-      'Number of Minutes Between Plays' => 
-      array (
-        0 => 'Nombre de minutes entre chaque lecture',
-      ),
-      'This playlist will play every $x minutes, where $x is specified below.' => 
-      array (
-        0 => 'Cette playlist jouera chaque $x minutes, où $x est indiqué ci-dessous.',
-      ),
-      'Minute of Hour to Play' => 
-      array (
-        0 => 'Minute de diffusion pour chaque heure',
-      ),
-      'Specify the minute of every hour that this playlist should play.' => 
-      array (
-        0 => 'Spécifiez la minute pour chaque heure de diffusion de cette playlist.',
-      ),
       'Use Browser Default' => 
       array (
         0 => 'Utiliser la valeur du navigateur',
@@ -1747,10 +1778,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Customization' => 
       array (
         0 => 'Personnalisation',
-      ),
-      'Language' => 
-      array (
-        0 => 'Langue',
       ),
       'Site Theme' => 
       array (
@@ -2059,10 +2086,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Description' => 
       array (
         0 => 'Description',
-      ),
-      'Genre' => 
-      array (
-        0 => 'Genre',
       ),
       'Web Site URL' => 
       array (
@@ -2456,10 +2479,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Maintenant on joue sur %s :',
       ),
-      'Title' => 
-      array (
-        0 => 'Titre',
-      ),
       'URL' => 
       array (
         0 => 'URL',
@@ -2669,6 +2688,10 @@ exécuté en moins de 2 secondes.',
       'Stations' => 
       array (
         0 => 'Stations',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Champs personnalisés',
       ),
       'Connected AzuraRelays' => 
       array (
@@ -2958,10 +2981,6 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Dernière modification',
       ),
-      'Size' => 
-      array (
-        0 => 'Taille',
-      ),
       'Download' => 
       array (
         0 => 'Télécharger',
@@ -3248,109 +3267,9 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Activer l\'authentification à deux facteurs',
       ),
-      'Microphone' => 
-      array (
-        0 => 'Microphone',
-      ),
-      'Settings' => 
-      array (
-        0 => 'Paramètres',
-      ),
-      'Mixer' => 
-      array (
-        0 => 'Mélangeur',
-      ),
-      'Playlist 1' => 
-      array (
-        0 => 'Playlist 1',
-      ),
-      'Playlist 2' => 
-      array (
-        0 => 'Playlist 2',
-      ),
-      'Encoder' => 
-      array (
-        0 => 'Encodeur',
-      ),
-      'MP3' => 
-      array (
-        0 => 'MP3',
-      ),
-      'Raw' => 
-      array (
-        0 => 'Brut',
-      ),
-      'Sample Rate' => 
-      array (
-        0 => 'Fréquence d\'échantillonnage',
-      ),
-      'Bit Rate' => 
-      array (
-        0 => 'Débit',
-      ),
-      'DJ Credentials' => 
-      array (
-        0 => 'Identifiant DJ',
-      ),
-      'Username' => 
-      array (
-        0 => 'Nom d’utilisateur',
-      ),
-      'Use Asynchronous Worker' => 
-      array (
-        0 => 'Utiliser une tâche asynchrone',
-      ),
-      'Artist' => 
-      array (
-        0 => 'Artiste',
-      ),
-      'Continuous Play' => 
-      array (
-        0 => 'Lecture continue',
-      ),
-      'Repeat Playlist' => 
-      array (
-        0 => 'Répéter la playlist',
-      ),
-      'Microphone Source' => 
-      array (
-        0 => 'Source du microphone',
-      ),
-      'Start Streaming' => 
-      array (
-        0 => 'Démarrer la diffusion',
-      ),
-      'Stop Streaming' => 
-      array (
-        0 => 'Arrêter la diffusion',
-      ),
-      'Cue' => 
-      array (
-        0 => 'Cue',
-      ),
-      'Update Metadata' => 
-      array (
-        0 => 'Mettre à jour les métadonnées',
-      ),
-      'Add Files to Playlist' => 
-      array (
-        0 => 'Ajouter des fichiers à la playlist',
-      ),
-      'Unknown Title' => 
-      array (
-        0 => 'Titre inconnu',
-      ),
-      'Unknown Artist' => 
-      array (
-        0 => 'Artiste inconnu',
-      ),
       'Request' => 
       array (
         0 => 'Demander',
-      ),
-      'Album' => 
-      array (
-        0 => 'Album',
       ),
       'Song History' => 
       array (
@@ -3367,34 +3286,6 @@ exécuté en moins de 2 secondes.',
       'Request a Song' => 
       array (
         0 => 'Demander un titre',
-      ),
-      'Live' => 
-      array (
-        0 => 'Live',
-      ),
-      'Play' => 
-      array (
-        0 => 'Lecture',
-      ),
-      'Pause' => 
-      array (
-        0 => 'Pause',
-      ),
-      'Mute' => 
-      array (
-        0 => 'Mettre en sourdine',
-      ),
-      'Volume' => 
-      array (
-        0 => 'Volume',
-      ),
-      'Full Volume' => 
-      array (
-        0 => 'Volume maximum',
-      ),
-      'Album Art' => 
-      array (
-        0 => 'Pochette d\'album',
       ),
       'AzuraCast First-Time Setup' => 
       array (
@@ -3500,6 +3391,14 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Défilement automatique jusqu\'au bas du log',
       ),
+      'Pause' => 
+      array (
+        0 => 'Pause',
+      ),
+      'Play' => 
+      array (
+        0 => 'Lecture',
+      ),
       'Automated Playlist Assignment' => 
       array (
         0 => 'Affectation de la playlist automatique',
@@ -3520,38 +3419,6 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Configurer l\'affectation automatique',
       ),
-      'Delete {NUM} media file(s)?' => 
-      array (
-        0 => 'Supprimer {NUM} fichier(s) ?',
-      ),
-      'Files removed:' => 
-      array (
-        0 => 'Fichiers supprimés :',
-      ),
-      'Playlists updated for selected files:' => 
-      array (
-        0 => 'Mise à jour des playlists pour les fichiers sélectionnés :',
-      ),
-      'Playlists cleared for selected files:' => 
-      array (
-        0 => 'Playlists effacées pour les fichiers sélectionnés :',
-      ),
-      'Album Artwork' => 
-      array (
-        0 => 'Illustration de l\'album',
-      ),
-      'Rename' => 
-      array (
-        0 => 'Renommer',
-      ),
-      'Select' => 
-      array (
-        0 => 'Sélectionner',
-      ),
-      'Home' => 
-      array (
-        0 => 'Accueil',
-      ),
       '%s of %s Used (%d Files)' => 
       array (
         0 => '%s de %s utilisé (%d fichiers)',
@@ -3563,62 +3430,6 @@ exécuté en moins de 2 secondes.',
       'View connection instructions' => 
       array (
         0 => 'Voir les instructions de connexion',
-      ),
-      'Drag files here to upload to this folder or ' => 
-      array (
-        0 => 'Glissez ici les fichier à téléverser dans ce dossier ou ',
-      ),
-      'Set Playlists' => 
-      array (
-        0 => 'Définir les playlists',
-      ),
-      'New Playlist' => 
-      array (
-        0 => 'Nouvelle playlist',
-      ),
-      'Save' => 
-      array (
-        0 => 'Sauvegarder',
-      ),
-      'Clear Playlists' => 
-      array (
-        0 => 'Effacer les playlists',
-      ),
-      'Move' => 
-      array (
-        0 => 'Déplacer',
-      ),
-      'New Folder' => 
-      array (
-        0 => 'Nouveau dossier',
-      ),
-      'Length' => 
-      array (
-        0 => 'Durée',
-      ),
-      'Modified' => 
-      array (
-        0 => 'Modifié',
-      ),
-      'New Directory' => 
-      array (
-        0 => 'Nouveau répertoire',
-      ),
-      'Directory Name' => 
-      array (
-        0 => 'Nom du répertoire',
-      ),
-      'Create Directory' => 
-      array (
-        0 => 'Créer le répertoire',
-      ),
-      'Move {{ selected_files }} File(s) to' => 
-      array (
-        0 => 'Déplacer le(s) fichier(s) {{ selected_files }} vers',
-      ),
-      'Back' => 
-      array (
-        0 => 'Retour',
       ),
       'FTP Connection Information' => 
       array (
@@ -3648,6 +3459,10 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Le FTP non chiffré est également autorisé, mais non recommandé.',
       ),
+      'Username' => 
+      array (
+        0 => 'Nom d’utilisateur',
+      ),
       'Your AzuraCast E-mail Address' => 
       array (
         0 => 'Votre adresse e-mail AzuraCast',
@@ -3675,82 +3490,6 @@ exécuté en moins de 2 secondes.',
       'Default Mount' => 
       array (
         0 => 'Point de montage par défaut',
-      ),
-      'All Playlists' => 
-      array (
-        0 => 'Toutes les playlists',
-      ),
-      'Schedule View' => 
-      array (
-        0 => 'Calendrier',
-      ),
-      '# Songs' => 
-      array (
-        0 => '# Titres',
-      ),
-      'Delete playlist "%s"?' => 
-      array (
-        0 => 'Supprimer la playlist "%s" ?',
-      ),
-      'More' => 
-      array (
-        0 => 'Plus',
-      ),
-      'Disable' => 
-      array (
-        0 => 'Désactiver',
-      ),
-      'Enable' => 
-      array (
-        0 => 'Activer',
-      ),
-      'Reorder' => 
-      array (
-        0 => 'Réorganiser',
-      ),
-      'Export %s' => 
-      array (
-        0 => 'Exporter %s',
-      ),
-      'Song-based' => 
-      array (
-        0 => 'Sur la base de chansons',
-      ),
-      'Jingle Mode' => 
-      array (
-        0 => 'Mode Jingle',
-      ),
-      'Auto-Assigned' => 
-      array (
-        0 => 'Auto-assigné',
-      ),
-      'Weight' => 
-      array (
-        0 => 'Poids',
-      ),
-      'Plays at %s' => 
-      array (
-        0 => 'Diffuse à %s',
-      ),
-      'Plays between %s and %s' => 
-      array (
-        0 => 'Joue entre %s et %s',
-      ),
-      'Once per %d Songs' => 
-      array (
-        0 => 'Une fois chaque %d Titres',
-      ),
-      'Once per %d Minutes' => 
-      array (
-        0 => 'Une fois chaque %d minutes',
-      ),
-      'Once per Hour (at :%02d)' => 
-      array (
-        0 => 'Une fois par heure (À : %02d)',
-      ),
-      'Custom' => 
-      array (
-        0 => 'Personnalisé',
       ),
       'Reorder Playlist' => 
       array (
@@ -3836,9 +3575,17 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Unique',
       ),
+      'Album Art' => 
+      array (
+        0 => 'Pochette d\'album',
+      ),
       'Playing Next' => 
       array (
         0 => 'À suivre',
+      ),
+      'Live' => 
+      array (
+        0 => 'Live',
       ),
       'Skip Song' => 
       array (
@@ -3867,6 +3614,10 @@ exécuté en moins de 2 secondes.',
       'Enable public pages?' => 
       array (
         0 => 'Activer les pages publiques ?',
+      ),
+      'Enable' => 
+      array (
+        0 => 'Activer',
       ),
       'View' => 
       array (
@@ -3923,6 +3674,10 @@ exécuté en moins de 2 secondes.',
       'Cued On' => 
       array (
         0 => 'En cours d\'exécution',
+      ),
+      'Source' => 
+      array (
+        0 => 'Source',
       ),
       'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
@@ -4180,10 +3935,6 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Supprimer le Webhook "%s" ?',
       ),
-      'The page you requested was not found.' => 
-      array (
-        0 => 'La page que vous avez demandée n\'a pas été trouvée.',
-      ),
       'Select...' => 
       array (
         0 => 'Sélectionner...',
@@ -4191,6 +3942,10 @@ exécuté en moins de 2 secondes.',
       'No results found!' => 
       array (
         0 => 'Aucun résultat trouvé!',
+      ),
+      'Advanced' => 
+      array (
+        0 => 'Avancé',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

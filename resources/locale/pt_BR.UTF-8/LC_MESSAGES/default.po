@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-28 13:20\n"
+"PO-Revision-Date: 2019-12-28 13:30\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -851,7 +851,7 @@ msgstr "Teste de saída do Web Hook"
 
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:139
 msgid "Web Hook deleted."
-msgstr ""
+msgstr "Hook web deletado."
 
 #: /var/azuracast/www/src/Controller/Traits/LogViewerTrait.php:90
 msgid "Liquidsoap Log"
@@ -883,19 +883,19 @@ msgstr "Configuração do SHOUTcast"
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:26
 msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
+msgstr "Não é permitido que os motores de busca usem este recurso."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
 msgid "The song ID you specified could not be found in the station."
-msgstr ""
+msgstr "O ID da música que você especificou não pôde ser encontrado na estação."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:43
 msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
+msgstr "O ID da música que você especificou não pôde ser encontrado na estação."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:69
 msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
+msgstr "Você enviou um pedido muito recentemente! Por favor, aguarde antes de enviar outro."
 
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:111
 msgid "Duplicate request: this song was already requested and will play soon."
@@ -908,7 +908,7 @@ msgstr "Esta música já foi reproduzida recentemente. Por favor espere antes de
 #: /var/azuracast/www/src/Form/Field/File.php:10
 #: /var/azuracast/www/config/forms/install_shoutcast.php:35
 msgid "Select File"
-msgstr ""
+msgstr "Selecione o arquivo"
 
 #: /var/azuracast/www/src/Form/StationForm.php:75
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
@@ -982,11 +982,11 @@ msgstr "Novas atualizações AzuraCast disponíveis"
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:183
 msgid "%s is not recognized as a service."
-msgstr ""
+msgstr "%s não é reconhecido como um serviço."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:184
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr ""
+msgstr "Ele ainda não pode ser registrado com Supervisor. Reiniciar a transmissão pode ajudar."
 
 #: /var/azuracast/www/src/Radio/AbstractAdapter.php:193
 msgid "%s cannot start"
@@ -1069,43 +1069,43 @@ msgstr "A senha não pode conter os seguintes caracteres: %s"
 
 #: /var/azuracast/www/config/cli.php:71
 msgid "Generate the translation locale file."
-msgstr ""
+msgstr "Gerar o arquivo de localidade de tradução."
 
 #: /var/azuracast/www/config/cli.php:76
 msgid "Convert translated locale files into PHP arrays."
-msgstr ""
+msgstr "Converter ficheiro de tradução num array PHP."
 
 #: /var/azuracast/www/config/cli.php:82
 msgid "Migrate existing configuration to new INI format if any exists."
-msgstr ""
+msgstr "Migrar configuração existente para um novo formato INI caso exista alguma configuração."
 
 #: /var/azuracast/www/config/cli.php:87
 msgid "Initial setup of InfluxDB."
-msgstr ""
+msgstr "Configuração inicial do InfluxDB."
 
 #: /var/azuracast/www/config/cli.php:92
 msgid "Install fixtures for demo / local development."
-msgstr ""
+msgstr "Instalar fixtures para demonstração / desenvolvimento local."
 
 #: /var/azuracast/www/config/cli.php:97
 msgid "Run all general AzuraCast setup steps."
-msgstr ""
+msgstr "Execute todas as etapas de configuração geral do AzuraCast."
 
 #: /var/azuracast/www/config/cli.php:108
 msgid "Run one or more scheduled synchronization tasks."
-msgstr ""
+msgstr "Executar uma ou mais tarefas de sincronização agendadas."
 
 #: /var/azuracast/www/config/cli.php:113
 msgid "Process the message queue."
-msgstr ""
+msgstr "Processar a fila de mensagens."
 
 #: /var/azuracast/www/config/cli.php:144
 msgid "List all settings in the AzuraCast settings database."
-msgstr ""
+msgstr "Listar todas as definições na base de dados de definições do AzuraCast."
 
 #: /var/azuracast/www/config/cli.php:154
 msgid "Back up the AzuraCast database and statistics (and optionally media)."
-msgstr ""
+msgstr "Fazer cópia de segurança da base de dados do AzuraCast e estatísticas (e ficheiros multimédia opcionalmente)."
 
 #: /var/azuracast/www/config/forms/api_key.php:10
 #: /var/azuracast/www/config/forms/streamer.php:53
@@ -1116,7 +1116,7 @@ msgstr "Comentários"
 
 #: /var/azuracast/www/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
-msgstr ""
+msgstr "Descreva o uso para esta chave de API para referência futura."
 
 #: /var/azuracast/www/config/forms/api_key.php:20
 #: /var/azuracast/www/config/forms/automation.php:40
@@ -1186,15 +1186,15 @@ msgstr "Baseado nessa configuração, o sistema irá reatribuir automaticamente 
 #: /var/azuracast/www/config/forms/automation.php:30
 #: /var/azuracast/www/config/forms/automation.php:31
 msgid "%d days"
-msgstr ""
+msgstr "%d dias"
 
 #: /var/azuracast/www/config/forms/backup.php:15
 msgid "Run Automatic Nightly Backups"
-msgstr ""
+msgstr "Executar Cópias de Segurança Noturnas Automáticas"
 
 #: /var/azuracast/www/config/forms/backup.php:16
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
-msgstr ""
+msgstr "Ativar para que o AzuraCast execute automaticamente cópias de segurança noturnas automaticamente no tempo especificado."
 
 #: /var/azuracast/www/config/forms/backup.php:17
 #: /var/azuracast/www/config/forms/backup.php:38
@@ -1264,43 +1264,43 @@ msgstr "Não"
 
 #: /var/azuracast/www/config/forms/backup.php:27
 msgid "Scheduled Backup Time"
-msgstr ""
+msgstr "Tempo Agendado para Cópias de Segurança"
 
 #: /var/azuracast/www/config/forms/backup.php:28
 msgid "The time (in UTC) to run the automated backup, if enabled."
-msgstr ""
+msgstr "O tempo (em UTC) para executar o backup automático, se habilitado."
 
 #: /var/azuracast/www/config/forms/backup.php:36
 msgid "Exclude Media from Backups"
-msgstr ""
+msgstr "Excluir Ficheiros Multimédia das Cópias de Segurança"
 
 #: /var/azuracast/www/config/forms/backup.php:37
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Excluir os ficheiros multimédia das cópias de segurança automáticas vai poupar espaço, mas você deve fazer uma cópia de segurança destes ficheiros noutro lugar."
 
 #: /var/azuracast/www/config/forms/backup.php:48
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "Número de Cópias de Segurança para Manter"
 
 #: /var/azuracast/www/config/forms/backup.php:49
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
-msgstr ""
+msgstr "As cópias de segurança mais antigas que o número especificado vão ser automaticamente apagadas. Defina como zero para não eliminar cópias de segurança."
 
 #: /var/azuracast/www/config/forms/backup_run.php:10
 msgid "Backup Filename"
-msgstr ""
+msgstr "Nome do arquivo de backup"
 
 #: /var/azuracast/www/config/forms/backup_run.php:11
 msgid "Optional absolute or relative path where the backup file should be located."
-msgstr ""
+msgstr "Diretório absoluto ou relativo onde a cópia de segurança vai ser guardada (opcional)."
 
 #: /var/azuracast/www/config/forms/backup_run.php:18
 msgid "Exclude Media from Backup"
-msgstr ""
+msgstr "Excluir pasta de mídia do backup"
 
 #: /var/azuracast/www/config/forms/backup_run.php:19
 msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere."
-msgstr ""
+msgstr "Isto irá criar uma cópia de segurança significativamente menor, mas você deve fazer uma cópia de segurança destes ficheiros noutro lugar."
 
 #: /var/azuracast/www/config/forms/branding.php:15
 msgid "Base Theme for Public Pages"
@@ -1400,11 +1400,11 @@ msgstr "Opcionalmente, especifique um nome amigável à API, como <code>field_na
 
 #: /var/azuracast/www/config/forms/custom_field.php:31
 msgid "Automatically Set from ID3v2 Value"
-msgstr ""
+msgstr "Definir automaticamente do valor ID3v2"
 
 #: /var/azuracast/www/config/forms/custom_field.php:32
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
-msgstr ""
+msgstr "Opcionalmente, selecione um campo de metadados ID3v2 que, se presente, será usado para definir o valor deste campo."
 
 #: /var/azuracast/www/config/forms/custom_field.php:36
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
@@ -1423,11 +1423,11 @@ msgstr "Álbum"
 
 #: /var/azuracast/www/config/forms/custom_field.php:38
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Ordem do Artista do Álbum"
 
 #: /var/azuracast/www/config/forms/custom_field.php:39
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Selecionar Ordem de classificação"
 
 #: /var/azuracast/www/config/forms/custom_field.php:40
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
@@ -1439,19 +1439,19 @@ msgstr "Artista"
 
 #: /var/azuracast/www/config/forms/custom_field.php:41
 msgid "Attached Picture"
-msgstr ""
+msgstr "Anexar imagem"
 
 #: /var/azuracast/www/config/forms/custom_field.php:42
 msgid "Audio Encryption"
-msgstr ""
+msgstr "Criptografia de áudio"
 
 #: /var/azuracast/www/config/forms/custom_field.php:43
 msgid "Audio Seek Point Index"
-msgstr ""
+msgstr "Índice do Audio Seek"
 
 #: /var/azuracast/www/config/forms/custom_field.php:44
 msgid "Band"
-msgstr ""
+msgstr "Banda"
 
 #: /var/azuracast/www/config/forms/custom_field.php:45
 msgid "Bpm"
@@ -1683,27 +1683,27 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:101
 msgid "Recording Dates"
-msgstr ""
+msgstr "Datas de gravação"
 
 #: /var/azuracast/www/config/forms/custom_field.php:102
 msgid "Recording Studio"
-msgstr ""
+msgstr "Estúdio de Gravação"
 
 #: /var/azuracast/www/config/forms/custom_field.php:103
 msgid "Recording Time"
-msgstr ""
+msgstr "Datas de gravação"
 
 #: /var/azuracast/www/config/forms/custom_field.php:104
 msgid "Relative Volume Adjustment"
-msgstr ""
+msgstr "Ajuste relativo do volume"
 
 #: /var/azuracast/www/config/forms/custom_field.php:105
 msgid "Release Time"
-msgstr ""
+msgstr "Data de Lançamento"
 
 #: /var/azuracast/www/config/forms/custom_field.php:106
 msgid "Remixer"
-msgstr ""
+msgstr "Remixer"
 
 #: /var/azuracast/www/config/forms/custom_field.php:107
 msgid "ReplayGain Adjustment"
@@ -1711,15 +1711,15 @@ msgstr "Ajuste de Replay"
 
 #: /var/azuracast/www/config/forms/custom_field.php:108
 msgid "Reverb"
-msgstr ""
+msgstr "Reverberação"
 
 #: /var/azuracast/www/config/forms/custom_field.php:109
 msgid "Seek Frame"
-msgstr ""
+msgstr "Procurar Frame"
 
 #: /var/azuracast/www/config/forms/custom_field.php:110
 msgid "Set Subtitle"
-msgstr ""
+msgstr "Definir legenda"
 
 #: /var/azuracast/www/config/forms/custom_field.php:111
 msgid "Signature Frame"
@@ -1789,35 +1789,35 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:126
 msgid "URL Artist"
-msgstr ""
+msgstr "Artista de URL"
 
 #: /var/azuracast/www/config/forms/custom_field.php:127
 msgid "URL File"
-msgstr ""
+msgstr "Arquivo URL"
 
 #: /var/azuracast/www/config/forms/custom_field.php:128
 msgid "URL Payment"
-msgstr ""
+msgstr "Pagamento de URL"
 
 #: /var/azuracast/www/config/forms/custom_field.php:129
 msgid "URL Publisher"
-msgstr ""
+msgstr "Publicador de URL"
 
 #: /var/azuracast/www/config/forms/custom_field.php:130
 msgid "URL Source"
-msgstr ""
+msgstr "URL fonte"
 
 #: /var/azuracast/www/config/forms/custom_field.php:131
 msgid "URL Station"
-msgstr ""
+msgstr "Estação de URL"
 
 #: /var/azuracast/www/config/forms/custom_field.php:132
 msgid "URL User"
-msgstr ""
+msgstr "Usuário de URL"
 
 #: /var/azuracast/www/config/forms/custom_field.php:133
 msgid "Year"
-msgstr ""
+msgstr "Ano"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
 msgid "Important Notes"
@@ -1825,15 +1825,15 @@ msgstr "Notas importantes"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
-msgstr ""
+msgstr "<p>O SHOUTcast 2 DNAS não é um software livre, e sua licença restritiva não permite que AzuraCast distribua o binário do SHOUTcast Para instalar o SHOUTcast, você deve baixar o binário Linux x64 do <a href=\"%s\" target=\"_blank\">Gerenciador de Rádio SHOUTcast</a> do site. Envie o <code>sc_serv2_linux_x64-latest.tar.gz</code> no campo abaixo para automaticamente extraí-lo no diretório correto</p>"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:22
 msgid "Current Installed Version"
-msgstr ""
+msgstr "Versão Atualmente Instalada"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:23
 msgid "SHOUTcast is not currently installed on this installation."
-msgstr ""
+msgstr "O SHOUTcast não está atualmente instalado nesta instalação do AzuraCast."
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:31
 msgid "Select SHOUTcast 64-bit .tar.gz File"

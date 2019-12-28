@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-28 13:30\n"
+"PO-Revision-Date: 2019-12-28 13:40\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -1837,11 +1837,11 @@ msgstr "O SHOUTcast não está atualmente instalado nesta instalação do AzuraC
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:31
 msgid "Select SHOUTcast 64-bit .tar.gz File"
-msgstr ""
+msgstr "Selecione o arquivo SHOUTcast 64-bit .tar.gz"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:44
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #: /var/azuracast/www/config/forms/login.php:9
 #: /var/azuracast/www/config/forms/profile.php:25
@@ -1890,11 +1890,11 @@ msgstr "O nome de exibição atribuído a este ponto de montagem ao visualizá-l
 #: /var/azuracast/www/config/forms/mount/generic.php:34
 #: /var/azuracast/www/config/forms/remote.php:13
 msgid "Show on Public Pages"
-msgstr ""
+msgstr "Mostrar em Páginas Públicas"
 
 #: /var/azuracast/www/config/forms/mount/generic.php:35
 msgid "Enable to allow listeners to select this mount point on this station's public pages."
-msgstr ""
+msgstr "Ative para permitir que os ouvintes selecionem este ponto de montagem nas página públicas da estação."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
@@ -1915,12 +1915,12 @@ msgstr "Digite a URL completa de outro stream para retransmitir sua transmissão
 #: /var/azuracast/www/config/forms/mount/generic.php:68
 #: /var/azuracast/www/config/forms/remote.php:165
 msgid "Publish to \"Yellow Pages\" Directories"
-msgstr ""
+msgstr "Publicar em diretórios \"Páginas amarelas\""
 
 #: /var/azuracast/www/config/forms/mount/generic.php:69
 #: /var/azuracast/www/config/forms/remote.php:166
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
-msgstr ""
+msgstr "Ative para publicar este ponto de montagem nos diretórios de \"Páginas Amarelas\" de rádios públicas."
 
 #: /var/azuracast/www/config/forms/mount/generic.php:80
 msgid "Enable AutoDJ"
@@ -2043,7 +2043,7 @@ msgstr "Criar conta"
 
 #: /var/azuracast/www/config/forms/remote.php:14
 msgid "Enable to allow listeners to select this relay on this station's public pages."
-msgstr ""
+msgstr "Ative para permitir que os ouvintes selecionem este ponto de montagem nas página públicas da estação."
 
 #: /var/azuracast/www/config/forms/remote.php:25
 msgid "Remote Station Type"
@@ -2071,7 +2071,7 @@ msgstr "Especifique um ponto de montagem (i.e. <code>%s</code>) ou um SID Shoutc
 
 #: /var/azuracast/www/config/forms/remote.php:75
 msgid "Broadcast AutoDJ to Remote Station"
-msgstr ""
+msgstr "Transmitir AutoDJ para Estação Remota"
 
 #: /var/azuracast/www/config/forms/remote.php:76
 msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
@@ -2087,7 +2087,7 @@ msgstr "Porta source da Estação remota"
 
 #: /var/azuracast/www/config/forms/remote.php:130
 msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
-msgstr ""
+msgstr "Se a porta para a qual você transmite é diferente da que você listou na URL acima, especifique a porta de origem aqui."
 
 #: /var/azuracast/www/config/forms/remote.php:138
 msgid "Remote Station Source Mountpoint/SID"
@@ -2095,7 +2095,7 @@ msgstr "Ponto de montagem da Estação remota"
 
 #: /var/azuracast/www/config/forms/remote.php:139
 msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
-msgstr ""
+msgstr "Se o ponto de montagem (ou seja, <code>/radio.mp3</code>) ou Shoutcast SID (ou seja, <code>2</code>) a transmissão é diferente da listada acima, especifique o ponto de montagem de origem aqui."
 
 #: /var/azuracast/www/config/forms/remote.php:147
 msgid "Remote Station Source Username"
@@ -2103,7 +2103,7 @@ msgstr "Username da Estação remota"
 
 #: /var/azuracast/www/config/forms/remote.php:148
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
-msgstr ""
+msgstr "Se você estiver usando AutoDJ, digite o nome de usuário de origem aqui. Isso pode estar em branco."
 
 #: /var/azuracast/www/config/forms/remote.php:156
 msgid "Remote Station Source Password"
@@ -2111,7 +2111,7 @@ msgstr "Senha da Estação remota"
 
 #: /var/azuracast/www/config/forms/remote.php:157
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
-msgstr ""
+msgstr "Se você estiver usando AutoDJ, digite a senha de origem aqui."
 
 #: /var/azuracast/www/config/forms/role.php:13
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:22
@@ -2144,11 +2144,11 @@ msgstr "Este nome irá aparecer como um sub cabeçalho próximo ao logo do Azura
 
 #: /var/azuracast/www/config/forms/settings.php:38
 msgid "Prefer Browser URL (If Available)"
-msgstr ""
+msgstr "Preferir URL do Navegador (se disponível)"
 
 #: /var/azuracast/www/config/forms/settings.php:39
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
-msgstr ""
+msgstr "Se essa configuração estiver definida como \"Sim\", a URL do navegador será usada ao invés da URL base quando estiver disponível. Defina como \"Não\" para sempre usar a URL base."
 
 #: /var/azuracast/www/config/forms/settings.php:50
 msgid "Use Web Proxy for Radio"
@@ -2183,15 +2183,15 @@ msgstr "Últimos 30 Dias"
 
 #: /var/azuracast/www/config/forms/settings.php:67
 msgid "Last 60 Days"
-msgstr ""
+msgstr "Últimos 60 Dias"
 
 #: /var/azuracast/www/config/forms/settings.php:68
 msgid "Last Year"
-msgstr ""
+msgstr "Ano Passado"
 
 #: /var/azuracast/www/config/forms/settings.php:69
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Últimos 2 Anos"
 
 #: /var/azuracast/www/config/forms/settings.php:70
 msgid "Indefinitely"
@@ -2574,7 +2574,7 @@ msgstr "Esse código será inserido na configuração do LiquidSoap da sua esta�
 
 #: /var/azuracast/www/config/forms/station.php:445
 msgid "Enable Broadcasting"
-msgstr ""
+msgstr "Ativar Transmissão"
 
 #: /var/azuracast/www/config/forms/station.php:446
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
@@ -2606,11 +2606,11 @@ msgstr "O diretório onde as mídias são armazenadas. Deixe em branco para usar
 
 #: /var/azuracast/www/config/forms/station_clone.php:14
 msgid "New Station Name"
-msgstr ""
+msgstr "Visualizar pagina da Estação"
 
 #: /var/azuracast/www/config/forms/station_clone.php:23
 msgid "New Station Description"
-msgstr ""
+msgstr "Descrição da estação"
 
 #: /var/azuracast/www/config/forms/station_clone.php:33
 msgid "Customize Station Cloning"
@@ -2662,7 +2662,7 @@ msgstr "A conta está ativa"
 
 #: /var/azuracast/www/config/forms/streamer.php:13
 msgid "Enable to allow this account to log in and stream."
-msgstr ""
+msgstr "Habilite para permitir que esta conta entre e transmita."
 
 #: /var/azuracast/www/config/forms/streamer.php:24
 msgid "Streamer Username"
@@ -2708,7 +2708,7 @@ msgstr "Funções"
 #: /var/azuracast/www/config/forms/webhook/tunein.php:17
 #: /var/azuracast/www/config/forms/webhook/twitter.php:99
 msgid "Web Hook Name"
-msgstr ""
+msgstr "Nome do Hook da Web"
 
 #: /var/azuracast/www/config/forms/webhook/discord.php:19
 #: /var/azuracast/www/config/forms/webhook/generic.php:28
@@ -2877,7 +2877,14 @@ msgid "Steps for configuring a Twitter application:<br>\n"
 "                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
 "                </ol>\n"
 "                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
-msgstr ""
+msgstr "Passos para configurar um aplicativo do Twitter:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>Crie um novo aplicativo no site <a href=\"%s\" target=\"_blank\">Aplicativos do Twitter</a>. \n"
+"                    Usar a URL base desta instalação como URL do aplicativo.</li>\n"
+"                    <li>No aplicativo recém-criado, clique na guia \"Chaves e Tokens de Acesso\".</li>\n"
+"                    <li>Na parte inferior da página, clique em \"Criar meu token de acesso\".</li>\n"
+"                </ol>\n"
+"                <p>Uma vez concluídos estes passos, insira as informações da página \"Chaves e Acesse Tokens\" nos campos abaixo.</p>"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:30
 msgid "Consumer Key (API Key)"
@@ -2897,17 +2904,17 @@ msgstr "Token Secreto de Acesso"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:70
 msgid "Only Send One Tweet Every..."
-msgstr ""
+msgstr "Envie apenas um Tweet a cada..."
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:74
 msgid "No Limit"
-msgstr ""
+msgstr "Sem limite"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:75
 #: /var/azuracast/www/config/forms/webhook/twitter.php:76
 #: /var/azuracast/www/config/forms/webhook/twitter.php:77
 msgid "%d seconds"
-msgstr ""
+msgstr "%d segundos"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:78
 #: /var/azuracast/www/config/forms/webhook/twitter.php:79
@@ -2916,7 +2923,7 @@ msgstr ""
 #: /var/azuracast/www/config/forms/webhook/twitter.php:82
 #: /var/azuracast/www/config/forms/webhook/twitter.php:83
 msgid "%d minutes"
-msgstr ""
+msgstr "%d minutos"
 
 #: /var/azuracast/www/config/forms/webhook/twitter.php:119
 msgid "Message Body"
@@ -2946,13 +2953,13 @@ msgstr "Registros do Sistema"
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:3
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:19
 msgid "Audit Log"
-msgstr ""
+msgstr "Registro de auditoria"
 
 #: /var/azuracast/www/config/menus/admin.php:42
 #: /var/azuracast/www/templates/admin/backups/index.phtml:8
 #: /var/azuracast/www/templates/admin/backups/index.phtml:82
 msgid "Backups"
-msgstr ""
+msgstr "Cópias de Segurança"
 
 #: /var/azuracast/www/config/menus/admin.php:49
 msgid "Users"
@@ -2987,7 +2994,7 @@ msgstr "Campos Personalizados"
 #: /var/azuracast/www/templates/admin/relays/index.phtml:3
 #: /var/azuracast/www/templates/admin/relays/index.phtml:15
 msgid "Connected AzuraRelays"
-msgstr ""
+msgstr "AzuraRelays conectados"
 
 #: /var/azuracast/www/config/menus/station.php:16
 msgid "Start Station"
@@ -3209,7 +3216,7 @@ msgstr "Revogar"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
 msgid "Insert"
-msgstr ""
+msgstr "Inserir"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
@@ -3231,12 +3238,12 @@ msgstr "Excluir"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:42
 msgid "Update"
-msgstr ""
+msgstr "Atualização"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:58
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:59
 msgid "Changes"
-msgstr ""
+msgstr "Alterar"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:83
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
@@ -3279,11 +3286,11 @@ msgstr "Usuário"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:44
 msgid "Identifier"
-msgstr ""
+msgstr "Identificador"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
 msgid "Target"
-msgstr ""
+msgstr "Destino"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:46
 #: /var/azuracast/www/templates/admin/backups/index.phtml:99
@@ -3306,79 +3313,79 @@ msgstr "Ações"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:71
 msgid "Field"
-msgstr ""
+msgstr "Campo"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:72
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:73
 msgid "Updated"
-msgstr ""
+msgstr "Atualizado"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:22
 #: /var/azuracast/www/templates/admin/backups/index.phtml:50
 msgid "Automatic Backups"
-msgstr ""
+msgstr "Backup automático"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:29
 #: /var/azuracast/www/templates/admin/index/index.phtml:78
 msgid "Last run: %s"
-msgstr ""
+msgstr "Última execução: %s"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:31
 msgid "Never run"
-msgstr ""
+msgstr "Nunca enviar"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:38
 #: /var/azuracast/www/templates/admin/backups/index.phtml:57
 msgid "Configure"
-msgstr ""
+msgstr "Configuração"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:43
 #: /var/azuracast/www/templates/admin/backups/index.phtml:130
 msgid "Most Recent Backup Log"
-msgstr ""
+msgstr "Log de Backup mais recente"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:64
 msgid "Restoring Backups"
-msgstr ""
+msgstr "Restaurar Backup"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:67
 msgid "To restore a backup from your host computer, run:"
-msgstr ""
+msgstr "Para restaurar um backup do seu computador de host, execute:"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:75
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
-msgstr ""
+msgstr "Note que a restauração de um backup irá limpar seu banco de dados existente. Nunca restaurar arquivos de backup de usuários não confiáveis."
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:100
 msgid "Backup"
-msgstr ""
+msgstr "Cópia de Segurança"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:101
 msgid "Last Modified"
-msgstr ""
+msgstr "Última modificação"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:110
 msgid "Download"
-msgstr ""
+msgstr "Fazer download"
 
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 msgid "Delete backup \"%s\"?"
-msgstr ""
+msgstr "Excluir backup \"%s?"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:20
 msgid "Backups Home"
-msgstr ""
+msgstr "Tempo de Backup"
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:25
 msgid "Backup was run successfully."
-msgstr ""
+msgstr "Backup restaurado com sucesso."
 
 #: /var/azuracast/www/templates/admin/backups/run.phtml:27
 msgid "Backup encountered errors when running. Check the log below for details."
-msgstr ""
+msgstr "O backup encontrou erros durante a execução. Verifique o log abaixo para mais detalhes."
 
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
 msgid "Delete custom field \"%s\"?"

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-28 13:40\n"
+"PO-Revision-Date: 2019-12-28 13:50\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -1455,67 +1455,67 @@ msgstr "Banda"
 
 #: /var/azuracast/www/config/forms/custom_field.php:45
 msgid "Bpm"
-msgstr ""
+msgstr "Bpm"
 
 #: /var/azuracast/www/config/forms/custom_field.php:46
 msgid "Comment"
-msgstr ""
+msgstr "Comentário"
 
 #: /var/azuracast/www/config/forms/custom_field.php:47
 msgid "Commercial Frame"
-msgstr ""
+msgstr "Moldura Comercial"
 
 #: /var/azuracast/www/config/forms/custom_field.php:48
 msgid "Commercial Information"
-msgstr ""
+msgstr "Informações Comerciais"
 
 #: /var/azuracast/www/config/forms/custom_field.php:49
 msgid "Composer"
-msgstr ""
+msgstr "Compositor"
 
 #: /var/azuracast/www/config/forms/custom_field.php:50
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Ordem do Compositor"
 
 #: /var/azuracast/www/config/forms/custom_field.php:51
 msgid "Conductor"
-msgstr ""
+msgstr "Condutor"
 
 #: /var/azuracast/www/config/forms/custom_field.php:52
 msgid "Content Group Description"
-msgstr ""
+msgstr "Descrição do Grupo de Conteúdo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:53
 msgid "Copyright"
-msgstr ""
+msgstr "Direitos autorais"
 
 #: /var/azuracast/www/config/forms/custom_field.php:54
 msgid "Copyright Message"
-msgstr ""
+msgstr "Mensagem de Direitos Autorais"
 
 #: /var/azuracast/www/config/forms/custom_field.php:55
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: /var/azuracast/www/config/forms/custom_field.php:56
 msgid "Encoded By"
-msgstr ""
+msgstr "Codificado por"
 
 #: /var/azuracast/www/config/forms/custom_field.php:57
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Configurações do Codificador"
 
 #: /var/azuracast/www/config/forms/custom_field.php:58
 msgid "Encoding Time"
-msgstr ""
+msgstr "Tempo de codificação"
 
 #: /var/azuracast/www/config/forms/custom_field.php:59
 msgid "Encrypted Meta Frame"
-msgstr ""
+msgstr "Meta Frame criptografado"
 
 #: /var/azuracast/www/config/forms/custom_field.php:60
 msgid "Encryption Method Registration"
-msgstr ""
+msgstr "Registro de Método de Criptografia"
 
 #: /var/azuracast/www/config/forms/custom_field.php:61
 msgid "Equalisation"
@@ -1527,15 +1527,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:63
 msgid "Featured Artist"
-msgstr ""
+msgstr "Artista em Destaque"
 
 #: /var/azuracast/www/config/forms/custom_field.php:64
 msgid "File Owner"
-msgstr ""
+msgstr "Proprietário do Arquivo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:65
 msgid "File Type"
-msgstr ""
+msgstr "Tipo de arquivo"
 
 #: /var/azuracast/www/config/forms/custom_field.php:66
 msgid "General Encapsulated Object"
@@ -1556,15 +1556,15 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:70
 msgid "Internet Radio Station Name"
-msgstr ""
+msgstr "Nome da Estação de Rádio da Internet"
 
 #: /var/azuracast/www/config/forms/custom_field.php:71
 msgid "Internet Radio Station Owner"
-msgstr ""
+msgstr "Proprietário da Estação de Rádio da Internet"
 
 #: /var/azuracast/www/config/forms/custom_field.php:72
 msgid "Involved People List"
-msgstr ""
+msgstr "Lista de Pessoas Envolvidas"
 
 #: /var/azuracast/www/config/forms/custom_field.php:73
 msgid "ISRC"
@@ -1583,7 +1583,7 @@ msgstr "Duração"
 
 #: /var/azuracast/www/config/forms/custom_field.php:76
 msgid "Linked Information"
-msgstr ""
+msgstr "Informações vinculadas"
 
 #: /var/azuracast/www/config/forms/custom_field.php:77
 msgid "Lyricist"
@@ -1591,7 +1591,7 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:78
 msgid "Media Type"
-msgstr ""
+msgstr "Tipo de mídia"
 
 #: /var/azuracast/www/config/forms/custom_field.php:79
 msgid "Mood"
@@ -1611,11 +1611,11 @@ msgstr ""
 
 #: /var/azuracast/www/config/forms/custom_field.php:83
 msgid "Original Album"
-msgstr ""
+msgstr "Álbum original"
 
 #: /var/azuracast/www/config/forms/custom_field.php:84
 msgid "Original Artist"
-msgstr ""
+msgstr "Artista Original"
 
 #: /var/azuracast/www/config/forms/custom_field.php:85
 msgid "Original Filename"
@@ -3393,15 +3393,15 @@ msgstr "Excluir campo personalizado \"%s\"?"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:37
 msgid "Server Status"
-msgstr ""
+msgstr "Status do Servidor"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:44
 msgid "Current CPU Load"
-msgstr ""
+msgstr "Carga atual da CPU"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:52
 msgid "15-Minute CPU Load Average"
-msgstr ""
+msgstr "Média de carga da CPU de 15 minutos"
 
 #: /var/azuracast/www/templates/admin/index/index.phtml:63
 msgid "%s of %s Used"
@@ -3445,19 +3445,19 @@ msgstr "Global"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:20
 msgid "Relay"
-msgstr ""
+msgstr "Retransmissão"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:21
 msgid "Is Public"
-msgstr ""
+msgstr "Definir como Público"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:22
 msgid "First Connected"
-msgstr ""
+msgstr "Primeiro Conectado"
 
 #: /var/azuracast/www/templates/admin/relays/index.phtml:23
 msgid "Latest Update"
-msgstr ""
+msgstr "Últimas Atualizações"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
@@ -3466,7 +3466,7 @@ msgstr "Gerenciar estações"
 #: /var/azuracast/www/templates/admin/stations/index.phtml:10
 #: /var/azuracast/www/templates/frontend/index/index.phtml:104
 msgid "Add Station"
-msgstr ""
+msgstr "Adicionar Estação"
 
 #: /var/azuracast/www/templates/admin/stations/index.phtml:21
 msgid "Station"
@@ -3510,18 +3510,18 @@ msgstr "Bem vindo ao %s!"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:34
 msgid "name@example.com"
-msgstr ""
+msgstr "nome@exemplo.com"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:41
 msgid "Enter your password"
-msgstr ""
+msgstr "Digite sua senha"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:43
 #: /var/azuracast/www/templates/frontend/account/login.phtml:44
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:22
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:23
 msgid "Sign in"
-msgstr ""
+msgstr "Login"
 
 #: /var/azuracast/www/templates/frontend/account/login.phtml:48
 msgid "Please log in to continue."
@@ -3554,7 +3554,8 @@ msgstr "Minhas Chaves API"
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
 msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
 "            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
-msgstr ""
+msgstr "Chaves API podem ser usadas para acessar algumas funcionalidades do sistema sem precisar fazer login. Todas as chaves \n"
+"            que você cria para compartilhar suas permissões no sistema. Para obter mais informações, consulte a documentação <a href=\"%s\">API</a>."
 
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
 msgid "Key Identifier"
@@ -3599,7 +3600,7 @@ msgstr "Dashboard"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "AzuraCast Usuário"
 
 #: /var/azuracast/www/templates/frontend/index/index.phtml:50
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:2
@@ -3657,7 +3658,7 @@ msgstr "Para verificar se o código foi configurado corretamente, digite o códi
 
 #: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
 msgid "QR-Code"
-msgstr ""
+msgstr "QR-Code"
 
 #: /var/azuracast/www/templates/frontend/profile/index.phtml:58
 msgid "Customize"

@@ -1,3 +1,6 @@
 files:
   - source: /resources/locale/default.pot
     translation: /resources/locale/%locale_with_underscore%.UTF-8/LC_MESSAGES/default.po
+
+  - source: /resources/locale/frontend.pot
+    translation: /resources/locale/%locale_with_underscore%.UTF-8/LC_MESSAGES/frontend.po

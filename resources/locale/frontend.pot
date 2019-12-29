@@ -9,21 +9,6 @@ msgstr ""
 msgid "# Songs"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:97
-msgid ""
-"<translate>\n"
-"                        Control how this playlist is handled by the AutoDJ software.\n"
-"                    </translate>\n"
-"                    <br>\n"
-"                    <b>\n"
-"                        <translate>Warning</translate>\n"
-"                        :</b>\n"
-"                    <translate>\n"
-"                        These functions are internal to Liquidsoap and will affect how your AutoDJ works.\n"
-"                    </translate>\n"
-"                </br>"
-msgstr ""
-
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:13
 msgid "A playlist containing media files hosted on this server."
 msgstr ""
@@ -290,6 +275,7 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
+#: ./vue/InlinePlayer.vue:20
 #: ./vue/RadioPlayer.vue:336
 msgid "Full Volume"
 msgstr ""
@@ -440,6 +426,7 @@ msgstr ""
 msgid "MP3"
 msgstr ""
 
+#: ./vue/InlinePlayer.vue:10
 #: ./vue/RadioPlayer.vue:330
 msgid "Mute"
 msgstr ""
@@ -523,7 +510,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: ./vue/InlinePlayer.vue:9
+#: ./vue/InlinePlayer.vue:4
 #: ./vue/RadioPlayer.vue:327
 msgid "Pause"
 msgstr ""
@@ -929,7 +916,7 @@ msgstr ""
 msgid "View tracks in playlist"
 msgstr ""
 
-#: ./vue/InlinePlayer.vue:72
+#: ./vue/InlinePlayer.vue:81
 #: ./vue/RadioPlayer.vue:333
 msgid "Volume"
 msgstr ""

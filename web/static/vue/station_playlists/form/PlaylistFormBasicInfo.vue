@@ -95,7 +95,7 @@
                     <template v-slot:label v-translate>
                         AutoDJ Scheduling Options
                     </template>
-                    <template v-slot:description v-translate>
+                    <template v-slot:description>
                         <translate>
                             Control how this playlist is handled by the AutoDJ software.
                         </translate>
@@ -220,31 +220,31 @@
 </template>
 
 <script>
-  export default {
-    name: 'PlaylistEditBasicInfo',
-    props: {
-      form: Object
-    },
-    data () {
-      let weightOptions = [
-        { value: 1, text: '1 - ' + this.$gettext('Low') },
-        { value: 2, text: '2' },
-        { value: 3, text: '3 - ' + this.$gettext('Default') },
-        { value: 4, text: '4' },
-        { value: 5, text: '5 - ' + this.$gettext('High') }
-      ]
-      for (var i = 6; i <= 25; i++) {
-        weightOptions.push({ value: i, text: i })
-      }
+    export default {
+        name: 'PlaylistEditBasicInfo',
+        props: {
+            form: Object
+        },
+        data () {
+            let weightOptions = [
+                { value: 1, text: '1 - ' + this.$gettext('Low') },
+                { value: 2, text: '2' },
+                { value: 3, text: '3 - ' + this.$gettext('Default') },
+                { value: 4, text: '4' },
+                { value: 5, text: '5 - ' + this.$gettext('High') }
+            ]
+            for (var i = 6; i <= 25; i++) {
+                weightOptions.push({ value: i, text: i })
+            }
 
-      return {
-        weightOptions: weightOptions
-      }
-    },
-    computed: {
-      langTabTitle () {
-        return this.$gettext('Basic Info')
-      }
+            return {
+                weightOptions: weightOptions
+            }
+        },
+        computed: {
+            langTabTitle () {
+                return this.$gettext('Basic Info')
+            }
+        }
     }
-  }
 </script>

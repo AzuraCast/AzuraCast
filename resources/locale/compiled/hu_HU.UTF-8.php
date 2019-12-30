@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-11-23T21:40:24+00:00
-PO-Revision-Date: 2019-12-28 17:56
+PO-Revision-Date: 2019-12-30 04:39
 Language: hu_HU
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast

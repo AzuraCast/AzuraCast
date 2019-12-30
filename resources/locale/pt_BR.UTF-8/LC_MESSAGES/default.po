@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-28 17:56\n"
+"PO-Revision-Date: 2019-12-30 04:39\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -144,7 +144,7 @@ msgstr "Configurações AzuraCast"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:18
 msgid "Setting Key"
-msgstr ""
+msgstr "Chave de configuração"
 
 #: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:19
 msgid "Setting Value"
@@ -160,7 +160,7 @@ msgstr "Local importado: %s"
 
 #: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:33
 msgid "Locales imported."
-msgstr ""
+msgstr "Traduções importadas."
 
 #: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:21
 msgid "Configuration already set up."
@@ -220,7 +220,7 @@ msgstr "Gerando Classes de Proxy do Banco de Dados"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:60
 msgid "Installing Data Fixtures"
-msgstr ""
+msgstr "Instalando Instalações de Dados"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:66
 msgid "Reload System Data"
@@ -244,7 +244,7 @@ msgstr "Visite %s para concluir a configuração."
 
 #: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:89
 msgid "Fixtures loaded."
-msgstr ""
+msgstr "Instalações carregadas."
 
 #: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:21
 msgid "Database created."

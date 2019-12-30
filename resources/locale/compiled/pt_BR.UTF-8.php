@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2019-11-23T21:40:24+00:00
-PO-Revision-Date: 2019-12-28 17:56
+PO-Revision-Date: 2019-12-30 04:39
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -149,7 +149,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Setting Key' => 
       array (
-        0 => '',
+        0 => 'Chave de configuração',
       ),
       'Setting Value' => 
       array (
@@ -165,7 +165,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Locales imported.' => 
       array (
-        0 => '',
+        0 => 'Traduções importadas.',
       ),
       'Configuration already set up.' => 
       array (
@@ -225,7 +225,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Installing Data Fixtures' => 
       array (
-        0 => '',
+        0 => 'Instalando Instalações de Dados',
       ),
       'Reload System Data' => 
       array (
@@ -249,7 +249,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Fixtures loaded.' => 
       array (
-        0 => '',
+        0 => 'Instalações carregadas.',
       ),
       'Database created.' => 
       array (

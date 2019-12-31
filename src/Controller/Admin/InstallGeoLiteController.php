@@ -4,8 +4,7 @@ namespace App\Controller\Admin;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Frontend\SHOUTcast;
-use App\Settings;
+use App\Service\GeoLite;
 use Azura\Config;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -13,23 +12,25 @@ use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Process\Process;
 use const UPLOAD_ERR_OK;
 
-class InstallShoutcastController
+class InstallGeoLiteController
 {
     protected array $form_config;
 
-    public function __construct(Config $config)
+    protected GeoLite $geoLite;
+
+    public function __construct(Config $config, GeoLite $geoLite)
     {
-        $this->form_config = $config->get('forms/install_shoutcast');
+        $this->form_config = $config->get('forms/install_geolite');
+        $this->geoLite = $geoLite;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $form_config = $this->form_config;
 
-        $version = SHOUTcast::getVersion();
-
+        $version = $this->geoLite->getVersion();
         if (null !== $version) {
-            $form_config['groups'][0]['elements']['current_version'][1]['markup'] = '<p class="text-success">' . __('SHOUTcast version "%s" is currently installed.',
+            $form_config['groups'][0]['elements']['current_version'][1]['markup'] = '<p class="text-success">' . __('GeoLite version "%s" is currently installed.',
                     $version) . '</p>';
         }
 
@@ -37,29 +38,30 @@ class InstallShoutcastController
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             try {
-                $sc_base_dir = Settings::getInstance()->getParentDirectory() . '/servers/shoutcast2';
+                $baseDir = dirname($this->geoLite->getDatabasePath());
 
                 $files = $request->getUploadedFiles();
                 /** @var UploadedFileInterface $import_file */
                 $import_file = $files['binary'];
 
                 if (UPLOAD_ERR_OK === $import_file->getError()) {
-                    $sc_tgz_path = $sc_base_dir . '/sc_serv.tar.gz';
-                    if (file_exists($sc_tgz_path)) {
-                        unlink($sc_tgz_path);
+                    $tgzPath = $baseDir . '/maxmind.tar.gz';
+                    if (file_exists($tgzPath)) {
+                        unlink($tgzPath);
                     }
 
-                    $import_file->moveTo($sc_tgz_path);
+                    $import_file->moveTo($tgzPath);
 
                     $process = new Process([
                         'tar',
                         'xvzf',
-                        $sc_tgz_path,
-                    ], $sc_base_dir);
+                        $tgzPath,
+                        '--strip-components=1',
+                    ], $baseDir);
 
                     $process->mustRun();
 
-                    unlink($sc_tgz_path);
+                    unlink($tgzPath);
                 }
 
                 return $response->withRedirect($request->getUri()->getPath());
@@ -73,7 +75,7 @@ class InstallShoutcastController
         return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => __('Install SHOUTcast'),
+            'title' => __('Install GeoLite IP Database'),
         ]);
     }
 }

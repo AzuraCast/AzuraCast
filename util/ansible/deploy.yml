@@ -24,7 +24,6 @@
     - mariadb
     - azuracast-db-install
     - ufw
-    - maxmind
     - composer
     - influxdb
     - services

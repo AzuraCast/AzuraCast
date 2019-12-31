@@ -18,11 +18,10 @@
     - { role: mariadb, when: update_revision|int < 15 }
     - { role: nginx, when: update_revision|int < 44 }
     - { role: redis, when: update_revision|int < 14 }
-    - { role: php, when: update_revision|int < 46 }
+    - { role: php, when: update_revision|int < 47 }
     - composer
     - { role: influxdb, when: update_revision|int < 10 }
     - { role: ufw, when: update_revision|int < 12 }
-    - { role: maxmind, when: update_revision|int < 24 }
     - { role: services, when: update_revision|int < 13 }
     - { role: azuracast-cron, when: update_revision|int < 41 }
     - azuracast-setup

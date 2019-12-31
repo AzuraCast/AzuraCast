@@ -32,7 +32,7 @@ else
 fi
 
 APP_ENV="${APP_ENV:-production}"
-UPDATE_REVISION="${UPDATE_REVISION:-46}"
+UPDATE_REVISION="${UPDATE_REVISION:-47}"
 
 echo "Updating AzuraCast (Environment: $APP_ENV, Update revision: $UPDATE_REVISION)"
 

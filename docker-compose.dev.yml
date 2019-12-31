@@ -37,6 +37,7 @@ services:
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
+      - geolite_install:/var/azuracast/geoip
       - backups:/var/azuracast/backups
     restart: always
     ulimits: &default-ulimits
@@ -141,6 +142,7 @@ volumes:
   influx_data: {}
   station_data: {}
   shoutcast2_install: {}
+  geolite_install: {}
   tmp_data: {}
   redis_data: {}
   backups: {}

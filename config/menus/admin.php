@@ -5,7 +5,7 @@
 
 use App\Acl;
 
-return function(\App\Event\BuildAdminMenu $e) {
+return function (\App\Event\BuildAdminMenu $e) {
     $router = $e->getRouter();
 
     $e->merge([
@@ -42,7 +42,7 @@ return function(\App\Event\BuildAdminMenu $e) {
                     'label' => __('Backups'),
                     'url' => $router->named('admin:backups:index'),
                     'permission' => Acl::GLOBAL_BACKUPS,
-                ]
+                ],
             ],
         ],
         'users' => [
@@ -85,7 +85,12 @@ return function(\App\Event\BuildAdminMenu $e) {
                     'url' => $router->named('admin:install:shoutcast'),
                     'permission' => Acl::GLOBAL_ALL,
                 ],
+                'geolite' => [
+                    'label' => __('Install GeoLite IP Database'),
+                    'url' => $router->named('admin:install:geolite'),
+                    'permission' => Acl::GLOBAL_ALL,
+                ],
             ],
-        ]
+        ],
     ]);
 };

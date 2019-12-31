@@ -179,10 +179,7 @@ return [
     },
 
     // MaxMind (IP Geolocation database for listener metadata)
-    MaxMind\Db\Reader::class => function (Settings $settings) {
-        $mmdb_path = dirname($settings[Settings::BASE_DIR]) . '/geoip/GeoLite2-City.mmdb';
-        return new MaxMind\Db\Reader($mmdb_path);
-    },
+    App\Service\GeoLite::class => DI\autowire(),
 
     // InfluxDB
     InfluxDB\Database::class => function (Settings $settings) {

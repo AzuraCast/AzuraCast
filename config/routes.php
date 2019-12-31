@@ -23,6 +23,9 @@ return function (App $app) {
             $group->map(['GET', 'POST'], '/shoutcast', Controller\Admin\InstallShoutcastController::class)
                 ->setName('admin:install:shoutcast');
 
+            $group->map(['GET', 'POST'], '/geolite', Controller\Admin\InstallGeoLiteController::class)
+                ->setName('admin:install:geolite');
+
         })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
         $group->get('/auditlog', Controller\Admin\AuditLogController::class)

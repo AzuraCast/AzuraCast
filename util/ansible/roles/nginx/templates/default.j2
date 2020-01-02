@@ -22,6 +22,8 @@ server {
 server {
     listen 80;
     listen 443 default_server ssl;
+    listen [::]:80;
+    listen [::]:443 default_server ssl;
 
     ssl_certificate    /etc/nginx/ssl/server.crt;
     ssl_certificate_key    /etc/nginx/ssl/server.key;

@@ -1,22 +1,17 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Entity;
-use App\Form\EntityFormManager;
+use App\Form\ApiKeyForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Config;
 use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class ApiController extends AbstractAdminCrudController
 {
     public function __construct(
-        Config $config,
-        EntityFormManager $formManager
+        ApiKeyForm $form
     ) {
-        $form = $formManager->getForm(Entity\ApiKey::class, $config->get('forms/api_key'));
-
         parent::__construct($form);
         $this->csrf_namespace = 'admin_api';
     }

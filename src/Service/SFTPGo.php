@@ -71,6 +71,7 @@ class SFTPGo
     public static function isSupported(): bool
     {
         $settings = Settings::getInstance();
-        return $settings->isDockerRevisionNewerThan(7);
+
+        return !$settings->isTesting() && $settings->isDockerRevisionNewerThan(7);
     }
 }

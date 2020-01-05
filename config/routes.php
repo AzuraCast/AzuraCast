@@ -620,6 +620,22 @@ return function (App $app) {
 
         })->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
+        $group->group('/sftp_users', function (RouteCollectorProxy $group) {
+
+            $group->get('', Controller\Stations\SFTPUsersController::class . ':indexAction')
+                ->setName('stations:sftp_users:index');
+
+            $group->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\SFTPUsersController::class . ':editAction')
+                ->setName('stations:sftp_users:edit');
+
+            $group->map(['GET', 'POST'], '/add', Controller\Stations\SFTPUsersController::class . ':editAction')
+                ->setName('stations:sftp_users:add');
+
+            $group->get('/delete/{id}/{csrf}', Controller\Stations\SFTPUsersController::class . ':deleteAction')
+                ->setName('stations:sftp_users:delete');
+
+        })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+
         $group->group('/streamers', function (RouteCollectorProxy $group) {
 
             $group->get('', Controller\Stations\StreamersController::class . ':indexAction')

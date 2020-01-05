@@ -131,8 +131,10 @@ return [
     App\Customization::class => DI\autowire(),
     App\Version::class => DI\autowire(),
     App\Service\AzuraCastCentral::class => DI\autowire(),
-    App\Service\Sentry::class => DI\autowire(),
+    App\Service\GeoLite::class => DI\autowire(),
     App\Service\NChan::class => DI\autowire(),
+    App\Service\Sentry::class => DI\autowire(),
+    App\Service\SFTPGo::class => DI\autowire(),
     App\Validator\Constraints\StationPortCheckerValidator::class => DI\autowire(),
 
     // Message queue manager class
@@ -177,9 +179,6 @@ return [
         $dispatcher->addSubscriber($mq);
         return $mq;
     },
-
-    // MaxMind (IP Geolocation database for listener metadata)
-    App\Service\GeoLite::class => DI\autowire(),
 
     // InfluxDB
     InfluxDB\Database::class => function (Settings $settings) {
@@ -271,6 +270,7 @@ return [
             [ // Every 5 minutes tasks
                 $di->get(App\Sync\Task\Media::class),
                 $di->get(App\Sync\Task\CheckForUpdates::class),
+                $di->get(App\Sync\Task\SyncSFTPUsers::class),
             ],
             [ // Every hour tasks
                 $di->get(App\Sync\Task\Analytics::class),
@@ -292,6 +292,7 @@ return [
     App\Sync\Task\RadioRequests::class => DI\autowire(),
     App\Sync\Task\RelayCleanup::class => DI\autowire(),
     App\Sync\Task\RotateLogs::class => DI\autowire(),
+    App\Sync\Task\SyncSFTPUsers::class => DI\autowire(),
 
     /**
      * Web Hooks
@@ -341,45 +342,15 @@ return [
     App\Notification\Manager::class => DI\autowire(),
 
     /*
-     * Forms
+     * Class Groups
      */
 
-    App\Form\EntityFormManager::class => function (
-        EntityManager $em,
-        Symfony\Component\Serializer\Serializer $serializer,
-        Symfony\Component\Validator\Validator\ValidatorInterface $validator,
-        ContainerInterface $di
-    ) {
-        $custom_forms = [
-            App\Entity\Station::class => $di->get(App\Form\StationForm::class),
-            App\Entity\User::class => $di->get(App\Form\UserForm::class),
-            App\Entity\RolePermission::class => $di->get(App\Form\PermissionsForm::class),
-            App\Entity\Settings::class => $di->get(App\Form\SettingsForm::class),
-            App\Entity\StationPlaylist::class => $di->get(App\Form\StationPlaylistForm::class),
-            App\Entity\StationMount::class => $di->get(App\Form\StationMountForm::class),
-            App\Entity\StationWebhook::class => $di->get(App\Form\StationWebhookForm::class),
-        ];
-
-        return new App\Form\EntityFormManager($em, $serializer, $validator, $custom_forms);
-    },
-
-    App\Form\BackupSettingsForm::class => DI\autowire(),
-    App\Form\BrandingSettingsForm::class => DI\autowire(),
-    App\Form\PermissionsForm::class => DI\autowire(),
-    App\Form\SettingsForm::class => DI\autowire(),
-    App\Form\StationForm::class => DI\autowire(),
-    App\Form\StationCloneForm::class => DI\autowire(),
-    App\Form\StationMountForm::class => DI\autowire(),
-    App\Form\StationPlaylistForm::class => DI\autowire(),
-    App\Form\StationWebhookForm::class => DI\autowire(),
-    App\Form\UserForm::class => DI\autowire(),
-    App\Form\UserProfileForm::class => DI\autowire(),
+    'App\Form\*Form' => DI\autowire(),
+    'App\Entity\Fixture\*' => DI\autowire(),
 
     /*
-     * Controller Groups
+     * Controller Classes
      */
-
-    'App\Entity\Fixture\*' => DI\autowire(),
 
     'App\Controller\Admin\*Controller' => DI\autowire(),
 

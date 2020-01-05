@@ -133,6 +133,12 @@ return function (\App\Event\BuildStationMenu $e) {
             'label' => __('Utilities'),
             'icon' => 'settings',
             'items' => [
+                'sftp_users' => [
+                    'label' => __('SFTP Users'),
+                    'url' => $router->fromHere('stations:sftp_users:index'),
+                    'visible' => \App\Service\SFTPGo::isSupported(),
+                    'permission' => Acl::STATION_MEDIA,
+                ],
                 'automation' => [
                     'label' => __('Automated Assignment'),
                     'url' => $router->fromHere('stations:automation:index'),

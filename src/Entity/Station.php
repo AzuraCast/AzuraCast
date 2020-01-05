@@ -381,6 +381,12 @@ class Station
      */
     protected $webhooks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="SFTPUser", mappedBy="station")
+     * @var Collection
+     */
+    protected $SFTPUsers;
+
     public function __construct()
     {
         $this->history = new ArrayCollection;
@@ -390,6 +396,7 @@ class Station
         $this->remotes = new ArrayCollection;
         $this->webhooks = new ArrayCollection;
         $this->streamers = new ArrayCollection;
+        $this->SFTPUsers = new ArrayCollection;
     }
 
     /**
@@ -1221,6 +1228,14 @@ class Station
     public function getWebhooks(): Collection
     {
         return $this->webhooks;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSFTPUsers(): Collection
+    {
+        return $this->SFTPUsers;
     }
 
     /**

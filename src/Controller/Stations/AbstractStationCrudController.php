@@ -66,7 +66,7 @@ abstract class AbstractStationCrudController
             return null;
         }
 
-        $record = $this->record_repo->findOneBy(['id' => $id, 'station_id' => $station->getId()]);
+        $record = $this->record_repo->findOneBy(['id' => $id, 'station' => $station]);
 
         if (!$record instanceof $this->entity_class) {
             throw new NotFoundException(__('Record not found.'));

@@ -4,20 +4,17 @@ namespace App\Controller\Stations;
 use App\Entity\Station;
 use App\Entity\StationRemote;
 use App\Exception\PermissionDeniedException;
-use App\Form\EntityFormManager;
+use App\Form\StationRemoteForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Config;
 use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class RemotesController extends AbstractStationCrudController
 {
-    public function __construct(EntityFormManager $formManager, Config $config)
+    public function __construct(StationRemoteForm $form)
     {
-        $form = $formManager->getForm(StationRemote::class, $config->get('forms/remote'));
         parent::__construct($form);
-
         $this->csrf_namespace = 'stations_remotes';
     }
 

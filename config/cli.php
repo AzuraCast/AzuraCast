@@ -43,14 +43,9 @@ return function (Application $console) {
     )->setDescription('Send upcoming song feedback from the AutoDJ back to AzuraCast.');
 
     $console->command(
-        'azuracast:internal:ftp-auth',
-        Command\Internal\FtpAuthCommand::class
-    )->setDescription('Authenticate a user for PureFTPD');
-
-    $console->command(
-        'azuracast:internal:ftp-upload path',
-        Command\Internal\FtpUploadCommand::class
-    )->setDescription('Process a file uploaded in PureFTPD');
+        'azuracast:internal:sftp-upload action username path target-path ssh-cmd',
+        Command\Internal\SFtpUploadCommand::class
+    )->setDescription('Process a file uploaded via SFTP');
 
     $console->command(
         'azuracast:internal:nextsong station-id [as-autodj]',

@@ -4,7 +4,7 @@ namespace App\Controller\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\Ftp;
+use App\Service\SFTPGo;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -13,8 +13,7 @@ class FilesController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
-        Ftp $ftp
+        EntityManager $em
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -45,7 +44,7 @@ class FilesController
         }
 
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
-            'ftp_info' => $ftp->getInfo(),
+            'show_sftp' => SFTPGo::isSupported(),
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
             'space_used' => $station->getStorageUsed(),

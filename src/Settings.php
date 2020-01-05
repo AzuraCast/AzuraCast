@@ -21,5 +21,13 @@ class Settings extends \Azura\Settings
         return $this->getParentDirectory() . '/stations';
     }
 
+    public function isDockerRevisionNewerThan(int $version): bool
+    {
+        if (!$this->isDocker()) {
+            return false;
+        }
 
+        $compareVersion = (int)$this->get(self::DOCKER_REVISION, 0);
+        return ($compareVersion >= $version);
+    }
 }

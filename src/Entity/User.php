@@ -12,7 +12,6 @@ use OpenApi\Annotations as OA;
 use OTPHP\Factory;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use const PASSWORD_ARGON2I;
 use const PASSWORD_BCRYPT;
 
 /**
@@ -235,8 +234,8 @@ class User
      */
     protected function _getPasswordAlgorithm(): array
     {
-        if (defined('PASSWORD_ARGON2I')) {
-            return [PASSWORD_ARGON2I, []];
+        if (defined('PASSWORD_ARGON2ID')) {
+            return [PASSWORD_ARGON2ID, []];
         }
 
         return [PASSWORD_BCRYPT, []];

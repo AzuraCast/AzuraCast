@@ -3,11 +3,10 @@ namespace App\Controller\Stations;
 
 use App\Entity;
 use App\Exception\StationUnsupportedException;
-use App\Form\EntityFormManager;
+use App\Form\StationStreamerForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
-use Azura\Config;
 use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,12 +17,10 @@ class StreamersController extends AbstractStationCrudController
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityFormManager $formManager,
-        Config $config,
+        StationStreamerForm $form,
         AzuraCastCentral $ac_central,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $form = $formManager->getForm(Entity\StationStreamer::class, $config->get('forms/streamer'));
         parent::__construct($form);
 
         $this->ac_central = $ac_central;

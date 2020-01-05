@@ -25,30 +25,31 @@ $assets
             <div class="card-header bg-primary-dark">
                 <div class="row align-items-center">
                     <div class="col-md-7">
-                        <h2 class="card-title"><?= __('Music Files') ?></h2>
+                        <h2 class="card-title"><?=__('Music Files')?></h2>
                     </div>
                     <div class="col-md-5 text-right">
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="<?= $space_percent ?>"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: <?= $space_percent ?>%;">
-                                <span class="sr-only"><?= $space_percent ?>%</span>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent?>"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent?>%;">
+                                <span class="sr-only"><?=$space_percent?>%</span>
                             </div>
                         </div>
-                        <?= __('%s of %s Used (%d Files)', $space_used, $space_total, $files_count) ?>
+                        <?=__('%s of %s Used (%d Files)', $space_used, $space_total, $files_count)?>
                     </div>
                 </div>
             </div>
-            <?php if ($ftp_info): ?>
+            <?php if ($show_sftp): ?>
                 <div class="card-body alert-info d-flex align-items-center" role="alert">
                     <div class="flex-shrink-0 mr-2">
                         <i class="material-icons" aria-hidden="true">info</i>
                     </div>
                     <div class="flex-fill">
                         <p class="mb-0">
-                            <?= __('You can also upload files in bulk via FTP.') ?><br>
-                            <button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#ftpinfo">
-                                <?= __('View connection instructions') ?>
-                            </button>
+                            <?=__('You can also upload files in bulk via SFTP.')?><br>
+                            <a class="btn btn-link p-0" target="_blank"
+                               href="<?=$router->fromHere('stations:sftp_users:index')?>">
+                                <?=__('Manage SFTP Accounts')?>
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -58,71 +59,3 @@ $assets
         </div>
     </div>
 </div>
-
-<?php if ($ftp_info): ?>
-    <div id="ftpinfo" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><?= __('FTP Connection Information') ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="40%">
-                            <col width="60%">
-                        </colgroup>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <?= __('Server') ?>
-                            </td>
-                            <td>
-                                <?= $ftp_info['url'] ?><br>
-                                <small><?= __('You may need to connect directly via your IP address, which is <code>%s</code>.',
-                                        $ftp_info['ip']) ?></small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <?= __('Port') ?>
-                            </td>
-                            <td>
-                                <?= $ftp_info['port'] ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <?= __('Protocol') ?>
-                            </td>
-                            <td>
-                                <?= __('FTP with Explicit TLS (FTPS)') ?><br>
-                                <small><?= __('Unencrypted FTP is also allowed, but not recommended.') ?></small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <?= __('Username') ?>
-                            </td>
-                            <td>
-                                <?= __('Your AzuraCast E-mail Address') ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <?= __('Password') ?>
-                            </td>
-                            <td>
-                                <?= __('Your AzuraCast Password') ?>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>

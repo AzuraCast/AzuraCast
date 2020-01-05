@@ -20,8 +20,7 @@ services:
     ports:
       - '${AZURACAST_HTTP_PORT:-80}:80'
       - '${AZURACAST_HTTPS_PORT:-443}:443'
-      - '${AZURACAST_FTP_PORT:-21}:21'
-      - '30000-30049:30000-30049' # FTP PASV support
+      - '${AZURACAST_SFTP_PORT:-2022}:2022'
     depends_on:
       - mariadb
       - influxdb
@@ -30,8 +29,8 @@ services:
     env_file: azuracast.env
     environment: &default-environment
       LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 6
-      AZURACAST_FTP_PORT: ${AZURACAST_FTP_PORT:-21}
+      AZURACAST_DC_REVISION: 7
+      AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
     volumes:
       - letsencrypt:/etc/letsencrypt
       - www_data:/var/azuracast/www
@@ -39,6 +38,7 @@ services:
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
       - geolite_install:/var/azuracast/geoip
+      - sftpgo_data:/var/azuracast/sftpgo/persist
       - backups:/var/azuracast/backups
     restart: always
     ulimits: &default-ulimits
@@ -247,6 +247,7 @@ volumes:
   letsencrypt: {}
   shoutcast2_install: {}
   geolite_install: {}
+  sftpgo_data: {}
   station_data: {}
   tmp_data: {}
   www_data: {}

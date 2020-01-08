@@ -4,7 +4,7 @@ namespace App\Controller\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\SFTPGo;
+use App\Service\SftpGo;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -44,7 +44,7 @@ class FilesController
         }
 
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
-            'show_sftp' => SFTPGo::isSupported(),
+            'show_sftp' => SftpGo::isSupported(),
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
             'space_used' => $station->getStorageUsed(),

@@ -134,7 +134,7 @@ return [
     App\Service\GeoLite::class => DI\autowire(),
     App\Service\NChan::class => DI\autowire(),
     App\Service\Sentry::class => DI\autowire(),
-    App\Service\SFTPGo::class => DI\autowire(),
+    App\Service\SftpGo::class => DI\autowire(),
     App\Validator\Constraints\StationPortCheckerValidator::class => DI\autowire(),
 
     // Message queue manager class
@@ -270,7 +270,6 @@ return [
             [ // Every 5 minutes tasks
                 $di->get(App\Sync\Task\Media::class),
                 $di->get(App\Sync\Task\CheckForUpdates::class),
-                $di->get(App\Sync\Task\SyncSFTPUsers::class),
             ],
             [ // Every hour tasks
                 $di->get(App\Sync\Task\Analytics::class),
@@ -292,7 +291,6 @@ return [
     App\Sync\Task\RadioRequests::class => DI\autowire(),
     App\Sync\Task\RelayCleanup::class => DI\autowire(),
     App\Sync\Task\RotateLogs::class => DI\autowire(),
-    App\Sync\Task\SyncSFTPUsers::class => DI\autowire(),
 
     /**
      * Web Hooks

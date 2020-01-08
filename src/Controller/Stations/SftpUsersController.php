@@ -2,19 +2,19 @@
 namespace App\Controller\Stations;
 
 use App\Exception\StationUnsupportedException;
-use App\Form\SFTPUserForm;
+use App\Form\SftpUserForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
-use App\Service\SFTPGo;
+use App\Service\SftpGo;
 use Azura\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
-class SFTPUsersController extends AbstractStationCrudController
+class SftpUsersController extends AbstractStationCrudController
 {
     protected AzuraCastCentral $ac_central;
 
-    public function __construct(SFTPUserForm $form, AzuraCastCentral $ac_central)
+    public function __construct(SftpUserForm $form, AzuraCastCentral $ac_central)
     {
         parent::__construct($form);
 
@@ -24,7 +24,7 @@ class SFTPUsersController extends AbstractStationCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        if (!SFTPGo::isSupported()) {
+        if (!SftpGo::isSupported()) {
             throw new StationUnsupportedException(__('This feature is not currently supported on this station.'));
         }
 

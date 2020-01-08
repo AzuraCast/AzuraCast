@@ -382,7 +382,7 @@ class Station
     protected $webhooks;
 
     /**
-     * @ORM\OneToMany(targetEntity="SFTPUser", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="SftpUser", mappedBy="station")
      * @var Collection
      */
     protected $SFTPUsers;

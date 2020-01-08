@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SFtpUploadCommand extends CommandAbstract
+class SftpUploadCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
@@ -28,13 +28,13 @@ class SFtpUploadCommand extends CommandAbstract
         $logger->info('SFTP file uploaded', ['path' => $path]);
 
         // Determine which station the username belongs to.
-        $userRepo = $em->getRepository(Entity\SFTPUser::class);
+        $userRepo = $em->getRepository(Entity\SftpUser::class);
 
         $sftpUser = $userRepo->findOneBy([
             'username' => $username,
         ]);
 
-        if (!$sftpUser instanceof Entity\SFTPUser) {
+        if (!$sftpUser instanceof Entity\SftpUser) {
             $logger->error('SFTP Username not found.', ['username' => $username]);
             return;
         }

@@ -136,7 +136,7 @@ return function (\App\Event\BuildStationMenu $e) {
                 'sftp_users' => [
                     'label' => __('SFTP Users'),
                     'url' => $router->fromHere('stations:sftp_users:index'),
-                    'visible' => \App\Service\SFTPGo::isSupported(),
+                    'visible' => \App\Service\SftpGo::isSupported(),
                     'permission' => Acl::STATION_MEDIA,
                 ],
                 'automation' => [

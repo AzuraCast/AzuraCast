@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Auditable()
  */
-class SFTPUser
+class SftpUser
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -86,19 +86,10 @@ class SFTPUser
         return '';
     }
 
-    public function getHashedPassword(): string
-    {
-        return $this->password;
-    }
-
     public function setPassword(?string $password): void
     {
         if (!empty($password)) {
-            $this->password = password_hash($password, \PASSWORD_ARGON2ID, [
-                'memory_cost' => 65535,
-                'time_cost' => 3,
-                'threads' => 2,
-            ]);
+            $this->password = password_hash($password, \PASSWORD_ARGON2ID);
         }
     }
 
@@ -111,7 +102,7 @@ class SFTPUser
     {
         $pubKeysRaw = trim($this->publicKeys);
         if (!empty($pubKeysRaw)) {
-            return explode("\n", $pubKeysRaw);
+            return array_filter(array_map('trim', explode("\n", $pubKeysRaw)));
         }
 
         return [];
@@ -120,5 +111,19 @@ class SFTPUser
     public function setPublicKeys(?string $publicKeys): void
     {
         $this->publicKeys = $publicKeys;
+    }
+
+    public function authenticate(?string $password = null, ?string $pubKey = null): bool
+    {
+        if (!empty($password)) {
+            return password_verify($password, $this->password);
+        }
+
+        if (!empty($pubKey)) {
+            $pubKeys = $this->getPublicKeysArray();
+            return in_array($pubKey, $pubKeys, true);
+        }
+
+        return false;
     }
 }

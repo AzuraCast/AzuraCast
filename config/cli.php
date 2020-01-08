@@ -44,8 +44,13 @@ return function (Application $console) {
 
     $console->command(
         'azuracast:internal:sftp-upload action username path target-path ssh-cmd',
-        Command\Internal\SFtpUploadCommand::class
+        Command\Internal\SftpUploadCommand::class
     )->setDescription('Process a file uploaded via SFTP');
+
+    $console->command(
+        'azuracast:internal:sftp-auth',
+        Command\Internal\SftpAuthCommand::class
+    )->setDescription('Attempt SFTP authentication');
 
     $console->command(
         'azuracast:internal:nextsong station-id [as-autodj]',

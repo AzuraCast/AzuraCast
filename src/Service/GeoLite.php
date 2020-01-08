@@ -14,11 +14,18 @@ class GeoLite
     public function __construct(Settings $settings)
     {
         $this->settings = $settings;
+    }
 
-        $mmdbPath = $this->getDatabasePath();
-        if (file_exists($mmdbPath)) {
-            $this->reader = new Reader($mmdbPath);
+    protected function getReader(): ?Reader
+    {
+        if (null === $this->reader) {
+            $mmdbPath = $this->getDatabasePath();
+            if (file_exists($mmdbPath)) {
+                $this->reader = new Reader($mmdbPath);
+            }
         }
+
+        return $this->reader;
     }
 
     public function getDatabasePath(): string
@@ -28,11 +35,11 @@ class GeoLite
 
     public function getVersion(): ?string
     {
-        if (null === $this->reader) {
+        if (null === ($reader = $this->getReader())) {
             return null;
         }
 
-        $metadata = $this->reader->metadata();
+        $metadata = $reader->metadata();
 
         $buildDate = Chronos::createFromTimestampUTC($metadata->buildEpoch);
         return $metadata->databaseType . ' (' . $buildDate->format('Y-m-d') . ')';
@@ -40,7 +47,7 @@ class GeoLite
 
     public function getLocationInfo(string $ip, string $locale): array
     {
-        if (null === $this->reader) {
+        if (null === ($reader = $this->getReader())) {
             return [
                 'status' => 'error',
                 'message' => 'GeoLite database not configured for this installation. See System Administration for instructions.',
@@ -48,7 +55,7 @@ class GeoLite
         }
 
         try {
-            $ipInfo = $this->reader->get($ip);
+            $ipInfo = $reader->get($ip);
         } catch (\Exception $e) {
             return [
                 'status' => 'error',

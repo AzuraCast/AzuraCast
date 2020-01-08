@@ -276,6 +276,7 @@ return [
                 $di->get(App\Sync\Task\RadioAutomation::class),
                 $di->get(App\Sync\Task\HistoryCleanup::class),
                 $di->get(App\Sync\Task\RotateLogs::class),
+                $di->get(App\Sync\Task\UpdateGeoLiteDatabase::class),
             ]
         );
     },
@@ -291,6 +292,7 @@ return [
     App\Sync\Task\RadioRequests::class => DI\autowire(),
     App\Sync\Task\RelayCleanup::class => DI\autowire(),
     App\Sync\Task\RotateLogs::class => DI\autowire(),
+    App\Sync\Task\UpdateGeoLiteDatabase::class => DI\autowire(),
 
     /**
      * Web Hooks

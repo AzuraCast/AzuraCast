@@ -66,6 +66,9 @@ class Settings
     public const BACKUP_LAST_RESULT = 'backup_last_result';
     public const BACKUP_LAST_OUTPUT = 'backup_last_output';
 
+    public const GEOLITE_LICENSE_KEY = 'geolite_license_key';
+    public const GEOLITE_LAST_RUN = 'geolite_last_run';
+
     /**
      * @ORM\Column(name="setting_key", type="string", length=64)
      * @ORM\Id

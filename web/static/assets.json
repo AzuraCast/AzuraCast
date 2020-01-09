@@ -4,6 +4,8 @@
   "dist/dark.css": "dist/dark-d8373bbfc0.css",
   "dist/inline_player.js": "dist/inline_player-4881710ca9.js",
   "dist/lib/autosize/autosize.min.js": "dist/lib/autosize/autosize-ad0656589d.min.js",
+  "dist/lib/bootgrid/jquery.bootgrid.min.css": "dist/lib/bootgrid/jquery-14a6b139e8.bootgrid.min.css",
+  "dist/lib/bootgrid/jquery.bootgrid.updated.js": "dist/lib/bootgrid/jquery-09b807f309.bootgrid.updated.js",
   "dist/lib/bootstrap-notify/bootstrap-notify.min.js": "dist/lib/bootstrap-notify/bootstrap-notify-a02f92a499.min.js",
   "dist/lib/bootstrap-vue/bootstrap-vue.min.css": "dist/lib/bootstrap-vue/bootstrap-vue-d02588705d.min.css",
   "dist/lib/bootstrap-vue/bootstrap-vue.min.js": "dist/lib/bootstrap-vue/bootstrap-vue-1eded317c5.min.js",

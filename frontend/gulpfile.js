@@ -175,6 +175,13 @@ var jsFiles = {
       'js/webcaster/*.js'
     ]
   },
+  'bootgrid': {
+    base: null,
+    files: [
+      'js/bootgrid/jquery.bootgrid.min.css',
+      'js/bootgrid/jquery.bootgrid.updated.js'
+    ]
+  },
   'bootstrap-vue': {
     base: null,
     files: [
@@ -190,7 +197,7 @@ defaultTasks.forEach(function (libName) {
   gulp.task('scripts:' + libName, function () {
     return gulp.src(jsFiles[libName].files, {
       base: jsFiles[libName].base
-    }).pipe(gulp.dest('dist/lib/' + libName))
+    }).pipe(gulp.dest('../web/static/dist/lib/' + libName))
   })
 })
 
@@ -202,9 +209,9 @@ gulp.task('bundle_deps', gulp.parallel(
 
 gulp.task('clean', function () {
   return del([
-    './dist/**/*',
-    './assets.json'
-  ])
+    '../web/static/dist/**/*',
+    '../web/static/assets.json'
+  ], { force: true })
 })
 
 gulp.task('concat-js', function () {
@@ -216,7 +223,7 @@ gulp.task('concat-js', function () {
     .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('../web/static/dist'))
 })
 
 var vueProjects = {
@@ -297,7 +304,7 @@ vueTasks.forEach(function (libName) {
       }))
       .pipe(uglify())
       .pipe(sourcemaps.write())
-      .pipe(gulp.dest('./dist'))
+      .pipe(gulp.dest('../web/static/dist'))
   })
 })
 
@@ -312,7 +319,7 @@ gulp.task('build-js', function () {
     .pipe(sourcemaps.init())
     .pipe(uglify())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('../web/static/dist'))
 })
 
 gulp.task('build-css', function () {
@@ -321,14 +328,14 @@ gulp.task('build-css', function () {
     .pipe(sass())
     .pipe(clean_css())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('../web/static/dist'))
 })
 
 gulp.task('default', gulp.series('clean', gulp.parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle_deps'), function () {
-  return gulp.src(['./dist/**/*.{js,css}'], { base: '.' })
+  return gulp.src(['../web/static/dist/**/*.{js,css}'], { base: '../web/static/' })
     .pipe(rev())
     .pipe(revdel())
-    .pipe(gulp.dest('.'))
+    .pipe(gulp.dest('../web/static/'))
     .pipe(rev.manifest('assets.json'))
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('../web/static/'))
 }))

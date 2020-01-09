@@ -1,5 +1,5 @@
 import GetTextPlugin from 'vue-gettext'
-import translations from '../../../resources/locale/translations'
+import translations from '../../resources/locale/translations'
 
 export default function (lang) {
   Vue.use(GetTextPlugin, {

@@ -178,12 +178,12 @@ return [
         'files' => [
             'css' => [
                 [
-                    'href' => 'js/bootgrid/jquery.bootgrid.min.css',
+                    'href' => 'dist/lib/bootgrid/jquery.bootgrid.min.css',
                 ],
             ],
             'js' => [
                 [
-                    'src' => 'js/bootgrid/jquery.bootgrid.updated.js',
+                    'src' => 'dist/lib/bootgrid/jquery.bootgrid.updated.js',
                 ],
                 [
                     'src' => 'dist/bootgrid.js',

@@ -1,0 +1,14 @@
+version: '2.2'
+
+services:
+  frontend:
+    build:
+      context: .
+    volumes:
+      - .:/data/frontend
+      - ../resources/locale:/data/resources/locale
+      - ../web/static:/data/web/static
+      - frontend_node_modules:/data/frontend/node_modules
+
+volumes:
+  frontend_node_modules: {}

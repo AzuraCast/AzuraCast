@@ -32,11 +32,11 @@
                             </div>
                         </div>
 
-                        <b-button type="submit" size="sm" variant="primary" v-translate>
-                            Save
+                        <b-button type="submit" size="sm" variant="primary">
+                            <translate>Save</translate>
                         </b-button>
-                        <b-button type="button" size="sm" variant="warning" @click="clearPlaylists()" v-translate>
-                            Clear
+                        <b-button type="button" size="sm" variant="warning" @click="clearPlaylists()">
+                            <translate>Clear</translate>
                         </b-button>
                     </b-dropdown-form>
                 </b-dropdown>
@@ -63,147 +63,147 @@
     </div>
 </template>
 <script>
-  import axios from 'axios'
+    import axios from 'axios'
 
-  export default {
-    name: 'station-media-toolbar',
-    props: {
-      currentDirectory: String,
-      selectedFiles: Array,
-      initialPlaylists: Array,
-      batchUrl: String
-    },
-    data () {
-      return {
-        playlists: this.initialPlaylists,
-        checkedPlaylists: [],
-        newPlaylist: ''
-      }
-    },
-    watch: {
-      newPlaylist (text) {
-        if (text !== '') {
-          if (!this.checkedPlaylists.includes('new')) {
-            this.checkedPlaylists.push('new')
-          }
-        }
-      }
-    },
-    computed: {
-      langPlaylistDropdown () {
-        return this.$gettext('Set or clear playlists from the selected media')
-      },
-      langNewPlaylist () {
-        return this.$gettext('New Playlist')
-      },
-      langQueue () {
-        return this.$gettext('Queue the selected media to play next')
-      },
-      langErrors () {
-        return this.$gettext('The request could not be processed.')
-      },
-      newPlaylistIsChecked () {
-        return this.newPlaylist !== ''
-      }
-    },
-    methods: {
-      doQueue (e) {
-        this.doBatch('queue', this.$gettext('Files queued for playback:'))
-      },
-      doDelete (e) {
-        let buttonText = this.$gettext('Delete')
-        let buttonConfirmText = this.$gettext('Delete %{ num } media file(s)?')
-
-        swal({
-          title: this.$gettextInterpolate(buttonConfirmText, { num: this.selectedFiles.length }),
-          buttons: [true, buttonText],
-          dangerMode: true
-        }).then((value) => {
-          if (value) {
-            this.doBatch('delete', this.$gettext('Files removed:'))
-          }
-        })
-      },
-      doBatch (action, notifyMessage) {
-        if (this.selectedFiles.length) {
-          this.notifyPending()
-
-          axios.put(this.batchUrl, {
-            'do': action,
-            'files': this.selectedFiles,
-            'file': this.currentDirectory
-          }).then((resp) => {
-            if (resp.data.success) {
-              notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
-            } else {
-              notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger')
+    export default {
+        name: 'station-media-toolbar',
+        props: {
+            currentDirectory: String,
+            selectedFiles: Array,
+            initialPlaylists: Array,
+            batchUrl: String
+        },
+        data () {
+            return {
+                playlists: this.initialPlaylists,
+                checkedPlaylists: [],
+                newPlaylist: ''
             }
-
-            this.$emit('relist')
-          }).catch((err) => {
-            this.handleError(err)
-          })
-        } else {
-          this.notifyNoFiles()
-        }
-      },
-      clearPlaylists () {
-        this.checkedPlaylists = []
-        this.newPlaylist = ''
-
-        this.setPlaylists()
-      },
-      setPlaylists () {
-        this.$refs.setPlaylistsDropdown.hide()
-
-        if (this.selectedFiles.length) {
-          this.notifyPending()
-
-          axios.put(this.batchUrl, {
-            'do': 'playlist',
-            'playlists': this.checkedPlaylists,
-            'new_playlist_name': this.newPlaylist,
-            'files': this.selectedFiles,
-            'file': this.currentDirectory
-          }).then((resp) => {
-            if (resp.data.success) {
-              if (resp.data.record) {
-                this.playlists.push(resp.data.record)
-              }
-
-              let notifyMessage = (this.checkedPlaylists.length > 0)
-                ? this.$gettext('Playlists updated for selected files:')
-                : this.$gettext('Playlists cleared for selected files:')
-              notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success')
-
-              this.checkedPlaylists = []
-              this.newPlaylist = ''
-            } else {
-              notify(resp.data.errors.join('<br>'), 'danger')
+        },
+        watch: {
+            newPlaylist (text) {
+                if (text !== '') {
+                    if (!this.checkedPlaylists.includes('new')) {
+                        this.checkedPlaylists.push('new')
+                    }
+                }
             }
+        },
+        computed: {
+            langPlaylistDropdown () {
+                return this.$gettext('Set or clear playlists from the selected media')
+            },
+            langNewPlaylist () {
+                return this.$gettext('New Playlist')
+            },
+            langQueue () {
+                return this.$gettext('Queue the selected media to play next')
+            },
+            langErrors () {
+                return this.$gettext('The request could not be processed.')
+            },
+            newPlaylistIsChecked () {
+                return this.newPlaylist !== ''
+            }
+        },
+        methods: {
+            doQueue (e) {
+                this.doBatch('queue', this.$gettext('Files queued for playback:'))
+            },
+            doDelete (e) {
+                let buttonText = this.$gettext('Delete')
+                let buttonConfirmText = this.$gettext('Delete %{ num } media file(s)?')
 
-            this.$emit('relist')
-          }).catch((err) => {
-            this.handleError(err)
-          })
-        } else {
-          this.notifyNoFiles()
+                swal({
+                    title: this.$gettextInterpolate(buttonConfirmText, { num: this.selectedFiles.length }),
+                    buttons: [true, buttonText],
+                    dangerMode: true
+                }).then((value) => {
+                    if (value) {
+                        this.doBatch('delete', this.$gettext('Files removed:'))
+                    }
+                })
+            },
+            doBatch (action, notifyMessage) {
+                if (this.selectedFiles.length) {
+                    this.notifyPending()
+
+                    axios.put(this.batchUrl, {
+                        'do': action,
+                        'files': this.selectedFiles,
+                        'file': this.currentDirectory
+                    }).then((resp) => {
+                        if (resp.data.success) {
+                            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+                        } else {
+                            notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger')
+                        }
+
+                        this.$emit('relist')
+                    }).catch((err) => {
+                        this.handleError(err)
+                    })
+                } else {
+                    this.notifyNoFiles()
+                }
+            },
+            clearPlaylists () {
+                this.checkedPlaylists = []
+                this.newPlaylist = ''
+
+                this.setPlaylists()
+            },
+            setPlaylists () {
+                this.$refs.setPlaylistsDropdown.hide()
+
+                if (this.selectedFiles.length) {
+                    this.notifyPending()
+
+                    axios.put(this.batchUrl, {
+                        'do': 'playlist',
+                        'playlists': this.checkedPlaylists,
+                        'new_playlist_name': this.newPlaylist,
+                        'files': this.selectedFiles,
+                        'file': this.currentDirectory
+                    }).then((resp) => {
+                        if (resp.data.success) {
+                            if (resp.data.record) {
+                                this.playlists.push(resp.data.record)
+                            }
+
+                            let notifyMessage = (this.checkedPlaylists.length > 0)
+                                    ? this.$gettext('Playlists updated for selected files:')
+                                    : this.$gettext('Playlists cleared for selected files:')
+                            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success')
+
+                            this.checkedPlaylists = []
+                            this.newPlaylist = ''
+                        } else {
+                            notify(resp.data.errors.join('<br>'), 'danger')
+                        }
+
+                        this.$emit('relist')
+                    }).catch((err) => {
+                        this.handleError(err)
+                    })
+                } else {
+                    this.notifyNoFiles()
+                }
+            },
+            notifyPending () {
+                notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
+                    delay: 3000
+                })
+            },
+            notifyNoFiles () {
+                notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger')
+            },
+            handleError (err) {
+                console.error(err)
+                if (err.response.message) {
+                    notify('<b>' + err.response.message + '</b>', 'danger')
+                }
+            }
         }
-      },
-      notifyPending () {
-        notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
-          delay: 3000
-        })
-      },
-      notifyNoFiles () {
-        notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger')
-      },
-      handleError (err) {
-        console.error(err)
-        if (err.response.message) {
-          notify('<b>' + err.response.message + '</b>', 'danger')
-        }
-      }
     }
-  }
 </script>

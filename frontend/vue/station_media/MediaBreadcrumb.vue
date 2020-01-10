@@ -9,39 +9,39 @@
 </template>
 
 <script>
-  export default {
-    name: 'Breadcrumb',
-    props: {
-      currentDirectory: String
-    },
-    computed: {
-      directoryParts () {
-        let dirParts = []
+    export default {
+        name: 'Breadcrumb',
+        props: {
+            currentDirectory: String
+        },
+        computed: {
+            directoryParts () {
+                let dirParts = []
 
-        if (this.currentDirectory === '') {
-          return dirParts
+                if (this.currentDirectory === '') {
+                    return dirParts
+                }
+
+                let builtDir = ''
+                let dirSegments = this.currentDirectory.split('/')
+
+                dirSegments.forEach((part) => {
+                    if (builtDir === '') {
+                        builtDir += part
+                    } else {
+                        builtDir += '/' + part
+                    }
+
+                    dirParts.push({ dir: builtDir, display: part })
+                })
+
+                return dirParts
+            }
+        },
+        methods: {
+            changeDirectory (newDir) {
+                this.$emit('change-directory', newDir)
+            }
         }
-
-        let builtDir = ''
-        let dirSegments = this.currentDirectory.split('/')
-
-        dirSegments.forEach((part) => {
-          if (builtDir === '') {
-            builtDir += part
-          } else {
-            builtDir += '/' + part
-          }
-
-          dirParts.push({ dir: builtDir, display: part })
-        })
-
-        return dirParts
-      }
-    },
-    methods: {
-      changeDirectory (newDir) {
-        this.$emit('change-directory', newDir)
-      }
     }
-  }
 </script>

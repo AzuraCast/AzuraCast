@@ -27,82 +27,82 @@
 </template>
 
 <script>
-  import { formatFileSize } from './utils.js'
-  import Flow from '@flowjs/flow.js'
+    import { formatFileSize } from './utils.js'
+    import Flow from '@flowjs/flow.js'
 
-  export default {
-    name: 'FileUpload',
-    props: {
-      uploadUrl: String,
-      currentDirectory: String,
-      searchPhrase: String
-    },
-    data () {
-      return {
-        flow: null,
-        files: []
-      }
-    },
-    mounted () {
-      this.flow = new Flow({
-        target: this.uploadUrl,
-        query: () => {
-          return {
-            file: this.currentDirectory,
-            searchPhrase: this.searchPhrase
-          }
+    export default {
+        name: 'FileUpload',
+        props: {
+            uploadUrl: String,
+            currentDirectory: String,
+            searchPhrase: String
         },
-        headers: {
-          'Accept': 'application/json'
+        data () {
+            return {
+                flow: null,
+                files: []
+            }
         },
-        withCredentials: true,
-        allowDuplicateUploads: true,
-        fileParameterName: 'file_data'
-      })
+        mounted () {
+            this.flow = new Flow({
+                target: this.uploadUrl,
+                query: () => {
+                    return {
+                        file: this.currentDirectory,
+                        searchPhrase: this.searchPhrase
+                    }
+                },
+                headers: {
+                    'Accept': 'application/json'
+                },
+                withCredentials: true,
+                allowDuplicateUploads: true,
+                fileParameterName: 'file_data'
+            })
 
-      this.flow.assignBrowse(document.getElementById('file_browse_target'))
-      this.flow.assignDrop(document.getElementById('file_drop_target'))
+            this.flow.assignBrowse(document.getElementById('file_browse_target'))
+            this.flow.assignDrop(document.getElementById('file_drop_target'))
 
-      this.flow.on('fileAdded', (file, event) => {
-        file.progress_percent = 0
-        file.is_completed = false
-        file.error = null
-        file.is_visible = true
+            this.flow.on('fileAdded', (file, event) => {
+                file.progress_percent = 0
+                file.is_completed = false
+                file.error = null
+                file.is_visible = true
 
-        this.files.push(file)
-        return true
-      })
+                this.files.push(file)
+                return true
+            })
 
-      this.flow.on('filesSubmitted', (array, event) => {
-        this.flow.upload()
-      })
+            this.flow.on('filesSubmitted', (array, event) => {
+                this.flow.upload()
+            })
 
-      this.flow.on('fileProgress', (file) => {
-        file.progress_percent = file.progress() * 100
-      })
+            this.flow.on('fileProgress', (file) => {
+                file.progress_percent = file.progress() * 100
+            })
 
-      this.flow.on('fileSuccess', (file, message) => {
-        file.is_completed = true
-      })
+            this.flow.on('fileSuccess', (file, message) => {
+                file.is_completed = true
+            })
 
-      this.flow.on('fileError', (file, message) => {
-        let messageJson = JSON.parse(message)
-        file.error = messageJson.message
-      })
+            this.flow.on('fileError', (file, message) => {
+                let messageJson = JSON.parse(message)
+                file.error = messageJson.message
+            })
 
-      this.flow.on('error', (message, file, chunk) => {
-        console.error(message, file, chunk)
-      })
+            this.flow.on('error', (message, file, chunk) => {
+                console.error(message, file, chunk)
+            })
 
-      this.flow.on('complete', () => {
-        this.files = []
-        this.$emit('relist')
-      })
-    },
-    methods: {
-      formatFileSize (bytes) {
-        return formatFileSize(bytes)
-      }
+            this.flow.on('complete', () => {
+                this.files = []
+                this.$emit('relist')
+            })
+        },
+        methods: {
+            formatFileSize (bytes) {
+                return formatFileSize(bytes)
+            }
+        }
     }
-  }
 </script>

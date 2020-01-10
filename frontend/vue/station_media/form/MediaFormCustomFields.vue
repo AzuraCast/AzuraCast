@@ -15,16 +15,16 @@
 </template>
 
 <script>
-  export default {
-    name: 'MediaFormCustomFields',
-    props: {
-      form: Object,
-      customFields: Array
-    },
-    computed: {
-      langTitle () {
-        return this.$gettext('Custom Fields')
-      }
+    export default {
+        name: 'MediaFormCustomFields',
+        props: {
+            form: Object,
+            customFields: Array
+        },
+        computed: {
+            langTitle () {
+                return this.$gettext('Custom Fields')
+            }
+        }
     }
-  }
 </script>

@@ -64,10 +64,16 @@ class StationCloneForm extends StationForm
                 new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role'));
             $copier->addFilter(new DeepCopy\Filter\KeepFilter,
                 new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field'));
+
             $copier->addFilter(
                 new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
                 new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'history')
             );
+            $copier->addFilter(
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'sftpUsers')
+            );
+
             $copier->addFilter(
                 new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
                 new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylist::class, 'media_items')

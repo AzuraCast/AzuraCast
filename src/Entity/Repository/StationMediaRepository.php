@@ -111,7 +111,7 @@ class StationMediaRepository extends Repository
         $fs = $this->filesystem->getForStation($station);
         $fs->upload($tmp_path, $dest);
 
-        $record->setMtime(time());
+        $record->setMtime(time() + 5);
 
         $this->em->persist($record);
         $this->em->flush();
@@ -470,7 +470,7 @@ class StationMediaRepository extends Repository
 
         // write tags
         if ($tagwriter->WriteTags()) {
-            $media->setMtime(time());
+            $media->setMtime(time() + 5);
 
             if (null !== $tmp_uri) {
                 $fs->updateFromTemp($tmp_uri, $media_uri);

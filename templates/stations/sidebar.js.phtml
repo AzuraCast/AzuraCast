@@ -1,7 +1,7 @@
-$(function() {
+$(function () {
     moment.tz.setDefault(<?=$this->escapeJs($station->getTimezone()) ?>);
 
-    function updateClock() {
+    function updateClock () {
         var station_time = $('#station-time');
         station_time.text(moment().format('LTS z'));
     }
@@ -9,7 +9,7 @@ $(function() {
     setInterval(updateClock, 1000);
     updateClock();
 
-    $(document).on('click', '.api-call', function(e) {
+    $(document).on('click', '.api-call', function (e) {
         e.stopPropagation();
         var btn = $(this);
 
@@ -22,12 +22,10 @@ $(function() {
         $.ajax({
             type: "POST",
             url: btn.attr('href'),
-            success: function(data) {
-                if (trigger_reload) {
-                    // Only restart if the user isn't on a form page
-                    if ($('form').length === 0) {
-                        setTimeout('location.reload()', 2000);
-                    }
+            success: function (data) {
+                // Only restart if the user isn't on a form page
+                if (trigger_reload && $('form.form').length === 0) {
+                    setTimeout('location.reload()', 2000);
                 } else {
                     btn.removeClass('disabled').html(btn_original_text);
                 }
@@ -35,7 +33,7 @@ $(function() {
                 var notify_type = (data.success) ? 'success' : 'warning';
                 notify(data.formatted_message, notify_type);
             },
-            error: function(response) {
+            error: function (response) {
                 data = jQuery.parseJSON(response.responseText);
                 notify(data.formatted_message, 'danger');
 

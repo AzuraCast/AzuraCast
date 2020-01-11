@@ -66,7 +66,8 @@ return function (\App\Event\BuildStationMenu $e) {
         'web_dj' => [
             'label' => __('Web DJ'),
             'icon' => 'surround_sound',
-            'url' => $router->named('public:dj', ['station_id' => $station->getShortName()]),
+            'url' => $router->named('public:dj', ['station_id' => $station->getShortName()], [], true)
+                ->withScheme('https'),
             'visible' => $station->getEnablePublicPage() && $station->getEnableStreamers(),
             'external' => true,
         ],

@@ -8,13 +8,13 @@
                 <div class="col-sm-12">
                     <ul class="nav nav-tabs card-header-tabs mt-0">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#settings" data-toggle="tab" v-translate>
-                                Settings
+                            <a class="nav-link active" href="#settings" data-toggle="tab">
+                                <translate>Settings</translate>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#metadata" data-toggle="tab" v-translate>
-                                Metadata
+                            <a class="nav-link" href="#metadata" data-toggle="tab">
+                                <translate>Metadata</translate>
                             </a>
                         </li>
                     </ul>
@@ -98,8 +98,8 @@
                                 <div class="custom-control custom-checkbox">
                                     <input id="use_async_worker" type="checkbox" v-model="asynchronous"
                                            class="custom-control-input">
-                                    <label for="use_async_worker" class="custom-control-label" v-translate>
-                                        Use Asynchronous Worker
+                                    <label for="use_async_worker" class="custom-control-label">
+                                        <translate>Use Asynchronous Worker</translate>
                                     </label>
                                 </div>
                             </div>
@@ -121,7 +121,8 @@
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-primary" v-on:click="updateMetadata"
-                                        v-bind:disabled="!isStreaming" v-translate>Update Metadata
+                                        v-bind:disabled="!isStreaming">
+                                    <translate>Update Metadata</translate>
                                 </button>
                             </div>
                         </div>
@@ -137,121 +138,121 @@
             <button class="btn btn-danger" v-on:click="stopStreaming" v-if="isStreaming">
                 {{ langStreamButton }}
             </button>
-            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }" v-translate>
-                Cue
+            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
+                <translate>Cue</translate>
             </button>
         </div>
     </div>
 </template>
 
 <script>
-  export default {
-    inject: ['getStream', 'resumeStream'],
-    data () {
-      return {
-        'isStreaming': false,
-        'djUsername': '',
-        'djPassword': '',
-        'bitrate': 128,
-        'samplerate': 44100,
-        'encoder': 'mp3',
-        'asynchronous': true,
-        'passThrough': false,
-        'metadata': {
-          'title': '',
-          'artist': ''
+    export default {
+        inject: ['getStream', 'resumeStream'],
+        data () {
+            return {
+                'isStreaming': false,
+                'djUsername': '',
+                'djPassword': '',
+                'bitrate': 128,
+                'samplerate': 44100,
+                'encoder': 'mp3',
+                'asynchronous': true,
+                'passThrough': false,
+                'metadata': {
+                    'title': '',
+                    'artist': ''
+                }
+            }
+        },
+        computed: {
+            langDjUsername () {
+                return this.$gettext('Username')
+            },
+            langDjPassword () {
+                return this.$gettext('Password')
+            },
+            langStreamButton () {
+                return (this.isStreaming)
+                        ? this.$gettext('Stop Streaming')
+                        : this.$gettext('Start Streaming')
+            },
+            uri () {
+                return 'wss://' + this.djUsername + ':' + this.djPassword + '@' + this.baseUri
+            }
+        },
+        props: {
+            stationName: String,
+            libUrls: Array,
+            baseUri: String
+        },
+        mounted () {
+            this.$root.$on('new-cue', this.onNewCue)
+            this.$root.$on('metadata-update', this.onMetadataUpdate)
+        },
+        methods: {
+            cue () {
+                this.resumeStream()
+
+                this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'master')
+            },
+            onNewCue (new_cue) {
+                this.passThrough = (new_cue === 'master')
+                this.getStream().webcast.setPassThrough(this.passThrough)
+            },
+            startStreaming () {
+                this.resumeStream()
+
+                var encoderClass
+                switch (this.encoder) {
+                    case 'mp3':
+                        encoderClass = Webcast.Encoder.Mp3
+                        break
+                    case 'raw':
+                        encoderClass = Webcast.Encoder.Raw
+                }
+
+                let encoder = new encoderClass({
+                    channels: 2,
+                    samplerate: this.samplerate,
+                    bitrate: this.bitrate
+                })
+
+                if (this.samplerate !== this.getStream().context.sampleRate) {
+                    encoder = new Webcast.Encoder.Resample({
+                        encoder: encoder,
+                        type: Samplerate.LINEAR,
+                        samplerate: this.getStream().context.sampleRate
+                    })
+                }
+
+                if (this.asynchronous) {
+                    encoder = new Webcast.Encoder.Asynchronous({
+                        encoder: encoder,
+                        scripts: this.libUrls
+                    })
+                }
+
+                this.getStream().webcast.connectSocket(encoder, this.uri)
+                this.isStreaming = true
+            },
+            stopStreaming () {
+                this.getStream().webcast.close()
+                this.isStreaming = false
+            },
+            updateMetadata () {
+                this.$root.$emit('metadata-update', {
+                    title: this.metadata.title,
+                    artist: this.metadata.artist
+                })
+
+                notify('Metadata updated!', 'success', true)
+            },
+            onMetadataUpdate (new_metadata) {
+                this.metadata.title = new_metadata.title
+                this.metadata.artist = new_metadata.artist
+
+                return this.getStream().webcast.sendMetadata(new_metadata)
+            }
         }
-      }
-    },
-    computed: {
-      langDjUsername () {
-        return this.$gettext('Username')
-      },
-      langDjPassword () {
-        return this.$gettext('Password')
-      },
-      langStreamButton () {
-        return (this.isStreaming)
-          ? this.$gettext('Stop Streaming')
-          : this.$gettext('Start Streaming')
-      },
-      uri () {
-        return 'wss://' + this.djUsername + ':' + this.djPassword + '@' + this.baseUri
-      }
-    },
-    props: {
-      stationName: String,
-      libUrls: Array,
-      baseUri: String
-    },
-    mounted () {
-      this.$root.$on('new-cue', this.onNewCue)
-      this.$root.$on('metadata-update', this.onMetadataUpdate)
-    },
-    methods: {
-      cue () {
-        this.resumeStream()
-
-        this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'master')
-      },
-      onNewCue (new_cue) {
-        this.passThrough = (new_cue === 'master')
-        this.getStream().webcast.setPassThrough(this.passThrough)
-      },
-      startStreaming () {
-        this.resumeStream()
-
-        var encoderClass
-        switch (this.encoder) {
-          case 'mp3':
-            encoderClass = Webcast.Encoder.Mp3
-            break
-          case 'raw':
-            encoderClass = Webcast.Encoder.Raw
-        }
-
-        let encoder = new encoderClass({
-          channels: 2,
-          samplerate: this.samplerate,
-          bitrate: this.bitrate
-        })
-
-        if (this.samplerate !== this.getStream().context.sampleRate) {
-          encoder = new Webcast.Encoder.Resample({
-            encoder: encoder,
-            type: Samplerate.LINEAR,
-            samplerate: this.getStream().context.sampleRate
-          })
-        }
-
-        if (this.asynchronous) {
-          encoder = new Webcast.Encoder.Asynchronous({
-            encoder: encoder,
-            scripts: this.libUrls
-          })
-        }
-
-        this.getStream().webcast.connectSocket(encoder, this.uri)
-        this.isStreaming = true
-      },
-      stopStreaming () {
-        this.getStream().webcast.close()
-        this.isStreaming = false
-      },
-      updateMetadata () {
-        this.$root.$emit('metadata-update', {
-          title: this.metadata.title,
-          artist: this.metadata.artist
-        })
-
-        notify('Metadata updated!', 'success', true)
-      },
-      onMetadataUpdate (new_metadata) {
-        this.metadata.title = new_metadata.title
-        this.metadata.artist = new_metadata.artist
-
-        return this.getStream().webcast.sendMetadata(new_metadata)
-      }
     }
-  }
 </script>

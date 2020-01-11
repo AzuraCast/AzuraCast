@@ -4,6 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Radio\Adapters;
 use Azura\Exception;
+use Azura\Logger;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 
@@ -37,20 +38,22 @@ class RadioAutomation extends AbstractTask
         // Check all stations for automation settings.
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
+        $logger = Logger::getInstance();
+
         $automation_log = $this->settingsRepo->getSetting('automation_log', []);
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
             try {
                 if ($this->runStation($station)) {
-                    $automation_log[$station->getId()] = $station->getName() . ': SUCCESS';
+                    $logger->info('Automated assignment [' . $station->getName() . ']: Successfully run.');
+                } else {
+                    $logger->info('Automated assignment [' . $station->getName() . ']: Skipped.');
                 }
             } catch (Exception $e) {
-                $automation_log[$station->getId()] = $station->getName() . ': ERROR - ' . $e->getMessage();
+                $logger->error('Automated assignment [' . $station->getName() . ']: Error: ' . $e->getMessage());
             }
         }
-
-        $this->settingsRepo->setSetting('automation_log', $automation_log);
     }
 
     /**
@@ -76,7 +79,9 @@ class RadioAutomation extends AbstractTask
 
         // Check whether assignment needs to be run.
         $threshold_days = (int)$settings['threshold_days'];
-        $threshold = time() - (86400 * $threshold_days);
+        $threshold = Chronos::now('UTC')
+            ->subDays($threshold_days)
+            ->getTimestamp();
 
         if (!$force && $station->getAutomationTimestamp() >= $threshold) {
             return false;
@@ -92,7 +97,7 @@ class RadioAutomation extends AbstractTask
             /** @var Entity\StationPlaylist $playlist */
 
             if ($playlist->getIsEnabled() &&
-                $playlist->getType() == Entity\StationPlaylist::TYPE_DEFAULT &&
+                $playlist->getType() === Entity\StationPlaylist::TYPE_DEFAULT &&
                 $playlist->getIncludeInAutomation()
             ) {
                 // Clear all related media.
@@ -112,7 +117,7 @@ class RadioAutomation extends AbstractTask
             }
         }
 
-        if (count($playlists) == 0) {
+        if (0 === count($playlists)) {
             throw new Exception('No playlists have automation enabled.');
         }
 

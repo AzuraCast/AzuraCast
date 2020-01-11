@@ -12,7 +12,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.9.8';
+    public const FALLBACK_VERSION = '0.9.8.1';
 
     protected CacheInterface $cache;
 

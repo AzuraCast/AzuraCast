@@ -50,7 +50,7 @@ install() {
         echo "then continue installing using this script."
         exit 1
     fi
-    
+
     if [[ $(which docker) && $(docker --version) ]]; then
         echo "Docker is already installed! Continuing..."
     else
@@ -294,8 +294,9 @@ restore-legacy() {
 # Usage: ./docker.sh static [static_container_command]
 #
 static() {
-    docker-compose -f docker-compose.static.yml build
-    docker-compose -f docker-compose.static.yml run --rm static $*
+    cd frontend
+    docker-compose build
+    docker-compose run --rm frontend $*
     exit
 }
 

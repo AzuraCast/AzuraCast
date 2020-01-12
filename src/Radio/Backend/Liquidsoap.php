@@ -182,48 +182,50 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $station = $event->getStation();
 
         // Clear out existing playlists directory.
-        $playlist_path = $station->getRadioPlaylistsDir();
-        $current_playlists = array_diff(scandir($playlist_path, SCANDIR_SORT_NONE), ['..', '.']);
-        foreach ($current_playlists as $list) {
-            @unlink($playlist_path . '/' . $list);
+        $playlistPath = $station->getRadioPlaylistsDir();
+        $currentPlaylists = array_diff(scandir($playlistPath, SCANDIR_SORT_NONE), ['..', '.']);
+        foreach ($currentPlaylists as $list) {
+            @unlink($playlistPath . '/' . $list);
         }
 
         // Set up playlists using older format as a fallback.
-        $has_default_playlist = false;
-        $playlist_objects = [];
+        $hasDefaultPlaylist = false;
+        $playlistObjects = [];
 
-        foreach ($station->getPlaylists() as $playlist_raw) {
-            /** @var Entity\StationPlaylist $playlist_raw */
-            if (!$playlist_raw->getIsEnabled()) {
+        foreach ($station->getPlaylists() as $playlistRaw) {
+            /** @var Entity\StationPlaylist $playlistRaw */
+            if (!$playlistRaw->getIsEnabled()) {
                 continue;
             }
-            if ($playlist_raw->getType() === Entity\StationPlaylist::TYPE_DEFAULT) {
-                $has_default_playlist = true;
+            if ($playlistRaw->getType() === Entity\StationPlaylist::TYPE_DEFAULT) {
+                $hasDefaultPlaylist = true;
             }
 
-            $playlist_objects[] = $playlist_raw;
+            $playlistObjects[] = $playlistRaw;
         }
 
         // Create a new default playlist if one doesn't exist.
-        if (!$has_default_playlist) {
+        if (!$hasDefaultPlaylist) {
             Logger::getInstance()->info('No default playlist existed for this station; new one was automatically created.',
                 ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
 
             // Auto-create an empty default playlist.
-            $default_playlist = new Entity\StationPlaylist($station);
-            $default_playlist->setName('default');
+            $defaultPlaylist = new Entity\StationPlaylist($station);
+            $defaultPlaylist->setName('default');
 
             /** @var EntityManager $em */
-            $this->em->persist($default_playlist);
+            $this->em->persist($defaultPlaylist);
             $this->em->flush();
 
-            $playlist_objects[] = $default_playlist;
+            $playlistObjects[] = $defaultPlaylist;
         }
 
-        $gen_playlist_weights = [];
-        $gen_playlist_vars = [];
+        $playlistVarNames = [];
 
-        $special_playlists = [
+        $genPlaylistWeights = [];
+        $genPlaylistVars = [];
+
+        $specialPlaylists = [
             'once_per_x_songs' => [
                 '# Once per x Songs Playlists',
             ],
@@ -232,75 +234,81 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             ],
         ];
 
-        $schedule_switches = [];
-        $schedule_switches_interrupting = [];
+        $scheduleSwitches = [];
+        $scheduleSwitchesInterrupting = [];
 
-        foreach ($playlist_objects as $playlist) {
+        foreach ($playlistObjects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            $playlist_var_name = 'playlist_' . str_replace('-', '_', $playlist->getShortName());
+            $playlistVarName = 'playlist_' . str_replace('-', '_', $playlist->getShortName());
 
-            $uses_random = true;
-            $uses_reload_mode = true;
-            $uses_conservative = false;
-
-            if ($playlist->backendLoopPlaylistOnce()) {
-                $playlist_func_name = 'playlist.once';
-            } elseif ($playlist->backendMerge()) {
-                $playlist_func_name = 'playlist.merge';
-                $uses_reload_mode = false;
-            } else {
-                $playlist_func_name = 'playlist';
-                $uses_random = false;
-                $uses_conservative = true;
+            if (in_array($playlistVarName, $playlistVarNames)) {
+                $playlistVarName .= '_' . $playlist->getId();
             }
 
-            $playlist_config_lines = [];
+            $playlistVarNames[] = $playlistVarName;
+
+            $usesRandom = true;
+            $usesReloadMode = true;
+            $usesConservative = false;
+
+            if ($playlist->backendLoopPlaylistOnce()) {
+                $playlistFuncName = 'playlist.once';
+            } elseif ($playlist->backendMerge()) {
+                $playlistFuncName = 'playlist.merge';
+                $usesReloadMode = false;
+            } else {
+                $playlistFuncName = 'playlist';
+                $usesRandom = false;
+                $usesConservative = true;
+            }
+
+            $playlistConfigLines = [];
 
             if (Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
-                $playlist_file_path = $this->writePlaylistFile($playlist, false);
+                $playlistFilePath = $this->writePlaylistFile($playlist, false);
 
-                if (!$playlist_file_path) {
+                if (!$playlistFilePath) {
                     continue;
                 }
 
                 // Liquidsoap's playlist functions support very different argument patterns. :/
-                $playlist_params = [
-                    'id="' . $this->_cleanUpString($playlist_var_name) . '"',
+                $playlistParams = [
+                    'id="' . $this->_cleanUpString($playlistVarName) . '"',
                 ];
 
-                if ($uses_random) {
+                if ($usesRandom) {
                     if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()) {
-                        $playlist_params[] = 'random=true';
+                        $playlistParams[] = 'random=true';
                     }
                 } else {
-                    $playlist_modes = [
+                    $playlistModes = [
                         Entity\StationPlaylist::ORDER_SEQUENTIAL => 'normal',
                         Entity\StationPlaylist::ORDER_SHUFFLE => 'randomize',
                         Entity\StationPlaylist::ORDER_RANDOM => 'random',
                     ];
 
-                    $playlist_params[] = 'mode="' . $playlist_modes[$playlist->getOrder()] . '"';
+                    $playlistParams[] = 'mode="' . $playlistModes[$playlist->getOrder()] . '"';
                 }
 
-                if ($uses_reload_mode) {
-                    $playlist_params[] = 'reload_mode="watch"';
+                if ($usesReloadMode) {
+                    $playlistParams[] = 'reload_mode="watch"';
                 }
 
-                if ($uses_conservative) {
-                    $playlist_params[] = 'conservative=true';
-                    $playlist_params[] = 'default_duration=10.';
-                    $playlist_params[] = 'length=20.';
+                if ($usesConservative) {
+                    $playlistParams[] = 'conservative=true';
+                    $playlistParams[] = 'default_duration=10.';
+                    $playlistParams[] = 'length=20.';
                 }
 
-                $playlist_params[] = '"' . $playlist_file_path . '"';
+                $playlistParams[] = '"' . $playlistFilePath . '"';
 
-                $playlist_config_lines[] = $playlist_var_name . ' = ' . $playlist_func_name . '(' . implode(',',
-                        $playlist_params) . ')';
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(',',
+                        $playlistParams) . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
-                        $playlist_func = $playlist_func_name . '("' . $this->_cleanUpString($playlist->getRemoteUrl()) . '")';
-                        $playlist_config_lines[] = $playlist_var_name . ' = ' . $playlist_func;
+                        $playlistFunc = $playlistFuncName . '("' . $this->_cleanUpString($playlist->getRemoteUrl()) . '")';
+                        $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
                         break;
 
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
@@ -312,25 +320,25 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         $buffer = $playlist->getRemoteBuffer();
                         $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                        $playlist_config_lines[] = $playlist_var_name . ' = mksafe(' . $remote_url_function . '(max=' . $buffer . '., "' . $this->_cleanUpString($remote_url) . '"))';
+                        $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function . '(max=' . $buffer . '., "' . $this->_cleanUpString($remote_url) . '"))';
                         break;
                 }
             }
 
-            $playlist_config_lines[] = $playlist_var_name . ' = audio_to_stereo(id="stereo_' . $this->_cleanUpString($playlist_var_name) . '", ' . $playlist_var_name . ')';
+            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . $this->_cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             if ($playlist->isJingle()) {
-                $playlist_config_lines[] = $playlist_var_name . ' = drop_metadata(' . $playlist_var_name . ')';
+                $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
-                $playlist_config_lines[] = 'ignore(' . $playlist_var_name . ')';
+                $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
             }
 
-            $event->appendLines($playlist_config_lines);
+            $event->appendLines($playlistConfigLines);
 
             if ($playlist->backendPlaySingleTrack()) {
-                $playlist_var_name = 'once(' . $playlist_var_name . ')';
+                $playlistVarName = 'once(' . $playlistVarName . ')';
             }
 
             $scheduleItems = $playlist->getScheduleItems();
@@ -341,28 +349,28 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         foreach ($scheduleItems as $scheduleItem) {
                             $play_time = $this->_getScheduledPlaylistPlayTime($scheduleItem);
 
-                            $schedule_timing = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                            $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
-                                $schedule_switches_interrupting[] = $schedule_timing;
+                                $scheduleSwitchesInterrupting[] = $schedule_timing;
                             } else {
-                                $schedule_switches[] = $schedule_timing;
+                                $scheduleSwitches[] = $schedule_timing;
                             }
                         }
                     } else {
-                        $gen_playlist_weights[] = $playlist->getWeight();
-                        $gen_playlist_vars[] = $playlist_var_name;
+                        $genPlaylistWeights[] = $playlist->getWeight();
+                        $genPlaylistVars[] = $playlistVarName;
                     }
                     break;
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
                     if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $playlist->getType()) {
-                        $playlistScheduleVar = 'rotate(weights=[1,' . $playlist->getPlayPerSongs() . '], [' . $playlist_var_name . ', radio])';
+                        $playlistScheduleVar = 'rotate(weights=[1,' . $playlist->getPlayPerSongs() . '], [' . $playlistVarName . ', radio])';
                     } else {
                         $delaySeconds = $playlist->getPlayPerMinutes() * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
-                        $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlist_var_name . '), radio])';
+                        $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';
                     }
 
                     if ($scheduleItems->count() > 0) {
@@ -371,13 +379,13 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
                             $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistScheduleVar . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
-                                $schedule_switches_interrupting[] = $schedule_timing;
+                                $scheduleSwitchesInterrupting[] = $schedule_timing;
                             } else {
-                                $schedule_switches[] = $schedule_timing;
+                                $scheduleSwitches[] = $schedule_timing;
                             }
                         }
                     } else {
-                        $special_playlists[$playlist->getType()][] = 'radio = ' . $playlistScheduleVar;
+                        $specialPlaylists[$playlist->getType()][] = 'radio = ' . $playlistScheduleVar;
                     }
                     break;
 
@@ -388,19 +396,19 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                         foreach ($scheduleItems as $scheduleItem) {
                             $playTime = '(' . $minutePlayTime . ') and (' . $this->_getScheduledPlaylistPlayTime($scheduleItem) . ')';
 
-                            $schedule_timing = '({ ' . $playTime . ' }, ' . $playlist_var_name . ')';
+                            $schedule_timing = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
-                                $schedule_switches_interrupting[] = $schedule_timing;
+                                $scheduleSwitchesInterrupting[] = $schedule_timing;
                             } else {
-                                $schedule_switches[] = $schedule_timing;
+                                $scheduleSwitches[] = $schedule_timing;
                             }
                         }
                     } else {
-                        $schedule_timing = '({ ' . $minutePlayTime . ' }, ' . $playlist_var_name . ')';
+                        $schedule_timing = '({ ' . $minutePlayTime . ' }, ' . $playlistVarName . ')';
                         if ($playlist->backendInterruptOtherSongs()) {
-                            $schedule_switches_interrupting[] = $schedule_timing;
+                            $scheduleSwitchesInterrupting[] = $schedule_timing;
                         } else {
-                            $schedule_switches[] = $schedule_timing;
+                            $scheduleSwitches[] = $schedule_timing;
                         }
                     }
                     break;
@@ -411,23 +419,23 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $event->appendLines([
             '# Standard Playlists',
             'radio = random(id="' . $this->_getVarName('standard_playlists', $station) . '", weights=[' . implode(', ',
-                $gen_playlist_weights) . '], [' . implode(', ', $gen_playlist_vars) . '])',
+                $genPlaylistWeights) . '], [' . implode(', ', $genPlaylistVars) . '])',
         ]);
 
-        if (!empty($schedule_switches)) {
-            $schedule_switches[] = '({true}, radio)';
+        if (!empty($scheduleSwitches)) {
+            $scheduleSwitches[] = '({true}, radio)';
 
             $event->appendLines([
                 '# Standard Schedule Switches',
                 'radio = switch(id="' . $this->_getVarName('schedule_switch',
-                    $station) . '", track_sensitive=true, [ ' . implode(', ', $schedule_switches) . ' ])',
+                    $station) . '", track_sensitive=true, [ ' . implode(', ', $scheduleSwitches) . ' ])',
             ]);
         }
 
         // Add in special playlists if necessary.
-        foreach ($special_playlists as $playlist_type => $playlist_config_lines) {
-            if (count($playlist_config_lines) > 1) {
-                $event->appendLines($playlist_config_lines);
+        foreach ($specialPlaylists as $playlist_type => $playlistConfigLines) {
+            if (count($playlistConfigLines) > 1) {
+                $event->appendLines($playlistConfigLines);
             }
         }
 
@@ -456,13 +464,13 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             ]);
         }
 
-        if (!empty($schedule_switches_interrupting)) {
-            $schedule_switches_interrupting[] = '({true}, radio)';
+        if (!empty($scheduleSwitchesInterrupting)) {
+            $scheduleSwitchesInterrupting[] = '({true}, radio)';
 
             $event->appendLines([
                 '# Interrupting Schedule Switches',
                 'radio = switch(id="' . $this->_getVarName('interrupt_switch',
-                    $station) . '", track_sensitive=false, [ ' . implode(', ', $schedule_switches_interrupting) . ' ])',
+                    $station) . '", track_sensitive=false, [ ' . implode(', ', $scheduleSwitchesInterrupting) . ' ])',
             ]);
         }
 

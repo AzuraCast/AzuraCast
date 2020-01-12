@@ -48,8 +48,8 @@
   "dist/light.css": "dist/light-a0a23d9ad3.css",
   "dist/material.js": "dist/material-df68dbf23f.js",
   "dist/radio_player.js": "dist/radio_player-e8fb69f5c3.js",
-  "dist/station_media.js": "dist/station_media-0fd87093e7.js",
-  "dist/station_playlists.js": "dist/station_playlists-eaa5f5c8be.js",
+  "dist/station_media.js": "dist/station_media-e603db7e25.js",
+  "dist/station_playlists.js": "dist/station_playlists-dee62b5f6b.js",
   "dist/vue_gettext.js": "dist/vue_gettext-5d8cb4cc3e.js",
   "dist/webcaster.js": "dist/webcaster-788fdd9f3d.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"

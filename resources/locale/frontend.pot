@@ -5,7 +5,7 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Project-Id-Version: \n"
 
-#: ./vue/StationPlaylists.vue:126
+#: ./vue/StationPlaylists.vue:124
 msgid "# Songs"
 msgstr ""
 
@@ -18,7 +18,7 @@ msgid "A playlist that instructs the station to play from a remote URL."
 msgstr ""
 
 #: ./vue/StationMedia.vue:177
-#: ./vue/StationPlaylists.vue:123
+#: ./vue/StationPlaylists.vue:121
 #: ./vue/station_playlists/PlaylistReorderModal.vue:11
 msgid "Actions"
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 msgid "Add Files to Playlist"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:20
+#: ./vue/StationPlaylists.vue:18
 #: ./vue/station_playlists/PlaylistEditModal.vue:52
 msgid "Add Playlist"
 msgstr ""
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Album Art"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:132
+#: ./vue/StationPlaylists.vue:130
 msgid "All Playlists"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "An error occurred and your request could not be completed."
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:205
+#: ./vue/StationPlaylists.vue:203
 #: ./vue/station_media/MediaToolbar.vue:194
 msgid "Applying changes..."
 msgstr ""
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Artist"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:73
+#: ./vue/StationPlaylists.vue:71
 msgid "Auto-Assigned"
 msgstr ""
 
@@ -130,13 +130,13 @@ msgstr ""
 msgid "Create Directory"
 msgstr ""
 
-#: ./vue/webcaster/microphone.vue:17
-#: ./vue/webcaster/playlist.vue:23
-#: ./vue/webcaster/settings.vue:139
+#: ./vue/webcaster/microphone.vue:18
+#: ./vue/webcaster/playlist.vue:24
+#: ./vue/webcaster/settings.vue:141
 msgid "Cue"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:184
+#: ./vue/StationPlaylists.vue:182
 msgid "Custom"
 msgstr ""
 
@@ -168,8 +168,8 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:33
-#: ./vue/StationPlaylists.vue:221
+#: ./vue/StationPlaylists.vue:31
+#: ./vue/StationPlaylists.vue:219
 #: ./vue/station_media/MediaToolbar.vue:53
 #: ./vue/station_media/MediaToolbar.vue:114
 msgid "Delete"
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Delete Album Art"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:222
+#: ./vue/StationPlaylists.vue:220
 msgid "Delete playlist?"
 msgstr ""
 
@@ -196,11 +196,11 @@ msgstr ""
 msgid "Directory Name"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:153
+#: ./vue/StationPlaylists.vue:151
 msgid "Disable"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:164
+#: ./vue/StationPlaylists.vue:162
 msgid "Disabled"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgid "Drag files here to upload to this folder or"
 msgstr ""
 
 #: ./vue/StationMedia.vue:206
-#: ./vue/StationPlaylists.vue:30
+#: ./vue/StationPlaylists.vue:28
 msgid "Edit"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 msgid "Edit Playlist"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:154
+#: ./vue/StationPlaylists.vue:152
 msgid "Enable"
 msgstr ""
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid "End Time"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:46
+#: ./vue/StationPlaylists.vue:44
 msgid "Export %{format}"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "Full Volume"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:169
+#: ./vue/StationPlaylists.vue:167
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:42
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:113
 msgid "General Rotation"
@@ -336,7 +336,7 @@ msgstr ""
 msgid "ISRC"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:66
+#: ./vue/StationPlaylists.vue:64
 msgid "Jingle Mode"
 msgstr ""
 
@@ -368,7 +368,7 @@ msgstr ""
 msgid "Merge playlist to play as a single track."
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:15
+#: ./vue/webcaster/settings.vue:16
 msgid "Metadata"
 msgstr ""
 
@@ -384,7 +384,7 @@ msgstr ""
 msgid "Minute of Hour to Play"
 msgstr ""
 
-#: ./vue/webcaster/mixer.vue:3
+#: ./vue/webcaster/mixer.vue:4
 msgid "Mixer"
 msgstr ""
 
@@ -396,7 +396,7 @@ msgstr ""
 msgid "Monday"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:138
+#: ./vue/StationPlaylists.vue:136
 msgid "More"
 msgstr ""
 
@@ -461,11 +461,11 @@ msgstr ""
 msgid "Number of Songs Between Plays"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:176
+#: ./vue/StationPlaylists.vue:174
 msgid "Once per %{minutes} Minutes"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:172
+#: ./vue/StationPlaylists.vue:170
 msgid "Once per %{songs} Songs"
 msgstr ""
 
@@ -474,7 +474,7 @@ msgstr ""
 msgid "Once per Hour"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:180
+#: ./vue/StationPlaylists.vue:178
 msgid "Once per Hour (at %{minute})"
 msgstr ""
 
@@ -496,7 +496,7 @@ msgstr ""
 msgid "Only play one track at scheduled time."
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:171
+#: ./vue/webcaster/settings.vue:172
 msgid "Password"
 msgstr ""
 
@@ -525,15 +525,15 @@ msgstr ""
 msgid "Play/Pause"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:124
+#: ./vue/StationPlaylists.vue:122
 msgid "Playlist"
 msgstr ""
 
-#: ./vue/webcaster/playlist.vue:119
+#: ./vue/webcaster/playlist.vue:118
 msgid "Playlist 1"
 msgstr ""
 
-#: ./vue/webcaster/playlist.vue:120
+#: ./vue/webcaster/playlist.vue:119
 msgid "Playlist 2"
 msgstr ""
 
@@ -587,7 +587,7 @@ msgstr ""
 msgid "Remote Playback Buffer (Seconds)"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:61
+#: ./vue/StationPlaylists.vue:59
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:80
 msgid "Remote URL"
 msgstr ""
@@ -614,7 +614,7 @@ msgstr ""
 msgid "Rename File/Directory"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:141
+#: ./vue/StationPlaylists.vue:139
 msgid "Reorder"
 msgstr ""
 
@@ -656,7 +656,7 @@ msgstr ""
 msgid "Schedule"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:135
+#: ./vue/StationPlaylists.vue:133
 msgid "Schedule View"
 msgstr ""
 
@@ -668,8 +668,12 @@ msgstr ""
 msgid "Scheduled Time #%{num}"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:125
+#: ./vue/StationPlaylists.vue:123
 msgid "Scheduling"
+msgstr ""
+
+#: ./vue/components/DataTable.vue:162
+msgid "Search"
 msgstr ""
 
 #: ./vue/station_media/form/MediaFormAdvancedSettings.vue:49
@@ -696,7 +700,7 @@ msgstr ""
 msgid "Select this row"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:70
+#: ./vue/StationPlaylists.vue:68
 msgid "Sequential"
 msgstr ""
 
@@ -704,7 +708,7 @@ msgstr ""
 msgid "Set or clear playlists from the selected media"
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:10
+#: ./vue/webcaster/settings.vue:11
 msgid "Settings"
 msgstr ""
 
@@ -736,7 +740,7 @@ msgstr ""
 msgid "Song Title"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:58
+#: ./vue/StationPlaylists.vue:56
 msgid "Song-based"
 msgstr ""
 
@@ -762,7 +766,7 @@ msgstr ""
 msgid "Start Date"
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:176
+#: ./vue/webcaster/settings.vue:177
 msgid "Start Streaming"
 msgstr ""
 
@@ -774,7 +778,7 @@ msgstr ""
 msgid "Station Time Zone"
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:175
+#: ./vue/webcaster/settings.vue:176
 msgid "Stop Streaming"
 msgstr ""
 
@@ -866,11 +870,11 @@ msgstr ""
 msgid "Tuesday"
 msgstr ""
 
-#: ./vue/webcaster/playlist.vue:126
+#: ./vue/webcaster/playlist.vue:125
 msgid "Unknown Artist"
 msgstr ""
 
-#: ./vue/webcaster/playlist.vue:123
+#: ./vue/webcaster/playlist.vue:122
 msgid "Unknown Title"
 msgstr ""
 
@@ -878,15 +882,15 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:122
+#: ./vue/webcaster/settings.vue:124
 msgid "Update Metadata"
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:100
+#: ./vue/webcaster/settings.vue:101
 msgid "Use Asynchronous Worker"
 msgstr ""
 
-#: ./vue/webcaster/settings.vue:168
+#: ./vue/webcaster/settings.vue:169
 msgid "Username"
 msgstr ""
 
@@ -907,6 +911,6 @@ msgstr ""
 msgid "Wednesday"
 msgstr ""
 
-#: ./vue/StationPlaylists.vue:169
+#: ./vue/StationPlaylists.vue:167
 msgid "Weight"
 msgstr ""

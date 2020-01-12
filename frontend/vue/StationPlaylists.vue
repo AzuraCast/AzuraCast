@@ -7,9 +7,7 @@
                         <h2 class="card-title" v-translate>Playlists</h2>
                     </b-col>
                     <b-col md="6" class="text-right text-muted">
-                        <translate :translate-params="{ tz: stationTimeZone }">
-                            This station's time zone is currently %{tz}.
-                        </translate>
+                        <translate :translate-params="{ tz: stationTimeZone }">This station's time zone is currently %{tz}.</translate>
                     </b-col>
                 </b-row>
             </b-card-header>
@@ -45,7 +43,7 @@
                                         <template v-for="format in ['pls', 'm3u']">
                                             <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
                                                 <translate :translate-params="{ format: format.toUpperCase() }">
-                                                    Export %{format}
+                                                Export %{format}
                                                 </translate>
                                             </b-dropdown-item>
                                         </template>
@@ -101,145 +99,145 @@
 </template>
 
 <script>
-  import DataTable from './components/DataTable'
-  import Schedule from './station_playlists/PlaylistSchedule'
-  import EditModal from './station_playlists/PlaylistEditModal'
-  import ReorderModal from './station_playlists/PlaylistReorderModal'
-  import axios from 'axios'
+    import DataTable from './components/DataTable'
+    import Schedule from './station_playlists/PlaylistSchedule'
+    import EditModal from './station_playlists/PlaylistEditModal'
+    import ReorderModal from './station_playlists/PlaylistReorderModal'
+    import axios from 'axios'
 
-  export default {
-    name: 'StationPlaylists',
-    components: { ReorderModal, EditModal, Schedule, DataTable },
-    props: {
-      listUrl: String,
-      scheduleUrl: String,
-      locale: String,
-      filesUrl: String,
-      stationTimeZone: String
-    },
-    data () {
-      return {
-        fields: [
-          { key: 'actions', label: this.$gettext('Actions'), sortable: false },
-          { key: 'name', label: this.$gettext('Playlist'), sortable: false },
-          { key: 'scheduling', label: this.$gettext('Scheduling'), sortable: false },
-          { key: 'num_songs', label: this.$gettext('# Songs'), sortable: false }
-        ]
-      }
-    },
-    computed: {
-      langAllPlaylistsTab () {
-        return this.$gettext('All Playlists')
-      },
-      langScheduleViewTab () {
-        return this.$gettext('Schedule View')
-      },
-      langMore () {
-        return this.$gettext('More')
-      },
-      langReorderButton () {
-        return this.$gettext('Reorder')
-      }
-    },
-    mounted () {
-      moment.relativeTimeThreshold('ss', 1)
-      moment.relativeTimeRounding(function (value) {
-        return Math.round(value * 10) / 10
-      })
-    },
-    methods: {
-      langToggleButton (record) {
-        return (record.is_enabled)
-          ? this.$gettext('Disable')
-          : this.$gettext('Enable')
-      },
-      formatTime (time) {
-        return moment(time).tz(this.stationTimeZone).format('LT')
-      },
-      formatLength (length) {
-        return moment.duration(length, 'seconds').humanize()
-      },
-      formatType (record) {
-        if (!record.is_enabled) {
-          return this.$gettext('Disabled')
-        }
-
-        switch (record.type) {
-          case 'default':
-            return this.$gettext('General Rotation') + '<br>' + this.$gettext('Weight') + ': ' + record.weight
-
-          case 'once_per_x_songs':
-            let oncePerSongs = this.$gettext('Once per %{songs} Songs')
-            return this.$gettextInterpolate(oncePerSongs, { songs: record.play_per_songs })
-
-          case 'once_per_x_minutes':
-            let oncePerMinutes = this.$gettext('Once per %{minutes} Minutes')
-            return this.$gettextInterpolate(oncePerMinutes, { minutes: record.play_per_minutes })
-
-          case 'once_per_hour':
-            let oncePerHour = this.$gettext('Once per Hour (at %{minute})')
-            return this.$gettextInterpolate(oncePerHour, { minute: record.play_per_hour_minute })
-
-          default:
-            return this.$gettext('Custom')
-        }
-      },
-      relist () {
-        if (this.$refs.datatable) {
-          this.$refs.datatable.refresh()
-        }
-        if (this.$refs.schedule) {
-          this.$refs.schedule.refresh()
-        }
-      },
-      doCreate () {
-        this.$refs.editModal.create()
-      },
-      doEdit (url) {
-        this.$refs.editModal.edit(url)
-      },
-      doReorder (url) {
-        this.$refs.reorderModal.open(url)
-      },
-      doToggle (url) {
-        notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
-          delay: 3000
-        })
-
-        axios.put(url).then((resp) => {
-          notify('<b>' + resp.data.message + '</b>', 'success')
-
-          this.relist()
-        }).catch((err) => {
-          console.error(err)
-          if (err.response.message) {
-            notify('<b>' + err.response.message + '</b>', 'danger')
-          }
-        })
-      },
-      doDelete (url) {
-        let buttonText = this.$gettext('Delete')
-        let buttonConfirmText = this.$gettext('Delete playlist?')
-
-        swal({
-          title: buttonConfirmText,
-          buttons: [true, buttonText],
-          dangerMode: true
-        }).then((value) => {
-          if (value) {
-            axios.delete(url).then((resp) => {
-              notify('<b>' + resp.data.message + '</b>', 'success')
-
-              this.relist()
-            }).catch((err) => {
-              console.error(err)
-              if (err.response.message) {
-                notify('<b>' + err.response.message + '</b>', 'danger')
-              }
+    export default {
+        name: 'StationPlaylists',
+        components: { ReorderModal, EditModal, Schedule, DataTable },
+        props: {
+            listUrl: String,
+            scheduleUrl: String,
+            locale: String,
+            filesUrl: String,
+            stationTimeZone: String
+        },
+        data () {
+            return {
+                fields: [
+                    { key: 'actions', label: this.$gettext('Actions'), sortable: false },
+                    { key: 'name', label: this.$gettext('Playlist'), sortable: false },
+                    { key: 'scheduling', label: this.$gettext('Scheduling'), sortable: false },
+                    { key: 'num_songs', label: this.$gettext('# Songs'), sortable: false }
+                ]
+            }
+        },
+        computed: {
+            langAllPlaylistsTab () {
+                return this.$gettext('All Playlists')
+            },
+            langScheduleViewTab () {
+                return this.$gettext('Schedule View')
+            },
+            langMore () {
+                return this.$gettext('More')
+            },
+            langReorderButton () {
+                return this.$gettext('Reorder')
+            }
+        },
+        mounted () {
+            moment.relativeTimeThreshold('ss', 1)
+            moment.relativeTimeRounding(function (value) {
+                return Math.round(value * 10) / 10
             })
-          }
-        })
-      }
+        },
+        methods: {
+            langToggleButton (record) {
+                return (record.is_enabled)
+                        ? this.$gettext('Disable')
+                        : this.$gettext('Enable')
+            },
+            formatTime (time) {
+                return moment(time).tz(this.stationTimeZone).format('LT')
+            },
+            formatLength (length) {
+                return moment.duration(length, 'seconds').humanize()
+            },
+            formatType (record) {
+                if (!record.is_enabled) {
+                    return this.$gettext('Disabled')
+                }
+
+                switch (record.type) {
+                    case 'default':
+                        return this.$gettext('General Rotation') + '<br>' + this.$gettext('Weight') + ': ' + record.weight
+
+                    case 'once_per_x_songs':
+                        let oncePerSongs = this.$gettext('Once per %{songs} Songs')
+                        return this.$gettextInterpolate(oncePerSongs, { songs: record.play_per_songs })
+
+                    case 'once_per_x_minutes':
+                        let oncePerMinutes = this.$gettext('Once per %{minutes} Minutes')
+                        return this.$gettextInterpolate(oncePerMinutes, { minutes: record.play_per_minutes })
+
+                    case 'once_per_hour':
+                        let oncePerHour = this.$gettext('Once per Hour (at %{minute})')
+                        return this.$gettextInterpolate(oncePerHour, { minute: record.play_per_hour_minute })
+
+                    default:
+                        return this.$gettext('Custom')
+                }
+            },
+            relist () {
+                if (this.$refs.datatable) {
+                    this.$refs.datatable.refresh()
+                }
+                if (this.$refs.schedule) {
+                    this.$refs.schedule.refresh()
+                }
+            },
+            doCreate () {
+                this.$refs.editModal.create()
+            },
+            doEdit (url) {
+                this.$refs.editModal.edit(url)
+            },
+            doReorder (url) {
+                this.$refs.reorderModal.open(url)
+            },
+            doToggle (url) {
+                notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
+                    delay: 3000
+                })
+
+                axios.put(url).then((resp) => {
+                    notify('<b>' + resp.data.message + '</b>', 'success')
+
+                    this.relist()
+                }).catch((err) => {
+                    console.error(err)
+                    if (err.response.message) {
+                        notify('<b>' + err.response.message + '</b>', 'danger')
+                    }
+                })
+            },
+            doDelete (url) {
+                let buttonText = this.$gettext('Delete')
+                let buttonConfirmText = this.$gettext('Delete playlist?')
+
+                swal({
+                    title: buttonConfirmText,
+                    buttons: [true, buttonText],
+                    dangerMode: true
+                }).then((value) => {
+                    if (value) {
+                        axios.delete(url).then((resp) => {
+                            notify('<b>' + resp.data.message + '</b>', 'success')
+
+                            this.relist()
+                        }).catch((err) => {
+                            console.error(err)
+                            if (err.response.message) {
+                                notify('<b>' + err.response.message + '</b>', 'danger')
+                            }
+                        })
+                    }
+                })
+            }
+        }
     }
-  }
 </script>

@@ -14,8 +14,8 @@ Language-Team: Portuguese, Brazilian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-11-23T21:40:24+00:00
-PO-Revision-Date: 2019-12-30 04:39
+POT-Creation-Date: 2019-12-31T12:47:58+00:00
+PO-Revision-Date: 2020-01-13 22:15
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -257,11 +257,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Retention policies updated.' => 
       array (
-        0 => '',
+        0 => 'Políticas de retenção atualizadas.',
       ),
       'Continuous queries created.' => 
       array (
-        0 => '',
+        0 => 'Consultas contínuas criadas.',
       ),
       'InfluxDB databases created.' => 
       array (
@@ -295,13 +295,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Executar Backup Manual',
       ),
-      'Backup not found.' => 
-      array (
-        0 => 'Backup não encontrado.',
-      ),
       'Backup deleted.' => 
       array (
         0 => 'Backup excluído.',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => 'Backup não encontrado.',
       ),
       'Custom Field updated.' => 
       array (
@@ -326,6 +326,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Sync Task Output' => 
       array (
         0 => 'Saída de tarefa de sincronização',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => 'Versão "%s" do GeoLite já está instalada.',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => 'Instalar banco de dados GeoLite IP',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
@@ -1349,7 +1357,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Group Identification Registration' => 
       array (
-        0 => '',
+        0 => 'Registro de identificação de grupo',
       ),
       'Initial Key' => 
       array (
@@ -1397,7 +1405,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'MPEG Location Lookup Table' => 
       array (
-        0 => '',
+        0 => 'Tabela de localização MPEG',
       ),
       'Music CD Identifier' => 
       array (
@@ -1405,7 +1413,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Musician Credits List' => 
       array (
-        0 => '',
+        0 => 'Lista de Créditos Músicos',
       ),
       'Original Album' => 
       array (
@@ -1437,15 +1445,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Part Of A Compilation' => 
       array (
-        0 => '',
+        0 => 'Parte de uma compilação',
       ),
       'Part Of A Set' => 
       array (
-        0 => '',
+        0 => 'Parte de um conjunto',
       ),
       'Performer Sort Order' => 
       array (
-        0 => '',
+        0 => 'Ordem de classificação do artista',
       ),
       'Play Counter' => 
       array (
@@ -1457,7 +1465,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Popularimeter' => 
       array (
-        0 => '',
+        0 => 'Popularímetro',
       ),
       'Position Synchronisation Frame' => 
       array (
@@ -1465,11 +1473,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Private Frame' => 
       array (
-        0 => '',
+        0 => 'Quadro Privado',
       ),
       'Produced Notice' => 
       array (
-        0 => '',
+        0 => 'Aviso Produzido',
       ),
       'Publisher' => 
       array (
@@ -1521,7 +1529,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Signature Frame' => 
       array (
-        0 => '',
+        0 => 'Tipo de assinatura',
       ),
       'Size' => 
       array (
@@ -1533,19 +1541,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Synced Tempo Codes' => 
       array (
-        0 => '',
+        0 => 'Códigos de Tempo Sincronizados',
       ),
       'Synchronised Lyric' => 
       array (
-        0 => '',
+        0 => 'Letra da música sincronizada',
       ),
       'Synchronised Tempo Codes' => 
       array (
-        0 => '',
+        0 => 'Códigos de Tempo Sincronizados',
       ),
       'Tagging Time' => 
       array (
-        0 => '',
+        0 => 'Tempo de Marcação',
       ),
       'Terms Of Use' => 
       array (
@@ -1565,7 +1573,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Title Sort Order' => 
       array (
-        0 => '',
+        0 => 'Selecionar Ordem de classificação',
       ),
       'Track Number' => 
       array (
@@ -1573,11 +1581,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Unique File Identifier' => 
       array (
-        0 => '',
+        0 => 'Identificador único',
       ),
       'Unsynchronised Lyric' => 
       array (
-        0 => '',
+        0 => 'Letra não sincronizada',
       ),
       'URL Artist' => 
       array (
@@ -1611,17 +1619,53 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Ano',
       ),
-      'Important Notes' => 
+      'Instructions' => 
       array (
-        0 => 'Notas importantes',
+        0 => 'Instruções',
       ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
       array (
-        0 => '<p>O SHOUTcast 2 DNAS não é um software livre, e sua licença restritiva não permite que AzuraCast distribua o binário do SHOUTcast Para instalar o SHOUTcast, você deve baixar o binário Linux x64 do <a href="%s" target="_blank">Gerenciador de Rádio SHOUTcast</a> do site. Envie o <code>sc_serv2_linux_x64-latest.tar.gz</code> no campo abaixo para automaticamente extraí-lo no diretório correto</p>',
+        0 => 'Você pode fazer o upload do banco de dados da MaxMind GeoLite para fornecer geolocalização dos endereços IP de seus ouvintes. Isto permitirá que você veja os ouvintes do relatório de "Ouvintes" de cada estação. Para baixar o banco de dados GeoLita:',
+      ),
+      'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
+      array (
+        0 => 'Crie uma conta em <a href="%s" target="_blank">o site de desenvolvimento da MaxMind</a>.',
+      ),
+      'Visit the <a href="%s" target="_blank">direct downloads page</a>.' => 
+      array (
+        0 => 'Visite a <a href="%s" target="_blank">página de downloads diretos</a>.',
+      ),
+      'Download the <code>%s</code> file (in GZIP) format.' => 
+      array (
+        0 => 'Baixe o arquivo <code>%s</code> (no formato GZIP).',
+      ),
+      'Select the downloaded file below to upload it.' => 
+      array (
+        0 => 'Selecione o arquivo baixado abaixo para enviá-lo.',
+      ),
+      'You can repeat this process any time you need to update the GeoLite database.' => 
+      array (
+        0 => 'Você pode repetir este processo a qualquer momento que necessitar para atualizar a base de dados GeoLitte.',
       ),
       'Current Installed Version' => 
       array (
         0 => 'Versão Atualmente Instalada',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => 'GeoLite não está instalado nesta instalação.',
+      ),
+      'Select GeoLite2-City .tar.gz File' => 
+      array (
+        0 => 'Selecione o arquivo GeoLite2-City .tar.gz',
+      ),
+      'Upload' => 
+      array (
+        0 => 'Upload',
+      ),
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      array (
+        0 => '<p>O SHOUTcast 2 DNAS não é um software livre, e sua licença restritiva não permite que AzuraCast distribua o binário do SHOUTcast Para instalar o SHOUTcast, você deve baixar o binário Linux x64 do <a href="%s" target="_blank">Gerenciador de Rádio SHOUTcast</a> do site. Envie o <code>sc_serv2_linux_x64-latest.tar.gz</code> no campo abaixo para automaticamente extraí-lo no diretório correto</p>',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
@@ -1630,10 +1674,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
         0 => 'Selecione o arquivo SHOUTcast 64-bit .tar.gz',
-      ),
-      'Upload' => 
-      array (
-        0 => 'Upload',
       ),
       'E-mail Address' => 
       array (
@@ -1949,7 +1989,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Indefinitely' => 
       array (
-        0 => '',
+        0 => 'Por tempo indeterminado',
       ),
       'Use WebSockets for Now Playing Updates' => 
       array (

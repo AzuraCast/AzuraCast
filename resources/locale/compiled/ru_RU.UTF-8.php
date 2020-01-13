@@ -14,8 +14,8 @@ Language-Team: Russian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-11-23T21:40:24+00:00
-PO-Revision-Date: 2019-12-30 04:39
+POT-Creation-Date: 2019-12-31T12:47:58+00:00
+PO-Revision-Date: 2020-01-13 22:15
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
 X-Crowdin-Project: azuracast
@@ -229,7 +229,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Reload System Data' => 
       array (
-        0 => '',
+        0 => 'Перезагрузить системные данные',
       ),
       'Refreshing All Stations' => 
       array (
@@ -295,13 +295,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Запуск Резервного Копирования Вручную',
       ),
-      'Backup not found.' => 
-      array (
-        0 => 'Резервная копия не найдена.',
-      ),
       'Backup deleted.' => 
       array (
         0 => 'Резервная копия удалена.',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => 'Резервная копия не найдена.',
       ),
       'Custom Field updated.' => 
       array (
@@ -326,6 +326,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Sync Task Output' => 
       array (
         0 => 'Синхронизация задач выходных данных',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => 'В настоящее время установлена версия GeoLite "%s".',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => 'Установить базу данных GeoLite IP',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
@@ -1217,7 +1225,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
       array (
-        0 => '',
+        0 => 'При необходимости выберите поле метаданных ID3v2, которое, если оно существует, будет использоваться для установки этого значения поля.',
       ),
       'Disable' => 
       array (
@@ -1229,11 +1237,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Album Artist Sort Order' => 
       array (
-        0 => '',
+        0 => 'Порядок сортировки исполнителя альбома',
       ),
       'Album Sort Order' => 
       array (
-        0 => '',
+        0 => 'Порядок сортировки альбомов',
       ),
       'Artist' => 
       array (
@@ -1241,7 +1249,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Attached Picture' => 
       array (
-        0 => '',
+        0 => 'Прикрепленное изображение',
       ),
       'Audio Encryption' => 
       array (
@@ -1249,11 +1257,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Audio Seek Point Index' => 
       array (
-        0 => '',
+        0 => 'Индекс Точки Поиска Звука',
       ),
       'Band' => 
       array (
-        0 => '',
+        0 => 'Группа',
       ),
       'Bpm' => 
       array (
@@ -1273,19 +1281,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Composer' => 
       array (
-        0 => 'Исполнитель',
+        0 => 'Композитор',
       ),
       'Composer Sort Order' => 
       array (
-        0 => '',
+        0 => 'Порядок сортировки композитора',
       ),
       'Conductor' => 
       array (
-        0 => '',
+        0 => 'Дирижёр',
       ),
       'Content Group Description' => 
       array (
-        0 => '',
+        0 => 'Описание Группы Содержимого',
       ),
       'Copyright' => 
       array (
@@ -1293,7 +1301,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Copyright Message' => 
       array (
-        0 => 'Сообщение об авторском праве',
+        0 => 'Сообщение об авторских правах',
       ),
       'Date' => 
       array (
@@ -1301,11 +1309,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Encoded By' => 
       array (
-        0 => 'Кодировка',
+        0 => 'Кодирование',
       ),
       'Encoder Settings' => 
       array (
-        0 => 'Настройки кодировщика',
+        0 => 'Настройки кодера',
       ),
       'Encoding Time' => 
       array (
@@ -1317,7 +1325,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Encryption Method Registration' => 
       array (
-        0 => '',
+        0 => 'Регистрация метода шифрования',
       ),
       'Equalisation' => 
       array (
@@ -1325,11 +1333,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Event Timing Codes' => 
       array (
-        0 => '',
+        0 => 'Временные коды события',
       ),
       'Featured Artist' => 
       array (
-        0 => '',
+        0 => 'Рекомендуемый Исполнитель',
       ),
       'File Owner' => 
       array (
@@ -1341,7 +1349,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'General Encapsulated Object' => 
       array (
-        0 => '',
+        0 => 'Общий инкапсулированный объект',
       ),
       'Genre' => 
       array (
@@ -1349,15 +1357,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Group Identification Registration' => 
       array (
-        0 => '',
+        0 => 'Регистрация Идентификации Группы',
       ),
       'Initial Key' => 
       array (
-        0 => '',
+        0 => 'Первичный Ключ',
       ),
       'Internet Radio Station Name' => 
       array (
-        0 => 'Имя интернет-радиостанции',
+        0 => 'Название интернет-радиостанции',
       ),
       'Internet Radio Station Owner' => 
       array (
@@ -1397,7 +1405,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'MPEG Location Lookup Table' => 
       array (
-        0 => '',
+        0 => 'Таблица поиска местоположения MPEG',
       ),
       'Music CD Identifier' => 
       array (
@@ -1405,47 +1413,47 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Musician Credits List' => 
       array (
-        0 => '',
+        0 => 'Список Заслуг Музыкантов',
       ),
       'Original Album' => 
       array (
-        0 => '',
+        0 => 'Первоначальный Альбом',
       ),
       'Original Artist' => 
       array (
-        0 => '',
+        0 => 'Первоначальный Исполнитель',
       ),
       'Original Filename' => 
       array (
-        0 => '',
+        0 => 'Первоначальное Название Файла',
       ),
       'Original Lyricist' => 
       array (
-        0 => '',
+        0 => 'Первоначальный Автор Текстов',
       ),
       'Original Release Time' => 
       array (
-        0 => '',
+        0 => 'Первоначальное Время Выпуска',
       ),
       'Original Year' => 
       array (
-        0 => '',
+        0 => 'Первоначальный Год',
       ),
       'Ownership Frame' => 
       array (
-        0 => '',
+        0 => 'Фрейм владельца',
       ),
       'Part Of A Compilation' => 
       array (
-        0 => '',
+        0 => 'Часть Компиляции',
       ),
       'Part Of A Set' => 
       array (
-        0 => '',
+        0 => 'Часть Набора',
       ),
       'Performer Sort Order' => 
       array (
-        0 => '',
+        0 => 'Порядок сортировки исполнителя',
       ),
       'Play Counter' => 
       array (
@@ -1453,59 +1461,59 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Playlist Delay' => 
       array (
-        0 => 'Задержка плейлиста',
+        0 => 'Задержка воспроизведения',
       ),
       'Popularimeter' => 
       array (
-        0 => 'Популяриметр',
+        0 => 'Популяризатор',
       ),
       'Position Synchronisation Frame' => 
       array (
-        0 => '',
+        0 => 'Синхронизация положения фрейма',
       ),
       'Private Frame' => 
       array (
-        0 => 'Частный фрейм',
+        0 => 'Личный фрейм',
       ),
       'Produced Notice' => 
       array (
-        0 => '',
+        0 => 'Оповещение о создании',
       ),
       'Publisher' => 
       array (
-        0 => '',
+        0 => 'Издатель',
       ),
       'Recommended Buffer Size' => 
       array (
-        0 => '',
+        0 => 'Рекомендуемый размер буфера',
       ),
       'Recording Dates' => 
       array (
-        0 => '',
+        0 => 'Даты Записи',
       ),
       'Recording Studio' => 
       array (
-        0 => '',
+        0 => 'Студия записи',
       ),
       'Recording Time' => 
       array (
-        0 => '',
+        0 => 'Время записи',
       ),
       'Relative Volume Adjustment' => 
       array (
-        0 => '',
+        0 => 'Релятивная Регулировка Громкости',
       ),
       'Release Time' => 
       array (
-        0 => '',
+        0 => 'Время Выпуска',
       ),
       'Remixer' => 
       array (
-        0 => '',
+        0 => 'Ремиксер',
       ),
       'ReplayGain Adjustment' => 
       array (
-        0 => 'Уровень ReplayGain',
+        0 => 'Настройки ReplayGain',
       ),
       'Reverb' => 
       array (
@@ -1517,11 +1525,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Set Subtitle' => 
       array (
-        0 => 'Установить субтитры',
+        0 => 'Установленные субтитры',
       ),
       'Signature Frame' => 
       array (
-        0 => '',
+        0 => 'Сигнатура Фрейма',
       ),
       'Size' => 
       array (
@@ -1533,7 +1541,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Synced Tempo Codes' => 
       array (
-        0 => '',
+        0 => 'Код Синхронизации Темпа',
       ),
       'Synchronised Lyric' => 
       array (
@@ -1541,11 +1549,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Synchronised Tempo Codes' => 
       array (
-        0 => '',
+        0 => 'Синхронизированные коды темпа',
       ),
       'Tagging Time' => 
       array (
-        0 => '',
+        0 => 'Время Тегирования',
       ),
       'Terms Of Use' => 
       array (
@@ -1581,47 +1589,83 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'URL Artist' => 
       array (
-        0 => '',
+        0 => 'Ссылка на Исполнителя',
       ),
       'URL File' => 
       array (
-        0 => '',
+        0 => 'Ссылка на Файл',
       ),
       'URL Payment' => 
       array (
-        0 => '',
+        0 => 'Ссылка на оплату',
       ),
       'URL Publisher' => 
       array (
-        0 => '',
+        0 => 'Ссылка на Издателя',
       ),
       'URL Source' => 
       array (
-        0 => '',
+        0 => 'Ссылка на Первоисточник',
       ),
       'URL Station' => 
       array (
-        0 => '',
+        0 => 'Ссылка на Станцию',
       ),
       'URL User' => 
       array (
-        0 => '',
+        0 => 'Ссылка на Пользователя',
       ),
       'Year' => 
       array (
         0 => 'Год',
       ),
-      'Important Notes' => 
+      'Instructions' => 
       array (
-        0 => 'Важные заметки',
+        0 => 'Инструкции',
       ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS не является бесплатным программным обеспечением, и его ограничительная лицензия не позволяет AzuraCast распространять бинарный файл SHOUTcast. Чтобы установить SHOUTcast, вы должны загрузить бинарный файл Linux x64 с веб-сайта <a href="%s" target="_blank">SHOUTcast Radio Manager</a> Загрузите <code>sc_serv2_linux_x64-latest.tar.gz</code> в поле ниже, чтобы автоматически извлечь его в соответствующий каталог.</p>',
+        0 => 'Вы можете загрузить базу данных MaxMind GeoLite, чтобы обеспечить геолокацию IP-адресов ваших слушателей. Это позволит вам просматривать слушателей в отчете "слушатели" каждой станции. Чтобы загрузить базу данных GeoLite:',
+      ),
+      'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
+      array (
+        0 => 'Создайте учетную запись на <a href="%s" target="_blank">сайте разработчиков MaxMind</a>.',
+      ),
+      'Visit the <a href="%s" target="_blank">direct downloads page</a>.' => 
+      array (
+        0 => 'Посетите <a href="%s" target="_blank">страницу прямых загрузок</a>.',
+      ),
+      'Download the <code>%s</code> file (in GZIP) format.' => 
+      array (
+        0 => 'Загрузите файл <code>%s</code> (в формате GZIP).',
+      ),
+      'Select the downloaded file below to upload it.' => 
+      array (
+        0 => 'Выберите скачанный файл ниже, чтобы загрузить его.',
+      ),
+      'You can repeat this process any time you need to update the GeoLite database.' => 
+      array (
+        0 => 'Вы можете повторить этот процесс в любое время, когда вам нужно обновить базу данных GeoLite.',
       ),
       'Current Installed Version' => 
       array (
         0 => 'Текущая установленная версия',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => 'GeoLite в настоящее время здесь не установлен.',
+      ),
+      'Select GeoLite2-City .tar.gz File' => 
+      array (
+        0 => 'Выберите файл GeoLite2-City .tar.gz',
+      ),
+      'Upload' => 
+      array (
+        0 => 'Загрузить',
+      ),
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      array (
+        0 => '<p>SHOUTcast 2 DNAS не является бесплатным программным обеспечением, и его ограничительная лицензия не позволяет AzuraCast распространять бинарный файл SHOUTcast. Чтобы установить SHOUTcast, вы должны загрузить бинарный файл Linux x64 с веб-сайта <a href="%s" target="_blank">SHOUTcast Radio Manager</a> Загрузите <code>sc_serv2_linux_x64-latest.tar.gz</code> в поле ниже, чтобы автоматически извлечь его в соответствующий каталог.</p>',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
@@ -1630,10 +1674,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
         0 => 'Выберите файл SHOUTcast 64-bit .tar.gz',
-      ),
-      'Upload' => 
-      array (
-        0 => 'Загрузить',
       ),
       'E-mail Address' => 
       array (
@@ -1941,7 +1981,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Last Year' => 
       array (
-        0 => 'Прошлый год',
+        0 => 'Последний год',
       ),
       'Last 2 Years' => 
       array (

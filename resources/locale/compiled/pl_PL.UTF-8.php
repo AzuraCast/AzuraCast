@@ -14,8 +14,8 @@ Language-Team: Polish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-11-23T21:40:24+00:00
-PO-Revision-Date: 2019-12-30 04:39
+POT-Creation-Date: 2019-12-31T12:47:58+00:00
+PO-Revision-Date: 2020-01-13 22:15
 Language: pl_PL
 Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
 X-Crowdin-Project: azuracast
@@ -295,13 +295,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Uruchom ręczne tworzenie kopii zapasowej',
       ),
-      'Backup not found.' => 
-      array (
-        0 => 'Nie znaleziono kopii zapasowej.',
-      ),
       'Backup deleted.' => 
       array (
         0 => 'Kopia zapasowa usunięta.',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => 'Nie znaleziono kopii zapasowej.',
       ),
       'Custom Field updated.' => 
       array (
@@ -326,6 +326,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Sync Task Output' => 
       array (
         0 => 'Dane wyjściowe zadania synchronizacji',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => '',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => '',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
@@ -1611,17 +1619,53 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Important Notes' => 
+      'Instructions' => 
       array (
-        0 => 'Ważne uwagi',
+        0 => '',
       ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS nie jest oprogramowaniem wolnym, a jego restrykcyjna licencja nie zezwala twórcom AzuraCast na rozpowszechnianie plików binarnych SHOUTcast. Aby zainstalować SHOUTcast, musisz pobrać binarkę x64 dla Linuxa ze strony <a href="%s" target="_blank">SHOUTcast Radio Manager</a>. Następnie wyślij plik <code>sc_serv2_linux_x64-latest.tar.gz</code> poprzez poniższe pole, aby automatycznie wypakować go do odpowiedniego katalogu.</p>',
+        0 => '',
+      ),
+      'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
+      array (
+        0 => '',
+      ),
+      'Visit the <a href="%s" target="_blank">direct downloads page</a>.' => 
+      array (
+        0 => '',
+      ),
+      'Download the <code>%s</code> file (in GZIP) format.' => 
+      array (
+        0 => '',
+      ),
+      'Select the downloaded file below to upload it.' => 
+      array (
+        0 => '',
+      ),
+      'You can repeat this process any time you need to update the GeoLite database.' => 
+      array (
+        0 => '',
       ),
       'Current Installed Version' => 
       array (
         0 => 'Obecnie zainstalowana wersja',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => '',
+      ),
+      'Select GeoLite2-City .tar.gz File' => 
+      array (
+        0 => '',
+      ),
+      'Upload' => 
+      array (
+        0 => 'Prześlij',
+      ),
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      array (
+        0 => '<p>SHOUTcast 2 DNAS nie jest oprogramowaniem wolnym, a jego restrykcyjna licencja nie zezwala twórcom AzuraCast na rozpowszechnianie plików binarnych SHOUTcast. Aby zainstalować SHOUTcast, musisz pobrać binarkę x64 dla Linuxa ze strony <a href="%s" target="_blank">SHOUTcast Radio Manager</a>. Następnie wyślij plik <code>sc_serv2_linux_x64-latest.tar.gz</code> poprzez poniższe pole, aby automatycznie wypakować go do odpowiedniego katalogu.</p>',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
@@ -1630,10 +1674,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
         0 => 'Wybierz plik SHOUTcast 64-bit .tar.gz',
-      ),
-      'Upload' => 
-      array (
-        0 => 'Prześlij',
       ),
       'E-mail Address' => 
       array (

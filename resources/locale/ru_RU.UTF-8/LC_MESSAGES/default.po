@@ -7,96 +7,96 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-11-23T21:40:24+00:00\n"
-"PO-Revision-Date: 2019-12-30 04:39\n"
+"POT-Creation-Date: 2019-12-31T12:47:58+00:00\n"
+"PO-Revision-Date: 2020-01-13 22:15\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: azuracast\n"
 "X-Crowdin-Language: ru\n"
 "X-Crowdin-File: /master/resources/locale/default.pot\n"
 
-#: /var/azuracast/www/src/Acl.php:79
-#: /var/azuracast/www/src/Acl.php:91
+#: /var/azuracast/www/src/Acl.php:77
+#: /var/azuracast/www/src/Acl.php:89
 msgid "All Permissions"
 msgstr "Все права доступа"
 
-#: /var/azuracast/www/src/Acl.php:80
+#: /var/azuracast/www/src/Acl.php:78
 msgid "View Administration Page"
 msgstr "Просмотр Страниц Администрирования"
 
-#: /var/azuracast/www/src/Acl.php:81
+#: /var/azuracast/www/src/Acl.php:79
 msgid "View System Logs"
 msgstr "Просмотр системных журналов"
 
-#: /var/azuracast/www/src/Acl.php:82
+#: /var/azuracast/www/src/Acl.php:80
 msgid "Administer Settings"
 msgstr "Управление Настройками"
 
-#: /var/azuracast/www/src/Acl.php:83
+#: /var/azuracast/www/src/Acl.php:81
 msgid "Administer API Keys"
 msgstr "Управление API ключами"
 
-#: /var/azuracast/www/src/Acl.php:84
+#: /var/azuracast/www/src/Acl.php:82
 msgid "Administer Users"
 msgstr "Управление Пользователями"
 
-#: /var/azuracast/www/src/Acl.php:85
+#: /var/azuracast/www/src/Acl.php:83
 msgid "Administer Permissions"
 msgstr "Управление Правами Доступа"
 
-#: /var/azuracast/www/src/Acl.php:86
+#: /var/azuracast/www/src/Acl.php:84
 msgid "Administer Stations"
 msgstr "Управление Станциями"
 
-#: /var/azuracast/www/src/Acl.php:87
+#: /var/azuracast/www/src/Acl.php:85
 msgid "Administer Custom Fields"
 msgstr "Управление Настраиваемыми Полями"
 
-#: /var/azuracast/www/src/Acl.php:88
+#: /var/azuracast/www/src/Acl.php:86
 msgid "Administer Backups"
 msgstr "Управление Резервными Копиями"
 
-#: /var/azuracast/www/src/Acl.php:92
+#: /var/azuracast/www/src/Acl.php:90
 msgid "View Station Page"
 msgstr "Просмотр Страниц Станции"
 
-#: /var/azuracast/www/src/Acl.php:93
+#: /var/azuracast/www/src/Acl.php:91
 msgid "View Station Reports"
 msgstr "Просмотр отчётов станции"
 
-#: /var/azuracast/www/src/Acl.php:94
+#: /var/azuracast/www/src/Acl.php:92
 msgid "View Station Logs"
 msgstr "Просмотр журналов станции"
 
-#: /var/azuracast/www/src/Acl.php:95
+#: /var/azuracast/www/src/Acl.php:93
 msgid "Manage Station Profile"
 msgstr "Управление Профилем Станции"
 
-#: /var/azuracast/www/src/Acl.php:96
+#: /var/azuracast/www/src/Acl.php:94
 msgid "Manage Station Broadcasting"
 msgstr "Управление Вещанием Станции"
 
-#: /var/azuracast/www/src/Acl.php:97
+#: /var/azuracast/www/src/Acl.php:95
 msgid "Manage Station Streamers"
 msgstr "Управление Стримерами Станции"
 
-#: /var/azuracast/www/src/Acl.php:98
+#: /var/azuracast/www/src/Acl.php:96
 msgid "Manage Station Mount Points"
 msgstr "Управление Точками Подключения Станции"
 
-#: /var/azuracast/www/src/Acl.php:99
+#: /var/azuracast/www/src/Acl.php:97
 msgid "Manage Station Remote Relays"
 msgstr "Управление Ретрансляторами Станции"
 
-#: /var/azuracast/www/src/Acl.php:100
+#: /var/azuracast/www/src/Acl.php:98
 msgid "Manage Station Media"
 msgstr "Управление Медиафайлами Станции"
 
-#: /var/azuracast/www/src/Acl.php:101
+#: /var/azuracast/www/src/Acl.php:99
 msgid "Manage Station Automation"
 msgstr "Управление Автоматизацией Станции"
 
-#: /var/azuracast/www/src/Acl.php:102
+#: /var/azuracast/www/src/Acl.php:100
 msgid "Manage Station Web Hooks"
 msgstr "Управление Веб-хуками Станции"
 
@@ -122,19 +122,19 @@ msgstr "Каталог \"%s\" не был создан"
 msgid "Backing up MariaDB..."
 msgstr "Резервное копирование MariaDB..."
 
-#: /var/azuracast/www/src/Console/Command/BackupCommand.php:80
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:81
 msgid "Backing up InfluxDB..."
 msgstr "Резервное копирование InfluxDB..."
 
-#: /var/azuracast/www/src/Console/Command/BackupCommand.php:119
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:120
 msgid "Creating backup archive..."
 msgstr "Создание архива резервной копии..."
 
-#: /var/azuracast/www/src/Console/Command/BackupCommand.php:158
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:159
 msgid "Cleaning up temporary files..."
 msgstr "Очистка временных файлов..."
 
-#: /var/azuracast/www/src/Console/Command/BackupCommand.php:169
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:170
 msgid "Backup complete in %.2f seconds."
 msgstr "Резервное копирование завершено за %.2f секунд."
 
@@ -224,7 +224,7 @@ msgstr "Установка модификатора данных"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:66
 msgid "Reload System Data"
-msgstr ""
+msgstr "Перезагрузить системные данные"
 
 #: /var/azuracast/www/src/Console/Command/SetupCommand.php:71
 msgid "Refreshing All Stations"
@@ -242,7 +242,7 @@ msgstr "Установка AzuraCast завершена!"
 msgid "Visit %s to complete setup."
 msgstr "Посетите %s для завершения установки."
 
-#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:89
+#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:91
 msgid "Fixtures loaded."
 msgstr "Модификатор загружен."
 
@@ -262,56 +262,56 @@ msgstr "Созданы непрерывные запросы."
 msgid "InfluxDB databases created."
 msgstr "Созданы базы данных InfluxDB."
 
-#: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:62
+#: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:57
 #: /var/azuracast/www/src/Controller/Api/Stations/Art/DeleteArtAction.php:25
 #: /var/azuracast/www/src/Controller/Api/Stations/Art/PostArtAction.php:25
-#: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:73
+#: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:72
 msgid "Record not found."
 msgstr "Запись не найдена."
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:43
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:97
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:39
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:88
 msgid "API Key updated."
 msgstr "API ключ обновлён."
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:50
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:46
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:95
 msgid "Edit API Key"
 msgstr "Редактировать API ключ"
 
-#: /var/azuracast/www/src/Controller/Admin/ApiController.php:58
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:124
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:54
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:115
 msgid "API Key deleted."
 msgstr "API ключ удалён."
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:79
-#: /var/azuracast/www/src/Controller/Admin/BrandingController.php:38
-#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:34
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:82
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:64
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:42
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:56
+#: /var/azuracast/www/src/Controller/Admin/BrandingController.php:18
+#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:18
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:75
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:54
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
 msgid "Changes saved."
 msgstr "Изменения сохранены."
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:86
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:63
 msgid "Configure Backups"
 msgstr "Настройка резервных копий"
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:101
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:111
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:83
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:93
 #: /var/azuracast/www/templates/admin/backups/index.phtml:87
 #: /var/azuracast/www/templates/admin/backups/run.phtml:8
 #: /var/azuracast/www/templates/admin/backups/run.phtml:15
 msgid "Run Manual Backup"
 msgstr "Запуск Резервного Копирования Вручную"
 
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:141
-msgid "Backup not found."
-msgstr "Резервная копия не найдена."
-
-#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:154
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:127
 msgid "Backup deleted."
 msgstr "Резервная копия удалена."
+
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:136
+msgid "Backup not found."
+msgstr "Резервная копия не найдена."
 
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:43
 msgid "Custom Field updated."
@@ -334,125 +334,134 @@ msgstr "Добавить Настраиваемое Поле"
 msgid "Custom Field deleted."
 msgstr "Настраиваемое поле удалено."
 
-#: /var/azuracast/www/src/Controller/Admin/IndexController.php:102
+#: /var/azuracast/www/src/Controller/Admin/IndexController.php:96
 msgid "Sync Task Output"
 msgstr "Синхронизация задач выходных данных"
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:36
+#: /var/azuracast/www/src/Controller/Admin/InstallGeoLiteController.php:33
+msgid "GeoLite version \"%s\" is currently installed."
+msgstr "В настоящее время установлена версия GeoLite \"%s\"."
+
+#: /var/azuracast/www/src/Controller/Admin/InstallGeoLiteController.php:78
+#: /var/azuracast/www/config/menus/admin.php:89
+msgid "Install GeoLite IP Database"
+msgstr "Установить базу данных GeoLite IP"
+
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:32
 msgid "SHOUTcast version \"%s\" is currently installed."
 msgstr "Установлена версия SHOUTcast \"%s\"."
 
-#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:78
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
 #: /var/azuracast/www/config/menus/admin.php:84
 msgid "Install SHOUTcast"
 msgstr "Установить SHOUTcast"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:53
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:49
 msgid "AzuraCast Application Log"
 msgstr "AzuraCast - Журнал"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:60
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:56
 msgid "Nginx Access Log"
 msgstr "Nginx - Журнал доступа"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:65
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:61
 msgid "Nginx Error Log"
 msgstr "Nginx - Журнал ошибок"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:70
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:66
 msgid "PHP Application Log"
 msgstr "PHP - Журнал"
 
-#: /var/azuracast/www/src/Controller/Admin/LogsController.php:75
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:71
 msgid "Supervisord Log"
 msgstr "Supervisord - Журнал"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:61
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:58
 msgid "Permission updated."
 msgstr "Права доступа обновлены."
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:61
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:58
 msgid "Permission added."
 msgstr "Добавлены Права Доступа."
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:69
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:66
 msgid "Edit Permission"
 msgstr "Редактирование Прав Доступа"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:69
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:66
 #: /var/azuracast/www/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
 msgstr "Добавить Права Доступа"
 
-#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:77
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:74
 msgid "Permission deleted."
 msgstr "Права Доступа Удалены."
 
-#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:41
+#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:25
 #: /var/azuracast/www/config/menus/admin.php:17
 #: /var/azuracast/www/templates/frontend/setup/settings.phtml:25
 #: /var/azuracast/www/templates/frontend/setup/station.phtml:25
 msgid "System Settings"
 msgstr "Настройки системы"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:51
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:44
 msgid "Station updated."
 msgstr "Станция обновлена."
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:51
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:44
 msgid "Station added."
 msgstr "Станция добавлена."
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:57
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:50
 msgid "Edit Station"
 msgstr "Редактировать Станцию"
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:70
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:63
 msgid "Station deleted."
 msgstr "Станция удалена."
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:78
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:71
 msgid "Station not found."
 msgstr "Станция не найдена."
 
-#: /var/azuracast/www/src/Controller/Admin/StationsController.php:89
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:82
 msgid "Clone Station: %s"
 msgstr "Клонировать станцию: %s"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:53
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:48
 msgid "User updated."
 msgstr "Пользователь обновлен."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:53
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:48
 msgid "User added."
 msgstr "Пользователь добавлен."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:58
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:53
 msgid "Another user already exists with this e-mail address. Please update the e-mail address."
 msgstr "Другой пользователь уже существует с этим адресом электронной почты. Пожалуйста, обновите адрес электронной почты."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:65
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:60
 msgid "Edit User"
 msgstr "Редактирование Пользователя"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:65
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:60
 #: /var/azuracast/www/templates/admin/users/index.phtml:10
 msgid "Add User"
 msgstr "Добавить Пользователя"
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:78
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:73
 msgid "You cannot delete your own account."
 msgstr "Вы не можете удалить свой собственный аккаунт."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:83
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:78
 msgid "User deleted."
 msgstr "Пользователь удалён."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:96
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:91
 msgid "User not found."
 msgstr "Пользователь не найден."
 
-#: /var/azuracast/www/src/Controller/Admin/UsersController.php:101
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:96
 #: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:69
 #: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:24
 msgid "Logged in successfully."
@@ -462,20 +471,20 @@ msgstr "Успешный вход в систему."
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:112
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:133
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:104
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:109
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:145
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:167
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:112
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:148
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:170
 msgid "Record not found!"
 msgstr "Запись не найдена!"
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:117
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:150
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:153
 msgid "Changes saved successfully."
 msgstr "Изменения успешно сохранены."
 
 #: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:138
 #: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:116
-#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:172
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:175
 msgid "Record deleted successfully."
 msgstr "Запись успешно удалена."
 
@@ -508,77 +517,77 @@ msgstr "Файл не указан."
 msgid "New path not specified."
 msgstr "Новый путь не указан."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/UploadAction.php:25
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/UploadAction.php:27
 msgid "This station is out of available storage space."
 msgstr "На этой станции нет свободного места для хранения."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:229
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:257
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:280
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:305
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:230
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:258
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:281
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:306
 msgid "Playlist not found."
 msgstr "Плейлист не найден."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:234
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:262
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:235
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:263
 msgid "This playlist is not a sequential playlist."
 msgstr "Этот плейлист не является последовательным."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:289
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:290
 msgid "Format not found."
 msgstr "Формат не найден."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:315
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:316
 msgid "Playlist enabled."
 msgstr "Плейлист включен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:316
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:317
 msgid "Playlist disabled."
 msgstr "Плейлист отключен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:68
-#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:166
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:60
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:158
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:31
 msgid "This station does not accept requests currently."
 msgstr "Эта станция не принимает запросы в настоящее время."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:174
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:166
 msgid "Request submitted successfully."
 msgstr "Запрос успешно отправлен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:75
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:73
 msgid "Station restarted."
 msgstr "Станция перезапущена."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:114
 msgid "Frontend stopped."
 msgstr "Интерфейс остановлен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:122
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:120
 msgid "Frontend started."
 msgstr "Интерфейс запущен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:135
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:133
 msgid "Frontend restarted."
 msgstr "Интерфейс перезапущен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:180
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:178
 msgid "Song skipped."
 msgstr "Композиция пропущена."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:188
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:186
 msgid "Streamer disconnected."
 msgstr "Стример отключен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:194
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:192
 msgid "Backend stopped."
 msgstr "Бэкэнд остановлен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:200
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:198
 msgid "Backend started."
 msgstr "Бэкэнд запущен."
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:213
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:211
 msgid "Backend restarted."
 msgstr "Бэкэнд перезапущен."
 
@@ -600,23 +609,23 @@ msgstr "Неудачный вход"
 msgid "Your credentials could not be verified."
 msgstr "Ваши учетные данные не могут быть проверены."
 
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:62
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:53
 msgid "API Key not found."
 msgstr "API ключ не найден."
 
-#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:104
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:95
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
 msgid "Add API Key"
 msgstr "Добавить API ключ"
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:205
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:188
 msgid "All Stations"
 msgstr "Все станции"
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:235
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:86
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:126
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:176
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:218
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:78
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:118
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:168
 #: /var/azuracast/www/config/menus/station.php:102
 #: /var/azuracast/www/templates/frontend/index/index.phtml:120
 #: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:32
@@ -655,8 +664,8 @@ msgid "Two-factor authentication enabled."
 msgstr "Двухфакторная аутентификация включена."
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:39
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:95
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:113
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:86
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:104
 #: /var/azuracast/www/config/forms/song.php:37
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:9
 #: /var/azuracast/www/templates/stations/queue/index.phtml:25
@@ -666,121 +675,121 @@ msgid "Song Title"
 msgstr "Название песни"
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicController.php:40
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:96
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:114
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:87
+#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:105
 #: /var/azuracast/www/templates/frontend/public/index.js.phtml:10
 msgid "Song Artist"
 msgstr "Исполнитель"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:124
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:100
 msgid "Setup has already been completed!"
 msgstr "Программа установки завершена!"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:152
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:128
 msgid "Super Administrator"
 msgstr "Супер администратор"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:240
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:216
 msgid "Setup is now complete!"
 msgstr "Установка завершена!"
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:240
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:216
 msgid "Continue setting up your station in the main AzuraCast app."
 msgstr "Продолжайте настройку станции в главном приложении AzuraCast."
 
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:81
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:71
 msgid "Automated assignment complete!"
 msgstr "Автоматизированное задание завершено!"
 
-#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:84
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:74
 msgid "Automated assignment error"
 msgstr "Ошибка автоматического назначения"
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:29
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:23
-#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:25
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:26
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:17
+#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:19
 msgid "This feature is not currently supported on this station."
 msgstr "В данный момент, на этой станции, функция не поддерживается."
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:49
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:46
 msgid "Edit Mount Point"
 msgstr "Редактирование Точки Подключения"
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:49
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:46
 #: /var/azuracast/www/templates/stations/mounts/index.phtml:13
 msgid "Add Mount Point"
 msgstr "Добавить Точку Подключения"
 
-#: /var/azuracast/www/src/Controller/Stations/MountsController.php:61
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:58
 msgid "Mount Point deleted."
 msgstr "Точка подключения удалена."
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:41
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:37
 msgid "Remote Relay updated."
 msgstr "Отдалённый Ретранслятор обновлён."
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:41
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:37
 msgid "Remote Relay added."
 msgstr "Отдалённый Ретранслятор добавлен."
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:49
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:45
 msgid "Edit Remote Relay"
 msgstr "Редактирование Отдалённого Ретранслятора"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:49
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:45
 #: /var/azuracast/www/templates/stations/remotes/index.phtml:13
 msgid "Add Remote Relay"
 msgstr "Добавить Отдалённый Ретранслятор"
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:61
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:57
 msgid "Remote Relay deleted."
 msgstr "Отдалённый Ретранслятор удалён."
 
-#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:71
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:67
 msgid "This record cannot be edited."
 msgstr "Эта запись не может быть отредактирована."
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:64
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:56
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:20
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:32
 msgid "Listeners by Day"
 msgstr "Слушателей по дням"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:100
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:92
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:26
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:42
 msgid "Listeners by Day of Week"
 msgstr "Слушателей по дням недели"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:108
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:100
 msgid "Monday"
 msgstr "Понедельник"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:109
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
 msgid "Tuesday"
 msgstr "Вторник"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:110
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:102
 msgid "Wednesday"
 msgstr "Среда"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:111
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:103
 msgid "Thursday"
 msgstr "Четверг"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:112
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:104
 msgid "Friday"
 msgstr "Пятница"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:113
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:105
 msgid "Saturday"
 msgstr "Суббота"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:114
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:106
 msgid "Sunday"
 msgstr "Воскресенье"
 
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:160
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:152
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:23
 #: /var/azuracast/www/templates/stations/reports/overview.phtml:37
 msgid "Listeners by Hour"
@@ -790,66 +799,66 @@ msgstr "Слушателей по часам"
 msgid "SoundExchange Report"
 msgstr "Отчёт SoundExchange"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:60
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
 msgid "Streamers enabled!"
 msgstr "Стримеры включены!"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:60
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:52
 msgid "You can now set up streamer (DJ) accounts."
 msgstr "Теперь вы можете настроить учетные записи стримеров (Диджеев)."
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:84
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:76
 msgid "Streamer updated."
 msgstr "Стример обновлён."
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:84
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:76
 msgid "Streamer added."
 msgstr "Стример добавлен."
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:92
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:84
 msgid "Edit Streamer"
 msgstr "Редактировать Стримера"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:92
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:84
 #: /var/azuracast/www/templates/stations/streamers/index.phtml:12
 msgid "Add Streamer"
 msgstr "Добавить стримера"
 
-#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:104
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:96
 msgid "Streamer deleted."
 msgstr "Стример удалён."
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:63
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:57
 msgid "Web Hook added."
 msgstr "Веб-хук добавлен."
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:70
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:64
 #: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
 #: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
 msgid "Add Web Hook"
 msgstr "Добавить Веб-хук"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:77
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:71
 msgid "Web Hook updated."
 msgstr "Веб-хук обновлён."
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:84
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
 msgid "Edit Web Hook"
 msgstr "Изменить веб-хук"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:104
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:98
 msgid "Web hook enabled."
 msgstr "Веб-хук включен."
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:104
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:98
 msgid "Web Hook disabled."
 msgstr "Веб-хук отключен."
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:126
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:120
 msgid "Web Hook Test Output"
 msgstr "Тест выходящего сигнала веб-хука"
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:139
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:133
 msgid "Web Hook deleted."
 msgstr "Веб-хук удалён."
 
@@ -906,156 +915,157 @@ msgid "This song was already played too recently. Wait a while before requesting
 msgstr "Эта песня была сыграна совсем недавно. Подождите некоторое время, прежде чем запросить её снова."
 
 #: /var/azuracast/www/src/Form/Field/File.php:10
-#: /var/azuracast/www/config/forms/install_shoutcast.php:35
+#: /var/azuracast/www/config/forms/install_geolite.php:47
+#: /var/azuracast/www/config/forms/install_shoutcast.php:36
 msgid "Select File"
 msgstr "Выбрать файл"
 
-#: /var/azuracast/www/src/Form/StationForm.php:75
+#: /var/azuracast/www/src/Form/StationForm.php:58
 msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
 msgstr "Хотите использовать SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Установите его здесь</a>, затем перезагрузите эту страницу."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:57
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:48
 msgid "This station's time zone is currently %s."
 msgstr "Часовой пояс этой станции в настоящее время %s."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:59
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:50
 msgid "The current time in the station's time zone is %s."
 msgstr "Текущее время в часовом поясе станции - %s."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:78
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:69
 msgid "Existing playlist imported."
 msgstr "Импортировать существующий список воспроизведения."
 
-#: /var/azuracast/www/src/Form/StationPlaylistForm.php:78
+#: /var/azuracast/www/src/Form/StationPlaylistForm.php:69
 msgid "%d song(s) were imported into the playlist."
 msgstr "%d песен было импортировано в плейлист."
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:101
-#: /var/azuracast/www/src/Http/ErrorHandler.php:108
+#: /var/azuracast/www/src/Http/ErrorHandler.php:98
+#: /var/azuracast/www/src/Http/ErrorHandler.php:105
 msgid "You must be logged in to access this page."
 msgstr "Вы должны войти в систему для доступа к этой странице."
 
-#: /var/azuracast/www/src/Http/ErrorHandler.php:123
-#: /var/azuracast/www/src/Http/ErrorHandler.php:130
+#: /var/azuracast/www/src/Http/ErrorHandler.php:120
+#: /var/azuracast/www/src/Http/ErrorHandler.php:127
 msgid "You do not have permission to access this portion of the site."
 msgstr "У вас нет прав на доступ к этой части сайта."
 
-#: /var/azuracast/www/src/Notification/Manager.php:77
+#: /var/azuracast/www/src/Notification/Manager.php:63
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
 msgstr "Ваш файл <code>docker-compose.yml</code> устарел!"
 
-#: /var/azuracast/www/src/Notification/Manager.php:78
+#: /var/azuracast/www/src/Notification/Manager.php:64
 msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
 msgstr "Вам следует обновить файл <code>docker-compose.yml</code> чтобы отразить последние изменения. Посмотрите <a href=\"%s\" target=\"_blank\">последнюю версию файла</a> и обновите файл соответствующим образом..<br>Вы также можете использовать скрипт <code>./docker.sh</code> для автоматического обновления вашего файла."
 
-#: /var/azuracast/www/src/Notification/Manager.php:105
+#: /var/azuracast/www/src/Notification/Manager.php:91
 msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
 msgstr "Следуйте <a href=\"%s\" target=\"_blank\">инструкции по обновлению</a> чтобы обновить вашу установку."
 
-#: /var/azuracast/www/src/Notification/Manager.php:110
+#: /var/azuracast/www/src/Notification/Manager.php:96
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
 msgstr "Доступна <a href=\"%s\" target=\"_blank\">версия %s</a> AzuraCast."
 
-#: /var/azuracast/www/src/Notification/Manager.php:112
+#: /var/azuracast/www/src/Notification/Manager.php:98
 msgid "You are currently running version %s. Updating is highly recommended."
 msgstr "В настоящее время вы используете версию %s. Рекомендуем обновиться."
 
-#: /var/azuracast/www/src/Notification/Manager.php:118
+#: /var/azuracast/www/src/Notification/Manager.php:104
 msgid "New AzuraCast Release Version Available"
 msgstr "Доступна новая версия релиза AzuraCast"
 
-#: /var/azuracast/www/src/Notification/Manager.php:128
+#: /var/azuracast/www/src/Notification/Manager.php:114
 msgid "The following improvements have been made since your last update:"
 msgstr "С момента вашего последнего обновления были ещё сделаны следующие улучшения:"
 
-#: /var/azuracast/www/src/Notification/Manager.php:132
+#: /var/azuracast/www/src/Notification/Manager.php:118
 msgid "Your installation is currently %d update(s) behind the latest version."
 msgstr "Ваша установка в настоящее время %d обновлена до последней версии."
 
-#: /var/azuracast/www/src/Notification/Manager.php:134
+#: /var/azuracast/www/src/Notification/Manager.php:120
 msgid "You should update to take advantage of bug and security fixes."
 msgstr "Вы должны обновиться, чтобы воспользоваться исправлениями ошибок и безопасности."
 
-#: /var/azuracast/www/src/Notification/Manager.php:140
+#: /var/azuracast/www/src/Notification/Manager.php:126
 msgid "New AzuraCast Updates Available"
 msgstr "Доступны новые обновления AzuraCast"
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:183
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:175
 msgid "%s is not recognized as a service."
 msgstr "%s не распознан как сервис."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:184
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:176
 msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
 msgstr "Возможно еще не зарегистрирован Руководитель. Перезапуск трансляции может помочь."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:193
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:184
 msgid "%s cannot start"
 msgstr "%s не удается запустить"
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:194
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:185
 msgid "It is already running."
 msgstr "Он уже работает."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:203
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:193
 msgid "%s cannot stop"
 msgstr "%s не может остановиться"
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:204
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:194
 msgid "It is not running."
 msgstr "Он не запущен."
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:212
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:202
 msgid "%s encountered an error"
 msgstr "%s столкнулся с ошибкой"
 
-#: /var/azuracast/www/src/Radio/AbstractAdapter.php:221
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:211
 msgid "Check the log for details."
 msgstr "Проверьте журнал для подробностей."
 
-#: /var/azuracast/www/src/Radio/Adapters.php:73
-#: /var/azuracast/www/src/Radio/Adapters.php:77
-#: /var/azuracast/www/src/Radio/Adapters.php:133
+#: /var/azuracast/www/src/Radio/Adapters.php:72
+#: /var/azuracast/www/src/Radio/Adapters.php:76
+#: /var/azuracast/www/src/Radio/Adapters.php:134
 msgid "Use <b>%s</b> on this server"
 msgstr "Использовать <b>%s</b> на этом сервере"
 
-#: /var/azuracast/www/src/Radio/Adapters.php:81
+#: /var/azuracast/www/src/Radio/Adapters.php:80
 msgid "Connect to a <b>remote radio server</b>"
 msgstr "Подключиться к <b>отдалённому радио-серверу</b>"
 
-#: /var/azuracast/www/src/Radio/Adapters.php:137
+#: /var/azuracast/www/src/Radio/Adapters.php:138
 msgid "<b>Do not use</b> an AutoDJ service"
 msgstr "<b>Не использовать</b> сервис АвтоДиджей"
 
-#: /var/azuracast/www/src/Sync/Runner.php:183
-#: /var/azuracast/www/src/Sync/Runner.php:186
+#: /var/azuracast/www/src/Sync/Runner.php:181
+#: /var/azuracast/www/src/Sync/Runner.php:184
 msgid "Now Playing Data"
 msgstr "Сейчас проигрывается"
 
-#: /var/azuracast/www/src/Sync/Runner.php:190
+#: /var/azuracast/www/src/Sync/Runner.php:188
 msgid "1-Minute Sync"
 msgstr "1-минутная синхронизация"
 
-#: /var/azuracast/www/src/Sync/Runner.php:193
+#: /var/azuracast/www/src/Sync/Runner.php:191
 msgid "Song Requests Queue"
 msgstr "Очередь запросов воспроизведения композиций"
 
-#: /var/azuracast/www/src/Sync/Runner.php:197
+#: /var/azuracast/www/src/Sync/Runner.php:195
 msgid "5-Minute Sync"
 msgstr "5-ти минутная синхронизация"
 
-#: /var/azuracast/www/src/Sync/Runner.php:200
+#: /var/azuracast/www/src/Sync/Runner.php:198
 msgid "Check Media Folders"
 msgstr "Проверка папок мультимедиа"
 
-#: /var/azuracast/www/src/Sync/Runner.php:204
+#: /var/azuracast/www/src/Sync/Runner.php:202
 msgid "1-Hour Sync"
 msgstr "Часовая синхронизация"
 
-#: /var/azuracast/www/src/Sync/Runner.php:207
+#: /var/azuracast/www/src/Sync/Runner.php:205
 msgid "Analytics/Statistics"
 msgstr "Аналитика/статистика"
 
-#: /var/azuracast/www/src/Sync/Runner.php:208
+#: /var/azuracast/www/src/Sync/Runner.php:206
 msgid "Cleanup"
 msgstr "Очистка"
 
@@ -1128,7 +1138,7 @@ msgstr "Опишите вариант использования этого кл
 #: /var/azuracast/www/config/forms/profile.php:111
 #: /var/azuracast/www/config/forms/remote.php:184
 #: /var/azuracast/www/config/forms/role.php:46
-#: /var/azuracast/www/config/forms/settings.php:204
+#: /var/azuracast/www/config/forms/settings.php:205
 #: /var/azuracast/www/config/forms/song.php:53
 #: /var/azuracast/www/config/forms/station.php:492
 #: /var/azuracast/www/config/forms/streamer.php:63
@@ -1208,12 +1218,12 @@ msgstr "Включите, чтобы AzuraCast автоматически зап
 #: /var/azuracast/www/config/forms/remote.php:15
 #: /var/azuracast/www/config/forms/remote.php:77
 #: /var/azuracast/www/config/forms/remote.php:167
-#: /var/azuracast/www/config/forms/settings.php:40
-#: /var/azuracast/www/config/forms/settings.php:52
-#: /var/azuracast/www/config/forms/settings.php:82
-#: /var/azuracast/www/config/forms/settings.php:103
-#: /var/azuracast/www/config/forms/settings.php:115
-#: /var/azuracast/www/config/forms/settings.php:188
+#: /var/azuracast/www/config/forms/settings.php:41
+#: /var/azuracast/www/config/forms/settings.php:53
+#: /var/azuracast/www/config/forms/settings.php:83
+#: /var/azuracast/www/config/forms/settings.php:104
+#: /var/azuracast/www/config/forms/settings.php:116
+#: /var/azuracast/www/config/forms/settings.php:189
 #: /var/azuracast/www/config/forms/station.php:84
 #: /var/azuracast/www/config/forms/station.php:261
 #: /var/azuracast/www/config/forms/station.php:273
@@ -1241,12 +1251,12 @@ msgstr "Да"
 #: /var/azuracast/www/config/forms/remote.php:16
 #: /var/azuracast/www/config/forms/remote.php:78
 #: /var/azuracast/www/config/forms/remote.php:168
-#: /var/azuracast/www/config/forms/settings.php:41
-#: /var/azuracast/www/config/forms/settings.php:53
-#: /var/azuracast/www/config/forms/settings.php:83
-#: /var/azuracast/www/config/forms/settings.php:104
-#: /var/azuracast/www/config/forms/settings.php:116
-#: /var/azuracast/www/config/forms/settings.php:189
+#: /var/azuracast/www/config/forms/settings.php:42
+#: /var/azuracast/www/config/forms/settings.php:54
+#: /var/azuracast/www/config/forms/settings.php:84
+#: /var/azuracast/www/config/forms/settings.php:105
+#: /var/azuracast/www/config/forms/settings.php:117
+#: /var/azuracast/www/config/forms/settings.php:190
 #: /var/azuracast/www/config/forms/station.php:85
 #: /var/azuracast/www/config/forms/station.php:262
 #: /var/azuracast/www/config/forms/station.php:274
@@ -1404,7 +1414,7 @@ msgstr "Автоматически устанавливать из значен�
 
 #: /var/azuracast/www/config/forms/custom_field.php:32
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
-msgstr ""
+msgstr "При необходимости выберите поле метаданных ID3v2, которое, если оно существует, будет использоваться для установки этого значения поля."
 
 #: /var/azuracast/www/config/forms/custom_field.php:36
 #: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
@@ -1423,11 +1433,11 @@ msgstr "Альбом"
 
 #: /var/azuracast/www/config/forms/custom_field.php:38
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Порядок сортировки исполнителя альбома"
 
 #: /var/azuracast/www/config/forms/custom_field.php:39
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Порядок сортировки альбомов"
 
 #: /var/azuracast/www/config/forms/custom_field.php:40
 #: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
@@ -1439,7 +1449,7 @@ msgstr "Исполнитель"
 
 #: /var/azuracast/www/config/forms/custom_field.php:41
 msgid "Attached Picture"
-msgstr ""
+msgstr "Прикрепленное изображение"
 
 #: /var/azuracast/www/config/forms/custom_field.php:42
 msgid "Audio Encryption"
@@ -1447,11 +1457,11 @@ msgstr "Шифрование аудио"
 
 #: /var/azuracast/www/config/forms/custom_field.php:43
 msgid "Audio Seek Point Index"
-msgstr ""
+msgstr "Индекс Точки Поиска Звука"
 
 #: /var/azuracast/www/config/forms/custom_field.php:44
 msgid "Band"
-msgstr ""
+msgstr "Группа"
 
 #: /var/azuracast/www/config/forms/custom_field.php:45
 msgid "Bpm"
@@ -1471,19 +1481,19 @@ msgstr "Коммерческая информация"
 
 #: /var/azuracast/www/config/forms/custom_field.php:49
 msgid "Composer"
-msgstr "Исполнитель"
+msgstr "Композитор"
 
 #: /var/azuracast/www/config/forms/custom_field.php:50
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Порядок сортировки композитора"
 
 #: /var/azuracast/www/config/forms/custom_field.php:51
 msgid "Conductor"
-msgstr ""
+msgstr "Дирижёр"
 
 #: /var/azuracast/www/config/forms/custom_field.php:52
 msgid "Content Group Description"
-msgstr ""
+msgstr "Описание Группы Содержимого"
 
 #: /var/azuracast/www/config/forms/custom_field.php:53
 msgid "Copyright"
@@ -1491,7 +1501,7 @@ msgstr "Авторские права"
 
 #: /var/azuracast/www/config/forms/custom_field.php:54
 msgid "Copyright Message"
-msgstr "Сообщение об авторском праве"
+msgstr "Сообщение об авторских правах"
 
 #: /var/azuracast/www/config/forms/custom_field.php:55
 msgid "Date"
@@ -1499,11 +1509,11 @@ msgstr "Дата"
 
 #: /var/azuracast/www/config/forms/custom_field.php:56
 msgid "Encoded By"
-msgstr "Кодировка"
+msgstr "Кодирование"
 
 #: /var/azuracast/www/config/forms/custom_field.php:57
 msgid "Encoder Settings"
-msgstr "Настройки кодировщика"
+msgstr "Настройки кодера"
 
 #: /var/azuracast/www/config/forms/custom_field.php:58
 msgid "Encoding Time"
@@ -1515,7 +1525,7 @@ msgstr "Зашифрованный мета-фрейм"
 
 #: /var/azuracast/www/config/forms/custom_field.php:60
 msgid "Encryption Method Registration"
-msgstr ""
+msgstr "Регистрация метода шифрования"
 
 #: /var/azuracast/www/config/forms/custom_field.php:61
 msgid "Equalisation"
@@ -1523,11 +1533,11 @@ msgstr "Эквализация"
 
 #: /var/azuracast/www/config/forms/custom_field.php:62
 msgid "Event Timing Codes"
-msgstr ""
+msgstr "Временные коды события"
 
 #: /var/azuracast/www/config/forms/custom_field.php:63
 msgid "Featured Artist"
-msgstr ""
+msgstr "Рекомендуемый Исполнитель"
 
 #: /var/azuracast/www/config/forms/custom_field.php:64
 msgid "File Owner"
@@ -1539,7 +1549,7 @@ msgstr "Тип файла"
 
 #: /var/azuracast/www/config/forms/custom_field.php:66
 msgid "General Encapsulated Object"
-msgstr ""
+msgstr "Общий инкапсулированный объект"
 
 #: /var/azuracast/www/config/forms/custom_field.php:67
 #: /var/azuracast/www/config/forms/station.php:54
@@ -1548,15 +1558,15 @@ msgstr "Жанр"
 
 #: /var/azuracast/www/config/forms/custom_field.php:68
 msgid "Group Identification Registration"
-msgstr ""
+msgstr "Регистрация Идентификации Группы"
 
 #: /var/azuracast/www/config/forms/custom_field.php:69
 msgid "Initial Key"
-msgstr ""
+msgstr "Первичный Ключ"
 
 #: /var/azuracast/www/config/forms/custom_field.php:70
 msgid "Internet Radio Station Name"
-msgstr "Имя интернет-радиостанции"
+msgstr "Название интернет-радиостанции"
 
 #: /var/azuracast/www/config/forms/custom_field.php:71
 msgid "Internet Radio Station Owner"
@@ -1599,7 +1609,7 @@ msgstr "Настроение"
 
 #: /var/azuracast/www/config/forms/custom_field.php:80
 msgid "MPEG Location Lookup Table"
-msgstr ""
+msgstr "Таблица поиска местоположения MPEG"
 
 #: /var/azuracast/www/config/forms/custom_field.php:81
 msgid "Music CD Identifier"
@@ -1607,47 +1617,47 @@ msgstr "Идентификатор CD"
 
 #: /var/azuracast/www/config/forms/custom_field.php:82
 msgid "Musician Credits List"
-msgstr ""
+msgstr "Список Заслуг Музыкантов"
 
 #: /var/azuracast/www/config/forms/custom_field.php:83
 msgid "Original Album"
-msgstr ""
+msgstr "Первоначальный Альбом"
 
 #: /var/azuracast/www/config/forms/custom_field.php:84
 msgid "Original Artist"
-msgstr ""
+msgstr "Первоначальный Исполнитель"
 
 #: /var/azuracast/www/config/forms/custom_field.php:85
 msgid "Original Filename"
-msgstr ""
+msgstr "Первоначальное Название Файла"
 
 #: /var/azuracast/www/config/forms/custom_field.php:86
 msgid "Original Lyricist"
-msgstr ""
+msgstr "Первоначальный Автор Текстов"
 
 #: /var/azuracast/www/config/forms/custom_field.php:87
 msgid "Original Release Time"
-msgstr ""
+msgstr "Первоначальное Время Выпуска"
 
 #: /var/azuracast/www/config/forms/custom_field.php:88
 msgid "Original Year"
-msgstr ""
+msgstr "Первоначальный Год"
 
 #: /var/azuracast/www/config/forms/custom_field.php:89
 msgid "Ownership Frame"
-msgstr ""
+msgstr "Фрейм владельца"
 
 #: /var/azuracast/www/config/forms/custom_field.php:90
 msgid "Part Of A Compilation"
-msgstr ""
+msgstr "Часть Компиляции"
 
 #: /var/azuracast/www/config/forms/custom_field.php:91
 msgid "Part Of A Set"
-msgstr ""
+msgstr "Часть Набора"
 
 #: /var/azuracast/www/config/forms/custom_field.php:92
 msgid "Performer Sort Order"
-msgstr ""
+msgstr "Порядок сортировки исполнителя"
 
 #: /var/azuracast/www/config/forms/custom_field.php:93
 msgid "Play Counter"
@@ -1655,59 +1665,59 @@ msgstr "Счетчик воспроизведения"
 
 #: /var/azuracast/www/config/forms/custom_field.php:94
 msgid "Playlist Delay"
-msgstr "Задержка плейлиста"
+msgstr "Задержка воспроизведения"
 
 #: /var/azuracast/www/config/forms/custom_field.php:95
 msgid "Popularimeter"
-msgstr "Популяриметр"
+msgstr "Популяризатор"
 
 #: /var/azuracast/www/config/forms/custom_field.php:96
 msgid "Position Synchronisation Frame"
-msgstr ""
+msgstr "Синхронизация положения фрейма"
 
 #: /var/azuracast/www/config/forms/custom_field.php:97
 msgid "Private Frame"
-msgstr "Частный фрейм"
+msgstr "Личный фрейм"
 
 #: /var/azuracast/www/config/forms/custom_field.php:98
 msgid "Produced Notice"
-msgstr ""
+msgstr "Оповещение о создании"
 
 #: /var/azuracast/www/config/forms/custom_field.php:99
 msgid "Publisher"
-msgstr ""
+msgstr "Издатель"
 
 #: /var/azuracast/www/config/forms/custom_field.php:100
 msgid "Recommended Buffer Size"
-msgstr ""
+msgstr "Рекомендуемый размер буфера"
 
 #: /var/azuracast/www/config/forms/custom_field.php:101
 msgid "Recording Dates"
-msgstr ""
+msgstr "Даты Записи"
 
 #: /var/azuracast/www/config/forms/custom_field.php:102
 msgid "Recording Studio"
-msgstr ""
+msgstr "Студия записи"
 
 #: /var/azuracast/www/config/forms/custom_field.php:103
 msgid "Recording Time"
-msgstr ""
+msgstr "Время записи"
 
 #: /var/azuracast/www/config/forms/custom_field.php:104
 msgid "Relative Volume Adjustment"
-msgstr ""
+msgstr "Релятивная Регулировка Громкости"
 
 #: /var/azuracast/www/config/forms/custom_field.php:105
 msgid "Release Time"
-msgstr ""
+msgstr "Время Выпуска"
 
 #: /var/azuracast/www/config/forms/custom_field.php:106
 msgid "Remixer"
-msgstr ""
+msgstr "Ремиксер"
 
 #: /var/azuracast/www/config/forms/custom_field.php:107
 msgid "ReplayGain Adjustment"
-msgstr "Уровень ReplayGain"
+msgstr "Настройки ReplayGain"
 
 #: /var/azuracast/www/config/forms/custom_field.php:108
 msgid "Reverb"
@@ -1719,11 +1729,11 @@ msgstr "Поиск фрейма"
 
 #: /var/azuracast/www/config/forms/custom_field.php:110
 msgid "Set Subtitle"
-msgstr "Установить субтитры"
+msgstr "Установленные субтитры"
 
 #: /var/azuracast/www/config/forms/custom_field.php:111
 msgid "Signature Frame"
-msgstr ""
+msgstr "Сигнатура Фрейма"
 
 #: /var/azuracast/www/config/forms/custom_field.php:112
 #: /var/azuracast/www/templates/admin/backups/index.phtml:102
@@ -1736,7 +1746,7 @@ msgstr "Субтитры"
 
 #: /var/azuracast/www/config/forms/custom_field.php:114
 msgid "Synced Tempo Codes"
-msgstr ""
+msgstr "Код Синхронизации Темпа"
 
 #: /var/azuracast/www/config/forms/custom_field.php:115
 msgid "Synchronised Lyric"
@@ -1744,11 +1754,11 @@ msgstr "Синхронизированный текст"
 
 #: /var/azuracast/www/config/forms/custom_field.php:116
 msgid "Synchronised Tempo Codes"
-msgstr ""
+msgstr "Синхронизированные коды темпа"
 
 #: /var/azuracast/www/config/forms/custom_field.php:117
 msgid "Tagging Time"
-msgstr ""
+msgstr "Время Тегирования"
 
 #: /var/azuracast/www/config/forms/custom_field.php:118
 msgid "Terms Of Use"
@@ -1789,59 +1799,94 @@ msgstr "Несинхронизированный текст"
 
 #: /var/azuracast/www/config/forms/custom_field.php:126
 msgid "URL Artist"
-msgstr ""
+msgstr "Ссылка на Исполнителя"
 
 #: /var/azuracast/www/config/forms/custom_field.php:127
 msgid "URL File"
-msgstr ""
+msgstr "Ссылка на Файл"
 
 #: /var/azuracast/www/config/forms/custom_field.php:128
 msgid "URL Payment"
-msgstr ""
+msgstr "Ссылка на оплату"
 
 #: /var/azuracast/www/config/forms/custom_field.php:129
 msgid "URL Publisher"
-msgstr ""
+msgstr "Ссылка на Издателя"
 
 #: /var/azuracast/www/config/forms/custom_field.php:130
 msgid "URL Source"
-msgstr ""
+msgstr "Ссылка на Первоисточник"
 
 #: /var/azuracast/www/config/forms/custom_field.php:131
 msgid "URL Station"
-msgstr ""
+msgstr "Ссылка на Станцию"
 
 #: /var/azuracast/www/config/forms/custom_field.php:132
 msgid "URL User"
-msgstr ""
+msgstr "Ссылка на Пользователя"
 
 #: /var/azuracast/www/config/forms/custom_field.php:133
 msgid "Year"
 msgstr "Год"
 
+#: /var/azuracast/www/config/forms/install_geolite.php:13
 #: /var/azuracast/www/config/forms/install_shoutcast.php:13
-msgid "Important Notes"
-msgstr "Важные заметки"
+msgid "Instructions"
+msgstr "Инструкции"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:15
+msgid "You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station's \"Listeners\" report. To download the GeoLite database:"
+msgstr "Вы можете загрузить базу данных MaxMind GeoLite, чтобы обеспечить геолокацию IP-адресов ваших слушателей. Это позволит вам просматривать слушателей в отчете \"слушатели\" каждой станции. Чтобы загрузить базу данных GeoLite:"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:17
+msgid "Create an account on <a href=\"%s\" target=\"_blank\">the MaxMind developer site</a>."
+msgstr "Создайте учетную запись на <a href=\"%s\" target=\"_blank\">сайте разработчиков MaxMind</a>."
+
+#: /var/azuracast/www/config/forms/install_geolite.php:19
+msgid "Visit the <a href=\"%s\" target=\"_blank\">direct downloads page</a>."
+msgstr "Посетите <a href=\"%s\" target=\"_blank\">страницу прямых загрузок</a>."
+
+#: /var/azuracast/www/config/forms/install_geolite.php:21
+msgid "Download the <code>%s</code> file (in GZIP) format."
+msgstr "Загрузите файл <code>%s</code> (в формате GZIP)."
+
+#: /var/azuracast/www/config/forms/install_geolite.php:23
+msgid "Select the downloaded file below to upload it."
+msgstr "Выберите скачанный файл ниже, чтобы загрузить его."
+
+#: /var/azuracast/www/config/forms/install_geolite.php:25
+msgid "You can repeat this process any time you need to update the GeoLite database."
+msgstr "Вы можете повторить этот процесс в любое время, когда вам нужно обновить базу данных GeoLite."
+
+#: /var/azuracast/www/config/forms/install_geolite.php:33
+#: /var/azuracast/www/config/forms/install_shoutcast.php:23
+msgid "Current Installed Version"
+msgstr "Текущая установленная версия"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:34
+msgid "GeoLite is not currently installed on this installation."
+msgstr "GeoLite в настоящее время здесь не установлен."
+
+#: /var/azuracast/www/config/forms/install_geolite.php:42
+msgid "Select GeoLite2-City .tar.gz File"
+msgstr "Выберите файл GeoLite2-City .tar.gz"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:56
+#: /var/azuracast/www/config/forms/install_shoutcast.php:45
+msgid "Upload"
+msgstr "Загрузить"
 
 #: /var/azuracast/www/config/forms/install_shoutcast.php:14
 msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
 msgstr "<p>SHOUTcast 2 DNAS не является бесплатным программным обеспечением, и его ограничительная лицензия не позволяет AzuraCast распространять бинарный файл SHOUTcast. Чтобы установить SHOUTcast, вы должны загрузить бинарный файл Linux x64 с веб-сайта <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> Загрузите <code>sc_serv2_linux_x64-latest.tar.gz</code> в поле ниже, чтобы автоматически извлечь его в соответствующий каталог.</p>"
 
-#: /var/azuracast/www/config/forms/install_shoutcast.php:22
-msgid "Current Installed Version"
-msgstr "Текущая установленная версия"
-
-#: /var/azuracast/www/config/forms/install_shoutcast.php:23
+#: /var/azuracast/www/config/forms/install_shoutcast.php:24
 msgid "SHOUTcast is not currently installed on this installation."
 msgstr "SHOUTcast в настоящее время здесь не установлен."
 
-#: /var/azuracast/www/config/forms/install_shoutcast.php:31
+#: /var/azuracast/www/config/forms/install_shoutcast.php:32
 msgid "Select SHOUTcast 64-bit .tar.gz File"
 msgstr "Выберите файл SHOUTcast 64-bit .tar.gz"
-
-#: /var/azuracast/www/config/forms/install_shoutcast.php:44
-msgid "Upload"
-msgstr "Загрузить"
 
 #: /var/azuracast/www/config/forms/login.php:9
 #: /var/azuracast/www/config/forms/profile.php:25
@@ -2126,47 +2171,47 @@ msgstr "Системные разрешения"
 msgid "Permissions for %s"
 msgstr "Права доступа для %s"
 
-#: /var/azuracast/www/config/forms/settings.php:15
+#: /var/azuracast/www/config/forms/settings.php:16
 msgid "Site Base URL"
 msgstr "Базовый URL-АДРЕС сайта"
 
-#: /var/azuracast/www/config/forms/settings.php:16
+#: /var/azuracast/www/config/forms/settings.php:17
 msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."
 msgstr "Базовый URL-адрес, где находится эта служба. Используйте либо внешний IP-адрес, либо полное доменное имя (если оно существует), указывающее на этот сервер."
 
-#: /var/azuracast/www/config/forms/settings.php:29
+#: /var/azuracast/www/config/forms/settings.php:30
 msgid "AzuraCast Instance Name"
 msgstr "Имя экземпляра IvaCom Radio Control"
 
-#: /var/azuracast/www/config/forms/settings.php:30
+#: /var/azuracast/www/config/forms/settings.php:31
 msgid "This name will appear as a sub-header next to the AzuraCast logo, to help identify this server."
 msgstr "Это имя появится в виде подзаголовка рядом с логотипом  IvaCom Radio Control, чтобы помочь идентифицировать этот сервер."
 
-#: /var/azuracast/www/config/forms/settings.php:38
+#: /var/azuracast/www/config/forms/settings.php:39
 msgid "Prefer Browser URL (If Available)"
 msgstr "Предпочтительный URL-адрес в браузере (если доступно)"
 
-#: /var/azuracast/www/config/forms/settings.php:39
+#: /var/azuracast/www/config/forms/settings.php:40
 msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
 msgstr "При выборе этого параметра, браузером будет использоваться URL-адрес по умолчанию, вместо указанного выше базового URL-адреса. Если не выбран этот параметр, то постоянно используется базовый URL-адрес."
 
-#: /var/azuracast/www/config/forms/settings.php:50
+#: /var/azuracast/www/config/forms/settings.php:51
 msgid "Use Web Proxy for Radio"
 msgstr "Использовать веб-прокси для радио"
 
-#: /var/azuracast/www/config/forms/settings.php:51
+#: /var/azuracast/www/config/forms/settings.php:52
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
 msgstr "По умолчанию радиостанции транслируются на своих портах (т. Е. 8000). Если вы используете службу CloudFlare или получаете доступ к своей радиостанции по протоколу SSL, вы должны включить эту функцию, которая маршрутизирует все радио через веб-порты (80 и 443)."
 
-#: /var/azuracast/www/config/forms/settings.php:62
+#: /var/azuracast/www/config/forms/settings.php:63
 msgid "Days of Playback History to Keep"
 msgstr "Количество дней для хранения истории проигранного"
 
-#: /var/azuracast/www/config/forms/settings.php:63
+#: /var/azuracast/www/config/forms/settings.php:64
 msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
 msgstr "Установите больше времени для сохранения истории воспроизведения станций. Установите меньше, чтобы сохранить дисковое пространство."
 
-#: /var/azuracast/www/config/forms/settings.php:65
+#: /var/azuracast/www/config/forms/settings.php:66
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:86
 #: /var/azuracast/www/templates/admin/audit_log/index.phtml:23
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
@@ -2174,130 +2219,130 @@ msgstr "Установите больше времени для сохранен
 msgid "Last 14 Days"
 msgstr "Последние 14 Дней"
 
-#: /var/azuracast/www/config/forms/settings.php:66
+#: /var/azuracast/www/config/forms/settings.php:67
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:87
 #: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:98
 #: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:64
 msgid "Last 30 Days"
 msgstr "Последние 30 дней"
 
-#: /var/azuracast/www/config/forms/settings.php:67
+#: /var/azuracast/www/config/forms/settings.php:68
 msgid "Last 60 Days"
 msgstr "Последние 60 дней"
 
-#: /var/azuracast/www/config/forms/settings.php:68
-msgid "Last Year"
-msgstr "Прошлый год"
-
 #: /var/azuracast/www/config/forms/settings.php:69
+msgid "Last Year"
+msgstr "Последний год"
+
+#: /var/azuracast/www/config/forms/settings.php:70
 msgid "Last 2 Years"
 msgstr "Последние 2 года"
 
-#: /var/azuracast/www/config/forms/settings.php:70
+#: /var/azuracast/www/config/forms/settings.php:71
 msgid "Indefinitely"
 msgstr "Неопределенный"
 
-#: /var/azuracast/www/config/forms/settings.php:80
+#: /var/azuracast/www/config/forms/settings.php:81
 msgid "Use WebSockets for Now Playing Updates"
 msgstr "Использовать WebSockets для обновления проигрываемого"
 
-#: /var/azuracast/www/config/forms/settings.php:81
+#: /var/azuracast/www/config/forms/settings.php:82
 msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
 msgstr "Включает или отключает использование новой и более быстрой системы на основе WebSocket для получения обновлений в режиме реального времени на общедоступных проигрывателях. Если возникают проблемы при использовании этой функции, вы можете её отключить."
 
-#: /var/azuracast/www/config/forms/settings.php:93
+#: /var/azuracast/www/config/forms/settings.php:94
 msgid "Security Controls"
 msgstr "Контроль безопасности"
 
-#: /var/azuracast/www/config/forms/settings.php:101
+#: /var/azuracast/www/config/forms/settings.php:102
 msgid "Always Use HTTPS"
 msgstr "Всегда использовать HTTPS"
 
-#: /var/azuracast/www/config/forms/settings.php:102
+#: /var/azuracast/www/config/forms/settings.php:103
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
 msgstr "Выберите параметр для того, чтобы всегда использовать безопасные URL-адресы \"https://\" и автоматически перенаправлять на безопасный URL-адрес, когда посещается небезопасный URL-адрес."
 
-#: /var/azuracast/www/config/forms/settings.php:113
+#: /var/azuracast/www/config/forms/settings.php:114
 msgid "Enable Built-in FTP Server"
 msgstr "Включить встроенный FTP сервер"
 
-#: /var/azuracast/www/config/forms/settings.php:114
+#: /var/azuracast/www/config/forms/settings.php:115
 msgid "If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage."
 msgstr "Если включено, пользователи могут подключаться через FTP, используя свои учетные данные AzuraCast, для загрузки медиафайлов напрямую на любые станции, которыми они управляют."
 
-#: /var/azuracast/www/config/forms/settings.php:125
+#: /var/azuracast/www/config/forms/settings.php:126
 msgid "API \"Access-Control-Allow-Origin\" header"
 msgstr "Заголовок API \"Access-Control-Allow-Origin\""
 
-#: /var/azuracast/www/config/forms/settings.php:127
+#: /var/azuracast/www/config/forms/settings.php:128
 msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
 msgstr "<a href=\"%s\" target=\"_blank\">Узнайте больше об этом заголовке</a>. Установите * для разрешения всех источников или укажите список источников, разделенных запятой (,)."
 
-#: /var/azuracast/www/config/forms/settings.php:138
+#: /var/azuracast/www/config/forms/settings.php:139
 msgid "Privacy Controls"
 msgstr "Контроль конфиденциальности"
 
-#: /var/azuracast/www/config/forms/settings.php:139
+#: /var/azuracast/www/config/forms/settings.php:140
 msgid "AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here."
 msgstr "AzuraCast не отправляет данные вашей станции или слушателя на какой-либо внешний сервер. Вы можете контролировать, сколько данных AzuraCast регистрирует о ваших слушателях здесь."
 
-#: /var/azuracast/www/config/forms/settings.php:146
+#: /var/azuracast/www/config/forms/settings.php:147
 msgid "Listener Analytics Collection"
 msgstr "Сбор Аналитики о Слушателях"
 
-#: /var/azuracast/www/config/forms/settings.php:147
+#: /var/azuracast/www/config/forms/settings.php:148
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr "Собираемая статистика о слушателях используется для отображения отчетов станции в системе. Статистика слушателей на основе IP-адреса используется для просмотра отслеживания онлайн слушателей и может потребоваться для роялти отчетов."
 
-#: /var/azuracast/www/config/forms/settings.php:150
+#: /var/azuracast/www/config/forms/settings.php:151
 msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
 msgstr "<b>Полная:</b> Сбор статистических данных слушателя и статистика на основе IP-адреса "
 
-#: /var/azuracast/www/config/forms/settings.php:151
+#: /var/azuracast/www/config/forms/settings.php:152
 msgid "<b>Limited:</b> Only collect aggregate listener statistics"
 msgstr "<b>Ограничено:</b> Сбор только статистических данных слушателя"
 
-#: /var/azuracast/www/config/forms/settings.php:152
+#: /var/azuracast/www/config/forms/settings.php:153
 msgid "<b>None:</b> Do not collect any listener analytics"
 msgstr "<b>Нет:</b> Не собирать никакой аналитики о слушателях"
 
-#: /var/azuracast/www/config/forms/settings.php:161
+#: /var/azuracast/www/config/forms/settings.php:162
 msgid "AzuraCast Installation Telemetry"
 msgstr "Телеметрия установки AzuraCast"
 
-#: /var/azuracast/www/config/forms/settings.php:162
+#: /var/azuracast/www/config/forms/settings.php:163
 msgid "Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
 msgstr "Выберите, будет ли ваша установка взаимодействовать с центральными серверами AzuraCast для проверки обновлений и объявлений. <br>AzuraCast уважает вашу конфиденциальность; смотрите нашу <a href=\"%s\" target=\"_blank\">политику конфиденциальности</a> для получения более подробной информации."
 
-#: /var/azuracast/www/config/forms/settings.php:170
+#: /var/azuracast/www/config/forms/settings.php:171
 msgid "Check for Updates and Announcements"
 msgstr "Проверка наличия обновлений и объявлений"
 
-#: /var/azuracast/www/config/forms/settings.php:171
+#: /var/azuracast/www/config/forms/settings.php:172
 msgid "Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements."
 msgstr "Отправьте минимальную информацию о вашей установке AzuraCast на центральный сервер AzuraCast, чтобы проверить наличие обновленных версий программного обеспечения и важных объявлений."
 
-#: /var/azuracast/www/config/forms/settings.php:174
+#: /var/azuracast/www/config/forms/settings.php:175
 msgid "<b>None:</b> Do not check for updates or announcements."
 msgstr "<b>Нет:</b> Не проверять наличие обновлений или объявлений."
 
-#: /var/azuracast/www/config/forms/settings.php:175
+#: /var/azuracast/www/config/forms/settings.php:176
 msgid "<b>Release Only:</b> Critical announcements and new release versions only."
 msgstr "<b>Только релиз:</b> Критические объявления и только новые версии релизов."
 
-#: /var/azuracast/www/config/forms/settings.php:176
+#: /var/azuracast/www/config/forms/settings.php:177
 msgid "<b>All Updates:</b> Include all announcements and minor updates."
 msgstr "<b>Все Обновления:</b> Включает все объявления и незначительные обновления."
 
-#: /var/azuracast/www/config/forms/settings.php:185
+#: /var/azuracast/www/config/forms/settings.php:186
 msgid "Automatically Send Error Reports to AzuraCast"
 msgstr "Автоматически отправлять отчёты об ошибках в AzuraCast"
 
-#: /var/azuracast/www/config/forms/settings.php:186
+#: /var/azuracast/www/config/forms/settings.php:187
 msgid "If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution."
 msgstr "Если веб-приложение сталкивается с ошибкой, вы можете автоматически отправить анонимный отчет об ошибке команде AzuraCast для более быстрой диагностики и устранения."
 
-#: /var/azuracast/www/config/forms/settings.php:186
+#: /var/azuracast/www/config/forms/settings.php:187
 msgid "Error reports are powered by <a href=\"%s\" target=\"_blank\">%s</a>."
 msgstr "Отчеты об ошибках основаны на <a href=\"%s\" target=\"_blank\">%s</a>."
 
@@ -3209,7 +3254,7 @@ msgstr "Владелец"
 
 #: /var/azuracast/www/templates/admin/api/index.phtml:27
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:31
-#: /var/azuracast/www/templates/admin/permissions/index.phtml:31
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:32
 #: /var/azuracast/www/templates/admin/stations/index.phtml:30
 #: /var/azuracast/www/templates/admin/users/index.phtml:35
 #: /var/azuracast/www/templates/frontend/api_keys/index.phtml:42
@@ -3232,8 +3277,8 @@ msgstr "Вставить"
 #: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
 #: /var/azuracast/www/templates/admin/backups/index.phtml:111
 #: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
-#: /var/azuracast/www/templates/admin/permissions/index.phtml:34
-#: /var/azuracast/www/templates/admin/permissions/index.phtml:36
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:38
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:41
 #: /var/azuracast/www/templates/admin/stations/index.phtml:32
 #: /var/azuracast/www/templates/admin/users/index.phtml:37
 #: /var/azuracast/www/templates/admin/users/index.phtml:39
@@ -3442,15 +3487,15 @@ msgstr "Поскольку вы используете Docker, доступ к �
 msgid "Logs by Station"
 msgstr "Системные Журналы Станций"
 
-#: /var/azuracast/www/templates/admin/permissions/index.phtml:34
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:36
 msgid "Delete role \"%s\"?"
 msgstr "Удалить роль \"%s\"?"
 
-#: /var/azuracast/www/templates/admin/permissions/index.phtml:36
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:41
 msgid "This role cannot be deleted."
 msgstr "Эта роль не может быть удалена."
 
-#: /var/azuracast/www/templates/admin/permissions/index.phtml:45
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:50
 msgid "Global"
 msgstr "Основное"
 

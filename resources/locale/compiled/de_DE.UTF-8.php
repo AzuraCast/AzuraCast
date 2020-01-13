@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-11-23T21:40:24+00:00
-PO-Revision-Date: 2019-12-30 04:39
+POT-Creation-Date: 2019-12-31T12:47:58+00:00
+PO-Revision-Date: 2020-01-13 22:15
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -295,13 +295,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Manuelles Backup ausführen',
       ),
-      'Backup not found.' => 
-      array (
-        0 => 'Backup nicht gefunden.',
-      ),
       'Backup deleted.' => 
       array (
         0 => 'Backup gelöscht.',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => 'Backup nicht gefunden.',
       ),
       'Custom Field updated.' => 
       array (
@@ -326,6 +326,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Sync Task Output' => 
       array (
         0 => 'Synchronisations Ausgang',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => 'Derzeit ist Version "%s" von GeoLite installiert.',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => 'GeoLite IP-Datenbank installieren',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
@@ -1250,11 +1258,11 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Audio Seek Point Index' => 
       array (
-        0 => '',
+        0 => 'Audio-Suchpunkt-Index',
       ),
       'Band' => 
       array (
-        0 => '',
+        0 => 'Band',
       ),
       'Bpm' => 
       array (
@@ -1266,11 +1274,11 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Commercial Frame' => 
       array (
-        0 => '',
+        0 => 'Kommerzieller Rahmen',
       ),
       'Commercial Information' => 
       array (
-        0 => '',
+        0 => 'Kommerzielle Informationen',
       ),
       'Composer' => 
       array (
@@ -1278,7 +1286,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Composer Sort Order' => 
       array (
-        0 => '',
+        0 => 'Interpreten-Sortierreihenfolge',
       ),
       'Conductor' => 
       array (
@@ -1286,7 +1294,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Content Group Description' => 
       array (
-        0 => '',
+        0 => 'Inhaltsgruppen-Beschreibung',
       ),
       'Copyright' => 
       array (
@@ -1318,19 +1326,19 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Encryption Method Registration' => 
       array (
-        0 => '',
+        0 => 'Registrierung der Verschlüsselungsmethode',
       ),
       'Equalisation' => 
       array (
-        0 => '',
+        0 => 'Frequenzausgleich',
       ),
       'Event Timing Codes' => 
       array (
-        0 => '',
+        0 => 'Event-Timing-Codes',
       ),
       'Featured Artist' => 
       array (
-        0 => '',
+        0 => 'Empfohlener Künstler',
       ),
       'File Owner' => 
       array (
@@ -1342,7 +1350,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'General Encapsulated Object' => 
       array (
-        0 => '',
+        0 => 'Allgemeines Verkapseltes Objekt',
       ),
       'Genre' => 
       array (
@@ -1350,23 +1358,23 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Group Identification Registration' => 
       array (
-        0 => '',
+        0 => 'Gruppenidentifikations-Registrierung',
       ),
       'Initial Key' => 
       array (
-        0 => '',
+        0 => 'Anfangs-Schlüssel',
       ),
       'Internet Radio Station Name' => 
       array (
-        0 => '',
+        0 => 'Name der Internetradio-Station',
       ),
       'Internet Radio Station Owner' => 
       array (
-        0 => '',
+        0 => 'Inhaber der Internetradio-Station',
       ),
       'Involved People List' => 
       array (
-        0 => '',
+        0 => 'Liste der Mitwirkenden',
       ),
       'ISRC' => 
       array (
@@ -1382,7 +1390,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Linked Information' => 
       array (
-        0 => '',
+        0 => 'Angehängte Informationen',
       ),
       'Lyricist' => 
       array (
@@ -1398,15 +1406,15 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'MPEG Location Lookup Table' => 
       array (
-        0 => '',
+        0 => 'MPEG-Standort-Nachschlagewerk',
       ),
       'Music CD Identifier' => 
       array (
-        0 => '',
+        0 => 'Musik-CD-Bezeichner',
       ),
       'Musician Credits List' => 
       array (
-        0 => '',
+        0 => 'Musiker-Credits',
       ),
       'Original Album' => 
       array (
@@ -1430,11 +1438,11 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Original Year' => 
       array (
-        0 => '',
+        0 => 'Originales Jahr',
       ),
       'Ownership Frame' => 
       array (
-        0 => '',
+        0 => 'Eigentumsrahmen',
       ),
       'Part Of A Compilation' => 
       array (
@@ -1446,15 +1454,15 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Performer Sort Order' => 
       array (
-        0 => '',
+        0 => 'Sortierreihenfolge Performer',
       ),
       'Play Counter' => 
       array (
-        0 => '',
+        0 => 'Abspiel-Zähler',
       ),
       'Playlist Delay' => 
       array (
-        0 => '',
+        0 => 'Playlist-Verzögerung',
       ),
       'Popularimeter' => 
       array (
@@ -1462,15 +1470,15 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Position Synchronisation Frame' => 
       array (
-        0 => '',
+        0 => 'Positions-Synchronisationsrahmen',
       ),
       'Private Frame' => 
       array (
-        0 => '',
+        0 => 'Privater Rahmen',
       ),
       'Produced Notice' => 
       array (
-        0 => '',
+        0 => 'Produktions-Hinweis',
       ),
       'Publisher' => 
       array (
@@ -1494,15 +1502,15 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Relative Volume Adjustment' => 
       array (
-        0 => '',
+        0 => 'Relative Lautstärkeanpassung',
       ),
       'Release Time' => 
       array (
-        0 => '',
+        0 => 'Veröffentlichungszeitpunkt',
       ),
       'Remixer' => 
       array (
-        0 => '',
+        0 => 'Remixer',
       ),
       'ReplayGain Adjustment' => 
       array (
@@ -1514,15 +1522,15 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Seek Frame' => 
       array (
-        0 => '',
+        0 => 'Suchrahmen',
       ),
       'Set Subtitle' => 
       array (
-        0 => '',
+        0 => 'Untertitel setzen',
       ),
       'Signature Frame' => 
       array (
-        0 => '',
+        0 => 'Signatur',
       ),
       'Size' => 
       array (
@@ -1534,19 +1542,19 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Synced Tempo Codes' => 
       array (
-        0 => '',
+        0 => 'Synchronisierte Tempo-Codes',
       ),
       'Synchronised Lyric' => 
       array (
-        0 => '',
+        0 => 'Synchronisierter Songtext',
       ),
       'Synchronised Tempo Codes' => 
       array (
-        0 => '',
+        0 => 'Synchronisierte Tempo-Codes',
       ),
       'Tagging Time' => 
       array (
-        0 => '',
+        0 => 'Tagging-Zeit',
       ),
       'Terms Of Use' => 
       array (
@@ -1566,7 +1574,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Title Sort Order' => 
       array (
-        0 => '',
+        0 => 'Sortierreihenfolge Titel',
       ),
       'Track Number' => 
       array (
@@ -1578,51 +1586,87 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Unsynchronised Lyric' => 
       array (
-        0 => '',
+        0 => 'Unsynchronisierter Songtext',
       ),
       'URL Artist' => 
       array (
-        0 => '',
+        0 => 'URL Künstler',
       ),
       'URL File' => 
       array (
-        0 => '',
+        0 => 'URL Datei',
       ),
       'URL Payment' => 
       array (
-        0 => '',
+        0 => 'URL Zahlung',
       ),
       'URL Publisher' => 
       array (
-        0 => '',
+        0 => 'URL Publisher',
       ),
       'URL Source' => 
       array (
-        0 => '',
+        0 => 'URL Quelle',
       ),
       'URL Station' => 
       array (
-        0 => '',
+        0 => 'URL Station',
       ),
       'URL User' => 
       array (
-        0 => '',
+        0 => 'URL Nutzer',
       ),
       'Year' => 
       array (
         0 => 'Jahr',
       ),
-      'Important Notes' => 
+      'Instructions' => 
       array (
-        0 => 'Wichtige Notizen',
+        0 => 'Anleitung',
       ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS ist keine freie Software und seine restriktive Lizenz erlaubt AzuraCast nicht die weitergabe eines Binaries. Um SHOUTcast zu installieren, sollten sie das Linux x64binary von der <a href="%s" target="_blank">SHOUTcast Radio Manager</a> Webseite herunterladen. Und das Binary <code>sc_serv2_linux_x64-latest.tar.gz</code>in das vorgesehene Verzeichniss extrahieren.</p>',
+        0 => 'Um die Geolokalisierung der IP-Adressen ihrer Zuhörer bereitzustellen, können Sie ihre MaxMind GeoLite-Datenbank hochladen. Dies wird Ihnen erlauben, die Liste der Zuhörer im "Zuhörer"-Bericht jeder Radiostation einzusehen. Um die GeoLite-Datenbank herunterzuladen:',
+      ),
+      'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
+      array (
+        0 => 'Erstellen Sie ein Konto auf <a href="%s" target="_blank">der Seite von MaxMind</a>.',
+      ),
+      'Visit the <a href="%s" target="_blank">direct downloads page</a>.' => 
+      array (
+        0 => 'Besuchen Sie die <a href="%s" target="_blank">Direktdownload-Seite</a>.',
+      ),
+      'Download the <code>%s</code> file (in GZIP) format.' => 
+      array (
+        0 => 'Laden Sie die <code>%s</code> Datei (im GZIP-Format) herunter.',
+      ),
+      'Select the downloaded file below to upload it.' => 
+      array (
+        0 => 'Wählen Sie die heruntergeladene Datei aus, um sie hochzuladen.',
+      ),
+      'You can repeat this process any time you need to update the GeoLite database.' => 
+      array (
+        0 => 'Sie können diesen Prozess jederzeit wiederholen, wenn Sie die Geo-Lite-Datenbank aktualisieren möchten.',
       ),
       'Current Installed Version' => 
       array (
         0 => 'Aktuell installierte Version',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => 'GeoLite ist auf diesem System derzeit nicht installiert.',
+      ),
+      'Select GeoLite2-City .tar.gz File' => 
+      array (
+        0 => 'Wählen Sie eine GeoLite2-City .tar.gz-Datei aus',
+      ),
+      'Upload' => 
+      array (
+        0 => 'Hochladen',
+      ),
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      array (
+        0 => '<p>SHOUTcast 2 DNAS ist keine freie Software und seine restriktive Lizenz erlaubt AzuraCast nicht die weitergabe eines Binaries. Um SHOUTcast zu installieren, sollten sie das Linux x64binary von der <a href="%s" target="_blank">SHOUTcast Radio Manager</a> Webseite herunterladen. Und das Binary <code>sc_serv2_linux_x64-latest.tar.gz</code>in das vorgesehene Verzeichniss extrahieren.</p>',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
@@ -1631,10 +1675,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
         0 => 'Wählen sie das SHOUTcast 64-bit .tar.gz aus',
-      ),
-      'Upload' => 
-      array (
-        0 => 'Hochladen',
       ),
       'E-mail Address' => 
       array (

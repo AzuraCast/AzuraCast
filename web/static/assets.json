@@ -50,7 +50,7 @@
   "dist/radio_player.js": "dist/radio_player-e8fb69f5c3.js",
   "dist/station_media.js": "dist/station_media-e603db7e25.js",
   "dist/station_playlists.js": "dist/station_playlists-dee62b5f6b.js",
-  "dist/vue_gettext.js": "dist/vue_gettext-5d8cb4cc3e.js",
+  "dist/vue_gettext.js": "dist/vue_gettext-9f5e925aaa.js",
   "dist/webcaster.js": "dist/webcaster-788fdd9f3d.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

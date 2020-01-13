@@ -10,9 +10,9 @@ msgstr ""
 "X-Crowdin-File: /master/resources/locale/frontend.pot\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
-"PO-Revision-Date: 2019-12-30 09:18\n"
+"PO-Revision-Date: 2020-01-13 22:15\n"
 
-#: ./vue/StationPlaylists.vue:126
+#: ./vue/StationPlaylists.vue:124
 msgid "# Songs"
 msgstr "# Şarkılar"
 
@@ -20,12 +20,12 @@ msgstr "# Şarkılar"
 msgid "A playlist containing media files hosted on this server."
 msgstr "Bu sunucuda barındırılan müzik dosyalarını içeren bir çalma listesidir."
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:21
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:19
 msgid "A playlist that instructs the station to play from a remote URL."
 msgstr "Uzak sunucudaki müzik dosyalarını içeren bir çalma listesidir."
 
 #: ./vue/StationMedia.vue:177
-#: ./vue/StationPlaylists.vue:123
+#: ./vue/StationPlaylists.vue:121
 #: ./vue/station_playlists/PlaylistReorderModal.vue:11
 msgid "Actions"
 msgstr "İşlemler"
@@ -34,20 +34,20 @@ msgstr "İşlemler"
 msgid "Add Files to Playlist"
 msgstr "Çalma Listesine Ekle"
 
-#: ./vue/StationPlaylists.vue:20
+#: ./vue/StationPlaylists.vue:18
 #: ./vue/station_playlists/PlaylistEditModal.vue:52
 msgid "Add Playlist"
 msgstr "Çalma Listesi Ekle"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:111
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:109
 msgid "Add Schedule Item"
 msgstr "Zamanlanmış Öğe Ekle"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:79
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:69
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:84
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:81
 msgid "Advanced Playback Settings"
 msgstr "Gelişmiş Oynatma Ayarları"
 
@@ -62,11 +62,11 @@ msgstr "Albüm"
 msgid "Album Art"
 msgstr "Albüm Sanatçısı"
 
-#: ./vue/StationPlaylists.vue:132
+#: ./vue/StationPlaylists.vue:130
 msgid "All Playlists"
 msgstr "Tüm Çalma Listeleri"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:60
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:55
 msgid "Allow Requests from This Playlist"
 msgstr "Çalma Listesinde İstekleri Etkinleştir"
 
@@ -75,12 +75,12 @@ msgstr "Çalma Listesinde İstekleri Etkinleştir"
 #: ./vue/station_media/MediaNewDirectoryModal.vue:76
 #: ./vue/station_playlists/PlaylistEditModal.vue:174
 msgid "An error occurred and your request could not be completed."
-msgstr ""
+msgstr "Bir hata oluştu ve işleminiz tamamlanamadı."
 
-#: ./vue/StationPlaylists.vue:205
+#: ./vue/StationPlaylists.vue:203
 #: ./vue/station_media/MediaToolbar.vue:194
 msgid "Applying changes..."
-msgstr ""
+msgstr "Değişiklikler Uygulanıyor..."
 
 #: ./vue/StationMedia.vue:146
 #: ./vue/station_playlists/PlaylistReorderModal.vue:9
@@ -88,11 +88,11 @@ msgstr ""
 msgid "Artist"
 msgstr "Sanatçı"
 
-#: ./vue/StationPlaylists.vue:73
+#: ./vue/StationPlaylists.vue:71
 msgid "Auto-Assigned"
 msgstr "Otomatik Atanmış"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:94
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:82
 msgid "AutoDJ Scheduling Options"
 msgstr "AutoDJ Zamanlama Ayarları"
 
@@ -100,7 +100,7 @@ msgstr "AutoDJ Zamanlama Ayarları"
 msgid "Back"
 msgstr "Geri"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:246
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:228
 msgid "Basic Info"
 msgstr "Temel Bilgiler"
 
@@ -113,14 +113,14 @@ msgstr "Temel Bilgiler"
 msgid "Changes saved."
 msgstr "Değişiklikler Kaydedildi."
 
-#: ./vue/station_media/MediaToolbar.vue:37
+#: ./vue/station_media/MediaToolbar.vue:38
 msgid "Clear"
 msgstr "Temizle"
 
 #: ./vue/station_media/MediaEditModal.vue:14
-#: ./vue/station_media/MediaMoveFilesModal.vue:33
+#: ./vue/station_media/MediaMoveFilesModal.vue:34
 #: ./vue/station_media/MediaNewDirectoryModal.vue:15
-#: ./vue/station_media/MediaRenameModal.vue:15
+#: ./vue/station_media/MediaRenameModal.vue:16
 #: ./vue/station_playlists/PlaylistEditModal.vue:15
 msgid "Close"
 msgstr "Kapat"
@@ -129,7 +129,7 @@ msgstr "Kapat"
 msgid "Continuous Play"
 msgstr "Çalmaya Devam Et"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:98
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:85
 msgid "Control how this playlist is handled by the AutoDJ software."
 msgstr "Bu çalma listesinin AutoDJ yazılımı tarafından nasıl işlendiğini ayarlayabilirsiniz."
 
@@ -137,21 +137,21 @@ msgstr "Bu çalma listesinin AutoDJ yazılımı tarafından nasıl işlendiğini
 msgid "Create Directory"
 msgstr "Dizin Oluştur"
 
-#: ./vue/webcaster/microphone.vue:17
-#: ./vue/webcaster/playlist.vue:23
-#: ./vue/webcaster/settings.vue:139
+#: ./vue/webcaster/microphone.vue:18
+#: ./vue/webcaster/playlist.vue:24
+#: ./vue/webcaster/settings.vue:141
 msgid "Cue"
 msgstr "Bağla"
 
-#: ./vue/StationPlaylists.vue:184
+#: ./vue/StationPlaylists.vue:182
 msgid "Custom"
 msgstr "Özel"
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:48
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:46
 msgid "Custom Cues: Cue-In Point (seconds)"
 msgstr "Custom Cues: Giriş Noktası (saniye)"
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:59
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:57
 msgid "Custom Cues: Cue-Out Point (seconds)"
 msgstr "Custom Cues: Çıkış Noktası (saniye)"
 
@@ -159,11 +159,11 @@ msgstr "Custom Cues: Çıkış Noktası (saniye)"
 msgid "Custom Fading: Fade-In Time (seconds)"
 msgstr "Custom Fading: Solma Zamanı (saniye)"
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:36
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:35
 msgid "Custom Fading: Fade-Out Time (seconds)"
 msgstr "Custom Fading: Solma Zamanı (saniye)"
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:12
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:13
 msgid "Custom Fading: Overlap Time (seconds)"
 msgstr "Custom Fading: Örtüşme Zamanı (saniye)"
 
@@ -171,12 +171,12 @@ msgstr "Custom Fading: Örtüşme Zamanı (saniye)"
 msgid "Custom Fields"
 msgstr "Özelleştirme"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:232
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:214
 msgid "Default"
 msgstr "Varsayılan"
 
-#: ./vue/StationPlaylists.vue:33
-#: ./vue/StationPlaylists.vue:221
+#: ./vue/StationPlaylists.vue:31
+#: ./vue/StationPlaylists.vue:219
 #: ./vue/station_media/MediaToolbar.vue:53
 #: ./vue/station_media/MediaToolbar.vue:114
 msgid "Delete"
@@ -186,11 +186,11 @@ msgstr "Sil"
 msgid "Delete %{ num } media file(s)?"
 msgstr "%{ num } adet müzik dosyası silinsin mi?"
 
-#: ./vue/station_media/form/MediaFormAlbumArt.vue:7
+#: ./vue/station_media/form/MediaFormAlbumArt.vue:8
 msgid "Delete Album Art"
 msgstr "Albüm Kapağını Sil"
 
-#: ./vue/StationPlaylists.vue:222
+#: ./vue/StationPlaylists.vue:220
 msgid "Delete playlist?"
 msgstr "Çalma listesi silinsin mi?"
 
@@ -199,15 +199,15 @@ msgstr "Çalma listesi silinsin mi?"
 msgid "Directory"
 msgstr "Klasör"
 
-#: ./vue/station_media/MediaNewDirectoryModal.vue:4
+#: ./vue/station_media/MediaNewDirectoryModal.vue:5
 msgid "Directory Name"
 msgstr "Dizin İsmi"
 
-#: ./vue/StationPlaylists.vue:153
+#: ./vue/StationPlaylists.vue:151
 msgid "Disable"
 msgstr "Devredışı"
 
-#: ./vue/StationPlaylists.vue:164
+#: ./vue/StationPlaylists.vue:162
 msgid "Disabled"
 msgstr "Kapalı"
 
@@ -224,7 +224,7 @@ msgid "Drag files here to upload to this folder or"
 msgstr "Bu klasöre müzik yüklemek için dosyaları buraya sürekleyip bırakın veya "
 
 #: ./vue/StationMedia.vue:206
-#: ./vue/StationPlaylists.vue:30
+#: ./vue/StationPlaylists.vue:28
 msgid "Edit"
 msgstr "Düzenle"
 
@@ -236,32 +236,31 @@ msgstr "Müzik Dosyası Düzenle"
 msgid "Edit Playlist"
 msgstr "Çalma Listesi Düzenle"
 
-#: ./vue/StationPlaylists.vue:154
+#: ./vue/StationPlaylists.vue:152
 msgid "Enable"
 msgstr "Etkin"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:65
-msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in\n"
-"                    this playlist. This is useful if the playlist contains jingles or bumpers."
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:61
+msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
 msgstr "Bu çalma listesinde bulunan müziklerin meta verilerini dinleyicilerden gizlemek için etkinleştirebilirsiniz. Çalma listesinde Jingle veya Bumpers varsa işinize yarayacak bir özelliktir."
 
 #: ./vue/webcaster/settings.vue:27
 msgid "Encoder"
 msgstr "Encoder"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:81
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:80
 msgid "End Date"
 msgstr "Bitiş Tarihi"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:41
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:43
 msgid "End Time"
 msgstr "Bitiş Zamanı"
 
-#: ./vue/StationPlaylists.vue:46
+#: ./vue/StationPlaylists.vue:44
 msgid "Export %{format}"
 msgstr "Dışa Aktar %{format}"
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:5
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:6
 msgid "File Name"
 msgstr "Dosya Adı"
 
@@ -277,7 +276,7 @@ msgstr "Çalınmak üzere sıraya alınmış müzik dosyaları:"
 msgid "Files removed:"
 msgstr "Silinen Dosyalar:"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:136
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:134
 msgid "Friday"
 msgstr "Cuma"
 
@@ -286,77 +285,73 @@ msgstr "Cuma"
 msgid "Full Volume"
 msgstr "Full Ses"
 
-#: ./vue/StationPlaylists.vue:169
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:44
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:129
+#: ./vue/StationPlaylists.vue:167
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:42
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:113
 msgid "General Rotation"
 msgstr "Genel Oynatma"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:70
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:64
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
 msgstr "Meta Verilerini Gizle (\"Jingle Mode\")"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:234
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:216
 msgid "High"
 msgstr "Yüksek"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:18
-msgid "Higher weight playlists are played more frequently compared to other lower-weight\n"
-"                    playlists."
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:19
+msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
 msgstr "Yüksek önceliğe sahip çalma listeleri daha sık çalınır."
 
 #: ./vue/station_media/MediaBreadcrumb.vue:2
 msgid "Home"
 msgstr "Anasayfa"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:135
-msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be\n"
-"                    redistributed into. This will overwrite the existing contents of this playlist."
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:119
+msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
 msgstr "Otomatik atama etkinse bu çalma listesini yeniden dağıtılacak şarkıların hedeflerinden biri olarak kullanın. Bu, bu oynatma listesinin mevcut içeriğinin üzerine yazacaktır."
 
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:29
-msgid "If disabled, the playlist will not be included in radio playback, but can still be\n"
-"                    managed."
+msgid "If disabled, the playlist will not be included in radio playback, but can still be managed."
 msgstr "\"HAYIR\" olarak ayarlanırsa AutoDJ müzik çalamaz."
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:55
-msgid "If requests are enabled for your station, users will be able to request media that\n"
-"                    is on this playlist."
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:52
+msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
 msgstr "Radyodaki çalan müzikleri kullanıcıların erişimine açmak için burayı etkinleştirebilirsiniz."
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:44
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:46
 msgid "If the end time is before the start time, the playlist will play overnight."
 msgstr "Bitiş saati başlangıç ​​saatinden önce ise çalma listesi gecede oynatılır."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:140
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:122
 msgid "Include in Automated Assignment"
 msgstr "Otomatik Atamaya Dahil Et"
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:49
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:50
 msgid "International Standard Recording Code, used for licensing reports."
 msgstr "Uluslararası Standart Kayıt Kodu lisans raporları için kullanılır."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:112
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:95
 msgid "Interrupt other songs to play at scheduled time."
 msgstr "Planlanan zamanda çalmak için diğer şarkıları kesin."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:34
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:32
 msgid "Is Enabled"
 msgstr "Etkinleştirildi!"
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:46
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:47
 msgid "ISRC"
 msgstr "ISRC"
 
-#: ./vue/StationPlaylists.vue:66
+#: ./vue/StationPlaylists.vue:64
 msgid "Jingle Mode"
 msgstr "Jingle Modu"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:85
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:74
 msgid "Learn about Advanced Playlists"
 msgstr "Gelişmiş Çalma Listeleri Hakkında Bilgi Edinin"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:96
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:95
 msgid "Leave blank to play on every day of the week."
 msgstr "Haftanın hangi günlerinde oynatılmasını istiyorsanız seçin veya haftanın her günü oynatmak için boş bırakın."
 
@@ -368,19 +363,19 @@ msgstr "Uzunluk"
 msgid "Live"
 msgstr "Canlı"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:230
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:212
 msgid "Low"
 msgstr "Düşük"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:82
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:72
 msgid "Manually define how this playlist is used in Liquidsoap configuration."
-msgstr ""
+msgstr "Bu çalma listesinin Liquidsoap yapılandırmasında nasıl kullanıldığını manuel olarak tanımlayın."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:121
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:104
 msgid "Merge playlist to play as a single track."
 msgstr "Tek bir parça olarak çalmak için çalma listesini birleştirin."
 
-#: ./vue/webcaster/settings.vue:15
+#: ./vue/webcaster/settings.vue:16
 msgid "Metadata"
 msgstr "Meta Verileri"
 
@@ -392,11 +387,11 @@ msgstr "Mikrofon"
 msgid "Microphone Source"
 msgstr "Mikrofon Kaynağı"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:202
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:185
 msgid "Minute of Hour to Play"
 msgstr "Saatin Hangi Dakikasında Çalınsın?"
 
-#: ./vue/webcaster/mixer.vue:3
+#: ./vue/webcaster/mixer.vue:4
 msgid "Mixer"
 msgstr "Mixer"
 
@@ -404,11 +399,11 @@ msgstr "Mixer"
 msgid "Modified"
 msgstr "Değiştirme Zamanı"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:132
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:130
 msgid "Monday"
 msgstr "Pazartesi"
 
-#: ./vue/StationPlaylists.vue:138
+#: ./vue/StationPlaylists.vue:136
 msgid "More"
 msgstr "Daha Fazla"
 
@@ -420,7 +415,7 @@ msgstr "Taşı"
 msgid "Move %{ num } File(s) to"
 msgstr "%{ num } adet dosyayı taşı"
 
-#: ./vue/station_media/MediaMoveFilesModal.vue:36
+#: ./vue/station_media/MediaMoveFilesModal.vue:37
 msgid "Move to Directory"
 msgstr "Dizine Taşı"
 
@@ -443,9 +438,9 @@ msgstr "Yeni Dizin"
 
 #: ./vue/station_media/MediaNewDirectoryModal.vue:68
 msgid "New directory created."
-msgstr ""
+msgstr "Yeni Klasör Oluşturuldu!"
 
-#: ./vue/station_media/MediaRenameModal.vue:4
+#: ./vue/station_media/MediaRenameModal.vue:5
 msgid "New File Name"
 msgstr "Yeni Klasör Adı"
 
@@ -461,54 +456,54 @@ msgstr "Yeni Çalma Listesi"
 msgid "No files selected."
 msgstr "Hiçbir dosya seçilmedi!"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:3
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:4
 msgid "Not Scheduled"
 msgstr "Planlanmadı"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:178
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:161
 msgid "Number of Minutes Between Plays"
 msgstr "Kaç Dakikada Bir Çalınsın?"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:154
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:137
 msgid "Number of Songs Between Plays"
 msgstr "Kaç Şarkıda Bir Çalınsın?"
 
-#: ./vue/StationPlaylists.vue:176
+#: ./vue/StationPlaylists.vue:174
 msgid "Once per %{minutes} Minutes"
-msgstr ""
+msgstr "%{minutes} Dakikada Bir"
 
-#: ./vue/StationPlaylists.vue:172
+#: ./vue/StationPlaylists.vue:170
 msgid "Once per %{songs} Songs"
-msgstr ""
+msgstr "%{songs} Şarkıda Bir"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:70
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:196
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:62
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:179
 msgid "Once per Hour"
 msgstr "Saatte Bir Çal"
 
-#: ./vue/StationPlaylists.vue:180
+#: ./vue/StationPlaylists.vue:178
 msgid "Once per Hour (at %{minute})"
-msgstr ""
+msgstr "Saatte Bir Kez ( %{minute} ) "
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:61
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:172
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:55
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:155
 msgid "Once per x Minutes"
 msgstr "x Dakikada Bir Çal"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:52
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:148
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:48
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:131
 msgid "Once per x Songs"
 msgstr "x Şarkıda Bir Çal"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:115
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:98
 msgid "Only loop through playlist once."
 msgstr "Çalma listesinde yalnızca bir kez döngü yapın."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:118
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:101
 msgid "Only play one track at scheduled time."
 msgstr "Planlanan zamanda sadece bir parça çalın."
 
-#: ./vue/webcaster/settings.vue:171
+#: ./vue/webcaster/settings.vue:172
 msgid "Password"
 msgstr "Şifre"
 
@@ -521,15 +516,15 @@ msgstr "Duraklat"
 msgid "Play"
 msgstr "Oynat"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:64
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:58
 msgid "Play exactly once every <i>x</i> minutes."
 msgstr "Her <i>x</i> dakikada bir çalınır."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:55
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:51
 msgid "Play exactly once every <i>x</i> songs."
 msgstr "Her <i>x</i> şarkıda bir çalınır."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:73
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:65
 msgid "Play once per hour at the specified minute."
 msgstr "Belirtilen dakikada saatte bir çalınır."
 
@@ -537,31 +532,31 @@ msgstr "Belirtilen dakikada saatte bir çalınır."
 msgid "Play/Pause"
 msgstr "Oynat/Duraklat"
 
-#: ./vue/StationPlaylists.vue:124
+#: ./vue/StationPlaylists.vue:122
 msgid "Playlist"
 msgstr "Çalma Listesi"
 
-#: ./vue/webcaster/playlist.vue:119
+#: ./vue/webcaster/playlist.vue:118
 msgid "Playlist 1"
 msgstr "Çalma Listesi 1"
 
-#: ./vue/webcaster/playlist.vue:120
+#: ./vue/webcaster/playlist.vue:119
 msgid "Playlist 2"
 msgstr "Çalma Listesi 2"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:5
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:6
 msgid "Playlist Name"
 msgstr "Çalma Listesi İsmi"
 
 #: ./vue/station_playlists/PlaylistReorderModal.vue:96
 msgid "Playlist order set."
-msgstr ""
+msgstr "Çalma listesi sırası ayarlandı!"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:38
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:37
 msgid "Playlist Type"
 msgstr "Çalma Listesi Türü"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:15
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:16
 msgid "Playlist Weight"
 msgstr "Çalma Listesi Önceliği"
 
@@ -595,30 +590,30 @@ msgstr "HAM DATA"
 msgid "Refresh rows"
 msgstr "Satırları Yenile"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:111
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:106
 msgid "Remote Playback Buffer (Seconds)"
 msgstr "Uzaktan Oynatma Arabelliği (saniye)"
 
-#: ./vue/StationPlaylists.vue:61
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:85
+#: ./vue/StationPlaylists.vue:59
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:80
 msgid "Remote URL"
 msgstr "Uzak Çalma Listesi URLsi"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:19
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:78
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:17
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:73
 msgid "Remote URL Playlist"
 msgstr "Uzak Çalma Listesi URLsi"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:97
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:92
 msgid "Remote URL Type"
 msgstr "Uzak Çalma Listesi Türü"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:20
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:21
 msgid "Remove"
 msgstr "Kaldır"
 
 #: ./vue/StationMedia.vue:203
-#: ./vue/station_media/MediaRenameModal.vue:18
+#: ./vue/station_media/MediaRenameModal.vue:19
 msgid "Rename"
 msgstr "Yeniden Adlandır"
 
@@ -626,7 +621,7 @@ msgstr "Yeniden Adlandır"
 msgid "Rename File/Directory"
 msgstr "Dosya/Klasör Yeniden Adlandır"
 
-#: ./vue/StationPlaylists.vue:141
+#: ./vue/StationPlaylists.vue:139
 msgid "Reorder"
 msgstr "Yeniden Sırala"
 
@@ -638,7 +633,7 @@ msgstr "Çalma Listesi Yeniden Sıralama"
 msgid "Repeat Playlist"
 msgstr "Çalma Listesini Tekrarla"
 
-#: ./vue/station_media/form/MediaFormAlbumArt.vue:13
+#: ./vue/station_media/form/MediaFormAlbumArt.vue:14
 msgid "Replace Album Cover Art"
 msgstr "Albüm Kapağını Değiştir"
 
@@ -651,11 +646,11 @@ msgstr "Sayfa Başına Satır"
 msgid "Sample Rate"
 msgstr "Sample Rate"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:137
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:135
 msgid "Saturday"
 msgstr "Cumartesi"
 
-#: ./vue/station_media/MediaToolbar.vue:34
+#: ./vue/station_media/MediaToolbar.vue:35
 msgid "Save"
 msgstr "Kaydet"
 
@@ -664,37 +659,41 @@ msgstr "Kaydet"
 msgid "Save Changes"
 msgstr "Kaydet"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:144
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:142
 msgid "Schedule"
 msgstr "Zamanla"
 
-#: ./vue/StationPlaylists.vue:135
+#: ./vue/StationPlaylists.vue:133
 msgid "Schedule View"
 msgstr "Zamanlama Görünümü"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:93
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:92
 msgid "Scheduled Play Days of Week"
 msgstr "Haftalık Zamanlama"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:14
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:15
 msgid "Scheduled Time #%{num}"
-msgstr ""
+msgstr "Planlanan Zaman #%{num}"
 
-#: ./vue/StationPlaylists.vue:125
+#: ./vue/StationPlaylists.vue:123
 msgid "Scheduling"
 msgstr "Zamanlama"
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:51
+#: ./vue/components/DataTable.vue:162
+msgid "Search"
+msgstr ""
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:49
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
 msgstr "AutoDJ'in şarkıyı çalmaya başlaması için gereken zamanı belirtin."
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:62
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:60
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr "AutoDJ'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin."
 
 #: ./vue/components/DataTable.vue:156
 msgid "Select all visible rows"
-msgstr ""
+msgstr "Tüm görünür satırları seç"
 
 #: ./vue/components/DataTable.vue:153
 msgid "Select displayed fields"
@@ -706,9 +705,9 @@ msgstr "Dosya Seç"
 
 #: ./vue/components/DataTable.vue:159
 msgid "Select this row"
-msgstr ""
+msgstr "Bu satırı seç"
 
-#: ./vue/StationPlaylists.vue:70
+#: ./vue/StationPlaylists.vue:68
 msgid "Sequential"
 msgstr "Sıralı"
 
@@ -716,7 +715,7 @@ msgstr "Sıralı"
 msgid "Set or clear playlists from the selected media"
 msgstr "Seçilen müzik dosyalarını çalma listesinden temizle veya ekle"
 
-#: ./vue/webcaster/settings.vue:10
+#: ./vue/webcaster/settings.vue:11
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -724,49 +723,49 @@ msgstr "Ayarlar"
 msgid "Size"
 msgstr "Boyut"
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:32
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:33
 msgid "Song Album"
 msgstr "Albüm"
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:25
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:26
 msgid "Song Artist"
 msgstr "Sanatçı"
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:5
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:6
 msgid "Song Length"
 msgstr "Şarkı Süresi"
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:39
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:40
 msgid "Song Lyrics"
 msgstr "Şarkı Sözleri"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:38
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:35
 msgid "Song Playback Order"
 msgstr "Şarkı Çalma Sırası"
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:18
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:19
 msgid "Song Title"
 msgstr "Şarkı"
 
-#: ./vue/StationPlaylists.vue:58
+#: ./vue/StationPlaylists.vue:56
 msgid "Song-based"
 msgstr "Çalma Listesi Modu"
 
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:11
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:31
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:28
 msgid "Song-Based Playlist"
 msgstr "Çalma Listesinden Çal"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:5
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:140
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:6
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:133
 msgid "Source"
 msgstr "Kaynak"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:205
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:188
 msgid "Specify the minute of every hour that this playlist should play."
 msgstr "Bu çalma listesinin saatin hangi dakikasında oynatılmasını istiyorsanız belirtin."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:46
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:44
 msgid "Standard playlist, shuffles with other standard playlists based on weight."
 msgstr "Gün boyu oynatılır ve önceliğe göre diğer standart çalma listeleriyle karıştırılır."
 
@@ -774,94 +773,89 @@ msgstr "Gün boyu oynatılır ve önceliğe göre diğer standart çalma listele
 msgid "Start Date"
 msgstr "Başlangıç Tarihi"
 
-#: ./vue/webcaster/settings.vue:176
+#: ./vue/webcaster/settings.vue:177
 msgid "Start Streaming"
 msgstr "Yayını Başlat"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:28
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:30
 msgid "Start Time"
 msgstr "Başlama Zamanı"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:54
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:56
 msgid "Station Time Zone"
 msgstr "Radyo Saat Dilimi"
 
-#: ./vue/webcaster/settings.vue:175
+#: ./vue/webcaster/settings.vue:176
 msgid "Stop Streaming"
 msgstr "Yayını Durdur"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:138
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:136
 msgid "Sunday"
 msgstr "Pazar"
 
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:114
-msgid "The length of playback time that Liquidsoap should buffer when playing this remote\n"
-"                    playlist. Shorter times may lead to intermittent playback on unstable connections."
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:109
+msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
 msgstr "Uzak çalma listesi Liquidsoap tarafından oynatılırken arabellek için gereken süreyi belirtin. Bağlantı sorunları oluştuğunda daha kısa süreler takılmalara neden olabilir."
 
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:8
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:9
 msgid "The relative path of the file in the station's media directory."
 msgstr "Radyonun müzik dosyalarının geçici dizinidir."
 
 #: ./vue/station_media/MediaToolbar.vue:103
 msgid "The request could not be processed."
-msgstr ""
+msgstr "İsteğiniz işlenemedi!"
 
 #: ./vue/station_media/form/MediaFormAdvancedSettings.vue:27
-msgid "The time period that the song should fade in. Leave\n"
-"                    blank to use the system default."
+msgid "The time period that the song should fade in. Leave blank to use the system default."
 msgstr "Bu şarkıya geçiş sırasında önceki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın."
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:39
-msgid "The time period that the song should fade out. Leave\n"
-"                    blank to use the system default."
-msgstr "Bu şarkıya geçiş sırasında önceki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın."
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:38
+msgid "The time period that the song should fade out. Leave blank to use the system default."
+msgstr "Bu şarkıdan diğer şarkıya geçiş sırasında sonraki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın."
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:15
-msgid "The time that this song should overlap its surrounding songs when fading. Leave\n"
-"                    blank to use the system default."
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:16
+msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
 msgstr "Bu şarkıdan sonraki şarkıya geçiş sırasında örtüşme süresini belirtin. Sistem varsayılan değeri için boş bırakın."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:105
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:90
 msgid "These functions are internal to Liquidsoap and will affect how your AutoDJ works."
 msgstr "Bu ayarlar Liquidsoap ve AutoDJ yazılımlarına doğrudan etki eder. Yeniden başlatma gerekebilir."
 
 #: ./vue/station_media/MediaNewDirectoryModal.vue:9
-#: ./vue/station_media/MediaRenameModal.vue:9
-#: ./vue/station_media/form/MediaFormBasicInfo.vue:13
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:10
+#: ./vue/station_media/MediaRenameModal.vue:10
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:14
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:11
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:24
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:163
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:187
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:211
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:36
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:49
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:75
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:87
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:91
-#: ./vue/station_playlists/form/PlaylistFormSource.vue:121
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:146
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:170
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:194
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:38
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:51
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:74
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:86
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:86
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:115
 msgid "This field is required."
-msgstr ""
+msgstr "Bu alan gereklidir."
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:4
-msgid "This playlist currently has no scheduled times. It will play at all times.\n"
-"            To add a new scheduled time, click the button below."
-msgstr ""
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:7
+msgid "This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below."
+msgstr "Bu oynatma listesinin şu anda planlanmış zamanı yok. Sistem tarafından her zaman oynatılacaktır. Yeni bir zamanlanmış saat eklemek için aşağıdaki düğmeyi tıklayın."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:181
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:164
 msgid "This playlist will play every $x minutes, where $x is specified below."
 msgstr "Bu çalma listesi her $x dakikada bir $x şarkı çalacaktır."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:157
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:140
 msgid "This playlist will play every $x songs, where $x is specified below."
 msgstr "Bu çalma listesi her $x şarkıda bir $x şarkı çalacaktır."
 
 #: ./vue/StationPlaylists.vue:9
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:58
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:59
 msgid "This station's time zone is currently %{tz}."
 msgstr "Bu radyonun saat dilimi %{tz} olarak ayarlanmıştır."
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:135
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:133
 msgid "Thursday"
 msgstr "Perşembe"
 
@@ -871,24 +865,23 @@ msgstr "Perşembe"
 msgid "Title"
 msgstr "Çalan Şarkı İsmi"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:31
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:33
 msgid "To play once per day, set the start and end times to the same value."
 msgstr "Günde bir kez oynamak için başlangıç ​​ve bitiş zamanlarını aynı değere ayarlayın."
 
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:68
-msgid "To set this schedule to run only within a certain date range, specify\n"
-"                            a start and end date."
-msgstr ""
+msgid "To set this schedule to run only within a certain date range, specify a start and end date."
+msgstr "Bu zamanlamayı yalnızca belirli bir tarih aralığında çalışacak şekilde ayarlamak için bir başlangıç ve bitiş tarihi belirtin."
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:133
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:131
 msgid "Tuesday"
 msgstr "Salı"
 
-#: ./vue/webcaster/playlist.vue:126
+#: ./vue/webcaster/playlist.vue:125
 msgid "Unknown Artist"
 msgstr "Bilinmeyen Sanatçı"
 
-#: ./vue/webcaster/playlist.vue:123
+#: ./vue/webcaster/playlist.vue:122
 msgid "Unknown Title"
 msgstr "Bilinmeyen Şarkı İsmi"
 
@@ -896,36 +889,36 @@ msgstr "Bilinmeyen Şarkı İsmi"
 msgid "Up"
 msgstr "Yukarı"
 
-#: ./vue/webcaster/settings.vue:122
+#: ./vue/webcaster/settings.vue:124
 msgid "Update Metadata"
 msgstr "Meta Verilerini Güncelle"
 
-#: ./vue/webcaster/settings.vue:100
+#: ./vue/webcaster/settings.vue:101
 msgid "Use Asynchronous Worker"
 msgstr "Eşzamansız Çalışma Kullan"
 
-#: ./vue/webcaster/settings.vue:168
+#: ./vue/webcaster/settings.vue:169
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
 #: ./vue/StationMedia.vue:212
 msgid "View tracks in playlist"
-msgstr ""
+msgstr "Çalma Listesindeki Parçaları Görüntüle"
 
 #: ./vue/InlinePlayer.vue:81
 #: ./vue/RadioPlayer.vue:333
 msgid "Volume"
 msgstr "Ses"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:103
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:88
 msgid "Warning"
 msgstr "Uyarı"
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:134
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:132
 msgid "Wednesday"
 msgstr "Çarşamba"
 
-#: ./vue/StationPlaylists.vue:169
+#: ./vue/StationPlaylists.vue:167
 msgid "Weight"
 msgstr "Öncelik"
 

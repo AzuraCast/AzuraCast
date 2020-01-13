@@ -14,8 +14,8 @@ Language-Team: Turkish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2019-11-23T21:40:24+00:00
-PO-Revision-Date: 2019-12-30 09:18
+POT-Creation-Date: 2019-12-31T12:47:58+00:00
+PO-Revision-Date: 2020-01-13 22:15
 Language: tr_TR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -229,7 +229,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Reload System Data' => 
       array (
-        0 => '',
+        0 => 'Sistem Verilerini Yeniden Yükle',
       ),
       'Refreshing All Stations' => 
       array (
@@ -295,13 +295,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Manuel Yedeklemeyi Çalıştır',
       ),
-      'Backup not found.' => 
-      array (
-        0 => 'Yedekleme bulunamadı!',
-      ),
       'Backup deleted.' => 
       array (
         0 => 'Yedekleme silindi!',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => 'Yedekleme bulunamadı!',
       ),
       'Custom Field updated.' => 
       array (
@@ -326,6 +326,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Sync Task Output' => 
       array (
         0 => 'Senkronizasyon Görev Çıktısı',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => 'GeoLite "%s" versiyonu kuruludur.',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => 'GeoLite IP Veritabanı Kurulumu',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
@@ -473,11 +481,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'File not specified.' => 
       array (
-        0 => '',
+        0 => 'Dosya belirtilmedi!',
       ),
       'New path not specified.' => 
       array (
-        0 => '',
+        0 => 'Yeni dizin belirlenmedi!',
       ),
       'This station is out of available storage space.' => 
       array (
@@ -1213,11 +1221,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Automatically Set from ID3v2 Value' => 
       array (
-        0 => '',
+        0 => 'ID3v2 Değerinden Otomatik Olarak Ayarla',
       ),
       'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
       array (
-        0 => '',
+        0 => 'İsteğe bağlı olarak varsa bu alanın değerini ayarlamak için kullanılacak bir ID3v2 metadata alanı belirtin.',
       ),
       'Disable' => 
       array (
@@ -1609,19 +1617,55 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Year' => 
       array (
+        0 => 'Yıl',
+      ),
+      'Instructions' => 
+      array (
         0 => '',
       ),
-      'Important Notes' => 
+      'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
       array (
-        0 => 'Önemli Notlar',
+        0 => 'Dinleyicilerinizin IP adreslerinin coğrafi konumlarını belirlemek için MaxMind GeoLite veritabanını yükleyebilirsiniz. Her bir radyo için bu raporu "Dinleyiciler" bölümünden görüntüleyebilirsiniz.. GeoLite veritabanını indirmek için:',
       ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href="%s" target="_blank">SHOUTcast Radio Manager</a> sitesinden "linux x64" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>',
+        0 => '<a href="%s" target="_blank">MaxMind Geliştirici Sitesi</a>nden kayıt yaptırınız.',
+      ),
+      'Visit the <a href="%s" target="_blank">direct downloads page</a>.' => 
+      array (
+        0 => '<a href="%s" target="_blank">İndir</a>me sayfasını ziyaret ediniz.',
+      ),
+      'Download the <code>%s</code> file (in GZIP) format.' => 
+      array (
+        0 => '<code>%s</code> dosyasını GZIP biçiminde indiriniz.',
+      ),
+      'Select the downloaded file below to upload it.' => 
+      array (
+        0 => 'İndirilen dosyayı yüklemek için seçiniz.',
+      ),
+      'You can repeat this process any time you need to update the GeoLite database.' => 
+      array (
+        0 => 'GeoLite veritabanını güncellemeniz gerektiğinde bu işlemi tekrarlayabilirsiniz.',
       ),
       'Current Installed Version' => 
       array (
         0 => 'Kurulmuş Mevcut Sürüm',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => 'GeoLite henüz kurulmamıştır.',
+      ),
+      'Select GeoLite2-City .tar.gz File' => 
+      array (
+        0 => 'GeoLite2-City .tar.gz Dosyasını Seçin',
+      ),
+      'Upload' => 
+      array (
+        0 => 'Yükle',
+      ),
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      array (
+        0 => '<p>SHOUTcast 2 DNAS ücretsiz bir yazılım değildir. SHOUTcast kurulumu yapmak için <a href="%s" target="_blank">SHOUTcast Radio Manager</a> sitesinden "linux x64" yazılımını indirmelisiniz. Otomatik kurulum yapmak için <code>sc_serv2_linux_x64-latest.tar.gz</code> dosyasını aşağıdaki alandan yükleyin.</p>',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
@@ -1630,10 +1674,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
         0 => 'SHOUTcast 64-bit .tar.gz Dosyasını Seçin',
-      ),
-      'Upload' => 
-      array (
-        0 => 'Yükle',
       ),
       'E-mail Address' => 
       array (

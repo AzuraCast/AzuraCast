@@ -25,7 +25,7 @@ class SftpUser
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="SFTPUsers")
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="sftpUsers")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })

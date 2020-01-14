@@ -42,7 +42,7 @@ class SftpUsersController extends AbstractStationCrudController
         ];
 
         return $request->getView()->renderToResponse($response, 'stations/sftp_users/index', [
-            'users' => $station->getSFTPUsers(),
+            'users' => $station->getSftpUsers(),
             'sftp_info' => $sftpInfo,
             'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);

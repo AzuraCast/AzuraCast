@@ -157,7 +157,7 @@ class StationMediaRepository extends Repository
             'title' => 'setTitle',
             'artist' => 'setArtist',
             'album' => 'setAlbum',
-            'unsynchronized_lyric' => 'setLyrics',
+            'unsynchronised_lyric' => 'setLyrics',
             'isrc' => 'setIsrc',
         ];
 
@@ -448,7 +448,7 @@ class StationMediaRepository extends Repository
             'album' => [
                 $media->getAlbum(),
             ],
-            'unsynchronized_lyric' => [
+            'unsynchronised_lyric' => [
                 $media->getLyrics(),
             ],
         ];

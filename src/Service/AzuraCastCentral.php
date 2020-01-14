@@ -5,6 +5,7 @@ use App\Entity;
 use App\Settings;
 use App\Version;
 use GuzzleHttp\Client;
+use Psr\Log\LoggerInterface;
 
 class AzuraCastCentral
 {
@@ -18,16 +19,20 @@ class AzuraCastCentral
 
     protected Version $version;
 
+    protected LoggerInterface $logger;
+
     public function __construct(
         Entity\Repository\SettingsRepository $settings_repo,
         Settings $app_settings,
         Version $version,
-        Client $http_client
+        Client $http_client,
+        LoggerInterface $logger
     ) {
         $this->settings_repo = $settings_repo;
         $this->app_settings = $app_settings;
         $this->version = $version;
         $this->http_client = $http_client;
+        $this->logger = $logger;
     }
 
     /**
@@ -52,16 +57,22 @@ class AzuraCastCentral
             $request_body['release'] = Version::FALLBACK_VERSION;
         }
 
-        $response = $this->http_client->request(
-            'POST',
-            self::BASE_URL . '/api/update',
-            ['json' => $request_body]
-        );
+        try {
+            $response = $this->http_client->request(
+                'POST',
+                self::BASE_URL . '/api/update',
+                ['json' => $request_body]
+            );
 
-        $update_data_raw = $response->getBody()->getContents();
+            $update_data_raw = $response->getBody()->getContents();
 
-        $update_data = json_decode($update_data_raw, true);
-        return $update_data['updates'] ?? null;
+            $update_data = json_decode($update_data_raw, true, 512, JSON_THROW_ON_ERROR);
+            return $update_data['updates'] ?? null;
+        } catch (\Exception $e) {
+            $this->logger->error('Error checking for updates: ' . $e->getMessage());
+        }
+
+        return null;
     }
 
     /**
@@ -78,15 +89,20 @@ class AzuraCastCentral
             : null;
 
         if (empty($ip)) {
-            $response = $this->http_client->request(
-                'GET',
-                self::BASE_URL . '/ip'
-            );
+            try {
+                $response = $this->http_client->request(
+                    'GET',
+                    self::BASE_URL . '/ip'
+                );
 
-            $body_raw = $response->getBody()->getContents();
-            $body = json_decode($body_raw, true);
+                $body_raw = $response->getBody()->getContents();
+                $body = json_decode($body_raw, true, 512, JSON_THROW_ON_ERROR);
 
-            $ip = $body['ip'] ?? null;
+                $ip = $body['ip'] ?? null;
+            } catch (\Exception $e) {
+                $this->logger->error('Could not fetch remote IP: ' . $e->getMessage());
+                $ip = null;
+            }
 
             if (!empty($ip) && $cached) {
                 $this->settings_repo->setSetting(Entity\Settings::EXTERNAL_IP, $ip);

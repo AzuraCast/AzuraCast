@@ -12,12 +12,9 @@ class Settings
     // Predefined settings constants.
     public const BASE_URL = 'base_url';
     public const INSTANCE_NAME = 'instance_name';
-
-    public const PREFER_BROWSER_URL = 'prefer_browser_url';
+    
     public const USE_RADIO_PROXY = 'use_radio_proxy';
     public const HISTORY_KEEP_DAYS = 'history_keep_days';
-
-    public const ENABLE_FTP_SERVER = 'enable_ftp_server';
 
     public const ALWAYS_USE_SSL = 'always_use_ssl';
     public const API_ACCESS_CONTROL = 'api_access_control';

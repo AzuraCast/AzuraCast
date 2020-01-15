@@ -33,18 +33,6 @@ $config = [
                     ],
                 ],
 
-                Entity\Settings::PREFER_BROWSER_URL => [
-                    'toggle',
-                    [
-                        'label' => __('Prefer Browser URL (If Available)'),
-                        'description' => __('If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => true,
-                        'form_group_class' => 'col-md-6',
-                    ],
-                ],
-
                 Entity\Settings::USE_RADIO_PROXY => [
                     'toggle',
                     [
@@ -104,18 +92,6 @@ $config = [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                        'form_group_class' => 'col-md-6',
-                    ],
-                ],
-
-                Entity\Settings::ENABLE_FTP_SERVER => [
-                    'toggle',
-                    [
-                        'label' => __('Enable Built-in FTP Server'),
-                        'description' => __('If enabled, users can connect via FTP using their AzuraCast credentials to upload media directly to any stations they manage.'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => true,
                         'form_group_class' => 'col-md-6',
                     ],
                 ],
@@ -210,9 +186,5 @@ $config = [
         ],
     ],
 ];
-
-if (!$settings->isDocker()) {
-    unset($config['groups']['security']['elements'][Entity\Settings::ENABLE_FTP_SERVER]);
-}
 
 return $config;

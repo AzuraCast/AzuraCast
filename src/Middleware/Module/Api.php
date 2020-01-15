@@ -40,9 +40,6 @@ class Api
             Entity\AuditLog::setCurrentUser($api_user);
         }
 
-        // Set default cache control for API pages.
-        $prefer_browser_url = (bool)$this->settings_repo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
-
         $response = $handler->handle($request);
 
         // Check for a user-set CORS header override.
@@ -75,7 +72,7 @@ class Api
         }
 
         if ($response instanceof Response) {
-            if ($prefer_browser_url || $request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
+            if ($request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
                 $response = $response->withNoCache();
             } else {
                 $response = $response->withCacheLifetime(15);

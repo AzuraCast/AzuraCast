@@ -86,7 +86,7 @@
 
   - name: Link Liquidsoap binary
     file:
-      src: /var/azuracast/.opam/4.08.0/bin/liquidsoap
+      src: "{{ app_base }}/.opam/4.08.0/bin/liquidsoap"
       dest: /usr/local/bin/liquidsoap
       state: link
       force: yes

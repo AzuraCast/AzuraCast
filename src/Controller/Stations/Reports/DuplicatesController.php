@@ -31,34 +31,28 @@ class DuplicatesController
     {
         $station = $request->getStation();
 
-        $duplicateSongIdsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sm.song_id
+        $dupesRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
+            sm, s, spm, sp
             FROM App\Entity\StationMedia sm
-            WHERE sm.station = :station GROUP BY sm.song_id HAVING COUNT(sm.id) > 1')
+            JOIN sm.song s
+            LEFT JOIN sm.playlists spm
+            LEFT JOIN spm.playlist sp
+            WHERE sm.station = :station
+            AND sm.song_id IN (
+                SELECT sm2.song_id FROM
+                App\Entity\StationMedia sm2
+                WHERE sm2.station = :station
+                GROUP BY sm2.song_id
+                HAVING COUNT(sm2.id) > 1                 
+            )
+            ORDER BY sm.song_id ASC, sm.mtime ASC')
             ->setParameter('station', $station)
             ->getArrayResult();
 
-        if (!empty($duplicateSongIdsRaw)) {
-            $duplicateSongIds = array_column($duplicateSongIdsRaw, 'song_id');
-
-            $dupesRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                sm, s, spm, sp
-                FROM App\Entity\StationMedia sm
-                JOIN sm.song s
-                LEFT JOIN sm.playlists spm
-                LEFT JOIN spm.playlist sp
-                WHERE sm.station = :station
-                AND sm.song_id IN (:song_ids)
-                ORDER BY sm.song_id ASC, sm.mtime ASC')
-                ->setParameter('station', $station)
-                ->setParameter('song_ids', $duplicateSongIds)
-                ->getArrayResult();
-
-            $dupes = [];
-            foreach ($dupesRaw as $row) {
-                $row['playlists'] = array_column($row['playlists'], 'playlist');
-                $dupes[$row['song_id']][] = $row;
-            }
+        $dupes = [];
+        foreach ($dupesRaw as $row) {
+            $row['playlists'] = array_column($row['playlists'], 'playlist');
+            $dupes[$row['song_id']][] = $row;
         }
 
         return $request->getView()->renderToResponse($response, 'stations/reports/duplicates', [

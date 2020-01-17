@@ -51,7 +51,8 @@
     "wikimedia/composer-merge-plugin": "^1.4",
     "zendframework/zend-config": "^3.3",
     "zircote/swagger-php": "^3.0",
-    "jhofm/flysystem-iterator": "^2.1"
+    "jhofm/flysystem-iterator": "^2.1",
+    "ocramius/doctrine-batch-utils": "^2.0"
   },
   "require-dev": {
     "codeception/codeception": "^2.2",

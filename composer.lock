@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8eac10c9b86190bbd49fd94319a45005",
+    "content-hash": "41c086aef128eb82609055687b775a14",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3730,6 +3730,61 @@
             "time": "2019-11-08T13:50:10+00:00"
         },
         {
+            "name": "ocramius/doctrine-batch-utils",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ocramius/DoctrineBatchUtils.git",
+                "reference": "55475deda1fb3c1bdd19a01e5afcf1c43298a51d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ocramius/DoctrineBatchUtils/zipball/55475deda1fb3c1bdd19a01e5afcf1c43298a51d",
+                "reference": "55475deda1fb3c1bdd19a01e5afcf1c43298a51d",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "^2.10.0",
+                "doctrine/orm": "^2.6.3",
+                "php": "^7.3.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^5.0.1",
+                "infection/infection": "^0.12.2",
+                "phpstan/phpstan": "^0.11.2",
+                "phpstan/phpstan-phpunit": "^0.11.0",
+                "phpunit/phpunit": "^8.0.4",
+                "roave/backward-compatibility-check": "^2.1",
+                "vimeo/psalm": "^3.1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DoctrineBatchUtils\\": "src/DoctrineBatchUtils"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com",
+                    "homepage": "http://ocramius.github.io/"
+                }
+            ],
+            "description": "A set of utilities to operate with Doctrine ORM's batch processing functionality",
+            "homepage": "https://github.com/Ocramius/DoctrineBatchUtils",
+            "keywords": [
+                "batch processing",
+                "doctrine",
+                "doctrine2",
+                "orm"
+            ],
+            "time": "2019-03-11T15:09:06+00:00"
+        },
+        {
             "name": "ocramius/package-versions",
             "version": "1.5.1",
             "source": {
@@ -6771,6 +6826,7 @@
                 "code",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-code",
             "time": "2019-10-05T23:18:22+00:00"
         },
         {
@@ -6831,6 +6887,7 @@
                 "config",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-config",
             "time": "2019-06-08T18:58:54+00:00"
         },
         {
@@ -6898,6 +6955,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2019-11-13T19:16:13+00:00"
         },
         {
@@ -6952,6 +7010,7 @@
                 "events",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-eventmanager",
             "time": "2018-04-25T15:33:34+00:00"
         },
         {
@@ -7014,6 +7073,7 @@
                 "zend-expressive",
                 "zf"
             ],
+            "abandoned": "mezzio/mezzio-session",
             "time": "2019-10-16T15:28:15+00:00"
         },
         {
@@ -7073,6 +7133,7 @@
                 "session",
                 "zf"
             ],
+            "abandoned": "mezzio/mezzio-session-cache",
             "time": "2019-06-24T22:18:27+00:00"
         },
         {
@@ -7119,6 +7180,7 @@
                 "stdlib",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-stdlib",
             "time": "2018-08-28T21:34:05+00:00"
         },
         {

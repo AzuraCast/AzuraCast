@@ -1,5 +1,9 @@
 <template>
     <div class="radio-player-widget">
+        <template v-if="is_playing">
+            <audio ref="player"/>
+        </template>
+
         <div class="now-playing-details">
             <div class="now-playing-art" v-if="show_album_art && np.now_playing.song.art">
                 <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank">
@@ -210,299 +214,313 @@
 </style>
 
 <script>
-  import axios from 'axios'
-  import NchanSubscriber from 'nchan'
-  import store from 'store'
+    import axios from 'axios'
+    import NchanSubscriber from 'nchan'
+    import store from 'store'
+    import getLogarithmicVolume from './inc/logarithmic_volume'
 
-
-  export default {
-    props: {
-      now_playing_uri: {
-        type: String,
-        required: true
-      },
-      initial_now_playing: {
-        type: Object,
-        default: {
-          'station': {
-            'listen_url': '',
-            'mounts': [],
-            'remotes': []
-          },
-          'now_playing': {
-            'song': {
-              'title': 'Song Title',
-              'artist': 'Song Artist',
-              'art': ''
+    export default {
+        props: {
+            now_playing_uri: {
+                type: String,
+                required: true
             },
-            'is_request': false,
-            'played_at': 0,
-            'duration': 0
-          },
-          'live': {
-            'is_live': false,
-            'streamer_name': ''
-          },
-          'song_history': []
-        }
-      },
-      use_nchan: {
-        type: Boolean,
-        default: true
-      },
-      show_album_art: {
-        type: Boolean,
-        default: true
-      }
-    },
-    data: function () {
-      return {
-        'np': this.initial_now_playing,
-        'np_elapsed': 0,
-        'is_playing': false,
-        'volume': 55,
-        'current_stream': {
-          'name': '',
-          'url': ''
-        },
-        'audio': null,
-        'np_timeout': null,
-        'nchan_subscriber': null,
-        'clock_interval': null
-      }
-    },
-    mounted: function () {
-      this.audio = document.createElement('audio')
-      this.clock_interval = setInterval(this.iterateTimer, 1000)
-
-      // Handle audio errors.
-      this.audio.onerror = (e) => {
-        if (e.target.error.code === e.target.error.MEDIA_ERR_NETWORK && this.audio.src !== '') {
-          console.log('Network interrupted stream. Automatically reconnecting shortly...')
-          setTimeout(this.play, 5000)
-        }
-      }
-
-      this.audio.onended = () => {
-        if (this.is_playing) {
-          this.stop()
-
-          console.log('Network interrupted stream. Automatically reconnecting shortly...')
-          setTimeout(this.play, 5000)
-        } else {
-          this.stop()
-        }
-      }
-
-      // Allow pausing from the mobile metadata update.
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.setActionHandler('pause', () => {
-          this.stop()
-        })
-      }
-
-      // Check webstorage for existing volume preference.
-      if (store.enabled && store.get('player_volume') !== undefined) {
-        this.volume = store.get('player_volume', this.volume)
-      }
-
-      // Check the query string if browser supports easy query string access.
-      if (typeof URLSearchParams !== 'undefined') {
-        var urlParams = new URLSearchParams(window.location.search)
-        if (urlParams.has('volume')) {
-          this.volume = parseInt(urlParams.get('volume'))
-        }
-      }
-
-      // Convert initial NP data from prop to data.
-      this.setNowPlaying(this.np)
-
-      this.np_timeout = setTimeout(this.checkNowPlaying, 5000)
-    },
-    computed: {
-      lang_play_btn () {
-        return this.$gettext('Play')
-      },
-      lang_pause_btn () {
-        return this.$gettext('Pause')
-      },
-      lang_mute_btn () {
-        return this.$gettext('Mute')
-      },
-      lang_volume_slider () {
-        return this.$gettext('Volume')
-      },
-      lang_full_volume_btn () {
-        return this.$gettext('Full Volume')
-      },
-      lang_album_art_alt () {
-        return this.$gettext('Album Art')
-      },
-      streams () {
-        let all_streams = []
-        this.np.station.mounts.forEach(function (mount) {
-          all_streams.push({
-            'name': mount.name,
-            'url': mount.url
-          })
-        })
-        this.np.station.remotes.forEach(function (remote) {
-          all_streams.push({
-            'name': remote.name,
-            'url': remote.url
-          })
-        })
-        return all_streams
-      },
-      time_percent () {
-        let time_played = this.np_elapsed
-        let time_total = this.np.now_playing.duration
-
-        if (!time_total) {
-          return 0
-        }
-        if (time_played > time_total) {
-          return 100
-        }
-
-        return (time_played / time_total) * 100
-      },
-      time_display_played () {
-        let time_played = this.np_elapsed
-        let time_total = this.np.now_playing.duration
-
-        if (!time_total) {
-          return null
-        }
-
-        if (time_played > time_total) {
-          time_played = time_total
-        }
-
-        return this.formatTime(time_played)
-      },
-      time_display_total () {
-        let time_total = this.np.now_playing.duration
-        return (time_total) ? this.formatTime(time_total) : null
-      }
-    },
-    watch: {
-      volume (volume) {
-        this.audio.volume = Math.min((Math.exp(volume / 100) - 1) / (Math.E - 1), 1)
-
-        if (store.enabled) {
-          store.set('player_volume', volume)
-        }
-      }
-    },
-    methods: {
-      play () {
-        this.audio.src = this.current_stream.url
-        this.audio.load()
-
-        this.audio.play()
-
-        this.is_playing = true
-      },
-      stop () {
-        this.is_playing = false
-
-        this.audio.pause()
-        this.audio.src = ''
-
-        setTimeout(() => {
-          this.audio.load()
-        })
-      },
-      toggle () {
-        if (this.is_playing) {
-          this.stop()
-        } else {
-          this.play()
-        }
-      },
-      switchStream (new_stream) {
-        this.current_stream = new_stream
-        this.play()
-      },
-      checkNowPlaying () {
-        if (this.use_nchan) {
-          this.nchan_subscriber = new NchanSubscriber(this.now_playing_uri)
-          this.nchan_subscriber.on('message', (message, message_metadata) => {
-            let np_new = JSON.parse(message)
-            setTimeout(() => {
-              this.setNowPlaying(np_new)
-            }, 5000)
-          })
-          this.nchan_subscriber.start()
-        } else {
-          axios.get(this.now_playing_uri).then((response) => {
-            this.setNowPlaying(response.data)
-          }).catch((error) => {
-            console.error(error)
-          }).then(() => {
-            clearTimeout(this.np_timeout)
-            this.np_timeout = setTimeout(this.checkNowPlaying, 15000)
-          })
-        }
-      },
-      setNowPlaying (np_new) {
-        this.np = np_new
-
-        // Set a "default" current stream if none exists.
-        if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
-          let current_stream = null
-
-          this.streams.forEach(function (stream) {
-            if (stream.url === np_new.station.listen_url) {
-              current_stream = stream
+            initial_now_playing: {
+                type: Object,
+                default: {
+                    'station': {
+                        'listen_url': '',
+                        'mounts': [],
+                        'remotes': []
+                    },
+                    'now_playing': {
+                        'song': {
+                            'title': 'Song Title',
+                            'artist': 'Song Artist',
+                            'art': ''
+                        },
+                        'is_request': false,
+                        'played_at': 0,
+                        'duration': 0
+                    },
+                    'live': {
+                        'is_live': false,
+                        'streamer_name': ''
+                    },
+                    'song_history': []
+                }
+            },
+            use_nchan: {
+                type: Boolean,
+                default: true
+            },
+            show_album_art: {
+                type: Boolean,
+                default: true
             }
-          })
+        },
+        data: function () {
+            return {
+                'np': this.initial_now_playing,
+                'np_elapsed': 0,
+                'is_playing': false,
+                'volume': 55,
+                'current_stream': {
+                    'name': '',
+                    'url': ''
+                },
+                'audio': null,
+                'np_timeout': null,
+                'nchan_subscriber': null,
+                'clock_interval': null
+            }
+        },
+        mounted: function () {
+            this.clock_interval = setInterval(this.iterateTimer, 1000)
 
-          this.current_stream = current_stream
-        }
+            // Allow pausing from the mobile metadata update.
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.setActionHandler('pause', () => {
+                    this.stop()
+                })
+            }
 
-        // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
-        if ('mediaSession' in navigator) {
-          navigator.mediaSession.metadata = new MediaMetadata({
-            title: np_new.now_playing.song.title,
-            artist: np_new.now_playing.song.artist,
-            artwork: [
-              { src: np_new.now_playing.song.art }
-            ]
-          })
-        }
+            // Check webstorage for existing volume preference.
+            if (store.enabled && store.get('player_volume') !== undefined) {
+                this.volume = store.get('player_volume', this.volume)
+            }
 
-        this.$eventHub.$emit('np_updated', np_new)
-      },
-      iterateTimer () {
-        let current_time = Math.floor(Date.now() / 1000)
-        let np_elapsed = current_time - this.np.now_playing.played_at
-        if (np_elapsed < 0) {
-          np_elapsed = 0
-        } else if (np_elapsed >= this.np.now_playing.duration) {
-          np_elapsed = this.np.now_playing.duration
-        }
-        this.np_elapsed = np_elapsed
-      },
-      formatTime (time) {
-        let sec_num = parseInt(time, 10)
+            // Check the query string if browser supports easy query string access.
+            if (typeof URLSearchParams !== 'undefined') {
+                var urlParams = new URLSearchParams(window.location.search)
+                if (urlParams.has('volume')) {
+                    this.volume = parseInt(urlParams.get('volume'))
+                }
+            }
 
-        let hours = Math.floor(sec_num / 3600)
-        let minutes = Math.floor((sec_num - (hours * 3600)) / 60)
-        let seconds = sec_num - (hours * 3600) - (minutes * 60)
+            // Convert initial NP data from prop to data.
+            this.setNowPlaying(this.np)
 
-        if (hours < 10) {
-          hours = '0' + hours
+            this.np_timeout = setTimeout(this.checkNowPlaying, 5000)
+        },
+        computed: {
+            lang_play_btn () {
+                return this.$gettext('Play')
+            },
+            lang_pause_btn () {
+                return this.$gettext('Pause')
+            },
+            lang_mute_btn () {
+                return this.$gettext('Mute')
+            },
+            lang_volume_slider () {
+                return this.$gettext('Volume')
+            },
+            lang_full_volume_btn () {
+                return this.$gettext('Full Volume')
+            },
+            lang_album_art_alt () {
+                return this.$gettext('Album Art')
+            },
+            streams () {
+                let all_streams = []
+                this.np.station.mounts.forEach(function (mount) {
+                    all_streams.push({
+                        'name': mount.name,
+                        'url': mount.url
+                    })
+                })
+                this.np.station.remotes.forEach(function (remote) {
+                    all_streams.push({
+                        'name': remote.name,
+                        'url': remote.url
+                    })
+                })
+                return all_streams
+            },
+            time_percent () {
+                let time_played = this.np_elapsed
+                let time_total = this.np.now_playing.duration
+
+                if (!time_total) {
+                    return 0
+                }
+                if (time_played > time_total) {
+                    return 100
+                }
+
+                return (time_played / time_total) * 100
+            },
+            time_display_played () {
+                let time_played = this.np_elapsed
+                let time_total = this.np.now_playing.duration
+
+                if (!time_total) {
+                    return null
+                }
+
+                if (time_played > time_total) {
+                    time_played = time_total
+                }
+
+                return this.formatTime(time_played)
+            },
+            time_display_total () {
+                let time_total = this.np.now_playing.duration
+                return (time_total) ? this.formatTime(time_total) : null
+            }
+        },
+        watch: {
+            volume (volume) {
+                if (this.audio !== null) {
+                    this.audio.volume = getLogarithmicVolume(volume)
+                }
+
+                if (store.enabled) {
+                    store.set('player_volume', volume)
+                }
+            }
+        },
+        methods: {
+            play () {
+                if (this.is_playing) {
+                    return
+                }
+
+                this.is_playing = true
+
+                // Wait for "next tick" to force Vue to recreate the <audio> element.
+                Vue.nextTick(() => {
+                    this.audio = this.$refs.player
+
+                    // Handle audio errors.
+                    this.audio.onerror = (e) => {
+                        if (e.target.error.code === e.target.error.MEDIA_ERR_NETWORK && this.audio.src !== '') {
+                            console.log('Network interrupted stream. Automatically reconnecting shortly...')
+                            setTimeout(this.play, 5000)
+                        }
+                    }
+
+                    this.audio.onended = () => {
+                        if (this.is_playing) {
+                            this.stop()
+
+                            console.log('Network interrupted stream. Automatically reconnecting shortly...')
+                            setTimeout(this.play, 5000)
+                        } else {
+                            this.stop()
+                        }
+                    }
+
+                    this.audio.volume = getLogarithmicVolume(this.volume)
+
+                    this.audio.src = this.current_stream.url
+                    this.audio.load()
+
+                    this.audio.play()
+                })
+            },
+            stop () {
+                this.audio.pause()
+                this.audio.src = ''
+
+                this.is_playing = false
+            },
+            toggle () {
+                if (this.is_playing) {
+                    this.stop()
+                } else {
+                    this.play()
+                }
+            },
+            switchStream (new_stream) {
+                this.current_stream = new_stream
+
+                // Stop the existing stream, then wait for the next Vue "tick", at which point the <audio> element will
+                // no longer exist, then recreate it via play() command.
+                this.stop()
+                Vue.nextTick(() => {
+                    this.play()
+                })
+            },
+            checkNowPlaying () {
+                if (this.use_nchan) {
+                    this.nchan_subscriber = new NchanSubscriber(this.now_playing_uri)
+                    this.nchan_subscriber.on('message', (message, message_metadata) => {
+                        let np_new = JSON.parse(message)
+                        setTimeout(() => {
+                            this.setNowPlaying(np_new)
+                        }, 5000)
+                    })
+                    this.nchan_subscriber.start()
+                } else {
+                    axios.get(this.now_playing_uri).then((response) => {
+                        this.setNowPlaying(response.data)
+                    }).catch((error) => {
+                        console.error(error)
+                    }).then(() => {
+                        clearTimeout(this.np_timeout)
+                        this.np_timeout = setTimeout(this.checkNowPlaying, 15000)
+                    })
+                }
+            },
+            setNowPlaying (np_new) {
+                this.np = np_new
+
+                // Set a "default" current stream if none exists.
+                if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
+                    let current_stream = null
+
+                    this.streams.forEach(function (stream) {
+                        if (stream.url === np_new.station.listen_url) {
+                            current_stream = stream
+                        }
+                    })
+
+                    this.current_stream = current_stream
+                }
+
+                // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
+                if ('mediaSession' in navigator) {
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: np_new.now_playing.song.title,
+                        artist: np_new.now_playing.song.artist,
+                        artwork: [
+                            { src: np_new.now_playing.song.art }
+                        ]
+                    })
+                }
+
+                this.$eventHub.$emit('np_updated', np_new)
+            },
+            iterateTimer () {
+                let current_time = Math.floor(Date.now() / 1000)
+                let np_elapsed = current_time - this.np.now_playing.played_at
+                if (np_elapsed < 0) {
+                    np_elapsed = 0
+                } else if (np_elapsed >= this.np.now_playing.duration) {
+                    np_elapsed = this.np.now_playing.duration
+                }
+                this.np_elapsed = np_elapsed
+            },
+            formatTime (time) {
+                let sec_num = parseInt(time, 10)
+
+                let hours = Math.floor(sec_num / 3600)
+                let minutes = Math.floor((sec_num - (hours * 3600)) / 60)
+                let seconds = sec_num - (hours * 3600) - (minutes * 60)
+
+                if (hours < 10) {
+                    hours = '0' + hours
+                }
+                if (minutes < 10) {
+                    minutes = '0' + minutes
+                }
+                if (seconds < 10) {
+                    seconds = '0' + seconds
+                }
+                return (hours !== '00' ? hours + ':' : '') + minutes + ':' + seconds
+            }
         }
-        if (minutes < 10) {
-          minutes = '0' + minutes
-        }
-        if (seconds < 10) {
-          seconds = '0' + seconds
-        }
-        return (hours !== '00' ? hours + ':' : '') + minutes + ':' + seconds
-      }
     }
-  }
 </script>

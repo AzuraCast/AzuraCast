@@ -5,7 +5,7 @@
 
 namespace App\Xml;
 
-use Zend\Config\Reader\Xml;
+use Laminas\Config\Reader\Xml;
 
 /**
  * XML config reader.

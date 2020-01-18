@@ -4,7 +4,7 @@ namespace App\Entity\Fixture;
 use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class StationPlaylist extends AbstractFixture implements DependentFixtureInterface
 {
@@ -21,6 +21,9 @@ class StationPlaylist extends AbstractFixture implements DependentFixtureInterfa
         $this->addReference('station_playlist', $playlist);
     }
 
+    /**
+     * @return string[]
+     */
     public function getDependencies()
     {
         return [

@@ -10,6 +10,7 @@ use Azura\Exception;
 use Azura\Session\Flash;
 use Azura\View;
 use Gettext\Translator;
+use Mezzio\Session\SessionInterface;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LogLevel;
@@ -17,7 +18,6 @@ use Slim\App;
 use Slim\Exception\HttpException;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
-use Zend\Expressive\Session\SessionInterface;
 
 class ErrorHandler extends \Azura\Http\ErrorHandler
 {

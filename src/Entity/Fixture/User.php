@@ -4,7 +4,7 @@ namespace App\Entity\Fixture;
 use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class User extends AbstractFixture implements DependentFixtureInterface
 {
@@ -45,6 +45,9 @@ class User extends AbstractFixture implements DependentFixtureInterface
         $em->flush();
     }
 
+    /**
+     * @return string[]
+     */
     public function getDependencies()
     {
         return [

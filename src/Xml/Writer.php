@@ -5,11 +5,11 @@
 
 namespace App\Xml;
 
+use Laminas\Config\Exception;
+use Laminas\Config\Writer\Xml;
+use Laminas\Stdlib\ArrayUtils;
 use Traversable;
 use XMLWriter;
-use Zend\Config\Exception;
-use Zend\Config\Writer\Xml;
-use Zend\Stdlib\ArrayUtils;
 
 class Writer extends Xml
 {

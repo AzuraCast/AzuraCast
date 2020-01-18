@@ -38,6 +38,10 @@ abstract class CestAbstract
         $auth->logout();
 
         if ($this->test_station instanceof Entity\Station) {
+            if (!$this->em->contains($this->test_station)) {
+                $this->test_station = $this->em->find(Entity\Station::class, $this->test_station->getId());
+            }
+
             $this->stationRepo->destroy($this->test_station);
             $this->test_station = null;
         }

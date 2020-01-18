@@ -4,7 +4,7 @@ namespace App\Entity\Fixture;
 use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
 
 class StationMedia extends AbstractFixture implements DependentFixtureInterface
@@ -35,7 +35,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
 
         /** @var Entity\StationPlaylist $playlist */
         $playlist = $this->getReference('station_playlist');
-        
+
         $finder = (new Finder())
             ->files()
             ->in($music_skeleton_dir)
@@ -60,6 +60,9 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
         $em->flush();
     }
 
+    /**
+     * @return string[]
+     */
     public function getDependencies()
     {
         return [

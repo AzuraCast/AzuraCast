@@ -589,7 +589,11 @@ class StationMedia
             return $spm->getPlaylist()->getId() === $playlist->getId();
         });
 
-        return $item->first() ?? null;
+        $firstItem = $item->first();
+
+        return ($firstItem instanceof StationPlaylistMedia)
+            ? $firstItem
+            : null;
     }
 
     /**

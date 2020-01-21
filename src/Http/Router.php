@@ -40,12 +40,15 @@ class Router extends \Azura\Http\Router
                 $use_https = true;
             }
 
-            $ignored_hosts = ['web', 'nginx', 'localhost'];
-            if (!in_array($current_uri->getHost(), $ignored_hosts, true)) {
-                $base_url = (new Uri())
-                    ->withScheme($current_uri->getScheme())
-                    ->withHost($current_uri->getHost())
-                    ->withPort($current_uri->getPort());
+            $prefer_browser_url = (bool)$this->settingsRepo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
+            if ($prefer_browser_url || $base_url->getHost() === '') {
+                $ignored_hosts = ['web', 'nginx', 'localhost'];
+                if (!in_array($current_uri->getHost(), $ignored_hosts, true)) {
+                    $base_url = (new Uri())
+                        ->withScheme($current_uri->getScheme())
+                        ->withHost($current_uri->getHost())
+                        ->withPort($current_uri->getPort());
+                }
             }
         }
 

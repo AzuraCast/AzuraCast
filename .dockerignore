@@ -1,0 +1,17 @@
+# Files in the root directory
+/*
+/.*
+
+!/composer.json
+!/composer.lock
+
+# Git/GitHub internal directories
+/.git
+/.github
+
+# Non-code folders
+/frontend
+/resources
+!/resources/locale/compiled
+/util
+!/util/docker/web

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo -E -u azuracast php /var/azuracast/www/util/cli.php queue:process 300

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+if [ `whoami` != 'azuracast' ]; then
+    echo 'This script must be run as the "azuracast" user. Rerunning...'
+    sudo -E -u azuracast letsencrypt_uninstall $@
+    exit 1
+fi
+
+SSL_DIR="/etc/letsencrypt"
+
+cd $SSL_DIR
+rm ssl.crt ssl.key
+
+openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=localhost" \
+    -days 365 -extensions v3_ca \
+    -keyout $SSL_DIR/selfsigned.key \
+	-out $SSL_DIR/selfsigned.crt
+
+ln -s selfsigned.key ssl.key
+ln -s selfsigned.crt ssl.crt
+
+sudo kill -HUP `sudo cat /var/run/nginx.pid`
+
+echo "Self-signed certificate restored."
+exit

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source /etc/container_environment.sh
+
+azuracast_cli azuracast:internal:sftp-upload "$@"

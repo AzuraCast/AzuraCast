@@ -18,7 +18,7 @@ services:
   web:
     image: azuracast/azuracast_web_v2:latest
     build:
-      context: ../docker-azuracast-web-v2
+      context: .
     depends_on:
       - mariadb
       - influxdb

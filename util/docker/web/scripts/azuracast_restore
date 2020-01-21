@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+bool() {
+    case "$1" in
+        Y*|y*|true|TRUE|1) return 0 ;;
+    esac
+    return 1
+}
+
+if [ `whoami` != 'azuracast' ]; then
+    echo 'This script must be run as the "azuracast" user. Rerunning...'
+    sudo -E -u azuracast azuracast_restore $@
+    exit 1
+fi
+
+release_update=0
+original_args=$*
+
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
+  -r | --release )
+    release_update=1
+    ;;
+esac; shift; done
+if [[ "$1" == '--' ]]; then shift; fi
+
+if bool "$PREFER_RELEASE_BUILDS"; then
+    release_update=1
+fi
+
+echo "Restoring AzuraCast..."
+
+APPLICATION_ENV="${APPLICATION_ENV:-production}"
+echo "(Environment: $APPLICATION_ENV)"
+
+if [ $APPLICATION_ENV = "production" ]; then
+    if [ $release_update = 1 ]; then
+        composer create-project azuracast/azuracast /var/azuracast/new ^0.9.5 --prefer-dist --no-install
+    else
+        composer create-project azuracast/azuracast /var/azuracast/new dev-master --prefer-source --keep-vcs --no-install
+    fi
+    
+    rsync -a -v -q /var/azuracast/new/ /var/azuracast/www
+    rm -rf /var/azuracast/new
+
+    if bool "$COMPOSER_PLUGIN_MODE"; then
+        composer update --lock --no-dev --optimize-autoloader
+    else
+        composer install --no-dev --optimize-autoloader
+    fi
+else
+    composer install
+fi
+
+azuracast_cli azuracast:restore ${original_args}

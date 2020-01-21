@@ -1,0 +1,9 @@
+0 * * * *   root        /usr/local/bin/cron_task azuracast_cli sync:run long
+*/5 * * * * root        /usr/local/bin/cron_task azuracast_cli sync:run medium
+* * * * *   root        /usr/local/bin/cron_task azuracast_cli sync:run short
+* * * * *   root        /usr/local/bin/cron_task azuracast_cli sync:run nowplaying
+* * * * *   root        sleep 15; /usr/local/bin/cron_task azuracast_cli sync:run nowplaying
+* * * * *   root        sleep 30; /usr/local/bin/cron_task azuracast_cli sync:run nowplaying
+* * * * *   root        sleep 45; /usr/local/bin/cron_task azuracast_cli sync:run nowplaying
+0 0 * * *   root        /usr/local/bin/cron_task letsencrypt_renew
+30 */6 * * *   root     /usr/local/bin/temp_cleanup

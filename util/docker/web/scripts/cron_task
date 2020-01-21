@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source /etc/container_environment.sh
+
+sudo -E -u azuracast $@ > /proc/1/fd/1 2> /proc/1/fd/2

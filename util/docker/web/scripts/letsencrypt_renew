@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+if [ `whoami` != 'azuracast' ]; then
+    echo 'This script must be run as the "azuracast" user. Rerunning...'
+    sudo -E -u azuracast letsencrypt_renew $@
+    exit 1
+fi
+
+certbot renew --webroot -w /var/www/letsencrypt $*

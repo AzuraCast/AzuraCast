@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+bool() {
+    case "$1" in
+        Y*|y*|true|TRUE|1) return 0 ;;
+    esac
+    return 1
+}
+
+if [ `whoami` != 'azuracast' ]; then
+    echo 'This script must be run as the "azuracast" user. Rerunning...'
+    sudo -E -u azuracast azuracast_install $@
+    exit 1
+fi
+
+update_mode=0
+release_update=0
+original_args=$*
+
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
+  --update )
+    update_mode=1
+    ;;
+
+  -r | --release )
+    release_update=1
+    ;;
+esac; shift; done
+if [[ "$1" == '--' ]]; then shift; fi
+
+if bool "$PREFER_RELEASE_BUILDS"; then
+    release_update=1
+fi
+
+if [ $update_mode = 1 ]; then
+    echo "Updating AzuraCast..."
+else
+    echo "Installing AzuraCast..."
+fi
+
+APPLICATION_ENV="${APPLICATION_ENV:-production}"
+echo "(Environment: $APPLICATION_ENV)"
+
+if [ $APPLICATION_ENV = "production" ]; then
+    if [ $release_update = 1 ]; then
+        COMPOSER_VERSION=${1:-"^0.9.5"}
+        composer create-project azuracast/azuracast /var/azuracast/new $COMPOSER_VERSION --prefer-dist --no-install
+
+        rsync -a -v -q /var/azuracast/new/ /var/azuracast/www
+        rm -rf /var/azuracast/new
+
+        if bool "$COMPOSER_PLUGIN_MODE"; then
+            composer update --lock --no-dev --optimize-autoloader
+        else
+            composer install --no-dev --optimize-autoloader
+        fi
+    else
+        if bool "$COMPOSER_PLUGIN_MODE"; then
+            composer update --lock --no-dev --optimize-autoloader
+        fi
+    fi
+else
+    if [ $APPLICATION_ENV = "testing" ]; then
+        sudo mkdir -p vendor
+        sudo chmod -R 0744 vendor
+        sudo chown -R azuracast:azuracast vendor
+    fi
+
+    composer install
+fi
+
+azuracast_cli azuracast:setup ${original_args}

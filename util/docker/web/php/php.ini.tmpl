@@ -1,0 +1,15 @@
+# AzuraCast custom PHP specifications
+
+[php]
+post_max_size={{ default .Env.PHP_MAX_FILE_SIZE "50M" }}
+upload_max_filesize={{ default .Env.PHP_MAX_FILE_SIZE "50M" }}
+memory_limit={{ default .Env.PHP_MEMORY_LIMIT "256M" }}
+max_execution_time={{ default .Env.PHP_MAX_EXECUTION_TIME "30" }}
+
+[opcache]
+opcache.enable=1
+opcache.enable_cli=1
+
+{{if eq .Env.APPLICATION_ENV "production"}}
+opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "60" }}
+{{end}}

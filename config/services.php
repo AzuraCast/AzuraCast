@@ -131,7 +131,7 @@ return [
     App\Customization::class => DI\autowire(),
     App\Version::class => DI\autowire(),
     App\Service\AzuraCastCentral::class => DI\autowire(),
-    App\Service\GeoLite::class => DI\autowire(),
+    App\Service\IpGeolocation::class => DI\autowire(),
     App\Service\NChan::class => DI\autowire(),
     App\Service\Sentry::class => DI\autowire(),
     App\Service\SftpGo::class => DI\autowire(),

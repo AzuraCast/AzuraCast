@@ -1,61 +1,67 @@
 <?php
 namespace App\Service;
 
-use App\Settings;
-use Cake\Chronos\Chronos;
+use App\Service\IpGeolocator;
 use MaxMind\Db\Reader;
 
-class GeoLite
+class IpGeolocation
 {
-    protected Settings $settings;
+    protected bool $isInitialized = false;
 
-    protected ?Reader $reader = null;
+    protected ?Reader $reader;
 
-    public function __construct(Settings $settings)
+    protected ?string $attribution;
+
+    protected function initialize(): void
     {
-        $this->settings = $settings;
-    }
+        if ($this->isInitialized) {
+            return;
+        }
 
-    protected function getReader(): ?Reader
-    {
-        if (null === $this->reader) {
-            $mmdbPath = $this->getDatabasePath();
-            if (file_exists($mmdbPath)) {
-                $this->reader = new Reader($mmdbPath);
+        $this->isInitialized = true;
+
+        $readers = [
+            IpGeolocator\GeoLite::class,
+            IpGeolocator\DbIp::class,
+        ];
+
+        foreach ($readers as $reader) {
+            /** @var IpGeolocator\IpGeolocatorInterface $reader */
+            if ($reader::isAvailable()) {
+                $this->reader = $reader::getReader();
+                $this->attribution = $reader::getAttribution();
+                return;
             }
         }
 
-        return $this->reader;
+        $this->reader = null;
+        $this->attribution = __('GeoLite database not configured for this installation. See System Administration for instructions.');
     }
 
-    public function getDatabasePath(): string
+    public function getAttribution(): string
     {
-        return dirname($this->settings[Settings::BASE_DIR]) . '/geoip/GeoLite2-City.mmdb';
-    }
-
-    public function getVersion(): ?string
-    {
-        if (null === ($reader = $this->getReader())) {
-            return null;
+        if (!$this->isInitialized) {
+            $this->initialize();
         }
 
-        $metadata = $reader->metadata();
-
-        $buildDate = Chronos::createFromTimestampUTC($metadata->buildEpoch);
-        return $metadata->databaseType . ' (' . $buildDate->format('Y-m-d') . ')';
+        return $this->attribution;
     }
 
     public function getLocationInfo(string $ip, string $locale): array
     {
-        if (null === ($reader = $this->getReader())) {
+        if (!$this->isInitialized) {
+            $this->initialize();
+        }
+
+        if (null === $this->reader) {
             return [
                 'status' => 'error',
-                'message' => 'GeoLite database not configured for this installation. See System Administration for instructions.',
+                'message' => $this->getAttribution(),
             ];
         }
 
         try {
-            $ipInfo = $reader->get($ip);
+            $ipInfo = $this->reader->get($ip);
         } catch (\Exception $e) {
             return [
                 'status' => 'error',
@@ -78,7 +84,7 @@ class GeoLite
             'region' => $this->getLocalizedString($ipInfo['subdivisions'][0]['names'] ?? null, $locale),
             'country' => $this->getLocalizedString($ipInfo['country']['names'] ?? null, $locale),
             'city' => $this->getLocalizedString($ipInfo['city']['names'] ?? null, $locale),
-            'message' => 'This product includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.',
+            'message' => $this->attribution,
         ];
     }
 

@@ -19,14 +19,16 @@ $assets
             <div class="card-header bg-primary-dark">
                 <div class="d-flex align-items-center">
                     <h2 class="card-title flex-fill my-0">
-                        <?=__('Listeners') ?>
+                        <?=__('Listeners')?>
                     </h2>
                     <div class="flex-shrink">
-                        <a class="btn btn-bg" id="btn-export" href="<?=$router->fromHere('api:listeners:index', [], ['format' => 'csv']) ?>" target="_blank" title="<?=__('Download CSV') ?>">
-                            <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Download CSV') ?>
+                        <a class="btn btn-bg" id="btn-export" href="<?=$router->fromHere('api:listeners:index', [],
+                            ['format' => 'csv'])?>" target="_blank" title="<?=__('Download CSV')?>">
+                            <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Download CSV')?>
                         </a>
                         <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#">
-                            <i class="material-icons" aria-hidden="true">date_range</i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
+                            <i class="material-icons" aria-hidden="true">date_range</i>
+                            <span><?=__('Live Listeners')?></span> <i class="caret"></i>
                         </a>
                     </div>
                 </div>
@@ -37,60 +39,60 @@ $assets
                 <div class="card-body row">
                     <div class="col-md-4">
                         <h5>
-                            <?=__('Unique Listeners') ?><br>
-                            <small><?=__('for selected period') ?></small>
+                            <?=__('Unique Listeners')?><br>
+                            <small><?=__('for selected period')?></small>
                         </h5>
                         <h3>{{ listeners.length }}</h3>
                     </div>
                     <div class="col-md-4">
                         <h5>
-                            <?=__('Total Listener Hours') ?><br>
-                            <small><?=__('for selected period') ?></small>
+                            <?=__('Total Listener Hours')?><br>
+                            <small><?=__('for selected period')?></small>
                         </h5>
                         <h3>{{ total_listener_hours }}</h3>
                     </div>
                 </div>
                 <table class="data-table table table-responsive table-striped" id="app-datatable">
                     <thead>
-                        <tr>
-                            <th><?=__('IP') ?></th>
-                            <th><?=__('Time (sec)') ?></th>
-                            <th><?=__('User Agent') ?></th>
-                            <th><?=__('Location') ?></th>
-                        </tr>
+                    <tr>
+                        <th><?=__('IP')?></th>
+                        <th><?=__('Time (sec)')?></th>
+                        <th><?=__('User Agent')?></th>
+                        <th><?=__('Location')?></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="listener in listeners">
-                            <td>{{ listener.ip }}</td>
-                            <td>{{ listener.connected_time }}</td>
-                            <td>
+                    <tr v-for="listener in listeners">
+                        <td>{{ listener.ip }}</td>
+                        <td>{{ listener.connected_time }}</td>
+                        <td>
                                 <span v-if="listener.is_mobile">
                                     <i class="material-icons" aria-hidden="true">smartphone</i>
-                                    <span class="sr-only"><?=__('Mobile Device') ?></span>
+                                    <span class="sr-only"><?=__('Mobile Device')?></span>
                                 </span>
-                                <span v-else>
+                            <span v-else>
                                     <i class="material-icons" aria-hidden="true">desktop_windows</i>
-                                    <span class="sr-only"><?=__('Desktop Device') ?></span>
+                                    <span class="sr-only"><?=__('Desktop Device')?></span>
                                 </span>
-                                {{ listener.user_agent }}
-                            </td>
-                            <td>
+                            {{ listener.user_agent }}
+                        </td>
+                        <td>
                                 <span v-if="listener.location.status == 'success'">
                                     {{ listener.location.region }}, {{ listener.location.country }}
                                 </span>
-                                <span v-else-if="listener.location.message">
+                            <span v-else-if="listener.location.message">
                                     {{ listener.location.message }}
                                 </span>
-                                <span v-else>
-                                    <?=__('Unknown') ?>
+                            <span v-else>
+                                    <?=__('Unknown')?>
                                 </span>
-                            </td>
-                        </tr>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
             <div class="card-body card-padding-sm text-muted">
-                <?=__('This product includes GeoLite2 data created by MaxMind, available from %s.', '<a href="http://www.maxmind.com">http://www.maxmind.com</a>') ?>
+                <?=$attribution?>
             </div>
         </div>
     </div>

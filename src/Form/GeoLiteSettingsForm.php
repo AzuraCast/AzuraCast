@@ -3,7 +3,8 @@ namespace App\Form;
 
 use App\Entity;
 use App\Http\ServerRequest;
-use App\Service\GeoLite;
+use App\Service\IpGeolocation;
+use App\Service\IpGeolocator\GeoLite;
 use App\Settings;
 use App\Sync\Task\UpdateGeoLiteDatabase;
 use Azura\Config;
@@ -12,7 +13,7 @@ use Doctrine\ORM\EntityManager;
 
 class GeoLiteSettingsForm extends AbstractSettingsForm
 {
-    protected GeoLite $geoLite;
+    protected IpGeolocation $geoLite;
 
     protected UpdateGeoLiteDatabase $syncTask;
 
@@ -21,7 +22,6 @@ class GeoLiteSettingsForm extends AbstractSettingsForm
         Entity\Repository\SettingsRepository $settingsRepo,
         Settings $settings,
         Config $config,
-        GeoLite $geoLite,
         UpdateGeoLiteDatabase $syncTask
     ) {
         $formConfig = $config->get('forms/install_geolite');
@@ -33,13 +33,12 @@ class GeoLiteSettingsForm extends AbstractSettingsForm
             $formConfig
         );
 
-        $this->geoLite = $geoLite;
         $this->syncTask = $syncTask;
     }
 
     public function process(ServerRequest $request): bool
     {
-        $version = $this->geoLite->getVersion();
+        $version = GeoLite::getVersion();
         if (null !== $version) {
             /** @var Markup $currentVersionField */
             $currentVersionField = $this->getField('current_version');

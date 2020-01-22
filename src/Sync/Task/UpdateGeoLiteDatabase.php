@@ -2,7 +2,8 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Service\GeoLite;
+use App\Service\IpGeolocation;
+use App\Service\IpGeolocator\GeoLite;
 use Azura\Logger;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
@@ -15,13 +16,13 @@ class UpdateGeoLiteDatabase extends AbstractTask
 
     protected Client $httpClient;
 
-    protected GeoLite $geoLite;
+    protected IpGeolocation $geoLite;
 
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Client $httpClient,
-        GeoLite $geoLite
+        IpGeolocation $geoLite
     ) {
         parent::__construct($em, $settingsRepo);
 
@@ -45,7 +46,7 @@ class UpdateGeoLiteDatabase extends AbstractTask
         $licenseKey = trim($this->settingsRepo->getSetting(Entity\Settings::GEOLITE_LICENSE_KEY));
 
         if (!empty($licenseKey)) {
-            $baseDir = dirname($this->geoLite->getDatabasePath());
+            $baseDir = GeoLite::getBaseDirectory();
             $downloadPath = $baseDir . '/geolite.tar.gz';
 
             try {
@@ -77,7 +78,7 @@ class UpdateGeoLiteDatabase extends AbstractTask
 
                 unlink($downloadPath);
 
-                $newVersion = $this->geoLite->getVersion();
+                $newVersion = GeoLite::getVersion();
                 $logger->info('GeoLite DB updated. New version: ' . $newVersion);
             } else {
                 $logger->error('Could not download updated GeoLite database.');

@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\GeoLite;
+use App\Service\IpGeolocation;
 use Azura\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
@@ -17,9 +17,9 @@ class ListenersController
 {
     protected EntityManager $em;
 
-    protected GeoLite $geoLite;
+    protected IpGeolocation $geoLite;
 
-    public function __construct(EntityManager $em, GeoLite $geoLite)
+    public function __construct(EntityManager $em, IpGeolocation $geoLite)
     {
         $this->em = $em;
         $this->geoLite = $geoLite;

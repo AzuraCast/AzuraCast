@@ -37,16 +37,14 @@ USER azuracast
 
 WORKDIR /var/azuracast/www
 
-# Add code
 COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
 RUN composer install \
-    --ignore-platform-reqs \
+    --no-dev \
     --no-ansi \
     --no-autoloader \
     --no-interaction \
     --no-scripts
 
-# We need to copy our whole application so that we can generate the autoload file inside the vendor folder.
 COPY --chown=azuracast:azuracast . .
 
 RUN composer dump-autoload --optimize --classmap-authoritative \

@@ -3,6 +3,7 @@ namespace App\Console\Command\Internal;
 
 use App\Entity\SftpUser;
 use Azura\Console\Command\CommandAbstract;
+use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -20,13 +21,21 @@ class SftpAuthCommand extends CommandAbstract
         $sftpUser = $sftpRepo->findOneBy(['username' => $username]);
 
         if ($sftpUser instanceof SftpUser && $sftpUser->authenticate($password, $pubKey)) {
+            $station = $sftpUser->getStation();
+
+            $quotaRaw = $station->getStorageQuotaBytes();
+            $quota = ($quotaRaw instanceof BigInteger)
+                ? (string)$quotaRaw
+                : 0;
+
             $row = [
                 'status' => 1,
                 'username' => $sftpUser->getUsername(),
                 'expiration_date' => 0,
-                'home_dir' => $sftpUser->getStation()->getRadioMediaDir(),
+                'home_dir' => $station->getRadioMediaDir(),
                 'uid' => 0,
                 'gid' => 0,
+                'quota_size' => $quota,
                 'permissions' => [
                     '/' => ['*'],
                 ],

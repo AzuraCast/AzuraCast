@@ -1,6 +1,7 @@
 # Files in the root directory
 **
 !composer.*
+!src
 !bin
 !config
 !resources/locale/compiled

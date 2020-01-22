@@ -46,6 +46,7 @@ if [ $APPLICATION_ENV = "production" ]; then
         COMPOSER_VERSION=${1:-"^0.9.5"}
         composer create-project azuracast/azuracast /var/azuracast/new $COMPOSER_VERSION --prefer-dist --no-install
 
+        find /var/azuracast/www -maxdepth 1 -type d ! -name 'plugins' -name '.' -exec rm -rf {} +
         rsync -a -v -q /var/azuracast/new/ /var/azuracast/www
         rm -rf /var/azuracast/new
 

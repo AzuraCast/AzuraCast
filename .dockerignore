@@ -7,4 +7,5 @@
 !resources/locale/compiled
 !util/docker/web
 !web
+!templates
 !plugins

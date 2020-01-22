@@ -13,7 +13,7 @@ class DbIp extends AbstractIpGeolocator
 
     public static function getDatabasePath(): string
     {
-        return self::getGeoBaseDirectory() . '/dbip-city-lite.mmdb';
+        return self::getBaseDirectory() . '/dbip-city-lite.mmdb';
     }
 
     public static function getAttribution(): string

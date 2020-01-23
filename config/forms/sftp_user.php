@@ -7,7 +7,7 @@ return [
             [
                 'label' => __('Username'),
                 'class' => 'half-width',
-                'maxLength' => 8,
+                'maxLength' => 32,
             ],
         ],
 

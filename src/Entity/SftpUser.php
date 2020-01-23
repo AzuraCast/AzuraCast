@@ -34,10 +34,10 @@ class SftpUser
     protected $station;
 
     /**
-     * @ORM\Column(name="username", type="string", length=8, nullable=false)
+     * @ORM\Column(name="username", type="string", length=32, nullable=false)
      * @var string
      *
-     * @Assert\Length(min=1, max=8)
+     * @Assert\Length(min=1, max=32)
      * @Assert\NotBlank
      */
     protected $username;

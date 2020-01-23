@@ -15,25 +15,11 @@ RUN chmod a+x /bd_build/*.sh \
     && /bd_build/cleanup.sh \
     && rm -rf /bd_build
 
-# SFTPGo build stage
-FROM golang:stretch as sftpgo
-LABEL maintainer="nicola.murino@gmail.com"
+# Install SFTPgo
+COPY --from=azuracast/azuracast_golang_deps:latest /usr/local/bin/sftpgo /usr/local/bin/sftpgo
 
-RUN go get -d github.com/drakkan/sftpgo
-WORKDIR /go/src/github.com/drakkan/sftpgo
-
-ARG build_commit="8e604f888a3a3c324500ba261cd1789ee8d80f0d"
-
-# uncomment the next line to get the latest stable version instead of the latest git
-# RUN git checkout `git rev-list --tags --max-count=1`
-RUN go build -i -ldflags "-s -w -X github.com/drakkan/sftpgo/utils.commit=`git describe --always --dirty` -X github.com/drakkan/sftpgo/utils.date=`date -u +%FT%TZ`" -o sftpgo
-
-#
-# Main build stage
-#
-FROM base
-
-COPY --from=sftpgo /go/src/github.com/drakkan/sftpgo/sftpgo /usr/local/sbin/sftpgo
+# Install Dockerize
+COPY --from=azuracast/azuracast_golang_deps:latest /usr/local/bin/dockerize /usr/local/bin/dockerize
 
 #
 # START Operations as `azuracast` user

@@ -1,3 +1,20 @@
+#
+# Base install step (done first for caching purposes).
+#
+FROM ubuntu:bionic as base
+
+ENV TZ="UTC"
+
+# Run base build process
+COPY ./util/docker/web/ /bd_build
+
+RUN chmod a+x /bd_build/*.sh \
+    && /bd_build/prepare.sh \
+    && /bd_build/add_user.sh \
+    && /bd_build/setup.sh \
+    && /bd_build/cleanup.sh \
+    && rm -rf /bd_build
+
 # SFTPGo build stage
 FROM golang:stretch as sftpgo
 LABEL maintainer="nicola.murino@gmail.com"
@@ -14,21 +31,9 @@ RUN go build -i -ldflags "-s -w -X github.com/drakkan/sftpgo/utils.commit=`git d
 #
 # Main build stage
 #
-FROM ubuntu:bionic
-
-ENV TZ="UTC"
-
-# Run base build process
-COPY ./util/docker/web/ /bd_build
+FROM base
 
 COPY --from=sftpgo /go/src/github.com/drakkan/sftpgo/sftpgo /usr/local/sbin/sftpgo
-
-RUN chmod a+x /bd_build/*.sh \
-    && /bd_build/prepare.sh \
-    && /bd_build/add_user.sh \
-    && /bd_build/setup.sh \
-    && /bd_build/cleanup.sh \
-    && rm -rf /bd_build
 
 #
 # START Operations as `azuracast` user

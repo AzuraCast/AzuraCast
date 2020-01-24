@@ -2447,6 +2447,11 @@ components:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
           example: 1578752515
+        amplify:
+          description: 'The amount of amplification (in dB) to be applied to the radio source;'
+          type: number
+          format: float
+          example: 2
         fade_overlap:
           description: 'The length of time (in seconds) before the next song starts in the fade;'
           type: number

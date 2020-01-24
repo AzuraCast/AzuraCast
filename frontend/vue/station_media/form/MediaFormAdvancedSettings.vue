@@ -9,6 +9,17 @@
 
                     <b-form-input id="edit_form_song_length" readonly :value="songLength"></b-form-input>
                 </b-form-group>
+                <b-form-group class="col-md-6" label-for="edit_form_amplify">
+                    <template v-slot:label>
+                        <translate>Amplify: Amplification (dB)</translate>
+                    </template>
+                    <template v-slot:description>
+                        <translate>The volume in decibels to amplify the track with. Leave blank to use the system default.</translate>
+                    </template>
+                    <b-form-input type="text" id="edit_form_amplify"
+                                  v-model="form.amplify.$model"
+                                  :state="form.amplify.$dirty ? !form.amplify.$error : null"></b-form-input>
+                </b-form-group>
                 <b-form-group class="col-md-6" label-for="edit_form_fade_overlap">
                     <template v-slot:label>
                         <translate>Custom Fading: Overlap Time (seconds)</translate>

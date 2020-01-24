@@ -814,7 +814,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'radio = server.insert_metadata(id="custom_metadata", radio)',
             '',
             '# Apply amplification metadata (if supplied)',
-            'radio = amplify(1., radio)',
+            'radio = amplify(override="liq_amplify", 1., radio)',
         ]);
 
         // NRJ normalization

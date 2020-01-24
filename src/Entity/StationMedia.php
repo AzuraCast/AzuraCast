@@ -154,6 +154,16 @@ class StationMedia
     protected $mtime = 0;
 
     /**
+     * @ORM\Column(name="amplify", type="decimal", precision=3, scale=1, nullable=true)
+     *
+     * @OA\Property(example=-14.00)
+     *
+     * @var float|null The amount of amplification (in dB) to be applied to the radio source;
+     *                 equivalent to Liquidsoap's "liq_amplify" annotation.
+     */
+    protected $amplify;
+
+    /**
      * @ORM\Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
      *
      * @OA\Property(example=2.00)
@@ -437,6 +447,26 @@ class StationMedia
     /**
      * @return float|null
      */
+    public function getAmplify(): ?float
+    {
+        return $this->amplify;
+    }
+
+    /**
+     * @param float|null $amplify
+     */
+    public function setAmplify($amplify = null): void
+    {
+        if ($amplify === '') {
+            $amplify = null;
+        }
+
+        $this->amplify = $amplify;
+    }
+
+    /**
+     * @return float|null
+     */
     public function getFadeOverlap(): ?float
     {
         return $this->fade_overlap;
@@ -674,6 +704,7 @@ class StationMedia
             'duration' => $this->length,
             'song_id' => $this->getSong()->getId(),
             'media_id' => $this->id,
+            'liq_amplify' => $this->amplify,
             'liq_cross_duration' => $this->fade_overlap,
             'liq_fade_in' => $this->fade_in,
             'liq_fade_out' => $this->fade_out,

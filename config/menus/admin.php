@@ -82,12 +82,12 @@ return function (\App\Event\BuildAdminMenu $e) {
                 ],
                 'shoutcast' => [
                     'label' => __('Install SHOUTcast'),
-                    'url' => $router->named('admin:install:shoutcast'),
+                    'url' => $router->named('admin:install_shoutcast:index'),
                     'permission' => Acl::GLOBAL_ALL,
                 ],
                 'geolite' => [
                     'label' => __('Install GeoLite IP Database'),
-                    'url' => $router->named('admin:install:geolite'),
+                    'url' => $router->named('admin:install_geolite:index'),
                     'permission' => Acl::GLOBAL_ALL,
                 ],
             ],

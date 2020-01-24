@@ -1,0 +1,45 @@
+<?php
+/**
+ * @var string|null $title
+ * @var string|null $header
+ * @var \Azura\Assets $assets
+ * @var \App\Form\Form $form
+ */
+
+$this->layout('main', [
+    'title' => $title,
+    'header' => $header,
+    'manual' => true,
+]);
+?>
+
+<div class="card">
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=$title?></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <?=$this->fetch('system/form_edit', ['form' => $form])?>
+            </div>
+            <div class="col-md-6">
+                <fieldset>
+                    <legend><?=__('Current Installed Version')?></legend>
+
+                    <?php if (!empty($version)): ?>
+                        <p class="text-success"><?=__('GeoLite version "%s" is currently installed.', $version)?></p>
+
+                        <div class="buttons">
+                            <a class="btn btn-danger" data-confirm-title="<?=$this->e(__('Uninstall GeoLite database?'))?>"
+                               href="<?=$router->fromHere('admin:install_geolite:uninstall', ['csrf' => $csrf])?>">
+                                <?=__('Uninstall GeoLite Database')?>
+                            </a>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-danger"><?=__('GeoLite is not currently installed on this installation.')?></p>
+                    <?php endif; ?>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

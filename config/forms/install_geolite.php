@@ -3,7 +3,6 @@ return [
     'method' => 'post',
     'groups' => [
         [
-            'use_grid' => true,
             'elements' => [
                 'details' => [
                     'markup',
@@ -18,16 +17,6 @@ return [
                             '<li>' . __('Click "Generate new license key".') . '</li>' .
                             '<li>' . __('Paste the generated license key into the field on this page.') . '</li>'
                             . '</ul>',
-                        'form_group_class' => 'col-md-6',
-                    ],
-                ],
-
-                'current_version' => [
-                    'markup',
-                    [
-                        'label' => __('Current Installed Version'),
-                        'markup' => '<p class="text-danger">' . __('GeoLite is not currently installed on this installation.') . '</p>',
-                        'form_group_class' => 'col-md-6',
                     ],
                 ],
 
@@ -36,7 +25,6 @@ return [
                     [
                         'label' => __('MaxMind License Key'),
                         'default' => '',
-                        'form_group_class' => 'col-md-6',
                     ],
                 ],
 
@@ -46,7 +34,6 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
-                        'form_group_class' => 'col-md-12',
                     ],
                 ],
             ],

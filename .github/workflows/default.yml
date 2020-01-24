@@ -11,7 +11,6 @@ on:
 
 jobs:
   publish:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -19,6 +18,7 @@ jobs:
           fetch-depth: 1
       - name: Publish to Docker Hub
         uses: elgohr/Publish-Docker-Github-Action@master
+        if: github.event_name == 'push'
         with:
           name: azuracast/azuracast_web_v2
           username: ${{ secrets.DOCKER_USERNAME }}

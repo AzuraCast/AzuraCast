@@ -719,7 +719,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             }
         } else {
             // Ansible shell-script call.
-            $shell_path = '/usr/bin/php ' . $settings->getBaseDirectory() . '/bin/azuracast';
+            $shell_path = '/usr/bin/php ' . $settings->getBaseDirectory() . '/bin/console';
 
             $shell_args = [];
             $shell_args[] = 'azuracast:internal:' . $endpoint;

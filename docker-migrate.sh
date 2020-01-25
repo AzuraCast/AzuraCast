@@ -16,8 +16,8 @@ fi
 BASE_DIR=`pwd`
 
 # Create backup from existing installation.
-chmod a+x bin/azuracast
-./bin/azuracast azuracast:backup --exclude-media migration.zip
+chmod a+x bin/console
+./bin/console azuracast:backup --exclude-media migration.zip
 
 read -n 1 -s -r -p "Database backed up. Press any key to continue (Install Docker)..."
 

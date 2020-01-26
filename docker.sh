@@ -44,14 +44,14 @@ ask() {
 # Usage: ./docker.sh install
 #
 install() {
-    if [[ ! $(which curl) ]]; then
+    if [[ ! $(command -v curl) ]]; then
         echo "cURL does not appear to be installed."
         echo "Install curl using your host's package manager,"
         echo "then continue installing using this script."
         exit 1
     fi
 
-    if [[ $(which docker) && $(docker --version) ]]; then
+    if [[ $(command -v docker) && $(docker --version) ]]; then
         echo "Docker is already installed! Continuing..."
     else
         if ask "Docker does not appear to be installed. Install Docker now?" Y; then
@@ -69,21 +69,14 @@ install() {
         fi
     fi
 
-    if [[ $(which docker-compose) && $(docker-compose --version) ]]; then
+    if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
         echo "Docker Compose is already installed! Continuing..."
     else
         if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-            if [[ ! $(which git) ]]; then
-                echo "Git does not appear to be installed."
-                echo "Install git using your host's package manager,"
-                echo "then continue installing using this script."
-                exit 1
-            fi
-
-            COMPOSE_VERSION=`git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1`
+            COMPOSE_VERSION=1.25.3
 
             if [[ $EUID -ne 0 ]]; then
-                if [[ ! $(which sudo) ]]; then
+                if [[ ! $(command -v sudo) ]]; then
                     echo "Sudo does not appear to be installed."
                     echo "Install sudo using your host's package manager,"
                     echo "then continue installing using this script."

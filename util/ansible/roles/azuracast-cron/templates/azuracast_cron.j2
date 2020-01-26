@@ -1,9 +1,9 @@
-0 * * * * php {{ util_base }}/cli.php sync:run long
-*/5 * * * * php {{ util_base }}/cli.php sync:run medium
-*/5 * * * * php {{ util_base }}/cli.php queue:process 275
-* * * * * php {{ util_base }}/cli.php sync:run short
-* * * * * php {{ util_base }}/cli.php sync:run nowplaying
-* * * * * sleep 15; php {{ util_base }}/cli.php sync:run nowplaying
-* * * * * sleep 30; php {{ util_base }}/cli.php sync:run nowplaying
-* * * * * sleep 45; php {{ util_base }}/cli.php sync:run nowplaying
+0 * * * * php {{ www_base }}/bin/console sync:run long
+*/5 * * * * php {{ www_base }}/bin/console sync:run medium
+*/5 * * * * php {{ www_base }}/bin/console queue:process 275
+* * * * * php {{ www_base }}/bin/console sync:run short
+* * * * * php {{ www_base }}/bin/console sync:run nowplaying
+* * * * * sleep 15; php {{ www_base }}/bin/console sync:run nowplaying
+* * * * * sleep 30; php {{ www_base }}/bin/console sync:run nowplaying
+* * * * * sleep 45; php {{ www_base }}/bin/console sync:run nowplaying
 0 */6 * * * tmpreaper 12h /var/azuracast/stations/*/temp

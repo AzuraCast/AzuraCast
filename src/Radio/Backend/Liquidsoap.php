@@ -743,35 +743,62 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             return;
         }
 
-        $event->appendLines([
+        $settings = (array)$station->getBackendConfig();
+        $charset = $settings['charset'] ?? 'UTF-8';
+        $dj_mount = $settings['dj_mount_point'] ?? '/';
+        $recordLiveStreams = $settings['record_streams'] ?? false;
+
+        $lines = [
             '# DJ Authentication',
+            'live_enabled = ref false',
+            'last_authenticated_dj = ref ""',
+            'live_dj = ref ""',
+            '',
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
             '  ret = ' . $this->_getApiUrlCommand($station, 'auth', ['dj-user' => 'user', 'dj-password' => 'password']),
             '  log("AzuraCast DJ Auth Response: #{ret}")',
-            '  bool_of_string(ret)',
+            '  authed = bool_of_string(ret)',
+            '  if authed then',
+            '    last_authenticated_dj := user',
+            '  end',
+            '  authed',
             'end',
             '',
-            'live_enabled = ref false',
-            '',
-            'def live_connected(header) =',
-            '  log("DJ Source connected! #{header}")',
-            '  live_enabled := true',
-            '  ret = ' . $this->_getApiUrlCommand($station, 'djon'),
-            '  log("AzuraCast Live Connected Response: #{ret}")',
-            'end',
-            '',
-            'def live_disconnected() =',
-            '  log("DJ Source disconnected!")',
-            '  live_enabled := false',
-            '  ret = ' . $this->_getApiUrlCommand($station, 'djoff'),
-            '  log("AzuraCast Live Disconnected Response: #{ret}")',
-            'end',
-        ]);
+        ];
 
-        $settings = (array)$station->getBackendConfig();
-        $charset = $settings['charset'] ?? 'UTF-8';
-        $dj_mount = $settings['dj_mount_point'] ?? '/';
+        $lines[] = 'def live_connected(header) =';
+        $lines[] = '  dj = !last_authenticated_dj';
+        $lines[] = '  log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")';
+        $lines[] = '  live_enabled := true';
+        $lines[] = '  live_dj := dj';
+        $lines[] = '  ret = ' . $this->_getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
+        $lines[] = '  log("AzuraCast Live Connected Response: #{ret}")';
+
+        if ($recordLiveStreams) {
+            $lines[] = '  if string.sub(ret, start = 0, length = 1) == "/" then';
+            $lines[] = '    start_recording(ret)';
+            $lines[] = '  end';
+        }
+
+        $lines[] = 'end';
+        $lines[] = '';
+
+        $lines[] = 'def live_disconnected() =';
+        $lines[] = '  dj = !live_dj';
+        $lines[] = '  log("DJ Source disconnected! Current live DJ: #{dj}")';
+        $lines[] = '  ret = ' . $this->_getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']);
+        $lines[] = '  log("AzuraCast Live Disconnected Response: #{ret}")';
+        $lines[] = '  live_enabled := false';
+        $lines[] = '  last_authenticated_dj := ""';
+        $lines[] = '  live_dj := ""';
+
+        if ($recordLiveStreams) {
+            $lines[] = '  stop_recording()';
+        }
+
+        $lines[] = 'end';
+        $event->appendLines($lines);
 
         $harbor_params = [
             '"' . $this->_cleanUpString($dj_mount) . '"',
@@ -802,6 +829,29 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'radio = switch(id="' . $this->_getVarName('live_switch',
                 $station) . '", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])',
         ]);
+
+        if ($recordLiveStreams) {
+            $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\StationMountInterface::FORMAT_MP3;
+            $recordLiveStreamsBitrate = (int)($settings['record_streams_bitrate'] ?? 128);
+
+            $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
+
+            $event->appendLines([
+                '# Record Live Broadcasts',
+                'stop_recording_f = ref (fun () -> ())',
+                '',
+                'def start_recording(path) =',
+                '  output_live_recording = output.file('.$formatString.', fallible=true, reopen_on_metadata=false, "#{path}", live)',
+                '  stop_recording_f := fun () -> source.shutdown(output_live_recording)',
+                'end',
+                '',
+                'def stop_recording() =',
+                '  f = !stop_recording_f',
+                '  f ()',
+                '  stop_recording_f := ref (fun () -> ())',
+                'end',
+            ]);
+        }
     }
 
     public function writeCustomConfiguration(WriteLiquidsoapConfiguration $event)
@@ -913,7 +963,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 continue;
             }
 
-            $ls_config[] = $this->_getOutputString($station, $mount_row, 'local_' . $i);
+            $ls_config[] = $this->getOutputString($station, $mount_row, 'local_' . $i);
         }
 
         $event->appendLines($ls_config);
@@ -928,34 +978,15 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @return string
      */
-    protected function _getOutputString(Entity\Station $station, Entity\StationMountInterface $mount, $id = '')
+    protected function getOutputString(Entity\Station $station, Entity\StationMountInterface $mount, $id = ''): string
     {
         $settings = (array)$station->getBackendConfig();
         $charset = $settings['charset'] ?? 'UTF-8';
 
-        $bitrate = ($mount->getAutodjBitrate() ?? 128);
-
-        switch (strtolower($mount->getAutodjFormat())) {
-            case $mount::FORMAT_AAC:
-                $afterburner = ($bitrate >= 160) ? 'true' : 'false';
-                $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
-
-                $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
-                break;
-
-            case $mount::FORMAT_OGG:
-                $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
-                break;
-
-            case $mount::FORMAT_OPUS:
-                $output_format = '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
-                break;
-
-            case $mount::FORMAT_MP3:
-            default:
-                $output_format = '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
-                break;
-        }
+        $output_format = $this->getOutputFormatString(
+            $mount->getAutodjFormat(),
+            $mount->getAutodjBitrate() ?? 128
+        );
 
         $output_params = [];
         $output_params[] = $output_format;
@@ -995,6 +1026,31 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         return 'output.icecast(' . implode(', ', $output_params) . ')';
     }
 
+    protected function getOutputFormatString(string $format, int $bitrate = 128): string
+    {
+        switch (strtolower($format)) {
+            case Entity\StationMountInterface::FORMAT_AAC:
+                $afterburner = ($bitrate >= 160) ? 'true' : 'false';
+                $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
+
+                return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
+                break;
+
+            case Entity\StationMountInterface::FORMAT_OGG:
+                return '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
+                break;
+
+            case Entity\StationMountInterface::FORMAT_OPUS:
+                return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+                break;
+
+            case Entity\StationMountInterface::FORMAT_MP3:
+            default:
+                return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
+                break;
+        }
+    }
+
     public function writeRemoteBroadcastConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
@@ -1013,7 +1069,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 continue;
             }
 
-            $ls_config[] = $this->_getOutputString($station, $remote_row, 'relay_' . $i);
+            $ls_config[] = $this->getOutputString($station, $remote_row, 'relay_' . $i);
         }
 
         $event->appendLines($ls_config);

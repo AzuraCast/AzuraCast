@@ -1168,8 +1168,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         );
     }
 
-    public function authenticateStreamer(Entity\Station $station, $user, $pass): string
-    {
+    public function authenticateStreamer(
+        Entity\Station $station,
+        string $user = '',
+        string $pass = ''
+    ): string {
         // Allow connections using the exact broadcast source password.
         $fe_config = (array)$station->getFrontendConfig();
         if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
@@ -1184,36 +1187,30 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             [$user, $pass] = explode(':', $pass);
         }
 
-        $streamer = $this->streamerRepo->authenticate($station, $user, $pass);
-
-        if ($streamer instanceof Entity\StationStreamer) {
-            Logger::getInstance()->debug('DJ successfully authenticated.', ['username' => $user]);
-
-            try {
-                // Successful authentication: update current streamer on station.
-                $station->setCurrentStreamer($streamer);
-                $this->em->persist($station);
-                $this->em->flush();
-            } catch (Exception $e) {
-                Logger::getInstance()->error('Error when calling post-DJ-authentication functions.', [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'code' => $e->getCode(),
-                ]);
-            }
-
-            return 'true';
-        }
-
-        return 'false';
+        return $this->streamerRepo->authenticate($station, $user, $pass)
+            ? 'true'
+            : 'false';
     }
 
-    public function toggleLiveStatus(Entity\Station $station, $is_streamer_live = true): void
-    {
-        $station->setIsStreamerLive($is_streamer_live);
+    public function onConnect(
+        Entity\Station $station,
+        string $user = ''
+    ): string {
+        $resp = $this->streamerRepo->onConnect($station, $user);
 
-        $this->em->persist($station);
-        $this->em->flush();
+        if (is_bool($resp)) {
+            return $resp ? 'true' : 'false';
+        }
+        return $resp;
+    }
+
+    public function onDisconnect(
+        Entity\Station $station,
+        string $user = ''
+    ): string {
+        return $this->streamerRepo->onDisconnect($station)
+            ? 'true'
+            : 'false';
     }
 
     public function getWebStreamingUrl(Entity\Station $station, UriInterface $base_url): UriInterface

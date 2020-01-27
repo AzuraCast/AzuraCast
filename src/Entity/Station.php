@@ -661,20 +661,19 @@ class Station
         $this->radio_base_dir = $this->_truncateString(trim($new_dir));
     }
 
-    /**
-     * @return string
-     */
     public function getRadioAlbumArtDir(): string
     {
         return $this->radio_base_dir . '/album_art';
     }
 
-    /**
-     * @return string
-     */
     public function getRadioTempDir(): string
     {
         return $this->radio_base_dir . '/temp';
+    }
+
+    public function getRadioRecordingsDir(): string
+    {
+        return $this->radio_base_dir . '/recordings';
     }
 
     /**

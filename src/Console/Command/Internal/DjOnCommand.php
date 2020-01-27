@@ -14,7 +14,8 @@ class DjOnCommand extends CommandAbstract
         SymfonyStyle $io,
         EntityManager $em,
         Adapters $adapters,
-        int $stationId
+        int $stationId,
+        string $djUser = ''
     ) {
         $station = $em->find(Entity\Station::class, $stationId);
 
@@ -25,7 +26,8 @@ class DjOnCommand extends CommandAbstract
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus($station, true);
+            $io->write($adapter->onConnect($station, $djUser));
+            return 0;
         }
 
         $io->write('received');

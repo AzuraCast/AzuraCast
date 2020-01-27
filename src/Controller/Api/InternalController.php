@@ -104,13 +104,16 @@ class InternalController
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
             $station = $request->getStation();
+            $user = $request->getParam('dj-user', '');
 
             $this->logger->info('Received "DJ connected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
                 'station_name' => $station->getName(),
+                'dj' => $user,
             ]);
 
-            $adapter->toggleLiveStatus($station, true);
+            $response->getBody()->write($adapter->onConnect($station, $user));
+            return $response;
         }
 
         $response->getBody()->write('received');
@@ -124,13 +127,16 @@ class InternalController
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
             $station = $request->getStation();
+            $user = $request->getParam('dj-user', '');
 
             $this->logger->info('Received "DJ disconnected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
                 'station_name' => $station->getName(),
+                'dj' => $user,
             ]);
 
-            $adapter->toggleLiveStatus($station, false);
+            $response->getBody()->write($adapter->onDisconnect($station, $user));
+            return $response;
         }
 
         $response->getBody()->write('received');

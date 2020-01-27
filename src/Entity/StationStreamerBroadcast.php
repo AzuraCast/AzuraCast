@@ -32,6 +32,15 @@ class StationStreamerBroadcast
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="streamer_broadcasts")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var Station
+     */
+    protected $station;
+
+    /**
      * @ORM\ManyToOne(targetEntity="StationStreamer", inversedBy="broadcasts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="streamer_id", referencedColumnName="id", onDelete="CASCADE")
@@ -61,8 +70,17 @@ class StationStreamerBroadcast
     public function __construct(StationStreamer $streamer)
     {
         $this->streamer = $streamer;
+        $this->station = $streamer->getStation();
 
         $this->timestampStart = time();
+    }
+
+    /**
+     * @return Station
+     */
+    public function getStation(): Station
+    {
+        return $this->station;
     }
 
     /**
@@ -71,14 +89,6 @@ class StationStreamerBroadcast
     public function getStreamer(): StationStreamer
     {
         return $this->streamer;
-    }
-
-    /**
-     * @param StationStreamer $streamer
-     */
-    public function setStreamer(StationStreamer $streamer): void
-    {
-        $this->streamer = $streamer;
     }
 
     /**
@@ -134,8 +144,7 @@ class StationStreamerBroadcast
                 break;
         }
 
-        $now = Chronos::createFromTimestampUTC($this->timestampStart);
-
-        return $this->streamer->getStreamerUsername().'/'.$now->format('Ymd-gis').'.'.$ext;
+        $now = Chronos::createFromTimestamp($this->timestampStart, $this->station->getTimezone());
+        return $this->streamer->getStreamerUsername().'/'.$now->format('Ymd-His').'.'.$ext;
     }
 }

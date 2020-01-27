@@ -748,7 +748,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $dj_mount = $settings['dj_mount_point'] ?? '/';
         $recordLiveStreams = $settings['record_streams'] ?? false;
 
-        $lines = [
+        $event->appendLines([
             '# DJ Authentication',
             'live_enabled = ref false',
             'last_authenticated_dj = ref ""',
@@ -765,40 +765,25 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '  authed',
             'end',
             '',
-        ];
-
-        $lines[] = 'def live_connected(header) =';
-        $lines[] = '  dj = !last_authenticated_dj';
-        $lines[] = '  log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")';
-        $lines[] = '  live_enabled := true';
-        $lines[] = '  live_dj := dj';
-        $lines[] = '  ret = ' . $this->_getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
-        $lines[] = '  log("AzuraCast Live Connected Response: #{ret}")';
-
-        if ($recordLiveStreams) {
-            $lines[] = '  if string.sub(ret, start = 0, length = 1) == "/" then';
-            $lines[] = '    start_recording(ret)';
-            $lines[] = '  end';
-        }
-
-        $lines[] = 'end';
-        $lines[] = '';
-
-        $lines[] = 'def live_disconnected() =';
-        $lines[] = '  dj = !live_dj';
-        $lines[] = '  log("DJ Source disconnected! Current live DJ: #{dj}")';
-        $lines[] = '  ret = ' . $this->_getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']);
-        $lines[] = '  log("AzuraCast Live Disconnected Response: #{ret}")';
-        $lines[] = '  live_enabled := false';
-        $lines[] = '  last_authenticated_dj := ""';
-        $lines[] = '  live_dj := ""';
-
-        if ($recordLiveStreams) {
-            $lines[] = '  stop_recording()';
-        }
-
-        $lines[] = 'end';
-        $event->appendLines($lines);
+            'def live_connected(header) =',
+            '  dj = !last_authenticated_dj',
+            '  log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")',
+            '  live_enabled := true',
+            '  live_dj := dj',
+            '  ret = ' . $this->_getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']),
+            '  log("AzuraCast Live Connected Response: #{ret}")',
+            'end',
+            '',
+            'def live_disconnected() =',
+            '  dj = !live_dj',
+            '  log("DJ Source disconnected! Current live DJ: #{dj}")',
+            '  ret = ' . $this->_getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']),
+            '  log("AzuraCast Live Disconnected Response: #{ret}")',
+            '  live_enabled := false',
+            '  last_authenticated_dj := ""',
+            '  live_dj := ""',
+            'end',
+        ]);
 
         $harbor_params = [
             '"' . $this->_cleanUpString($dj_mount) . '"',
@@ -848,8 +833,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 'def stop_recording() =',
                 '  f = !stop_recording_f',
                 '  f ()',
-                '  stop_recording_f := ref (fun () -> ())',
+                '  stop_recording_f := fun () -> ()',
                 'end',
+                '',
+                'server.register(namespace="recording", description="Start recording.", usage="recording.start <filename>", "start", fun (s) -> begin start_recording(s) "Done!" end)',
+                'server.register(namespace="recording", description="Stop recording.", usage="recording.stop", "stop", fun (s) -> begin stop_recording() "Done!" end)',
             ]);
         }
     }
@@ -1198,16 +1186,25 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     ): string {
         $resp = $this->streamerRepo->onConnect($station, $user);
 
-        if (is_bool($resp)) {
-            return $resp ? 'true' : 'false';
+        if (is_string($resp)) {
+            $this->command($station, 'recording.start '.$resp);
+            return 'recording';
         }
-        return $resp;
+
+        return $resp ? 'true' : 'false';
     }
 
     public function onDisconnect(
         Entity\Station $station,
         string $user = ''
     ): string {
+        $backendConfig = (array)$station->getBackendConfig();
+        $recordStreams = (bool)($backendConfig['record_streams'] ?? false);
+
+        if ($recordStreams) {
+            $this->command($station, 'recording.stop');
+        }
+
         return $this->streamerRepo->onDisconnect($station)
             ? 'true'
             : 'false';

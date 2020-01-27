@@ -89,9 +89,9 @@ class StationStreamerRepository extends Repository
     protected function clearBroadcastsForStation(Entity\Station $station): void
     {
         $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\StationStreamerBroadcast ssb
-            SET ssb.timestamp_end = :time
+            SET ssb.timestampEnd = :time
             WHERE ssb.station = :station
-            AND ssb.timestamp_end = 0')
+            AND ssb.timestampEnd = 0')
             ->setParameter('time', time())
             ->setParameter('station', $station)
             ->execute();

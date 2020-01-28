@@ -1,12 +1,9 @@
 <?php
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
-use App\Validator\Constraints as AppAssert;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Each individual broadcast associated with a streamer.
@@ -73,6 +70,14 @@ class StationStreamerBroadcast
         $this->station = $streamer->getStation();
 
         $this->timestampStart = time();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**
@@ -145,7 +150,7 @@ class StationStreamerBroadcast
         }
 
         $now = Chronos::createFromTimestamp($this->timestampStart, $this->station->getTimezone());
-        $this->recordingPath = $this->streamer->getStreamerUsername().'/'.$now->format('Ymd-His').'.'.$ext;
+        $this->recordingPath = $this->streamer->getStreamerUsername() . '/' . $now->format('Ymd-His') . '.' . $ext;
 
         return $this->recordingPath;
     }

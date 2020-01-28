@@ -7,7 +7,7 @@
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <i class="material-icons" aria-hidden="true">add</i>
-                    <translate>Add Playlist</translate>
+                    <translate>Add Streamer</translate>
                 </b-button>
             </b-card-body>
 
@@ -16,13 +16,13 @@
                             :api-url="listUrl">
                     <template v-slot:cell(actions)="row">
                         <b-button-group size="sm">
-                            <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                            <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links_self)">
                                 <translate>Edit</translate>
                             </b-button>
-                            <b-button size="sm" variant="default" @click.prevent="doShowBroadcasts(row.item.links.broadcasts)">
+                            <b-button size="sm" variant="default" @click.prevent="doShowBroadcasts(row.item.links_broadcasts)">
                                 <translate>Broadcasts</translate>
                             </b-button>
-                            <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                            <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links_self)">
                                 <translate>Delete</translate>
                             </b-button>
                         </b-button-group>

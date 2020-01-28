@@ -483,4 +483,16 @@ return [
             ],
         ],
     ],
+
+    'station_streamers' => [
+        'order' => 10,
+        'require' => ['vue', 'vue-translations', 'bootstrap-vue', 'moment'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/station_streamers.js',
+                ],
+            ],
+        ],
+    ],
 ];

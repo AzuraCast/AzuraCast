@@ -257,6 +257,8 @@
                 if (this.paginated) {
                     queryParams.rowCount = ctx.perPage;
                     queryParams.current = ctx.currentPage;
+                } else {
+                    queryParams.rowCount = 0;
                 }
 
                 if (this.flushCache) {

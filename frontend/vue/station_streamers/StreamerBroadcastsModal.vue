@@ -1,24 +1,18 @@
 <template>
     <b-modal id="streamer_broadcasts" size="xl" centered ref="modal" :title="langHeader">
-        <b-row>
-            <b-col md="12">
-                <data-table ref="datatable" id="station_media" :show-toolbar="false"
-                            :selectable="false" :fields="fields"
-                            :api-url="listUrl" :request-config="requestConfig">
-                    <template v-slot:cell(directory)="row">
-                        <div class="is_dir">
-                            <span class="file-icon">
-                                <i class="material-icons" aria-hidden="true">folder</i>
-                            </span>
-
-                            <a href="#" @click.prevent="enterDirectory(row.item.path)">
-                                {{ row.item.name }}
-                            </a>
-                        </div>
-                    </template>
-                </data-table>
-            </b-col>
-        </b-row>
+        <template v-if="listUrl">
+            <data-table ref="datatable" id="station_streamer_broadcasts" :show-toolbar="false"
+                        :fields="fields" :api-url="listUrl">
+                <template v-slot:cell(actions)="row">
+                    <b-button-group size="sm" v-if="row.item.links_download">
+                        <b-button size="sm" variant="primary" :href="row.item.links_download" target="_blank">
+                            <translate>Download</translate>
+                        </b-button>
+                    </b-button-group>
+                    <template v-else>&nbsp;</template>
+                </template>
+            </data-table>
+        </template>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
                 <translate>Close</translate>
@@ -36,7 +30,30 @@
             return {
                 listUrl: null,
                 fields: [
-                    { key: 'directory', label: this.$gettext('Directory'), sortable: false }
+                    {
+                        key: 'timestampStart',
+                        label: this.$gettext('Start Time'),
+                        sortable: false,
+                        formatter: (value, key, item) => {
+                            return moment.unix(value).format('lll');
+                        }
+                    },
+                    {
+                        key: 'timestampEnd',
+                        label: this.$gettext('End Time'),
+                        sortable: false,
+                        formatter: (value, key, item) => {
+                            if (value === 0) {
+                                return this.$gettext('');
+                            }
+                            return moment.unix(value).format('lll');
+                        }
+                    },
+                    {
+                        key: 'actions',
+                        label: this.$gettext('Actions'),
+                        sortable: false
+                    }
                 ]
             };
         },
@@ -48,7 +65,6 @@
         methods: {
             open (listUrl) {
                 this.listUrl = listUrl;
-                this.$refs.datatable.refresh();
                 this.$refs.modal.show();
             },
             close () {

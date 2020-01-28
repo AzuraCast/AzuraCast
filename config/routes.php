@@ -391,9 +391,17 @@ return function (App $app) {
 
             })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
-            $group->get('/streamer/{id}/broadcasts', Controller\Api\Stations\StreamersController::class.':broadcastsAction')
-                ->setName('api:stations:streamer:broadcasts')
-                ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
+            $group->group('/streamer/{id}', function (RouteCollectorProxy $group) {
+
+                $group->get('/broadcasts',
+                    Controller\Api\Stations\StreamersController::class . ':broadcastsAction')
+                    ->setName('api:stations:streamer:broadcasts');
+
+                $group->get('/broadcast/{broadcast_id}',
+                    Controller\Api\Stations\StreamersController::class . ':downloadBroadcastAction')
+                    ->setName('api:stations:streamer:broadcast:download');
+
+            })->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
             $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                 ->setName('api:stations:status')

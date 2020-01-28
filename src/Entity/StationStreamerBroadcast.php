@@ -145,6 +145,8 @@ class StationStreamerBroadcast
         }
 
         $now = Chronos::createFromTimestamp($this->timestampStart, $this->station->getTimezone());
-        return $this->streamer->getStreamerUsername().'/'.$now->format('Ymd-His').'.'.$ext;
+        $this->recordingPath = $this->streamer->getStreamerUsername().'/'.$now->format('Ymd-His').'.'.$ext;
+
+        return $this->recordingPath;
     }
 }

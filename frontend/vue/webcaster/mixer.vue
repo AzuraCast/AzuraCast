@@ -22,12 +22,12 @@
         data () {
             return {
                 'position': 0.5
-            }
+            };
         },
         watch: {
             position (val, oldVal) {
-                this.$root.$emit('new-mixer-value', val)
+                this.$root.$emit('new-mixer-value', val);
             }
         }
-    }
+    };
 </script>

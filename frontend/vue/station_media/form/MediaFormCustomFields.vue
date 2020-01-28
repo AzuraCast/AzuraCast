@@ -23,8 +23,8 @@
         },
         computed: {
             langTitle () {
-                return this.$gettext('Custom Fields')
+                return this.$gettext('Custom Fields');
             }
         }
-    }
+    };
 </script>

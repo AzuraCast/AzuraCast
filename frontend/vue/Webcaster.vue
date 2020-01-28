@@ -28,45 +28,45 @@
 </template>
 
 <script>
-  import mixer from './webcaster/mixer.vue'
-  import microphone from './webcaster/microphone.vue'
-  import playlist from './webcaster/playlist.vue'
-  import settings from './webcaster/settings.vue'
+    import mixer from './webcaster/mixer.vue';
+    import microphone from './webcaster/microphone.vue';
+    import playlist from './webcaster/playlist.vue';
+    import settings from './webcaster/settings.vue';
 
-  import stream from './webcaster/stream.js'
+    import stream from './webcaster/stream.js';
 
-  export default {
-    data: function () {
-      return {
-        'stream': stream
-      }
-    },
-    components: {
-      mixer,
-      microphone,
-      playlist,
-      settings
-    },
-    props: {
-      stationName: String,
-      libUrls: Array,
-      baseUri: String
-    },
-    provide: function () {
-      return {
-        getStream: this.getStream,
-        resumeStream: this.resumeStream
-      }
-    },
-    methods: {
-      getStream: function () {
-        this.stream.init()
+    export default {
+        data: function () {
+            return {
+                'stream': stream
+            };
+        },
+        components: {
+            mixer,
+            microphone,
+            playlist,
+            settings
+        },
+        props: {
+            stationName: String,
+            libUrls: Array,
+            baseUri: String
+        },
+        provide: function () {
+            return {
+                getStream: this.getStream,
+                resumeStream: this.resumeStream
+            };
+        },
+        methods: {
+            getStream: function () {
+                this.stream.init();
 
-        return this.stream
-      },
-      resumeStream: function () {
-        this.stream.resumeContext()
-      }
-    }
-  }
+                return this.stream;
+            },
+            resumeStream: function () {
+                this.stream.resumeContext();
+            }
+        }
+    };
 </script>

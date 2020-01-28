@@ -8,35 +8,35 @@
 </template>
 
 <script>
-  import FullCalendar from '@fullcalendar/vue'
-  import allLocales from '@fullcalendar/core/locales-all'
-  import momentPlugin from '@fullcalendar/moment'
-  import momentTimezonePlugin from '@fullcalendar/moment-timezone'
-  import timeGridPlugin from '@fullcalendar/timegrid'
+    import FullCalendar from '@fullcalendar/vue';
+    import allLocales from '@fullcalendar/core/locales-all';
+    import momentPlugin from '@fullcalendar/moment';
+    import momentTimezonePlugin from '@fullcalendar/moment-timezone';
+    import timeGridPlugin from '@fullcalendar/timegrid';
 
-  export default {
-    name: 'Schedule',
-    components: { FullCalendar },
-    props: {
-      scheduleUrl: String,
-      stationTimeZone: String,
-      locale: String
-    },
-    data () {
-      return {
-        locales: allLocales,
-        plugins: [momentPlugin, momentTimezonePlugin, timeGridPlugin]
-      }
-    },
-    methods: {
-      refresh () {
+    export default {
+        name: 'Schedule',
+        components: { FullCalendar },
+        props: {
+            scheduleUrl: String,
+            stationTimeZone: String,
+            locale: String
+        },
+        data () {
+            return {
+                locales: allLocales,
+                plugins: [momentPlugin, momentTimezonePlugin, timeGridPlugin]
+            };
+        },
+        methods: {
+            refresh () {
 
-      },
-      onEventClick (arg) {
-        this.$emit('edit', arg.event.extendedProps.edit_url)
-      }
-    }
-  }
+            },
+            onEventClick (arg) {
+                this.$emit('edit', arg.event.extendedProps.edit_url);
+            }
+        }
+    };
 </script>
 
 <style lang="scss">

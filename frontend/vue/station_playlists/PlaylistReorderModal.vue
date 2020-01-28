@@ -36,74 +36,74 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import Draggable from 'vuedraggable'
+    import axios from 'axios';
+    import Draggable from 'vuedraggable';
 
-  export default {
-    name: 'ReorderModal',
-    components: {
-      Draggable
-    },
-    data () {
-      return {
-        loading: true,
-        reorderUrl: null,
-        media: []
-      }
-    },
-    computed: {
-      langTitle () {
-        return this.$gettext('Reorder Playlist')
-      },
-      langDownBtn () {
-        return this.$gettext('Down')
-      },
-      langUpBtn () {
-        return this.$gettext('Up')
-      }
-    },
-    methods: {
-      open (reorderUrl) {
-        this.$refs.modal.show()
-        this.reorderUrl = reorderUrl
-        this.loading = true
+    export default {
+        name: 'ReorderModal',
+        components: {
+            Draggable
+        },
+        data () {
+            return {
+                loading: true,
+                reorderUrl: null,
+                media: []
+            };
+        },
+        computed: {
+            langTitle () {
+                return this.$gettext('Reorder Playlist');
+            },
+            langDownBtn () {
+                return this.$gettext('Down');
+            },
+            langUpBtn () {
+                return this.$gettext('Up');
+            }
+        },
+        methods: {
+            open (reorderUrl) {
+                this.$refs.modal.show();
+                this.reorderUrl = reorderUrl;
+                this.loading = true;
 
-        axios.get(this.reorderUrl).then((resp) => {
-          this.media = resp.data
-          this.loading = false
-        }).catch((err) => {
-          this.handleError(err)
-        })
-      },
-      moveDown (index) {
-        this.media.splice(index + 1, 0, this.media.splice(index, 1)[0])
-        this.save()
-      },
-      moveUp (index) {
-        this.media.splice(index - 1, 0, this.media.splice(index, 1)[0])
-        this.save()
-      },
-      save () {
-        let newOrder = {}
-        let i = 0
+                axios.get(this.reorderUrl).then((resp) => {
+                    this.media = resp.data;
+                    this.loading = false;
+                }).catch((err) => {
+                    this.handleError(err);
+                });
+            },
+            moveDown (index) {
+                this.media.splice(index + 1, 0, this.media.splice(index, 1)[0]);
+                this.save();
+            },
+            moveUp (index) {
+                this.media.splice(index - 1, 0, this.media.splice(index, 1)[0]);
+                this.save();
+            },
+            save () {
+                let newOrder = {};
+                let i = 0;
 
-        this.media.forEach((row) => {
-          i++
-          newOrder[row.id] = i
-        })
+                this.media.forEach((row) => {
+                    i++;
+                    newOrder[row.id] = i;
+                });
 
-        axios.put(this.reorderUrl, { 'order': newOrder }).then((resp) => {
-          notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success', false)
-        }).catch((err) => {
-          this.handleError(err)
-        })
-      },
-      handleError (err) {
-        console.error(err)
-        if (err.response.message) {
-          notify('<b>' + err.response.message + '</b>', 'danger')
+                axios.put(this.reorderUrl, { 'order': newOrder }).then((resp) => {
+                    notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success', false);
+                }).catch((err) => {
+                    this.handleError(err);
+                });
+            },
+            handleError (err) {
+                console.error(err);
+                if (err.response.message) {
+                    notify('<b>' + err.response.message + '</b>', 'danger');
+                }
+            }
         }
-      }
-    }
-  }
+    };
 </script>

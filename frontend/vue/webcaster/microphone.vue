@@ -44,8 +44,8 @@
     </div>
 </template>
 <script>
-    import track from './track.js'
-    import _ from 'lodash'
+    import track from './track.js';
+    import _ from 'lodash';
 
     export default {
         extends: track,
@@ -55,104 +55,104 @@
                 'device': null,
                 'devices': [],
                 'isRecording': false
-            }
+            };
         },
         watch: {
             device: function (val, oldVal) {
                 if (this.source == null) {
-                    return
+                    return;
                 }
-                return this.createSource()
+                return this.createSource();
             }
         },
         mounted: function () {
-            var base, base1
+            var base, base1;
 
             // Get multimedia devices by requesting them from the browser.
             navigator.mediaDevices || (navigator.mediaDevices = {});
 
             (base = navigator.mediaDevices).getUserMedia || (base.getUserMedia = function (constraints) {
-                var fn
-                fn = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
+                var fn;
+                fn = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
                 if (fn == null) {
-                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'))
+                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
                 }
                 return new Promise(function (resolve, reject) {
-                    return fn.call(navigator, constraints, resolve, reject)
-                })
+                    return fn.call(navigator, constraints, resolve, reject);
+                });
             });
 
             (base1 = navigator.mediaDevices).enumerateDevices || (base1.enumerateDevices = function () {
-                return Promise.reject(new Error('enumerateDevices is not implemented on this browser'))
-            })
+                return Promise.reject(new Error('enumerateDevices is not implemented on this browser'));
+            });
 
-            var vm_mic = this
+            var vm_mic = this;
             navigator.mediaDevices.getUserMedia({
                 audio: true,
                 video: false
             }).then(function () {
-                return navigator.mediaDevices.enumerateDevices().then(vm_mic.setDevices)
-            })
+                return navigator.mediaDevices.enumerateDevices().then(vm_mic.setDevices);
+            });
 
-            this.$root.$on('new-cue', this.onNewCue)
+            this.$root.$on('new-cue', this.onNewCue);
         },
         methods: {
             cue: function () {
-                this.resumeStream()
-                this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'microphone')
+                this.resumeStream();
+                this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'microphone');
             },
             onNewCue: function (new_cue) {
-                this.passThrough = (new_cue === 'microphone')
+                this.passThrough = (new_cue === 'microphone');
             },
             toggleRecording: function () {
-                this.resumeStream()
+                this.resumeStream();
 
                 if (this.playing) {
-                    this.stop()
+                    this.stop();
                 } else {
-                    this.play()
+                    this.play();
                 }
             },
             createSource: function (cb) {
-                var constraints
+                var constraints;
                 if (this.source != null) {
-                    this.source.disconnect(this.destination)
+                    this.source.disconnect(this.destination);
                 }
                 constraints = {
                     video: false
-                }
+                };
                 if (this.device) {
                     constraints.audio = {
                         deviceId: this.device
-                    }
+                    };
                 } else {
-                    constraints.audio = true
+                    constraints.audio = true;
                 }
                 return this.getStream().createMicrophoneSource(constraints, (source) => {
-                    this.source = source
-                    this.source.connect(this.destination)
-                    return typeof cb === 'function' ? cb() : void 0
-                })
+                    this.source = source;
+                    this.source.connect(this.destination);
+                    return typeof cb === 'function' ? cb() : void 0;
+                });
             },
             play: function () {
-                this.prepare()
+                this.prepare();
 
                 return this.createSource(() => {
-                    this.playing = true
-                    this.paused = false
-                })
+                    this.playing = true;
+                    this.paused = false;
+                });
             },
             setDevices: function (devices) {
                 devices = _.filter(devices, function ({ kind, deviceId }) {
-                    return kind === 'audioinput'
-                })
+                    return kind === 'audioinput';
+                });
                 if (_.isEmpty(devices)) {
-                    return
+                    return;
                 }
 
-                this.devices = devices
-                this.device = _.first(devices).deviceId
+                this.devices = devices;
+                this.device = _.first(devices).deviceId;
             }
         }
-    }
+    };
 </script>

@@ -92,8 +92,8 @@
 </template>
 
 <script>
-    import track from './track.js'
-    import _ from 'lodash'
+    import track from './track.js';
+    import _ from 'lodash';
 
     export default {
         extends: track,
@@ -110,78 +110,78 @@
                 'isSeeking': false,
                 'seekPosition': 0,
                 'mixGainObj': null
-            }
+            };
         },
         computed: {
             lang_header () {
                 return (this.id === 'playlist_1')
                         ? this.$gettext('Playlist 1')
-                        : this.$gettext('Playlist 2')
+                        : this.$gettext('Playlist 2');
             },
             lang_unknown_title () {
-                return this.$gettext('Unknown Title')
+                return this.$gettext('Unknown Title');
             },
             lang_unknown_artist () {
-                return this.$gettext('Unknown Artist')
+                return this.$gettext('Unknown Artist');
             },
             positionPercent () {
-                return (100.0 * this.position / parseFloat(this.duration))
+                return (100.0 * this.position / parseFloat(this.duration));
             },
             seekingPosition () {
-                return (this.isSeeking) ? this.seekPosition : this.positionPercent
+                return (this.isSeeking) ? this.seekPosition : this.positionPercent;
             }
         },
         props: {
             id: String
         },
         mounted () {
-            this.mixGainObj = this.getStream().context.createGain()
-            this.mixGainObj.connect(this.getStream().webcast)
-            this.sink = this.mixGainObj
+            this.mixGainObj = this.getStream().context.createGain();
+            this.mixGainObj.connect(this.getStream().webcast);
+            this.sink = this.mixGainObj;
 
-            this.$root.$on('new-mixer-value', this.setMixGain)
-            this.$root.$on('new-cue', this.onNewCue)
+            this.$root.$on('new-mixer-value', this.setMixGain);
+            this.$root.$on('new-cue', this.onNewCue);
         },
         filters: {
             prettifyTime (time) {
                 if (typeof time === 'undefined') {
-                    return 'N/A'
+                    return 'N/A';
                 }
 
-                var hours = parseInt(time / 3600)
-                time %= 3600
-                var minutes = parseInt(time / 60)
-                var seconds = parseInt(time % 60)
+                var hours = parseInt(time / 3600);
+                time %= 3600;
+                var minutes = parseInt(time / 60);
+                var seconds = parseInt(time % 60);
 
                 if (minutes < 10) {
-                    minutes = '0' + minutes
+                    minutes = '0' + minutes;
                 }
                 if (seconds < 10) {
-                    seconds = '0' + seconds
+                    seconds = '0' + seconds;
                 }
 
                 if (hours > 0) {
-                    return hours + ':' + minutes + ':' + seconds
+                    return hours + ':' + minutes + ':' + seconds;
                 } else {
-                    return minutes + ':' + seconds
+                    return minutes + ':' + seconds;
                 }
             }
         },
         methods: {
             cue () {
-                this.resumeStream()
-                this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id)
+                this.resumeStream();
+                this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
             },
 
             onNewCue (new_cue) {
-                this.passThrough = (new_cue === this.id)
+                this.passThrough = (new_cue === this.id);
             },
 
             setMixGain (new_value) {
                 if (this.id === 'playlist_1') {
-                    this.mixGainObj.gain.value = 1.0 - new_value
+                    this.mixGainObj.gain.value = 1.0 - new_value;
                 } else {
-                    this.mixGainObj.gain.value = new_value
+                    this.mixGainObj.gain.value = new_value;
                 }
             },
 
@@ -192,115 +192,115 @@
                             file: file,
                             audio: data.audio,
                             metadata: data.metadata || { title: '', artist: '' }
-                        })
-                    })
-                })
+                        });
+                    });
+                });
             },
 
             play (options) {
-                this.resumeStream()
+                this.resumeStream();
 
                 if (this.paused) {
-                    this.togglePause()
-                    return
+                    this.togglePause();
+                    return;
                 }
 
-                this.stop()
+                this.stop();
 
                 if (!(this.file = this.selectFile(options))) {
-                    return
+                    return;
                 }
 
-                this.prepare()
+                this.prepare();
 
                 return this.getStream().createFileSource(this.file, this, (source) => {
-                    var ref1
-                    this.source = source
-                    this.source.connect(this.destination)
+                    var ref1;
+                    this.source = source;
+                    this.source.connect(this.destination);
                     if (this.source.duration != null) {
-                        this.duration = this.source.duration()
+                        this.duration = this.source.duration();
                     } else {
                         if (((ref1 = this.file.audio) != null ? ref1.length : void 0) != null) {
-                            this.duration = parseFloat(this.file.audio.length)
+                            this.duration = parseFloat(this.file.audio.length);
                         }
                     }
 
-                    this.source.play(this.file)
+                    this.source.play(this.file);
 
                     this.$root.$emit('metadata-update', {
                         title: this.file.metadata.title,
                         artist: this.file.metadata.artist
-                    })
+                    });
 
-                    this.playing = true
-                    this.paused = false
-                })
+                    this.playing = true;
+                    this.paused = false;
+                });
             },
 
             selectFile (options = {}) {
                 if (this.files.length === 0) {
-                    return
+                    return;
                 }
 
                 if (options.fileIndex) {
-                    this.fileIndex = options.fileIndex
+                    this.fileIndex = options.fileIndex;
                 } else {
-                    this.fileIndex += options.backward ? -1 : 1
+                    this.fileIndex += options.backward ? -1 : 1;
                     if (this.fileIndex < 0) {
-                        this.fileIndex = this.files.length - 1
+                        this.fileIndex = this.files.length - 1;
                     }
 
                     if (this.fileIndex >= this.files.length) {
                         if (options.isAutoPlay && !this.loop) {
-                            this.fileIndex = -1
-                            return
+                            this.fileIndex = -1;
+                            return;
                         }
 
                         if (this.fileIndex < 0) {
-                            this.fileIndex = this.files.length - 1
+                            this.fileIndex = this.files.length - 1;
                         } else {
-                            this.fileIndex = 0
+                            this.fileIndex = 0;
                         }
                     }
                 }
 
-                return this.files[this.fileIndex]
+                return this.files[this.fileIndex];
             },
 
             previous () {
                 if (!this.playing) {
-                    return
+                    return;
                 }
 
                 return this.play({
                     backward: true
-                })
+                });
             },
 
             next () {
                 if (!this.playing) {
-                    return
+                    return;
                 }
 
-                return this.play()
+                return this.play();
             },
 
             onEnd () {
-                this.stop()
+                this.stop();
 
                 if (this.playThrough) {
                     return this.play({
                         isAutoPlay: true
-                    })
+                    });
                 }
             },
 
             doSeek (e) {
                 if (this.isSeeking) {
-                    this.seekPosition = e.target.value
-                    this.seek(this.seekPosition / 100)
+                    this.seekPosition = e.target.value;
+                    this.seek(this.seekPosition / 100);
                 }
             }
         }
-    }
+    };
 </script>

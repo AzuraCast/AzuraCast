@@ -93,9 +93,9 @@
 </style>
 
 <script>
-    import axios from 'axios'
-    import store from 'store'
-    import _ from 'lodash'
+    import axios from 'axios';
+    import store from 'store';
+    import _ from 'lodash';
 
     export default {
         name: 'DataTable',
@@ -137,186 +137,186 @@
                 currentPage: 1,
                 totalRows: 0,
                 flushCache: false
-            }
+            };
         },
         mounted () {
-            this.loadStoredSettings()
+            this.loadStoredSettings();
         },
         computed: {
             langRefreshTooltip () {
-                return this.$gettext('Refresh rows')
+                return this.$gettext('Refresh rows');
             },
             langPerPageTooltip () {
-                return this.$gettext('Rows per page')
+                return this.$gettext('Rows per page');
             },
             langSelectFieldsTooltip () {
-                return this.$gettext('Select displayed fields')
+                return this.$gettext('Select displayed fields');
             },
             langSelectAll () {
-                return this.$gettext('Select all visible rows')
+                return this.$gettext('Select all visible rows');
             },
             langSelectRow () {
-                return this.$gettext('Select this row')
+                return this.$gettext('Select this row');
             },
             langSearch () {
-                return this.$gettext('Search')
+                return this.$gettext('Search');
             },
             visibleFields () {
-                let fields = this.fields.slice()
+                let fields = this.fields.slice();
 
                 if (this.selectable) {
-                    fields.unshift({ key: 'selected', label: '', sortable: false })
+                    fields.unshift({ key: 'selected', label: '', sortable: false });
                 }
 
                 if (!this.selectFields) {
-                    return fields
+                    return fields;
                 }
 
                 return _.filter(fields, (field) => {
-                    let isSelectable = _.defaultTo(field.selectable, false)
+                    let isSelectable = _.defaultTo(field.selectable, false);
                     if (!isSelectable) {
-                        return true
+                        return true;
                     }
 
-                    return _.defaultTo(field.visible, true)
-                })
+                    return _.defaultTo(field.visible, true);
+                });
             },
             selectableFields () {
                 return _.filter(this.fields.slice(), (field) => {
-                    return _.defaultTo(field.selectable, false)
-                })
+                    return _.defaultTo(field.selectable, false);
+                });
             },
             showPagination () {
-                return this.paginated && this.perPage !== 0
+                return this.paginated && this.perPage !== 0;
             },
             perPageLabel () {
-                return this.getPerPageLabel(this.perPage)
+                return this.getPerPageLabel(this.perPage);
             }
         },
         methods: {
             loadStoredSettings () {
                 if (store.enabled && store.get(this.storeKey) !== undefined) {
-                    let settings = store.get(this.storeKey)
+                    let settings = store.get(this.storeKey);
 
-                    this.perPage = _.defaultTo(settings.perPage, this.defaultPerPage)
+                    this.perPage = _.defaultTo(settings.perPage, this.defaultPerPage);
 
                     _.forEach(this.selectableFields, (field) => {
-                        field.visible = _.includes(settings.visibleFields, field.key)
-                    })
+                        field.visible = _.includes(settings.visibleFields, field.key);
+                    });
                 }
             },
             storeSettings () {
                 if (!store.enabled) {
-                    return
+                    return;
                 }
 
                 let settings = {
                     'perPage': this.perPage,
                     'visibleFields': _.map(this.visibleFields, 'key')
-                }
-                store.set(this.storeKey, settings)
+                };
+                store.set(this.storeKey, settings);
             },
             getPerPageLabel (num) {
-                return (num === 0) ? 'All' : num.toString()
+                return (num === 0) ? 'All' : num.toString();
             },
             setPerPage (num) {
-                this.perPage = num
-                this.storeSettings()
+                this.perPage = num;
+                this.storeSettings();
             },
             onClickRefresh (e) {
                 if (e.shiftKey) {
-                    this.relist()
+                    this.relist();
                 } else {
-                    this.refresh()
+                    this.refresh();
                 }
             },
             onRefreshed () {
-                this.$emit('refreshed')
+                this.$emit('refreshed');
             },
             refresh () {
-                this.$refs.table.refresh()
+                this.$refs.table.refresh();
             },
             navigate () {
-                this.filter = null
-                this.currentPage = 1
-                this.flushCache = true
-                this.refresh()
+                this.filter = null;
+                this.currentPage = 1;
+                this.flushCache = true;
+                this.refresh();
             },
             relist () {
-                this.filter = null
-                this.flushCache = true
-                this.refresh()
+                this.filter = null;
+                this.flushCache = true;
+                this.refresh();
             },
             setFilter (newTerm) {
-                this.currentPage = 1
-                this.filter = newTerm
+                this.currentPage = 1;
+                this.filter = newTerm;
             },
             loadItems (ctx, callback) {
-                let queryParams = {}
+                let queryParams = {};
 
                 if (this.paginated) {
-                    queryParams.rowCount = ctx.perPage
-                    queryParams.current = ctx.currentPage
+                    queryParams.rowCount = ctx.perPage;
+                    queryParams.current = ctx.currentPage;
                 }
 
                 if (this.flushCache) {
-                    queryParams.flushCache = true
+                    queryParams.flushCache = true;
                 }
 
                 if (typeof ctx.filter === 'string') {
-                    queryParams.searchPhrase = ctx.filter
+                    queryParams.searchPhrase = ctx.filter;
                 }
 
                 if ('' !== ctx.sortBy) {
-                    queryParams.sort = ctx.sortBy
-                    queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC'
+                    queryParams.sort = ctx.sortBy;
+                    queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC';
                 }
 
-                let requestConfig = { params: queryParams }
+                let requestConfig = { params: queryParams };
                 if (typeof this.requestConfig === 'function') {
-                    requestConfig = this.requestConfig(requestConfig)
+                    requestConfig = this.requestConfig(requestConfig);
                 }
 
                 axios.get(ctx.apiUrl, requestConfig).then((resp) => {
-                    this.flushCache = false
-                    this.totalRows = resp.data.total
+                    this.flushCache = false;
+                    this.totalRows = resp.data.total;
 
-                    let rows = resp.data.rows
+                    let rows = resp.data.rows;
                     if (typeof this.requestProcess === 'function') {
-                        rows = this.requestProcess(rows)
+                        rows = this.requestProcess(rows);
                     }
 
-                    callback(rows)
+                    callback(rows);
                 }).catch((err) => {
-                    this.flushCache = false
-                    this.totalRows = 0
+                    this.flushCache = false;
+                    this.totalRows = 0;
 
-                    console.error(err.data.message)
-                    callback([])
-                })
+                    console.error(err.data.message);
+                    callback([]);
+                });
             },
             onRowSelected (items) {
                 if (this.perPage === 0) {
-                    this.allSelected = items.length === this.totalRows
+                    this.allSelected = items.length === this.totalRows;
                 } else {
-                    this.allSelected = items.length === this.perPage
+                    this.allSelected = items.length === this.perPage;
                 }
 
-                this.selected = items
-                this.$emit('row-selected', items)
+                this.selected = items;
+                this.$emit('row-selected', items);
             },
             toggleSelected () {
                 if (this.allSelected) {
-                    this.$refs.table.clearSelected()
-                    this.allSelected = false
+                    this.$refs.table.clearSelected();
+                    this.allSelected = false;
                 } else {
-                    this.$refs.table.selectAllRows()
-                    this.allSelected = true
+                    this.$refs.table.selectAllRows();
+                    this.allSelected = true;
                 }
             },
             onFiltered (filter) {
-                this.$emit('filtered', filter)
+                this.$emit('filtered', filter);
             }
         }
-    }
+    };
 </script>

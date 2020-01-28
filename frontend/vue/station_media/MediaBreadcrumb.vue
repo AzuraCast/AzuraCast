@@ -16,32 +16,32 @@
         },
         computed: {
             directoryParts () {
-                let dirParts = []
+                let dirParts = [];
 
                 if (this.currentDirectory === '') {
-                    return dirParts
+                    return dirParts;
                 }
 
-                let builtDir = ''
-                let dirSegments = this.currentDirectory.split('/')
+                let builtDir = '';
+                let dirSegments = this.currentDirectory.split('/');
 
                 dirSegments.forEach((part) => {
                     if (builtDir === '') {
-                        builtDir += part
+                        builtDir += part;
                     } else {
-                        builtDir += '/' + part
+                        builtDir += '/' + part;
                     }
 
-                    dirParts.push({ dir: builtDir, display: part })
-                })
+                    dirParts.push({ dir: builtDir, display: part });
+                });
 
-                return dirParts
+                return dirParts;
             }
         },
         methods: {
             changeDirectory (newDir) {
-                this.$emit('change-directory', newDir)
+                this.$emit('change-directory', newDir);
             }
         }
-    }
+    };
 </script>

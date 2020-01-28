@@ -391,6 +391,10 @@ return function (App $app) {
 
             })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+            $group->get('/streamer/{id}/broadcasts', Controller\Api\Stations\StreamersController::class.':broadcastsAction')
+                ->setName('api:stations:streamer:broadcasts')
+                ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
+
             $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                 ->setName('api:stations:status')
                 ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));

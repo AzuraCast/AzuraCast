@@ -143,7 +143,7 @@ class StationStreamer
      */
     public function getStreamerPassword(): string
     {
-        return $this->streamer_password;
+        return '';
     }
 
     /**

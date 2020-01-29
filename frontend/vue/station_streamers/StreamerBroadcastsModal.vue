@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="streamer_broadcasts" size="xl" centered ref="modal" :title="langHeader">
+    <b-modal id="streamer_broadcasts" size="lg" centered ref="modal" :title="langHeader">
         <template v-if="listUrl">
             <data-table ref="datatable" id="station_streamer_broadcasts" :show-toolbar="false"
                         :fields="fields" :api-url="listUrl">

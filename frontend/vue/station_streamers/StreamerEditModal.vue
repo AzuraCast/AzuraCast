@@ -9,7 +9,7 @@
                         <template v-slot:description>
                             <translate>Enable to allow this account to log in and stream.</translate>
                         </template>
-                        <b-form-checkbox id="form_edit_is_active" v-model="form.is_active.$model">
+                        <b-form-checkbox id="form_edit_is_active" v-model="$v.form.is_active.$model">
                             <translate>Account is Active</translate>
                         </b-form-checkbox>
                     </b-form-group>
@@ -22,8 +22,8 @@
                         <template v-slot:description>
                             <translate>The streamer will use this username to connect to the radio server.</translate>
                         </template>
-                        <b-form-input type="text" id="edit_form_streamer_username" v-model="form.streamer_username.$model"
-                                      :state="form.streamer_username.$dirty ? !form.streamer_username.$error : null"></b-form-input>
+                        <b-form-input type="text" id="edit_form_streamer_username" v-model="$v.form.streamer_username.$model"
+                                      :state="$v.form.streamer_username.$dirty ? !$v.form.streamer_username.$error : null"></b-form-input>
                         <b-form-invalid-feedback>
                             <translate>This field is required.</translate>
                         </b-form-invalid-feedback>
@@ -35,8 +35,8 @@
                         <template v-slot:description>
                             <translate>The streamer will use this password to connect to the radio server.</translate>
                         </template>
-                        <b-form-input type="password" id="edit_form_streamer_password" v-model="form.streamer_password.$model"
-                                      :state="form.streamer_password.$dirty ? !form.streamer_password.$error : null"></b-form-input>
+                        <b-form-input type="password" id="edit_form_streamer_password" v-model="$v.form.streamer_password.$model"
+                                      :state="$v.form.streamer_password.$dirty ? !$v.form.streamer_password.$error : null"></b-form-input>
                         <b-form-invalid-feedback>
                             <translate>This field is required.</translate>
                         </b-form-invalid-feedback>
@@ -50,8 +50,8 @@
                         <template v-slot:description>
                             <translate>This is the informal display name that will be shown in API responses if the streamer/DJ is live.</translate>
                         </template>
-                        <b-form-input type="text" id="edit_form_display_name" v-model="form.display_name.$model"
-                                      :state="form.display_name.$dirty ? !form.display_name.$error : null"></b-form-input>
+                        <b-form-input type="text" id="edit_form_display_name" v-model="$v.form.display_name.$model"
+                                      :state="$v.form.display_name.$dirty ? !$v.form.display_name.$error : null"></b-form-input>
                         <b-form-invalid-feedback>
                             <translate>This field is required.</translate>
                         </b-form-invalid-feedback>
@@ -63,8 +63,8 @@
                         <template v-slot:description>
                             <translate>Internal notes or comments about the user, visible only on this control panel.</translate>
                         </template>
-                        <b-form-textarea id="edit_form_comments" v-model="form.comments.$model"
-                                         :state="form.comments.$dirty ? !form.comments.$error : null"></b-form-textarea>
+                        <b-form-textarea id="edit_form_comments" v-model="$v.form.comments.$model"
+                                         :state="$v.form.comments.$dirty ? !$v.form.comments.$error : null"></b-form-textarea>
                         <b-form-invalid-feedback>
                             <translate>This field is required.</translate>
                         </b-form-invalid-feedback>
@@ -143,7 +143,17 @@
                 this.$refs.modal.show();
 
                 axios.get(this.editUrl).then((resp) => {
-                    this.form = resp.data;
+
+                    let d = resp.data;
+
+                    this.form = {
+                        'streamer_username': d.streamer_username,
+                        'streamer_password': null,
+                        'display_name': d.display_name,
+                        'comments': d.comments,
+                        'is_active': d.is_active
+                    };
+
                     this.loading = false;
                 }).catch((err) => {
                     console.log(err);

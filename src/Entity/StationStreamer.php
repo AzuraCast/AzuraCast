@@ -2,7 +2,6 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,7 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
- * @ORM\Table(name="station_streamers")
+ * @ORM\Table(name="station_streamers", uniqueConstraints={
+ *   @ORM\UniqueConstraint(name="username_unique_idx", columns={"station_id", "streamer_username"})
+ * })
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *
@@ -57,9 +58,9 @@ class StationStreamer
     protected $streamer_username;
 
     /**
-     * @ORM\Column(name="streamer_password", type="string", length=50, nullable=false)
+     * @ORM\Column(name="streamer_password", type="string", length=255, nullable=false)
      *
-     * @AppAssert\StreamerPassword()
+     * @Assert\NotBlank()
      * @OA\Property(example="")
      * @var string
      */
@@ -133,7 +134,7 @@ class StationStreamer
     /**
      * @param string $streamer_username
      */
-    public function setStreamerUsername(string $streamer_username)
+    public function setStreamerUsername(string $streamer_username): void
     {
         $this->streamer_username = $this->_truncateString($streamer_username, 50);
     }
@@ -147,11 +148,20 @@ class StationStreamer
     }
 
     /**
-     * @param string $streamer_password
+     * @param string|null $streamer_password
      */
-    public function setStreamerPassword(string $streamer_password)
+    public function setStreamerPassword(?string $streamer_password): void
     {
-        $this->streamer_password = $this->_truncateString($streamer_password, 50);
+        $streamer_password = trim($streamer_password);
+
+        if (!empty($streamer_password)) {
+            $this->streamer_password = password_hash($streamer_password, \PASSWORD_ARGON2ID);
+        }
+    }
+
+    public function authenticate(string $password): bool
+    {
+        return password_verify($password, $this->streamer_password);
     }
 
     /**
@@ -185,7 +195,7 @@ class StationStreamer
     /**
      * @param null|string $comments
      */
-    public function setComments(string $comments = null)
+    public function setComments(string $comments = null): void
     {
         $this->comments = $comments;
     }
@@ -201,7 +211,7 @@ class StationStreamer
     /**
      * @param bool $is_active
      */
-    public function setIsActive(bool $is_active)
+    public function setIsActive(bool $is_active): void
     {
         $this->is_active = $is_active;
 
@@ -222,7 +232,7 @@ class StationStreamer
     /**
      * @param int|null $reactivate_at
      */
-    public function setReactivateAt(?int $reactivate_at)
+    public function setReactivateAt(?int $reactivate_at): void
     {
         $this->reactivate_at = $reactivate_at;
     }
@@ -232,7 +242,7 @@ class StationStreamer
      *
      * @param int $seconds
      */
-    public function deactivateFor(int $seconds)
+    public function deactivateFor(int $seconds): void
     {
         $this->is_active = false;
         $this->reactivate_at = time() + $seconds;

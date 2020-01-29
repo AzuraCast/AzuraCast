@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-card no-body>
-            <b-card-header>
+            <b-card-header header-bg-variant="primary-dark">
                 <h2 class="card-title" v-translate>Streamer/DJ Accounts</h2>
             </b-card-header>
             <b-card-body body-class="card-padding-sm">
@@ -12,7 +12,7 @@
             </b-card-body>
 
             <div class="table-responsive table-responsive-lg">
-                <data-table ref="datatable" id="station_streamers" paginated :fields="fields"
+                <data-table ref="datatable" id="station_streamers" :show-toolbar="false" :fields="fields"
                             :api-url="listUrl">
                     <template v-slot:cell(actions)="row">
                         <b-button-group size="sm">

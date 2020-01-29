@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-card no-body>
-            <b-card-header>
+            <b-card-header header-bg-variant="primary-dark">
                 <b-row class="align-items-center">
                     <b-col md="6">
                         <h2 class="card-title" v-translate>Playlists</h2>

@@ -13,6 +13,7 @@ class StationStreamerRepository extends Repository
      * @param Entity\Station $station
      * @param string $username
      * @param string $password
+     *
      * @return bool
      */
     public function authenticate(
@@ -30,7 +31,7 @@ class StationStreamerRepository extends Repository
             return false;
         }
 
-        return strcmp($streamer->getStreamerPassword(), $password) === 0;
+        return $streamer->authenticate($password);
     }
 
     /**
@@ -67,7 +68,7 @@ class StationStreamerRepository extends Repository
                 $this->em->persist($record);
                 $this->em->flush();
 
-                return $station->getRadioRecordingsDir().'/'.$recordingPath;
+                return $station->getRadioRecordingsDir() . '/' . $recordingPath;
             }
         }
 

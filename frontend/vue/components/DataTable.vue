@@ -53,6 +53,7 @@
 
         <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                  :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
+                 :empty-text="langNoRecords" :empty-filtered-text="langNoRecords"
                  tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                  :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
             <template v-slot:head(selected)="data">
@@ -64,6 +65,27 @@
                     <template v-if="rowSelected">check_box</template>
                     <template v-else>check_box_outline_blank</template>
                 </i>
+            </template>
+            <template v-slot:table-busy>
+                <div role="alert" aria-live="polite">
+                    <div class="text-center my-2">
+                        <div class="progress-circular progress-circular-primary mx-auto mb-3">
+                            <div class="progress-circular-wrapper">
+                                <div class="progress-circular-inner">
+                                    <div class="progress-circular-left">
+                                        <div class="progress-circular-spinner"></div>
+                                    </div>
+                                    <div class="progress-circular-gap"></div>
+                                    <div class="progress-circular-right">
+                                        <div class="progress-circular-spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ langLoading }}
+                    </div>
+                </div>
             </template>
             <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
             <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
@@ -160,6 +182,12 @@
             },
             langSearch () {
                 return this.$gettext('Search');
+            },
+            langNoRecords () {
+                return this.$gettext('No records to display.');
+            },
+            langLoading () {
+                return this.$gettext('Loading...');
             },
             visibleFields () {
                 let fields = this.fields.slice();

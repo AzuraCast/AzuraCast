@@ -3,6 +3,7 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 
 class ReactivateStreamer extends AbstractTask
 {
@@ -11,11 +12,12 @@ class ReactivateStreamer extends AbstractTask
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
         Entity\Repository\StationStreamerRepository $streamerRepo
     ) {
-        $this->streamerRepo = $streamerRepo;
+        parent::__construct($em, $settingsRepo, $logger);
 
-        parent::__construct($em, $settingsRepo);
+        $this->streamerRepo = $streamerRepo;
     }
 
     public function run($force = false): void

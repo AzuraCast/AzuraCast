@@ -36,8 +36,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected MessageQueue $message_queue;
 
-    protected Logger $logger;
-
     protected ApiUtilities $api_utils;
 
     protected Entity\Repository\SongHistoryRepository $history_repo;
@@ -64,7 +62,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Repository\ListenerRepository $listenerRepository,
         Entity\Repository\SettingsRepository $settingsRepository
     ) {
-        parent::__construct($em, $settingsRepository);
+        parent::__construct($em, $settingsRepository, $logger);
 
         $this->adapters = $adapters;
         $this->api_utils = $api_utils;
@@ -73,7 +71,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->event_dispatcher = $event_dispatcher;
         $this->message_queue = $message_queue;
         $this->influx = $influx;
-        $this->logger = $logger;
 
         $this->history_repo = $historyRepository;
         $this->song_repo = $songRepository;

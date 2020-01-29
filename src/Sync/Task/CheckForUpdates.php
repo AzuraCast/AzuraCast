@@ -4,9 +4,9 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Service\AzuraCastCentral;
 use App\Settings;
-use Azura\Logger;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Exception\TransferException;
+use Psr\Log\LoggerInterface;
 
 class CheckForUpdates extends AbstractTask
 {
@@ -17,22 +17,21 @@ class CheckForUpdates extends AbstractTask
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
         AzuraCastCentral $azuracastCentral
     ) {
-        parent::__construct($em, $settingsRepo);
+        parent::__construct($em, $settingsRepo, $logger);
 
         $this->azuracastCentral = $azuracastCentral;
     }
 
     public function run($force = false): void
     {
-        $logger = Logger::getInstance();
-
         if (!$force) {
             $update_last_run = (int)$this->settingsRepo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);
 
             if ($update_last_run > (time() - self::UPDATE_THRESHOLD)) {
-                $logger->debug('Not checking for updates; checked too recently.');
+                $this->logger->debug('Not checking for updates; checked too recently.');
                 return;
             }
         }
@@ -41,7 +40,7 @@ class CheckForUpdates extends AbstractTask
             Entity\Settings::UPDATES_RELEASE_ONLY);
 
         if (Entity\Settings::UPDATES_NONE === $check_for_updates || Settings::getInstance()->isTesting()) {
-            $logger->info('Update checks are currently disabled for this AzuraCast instance.');
+            $this->logger->info('Update checks are currently disabled for this AzuraCast instance.');
             return;
         }
 
@@ -50,12 +49,12 @@ class CheckForUpdates extends AbstractTask
 
             if (!empty($updates)) {
                 $this->settingsRepo->setSetting(Entity\Settings::UPDATE_RESULTS, $updates);
-                $logger->info('Successfully checked for updates.', ['results' => $updates]);
+                $this->logger->info('Successfully checked for updates.', ['results' => $updates]);
             } else {
-                $logger->error('Error parsing update data response from AzuraCast central.');
+                $this->logger->error('Error parsing update data response from AzuraCast central.');
             }
         } catch (TransferException $e) {
-            $logger->error(sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage()));
             return;
         }
 

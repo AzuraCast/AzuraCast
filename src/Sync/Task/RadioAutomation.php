@@ -4,10 +4,10 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Radio\Adapters;
 use Azura\Exception;
-use Azura\Logger;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
+use Psr\Log\LoggerInterface;
 
 class RadioAutomation extends AbstractTask
 {
@@ -20,10 +20,11 @@ class RadioAutomation extends AbstractTask
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Adapters $adapters
     ) {
-        parent::__construct($em, $settingsRepo);
+        parent::__construct($em, $settingsRepo, $logger);
 
         $this->mediaRepo = $mediaRepo;
         $this->adapters = $adapters;
@@ -39,18 +40,16 @@ class RadioAutomation extends AbstractTask
         // Check all stations for automation settings.
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
-        $logger = Logger::getInstance();
-
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
             try {
                 if ($this->runStation($station)) {
-                    $logger->info('Automated assignment [' . $station->getName() . ']: Successfully run.');
+                    $this->logger->info('Automated assignment [' . $station->getName() . ']: Successfully run.');
                 } else {
-                    $logger->info('Automated assignment [' . $station->getName() . ']: Skipped.');
+                    $this->logger->info('Automated assignment [' . $station->getName() . ']: Skipped.');
                 }
             } catch (Exception $e) {
-                $logger->error('Automated assignment [' . $station->getName() . ']: Error: ' . $e->getMessage());
+                $this->logger->error('Automated assignment [' . $station->getName() . ']: Error: ' . $e->getMessage());
             }
         }
     }

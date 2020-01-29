@@ -214,19 +214,19 @@
                 { value: 3, text: '3 - ' + this.$gettext('Default') },
                 { value: 4, text: '4' },
                 { value: 5, text: '5 - ' + this.$gettext('High') }
-            ]
+            ];
             for (var i = 6; i <= 25; i++) {
-                weightOptions.push({ value: i, text: i })
+                weightOptions.push({ value: i, text: i });
             }
 
             return {
                 weightOptions: weightOptions
-            }
+            };
         },
         computed: {
             langTabTitle () {
-                return this.$gettext('Basic Info')
+                return this.$gettext('Basic Info');
             }
         }
-    }
+    };
 </script>

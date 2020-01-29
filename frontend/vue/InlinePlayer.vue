@@ -41,8 +41,8 @@
 </style>
 
 <script>
-    import store from 'store'
-    import getLogarithmicVolume from './inc/logarithmic_volume'
+    import store from 'store';
+    import getLogarithmicVolume from './inc/logarithmic_volume';
 
     export default {
         data () {
@@ -50,88 +50,88 @@
                 'isPlaying': false,
                 'volume': 55,
                 'audio': null
-            }
+            };
         },
         created () {
             // Allow pausing from the mobile metadata update.
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.setActionHandler('pause', () => {
-                    this.stop()
-                })
+                    this.stop();
+                });
             }
 
             // Check webstorage for existing volume preference.
             if (store.enabled && store.get('player_volume') !== undefined) {
-                this.volume = store.get('player_volume', this.volume)
+                this.volume = store.get('player_volume', this.volume);
             }
 
             this.$eventHub.$on('player_toggle', (url) => {
                 if (this.isPlaying && this.audio.src === url) {
-                    this.stop()
+                    this.stop();
                 } else {
-                    this.stop()
+                    this.stop();
                     Vue.nextTick(() => {
-                        this.play(url)
-                    })
+                        this.play(url);
+                    });
                 }
-            })
+            });
         },
         computed: {
             lang_volume () {
-                return this.$gettext('Volume')
+                return this.$gettext('Volume');
             }
         },
         watch: {
             volume (volume) {
                 if (this.audio !== null) {
-                    this.audio.volume = getLogarithmicVolume(volume)
+                    this.audio.volume = getLogarithmicVolume(volume);
                 }
 
                 if (store.enabled) {
-                    store.set('player_volume', volume)
+                    store.set('player_volume', volume);
                 }
             }
         },
         methods: {
             play (url) {
                 if (this.isPlaying) {
-                    this.stop()
+                    this.stop();
                     Vue.nextTick(() => {
-                        this.play(url)
-                    })
+                        this.play(url);
+                    });
                 }
 
-                this.isPlaying = true
+                this.isPlaying = true;
 
                 Vue.nextTick(() => {
-                    this.audio = this.$refs.player
+                    this.audio = this.$refs.player;
 
                     this.audio.onended = () => {
-                        this.stop()
-                    }
+                        this.stop();
+                    };
 
-                    this.audio.volume = getLogarithmicVolume(this.volume)
+                    this.audio.volume = getLogarithmicVolume(this.volume);
 
-                    this.audio.src = url
+                    this.audio.src = url;
 
-                    this.audio.load()
-                    this.audio.play()
-                })
+                    this.audio.load();
+                    this.audio.play();
+                });
 
-                this.$eventHub.$emit('player_playing', url)
+                this.$eventHub.$emit('player_playing', url);
             },
             stop () {
                 if (!this.isPlaying) {
-                    return
+                    return;
                 }
 
-                this.$eventHub.$emit('player_stopped', this.audio.src)
+                this.$eventHub.$emit('player_stopped', this.audio.src);
 
-                this.audio.pause()
-                this.audio.src = ''
+                this.audio.pause();
+                this.audio.src = '';
 
-                this.isPlaying = false
+                this.isPlaying = false;
             }
         }
-    }
+    };
 </script>

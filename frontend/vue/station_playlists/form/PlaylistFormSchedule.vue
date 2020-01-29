@@ -114,7 +114,7 @@
 </template>
 
 <script>
-    import PlaylistTime from '../../components/PlaylistTime'
+    import PlaylistTime from '../../components/PlaylistTime';
 
     export default {
         name: 'PlaylistEditSchedule',
@@ -135,11 +135,11 @@
                     { value: 6, text: this.$gettext('Saturday') },
                     { value: 7, text: this.$gettext('Sunday') }
                 ]
-            }
+            };
         },
         computed: {
             langTabTitle () {
-                return this.$gettext('Schedule')
+                return this.$gettext('Schedule');
             }
         },
         methods: {
@@ -150,11 +150,11 @@
                     start_date: null,
                     end_date: null,
                     days: []
-                })
+                });
             },
             remove (index) {
-                this.scheduleItems.splice(index, 1)
+                this.scheduleItems.splice(index, 1);
             }
         }
-    }
+    };
 </script>

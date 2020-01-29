@@ -21,14 +21,14 @@
     </b-modal>
 </template>
 <script>
-    import { validationMixin } from 'vuelidate'
-    import axios from 'axios'
-    import required from 'vuelidate/src/validators/required'
-    import _ from 'lodash'
-    import MediaFormBasicInfo from './form/MediaFormBasicInfo'
-    import MediaFormAlbumArt from './form/MediaFormAlbumArt'
-    import MediaFormCustomFields from './form/MediaFormCustomFields'
-    import MediaFormAdvancedSettings from './form/MediaFormAdvancedSettings'
+    import { validationMixin } from 'vuelidate';
+    import axios from 'axios';
+    import required from 'vuelidate/src/validators/required';
+    import _ from 'lodash';
+    import MediaFormBasicInfo from './form/MediaFormBasicInfo';
+    import MediaFormAlbumArt from './form/MediaFormAlbumArt';
+    import MediaFormCustomFields from './form/MediaFormCustomFields';
+    import MediaFormAdvancedSettings from './form/MediaFormAdvancedSettings';
 
     export default {
         name: 'EditModal',
@@ -44,7 +44,7 @@
                 albumArtUrl: null,
                 songLength: null,
                 form: this.getBlankForm()
-            }
+            };
         },
         validations: {
             form: {
@@ -67,16 +67,16 @@
         },
         computed: {
             langTitle () {
-                return this.$gettext('Edit Media')
+                return this.$gettext('Edit Media');
             }
         },
         methods: {
             getBlankForm () {
-                let customFields = {}
+                let customFields = {};
 
                 _.forEach(this.customFields.slice(), (field) => {
-                    customFields[field.key] = null
-                })
+                    customFields[field.key] = null;
+                });
 
                 return {
                     path: null,
@@ -92,19 +92,19 @@
                     cue_in: null,
                     cue_out: null,
                     custom_fields: customFields
-                }
+                };
             },
             open (recordUrl, albumArtUrl) {
-                this.loading = true
-                this.$refs.modal.show()
+                this.loading = true;
+                this.$refs.modal.show();
 
-                this.albumArtUrl = albumArtUrl
-                this.recordUrl = recordUrl
+                this.albumArtUrl = albumArtUrl;
+                this.recordUrl = recordUrl;
 
                 axios.get(recordUrl).then((resp) => {
-                    let d = resp.data
+                    let d = resp.data;
 
-                    this.songLength = d.length_text
+                    this.songLength = d.length_text;
                     this.form = {
                         path: d.path,
                         title: d.title,
@@ -119,49 +119,49 @@
                         cue_in: d.cue_in,
                         cue_out: d.cue_out,
                         custom_fields: {}
-                    }
+                    };
 
                     _.forEach(this.customFields.slice(), (field) => {
-                        this.form.custom_fields[field.key] = _.defaultTo(d.custom_fields[field.key], null)
-                    })
+                        this.form.custom_fields[field.key] = _.defaultTo(d.custom_fields[field.key], null);
+                    });
 
-                    this.loading = false
+                    this.loading = false;
                 }).catch((err) => {
-                    console.log(err)
-                    this.close()
-                })
+                    console.log(err);
+                    this.close();
+                });
             },
             close () {
-                this.loading = false
-                this.albumArtUrl = null
+                this.loading = false;
+                this.albumArtUrl = null;
 
-                this.form = this.getBlankForm()
+                this.form = this.getBlankForm();
 
-                this.$v.form.$reset()
-                this.$refs.modal.hide()
+                this.$v.form.$reset();
+                this.$refs.modal.hide();
             },
             doEdit () {
-                this.$v.form.$touch()
+                this.$v.form.$touch();
                 if (this.$v.form.$anyError) {
-                    return
+                    return;
                 }
 
                 axios.put(this.recordUrl, this.form).then((resp) => {
-                    let notifyMessage = this.$gettext('Changes saved.')
-                    notify('<b>' + notifyMessage + '</b>', 'success', false)
+                    let notifyMessage = this.$gettext('Changes saved.');
+                    notify('<b>' + notifyMessage + '</b>', 'success', false);
 
-                    this.$emit('relist')
-                    this.close()
+                    this.$emit('relist');
+                    this.close();
                 }).catch((err) => {
-                    console.error(err)
+                    console.error(err);
 
-                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.')
-                    notify('<b>' + notifyMessage + '</b>', 'danger', false)
+                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                    notify('<b>' + notifyMessage + '</b>', 'danger', false);
 
-                    this.$emit('relist')
-                    this.close()
-                })
+                    this.$emit('relist');
+                    this.close();
+                });
             }
         }
-    }
+    };
 </script>

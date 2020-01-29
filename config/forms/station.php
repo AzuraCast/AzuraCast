@@ -1,5 +1,6 @@
 <?php
 use App\Entity\Station;
+use App\Entity\StationMountInterface;
 use App\Radio\Adapters;
 
 $frontends = Adapters::listFrontendAdapters(true);
@@ -309,7 +310,55 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
-                        'form_group_class' => 'col-md-8',
+                        'form_group_class' => 'col-md-12',
+                    ]
+                ],
+
+                'record_streams' => [
+                    'toggle',
+                    [
+                        'label' => __('Record Live Broadcasts'),
+                        'description' => __('If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                        'belongsTo' => 'backend_config',
+                        'form_group_class' => 'col-md-4',
+                    ]
+                ],
+
+                'record_streams_format' => [
+                    'radio',
+                    [
+                        'label' => __('Live Broadcast Recording Format'),
+                        'choices' => [
+                            StationMountInterface::FORMAT_MP3 => 'MP3',
+                            StationMountInterface::FORMAT_OGG => 'OGG Vorbis',
+                            StationMountInterface::FORMAT_OPUS => 'OGG Opus',
+                            StationMountInterface::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
+                        ],
+                        'belongsTo' => 'backend_config',
+                        'form_group_class' => 'col-md-4',
+                    ]
+                ],
+
+                'record_streams_bitrate' => [
+                    'radio',
+                    [
+                        'label' => __('Live Broadcast Recording Bitrate (kbps)'),
+                        'choices' => [
+                            32 => '32',
+                            48 => '48',
+                            64 => '64',
+                            96 => '96',
+                            128 => '128',
+                            192 => '192',
+                            256 => '256',
+                            320 => '320',
+                        ],
+                        'default' => 128,
+                        'belongsTo' => 'backend_config',
+                        'form_group_class' => 'col-md-4',
                     ]
                 ],
 

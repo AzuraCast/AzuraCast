@@ -130,8 +130,8 @@
         },
         computed: {
             langTabTitle () {
-                return this.$gettext('Source')
+                return this.$gettext('Source');
             }
         }
-    }
+    };
 </script>

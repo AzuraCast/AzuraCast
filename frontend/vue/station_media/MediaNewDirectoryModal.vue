@@ -23,9 +23,9 @@
     </b-modal>
 </template>
 <script>
-    import { validationMixin } from 'vuelidate'
-    import { required } from 'vuelidate/lib/validators'
-    import axios from 'axios'
+    import { validationMixin } from 'vuelidate';
+    import { required } from 'vuelidate/lib/validators';
+    import axios from 'axios';
 
     export default {
         name: 'NewDirectoryModal',
@@ -37,7 +37,7 @@
         data () {
             return {
                 newDirectory: null
-            }
+            };
         },
         validations: {
             newDirectory: {
@@ -46,40 +46,40 @@
         },
         computed: {
             langNewDirectory () {
-                return this.$gettext('New Directory')
+                return this.$gettext('New Directory');
             }
         },
         methods: {
             close () {
-                this.newDirectory = null
-                this.$v.$reset()
-                this.$refs.modal.hide()
+                this.newDirectory = null;
+                this.$v.$reset();
+                this.$refs.modal.hide();
             },
             doMkdir () {
-                this.$v.$touch()
+                this.$v.$touch();
                 if (this.$v.$anyError) {
-                    return
+                    return;
                 }
 
                 axios.post(this.mkdirUrl, {
                     name: this.newDirectory,
                     file: this.currentDirectory
                 }).then((resp) => {
-                    let notifyMessage = this.$gettext('New directory created.')
-                    notify('<b>' + notifyMessage + '</b>', 'success', false)
+                    let notifyMessage = this.$gettext('New directory created.');
+                    notify('<b>' + notifyMessage + '</b>', 'success', false);
 
-                    this.$emit('relist')
-                    this.close()
+                    this.$emit('relist');
+                    this.close();
                 }).catch((err) => {
-                    console.error(err)
+                    console.error(err);
 
-                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.')
-                    notify('<b>' + notifyMessage + '</b>', 'danger', false)
+                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                    notify('<b>' + notifyMessage + '</b>', 'danger', false);
 
-                    this.$emit('relist')
-                    this.close()
-                })
+                    this.$emit('relist');
+                    this.close();
+                });
             }
         }
-    }
+    };
 </script>

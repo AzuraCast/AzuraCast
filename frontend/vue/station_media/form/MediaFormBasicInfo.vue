@@ -66,8 +66,8 @@
         },
         computed: {
             langTitle () {
-                return this.$gettext('Basic Information')
+                return this.$gettext('Basic Information');
             }
         }
-    }
+    };
 </script>

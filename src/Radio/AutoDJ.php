@@ -19,6 +19,8 @@ class AutoDJ implements EventSubscriberInterface
 
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
+    protected Entity\Repository\StationStreamerRepository $streamerRepo;
+
     protected EventDispatcher $dispatcher;
 
     protected Filesystem $filesystem;
@@ -29,6 +31,7 @@ class AutoDJ implements EventSubscriberInterface
         EntityManager $em,
         Entity\Repository\SongRepository $songRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        Entity\Repository\StationStreamerRepository $streamerRepo,
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
         Logger $logger
@@ -36,6 +39,7 @@ class AutoDJ implements EventSubscriberInterface
         $this->em = $em;
         $this->songRepo = $songRepo;
         $this->spmRepo = $spmRepo;
+        $this->streamerRepo = $streamerRepo;
         $this->dispatcher = $dispatcher;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
@@ -119,8 +123,7 @@ class AutoDJ implements EventSubscriberInterface
             }
 
             // The "get next song" function is only called when a streamer is not live
-            $station->setIsStreamerLive(false);
-            $this->em->persist($station);
+            $this->streamerRepo->onDisconnect($station);
 
             $this->em->flush();
         }

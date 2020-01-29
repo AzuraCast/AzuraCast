@@ -256,6 +256,11 @@ var vueProjects = {
     'src_file': 'vue/StationPlaylists.vue',
     'filename': 'station_playlists.js',
     'library': 'StationPlaylist'
+  },
+  'station_streamers': {
+    'src_file': 'vue/StationStreamers.vue',
+    'filename': 'station_streamers.js',
+    'library': 'StationStreamers'
   }
 }
 

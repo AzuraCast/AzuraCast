@@ -191,10 +191,12 @@ class StationRepository extends Repository
         // Scan directory for any existing files.
         set_time_limit(600);
         $this->media_sync->importMusic($station);
-        $this->em->refresh($station);
+
+        $station = $this->em->find(Entity\Station::class, $station->getId());
 
         $this->media_sync->importPlaylists($station);
-        $this->em->refresh($station);
+
+        $station = $this->em->find(Entity\Station::class, $station->getId());
 
         // Load adapters.
         $frontend_adapter = $this->adapters->getFrontendAdapter($station);

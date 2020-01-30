@@ -18,6 +18,7 @@ use InfluxDB\Database;
 use InfluxDB\Point;
 use Monolog\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use function DeepCopy\deep_copy;
@@ -54,7 +55,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         AutoDJ $autodj,
         CacheInterface $cache,
         Database $influx,
-        Logger $logger,
+        LoggerInterface $logger,
         EventDispatcher $event_dispatcher,
         MessageQueue $message_queue,
         Entity\Repository\SongHistoryRepository $historyRepository,
@@ -178,7 +179,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Station $station,
         $standalone = false
     ): Entity\Api\NowPlaying {
-        $this->logger->pushProcessor(function ($record) use ($station) {
+        /** @var Logger $logger */
+        $logger = $this->logger;
+
+        $logger->pushProcessor(function ($record) use ($station) {
             $record['extra']['station'] = [
                 'id' => $station->getId(),
                 'name' => $station->getName(),
@@ -297,7 +301,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
         $this->event_dispatcher->dispatch($webhook_event);
 
-        $this->logger->popProcessor();
+        $logger->popProcessor();
 
         return $np;
     }

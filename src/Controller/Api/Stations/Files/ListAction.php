@@ -61,6 +61,18 @@ class ListAction
                 $media_query->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
                     ->setParameter('query', '%' . $search_phrase . '%');
             }
+
+            $folders_in_dir_raw = [];
+        } else {
+            $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT 
+                spf, partial sp.{id, name}
+                FROM App\Entity\StationPlaylistFolder spf
+                JOIN spf.playlist sp
+                WHERE spf.station = :station
+                AND spf.path LIKE :path')
+                ->setParameter('station', $station)
+                ->setParameter('path', $file . '%')
+                ->getArrayResult();
         }
 
         $media_in_dir_raw = $media_query->getQuery()
@@ -108,6 +120,17 @@ class ListAction
                 ] + $custom_fields;
         }
 
+        $folders_in_dir = [];
+        foreach ($folders_in_dir_raw as $folder_row) {
+            if (!isset($folders_in_dir[$folder_row['path']])) {
+                $folders_in_dir[$folder_row['path']] = [
+                    'playlists' => [],
+                ];
+            }
+
+            $folders_in_dir[$folder_row['path']]['playlists'][] = $folder_row['playlist']['name'];
+        }
+
         $files = [];
         if (!empty($search_phrase)) {
             foreach ($media_in_dir as $short_path => $media_row) {
@@ -126,6 +149,10 @@ class ListAction
 
             if ('dir' === $meta['type']) {
                 $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
+
+                if (isset($folders_in_dir[$short])) {
+                    $media['playlists'] = $folders_in_dir[$short]['playlists'];
+                }
             } elseif (isset($media_in_dir[$short])) {
                 $media = $media_in_dir[$short];
             } else {

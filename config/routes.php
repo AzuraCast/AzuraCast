@@ -61,7 +61,7 @@ return function (App $app) {
             $group->map(['GET', 'POST'], '/run', Controller\Admin\BackupsController::class . ':runAction')
                 ->setName('admin:backups:run');
 
-            $group->get('/delete/{path}', Controller\Admin\BackupsController::class . ':downloadAction')
+            $group->get('/download/{path}', Controller\Admin\BackupsController::class . ':downloadAction')
                 ->setName('admin:backups:download');
 
             $group->get('/delete/{path}/{csrf}', Controller\Admin\BackupsController::class . ':deleteAction')

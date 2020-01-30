@@ -108,7 +108,7 @@ $assets
                 <td>
                     <div class="btn-group btn-group-sm">
                         <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('admin:backups:download',
-                            ['path' => base64_encode($row['path'])])?>"><?=__('Download')?></a>
+                            ['path' => base64_encode($row['path'])])?>" download="<?=$this->e($row['basename'])?>"><?=__('Download')?></a>
                         <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('admin:backups:delete', [
                             'path' => base64_encode($row['path']),
                             'csrf' => $csrf,

@@ -98,9 +98,7 @@ abstract class CestAbstract
         $test_station->setFrontendType(\App\Radio\Adapters::DEFAULT_FRONTEND);
         $test_station->setBackendType(\App\Radio\Adapters::DEFAULT_BACKEND);
 
-        $this->stationRepo->create($test_station);
-
-        $this->test_station = $test_station;
+        $this->test_station = $this->stationRepo->create($test_station);
 
         // Set settings.
         $this->settingsRepo->setSetting('setup_complete', time());

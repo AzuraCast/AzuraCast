@@ -117,8 +117,10 @@ class StationRepository extends Repository
 
     /**
      * @param Entity\Station $record
+     *
+     * @return Entity\Station
      */
-    public function edit(Entity\Station $record): void
+    public function edit(Entity\Station $record): Entity\Station
     {
         /** @var Entity\Station $original_record */
         $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($record);
@@ -139,6 +141,8 @@ class StationRepository extends Repository
         $this->configuration->writeConfiguration($record, $adapter_changed);
 
         $this->cache->delete('stations');
+
+        return $record;
     }
 
     /**
@@ -174,8 +178,10 @@ class StationRepository extends Repository
      * Handle tasks necessary to a station's creation.
      *
      * @param Entity\Station $station
+     *
+     * @return Entity\Station
      */
-    public function create(Entity\Station $station): void
+    public function create(Entity\Station $station): Entity\Station
     {
         // Create path for station.
         $station_base_dir = Settings::getInstance()->getStationDirectory();
@@ -192,10 +198,12 @@ class StationRepository extends Repository
         set_time_limit(600);
         $this->media_sync->importMusic($station);
 
+        /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
 
         $this->media_sync->importPlaylists($station);
 
+        /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
 
         // Load adapters.
@@ -216,6 +224,8 @@ class StationRepository extends Repository
         $this->em->flush();
 
         $this->cache->delete('stations');
+
+        return $station;
     }
 
     /**

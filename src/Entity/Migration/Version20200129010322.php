@@ -14,7 +14,7 @@ final class Version20200129010322 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Deduplicate streamers and hash passwords for streamer accounts.';
     }
 
     public function preup(Schema $schema): void

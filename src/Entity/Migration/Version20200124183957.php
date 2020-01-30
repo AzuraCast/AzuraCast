@@ -14,7 +14,7 @@ final class Version20200124183957 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add "amplify" metadata to associate with station media.';
     }
 
     public function up(Schema $schema): void

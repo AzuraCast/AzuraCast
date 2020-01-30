@@ -41,7 +41,7 @@ class SftpAuthCommand extends CommandAbstract
                 ],
             ];
 
-            $io->write(json_encode($row, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES));
+            $io->write(json_encode($row, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_NUMERIC_CHECK));
             return 0;
         }
 

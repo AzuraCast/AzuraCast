@@ -79,6 +79,8 @@ class Media extends AbstractTask
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         foreach ($stations as $station) {
+            $station = $this->em->find(Entity\Station::class, $station->getId());
+
             $this->logger->info('Processing media for station...', [
                 'station' => $station->getName(),
             ]);

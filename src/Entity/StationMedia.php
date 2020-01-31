@@ -461,7 +461,7 @@ class StationMedia
             $amplify = null;
         }
 
-        $this->amplify = $amplify;
+        $this->amplify = (null === $amplify) ? null : (float)$amplify;
     }
 
     /**

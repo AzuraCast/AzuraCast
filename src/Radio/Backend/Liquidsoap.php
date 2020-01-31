@@ -541,6 +541,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             $annotations_str = [];
             foreach ($mediaAnnotations as $annotation_key => $annotation_val) {
+                if ($annotation_key == 'liq_amplify') {
+                    $annotations_str[] = $annotation_key . '="' . $annotation_val . 'dB"';
+                    continue;
+                }
                 $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
             }
 

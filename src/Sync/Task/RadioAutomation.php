@@ -38,7 +38,11 @@ class RadioAutomation extends AbstractTask
     public function run($force = false): void
     {
         // Check all stations for automation settings.
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
+        // Use this to avoid detached entity errors.
+        $stations = SimpleBatchIteratorAggregate::fromQuery(
+            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
+            1
+        );
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */

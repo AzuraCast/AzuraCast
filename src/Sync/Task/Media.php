@@ -76,11 +76,13 @@ class Media extends AbstractTask
      */
     public function run($force = false): void
     {
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
+        $stations = SimpleBatchIteratorAggregate::fromQuery(
+            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
+            1
+        );
 
         foreach ($stations as $station) {
-            $station = $this->em->find(Entity\Station::class, $station->getId());
-
+            /** @var Entity\Station $station */
             $this->logger->info('Processing media for station...', [
                 'station' => $station->getName(),
             ]);

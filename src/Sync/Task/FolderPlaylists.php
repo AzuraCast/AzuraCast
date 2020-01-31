@@ -5,6 +5,7 @@ use App\Entity;
 use App\MessageQueue;
 use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
+use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
 class FolderPlaylists extends AbstractTask
@@ -39,9 +40,14 @@ class FolderPlaylists extends AbstractTask
      */
     public function run($force = false): void
     {
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
+        $stations = SimpleBatchIteratorAggregate::fromQuery(
+            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
+            1
+        );
 
         foreach ($stations as $station) {
+            /** @var Entity\Station $station */
+
             $this->logger->info('Processing auto-assigning folders for station...', [
                 'station' => $station->getName(),
             ]);

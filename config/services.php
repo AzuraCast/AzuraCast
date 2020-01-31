@@ -269,6 +269,7 @@ return [
             ],
             [ // Every 5 minutes tasks
                 $di->get(App\Sync\Task\Media::class),
+                $di->get(App\Sync\Task\FolderPlaylists::class),
                 $di->get(App\Sync\Task\CheckForUpdates::class),
             ],
             [ // Every hour tasks
@@ -284,6 +285,7 @@ return [
     App\Sync\Task\Analytics::class => DI\autowire(),
     App\Sync\Task\Backup::class => DI\autowire(),
     App\Sync\Task\CheckForUpdates::class => DI\autowire(),
+    App\Sync\Task\FolderPlaylists::class => DI\autowire(),
     App\Sync\Task\HistoryCleanup::class => DI\autowire(),
     App\Sync\Task\Media::class => DI\autowire(),
     App\Sync\Task\ReactivateStreamer::class => DI\autowire(),

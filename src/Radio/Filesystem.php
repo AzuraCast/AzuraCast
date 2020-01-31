@@ -34,6 +34,7 @@ class Filesystem
                 'albumart' => $station->getRadioAlbumArtDir(),
                 'playlists' => $station->getRadioPlaylistsDir(),
                 'config' => $station->getRadioConfigDir(),
+                'recordings' => $station->getRadioRecordingsDir(),
                 'temp' => $station->getRadioTempDir(),
             ];
 

@@ -5,9 +5,9 @@ use App\Entity;
 use App\Message;
 use App\MessageQueue;
 use Azura\Console\Application;
-use Azura\Logger;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 
 class Backup extends AbstractTask
 {
@@ -20,10 +20,11 @@ class Backup extends AbstractTask
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
         MessageQueue $message_queue,
         Application $console
     ) {
-        parent::__construct($em, $settingsRepo);
+        parent::__construct($em, $settingsRepo, $logger);
 
         $this->messageQueue = $message_queue;
         $this->console = $console;
@@ -76,7 +77,7 @@ class Backup extends AbstractTask
     {
         $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
         if (!$backup_enabled) {
-            Logger::getInstance()->debug('Automated backups disabled; skipping...');
+            $this->logger->debug('Automated backups disabled; skipping...');
             return;
         }
 

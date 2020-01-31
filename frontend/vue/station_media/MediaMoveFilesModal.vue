@@ -41,8 +41,8 @@
     </b-modal>
 </template>
 <script>
-    import DataTable from '../components/DataTable.vue'
-    import axios from 'axios'
+    import DataTable from '../components/DataTable.vue';
+    import axios from 'axios';
 
     export default {
         name: 'MoveFilesModal',
@@ -60,20 +60,20 @@
                 fields: [
                     { key: 'directory', label: this.$gettext('Directory'), sortable: false }
                 ]
-            }
+            };
         },
         computed: {
             langHeader () {
-                let headerText = this.$gettext('Move %{ num } File(s) to')
-                return this.$gettextInterpolate(headerText, { num: this.selectedFiles.length })
+                let headerText = this.$gettext('Move %{ num } File(s) to');
+                return this.$gettextInterpolate(headerText, { num: this.selectedFiles.length });
             }
         },
         methods: {
             close () {
-                this.dirHistory = []
-                this.destinationDirectory = ''
+                this.dirHistory = [];
+                this.destinationDirectory = '';
 
-                this.$refs.modal.hide()
+                this.$refs.modal.hide();
             },
             doMove () {
                 this.selectedFiles.length && axios.put(this.batchUrl, {
@@ -81,41 +81,41 @@
                     'files': this.selectedFiles,
                     'directory': this.destinationDirectory
                 }).then((resp) => {
-                    let notifyMessage = this.$gettext('Files moved:')
-                    notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+                    let notifyMessage = this.$gettext('Files moved:');
+                    notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false);
 
-                    this.close()
-                    this.$emit('relist')
+                    this.close();
+                    this.$emit('relist');
                 }).catch((err) => {
-                    console.error(err)
+                    console.error(err);
 
-                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.')
-                    notify('<b>' + notifyMessage + '</b>', 'danger', false)
+                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                    notify('<b>' + notifyMessage + '</b>', 'danger', false);
 
-                    this.close()
-                    this.$emit('relist')
-                })
+                    this.close();
+                    this.$emit('relist');
+                });
             },
             enterDirectory (path) {
-                this.dirHistory.push(path)
-                this.destinationDirectory = path
+                this.dirHistory.push(path);
+                this.destinationDirectory = path;
 
-                this.$refs.datatable.refresh()
+                this.$refs.datatable.refresh();
             },
             pageBack: function (e) {
-                e.preventDefault()
+                e.preventDefault();
 
-                this.dirHistory.pop()
-                this.destinationDirectory = this.dirHistory.slice(-1)[0]
+                this.dirHistory.pop();
+                this.destinationDirectory = this.dirHistory.slice(-1)[0];
 
-                this.$refs.datatable.refresh()
+                this.$refs.datatable.refresh();
             },
             requestConfig (config) {
-                config.params.file = this.destinationDirectory
-                config.params.csrf = this.csrf
+                config.params.file = this.destinationDirectory;
+                config.params.csrf = this.csrf;
 
-                return config
+                return config;
             }
         }
-    }
+    };
 </script>

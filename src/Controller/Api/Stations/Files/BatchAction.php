@@ -21,6 +21,7 @@ class BatchAction
         EntityManager $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
         Filesystem $filesystem,
         MessageQueue $messageQueue
     ): ResponseInterface {
@@ -42,13 +43,16 @@ class BatchAction
         $files_found = 0;
         $files_affected = 0;
 
+        $directories_found = 0;
+        $directories_affected = 0;
+
         $response_record = null;
         $errors = [];
 
         switch ($request->getParam('do')) {
             case 'delete':
                 // Remove the database entries of any music being removed.
-                $music_files = $this->_getMusicFiles($fs, $files);
+                $music_files = $this->getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
                 /** @var Entity\StationPlaylist[] $playlists */
@@ -153,7 +157,7 @@ class BatchAction
                     }
                 }
 
-                $music_files = $this->_getMusicFiles($fs, $files);
+                $music_files = $this->getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
                 foreach ($music_files as $file) {
@@ -184,6 +188,22 @@ class BatchAction
                     $files_affected++;
                 }
 
+                // Set the playlist auto-assignment of any selected folders.
+                $directories = $this->getDirectories($fs, $files);
+                $directories_found = count($directories);
+
+                foreach ($directories as $dir) {
+                    try {
+                        $playlistFolderRepo->setPlaylistsForFolder($station, $playlists, $dir['path']);
+                    } catch (Exception $e) {
+                        $errors[] = $dir['path'] . ': ' . $e->getMessage();
+
+                        if (!$em->isOpen()) {
+                            break 2;
+                        }
+                    }
+                }
+
                 $em->flush();
 
                 // Write new PLS playlist configuration.
@@ -200,7 +220,7 @@ class BatchAction
                 break;
 
             case 'move':
-                $music_files = $this->_getMusicFiles($fs, $files);
+                $music_files = $this->getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
                 $directory_path = $request->getParam('directory');
@@ -246,7 +266,7 @@ class BatchAction
                 break;
 
             case 'queue':
-                $music_files = $this->_getMusicFiles($fs, $files);
+                $music_files = $this->getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
                 foreach ($music_files as $file) {
@@ -279,29 +299,46 @@ class BatchAction
             'success' => empty($errors),
             'files_found' => $files_found,
             'files_affected' => $files_affected,
+            'directories_found' => $directories_found,
+            'directories_affected' => $directories_affected,
             'errors' => $errors,
             'record' => $response_record,
         ]);
     }
 
-    protected function _getMusicFiles(StationFilesystem $fs, $path, $recursive = true)
+    protected function getMusicFiles(StationFilesystem $fs, array $files): array
     {
-        if (is_array($path)) {
-            $music_files = [];
-            foreach ($path as $dir_file) {
-                $music_files = array_merge($music_files, $this->_getMusicFiles($fs, $dir_file, $recursive));
+        $musicFiles = [];
+
+        foreach ($files as $path) {
+            $pathMeta = $fs->getMetadata($path);
+
+            if ('file' === $pathMeta['type']) {
+                $musicFiles[] = $pathMeta;
+            } else {
+                foreach ($fs->listContents($path, true) as $file) {
+                    if ('file' === $file['type']) {
+                        $musicFiles[] = $file;
+                    }
+                }
             }
-
-            return $music_files;
         }
 
-        $path_meta = $fs->getMetadata($path);
-        if ('file' === $path_meta['type']) {
-            return [$path_meta];
+        return $musicFiles;
+    }
+
+    protected function getDirectories(StationFilesystem $fs, array $files): array
+    {
+        $directories = [];
+
+        foreach ($files as $path) {
+            $pathMeta = $fs->getMetadata($path);
+
+            if ('dir' === $pathMeta['type']) {
+                $directories[] = $pathMeta;
+            }
         }
 
-        return array_filter($fs->listContents($path, $recursive), function ($file) {
-            return ('file' === $file['type']);
-        });
+        return $directories;
     }
 }

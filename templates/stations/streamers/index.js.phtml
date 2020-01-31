@@ -1,0 +1,17 @@
+<?php
+$props = [
+    'listUrl' => $router->fromHere('api:stations:streamers'),
+]
+?>
+var station_streamers;
+
+$(function () {
+    station_streamers = new Vue({
+        el: '#station-streamers',
+        render: function (createElement) {
+            return createElement(StationStreamers.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
+    });
+});

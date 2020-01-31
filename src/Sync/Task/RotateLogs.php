@@ -4,8 +4,8 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Radio\Adapters;
 use App\Settings;
-use Azura\Logger;
 use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 use studio24\Rotate;
 use Supervisor\Supervisor;
 use Symfony\Component\Finder\Finder;
@@ -19,10 +19,11 @@ class RotateLogs extends AbstractTask
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
         Adapters $adapters,
         Supervisor $supervisor
     ) {
-        parent::__construct($em, $settingsRepo);
+        parent::__construct($em, $settingsRepo, $logger);
 
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
@@ -37,7 +38,7 @@ class RotateLogs extends AbstractTask
         if (!empty($stations)) {
             foreach ($stations as $station) {
                 /** @var Entity\Station $station */
-                Logger::getInstance()->info('Processing logs for station.',
+                $this->logger->info('Processing logs for station.',
                     ['id' => $station->getId(), 'name' => $station->getName()]);
 
                 $this->rotateStationLogs($station);
@@ -68,10 +69,10 @@ class RotateLogs extends AbstractTask
      */
     public function rotateStationLogs(Entity\Station $station): void
     {
-        $this->_cleanUpIcecastLog($station);
+        $this->cleanUpIcecastLog($station);
     }
 
-    protected function _cleanUpIcecastLog(Entity\Station $station): void
+    protected function cleanUpIcecastLog(Entity\Station $station): void
     {
         $config_path = $station->getRadioConfigDir();
 

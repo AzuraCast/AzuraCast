@@ -63,7 +63,7 @@
     </div>
 </template>
 <script>
-    import axios from 'axios'
+    import axios from 'axios';
 
     export default {
         name: 'station-media-toolbar',
@@ -78,41 +78,41 @@
                 playlists: this.initialPlaylists,
                 checkedPlaylists: [],
                 newPlaylist: ''
-            }
+            };
         },
         watch: {
             newPlaylist (text) {
                 if (text !== '') {
                     if (!this.checkedPlaylists.includes('new')) {
-                        this.checkedPlaylists.push('new')
+                        this.checkedPlaylists.push('new');
                     }
                 }
             }
         },
         computed: {
             langPlaylistDropdown () {
-                return this.$gettext('Set or clear playlists from the selected media')
+                return this.$gettext('Set or clear playlists from the selected media');
             },
             langNewPlaylist () {
-                return this.$gettext('New Playlist')
+                return this.$gettext('New Playlist');
             },
             langQueue () {
-                return this.$gettext('Queue the selected media to play next')
+                return this.$gettext('Queue the selected media to play next');
             },
             langErrors () {
-                return this.$gettext('The request could not be processed.')
+                return this.$gettext('The request could not be processed.');
             },
             newPlaylistIsChecked () {
-                return this.newPlaylist !== ''
+                return this.newPlaylist !== '';
             }
         },
         methods: {
             doQueue (e) {
-                this.doBatch('queue', this.$gettext('Files queued for playback:'))
+                this.doBatch('queue', this.$gettext('Files queued for playback:'));
             },
             doDelete (e) {
-                let buttonText = this.$gettext('Delete')
-                let buttonConfirmText = this.$gettext('Delete %{ num } media file(s)?')
+                let buttonText = this.$gettext('Delete');
+                let buttonConfirmText = this.$gettext('Delete %{ num } media file(s)?');
 
                 swal({
                     title: this.$gettextInterpolate(buttonConfirmText, { num: this.selectedFiles.length }),
@@ -120,13 +120,13 @@
                     dangerMode: true
                 }).then((value) => {
                     if (value) {
-                        this.doBatch('delete', this.$gettext('Files removed:'))
+                        this.doBatch('delete', this.$gettext('Files removed:'));
                     }
-                })
+                });
             },
             doBatch (action, notifyMessage) {
                 if (this.selectedFiles.length) {
-                    this.notifyPending()
+                    this.notifyPending();
 
                     axios.put(this.batchUrl, {
                         'do': action,
@@ -134,30 +134,30 @@
                         'file': this.currentDirectory
                     }).then((resp) => {
                         if (resp.data.success) {
-                            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false)
+                            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false);
                         } else {
-                            notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger')
+                            notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger');
                         }
 
-                        this.$emit('relist')
+                        this.$emit('relist');
                     }).catch((err) => {
-                        this.handleError(err)
-                    })
+                        this.handleError(err);
+                    });
                 } else {
-                    this.notifyNoFiles()
+                    this.notifyNoFiles();
                 }
             },
             clearPlaylists () {
-                this.checkedPlaylists = []
-                this.newPlaylist = ''
+                this.checkedPlaylists = [];
+                this.newPlaylist = '';
 
-                this.setPlaylists()
+                this.setPlaylists();
             },
             setPlaylists () {
-                this.$refs.setPlaylistsDropdown.hide()
+                this.$refs.setPlaylistsDropdown.hide();
 
                 if (this.selectedFiles.length) {
-                    this.notifyPending()
+                    this.notifyPending();
 
                     axios.put(this.batchUrl, {
                         'do': 'playlist',
@@ -168,42 +168,42 @@
                     }).then((resp) => {
                         if (resp.data.success) {
                             if (resp.data.record) {
-                                this.playlists.push(resp.data.record)
+                                this.playlists.push(resp.data.record);
                             }
 
                             let notifyMessage = (this.checkedPlaylists.length > 0)
                                     ? this.$gettext('Playlists updated for selected files:')
-                                    : this.$gettext('Playlists cleared for selected files:')
-                            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success')
+                                    : this.$gettext('Playlists cleared for selected files:');
+                            notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success');
 
-                            this.checkedPlaylists = []
-                            this.newPlaylist = ''
+                            this.checkedPlaylists = [];
+                            this.newPlaylist = '';
                         } else {
-                            notify(resp.data.errors.join('<br>'), 'danger')
+                            notify(resp.data.errors.join('<br>'), 'danger');
                         }
 
-                        this.$emit('relist')
+                        this.$emit('relist');
                     }).catch((err) => {
-                        this.handleError(err)
-                    })
+                        this.handleError(err);
+                    });
                 } else {
-                    this.notifyNoFiles()
+                    this.notifyNoFiles();
                 }
             },
             notifyPending () {
                 notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
                     delay: 3000
-                })
+                });
             },
             notifyNoFiles () {
-                notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger')
+                notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger');
             },
             handleError (err) {
-                console.error(err)
+                console.error(err);
                 if (err.response.message) {
-                    notify('<b>' + err.response.message + '</b>', 'danger')
+                    notify('<b>' + err.response.message + '</b>', 'danger');
                 }
             }
         }
-    }
+    };
 </script>

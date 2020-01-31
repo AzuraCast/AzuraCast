@@ -21,10 +21,15 @@ return function (App $app) {
         $group->group('/install', function (RouteCollectorProxy $group) {
 
             $group->map(['GET', 'POST'], '/shoutcast', Controller\Admin\InstallShoutcastController::class)
-                ->setName('admin:install:shoutcast');
+                ->setName('admin:install_shoutcast:index');
 
             $group->map(['GET', 'POST'], '/geolite', Controller\Admin\InstallGeoLiteController::class)
-                ->setName('admin:install:geolite');
+                ->setName('admin:install_geolite:index');
+
+            $group->get(
+                '/geolite/uninstall/{csrf}',
+                Controller\Admin\InstallGeoLiteController::class . ':uninstallAction'
+            )->setName('admin:install_geolite:uninstall');
 
         })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
@@ -56,7 +61,7 @@ return function (App $app) {
             $group->map(['GET', 'POST'], '/run', Controller\Admin\BackupsController::class . ':runAction')
                 ->setName('admin:backups:run');
 
-            $group->get('/delete/{path}', Controller\Admin\BackupsController::class . ':downloadAction')
+            $group->get('/download/{path}', Controller\Admin\BackupsController::class . ':downloadAction')
                 ->setName('admin:backups:download');
 
             $group->get('/delete/{path}/{csrf}', Controller\Admin\BackupsController::class . ':deleteAction')
@@ -385,6 +390,18 @@ return function (App $app) {
                     ->setName('api:stations:playlist:export');
 
             })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+
+            $group->group('/streamer/{id}', function (RouteCollectorProxy $group) {
+
+                $group->get('/broadcasts',
+                    Controller\Api\Stations\StreamersController::class . ':broadcastsAction')
+                    ->setName('api:stations:streamer:broadcasts');
+
+                $group->get('/broadcast/{broadcast_id}',
+                    Controller\Api\Stations\StreamersController::class . ':downloadBroadcastAction')
+                    ->setName('api:stations:streamer:broadcast:download');
+
+            })->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
             $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                 ->setName('api:stations:status')

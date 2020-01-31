@@ -140,15 +140,14 @@ class StationsController extends AbstractAdminApiCrudController
             throw $e;
         }
 
-        if ($create_mode) {
-            $this->station_repo->create($record);
-        } else {
-            $this->station_repo->edit($record);
-        }
-
         $this->em->persist($record);
         $this->em->flush($record);
-        return $record;
+
+        if ($create_mode) {
+            return $this->station_repo->create($record);
+        }
+        
+        return $this->station_repo->edit($record);
     }
 
     /** @inheritDoc */

@@ -23,5 +23,5 @@
     - { role: influxdb, when: update_revision|int < 10 }
     - { role: ufw, when: update_revision|int < 12 }
     - { role: services, when: update_revision|int < 13 }
-    - { role: azuracast-cron, when: update_revision|int < 41 }
+    - { role: azuracast-cron, when: update_revision|int < 48 }
     - azuracast-setup

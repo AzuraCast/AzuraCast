@@ -109,7 +109,7 @@
     }
   },
   "bin": [
-    "bin/azuracast"
+    "bin/console"
   ],
   "config": {
     "preferred-install": "dist"

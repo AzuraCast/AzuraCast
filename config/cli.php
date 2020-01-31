@@ -28,12 +28,12 @@ return function (Application $console) {
     )->setDescription('Authorize a streamer to connect as a source for the radio service.');
 
     $console->command(
-        'azuracast:internal:djoff station-id',
+        'azuracast:internal:djoff station-id [--dj-user=]',
         Command\Internal\DjOffCommand::class
     )->setDescription('Indicate that a DJ has finished streaming to a station.');
 
     $console->command(
-        'azuracast:internal:djon station-id',
+        'azuracast:internal:djon station-id [--dj-user=]',
         Command\Internal\DjOnCommand::class
     )->setDescription('Indicate that a DJ has begun streaming to a station.');
 

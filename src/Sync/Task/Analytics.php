@@ -4,14 +4,19 @@ namespace App\Sync\Task;
 use App\Entity;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
+use Psr\Log\LoggerInterface;
 
 class Analytics extends AbstractTask
 {
     protected Database $influx;
 
-    public function __construct(EntityManager $em, Entity\Repository\SettingsRepository $settingsRepo, Database $influx)
-    {
-        parent::__construct($em, $settingsRepo);
+    public function __construct(
+        EntityManager $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
+        Database $influx
+    ) {
+        parent::__construct($em, $settingsRepo, $logger);
 
         $this->influx = $influx;
     }
@@ -21,16 +26,16 @@ class Analytics extends AbstractTask
         $analytics_level = $this->settingsRepo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
-            $this->_purgeAnalytics();
-            $this->_purgeListeners();
+            $this->purgeAnalytics();
+            $this->purgeListeners();
         } elseif ($analytics_level === Entity\Analytics::LEVEL_NO_IP) {
-            $this->_purgeListeners();
+            $this->purgeListeners();
         } else {
-            $this->_clearOldAnalytics();
+            $this->clearOldAnalytics();
         }
     }
 
-    protected function _purgeAnalytics()
+    protected function purgeAnalytics(): void
     {
         $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a')
             ->execute();
@@ -38,13 +43,13 @@ class Analytics extends AbstractTask
         $this->influx->query('DROP SERIES FROM /.*/');
     }
 
-    protected function _purgeListeners()
+    protected function purgeListeners(): void
     {
         $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Listener l')
             ->execute();
     }
 
-    protected function _clearOldAnalytics()
+    protected function clearOldAnalytics(): void
     {
         // Clear out any non-daily statistics.
         $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a WHERE a.type != :type')

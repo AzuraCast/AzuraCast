@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import axios from 'axios';
 
     export default {
         name: 'MediaFormAlbumArt',
@@ -35,45 +35,45 @@
             return {
                 artFile: null,
                 albumArtSrc: null
-            }
+            };
         },
         computed: {
             langTitle () {
-                return this.$gettext('Album Art')
+                return this.$gettext('Album Art');
             }
         },
         watch: {
             albumArtUrl: {
                 immediate: true,
                 handler (newVal, oldVal) {
-                    this.albumArtSrc = newVal
+                    this.albumArtSrc = newVal;
                 }
             }
         },
         methods: {
             uploadNewArt () {
-                let formData = new FormData()
-                formData.append('art', this.artFile)
+                let formData = new FormData();
+                formData.append('art', this.artFile);
 
                 axios.post(this.albumArtUrl, formData).then((resp) => {
-                    this.reloadArt()
+                    this.reloadArt();
                 }).catch((err) => {
-                    console.log(err)
-                    this.reloadArt()
-                })
+                    console.log(err);
+                    this.reloadArt();
+                });
             },
             deleteArt () {
                 axios.delete(this.albumArtUrl).then((resp) => {
-                    this.reloadArt()
+                    this.reloadArt();
                 }).catch((err) => {
-                    console.log(err)
-                    this.reloadArt()
-                })
+                    console.log(err);
+                    this.reloadArt();
+                });
             },
             reloadArt () {
-                this.artFile = null
-                this.albumArtSrc = this.albumArtUrl + '?' + Math.floor(Date.now() / 1000)
+                this.artFile = null;
+                this.albumArtSrc = this.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
             }
         }
-    }
+    };
 </script>

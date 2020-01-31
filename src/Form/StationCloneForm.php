@@ -211,6 +211,8 @@ class StationCloneForm extends StationForm
             // Run normal post-creation steps.
             $this->media_sync->importMusic($new_record);
 
+            $new_record = $this->em->find(Entity\Station::class, $new_record_id);
+
             $this->configuration->assignRadioPorts($new_record, true);
             $this->configuration->writeConfiguration($new_record);
 

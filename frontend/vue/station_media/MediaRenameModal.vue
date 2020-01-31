@@ -23,9 +23,9 @@
     </b-modal>
 </template>
 <script>
-    import { validationMixin } from 'vuelidate'
-    import { required } from 'vuelidate/lib/validators'
-    import axios from 'axios'
+    import { validationMixin } from 'vuelidate';
+    import { required } from 'vuelidate/lib/validators';
+    import axios from 'axios';
 
     export default {
         name: 'RenameModal',
@@ -39,7 +39,7 @@
                     file: null,
                     newPath: null
                 }
-            }
+            };
         },
         validations: {
             form: {
@@ -50,36 +50,36 @@
         },
         computed: {
             langRenameFile () {
-                return this.$gettext('Rename File/Directory')
+                return this.$gettext('Rename File/Directory');
             }
         },
         methods: {
             open (filePath) {
-                this.form.file = filePath
-                this.form.newPath = filePath
+                this.form.file = filePath;
+                this.form.newPath = filePath;
 
-                this.$refs.modal.show()
+                this.$refs.modal.show();
             },
             close () {
-                this.$v.form.$reset()
-                this.$refs.modal.hide()
+                this.$v.form.$reset();
+                this.$refs.modal.hide();
             },
             doRename () {
-                this.$v.form.$touch()
+                this.$v.form.$touch();
                 if (this.$v.form.$anyError) {
-                    return
+                    return;
                 }
 
                 axios.put(this.renameUrl, this.form).then((resp) => {
-                    this.$refs.modal.hide()
-                    this.$emit('relist')
+                    this.$refs.modal.hide();
+                    this.$emit('relist');
                 }).catch((err) => {
-                    console.error(err)
+                    console.error(err);
 
-                    this.$refs.modal.hide()
-                    this.$emit('relist')
-                })
+                    this.$refs.modal.hide();
+                    this.$emit('relist');
+                });
             }
         }
-    }
+    };
 </script>

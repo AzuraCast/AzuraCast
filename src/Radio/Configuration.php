@@ -85,6 +85,7 @@ class Configuration
             $station->getRadioPlaylistsDir(),
             $station->getRadioConfigDir(),
             $station->getRadioTempDir(),
+            $station->getRadioRecordingsDir(),
         ];
         foreach ($radio_dirs as $radio_dir) {
             if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {

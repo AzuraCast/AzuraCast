@@ -56,7 +56,7 @@ class StationForm extends EntityForm
 
         if (!SHOUTcast::isInstalled()) {
             $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
-                $request->getRouter()->named('admin:install:shoutcast'));
+                $request->getRouter()->named('admin:install_shoutcast:index'));
         }
 
         $create_mode = (null === $record);
@@ -83,15 +83,14 @@ class StationForm extends EntityForm
                 return false;
             }
 
-            if ($create_mode) {
-                $this->station_repo->create($record);
-            } else {
-                $this->station_repo->edit($record);
-            }
-
             $this->em->persist($record);
             $this->em->flush($record);
-            return $record;
+
+            if ($create_mode) {
+                return $this->station_repo->create($record);
+            }
+
+            return $this->station_repo->edit($record);
         }
 
         return false;

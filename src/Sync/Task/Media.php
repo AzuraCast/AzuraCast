@@ -6,12 +6,13 @@ use App\Message;
 use App\MessageQueue;
 use App\Radio\Filesystem;
 use App\Radio\Quota;
-use Azura\Logger;
 use Bernard\Envelope;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
+use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 
 class Media extends AbstractTask
@@ -27,12 +28,13 @@ class Media extends AbstractTask
     public function __construct(
         EntityManager $em,
         Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Filesystem $filesystem,
         MessageQueue $messageQueue
     ) {
-        parent::__construct($em, $settingsRepo);
+        parent::__construct($em, $settingsRepo, $logger);
 
         $this->mediaRepo = $mediaRepo;
         $this->spmRepo = $spmRepo;
@@ -74,11 +76,14 @@ class Media extends AbstractTask
      */
     public function run($force = false): void
     {
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
-        $logger = Logger::getInstance();
+        $stations = SimpleBatchIteratorAggregate::fromQuery(
+            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
+            1
+        );
 
         foreach ($stations as $station) {
-            $logger->info('Processing media for station...', [
+            /** @var Entity\Station $station */
+            $this->logger->info('Processing media for station...', [
                 'station' => $station->getName(),
             ]);
 
@@ -153,19 +158,16 @@ class Media extends AbstractTask
             $queue_position += $queue_iteration;
         }
 
-        $existing_media_q = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm 
             FROM App\Entity\StationMedia sm 
             WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId());
-        $existing_media = $existing_media_q->iterate();
 
-        $records_per_batch = 10;
-        $i = 0;
+        $iterator = SimpleBatchIteratorAggregate::fromQuery($existingMediaQuery, 10);
 
-        foreach ($existing_media as $media_row_iteration) {
+        foreach ($iterator as $media_row) {
             /** @var Entity\StationMedia $media_row */
-            $media_row = $media_row_iteration[0];
 
             // Check if media file still exists.
             $path_hash = md5($media_row->getPath());
@@ -201,16 +203,7 @@ class Media extends AbstractTask
 
                 $stats['deleted']++;
             }
-
-            // Batch processing
-            if ($i % $records_per_batch === 0) {
-                $this->_flushAndClearRecords();
-            }
-
-            ++$i;
         }
-
-        $this->_flushAndClearRecords();
 
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
@@ -227,21 +220,7 @@ class Media extends AbstractTask
             }
         }
 
-        Logger::getInstance()->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
-    }
-
-    /**
-     * Flush the Doctrine Entity Manager and clear associated records to save memory space.
-     */
-    protected function _flushAndClearRecords(): void
-    {
-        $this->em->flush();
-
-        try {
-            $this->em->clear(Entity\StationMedia::class);
-            $this->em->clear(Entity\Song::class);
-        } catch (MappingException $e) {
-        }
+        $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }
 
     public function importPlaylists(Entity\Station $station)

@@ -89,8 +89,8 @@
         },
         computed: {
             langTitle () {
-                return this.$gettext('Advanced Playback Settings')
+                return this.$gettext('Advanced Playback Settings');
             }
         }
-    }
+    };
 </script>

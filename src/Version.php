@@ -97,7 +97,7 @@ class Version
         if (!empty($last_tagged_commit)) {
             $details['tag'] = $this->_runProcess(['git', 'describe', '--tags', $last_tagged_commit], 'N/A');
         } else {
-            $details['tag'] = 'N/A';
+            $details['tag'] = self::FALLBACK_VERSION;
         }
 
         return $details;

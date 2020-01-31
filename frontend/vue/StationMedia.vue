@@ -106,153 +106,165 @@
 </style>
 
 <script>
-  import DataTable from './components/DataTable'
-  import MediaToolbar from './station_media/MediaToolbar'
-  import Breadcrumb from './station_media/MediaBreadcrumb'
-  import FileUpload from './station_media/MediaFileUpload'
-  import NewDirectoryModal from './station_media/MediaNewDirectoryModal'
-  import MoveFilesModal from './station_media/MediaMoveFilesModal'
-  import RenameModal from './station_media/MediaRenameModal'
-  import EditModal from './station_media/MediaEditModal'
-  import { formatFileSize } from './station_media/utils'
-  import _ from 'lodash'
+    import DataTable from './components/DataTable';
+    import MediaToolbar from './station_media/MediaToolbar';
+    import Breadcrumb from './station_media/MediaBreadcrumb';
+    import FileUpload from './station_media/MediaFileUpload';
+    import NewDirectoryModal from './station_media/MediaNewDirectoryModal';
+    import MoveFilesModal from './station_media/MediaMoveFilesModal';
+    import RenameModal from './station_media/MediaRenameModal';
+    import EditModal from './station_media/MediaEditModal';
+    import { formatFileSize } from './station_media/utils';
+    import _ from 'lodash';
 
-  export default {
-    components: {
-      EditModal,
-      RenameModal,
-      MoveFilesModal,
-      NewDirectoryModal,
-      FileUpload,
-      MediaToolbar,
-      DataTable,
-      Breadcrumb
-    },
-    props: {
-      listUrl: String,
-      batchUrl: String,
-      uploadUrl: String,
-      listDirectoriesUrl: String,
-      mkdirUrl: String,
-      renameUrl: String,
-      editUrl: String,
-      initialPlaylists: Array,
-      customFields: Array
-    },
-    data () {
-      let fields = [
-        { key: 'name', label: this.$gettext('Name'), sortable: true },
-        { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
-        { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true, visible: false },
-        { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
-        { key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true }
-      ]
-
-      _.forEach(this.customFields.slice(), (field) => {
-        fields.push({
-          key: field.display_key,
-          label: field.label,
-          sortable: true,
-          selectable: true,
-          visible: false
-        })
-      })
-
-      fields.push(
-        { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
-        {
-          key: 'mtime',
-          label: this.$gettext('Modified'),
-          sortable: true,
-          formatter: (value, key, item) => {
-            if (!value) {
-              return ''
-            }
-            return moment.unix(value).format('lll')
-          },
-          selectable: true,
-          visible: true
+    export default {
+        components: {
+            EditModal,
+            RenameModal,
+            MoveFilesModal,
+            NewDirectoryModal,
+            FileUpload,
+            MediaToolbar,
+            DataTable,
+            Breadcrumb
         },
-        { key: 'playlists', label: this.$gettext('Playlists'), sortable: true, selectable: true, visible: true },
-        { key: 'commands', label: this.$gettext('Actions'), sortable: false }
-      )
+        props: {
+            listUrl: String,
+            batchUrl: String,
+            uploadUrl: String,
+            listDirectoriesUrl: String,
+            mkdirUrl: String,
+            renameUrl: String,
+            editUrl: String,
+            initialPlaylists: Array,
+            customFields: Array
+        },
+        data () {
+            let fields = [
+                { key: 'name', label: this.$gettext('Name'), sortable: true },
+                { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
+                {
+                    key: 'media_artist',
+                    label: this.$gettext('Artist'),
+                    sortable: true,
+                    selectable: true,
+                    visible: false
+                },
+                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
+                { key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true }
+            ];
 
-      return {
-        fields: fields,
-        selectedFiles: [],
-        currentDirectory: '',
-        searchPhrase: null
-      }
-    },
-    mounted () {
-      // Load directory from URL hash, if applicable.
-      let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'))
+            _.forEach(this.customFields.slice(), (field) => {
+                fields.push({
+                    key: field.display_key,
+                    label: field.label,
+                    sortable: true,
+                    selectable: true,
+                    visible: false
+                });
+            });
 
-      if (urlHash.substr(0, 9) === 'playlist:') {
-        window.location.hash = ''
-        this.filter(urlHash)
-      } else if (urlHash !== '') {
-        this.changeDirectory(urlHash)
-      }
-    },
-    computed: {
-      langAlbumArt () {
-        return this.$gettext('Album Art')
-      },
-      langRenameButton () {
-        return this.$gettext('Rename')
-      },
-      langEditButton () {
-        return this.$gettext('Edit')
-      },
-      langPlayPause () {
-        return this.$gettext('Play/Pause')
-      },
-      langPlaylistSelect () {
-        return this.$gettext('View tracks in playlist')
-      }
-    },
-    methods: {
-      formatFileSize (size) {
-        return formatFileSize(size)
-      },
-      onRowSelected (items) {
-        this.selectedFiles = _.map(items, 'name')
-      },
-      onRefreshed () {
-        this.$eventHub.$emit('refreshed')
-      },
-      onTriggerNavigate () {
-        this.$refs.datatable.navigate()
-      },
-      onTriggerRelist () {
-        this.$refs.datatable.relist()
-      },
-      playAudio (url) {
-        this.$eventHub.$emit('player_toggle', url)
-      },
-      changeDirectory (newDir) {
-        window.location.hash = newDir
+            fields.push(
+                    { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
+                    {
+                        key: 'mtime',
+                        label: this.$gettext('Modified'),
+                        sortable: true,
+                        formatter: (value, key, item) => {
+                            if (!value) {
+                                return '';
+                            }
+                            return moment.unix(value).format('lll');
+                        },
+                        selectable: true,
+                        visible: true
+                    },
+                    {
+                        key: 'playlists',
+                        label: this.$gettext('Playlists'),
+                        sortable: true,
+                        selectable: true,
+                        visible: true
+                    },
+                    { key: 'commands', label: this.$gettext('Actions'), sortable: false }
+            );
 
-        this.currentDirectory = newDir
-        this.onTriggerNavigate()
-      },
-      filter (newFilter) {
-        this.$refs.datatable.setFilter(newFilter)
-      },
-      onFiltered (newFilter) {
-        this.searchPhrase = newFilter
-      },
-      rename (path) {
-        this.$refs.renameModal.open(path)
-      },
-      edit (recordUrl, albumArtUrl) {
-        this.$refs.editModal.open(recordUrl, albumArtUrl)
-      },
-      requestConfig (config) {
-        config.params.file = this.currentDirectory
-        return config
-      }
-    }
-  }
+            return {
+                fields: fields,
+                selectedFiles: [],
+                currentDirectory: '',
+                searchPhrase: null
+            };
+        },
+        mounted () {
+            // Load directory from URL hash, if applicable.
+            let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
+
+            if (urlHash.substr(0, 9) === 'playlist:') {
+                window.location.hash = '';
+                this.filter(urlHash);
+            } else if (urlHash !== '') {
+                this.changeDirectory(urlHash);
+            }
+        },
+        computed: {
+            langAlbumArt () {
+                return this.$gettext('Album Art');
+            },
+            langRenameButton () {
+                return this.$gettext('Rename');
+            },
+            langEditButton () {
+                return this.$gettext('Edit');
+            },
+            langPlayPause () {
+                return this.$gettext('Play/Pause');
+            },
+            langPlaylistSelect () {
+                return this.$gettext('View tracks in playlist');
+            }
+        },
+        methods: {
+            formatFileSize (size) {
+                return formatFileSize(size);
+            },
+            onRowSelected (items) {
+                this.selectedFiles = _.map(items, 'name');
+            },
+            onRefreshed () {
+                this.$eventHub.$emit('refreshed');
+            },
+            onTriggerNavigate () {
+                this.$refs.datatable.navigate();
+            },
+            onTriggerRelist () {
+                this.$refs.datatable.relist();
+            },
+            playAudio (url) {
+                this.$eventHub.$emit('player_toggle', url);
+            },
+            changeDirectory (newDir) {
+                window.location.hash = newDir;
+
+                this.currentDirectory = newDir;
+                this.onTriggerNavigate();
+            },
+            filter (newFilter) {
+                this.$refs.datatable.setFilter(newFilter);
+            },
+            onFiltered (newFilter) {
+                this.searchPhrase = newFilter;
+            },
+            rename (path) {
+                this.$refs.renameModal.open(path);
+            },
+            edit (recordUrl, albumArtUrl) {
+                this.$refs.editModal.open(recordUrl, albumArtUrl);
+            },
+            requestConfig (config) {
+                config.params.file = this.currentDirectory;
+                return config;
+            }
+        }
+    };
 </script>

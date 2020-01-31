@@ -1,91 +1,59 @@
-<?php $this->layout('main', ['title' => __('Streamer/DJ Accounts'), 'manual' => true]) ?>
+<?php
+$this->layout('main', ['title' => __('Streamer/DJ Accounts'), 'manual' => true]);
+
+/** @var \Azura\Assets $assets */
+$assets->load('station_streamers')
+    ->addInlineJs($this->fetch('stations/streamers/index.js'));
+?>
 
 <div class="row">
     <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Streamer/DJ Accounts') ?></h2>
-            </div>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:streamers:add') ?>">
-                    <i class="material-icons" aria-hidden="true">add</i>
-                    <?=__('Add Streamer') ?>
-                </a>
-            </div>
-            <table class="table table-responsive-lg table-striped mb-0">
-                <colgroup>
-                    <col width="25%">
-                    <col width="15%">
-                    <col width="20%">
-                    <col width="40%">
-                </colgroup>
-                <thead>
-                <tr>
-                    <th><?=__('Actions') ?></th>
-                    <th><?=__('Username') ?></th>
-                    <th><?=__('Display Name') ?></th>
-                    <th><?=__('Notes') ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach($streamers as $row): ?>
-                    <?php /** @var App\Entity\StationStreamer $row */ ?>
-                    <tr class="align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:streamers:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                                <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete streamer "%s"?', $row->getStreamerUsername())) ?>" href="<?=$router->fromHere('stations:streamers:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
-                            </div>
-                        </td>
-                        <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
-                        <td><?=$this->e($row->getDisplayName()) ?></td>
-                        <td><?=nl2br($this->e($row->getComments())) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+        <div id="station-streamers"></div>
     </div>
     <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Connection Information') ?></h2>
+                <h2 class="card-title"><?=__('Connection Information')?></h2>
             </div>
             <div class="card-body">
-                <h3 class="card-title"><?=__('IceCast Clients') ?></h3>
+                <h3 class="card-title"><?=__('IceCast Clients')?></h3>
                 <dl>
-                    <dt class="mb-1"><?=__('Server') ?>:</dt>
-                    <dd><code><?=$this->e($server_url) ?></code></dd>
-                <?php if ($ip): ?>
-                    <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.', $ip) ?></dd>
-                <?php endif; ?>
+                    <dt class="mb-1"><?=__('Server')?>:</dt>
+                    <dd><code><?=$this->e($server_url)?></code></dd>
+                    <?php if ($ip): ?>
+                        <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.',
+                                $ip)?></dd>
+                    <?php endif; ?>
 
-                    <dt class="mb-1"><?=__('Port') ?>:</dt>
-                    <dd><code><?=(int)$stream_port ?></code></dd>
+                    <dt class="mb-1"><?=__('Port')?>:</dt>
+                    <dd><code><?=(int)$stream_port?></code></dd>
 
-                    <dt class="mb-1"><?=__('Mount Name') ?>:</dt>
-                    <dd><code><?=$this->e($dj_mount_point) ?></code></dd>
+                    <dt class="mb-1"><?=__('Mount Name')?>:</dt>
+                    <dd><code><?=$this->e($dj_mount_point)?></code></dd>
                 </dl>
 
-                <h3 class="card-title mt-3"><?=__('ShoutCast v1 Clients') ?></h3>
+                <h3 class="card-title mt-3"><?=__('ShoutCast v1 Clients')?></h3>
                 <dl>
-                    <dt class="mb-1"><?=__('Server') ?>:</dt>
-                    <dd><code><?=$this->e($server_url) ?></code></dd>
-                <?php if ($ip): ?>
-                    <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.', $ip) ?></dd>
-                <?php endif; ?>
+                    <dt class="mb-1"><?=__('Server')?>:</dt>
+                    <dd><code><?=$this->e($server_url)?></code></dd>
+                    <?php if ($ip): ?>
+                        <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.',
+                                $ip)?></dd>
+                    <?php endif; ?>
 
-                    <dt class="mb-1"><?=__('Port') ?>:</dt>
-                    <dd><code><?=__('%d (%d for some clients)', (int)$stream_port, ((int)$stream_port + 1)) ?></code></dd>
+                    <dt class="mb-1"><?=__('Port')?>:</dt>
+                    <dd><code><?=__('%d (%d for some clients)', (int)$stream_port, ((int)$stream_port + 1))?></code>
+                    </dd>
 
-                    <dt class="mb-1"><?=__('Password') ?>:</dt>
+                    <dt class="mb-1"><?=__('Password')?>:</dt>
                     <dd>
                         <code>dj_username:dj_password</code><br/>
-                        <small><?=__('(DJ username and password separated by a colon)') ?></small>
+                        <small><?=__('(DJ username and password separated by a colon)')?></small>
                     </dd>
                 </dl>
 
-                <p><?=sprintf(__('Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.'), 'https://www.azuracast.com/help/streaming_software.html') ?></p>
+                <p><?=sprintf(__('Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.'),
+                        'https://www.azuracast.com/help/streaming_software.html')?></p>
             </div>
         </div>
     </div>

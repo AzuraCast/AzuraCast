@@ -1,5 +1,6 @@
 # Files in the root directory
 **
+!.git
 !composer.*
 !src
 !bin

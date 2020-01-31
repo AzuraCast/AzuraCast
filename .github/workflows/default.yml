@@ -14,8 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
+      - name: Reduce Git repository size.
+        run: |
+          git gc --prune=now --aggressive
       - name: Publish to Docker Hub
         uses: elgohr/Publish-Docker-Github-Action@master
         if: github.event_name == 'push'

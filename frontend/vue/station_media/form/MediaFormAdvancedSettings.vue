@@ -11,10 +11,10 @@
                 </b-form-group>
                 <b-form-group class="col-md-6" label-for="edit_form_amplify">
                     <template v-slot:label>
-                        <translate>Amplify: Multiply Signal</translate>
+                        <translate>Amplify: Amplification (dB)</translate>
                     </template>
                     <template v-slot:description>
-                        <translate>Multiply the signal of the track to make it louder or quieter. Leave blank to use the system default.</translate>
+                        <translate>The volume in decibels to amplify the track with. Leave blank to use the system default.</translate>
                     </template>
                     <b-form-input type="text" id="edit_form_amplify"
                                   v-model="form.amplify.$model"

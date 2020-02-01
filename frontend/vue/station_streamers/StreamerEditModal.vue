@@ -100,14 +100,22 @@
                 form: {}
             };
         },
-        validations: {
-            form: {
-                'streamer_username': { required },
-                'streamer_password': {},
-                'display_name': {},
-                'comments': {},
-                'is_active': {}
+        validations () {
+            let validations = {
+                form: {
+                    'streamer_username': { required },
+                    'streamer_password': {},
+                    'display_name': {},
+                    'comments': {},
+                    'is_active': {}
+                }
+            };
+
+            if (this.editUrl === null) {
+                validations.form.streamer_password = { required };
             }
+
+            return validations;
         },
         computed: {
             langTitle () {

@@ -28,8 +28,11 @@ trait LogViewerTrait
             $log_contents_parts = explode("\n", file_get_contents($log_path));
             $log_contents_parts = str_replace(['>', '<'], ['&gt;', '&lt;'], $log_contents_parts);
 
+            $log_contents = implode("\n", $log_contents_parts);
+            $log_contents = mb_convert_encoding($log_contents, 'UTF-8', 'UTF-8');
+
             return $response->withJson([
-                'contents' => implode("\n", $log_contents_parts),
+                'contents' => $log_contents,
                 'eof' => true,
             ]);
         }
@@ -66,7 +69,9 @@ trait LogViewerTrait
             }
 
             $log_contents_parts = str_replace(['>', '<'], ['&gt;', '&lt;'], $log_contents_parts);
+
             $log_contents = implode("\n", $log_contents_parts);
+            $log_contents = mb_convert_encoding($log_contents, 'UTF-8', 'UTF-8');
 
             fclose($fp);
         }

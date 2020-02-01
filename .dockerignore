@@ -7,6 +7,7 @@
 !config
 !resources/locale/compiled
 !util/docker/web
+!util/openapi.php
 !web
 !templates
 !plugins

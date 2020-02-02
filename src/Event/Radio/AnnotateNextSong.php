@@ -84,6 +84,10 @@ class AnnotateNextSong extends Event
         if (!empty($this->annotations)) {
             $annotations_str = [];
             foreach ($this->annotations as $annotation_key => $annotation_val) {
+                if ($annotation_key == 'liq_amplify') {
+                    $annotations_str[] = $annotation_key . '="' . $annotation_val . 'dB"';
+                    continue;
+                }
                 $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
             }
 

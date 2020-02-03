@@ -4,11 +4,11 @@
             <data-table ref="datatable" id="station_streamer_broadcasts" :show-toolbar="false"
                         :fields="fields" :api-url="listUrl">
                 <template v-slot:cell(actions)="row">
-                    <b-button-group size="sm" v-if="row.item.links_download">
-                        <b-button size="sm" variant="primary" :href="row.item.links_download" target="_blank">
+                    <b-button-group size="sm" v-if="row.item.recording_links_download">
+                        <b-button size="sm" variant="primary" :href="row.item.recording_links_download" target="_blank">
                             <translate>Download</translate>
                         </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links_delete)">
+                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.recording_links_delete)">
                             <translate>Delete</translate>
                         </b-button>
                     </b-button-group>
@@ -26,6 +26,7 @@
 <script>
     import DataTable from '../components/DataTable.vue';
     import axios from 'axios';
+    import { formatFileSize } from '../inc/format_file_size';
 
     export default {
         name: 'StreamerBroadcastsModal',
@@ -48,9 +49,21 @@
                         sortable: false,
                         formatter: (value, key, item) => {
                             if (value === 0) {
-                                return this.$gettext('');
+                                return this.$gettext('Live');
                             }
                             return moment.unix(value).format('lll');
+                        }
+                    },
+                    {
+                        key: 'recording_size',
+                        label: this.$gettext('Size'),
+                        sortable: false,
+                        formatter: (value, key, item) => {
+                            if (!value) {
+                                return '';
+                            }
+
+                            return formatFileSize(value);
                         }
                     },
                     {

@@ -114,7 +114,7 @@
     import MoveFilesModal from './station_media/MediaMoveFilesModal';
     import RenameModal from './station_media/MediaRenameModal';
     import EditModal from './station_media/MediaEditModal';
-    import { formatFileSize } from './station_media/utils';
+    import { formatFileSize } from './inc/format_file_size';
     import _ from 'lodash';
 
     export default {

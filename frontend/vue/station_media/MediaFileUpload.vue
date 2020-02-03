@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import { formatFileSize } from './utils.js';
+    import { formatFileSize } from '../inc/format_file_size';
     import Flow from '@flowjs/flow.js';
 
     export default {

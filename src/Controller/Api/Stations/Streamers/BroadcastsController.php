@@ -17,6 +17,7 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
+     * @param Filesystem $filesystem
      * @param string|int $station_id
      * @param int $id
      *
@@ -25,6 +26,7 @@ class BroadcastsController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
+        Filesystem $filesystem,
         $station_id,
         $id
     ): ResponseInterface {
@@ -49,25 +51,40 @@ class BroadcastsController extends AbstractApiCrudController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router) {
+        $fs = $filesystem->getForStation($station);
+
+        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router, $fs) {
             /** @var Entity\StationStreamerBroadcast $row */
             $return = $this->_normalizeRecord($row);
 
-            if (!empty($row->getRecordingPath())) {
-                $return['links'] = [
-                    'download' => $router->fromHere(
-                        'api:stations:streamer:broadcast:download',
-                        ['broadcast_id' => $row->getId()],
-                        [],
-                        true
-                    ),
-                    'delete' => $router->fromHere(
-                        'api:stations:streamer:broadcast:delete',
-                        ['broadcast_id' => $row->getId()],
-                        [],
-                        true
-                    ),
+            unset($return['recordingPath']);
+
+            $recordingPath = $row->getRecordingPath();
+            $recordingUri = 'recordings://' . $recordingPath;
+
+            if ($fs->has($recordingUri)) {
+                $recordingMeta = $fs->getMetadata($recordingUri);
+
+                $return['recording'] = [
+                    'path' => $recordingPath,
+                    'size' => $recordingMeta['size'],
+                    'links' => [
+                        'download' => $router->fromHere(
+                            'api:stations:streamer:broadcast:download',
+                            ['broadcast_id' => $row->getId()],
+                            [],
+                            true
+                        ),
+                        'delete' => $router->fromHere(
+                            'api:stations:streamer:broadcast:delete',
+                            ['broadcast_id' => $row->getId()],
+                            [],
+                            true
+                        ),
+                    ],
                 ];
+            } else {
+                $return['recording'] = [];
             }
 
             if ($is_bootgrid) {

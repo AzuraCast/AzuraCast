@@ -8,6 +8,9 @@
                         <b-button size="sm" variant="primary" :href="row.item.links_download" target="_blank">
                             <translate>Download</translate>
                         </b-button>
+                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links_delete)">
+                            <translate>Delete</translate>
+                        </b-button>
                     </b-button-group>
                     <template v-else>&nbsp;</template>
                 </template>
@@ -22,6 +25,7 @@
 </template>
 <script>
     import DataTable from '../components/DataTable.vue';
+    import axios from 'axios';
 
     export default {
         name: 'StreamerBroadcastsModal',
@@ -63,6 +67,31 @@
             }
         },
         methods: {
+            doDelete (url) {
+                let buttonText = this.$gettext('Delete');
+                let buttonConfirmText = this.$gettext('Delete broadcast?');
+
+                swal({
+                    title: buttonConfirmText,
+                    buttons: [true, buttonText],
+                    dangerMode: true
+                }).then((value) => {
+                    if (value) {
+                        axios.delete(url).then((resp) => {
+                            notify('<b>' + resp.data.message + '</b>', 'success');
+
+                            this.$refs.datatable.refresh();
+                        }).catch((err) => {
+                            console.error(err);
+                            if (err.response.message) {
+                                notify('<b>' + err.response.message + '</b>', 'danger');
+                            }
+                        });
+
+                        this.$refs.datatable.refresh();
+                    }
+                });
+            },
             open (listUrl) {
                 this.listUrl = listUrl;
                 this.$refs.modal.show();

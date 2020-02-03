@@ -394,12 +394,16 @@ return function (App $app) {
             $group->group('/streamer/{id}', function (RouteCollectorProxy $group) {
 
                 $group->get('/broadcasts',
-                    Controller\Api\Stations\StreamersController::class . ':broadcastsAction')
+                    Controller\Api\Stations\Streamers\BroadcastsController::class . ':listAction')
                     ->setName('api:stations:streamer:broadcasts');
 
-                $group->get('/broadcast/{broadcast_id}',
-                    Controller\Api\Stations\StreamersController::class . ':downloadBroadcastAction')
+                $group->get('/broadcast/{broadcast_id}/download',
+                    Controller\Api\Stations\Streamers\BroadcastsController::class . ':downloadAction')
                     ->setName('api:stations:streamer:broadcast:download');
+
+                $group->delete('/broadcast/{broadcast_id}',
+                    Controller\Api\Stations\Streamers\BroadcastsController::class . ':deleteAction')
+                    ->setName('api:stations:streamer:broadcast:delete');
 
             })->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 

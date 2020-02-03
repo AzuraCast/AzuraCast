@@ -154,4 +154,9 @@ class StationStreamerBroadcast
 
         return $this->recordingPath;
     }
+
+    public function clearRecordingPath(): void
+    {
+        $this->recordingPath = null;
+    }
 }

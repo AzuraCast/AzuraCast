@@ -5,7 +5,7 @@ use App\Entity;
 use App\Message;
 use App\MessageQueue;
 use App\Radio\Filesystem;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;

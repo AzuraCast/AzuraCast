@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 use App\Form\ApiKeyForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Session\Flash;
+use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class ApiController extends AbstractAdminCrudController

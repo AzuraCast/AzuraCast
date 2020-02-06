@@ -4,7 +4,7 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Service\AzuraCastCentral;
 use App\Settings;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;

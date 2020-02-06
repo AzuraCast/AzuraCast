@@ -2,7 +2,7 @@
 namespace App\Console\Command;
 
 use App\MessageQueue;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Psr\Log\LoggerInterface;
 use const PHP_INT_MAX;
 

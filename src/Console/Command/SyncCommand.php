@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App;
 use App\Sync\Runner;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 
 class SyncCommand extends CommandAbstract
 {

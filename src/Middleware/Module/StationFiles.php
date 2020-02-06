@@ -2,7 +2,7 @@
 namespace App\Middleware\Module;
 
 use App\Http\ServerRequest;
-use Azura\Exception;
+use App\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 

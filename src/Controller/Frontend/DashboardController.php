@@ -8,7 +8,7 @@ use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Azura\EventDispatcher;
+use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;

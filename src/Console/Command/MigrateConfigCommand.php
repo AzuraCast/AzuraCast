@@ -2,7 +2,7 @@
 namespace App\Console\Command;
 
 use App\Settings;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MigrateConfigCommand extends CommandAbstract

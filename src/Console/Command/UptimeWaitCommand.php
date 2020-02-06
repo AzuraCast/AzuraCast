@@ -2,7 +2,7 @@
 namespace App\Console\Command;
 
 use App;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use InvalidArgumentException;

@@ -12,7 +12,7 @@ class C02_Station_MediaCest extends CestAbstract
 
         $station_id = $this->test_station->getId();
 
-        $test_song_orig = $this->settings[\Azura\Settings::BASE_DIR] . '/resources/error.mp3';
+        $test_song_orig = $this->settings[\App\Settings::BASE_DIR] . '/resources/error.mp3';
         $test_song = tempnam(sys_get_temp_dir(), 'azuracast');
         copy($test_song_orig, $test_song);
 

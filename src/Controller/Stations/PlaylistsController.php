@@ -3,7 +3,7 @@ namespace App\Controller\Stations;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Exception;
+use App\Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class PlaylistsController

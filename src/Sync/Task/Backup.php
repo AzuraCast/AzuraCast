@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Message;
 use App\MessageQueue;
-use Azura\Console\Application;
+use App\Console\Application;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;

@@ -2,7 +2,7 @@
 namespace App\Radio\Backend;
 
 use App\Entity;
-use Azura\Logger;
+use App\Logger;
 
 class None extends AbstractBackend
 {

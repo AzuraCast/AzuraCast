@@ -8,8 +8,8 @@ use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Radio\Filesystem;
 use App\Settings;
-use Azura\EventDispatcher;
-use Azura\Logger;
+use App\EventDispatcher;
+use App\Logger;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Psr\Http\Message\UriInterface;
@@ -580,7 +580,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      * @param string $command_str
      *
      * @return array
-     * @throws \Azura\Exception
+     * @throws \App\Exception
      */
     public function command(Entity\Station $station, $command_str)
     {
@@ -588,7 +588,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $errno, $errstr, 20);
 
         if (!$fp) {
-            throw new \Azura\Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
+            throw new \App\Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
         }
 
         fwrite($fp, str_replace(["\\'", '&amp;'], ["'", '&'], urldecode($command_str)) . "\nquit\n");

@@ -1,7 +1,7 @@
 <?php
 namespace App\Exception;
 
-use Azura\Exception;
+use App\Exception;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;

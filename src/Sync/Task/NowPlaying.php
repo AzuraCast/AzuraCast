@@ -10,7 +10,7 @@ use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Settings;
-use Azura\EventDispatcher;
+use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use GuzzleHttp\Psr7\Uri;

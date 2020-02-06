@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity\Api;
 
-use Azura\Http\Router;
+use App\Http\Router;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 

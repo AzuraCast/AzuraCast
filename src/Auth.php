@@ -4,7 +4,7 @@ namespace App;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
-use Azura\Exception;
+use App\Exception;
 use Mezzio\Session\SessionInterface;
 
 class Auth

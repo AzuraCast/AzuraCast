@@ -4,7 +4,7 @@ namespace App\Event;
 use App\Acl;
 use App\Entity\User;
 use App\Http\Router;
-use Azura\Http\RouterInterface;
+use App\Http\RouterInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractBuildMenu extends Event

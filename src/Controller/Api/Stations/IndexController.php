@@ -6,7 +6,7 @@ use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Azura\Exception;
+use App\Exception;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;

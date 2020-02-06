@@ -4,7 +4,7 @@ namespace App\Controller\Api\Admin;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Doctrine\Paginator;
+use App\Doctrine\Paginator;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
 use Doctrine\ORM\EntityManager;

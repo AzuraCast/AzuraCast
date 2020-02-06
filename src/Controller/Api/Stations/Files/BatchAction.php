@@ -231,7 +231,7 @@ class BatchAction
                     if ('' !== $directory_path) {
                         $directory_path_meta = $fs->getMetadata($directory_path_full);
                         if ('dir' !== $directory_path_meta['type']) {
-                            throw new \Azura\Exception(__('Path "%s" is not a folder.', $directory_path_full));
+                            throw new \App\Exception(__('Path "%s" is not a folder.', $directory_path_full));
                         }
                     }
 
@@ -246,7 +246,7 @@ class BatchAction
                         $media->setPath($newPath);
 
                         if (!$fs->rename($old_full_path, $media->getPath())) {
-                            throw new \Azura\Exception(__('Could not move "%s" to "%s"', $old_full_path,
+                            throw new \App\Exception(__('Could not move "%s" to "%s"', $old_full_path,
                                 $media->getPath()));
                         }
 

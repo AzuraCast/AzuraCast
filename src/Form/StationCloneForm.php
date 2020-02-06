@@ -7,7 +7,7 @@ use App\Http\ServerRequest;
 use App\Radio\Configuration;
 use App\Settings;
 use App\Sync\Task\Media;
-use Azura\Config;
+use App\Config;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;

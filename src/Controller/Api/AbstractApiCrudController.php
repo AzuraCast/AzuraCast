@@ -2,7 +2,7 @@
 namespace App\Controller\Api;
 
 use App\Exception\ValidationException;
-use Azura\Http\RouterInterface;
+use App\Http\RouterInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;

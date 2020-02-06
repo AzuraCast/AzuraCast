@@ -8,7 +8,7 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Quota;
 use App\Radio\Remote\AdapterProxy;
 use App\Validator\Constraints as AppAssert;
-use Azura\File;
+use App\File;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

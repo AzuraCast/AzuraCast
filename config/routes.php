@@ -5,7 +5,7 @@ use App\Controller;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Middleware;
-use Azura\Middleware as AzuraMiddleware;
+use App\Middleware as AzuraMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 

@@ -5,7 +5,7 @@ use App\Entity;
 use App\Event\Radio\LoadNowPlaying;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\EventDispatcher;
+use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;

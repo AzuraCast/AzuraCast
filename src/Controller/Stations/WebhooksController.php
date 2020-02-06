@@ -6,7 +6,7 @@ use App\Form\StationWebhookForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Webhook\Dispatcher;
-use Azura\Session\Flash;
+use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class WebhooksController extends AbstractStationCrudController

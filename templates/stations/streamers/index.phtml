@@ -1,7 +1,7 @@
 <?php
 $this->layout('main', ['title' => __('Streamer/DJ Accounts'), 'manual' => true]);
 
-/** @var \Azura\Assets $assets */
+/** @var \App\Assets $assets */
 $assets->load('station_streamers')
     ->addInlineJs($this->fetch('stations/streamers/index.js'));
 ?>

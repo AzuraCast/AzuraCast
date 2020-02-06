@@ -3,7 +3,7 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Radio\Adapters;
-use Azura\Exception;
+use App\Exception;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;

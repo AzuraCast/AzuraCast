@@ -6,7 +6,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Settings;
-use Azura\Exception;
+use App\Exception;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 

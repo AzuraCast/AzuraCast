@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
-use Azura\EventDispatcher;
+use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 

@@ -3,8 +3,8 @@ namespace App\Entity\Repository;
 
 use App\Entity;
 use App\Utilities;
-use Azura\Doctrine\Repository;
-use Azura\Exception;
+use App\Doctrine\Repository;
+use App\Exception;
 use Doctrine\ORM\NoResultException;
 
 class StationRequestRepository extends Repository

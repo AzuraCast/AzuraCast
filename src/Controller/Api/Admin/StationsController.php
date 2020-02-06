@@ -3,7 +3,7 @@ namespace App\Controller\Api\Admin;
 
 use App\Entity;
 use App\Exception\ValidationException;
-use Azura\Normalizer\DoctrineEntityNormalizer;
+use App\Normalizer\DoctrineEntityNormalizer;
 use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;

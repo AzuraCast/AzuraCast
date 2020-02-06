@@ -7,7 +7,7 @@ use App\Exception\PermissionDeniedException;
 use App\Form\StationRemoteForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Session\Flash;
+use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class RemotesController extends AbstractStationCrudController

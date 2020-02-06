@@ -4,7 +4,7 @@ namespace App\Webhook;
 use App\Entity;
 use App\Event\SendWebhooks;
 use App\Settings;
-use Azura\Exception;
+use App\Exception;
 use InvalidArgumentException;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;

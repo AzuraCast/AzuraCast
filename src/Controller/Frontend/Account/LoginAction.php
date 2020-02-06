@@ -8,9 +8,9 @@ use App\Entity\Settings;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Exception\RateLimitExceededException;
-use Azura\RateLimit;
-use Azura\Session\Flash;
+use App\Exception\RateLimitExceededException;
+use App\RateLimit;
+use App\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 

@@ -2,7 +2,7 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use Azura\Normalizer\Annotation\DeepNormalize;
+use App\Normalizer\Annotation\DeepNormalize;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;

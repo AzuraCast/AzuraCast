@@ -5,7 +5,7 @@ use App\Acl;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
-use Azura\Config;
+use App\Config;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;

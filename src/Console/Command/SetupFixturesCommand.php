@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App\Entity\Station;
 use App\Settings;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;

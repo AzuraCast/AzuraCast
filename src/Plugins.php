@@ -1,8 +1,8 @@
 <?php
 namespace App;
 
-use Azura\Container;
-use Azura\EventDispatcher;
+use App\Container;
+use App\EventDispatcher;
 use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Finder\Finder;

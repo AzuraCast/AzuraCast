@@ -8,7 +8,7 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Settings;
 use App\Sync\Task\Media;
 use App\Utilities;
-use Azura\Doctrine\Repository;
+use App\Doctrine\Repository;
 use Closure;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -37,7 +37,7 @@ class StationRepository extends Repository
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
-        \Azura\Settings $settings,
+        \App\Settings $settings,
         LoggerInterface $logger,
         Media $media_sync,
         Adapters $adapters,

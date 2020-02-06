@@ -7,8 +7,8 @@ parameters:
     bootstrap: %rootDir%/../../../util/phpstan.php
 
     universalObjectCratesClasses:
-        - Azura\Session\NamespaceInterface
-        - Azura\View
+        - App\Session\NamespaceInterface
+        - App\View
 
     ignoreErrors:
         # Caused by Symfony Validator (perhaps wrongly) returning the interface.

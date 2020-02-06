@@ -4,7 +4,7 @@ namespace App\Console\Command\Internal;
 use App\Entity;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;
 

@@ -3,8 +3,8 @@ namespace App\Entity\Repository;
 
 use App\ApiUtilities;
 use App\Entity;
-use Azura\Doctrine\Repository;
-use Azura\Settings;
+use App\Doctrine\Repository;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;

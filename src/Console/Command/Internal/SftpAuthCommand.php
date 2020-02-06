@@ -2,7 +2,7 @@
 namespace App\Console\Command\Internal;
 
 use App\Entity\SftpUser;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;

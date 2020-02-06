@@ -6,7 +6,7 @@ use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
-use Azura\Logger;
+use App\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
 use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;

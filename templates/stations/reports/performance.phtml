@@ -1,7 +1,7 @@
 <?php
 $this->layout('main', ['title' => __('Song Listener Impact'), 'manual' => true]);
 
-/** @var \Azura\Assets $assets */
+/** @var \App\Assets $assets */
 $assets
     ->load('bootgrid')
     ->addInlineJs($this->fetch('stations/reports/performance.js'));

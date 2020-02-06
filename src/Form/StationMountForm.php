@@ -5,7 +5,7 @@ use App\Entity;
 use App\Entity\Station;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Azura\Config;
+use App\Config;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

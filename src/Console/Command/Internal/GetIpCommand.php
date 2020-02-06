@@ -3,7 +3,7 @@ namespace App\Console\Command\Internal;
 
 use App\Entity;
 use App\Service\AzuraCastCentral;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GetIpCommand extends CommandAbstract

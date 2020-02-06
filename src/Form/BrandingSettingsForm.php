@@ -3,7 +3,7 @@ namespace App\Form;
 
 use App\Entity;
 use App\Settings;
-use Azura\Config;
+use App\Config;
 use Doctrine\ORM\EntityManager;
 
 class BrandingSettingsForm extends AbstractSettingsForm

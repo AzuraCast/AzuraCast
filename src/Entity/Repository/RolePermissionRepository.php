@@ -2,7 +2,7 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
-use Azura\Doctrine\Repository;
+use App\Doctrine\Repository;
 
 class RolePermissionRepository extends Repository
 {

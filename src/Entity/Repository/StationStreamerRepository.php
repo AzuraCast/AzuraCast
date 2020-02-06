@@ -3,7 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Entity;
 use App\Radio\Adapters;
-use Azura\Doctrine\Repository;
+use App\Doctrine\Repository;
 
 class StationStreamerRepository extends Repository
 {

@@ -4,7 +4,7 @@ namespace App\Radio;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
-use Azura\EventDispatcher;
+use App\EventDispatcher;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
 use Doctrine\ORM\EntityManager;

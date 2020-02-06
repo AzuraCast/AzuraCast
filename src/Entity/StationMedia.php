@@ -4,7 +4,7 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\ApiUtilities;
 use App\Radio\Backend\Liquidsoap;
-use Azura\Normalizer\Annotation\DeepNormalize;
+use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

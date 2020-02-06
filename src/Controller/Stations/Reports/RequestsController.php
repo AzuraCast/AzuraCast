@@ -4,7 +4,7 @@ namespace App\Controller\Stations\Reports;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Session\Flash;
+use App\Session\Flash;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 

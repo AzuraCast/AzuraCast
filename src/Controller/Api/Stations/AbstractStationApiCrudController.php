@@ -6,8 +6,8 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use Azura\Doctrine\Paginator;
-use Azura\Exception;
+use App\Doctrine\Paginator;
+use App\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 

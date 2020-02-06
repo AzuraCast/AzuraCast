@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\ServerRequest;
-use Azura\Http\RouterInterface;
+use App\Http\RouterInterface;
 use OpenApi\Annotations as OA;
 
 class StreamersController extends AbstractStationApiCrudController

@@ -5,7 +5,7 @@ use App\Entity;
 use App\Http\ServerRequest;
 use App\Settings;
 use App\Sync\Task\UpdateGeoLiteDatabase;
-use Azura\Config;
+use App\Config;
 use Doctrine\ORM\EntityManager;
 
 class GeoLiteSettingsForm extends AbstractSettingsForm

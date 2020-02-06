@@ -6,7 +6,7 @@ use App\Entity\Station;
 use App\Entity\User;
 use App\Radio\Backend\AbstractBackend;
 use App\Radio\Frontend\AbstractFrontend;
-use Azura\Http\RouterInterface;
+use App\Http\RouterInterface;
 
 class BuildStationMenu extends AbstractBuildMenu
 {
@@ -45,7 +45,7 @@ class BuildStationMenu extends AbstractBuildMenu
     {
         return $this->frontend;
     }
-    
+
     public function checkPermission(string $permission_name): bool
     {
         return $this->acl->userAllowed($this->user, $permission_name, $this->station->getId());

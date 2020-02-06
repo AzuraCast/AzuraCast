@@ -5,7 +5,7 @@ use App\Entity;
 use App\Exception\SupervisorException;
 use App\Settings;
 use App\Version;
-use Azura\Exception;
+use App\Exception;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;

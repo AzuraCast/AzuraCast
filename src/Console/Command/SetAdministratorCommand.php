@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App\Acl;
 use App\Entity;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;
 

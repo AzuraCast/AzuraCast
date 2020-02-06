@@ -7,10 +7,10 @@
 class_name: FunctionalTester
 modules:
   enabled:
-   - \Azura\Tests\Module:
+   - \App\Tests\Module:
       container: \App\AppFactory
    - Doctrine2:
-      depends: \Azura\Tests\Module
+      depends: \App\Tests\Module
    - REST:
-      depends: \Azura\Tests\Module
+      depends: \App\Tests\Module
    - Cli

@@ -3,7 +3,7 @@ namespace App\Middleware\Module;
 
 use App\Event;
 use App\Http\ServerRequest;
-use Azura\EventDispatcher;
+use App\EventDispatcher;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;

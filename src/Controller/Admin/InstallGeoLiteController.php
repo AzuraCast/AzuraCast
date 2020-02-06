@@ -7,7 +7,7 @@ use App\Form\GeoLiteSettingsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
-use Azura\Session\Flash;
+use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class InstallGeoLiteController

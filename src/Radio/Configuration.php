@@ -3,7 +3,7 @@ namespace App\Radio;
 
 use App\Entity\Station;
 use App\Settings;
-use Azura\Exception;
+use App\Exception;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;

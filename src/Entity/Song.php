@@ -2,7 +2,7 @@
 namespace App\Entity;
 
 use App\ApiUtilities;
-use Azura\Exception;
+use App\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

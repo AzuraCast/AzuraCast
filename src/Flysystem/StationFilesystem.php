@@ -1,7 +1,7 @@
 <?php
 namespace App\Flysystem;
 
-use Azura\Exception;
+use App\Exception;
 use InvalidArgumentException;
 use Iterator;
 use Jhofm\FlysystemIterator\FilesystemFilterIterator;

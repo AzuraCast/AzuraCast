@@ -7,7 +7,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use App\Utilities;
-use Azura\Doctrine\Paginator;
+use App\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
 
 class BroadcastsController extends AbstractApiCrudController

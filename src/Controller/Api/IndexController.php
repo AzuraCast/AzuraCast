@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Timezone;
+use App\Timezone;
 use Psr\Http\Message\ResponseInterface;
 
 class IndexController

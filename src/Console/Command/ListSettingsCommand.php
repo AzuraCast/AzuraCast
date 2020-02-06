@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Utilities;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ListSettingsCommand extends CommandAbstract

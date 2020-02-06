@@ -9,7 +9,7 @@ abstract class CestAbstract
     /** @var ContainerInterface */
     protected $di;
 
-    /** @var \Azura\Settings */
+    /** @var \App\Settings */
     protected $settings;
 
     /** @var Entity\Repository\SettingsRepository */
@@ -21,14 +21,14 @@ abstract class CestAbstract
     /** @var EntityManagerInterface */
     protected $em;
 
-    protected function _inject(\Azura\Tests\Module $tests_module)
+    protected function _inject(\App\Tests\Module $tests_module)
     {
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
 
         $this->settingsRepo = $this->di->get(Entity\Repository\SettingsRepository::class);
         $this->stationRepo = $this->di->get(Entity\Repository\StationRepository::class);
-        $this->settings = $this->di->get(\Azura\Settings::class);
+        $this->settings = $this->di->get(\App\Settings::class);
     }
 
     public function _after(FunctionalTester $I)

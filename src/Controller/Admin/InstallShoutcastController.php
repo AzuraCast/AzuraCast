@@ -6,7 +6,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
 use App\Settings;
-use Azura\Config;
+use App\Config;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;

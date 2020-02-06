@@ -3,8 +3,8 @@ namespace App\Middleware;
 
 use App\Entity;
 use App\Http\Response;
-use Azura\App;
-use Azura\Assets;
+use App\App;
+use App\Assets;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

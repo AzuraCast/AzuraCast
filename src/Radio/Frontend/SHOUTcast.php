@@ -4,7 +4,7 @@ namespace App\Radio\Frontend;
 use App\Entity;
 use App\Settings;
 use App\Utilities;
-use Azura\Logger;
+use App\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
 use NowPlaying\Adapter\SHOUTcast2;
 use NowPlaying\Exception;

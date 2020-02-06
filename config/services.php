@@ -3,43 +3,115 @@
  * PHP-DI Services
  */
 
-use App;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 
-return [
+return array_merge(
+    include(__DIR__ . '/services/cache.php'),
+    include(__DIR__ . '/services/database.php'),
+    include(__DIR__ . '/services/http.php'),
+    include(__DIR__ . '/services/view.php'), [
 
-    /*
-     * Slim Component Overrides
-     */
-
-    // URL Router helper
-    App\Http\Router::class => function (
-        Settings $settings,
-        \Slim\App $app,
-        App\Entity\Repository\SettingsRepository $settingsRepo
-    ) {
-        $route_parser = $app->getRouteCollector()->getRouteParser();
-        return new App\Http\Router($settings, $route_parser, $settingsRepo);
+    // Configuration management
+    App\Config::class => function (App\Settings $settings) {
+        return new App\Config($settings[App\Settings::CONFIG_DIR]);
     },
-    Azura\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
-    // Error Handler
-    App\Http\ErrorHandler::class => DI\autowire(),
-    Slim\Interfaces\ErrorHandlerInterface::class => DI\Get(App\Http\ErrorHandler::class),
+    // Console
+    App\Console\Application::class => function (DI\Container $di, App\EventDispatcher $dispatcher) {
+        $console = new App\Console\Application('Command Line Interface', '1.0.0', $di);
 
-    /*
-     * Doctrine Database
-     */
+        // Trigger an event for the core app and all plugins to build their CLI commands.
+        $event = new App\Event\BuildConsoleCommands($console);
+        $dispatcher->dispatch($event);
 
-    EntityManager::class => DI\decorate(function (EntityManager $em, ContainerInterface $di) {
-        $event_manager = $em->getEventManager();
-        $event_manager->addEventSubscriber($di->get(App\Doctrine\Event\StationRequiresRestart::class));
-        $event_manager->addEventSubscriber($di->get(App\Doctrine\Event\AuditLog::class));
+        return $console;
+    },
 
-        return $em;
-    }),
+    // Event Dispatcher
+    App\EventDispatcher::class => function (Slim\App $app, App\Plugins $plugins) {
+        $dispatcher = new App\EventDispatcher($app->getCallableResolver());
+
+        // Register application default events.
+        if (file_exists(__DIR__ . '/events.php')) {
+            call_user_func(include(__DIR__ . '/events.php'), $dispatcher);
+        }
+
+        // Register plugin-provided events.
+        $plugins->registerEvents($dispatcher);
+
+        return $dispatcher;
+    },
+
+    // Monolog Logger
+    Monolog\Logger::class => function (App\Settings $settings) {
+        $logger = new Monolog\Logger($settings[App\Settings::APP_NAME] ?? 'app');
+        $logging_level = $settings->isProduction() ? Psr\Log\LogLevel::INFO : Psr\Log\LogLevel::DEBUG;
+
+        if ($settings[App\Settings::IS_DOCKER] || $settings[App\Settings::IS_CLI]) {
+            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
+            $logger->pushHandler($log_stderr);
+        }
+
+        $log_file = new Monolog\Handler\StreamHandler($settings[App\Settings::TEMP_DIR] . '/app.log',
+            $logging_level, true);
+        $logger->pushHandler($log_file);
+
+        return $logger;
+    },
+    Psr\Log\LoggerInterface::class => DI\get(Monolog\Logger::class),
+
+    // Middleware
+    App\Middleware\InjectRateLimit::class => DI\autowire(),
+    App\Middleware\InjectRouter::class => DI\autowire(),
+    App\Middleware\InjectSession::class => DI\autowire(),
+    App\Middleware\EnableView::class => DI\autowire(),
+
+    // Rate limiter
+    App\RateLimit::class => DI\autowire(),
+
+    // Doctrine annotations reader
+    Doctrine\Common\Annotations\Reader::class => function (
+        Doctrine\Common\Cache\Cache $doctrine_cache,
+        App\Settings $settings
+    ) {
+        return new Doctrine\Common\Annotations\CachedReader(
+            new Doctrine\Common\Annotations\AnnotationReader,
+            $doctrine_cache,
+            !$settings->isProduction()
+        );
+    },
+
+    // Symfony Serializer
+    Symfony\Component\Serializer\Serializer::class => function (
+        Doctrine\Common\Annotations\Reader $annotation_reader,
+        Doctrine\ORM\EntityManager $em
+    ) {
+        $meta_factory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
+            new Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($annotation_reader)
+        );
+
+        $normalizers = [
+            new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
+            new App\Normalizer\DoctrineEntityNormalizer($em, $annotation_reader, $meta_factory),
+            new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory),
+        ];
+        return new Symfony\Component\Serializer\Serializer($normalizers);
+    },
+
+    // Symfony Validator
+    Symfony\Component\Validator\ConstraintValidatorFactoryInterface::class => DI\autowire(App\Validator\ConstraintValidatorFactory::class),
+
+    Symfony\Component\Validator\Validator\ValidatorInterface::class => function (
+        Doctrine\Common\Annotations\Reader $annotation_reader,
+        Symfony\Component\Validator\ConstraintValidatorFactoryInterface $cvf
+    ) {
+        $builder = new Symfony\Component\Validator\ValidatorBuilder();
+        $builder->setConstraintValidatorFactory($cvf);
+        $builder->enableAnnotationMapping($annotation_reader);
+        return $builder->getValidator();
+    },
 
     App\Doctrine\Event\AuditLog::class => DI\autowire(),
     App\Doctrine\Event\StationRequiresRestart::class => DI\autowire(),
@@ -62,66 +134,6 @@ return [
     App\Entity\Repository\UserRepository::class => DI\autowire(),
 
     /*
-     * View
-     */
-
-    Azura\View::class => DI\decorate(function (Azura\View $view, ContainerInterface $di) {
-        $view->registerFunction('mailto', function ($address, $link_text = null) {
-            $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
-            $link_text = $link_text ?? $address;
-            return '<a href="mailto:' . $address . '">' . $link_text . '</a>';
-        });
-        $view->registerFunction('pluralize', function ($word, $num = 0) {
-            if ((int)$num === 1) {
-                return $word;
-            }
-            return Doctrine\Common\Inflector\Inflector::pluralize($word);
-        });
-        $view->registerFunction('truncate', function ($text, $length = 80) {
-            return App\Utilities::truncateText($text, $length);
-        });
-        $view->registerFunction('truncateUrl', function ($url) {
-            return App\Utilities::truncateUrl($url);
-        });
-        $view->registerFunction('link', function ($url, $external = true, $truncate = true) {
-            $url = htmlspecialchars($url, \ENT_QUOTES, 'UTF-8');
-
-            $a = ['href="' . $url . '"'];
-            if ($external) {
-                $a[] = 'target="_blank"';
-            }
-
-            $a_body = ($truncate) ? App\Utilities::truncateUrl($url) : $url;
-            return '<a ' . implode(' ', $a) . '>' . $a_body . '</a>';
-        });
-
-        $view->addData([
-            'assets' => $di->get(Azura\Assets::class),
-            'auth' => $di->get(App\Auth::class),
-            'acl' => $di->get(App\Acl::class),
-            'customization' => $di->get(App\Customization::class),
-            'version' => $di->get(App\Version::class),
-        ]);
-        return $view;
-    }),
-
-    /*
-     * Event Dispatcher
-     */
-
-    Azura\EventDispatcher::class => DI\decorate(function (Azura\EventDispatcher $dispatcher, ContainerInterface $di) {
-        if ($di->has(App\Plugins::class)) {
-            /** @var App\Plugins $plugins */
-            $plugins = $di->get(App\Plugins::class);
-
-            // Register plugin-provided events.
-            $plugins->registerEvents($dispatcher);
-        }
-
-        return $dispatcher;
-    }),
-
-    /*
      * AzuraCast-specific dependencies
      */
 
@@ -139,7 +151,7 @@ return [
 
     // Message queue manager class
     App\MessageQueue::class => function (
-        \Redis $redis,
+        Redis $redis,
         ContainerInterface $di,
         Monolog\Logger $logger,
         EntityManager $em
@@ -206,22 +218,22 @@ return [
         $supervisor = new Supervisor\Supervisor($connector);
 
         if (!$supervisor->isConnected()) {
-            throw new \Azura\Exception(sprintf('Could not connect to supervisord.'));
+            throw new \App\Exception(sprintf('Could not connect to supervisord.'));
         }
 
         return $supervisor;
     },
 
-    Azura\Assets::class => function (Azura\Config $config, Settings $settings) {
+    App\Assets::class => function (App\Config $config, Settings $settings) {
         $libraries = $config->get('assets');
 
         $versioned_files = [];
         $assets_file = $settings[Settings::BASE_DIR] . '/web/static/assets.json';
         if (file_exists($assets_file)) {
-            $versioned_files = json_decode(file_get_contents($assets_file), true);
+            $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }
 
-        return new Azura\Assets($libraries, $versioned_files);
+        return new App\Assets($libraries, $versioned_files);
     },
 
     /*
@@ -302,7 +314,7 @@ return [
 
     App\Webhook\Dispatcher::class => function (
         ContainerInterface $di,
-        Azura\Config $config,
+        App\Config $config,
         Monolog\Logger $logger
     ) {
         $webhooks = $config->get('webhooks');
@@ -365,4 +377,4 @@ return [
     'App\Controller\Stations\*Controller' => DI\autowire(),
     'App\Controller\Stations\Files\*Controller' => DI\autowire(),
     'App\Controller\Stations\Reports\*Controller' => DI\autowire(),
-];
+]);

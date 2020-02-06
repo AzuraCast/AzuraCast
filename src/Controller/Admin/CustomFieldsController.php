@@ -5,7 +5,7 @@ use App\Entity;
 use App\Form\CustomFieldForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Session\Flash;
+use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class CustomFieldsController extends AbstractAdminCrudController

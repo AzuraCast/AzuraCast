@@ -1,8 +1,8 @@
 <?php
 
 use App\Console\Command;
-use Azura\Console\Application;
-use Azura\Settings;
+use App\Console\Application;
+use App\Settings;
 
 return function (Application $console) {
     // Set console version and name.

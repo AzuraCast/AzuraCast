@@ -7,7 +7,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use App\Service\SftpGo;
-use Azura\Session\Flash;
+use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 class SftpUsersController extends AbstractStationCrudController

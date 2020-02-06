@@ -1,7 +1,7 @@
 <?php
 namespace App\Notification;
 
-use Azura\Session\Flash;
+use App\Session\Flash;
 
 class Notification
 {

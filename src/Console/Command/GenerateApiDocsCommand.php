@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App\Settings;
 use App\Version;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use function OpenApi\scan;
 

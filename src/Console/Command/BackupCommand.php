@@ -4,7 +4,7 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Sync\Task\Backup;
 use App\Utilities;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Symfony\Component\Console\Style\SymfonyStyle;

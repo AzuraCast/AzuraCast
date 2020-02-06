@@ -2,7 +2,7 @@
 namespace App\Console\Command;
 
 use App\Entity;
-use Azura\Console\Command\CommandAbstract;
+use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetSettingCommand extends CommandAbstract

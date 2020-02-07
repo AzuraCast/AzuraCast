@@ -45,8 +45,8 @@ return [
         if (!$settings[App\Settings::IS_DOCKER]) {
             $defaults['conn']['host'] = $_ENV['db_host'] ?? 'localhost';
             $defaults['conn']['port'] = $_ENV['db_port'] ?? '3306';
-            $defaults['conn']['dbname'] = $_ENV['db_name'] ?? 'app';
-            $defaults['conn']['user'] = $_ENV['db_username'] ?? 'app';
+            $defaults['conn']['dbname'] = $_ENV['db_name'] ?? 'azuracast';
+            $defaults['conn']['user'] = $_ENV['db_username'] ?? 'azuracast';
             $defaults['conn']['password'] = $_ENV['db_password'];
         }
 

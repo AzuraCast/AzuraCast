@@ -100,7 +100,11 @@ class FolderPlaylists extends AbstractTask
 
                 foreach ($playlists as $playlist) {
                     /** @var Entity\StationPlaylist $playlist */
-                    $this->spmRepo->addMediaToPlaylist($media, $playlist);
+
+                    if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()
+                        && Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
+                        $this->spmRepo->addMediaToPlaylist($media, $playlist);
+                    }
                 }
             }
         }

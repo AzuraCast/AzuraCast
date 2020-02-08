@@ -122,10 +122,9 @@ class BatchAction
                 $response_record = null;
 
                 /** @var Entity\StationPlaylist[] $playlists */
-                $affected_playlists = [];
-
                 $playlists = [];
                 $playlist_weights = [];
+                $affected_playlists = [];
 
                 foreach ($request->getParam('playlists') as $playlist_id) {
                     if ('new' === $playlist_id) {

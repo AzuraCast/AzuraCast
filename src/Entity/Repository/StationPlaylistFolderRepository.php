@@ -1,8 +1,8 @@
 <?php
 namespace App\Entity\Repository;
 
-use App\Entity;
 use App\Doctrine\Repository;
+use App\Entity;
 
 class StationPlaylistFolderRepository extends Repository
 {
@@ -28,8 +28,12 @@ class StationPlaylistFolderRepository extends Repository
             ->execute();
 
         foreach ($playlists as $playlist) {
-            $newRecord = new Entity\StationPlaylistFolder($station, $playlist, $path);
-            $this->em->persist($newRecord);
+            /** @var Entity\StationPlaylist $playlist */
+            if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()
+                && Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
+                $newRecord = new Entity\StationPlaylistFolder($station, $playlist, $path);
+                $this->em->persist($newRecord);
+            }
         }
 
         $this->em->flush();

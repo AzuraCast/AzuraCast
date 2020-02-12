@@ -5,12 +5,12 @@ use App\ApiUtilities;
 use App\Entity;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
+use App\EventDispatcher;
 use App\Message;
 use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Settings;
-use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
@@ -151,7 +151,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             /** @var Entity\Station $station */
             $last_run = $station->getNowplayingTimestamp();
 
-            if ($last_run >= (time() - 10) && !$force) {
+            if (!$force && $last_run >= (time() - 10)) {
                 $np = $station->getNowplaying();
 
                 if ($np instanceof Entity\Api\NowPlaying) {
@@ -369,7 +369,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $station = $this->em->find(Entity\Station::class, $message->station_id);
 
                 if ($station instanceof Entity\Station) {
-                    $this->processStation($station, true);
+                    $lastRun = $station->getNowplayingTimestamp();
+
+                    if ($lastRun < (time() - 10)) {
+                        $this->processStation($station, true);
+                    }
                 }
             }
         } finally {

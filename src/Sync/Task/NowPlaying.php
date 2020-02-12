@@ -10,6 +10,7 @@ use App\Message;
 use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
+use App\Service\Mutex;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -45,8 +46,9 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\ListenerRepository $listener_repo;
 
-    /** @var string */
-    protected $analytics_level;
+    protected Mutex $mutex;
+
+    protected string $analytics_level = Entity\Analytics::LEVEL_ALL;
 
     public function __construct(
         EntityManager $em,
@@ -58,6 +60,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         LoggerInterface $logger,
         EventDispatcher $event_dispatcher,
         MessageQueue $message_queue,
+        Mutex $mutex,
         Entity\Repository\SongHistoryRepository $historyRepository,
         Entity\Repository\SongRepository $songRepository,
         Entity\Repository\ListenerRepository $listenerRepository,
@@ -72,6 +75,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->event_dispatcher = $event_dispatcher;
         $this->message_queue = $message_queue;
         $this->influx = $influx;
+        $this->mutex = $mutex;
 
         $this->history_repo = $historyRepository;
         $this->song_repo = $songRepository;
@@ -179,131 +183,137 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Station $station,
         $standalone = false
     ): Entity\Api\NowPlaying {
-        /** @var Logger $logger */
-        $logger = $this->logger;
+        // Use a Redis-backed mutex to prevent stacked execution by multiple workers/processes.
+        $mutex = $this->mutex->getMutex('nowplaying_station_' . $station->getId());
 
-        $logger->pushProcessor(function ($record) use ($station) {
-            $record['extra']['station'] = [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
-            ];
-            return $record;
-        });
+        return $mutex->synchronized(function () use ($station, $standalone) {
+            /** @var Logger $logger */
+            $logger = $this->logger;
 
-        $include_clients = ($this->analytics_level === Entity\Analytics::LEVEL_ALL);
+            $logger->pushProcessor(function ($record) use ($station) {
+                $record['extra']['station'] = [
+                    'id' => $station->getId(),
+                    'name' => $station->getName(),
+                ];
+                return $record;
+            });
 
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-        $remote_adapters = $this->adapters->getRemoteAdapters($station);
+            $include_clients = ($this->analytics_level === Entity\Analytics::LEVEL_ALL);
 
-        /** @var Entity\Api\NowPlaying|null $np_old */
-        $np_old = $station->getNowplaying();
+            $frontend_adapter = $this->adapters->getFrontendAdapter($station);
+            $remote_adapters = $this->adapters->getRemoteAdapters($station);
 
-        // Build the new "raw" NowPlaying data.
-        try {
-            $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null, $include_clients);
-            $this->event_dispatcher->dispatch($event);
-            $np_raw = $event->getRawResponse();
-        } catch (Exception $e) {
-            $this->logger->log(Logger::ERROR, $e->getMessage(), [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'code' => $e->getCode(),
-            ]);
+            /** @var Entity\Api\NowPlaying|null $np_old */
+            $np_old = $station->getNowplaying();
 
-            $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
-        }
+            // Build the new "raw" NowPlaying data.
+            try {
+                $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null,
+                    $include_clients);
+                $this->event_dispatcher->dispatch($event);
+                $np_raw = $event->getRawResponse();
+            } catch (Exception $e) {
+                $this->logger->log(Logger::ERROR, $e->getMessage(), [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'code' => $e->getCode(),
+                ]);
 
-        $np = new Entity\Api\NowPlaying;
-        $uri_empty = new Uri('');
-
-        $np->station = $station->api($frontend_adapter, $remote_adapters, $uri_empty);
-        $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
-
-        if (empty($np_raw['current_song']['text'])) {
-            $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
-
-            $offline_sh = new Entity\Api\NowPlayingCurrentSong;
-            $offline_sh->sh_id = 0;
-            $offline_sh->song = $song_obj->api($this->api_utils, $uri_empty);
-            $np->now_playing = $offline_sh;
-
-            $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
-            $next_song = $this->autodj->getNextSong($station);
-            if ($next_song instanceof Entity\SongHistory) {
-                $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
-            } else {
-                $np->playing_next = null;
+                $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
             }
 
-            $np->live = new Entity\Api\NowPlayingLive(false);
-        } else {
-            // Pull from current NP data if song details haven't changed.
-            $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
+            $np = new Entity\Api\NowPlaying;
+            $uri_empty = new Uri('');
 
-            if ($np_old instanceof Entity\Api\NowPlaying && strcmp($current_song_hash,
-                    $np_old->now_playing->song->id) === 0) {
-                /** @var Entity\Song $song_obj */
-                $song_obj = $this->song_repo->getRepository()->find($current_song_hash);
+            $np->station = $station->api($frontend_adapter, $remote_adapters, $uri_empty);
+            $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
 
-                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+            if (empty($np_raw['current_song']['text'])) {
+                $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
 
-                $np->song_history = $np_old->song_history;
-                $np->playing_next = $np_old->playing_next;
-            } else {
-                // SongHistory registration must ALWAYS come before the history/nextsong calls
-                // otherwise they will not have up-to-date database info!
-                $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
-                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+                $offline_sh = new Entity\Api\NowPlayingCurrentSong;
+                $offline_sh->sh_id = 0;
+                $offline_sh->song = $song_obj->api($this->api_utils, $uri_empty);
+                $np->now_playing = $offline_sh;
 
                 $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
-
                 $next_song = $this->autodj->getNextSong($station);
-                if ($next_song instanceof Entity\SongHistory && $next_song->showInApis()) {
+                if ($next_song instanceof Entity\SongHistory) {
                     $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
+                } else {
+                    $np->playing_next = null;
                 }
-            }
 
-            // Update detailed listener statistics, if they exist for the station
-            if ($include_clients && isset($np_raw['listeners']['clients'])) {
-                $this->listener_repo->update($station, $np_raw['listeners']['clients']);
-            }
-
-            // Detect and report live DJ status
-            if ($station->getIsStreamerLive()) {
-                $current_streamer = $station->getCurrentStreamer();
-                $streamer_name = ($current_streamer instanceof Entity\StationStreamer)
-                    ? $current_streamer->getDisplayName()
-                    : 'Live DJ';
-
-                $np->live = new Entity\Api\NowPlayingLive(true, $streamer_name);
+                $np->live = new Entity\Api\NowPlayingLive(false);
             } else {
-                $np->live = new Entity\Api\NowPlayingLive(false, '');
+                // Pull from current NP data if song details haven't changed.
+                $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
+
+                if ($np_old instanceof Entity\Api\NowPlaying && strcmp($current_song_hash,
+                        $np_old->now_playing->song->id) === 0) {
+                    /** @var Entity\Song $song_obj */
+                    $song_obj = $this->song_repo->getRepository()->find($current_song_hash);
+
+                    $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+
+                    $np->song_history = $np_old->song_history;
+                    $np->playing_next = $np_old->playing_next;
+                } else {
+                    // SongHistory registration must ALWAYS come before the history/nextsong calls
+                    // otherwise they will not have up-to-date database info!
+                    $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
+                    $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+
+                    $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils,
+                        $uri_empty);
+
+                    $next_song = $this->autodj->getNextSong($station);
+                    if ($next_song instanceof Entity\SongHistory && $next_song->showInApis()) {
+                        $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
+                    }
+                }
+
+                // Update detailed listener statistics, if they exist for the station
+                if ($include_clients && isset($np_raw['listeners']['clients'])) {
+                    $this->listener_repo->update($station, $np_raw['listeners']['clients']);
+                }
+
+                // Detect and report live DJ status
+                if ($station->getIsStreamerLive()) {
+                    $current_streamer = $station->getCurrentStreamer();
+                    $streamer_name = ($current_streamer instanceof Entity\StationStreamer)
+                        ? $current_streamer->getDisplayName()
+                        : 'Live DJ';
+
+                    $np->live = new Entity\Api\NowPlayingLive(true, $streamer_name);
+                } else {
+                    $np->live = new Entity\Api\NowPlayingLive(false, '');
+                }
+
+                // Register a new item in song history.
+                $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils, $uri_empty);
             }
 
-            // Register a new item in song history.
-            $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils, $uri_empty);
-        }
+            $np->update();
 
-        $np->update();
+            $station->setNowplaying($np);
 
-        $station->setNowplaying($np);
+            $this->em->persist($station);
+            $this->em->flush();
 
-        $this->em->persist($station);
-        $this->em->flush();
+            // Trigger the dispatching of webhooks.
+            /** @var Entity\Api\NowPlaying $np_event */
+            $np_event = deep_copy($np);
+            $np_event->resolveUrls($this->api_utils->getRouter()->getBaseUrl(false));
+            $np_event->cache = 'event';
 
-        // Trigger the dispatching of webhooks.
+            $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
+            $this->event_dispatcher->dispatch($webhook_event);
 
-        /** @var Entity\Api\NowPlaying $np_event */
-        $np_event = deep_copy($np);
-        $np_event->resolveUrls($this->api_utils->getRouter()->getBaseUrl(false));
-        $np_event->cache = 'event';
+            $logger->popProcessor();
 
-        $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
-        $this->event_dispatcher->dispatch($webhook_event);
-
-        $logger->popProcessor();
-
-        return $np;
+            return $np;
+        });
     }
 
     /**
@@ -369,11 +379,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $station = $this->em->find(Entity\Station::class, $message->station_id);
 
                 if ($station instanceof Entity\Station) {
-                    $lastRun = $station->getNowplayingTimestamp();
-
-                    if ($lastRun < (time() - 10)) {
-                        $this->processStation($station, true);
-                    }
+                    $this->processStation($station, true);
                 }
             }
         } finally {

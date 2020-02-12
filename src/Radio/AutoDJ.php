@@ -5,6 +5,7 @@ use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
 use App\EventDispatcher;
+use App\Service\Mutex;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
 use Doctrine\ORM\EntityManager;
@@ -27,6 +28,8 @@ class AutoDJ implements EventSubscriberInterface
 
     protected Logger $logger;
 
+    protected Mutex $mutex;
+
     public function __construct(
         EntityManager $em,
         Entity\Repository\SongRepository $songRepo,
@@ -34,7 +37,8 @@ class AutoDJ implements EventSubscriberInterface
         Entity\Repository\StationStreamerRepository $streamerRepo,
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
-        Logger $logger
+        Logger $logger,
+        Mutex $mutex
     ) {
         $this->em = $em;
         $this->songRepo = $songRepo;
@@ -43,6 +47,7 @@ class AutoDJ implements EventSubscriberInterface
         $this->dispatcher = $dispatcher;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
+        $this->mutex = $mutex;
     }
 
     /**
@@ -96,39 +101,44 @@ class AutoDJ implements EventSubscriberInterface
             return null;
         }
 
-        $this->logger->pushProcessor(function ($record) use ($station) {
-            $record['extra']['station'] = [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
-            ];
-            return $record;
-        });
+        // Use a Redis-backed mutex to prevent stacked execution by multiple workers/processes.
+        $mutex = $this->mutex->getMutex('autodj_next_song_' . $station->getId(), 5);
 
-        $event = new GetNextSong($station);
-        $this->dispatcher->dispatch($event);
+        return $mutex->synchronized(function () use ($station, $is_autodj) {
+            $this->logger->pushProcessor(function ($record) use ($station) {
+                $record['extra']['station'] = [
+                    'id' => $station->getId(),
+                    'name' => $station->getName(),
+                ];
+                return $record;
+            });
 
-        $this->logger->popProcessor();
+            $event = new GetNextSong($station);
+            $this->dispatcher->dispatch($event);
 
-        $next_song = $event->getNextSong();
+            $this->logger->popProcessor();
 
-        if ($next_song instanceof Entity\SongHistory && $is_autodj) {
-            $next_song->sentToAutodj();
-            $this->em->persist($next_song);
+            $next_song = $event->getNextSong();
 
-            // Mark the playlist itself as played at this time.
-            $playlist = $next_song->getPlaylist();
-            if ($playlist instanceof Entity\StationPlaylist) {
-                $playlist->played();
-                $this->em->persist($playlist);
+            if ($next_song instanceof Entity\SongHistory && $is_autodj) {
+                $next_song->sentToAutodj();
+                $this->em->persist($next_song);
+
+                // Mark the playlist itself as played at this time.
+                $playlist = $next_song->getPlaylist();
+                if ($playlist instanceof Entity\StationPlaylist) {
+                    $playlist->played();
+                    $this->em->persist($playlist);
+                }
+
+                // The "get next song" function is only called when a streamer is not live
+                $this->streamerRepo->onDisconnect($station);
+
+                $this->em->flush();
             }
 
-            // The "get next song" function is only called when a streamer is not live
-            $this->streamerRepo->onDisconnect($station);
-
-            $this->em->flush();
-        }
-
-        return $next_song;
+            return $next_song;
+        });
     }
 
     /**

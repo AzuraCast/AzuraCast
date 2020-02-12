@@ -184,7 +184,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $standalone = false
     ): Entity\Api\NowPlaying {
         // Use a Redis-backed mutex to prevent stacked execution by multiple workers/processes.
-        $mutex = $this->mutex->getMutex('nowplaying_station_' . $station->getId());
+        $mutex = $this->mutex->getMutex('nowplaying_station_' . $station->getId(), 30);
 
         return $mutex->synchronized(function () use ($station, $standalone) {
             /** @var Logger $logger */

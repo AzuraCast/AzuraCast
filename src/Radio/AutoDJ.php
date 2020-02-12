@@ -102,7 +102,7 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         // Use a Redis-backed mutex to prevent stacked execution by multiple workers/processes.
-        $mutex = $this->mutex->getMutex('autodj_next_song_' . $station->getId(), 5);
+        $mutex = $this->mutex->getMutex('autodj_next_song_' . $station->getId(), 30);
 
         return $mutex->synchronized(function () use ($station, $is_autodj) {
             $this->logger->pushProcessor(function ($record) use ($station) {

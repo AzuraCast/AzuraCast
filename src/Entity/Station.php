@@ -3,12 +3,12 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Customization;
+use App\File;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Quota;
 use App\Radio\Remote\AdapterProxy;
 use App\Validator\Constraints as AppAssert;
-use App\File;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -1186,7 +1186,9 @@ class Station
      */
     public function setCurrentStreamer(?StationStreamer $current_streamer = null): void
     {
-        $this->current_streamer = $current_streamer;
+        if (null !== $this->current_streamer || null !== $current_streamer) {
+            $this->current_streamer = $current_streamer;
+        }
     }
 
     /**

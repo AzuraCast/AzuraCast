@@ -2,11 +2,11 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Logger;
 use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
-use App\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
 use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;
@@ -41,8 +41,6 @@ class Icecast extends AbstractFrontend
                     $include_clients ? $np_adapter->getClients($mount->getName(), true) : null
                 );
             }
-
-            Logger::getInstance()->debug('Aggregated NowPlaying response', ['response' => $np_final]);
         } catch (Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }

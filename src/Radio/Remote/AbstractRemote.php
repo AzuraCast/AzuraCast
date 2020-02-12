@@ -7,7 +7,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
-use NowPlaying\Exception;
 
 abstract class AbstractRemote
 {
@@ -106,7 +105,7 @@ abstract class AbstractRemote
                 $np,
                 null
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
@@ -162,8 +161,10 @@ abstract class AbstractRemote
             $np_aggregate['meta'] = $np['meta'];
         }
 
-        $np_aggregate['listeners']['clients'] = array_merge((array)$np_aggregate['listeners']['clients'],
-            (array)$np['listeners']['clients']);
+        $np_aggregate['listeners']['clients'] = array_merge(
+            (array)$np_aggregate['listeners']['clients'],
+            (array)$np['listeners']['clients']
+        );
         $np_aggregate['listeners']['current'] += $np['listeners']['current'];
         $np_aggregate['listeners']['unique'] += $np['listeners']['unique'];
         $np_aggregate['listeners']['total'] += $np['listeners']['total'];

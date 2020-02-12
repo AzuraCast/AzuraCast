@@ -222,6 +222,12 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
             }
 
+            $this->logger->debug('Final NowPlaying Response for Station', [
+                'id' => $station->getId(),
+                'name' => $station->getName(),
+                'np' => $np_raw,
+            ]);
+
             $np = new Entity\Api\NowPlaying;
             $uri_empty = new Uri('');
 
@@ -402,8 +408,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
         // Loop through all remotes and update NP data accordingly.
         foreach ($event->getRemotes() as $ra_proxy) {
-            $np_raw = $ra_proxy->getAdapter()->updateNowPlaying($ra_proxy->getRemote(), $np_raw,
-                $event->includeClients());
+            $np_raw = $ra_proxy->getAdapter()->updateNowPlaying(
+                $ra_proxy->getRemote(),
+                $np_raw,
+                $event->includeClients()
+            );
         }
 
         $event->setRawResponse($np_raw);

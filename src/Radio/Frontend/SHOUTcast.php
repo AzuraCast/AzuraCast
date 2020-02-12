@@ -2,9 +2,9 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Logger;
 use App\Settings;
 use App\Utilities;
-use App\Logger;
 use NowPlaying\Adapter\AdapterAbstract;
 use NowPlaying\Adapter\SHOUTcast2;
 use NowPlaying\Exception;
@@ -75,8 +75,6 @@ class SHOUTcast extends AbstractFrontend
                     $include_clients ? $np_adapter->getClients($sid, true) : null
                 );
             }
-
-            Logger::getInstance()->debug('Aggregated NowPlaying response', ['response' => $np_final]);
         } catch (Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }

@@ -7,7 +7,6 @@ use App\Settings;
 use App\Utilities;
 use NowPlaying\Adapter\AdapterAbstract;
 use NowPlaying\Adapter\SHOUTcast2;
-use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
@@ -75,7 +74,7 @@ class SHOUTcast extends AbstractFrontend
                     $include_clients ? $np_adapter->getClients($sid, true) : null
                 );
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 

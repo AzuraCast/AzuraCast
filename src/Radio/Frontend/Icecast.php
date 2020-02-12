@@ -8,7 +8,6 @@ use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
 use NowPlaying\Adapter\AdapterAbstract;
-use NowPlaying\Exception;
 use Psr\Http\Message\UriInterface;
 
 class Icecast extends AbstractFrontend
@@ -41,7 +40,7 @@ class Icecast extends AbstractFrontend
                     $include_clients ? $np_adapter->getClients($mount->getName(), true) : null
                 );
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 

@@ -106,17 +106,17 @@ abstract class AbstractRemote
                 return $np_aggregate;
             }
 
-            $np['listeners']['clients'] = ($include_clients && !empty($adminPassword))
+            $clients = ($include_clients && !empty($adminPassword))
                 ? $np_adapter->getClients($remote->getMount(), true)
                 : null;
-            
-            $this->logger->debug('NowPlaying adapter response', ['response' => $np]);
+
+            $this->logger->debug('NowPlaying adapter response', ['response' => $np, 'clients' => $clients]);
 
             return $this->_mergeNowPlaying(
                 $remote,
                 $np_aggregate,
                 $np,
-                null
+                $clients
             );
         } catch (\Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));

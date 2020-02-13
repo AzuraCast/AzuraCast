@@ -40,8 +40,6 @@ class AppFactory
         $diDefinitions[Settings::class] = $settings;
         $diDefinitions['settings'] = DI\get(Settings::class);
 
-        self::applyPhpSettings($settings);
-
         if ($autoloader) {
             $plugins = new Plugins($settings[Settings::BASE_DIR] . '/plugins');
             $plugins->registerAutoloaders($autoloader);

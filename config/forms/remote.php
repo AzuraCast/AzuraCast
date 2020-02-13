@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity\StationRemote;
 
 return [
@@ -16,7 +17,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => true,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'type' => [
@@ -30,7 +31,7 @@ return [
                             \App\Radio\Adapters::REMOTE_ICECAST => 'Icecast v2.4+',
                         ],
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'display_name' => [
@@ -39,7 +40,7 @@ return [
                         'label' => __('Display Name'),
                         'description' => __('The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'url' => [
@@ -53,7 +54,7 @@ return [
                         ),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'mount' => [
@@ -66,7 +67,16 @@ return [
                             '2'
                         ),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
+                ],
+
+                'admin_password' => [
+                    'text',
+                    [
+                        'label' => __('Remote Station Administrator Password'),
+                        'description' => __('To retrieve detailed unique listeners and client details, an administrator password is often required.'),
+                        'form_group_class' => 'col-md-6',
+                    ],
                 ],
 
                 'enable_autodj' => [
@@ -78,7 +88,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => 0,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
             ],
@@ -101,7 +111,7 @@ return [
                         ],
                         'default' => StationRemote::FORMAT_MP3,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'autodj_bitrate' => [
@@ -120,7 +130,7 @@ return [
                         ],
                         'default' => 128,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'source_port' => [
@@ -129,7 +139,7 @@ return [
                         'label' => __('Remote Station Source Port'),
                         'description' => __('If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'source_mount' => [
@@ -138,7 +148,7 @@ return [
                         'label' => __('Remote Station Source Mountpoint/SID'),
                         'description' => __('If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'source_username' => [
@@ -147,7 +157,7 @@ return [
                         'label' => __('Remote Station Source Username'),
                         'description' => __('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'source_password' => [
@@ -156,7 +166,7 @@ return [
                         'label' => __('Remote Station Source Password'),
                         'description' => __('If you are broadcasting using AutoDJ, enter the source password here.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'is_public' => [
@@ -168,7 +178,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
             ],
@@ -183,7 +193,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
-                    ]
+                    ],
                 ],
 
             ],

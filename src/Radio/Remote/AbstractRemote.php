@@ -96,7 +96,20 @@ abstract class AbstractRemote
         $np_adapter = new $adapter_class($remote->getUrl(), $this->http_client);
 
         try {
+            $adminPassword = $remote->getAdminPassword();
+            if (!empty($adminPassword)) {
+                $np_adapter->setAdminPassword($adminPassword);
+            }
+
             $np = $np_adapter->getNowPlaying($remote->getMount());
+            if (empty($np)) {
+                return $np_aggregate;
+            }
+
+            $np['listeners']['clients'] = ($include_clients && !empty($adminPassword))
+                ? $np_adapter->getClients($remote->getMount(), true)
+                : null;
+            
             $this->logger->debug('NowPlaying adapter response', ['response' => $np]);
 
             return $this->_mergeNowPlaying(

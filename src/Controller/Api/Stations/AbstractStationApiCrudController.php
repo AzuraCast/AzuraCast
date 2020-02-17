@@ -2,12 +2,12 @@
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Doctrine\Paginator;
 use App\Entity;
+use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use App\Doctrine\Paginator;
-use App\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -91,6 +91,14 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
                 ],
             ],
         ]);
+    }
+
+    protected function _editRecord($data, $record = null, array $context = []): object
+    {
+        // Force an unset of the `station` parameter as it supercedes the default constructor arguments.
+        unset($data['station']);
+
+        return parent::_editRecord($data, $record, $context);
     }
 
     /**

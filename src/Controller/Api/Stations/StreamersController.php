@@ -3,12 +3,17 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Exception\StationUnsupportedException;
-use App\Http\ServerRequest;
+use App\Http\Response;
 use App\Http\RouterInterface;
+use App\Http\ServerRequest;
+use Cake\Chronos\Chronos;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
 
 class StreamersController extends AbstractStationApiCrudController
 {
+    use Traits\CalendarView;
+
     protected string $entityClass = Entity\StationStreamer::class;
     protected string $resourceRouteName = 'api:stations:streamer';
 
@@ -95,7 +100,49 @@ class StreamersController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
-    
+
+    /**
+     * Controller used to respond to AJAX requests from the streamer "Schedule View".
+     *
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     */
+    public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $scheduleItems = $this->em->createQuery(/** @lang DQL */ 'SELECT
+            ssc, sst
+            FROM App\Entity\StationSchedule ssc
+            LEFT JOIN ssc.streamer sst
+            WHERE sst.station = :station AND sst.is_active = 1
+        ')->setParameter('station', $station)
+            ->execute();
+
+        return $this->renderEvents(
+            $request,
+            $response,
+            $scheduleItems,
+            function (Entity\StationSchedule $scheduleItem, Chronos $start, Chronos $end) use ($request, $station) {
+                /** @var Entity\StationStreamer $streamer */
+                $streamer = $scheduleItem->getStreamer();
+
+                return [
+                    'id' => $streamer->getId(),
+                    'title' => $streamer->getDisplayName(),
+                    'start' => $start->toIso8601String(),
+                    'end' => $end->toIso8601String(),
+                    'edit_url' => (string)$request->getRouter()->named(
+                        'api:stations:streamer',
+                        ['station_id' => $station->getId(), 'id' => $streamer->getId()]
+                    ),
+                ];
+            }
+        );
+    }
+
     /**
      * @inheritDoc
      */

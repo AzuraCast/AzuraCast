@@ -3,13 +3,13 @@ namespace App\Radio\Backend;
 
 use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
+use App\EventDispatcher;
+use App\Logger;
 use App\Message;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Radio\Filesystem;
 use App\Settings;
-use App\EventDispatcher;
-use App\Logger;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Psr\Http\Message\UriInterface;
@@ -606,11 +606,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /**
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
      *
-     * @param Entity\StationPlaylistSchedule $playlistSchedule
+     * @param Entity\StationSchedule $playlistSchedule
      *
      * @return string
      */
-    protected function _getScheduledPlaylistPlayTime(Entity\StationPlaylistSchedule $playlistSchedule): string
+    protected function _getScheduledPlaylistPlayTime(Entity\StationSchedule $playlistSchedule): string
     {
         $start_time = $playlistSchedule->getStartTime();
         $end_time = $playlistSchedule->getEndTime();
@@ -830,7 +830,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 'stop_recording_f = ref (fun () -> ())',
                 '',
                 'def start_recording(path) =',
-                '  output_live_recording = output.file('.$formatString.', fallible=true, reopen_on_metadata=false, "#{path}", live)',
+                '  output_live_recording = output.file(' . $formatString . ', fallible=true, reopen_on_metadata=false, "#{path}", live)',
                 '  stop_recording_f := fun () -> source.shutdown(output_live_recording)',
                 'end',
                 '',
@@ -1191,7 +1191,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $resp = $this->streamerRepo->onConnect($station, $user);
 
         if (is_string($resp)) {
-            $this->command($station, 'recording.start '.$resp);
+            $this->command($station, 'recording.start ' . $resp);
             return 'recording';
         }
 

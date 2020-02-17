@@ -1,15 +1,14 @@
 <?php
 namespace App\Controller\Api\Stations;
 
+use App\Doctrine\Paginator;
 use App\Entity;
+use App\Exception;
 use App\Exception\NotFoundException;
 use App\Http\Response;
-use App\Http\ServerRequest;
-use App\Doctrine\Paginator;
-use App\Exception;
 use App\Http\RouterInterface;
+use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
-use DateTimeZone;
 use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
@@ -20,16 +19,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PlaylistsController extends AbstractStationApiCrudController
 {
+    use Traits\CalendarView;
+
     protected string $entityClass = Entity\StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
 
-    protected Entity\Repository\StationPlaylistScheduleRepository $playlistScheduleRepo;
+    protected Entity\Repository\StationScheduleRepository $playlistScheduleRepo;
 
     public function __construct(
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\StationPlaylistScheduleRepository $playlistScheduleRepo
+        Entity\Repository\StationScheduleRepository $playlistScheduleRepo
     ) {
         parent::__construct($em, $serializer, $validator);
 
@@ -164,59 +165,35 @@ class PlaylistsController extends AbstractStationApiCrudController
     public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $tz = new DateTimeZone($station->getTimezone());
 
-        $params = $request->getQueryParams();
+        $scheduleItems = $this->em->createQuery(/** @lang DQL */ 'SELECT
+            ssc, sp
+            FROM App\Entity\StationSchedule ssc
+            JOIN ssc.playlist sp
+            WHERE sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1
+        ')->setParameter('station', $station)
+            ->execute();
 
-        $startDateStr = substr($params['start'], 0, 10);
-        $startDate = Chronos::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
+        return $this->renderEvents(
+            $request,
+            $response,
+            $scheduleItems,
+            function (Entity\StationSchedule $scheduleItem, Chronos $start, Chronos $end) use ($request, $station) {
+                /** @var Entity\StationPlaylist $playlist */
+                $playlist = $scheduleItem->getPlaylist();
 
-        $endDateStr = substr($params['end'], 0, 10);
-        $endDate = Chronos::createFromFormat('Y-m-d', $endDateStr, $tz);
-
-        /** @var Entity\StationPlaylist[] $all_playlists */
-        $playlists = $station->getPlaylists()->filter(function ($record) {
-            /** @var Entity\StationPlaylist $record */
-            return (!$record->isJingle() && $record->getScheduleItems()->count() > 0);
-        });
-
-        $events = [];
-        foreach ($playlists as $playlist) {
-            /** @var Entity\StationPlaylist $playlist */
-            foreach ($playlist->getScheduleItems() as $scheduleItem) {
-                /** @var Entity\StationPlaylistSchedule $scheduleItem */
-                $i = $startDate;
-                while ($i <= $endDate) {
-                    $dayOfWeek = $i->format('N');
-
-                    if ($scheduleItem->shouldPlayOnCurrentDate($i)
-                        && $scheduleItem->isScheduledToPlayToday($dayOfWeek)) {
-                        $playlistStart = Entity\StationPlaylist::getDateTime($scheduleItem->getStartTime(), $i);
-                        $playlistEnd = Entity\StationPlaylist::getDateTime($scheduleItem->getEndTime(), $i);
-
-                        // Handle overnight playlists
-                        if ($playlistEnd < $playlistStart) {
-                            $playlistEnd = $playlistEnd->addDay();
-                        }
-
-                        $events[] = [
-                            'id' => $playlist->getId(),
-                            'title' => $playlist->getName(),
-                            'start' => $playlistStart->toIso8601String(),
-                            'end' => $playlistEnd->toIso8601String(),
-                            'edit_url' => (string)$request->getRouter()->named(
-                                'api:stations:playlist',
-                                ['station_id' => $station->getId(), 'id' => $playlist->getId()]
-                            ),
-                        ];
-                    }
-
-                    $i = $i->addDay();
-                }
+                return [
+                    'id' => $playlist->getId(),
+                    'title' => $playlist->getName(),
+                    'start' => $start->toIso8601String(),
+                    'end' => $end->toIso8601String(),
+                    'edit_url' => (string)$request->getRouter()->named(
+                        'api:stations:playlist',
+                        ['station_id' => $station->getId(), 'id' => $playlist->getId()]
+                    ),
+                ];
             }
-        }
-
-        return $response->withJson($events);
+        );
     }
 
     public function getOrderAction(

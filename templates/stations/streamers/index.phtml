@@ -3,7 +3,9 @@ $this->layout('main', ['title' => __('Streamer/DJ Accounts'), 'manual' => true])
 
 /** @var \App\Assets $assets */
 $assets->load('station_streamers')
-    ->addInlineJs($this->fetch('stations/streamers/index.js'));
+    ->addInlineJs($this->fetch('stations/streamers/index.js', [
+        'station_tz' => $station_tz,
+    ]));
 ?>
 
 <div class="row">

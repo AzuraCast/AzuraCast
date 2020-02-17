@@ -3,74 +3,11 @@
         <b-spinner v-if="loading">
         </b-spinner>
         <b-form class="form" v-else @submit.prevent="doSubmit">
-            <b-form-group>
-                <b-row>
-                    <b-form-group class="col-md-12" label-for="form_edit_is_active">
-                        <template v-slot:description>
-                            <translate>Enable to allow this account to log in and stream.</translate>
-                        </template>
-                        <b-form-checkbox id="form_edit_is_active" v-model="$v.form.is_active.$model">
-                            <translate>Account is Active</translate>
-                        </b-form-checkbox>
-                    </b-form-group>
-                </b-row>
-                <b-row>
-                    <b-form-group class="col-md-6" label-for="edit_form_streamer_username">
-                        <template v-slot:label>
-                            <translate>Streamer Username</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate>The streamer will use this username to connect to the radio server.</translate>
-                        </template>
-                        <b-form-input type="text" id="edit_form_streamer_username" v-model="$v.form.streamer_username.$model"
-                                      :state="$v.form.streamer_username.$dirty ? !$v.form.streamer_username.$error : null"></b-form-input>
-                        <b-form-invalid-feedback>
-                            <translate>This field is required.</translate>
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-                    <b-form-group class="col-md-6" label-for="edit_form_streamer_password">
-                        <template v-slot:label>
-                            <translate>Streamer password</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate>The streamer will use this password to connect to the radio server.</translate>
-                        </template>
-                        <b-form-input type="password" id="edit_form_streamer_password" v-model="$v.form.streamer_password.$model"
-                                      :state="$v.form.streamer_password.$dirty ? !$v.form.streamer_password.$error : null"></b-form-input>
-                        <b-form-invalid-feedback>
-                            <translate>This field is required.</translate>
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-                </b-row>
-                <b-row>
-                    <b-form-group class="col-md-6" label-for="edit_form_display_name">
-                        <template v-slot:label>
-                            <translate>Streamer Display Name</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate>This is the informal display name that will be shown in API responses if the streamer/DJ is live.</translate>
-                        </template>
-                        <b-form-input type="text" id="edit_form_display_name" v-model="$v.form.display_name.$model"
-                                      :state="$v.form.display_name.$dirty ? !$v.form.display_name.$error : null"></b-form-input>
-                        <b-form-invalid-feedback>
-                            <translate>This field is required.</translate>
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-                    <b-form-group class="col-md-6" label-for="edit_form_comments">
-                        <template v-slot:label>
-                            <translate>Comments</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate>Internal notes or comments about the user, visible only on this control panel.</translate>
-                        </template>
-                        <b-form-textarea id="edit_form_comments" v-model="$v.form.comments.$model"
-                                         :state="$v.form.comments.$dirty ? !$v.form.comments.$error : null"></b-form-textarea>
-                        <b-form-invalid-feedback>
-                            <translate>This field is required.</translate>
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-                </b-row>
-            </b-form-group>
+            <b-tabs content-class="mt-3">
+                <form-basic-info :form="$v.form"></form-basic-info>
+                <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
+                               :station-time-zone="stationTimeZone"></form-schedule>
+            </b-tabs>
         </b-form>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
@@ -86,12 +23,16 @@
     import { validationMixin } from 'vuelidate';
     import axios from 'axios';
     import required from 'vuelidate/src/validators/required';
+    import FormBasicInfo from './form/StreamerFormBasicInfo';
+    import FormSchedule from './form/StreamerFormSchedule';
 
     export default {
         name: 'EditModal',
         mixins: [validationMixin],
+        components: { FormBasicInfo, FormSchedule },
         props: {
-            createUrl: String
+            createUrl: String,
+            stationTimeZone: String
         },
         data () {
             return {
@@ -107,7 +48,17 @@
                     'streamer_password': {},
                     'display_name': {},
                     'comments': {},
-                    'is_active': {}
+                    'is_active': {},
+                    'enforce_schedule': {},
+                    'schedule_items': {
+                        $each: {
+                            'start_time': { required },
+                            'end_time': { required },
+                            'start_date': {},
+                            'end_date': {},
+                            'days': {}
+                        }
+                    }
                 }
             };
 
@@ -134,7 +85,9 @@
                     'streamer_password': null,
                     'display_name': null,
                     'comments': null,
-                    'is_active': true
+                    'is_active': true,
+                    'enforce_schedule': false,
+                    'schedule_items': []
                 };
             },
             create () {
@@ -159,7 +112,9 @@
                         'streamer_password': null,
                         'display_name': d.display_name,
                         'comments': d.comments,
-                        'is_active': d.is_active
+                        'is_active': d.is_active,
+                        'enforce_schedule': d.enforce_schedule,
+                        'schedule_items': d.schedule_items
                     };
 
                     this.loading = false;

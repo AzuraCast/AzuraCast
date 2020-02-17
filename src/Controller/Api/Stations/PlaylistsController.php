@@ -9,33 +9,15 @@ use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PlaylistsController extends AbstractStationApiCrudController
+class PlaylistsController extends AbstractScheduledEntityController
 {
-    use Traits\CalendarView;
-
     protected string $entityClass = Entity\StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
-
-    protected Entity\Repository\StationScheduleRepository $playlistScheduleRepo;
-
-    public function __construct(
-        EntityManager $em,
-        Serializer $serializer,
-        ValidatorInterface $validator,
-        Entity\Repository\StationScheduleRepository $playlistScheduleRepo
-    ) {
-        parent::__construct($em, $serializer, $validator);
-
-        $this->playlistScheduleRepo = $playlistScheduleRepo;
-    }
 
     /**
      * @OA\Get(path="/station/{station_id}/playlists",
@@ -340,25 +322,5 @@ class PlaylistsController extends AbstractStationApiCrudController
         ]));
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
-    {
-        $scheduleItems = $data['schedule_items'] ?? null;
-        unset($data['schedule_items']);
 
-        $record = parent::_denormalizeToRecord($data, $record, $context);
-
-        if ($record instanceof Entity\StationPlaylist) {
-            $this->em->persist($record);
-            $this->em->flush($record);
-
-            if (null !== $scheduleItems) {
-                $this->playlistScheduleRepo->setScheduleItems($record, $scheduleItems);
-            }
-        }
-
-        return $record;
-    }
 }

@@ -61,9 +61,8 @@ class StreamersController extends AbstractStationCrudController
             'server_url' => $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, ''),
             'stream_port' => $backend->getStreamPort($station),
             'ip' => $this->ac_central->getIp(),
-            'streamers' => $station->getStreamers(),
             'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
-            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
+            'station_tz' => $station->getTimezone(),
         ]);
     }
 

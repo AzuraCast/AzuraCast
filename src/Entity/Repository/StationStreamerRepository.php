@@ -1,9 +1,9 @@
 <?php
 namespace App\Entity\Repository;
 
+use App\Doctrine\Repository;
 use App\Entity;
 use App\Radio\Adapters;
-use App\Doctrine\Repository;
 
 class StationStreamerRepository extends Repository
 {
@@ -31,7 +31,7 @@ class StationStreamerRepository extends Repository
             return false;
         }
 
-        return $streamer->authenticate($password);
+        return $streamer->authenticate($password) && $streamer->canStreamNow();
     }
 
     /**

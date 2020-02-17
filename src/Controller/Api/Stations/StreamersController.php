@@ -10,10 +10,8 @@ use Cake\Chronos\Chronos;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
-class StreamersController extends AbstractStationApiCrudController
+class StreamersController extends AbstractScheduledEntityController
 {
-    use Traits\CalendarView;
-
     protected string $entityClass = Entity\StationStreamer::class;
     protected string $resourceRouteName = 'api:stations:streamer';
 

@@ -33,7 +33,7 @@
 
             },
             onEventClick (arg) {
-                this.$emit('edit', arg.event.extendedProps.edit_url);
+                this.$emit('click', arg.event);
             }
         }
     };

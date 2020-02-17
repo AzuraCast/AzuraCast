@@ -1,14 +1,30 @@
 <?php
-namespace App\Controller\Api\Stations\Traits;
+namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-trait CalendarView
+abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController
 {
+    protected Entity\Repository\StationScheduleRepository $scheduleRepo;
+
+    public function __construct(
+        EntityManager $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        Entity\Repository\StationScheduleRepository $scheduleRepo
+    ) {
+        parent::__construct($em, $serializer, $validator);
+
+        $this->scheduleRepo = $scheduleRepo;
+    }
+
     protected function renderEvents(
         ServerRequest $request,
         Response $response,
@@ -53,5 +69,27 @@ trait CalendarView
         }
 
         return $response->withJson($events);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    {
+        $scheduleItems = $data['schedule_items'] ?? null;
+        unset($data['schedule_items']);
+
+        $record = parent::_denormalizeToRecord($data, $record, $context);
+
+        if ($record instanceof $this->entityClass) {
+            $this->em->persist($record);
+            $this->em->flush($record);
+
+            if (null !== $scheduleItems) {
+                $this->scheduleRepo->setScheduleItems($record, $scheduleItems);
+            }
+        }
+
+        return $record;
     }
 }

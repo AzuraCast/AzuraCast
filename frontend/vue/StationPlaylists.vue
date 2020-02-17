@@ -87,7 +87,7 @@
                 </b-tab>
                 <b-tab :title="langScheduleViewTab" no-body>
                     <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"
-                              :locale="locale" @edit="doEdit"></schedule>
+                              :locale="locale" @click="doCalendarClick"></schedule>
                 </b-tab>
             </b-tabs>
         </b-card>
@@ -100,7 +100,7 @@
 
 <script>
     import DataTable from './components/DataTable';
-    import Schedule from './station_playlists/PlaylistSchedule';
+    import Schedule from './components/ScheduleView';
     import EditModal from './station_playlists/PlaylistEditModal';
     import ReorderModal from './station_playlists/PlaylistReorderModal';
     import axios from 'axios';
@@ -192,6 +192,9 @@
             },
             doCreate () {
                 this.$refs.editModal.create();
+            },
+            doCalendarClick (event) {
+                this.doEdit(event.extendedProps.edit_url);
             },
             doEdit (url) {
                 this.$refs.editModal.edit(url);

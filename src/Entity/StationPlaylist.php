@@ -557,7 +557,7 @@ class StationPlaylist
     }
 
     /**
-     * @return Collection
+     * @return Collection|StationPlaylistMedia[]
      */
     public function getMediaItems(): Collection
     {
@@ -565,7 +565,7 @@ class StationPlaylist
     }
 
     /**
-     * @return Collection
+     * @return Collection|StationSchedule[]
      */
     public function getScheduleItems(): Collection
     {

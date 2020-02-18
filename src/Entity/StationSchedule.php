@@ -230,56 +230,44 @@ class StationSchedule
      */
     public function shouldPlayNow(Chronos $now): bool
     {
-        $day_to_check = (int)$now->format('N');
-        $current_timecode = (int)$now->format('Hi');
+        if (!$this->shouldPlayOnCurrentDate($now)) {
+            return false;
+        }
 
-        $schedule_start_time = $this->getStartTime();
-        $schedule_end_time = $this->getEndTime();
+        $startTime = self::getDateTime($this->getStartTime(), $now);
+        $endTime = self::getDateTime($this->getEndTime(), $now);
 
-        // Playlists that should only "play once".
-        if ($schedule_start_time === $schedule_end_time) {
-            $compare_periods = [$current_timecode - $schedule_start_time];
+        $comparePeriods = [];
 
-            if ($current_timecode > 2400 - 15) {
-                $compare_periods[] = 2400 - $current_timecode;
-            }
+        if ($startTime->equals($endTime)) {
+            // Create intervals for "play once" type dates.
+            $startTime = $startTime->addMinutes(-15);
+            $endTime = $endTime->addMinutes(15);
 
-            $matchesPeriod = false;
-            foreach ($compare_periods as $period) {
-                $playlist_diff = $current_timecode - $schedule_start_time;
-                if ($playlist_diff > 0 && $playlist_diff < 15) {
-                    $matchesPeriod = true;
-                    break;
-                }
-            }
-
-            if (!$matchesPeriod || $this->playlist->wasPlayedInLastXMinutes($now, 30)) {
-                return false;
-            }
+            $comparePeriods[] = [$startTime, $endTime];
+            $comparePeriods[] = [$startTime->addDays(-1), $endTime->addDays(-1)];
+            $comparePeriods[] = [$startTime->addDays(1), $endTime->addDays(1)];
+        } elseif ($startTime->greaterThan($endTime)) {
+            // Create intervals for overnight playlists (one from yesterday to today, one from today to tomorrow).
+            $comparePeriods[] = [$startTime->addDays(-1), $endTime];
+            $comparePeriods[] = [$startTime, $endTime->addDays(1)];
         } else {
-            // Special handling for playlists ending at midnight (hour code "000").
-            if (0 === $schedule_end_time) {
-                $schedule_end_time = 2400;
-            }
+            $comparePeriods[] = [$startTime, $endTime];
+        }
 
-            // Handle overnight playlists that stretch into the next day.
-            if ($schedule_end_time < $schedule_start_time) {
-                if ($current_timecode <= $schedule_end_time) {
-                    // Check the previous day, since it's before the end time.
-                    $day_to_check = (1 === $day_to_check) ? 7 : $day_to_check - 1;
-                } elseif ($current_timecode < $schedule_start_time) {
-                    // The playlist shouldn't be playing before the start time on the current date.
-                    return false;
+        foreach ($comparePeriods as [$start, $end]) {
+            /** @var Chronos $start */
+            /** @var Chronos $end */
+            if ($now->between($start, $end)) {
+                $dayToCheck = (int)$start->format('N');
+
+                if ($this->isScheduledToPlayToday($dayToCheck)) {
+                    return true;
                 }
-                // Non-overnight playlist check
-            } elseif ($current_timecode < $schedule_start_time || $current_timecode > $schedule_end_time) {
-                return false;
             }
         }
 
-        // Check that the current day is one of the scheduled play days.
-        return $this->shouldPlayOnCurrentDate($now)
-            && $this->isScheduledToPlayToday($day_to_check);
+        return false;
     }
 
     public function shouldPlayOnCurrentDate(Chronos $now): bool
@@ -318,18 +306,18 @@ class StationSchedule
     /**
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
-     * @param string|int $time_code
+     * @param string|int $timeCode
      * @param Chronos|null $now
      *
      * @return Chronos
      */
-    public static function getDateTime($time_code, Chronos $now = null): Chronos
+    public static function getDateTime($timeCode, Chronos $now = null): Chronos
     {
         if ($now === null) {
             $now = Chronos::now(new DateTimeZone('UTC'));
         }
 
-        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
-        return $now->setTime(substr($time_code, 0, 2), substr($time_code, 2));
+        $timeCode = str_pad($timeCode, 4, '0', STR_PAD_LEFT);
+        return $now->setTime(substr($timeCode, 0, 2), substr($timeCode, 2));
     }
 }

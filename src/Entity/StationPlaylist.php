@@ -646,7 +646,12 @@ class StationPlaylist
             foreach ($this->schedule_items as $scheduleItem) {
                 /** @var StationSchedule $scheduleItem */
                 if ($scheduleItem->shouldPlayNow($now)) {
-                    $isScheduled = true;
+                    $startTime = $scheduleItem->getStartTime();
+                    $endTime = $scheduleItem->getEndTime();
+
+                    $isScheduled = ($startTime === $endTime)
+                        ? $this->wasPlayedInLastXMinutes($now, 30)
+                        : true;
                     break;
                 }
             }

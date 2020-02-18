@@ -59,13 +59,19 @@ class ScheduleController extends AbstractStationApiCrudController
                         $end = $end->addDay();
                     }
 
+                    // Skip events that have already happened today.
+                    if ($end->lessThan($startDate)) {
+                        $i = $i->addDay();
+                        continue;
+                    }
+
                     $row = [
                         'id' => $scheduleItem->getId(),
                         'start_timestamp' => $start->getTimestamp(),
                         'start' => $start->toIso8601String(),
                         'end_timestamp' => $end->getTimestamp(),
                         'end' => $end->toIso8601String(),
-                        'is_now' => $start->lessThan($startDate),
+                        'is_now' => $start->lessThanOrEquals($startDate),
                     ];
 
                     if ($scheduleItem->getPlaylist() instanceof Entity\StationPlaylist) {

@@ -241,16 +241,16 @@ class StationSchedule
 
         if ($startTime->equals($endTime)) {
             // Create intervals for "play once" type dates.
-            $startTime = $startTime->addMinutes(-15);
+            $startTime = $startTime->subMinutes(15);
             $endTime = $endTime->addMinutes(15);
 
             $comparePeriods[] = [$startTime, $endTime];
-            $comparePeriods[] = [$startTime->addDays(-1), $endTime->addDays(-1)];
-            $comparePeriods[] = [$startTime->addDays(1), $endTime->addDays(1)];
+            $comparePeriods[] = [$startTime->subDay(), $endTime->subDay()];
+            $comparePeriods[] = [$startTime->addDay(), $endTime->addDay()];
         } elseif ($startTime->greaterThan($endTime)) {
             // Create intervals for overnight playlists (one from yesterday to today, one from today to tomorrow).
-            $comparePeriods[] = [$startTime->addDays(-1), $endTime];
-            $comparePeriods[] = [$startTime, $endTime->addDays(1)];
+            $comparePeriods[] = [$startTime->subDay(), $endTime];
+            $comparePeriods[] = [$startTime, $endTime->addDay()];
         } else {
             $comparePeriods[] = [$startTime, $endTime];
         }

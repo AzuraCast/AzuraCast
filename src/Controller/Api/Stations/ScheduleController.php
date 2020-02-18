@@ -37,8 +37,10 @@ class ScheduleController extends AbstractStationApiCrudController
 
         $tz = new \DateTimeZone($station->getTimezone());
 
-        $startDate = Chronos::now($tz);
-        $endDate = $startDate->addDay()->addHour();
+        $now = Chronos::now($tz);
+
+        $startDate = $now->subDay();
+        $endDate = $now->addDay()->addHour();
 
         $events = [];
 
@@ -60,7 +62,7 @@ class ScheduleController extends AbstractStationApiCrudController
                     }
 
                     // Skip events that have already happened today.
-                    if ($end->lessThan($startDate)) {
+                    if ($end->lessThan($now)) {
                         $i = $i->addDay();
                         continue;
                     }

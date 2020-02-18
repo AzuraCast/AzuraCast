@@ -247,7 +247,7 @@ class StationPlaylist
     protected $media_items;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationPlaylistSchedule", mappedBy="playlist")
+     * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="playlist")
      * @var Collection
      *
      * @DeepNormalize(true)
@@ -447,7 +447,7 @@ class StationPlaylist
             $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
 
             foreach ($this->schedule_items as $scheduleItem) {
-                /** @var StationPlaylistSchedule $scheduleItem */
+                /** @var StationSchedule $scheduleItem */
                 if ($scheduleItem->shouldPlayNow($now)) {
                     return $scheduleItem->getDuration();
                 }
@@ -455,24 +455,6 @@ class StationPlaylist
         }
 
         return 0;
-    }
-
-    /**
-     * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
-     *
-     * @param string|int $time_code
-     * @param Chronos|null $now
-     *
-     * @return Chronos
-     */
-    public static function getDateTime($time_code, Chronos $now = null): Chronos
-    {
-        if ($now === null) {
-            $now = Chronos::now(new DateTimeZone('UTC'));
-        }
-
-        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
-        return $now->setTime(substr($time_code, 0, 2), substr($time_code, 2));
     }
 
     /**
@@ -575,7 +557,7 @@ class StationPlaylist
     }
 
     /**
-     * @return Collection
+     * @return Collection|StationPlaylistMedia[]
      */
     public function getMediaItems(): Collection
     {
@@ -583,7 +565,7 @@ class StationPlaylist
     }
 
     /**
-     * @return Collection
+     * @return Collection|StationSchedule[]
      */
     public function getScheduleItems(): Collection
     {
@@ -662,7 +644,7 @@ class StationPlaylist
             $isScheduled = false;
 
             foreach ($this->schedule_items as $scheduleItem) {
-                /** @var StationPlaylistSchedule $scheduleItem */
+                /** @var StationSchedule $scheduleItem */
                 if ($scheduleItem->shouldPlayNow($now)) {
                     $isScheduled = true;
                     break;

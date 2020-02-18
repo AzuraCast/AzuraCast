@@ -17,7 +17,7 @@ class StationPlaylistTest extends \Codeception\Test\Unit
         $playlist = new Entity\StationPlaylist($station);
 
         // Sample playlist that plays from 10PM to 4AM the next day.
-        $scheduleEntry = new Entity\StationPlaylistSchedule($playlist);
+        $scheduleEntry = new Entity\StationSchedule($playlist);
         $scheduleEntry->setStartTime(2200);
         $scheduleEntry->setEndTime(400);
         $scheduleEntry->setDays([1, 2, 3]); // Monday, Tuesday, Wednesday

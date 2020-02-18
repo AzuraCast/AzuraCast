@@ -5,21 +5,22 @@
  */
 ?>
 
-var nowPlaying, backendStatus, frontendStatus;
+var nowPlaying, scheduleItems, backendStatus, frontendStatus;
 
-$(function() {
+$(function () {
     nowPlaying = new Vue({
         el: '#profile-nowplaying',
         data: {
             np: <?=json_encode($nowplaying) ?>,
+            schedule_items: [],
             np_elapsed: 0,
             clock_interval: null
         },
-        created: function() {
+        created: function () {
             this.clock_interval = setInterval(this.iterateTimer, 1000);
         },
         computed: {
-            "time_display": function() {
+            "time_display": function () {
                 var time_played = this.np_elapsed;
                 var time_total = this.np.now_playing.duration;
 
@@ -35,22 +36,22 @@ $(function() {
             }
         },
         methods: {
-            "setNowPlaying": function(np_new) {
+            "setNowPlaying": function (np_new) {
                 this.np = np_new;
 
                 // Update mount-specific listener counts.
-                np_new.station.mounts.forEach(function(mount) {
-                    $('#mount_'+mount.id+' .listeners-total').text(mount.listeners.total);
-                    $('#mount_'+mount.id+' .listeners-unique').text(mount.listeners.unique);
+                np_new.station.mounts.forEach(function (mount) {
+                    $('#mount_' + mount.id + ' .listeners-total').text(mount.listeners.total);
+                    $('#mount_' + mount.id + ' .listeners-unique').text(mount.listeners.unique);
                 });
 
                 // Update remote-specific listener counts.
-                np_new.station.remotes.forEach(function(remote) {
-                    $('#remote_'+remote.id+' .listeners-total').text(remote.listeners.total);
-                    $('#remote_'+remote.id+' .listeners-unique').text(remote.listeners.unique);
+                np_new.station.remotes.forEach(function (remote) {
+                    $('#remote_' + remote.id + ' .listeners-total').text(remote.listeners.total);
+                    $('#remote_' + remote.id + ' .listeners-unique').text(remote.listeners.unique);
                 });
             },
-            "formatTime": function(time) {
+            "formatTime": function (time) {
                 var sec_num = parseInt(time, 10);
 
                 var hours = Math.floor(sec_num / 3600);
@@ -68,7 +69,7 @@ $(function() {
                 }
                 return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
             },
-            "iterateTimer": function() {
+            "iterateTimer": function () {
                 var current_time = Math.floor(Date.now() / 1000);
                 var np_elapsed = current_time - this.np.now_playing.played_at;
                 if (np_elapsed < 0) {
@@ -78,6 +79,39 @@ $(function() {
                 }
 
                 this.np_elapsed = np_elapsed;
+            }
+        }
+    });
+
+    scheduleItems = new Vue({
+        el: '#profile-scheduled',
+        data: {
+            schedule_items: []
+        },
+        methods: {
+            "setScheduleItems": function (schedule_items) {
+                var now = moment();
+
+                schedule_items.forEach(function (row, index) {
+                    var start_moment = moment.unix(row.start_timestamp);
+                    var end_moment = moment.unix(row.end_timestamp);
+
+                    this[index].time_until = start_moment.fromNow();
+
+                    if (start_moment.isSame(now, "day")) {
+                        this[index].start_formatted = start_moment.format('LT');
+                    } else {
+                        this[index].start_formatted = start_moment.format('llll');
+                    }
+
+                    if (end_moment.isSame(start_moment, "day")) {
+                        this[index].end_formatted = end_moment.format('LT');
+                    } else {
+                        this[index].end_formatted = end_moment.format('lll');
+                    }
+                }, schedule_items);
+
+                this.schedule_items = schedule_items;
             }
         }
     });
@@ -96,49 +130,66 @@ $(function() {
         }
     });
 
-    function checkServiceStatus() {
+    function checkServiceStatus () {
         $.ajax({
             cache: false,
             dataType: "json",
             url: '<?=$router->fromHere('api:stations:status') ?>',
-            success: function(data) {
+            success: function (data) {
                 backendStatus.is_running = data.backend_running;
                 frontendStatus.is_running = data.frontend_running;
                 setTimeout(checkServiceStatus, 7500);
             }
-        }).fail(function() {
+        }).fail(function () {
             setTimeout(checkServiceStatus, 30000);
         });
     }
 
     checkServiceStatus();
 
-<?php if ($customization->useWebSocketsForNowPlaying()): ?>
+    function checkScheduleItems () {
+        $.ajax({
+            cache: false,
+            dataType: "json",
+            url: '<?=$router->fromHere('api:stations:schedule') ?>',
+            success: function (data) {
+                scheduleItems.setScheduleItems(data);
+
+                setTimeout(checkScheduleItems, 120000);
+            }
+        }).fail(function () {
+            setTimeout(checkScheduleItems, 300000);
+        });
+    }
+
+    checkScheduleItems();
+
+    <?php if ($customization->useWebSocketsForNowPlaying()): ?>
     var sub = new NchanSubscriber('/api/live/nowplaying/<?=urlencode($station->getShortName()) ?>');
 
-    sub.on("message", function(message, message_metadata) {
+    sub.on("message", function (message, message_metadata) {
         var np_new = JSON.parse(message);
 
-        setTimeout(function() {
+        setTimeout(function () {
             nowPlaying.setNowPlaying(np_new);
         }, 5000);
     });
     sub.start();
-<?php else: ?>
-    function loadNowPlaying() {
+    <?php else: ?>
+    function loadNowPlaying () {
         $.ajax({
             cache: false,
             dataType: "json",
             url: '<?=$router->fromHere('api:nowplaying:index') ?>',
-            success: function(row) {
+            success: function (row) {
                 nowPlaying.setNowPlaying(row);
                 setTimeout(loadNowPlaying, 15000);
             }
-        }).fail(function() {
+        }).fail(function () {
             setTimeout(loadNowPlaying, 30000);
         });
     }
 
     setTimeout(loadNowPlaying, 15000);
-<?php endif; ?>
+    <?php endif; ?>
 });

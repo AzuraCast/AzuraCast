@@ -1,6 +1,9 @@
 <?php
 $props = [
     'listUrl' => $router->fromHere('api:stations:streamers'),
+    'scheduleUrl' => $router->fromHere('api:stations:streamers:schedule'),
+    'locale' => substr($customization->getLocale(), 0, 2),
+    'stationTimeZone' => $station_tz,
 ]
 ?>
 var station_streamers;

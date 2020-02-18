@@ -5,7 +5,7 @@
                 <translate>Not Scheduled</translate>
             </label>
             <p>
-                <translate>This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.</translate>
+                <translate>This streamer is not scheduled to play at any times.</translate>
             </p>
         </b-form-group>
 
@@ -30,9 +30,6 @@
                             <template v-slot:label>
                                 <translate>Start Time</translate>
                             </template>
-                            <template v-slot:description>
-                                <translate>To play once per day, set the start and end times to the same value.</translate>
-                            </template>
                             <playlist-time :id="'edit_form_start_time_'+index" v-model="row.start_time.$model"
                                            :state="row.start_time.$dirty ? !row.start_time.$error : null"></playlist-time>
                             <b-form-invalid-feedback>
@@ -44,7 +41,7 @@
                                 <translate>End Time</translate>
                             </template>
                             <template v-slot:description>
-                                <translate>If the end time is before the start time, the playlist will play overnight.</translate>
+                                <translate>If the end time is before the start time, the schedule entry will continue overnight.</translate>
                             </template>
                             <playlist-time :id="'edit_form_end_time_'+index" v-model="row.end_time.$model"
                                            :state="row.end_time.$dirty ? !row.end_time.$error : null"></playlist-time>
@@ -117,7 +114,7 @@
     import PlaylistTime from '../../components/TimeCode';
 
     export default {
-        name: 'PlaylistEditSchedule',
+        name: 'StreamerFormSchedule',
         components: { PlaylistTime },
         props: {
             form: Object,

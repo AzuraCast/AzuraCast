@@ -2,8 +2,14 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
+use App\Normalizer\Annotation\DeepNormalize;
+use Cake\Chronos\Chronos;
+use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -88,7 +94,15 @@ class StationStreamer
      * @OA\Property(example=true)
      * @var bool
      */
-    protected $is_active;
+    protected $is_active = true;
+
+    /**
+     * @ORM\Column(name="enforce_schedule", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=false)
+     * @var bool
+     */
+    protected $enforce_schedule = false;
 
     /**
      * @ORM\Column(name="reactivate_at", type="integer", nullable=true)
@@ -100,11 +114,22 @@ class StationStreamer
      */
     protected $reactivate_at;
 
+    /**
+     * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="streamer")
+     * @var Collection
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     * @OA\Property(
+     *     @OA\Items()
+     * )
+     */
+    protected $schedule_items;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
-
-        $this->is_active = true;
+        $this->schedule_items = new ArrayCollection;
     }
 
     /**
@@ -203,7 +228,7 @@ class StationStreamer
     /**
      * @return bool
      */
-    public function getIsActive(): bool
+    public function isActive(): bool
     {
         return $this->is_active;
     }
@@ -219,6 +244,22 @@ class StationStreamer
         if (true === $is_active) {
             $this->reactivate_at = null;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function enforceSchedule(): bool
+    {
+        return $this->enforce_schedule;
+    }
+
+    /**
+     * @param bool $enforce_schedule
+     */
+    public function setEnforceSchedule(bool $enforce_schedule): void
+    {
+        $this->enforce_schedule = $enforce_schedule;
     }
 
     /**
@@ -246,5 +287,42 @@ class StationStreamer
     {
         $this->is_active = false;
         $this->reactivate_at = time() + $seconds;
+    }
+
+    /**
+     * @return Collection|StationSchedule[]
+     */
+    public function getScheduleItems(): Collection
+    {
+        return $this->schedule_items;
+    }
+
+    /**
+     * Determine whether the given DJ is allowed to broadcast at the given moment.
+     *
+     * @param Chronos|null $now
+     *
+     * @return bool
+     */
+    public function canStreamNow(Chronos $now = null): bool
+    {
+        if (!$this->enforceSchedule()) {
+            return true;
+        }
+
+        if (null === $now) {
+            $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
+        }
+
+        if ($this->schedule_items->count() > 0) {
+            foreach ($this->schedule_items as $scheduleItem) {
+                /** @var StationSchedule $scheduleItem */
+                if ($scheduleItem->shouldPlayNow($now)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

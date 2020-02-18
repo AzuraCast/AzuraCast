@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
 /**
- * @ORM\Table(name="station_playlist_schedules")
+ * @ORM\Table(name="station_schedules")
  * @ORM\Entity
  *
  * @AuditLog\Auditable
  *
  * @OA\Schema(type="object")
  */
-class StationPlaylistSchedule
+class StationSchedule
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -30,11 +30,20 @@ class StationPlaylistSchedule
     /**
      * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="schedules")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
-     * @var StationPlaylist
+     * @var StationPlaylist|null
      */
     protected $playlist;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="StationStreamer", inversedBy="schedules")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="streamer_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
+     * @var StationStreamer|null
+     */
+    protected $streamer;
 
     /**
      * @ORM\Column(name="start_time", type="smallint")
@@ -78,11 +87,17 @@ class StationPlaylistSchedule
     protected $days;
 
     /**
-     * @param StationPlaylist $playlist
+     * @param StationPlaylist|StationStreamer $relation
      */
-    public function __construct(StationPlaylist $playlist)
+    public function __construct($relation)
     {
-        $this->playlist = $playlist;
+        if ($relation instanceof StationPlaylist) {
+            $this->playlist = $relation;
+        } elseif ($relation instanceof StationStreamer) {
+            $this->streamer = $relation;
+        } else {
+            throw new \InvalidArgumentException('Schedule must be created with either a playlist or a streamer.');
+        }
     }
 
     /**
@@ -94,11 +109,19 @@ class StationPlaylistSchedule
     }
 
     /**
-     * @return StationPlaylist
+     * @return StationPlaylist|null
      */
-    public function getPlaylist(): StationPlaylist
+    public function getPlaylist(): ?StationPlaylist
     {
         return $this->playlist;
+    }
+
+    /**
+     * @return StationStreamer|null
+     */
+    public function getStreamer(): ?StationStreamer
+    {
+        return $this->streamer;
     }
 
     /**

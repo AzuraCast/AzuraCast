@@ -1404,6 +1404,42 @@ paths:
           description: 'Station not found'
         '403':
           description: 'Station does not support requests'
+  '/station/{station_id}/schedule':
+    get:
+      tags:
+        - 'Stations: Schedules'
+      description: 'Return upcoming and currently ongoing schedule entries.'
+      operationId: 'App\Controller\Api\Stations\ScheduleController::__invoke'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: now
+          in: query
+          description: 'The date/time to compare schedule items to. Defaults to the current date and time.'
+          required: false
+          schema:
+            type: string
+        -
+          name: rows
+          in: query
+          description: 'The number of upcoming/ongoing schedule entries to return. Defaults to 5.'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationSchedule'
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Access denied'
   '/station/{station_id}/status':
     get:
       tags:
@@ -1919,7 +1955,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1578752515
+          example: 1582207631
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2015,7 +2051,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1578752515
+              example: 1582207631
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -2070,7 +2106,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1578752515
+          example: 1582207631
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2181,6 +2217,44 @@ components:
         song:
           $ref: '#/components/schemas/Api_Song'
       type: object
+    Api_StationSchedule:
+      properties:
+        id:
+          description: 'Unique identifier for this schedule entry.'
+          type: integer
+          example: 1
+        type:
+          description: 'The type of this schedule entry.'
+          type: string
+          enum:
+            - playlist
+            - streamer
+          example: playlist
+        name:
+          description: 'Either the playlist or streamer''s display name.'
+          type: string
+          example: 'Example Schedule Entry'
+        start_timestamp:
+          description: 'The start time of the schedule entry, in UNIX format.'
+          type: integer
+          example: 1582207631
+        start:
+          description: 'The start time of the schedule entry, in ISO 8601 format.'
+          type: string
+          example: '020-02-19T03:00:00-06:00'
+        end_timestamp:
+          description: 'The end time of the schedule entry, in UNIX format.'
+          type: integer
+          example: 1582207631
+        end:
+          description: 'The start time of the schedule entry, in ISO 8601 format.'
+          type: string
+          example: '020-02-19T05:00:00-06:00'
+        is_now:
+          description: 'Whether the event is currently ongoing.'
+          type: boolean
+          example: true
+      type: object
     Api_StationServiceStatus:
       properties:
         backend_running:
@@ -2211,7 +2285,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1578752515
+          example: 1582207631
       type: object
     Api_Time:
       properties:
@@ -2290,10 +2364,10 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1578752515
+          example: 1582207631
         updated_at:
           type: integer
-          example: 1578752515
+          example: 1582207631
       type: object
     Role:
       properties:
@@ -2446,12 +2520,12 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1578752515
+          example: 1582207631
         amplify:
           description: 'The amount of amplification (in dB) to be applied to the radio source;'
           type: number
           format: float
-          example: 2
+          example: -14
         fade_overlap:
           description: 'The length of time (in seconds) before the next song starts in the fade;'
           type: number
@@ -2480,7 +2554,7 @@ components:
         art_updated_at:
           description: 'The latest time (UNIX timestamp) when album art was updated.'
           type: integer
-          example: 1578752515
+          example: 1582207631
         playlists:
           items: {  }
       type: object
@@ -2595,21 +2669,6 @@ components:
         schedule_items:
           items: {  }
       type: object
-    StationPlaylistSchedule:
-      properties:
-        id:
-          type: integer
-          example: 1
-        start_time:
-          type: integer
-          example: 900
-        end_time:
-          type: integer
-          example: 2200
-        days:
-          type: string
-          example: '0,1,2,3'
-      type: object
     StationRemote:
       properties:
         id:
@@ -2642,6 +2701,9 @@ components:
         mount:
           type: string
           example: /stream.mp3
+        admin_password:
+          type: string
+          example: password
         source_port:
           type: integer
           example: 8000
@@ -2666,6 +2728,21 @@ components:
           type: integer
           example: 12
       type: object
+    StationSchedule:
+      properties:
+        id:
+          type: integer
+          example: 1
+        start_time:
+          type: integer
+          example: 900
+        end_time:
+          type: integer
+          example: 2200
+        days:
+          type: string
+          example: '0,1,2,3'
+      type: object
     StationStreamer:
       properties:
         id:
@@ -2686,9 +2763,20 @@ components:
         is_active:
           type: boolean
           example: true
+        enforce_schedule:
+          type: boolean
+          example: false
         reactivate_at:
           type: integer
-          example: 1578752515
+          example: 1582207631
+        schedule_items:
+          items: {  }
+      type: object
+    StationStreamerBroadcast:
+      properties:
+        id:
+          type: integer
+          example: 1
       type: object
     StationWebhook:
       properties:
@@ -2751,10 +2839,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1578752515
+          example: 1582207631
         updated_at:
           type: integer
-          example: 1578752515
+          example: 1582207631
         roles:
           items: {  }
       type: object
@@ -2789,6 +2877,8 @@ tags:
     name: 'Stations: History'
   -
     name: 'Stations: Listeners'
+  -
+    name: 'Stations: Schedules'
   -
     name: 'Stations: Media'
   -

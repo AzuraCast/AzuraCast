@@ -284,6 +284,9 @@ return function (App $app) {
 
             $group->get('/nowplaying', Controller\Api\NowplayingController::class . ':indexAction');
 
+            $group->get('/schedule', Controller\Api\Stations\ScheduleController::class)
+                ->setName('api:stations:schedule');
+
             $group->get('/history', Controller\Api\Stations\HistoryController::class)
                 ->setName('api:stations:history')
                 ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
@@ -410,10 +413,6 @@ return function (App $app) {
                     ->setName('api:stations:streamer:broadcast:delete');
 
             })->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
-
-            $group->get('/schedule', Controller\Api\Stations\ScheduleController::class)
-                ->setName('api:stations:schedule')
-                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
 
             $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                 ->setName('api:stations:status')

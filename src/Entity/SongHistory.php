@@ -321,6 +321,11 @@ class SongHistory
 
     public function sentToAutodj(): void
     {
+        $cued = $this->getTimestampCued();
+        if (null === $cued || 0 === $cued) {
+            $this->setTimestampCued(time());
+        }
+        
         $this->sent_to_autodj = true;
     }
 

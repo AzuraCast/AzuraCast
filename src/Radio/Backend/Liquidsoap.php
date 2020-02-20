@@ -804,8 +804,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         $djBuffer = (int)($settings['dj_buffer'] ?? 5);
         if (0 !== $djBuffer) {
-            $harbor_params['buffer'] = self::toFloat($djBuffer);
-            $harbor_params['max'] = self::toFloat(max($djBuffer, 10));
+            $harbor_params[] = 'buffer=' . self::toFloat($djBuffer);
+            $harbor_params[] = 'max=' . self::toFloat(max($djBuffer, 10));
         }
 
         $event->appendLines([

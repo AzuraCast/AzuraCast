@@ -68,8 +68,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     {
         return [
             WriteLiquidsoapConfiguration::class => [
-                ['writeHeaderFunctions', 30],
-                ['writePlaylistConfiguration', 25],
+                ['writeHeaderFunctions', 35],
+                ['writePlaylistConfiguration', 30],
+                ['writeCrossfadeConfiguration', 25],
                 ['writeHarborConfiguration', 20],
                 ['writeCustomConfiguration', 15],
                 ['writeMetadataFeedbackConfiguration', 10],
@@ -739,6 +740,25 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         return 'list.hd(get_process_lines("' . $command . '"), default="")';
     }
 
+    public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event)
+    {
+        $station = $event->getStation();
+        $settings = (array)$station->getBackendConfig();
+
+        // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
+        $crossfade_type = $settings['crossfade_type'] ?? self::CROSSFADE_NORMAL;
+        $crossfade = round($settings['crossfade'] ?? 2, 1);
+
+        if (self::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
+            $start_next = round($crossfade * 1.5, 2);
+            $crossfadeIsSmart = (self::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
+
+            $event->appendLines([
+                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
+            ]);
+        }
+    }
+
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event)
     {
         $station = $event->getStation();
@@ -805,7 +825,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $djBuffer = (int)($settings['dj_buffer'] ?? 5);
         if (0 !== $djBuffer) {
             $harbor_params[] = 'buffer=' . self::toFloat($djBuffer);
-            $harbor_params[] = 'max=' . self::toFloat(max($djBuffer + 1, 10));
+            $harbor_params[] = 'max=' . self::toFloat(max($djBuffer + 5, 10));
         }
 
         $event->appendLines([
@@ -875,19 +895,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $event->appendLines([
                 '# Replaygain Metadata',
                 'enable_replaygain_metadata()',
-            ]);
-        }
-
-        // Crossfading
-        $crossfade_type = $settings['crossfade_type'] ?? self::CROSSFADE_NORMAL;
-        $crossfade = round($settings['crossfade'] ?? 2, 1);
-
-        if (self::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
-            $start_next = round($crossfade * 1.5, 2);
-            $crossfadeIsSmart = (self::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
-
-            $event->appendLines([
-                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
 

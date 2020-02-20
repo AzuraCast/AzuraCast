@@ -796,13 +796,17 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             'user="shoutcast"',
             'auth=dj_auth',
             'icy=true',
-            'max=30.',
-            'buffer=' . ((int)($settings['dj_buffer'] ?? 5)) . '.',
             'icy_metadata_charset="' . $charset . '"',
             'metadata_charset="' . $charset . '"',
             'on_connect=live_connected',
             'on_disconnect=live_disconnected',
         ];
+
+        $djBuffer = (int)($settings['dj_buffer'] ?? 5);
+        if (0 !== $djBuffer) {
+            $harbor_params['buffer'] = self::toFloat($djBuffer);
+            $harbor_params['max'] = self::toFloat(max($djBuffer, 10));
+        }
 
         $event->appendLines([
             '# A Pre-DJ source of radio that can be broadcasted if needed',
@@ -812,11 +816,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             '# Live Broadcasting',
             'live = audio_to_stereo(input.harbor(' . implode(', ', $harbor_params) . '))',
             'ignore(output.dummy(live, fallible=true))',
-            'live = fallback(id="' . $this->_getVarName('live_fallback',
-                $station) . '", track_sensitive=false, [live, blank(duration=2.)])',
             '',
-            'radio = switch(id="' . $this->_getVarName('live_switch',
-                $station) . '", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])',
+            'radio = fallback(id="' . $this->_getVarName('live_fallback',
+                $station) . '", track_sensitive=false, [live, radio])',
         ]);
 
         if ($recordLiveStreams) {
@@ -901,7 +903,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     /**
      * Convert an integer or float into a Liquidsoap configuration compatible float.
      *
-     * @param float $number
+     * @param float|int $number
      * @param int $decimals
      *
      * @return string

@@ -805,11 +805,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $djBuffer = (int)($settings['dj_buffer'] ?? 5);
         if (0 !== $djBuffer) {
             $harbor_params[] = 'buffer=' . self::toFloat($djBuffer);
-            $harbor_params[] = 'max=' . self::toFloat(max($djBuffer, 10));
+            $harbor_params[] = 'max=' . self::toFloat(max($djBuffer + 1, 10));
         }
 
         $event->appendLines([
-            '# A Pre-DJ source of radio that can be broadcasted if needed',
+            '# A Pre-DJ source of radio that can be broadcast if needed',
             'radio_without_live = radio',
             'ignore(radio_without_live)',
             '',

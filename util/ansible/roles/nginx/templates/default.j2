@@ -137,11 +137,11 @@ server {
     # Internal handlers used by the application to perform X-Accel-Redirect's for higher performance.
     location /internal/backups/ {
         internal;
-        alias /var/azuracast/backups/;
+        alias {{ app_base }}/backups/;
     }
 
     location /internal/stations/ {
         internal;
-        alias /var/azuracast/stations/;
+        alias {{ app_base }}/stations/;
     }
 }

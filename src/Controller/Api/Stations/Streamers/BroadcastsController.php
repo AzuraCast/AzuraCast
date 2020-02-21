@@ -2,12 +2,13 @@
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Doctrine\Paginator;
 use App\Entity;
+use App\File;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Filesystem;
 use App\Utilities;
-use App\Doctrine\Paginator;
 use Psr\Http\Message\ResponseInterface;
 
 class BroadcastsController extends AbstractApiCrudController
@@ -134,18 +135,12 @@ class BroadcastsController extends AbstractApiCrudController
         $filename = basename($recordingPath);
 
         $recordingPath = 'recordings://' . $recordingPath;
-        $fh = $fs->readStream($recordingPath);
-        $fileMeta = $fs->getMetadata($recordingPath);
 
-        try {
-            $fileMime = $fs->getMimetype($recordingPath);
-        } catch (\Exception $e) {
-            $fileMime = 'application/octet-stream';
-        }
-
-        return $response->withFileDownload($fh, $filename, $fileMime)
-            ->withHeader('Content-Length', $fileMeta['size'])
-            ->withHeader('X-Accel-Buffering', 'no');
+        return $response->withFlysystemFile(
+            $fs,
+            $recordingPath,
+            File::sanitizeFileName($broadcast->getStreamer()->getDisplayName()) . '_' . $filename
+        );
     }
 
     public function deleteAction(

@@ -67,14 +67,8 @@ class GetArtAction
         }
 
         if ($fs->has($mediaPath)) {
-            $file_meta = $fs->getMetadata($mediaPath);
-            $art = $fs->readStream($mediaPath);
-
-            if (is_resource($art)) {
-                return $response->withFile($art, 'image/jpeg')
-                    ->withCacheLifetime(Response::CACHE_ONE_YEAR)
-                    ->withHeader('Content-Length', $file_meta['size']);
-            }
+            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
+                ->withFlysystemFile($fs, $mediaPath, null, 'inline');
         }
 
         return $defaultArtRedirect;

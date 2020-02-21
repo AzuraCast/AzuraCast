@@ -1,6 +1,7 @@
 <?php
 namespace App\Http;
 
+use App\Flysystem\FilesystemGroup;
 use Psr\Http\Message\ResponseInterface;
 
 class Response extends \Slim\Http\Response
@@ -128,5 +129,58 @@ class Response extends \Slim\Http\Response
         $response->getBody()->write($file_data);
 
         return new static($response, $this->streamFactory);
+    }
+
+    public function withFlysystemFile(
+        FilesystemGroup $fs,
+        string $path,
+        string $fileName = null,
+        string $disposition = 'attachment'
+    ) {
+        $meta = $fs->getMetadata($path);
+
+        try {
+            $mime = $fs->getMimetype($path);
+        } catch (\Exception $e) {
+            $mime = 'application/octet-stream';
+        }
+
+        $fileName ??= basename($path);
+
+        if ('attachment' === $disposition) {
+            /*
+             * The regex used below is to ensure that the $fileName contains only
+             * characters ranging from ASCII 128-255 and ASCII 0-31 and 127 are replaced with an empty string
+             */
+            $disposition .= '; filename="' . preg_replace('/[\x00-\x1F\x7F\"]/', ' ', $fileName) . '"';
+            $disposition .= "; filename*=UTF-8''" . rawurlencode($fileName);
+        }
+
+        $response = $this->response->withHeader('Content-Disposition', $disposition)
+            ->withHeader('Content-Length', $meta['size'])
+            ->withHeader('X-Accel-Buffering', 'no');
+
+        try {
+            $localPath = $fs->getFullPath($path);
+
+            // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
+            $specialPaths = [
+                '/var/azuracast/backups' => '/internal/backups',
+                '/var/azuracast/stations' => '/internal/stations',
+            ];
+
+            foreach ($specialPaths as $diskPath => $nginxPath) {
+                if (0 === strpos($localPath, $diskPath)) {
+                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
+
+                    return $response->withHeader('X-Accel-Redirect', $accelPath);
+                }
+            }
+        } catch (\Exception $e) {
+            // Stream via PHP instead
+        }
+
+        $fh = $fs->readStream($path);
+        return $response->withFile($fh, $mime);
     }
 }

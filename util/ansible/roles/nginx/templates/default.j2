@@ -39,7 +39,7 @@ server {
 
     access_log {{ app_base }}/www_tmp/access.log;
     error_log {{ app_base }}/www_tmp/error.log;
-    
+
     client_max_body_size 50M;
 
     # Serve a static version of the nowplaying data for non-PHP-blocking delivery.
@@ -132,5 +132,16 @@ server {
     #
     location ~ /\.ht {
         deny all;
+    }
+
+    # Internal handlers used by the application to perform X-Accel-Redirect's for higher performance.
+    location /internal/backups/ {
+        internal;
+        alias /var/azuracast/backups/;
+    }
+
+    location /internal/stations/ {
+        internal;
+        alias /var/azuracast/stations/;
     }
 }

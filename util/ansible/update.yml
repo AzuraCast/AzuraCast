@@ -16,7 +16,7 @@
     - { role: azuracast-radio, when: update_revision|int < 45 }
     - { role: supervisord, when: update_revision|int < 13 }
     - { role: mariadb, when: update_revision|int < 15 }
-    - { role: nginx, when: update_revision|int < 44 }
+    - { role: nginx, when: update_revision|int < 49 }
     - { role: redis, when: update_revision|int < 14 }
     - { role: php, when: update_revision|int < 47 }
     - composer

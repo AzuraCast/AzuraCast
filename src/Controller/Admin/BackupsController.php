@@ -1,17 +1,17 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Config;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Exception\NotFoundException;
+use App\Flysystem\FilesystemGroup;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Sync\Task\Backup;
-use App\Config;
 use App\Session\Flash;
-use Exception;
+use App\Sync\Task\Backup;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
@@ -100,21 +100,14 @@ class BackupsController
         $path
     ): ResponseInterface {
         $path = $this->getFilePath($path);
+        $path = 'backup://' . $path;
 
-        $fh = $this->backupFs->readStream($path);
-        $file_meta = $this->backupFs->getMetadata($path);
+        $fsGroup = new FilesystemGroup([
+            'backup' => $this->backupFs,
+        ]);
 
-        try {
-            $file_mime = $this->backupFs->getMimetype($path);
-        } catch (Exception $e) {
-            $file_mime = 'application/octet-stream';
-        }
-
-        return $response->withFileDownload($fh, $path)
-            ->withNoCache()
-            ->withHeader('Content-Type', $file_mime)
-            ->withHeader('Content-Length', $file_meta['size'])
-            ->withHeader('X-Accel-Buffering', 'no');
+        return $response->withNoCache()
+            ->withFlysystemFile($fsGroup, $path);
     }
 
     public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface

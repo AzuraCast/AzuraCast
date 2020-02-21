@@ -2,22 +2,25 @@
 
 release_update=0
 
-while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do
+    case $1 in
     --dev)
         APP_ENV="development"
         ;;
 
-    -r | --release )
+    -r | --release)
         release_update=1
         ;;
 
     --full)
         UPDATE_REVISION=0
         ;;
-esac; shift; done
+    esac
+    shift
+done
 if [[ "$1" == '--' ]]; then shift; fi
 
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ansible|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ansible | grep "install ok installed")
 echo "Checking for Ansible: $PKG_OK"
 
 if [[ "" == "$PKG_OK" ]]; then
@@ -32,13 +35,13 @@ else
 fi
 
 APP_ENV="${APP_ENV:-production}"
-UPDATE_REVISION="${UPDATE_REVISION:-48}"
+UPDATE_REVISION="${UPDATE_REVISION:-49}"
 
 echo "Updating AzuraCast (Environment: $APP_ENV, Update revision: $UPDATE_REVISION)"
 
-if [[ ${APP_ENV} = "production" ]]; then
+if [[ ${APP_ENV} == "production" ]]; then
     if [[ -d ".git" ]]; then
-        if [[ $release_update = 1 ]]; then
+        if [[ $release_update == 1 ]]; then
             current_hash=$(git rev-parse HEAD)
             current_tag=$(git describe --abbrev=0 --tags)
 
@@ -47,7 +50,7 @@ if [[ ${APP_ENV} = "production" ]]; then
 
             git reset --hard
 
-            if [[ $current_tag = $latest_tag ]]; then
+            if [[ $current_tag == $latest_tag ]]; then
                 echo "You are already on the latest version (${current_tag})!"
             else
                 echo "Updating codebase from ${current_tag} to ${latest_tag}..."

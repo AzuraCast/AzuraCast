@@ -156,7 +156,7 @@ class Response extends \Slim\Http\Response
             $disposition .= "; filename*=UTF-8''" . rawurlencode($fileName);
         }
 
-        $response = $this->response->withHeader('Content-Disposition', $disposition)
+        $response = $this->withHeader('Content-Disposition', $disposition)
             ->withHeader('Content-Length', $meta['size'])
             ->withHeader('X-Accel-Buffering', 'no');
 

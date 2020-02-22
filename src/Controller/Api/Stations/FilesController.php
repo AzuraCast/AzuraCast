@@ -121,8 +121,7 @@ class FilesController extends AbstractStationApiCrudController
         // Process temp path as regular media record.
         $record = $this->media_repo->uploadFile($station, $temp_path, $sanitized_path);
 
-        $router = $request->getRouter();
-        $return = $this->_viewRecord($record, $router);
+        $return = $this->_viewRecord($record, $request);
 
         return $response->withJson($return);
     }

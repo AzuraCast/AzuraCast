@@ -3,11 +3,9 @@ namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
+use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Utilities;
-use App\Doctrine\Paginator;
-use App\Exception;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\TransactionRequiredException;
@@ -19,23 +17,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     {
         $query = $this->em->createQuery('SELECT e FROM ' . $this->entityClass . ' e');
 
-        $paginator = new Paginator($query);
-        $paginator->setFromRequest($request);
-
-        $is_bootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
-
-        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router) {
-            $return = $this->_viewRecord($row, $router);
-
-            if ($is_bootgrid) {
-                return Utilities::flattenArray($return, '_');
-            }
-
-            return $return;
-        });
-
-        return $paginator->write($response);
+        return $this->_listPaginatedFromQuery($request, $response, $query);
     }
 
     /**
@@ -49,7 +31,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     {
         $row = $this->_createRecord($request->getParsedBody());
 
-        $return = $this->_viewRecord($row, $request->getRouter());
+        $return = $this->_viewRecord($row, $request);
         return $response->withJson($return);
     }
 
@@ -79,7 +61,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $return = $this->_viewRecord($record, $request->getRouter());
+        $return = $this->_viewRecord($record, $request);
         return $response->withJson($return);
     }
 

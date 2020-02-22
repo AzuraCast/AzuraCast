@@ -280,7 +280,9 @@
                 this.filter = newTerm;
             },
             loadItems (ctx, callback) {
-                let queryParams = {};
+                let queryParams = {
+                    internal: true
+                };
 
                 if (this.paginated) {
                     queryParams.rowCount = ctx.perPage;

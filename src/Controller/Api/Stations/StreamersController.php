@@ -4,7 +4,6 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
-use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
 use OpenApi\Annotations as OA;
@@ -144,14 +143,18 @@ class StreamersController extends AbstractScheduledEntityController
     /**
      * @inheritDoc
      */
-    protected function _viewRecord($record, RouterInterface $router)
+    protected function _viewRecord($record, ServerRequest $request)
     {
-        $return = parent::_viewRecord($record, $router);
+        $return = parent::_viewRecord($record, $request);
+
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+
         $return['links']['broadcasts'] = $router->fromHere(
             'api:stations:streamer:broadcasts',
             ['id' => $record->getId()],
             [],
-            true
+            !$isInternal
         );
 
         return $return;

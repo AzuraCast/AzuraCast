@@ -5,8 +5,6 @@ use App;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Doctrine\Paginator;
-use App\Http\RouterInterface;
 use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
@@ -65,22 +63,7 @@ class QueueController extends AbstractStationApiCrudController
             ORDER BY sh.timestamp_cued DESC')
             ->setParameter('station_id', $station->getId());
 
-        $paginator = new Paginator($query);
-        $paginator->setFromRequest($request);
-
-        $is_bootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
-
-        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router) {
-            $return = $this->_viewRecord($row, $router);
-            if ($is_bootgrid) {
-                return App\Utilities::flattenArray($return, '_');
-            }
-
-            return $return;
-        });
-
-        return $paginator->write($response);
+        return $this->_listPaginatedFromQuery($request, $response, $query);
     }
 
     /**
@@ -124,7 +107,7 @@ class QueueController extends AbstractStationApiCrudController
     /**
      * @inheritdoc
      */
-    protected function _viewRecord($record, RouterInterface $router)
+    protected function _viewRecord($record, \App\Http\ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -133,10 +116,10 @@ class QueueController extends AbstractStationApiCrudController
         /** @var Entity\SongHistory $record */
         /** @var Entity\Api\QueuedSong $row */
         $row = $record->api(new Entity\Api\QueuedSong, $this->apiUtils);
-        $row->resolveUrls($router->getBaseUrl());
+        $row->resolveUrls($request->getBaseUrl());
 
         $row->links = [
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+            'self' => $request->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
         ];
 
         return $row;

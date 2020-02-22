@@ -1,12 +1,10 @@
 <?php
 namespace App\Controller\Api\Stations;
 
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\Exception;
 use App\Exception\NotFoundException;
 use App\Http\Response;
-use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
 use InvalidArgumentException;
@@ -124,16 +122,7 @@ class PlaylistsController extends AbstractScheduledEntityController
                 ->setParameter('name', '%' . $searchPhrase . '%');
         }
 
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
-
-        $router = $request->getRouter();
-
-        $paginator->setPostprocessor(function ($row) use ($router) {
-            return $this->_viewRecord($row, $router);
-        });
-
-        return $paginator->write($response);
+        return $this->_listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
     /**
@@ -278,7 +267,7 @@ class PlaylistsController extends AbstractScheduledEntityController
         return $response->withJson(new Entity\Api\Status(true, $flash_message));
     }
 
-    protected function _viewRecord($record, RouterInterface $router)
+    protected function _viewRecord($record, \App\Http\ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -297,10 +286,13 @@ class PlaylistsController extends AbstractScheduledEntityController
         $return['num_songs'] = (int)$song_totals[0]['num_songs'];
         $return['total_length'] = (int)$song_totals[0]['total_length'];
 
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+
         $return['links'] = [
-            'toggle' => $router->fromHere('api:stations:playlist:toggle', ['id' => $record->getId()], [], true),
-            'order' => $router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], true),
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+            'toggle' => $router->fromHere('api:stations:playlist:toggle', ['id' => $record->getId()], [], !$isInternal),
+            'order' => $router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], !$isInternal),
+            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 
         foreach (['pls', 'm3u'] as $format) {
@@ -308,7 +300,7 @@ class PlaylistsController extends AbstractScheduledEntityController
                 'api:stations:playlist:export',
                 ['id' => $record->getId(), 'format' => $format],
                 [],
-                true
+                !$isInternal
             );
         }
 

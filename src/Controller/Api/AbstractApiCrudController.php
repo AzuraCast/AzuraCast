@@ -1,12 +1,17 @@
 <?php
 namespace App\Controller\Api;
 
+use App\Doctrine\Paginator;
 use App\Exception\ValidationException;
-use App\Http\RouterInterface;
+use App\Http\Response;
+use App\Http\ServerRequest;
+use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,8 +36,35 @@ abstract class AbstractApiCrudController
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
-    
-    protected function _viewRecord($record, RouterInterface $router)
+
+    protected function _listPaginatedFromQuery(
+        ServerRequest $request,
+        Response $response,
+        Query $query,
+        callable $postProcessor = null
+    ): ResponseInterface {
+        $paginator = new Paginator($query);
+        $paginator->setFromRequest($request);
+
+        $is_bootgrid = $paginator->isFromBootgrid();
+        $is_internal = ('true' === $request->getParam('internal', 'false'));
+
+        $postProcessor ??= function ($row) use ($is_bootgrid, $is_internal, $request) {
+            $return = $this->_viewRecord($row, $request);
+
+            // Older jQuery Bootgrid requests should be "flattened".
+            if ($is_bootgrid && !$is_internal) {
+                return Utilities::flattenArray($return, '_');
+            }
+
+            return $return;
+        };
+        $paginator->setPostprocessor($postProcessor);
+
+        return $paginator->write($response);
+    }
+
+    protected function _viewRecord($record, ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -40,8 +72,11 @@ abstract class AbstractApiCrudController
 
         $return = $this->_normalizeRecord($record);
 
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+
         $return['links'] = [
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
         return $return;
     }

@@ -26,13 +26,13 @@
                                     :api-url="listUrl">
                             <template v-slot:cell(actions)="row">
                                 <b-button-group size="sm">
-                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links_self)">
+                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                                         <translate>Edit</translate>
                                     </b-button>
-                                    <b-button size="sm" variant="default" @click.prevent="doShowBroadcasts(row.item.links_broadcasts)">
+                                    <b-button size="sm" variant="default" @click.prevent="doShowBroadcasts(row.item.links.broadcasts)">
                                         <translate>Broadcasts</translate>
                                     </b-button>
-                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links_self)">
+                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
                                         <translate>Delete</translate>
                                     </b-button>
                                 </b-button-group>

@@ -111,7 +111,7 @@ class UsersController extends AbstractAdminApiCrudController
                 ->withJson(new Entity\Api\Error(403, __('You cannot remove yourself.')));
         }
 
-        $this->_deleteRecord($record);
+        $this->deleteRecord($record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
     }

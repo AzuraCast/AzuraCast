@@ -96,7 +96,7 @@ class FilesController extends AbstractStationApiCrudController
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = $this->_getStation($request);
+        $station = $this->getStation($request);
 
         $body = $request->getParsedBody();
 
@@ -121,7 +121,7 @@ class FilesController extends AbstractStationApiCrudController
         // Process temp path as regular media record.
         $record = $this->media_repo->uploadFile($station, $temp_path, $sanitized_path);
 
-        $return = $this->_viewRecord($record, $request);
+        $return = $this->viewRecord($record, $request);
 
         return $response->withJson($return);
     }
@@ -188,9 +188,9 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function _normalizeRecord($record, array $context = [])
+    protected function toArray($record, array $context = [])
     {
-        $row = parent::_normalizeRecord($record, $context);
+        $row = parent::toArray($record, $context);
 
         if ($record instanceof Entity\StationMedia) {
             $row['custom_fields'] = $this->custom_fields_repo->getCustomFields($record);
@@ -202,13 +202,13 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function fromArray($data, $record = null, array $context = []): object
     {
         $custom_fields = $data['custom_fields'] ?? null;
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
-        $record = parent::_denormalizeToRecord($data, $record, array_merge($context, [
+        $record = parent::fromArray($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [
                 'path' => function ($new_value, $record) {
                     // Detect and handle a rename.
@@ -299,7 +299,7 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function _deleteRecord($record): void
+    protected function deleteRecord($record): void
     {
         if (!($record instanceof Entity\StationMedia)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -334,6 +334,6 @@ class FilesController extends AbstractStationApiCrudController
             }
         }
 
-        parent::_deleteRecord($record);
+        parent::deleteRecord($record);
     }
 }

@@ -122,7 +122,7 @@ class PlaylistsController extends AbstractScheduledEntityController
                 ->setParameter('name', '%' . $searchPhrase . '%');
         }
 
-        return $this->_listPaginatedFromQuery($request, $response, $qb->getQuery());
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
     /**
@@ -172,7 +172,7 @@ class PlaylistsController extends AbstractScheduledEntityController
         Response $response,
         $id
     ): ResponseInterface {
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new NotFoundException(__('Playlist not found.'));
@@ -200,7 +200,7 @@ class PlaylistsController extends AbstractScheduledEntityController
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepository,
         $id
     ): ResponseInterface {
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new NotFoundException(__('Playlist not found.'));
@@ -223,7 +223,7 @@ class PlaylistsController extends AbstractScheduledEntityController
         $id,
         $format = 'pls'
     ): ResponseInterface {
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new NotFoundException(__('Playlist not found.'));
@@ -248,7 +248,7 @@ class PlaylistsController extends AbstractScheduledEntityController
 
     public function toggleAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->getRecord($request->getStation(), $id);
 
         if (!$record instanceof Entity\StationPlaylist) {
             throw new NotFoundException(__('Playlist not found.'));
@@ -267,13 +267,13 @@ class PlaylistsController extends AbstractScheduledEntityController
         return $response->withJson(new Entity\Api\Status(true, $flash_message));
     }
 
-    protected function _viewRecord($record, \App\Http\ServerRequest $request)
+    protected function viewRecord($record, \App\Http\ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $return = $this->_normalizeRecord($record);
+        $return = $this->toArray($record);
 
         $song_totals = $this->em->createQuery(/** @lang DQL */ '
             SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
@@ -307,9 +307,9 @@ class PlaylistsController extends AbstractScheduledEntityController
         return $return;
     }
 
-    protected function _normalizeRecord($record, array $context = [])
+    protected function toArray($record, array $context = [])
     {
-        return parent::_normalizeRecord($record, array_merge($context, [
+        return parent::toArray($record, array_merge($context, [
             AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue'],
         ]));
     }

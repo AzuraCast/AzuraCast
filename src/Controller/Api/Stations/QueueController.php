@@ -63,7 +63,7 @@ class QueueController extends AbstractStationApiCrudController
             ORDER BY sh.timestamp_cued DESC')
             ->setParameter('station_id', $station->getId());
 
-        return $this->_listPaginatedFromQuery($request, $response, $query);
+        return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
     /**
@@ -107,19 +107,23 @@ class QueueController extends AbstractStationApiCrudController
     /**
      * @inheritdoc
      */
-    protected function _viewRecord($record, \App\Http\ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
+        $router = $request->getRouter();
+
         /** @var Entity\SongHistory $record */
         /** @var Entity\Api\QueuedSong $row */
         $row = $record->api(new Entity\Api\QueuedSong, $this->apiUtils);
-        $row->resolveUrls($request->getBaseUrl());
+        $row->resolveUrls($router->getBaseUrl());
+
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
 
         $row->links = [
-            'self' => $request->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], true),
+            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 
         return $row;

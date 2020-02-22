@@ -98,9 +98,9 @@ class MountsController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function _getStation(ServerRequest $request): Entity\Station
+    protected function getStation(ServerRequest $request): Entity\Station
     {
-        $station = parent::_getStation($request);
+        $station = parent::getStation($request);
 
         $frontend = $request->getStationFrontend();
         if (!$frontend::supportsMounts()) {

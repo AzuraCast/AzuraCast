@@ -19,14 +19,14 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = $this->_getStation($request);
+        $station = $this->getStation($request);
 
         $query = $this->em->createQuery('SELECT e 
             FROM ' . $this->entityClass . ' e 
             WHERE e.station = :station')
             ->setParameter('station', $station);
 
-        return $this->_listPaginatedFromQuery($request, $response, $query);
+        return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      *
      * @return Entity\Station
      */
-    protected function _getStation(ServerRequest $request): Entity\Station
+    protected function getStation(ServerRequest $request): Entity\Station
     {
         return $request->getStation();
     }
@@ -50,10 +50,10 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = $this->_getStation($request);
+        $station = $this->getStation($request);
         $row = $this->_createRecord($request->getParsedBody(), $station);
 
-        $return = $this->_viewRecord($row, $request);
+        $return = $this->viewRecord($row, $request);
 
         return $response->withJson($return);
     }
@@ -66,7 +66,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     protected function _createRecord($data, Entity\Station $station): object
     {
-        return $this->_editRecord($data, null, [
+        return $this->editRecord($data, null, [
             AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
                 $this->entityClass => [
                     'station' => $station,
@@ -75,12 +75,12 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         ]);
     }
 
-    protected function _editRecord($data, $record = null, array $context = []): object
+    protected function editRecord($data, $record = null, array $context = []): object
     {
         // Force an unset of the `station` parameter as it supercedes the default constructor arguments.
         unset($data['station']);
 
-        return parent::_editRecord($data, $record, $context);
+        return parent::editRecord($data, $record, $context);
     }
 
     /**
@@ -94,15 +94,15 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $station = $this->_getStation($request);
-        $record = $this->_getRecord($station, $id);
+        $station = $this->getStation($request);
+        $record = $this->getRecord($station, $id);
 
         if (null === $record) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $return = $this->_viewRecord($record, $request);
+        $return = $this->viewRecord($record, $request);
         return $response->withJson($return);
     }
 
@@ -112,7 +112,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      *
      * @return object|null
      */
-    protected function _getRecord(Entity\Station $station, $id)
+    protected function getRecord(Entity\Station $station, $id)
     {
         $repo = $this->em->getRepository($this->entityClass);
         return $repo->findOneBy([
@@ -131,14 +131,14 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord($this->_getStation($request), $id);
+        $record = $this->getRecord($this->getStation($request), $id);
 
         if (null === $record) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->_editRecord($request->getParsedBody(), $record);
+        $this->editRecord($request->getParsedBody(), $record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -153,14 +153,14 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     public function deleteAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $record = $this->_getRecord($this->_getStation($request), $id);
+        $record = $this->getRecord($this->getStation($request), $id);
 
         if (null === $record) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->_deleteRecord($record);
+        $this->deleteRecord($record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
     }

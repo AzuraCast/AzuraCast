@@ -92,9 +92,9 @@ class RolesController extends AbstractAdminApiCrudController
      * @inheritdoc
      */
 
-    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function fromArray($data, $record = null, array $context = []): object
     {
-        return parent::_denormalizeToRecord($data, $record, array_merge($context, [
+        return parent::fromArray($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [
                 'permissions' => function (array $value, $record) {
                     if ($record instanceof Entity\Role) {

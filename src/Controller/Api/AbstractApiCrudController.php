@@ -37,7 +37,7 @@ abstract class AbstractApiCrudController
         $this->validator = $validator;
     }
 
-    protected function _listPaginatedFromQuery(
+    protected function listPaginatedFromQuery(
         ServerRequest $request,
         Response $response,
         Query $query,
@@ -50,7 +50,7 @@ abstract class AbstractApiCrudController
         $is_internal = ('true' === $request->getParam('internal', 'false'));
 
         $postProcessor ??= function ($row) use ($is_bootgrid, $is_internal, $request) {
-            $return = $this->_viewRecord($row, $request);
+            $return = $this->viewRecord($row, $request);
 
             // Older jQuery Bootgrid requests should be "flattened".
             if ($is_bootgrid && !$is_internal) {
@@ -64,13 +64,13 @@ abstract class AbstractApiCrudController
         return $paginator->write($response);
     }
 
-    protected function _viewRecord($record, ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $return = $this->_normalizeRecord($record);
+        $return = $this->toArray($record);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
@@ -82,14 +82,12 @@ abstract class AbstractApiCrudController
     }
 
     /**
-     * Modern version of $record->toArray().
-     *
      * @param object $record
      * @param array $context
      *
      * @return array|mixed
      */
-    protected function _normalizeRecord($record, array $context = [])
+    protected function toArray($record, array $context = [])
     {
         return $this->serializer->normalize($record, null, array_merge($context, [
             ObjectNormalizer::ENABLE_MAX_DEPTH => true,
@@ -100,14 +98,14 @@ abstract class AbstractApiCrudController
                 string $format = null,
                 array $context = []
             ) {
-                return $this->_displayShortenedObject($innerObject);
+                return $this->displayShortenedObject($innerObject);
             },
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
                 $object,
                 string $format = null,
                 array $context = []
             ) {
-                return $this->_displayShortenedObject($object);
+                return $this->displayShortenedObject($object);
             },
         ]));
     }
@@ -117,7 +115,7 @@ abstract class AbstractApiCrudController
      *
      * @return mixed
      */
-    protected function _displayShortenedObject($object)
+    protected function displayShortenedObject($object)
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();
@@ -133,13 +131,13 @@ abstract class AbstractApiCrudController
      *
      * @return object
      */
-    protected function _editRecord($data, $record = null, array $context = []): object
+    protected function editRecord($data, $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
         }
 
-        $record = $this->_denormalizeToRecord($data, $record, $context);
+        $record = $this->fromArray($data, $record, $context);
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
@@ -155,15 +153,13 @@ abstract class AbstractApiCrudController
     }
 
     /**
-     * Modern equivalent of $object->fromArray($data).
-     *
      * @param array $data
      * @param object|null $record
      * @param array $context
      *
      * @return object
      */
-    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function fromArray($data, $record = null, array $context = []): object
     {
         if (null !== $record) {
             $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;
@@ -178,7 +174,7 @@ abstract class AbstractApiCrudController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    protected function _deleteRecord($record): void
+    protected function deleteRecord($record): void
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

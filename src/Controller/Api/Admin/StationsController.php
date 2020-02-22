@@ -108,9 +108,9 @@ class StationsController extends AbstractAdminApiCrudController
      */
 
     /** @inheritDoc */
-    protected function _normalizeRecord($record, array $context = [])
+    protected function toArray($record, array $context = [])
     {
-        return parent::_normalizeRecord($record, $context + [
+        return parent::toArray($record, $context + [
                 DoctrineEntityNormalizer::IGNORED_ATTRIBUTES => [
                     'adapter_api_key',
                     'nowplaying',
@@ -123,7 +123,7 @@ class StationsController extends AbstractAdminApiCrudController
     }
 
     /** @inheritDoc */
-    protected function _editRecord($data, $record = null, array $context = []): object
+    protected function editRecord($data, $record = null, array $context = []): object
     {
         $create_mode = (null === $record);
 
@@ -131,7 +131,7 @@ class StationsController extends AbstractAdminApiCrudController
             throw new InvalidArgumentException('Could not parse input data.');
         }
 
-        $record = $this->_denormalizeToRecord($data, $record, $context);
+        $record = $this->fromArray($data, $record, $context);
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
@@ -146,12 +146,12 @@ class StationsController extends AbstractAdminApiCrudController
         if ($create_mode) {
             return $this->station_repo->create($record);
         }
-        
+
         return $this->station_repo->edit($record);
     }
 
     /** @inheritDoc */
-    protected function _deleteRecord($record): void
+    protected function deleteRecord($record): void
     {
         $this->station_repo->destroy($record);
     }

@@ -17,7 +17,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     {
         $query = $this->em->createQuery('SELECT e FROM ' . $this->entityClass . ' e');
 
-        return $this->_listPaginatedFromQuery($request, $response, $query);
+        return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
     /**
@@ -31,7 +31,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     {
         $row = $this->_createRecord($request->getParsedBody());
 
-        $return = $this->_viewRecord($row, $request);
+        $return = $this->viewRecord($row, $request);
         return $response->withJson($return);
     }
 
@@ -42,7 +42,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      */
     protected function _createRecord($data): object
     {
-        return $this->_editRecord($data, null);
+        return $this->editRecord($data, null);
     }
 
     /**
@@ -61,7 +61,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $return = $this->_viewRecord($record, $request);
+        $return = $this->viewRecord($record, $request);
         return $response->withJson($return);
     }
 
@@ -94,7 +94,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->_editRecord($request->getParsedBody(), $record);
+        $this->editRecord($request->getParsedBody(), $record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -115,7 +115,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->_deleteRecord($record);
+        $this->deleteRecord($record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
     }

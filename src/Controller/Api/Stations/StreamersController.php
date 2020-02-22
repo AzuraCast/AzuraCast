@@ -143,9 +143,9 @@ class StreamersController extends AbstractScheduledEntityController
     /**
      * @inheritDoc
      */
-    protected function _viewRecord($record, ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request)
     {
-        $return = parent::_viewRecord($record, $request);
+        $return = parent::viewRecord($record, $request);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
@@ -163,9 +163,9 @@ class StreamersController extends AbstractScheduledEntityController
     /**
      * @inheritDoc
      */
-    protected function _getStation(ServerRequest $request): Entity\Station
+    protected function getStation(ServerRequest $request): Entity\Station
     {
-        $station = parent::_getStation($request);
+        $station = parent::getStation($request);
 
         $backend = $request->getStationBackend();
         if (!$backend::supportsStreamers()) {

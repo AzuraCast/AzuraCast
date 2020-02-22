@@ -74,12 +74,12 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
     /**
      * @inheritDoc
      */
-    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function fromArray($data, $record = null, array $context = []): object
     {
         $scheduleItems = $data['schedule_items'] ?? null;
         unset($data['schedule_items']);
 
-        $record = parent::_denormalizeToRecord($data, $record, $context);
+        $record = parent::fromArray($data, $record, $context);
 
         if ($record instanceof $this->entityClass) {
             $this->em->persist($record);

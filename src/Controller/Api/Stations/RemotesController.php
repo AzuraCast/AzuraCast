@@ -98,9 +98,9 @@ class RemotesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function _getRecord(Entity\Station $station, $id)
+    protected function getRecord(Entity\Station $station, $id)
     {
-        $record = parent::_getRecord($station, $id);
+        $record = parent::getRecord($station, $id);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
             throw new PermissionDeniedException('This record cannot be edited.');

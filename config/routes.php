@@ -555,6 +555,10 @@ return function (App $app) {
             ->add(Middleware\Module\StationFiles::class)
             ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+        $group->map(['GET', 'POST'], '/ls_config', Controller\Stations\EditLiquidsoapConfigController::class)
+            ->setName('stations:util:ls_config')
+            ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+
         $group->group('/logs', function (RouteCollectorProxy $group) {
 
             $group->get('', Controller\Stations\LogsController::class)
@@ -664,21 +668,9 @@ return function (App $app) {
 
         })->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
-        $group->group('/streamers', function (RouteCollectorProxy $group) {
-
-            $group->get('', Controller\Stations\StreamersController::class . ':indexAction')
-                ->setName('stations:streamers:index');
-
-            $group->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\StreamersController::class . ':editAction')
-                ->setName('stations:streamers:edit');
-
-            $group->map(['GET', 'POST'], '/add', Controller\Stations\StreamersController::class . ':editAction')
-                ->setName('stations:streamers:add');
-
-            $group->get('/delete/{id}/{csrf}', Controller\Stations\StreamersController::class . ':deleteAction')
-                ->setName('stations:streamers:delete');
-
-        })->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
+        $group->get('/streamers', Controller\Stations\StreamersController::class)
+            ->setName('stations:streamers:index')
+            ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
         $group->group('/webhooks', function (RouteCollectorProxy $group) {
 

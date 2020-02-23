@@ -28,7 +28,7 @@ class StreamersController extends AbstractStationCrudController
         $this->csrf_namespace = 'stations_streamers';
     }
 
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
@@ -64,32 +64,5 @@ class StreamersController extends AbstractStationCrudController
             'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
             'station_tz' => $station->getTimezone(),
         ]);
-    }
-
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
-    {
-        if (false !== $this->_doEdit($request, $id)) {
-            $request->getFlash()->addMessage('<b>' . ($id ? __('Streamer updated.') : __('Streamer added.')) . '</b>',
-                Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
-        }
-
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => $id ? __('Edit Streamer') : __('Add Streamer'),
-        ]);
-    }
-
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        $id,
-        $csrf
-    ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf);
-
-        $request->getFlash()->addMessage('<b>' . __('Streamer deleted.') . '</b>', Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
     }
 }

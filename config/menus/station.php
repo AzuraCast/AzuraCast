@@ -146,6 +146,12 @@ return function (\App\Event\BuildStationMenu $e) {
                     'visible' => $backend::supportsMedia(),
                     'permission' => Acl::STATION_AUTOMATION,
                 ],
+                'ls_config' => [
+                    'label' => __('Edit Liquidsoap Configuration'),
+                    'url' => $router->fromHere('stations:util:ls_config'),
+                    'visible' => $backend instanceof App\Radio\Backend\Liquidsoap,
+                    'permission' => Acl::STATION_PROFILE,
+                ],
                 'logs' => [
                     'label' => __('Log Viewer'),
                     'url' => $router->fromHere('stations:logs:index'),

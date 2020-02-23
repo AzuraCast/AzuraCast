@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity\Station;
 use App\Entity\StationMountInterface;
 use App\Radio\Adapters;
@@ -20,10 +21,10 @@ return [
     'enctype' => 'multipart/form-data',
 
     'tabs' => [
-        'profile'   => __('Station Profile'),
-        'frontend'  => __('Broadcasting'),
-        'backend'   => __('AutoDJ'),
-        'admin'     => __('Administration'),
+        'profile' => __('Station Profile'),
+        'frontend' => __('Broadcasting'),
+        'backend' => __('AutoDJ'),
+        'admin' => __('Administration'),
     ],
 
     'groups' => [
@@ -38,7 +39,7 @@ return [
                         'label' => __('Name'),
                         'required' => true,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'description' => [
@@ -46,7 +47,7 @@ return [
                     [
                         'label' => __('Description'),
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'genre' => [
@@ -54,7 +55,7 @@ return [
                     [
                         'label' => __('Genre'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'url' => [
@@ -63,7 +64,7 @@ return [
                         'label' => __('Web Site URL'),
                         'description' => __('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'timezone' => [
@@ -74,7 +75,7 @@ return [
                         'options' => \App\Timezone::fetchSelect(),
                         'default' => \App\Customization::DEFAULT_TIMEZONE,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'enable_public_page' => [
@@ -86,7 +87,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => true,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'short_name' => [
@@ -96,7 +97,7 @@ return [
                         'label_class' => 'advanced',
                         'description' => __('Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'api_history_items' => [
@@ -114,8 +115,8 @@ return [
                         ],
                         'default' => Station::DEFAULT_API_HISTORY_ITEMS,
                         'form_group_class' => 'col-md-6',
-                    ]
-                ]
+                    ],
+                ],
             ],
         ],
 
@@ -130,7 +131,7 @@ return [
                         'description' => __('This software delivers your broadcast to the listening audience.'),
                         'options' => $frontend_types,
                         'default' => Adapters::DEFAULT_FRONTEND,
-                    ]
+                    ],
                 ],
             ],
         ],
@@ -150,7 +151,7 @@ return [
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'frontend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'max_listeners' => [
@@ -161,7 +162,7 @@ return [
                         'description' => __('Maximum number of total listeners across all streams. Leave blank to use the default (250).'),
                         'belongsTo' => 'frontend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'source_pw' => [
@@ -172,7 +173,7 @@ return [
                         'description' => __('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'admin_pw' => [
@@ -183,7 +184,7 @@ return [
                         'description' => __('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'custom_config' => [
@@ -195,7 +196,7 @@ return [
                         'class' => 'text-preformatted',
                         'description' => __('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
             ],
@@ -211,7 +212,7 @@ return [
                         'description' => __('This software shuffles from playlists of music constantly and plays when no other radio source is available.'),
                         'options' => $backend_types,
                         'default' => Adapters::DEFAULT_BACKEND,
-                    ]
+                    ],
                 ],
             ],
         ],
@@ -232,11 +233,11 @@ return [
                         'choices' => [
                             \App\Radio\Backend\Liquidsoap::CROSSFADE_SMART => __('Smart Mode'),
                             \App\Radio\Backend\Liquidsoap::CROSSFADE_NORMAL => __('Normal Mode'),
-                            \App\Radio\Backend\Liquidsoap::CROSSFADE_DISABLED => __('Disable Crossfading')
+                            \App\Radio\Backend\Liquidsoap::CROSSFADE_DISABLED => __('Disable Crossfading'),
                         ],
                         'default' => \App\Radio\Backend\Liquidsoap::CROSSFADE_NORMAL,
                         'form_group_class' => 'col-md-8',
-                    ]
+                    ],
                 ],
 
                 'crossfade' => [
@@ -250,7 +251,7 @@ return [
                         'max' => '30.0',
                         'step' => '0.1',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
                 'nrj' => [
@@ -263,7 +264,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'enable_requests' => [
@@ -275,7 +276,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 'request_delay' => [
@@ -287,7 +288,7 @@ return [
                         'min' => '0',
                         'max' => '1440',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'request_threshold' => [
@@ -299,7 +300,7 @@ return [
                         'min' => '0',
                         'max' => '1440',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'enable_streamers' => [
@@ -311,7 +312,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-12',
-                    ]
+                    ],
                 ],
 
                 'record_streams' => [
@@ -324,7 +325,7 @@ return [
                         'default' => false,
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
                 'record_streams_format' => [
@@ -339,7 +340,7 @@ return [
                         ],
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
                 'record_streams_bitrate' => [
@@ -359,7 +360,7 @@ return [
                         'default' => 128,
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
                 'disconnect_deactivate_streamer' => [
@@ -371,7 +372,7 @@ return [
                         'min' => '0',
                         'step' => '1',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
                 'dj_port' => [
@@ -382,7 +383,7 @@ return [
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.'),
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'telnet_port' => [
@@ -393,7 +394,7 @@ return [
                         'description' => __('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'dj_buffer' => [
@@ -408,7 +409,7 @@ return [
                         'step' => 1,
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'dj_mount_point' => [
@@ -434,7 +435,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'use_manual_autodj' => [
@@ -448,7 +449,7 @@ return [
                         'default' => false,
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'charset' => [
@@ -466,19 +467,6 @@ return [
                         'form_group_class' => 'col-md-6',
                     ],
                 ],
-
-                'custom_config' => [
-                    'textarea',
-                    [
-                        'label' => __('Custom Configuration'),
-                        'label_class' => 'advanced',
-                        'belongsTo' => 'backend_config',
-                        'class' => 'text-preformatted',
-                        'description' => __('This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!'),
-                        'form_group_class' => 'col-sm-12',
-                    ]
-                ],
-
             ],
         ],
 
@@ -497,7 +485,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'storage_quota' => [
@@ -506,7 +494,7 @@ return [
                         'label' => __('Storage Quota'),
                         'description' => __('Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.'),
                         'form_group_class' => 'col-md-6 ',
-                    ]
+                    ],
                 ],
 
                 'radio_base_dir' => [
@@ -516,7 +504,7 @@ return [
                         'label_class' => 'advanced',
                         'description' => __('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'radio_media_dir' => [
@@ -526,7 +514,7 @@ return [
                         'label_class' => 'advanced',
                         'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
             ],
@@ -540,7 +528,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
-                    ]
+                    ],
                 ],
             ],
         ],

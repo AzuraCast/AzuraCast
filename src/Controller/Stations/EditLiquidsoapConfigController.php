@@ -77,7 +77,7 @@ class EditLiquidsoapConfigController
                 $formConfig['groups']['ls_config']['elements']['config_section_' . $i] = [
                     'markup',
                     [
-                        'markup' => '<pre>' . $tok . '</pre>',
+                        'markup' => '<pre class="typography-body-1">' . $tok . '</pre>',
                     ],
                 ];
             }

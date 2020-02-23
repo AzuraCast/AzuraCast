@@ -36,10 +36,7 @@ class CheckForUpdates extends AbstractTask
             }
         }
 
-        $check_for_updates = (int)$this->settingsRepo->getSetting(Entity\Settings::CENTRAL_UPDATES,
-            Entity\Settings::UPDATES_RELEASE_ONLY);
-
-        if (Entity\Settings::UPDATES_NONE === $check_for_updates || Settings::getInstance()->isTesting()) {
+        if (Settings::getInstance()->isTesting()) {
             $this->logger->info('Update checks are currently disabled for this AzuraCast instance.');
             return;
         }

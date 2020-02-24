@@ -173,7 +173,9 @@ class Response extends \Slim\Http\Response
                 if (0 === strpos($localPath, $diskPath)) {
                     $accelPath = str_replace($diskPath, $nginxPath, $localPath);
 
-                    return $response->withHeader('X-Accel-Redirect', $accelPath);
+                    return $response->withHeader('Content-Type', $mime)
+                        ->withHeader('X-Accel-Redirect', $accelPath)
+                        ->write(' '); // Temporary work around, see SlimPHP/Slim#2924
                 }
             }
         } catch (\Exception $e) {

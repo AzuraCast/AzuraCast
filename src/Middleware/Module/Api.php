@@ -74,7 +74,7 @@ class Api
             $response = $response->withHeader('Access-Control-Allow-Origin', '*');
         }
 
-        if ($response instanceof Response) {
+        if ($response instanceof Response && !$response->hasCacheLifetime()) {
             if ($prefer_browser_url || $request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
                 $response = $response->withNoCache();
             } else {

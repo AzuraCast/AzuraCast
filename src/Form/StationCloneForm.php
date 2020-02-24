@@ -2,12 +2,12 @@
 namespace App\Form;
 
 use App\Acl;
+use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
 use App\Settings;
 use App\Sync\Task\Media;
-use App\Config;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
@@ -71,7 +71,7 @@ class StationCloneForm extends StationForm
             );
             $copier->addFilter(
                 new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
-                new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'sftpUsers')
+                new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'sftp_users')
             );
 
             $copier->addFilter(
@@ -138,6 +138,11 @@ class StationCloneForm extends StationForm
                     new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
                     new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'media')
                 );
+            } else {
+                $copier->addFilter(
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'playlists')
+                );
             }
 
             // Execute the Doctrine entity copy.
@@ -168,7 +173,16 @@ class StationCloneForm extends StationForm
             // Persist all newly created records (and relations).
             $this->em->persist($new_record);
             foreach ($new_record->getMedia() as $subrecord) {
+                /** @var Entity\StationMedia $subrecord */
                 $this->em->persist($subrecord);
+
+                foreach ($subrecord->getPlaylists() as $subrecord_playlist_items) {
+                    /** @var Entity\StationPlaylistMedia $subrecord_playlist_items */
+                    $this->em->persist($subrecord_playlist_items);
+
+                    $playlist = $subrecord_playlist_items->getPlaylist();
+                    $this->em->persist($playlist);
+                }
             }
             foreach ($new_record->getMounts() as $subrecord) {
                 $this->em->persist($subrecord);
@@ -177,13 +191,23 @@ class StationCloneForm extends StationForm
                 $this->em->persist($subrecord);
             }
             foreach ($new_record->getPlaylists() as $subrecord) {
+                /** @var Entity\StationPlaylist $subrecord */
                 $this->em->persist($subrecord);
+
+                foreach ($subrecord->getScheduleItems() as $playlist_schedule_item) {
+                    $this->em->persist($playlist_schedule_item);
+                }
             }
             foreach ($new_record->getRemotes() as $subrecord) {
                 $this->em->persist($subrecord);
             }
             foreach ($new_record->getStreamers() as $subrecord) {
+                /** @var Entity\StationStreamer $subrecord */
                 $this->em->persist($subrecord);
+
+                foreach ($subrecord->getScheduleItems() as $playlist_schedule_item) {
+                    $this->em->persist($playlist_schedule_item);
+                }
             }
             $this->em->flush();
 

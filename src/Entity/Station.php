@@ -385,7 +385,7 @@ class Station
      * @ORM\OneToMany(targetEntity="SftpUser", mappedBy="station")
      * @var Collection
      */
-    protected $sftpUsers;
+    protected $sftp_users;
 
     public function __construct()
     {
@@ -396,7 +396,7 @@ class Station
         $this->remotes = new ArrayCollection;
         $this->webhooks = new ArrayCollection;
         $this->streamers = new ArrayCollection;
-        $this->sftpUsers = new ArrayCollection;
+        $this->sftp_users = new ArrayCollection;
     }
 
     /**
@@ -1236,7 +1236,7 @@ class Station
      */
     public function getSftpUsers(): Collection
     {
-        return $this->sftpUsers;
+        return $this->sftp_users;
     }
 
     /**

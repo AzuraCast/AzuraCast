@@ -176,6 +176,10 @@ class StationCloneForm extends StationForm
                 /** @var Entity\StationMedia $subrecord */
                 $this->em->persist($subrecord);
 
+                foreach ($subrecord->getCustomFields() as $subrecord_custom_field) {
+                    $this->em->persist($subrecord_custom_field);
+                }
+
                 foreach ($subrecord->getPlaylists() as $subrecord_playlist_items) {
                     /** @var Entity\StationPlaylistMedia $subrecord_playlist_items */
                     $this->em->persist($subrecord_playlist_items);

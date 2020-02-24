@@ -650,7 +650,7 @@ class StationPlaylist
                     $endTime = $scheduleItem->getEndTime();
 
                     $isScheduled = ($startTime === $endTime)
-                        ? $this->wasPlayedInLastXMinutes($now, 30)
+                        ? !$this->wasPlayedInLastXMinutes($now, 30)
                         : true;
                     break;
                 }
@@ -704,7 +704,7 @@ class StationPlaylist
         $target_minute = $this->getPlayPerHourMinute();
 
         if ($current_minute < $target_minute) {
-            $target_time = $now->addHour(-1)->minute($target_minute);
+            $target_time = $now->subHour()->minute($target_minute);
         } else {
             $target_time = $now->minute($target_minute);
         }
@@ -744,7 +744,7 @@ class StationPlaylist
             return false;
         }
 
-        $threshold = $now->addMinutes(0 - $minutes)->getTimestamp();
+        $threshold = $now->subMinutes($minutes)->getTimestamp();
         return ($this->played_at > $threshold);
     }
 

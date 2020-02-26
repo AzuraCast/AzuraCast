@@ -81,6 +81,9 @@ class ProfileController
 
         // Populate initial nowplaying data.
         $np = [
+            'station' => [
+                'mounts' => [],
+            ],
             'now_playing' => [
                 'song' => [
                     'title' => __('Song Title'),

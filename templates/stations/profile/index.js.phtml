@@ -11,13 +11,16 @@ $(function () {
     nowPlaying = new Vue({
         el: '#profile-nowplaying',
         data: {
-            np: <?=json_encode($nowplaying) ?>,
+            np: {},
             schedule_items: [],
             np_elapsed: 0,
             clock_interval: null
         },
         created: function () {
             this.clock_interval = setInterval(this.iterateTimer, 1000);
+        },
+        mounted: function () {
+            this.setNowPlaying(<?=json_encode($nowplaying) ?>);
         },
         computed: {
             "time_display": function () {

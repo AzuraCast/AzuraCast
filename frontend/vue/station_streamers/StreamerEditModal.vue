@@ -8,12 +8,14 @@
                 <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
                                :station-time-zone="stationTimeZone"></form-schedule>
             </b-tabs>
+
+            <invisible-submit-button/>
         </b-form>
         <template v-slot:modal-footer>
-            <b-button variant="default" @click="close">
+            <b-button variant="default" type="button" @click="close">
                 <translate>Close</translate>
             </b-button>
-            <b-button variant="primary" @click="doSubmit" :disabled="$v.form.$invalid">
+            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
                 <translate>Save Changes</translate>
             </b-button>
         </template>
@@ -25,11 +27,12 @@
     import required from 'vuelidate/src/validators/required';
     import FormBasicInfo from './form/StreamerFormBasicInfo';
     import FormSchedule from './form/StreamerFormSchedule';
+    import InvisibleSubmitButton from '../components/InvisibleSubmitButton';
 
     export default {
         name: 'EditModal',
         mixins: [validationMixin],
-        components: { FormBasicInfo, FormSchedule },
+        components: { FormBasicInfo, FormSchedule, InvisibleSubmitButton },
         props: {
             createUrl: String,
             stationTimeZone: String

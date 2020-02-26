@@ -6,7 +6,7 @@
                     <translate>Directory Name</translate>
                 </template>
                 <b-input type="text" id="new_directory_name" v-model="$v.newDirectory.$model"
-                         :state="$v.newDirectory.$dirty ? !$v.newDirectory.$error : null"></b-input>
+                         :state="$v.newDirectory.$dirty ? !$v.newDirectory.$error : null" autofocus></b-input>
                 <b-form-invalid-feedback v-translate>
                     This field is required.
                 </b-form-invalid-feedback>

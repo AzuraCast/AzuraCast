@@ -10,12 +10,14 @@
                 <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
                                :station-time-zone="stationTimeZone"></form-schedule>
             </b-tabs>
+
+            <invisible-submit-button/>
         </b-form>
         <template v-slot:modal-footer>
-            <b-button variant="default" @click="close">
+            <b-button variant="default" type="button" @click="close">
                 <translate>Close</translate>
             </b-button>
-            <b-button variant="primary" @click="doSubmit" :disabled="$v.form.$invalid">
+            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
                 <translate>Save Changes</translate>
             </b-button>
         </template>
@@ -29,10 +31,11 @@
     import FormBasicInfo from './form/PlaylistFormBasicInfo';
     import FormSource from './form/PlaylistFormSource';
     import FormSchedule from './form/PlaylistFormSchedule';
+    import InvisibleSubmitButton from '../components/InvisibleSubmitButton';
 
     export default {
         name: 'EditModal',
-        components: { FormSchedule, FormSource, FormBasicInfo },
+        components: { FormSchedule, FormSource, FormBasicInfo, InvisibleSubmitButton },
         mixins: [validationMixin],
         props: {
             createUrl: String,

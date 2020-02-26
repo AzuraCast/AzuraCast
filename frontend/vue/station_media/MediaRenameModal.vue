@@ -6,7 +6,7 @@
                     <translate>New File Name</translate>
                 </template>
                 <b-input type="text" id="new_directory_name" v-model="$v.form.newPath.$model"
-                         :state="$v.form.newPath.$dirty ? !$v.form.newPath.$error : null"></b-input>
+                         :state="$v.form.newPath.$dirty ? !$v.form.newPath.$error : null" autofocus></b-input>
                 <b-form-invalid-feedback>
                     <translate>This field is required.</translate>
                 </b-form-invalid-feedback>

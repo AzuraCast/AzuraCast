@@ -9,6 +9,7 @@
                 <media-form-custom-fields :form="form" :custom-fields="customFields"></media-form-custom-fields>
                 <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
             </b-tabs>
+            <invisible-submit-button/>
         </b-form>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
@@ -29,10 +30,17 @@
     import MediaFormAlbumArt from './form/MediaFormAlbumArt';
     import MediaFormCustomFields from './form/MediaFormCustomFields';
     import MediaFormAdvancedSettings from './form/MediaFormAdvancedSettings';
+    import InvisibleSubmitButton from '../components/InvisibleSubmitButton';
 
     export default {
         name: 'EditModal',
-        components: { MediaFormAdvancedSettings, MediaFormCustomFields, MediaFormAlbumArt, MediaFormBasicInfo },
+        components: {
+            MediaFormAdvancedSettings,
+            MediaFormCustomFields,
+            MediaFormAlbumArt,
+            MediaFormBasicInfo,
+            InvisibleSubmitButton
+        },
         mixins: [validationMixin],
         props: {
             customFields: Array

@@ -33,15 +33,15 @@ return function (\App\Event\BuildAdminMenu $e) {
                     'url' => $router->named('admin:logs:index'),
                     'permission' => Acl::GLOBAL_LOGS,
                 ],
-                'auditlog' => [
-                    'label' => __('Audit Log'),
-                    'url' => $router->named('admin:auditlog:index'),
-                    'permission' => Acl::GLOBAL_LOGS,
-                ],
                 'backups' => [
                     'label' => __('Backups'),
                     'url' => $router->named('admin:backups:index'),
                     'permission' => Acl::GLOBAL_BACKUPS,
+                ],
+                'debug' => [
+                    'label' => __('System Debugger'),
+                    'url' => $router->named('admin:debug:index'),
+                    'permission' => Acl::GLOBAL_ALL,
                 ],
             ],
         ],
@@ -58,6 +58,11 @@ return function (\App\Event\BuildAdminMenu $e) {
                     'label' => __('Permissions'),
                     'url' => $router->named('admin:permissions:index'),
                     'permission' => Acl::GLOBAL_PERMISSIONS,
+                ],
+                'auditlog' => [
+                    'label' => __('Audit Log'),
+                    'url' => $router->named('admin:auditlog:index'),
+                    'permission' => Acl::GLOBAL_LOGS,
                 ],
             ],
         ],

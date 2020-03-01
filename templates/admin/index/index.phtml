@@ -7,7 +7,7 @@
 $this->layout('main', [
     'title' => 'Administration',
     'manual' => true,
-    'page_class' => 'page-admin'
+    'page_class' => 'page-admin',
 ]);
 
 $assets
@@ -15,74 +15,76 @@ $assets
     ->addInlineJs($this->fetch('admin/index/index.js'), 99);
 ?>
 
-<h2 class="outside-card-header mb-1"><?=__('Administration') ?></h2>
+<h2 class="outside-card-header mb-1"><?=__('Administration')?></h2>
 
 <div class="card-columns">
-<?php foreach($admin_panels as $category_id => $category): ?>
-    <section class="card" role="region">
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title"><?=$category['label'] ?></h2>
-        </div>
-        <div class="list-group list-group-flush">
-        <?php foreach($category['items'] as $item): ?>
-            <a class="list-group-item list-group-item-action" href="<?=$item['url'] ?>" title="<?=$item['title'] ?>">
-                <?=$item['label'] ?>
-            </a>
-        <?php endforeach; ?>
-        </div>
-    </section>
-<?php endforeach; ?>
+    <?php foreach ($admin_panels as $category_id => $category): ?>
+        <section class="card" role="region">
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title"><?=$category['label']?></h2>
+            </div>
+            <div class="list-group list-group-flush">
+                <?php foreach ($category['items'] as $item): ?>
+                    <a class="list-group-item list-group-item-action" href="<?=$item['url']?>" title="<?=$item['title']?>">
+                        <?=$item['label']?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    <?php endforeach; ?>
 </div>
 
-<h2 class="outside-card-header mb-1"><?=__('Server Status') ?></h2>
+<h2 class="outside-card-header mb-1"><?=__('Server Status')?></h2>
 
 <div class="card-deck system-statistics">
     <div class="card cpu-usage-card" role="region">
         <div class="card-body bg-primary-dark">
             <h3 class="text-white">
-                <?=round($load[0], 2) ?><br>
-                <small><?=__('Current CPU Load') ?></small>
+                <?=round($load[0], 2)?><br>
+                <small><?=__('Current CPU Load')?></small>
             </h3>
         </div>
     </div>
     <div class="card cpu-usage-card" role="region">
         <div class="card-body bg-primary-dark text-white">
             <h3 class="text-white">
-                <?=round($load[2], 2) ?><br>
-                <small><?=__('15-Minute CPU Load Average') ?></small>
+                <?=round($load[2], 2)?><br>
+                <small><?=__('15-Minute CPU Load Average')?></small>
             </h3>
         </div>
     </div>
     <div class="card storage-card" role="region">
         <div class="card-body bg-primary-dark text-white">
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
-                    <span class="sr-only"><?=$space_percent ?>%</span>
+                <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent?>%;">
+                    <span class="sr-only"><?=$space_percent?>%</span>
                 </div>
             </div>
-            <h3 class="text-white"><small><?=__('%s of %s Used', $space_used, $space_total) ?></small></h3>
+            <h3 class="text-white"><small><?=__('%s of %s Used', $space_used, $space_total)?></small></h3>
         </div>
     </div>
 </div>
 
-<h2 class="outside-card-header mb-1"><?=__('Synchronization Tasks') ?></h2>
+<h2 class="outside-card-header mb-1"><?=__('Synchronization Tasks')?></h2>
 
 <div class="card-deck">
-<?php foreach($sync_times as $sync_key => $sync_info): ?>
-    <section class="card" role="region">
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title"><?=$sync_info['name'] ?></h2>
-            <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents']) ?></h3>
-        </div>
-        <div class="card-body">
-            <p class="card-text"><?=__('Last run: %s', '<time data-duration="'.$sync_info['diff'].'"></time>') ?></p>
-        </div>
-        <div class="card-actions">
-            <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>">
-                <i class="material-icons" aria-hidden="true">send</i>
-                <?=__('Run Task') ?>
-            </a>
-        </div>
-    </section>
-<?php endforeach; ?>
+    <?php foreach ($sync_times as $sync_key => $sync_info): ?>
+        <section class="card" role="region">
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title"><?=$sync_info['name']?></h2>
+                <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents'])?></h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text"><?=__('Last run: %s',
+                        '<time data-duration="' . $sync_info['diff'] . '"></time>')?></p>
+            </div>
+            <div class="card-actions">
+                <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:debug:sync',
+                    ['type' => $sync_key])?>">
+                    <i class="material-icons" aria-hidden="true">send</i>
+                    <?=__('Run Task')?>
+                </a>
+            </div>
+        </section>
+    <?php endforeach; ?>
 </div>

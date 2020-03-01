@@ -11,12 +11,25 @@ use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
     $app->group('/admin', function (RouteCollectorProxy $group) {
-        $group->get('', Controller\Admin\IndexController::class . ':indexAction')
+        $group->get('', Controller\Admin\IndexController::class)
             ->setName('admin:index:index');
 
-        $group->get('/sync/{type}', Controller\Admin\IndexController::class . ':syncAction')
-            ->setName('admin:index:sync')
-            ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+        $group->group('/debug', function (RouteCollectorProxy $group) {
+
+            $group->get('', Controller\Admin\DebugController::class)
+                ->setName('admin:debug:index');
+
+            $group->get('/sync/{type}', Controller\Admin\DebugController::class . ':syncAction')
+                ->setName('admin:debug:sync');
+
+            $group->group('/station/{station_id}', function (RouteCollectorProxy $group) {
+
+                $group->map(['GET', 'POST'], '/nextsong', Controller\Admin\DebugController::class . ':nextsongAction')
+                    ->setName('admin:debug:nextsong');
+
+            })->add(Middleware\GetStation::class);
+
+        })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
         $group->group('/install', function (RouteCollectorProxy $group) {
 

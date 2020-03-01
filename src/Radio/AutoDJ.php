@@ -284,11 +284,17 @@ class AutoDJ implements EventSubscriberInterface
                 continue;
             }
 
+            $log_playlists = [];
             $eligible_playlists = [];
             foreach ($playlists_by_type[$type] as $playlist_id => $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 if ($playlist->shouldPlayNow($now, $cued_song_history)) {
                     $eligible_playlists[$playlist_id] = $playlist->getWeight();
+                    $log_playlists[] = [
+                        'id' => $playlist->getId(),
+                        'name' => $playlist->getName(),
+                        'weight' => $playlist->getWeight(),
+                    ];
                 }
             }
 
@@ -296,8 +302,11 @@ class AutoDJ implements EventSubscriberInterface
                 continue;
             }
 
-            $this->logger->info(sprintf('%d playable playlists of type "%s" found.', count($eligible_playlists), $type),
-                $eligible_playlists);
+            $this->logger->info(sprintf(
+                '%d playable playlist(s) of type "%s" found.',
+                count($eligible_playlists),
+                $type
+            ), ['playlists' => $log_playlists]);
 
             // Shuffle playlists by weight.
             uasort($eligible_playlists, function ($a, $b) {

@@ -8,32 +8,15 @@ use App\Radio\Quota;
 use App\Settings;
 use App\Sync\Runner;
 use Brick\Math\BigInteger;
-use Monolog\Handler\TestHandler;
-use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    protected Logger $logger;
-
-    protected Runner $sync;
-
-    public function __construct(Logger $logger, Runner $sync)
-    {
-        $this->logger = $logger;
-        $this->sync = $sync;
-    }
-
-    /**
-     * Main display.
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @return ResponseInterface
-     */
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        Runner $sync
+    ): ResponseInterface {
         $view = $request->getView();
         $user = $request->getUser();
 
@@ -45,7 +28,7 @@ class IndexController
 
         if ($acl->userAllowed($user, Acl::GLOBAL_ALL)) {
             $view->addData([
-                'sync_times' => $this->sync->getSyncTimes(),
+                'sync_times' => $sync->getSyncTimes(),
             ]);
         }
 
@@ -60,41 +43,6 @@ class IndexController
             'space_percent' => Quota::getPercentage($space_used, $space_total),
             'space_used' => Quota::getReadableSize($space_used),
             'space_total' => Quota::getReadableSize($space_total),
-        ]);
-    }
-
-    public function syncAction(ServerRequest $request, Response $response, $type): ResponseInterface
-    {
-        $view = $request->getView();
-
-        $handler = new TestHandler(Logger::DEBUG, false);
-        $this->logger->pushHandler($handler);
-
-        switch ($type) {
-            case 'long':
-                $this->sync->syncLong(true);
-                break;
-
-            case 'medium':
-                $this->sync->syncMedium(true);
-                break;
-
-            case 'short':
-                $this->sync->syncShort(true);
-                break;
-
-            case 'nowplaying':
-            default:
-                $this->sync->syncNowplaying(true);
-                break;
-        }
-
-        $this->logger->popHandler();
-
-        return $view->renderToResponse($response, 'system/log_view', [
-            'sidebar' => null,
-            'title' => __('Sync Task Output'),
-            'log_records' => $handler->getRecords(),
         ]);
     }
 }

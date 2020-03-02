@@ -120,6 +120,7 @@ class Icecast extends AbstractFrontend
                 'ssl-private-key' => '/etc/nginx/ssl/ssl.key',
                 'ssl-certificate' => '/etc/nginx/ssl/ssl.crt',
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
+                'deny-ip' => $this->writeIpBansFile($station),
                 'x-forwarded-for' => '127.0.0.1',
             ],
             'logging' => [
@@ -132,6 +133,7 @@ class Icecast extends AbstractFrontend
                 'chroot' => 0,
             ],
         ];
+
 
         // Allow all sources to set the X-Forwarded-For header
         $settings = Settings::getInstance();

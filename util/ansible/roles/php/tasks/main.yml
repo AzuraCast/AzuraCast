@@ -1,86 +1,88 @@
 ---
-  - name: Add PHP PPA repository
-    apt_repository:
-      repo: "ppa:ondrej/php"
-      update_cache: yes
+- name: Add PHP PPA repository
+  apt_repository:
+    repo: "ppa:ondrej/php"
+    update_cache: yes
 
-  - name: Remove Old PHP Libraries
-    apt:
-      name: "{{ packages }}"
-      state: absent
-    vars:
-      packages:
-       - php5-common
-       - php5-fpm
-       - php5-cli
-       - php5-phalcon
-       - php7.0-fpm
-       - php7.0-cli
-       - php7.0-gd
-       - php7.0-curl
-       - php7.0-xml
-       - php7.0-zip
-       - php7.0-mysqlnd
-       - php7.0-mbstring
-       - php7.0-intl
-       - php7.0-phalcon
-       - php7.1-fpm
-       - php7.1-cli
-       - php7.1-gd
-       - php7.1-curl
-       - php7.1-xml
-       - php7.1-zip
-       - php7.1-mysqlnd
-       - php7.1-mbstring
-       - php7.1-intl
-       - php7.1-redis
-       - php7.2-fpm
-       - php7.2-cli
-       - php7.2-gd
-       - php7.2-curl
-       - php7.2-xml
-       - php7.2-zip
-       - php7.2-mysqlnd
-       - php7.2-mbstring
-       - php7.2-intl
-       - php7.2-redis
+- name: Remove Old PHP Libraries
+  apt:
+    name: "{{ packages }}"
+    state: absent
+  vars:
+    packages:
+      - php5-common
+      - php5-fpm
+      - php5-cli
+      - php5-phalcon
+      - php7.0-fpm
+      - php7.0-cli
+      - php7.0-gd
+      - php7.0-curl
+      - php7.0-xml
+      - php7.0-zip
+      - php7.0-mysqlnd
+      - php7.0-mbstring
+      - php7.0-intl
+      - php7.0-phalcon
+      - php7.1-fpm
+      - php7.1-cli
+      - php7.1-gd
+      - php7.1-curl
+      - php7.1-xml
+      - php7.1-zip
+      - php7.1-mysqlnd
+      - php7.1-mbstring
+      - php7.1-intl
+      - php7.1-redis
+      - php7.2-fpm
+      - php7.2-cli
+      - php7.2-gd
+      - php7.2-curl
+      - php7.2-xml
+      - php7.2-zip
+      - php7.2-mysqlnd
+      - php7.2-mbstring
+      - php7.2-intl
+      - php7.2-redis
 
-  - name: Install PHP 7.4
-    apt:
-      name: "{{ packages }}"
-      state: latest
-    vars:
-      packages:
-       - php7.4-fpm
-       - php7.4-cli
-       - php7.4-gd
-       - php7.4-curl
-       - php7.4-xml         # IceCast XML config
-       - php7.4-zip         # Composer installs
-       - php7.4-mysqlnd     # MySQL Native Driver (Doctrine)
-       - php7.4-mbstring    # Codeception Tests
-       - php7.4-intl        # Localization
-       - php7.4-redis       # Cache
+- name: Install PHP 7.4
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - php7.4-fpm
+      - php7.4-cli
+      - php7.4-gd
+      - php7.4-curl
+      - php7.4-xml         # IceCast XML config
+      - php7.4-zip         # Composer installs
+      - php7.4-mysqlnd     # MySQL Native Driver (Doctrine)
+      - php7.4-mbstring    # Codeception Tests
+      - php7.4-intl        # Localization
+      - php7.4-redis       # Cache
+      - php7.4-bcmath      # BigInteger
+      - php7.4-gmp         # BigInteger and PHP-IP
 
-  - name: Configure PHP FPM Pool
-    template: src=fpmpool.j2 dest=/etc/php/7.4/fpm/pool.d/www.conf force=true
+- name: Configure PHP FPM Pool
+  template: src=fpmpool.j2 dest=/etc/php/7.4/fpm/pool.d/www.conf force=true
 
-  - name: Configure php-fpm php.ini
-    ini_file:
-      dest: /etc/php/7.4/fpm/php.ini
-      section: PHP
-      option: "{{ item.option }}"
-      value: "{{ item.value }}"
-    with_items:
-      - { option: 'post_max_size',       value: "50M" }
-      - { option: 'short_open_tag',      value: "On" }
-      - { option: 'upload_max_filesize', value: "50M" }
+- name: Configure php-fpm php.ini
+  ini_file:
+    dest: /etc/php/7.4/fpm/php.ini
+    section: PHP
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { option: 'post_max_size',       value: "50M" }
+    - { option: 'short_open_tag',      value: "On" }
+    - { option: 'upload_max_filesize', value: "50M" }
 
-  - name: Configure php-cli php.ini
-    ini_file:
-      dest: /etc/php/7.4/cli/php.ini
-      section: PHP
-      option: "{{ item.option }}"
-      value: "{{ item.value }}"
-    with_items:
-      - { option: 'short_open_tag',      value: "On" }
+- name: Configure php-cli php.ini
+  ini_file:
+    dest: /etc/php/7.4/cli/php.ini
+    section: PHP
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { option: 'short_open_tag',      value: "On" }

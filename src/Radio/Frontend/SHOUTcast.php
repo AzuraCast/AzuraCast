@@ -187,7 +187,7 @@ class SHOUTcast extends AbstractFrontend
             'adminpassword' => Utilities::generatePassword(),
             'logfile' => '/tmp/sc_serv.log',
             'w3clog' => $config_path . '/sc_w3c.log',
-            'banfile' => $config_path . '/sc_serv.ban',
+            'banfile' => $this->writeIpBansFile($station),
             'ripfile' => $config_path . '/sc_serv.rip',
             'maxuser' => 250,
             'portbase' => $this->_getRadioPort($station),

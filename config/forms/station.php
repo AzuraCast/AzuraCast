@@ -195,7 +195,19 @@ return [
                         'belongsTo' => 'frontend_config',
                         'class' => 'text-preformatted',
                         'description' => __('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
-                        'form_group_class' => 'col-sm-12',
+                        'form_group_class' => 'col-sm-7',
+                    ],
+                ],
+
+                'banned_ips' => [
+                    'textarea',
+                    [
+                        'label' => __('Banned IP Addresses'),
+                        'label_class' => 'advanced',
+                        'belongsTo' => 'frontend_config',
+                        'class' => 'text-preformatted',
+                        'description' => __('List one IP address or group (in CIDR format) per line.'),
+                        'form_group_class' => 'col-sm-5',
                     ],
                 ],
 

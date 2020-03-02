@@ -2,16 +2,18 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\EventDispatcher;
 use App\Http\Router;
+use App\Logger;
 use App\Radio\AbstractAdapter;
 use App\Settings;
 use App\Xml\Reader;
-use App\EventDispatcher;
-use App\Logger;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Adapter\AdapterAbstract;
+use PhpIP\IP;
+use PhpIP\IPBlock;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
 
@@ -268,5 +270,39 @@ abstract class AbstractFrontend extends AbstractAdapter
     protected function _getRadioPort(Entity\Station $station)
     {
         return (8000 + (($station->getId() - 1) * 10));
+    }
+
+    protected function writeIpBansFile(Entity\Station $station): string
+    {
+        $ips = [];
+        $frontendConfig = $station->getFrontendConfig();
+
+        if (!empty($frontendConfig['banned_ips'])) {
+            $ipsRaw = array_filter(array_map('trim', explode("\n", $frontendConfig['banned_ips'])));
+
+            foreach ($ipsRaw as $ip) {
+                try {
+                    if (false === strpos($ip, '/')) {
+                        $ipObj = IP::create($ip);
+                        $ips[] = (string)$ipObj;
+                    } else {
+                        // Iterate through CIDR notation
+                        $ipBlock = IPBlock::create($ip);
+                        foreach ($ipBlock as $ipObj) {
+                            $ips[] = (string)$ipObj;
+                        }
+                    }
+                } catch (\InvalidArgumentException $e) {
+                    continue;
+                }
+            }
+        }
+
+        $configDir = $station->getRadioConfigDir();
+        $bansFile = $configDir . '/ip_bans.txt';
+
+        file_put_contents($bansFile, implode("\n", $ips));
+
+        return $bansFile;
     }
 }

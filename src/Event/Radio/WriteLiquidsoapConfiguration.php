@@ -38,6 +38,11 @@ class WriteLiquidsoapConfiguration extends Event
     {
         $this->configLines = array_merge($this->configLines, [''], $lines);
     }
+    
+    public function appendBlock(string $lines): void
+    {
+        $this->appendLines(explode("\n", $lines));
+    }
 
     /**
      * Prepend one or more lines to the front of the configuration string.

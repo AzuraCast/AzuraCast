@@ -486,21 +486,25 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         }
 
         if (!$station->useManualAutoDJ()) {
-            $event->appendLines([
-                '# AutoDJ Next Song Script',
-                'def azuracast_next_song() =',
-                '  uri = ' . $this->_getApiUrlCommand($station, 'nextsong'),
-                '  log("AzuraCast Raw Response: #{uri}")',
-                '  ',
-                '  if uri == "" or string.match(pattern="Error", uri) then',
-                '    log("AzuraCast Error: Delaying subsequent requests...")',
-                '    system("sleep 2")',
-                '    request.create("")',
-                '  else',
-                '    request.create(uri)',
-                '  end',
-                'end',
-            ]);
+
+            $nextsongCommand = $this->_getApiUrlCommand($station, 'nextsong');
+
+            $event->appendBlock(<<< EOF
+            # AutoDJ Next Song Script
+            def azuracast_next_song() =
+                uri = {$nextsongCommand}
+                log("AzuraCast Raw Response: #{uri}")
+                
+                if uri == "" or string.match(pattern="Error", uri) then
+                    log("AzuraCast Error: Delaying subsequent requests...")
+                    system("sleep 2")
+                    request.create("")
+                else
+                    request.create(uri)
+                end
+            end
+            EOF
+            );
 
             $event->appendLines([
                 'dynamic = audio_to_stereo(request.dynamic(id="' . $this->_getVarName('next_song',
@@ -822,60 +826,85 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $dj_mount = $settings['dj_mount_point'] ?? '/';
         $recordLiveStreams = $settings['record_streams'] ?? false;
 
-        $event->appendLines([
-            '# DJ Authentication',
-            'live_enabled = ref false',
-            'last_authenticated_dj = ref ""',
-            'live_dj = ref ""',
-            '',
-            'def dj_auth(user,password) =',
-            '  log("Authenticating DJ: #{user}")',
-            '  ret = ' . $this->_getApiUrlCommand($station, 'auth', ['dj-user' => 'user', 'dj-password' => 'password']),
-            '  log("AzuraCast DJ Auth Response: #{ret}")',
-            '  authed = bool_of_string(ret)',
-            '  if authed then',
-            '    last_authenticated_dj := user',
-            '  end',
-            '  authed',
-            'end',
-            '',
-            'def live_connected(header) =',
-            '  dj = !last_authenticated_dj',
-            '  log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")',
-            '  live_enabled := true',
-            '  live_dj := dj',
-            '  ret = ' . $this->_getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']),
-            '  log("AzuraCast Live Connected Response: #{ret}")',
-            'end',
-            '',
-            'def live_disconnected() =',
-            '  dj = !live_dj',
-            '  log("DJ Source disconnected! Current live DJ: #{dj}")',
-            '  ret = ' . $this->_getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']),
-            '  log("AzuraCast Live Disconnected Response: #{ret}")',
-            '  live_enabled := false',
-            '  last_authenticated_dj := ""',
-            '  live_dj := ""',
-            'end',
-        ]);
+        $authCommand = $this->_getApiUrlCommand($station, 'auth', ['dj-user' => '!user', 'dj-password' => '!password']);
+        $djonCommand = $this->_getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
+        $djoffCommand = $this->_getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']);
+
+        $event->appendBlock(<<< EOF
+        # DJ Authentication
+        live_enabled = ref false
+        last_authenticated_dj = ref ""
+        live_dj = ref ""
+        
+        def dj_auth(auth_user,auth_pw) =
+            user = ref ""
+            password = ref ""
+          
+            if (auth_user == "source" or auth_user == "") and (string.match(pattern="(:|,)+", auth_pw)) then
+                auth_string = string.split(separator="(:|,)", auth_pw)
+                
+                user := list.nth(default="", auth_string, 0)
+                password := list.nth(default="", auth_string, 2)
+            else
+                user := auth_user
+                password := auth_pw
+            end
+            
+            log("Authenticating DJ: #{!user}")
+            
+            ret = {$authCommand}
+            log("AzuraCast DJ Auth Response: #{ret}")
+            
+            authed = bool_of_string(ret)
+            if (authed) then
+                last_authenticated_dj := !user
+            end
+            
+            authed
+        end
+        
+        def live_connected(header) =
+            dj = !last_authenticated_dj
+            log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
+            
+            live_enabled := true
+            live_dj := dj
+            
+            ret = {$djonCommand}
+            log("AzuraCast Live Connected Response: #{ret}")
+        end
+        
+        def live_disconnected() = 
+            dj = !live_dj
+            
+            log("DJ Source disconnected! Current live DJ: #{dj}")
+            
+            ret = {$djoffCommand}
+            log("AzuraCast Live Disconnected Response: #{ret}")
+            
+            live_enabled := false
+            last_authenticated_dj := ""
+            live_dj := ""
+        end 
+        EOF
+        );
 
         $harbor_params = [
             '"' . $this->_cleanUpString($dj_mount) . '"',
-            'id="' . $this->_getVarName('input_streamer', $station) . '"',
-            'port=' . $this->getStreamPort($station),
-            'user="shoutcast"',
-            'auth=dj_auth',
-            'icy=true',
-            'icy_metadata_charset="' . $charset . '"',
-            'metadata_charset="' . $charset . '"',
-            'on_connect=live_connected',
-            'on_disconnect=live_disconnected',
+            'id = "' . $this->_getVarName('input_streamer', $station) . '"',
+            'port = ' . $this->getStreamPort($station),
+            'auth = dj_auth',
+            'icy = true',
+            'icy_metadata_charset = "' . $charset . '"',
+            'metadata_charset = "' . $charset . '"',
+            'on_connect = live_connected',
+            'on_disconnect = live_disconnected',
         ];
 
         $djBuffer = (int)($settings['dj_buffer'] ?? 5);
         if (0 !== $djBuffer) {
-            $harbor_params[] = 'buffer=' . self::toFloat($djBuffer);
-            $harbor_params[] = 'max=' . self::toFloat(max($djBuffer + 5, 10));
+            $harbor_params[] = 'buffer = ' . self::toFloat($djBuffer);
+            $harbor_params[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
         }
 
         $event->appendLines([
@@ -897,24 +926,26 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
 
-            $event->appendLines([
-                '# Record Live Broadcasts',
-                'stop_recording_f = ref (fun () -> ())',
-                '',
-                'def start_recording(path) =',
-                '  output_live_recording = output.file(' . $formatString . ', fallible=true, reopen_on_metadata=false, "#{path}", live)',
-                '  stop_recording_f := fun () -> source.shutdown(output_live_recording)',
-                'end',
-                '',
-                'def stop_recording() =',
-                '  f = !stop_recording_f',
-                '  f ()',
-                '  stop_recording_f := fun () -> ()',
-                'end',
-                '',
-                'server.register(namespace="recording", description="Start recording.", usage="recording.start <filename>", "start", fun (s) -> begin start_recording(s) "Done!" end)',
-                'server.register(namespace="recording", description="Stop recording.", usage="recording.stop", "stop", fun (s) -> begin stop_recording() "Done!" end)',
-            ]);
+            $event->appendBlock(<<< EOF
+            # Record Live Broadcasts
+            stop_recording_f = ref (fun () -> ())
+            
+            def start_recording(path) =
+                output_live_recording = output.file({$formatString}, fallible=true, reopen_on_metadata=false, "#{path}", live)
+                stop_recording_f := fun () -> source.shutdown(output_live_recording)
+            end
+            
+            def stop_recording() =
+                f = !stop_recording_f
+                f ()
+                
+                stop_recording_f := fun () -> ()
+            end
+            
+            server.register(namespace="recording", description="Start recording.", usage="recording.start filename", "start", fun (s) -> begin start_recording(s) "Done!" end)
+            server.register(namespace="recording", description="Stop recording.", usage="recording.stop", "stop", fun (s) -> begin stop_recording() "Done!" end)
+            EOF
+            );
         }
     }
 
@@ -968,18 +999,21 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         // Custom configuration
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
 
-        $event->appendLines([
-            '# Send metadata changes back to AzuraCast',
-            'def metadata_updated(m) =',
-            '  if (m["song_id"] != "") then',
-            '    ret = ' . $this->_getApiUrlCommand($station, 'feedback',
-                ['song' => 'm["song_id"]', 'media' => 'm["media_id"]', 'playlist' => 'm["playlist_id"]']),
-            '    log("AzuraCast Feedback Response: #{ret}")',
-            '  end',
-            'end',
-            '',
-            'radio = on_metadata(metadata_updated,radio)',
-        ]);
+        $feedbackCommand = $this->_getApiUrlCommand($station, 'feedback',
+            ['song' => 'm["song_id"]', 'media' => 'm["media_id"]', 'playlist' => 'm["playlist_id"]']);
+
+        $event->appendBlock(<<<EOF
+        # Send metadata changes back to AzuraCast
+        def metadata_updated(m) =
+            if (m["song_id"] != "") then
+                ret = {$feedbackCommand}
+                log("AzuraCast Feedback Response: #{ret}")
+            end
+        end
+        
+        radio = on_metadata(metadata_updated,radio)
+        EOF
+        );
     }
 
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event)
@@ -1218,14 +1252,6 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
         $fe_config = (array)$station->getFrontendConfig();
         if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
             return 'true';
-        }
-
-        // Handle login conditions where the username and password are joined in the password field.
-        if (strpos($pass, ',') !== false) {
-            [$user, $pass] = explode(',', $pass);
-        }
-        if (strpos($pass, ':') !== false) {
-            [$user, $pass] = explode(':', $pass);
         }
 
         return $this->streamerRepo->authenticate($station, $user, $pass)

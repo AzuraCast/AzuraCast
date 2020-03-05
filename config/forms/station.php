@@ -95,7 +95,7 @@ return [
                     [
                         'label' => __('URL Stub'),
                         'label_class' => 'advanced',
-                        'description' => __('Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'),
+                        'description' => __('Optional, specify a URL friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name. Do not leave spaces within this field. '),
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

@@ -46,6 +46,7 @@
     "vue-gettext": "^2.1.8",
     "vuedraggable": "^2.23.2",
     "vuelidate": "^0.7.5",
+    "wavesurfer.js": "^3.3.1",
     "webpack": "^4.41.5",
     "zxcvbn": "^4.4.2"
   },

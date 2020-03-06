@@ -3,19 +3,19 @@
         <audio ref="player"/>
 
         <div class="inline-seek d-inline-flex align-items-center ml-1" v-if="duration !== 0">
-            <div class="flex-shrink-0 mx-2 text-muted time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ currentTimeText }}
             </div>
             <div class="flex-fill mx-2">
                 <input type="range" :title="langSeek" class="player-seek-range custom-range" min="0" max="100"
                        step="1" v-model="progress">
             </div>
-            <div class="flex-shrink-0 mx-2 text-muted time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ durationText }}
             </div>
         </div>
 
-        <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="stop()">
+        <a class="btn btn-sm btn-outline-light px-2 ml-1" href="#" @click.prevent="stop()">
             <i class="material-icons" aria-hidden="true">pause</i>
             <span class="sr-only" v-translate>Pause</span>
         </a>
@@ -44,6 +44,10 @@
     .player-inline {
         .inline-seek {
             width: 300px;
+
+            div.time-display {
+                font-size: 90%;
+            }
         }
 
         .inline-volume-controls {

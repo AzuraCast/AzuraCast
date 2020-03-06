@@ -7,6 +7,7 @@
                 <media-form-basic-info :form="$v.form"></media-form-basic-info>
                 <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
                 <media-form-custom-fields :form="form" :custom-fields="customFields"></media-form-custom-fields>
+                <media-form-waveform-editor :form="form" :audio-url="audioUrl"></media-form-waveform-editor>
                 <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
             </b-tabs>
             <invisible-submit-button/>
@@ -31,10 +32,12 @@
     import MediaFormCustomFields from './form/MediaFormCustomFields';
     import MediaFormAdvancedSettings from './form/MediaFormAdvancedSettings';
     import InvisibleSubmitButton from '../components/InvisibleSubmitButton';
+    import MediaFormWaveformEditor from "./form/MediaFormWaveformEditor";
 
     export default {
         name: 'EditModal',
         components: {
+            MediaFormWaveformEditor,
             MediaFormAdvancedSettings,
             MediaFormCustomFields,
             MediaFormAlbumArt,
@@ -50,6 +53,7 @@
                 loading: true,
                 recordUrl: null,
                 albumArtUrl: null,
+                audioUrl: null,
                 songLength: null,
                 form: this.getBlankForm()
             };
@@ -102,12 +106,13 @@
                     custom_fields: customFields
                 };
             },
-            open (recordUrl, albumArtUrl) {
+            open (recordUrl, albumArtUrl, audioUrl) {
                 this.loading = true;
                 this.$refs.modal.show();
 
                 this.albumArtUrl = albumArtUrl;
                 this.recordUrl = recordUrl;
+                this.audioUrl = audioUrl;
 
                 axios.get(recordUrl).then((resp) => {
                     let d = resp.data;
@@ -142,6 +147,7 @@
             close () {
                 this.loading = false;
                 this.albumArtUrl = null;
+                this.audioUrl = null;
 
                 this.form = this.getBlankForm();
 

@@ -423,7 +423,29 @@ class Station
         $this->name = $this->_truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName(self::getStationShortName($name));
+            $this->setShortName($name);
+        }
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getShortName(): ?string
+    {
+        return (!empty($this->short_name))
+            ? $this->short_name
+            : self::getStationShortName($this->name);
+    }
+
+    /**
+     * @param null|string $short_name
+     */
+    public function setShortName(?string $short_name): void
+    {
+        $short_name = trim($short_name);
+        if (!empty($short_name)) {
+            $short_name = self::getStationShortName($short_name);
+            $this->short_name = $this->_truncateString($short_name, 100);
         }
     }
 
@@ -1286,26 +1308,5 @@ class Station
         $response->remotes = $remotes;
 
         return $response;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getShortName(): ?string
-    {
-        return (!empty($this->short_name))
-            ? $this->short_name
-            : self::getStationShortName($this->name);
-    }
-
-    /**
-     * @param null|string $short_name
-     */
-    public function setShortName(?string $short_name): void
-    {
-        $short_name = trim($short_name);
-        if (!empty($short_name)) {
-            $this->short_name = $this->_truncateString($short_name, 100);
-        }
     }
 }

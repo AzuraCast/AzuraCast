@@ -21,6 +21,7 @@
 <script>
     import WaveSurfer from 'wavesurfer.js'
     import timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js'
+    import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js'
 
     export default {
         name: 'Waveform',
@@ -42,6 +43,9 @@
                 plugins: [
                     timeline.create({
                         container: '#waveform-timeline'
+                    }),
+                    regions.create({
+                        regions: []
                     })
                 ]
             });
@@ -67,6 +71,24 @@
             getDuration() {
                 if (this.wavesurfer) {
                     return this.wavesurfer.getDuration();
+                }
+            },
+            addRegion(start, end, color) {
+                if (this.wavesurfer) {
+                    this.wavesurfer.addRegion(
+                            {
+                                start: start,
+                                end: end,
+                                resize: false,
+                                drag: false,
+                                color: color
+                            }
+                    );
+                }
+            },
+            clearRegions() {
+                if (this.wavesurfer) {
+                    this.wavesurfer.clearRegions();
                 }
             }
         },
